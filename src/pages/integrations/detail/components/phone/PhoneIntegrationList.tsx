@@ -26,8 +26,7 @@ export function PhoneIntegrationList({
     maxIntegrations,
 }: Props): JSX.Element {
     const phoneIntegrations = integrations.filter(
-        (integration) =>
-            integration?.get('type') === IntegrationType.PhoneIntegrationType
+        (integration) => integration?.get('type') === IntegrationType.Phone
     ) as List<Map<any, any>>
     const isLimitReached = phoneIntegrations.size >= maxIntegrations
     const longTypeDescription =
@@ -49,12 +48,12 @@ export function PhoneIntegrationList({
 
     return (
         <IntegrationList
-            integrationType={IntegrationType.PhoneIntegrationType}
+            integrationType={IntegrationType.Phone}
             longTypeDescription={longTypeDescription}
             integrations={phoneIntegrations}
             createIntegration={() =>
                 history.push(
-                    `/app/settings/integrations/${IntegrationType.PhoneIntegrationType}/new`
+                    `/app/settings/integrations/${IntegrationType.Phone}/new`
                 )
             }
             createIntegrationButtonContent="Add Phone Number"

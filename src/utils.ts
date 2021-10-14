@@ -986,3 +986,13 @@ export const makeGetPlainJS = <T = unknown>(
         selector,
         (data: Iterable<any, any>) => data.toJS() as T
     )
+
+export function createTypeGuard<
+    Input,
+    Output extends Input,
+    Args extends unknown[] = []
+>(f: (value: Input, ...args: Args) => Output | undefined) {
+    return (value: Input, ...args: Args): value is Output => {
+        return f(value, ...args) !== undefined
+    }
+}

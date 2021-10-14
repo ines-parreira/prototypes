@@ -202,9 +202,7 @@ RefundOrderModalContainer.contextTypes = {
 
 const connector = connect(
     (state: RootState) => ({
-        integrations: getIntegrationsByTypes([
-            IntegrationType.ShopifyIntegrationType,
-        ])(state),
+        integrations: getIntegrationsByTypes([IntegrationType.Shopify])(state),
         loading: getRefundOrderState(state).get('loading') as boolean,
         loadingMessage: getRefundOrderState(state).get(
             'loadingMessage'

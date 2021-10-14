@@ -96,7 +96,7 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
 
         void activateOnboardingIntegrations(
             data,
-            IntegrationType.FacebookIntegrationType
+            IntegrationType.Facebook
         ).then(() => fetchIntegrations())
         history.push('/app/settings/integrations/facebook')
     }
@@ -818,12 +818,10 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
 
 const connector = connect(
     (state: RootState) => ({
-        integrations: getOnboardingIntegrations(
-            IntegrationType.FacebookIntegrationType
-        )(state),
-        pagination: getOnboardingMeta(IntegrationType.FacebookIntegrationType)(
+        integrations: getOnboardingIntegrations(IntegrationType.Facebook)(
             state
         ),
+        pagination: getOnboardingMeta(IntegrationType.Facebook)(state),
         currentAccount: state.currentAccount,
         currentPlan: getCurrentPlan(state),
     }),

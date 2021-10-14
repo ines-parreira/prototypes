@@ -242,9 +242,9 @@ const connector = connect(
         currentAccount: state.currentAccount,
         notifications: state.notifications,
         openedPanel: layoutSelectors.getCurrentOpenedPanel(state),
-        hasPhoneIntegration: hasIntegrationOfTypes(
-            IntegrationType.PhoneIntegrationType
-        )(state),
+        hasPhoneIntegration: hasIntegrationOfTypes(IntegrationType.Phone)(
+            state
+        ),
     }),
     {
         injectInterceptor: injectInterceptor,

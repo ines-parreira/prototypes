@@ -37,7 +37,7 @@ export default class ProductSearchInput extends Component<Props> {
     }
 
     static _variantsMapper = {
-        [IntegrationType.ShopifyIntegrationType]: (
+        [IntegrationType.Shopify]: (
             result: IntegrationDataItem<ShopifyProduct>
         ) => result.data.variants,
     }

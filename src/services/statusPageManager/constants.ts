@@ -58,29 +58,29 @@ export const INTEGRATION_COMPONENTS_TYPES: {
     [key: string]: IntegrationType
 } = isProduction
     ? Object.freeze({
-          '2mthy5ngnx15': IntegrationType.AircallIntegrationType, // Aircall Public API
-          '9trdjybr6ns8': IntegrationType.AircallIntegrationType, // Aircall Apps
-          cphz58q8ddp1: IntegrationType.EmailIntegrationType,
-          '02bj4d0s58d5': IntegrationType.EmailIntegrationType, // Mailgun smtp
-          '97wn3q88vb90': IntegrationType.EmailIntegrationType, // Mailgun inbound email
-          dmf38pkrn2hh: IntegrationType.EmailIntegrationType, // Mailgun outbound email
-          k647tnkgnrzn: IntegrationType.EmailIntegrationType, // Mailgun API
-          c696fffd032x: IntegrationType.GmailIntegrationType,
-          '0k9stqn0czpt': IntegrationType.OutlookIntegrationType,
-          slm5jt5rbn6w: IntegrationType.SmoochInsideIntegrationType,
-          wt84j6hkbg5v: IntegrationType.SmoochInsideIntegrationType, // Smooch Core API
-          zlsstk1s8j12: IntegrationType.FacebookIntegrationType,
-          x95q6p88z8hd: IntegrationType.FacebookIntegrationType, // Instagram comments
-          fzmbzjs3p9qd: IntegrationType.FacebookIntegrationType, // Messenger
-          '2pr7qbc9c17s': IntegrationType.ShopifyIntegrationType,
-          '212dg2c2png1': IntegrationType.ShopifyIntegrationType, // Shopify API & Mobile
+          '2mthy5ngnx15': IntegrationType.Aircall, // Aircall Public API
+          '9trdjybr6ns8': IntegrationType.Aircall, // Aircall Apps
+          cphz58q8ddp1: IntegrationType.Email,
+          '02bj4d0s58d5': IntegrationType.Email, // Mailgun smtp
+          '97wn3q88vb90': IntegrationType.Email, // Mailgun inbound email
+          dmf38pkrn2hh: IntegrationType.Email, // Mailgun outbound email
+          k647tnkgnrzn: IntegrationType.Email, // Mailgun API
+          c696fffd032x: IntegrationType.Gmail,
+          '0k9stqn0czpt': IntegrationType.Outlook,
+          slm5jt5rbn6w: IntegrationType.SmoochInside,
+          wt84j6hkbg5v: IntegrationType.SmoochInside, // Smooch Core API
+          zlsstk1s8j12: IntegrationType.Facebook,
+          x95q6p88z8hd: IntegrationType.Facebook, // Instagram comments
+          fzmbzjs3p9qd: IntegrationType.Facebook, // Messenger
+          '2pr7qbc9c17s': IntegrationType.Shopify,
+          '212dg2c2png1': IntegrationType.Shopify, // Shopify API & Mobile
       })
     : Object.freeze({
-          ykr08lvqnb66: IntegrationType.AircallIntegrationType,
-          '72gh1dxg7hnv': IntegrationType.FacebookIntegrationType,
-          wfkm6njpgc6p: IntegrationType.GmailIntegrationType,
-          '3gk4mkb0w9q4': IntegrationType.OutlookIntegrationType,
-          ys5kq8wycd9w: IntegrationType.FacebookIntegrationType, // Instagram comments
+          ykr08lvqnb66: IntegrationType.Aircall,
+          '72gh1dxg7hnv': IntegrationType.Facebook,
+          wfkm6njpgc6p: IntegrationType.Gmail,
+          '3gk4mkb0w9q4': IntegrationType.Outlook,
+          ys5kq8wycd9w: IntegrationType.Facebook, // Instagram comments
       })
 
 // Mapping between statuspage.io statuses (https://status.gorgias.com/api) and our own notification status/labels.

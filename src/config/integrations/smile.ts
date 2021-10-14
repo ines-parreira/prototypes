@@ -1,7 +1,7 @@
 import {IntegrationType} from '../../models/integration/types'
 
 export const MACRO_VARIABLES = {
-    type: IntegrationType.SmileIntegrationType,
+    type: IntegrationType.Smile,
     integration: true,
     name: 'Smile',
     children: [

@@ -13,7 +13,7 @@ export default class GorgiasChatIntegrationNavigation extends Component<Props> {
     render() {
         const {integration} = this.props
         const integrationId: number = integration.get('id')
-        const baseURL = `/app/settings/integrations/${IntegrationType.GorgiasChatIntegrationType}/${integrationId}`
+        const baseURL = `/app/settings/integrations/${IntegrationType.GorgiasChat}/${integrationId}`
 
         return (
             <SecondaryNavbar>

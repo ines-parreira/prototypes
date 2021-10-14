@@ -20,7 +20,7 @@ export const useConfigurationData = () => {
         integrationType: string
     }>()
     const shopifyIntegrations = useSelector(
-        getIntegrationsByTypes(IntegrationType.ShopifyIntegrationType)
+        getIntegrationsByTypes(IntegrationType.Shopify)
     )
     const selfServiceConfigurations = useSelector(getSelfServiceConfigurations)
 

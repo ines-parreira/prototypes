@@ -209,15 +209,15 @@ export class Widget extends Component<Props, State> {
 
         const variableTypes = ['current_user', 'ticket.customer']
 
-        if (hasIntegrationOfTypes(IntegrationType.ShopifyIntegrationType)) {
+        if (hasIntegrationOfTypes(IntegrationType.Shopify)) {
             variableTypes.push('shopify')
         }
 
-        if (hasIntegrationOfTypes(IntegrationType.RechargeIntegrationType)) {
+        if (hasIntegrationOfTypes(IntegrationType.Recharge)) {
             variableTypes.push('recharge')
         }
 
-        if (hasIntegrationOfTypes(IntegrationType.Magento2IntegrationType)) {
+        if (hasIntegrationOfTypes(IntegrationType.Magento2)) {
             variableTypes.push('magento2')
         }
 

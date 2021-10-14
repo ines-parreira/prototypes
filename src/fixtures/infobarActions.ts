@@ -24,7 +24,7 @@ export const infobarActionsStateFixture = ({
     editOrderState?: typeof editOrderInitialState
     editShippingAddressState?: typeof shippingAddressInitialState
 } = {}): InfobarActionsState => ({
-    [IntegrationType.ShopifyIntegrationType]: {
+    [IntegrationType.Shopify]: {
         cancelOrder: cancelOrderState,
         createOrder: createOrderState,
         refundOrder: refundOrderState,

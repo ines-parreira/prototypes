@@ -173,7 +173,7 @@ describe('components utils: labels', () => {
                 const {container} = render(
                     <labels.IntegrationsDetailLabel
                         integration={fromJS({
-                            type: IntegrationType.EmailIntegrationType,
+                            type: IntegrationType.Email,
                             name: 'common',
                             meta: {address: 'specific'},
                         })}
@@ -186,7 +186,7 @@ describe('components utils: labels', () => {
                 const {container} = render(
                     <labels.IntegrationsDetailLabel
                         integration={fromJS({
-                            type: IntegrationType.EmailIntegrationType,
+                            type: IntegrationType.Email,
                             name: 'common',
                             meta: {address: ''},
                         })}
@@ -199,7 +199,7 @@ describe('components utils: labels', () => {
                 const {container} = render(
                     <labels.IntegrationsDetailLabel
                         integration={fromJS({
-                            type: IntegrationType.FacebookIntegrationType,
+                            type: IntegrationType.Facebook,
                             name: 'common',
                             meta: {address: 'specific'},
                         })}
@@ -212,7 +212,7 @@ describe('components utils: labels', () => {
                 const {container} = render(
                     <labels.IntegrationsDetailLabel
                         integration={fromJS({
-                            type: IntegrationType.GmailIntegrationType,
+                            type: IntegrationType.Gmail,
                             name: 'common',
                             address: 'inlined email',
                         })}
@@ -225,7 +225,7 @@ describe('components utils: labels', () => {
                 const {container} = render(
                     <labels.IntegrationsDetailLabel
                         integration={fromJS({
-                            type: IntegrationType.AircallIntegrationType,
+                            type: IntegrationType.Aircall,
                             name: 'common',
                             address: 'aircall style',
                         })}

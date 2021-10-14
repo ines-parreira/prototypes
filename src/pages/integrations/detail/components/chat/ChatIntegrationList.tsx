@@ -24,8 +24,7 @@ export class ChatIntegrationListContainer extends Component<Props> {
         const {integrations, loading} = this.props
         const hasActiveSmoochInsideIntegration = integrations.find(
             (integration) =>
-                integration!.get('type') ===
-                    IntegrationType.SmoochInsideIntegrationType &&
+                integration!.get('type') === IntegrationType.SmoochInside &&
                 integration!.get('deactivated_datetime') == null
         )
 
@@ -109,13 +108,13 @@ export class ChatIntegrationListContainer extends Component<Props> {
 
         return (
             <IntegrationList
-                integrationType={IntegrationType.SmoochInsideIntegrationType}
+                integrationType={IntegrationType.SmoochInside}
                 longTypeDescription={longTypeDescription()}
                 integrations={
                     integrations.filter(
                         (integration) =>
                             integration!.get('type') ===
-                            IntegrationType.SmoochInsideIntegrationType
+                            IntegrationType.SmoochInside
                     ) as List<Map<any, any>>
                 }
                 createIntegration={() =>

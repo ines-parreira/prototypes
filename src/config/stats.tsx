@@ -86,17 +86,17 @@ export const SATISFACTION_SURVEY_MAX_COMMENT_LENGTH = 80
 
 export const TICKET_MAX_SUBJECT_LENGTH = 100
 
-export const STORE_INTEGRATION_TYPES = [IntegrationType.ShopifyIntegrationType]
+export const STORE_INTEGRATION_TYPES = [IntegrationType.Shopify]
 export const MESSAGE_INTEGRATION_TYPES = [
-    IntegrationType.EmailIntegrationType,
-    IntegrationType.GmailIntegrationType,
-    IntegrationType.OutlookIntegrationType,
-    IntegrationType.AircallIntegrationType,
-    IntegrationType.GorgiasChatIntegrationType,
-    IntegrationType.SmoochIntegrationType,
-    IntegrationType.SmoochInsideIntegrationType,
-    IntegrationType.FacebookIntegrationType,
-    IntegrationType.ZendeskIntegrationType,
+    IntegrationType.Email,
+    IntegrationType.Gmail,
+    IntegrationType.Outlook,
+    IntegrationType.Aircall,
+    IntegrationType.GorgiasChat,
+    IntegrationType.Smooch,
+    IntegrationType.SmoochInside,
+    IntegrationType.Facebook,
+    IntegrationType.Zendesk,
 ]
 
 type IntentOption = {color: string; label: string}

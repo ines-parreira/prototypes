@@ -26,7 +26,7 @@ import {
     smoochTicket,
 } from '../../ticket/tests/fixtures'
 import socketManager from '../../../services/socketManager/socketManager'
-import {Integration, IntegrationType} from '../../../models/integration/types'
+import {IntegrationType} from '../../../models/integration/types'
 import {ticket} from '../../../fixtures/ticket'
 import * as emailExtraUtils from '../emailExtraUtils'
 import {convertFromHTML} from '../../../utils/editor'
@@ -340,18 +340,16 @@ describe('actions', () => {
             })
 
             it('should reject any channel which is not verified and replace it with any verified channel', () => {
-                const unverifiedChannel = (integrationsState as {
-                    integrations: Integration[]
-                }).integrations.find(
+                const unverifiedChannel = integrationsState.integrations.find(
                     (integration) => integration.meta.verified === false
-                ) as Integration
+                )
 
                 const _emailTicket = emailTicket
                     .deleteIn(['messages', 1]) // delete last message from agent
                     .setIn(
                         ['messages', 0, 'source', 'to', 0],
                         fromJS({
-                            name: unverifiedChannel.name,
+                            name: unverifiedChannel?.name,
                             address: ((unverifiedChannel as unknown) as {
                                 address: unknown
                             }).address,
@@ -378,9 +376,7 @@ describe('actions', () => {
                 >
                 const sender = setSenderAction.sender as Map<any, any>
                 //$TsFixMe remove casting once fixtures/integrations is migrated
-                const senderChannel = (integrationsState as {
-                    integrations: Integration[]
-                }).integrations.find(
+                const senderChannel = integrationsState.integrations.find(
                     (integration) =>
                         integration.meta.address === sender.get('address')
                 )
@@ -435,9 +431,7 @@ describe('actions', () => {
                 >
                 const sender = setSenderAction.sender as Map<any, any>
                 //$TsFixMe remove casting once fixtures/integrations is migrated
-                const senderChannel = (integrationsState as {
-                    integrations: Integration[]
-                }).integrations.find(
+                const senderChannel = integrationsState.integrations.find(
                     (integration) =>
                         integration.meta.address === sender.get('address')
                 )
@@ -475,9 +469,7 @@ describe('actions', () => {
 
             it('should handle phone channel', () => {
                 const phoneIntegration = integrationsState.integrations.find(
-                    (integration) =>
-                        integration.type ===
-                        IntegrationType.PhoneIntegrationType
+                    (integration) => integration.type === IntegrationType.Phone
                 )
 
                 store = mockStore({

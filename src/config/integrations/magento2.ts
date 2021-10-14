@@ -6,7 +6,7 @@ import {getTrackingUrl} from '../../utils/delivery'
 import {IntegrationType} from '../../models/integration/types'
 
 export const MACRO_VARIABLES = {
-    type: IntegrationType.Magento2IntegrationType,
+    type: IntegrationType.Magento2,
     name: 'Magento 2',
     integration: true,
     children: [
@@ -181,7 +181,7 @@ export const MACRO_VARIABLES = {
 }
 
 export const MACRO_HIDDEN_VARIABLES = {
-    type: IntegrationType.Magento2IntegrationType,
+    type: IntegrationType.Magento2,
     name: 'Magento 2',
     integration: true,
     children: [

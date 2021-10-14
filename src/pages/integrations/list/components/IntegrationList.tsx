@@ -76,8 +76,7 @@ export default class IntegrationList extends React.Component<Props> {
         return this.props.integrations
             .filter(
                 (integration) =>
-                    integration!.get('type') ===
-                    IntegrationType.TwitterIntegrationType
+                    integration!.get('type') === IntegrationType.Twitter
             )
             .find(
                 (integration) =>
@@ -90,8 +89,7 @@ export default class IntegrationList extends React.Component<Props> {
         return this.props.integrations
             .filter(
                 (integration) =>
-                    integration!.get('type') ===
-                    IntegrationType.SmoochInsideIntegrationType
+                    integration!.get('type') === IntegrationType.SmoochInside
             )
             .find(
                 (integration) =>
@@ -139,8 +137,7 @@ export default class IntegrationList extends React.Component<Props> {
                 // do not return the smooch inside integration
                 // if there is no active integration of it
                 if (
-                    integration!.get('type') ===
-                        IntegrationType.SmoochInsideIntegrationType &&
+                    integration!.get('type') === IntegrationType.SmoochInside &&
                     !hasActiveSmoochInsideIntegrations
                 ) {
                     return false
@@ -169,8 +166,7 @@ export default class IntegrationList extends React.Component<Props> {
                     // contain the custom plans (Enterprise plans == Custom plans)
                     if (
                         !hasTwitterIntegrations &&
-                        integration!.get('type') ===
-                            IntegrationType.TwitterIntegrationType
+                        integration!.get('type') === IntegrationType.Twitter
                     ) {
                         return integration!.set(
                             'requiredPlanName',

@@ -25,11 +25,7 @@ export const EMAIL_INTEGRATION_TYPES = Object.freeze([
     EMAIL_INTEGRATION_TYPE,
     GMAIL_INTEGRATION_TYPE,
     OUTLOOK_INTEGRATION_TYPE,
-]) as [
-    IntegrationType.EmailIntegrationType,
-    IntegrationType.GmailIntegrationType,
-    IntegrationType.OutlookIntegrationType
-]
+]) as [IntegrationType.Email, IntegrationType.Gmail, IntegrationType.Outlook]
 
 export const INTEGRATION_TYPES_MAP = Object.freeze({
     EMAIL_INTEGRATION_TYPE,

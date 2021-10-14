@@ -47,7 +47,7 @@ describe('<GorgiasChatIntegrationSelfService/>', () => {
         integration: fromJS({
             id: 7,
             name: 'my chat integration',
-            type: IntegrationType.GorgiasChatIntegrationType,
+            type: IntegrationType.GorgiasChat,
             meta: {
                 self_service: {
                     enabled: false,

@@ -82,7 +82,7 @@ describe('<ImportZendeskCreate/>', () => {
             expect(mockedCreateIntegration).toBeCalledWith(
                 fromJS({
                     name: domain,
-                    type: IntegrationType.ZendeskIntegrationType,
+                    type: IntegrationType.Zendesk,
                     connections: [
                         {
                             type: ZENDESK_CONNECTION_TYPE,

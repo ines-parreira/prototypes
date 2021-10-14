@@ -40,7 +40,7 @@ export default class VariantResult extends Component<Props> {
     }
 
     static _dataMappers = {
-        [IntegrationType.ShopifyIntegrationType]:
+        [IntegrationType.Shopify]:
             // eslint-disable-next-line @typescript-eslint/unbound-method
             VariantResult._shopifyDataMapper,
     }

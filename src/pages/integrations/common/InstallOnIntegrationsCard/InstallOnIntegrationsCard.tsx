@@ -50,10 +50,7 @@ export class InstallOnIntegrationsCardContainer extends React.Component<
             updateOrCreateIntegration,
         } = this.props
 
-        if (
-            integration.get('type') ===
-            IntegrationType.SmoochInsideIntegrationType
-        ) {
+        if (integration.get('type') === IntegrationType.SmoochInside) {
             void notify({
                 status: NotificationStatus.Error,
                 message:
@@ -142,9 +139,7 @@ export class InstallOnIntegrationsCardContainer extends React.Component<
         const {integrationType, targetIntegrations, integration} = this.props
         const {showAll, integrationLoading} = this.state
 
-        const isChat =
-            integration.get('type') ===
-            IntegrationType.SmoochInsideIntegrationType
+        const isChat = integration.get('type') === IntegrationType.SmoochInside
         const integrationAlias = isChat ? 'chat' : 'customer chat'
 
         let sortedTargetIntegrations = targetIntegrations.sortBy(

@@ -329,9 +329,9 @@ export const setSender = (sender?: Maybe<string>) => (
                 (channel: Map<any, any>) =>
                     channel.get('verified') === true &&
                     [
-                        IntegrationType.EmailIntegrationType,
-                        IntegrationType.GmailIntegrationType,
-                        IntegrationType.OutlookIntegrationType,
+                        IntegrationType.Email,
+                        IntegrationType.Gmail,
+                        IntegrationType.Outlook,
                     ].includes(channel.get('type'))
             ) || fromJS({})
     }

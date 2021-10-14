@@ -16,9 +16,7 @@ import {updateOrCreateIntegration} from '../../../../../../state/integrations/ac
 
 import {renderChatCodeSnippet} from './utils.js'
 
-const targetIntegrationsType = fromJS([
-    IntegrationType.ShopifyIntegrationType,
-]) as List<any>
+const targetIntegrationsType = fromJS([IntegrationType.Shopify]) as List<any>
 
 type Props = {
     integration: Map<any, any>

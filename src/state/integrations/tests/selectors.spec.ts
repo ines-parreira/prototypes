@@ -1,13 +1,7 @@
 import {fromJS} from 'immutable'
+import {size} from 'lodash'
 
-import {
-    EMAIL_INTEGRATION_TYPE,
-    FACEBOOK_INTEGRATION_TYPE,
-    GMAIL_INTEGRATION_TYPE,
-    MAGENTO2_INTEGRATION_TYPE,
-    OUTLOOK_INTEGRATION_TYPE,
-    SHOPIFY_INTEGRATION_TYPE,
-} from '../../../constants/integration.ts'
+import {RootState} from '../../types'
 
 import {
     getBaseEmailIntegration,
@@ -31,16 +25,23 @@ import {
     hasAtLeastOneEmailIntegration,
     getMessagingIntegrations,
     getPhoneIntegrations,
-} from '../selectors.ts'
-import {integrationsState} from '../../../fixtures/integrations.ts'
-import {IntegrationType} from '../../../models/integration/types.ts'
+} from '../selectors'
+import {integrationsState} from '../../../fixtures/integrations'
+import {
+    Integration,
+    EmailIntegration,
+    ShopifyIntegration,
+    PhoneIntegration,
+    IntegrationType,
+    isPhoneIntegration,
+} from '../../../models/integration/types'
 
 const state = {
     integrations: fromJS(integrationsState),
     currentUser: fromJS({
         first_name: 'Steve',
     }),
-}
+} as RootState
 
 describe('integrations selectors', () => {
     it('should get integrations state', () => {
@@ -57,47 +58,56 @@ describe('integrations selectors', () => {
 
     describe('getMessagingIntegrations()', () => {
         it('should get messaging integrations', () => {
-            const integrations = getMessagingIntegrations(state)
-            const expected = getIntegrations(state).filter((inte) =>
-                [
-                    IntegrationType.EmailIntegrationType,
-                    IntegrationType.OutlookIntegrationType,
-                    IntegrationType.GmailIntegrationType,
-                    IntegrationType.AircallIntegrationType,
-                    IntegrationType.SmoochInsideIntegrationType,
-                    IntegrationType.SmoochIntegrationType,
-                    IntegrationType.FacebookIntegrationType,
-                    IntegrationType.PhoneIntegrationType,
-                    IntegrationType.TwitterIntegrationType,
-                    IntegrationType.GorgiasChatIntegrationType,
-                ].includes(inte.get('type', ''))
+            const messagingIntegrations = getMessagingIntegrations(state).toJS()
+            const allIntegrations: Integration[] = getIntegrations(state).toJS()
+            const expected = allIntegrations.filter(
+                (integration: Integration) =>
+                    [
+                        IntegrationType.Email,
+                        IntegrationType.Outlook,
+                        IntegrationType.Gmail,
+                        IntegrationType.Aircall,
+                        IntegrationType.SmoochInside,
+                        IntegrationType.Smooch,
+                        IntegrationType.Facebook,
+                        IntegrationType.Phone,
+                        IntegrationType.Twitter,
+                        IntegrationType.GorgiasChat,
+                    ].includes(integration.type)
             )
 
-            expect(integrations).toEqual(expected)
+            expect(messagingIntegrations).toEqual(expected)
         })
     })
 
     describe('getEmailIntegrations()', () => {
         it('should get email integrations', () => {
-            const integrations = getEmailIntegrations(state)
-            const expected = getIntegrations(state).filter((inte) =>
-                ['email', 'gmail'].includes(inte.get('type', ''))
+            const emailIntegrations: EmailIntegration[] = getEmailIntegrations(
+                state
+            ).toJS()
+            const allIntegrations: Integration[] = getIntegrations(state).toJS()
+            const expected = allIntegrations.filter(
+                (integration: Integration) =>
+                    [IntegrationType.Email, IntegrationType.Gmail].includes(
+                        integration.type
+                    )
             )
 
-            expect(integrations.equals(expected)).toEqual(true)
+            expect(emailIntegrations).toEqual(expected)
         })
     })
 
     describe('getPhoneIntegrations()', () => {
         it('should get phone integrations', () => {
-            const integrations = getPhoneIntegrations(state)
-            const expected = getIntegrations(state).filter(
-                (integration) =>
-                    integration.get('type') ===
-                    IntegrationType.PhoneIntegrationType
+            const phoneIntegrations: PhoneIntegration[] = getPhoneIntegrations(
+                state
+            ).toJS()
+            const allIntegrations: Integration[] = getIntegrations(state).toJS()
+            const expected: PhoneIntegration[] = allIntegrations.filter(
+                isPhoneIntegration
             )
 
-            expect(integrations).toEqual(expected)
+            expect(phoneIntegrations).toEqual(expected)
         })
     })
 
@@ -105,7 +115,7 @@ describe('integrations selectors', () => {
         it('should return the base email integration', () => {
             const baseEmailIntegration = fromJS({
                 id: 1,
-                type: EMAIL_INTEGRATION_TYPE,
+                type: IntegrationType.Email,
                 meta: {
                     address: `asd48sa6d@${window.EMAIL_FORWARDING_DOMAIN}`,
                 },
@@ -115,7 +125,7 @@ describe('integrations selectors', () => {
                 integrations: fromJS({
                     integrations: [baseEmailIntegration],
                 }),
-            })
+            } as RootState)
 
             expect(result).toEqual(baseEmailIntegration)
         })
@@ -123,7 +133,7 @@ describe('integrations selectors', () => {
         it('should return an empty map because there is no base email integration', () => {
             const baseEmailIntegration = fromJS({
                 id: 1,
-                type: EMAIL_INTEGRATION_TYPE,
+                type: IntegrationType.Email,
                 meta: {
                     address: 'support@mycompany.com',
                 },
@@ -133,7 +143,7 @@ describe('integrations selectors', () => {
                 integrations: fromJS({
                     integrations: [baseEmailIntegration],
                 }),
-            })
+            } as RootState)
 
             expect(result).toEqual(fromJS({}))
         })
@@ -144,10 +154,12 @@ describe('integrations selectors', () => {
     })
 
     it('should get channel by type and address', () => {
-        expect(getChannelByTypeAndAddress()(state)).toEqual(fromJS({}))
+        expect(
+            getChannelByTypeAndAddress(IntegrationType.Email, '')(state)
+        ).toEqual(fromJS({}))
         expect(
             getChannelByTypeAndAddress(
-                'email',
+                IntegrationType.Email,
                 'support@acme.gorgias.io'
             )(state)
         ).toMatchSnapshot()
@@ -155,7 +167,10 @@ describe('integrations selectors', () => {
 
     it('should get channels signature', () => {
         expect(
-            getChannelSignature('email', 'support@acme.gorgias.io')(state)
+            getChannelSignature(
+                IntegrationType.Email,
+                'support@acme.gorgias.io'
+            )(state)
         ).toMatchSnapshot()
     })
 
@@ -181,13 +196,15 @@ describe('integrations selectors', () => {
                         },
                     ],
                 }),
-            }
+            } as RootState
 
-            const res = getShopifyIntegrationsWithoutChat(state)
-            expect(res.size).toEqual(1)
+            const shopifyIntegrations: ShopifyIntegration[] = getShopifyIntegrationsWithoutChat(
+                state
+            ).toJS()
+            expect(size(shopifyIntegrations)).toEqual(1)
 
-            const integration = res.first()
-            expect(integration.get('id')).toEqual(2)
+            const integration: ShopifyIntegration = shopifyIntegrations[0]
+            expect(integration.id).toEqual(2)
         })
 
         it('should return no integration', () => {
@@ -211,7 +228,7 @@ describe('integrations selectors', () => {
                         },
                     ],
                 }),
-            }
+            } as RootState
 
             const res = getShopifyIntegrationsWithoutChat(state)
             expect(res.size).toEqual(0)
@@ -240,13 +257,15 @@ describe('integrations selectors', () => {
                         },
                     ],
                 }),
-            }
+            } as RootState
 
-            const res = getShopifyIntegrationsWithoutFacebook(state)
-            expect(res.size).toEqual(1)
+            const shopiFyIntegrations: ShopifyIntegration[] = getShopifyIntegrationsWithoutFacebook(
+                state
+            ).toJS()
+            expect(size(shopiFyIntegrations)).toEqual(1)
 
-            const integration = res.first()
-            expect(integration.get('id')).toEqual(2)
+            const integration = shopiFyIntegrations[0]
+            expect(integration.id).toEqual(2)
         })
 
         it('should return no integration', () => {
@@ -270,7 +289,7 @@ describe('integrations selectors', () => {
                         },
                     ],
                 }),
-            }
+            } as RootState
 
             const res = getShopifyIntegrationsWithoutFacebook(state)
             expect(res.size).toEqual(0)
@@ -305,7 +324,7 @@ describe('integrations selectors', () => {
                         },
                     ],
                 }),
-            }
+            } as RootState
 
             const res = getShopifyIntegrationByShopName('bar')(state)
             expect(res.get('id')).toEqual(2)
@@ -349,7 +368,7 @@ describe('integrations selectors', () => {
                         },
                     ],
                 }),
-            }
+            } as RootState
 
             const res = getChatIntegrationCampaigns(3)(state)
 
@@ -361,7 +380,7 @@ describe('integrations selectors', () => {
         it('should return the correct campaign of the correct chat integration', () => {
             const expectedCampaign = {
                 name: 'campaign inte 3',
-                id: 'una-campagnita-123',
+                id: 123,
             }
 
             const state = {
@@ -374,11 +393,11 @@ describe('integrations selectors', () => {
                                 campaigns: [
                                     {
                                         name: 'campaign inte 1',
-                                        id: 'una-campagnita-123',
+                                        id: 123,
                                     },
                                     {
                                         name: 'una otra campagnita',
-                                        id: 'una-otra-campagnita-456',
+                                        id: 456,
                                     },
                                 ],
                             },
@@ -391,19 +410,16 @@ describe('integrations selectors', () => {
                                     expectedCampaign,
                                     {
                                         name: 'una otra campagnita',
-                                        id: 'una-otra-campagnita-456',
+                                        id: 456,
                                     },
                                 ],
                             },
                         },
                     ],
                 }),
-            }
+            } as RootState
 
-            const res = getChatIntegrationCampaignById(
-                3,
-                'una-campagnita-123'
-            )(state)
+            const res = getChatIntegrationCampaignById(3, 123)(state)
 
             expect(res.toJS()).toEqual(expectedCampaign)
         })
@@ -416,7 +432,7 @@ describe('integrations selectors', () => {
                     integrations: [{id: 1}, {id: 2}],
                     integration: null,
                 }),
-            }
+            } as RootState
 
             expect(getCurrentIntegration(state).toJS()).toEqual({})
         })
@@ -428,7 +444,7 @@ describe('integrations selectors', () => {
                     integrations: [{id: 1}, {id: 2}],
                     integration: currentIntegration,
                 }),
-            }
+            } as RootState
 
             expect(getCurrentIntegration(state).toJS()).toEqual(
                 currentIntegration
@@ -437,11 +453,13 @@ describe('integrations selectors', () => {
     })
 
     describe('getOnboardingIntegrations()', () => {
-        ;[FACEBOOK_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE].forEach(
+        ;[IntegrationType.Facebook, IntegrationType.Outlook].forEach(
             (integrationType) => {
                 it(`should return an empty list because there is no integrations in the state (${integrationType})`, () => {
                     expect(
-                        getOnboardingIntegrations(integrationType)({})
+                        getOnboardingIntegrations(integrationType)(
+                            {} as RootState
+                        )
                     ).toEqual(fromJS([]))
                 })
 
@@ -455,7 +473,7 @@ describe('integrations selectors', () => {
                                 },
                             },
                         }),
-                    }
+                    } as RootState
 
                     expect(
                         getOnboardingIntegrations(integrationType)(state).toJS()
@@ -466,12 +484,12 @@ describe('integrations selectors', () => {
     })
 
     describe('getOnboardingMeta()', () => {
-        ;[FACEBOOK_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE].forEach(
+        ;[IntegrationType.Facebook, IntegrationType.Outlook].forEach(
             (integrationType) => {
                 it(`should return an empty map because there is no meta in the state (${integrationType})`, () => {
-                    expect(getOnboardingMeta(integrationType)({})).toEqual(
-                        fromJS({})
-                    )
+                    expect(
+                        getOnboardingMeta(integrationType)({} as RootState)
+                    ).toEqual(fromJS({}))
                 })
 
                 it('should return the meta of onboarding pages from the state', () => {
@@ -484,7 +502,7 @@ describe('integrations selectors', () => {
                                 },
                             },
                         }),
-                    }
+                    } as RootState
 
                     expect(
                         getOnboardingMeta(integrationType)(state).toJS()
@@ -497,7 +515,7 @@ describe('integrations selectors', () => {
     describe('getFacebookRedirectUri()', () => {
         const FAKE_URI = 'https://.../'
         const FAKE_URI_RECONNECT = 'https://.../?reconnect'
-        let state
+        let state: RootState
 
         beforeEach(() => {
             state = {
@@ -509,7 +527,7 @@ describe('integrations selectors', () => {
                         },
                     },
                 }),
-            }
+            } as RootState
         })
 
         it('should return the login URI', () => {
@@ -530,28 +548,28 @@ describe('integrations selectors', () => {
                     integrations: [
                         {
                             id: 1,
-                            type: SHOPIFY_INTEGRATION_TYPE,
+                            type: IntegrationType.Shopify,
                             meta: {
                                 store_url: 'magento.gorgi.us',
                             },
                         },
                         {
                             id: 2,
-                            type: MAGENTO2_INTEGRATION_TYPE,
+                            type: IntegrationType.Magento2,
                             meta: {
                                 store_url: 'magento.gorgi.us',
                             },
                         },
                         {
                             id: 3,
-                            type: MAGENTO2_INTEGRATION_TYPE,
+                            type: IntegrationType.Magento2,
                             meta: {
                                 store_url: 'bar',
                             },
                         },
                     ],
                 }),
-            }
+            } as RootState
 
             const res = getMagento2IntegrationByStoreUrl('magento.gorgi.us')(
                 state
@@ -567,12 +585,12 @@ describe('integrations selectors', () => {
             const state = {
                 integrations: fromJS({
                     authentication: {
-                        [EMAIL_INTEGRATION_TYPE]: {
+                        [IntegrationType.Email]: {
                             forwarding_email_address: forwardingEmailAddress,
                         },
                     },
                 }),
-            }
+            } as RootState
 
             expect(getForwardingEmailAddress(state)).toEqual(
                 forwardingEmailAddress
@@ -587,7 +605,7 @@ describe('integrations selectors', () => {
             [
                 [
                     {
-                        type: EMAIL_INTEGRATION_TYPE,
+                        type: IntegrationType.Email,
                         meta: {verified: true, ...testadress},
                     },
                 ],
@@ -596,7 +614,7 @@ describe('integrations selectors', () => {
             [
                 [
                     {
-                        type: GMAIL_INTEGRATION_TYPE,
+                        type: IntegrationType.Gmail,
                         meta: testadress,
                     },
                 ],
@@ -605,7 +623,7 @@ describe('integrations selectors', () => {
             [
                 [
                     {
-                        type: OUTLOOK_INTEGRATION_TYPE,
+                        type: IntegrationType.Outlook,
                         meta: testadress,
                     },
                 ],
@@ -614,7 +632,7 @@ describe('integrations selectors', () => {
             [
                 [
                     {
-                        type: EMAIL_INTEGRATION_TYPE,
+                        type: IntegrationType.Email,
                         meta: {verified: false, ...testadress},
                     },
                 ],
@@ -623,7 +641,7 @@ describe('integrations selectors', () => {
             [
                 [
                     {
-                        type: EMAIL_INTEGRATION_TYPE,
+                        type: IntegrationType.Email,
                         meta: {
                             verified: true,
                             address: `testadress@${window.EMAIL_FORWARDING_DOMAIN}`,
@@ -635,7 +653,7 @@ describe('integrations selectors', () => {
             [
                 [
                     {
-                        type: GMAIL_INTEGRATION_TYPE,
+                        type: IntegrationType.Gmail,
                         deactivated_datetime: 'sometime',
                         meta: testadress,
                     },
@@ -649,7 +667,7 @@ describe('integrations selectors', () => {
                     integrations: fromJS({
                         integrations: integrationsJSON,
                     }),
-                }
+                } as RootState
 
                 expect(hasAtLeastOneEmailIntegration(state)).toBe(
                     expectedResult

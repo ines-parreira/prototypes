@@ -74,7 +74,7 @@ export class OutlookIntegrationSetupContainer extends Component<Props, State> {
 
         void activateOnboardingIntegrations(
             data,
-            IntegrationType.OutlookIntegrationType
+            IntegrationType.Outlook
         ).then(() => fetchIntegrations())
         history.push('/app/settings/integrations/email')
     }
@@ -274,12 +274,8 @@ export class OutlookIntegrationSetupContainer extends Component<Props, State> {
 
 const connector = connect(
     (state: RootState) => ({
-        integrations: getOnboardingIntegrations(
-            IntegrationType.OutlookIntegrationType
-        )(state),
-        pagination: getOnboardingMeta(IntegrationType.OutlookIntegrationType)(
-            state
-        ),
+        integrations: getOnboardingIntegrations(IntegrationType.Outlook)(state),
+        pagination: getOnboardingMeta(IntegrationType.Outlook)(state),
     }),
     {
         activateOnboardingIntegrations,

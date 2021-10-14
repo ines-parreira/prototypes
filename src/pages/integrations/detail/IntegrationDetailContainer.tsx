@@ -183,7 +183,7 @@ export const IntegrationDetailContainer = ({
     }, [integrationId])
 
     switch (integrationType) {
-        case IntegrationType.AircallIntegrationType:
+        case IntegrationType.Aircall:
             if (!!integrationId) {
                 return <AircallIntegrationCreate />
             }
@@ -194,7 +194,7 @@ export const IntegrationDetailContainer = ({
                 />
             )
 
-        case IntegrationType.EmailIntegrationType:
+        case IntegrationType.Email:
             if (!!integrationId) {
                 if (integrationId === 'setup') {
                     return <OutlookIntegrationSetup loading={loading} />
@@ -251,16 +251,12 @@ export const IntegrationDetailContainer = ({
                 <EmailIntegrationList
                     integrations={integrationsProp}
                     loading={loading}
-                    gmailRedirectUri={getRedirectUri(
-                        IntegrationType.GmailIntegrationType
-                    )}
-                    outlookRedirectUri={getRedirectUri(
-                        IntegrationType.OutlookIntegrationType
-                    )}
+                    gmailRedirectUri={getRedirectUri(IntegrationType.Gmail)}
+                    outlookRedirectUri={getRedirectUri(IntegrationType.Outlook)}
                 />
             )
 
-        case IntegrationType.FacebookIntegrationType:
+        case IntegrationType.Facebook:
             if (!!integrationId) {
                 if (integrationId === 'setup') {
                     return <FacebookIntegrationSetup loading={loading} />
@@ -307,7 +303,7 @@ export const IntegrationDetailContainer = ({
                 />
             )
 
-        case IntegrationType.HttpIntegrationType:
+        case IntegrationType.Http:
             if (!!integrationId) {
                 if (extra === Tab.HttpEvents) {
                     if (subId) {
@@ -358,7 +354,7 @@ export const IntegrationDetailContainer = ({
                 />
             )
 
-        case IntegrationType.GorgiasChatIntegrationType:
+        case IntegrationType.GorgiasChat:
             if (!!integrationId) {
                 if (extra === Tab.Installation) {
                     return (
@@ -429,7 +425,7 @@ export const IntegrationDetailContainer = ({
                 />
             )
 
-        case IntegrationType.PhoneIntegrationType:
+        case IntegrationType.Phone:
             if (!!integrationId) {
                 if (!isUpdate) {
                     return <PhoneIntegrationCreate actions={actions} />
@@ -466,7 +462,7 @@ export const IntegrationDetailContainer = ({
                 />
             )
 
-        case IntegrationType.SmoochInsideIntegrationType:
+        case IntegrationType.SmoochInside:
             if (!!integrationId) {
                 if (extra === Tab.SmoochInsideMigration) {
                     return (
@@ -524,7 +520,7 @@ export const IntegrationDetailContainer = ({
                 />
             )
 
-        case IntegrationType.SmoochIntegrationType:
+        case IntegrationType.Smooch:
             if (!!integrationId) {
                 if (extra === Tab.Preferences) {
                     return (
@@ -550,7 +546,7 @@ export const IntegrationDetailContainer = ({
                 />
             )
 
-        case IntegrationType.ShopifyIntegrationType:
+        case IntegrationType.Shopify:
             if (!!integrationId) {
                 return (
                     <ShopifyIntegrationDetail
@@ -571,7 +567,7 @@ export const IntegrationDetailContainer = ({
                 />
             )
 
-        case IntegrationType.TwitterIntegrationType:
+        case IntegrationType.Twitter:
             if (!!integrationId) {
                 return (
                     <TwitterIntegrationDetail
@@ -590,7 +586,7 @@ export const IntegrationDetailContainer = ({
                 />
             )
 
-        case IntegrationType.KlaviyoIntegrationType:
+        case IntegrationType.Klaviyo:
             if (!!integrationId) {
                 return (
                     <KlaviyoIntegrationDetail
@@ -607,13 +603,13 @@ export const IntegrationDetailContainer = ({
                     loading={loading}
                 />
             )
-        case IntegrationType.RechargeIntegrationType:
+        case IntegrationType.Recharge:
             if (!!integrationId) {
                 return (
                     <RechargeIntegrationDetail
                         integration={integration}
                         shopifyIntegrations={getEligibleShopifyIntegrationsFor(
-                            IntegrationType.RechargeIntegrationType
+                            IntegrationType.Recharge
                         )}
                         loading={loading}
                         redirectUri={redirectUri}
@@ -625,13 +621,13 @@ export const IntegrationDetailContainer = ({
                 <RechargeIntegrationList
                     integrations={integrationsProp}
                     shopifyIntegrations={getEligibleShopifyIntegrationsFor(
-                        IntegrationType.RechargeIntegrationType
+                        IntegrationType.Recharge
                     )}
                     loading={loading}
                 />
             )
 
-        case IntegrationType.SmileIntegrationType:
+        case IntegrationType.Smile:
             if (!!integrationId) {
                 return (
                     <SmileIntegrationDetail
@@ -650,7 +646,7 @@ export const IntegrationDetailContainer = ({
                 />
             )
 
-        case IntegrationType.YotpoIntegrationType:
+        case IntegrationType.Yotpo:
             if (!!integrationId) {
                 return (
                     <YotpoIntegrationDetail
@@ -670,7 +666,7 @@ export const IntegrationDetailContainer = ({
                 />
             )
 
-        case IntegrationType.Magento2IntegrationType:
+        case IntegrationType.Magento2:
             if (!!integrationId) {
                 return (
                     <Magento2IntegrationDetail

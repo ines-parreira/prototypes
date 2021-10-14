@@ -106,13 +106,11 @@ export class SmoochIntegrationList extends Component<Props> {
 
         return (
             <IntegrationList
-                integrationType={IntegrationType.SmoochIntegrationType}
+                integrationType={IntegrationType.Smooch}
                 longTypeDescription={longTypeDescription}
                 integrations={
                     integrations.filter(
-                        (v) =>
-                            v!.get('type') ===
-                            IntegrationType.SmoochIntegrationType
+                        (v) => v!.get('type') === IntegrationType.Smooch
                     ) as List<Map<any, any>>
                 }
                 createIntegration={this._onLogin}

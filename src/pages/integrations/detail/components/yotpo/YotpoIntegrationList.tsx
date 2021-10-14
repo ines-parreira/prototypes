@@ -23,7 +23,7 @@ export default class YotpoIntegrationList extends React.Component<
         const isSubmitting = loading.get('updateIntegration')
 
         const yotpoIntegrations = integrations.filter(
-            (v) => v?.get('type') === IntegrationType.YotpoIntegrationType
+            (v) => v?.get('type') === IntegrationType.Yotpo
         ) as List<Map<any, any>>
 
         const longTypeDescription = (
@@ -87,7 +87,7 @@ export default class YotpoIntegrationList extends React.Component<
         return (
             <IntegrationList
                 longTypeDescription={longTypeDescription}
-                integrationType={IntegrationType.YotpoIntegrationType}
+                integrationType={IntegrationType.Yotpo}
                 integrations={yotpoIntegrations}
                 createIntegration={() =>
                     (window.location.href = this.props.redirectUri)

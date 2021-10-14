@@ -7,7 +7,8 @@ import ChatIntegrationPreview from '../../../../../integrations/detail/component
 import {SelectableOption} from '../../../../../common/forms/SelectField/types'
 import {
     Integration,
-    IntegrationType,
+    isGorgiasChatIntegration,
+    isShopifyIntegration,
 } from '../../../../../../models/integration/types'
 
 import {getIntegrations} from '../../../../../../state/integrations/selectors'
@@ -29,19 +30,20 @@ const Preview = ({reasonOptions}: PreviewProps) => {
     const chatIntegration = useMemo(() => {
         const integrations: Integration[] = immutableIntegrations.toJS()
 
-        const shopifyIntegration = integrations.find((integration) => {
-            return (
-                integration.type === 'shopify' && integration.name === shopName
-            )
-        }) as Integration
+        const shopifyIntegration = integrations
+            .filter(isShopifyIntegration)
+            .find((integration) => {
+                return integration.name === shopName
+            })
 
-        const chatIntegration = integrations.find((integration) => {
-            return (
-                integration.type ===
-                    IntegrationType.GorgiasChatIntegrationType &&
-                integration.meta.shop_integration_id === shopifyIntegration.id
-            )
-        })
+        const chatIntegration = integrations
+            .filter(isGorgiasChatIntegration)
+            .find((integration) => {
+                return (
+                    integration.meta.shop_integration_id ===
+                    shopifyIntegration?.id
+                )
+            })
         return chatIntegration
     }, [immutableIntegrations])
 

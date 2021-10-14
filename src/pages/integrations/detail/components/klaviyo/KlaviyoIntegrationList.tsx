@@ -62,12 +62,10 @@ const KlaviyoIntegrationList = (props: Props) => {
     return (
         <IntegrationList
             longTypeDescription={longTypeDescription}
-            integrationType={IntegrationType.KlaviyoIntegrationType}
+            integrationType={IntegrationType.Klaviyo}
             integrations={
                 integrations.filter(
-                    (item) =>
-                        item?.get('type') ===
-                        IntegrationType.KlaviyoIntegrationType
+                    (item) => item?.get('type') === IntegrationType.Klaviyo
                 ) as List<Map<any, any>>
             }
             createIntegration={() => {

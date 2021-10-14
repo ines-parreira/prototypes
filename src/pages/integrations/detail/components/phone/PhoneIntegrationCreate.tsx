@@ -119,7 +119,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
 
                 await ((actions.updateOrCreateIntegration(
                     fromJS({
-                        type: IntegrationType.PhoneIntegrationType,
+                        type: IntegrationType.Phone,
                         name: title,
                         meta: {
                             emoji,
@@ -196,7 +196,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                         </BreadcrumbItem>
                         <BreadcrumbItem>
                             <Link
-                                to={`/app/settings/integrations/${IntegrationType.PhoneIntegrationType}`}
+                                to={`/app/settings/integrations/${IntegrationType.Phone}`}
                             >
                                 Phone
                             </Link>

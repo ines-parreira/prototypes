@@ -500,9 +500,9 @@ const connector = connect(
             isNewMessagePublic: newMessageSelectors.isNewMessagePublic(state),
             sourceType,
             ticket: state.ticket,
-            hasPhoneIntegration: hasIntegrationOfTypes(
-                IntegrationType.PhoneIntegrationType
-            )(state),
+            hasPhoneIntegration: hasIntegrationOfTypes(IntegrationType.Phone)(
+                state
+            ),
         }
     },
     {

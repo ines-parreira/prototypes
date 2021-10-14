@@ -47,10 +47,7 @@ class IntegrationList extends React.Component<Props> {
     }
 
     onButtonClick = () => {
-        if (
-            this.props.integrationType ===
-            IntegrationType.SmoochInsideIntegrationType
-        ) {
+        if (this.props.integrationType === IntegrationType.SmoochInside) {
             void this.props.notify({
                 status: NotificationStatus.Error,
                 message:
@@ -70,7 +67,7 @@ class IntegrationList extends React.Component<Props> {
         integrationType: IntegrationType,
         integrations: List<Map<any, any>>
     ) => {
-        if (integrationType !== IntegrationType.AircallIntegrationType) {
+        if (integrationType !== IntegrationType.Aircall) {
             return
         }
 

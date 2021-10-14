@@ -35,7 +35,7 @@ export const ImportZendeskCreate = (
 
         const integration = fromJS({
             name: processedDomain,
-            type: IntegrationType.ZendeskIntegrationType,
+            type: IntegrationType.Zendesk,
             connections: [
                 {
                     type: ZENDESK_CONNECTION_TYPE,
@@ -152,9 +152,7 @@ export const ImportZendeskCreate = (
 
 const mapStateToProps = (state: RootState) => {
     return {
-        integrations: getIntegrationsByTypes(
-            IntegrationType.ZendeskIntegrationType
-        )(state),
+        integrations: getIntegrationsByTypes(IntegrationType.Zendesk)(state),
     }
 }
 const mapDispatchToProps = (dispatch: StoreDispatch) => {

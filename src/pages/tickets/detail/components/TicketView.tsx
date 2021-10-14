@@ -403,9 +403,9 @@ const connector = connect(
         ticket: state.ticket,
         ticketBody: getBody(state),
         sourceType: getNewMessageType(state),
-        hasPhoneIntegration: hasIntegrationOfTypes(
-            IntegrationType.PhoneIntegrationType
-        )(state),
+        hasPhoneIntegration: hasIntegrationOfTypes(IntegrationType.Phone)(
+            state
+        ),
     }),
     {
         displayHistoryOnNextPage,

@@ -123,7 +123,7 @@ export class EventContainer extends React.Component<Props, State> {
     }
 
     getDisplayableType(integrationType: IntegrationType) {
-        if (integrationType === IntegrationType.SmoochInsideIntegrationType) {
+        if (integrationType === IntegrationType.SmoochInside) {
             return 'chat'
         }
 

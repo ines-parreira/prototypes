@@ -35,7 +35,7 @@ export function TwitterIntegrationList({
     maxIntegrations,
 }: Props): JSX.Element {
     const twitterIntegrations = integrations.filter(
-        (v) => v?.get('type') === IntegrationType.TwitterIntegrationType
+        (v) => v?.get('type') === IntegrationType.Twitter
     ) as List<Map<any, any>>
 
     const _maxIntegrations = maxIntegrations || 2
@@ -58,7 +58,7 @@ export function TwitterIntegrationList({
     return (
         <IntegrationList
             longTypeDescription={longTypeDescription}
-            integrationType={IntegrationType.TwitterIntegrationType}
+            integrationType={IntegrationType.Twitter}
             integrations={twitterIntegrations}
             createIntegration={() => (window.location.href = redirectUri)}
             createIntegrationButtonContent={

@@ -113,11 +113,11 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         return {
             name: integration.get('name', ''),
             enable_gmail_sending:
-                integration.get('type') === IntegrationType.GmailIntegrationType
+                integration.get('type') === IntegrationType.Gmail
                     ? integration.getIn(['meta', 'enable_gmail_sending'], true)
                     : true,
             use_gmail_categories:
-                integration.get('type') === IntegrationType.GmailIntegrationType
+                integration.get('type') === IntegrationType.Gmail
                     ? integration.getIn(['meta', 'use_gmail_categories']) ||
                       false
                     : false,
@@ -133,7 +133,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
             .setIn(['meta', 'signature', 'text'], this.state.signature_text)
             .setIn(['meta', 'signature', 'html'], this.state.signature_html)
 
-        if (integration.get('type') === IntegrationType.GmailIntegrationType) {
+        if (integration.get('type') === IntegrationType.Gmail) {
             form = form
                 .setIn(
                     ['meta', 'use_gmail_categories'],
@@ -434,8 +434,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
             loading.get('updateIntegration') === integration.get('id')
         const isDeactivated = !!integration.get('deactivated_datetime')
         const isDeleting = loading.get('delete') === integration.get('id')
-        const isGmail =
-            integration.get('type') === IntegrationType.GmailIntegrationType
+        const isGmail = integration.get('type') === IntegrationType.Gmail
 
         const {
             errors,
@@ -598,16 +597,13 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
 
         return (
             <Container fluid className="page-container">
-                {integration.get('type') ===
-                    IntegrationType.EmailIntegrationType &&
+                {integration.get('type') === IntegrationType.Email &&
                     this._renderInstructions()}
 
-                {integration.get('type') ===
-                    IntegrationType.GmailIntegrationType &&
+                {integration.get('type') === IntegrationType.Gmail &&
                     this._gmailRenderImport()}
 
-                {integration.get('type') ===
-                    IntegrationType.OutlookIntegrationType &&
+                {integration.get('type') === IntegrationType.Outlook &&
                     this._outlookRenderImport()}
 
                 {this._renderSettings()}
@@ -619,9 +615,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
 const connector = connect(
     (state: RootState) => ({
         domain: state.currentAccount.get('domain'),
-        gmailRedirectUri: getRedirectUri(IntegrationType.GmailIntegrationType)(
-            state
-        ),
+        gmailRedirectUri: getRedirectUri(IntegrationType.Gmail)(state),
         forwardingEmailAddress: getForwardingEmailAddress(state),
     }),
     {

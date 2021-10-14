@@ -110,7 +110,7 @@ class AfterTitleContainer extends Component<
 
 const connector = connect((state: RootState) => ({
     integrations: integrationsSelectors.getIntegrationsByTypes([
-        IntegrationType.ShopifyIntegrationType,
+        IntegrationType.Shopify,
     ])(state),
 }))
 

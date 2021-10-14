@@ -43,7 +43,7 @@ export const SelfServiceView = () => {
     const hasSelfServiceV1Features = useSelector(hasAutomationLegacyFeatures)
     const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
     const shopifyIntegrations = useSelector(
-        getIntegrationsByTypes(IntegrationType.ShopifyIntegrationType)
+        getIntegrationsByTypes(IntegrationType.Shopify)
     )
     const selfServiceConfigurations = useSelector(getSelfServiceConfigurations)
 

@@ -25,13 +25,13 @@ export const initialState: IntegrationsState = fromJS({
     },
 
     extra: {
-        [IntegrationType.FacebookIntegrationType]: {
+        [IntegrationType.Facebook]: {
             onboardingIntegrations: {
                 data: [],
                 meta: {},
             },
         },
-        [IntegrationType.OutlookIntegrationType]: {
+        [IntegrationType.Outlook]: {
             onboardingIntegrations: {
                 data: [],
                 meta: {},

@@ -189,7 +189,7 @@ export default function PhoneIntegrationPreferences({
                         </BreadcrumbItem>
                         <BreadcrumbItem>
                             <Link
-                                to={`/app/settings/integrations/${IntegrationType.PhoneIntegrationType}`}
+                                to={`/app/settings/integrations/${IntegrationType.Phone}`}
                             >
                                 Phone
                             </Link>

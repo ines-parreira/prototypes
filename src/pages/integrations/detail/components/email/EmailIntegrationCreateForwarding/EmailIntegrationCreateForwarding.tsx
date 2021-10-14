@@ -79,10 +79,7 @@ export class EmailIntegrationCreateForwarding extends Component<Props, State> {
 
     componentDidUpdate() {
         // activate copy to clipboard button only for email integration
-        if (
-            this.props.integration.get('type') ===
-            IntegrationType.EmailIntegrationType
-        ) {
+        if (this.props.integration.get('type') === IntegrationType.Email) {
             const clipboard = new Clipboard('#copy-forwarding-email')
             clipboard.on('success', () => {
                 this.setState({isCopied: true})

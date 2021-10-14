@@ -260,20 +260,20 @@ describe('<IntegrationDetailContainer />', () => {
     }
 
     it.each([
-        [IntegrationType.AircallIntegrationType],
-        [IntegrationType.EmailIntegrationType],
-        [IntegrationType.FacebookIntegrationType],
-        [IntegrationType.GorgiasChatIntegrationType],
-        [IntegrationType.HttpIntegrationType],
-        [IntegrationType.KlaviyoIntegrationType],
-        [IntegrationType.PhoneIntegrationType],
-        [IntegrationType.Magento2IntegrationType],
-        [IntegrationType.RechargeIntegrationType],
-        [IntegrationType.ShopifyIntegrationType],
-        [IntegrationType.SmileIntegrationType],
-        [IntegrationType.SmoochInsideIntegrationType],
-        [IntegrationType.SmoochIntegrationType],
-        [IntegrationType.YotpoIntegrationType],
+        [IntegrationType.Aircall],
+        [IntegrationType.Email],
+        [IntegrationType.Facebook],
+        [IntegrationType.GorgiasChat],
+        [IntegrationType.Http],
+        [IntegrationType.Klaviyo],
+        [IntegrationType.Phone],
+        [IntegrationType.Magento2],
+        [IntegrationType.Recharge],
+        [IntegrationType.Shopify],
+        [IntegrationType.Smile],
+        [IntegrationType.SmoochInside],
+        [IntegrationType.Smooch],
+        [IntegrationType.Yotpo],
     ])('should render the list of integrations for %s', (integrationType) => {
         const {container} = renderWithRouter(
             <IntegrationDetailContainer {...minProps} />,
@@ -287,10 +287,10 @@ describe('<IntegrationDetailContainer />', () => {
     })
 
     it.each([
-        [IntegrationType.AircallIntegrationType],
-        [IntegrationType.EmailIntegrationType],
-        [IntegrationType.FacebookIntegrationType],
-        [IntegrationType.PhoneIntegrationType],
+        [IntegrationType.Aircall],
+        [IntegrationType.Email],
+        [IntegrationType.Facebook],
+        [IntegrationType.Phone],
     ])('should render the creation page for %s', (integrationType) => {
         const {container} = renderWithRouter(
             <IntegrationDetailContainer {...minProps} />,
@@ -303,34 +303,34 @@ describe('<IntegrationDetailContainer />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it.each([
-        [IntegrationType.EmailIntegrationType],
-        [IntegrationType.FacebookIntegrationType],
-    ])('should render the setup page for %s', (integrationType) => {
-        const {container} = renderWithRouter(
-            <IntegrationDetailContainer {...minProps} />,
-            {
-                path:
-                    '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                route: `/integrations/${integrationType}/setup`,
-            }
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
+    it.each([[IntegrationType.Email], [IntegrationType.Facebook]])(
+        'should render the setup page for %s',
+        (integrationType) => {
+            const {container} = renderWithRouter(
+                <IntegrationDetailContainer {...minProps} />,
+                {
+                    path:
+                        '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                    route: `/integrations/${integrationType}/setup`,
+                }
+            )
+            expect(container.firstChild).toMatchSnapshot()
+        }
+    )
 
     it.each([
-        [IntegrationType.EmailIntegrationType],
-        [IntegrationType.FacebookIntegrationType],
-        [IntegrationType.GorgiasChatIntegrationType],
-        [IntegrationType.HttpIntegrationType],
-        [IntegrationType.KlaviyoIntegrationType],
-        [IntegrationType.Magento2IntegrationType],
-        [IntegrationType.RechargeIntegrationType],
-        [IntegrationType.ShopifyIntegrationType],
-        [IntegrationType.SmileIntegrationType],
-        [IntegrationType.SmoochInsideIntegrationType],
-        [IntegrationType.SmoochIntegrationType],
-        [IntegrationType.YotpoIntegrationType],
+        [IntegrationType.Email],
+        [IntegrationType.Facebook],
+        [IntegrationType.GorgiasChat],
+        [IntegrationType.Http],
+        [IntegrationType.Klaviyo],
+        [IntegrationType.Magento2],
+        [IntegrationType.Recharge],
+        [IntegrationType.Shopify],
+        [IntegrationType.Smile],
+        [IntegrationType.SmoochInside],
+        [IntegrationType.Smooch],
+        [IntegrationType.Yotpo],
     ])(
         'should render the page of a specific integration for %s',
         (integrationType) => {
@@ -349,10 +349,7 @@ describe('<IntegrationDetailContainer />', () => {
         }
     )
 
-    it.each([
-        [IntegrationType.GorgiasChatIntegrationType],
-        [IntegrationType.SmoochInsideIntegrationType],
-    ])(
+    it.each([[IntegrationType.GorgiasChat], [IntegrationType.SmoochInside]])(
         'should render the installation tab of a specific integration for %s',
         (integrationType) => {
             const {container} = renderWithRouter(
@@ -368,10 +365,10 @@ describe('<IntegrationDetailContainer />', () => {
     )
 
     it.each([
-        [IntegrationType.FacebookIntegrationType],
-        [IntegrationType.GorgiasChatIntegrationType],
-        [IntegrationType.PhoneIntegrationType],
-        [IntegrationType.SmoochIntegrationType],
+        [IntegrationType.Facebook],
+        [IntegrationType.GorgiasChat],
+        [IntegrationType.Phone],
+        [IntegrationType.Smooch],
     ])(
         'should render the preferences tab of a specific integrations for %s',
         (integrationType) => {
@@ -387,10 +384,7 @@ describe('<IntegrationDetailContainer />', () => {
         }
     )
 
-    it.each([
-        [IntegrationType.GorgiasChatIntegrationType],
-        [IntegrationType.SmoochInsideIntegrationType],
-    ])(
+    it.each([[IntegrationType.GorgiasChat], [IntegrationType.SmoochInside]])(
         'should render the list of campaigns of a specific integration for %s',
         (integrationType) => {
             const {container} = renderWithRouter(
@@ -405,10 +399,7 @@ describe('<IntegrationDetailContainer />', () => {
         }
     )
 
-    it.each([
-        [IntegrationType.GorgiasChatIntegrationType],
-        [IntegrationType.SmoochInsideIntegrationType],
-    ])(
+    it.each([[IntegrationType.GorgiasChat], [IntegrationType.SmoochInside]])(
         'should render the campaign tab of a specific integration for %s',
         (integrationType) => {
             const {container} = renderWithRouter(
@@ -423,10 +414,7 @@ describe('<IntegrationDetailContainer />', () => {
         }
     )
 
-    it.each([
-        [IntegrationType.GorgiasChatIntegrationType],
-        [IntegrationType.SmoochInsideIntegrationType],
-    ])(
+    it.each([[IntegrationType.GorgiasChat], [IntegrationType.SmoochInside]])(
         'should render the quick replies tab of a specific integration for %s',
         (integrationType) => {
             const {container} = renderWithRouter(
@@ -441,14 +429,14 @@ describe('<IntegrationDetailContainer />', () => {
         }
     )
 
-    describe(`${IntegrationType.EmailIntegrationType}`, () => {
+    describe(`${IntegrationType.Email}`, () => {
         it('should render the custom creation page', () => {
             const {container} = renderWithRouter(
                 <IntegrationDetailContainer {...minProps} />,
                 {
                     path:
                         '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.EmailIntegrationType}/new/${Tab.EmailCustom}`,
+                    route: `/integrations/${IntegrationType.Email}/new/${Tab.EmailCustom}`,
                 }
             )
             expect(container.firstChild).toMatchSnapshot()
@@ -460,7 +448,7 @@ describe('<IntegrationDetailContainer />', () => {
                 {
                     path:
                         '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.EmailIntegrationType}/1/${Tab.EmailForwarding}`,
+                    route: `/integrations/${IntegrationType.Email}/1/${Tab.EmailForwarding}`,
                 }
             )
             expect(container.firstChild).toMatchSnapshot()
@@ -472,21 +460,21 @@ describe('<IntegrationDetailContainer />', () => {
                 {
                     path:
                         '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.EmailIntegrationType}/1/${Tab.EmailVerification}`,
+                    route: `/integrations/${IntegrationType.Email}/1/${Tab.EmailVerification}`,
                 }
             )
             expect(container.firstChild).toMatchSnapshot()
         })
     })
 
-    describe(`${IntegrationType.FacebookIntegrationType}`, () => {
+    describe(`${IntegrationType.Facebook}`, () => {
         it('should render the customer chat tab for a specific integration', () => {
             const {container} = renderWithRouter(
                 <IntegrationDetailContainer {...minProps} />,
                 {
                     path:
                         '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.FacebookIntegrationType}/1/${Tab.FacebookCustomerChat}`,
+                    route: `/integrations/${IntegrationType.Facebook}/1/${Tab.FacebookCustomerChat}`,
                 }
             )
             expect(container.firstChild).toMatchSnapshot()
@@ -498,14 +486,14 @@ describe('<IntegrationDetailContainer />', () => {
                 {
                     path:
                         '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.FacebookIntegrationType}/1/${Tab.FacebookAds}`,
+                    route: `/integrations/${IntegrationType.Facebook}/1/${Tab.FacebookAds}`,
                 }
             )
             expect(container.firstChild).toMatchSnapshot()
         })
     })
 
-    describe(`${IntegrationType.HttpIntegrationType}`, () => {
+    describe(`${IntegrationType.Http}`, () => {
         it('should render the list of events page for a specific integration', () => {
             const {container} = renderWithRouter(
                 <IntegrationDetailContainer
@@ -515,7 +503,7 @@ describe('<IntegrationDetailContainer />', () => {
                 {
                     path:
                         '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.HttpIntegrationType}/1/${Tab.HttpEvents}`,
+                    route: `/integrations/${IntegrationType.Http}/1/${Tab.HttpEvents}`,
                 }
             )
             expect(container.firstChild).toMatchSnapshot()
@@ -530,49 +518,49 @@ describe('<IntegrationDetailContainer />', () => {
                 {
                     path:
                         '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.HttpIntegrationType}/1/${Tab.HttpEvents}/1`,
+                    route: `/integrations/${IntegrationType.Http}/1/${Tab.HttpEvents}/1`,
                 }
             )
             expect(container.firstChild).toMatchSnapshot()
         })
     })
 
-    describe(`${IntegrationType.GorgiasChatIntegrationType}`, () => {
+    describe(`${IntegrationType.GorgiasChat}`, () => {
         it('should render the self service tab of a specific integration', () => {
             const {container} = renderWithRouter(
                 <IntegrationDetailContainer {...minProps} />,
                 {
                     path:
                         '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.GorgiasChatIntegrationType}/1/${Tab.ChatSelfService}`,
+                    route: `/integrations/${IntegrationType.GorgiasChat}/1/${Tab.ChatSelfService}`,
                 }
             )
             expect(container.firstChild).toMatchSnapshot()
         })
     })
 
-    describe(`${IntegrationType.PhoneIntegrationType}`, () => {
+    describe(`${IntegrationType.Phone}`, () => {
         it('should render the voicemail tab of a specific integration', () => {
             const {container} = renderWithRouter(
                 <IntegrationDetailContainer {...minProps} />,
                 {
                     path:
                         '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.PhoneIntegrationType}/1/${Tab.PhoneVoicemail}`,
+                    route: `/integrations/${IntegrationType.Phone}/1/${Tab.PhoneVoicemail}`,
                 }
             )
             expect(container.firstChild).toMatchSnapshot()
         })
     })
 
-    describe(`${IntegrationType.SmoochInsideIntegrationType}`, () => {
+    describe(`${IntegrationType.SmoochInside}`, () => {
         it('should render the migration tab of a specific integrations', () => {
             const {container} = renderWithRouter(
                 <IntegrationDetailContainer {...minProps} />,
                 {
                     path:
                         '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.SmoochInsideIntegrationType}/1/${Tab.SmoochInsideMigration}`,
+                    route: `/integrations/${IntegrationType.SmoochInside}/1/${Tab.SmoochInsideMigration}`,
                 }
             )
             expect(container.firstChild).toMatchSnapshot()

@@ -236,7 +236,7 @@ export const InfobarCustomerInfoContainer = ({
             (customerIntegrationData: Map<any, any>) => {
                 return (
                     customerIntegrationData.get('__integration_type__') ===
-                    IntegrationType.GorgiasChatIntegrationType
+                    IntegrationType.GorgiasChat
                 )
             }
         )
@@ -290,11 +290,11 @@ export const InfobarCustomerInfoContainer = ({
 const connector = connect((state: RootState) => ({
     hasIntegrations: !integrationsSelectors
         .getIntegrationsByTypes([
-            IntegrationType.HttpIntegrationType,
-            IntegrationType.Magento2IntegrationType,
-            IntegrationType.RechargeIntegrationType,
-            IntegrationType.ShopifyIntegrationType,
-            IntegrationType.SmileIntegrationType,
+            IntegrationType.Http,
+            IntegrationType.Magento2,
+            IntegrationType.Recharge,
+            IntegrationType.Shopify,
+            IntegrationType.Smile,
         ])(state)
         .isEmpty(),
 }))

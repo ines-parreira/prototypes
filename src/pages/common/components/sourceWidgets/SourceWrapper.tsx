@@ -14,7 +14,7 @@ import SourceWidgets from './SourceWidgets.js'
 
 export const WIDGET_DATA_TYPES = [
     {
-        type: IntegrationType.ShopifyIntegrationType,
+        type: IntegrationType.Shopify,
         title: 'Shopify data',
         description: (
             <div>
@@ -27,7 +27,7 @@ export const WIDGET_DATA_TYPES = [
         ),
     },
     {
-        type: IntegrationType.RechargeIntegrationType,
+        type: IntegrationType.Recharge,
         title: 'Recharge data',
         description: (
             <div>
@@ -40,7 +40,7 @@ export const WIDGET_DATA_TYPES = [
         ),
     },
     {
-        type: IntegrationType.SmileIntegrationType,
+        type: IntegrationType.Smile,
         title: 'Smile data',
         description: (
             <div>
@@ -53,7 +53,7 @@ export const WIDGET_DATA_TYPES = [
         ),
     },
     {
-        type: IntegrationType.Magento2IntegrationType,
+        type: IntegrationType.Magento2,
         title: 'Magento2 data',
         description: (
             <div>
@@ -66,7 +66,7 @@ export const WIDGET_DATA_TYPES = [
         ),
     },
     {
-        type: IntegrationType.SmoochInsideIntegrationType,
+        type: IntegrationType.SmoochInside,
         title: 'Chat data',
         description: (
             <div>
@@ -82,7 +82,7 @@ export const WIDGET_DATA_TYPES = [
         ),
     },
     {
-        type: IntegrationType.HttpIntegrationType,
+        type: IntegrationType.Http,
         title: 'HTTP data',
         description: (
             <div>
@@ -95,7 +95,7 @@ export const WIDGET_DATA_TYPES = [
         ),
     },
     {
-        type: IntegrationType.YotpoIntegrationType,
+        type: IntegrationType.Yotpo,
         title: 'Yotpo data',
         description: (
             <div>
@@ -108,7 +108,7 @@ export const WIDGET_DATA_TYPES = [
         ),
     },
     {
-        type: IntegrationType.KlaviyoIntegrationType,
+        type: IntegrationType.Klaviyo,
         title: 'Klaviyo data',
         description: (
             <div>

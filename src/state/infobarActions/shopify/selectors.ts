@@ -11,7 +11,4 @@ export const getShopifyActionsState = createSelector<
     RootState,
     ShopifyActionsState,
     InfobarActionsState
->(
-    getInfobarActionsState,
-    (state) => state[IntegrationType.ShopifyIntegrationType]
-)
+>(getInfobarActionsState, (state) => state[IntegrationType.Shopify])

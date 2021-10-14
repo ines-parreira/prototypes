@@ -151,7 +151,7 @@ export default function TwitterIntegrationDetail({
                         </BreadcrumbItem>
                         <BreadcrumbItem>
                             <Link
-                                to={`/app/settings/integrations/${IntegrationType.TwitterIntegrationType}`}
+                                to={`/app/settings/integrations/${IntegrationType.Twitter}`}
                             >
                                 Twitter
                             </Link>

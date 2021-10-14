@@ -325,9 +325,7 @@ EditOrderModalContainer.contextTypes = {
 
 const connector = connect(
     (state: RootState) => ({
-        integrations: getIntegrationsByTypes([
-            IntegrationType.ShopifyIntegrationType,
-        ])(state),
+        integrations: getIntegrationsByTypes([IntegrationType.Shopify])(state),
         loading: getEditOrderState(state).get('loading'),
         loadingMessage: getEditOrderState(state).get('loadingMessage'),
         payload: getEditOrderState(state).get('payload') as Map<

@@ -29,17 +29,17 @@ const sourceTypeToIcon = (
             icon.extra = 'text-warning'
             break
         case TicketMessageSourceType.Email:
-        case IntegrationType.GmailIntegrationType:
-        case IntegrationType.OutlookIntegrationType:
+        case IntegrationType.Gmail:
+        case IntegrationType.Outlook:
             icon.name = 'email'
             break
         case TicketMessageSourceType.EmailForward:
             icon.name = 'forward'
             break
         case TicketMessageSourceType.Chat:
-        case IntegrationType.GorgiasChatIntegrationType:
-        case IntegrationType.SmoochIntegrationType:
-        case IntegrationType.SmoochInsideIntegrationType:
+        case IntegrationType.GorgiasChat:
+        case IntegrationType.Smooch:
+        case IntegrationType.SmoochInside:
             icon.name = 'forum'
             icon.extra = 'text-purple'
             break

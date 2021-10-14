@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {Form, Button} from 'reactstrap'
 import _pick from 'lodash/pick'
 
-import {IntegrationType} from '../../../../../../../../../models/integration/types.ts'
+import {IntegrationType} from '../../../../../../../../../models/integration/types/index.ts'
 
 import InputField from '../../../../../../../forms/InputField'
 
@@ -67,8 +67,7 @@ class PopoverWidgetEditField extends React.Component {
                     <option value="email">Email</option>
                     <option value="boolean">Boolean (true/false)</option>
                     {path === 'tags' &&
-                        widgetType ===
-                            IntegrationType.ShopifyIntegrationType && (
+                        widgetType === IntegrationType.Shopify && (
                             <option value="editableList">Editable List</option>
                         )}
                     <option value="array">List</option>

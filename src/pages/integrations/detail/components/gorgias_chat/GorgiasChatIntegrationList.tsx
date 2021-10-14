@@ -46,7 +46,7 @@ function GorgiasChatIntegrationList({
         }
 
         const editLink = `/app/settings/integrations/${
-            IntegrationType.GorgiasChatIntegrationType
+            IntegrationType.GorgiasChat
         }/${integration.get('id') as string}/appearance`
         const isDisabled = integration.get('deactivated_datetime')
         const isLoading = loading.get('updateIntegration') === integrationId
@@ -57,8 +57,7 @@ function GorgiasChatIntegrationList({
         const shopifyStore: Map<any, any> = integrations.find(
             (_integration) =>
                 _integration?.get('name') === shopifyStoreName &&
-                _integration?.get('type') ===
-                    IntegrationType.ShopifyIntegrationType
+                _integration?.get('type') === IntegrationType.Shopify
         )
         const isStoreDisconnected =
             !shopifyStore || shopifyStore.get('deactivated_datetime')
@@ -119,18 +118,17 @@ function GorgiasChatIntegrationList({
 
     return (
         <IntegrationList
-            integrationType={IntegrationType.GorgiasChatIntegrationType}
+            integrationType={IntegrationType.GorgiasChat}
             longTypeDescription={longTypeDescription}
             integrations={
                 integrations.filter(
                     (integration) =>
-                        integration?.get('type') ===
-                        IntegrationType.GorgiasChatIntegrationType
+                        integration?.get('type') === IntegrationType.GorgiasChat
                 ) as List<Map<any, any>>
             }
             createIntegration={() =>
                 history.push(
-                    `/app/settings/integrations/${IntegrationType.GorgiasChatIntegrationType}/new`
+                    `/app/settings/integrations/${IntegrationType.GorgiasChat}/new`
                 )
             }
             createIntegrationButtonContent={

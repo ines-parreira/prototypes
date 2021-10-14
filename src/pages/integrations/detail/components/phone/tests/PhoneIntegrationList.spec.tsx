@@ -32,7 +32,7 @@ describe('<PhoneIntegrationList/>', () => {
     beforeEach(() => {
         const integration = {
             id: 1,
-            type: IntegrationType.PhoneIntegrationType,
+            type: IntegrationType.Phone,
             name: 'Fake phone integration',
             meta: {
                 emoji: '🍏',

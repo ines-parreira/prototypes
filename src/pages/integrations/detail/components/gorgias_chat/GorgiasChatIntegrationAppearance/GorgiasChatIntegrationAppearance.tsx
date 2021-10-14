@@ -62,7 +62,7 @@ import {StoreNameDropdown} from './StoreNameDropdown'
 import {GorgiasChatIntegrationStoreTypeRadioButton} from './GorgiasChatIntegrationStoreTypeRadioButton'
 
 export const defaultContent = {
-    type: IntegrationType.GorgiasChatIntegrationType,
+    type: IntegrationType.GorgiasChat,
     name: '',
     introductionText: GORGIAS_CHAT_WIDGET_TEXTS_DEFAULTS?.introductionText,
     offlineIntroductionText:
@@ -339,7 +339,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         </BreadcrumbItem>
                         <BreadcrumbItem>
                             <Link
-                                to={`/app/settings/integrations/${IntegrationType.GorgiasChatIntegrationType}`}
+                                to={`/app/settings/integrations/${IntegrationType.GorgiasChat}`}
                             >
                                 Chat
                             </Link>
@@ -710,10 +710,10 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
 const mapStateToProps = (state: RootState) => {
     return {
         shopifyIntegrations: integrationSelectors.getIntegrationsByTypes(
-            IntegrationType.ShopifyIntegrationType
+            IntegrationType.Shopify
         )(state),
         gorgiasChatIntegrations: integrationSelectors.getIntegrationsByTypes(
-            IntegrationType.GorgiasChatIntegrationType
+            IntegrationType.GorgiasChat
         )(state),
     }
 }

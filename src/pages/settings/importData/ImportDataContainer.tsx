@@ -74,7 +74,7 @@ const mapStateToProps = (state: RootState) => {
     return {
         loading: state.integrations.getIn(['state', 'loading', 'integrations']),
         zendeskIntegrations: integrationSelectors.getIntegrationsByTypes(
-            IntegrationType.ZendeskIntegrationType
+            IntegrationType.Zendesk
         )(state),
     }
 }

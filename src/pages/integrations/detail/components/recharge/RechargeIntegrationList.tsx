@@ -51,7 +51,7 @@ export class RechargeIntegrationList extends React.Component<Props, State> {
     render() {
         const {integrations, loading, redirectUri} = this.props
         const rechargeIntegrations = integrations.filter(
-            (v) => v!.get('type') === IntegrationType.RechargeIntegrationType
+            (v) => v!.get('type') === IntegrationType.Recharge
         ) as List<Map<any, any>>
 
         const imagesUrl = [
@@ -165,7 +165,7 @@ export class RechargeIntegrationList extends React.Component<Props, State> {
         return (
             <IntegrationList
                 longTypeDescription={longTypeDescription}
-                integrationType={IntegrationType.RechargeIntegrationType}
+                integrationType={IntegrationType.Recharge}
                 integrations={rechargeIntegrations}
                 createIntegration={() =>
                     history.push('/app/settings/integrations/recharge/new')
@@ -181,9 +181,7 @@ export class RechargeIntegrationList extends React.Component<Props, State> {
 
 const connector = connect((state: RootState) => {
     return {
-        redirectUri: getRedirectUri(IntegrationType.RechargeIntegrationType)(
-            state
-        ),
+        redirectUri: getRedirectUri(IntegrationType.Recharge)(state),
     }
 })
 

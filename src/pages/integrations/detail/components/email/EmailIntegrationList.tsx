@@ -43,11 +43,9 @@ export default class EmailIntegrationList extends Component<Props> {
         const integrationToItemDisplay = (integration: Map<any, any>) => {
             const active = !integration.get('deactivated_datetime')
             const isRowSubmitting = isSubmitting === integration.get('id')
-            const isGmail =
-                integration.get('type') === IntegrationType.GmailIntegrationType
+            const isGmail = integration.get('type') === IntegrationType.Gmail
             const isOutlook =
-                integration.get('type') ===
-                IntegrationType.OutlookIntegrationType
+                integration.get('type') === IntegrationType.Outlook
 
             const isVerified = integration.getIn(['meta', 'verified'], true)
 
@@ -137,7 +135,7 @@ export default class EmailIntegrationList extends Component<Props> {
 
         return (
             <IntegrationList
-                integrationType={IntegrationType.EmailIntegrationType}
+                integrationType={IntegrationType.Email}
                 integrations={getIntegrationsByTypes(
                     integrations,
                     EMAIL_INTEGRATION_TYPES

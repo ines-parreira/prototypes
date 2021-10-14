@@ -13,7 +13,7 @@ export default function PhoneIntegrationNavigation({
     integration,
 }: Props): JSX.Element {
     const integrationId: number = integration.get('id')
-    const baseURL = `/app/settings/integrations/${IntegrationType.PhoneIntegrationType}/${integrationId}`
+    const baseURL = `/app/settings/integrations/${IntegrationType.Phone}/${integrationId}`
 
     return (
         <SecondaryNavbar>

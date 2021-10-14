@@ -43,10 +43,10 @@ export function MemberExpressionContainer({
     property,
     parent,
     filteredIntegrationTypes = [
-        IntegrationType.ShopifyIntegrationType,
-        IntegrationType.Magento2IntegrationType,
-        IntegrationType.RechargeIntegrationType,
-        IntegrationType.SmileIntegrationType,
+        IntegrationType.Shopify,
+        IntegrationType.Magento2,
+        IntegrationType.Recharge,
+        IntegrationType.Smile,
     ],
     actions,
 }: OwnProps & ConnectedProps<typeof connector>) {
@@ -93,13 +93,13 @@ export function MemberExpressionContainer({
             return null
         }
         const integrationName = displayedValue.value.includes('shopify')
-            ? IntegrationType.ShopifyIntegrationType
+            ? IntegrationType.Shopify
             : displayedValue.value.includes('recharge')
-            ? IntegrationType.RechargeIntegrationType
+            ? IntegrationType.Recharge
             : displayedValue.value.includes('magento')
-            ? IntegrationType.Magento2IntegrationType
+            ? IntegrationType.Magento2
             : displayedValue.value.includes('smile')
-            ? IntegrationType.SmileIntegrationType
+            ? IntegrationType.Smile
             : null
         const integrationUrl = integrationName
             ? getIconFromUrl(`integrations/${integrationName}-mono.svg`)

@@ -56,7 +56,7 @@ export const updatePhoneVoiceMessageConfiguration = (
             () => {
                 void fetchIntegration(
                     integrationId.toString(),
-                    IntegrationType.PhoneIntegrationType
+                    IntegrationType.Phone
                 )(dispatch)
                 return dispatch(
                     notify({

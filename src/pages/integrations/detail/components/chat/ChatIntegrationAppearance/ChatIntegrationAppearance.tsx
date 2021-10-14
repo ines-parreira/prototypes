@@ -57,7 +57,7 @@ import {
 import css from './ChatIntegrationAppearance.less'
 
 export const defaultContent = {
-    type: IntegrationType.SmoochInsideIntegrationType,
+    type: IntegrationType.SmoochInside,
     name: '',
     introductionText: SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS.introductionText,
     offlineIntroductionText:
@@ -538,7 +538,7 @@ const connector = connect(
     (state: RootState) => {
         return {
             shopifyIntegrations: getIntegrationsByTypes(
-                IntegrationType.ShopifyIntegrationType
+                IntegrationType.Shopify
             )(state),
         }
     },

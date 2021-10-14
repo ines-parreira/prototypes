@@ -103,7 +103,7 @@ export function fetchFacebookOnboardingIntegrations(
 ) {
     return fetchOnboardingIntegrations(
         page,
-        IntegrationType.FacebookIntegrationType,
+        IntegrationType.Facebook,
         forceOverride
     )
 }
@@ -118,7 +118,7 @@ export function fetchOutlookOnboardingIntegrations(
 ) {
     return fetchOnboardingIntegrations(
         page,
-        IntegrationType.OutlookIntegrationType,
+        IntegrationType.Outlook,
         forceOverride,
         filter
     )
@@ -183,14 +183,14 @@ export function onCreateSuccess(dispatch: StoreDispatch, resp: Integration) {
 
     let nextStep = ''
 
-    if (resp.type === IntegrationType.EmailIntegrationType) {
+    if (resp.type === IntegrationType.Email) {
         nextStep = '/forwarding'
     } else if (
-        resp.type === IntegrationType.SmoochInsideIntegrationType ||
-        resp.type === IntegrationType.GorgiasChatIntegrationType
+        resp.type === IntegrationType.SmoochInside ||
+        resp.type === IntegrationType.GorgiasChat
     ) {
         nextStep = '/installation'
-    } else if (resp.type === IntegrationType.SmoochIntegrationType) {
+    } else if (resp.type === IntegrationType.Smooch) {
         nextStep = '/overview'
     }
 
@@ -228,10 +228,7 @@ export function onUpdateSuccess(
 
     let message = 'Integration successfully updated'
 
-    if (
-        resp.type === IntegrationType.SmoochInsideIntegrationType &&
-        didInvalidateCache
-    ) {
+    if (resp.type === IntegrationType.SmoochInside && didInvalidateCache) {
         message = 'Integration successfully updated.'
     }
 

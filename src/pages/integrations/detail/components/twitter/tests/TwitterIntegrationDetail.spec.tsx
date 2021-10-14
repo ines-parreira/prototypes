@@ -18,7 +18,7 @@ describe('<TwitterIntegrationDetail/>', () => {
             id: 1,
             name: 'Fake twitter integration',
             description: '@faketwitterintegration',
-            type: IntegrationType.TwitterIntegrationType,
+            type: IntegrationType.Twitter,
             meta: {
                 about: 'Foo bar',
                 picture: 'https://some-random-url.com/picture.jpeg',

@@ -12,7 +12,7 @@ export const RECHARGE_CANCELLATION_REASONS = [
 ]
 
 export const MACRO_VARIABLES = {
-    type: IntegrationType.RechargeIntegrationType,
+    type: IntegrationType.Recharge,
     integration: true,
     name: 'Recharge',
     children: [
@@ -54,7 +54,7 @@ export const MACRO_VARIABLES = {
 }
 
 export const MACRO_PREVIOUS_VARIABLES = {
-    type: IntegrationType.RechargeIntegrationType,
+    type: IntegrationType.Recharge,
     name: 'Recharge',
     integration: true,
     children: [

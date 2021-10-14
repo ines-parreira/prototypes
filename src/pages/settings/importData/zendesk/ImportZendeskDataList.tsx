@@ -168,9 +168,7 @@ const mapStateToProps = (state: RootState) => ({
     img: `${
         window.GORGIAS_ASSETS_URL || ''
     }/static/private/img/integrations/zendesk.png`,
-    zendeskImports: getIntegrationsByTypes(
-        IntegrationType.ZendeskIntegrationType
-    )(state),
+    zendeskImports: getIntegrationsByTypes(IntegrationType.Zendesk)(state),
 })
 
 const connector = connect(mapStateToProps, {})

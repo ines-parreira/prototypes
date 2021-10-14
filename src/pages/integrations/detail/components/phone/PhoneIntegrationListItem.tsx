@@ -20,7 +20,7 @@ export default function PhoneIntegrationListItem({
     const id: string = integration.get('id')
     const emoji = integration.getIn(['meta', 'emoji'])
     const isIvr = integration.getIn(['meta', 'function']) === PhoneFunction.IVR
-    const editLink = `/app/settings/integrations/${IntegrationType.PhoneIntegrationType}/${id}/preferences`
+    const editLink = `/app/settings/integrations/${IntegrationType.Phone}/${id}/preferences`
 
     return (
         <tr>

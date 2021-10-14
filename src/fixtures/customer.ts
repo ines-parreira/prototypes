@@ -53,7 +53,7 @@ export const customer: Customer = ({
             args: {
                 name: 'Jean Bon',
             },
-            __integration_type__: IntegrationType.HttpIntegrationType,
+            __integration_type__: IntegrationType.Http,
             headers: {
                 Host: 'httpbin.org',
                 'Content-Type': 'application/json',
@@ -433,7 +433,7 @@ export const customer: Customer = ({
                     confirmed: true,
                 },
             ],
-            __integration_type__: IntegrationType.ShopifyIntegrationType,
+            __integration_type__: IntegrationType.Shopify,
         },
     },
     updated_datetime: '2017-07-31T23:17:01.313273+00:00',

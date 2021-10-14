@@ -55,10 +55,7 @@ describe('updatePhoneVoicemailConfiguration', () => {
             .reply(202, {})
         await updatePhoneVoicemailConfiguration(formData)(dispatch, getState)
 
-        expect(fetchIntegration).toBeCalledWith(
-            '1',
-            IntegrationType.PhoneIntegrationType
-        )
+        expect(fetchIntegration).toBeCalledWith('1', IntegrationType.Phone)
         expect(notify.mock.calls).toMatchSnapshot()
     })
 })

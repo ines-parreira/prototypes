@@ -94,7 +94,7 @@ export const integrationDataItemProductFixture = ({
 } = {}): IntegrationDataItem<Product> => ({
     id: 1,
     integration_id: 1,
-    integration_type: IntegrationType.ShopifyIntegrationType,
+    integration_type: IntegrationType.Shopify,
     external_id: '123',
     item_type: IntegrationDataItemType.IntegrationDataItemTypeProduct,
     search: 'foo',

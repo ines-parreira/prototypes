@@ -259,7 +259,7 @@ describe('services', () => {
             const getItem = (id: number): IntegrationDataItem<null> => ({
                 id,
                 integration_id: 1,
-                integration_type: IntegrationType.ShopifyIntegrationType,
+                integration_type: IntegrationType.Shopify,
                 external_id: id.toString(),
                 item_type:
                     IntegrationDataItemType.IntegrationDataItemTypeProduct,

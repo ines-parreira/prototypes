@@ -32,7 +32,7 @@ describe('<TwitterIntegrationList/>', () => {
     beforeEach(() => {
         const integration = {
             id: 1,
-            type: IntegrationType.TwitterIntegrationType,
+            type: IntegrationType.Twitter,
         }
         integrations = fromJS([integration])
     })

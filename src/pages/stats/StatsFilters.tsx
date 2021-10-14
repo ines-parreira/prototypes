@@ -337,14 +337,14 @@ export const StatsFiltersContainer = ({
                     >
                         {data.map((integration) => {
                             const icon = [
-                                IntegrationType.EmailIntegrationType,
-                                IntegrationType.FacebookIntegrationType,
-                                IntegrationType.HttpIntegrationType,
-                                IntegrationType.PhoneIntegrationType,
-                                IntegrationType.GorgiasChatIntegrationType,
+                                IntegrationType.Email,
+                                IntegrationType.Facebook,
+                                IntegrationType.Http,
+                                IntegrationType.Phone,
+                                IntegrationType.GorgiasChat,
                             ].includes(integration.type) ? (
                                 integration.type ===
-                                IntegrationType.GorgiasChatIntegrationType ? (
+                                IntegrationType.GorgiasChat ? (
                                     'chat'
                                 ) : (
                                     integration.type

@@ -294,7 +294,7 @@ export const integrationsState = {
             decoration: null,
             locked_datetime: null,
             created_datetime: '2021-04-20T01:45:48.846020+00:00',
-            type: IntegrationType.PhoneIntegrationType,
+            type: IntegrationType.Phone,
             id: 6,
             description: null,
             updated_datetime: '2021-04-26T19:19:33.451511+00:00',

@@ -58,23 +58,22 @@ class TicketListInfobarContainer extends Component<Props> {
             .some((integration: Map<any, any>) => {
                 // gmail or outlook is connected or forwarding is on
                 return (
-                    integration.get('type') !==
-                        IntegrationType.EmailIntegrationType ||
+                    integration.get('type') !== IntegrationType.Email ||
                     (integration.getIn(['meta', 'verified']) as boolean)
                 )
             })
 
         const hasConnectedFacebook = hasIntegrationsOfTypes(
-            IntegrationType.FacebookIntegrationType
+            IntegrationType.Facebook
         )
         const hasShopifyIntegration = hasIntegrationsOfTypes(
-            IntegrationType.ShopifyIntegrationType
+            IntegrationType.Shopify
         )
 
         const hasConnectedChat = hasIntegrationsOfTypes([
-            IntegrationType.SmoochIntegrationType,
-            IntegrationType.SmoochInsideIntegrationType,
-            IntegrationType.GorgiasChatIntegrationType,
+            IntegrationType.Smooch,
+            IntegrationType.SmoochInside,
+            IntegrationType.GorgiasChat,
         ])
 
         const hasInvitedTeamMembers = agents.size > 1

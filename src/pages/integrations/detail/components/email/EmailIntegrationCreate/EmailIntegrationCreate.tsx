@@ -115,12 +115,8 @@ export class EmailIntegrationCreate extends Component<Props> {
 }
 
 const connector = connect((state: RootState) => ({
-    gmailRedirectUri: getRedirectUri(IntegrationType.GmailIntegrationType)(
-        state
-    ),
-    outlookRedirectUri: getRedirectUri(IntegrationType.OutlookIntegrationType)(
-        state
-    ),
+    gmailRedirectUri: getRedirectUri(IntegrationType.Gmail)(state),
+    outlookRedirectUri: getRedirectUri(IntegrationType.Outlook)(state),
 }))
 
 export default connector(EmailIntegrationCreate)

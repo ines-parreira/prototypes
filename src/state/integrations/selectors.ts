@@ -159,9 +159,9 @@ export const makeGetIntegrationsByTypes = (state: RootState) => (
 export const getEligibleShopifyIntegrationsFor = (state: RootState) => (
     type: IntegrationType
 ) => {
-    const shopifyIntegrations = getIntegrationsByTypes(
-        IntegrationType.ShopifyIntegrationType
-    )(state)
+    const shopifyIntegrations = getIntegrationsByTypes(IntegrationType.Shopify)(
+        state
+    )
     const currentIntegrationOfType = getIntegrationsByTypes(type)(state)
 
     return shopifyIntegrations.filter(
@@ -233,7 +233,7 @@ export const getFacebookMaxAccountAds = createSelector<
     (state) =>
         (state.getIn([
             'extra',
-            IntegrationType.FacebookIntegrationType,
+            IntegrationType.Facebook,
             'max_account_ads',
         ]) as number) || 0
 )
@@ -247,9 +247,9 @@ export const getEmailIntegrations = createSelector<
     (state) =>
         state.filter((integration: Map<any, any>) =>
             [
-                IntegrationType.EmailIntegrationType,
-                IntegrationType.GmailIntegrationType,
-                IntegrationType.OutlookIntegrationType,
+                IntegrationType.Email,
+                IntegrationType.Gmail,
+                IntegrationType.Outlook,
             ].includes(integration.get('type'))
         ) as List<any>
 )
@@ -263,7 +263,7 @@ export const getPhoneIntegrations = createSelector<
     (state) =>
         state.filter(
             (integration: Map<any, any>) =>
-                integration.get('type') === IntegrationType.PhoneIntegrationType
+                integration.get('type') === IntegrationType.Phone
         ) as List<any>
 )
 
@@ -298,12 +298,12 @@ export const getEmailChannels = createSelector<
 
             if (
                 [
-                    IntegrationType.EmailIntegrationType,
-                    IntegrationType.GmailIntegrationType,
-                    IntegrationType.OutlookIntegrationType,
+                    IntegrationType.Email,
+                    IntegrationType.Gmail,
+                    IntegrationType.Outlook,
                 ].includes(integration.get('type'))
             ) {
-                type = IntegrationType.EmailIntegrationType
+                type = IntegrationType.Email
             }
 
             return fromJS({
@@ -318,8 +318,7 @@ export const getEmailChannels = createSelector<
                     currentUser
                 ),
                 verified:
-                    integration.get('type') !==
-                        IntegrationType.EmailIntegrationType ||
+                    integration.get('type') !== IntegrationType.Email ||
                     integration.getIn(['meta', 'verified'], false),
             }) as Map<any, any>
         }) as List<any>
@@ -403,13 +402,13 @@ export const getForwardingEmailAddress = createSelector<
     string,
     Map<any, any>
 >(
-    getAuthData(IntegrationType.EmailIntegrationType),
+    getAuthData(IntegrationType.Email),
     (state) => state.get('forwarding_email_address', '') as string
 )
 
 export const getFacebookRedirectUri = (reconnect = false) =>
     createSelector<RootState, string, Map<any, any>>(
-        getAuthData(IntegrationType.FacebookIntegrationType),
+        getAuthData(IntegrationType.Facebook),
         (state) =>
             state.get(
                 reconnect ? 'redirect_uri_reconnect' : 'redirect_uri',
@@ -428,9 +427,7 @@ export const getMessagingIntegrations = createSelector<
     List<Map<any, any>>
 >(getIntegrationsByTypes(MESSAGING_INTEGRATION_TYPES), (integrations) => {
     return integrations.map((integration) => {
-        if (
-            integration!.get('type') === IntegrationType.FacebookIntegrationType
-        ) {
+        if (integration!.get('type') === IntegrationType.Facebook) {
             return integration!.set(
                 'name',
                 integration!.getIn(['meta', 'name'])
@@ -453,11 +450,11 @@ export const makeHasIntegrationOfTypes = (state: RootState) => (
 ) => hasIntegrationOfTypes(types)(state)
 
 export const getShopifyIntegrationsWithoutChat = (state: RootState) => {
-    const shopifyIntegrations = getIntegrationsByTypes(
-        IntegrationType.ShopifyIntegrationType
-    )(state)
+    const shopifyIntegrations = getIntegrationsByTypes(IntegrationType.Shopify)(
+        state
+    )
     const chatIntegrations = getIntegrationsByTypes(
-        IntegrationType.SmoochInsideIntegrationType
+        IntegrationType.SmoochInside
     )(state)
 
     return shopifyIntegrations.filter((shopifyIntegration: Map<any, any>) => {
@@ -473,11 +470,11 @@ export const getShopifyIntegrationsWithoutChat = (state: RootState) => {
 }
 
 export const getShopifyIntegrationsWithoutFacebook = (state: RootState) => {
-    const shopifyIntegrations = getIntegrationsByTypes(
-        IntegrationType.ShopifyIntegrationType
-    )(state)
+    const shopifyIntegrations = getIntegrationsByTypes(IntegrationType.Shopify)(
+        state
+    )
     const facebookIntegrations = getIntegrationsByTypes(
-        IntegrationType.FacebookIntegrationType
+        IntegrationType.Facebook
     )(state)
 
     return shopifyIntegrations.filter((shopifyIntegration: Map<any, any>) => {
@@ -496,7 +493,7 @@ export const getShopifyIntegrationsWithoutFacebook = (state: RootState) => {
 
 export const getShopifyIntegrationByShopName = (shopName: string) =>
     createSelector<RootState, Map<any, any>, List<any>>(
-        getIntegrationsByTypes([IntegrationType.ShopifyIntegrationType]),
+        getIntegrationsByTypes([IntegrationType.Shopify]),
         (state) =>
             (state.find(
                 (integration: Map<any, any>) =>
@@ -510,7 +507,7 @@ export const makeGetShopifyIntegrationByShopName = (state: RootState) => (
 
 export const getMagento2IntegrationByStoreUrl = (storeUrl: string) =>
     createSelector<RootState, Map<any, any>, List<any>>(
-        getIntegrationsByTypes([IntegrationType.Magento2IntegrationType]),
+        getIntegrationsByTypes([IntegrationType.Magento2]),
         (state) =>
             (state.find(
                 (integration: Map<any, any>) =>
@@ -550,7 +547,7 @@ export const hasAtLeastOneEmailIntegration = (state: RootState) =>
         ) as string).includes(window.EMAIL_FORWARDING_DOMAIN)
         const isDeactivated = !!integration.get('deactivated_datetime')
         const isNotVerified =
-            integration.get('type') === IntegrationType.EmailIntegrationType &&
+            integration.get('type') === IntegrationType.Email &&
             !integration.getIn(['meta', 'verified'])
 
         return !isBaseIntegration && !isDeactivated && !isNotVerified

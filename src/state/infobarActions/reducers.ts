@@ -5,5 +5,5 @@ import {IntegrationType} from '../../models/integration/types'
 import shopifyReducer from './shopify/reducers'
 
 export default combineReducers({
-    [IntegrationType.ShopifyIntegrationType]: shopifyReducer,
+    [IntegrationType.Shopify]: shopifyReducer,
 })

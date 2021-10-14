@@ -112,14 +112,13 @@ export class Magento2IntegrationList extends Component<Props> {
 
         const magento2Integrations = integrations.filter(
             (integration) =>
-                integration!.get('type') ===
-                IntegrationType.Magento2IntegrationType
+                integration!.get('type') === IntegrationType.Magento2
         ) as List<Map<any, any>>
 
         return (
             <IntegrationList
                 longTypeDescription={longTypeDescription}
-                integrationType={IntegrationType.Magento2IntegrationType}
+                integrationType={IntegrationType.Magento2}
                 integrations={magento2Integrations}
                 createIntegration={() =>
                     history.push('/app/settings/integrations/magento2/new')

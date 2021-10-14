@@ -21,7 +21,7 @@ describe('<ClickablePhoneNumber/>', () => {
     function getPhoneIntegration(id: number, phoneNumber: string) {
         return {
             id,
-            type: IntegrationType.PhoneIntegrationType,
+            type: IntegrationType.Phone,
             name: `My Phone Integration ${id}`,
             meta: {
                 emoji: '😀',

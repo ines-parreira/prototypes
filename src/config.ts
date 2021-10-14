@@ -153,25 +153,25 @@ export const DEFAULT_SOURCE_PATHS = {
 // A list of integration types along with descriptions that will be displayed in the integrations summary
 export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
-        type: IntegrationType.EmailIntegrationType,
+        type: IntegrationType.Email,
         subTypes: [
-            IntegrationType.EmailIntegrationType,
-            IntegrationType.GmailIntegrationType,
-            IntegrationType.OutlookIntegrationType,
+            IntegrationType.Email,
+            IntegrationType.Gmail,
+            IntegrationType.Outlook,
         ],
         title: 'Email',
         description:
             'Connect your support email addresses and respond to your customers from Gorgias',
     },
     {
-        type: IntegrationType.PhoneIntegrationType,
+        type: IntegrationType.Phone,
         title: 'Phone',
         description: 'Chat with your customers over the phone from Gorgias.',
         image: 'integrations/phone.png',
         requiredFeature: AccountFeature.PhoneIntegration,
     },
     {
-        type: IntegrationType.GorgiasChatIntegrationType,
+        type: IntegrationType.GorgiasChat,
         title: 'Chat',
         description: 'Add a chat on your website.',
     },
@@ -209,7 +209,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/shopify.png',
     },
     {
-        type: IntegrationType.TwitterIntegrationType,
+        type: IntegrationType.Twitter,
         title: 'Twitter',
         description:
             'Create tickets when customers interact with you via replies or mentions on Twitter',
@@ -217,7 +217,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         requiredFeature: AccountFeature.TwitterIntegration,
     },
     {
-        type: IntegrationType.Magento2IntegrationType,
+        type: IntegrationType.Magento2,
         title: 'Magento 2',
         description:
             'Display customer profiles & orders next to tickets. Edit orders with macros',
@@ -240,13 +240,13 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     },
     {
         title: 'Klaviyo',
-        type: IntegrationType.KlaviyoIntegrationType,
+        type: IntegrationType.Klaviyo,
         description:
             'Handle your customers, lists and segments from your Klaviyo campaigns via emails or sms.',
         image: 'integrations/klaviyo.png',
     },
     {
-        type: IntegrationType.YotpoIntegrationType,
+        type: IntegrationType.Yotpo,
         title: 'Yotpo',
         description:
             'Yotpo is a user-generated content tool for merchants. It includes customer reviews, visual marketing, loyalty, and referrals.',
@@ -749,7 +749,7 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: ActionTemplateExecution.Back,
-        integrationType: IntegrationType.ShopifyIntegrationType,
+        integrationType: IntegrationType.Shopify,
         name: MacroActionName.ShopifyCancelLastOrder,
         title: 'Cancel last order',
         arguments: {
@@ -778,8 +778,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     return !!_find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.ShopifyIntegrationType,
+                        __integration_type__: IntegrationType.Shopify,
                     })
                 },
                 error: 'This customer has no Shopify data.',
@@ -787,8 +786,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     const shopifyIntegration = _find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.ShopifyIntegrationType,
+                        __integration_type__: IntegrationType.Shopify,
                     })
 
                     return _get(shopifyIntegration, ['orders']) as Maybe<Order>
@@ -798,8 +796,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     const shopifyIntegration = _find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.ShopifyIntegrationType,
+                        __integration_type__: IntegrationType.Shopify,
                     })
 
                     return (
@@ -816,8 +813,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     const shopifyIntegration = _find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.ShopifyIntegrationType,
+                        __integration_type__: IntegrationType.Shopify,
                     })
 
                     return (
@@ -835,7 +831,7 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: ActionTemplateExecution.Back,
-        integrationType: IntegrationType.ShopifyIntegrationType,
+        integrationType: IntegrationType.Shopify,
         name: MacroActionName.ShopifyCancelOrder,
         title: 'Cancel order',
         arguments: {
@@ -870,7 +866,7 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: ActionTemplateExecution.Back,
-        integrationType: IntegrationType.ShopifyIntegrationType,
+        integrationType: IntegrationType.Shopify,
         name: MacroActionName.ShopifyDuplicateLastOrder,
         title: 'Duplicate last order',
         arguments: {},
@@ -878,8 +874,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     return !!_find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.ShopifyIntegrationType,
+                        __integration_type__: IntegrationType.Shopify,
                     })
                 },
                 error: 'This customer has no Shopify data.',
@@ -887,8 +882,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     const shopifyIntegration = _find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.ShopifyIntegrationType,
+                        __integration_type__: IntegrationType.Shopify,
                     })
 
                     return _get(shopifyIntegration, ['orders']) as Maybe<
@@ -901,7 +895,7 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: ActionTemplateExecution.Back,
-        integrationType: IntegrationType.ShopifyIntegrationType,
+        integrationType: IntegrationType.Shopify,
         name: MacroActionName.ShopifyEditShippingAddressLastOrder,
         title: "Edit last order's shipping address",
         notes: [
@@ -976,8 +970,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     return !!_find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.ShopifyIntegrationType,
+                        __integration_type__: IntegrationType.Shopify,
                     })
                 },
                 error: 'This customer has no Shopify data.',
@@ -985,8 +978,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     const shopifyIntegration = _find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.ShopifyIntegrationType,
+                        __integration_type__: IntegrationType.Shopify,
                     })
 
                     return _get(shopifyIntegration, ['orders']) as Maybe<
@@ -998,8 +990,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     const shopifyIntegration = _find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.ShopifyIntegrationType,
+                        __integration_type__: IntegrationType.Shopify,
                     })
 
                     return (
@@ -1017,7 +1008,7 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: ActionTemplateExecution.Back,
-        integrationType: IntegrationType.ShopifyIntegrationType,
+        integrationType: IntegrationType.Shopify,
         name: MacroActionName.ShopifyRefundShippingCostLastOrder,
         title: "Refund last order's shipping cost",
         arguments: {},
@@ -1028,8 +1019,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     return !!_find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.ShopifyIntegrationType,
+                        __integration_type__: IntegrationType.Shopify,
                     })
                 },
                 error: 'This customer has no Shopify data.',
@@ -1037,8 +1027,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     const shopifyIntegration = _find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.ShopifyIntegrationType,
+                        __integration_type__: IntegrationType.Shopify,
                     })
 
                     return _get(shopifyIntegration, ['orders']) as Maybe<
@@ -1050,8 +1039,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     const shopifyIntegration = _find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.ShopifyIntegrationType,
+                        __integration_type__: IntegrationType.Shopify,
                     })
 
                     return !['refunded', 'accepted'].includes(
@@ -1069,7 +1057,7 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: ActionTemplateExecution.Back,
-        integrationType: IntegrationType.ShopifyIntegrationType,
+        integrationType: IntegrationType.Shopify,
         name: MacroActionName.ShopifyFullRefundLastOrder,
         title: 'Refund last order',
         arguments: {
@@ -1091,8 +1079,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     return !!_find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.ShopifyIntegrationType,
+                        __integration_type__: IntegrationType.Shopify,
                     })
                 },
                 error: 'This customer has no Shopify data.',
@@ -1100,8 +1087,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     const shopifyIntegration = _find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.ShopifyIntegrationType,
+                        __integration_type__: IntegrationType.Shopify,
                     })
 
                     return _get(shopifyIntegration, ['orders']) as Maybe<
@@ -1113,8 +1099,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     const shopifyIntegration = _find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.ShopifyIntegrationType,
+                        __integration_type__: IntegrationType.Shopify,
                     })
 
                     return !['refunded', 'accepted'].includes(
@@ -1132,7 +1117,7 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: ActionTemplateExecution.Back,
-        integrationType: IntegrationType.ShopifyIntegrationType,
+        integrationType: IntegrationType.Shopify,
         name: MacroActionName.ShopifyPartialRefundLastOrder,
         title: 'Partially refund last order',
         arguments: {
@@ -1155,8 +1140,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     return !!_find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.ShopifyIntegrationType,
+                        __integration_type__: IntegrationType.Shopify,
                     })
                 },
                 error: 'This customer has no Shopify data.',
@@ -1164,8 +1148,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     const shopifyIntegration = _find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.ShopifyIntegrationType,
+                        __integration_type__: IntegrationType.Shopify,
                     })
 
                     return _get(shopifyIntegration, ['orders']) as Maybe<
@@ -1177,8 +1160,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     const shopifyIntegration = _find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.ShopifyIntegrationType,
+                        __integration_type__: IntegrationType.Shopify,
                     })
 
                     return !['refunded', 'accepted'].includes(
@@ -1196,7 +1178,7 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: ActionTemplateExecution.Back,
-        integrationType: IntegrationType.ShopifyIntegrationType,
+        integrationType: IntegrationType.Shopify,
         name: MacroActionName.ShopifyEditNoteLastOrder,
         title: "Edit last order's note",
         arguments: {
@@ -1214,8 +1196,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     return !!_find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.ShopifyIntegrationType,
+                        __integration_type__: IntegrationType.Shopify,
                     })
                 },
                 error: 'This customer has no Shopify data.',
@@ -1223,8 +1204,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     const shopifyIntegration = _find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.ShopifyIntegrationType,
+                        __integration_type__: IntegrationType.Shopify,
                     })
 
                     return _get(shopifyIntegration, ['orders']) as Maybe<
@@ -1237,7 +1217,7 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: ActionTemplateExecution.Back,
-        integrationType: IntegrationType.RechargeIntegrationType,
+        integrationType: IntegrationType.Recharge,
         name: MacroActionName.RechargeCancelLastSubscription,
         title: 'Cancel last subscription',
         arguments: {
@@ -1264,8 +1244,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     return !!_find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.RechargeIntegrationType,
+                        __integration_type__: IntegrationType.Recharge,
                     })
                 },
                 error: 'This customer has no Recharge data.',
@@ -1273,8 +1252,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     const rechargeIntegration = _find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.RechargeIntegrationType,
+                        __integration_type__: IntegrationType.Recharge,
                     })
 
                     return _get(rechargeIntegration, ['subscriptions'])
@@ -1284,8 +1262,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     const rechargeIntegration = _find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.RechargeIntegrationType,
+                        __integration_type__: IntegrationType.Recharge,
                     })
 
                     return (
@@ -1302,7 +1279,7 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: ActionTemplateExecution.Back,
-        integrationType: IntegrationType.RechargeIntegrationType,
+        integrationType: IntegrationType.Recharge,
         name: MacroActionName.RechargeActivateLastSubscription,
         title: 'Activate last subscription',
         arguments: {},
@@ -1310,8 +1287,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     return !!_find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.RechargeIntegrationType,
+                        __integration_type__: IntegrationType.Recharge,
                     })
                 },
                 error: 'This customer has no Recharge data.',
@@ -1319,8 +1295,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     const rechargeIntegration = _find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.RechargeIntegrationType,
+                        __integration_type__: IntegrationType.Recharge,
                     })
 
                     return _get(rechargeIntegration, ['subscriptions'])
@@ -1330,8 +1305,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     const rechargeIntegration = _find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.RechargeIntegrationType,
+                        __integration_type__: IntegrationType.Recharge,
                     })
 
                     return (
@@ -1348,7 +1322,7 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: ActionTemplateExecution.Back,
-        integrationType: IntegrationType.RechargeIntegrationType,
+        integrationType: IntegrationType.Recharge,
         name: MacroActionName.RechargeRefundLastCharge,
         title: 'Refund last charge',
         arguments: {
@@ -1369,8 +1343,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     return !!_find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.RechargeIntegrationType,
+                        __integration_type__: IntegrationType.Recharge,
                     })
                 },
                 error: 'This customer has no Recharge data.',
@@ -1378,8 +1351,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     const rechargeIntegration = _find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.RechargeIntegrationType,
+                        __integration_type__: IntegrationType.Recharge,
                     })
 
                     return _get(rechargeIntegration, ['charges'])
@@ -1389,8 +1361,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     const rechargeIntegration = _find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.RechargeIntegrationType,
+                        __integration_type__: IntegrationType.Recharge,
                     })
 
                     return ['SUCCESS', 'PARTIALLY_REFUNDED'].includes(
@@ -1403,7 +1374,7 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: ActionTemplateExecution.Back,
-        integrationType: IntegrationType.RechargeIntegrationType,
+        integrationType: IntegrationType.Recharge,
         name: MacroActionName.RechargeRefundLastOrder,
         title: 'Refund last order',
         arguments: {
@@ -1424,8 +1395,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     return !!_find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.RechargeIntegrationType,
+                        __integration_type__: IntegrationType.Recharge,
                     })
                 },
                 error: 'This customer has no Recharge data.',
@@ -1433,8 +1403,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     const rechargeIntegration = _find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.RechargeIntegrationType,
+                        __integration_type__: IntegrationType.Recharge,
                     })
 
                     return _get(rechargeIntegration, ['orders'])
@@ -1444,8 +1413,7 @@ export const ACTION_TEMPLATES = [
             {
                 validate: (customer: Customer) => {
                     const rechargeIntegration = _find(customer.integrations, {
-                        __integration_type__:
-                            IntegrationType.RechargeIntegrationType,
+                        __integration_type__: IntegrationType.Recharge,
                     })
 
                     return ['SUCCESS', 'PARTIALLY_REFUNDED'].includes(

@@ -17,9 +17,7 @@ import {updateOrCreateIntegration} from '../../../../../../state/integrations/ac
 import {renderFacebookCodeSnippet} from './utils.js'
 import css from './FacebookIntegrationCustomerChat.less'
 
-const targetIntegrationTypes: List<any> = fromJS([
-    IntegrationType.ShopifyIntegrationType,
-])
+const targetIntegrationTypes: List<any> = fromJS([IntegrationType.Shopify])
 
 type Props = {
     integration: Map<any, any>

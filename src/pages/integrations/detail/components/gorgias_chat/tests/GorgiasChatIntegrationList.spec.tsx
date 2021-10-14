@@ -18,13 +18,13 @@ describe('<GorgiasChatIntegrationList/>', () => {
             {
                 id: 1,
                 name: 'my chat enabled',
-                type: IntegrationType.GorgiasChatIntegrationType,
+                type: IntegrationType.GorgiasChat,
                 meta: {
                     self_service: {
                         enabled: false,
                     },
                     shop_name: 'my associated Shopify store',
-                    shop_type: IntegrationType.ShopifyIntegrationType,
+                    shop_type: IntegrationType.Shopify,
                 },
                 decoration: {
                     introduction_text: 'this is an intro',
@@ -35,7 +35,7 @@ describe('<GorgiasChatIntegrationList/>', () => {
             {
                 id: 3,
                 name: 'my associated Shopify store',
-                type: IntegrationType.ShopifyIntegrationType,
+                type: IntegrationType.Shopify,
                 meta: {
                     self_service: {
                         enabled: false,

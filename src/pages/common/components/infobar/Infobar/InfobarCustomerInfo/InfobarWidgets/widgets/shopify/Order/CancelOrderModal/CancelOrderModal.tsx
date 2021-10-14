@@ -216,9 +216,7 @@ CancelOrderModalContainer.contextTypes = {
 
 const connector = connect(
     (state: RootState) => ({
-        integrations: getIntegrationsByTypes([
-            IntegrationType.ShopifyIntegrationType,
-        ])(state),
+        integrations: getIntegrationsByTypes([IntegrationType.Shopify])(state),
         loading: getCancelOrderState(state).get('loading') as boolean,
         loadingMessage: getCancelOrderState(state).get(
             'loadingMessage'

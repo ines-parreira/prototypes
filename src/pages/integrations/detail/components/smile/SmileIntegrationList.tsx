@@ -48,7 +48,7 @@ export default class SmileIntegrationList extends React.Component<
     render() {
         const {integrations, loading, redirectUri} = this.props
         const smileIntegrations = integrations.filter(
-            (v) => v!.get('type') === IntegrationType.SmileIntegrationType
+            (v) => v!.get('type') === IntegrationType.Smile
         ) as List<Map<any, any>>
         const imagesUrl = [
             `${
@@ -144,7 +144,7 @@ export default class SmileIntegrationList extends React.Component<
         return (
             <IntegrationList
                 longTypeDescription={longTypeDescription}
-                integrationType={IntegrationType.SmileIntegrationType}
+                integrationType={IntegrationType.Smile}
                 integrations={smileIntegrations}
                 createIntegration={this._onLogin}
                 createIntegrationButtonContent="Add Smile account"

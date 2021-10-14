@@ -605,9 +605,7 @@ EditOrderShippingAddressModal.contextTypes = {
 const connector = connect(
     (state: RootState) => ({
         currentAccount: getCurrentAccountState(state),
-        integrations: getIntegrationsByTypes([
-            IntegrationType.ShopifyIntegrationType,
-        ])(state),
+        integrations: getIntegrationsByTypes([IntegrationType.Shopify])(state),
         shippingAddresses: getShippingAddressState(state).get(
             'addresses'
         ) as List<Map<any, any>>,

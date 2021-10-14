@@ -33,7 +33,7 @@ describe('<ImportZendeskDetail/>', () => {
                 } as any)
                 expect(fetchIntegrationMock).toBeCalledWith(
                     zendeskImport.id,
-                    IntegrationType.ZendeskIntegrationType
+                    IntegrationType.Zendesk
                 )
                 expect(container).toMatchSnapshot()
             }

@@ -372,9 +372,7 @@ DraftOrderModalContainer.contextTypes = {
 
 const connector = connect(
     (state: RootState) => ({
-        integrations: getIntegrationsByTypes([
-            IntegrationType.ShopifyIntegrationType,
-        ])(state),
+        integrations: getIntegrationsByTypes([IntegrationType.Shopify])(state),
         loading: getCreateOrderState(state).get('loading'),
         loadingMessage: getCreateOrderState(state).get('loadingMessage'),
         payload: getCreateOrderState(state).get('payload') as Map<
