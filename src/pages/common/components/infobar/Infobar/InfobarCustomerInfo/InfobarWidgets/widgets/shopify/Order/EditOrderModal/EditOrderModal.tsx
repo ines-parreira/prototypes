@@ -15,13 +15,13 @@ import {getEditOrderState} from '../../../../../../../../../../../state/infobarA
 import {
     addCustomRow,
     addRow,
+    onLineItemChange,
     onCancel,
     onInit,
     onNoteChange,
     onNotifyChange,
-    onPayloadChange,
     onReset,
-} from '../../../../../../../../../../../state/infobarActions/shopify/editOrder/action'
+} from '../../../../../../../../../../../state/infobarActions/shopify/editOrder/actions'
 import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
 import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
 import {RootState} from '../../../../../../../../../../../state/types'
@@ -55,6 +55,7 @@ export function EditOrderModalContainer(
     {
         addCustomRow,
         addRow,
+        onLineItemChange,
         defaultCurrency = 'USD',
         data = {actionName: null, order: null},
         header,
@@ -70,7 +71,6 @@ export function EditOrderModalContainer(
         onClose,
         onChange,
         onCancel,
-        onPayloadChange,
         onNotifyChange,
         onNoteChange,
         onBulkChange,
@@ -122,34 +122,46 @@ export function EditOrderModalContainer(
         [data, integrationId, onClose]
     )
 
-    const handlePaymentSubmit = useCallback(
-        () => () => {
-            onBulkChange(
-                [
-                    {name: 'note', value: payload && payload.get('note')},
-                    {
-                        name: 'notify',
-                        value: (payload && payload.get('notify')) || false,
-                    },
-                    {
-                        name: 'edited_order_id',
-                        value:
-                            calculatedEditOrder &&
-                            calculatedEditOrder.get('calculatedOrderId'),
-                    },
-                ],
-                () => {
-                    onSubmit()
-                    handleReset()
-                }
-            )
-        },
-        [integrationId, onBulkChange, onSubmit, calculatedEditOrder, payload]
-    )
     const handleReset = useCallback(() => {
         onReset()
         shortcutManager.unpause()
-    }, [])
+    }, [onReset])
+
+    const handleLineItemUpdate = useCallback(
+        (newLineItem: Map<any, any>, index: number) => {
+            void onLineItemChange(integrationId, {newLineItem, index})
+        },
+        [integrationId, onLineItemChange]
+    )
+
+    const handleLineItemDelete = useCallback(
+        (index: number) => {
+            void onLineItemChange(integrationId, {remove: true, index})
+        },
+        [integrationId, onLineItemChange]
+    )
+
+    const handlePaymentSubmit = useCallback(() => {
+        onBulkChange(
+            [
+                {name: 'note', value: payload && payload.get('note')},
+                {
+                    name: 'notify',
+                    value: (payload && payload.get('notify')) || false,
+                },
+                {
+                    name: 'edited_order_id',
+                    value:
+                        calculatedEditOrder &&
+                        calculatedEditOrder.get('calculatedOrderId'),
+                },
+            ],
+            () => {
+                onSubmit()
+                handleReset()
+            }
+        )
+    }, [onBulkChange, payload, calculatedEditOrder, onSubmit, handleReset])
 
     useUpdateEffect(() => {
         if (!previousIsOpen && isOpen) {
@@ -181,6 +193,8 @@ export function EditOrderModalContainer(
         onClose,
         currencyCode,
         onChange,
+        onInit,
+        handleReset,
     ])
     if (!hasScope) {
         return (
@@ -254,12 +268,8 @@ export function EditOrderModalContainer(
                         currencyCode={currencyCode}
                         lineItems={lineItems}
                         products={products}
-                        onChange={(lineItems) => {
-                            void onPayloadChange(
-                                integrationId,
-                                payload.set('line_items', lineItems)
-                            )
-                        }}
+                        onLineItemUpdate={handleLineItemUpdate}
+                        onLineItemDelete={handleLineItemDelete}
                     />
                     {calculatedEditOrder ? (
                         <EditOrderForm
@@ -310,7 +320,7 @@ export function EditOrderModalContainer(
                     }
                     tabIndex={0}
                     className={classnames(css.focusable, 'ml-auto')}
-                    onClick={handlePaymentSubmit()}
+                    onClick={handlePaymentSubmit}
                 >
                     Edit order
                 </Button>
@@ -340,9 +350,9 @@ const connector = connect(
     {
         addCustomRow,
         addRow,
+        onLineItemChange,
         onCancel,
         onInit,
-        onPayloadChange,
         onNotifyChange,
         onReset,
         onNoteChange,

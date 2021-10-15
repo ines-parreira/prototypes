@@ -1,6 +1,6 @@
-import {shallow} from 'enzyme'
 import React, {ComponentProps} from 'react'
 import {fromJS, Map} from 'immutable'
+import {render, fireEvent, screen} from '@testing-library/react'
 
 import {
     shopifyAppliedDiscountFixture,
@@ -12,32 +12,24 @@ import {
     EVENTS,
     logEvent,
 } from '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
-import {DraftOrderLineItemRow} from '../DraftOrderLineItemRow'
+import DraftOrderLineItemRow from '../DraftOrderLineItemRow'
 import {ShopifyActionType} from '../../../../types'
 import {InventoryManagement} from '../../../../../../../../../../../../../constants/integrations/types/shopify'
 
 jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 
 jest.mock(
-    '../../../../../../../../../../../../../store/middlewares/segmentTracker',
-    () => {
-        const segmentTracker: Record<string, unknown> = jest.requireActual(
-            '../../../../../../../../../../../../../store/middlewares/segmentTracker'
-        )
-
-        return {
-            ...segmentTracker,
-            logEvent: jest.fn(),
-        }
-    }
+    '../../../../../../../../../../../../../store/middlewares/segmentTracker'
 )
+const logEventMock = logEvent as jest.Mock
 
 describe('<DraftOrderLineItemRow/>', () => {
     let onChange: jest.MockedFunction<any>,
-        onDelete,
+        onDelete: jest.MockedFunction<any>,
         props: ComponentProps<typeof DraftOrderLineItemRow>
 
     beforeEach(() => {
+        jest.useFakeTimers()
         onChange = jest.fn()
         onDelete = jest.fn()
 
@@ -49,7 +41,11 @@ describe('<DraftOrderLineItemRow/>', () => {
             removable: true,
             onChange,
             onDelete,
+            index: 0,
         } as unknown) as ComponentProps<typeof DraftOrderLineItemRow>
+    })
+    afterEach(() => {
+        jest.useRealTimers()
     })
 
     describe('render()', () => {
@@ -60,7 +56,7 @@ describe('<DraftOrderLineItemRow/>', () => {
             >
             const lineItem = payload.getIn(['line_items', 0])
 
-            const component = shallow(
+            const {container} = render(
                 <DraftOrderLineItemRow
                     {...props}
                     lineItem={lineItem}
@@ -68,7 +64,7 @@ describe('<DraftOrderLineItemRow/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with product image', () => {
@@ -78,7 +74,7 @@ describe('<DraftOrderLineItemRow/>', () => {
             >
             const lineItem = payload.getIn(['line_items', 0])
 
-            const component = shallow(
+            const {container} = render(
                 <DraftOrderLineItemRow
                     {...props}
                     lineItem={lineItem}
@@ -86,7 +82,7 @@ describe('<DraftOrderLineItemRow/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with applied discount', () => {
@@ -102,7 +98,7 @@ describe('<DraftOrderLineItemRow/>', () => {
                 any
             >).set('applied_discount', appliedDiscount)
 
-            const component = shallow(
+            const {container} = render(
                 <DraftOrderLineItemRow
                     {...props}
                     lineItem={lineItem}
@@ -110,7 +106,7 @@ describe('<DraftOrderLineItemRow/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render without quantity and without price', () => {
@@ -123,7 +119,7 @@ describe('<DraftOrderLineItemRow/>', () => {
                 any
             >).set('quantity', 0)
 
-            const component = shallow(
+            const {container} = render(
                 <DraftOrderLineItemRow
                     {...props}
                     lineItem={lineItem}
@@ -132,7 +128,7 @@ describe('<DraftOrderLineItemRow/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with product stock quantity', () => {
@@ -154,7 +150,7 @@ describe('<DraftOrderLineItemRow/>', () => {
             )
             const product = fromJS(shopifyProductFixture({variants: [variant]}))
 
-            const component = shallow(
+            const {container} = render(
                 <DraftOrderLineItemRow
                     {...props}
                     lineItem={lineItem}
@@ -163,7 +159,7 @@ describe('<DraftOrderLineItemRow/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render without product stock quantity because the inventory is not tracked', () => {
@@ -185,7 +181,7 @@ describe('<DraftOrderLineItemRow/>', () => {
             )
             const product = fromJS(shopifyProductFixture({variants: [variant]}))
 
-            const component = shallow(
+            const {container} = render(
                 <DraftOrderLineItemRow
                     {...props}
                     lineItem={lineItem}
@@ -194,11 +190,11 @@ describe('<DraftOrderLineItemRow/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 
-    describe('_onQuantityChange()', () => {
+    describe('on quantity changed', () => {
         it.each([
             [
                 ShopifyActionType.CreateOrder,
@@ -218,8 +214,7 @@ describe('<DraftOrderLineItemRow/>', () => {
                     any,
                     any
                 >
-
-                const component = shallow(
+                render(
                     <DraftOrderLineItemRow
                         {...props}
                         actionName={actionName}
@@ -228,15 +223,37 @@ describe('<DraftOrderLineItemRow/>', () => {
                     />
                 )
 
-                component
-                    .find({type: 'number'})
-                    .simulate('change', {target: {value: '5'}})
+                fireEvent.change(screen.getByRole('spinbutton'), {
+                    target: {value: 5},
+                })
 
+                jest.advanceTimersByTime(1000)
                 expect(onChange).toHaveBeenCalledWith(
-                    lineItem.set('quantity', 5)
+                    lineItem.set('quantity', 5),
+                    0
                 )
-                expect(logEvent).toHaveBeenCalledWith(event)
+                expect(logEventMock).toHaveBeenCalledWith(event)
             }
         )
+    })
+    describe('on delete line', () => {
+        it('should call onDelete() with correct index', () => {
+            const payload = fromJS(shopifyDraftOrderPayloadFixture()) as Map<
+                any,
+                any
+            >
+            const lineItem = payload.getIn(['line_items', 0]) as Map<any, any>
+
+            render(
+                <DraftOrderLineItemRow
+                    {...props}
+                    lineItem={lineItem}
+                    product={fromJS(shopifyProductFixture())}
+                />
+            )
+            fireEvent.click(screen.getByText('close'))
+
+            expect(onDelete).toHaveBeenCalledWith(0)
+        })
     })
 })

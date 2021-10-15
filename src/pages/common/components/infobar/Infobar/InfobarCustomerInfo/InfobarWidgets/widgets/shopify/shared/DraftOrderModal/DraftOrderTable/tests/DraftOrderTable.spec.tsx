@@ -1,6 +1,6 @@
 import React from 'react'
-import {fromJS, Map, List} from 'immutable'
-import {shallow} from 'enzyme'
+import {fromJS, Map} from 'immutable'
+import {render, fireEvent, screen} from '@testing-library/react'
 
 import {
     shopifyDraftOrderPayloadFixture,
@@ -9,8 +9,14 @@ import {
 import DraftOrderTable from '../DraftOrderTable'
 import {ShopifyActionType} from '../../../../types'
 
+jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
+jest.mock(
+    '../../../../../../../../../../../../../store/middlewares/segmentTracker'
+)
+
 describe('<DraftOrderTable/>', () => {
-    let onChange: jest.MockedFunction<any>
+    let handleLineItemUpdate: jest.MockedFunction<any>
+    let handleLineItemDelete: jest.MockedFunction<any>
 
     const payload = (fromJS(shopifyDraftOrderPayloadFixture()) as Map<any, any>)
         .setIn(['line_items', 0, 'product_id'], 1)
@@ -25,107 +31,104 @@ describe('<DraftOrderTable/>', () => {
     ])
 
     beforeEach(() => {
-        onChange = jest.fn()
+        jest.useFakeTimers()
+        handleLineItemUpdate = jest.fn()
+        handleLineItemDelete = jest.fn()
     })
 
-    describe('render()', () => {
-        it('should render', () => {
-            const component = shallow(
-                <DraftOrderTable
-                    shopName="storegorgias3"
-                    isShownInEditOrder={false}
-                    actionName={ShopifyActionType.DuplicateOrder}
-                    currencyCode="USD"
-                    lineItems={payload.get('line_items', [])}
-                    products={products}
-                    onChange={onChange}
-                />
-            )
-
-            expect(component).toMatchSnapshot()
-        })
-
-        it('should render without products', () => {
-            const component = shallow(
-                <DraftOrderTable
-                    shopName="storegorgias3"
-                    isShownInEditOrder={false}
-                    actionName={ShopifyActionType.DuplicateOrder}
-                    currencyCode="USD"
-                    lineItems={payload.get('line_items', [])}
-                    products={fromJS({})}
-                    onChange={onChange}
-                />
-            )
-
-            expect(component).toMatchSnapshot()
-        })
-
-        it('should render without line items', () => {
-            const component = shallow(
-                <DraftOrderTable
-                    shopName="storegorgias3"
-                    isShownInEditOrder={false}
-                    actionName={ShopifyActionType.DuplicateOrder}
-                    currencyCode="USD"
-                    lineItems={fromJS([])}
-                    products={products}
-                    onChange={onChange}
-                />
-            )
-
-            expect(component).toMatchSnapshot()
-        })
+    afterEach(() => {
+        jest.useRealTimers()
     })
 
-    describe('_onLineItemChange()', () => {
-        it('should call onChange() with updated payload', () => {
-            const component = shallow<DraftOrderTable>(
-                <DraftOrderTable
-                    shopName="storegorgias3"
-                    isShownInEditOrder={false}
-                    actionName={ShopifyActionType.DuplicateOrder}
-                    currencyCode="USD"
-                    lineItems={payload.get('line_items', [])}
-                    products={products}
-                    onChange={onChange}
-                />
-            )
+    it('should render', () => {
+        const {container} = render(
+            <DraftOrderTable
+                shopName="storegorgias3"
+                isShownInEditOrder={false}
+                actionName={ShopifyActionType.DuplicateOrder}
+                currencyCode="USD"
+                lineItems={payload.get('line_items', [])}
+                products={products}
+                onLineItemUpdate={handleLineItemUpdate}
+                onLineItemDelete={handleLineItemDelete}
+            />
+        )
 
-            const updatedLineItem = (payload.getIn(['line_items', 0]) as Map<
-                any,
-                any
-            >).set('quantity', 5)
-            component.instance()._onLineItemChange(0, updatedLineItem)
-
-            const newLineItems = (payload.get('line_items') as List<any>).set(
-                0,
-                updatedLineItem
-            )
-            expect(onChange).toHaveBeenCalledWith(newLineItems)
-        })
+        expect(container.firstChild).toMatchSnapshot()
     })
 
-    describe('_onLineItemDelete()', () => {
-        it('should call onChange() with updated payload', () => {
-            const component = shallow<DraftOrderTable>(
-                <DraftOrderTable
-                    shopName="storegorgias3"
-                    isShownInEditOrder={false}
-                    actionName={ShopifyActionType.DuplicateOrder}
-                    currencyCode="USD"
-                    lineItems={payload.get('line_items', [])}
-                    products={products}
-                    onChange={onChange}
-                />
-            )
+    it('should render without products', () => {
+        const {container} = render(
+            <DraftOrderTable
+                shopName="storegorgias3"
+                isShownInEditOrder={false}
+                actionName={ShopifyActionType.DuplicateOrder}
+                currencyCode="USD"
+                lineItems={payload.get('line_items', [])}
+                products={fromJS({})}
+                onLineItemUpdate={handleLineItemUpdate}
+                onLineItemDelete={handleLineItemDelete}
+            />
+        )
 
-            component.instance()._onLineItemDelete(0)
+        expect(container.firstChild).toMatchSnapshot()
+    })
 
-            const newLineItems = (payload.get('line_items') as List<
-                any
-            >).remove(0)
-            expect(onChange).toHaveBeenCalledWith(newLineItems)
+    it('should render without line items', () => {
+        const {container} = render(
+            <DraftOrderTable
+                shopName="storegorgias3"
+                isShownInEditOrder={false}
+                actionName={ShopifyActionType.DuplicateOrder}
+                currencyCode="USD"
+                lineItems={fromJS([])}
+                products={products}
+                onLineItemUpdate={handleLineItemUpdate}
+                onLineItemDelete={handleLineItemDelete}
+            />
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should call onLineItemUpdate() with updated data when updating', () => {
+        render(
+            <DraftOrderTable
+                shopName="storegorgias3"
+                isShownInEditOrder={false}
+                actionName={ShopifyActionType.DuplicateOrder}
+                currencyCode="USD"
+                lineItems={payload.get('line_items', [])}
+                products={products}
+                onLineItemUpdate={handleLineItemUpdate}
+                onLineItemDelete={handleLineItemDelete}
+            />
+        )
+        fireEvent.change(screen.getAllByRole('spinbutton')[0], {
+            target: {value: 2},
         })
+
+        jest.advanceTimersByTime(1000)
+        let newLineItem = payload.getIn(['line_items', 0]) as Map<any, any>
+        newLineItem = newLineItem.set('quantity', 2)
+        expect(handleLineItemUpdate).toHaveBeenCalledWith(newLineItem, 0)
+    })
+
+    it('should call onLineItemDelete() with correct data when deleting', () => {
+        render(
+            <DraftOrderTable
+                shopName="storegorgias3"
+                isShownInEditOrder={false}
+                actionName={ShopifyActionType.DuplicateOrder}
+                currencyCode="USD"
+                lineItems={payload.get('line_items', [])}
+                products={products}
+                onLineItemUpdate={handleLineItemUpdate}
+                onLineItemDelete={handleLineItemDelete}
+            />
+        )
+        fireEvent.click(screen.getAllByText('close')[0])
+
+        expect(handleLineItemDelete).toHaveBeenCalledWith(0)
     })
 })

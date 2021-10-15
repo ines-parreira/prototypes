@@ -241,6 +241,7 @@ const _refreshOrderAmount = (
         ]),
         has_changes: changeList.size !== 0,
     })
+
     dispatch(setCalculatedEditOrder(updatedOrder))
 }
 
@@ -277,6 +278,7 @@ export const onPayloadChange = (
         )
 
         const editedOrder = await api.editOrder(integrationId, updateToPerform)
+
         let updatedPayload = payload
 
         if (
@@ -305,7 +307,6 @@ export const onPayloadChange = (
             )
         )
         dispatch(setPayload(updatedPayload))
-        dispatch(setLoading(false))
     } catch (error) {
         if (axios.isCancel(error)) {
             return
@@ -479,6 +480,33 @@ export const addRow = (
     ])
 }
 
+export const onLineItemChange = (
+    integrationId: number,
+    {
+        newLineItem,
+        index,
+        remove = false,
+    }: {newLineItem?: Map<any, any>; index: number; remove?: boolean}
+) => (dispatch: StoreDispatch, getState: () => RootState) => {
+    const state = getState()
+    const oldPayload = getEditOrderState(state).get('payload') as Map<any, any>
+    const oldLineItems = oldPayload.get('line_items') as List<Map<any, any>>
+    let newLineItems: List<Map<any, any>> = List([])
+    if (remove) {
+        newLineItems = oldLineItems.remove(index)
+    } else {
+        if (newLineItem) {
+            newLineItems = oldLineItems.set(index, newLineItem)
+        }
+    }
+    return dispatch(
+        onPayloadChange(
+            integrationId,
+            oldPayload.set('line_items', newLineItems)
+        )
+    )
+}
+
 /**
  * Add a new customItem row
  */
@@ -487,7 +515,7 @@ export const addCustomRow = (
     lineItem: Map<any, any>
 ) => (dispatch: StoreDispatch, getState: () => RootState) => {
     const state = getState()
-    const payload = getEditOrderState(state).get('payload') as Map<any, any>
+    const payload = getEditOrderState(state).get('payload')
     const newPayload = addCustomLineItem(payload, lineItem)
 
     return dispatch(onPayloadChange(integrationId, newPayload))

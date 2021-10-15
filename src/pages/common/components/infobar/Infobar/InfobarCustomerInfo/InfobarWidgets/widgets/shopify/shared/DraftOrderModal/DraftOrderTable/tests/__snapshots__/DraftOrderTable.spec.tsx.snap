@@ -1,170 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<DraftOrderTable/> render() should render 1`] = `
-<Table
-  className="table"
-  hover={true}
-  responsiveTag="div"
-  tag="table"
->
-  <thead>
-    <tr>
-      <th>
-        Product
-      </th>
-      <th>
-        In stock
-      </th>
-      <th>
-        Item price
-      </th>
-      <th>
-        Qty
-      </th>
-      <th>
-        Item total
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <DraftOrderLineItemRow
-      actionName="shopifyDuplicateOrder"
-      currencyCode="USD"
-      id="4f93eb74e9ec2d79401da8b7a8fce088108a01fb"
-      isShownInEditOrder={false}
-      key="4f93eb74e9ec2d79401da8b7a8fce088108a01fb"
-      lineItem={
-        Immutable.Map {
-          "applied_discount": null,
-          "taxable": true,
-          "price": "1.00",
-          "quantity": 1,
-          "product_id": 1,
-          "product_exists": true,
-          "properties": Immutable.List [],
-          "variant_id": 31128766316567,
-          "title": "Acidulous candy",
-          "sku": "0987654321-1",
-          "variant_title": "Red / A",
-          "requires_shipping": true,
-        }
-      }
-      onChange={[Function]}
-      onDelete={[Function]}
-      product={
-        Immutable.Map {
-          "id": 1,
-          "title": "Product 1",
-          "options": Immutable.List [],
-          "created_at": "2020-01-01 00:00:00.000000",
-          "image": Immutable.Map {
-            "id": 1,
-            "alt": "Alt",
-            "src": "src",
-          },
-          "images": Immutable.List [
-            Immutable.Map {
-              "id": 1,
-              "alt": "Alt",
-              "src": "src",
-            },
-          ],
-          "variants": Immutable.List [
-            Immutable.Map {
-              "taxable": true,
-              "admin_graphql_api_id": "gid://shopify/ProductVariant/1",
-              "inventory_management": null,
-              "price": "9.99",
-              "inventory_quantity": 0,
-              "title": "Variant 1",
-              "id": 1,
-              "option1": null,
-              "sku": "11111",
-              "option2": null,
-              "option3": null,
-              "image_id": 1,
-              "requires_shipping": true,
-            },
-          ],
-        }
-      }
-      removable={true}
-      shopName="storegorgias3"
-    />
-    <DraftOrderLineItemRow
-      actionName="shopifyDuplicateOrder"
-      currencyCode="USD"
-      id="b391dcbebcc4eac57e66e9b2fec677c45018e15d"
-      isShownInEditOrder={false}
-      key="b391dcbebcc4eac57e66e9b2fec677c45018e15d"
-      lineItem={
-        Immutable.Map {
-          "applied_discount": null,
-          "taxable": true,
-          "price": "1.00",
-          "quantity": 4,
-          "product_id": 2,
-          "product_exists": true,
-          "properties": Immutable.List [],
-          "variant_id": 31128766349335,
-          "title": "Acidulous candy",
-          "sku": "0987654321-2",
-          "variant_title": "Red / B",
-          "requires_shipping": true,
-        }
-      }
-      onChange={[Function]}
-      onDelete={[Function]}
-      product={
-        Immutable.Map {
-          "id": 2,
-          "title": "Product 2",
-          "options": Immutable.List [],
-          "created_at": "2020-01-01 00:00:00.000000",
-          "image": Immutable.Map {
-            "id": 1,
-            "alt": "Alt",
-            "src": "src",
-          },
-          "images": Immutable.List [
-            Immutable.Map {
-              "id": 1,
-              "alt": "Alt",
-              "src": "src",
-            },
-          ],
-          "variants": Immutable.List [
-            Immutable.Map {
-              "taxable": true,
-              "admin_graphql_api_id": "gid://shopify/ProductVariant/1",
-              "inventory_management": null,
-              "price": "9.99",
-              "inventory_quantity": 0,
-              "title": "Variant 1",
-              "id": 1,
-              "option1": null,
-              "sku": "11111",
-              "option2": null,
-              "option3": null,
-              "image_id": 1,
-              "requires_shipping": true,
-            },
-          ],
-        }
-      }
-      removable={true}
-      shopName="storegorgias3"
-    />
-  </tbody>
-</Table>
-`;
-
-exports[`<DraftOrderTable/> render() should render without line items 1`] = `
-<Table
-  className="table"
-  hover={false}
-  responsiveTag="div"
-  tag="table"
+exports[`<DraftOrderTable/> should render 1`] = `
+<table
+  class="table table table-hover"
 >
   <thead>
     <tr>
@@ -188,24 +26,241 @@ exports[`<DraftOrderTable/> render() should render without line items 1`] = `
   <tbody>
     <tr>
       <td
-        className="text-center text-muted"
-        colSpan={4}
+        class="container"
       >
-        <small>
-          No items
-        </small>
+        <div
+          class="imgContainer"
+        >
+          <img
+            alt="Alt"
+            class="img"
+          />
+        </div>
+        <div
+          class="legend"
+        >
+          <div>
+            <a
+              class="title"
+              href="https://storegorgias3.myshopify.com/admin/products/1/variants/31128766316567"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Acidulous candy
+            </a>
+          </div>
+          <div
+            class="subtitle"
+          >
+            Red / A
+          </div>
+          <div
+            class="subtitle"
+          >
+            SKU: 
+            0987654321-1
+          </div>
+        </div>
+      </td>
+      <td
+        class="numberCol"
+      >
+        <span
+          class="text-muted"
+        >
+          N/A
+        </span>
+      </td>
+      <td
+        class="numberCol"
+      >
+        <div
+          class="d-flex"
+        >
+          <div
+            class="d-inline-block text-center"
+          >
+            <div>
+              <button
+                class="p-0 button focusable btn btn-link"
+                id="applied-discount-1_31128766316567"
+                tabindex="0"
+                type="button"
+              >
+                <strong>
+                  <span>
+                    $1.00
+                  </span>
+                </strong>
+              </button>
+            </div>
+          </div>
+          <span
+            class="times"
+          >
+            x
+          </span>
+        </div>
+      </td>
+      <td
+        class="quantityCol"
+      >
+        <input
+          class="form-control"
+          min="1"
+          type="number"
+          value="1"
+        />
+      </td>
+      <td
+        class="numberCol"
+      >
+        <div
+          class="d-flex"
+        >
+          <strong
+            class="mt-auto mb-auto mr-auto"
+          >
+            <span>
+              $1.00
+            </span>
+          </strong>
+          <button
+            class="delete focusable btn btn-link"
+            tabindex="0"
+            type="button"
+          >
+            <i
+              class="material-icons"
+            >
+              close
+            </i>
+          </button>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td
+        class="container"
+      >
+        <div
+          class="imgContainer"
+        >
+          <img
+            alt="Alt"
+            class="img"
+          />
+        </div>
+        <div
+          class="legend"
+        >
+          <div>
+            <a
+              class="title"
+              href="https://storegorgias3.myshopify.com/admin/products/2/variants/31128766349335"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Acidulous candy
+            </a>
+          </div>
+          <div
+            class="subtitle"
+          >
+            Red / B
+          </div>
+          <div
+            class="subtitle"
+          >
+            SKU: 
+            0987654321-2
+          </div>
+        </div>
+      </td>
+      <td
+        class="numberCol"
+      >
+        <span
+          class="text-muted"
+        >
+          N/A
+        </span>
+      </td>
+      <td
+        class="numberCol"
+      >
+        <div
+          class="d-flex"
+        >
+          <div
+            class="d-inline-block text-center"
+          >
+            <div>
+              <button
+                class="p-0 button focusable btn btn-link"
+                id="applied-discount-2_31128766349335"
+                tabindex="0"
+                type="button"
+              >
+                <strong>
+                  <span>
+                    $1.00
+                  </span>
+                </strong>
+              </button>
+            </div>
+          </div>
+          <span
+            class="times"
+          >
+            x
+          </span>
+        </div>
+      </td>
+      <td
+        class="quantityCol"
+      >
+        <input
+          class="form-control"
+          min="1"
+          type="number"
+          value="4"
+        />
+      </td>
+      <td
+        class="numberCol"
+      >
+        <div
+          class="d-flex"
+        >
+          <strong
+            class="mt-auto mb-auto mr-auto"
+          >
+            <span>
+              $4.00
+            </span>
+          </strong>
+          <button
+            class="delete focusable btn btn-link"
+            tabindex="0"
+            type="button"
+          >
+            <i
+              class="material-icons"
+            >
+              close
+            </i>
+          </button>
+        </div>
       </td>
     </tr>
   </tbody>
-</Table>
+</table>
 `;
 
-exports[`<DraftOrderTable/> render() should render without products 1`] = `
-<Table
-  className="table"
-  hover={true}
-  responsiveTag="div"
-  tag="table"
+exports[`<DraftOrderTable/> should render without line items 1`] = `
+<table
+  class="table table"
 >
   <thead>
     <tr>
@@ -227,60 +282,276 @@ exports[`<DraftOrderTable/> render() should render without products 1`] = `
     </tr>
   </thead>
   <tbody>
-    <DraftOrderLineItemRow
-      actionName="shopifyDuplicateOrder"
-      currencyCode="USD"
-      id="4f93eb74e9ec2d79401da8b7a8fce088108a01fb"
-      isShownInEditOrder={false}
-      key="4f93eb74e9ec2d79401da8b7a8fce088108a01fb"
-      lineItem={
-        Immutable.Map {
-          "applied_discount": null,
-          "taxable": true,
-          "price": "1.00",
-          "quantity": 1,
-          "product_id": 1,
-          "product_exists": true,
-          "properties": Immutable.List [],
-          "variant_id": 31128766316567,
-          "title": "Acidulous candy",
-          "sku": "0987654321-1",
-          "variant_title": "Red / A",
-          "requires_shipping": true,
-        }
-      }
-      onChange={[Function]}
-      onDelete={[Function]}
-      removable={true}
-      shopName="storegorgias3"
-    />
-    <DraftOrderLineItemRow
-      actionName="shopifyDuplicateOrder"
-      currencyCode="USD"
-      id="b391dcbebcc4eac57e66e9b2fec677c45018e15d"
-      isShownInEditOrder={false}
-      key="b391dcbebcc4eac57e66e9b2fec677c45018e15d"
-      lineItem={
-        Immutable.Map {
-          "applied_discount": null,
-          "taxable": true,
-          "price": "1.00",
-          "quantity": 4,
-          "product_id": 2,
-          "product_exists": true,
-          "properties": Immutable.List [],
-          "variant_id": 31128766349335,
-          "title": "Acidulous candy",
-          "sku": "0987654321-2",
-          "variant_title": "Red / B",
-          "requires_shipping": true,
-        }
-      }
-      onChange={[Function]}
-      onDelete={[Function]}
-      removable={true}
-      shopName="storegorgias3"
-    />
+    <tr>
+      <td
+        class="text-center text-muted"
+        colspan="4"
+      >
+        <small>
+          No items
+        </small>
+      </td>
+    </tr>
   </tbody>
-</Table>
+</table>
+`;
+
+exports[`<DraftOrderTable/> should render without products 1`] = `
+<table
+  class="table table table-hover"
+>
+  <thead>
+    <tr>
+      <th>
+        Product
+      </th>
+      <th>
+        In stock
+      </th>
+      <th>
+        Item price
+      </th>
+      <th>
+        Qty
+      </th>
+      <th>
+        Item total
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td
+        class="container"
+      >
+        <div
+          class="imgContainer"
+        >
+          <img
+            alt=""
+            class="img"
+            src="test-file-stub"
+          />
+        </div>
+        <div
+          class="legend"
+        >
+          <div>
+            <a
+              class="title"
+              href="https://storegorgias3.myshopify.com/admin/products/1/variants/31128766316567"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Acidulous candy
+            </a>
+          </div>
+          <div
+            class="subtitle"
+          >
+            Red / A
+          </div>
+          <div
+            class="subtitle"
+          >
+            SKU: 
+            0987654321-1
+          </div>
+        </div>
+      </td>
+      <td
+        class="numberCol"
+      >
+        <span
+          class="text-muted"
+        >
+          N/A
+        </span>
+      </td>
+      <td
+        class="numberCol"
+      >
+        <div
+          class="d-flex"
+        >
+          <div
+            class="d-inline-block text-center"
+          >
+            <div>
+              <button
+                class="p-0 button focusable btn btn-link"
+                id="applied-discount-1_31128766316567"
+                tabindex="0"
+                type="button"
+              >
+                <strong>
+                  <span>
+                    $1.00
+                  </span>
+                </strong>
+              </button>
+            </div>
+          </div>
+          <span
+            class="times"
+          >
+            x
+          </span>
+        </div>
+      </td>
+      <td
+        class="quantityCol"
+      >
+        <input
+          class="form-control"
+          min="1"
+          type="number"
+          value="1"
+        />
+      </td>
+      <td
+        class="numberCol"
+      >
+        <div
+          class="d-flex"
+        >
+          <strong
+            class="mt-auto mb-auto mr-auto"
+          >
+            <span>
+              $1.00
+            </span>
+          </strong>
+          <button
+            class="delete focusable btn btn-link"
+            tabindex="0"
+            type="button"
+          >
+            <i
+              class="material-icons"
+            >
+              close
+            </i>
+          </button>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td
+        class="container"
+      >
+        <div
+          class="imgContainer"
+        >
+          <img
+            alt=""
+            class="img"
+            src="test-file-stub"
+          />
+        </div>
+        <div
+          class="legend"
+        >
+          <div>
+            <a
+              class="title"
+              href="https://storegorgias3.myshopify.com/admin/products/2/variants/31128766349335"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Acidulous candy
+            </a>
+          </div>
+          <div
+            class="subtitle"
+          >
+            Red / B
+          </div>
+          <div
+            class="subtitle"
+          >
+            SKU: 
+            0987654321-2
+          </div>
+        </div>
+      </td>
+      <td
+        class="numberCol"
+      >
+        <span
+          class="text-muted"
+        >
+          N/A
+        </span>
+      </td>
+      <td
+        class="numberCol"
+      >
+        <div
+          class="d-flex"
+        >
+          <div
+            class="d-inline-block text-center"
+          >
+            <div>
+              <button
+                class="p-0 button focusable btn btn-link"
+                id="applied-discount-2_31128766349335"
+                tabindex="0"
+                type="button"
+              >
+                <strong>
+                  <span>
+                    $1.00
+                  </span>
+                </strong>
+              </button>
+            </div>
+          </div>
+          <span
+            class="times"
+          >
+            x
+          </span>
+        </div>
+      </td>
+      <td
+        class="quantityCol"
+      >
+        <input
+          class="form-control"
+          min="1"
+          type="number"
+          value="4"
+        />
+      </td>
+      <td
+        class="numberCol"
+      >
+        <div
+          class="d-flex"
+        >
+          <strong
+            class="mt-auto mb-auto mr-auto"
+          >
+            <span>
+              $4.00
+            </span>
+          </strong>
+          <button
+            class="delete focusable btn btn-link"
+            tabindex="0"
+            type="button"
+          >
+            <i
+              class="material-icons"
+            >
+              close
+            </i>
+          </button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
 `;

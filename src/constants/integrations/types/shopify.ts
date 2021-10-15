@@ -222,7 +222,7 @@ export type ShippingLine = {
     price: string
 }
 
-export type EditOrderPayload = {
+export type CalculatedEditOrder = {
     calculatedOrderId: string
     total_line_items_price: string
     current_total_tax: string

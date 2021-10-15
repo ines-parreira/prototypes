@@ -1,4 +1,4 @@
-import React, {ChangeEvent, PureComponent} from 'react'
+import React, {ChangeEvent, memo, useCallback, useState} from 'react'
 import {Button, Input, Label, FormGroup} from 'reactstrap'
 import {Map, List} from 'immutable'
 import {getSizedImageUrl} from '@shopify/theme-images'
@@ -19,8 +19,11 @@ import {ShopifyActionType} from '../../../types'
 
 import css from './DraftOrderLineItemRow.less'
 
+type onChange = (record: Map<any, any>, index: number) => void
+
 type Props = {
     id: string
+    index: number
     actionName: ShopifyActionType
     isShownInEditOrder: boolean
     lineItem: Map<any, any>
@@ -28,77 +31,118 @@ type Props = {
     shopName: string
     currencyCode: string
     removable: boolean
-    onChange: (record: Map<any, any>) => void
-    onDelete: () => void
+    onChange: onChange
+    onDelete: (index: number) => void
 }
 
-type State = {
-    quantity: number
-    restock: boolean
-}
+const debouncedRestock = _debounce(
+    (
+        restock: boolean,
+        lineItem: Map<any, any>,
+        index: number,
+        onChange: onChange
+    ) => {
+        const newLineItem = lineItem.set('restock_item', restock)
+        onChange(newLineItem, index)
+    },
+    100
+)
 
-export class DraftOrderLineItemRow extends PureComponent<Props, State> {
-    state = {
-        quantity: this.props.lineItem.get('quantity'),
-        restock: this.props.lineItem.get('restock_item', false),
-    }
+const debouncedUpdateLineItem = _debounce(
+    (
+        newQuantity,
+        lineItem: Map<any, any>,
+        index: number,
+        onChange: onChange,
+        actionName
+    ) => {
+        const newLineItem = lineItem.set('quantity', newQuantity)
+        onChange(newLineItem, index)
+        let action
+        switch (actionName) {
+            case ShopifyActionType.CreateOrder:
+                action =
+                    segmentTracker.EVENTS
+                        .SHOPIFY_CREATE_ORDER_LINE_ITEM_QUANTITY_CHANGED
+                break
+            case ShopifyActionType.DuplicateOrder:
+                action =
+                    segmentTracker.EVENTS
+                        .SHOPIFY_DUPLICATE_ORDER_LINE_ITEM_QUANTITY_CHANGED
+                break
+            case ShopifyActionType.EditOrder:
+                action =
+                    segmentTracker.EVENTS
+                        .SHOPIFY_EDIT_ORDER_LINE_ITEM_QUANTITY_CHANGED
+                break
+        }
+        segmentTracker.logEvent(action)
+    },
+    800
+)
 
-    _onAppliedDiscountChange = (appliedDiscount: Map<any, any> | null) => {
-        const {onChange, lineItem} = this.props
-        const newLineItem = lineItem.set('applied_discount', appliedDiscount)
-        onChange(newLineItem)
-    }
+function DraftOrderLineItemRow({
+    id,
+    index,
+    actionName,
+    isShownInEditOrder,
+    lineItem,
+    product = null,
+    shopName,
+    currencyCode,
+    removable,
+    onChange,
+    onDelete,
+}: Props) {
+    const [quantity, setQuantity] = useState<number>(lineItem.get('quantity'))
+    const [restock, setRestock] = useState<boolean>(
+        lineItem.get('restock_item', false)
+    )
 
-    _onQuantityChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const {lineItem, isShownInEditOrder} = this.props
-        const min = !lineItem.get('newly_added') && isShownInEditOrder ? 0 : 1
-        const value = parseInt(event.target.value)
-        let quantity = isNaN(value) ? 1 : value
-        if (quantity < min) quantity = min
-        this.setState({quantity: quantity})
-        this._updateLineItem()
-        this._trackQuantityChanged()
-    }
+    const handleRestockItemsChange = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            setRestock(event.target.checked)
+            debouncedRestock(event.target.checked, lineItem, index, onChange)
+        },
+        []
+    )
+    const handleQuantityChange = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            const min =
+                !lineItem.get('newly_added') && isShownInEditOrder ? 0 : 1
+            const value = Number.parseInt(event.target.value, 10)
+            let newQuantity = Number.isNaN(value) ? 1 : value
+            if (newQuantity < min) newQuantity = min
+            setQuantity(newQuantity)
+            debouncedUpdateLineItem(
+                newQuantity,
+                lineItem,
+                index,
+                onChange,
+                actionName
+            )
+        },
+        [lineItem, isShownInEditOrder, index, onChange, actionName]
+    )
 
-    _onLineItemSetQty0 = () => {
-        const {onChange, lineItem} = this.props
+    const handleSetQuantityTo0 = useCallback(() => {
+        setQuantity(0)
         const newLineItem = lineItem.set('quantity', 0)
-        this.setState({quantity: 0})
-        onChange(newLineItem)
-    }
+        onChange(newLineItem, index)
+    }, [lineItem, index, onChange])
 
-    _onRestockItemsChange = (event: ChangeEvent<HTMLInputElement>) => {
-        this.setState({restock: event.target.checked})
-        this._delayRestock(event.target.checked)
-    }
+    const handleAppliedDiscountChange = useCallback(
+        (appliedDiscount: Map<any, any> | null) => {
+            const newLineItem = lineItem.set(
+                'applied_discount',
+                appliedDiscount
+            )
+            onChange(newLineItem, index)
+        },
+        [lineItem, index, onChange]
+    )
 
-    _delayRestock = _debounce((isChecked) => {
-        const {onChange, lineItem} = this.props
-        const newLineItem = lineItem.set('restock_item', isChecked)
-        onChange(newLineItem)
-    }, 100)
-
-    _updateLineItem = _debounce(() => {
-        const {onChange, lineItem} = this.props
-        const {quantity} = this.state
-        const newLineItem = lineItem.set('quantity', quantity)
-        onChange(newLineItem)
-    }, 800)
-
-    _trackQuantityChanged = _debounce(() => {
-        const {actionName} = this.props
-
-        segmentTracker.logEvent(
-            actionName === ShopifyActionType.CreateOrder
-                ? segmentTracker.EVENTS
-                      .SHOPIFY_CREATE_ORDER_LINE_ITEM_QUANTITY_CHANGED
-                : segmentTracker.EVENTS
-                      .SHOPIFY_DUPLICATE_ORDER_LINE_ITEM_QUANTITY_CHANGED
-        )
-    }, 1000)
-
-    _renderImage() {
-        const {product} = this.props
+    const renderImage = useCallback(() => {
         const src =
             !!product && product.get('image')
                 ? getSizedImageUrl(product.getIn(['image', 'src']), 'small')
@@ -106,10 +150,9 @@ export class DraftOrderLineItemRow extends PureComponent<Props, State> {
         const alt = !!product ? product.getIn(['image', 'alt']) : ''
 
         return <img className={css.img} src={src} alt={alt} />
-    }
+    }, [product])
 
-    _renderTitle() {
-        const {shopName, lineItem} = this.props
+    const renderTitle = useCallback(() => {
         const productId = lineItem.get('product_id') as string | null
         if (!productId) {
             return (
@@ -134,10 +177,9 @@ export class DraftOrderLineItemRow extends PureComponent<Props, State> {
                 </a>
             </div>
         )
-    }
+    }, [lineItem, shopName])
 
-    _renderProduct() {
-        const {lineItem} = this.props
+    const renderProduct = useCallback(() => {
         const variantTitle = lineItem.get('variant_title')
         const shouldRenderVariantTitle =
             !!variantTitle && variantTitle !== 'Default Title'
@@ -145,9 +187,9 @@ export class DraftOrderLineItemRow extends PureComponent<Props, State> {
 
         return (
             <td className={css.container}>
-                <div className={css.imgContainer}>{this._renderImage()}</div>
+                <div className={css.imgContainer}>{renderImage()}</div>
                 <div className={css.legend}>
-                    {this._renderTitle()}
+                    {renderTitle()}
                     {shouldRenderVariantTitle && (
                         <div className={css.subtitle}>{variantTitle}</div>
                     )}
@@ -155,10 +197,9 @@ export class DraftOrderLineItemRow extends PureComponent<Props, State> {
                 </div>
             </td>
         )
-    }
+    }, [lineItem, renderImage, renderTitle])
 
-    _renderStock() {
-        const {lineItem, product} = this.props
+    const renderStock = useCallback(() => {
         const variantId = lineItem.get('variant_id')
         const variant = !!product
             ? ((product.get('variants', []) as List<any>).find(
@@ -177,17 +218,9 @@ export class DraftOrderLineItemRow extends PureComponent<Props, State> {
                 )}
             </td>
         )
-    }
+    }, [product, lineItem])
 
-    _renderPrice() {
-        const {
-            lineItem,
-            currencyCode,
-            id,
-            actionName,
-            isShownInEditOrder,
-        } = this.props
-
+    const renderPrice = useCallback(() => {
         const price = lineItem.get('price')
         const discountedPrice = getDraftOrderLineItemDiscountedPrice(
             lineItem,
@@ -222,7 +255,7 @@ export class DraftOrderLineItemRow extends PureComponent<Props, State> {
                                 currencyCode={currencyCode}
                                 value={lineItem.get('applied_discount')}
                                 max={parseFloat(price)}
-                                onChange={this._onAppliedDiscountChange}
+                                onChange={handleAppliedDiscountChange}
                             >
                                 <MoneyAmount
                                     renderIfZero
@@ -247,7 +280,7 @@ export class DraftOrderLineItemRow extends PureComponent<Props, State> {
                                 currencyCode={currencyCode}
                                 value={lineItem.get('applied_discount')}
                                 max={parseFloat(price)}
-                                onChange={this._onAppliedDiscountChange}
+                                onChange={handleAppliedDiscountChange}
                             >
                                 <MoneyAmount
                                     renderIfZero
@@ -261,11 +294,16 @@ export class DraftOrderLineItemRow extends PureComponent<Props, State> {
                 </div>
             </td>
         )
-    }
+    }, [
+        handleAppliedDiscountChange,
+        actionName,
+        currencyCode,
+        id,
+        isShownInEditOrder,
+        lineItem,
+    ])
 
-    _renderQuantity() {
-        const {quantity} = this.state
-        const {lineItem, isShownInEditOrder} = this.props
+    const renderQuantity = useCallback(() => {
         const min = !lineItem.get('newly_added') && isShownInEditOrder ? 0 : 1
         return (
             <td className={css.quantityCol}>
@@ -273,20 +311,13 @@ export class DraftOrderLineItemRow extends PureComponent<Props, State> {
                     type="number"
                     min={min}
                     value={quantity}
-                    onChange={this._onQuantityChange}
+                    onChange={handleQuantityChange}
                 />
             </td>
         )
-    }
+    }, [handleQuantityChange, isShownInEditOrder, lineItem, quantity])
 
-    _renderTotal() {
-        const {
-            removable,
-            lineItem,
-            currencyCode,
-            onDelete,
-            isShownInEditOrder,
-        } = this.props
+    const renderTotal = useCallback(() => {
         return (
             <td className={css.numberCol}>
                 <div className="d-flex">
@@ -308,7 +339,7 @@ export class DraftOrderLineItemRow extends PureComponent<Props, State> {
                             color="link"
                             tabIndex={0}
                             className={classnames(css.delete, css.focusable)}
-                            onClick={onDelete}
+                            onClick={() => onDelete(index)}
                         >
                             <i className="material-icons">close</i>
                         </Button>
@@ -316,17 +347,15 @@ export class DraftOrderLineItemRow extends PureComponent<Props, State> {
                 </div>
             </td>
         )
-    }
-    _renderRestock() {
-        const {lineItem, onDelete} = this.props
-        const {restock} = this.state
+    }, [currencyCode, index, isShownInEditOrder, lineItem, onDelete, removable])
+
+    const renderRestock = useCallback(() => {
         const shouldRestock =
             lineItem.get('initial_quantity') > lineItem.get('quantity')
 
-        let clickFunc = onDelete
-
-        if (!shouldRestock && !lineItem.get('newly_added'))
-            clickFunc = this._onLineItemSetQty0
+        const clickFunc = lineItem.get('newly_added')
+            ? () => onDelete(index)
+            : handleSetQuantityTo0
 
         return (
             <td className={classnames(css.numberCol, css.centered)}>
@@ -352,7 +381,7 @@ export class DraftOrderLineItemRow extends PureComponent<Props, State> {
                                     css.focusable
                                 )}
                                 checked={restock}
-                                onChange={this._onRestockItemsChange}
+                                onChange={handleRestockItemsChange}
                             />
                             <span className="ml-1">
                                 Restock{' '}
@@ -365,19 +394,24 @@ export class DraftOrderLineItemRow extends PureComponent<Props, State> {
                 )}
             </td>
         )
-    }
-
-    render() {
-        const {isShownInEditOrder} = this.props
-        return (
-            <tr>
-                {this._renderProduct()}
-                {this._renderStock()}
-                {this._renderPrice()}
-                {this._renderQuantity()}
-                {this._renderTotal()}
-                {isShownInEditOrder && this._renderRestock()}
-            </tr>
-        )
-    }
+    }, [
+        handleSetQuantityTo0,
+        handleRestockItemsChange,
+        index,
+        lineItem,
+        onDelete,
+        restock,
+    ])
+    return (
+        <tr>
+            {renderProduct()}
+            {renderStock()}
+            {renderPrice()}
+            {renderQuantity()}
+            {renderTotal()}
+            {isShownInEditOrder && renderRestock()}
+        </tr>
+    )
 }
+
+export default memo(DraftOrderLineItemRow)

@@ -198,6 +198,7 @@ const minProps = {
     header: 'Duplicate order',
     onOpen: jest.fn(),
     onChange: jest.fn(),
+    onLineItemChange: jest.fn(),
     //eslint-disable-next-line @typescript-eslint/require-await
     onBulkChange: jest.fn(async (a, cb?: () => void) => {
         if (cb) {

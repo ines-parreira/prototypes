@@ -8,7 +8,7 @@ import {
     Address,
     LineItem,
     DraftOrder,
-    EditOrderPayload,
+    CalculatedEditOrder,
     AppliedDiscount,
     DraftOrderInvoice,
     TaxLine,
@@ -1049,7 +1049,29 @@ export const shopifyShippingLineFixture = ({price = '12.00'} = {}) => ({
     title: 'Standard Shipping',
 })
 
-export const shopifyEditOrderPayloadFixture = (): EditOrderPayload => ({
+export const shopifyCalculateEditOrderFixture = () => ({
+    calculatedOrder: {
+        id: 'gid://shopify/CalculatedOrder/14574846161',
+        stagedChanges: {
+            edges: [
+                {
+                    cursor:
+                        'eyJsYXN0X2lkIjoyMDU0MTAxNDIyNSwibGFzdF92YWx1ZSI6IjIwNTQxMDE0MjI1In0=',
+                },
+            ],
+        },
+        subtotalPriceSet: {presentmentMoney: {amount: '140.0'}},
+        taxLines: [
+            {priceSet: {presentmentMoney: {amount: '1.93'}}},
+            {priceSet: {presentmentMoney: {amount: '10.15'}}},
+        ],
+        totalOutstandingSet: {presentmentMoney: {amount: '152.08'}},
+        totalPriceSet: {presentmentMoney: {amount: '152.08'}},
+    },
+    calculatedLineItem: {id: 'okok'},
+})
+
+export const shopifyCalculatedEditOrderFixture = (): CalculatedEditOrder => ({
     calculatedOrderId: '123456789',
     total_line_items_price: '80',
     current_total_tax: '20',

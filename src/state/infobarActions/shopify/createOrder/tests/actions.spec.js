@@ -242,6 +242,44 @@ describe('infobarActions.shopify.createOrder actions', () => {
         })
     })
 
+    describe('onLineItemChange()', () => {
+        let payload
+
+        beforeEach(() => {
+            payload = fromJS(shopifyDraftOrderPayloadFixture())
+
+            store = mockStore({
+                infobarActions: {
+                    [SHOPIFY_INTEGRATION_TYPE]: {
+                        createOrder: initialState.set('payload', payload),
+                    },
+                },
+            })
+            mockCalculateSuccess()
+        })
+
+        it('edits the payload with the new product line', async () => {
+            await store.dispatch(
+                actions.onLineItemChange(integrationId, {
+                    newLineItem: order
+                        .getIn(['line_items', 0])
+                        .set('quantity', 6),
+                    index: 0,
+                })
+            )
+            expect(store.getActions()).toMatchSnapshot()
+        })
+        it('edits the payload with the removed product line', async () => {
+            await store.dispatch(
+                actions.onLineItemChange(integrationId, {
+                    remove: true,
+                    index: 0,
+                })
+            )
+            expect(store.getActions()).toMatchSnapshot()
+        })
+    })
+
     describe('addCustomRow()', () => {
         it('should add custom row to the payload', async () => {
             const payload = fromJS(shopifyDraftOrderPayloadFixture())

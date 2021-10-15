@@ -19,7 +19,7 @@ import {
     onCreateDraftOrder,
     onEmailInvoice,
     onInit,
-    onPayloadChange,
+    onLineItemChange,
     onReset,
 } from '../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions'
 import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
@@ -72,7 +72,7 @@ export function DraftOrderModalContainer(
         onClose,
         onChange,
         onCancel,
-        onPayloadChange,
+        onLineItemChange,
         onEmailInvoice,
         onCreateDraftOrder,
         onBulkChange,
@@ -105,7 +105,7 @@ export function DraftOrderModalContainer(
         () =>
             (currentIntegration?.getIn(['meta', 'currency']) as string) ||
             defaultCurrency,
-        [currentIntegration]
+        [currentIntegration, defaultCurrency]
     )
     const previousIsOpen = usePrevious(isOpen)
     const lineItems = useMemo(
@@ -114,14 +114,20 @@ export function DraftOrderModalContainer(
     )
     const isEmpty = useMemo(() => lineItems.size === 0, [lineItems])
 
+    const handleReset = useCallback(() => {
+        onReset()
+        shortcutManager.unpause()
+    }, [onReset])
+
     const handleCancel = useCallback(
         (via: string) => () => {
             onCancel(data.actionName!, integrationId, via)
             onClose()
             handleReset()
         },
-        [data, integrationId, onClose]
+        [data.actionName, handleReset, integrationId, onCancel, onClose]
     )
+
     const handleInvoiceSubmit = useCallback(
         (invoicePayload: Map<any, any>) => {
             if (customerId) {
@@ -137,7 +143,14 @@ export function DraftOrderModalContainer(
                 )
             }
         },
-        [integrationId, customerId, data, onClose]
+        [
+            customerId,
+            onEmailInvoice,
+            integrationId,
+            data.order,
+            onClose,
+            handleReset,
+        ]
     )
     const handlePaymentSubmit = useCallback(
         (isPending = false) => async () => {
@@ -156,12 +169,29 @@ export function DraftOrderModalContainer(
                 }
             )
         },
-        [integrationId, data, onBulkChange, onSubmit]
+        [
+            onCreateDraftOrder,
+            integrationId,
+            data.order,
+            onBulkChange,
+            onSubmit,
+            handleReset,
+        ]
     )
-    const handleReset = useCallback(() => {
-        onReset()
-        shortcutManager.unpause()
-    }, [])
+
+    const handleLineItemUpdate = useCallback(
+        (newLineItem: Map<any, any>, index: number) => {
+            void onLineItemChange(integrationId, {newLineItem, index})
+        },
+        [integrationId, onLineItemChange]
+    )
+
+    const handleLineItemDelete = useCallback(
+        (index: number) => {
+            void onLineItemChange(integrationId, {remove: true, index})
+        },
+        [integrationId, onLineItemChange]
+    )
 
     useUpdateEffect(() => {
         if (!previousIsOpen && isOpen) {
@@ -193,6 +223,8 @@ export function DraftOrderModalContainer(
         onClose,
         currencyCode,
         onChange,
+        onInit,
+        handleReset,
     ])
 
     if (!hasScope) {
@@ -266,12 +298,8 @@ export function DraftOrderModalContainer(
                         currencyCode={currencyCode}
                         lineItems={lineItems}
                         products={products}
-                        onChange={(lineItems) => {
-                            void onPayloadChange(
-                                integrationId,
-                                payload.set('line_items', lineItems)
-                            )
-                        }}
+                        onLineItemUpdate={handleLineItemUpdate}
+                        onLineItemDelete={handleLineItemDelete}
                     />
                     <DraftOrderFooter
                         editable
@@ -387,7 +415,7 @@ const connector = connect(
         onCancel,
         onEmailInvoice,
         onInit,
-        onPayloadChange,
+        onLineItemChange,
         onCreateDraftOrder,
         onReset,
     }

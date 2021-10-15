@@ -3,23 +3,22 @@
 exports[`<DraftOrderLineItemRow/> render() should render with applied discount 1`] = `
 <tr>
   <td
-    className="container"
+    class="container"
   >
     <div
-      className="imgContainer"
+      class="imgContainer"
     >
       <img
         alt="Alt"
-        className="img"
-        src={null}
+        class="img"
       />
     </div>
     <div
-      className="legend"
+      class="legend"
     >
       <div>
         <a
-          className="title"
+          class="title"
           href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
           rel="noopener noreferrer"
           target="_blank"
@@ -28,12 +27,12 @@ exports[`<DraftOrderLineItemRow/> render() should render with applied discount 1
         </a>
       </div>
       <div
-        className="subtitle"
+        class="subtitle"
       >
         Red / A
       </div>
       <div
-        className="subtitle"
+        class="subtitle"
       >
         SKU: 
         0987654321-1
@@ -41,109 +40,88 @@ exports[`<DraftOrderLineItemRow/> render() should render with applied discount 1
     </div>
   </td>
   <td
-    className="numberCol"
+    class="numberCol"
   >
     <span
-      className="text-muted"
+      class="text-muted"
     >
       N/A
     </span>
   </td>
   <td
-    className="numberCol"
+    class="numberCol"
   >
     <div
-      className="d-flex"
+      class="d-flex"
     >
       <div
-        className="d-inline-block text-center"
+        class="d-inline-block text-center"
       >
         <small
-          className="d-block text-muted"
+          class="d-block text-muted"
         >
           <del>
-            <MoneyAmount
-              amount="1.00"
-              currencyCode="USD"
-              negative={false}
-              renderIfZero={true}
-            />
+            <span>
+              $1.00
+            </span>
           </del>
         </small>
-        <DiscountPopover
-          actionName="shopifyDuplicateOrder"
-          currencyCode="USD"
-          editable={true}
-          id="applied-discount-line-item"
-          label="item"
-          max={1}
-          onChange={[Function]}
-          placement="bottom"
-          value={
-            Immutable.Map {
-              "description": null,
-              "value": "50.0",
-              "title": "",
-              "amount": "0.50",
-              "value_type": "percentage",
-            }
-          }
-        >
-          <MoneyAmount
-            amount="0.50"
-            currencyCode="USD"
-            negative={false}
-            renderIfZero={true}
-          />
-        </DiscountPopover>
+        <div>
+          <button
+            class="p-0 button focusable btn btn-link"
+            id="applied-discount-line-item"
+            tabindex="0"
+            type="button"
+          >
+            <strong>
+              <span>
+                $0.50
+              </span>
+            </strong>
+          </button>
+        </div>
       </div>
       <span
-        className="times"
+        class="times"
       >
         x
       </span>
     </div>
   </td>
   <td
-    className="quantityCol"
+    class="quantityCol"
   >
-    <Input
-      min={1}
-      onChange={[Function]}
+    <input
+      class="form-control"
+      min="1"
       type="number"
-      value={1}
+      value="1"
     />
   </td>
   <td
-    className="numberCol"
+    class="numberCol"
   >
     <div
-      className="d-flex"
+      class="d-flex"
     >
       <strong
-        className="mt-auto mb-auto mr-auto"
+        class="mt-auto mb-auto mr-auto"
       >
-        <MoneyAmount
-          amount="0.50"
-          currencyCode="USD"
-          negative={false}
-          renderIfZero={true}
-        />
+        <span>
+          $0.50
+        </span>
       </strong>
-      <Button
-        className="delete focusable"
-        color="link"
-        onClick={[MockFunction]}
-        tabIndex={0}
-        tag="button"
+      <button
+        class="delete focusable btn btn-link"
+        tabindex="0"
         type="button"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           close
         </i>
-      </Button>
+      </button>
     </div>
   </td>
 </tr>
@@ -152,23 +130,22 @@ exports[`<DraftOrderLineItemRow/> render() should render with applied discount 1
 exports[`<DraftOrderLineItemRow/> render() should render with product image 1`] = `
 <tr>
   <td
-    className="container"
+    class="container"
   >
     <div
-      className="imgContainer"
+      class="imgContainer"
     >
       <img
         alt="Alt"
-        className="img"
-        src={null}
+        class="img"
       />
     </div>
     <div
-      className="legend"
+      class="legend"
     >
       <div>
         <a
-          className="title"
+          class="title"
           href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
           rel="noopener noreferrer"
           target="_blank"
@@ -177,12 +154,12 @@ exports[`<DraftOrderLineItemRow/> render() should render with product image 1`] 
         </a>
       </div>
       <div
-        className="subtitle"
+        class="subtitle"
       >
         Red / A
       </div>
       <div
-        className="subtitle"
+        class="subtitle"
       >
         SKU: 
         0987654321-1
@@ -190,89 +167,79 @@ exports[`<DraftOrderLineItemRow/> render() should render with product image 1`] 
     </div>
   </td>
   <td
-    className="numberCol"
+    class="numberCol"
   >
     <span
-      className="text-muted"
+      class="text-muted"
     >
       N/A
     </span>
   </td>
   <td
-    className="numberCol"
+    class="numberCol"
   >
     <div
-      className="d-flex"
+      class="d-flex"
     >
       <div
-        className="d-inline-block text-center"
+        class="d-inline-block text-center"
       >
-        <DiscountPopover
-          actionName="shopifyDuplicateOrder"
-          currencyCode="USD"
-          editable={true}
-          id="applied-discount-line-item"
-          label="item"
-          max={1}
-          onChange={[Function]}
-          placement="bottom"
-          value={null}
-        >
-          <MoneyAmount
-            amount="1.00"
-            currencyCode="USD"
-            negative={false}
-            renderIfZero={true}
-          />
-        </DiscountPopover>
+        <div>
+          <button
+            class="p-0 button focusable btn btn-link"
+            id="applied-discount-line-item"
+            tabindex="0"
+            type="button"
+          >
+            <strong>
+              <span>
+                $1.00
+              </span>
+            </strong>
+          </button>
+        </div>
       </div>
       <span
-        className="times"
+        class="times"
       >
         x
       </span>
     </div>
   </td>
   <td
-    className="quantityCol"
+    class="quantityCol"
   >
-    <Input
-      min={1}
-      onChange={[Function]}
+    <input
+      class="form-control"
+      min="1"
       type="number"
-      value={1}
+      value="1"
     />
   </td>
   <td
-    className="numberCol"
+    class="numberCol"
   >
     <div
-      className="d-flex"
+      class="d-flex"
     >
       <strong
-        className="mt-auto mb-auto mr-auto"
+        class="mt-auto mb-auto mr-auto"
       >
-        <MoneyAmount
-          amount="1.00"
-          currencyCode="USD"
-          negative={false}
-          renderIfZero={true}
-        />
+        <span>
+          $1.00
+        </span>
       </strong>
-      <Button
-        className="delete focusable"
-        color="link"
-        onClick={[MockFunction]}
-        tabIndex={0}
-        tag="button"
+      <button
+        class="delete focusable btn btn-link"
+        tabindex="0"
         type="button"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           close
         </i>
-      </Button>
+      </button>
     </div>
   </td>
 </tr>
@@ -281,23 +248,22 @@ exports[`<DraftOrderLineItemRow/> render() should render with product image 1`] 
 exports[`<DraftOrderLineItemRow/> render() should render with product stock quantity 1`] = `
 <tr>
   <td
-    className="container"
+    class="container"
   >
     <div
-      className="imgContainer"
+      class="imgContainer"
     >
       <img
         alt="Alt"
-        className="img"
-        src={null}
+        class="img"
       />
     </div>
     <div
-      className="legend"
+      class="legend"
     >
       <div>
         <a
-          className="title"
+          class="title"
           href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
           rel="noopener noreferrer"
           target="_blank"
@@ -306,12 +272,12 @@ exports[`<DraftOrderLineItemRow/> render() should render with product stock quan
         </a>
       </div>
       <div
-        className="subtitle"
+        class="subtitle"
       >
         Red / A
       </div>
       <div
-        className="subtitle"
+        class="subtitle"
       >
         SKU: 
         0987654321-1
@@ -319,72 +285,67 @@ exports[`<DraftOrderLineItemRow/> render() should render with product stock quan
     </div>
   </td>
   <td
-    className="numberCol"
+    class="numberCol"
   >
-    <ProductStockQuantity
-      value={99}
-    />
+    <span
+      class="success"
+    >
+      99
+    </span>
   </td>
   <td
-    className="numberCol"
+    class="numberCol"
   >
     <div
-      className="d-flex"
+      class="d-flex"
     >
       <div
-        className="d-inline-block text-center"
+        class="d-inline-block text-center"
       >
-        <DiscountPopover
-          actionName="shopifyDuplicateOrder"
-          currencyCode="USD"
-          editable={true}
-          id="applied-discount-line-item"
-          label="item"
-          max={1}
-          onChange={[Function]}
-          placement="bottom"
-          value={null}
-        >
-          <MoneyAmount
-            amount="1.00"
-            currencyCode="USD"
-            negative={false}
-            renderIfZero={true}
-          />
-        </DiscountPopover>
+        <div>
+          <button
+            class="p-0 button focusable btn btn-link"
+            id="applied-discount-line-item"
+            tabindex="0"
+            type="button"
+          >
+            <strong>
+              <span>
+                $1.00
+              </span>
+            </strong>
+          </button>
+        </div>
       </div>
       <span
-        className="times"
+        class="times"
       >
         x
       </span>
     </div>
   </td>
   <td
-    className="quantityCol"
+    class="quantityCol"
   >
-    <Input
-      min={1}
-      onChange={[Function]}
+    <input
+      class="form-control"
+      min="1"
       type="number"
-      value={0}
+      value="0"
     />
   </td>
   <td
-    className="numberCol"
+    class="numberCol"
   >
     <div
-      className="d-flex"
+      class="d-flex"
     >
       <strong
-        className="mt-auto mb-auto mr-auto"
+        class="mt-auto mb-auto mr-auto"
       >
-        <MoneyAmount
-          amount="0.00"
-          currencyCode="USD"
-          negative={false}
-          renderIfZero={true}
-        />
+        <span>
+          $0.00
+        </span>
       </strong>
     </div>
   </td>
@@ -394,23 +355,23 @@ exports[`<DraftOrderLineItemRow/> render() should render with product stock quan
 exports[`<DraftOrderLineItemRow/> render() should render without product image 1`] = `
 <tr>
   <td
-    className="container"
+    class="container"
   >
     <div
-      className="imgContainer"
+      class="imgContainer"
     >
       <img
         alt=""
-        className="img"
+        class="img"
         src="test-file-stub"
       />
     </div>
     <div
-      className="legend"
+      class="legend"
     >
       <div>
         <a
-          className="title"
+          class="title"
           href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
           rel="noopener noreferrer"
           target="_blank"
@@ -419,12 +380,12 @@ exports[`<DraftOrderLineItemRow/> render() should render without product image 1
         </a>
       </div>
       <div
-        className="subtitle"
+        class="subtitle"
       >
         Red / A
       </div>
       <div
-        className="subtitle"
+        class="subtitle"
       >
         SKU: 
         0987654321-1
@@ -432,89 +393,79 @@ exports[`<DraftOrderLineItemRow/> render() should render without product image 1
     </div>
   </td>
   <td
-    className="numberCol"
+    class="numberCol"
   >
     <span
-      className="text-muted"
+      class="text-muted"
     >
       N/A
     </span>
   </td>
   <td
-    className="numberCol"
+    class="numberCol"
   >
     <div
-      className="d-flex"
+      class="d-flex"
     >
       <div
-        className="d-inline-block text-center"
+        class="d-inline-block text-center"
       >
-        <DiscountPopover
-          actionName="shopifyDuplicateOrder"
-          currencyCode="USD"
-          editable={true}
-          id="applied-discount-line-item"
-          label="item"
-          max={1}
-          onChange={[Function]}
-          placement="bottom"
-          value={null}
-        >
-          <MoneyAmount
-            amount="1.00"
-            currencyCode="USD"
-            negative={false}
-            renderIfZero={true}
-          />
-        </DiscountPopover>
+        <div>
+          <button
+            class="p-0 button focusable btn btn-link"
+            id="applied-discount-line-item"
+            tabindex="0"
+            type="button"
+          >
+            <strong>
+              <span>
+                $1.00
+              </span>
+            </strong>
+          </button>
+        </div>
       </div>
       <span
-        className="times"
+        class="times"
       >
         x
       </span>
     </div>
   </td>
   <td
-    className="quantityCol"
+    class="quantityCol"
   >
-    <Input
-      min={1}
-      onChange={[Function]}
+    <input
+      class="form-control"
+      min="1"
       type="number"
-      value={1}
+      value="1"
     />
   </td>
   <td
-    className="numberCol"
+    class="numberCol"
   >
     <div
-      className="d-flex"
+      class="d-flex"
     >
       <strong
-        className="mt-auto mb-auto mr-auto"
+        class="mt-auto mb-auto mr-auto"
       >
-        <MoneyAmount
-          amount="1.00"
-          currencyCode="USD"
-          negative={false}
-          renderIfZero={true}
-        />
+        <span>
+          $1.00
+        </span>
       </strong>
-      <Button
-        className="delete focusable"
-        color="link"
-        onClick={[MockFunction]}
-        tabIndex={0}
-        tag="button"
+      <button
+        class="delete focusable btn btn-link"
+        tabindex="0"
         type="button"
       >
         <i
-          className="material-icons"
+          class="material-icons"
         >
           close
         </i>
-      </Button>
+      </button>
     </div>
   </td>
 </tr>
@@ -523,23 +474,22 @@ exports[`<DraftOrderLineItemRow/> render() should render without product image 1
 exports[`<DraftOrderLineItemRow/> render() should render without product stock quantity because the inventory is not tracked 1`] = `
 <tr>
   <td
-    className="container"
+    class="container"
   >
     <div
-      className="imgContainer"
+      class="imgContainer"
     >
       <img
         alt="Alt"
-        className="img"
-        src={null}
+        class="img"
       />
     </div>
     <div
-      className="legend"
+      class="legend"
     >
       <div>
         <a
-          className="title"
+          class="title"
           href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
           rel="noopener noreferrer"
           target="_blank"
@@ -548,12 +498,12 @@ exports[`<DraftOrderLineItemRow/> render() should render without product stock q
         </a>
       </div>
       <div
-        className="subtitle"
+        class="subtitle"
       >
         Red / A
       </div>
       <div
-        className="subtitle"
+        class="subtitle"
       >
         SKU: 
         0987654321-1
@@ -561,74 +511,67 @@ exports[`<DraftOrderLineItemRow/> render() should render without product stock q
     </div>
   </td>
   <td
-    className="numberCol"
+    class="numberCol"
   >
     <span
-      className="text-muted"
+      class="text-muted"
     >
       N/A
     </span>
   </td>
   <td
-    className="numberCol"
+    class="numberCol"
   >
     <div
-      className="d-flex"
+      class="d-flex"
     >
       <div
-        className="d-inline-block text-center"
+        class="d-inline-block text-center"
       >
-        <DiscountPopover
-          actionName="shopifyDuplicateOrder"
-          currencyCode="USD"
-          editable={true}
-          id="applied-discount-line-item"
-          label="item"
-          max={1}
-          onChange={[Function]}
-          placement="bottom"
-          value={null}
-        >
-          <MoneyAmount
-            amount="1.00"
-            currencyCode="USD"
-            negative={false}
-            renderIfZero={true}
-          />
-        </DiscountPopover>
+        <div>
+          <button
+            class="p-0 button focusable btn btn-link"
+            id="applied-discount-line-item"
+            tabindex="0"
+            type="button"
+          >
+            <strong>
+              <span>
+                $1.00
+              </span>
+            </strong>
+          </button>
+        </div>
       </div>
       <span
-        className="times"
+        class="times"
       >
         x
       </span>
     </div>
   </td>
   <td
-    className="quantityCol"
+    class="quantityCol"
   >
-    <Input
-      min={1}
-      onChange={[Function]}
+    <input
+      class="form-control"
+      min="1"
       type="number"
-      value={0}
+      value="0"
     />
   </td>
   <td
-    className="numberCol"
+    class="numberCol"
   >
     <div
-      className="d-flex"
+      class="d-flex"
     >
       <strong
-        className="mt-auto mb-auto mr-auto"
+        class="mt-auto mb-auto mr-auto"
       >
-        <MoneyAmount
-          amount="0.00"
-          currencyCode="USD"
-          negative={false}
-          renderIfZero={true}
-        />
+        <span>
+          $0.00
+        </span>
       </strong>
     </div>
   </td>
@@ -638,23 +581,22 @@ exports[`<DraftOrderLineItemRow/> render() should render without product stock q
 exports[`<DraftOrderLineItemRow/> render() should render without quantity and without price 1`] = `
 <tr>
   <td
-    className="container"
+    class="container"
   >
     <div
-      className="imgContainer"
+      class="imgContainer"
     >
       <img
         alt="Alt"
-        className="img"
-        src={null}
+        class="img"
       />
     </div>
     <div
-      className="legend"
+      class="legend"
     >
       <div>
         <a
-          className="title"
+          class="title"
           href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
           rel="noopener noreferrer"
           target="_blank"
@@ -663,12 +605,12 @@ exports[`<DraftOrderLineItemRow/> render() should render without quantity and wi
         </a>
       </div>
       <div
-        className="subtitle"
+        class="subtitle"
       >
         Red / A
       </div>
       <div
-        className="subtitle"
+        class="subtitle"
       >
         SKU: 
         0987654321-1
@@ -676,74 +618,67 @@ exports[`<DraftOrderLineItemRow/> render() should render without quantity and wi
     </div>
   </td>
   <td
-    className="numberCol"
+    class="numberCol"
   >
     <span
-      className="text-muted"
+      class="text-muted"
     >
       N/A
     </span>
   </td>
   <td
-    className="numberCol"
+    class="numberCol"
   >
     <div
-      className="d-flex"
+      class="d-flex"
     >
       <div
-        className="d-inline-block text-center"
+        class="d-inline-block text-center"
       >
-        <DiscountPopover
-          actionName="shopifyDuplicateOrder"
-          currencyCode="USD"
-          editable={true}
-          id="applied-discount-line-item"
-          label="item"
-          max={1}
-          onChange={[Function]}
-          placement="bottom"
-          value={null}
-        >
-          <MoneyAmount
-            amount="1.00"
-            currencyCode="USD"
-            negative={false}
-            renderIfZero={true}
-          />
-        </DiscountPopover>
+        <div>
+          <button
+            class="p-0 button focusable btn btn-link"
+            id="applied-discount-line-item"
+            tabindex="0"
+            type="button"
+          >
+            <strong>
+              <span>
+                $1.00
+              </span>
+            </strong>
+          </button>
+        </div>
       </div>
       <span
-        className="times"
+        class="times"
       >
         x
       </span>
     </div>
   </td>
   <td
-    className="quantityCol"
+    class="quantityCol"
   >
-    <Input
-      min={1}
-      onChange={[Function]}
+    <input
+      class="form-control"
+      min="1"
       type="number"
-      value={0}
+      value="0"
     />
   </td>
   <td
-    className="numberCol"
+    class="numberCol"
   >
     <div
-      className="d-flex"
+      class="d-flex"
     >
       <strong
-        className="mt-auto mb-auto mr-auto"
+        class="mt-auto mb-auto mr-auto"
       >
-        <MoneyAmount
-          amount="0.00"
-          currencyCode="USD"
-          negative={false}
-          renderIfZero={true}
-        />
+        <span>
+          $0.00
+        </span>
       </strong>
     </div>
   </td>

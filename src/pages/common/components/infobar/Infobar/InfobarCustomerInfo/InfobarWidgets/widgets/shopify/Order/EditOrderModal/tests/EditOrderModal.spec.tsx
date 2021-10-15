@@ -159,6 +159,7 @@ const minProps = {
     header: 'Edit order',
     onOpen: jest.fn(),
     onChange: jest.fn(),
+    onLineItemChange: jest.fn(),
     //eslint-disable-next-line @typescript-eslint/require-await
     onBulkChange: jest.fn(async (params, callBackFunc?: () => void) => {
         if (callBackFunc) {
