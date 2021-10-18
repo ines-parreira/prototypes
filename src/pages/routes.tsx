@@ -20,7 +20,7 @@ import CustomerNavbarContainer from './customers/common/CustomerNavbarContainer'
 import CustomerDetailContainer from './customers/detail/CustomerDetailContainer'
 import CustomerSourceContainer from './customers/detail/CustomerSourceContainer'
 import CustomerInfobarContainer from './customers/detail/CustomerInfobarContainer'
-import StatsPage from './stats/StatsPage'
+import DEPRECATED_StatsPage from './stats/DEPRECATED_StatsPage'
 
 import YourProfileContainer from './settings/yourProfile/YourProfileContainer.js'
 import ChangePassword from './settings/yourProfile/ChangePassword'
@@ -355,7 +355,7 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:view`}
                 exact
                 render={appRender({
-                    content: StatsPage,
+                    content: DEPRECATED_StatsPage,
                     navbar: StatsNavbarContainer,
                 })}
             />

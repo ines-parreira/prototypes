@@ -45,7 +45,7 @@ describe('selectors', () => {
             it('should return no filter for the given view because there is no filter', () => {
                 state.stats = state.stats.set('filters', null)
                 expect(
-                    selectors.makeStatsFiltersSelector(
+                    selectors.DEPRECATED_makeStatsFiltersSelector(
                         'support-performance-overview'
                     )(state)
                 ).toEqual(null)
@@ -64,12 +64,14 @@ describe('selectors', () => {
                 })
                 state.stats = state.stats.set('filters', filters)
                 expect(
-                    selectors.makeStatsFiltersSelector(
+                    selectors.DEPRECATED_makeStatsFiltersSelector(
                         'support-performance-overview'
                     )(state)
                 ).toMatchSnapshot()
                 expect(
-                    selectors.makeStatsFiltersSelector('satisfaction')(state)
+                    selectors.DEPRECATED_makeStatsFiltersSelector(
+                        'satisfaction'
+                    )(state)
                 ).toMatchSnapshot()
             })
 
@@ -99,7 +101,9 @@ describe('selectors', () => {
                 )
 
                 expect(
-                    selectors.makeStatsFiltersSelector('revenue')(state)
+                    selectors.DEPRECATED_makeStatsFiltersSelector('revenue')(
+                        state
+                    )
                 ).toMatchSnapshot()
             })
 
@@ -129,14 +133,18 @@ describe('selectors', () => {
                 )
 
                 expect(
-                    selectors.makeStatsFiltersSelector('revenue')(state)
+                    selectors.DEPRECATED_makeStatsFiltersSelector('revenue')(
+                        state
+                    )
                 ).toMatchSnapshot()
             })
 
             it('should return a default period if missing from the filters', () => {
                 state.stats = state.stats.set('filters', fromJS({}))
                 expect(
-                    selectors.makeStatsFiltersSelector('live-agents')(state)
+                    selectors.DEPRECATED_makeStatsFiltersSelector(
+                        'live-agents'
+                    )(state)
                 ).toMatchSnapshot()
             })
         })

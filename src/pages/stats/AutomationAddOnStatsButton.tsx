@@ -19,7 +19,7 @@ import {getCurrentAccountState} from '../../state/currentAccount/selectors'
 import {SegmentEvent} from '../../store/middlewares/types/segmentTracker'
 
 import css from './common/components/charts/KeyMetricStat/KeyMetricStat.less'
-import statsCss from './StatsPage.less'
+import statsCss from './DEPRECATED_StatsPage.less'
 
 export const AutomationAddOnStatsButton = () => {
     const selfServiceConfigurations = useSelector(getSelfServiceConfigurations)

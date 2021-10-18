@@ -27,7 +27,7 @@ import {getIntegrations} from '../../state/integrations/selectors'
 import {notify} from '../../state/notifications/actions'
 import {NotificationStatus} from '../../state/notifications/types'
 import {mergeStatsFilters} from '../../state/stats/actions'
-import {makeStatsFiltersSelector} from '../../state/stats/selectors'
+import {DEPRECATED_makeStatsFiltersSelector} from '../../state/stats/selectors'
 import {getLabelledTeams} from '../../state/teams/selectors'
 import {RootState} from '../../state/types'
 
@@ -45,7 +45,7 @@ import zendesk from '../../../img/integrations/zendesk.png'
 
 import PeriodPicker from './common/PeriodPicker'
 import SelectFilter from './common/SelectFilter'
-import css from './StatsFilters.less'
+import css from './DEPRECATED_StatsFilters.less'
 
 const TagDropdownMenuWrapper = (
     props: ComponentProps<typeof TagDropdownMenu>
@@ -463,7 +463,9 @@ const makeMapStateToProps = () => {
             agents: getAgentsToJS(state),
             channels: getChannels(),
             config,
-            filters: makeStatsFiltersSelector(props.match.params.view)(state),
+            filters: DEPRECATED_makeStatsFiltersSelector(
+                props.match.params.view
+            )(state),
             integrations: getIntegrationsToJS(state),
             tags: state.entities.tags,
             teams: getTeamsToJS(state),

@@ -9,7 +9,7 @@ import {agents as agentsFixtures} from '../../../fixtures/agents'
 import {integrationsState} from '../../../fixtures/integrations'
 import {tags as tagsFixtures} from '../../../fixtures/tag'
 import {TagsState} from '../../../state/entities/tags/types'
-import {StatsFiltersContainer} from '../StatsFilters'
+import {StatsFiltersContainer} from '../DEPRECATED_StatsFilters'
 
 jest.mock('../common/PeriodPicker', () => () => 'PeriodPicker')
 

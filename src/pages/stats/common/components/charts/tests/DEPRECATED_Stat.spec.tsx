@@ -15,7 +15,7 @@ import {
 import client from '../../../../../../models/api/resources'
 import {Stat} from '../../../../../../models/stat/types'
 import * as fileUtils from '../../../../../../utils/file'
-import {StatContainer} from '../Stat'
+import {StatContainer} from '../DEPRECATED_Stat'
 import {user} from '../../../../../../fixtures/users'
 import {account} from '../../../../../../fixtures/account'
 import {logEvent} from '../../../../../../store/middlewares/segmentTracker.js'

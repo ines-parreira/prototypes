@@ -6,7 +6,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import {account} from '../../../fixtures/account'
-import StatsPage from '../StatsPage'
+import DEPRECATED_StatsPage from '../DEPRECATED_StatsPage'
 import {renderWithRouter, RenderWithRouterParams} from '../../../utils/testing'
 import {AccountFeature} from '../../../state/currentAccount/types'
 import Paywall from '../../common/components/Paywall/Paywall'
@@ -26,12 +26,12 @@ jest.mock('moment-timezone', () => () => {
 })
 
 const mockUseParams = useParams
-jest.mock('../Stats', () => () => {
+jest.mock('../DEPRECATED_Stats', () => () => {
     const {view} = mockUseParams<{view?: string}>()
     return <div>Stats Component: {view}</div>
 })
 
-jest.mock('../StatsFilters', () => () => 'StatsFilters')
+jest.mock('../DEPRECATED_StatsFilters', () => () => 'StatsFilters')
 
 jest.mock('../../common/components/Paywall/Paywall', () => {
     return ({feature}: ComponentProps<typeof Paywall>) => (
@@ -72,7 +72,7 @@ describe('StatsPage', () => {
 
             renderWithRouter(
                 <Provider store={store}>
-                    <StatsPage />
+                    <DEPRECATED_StatsPage />
                 </Provider>,
                 {
                     path: '/:view',
@@ -94,7 +94,7 @@ describe('StatsPage', () => {
 
             renderWithRouter(
                 <Provider store={store}>
-                    <StatsPage />
+                    <DEPRECATED_StatsPage />
                 </Provider>,
                 {
                     path: '/:view',
@@ -111,7 +111,7 @@ describe('StatsPage', () => {
 
         const {unmount} = renderWithRouter(
             <Provider store={store}>
-                <StatsPage />
+                <DEPRECATED_StatsPage />
             </Provider>,
             {
                 path: '/:view',
@@ -126,7 +126,7 @@ describe('StatsPage', () => {
     it('should render "Satisfaction" statistics', () => {
         const {container} = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
-                <StatsPage />
+                <DEPRECATED_StatsPage />
             </Provider>,
             {
                 path: '/:view',
@@ -148,7 +148,7 @@ describe('StatsPage', () => {
                     ),
                 })}
             >
-                <StatsPage />
+                <DEPRECATED_StatsPage />
             </Provider>,
             {
                 path: '/:view',
@@ -167,7 +167,7 @@ describe('StatsPage', () => {
                     stats: defaultState.stats!.set('filters', null),
                 })}
             >
-                <StatsPage />
+                <DEPRECATED_StatsPage />
             </Provider>,
             {
                 path: '/:view',
@@ -189,7 +189,7 @@ describe('StatsPage', () => {
                     ),
                 })}
             >
-                <StatsPage />
+                <DEPRECATED_StatsPage />
             </Provider>,
             {
                 path: '/:view',
@@ -272,7 +272,7 @@ describe('StatsPage', () => {
     ])('should render paywall when %s', (testName, state, routerParams) => {
         const {container} = renderWithRouter(
             <Provider store={mockStore(state)}>
-                <StatsPage />
+                <DEPRECATED_StatsPage />
             </Provider>,
             routerParams
         )
@@ -288,7 +288,7 @@ describe('StatsPage', () => {
                     integrations: fromJS(integrationsState),
                 })}
             >
-                <StatsPage />
+                <DEPRECATED_StatsPage />
             </Provider>,
             {
                 path: '/:view',
@@ -304,7 +304,7 @@ describe('StatsPage', () => {
 
         const {container} = renderWithRouter(
             <Provider store={store}>
-                <StatsPage />
+                <DEPRECATED_StatsPage />
             </Provider>,
             {
                 path: '/:view',

@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
 import axios, {CancelTokenSource} from 'axios'
 
-import {StatsContainer} from '../Stats'
+import {StatsContainer} from '../DEPRECATED_Stats'
 import {views as statsViewsConfig} from '../../../config/stats'
 import {firstResponseTimeStat} from '../../../fixtures/stats'
 import client from '../../../models/api/resources'

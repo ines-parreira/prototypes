@@ -22,7 +22,7 @@ import {RootState} from '../../../../../state/types'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {saveFileAsDownloaded} from '../../../../../utils/file'
 import StatsHelpIcon from '../StatsHelpIcon'
-import {makeStatsFiltersSelector} from '../../../../../state/stats/selectors'
+import {DEPRECATED_makeStatsFiltersSelector} from '../../../../../state/stats/selectors'
 import {TwoDimensionalChart} from '../../../../../models/stat/types'
 import {downloadStat} from '../../../../../models/stat/resources'
 import {getFetchingStatusByName} from '../../../../../state/ui/stats/selectors'
@@ -36,7 +36,7 @@ import KeyMetricStat from './KeyMetricStat/KeyMetricStat'
 import BarStat from './BarStat'
 import SankeyStat from './SankeyStat'
 
-import css from './Stat.less'
+import css from './DEPRECATED_Stat.less'
 
 type OwnProps = {
     defaultLoaderHeight?: string
@@ -264,7 +264,9 @@ const connector = connect(
                               )
                           }, fromJS({}) as Map<any, any>),
             stat: getStatDataByName(name)(state),
-            filters: makeStatsFiltersSelector(match.params.view)(state),
+            filters: DEPRECATED_makeStatsFiltersSelector(match.params.view)(
+                state
+            ),
             isFetching: getFetchingStatusByName(name)(state),
             currentUser: getCurrentUser(state),
             account: getCurrentAccountState(state),

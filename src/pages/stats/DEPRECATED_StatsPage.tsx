@@ -17,13 +17,13 @@ import useAppDispatch from '../../hooks/useAppDispatch'
 
 import NoMatch from '../common/components/NoMatch'
 
-import StatsFilters from './StatsFilters'
-import Stats from './Stats'
+import DEPRECATED_StatsFilters from './DEPRECATED_StatsFilters'
+import DEPRECATED_Stats from './DEPRECATED_Stats'
 import RevenueStatsRestrictedFeature from './RevenueStatsRestrictedFeature'
 
-import css from './StatsPage.less'
+import css from './DEPRECATED_StatsPage.less'
 
-export default function StatsPage() {
+export default function DEPRECATED_StatsPage() {
     const dispatch = useAppDispatch()
     const {view} = useParams<{view?: string}>()
     const isViewValid = views.some((v: Map<any, any>) => v.get('link') === view)
@@ -111,10 +111,10 @@ export default function StatsPage() {
     return (
         <div className={classNames('full-width', css.wrapper)}>
             <div className={css.filtersWrapper}>
-                <StatsFilters />
+                <DEPRECATED_StatsFilters />
             </div>
             <div className={css.statsWrapper}>
-                <Stats />
+                <DEPRECATED_Stats />
             </div>
         </div>
     )

@@ -18,7 +18,7 @@ export const getFilters = createSelector<
     StatsState
 >(getStatsState, (state) => state.get('filters') as Maybe<Map<any, any>>)
 
-export const makeStatsFiltersSelector = (viewName: string) =>
+export const DEPRECATED_makeStatsFiltersSelector = (viewName: string) =>
     createSelector<
         RootState,
         Maybe<Map<any, any>>,
@@ -99,12 +99,16 @@ export const makeStatsFiltersSelector = (viewName: string) =>
         }
     )
 
-export const getSupportPerformanceAgentsStatsFilters = makeStatsFiltersSelector(
+export const getSupportPerformanceAgentsStatsFilters = DEPRECATED_makeStatsFiltersSelector(
     'support-performance-agents'
 )
 
-export const getTagsStatsFilters = makeStatsFiltersSelector('tags')
+export const getTagsStatsFilters = DEPRECATED_makeStatsFiltersSelector('tags')
 
-export const getChannelsStatsFilters = makeStatsFiltersSelector('channels')
+export const getChannelsStatsFilters = DEPRECATED_makeStatsFiltersSelector(
+    'channels'
+)
 
-export const getLiveAgentsStatsFilters = makeStatsFiltersSelector('live-agents')
+export const getLiveAgentsStatsFilters = DEPRECATED_makeStatsFiltersSelector(
+    'live-agents'
+)

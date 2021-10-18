@@ -11,7 +11,7 @@ import {
     views as statViewsConfig,
 } from '../../config/stats'
 import {notify} from '../../state/notifications/actions'
-import {makeStatsFiltersSelector} from '../../state/stats/selectors'
+import {DEPRECATED_makeStatsFiltersSelector} from '../../state/stats/selectors'
 import {errorToChildren} from '../../utils'
 import {Notification, NotificationStatus} from '../../state/notifications/types'
 import {RootState} from '../../state/types'
@@ -19,7 +19,7 @@ import {statFetched} from '../../state/entities/stats/actions'
 import {fetchStat} from '../../models/stat/resources'
 import {fetchStatEnded, fetchStatStarted} from '../../state/ui/stats/actions'
 
-import Stat from './common/components/charts/Stat'
+import DEPRECATED_Stat from './common/components/charts/DEPRECATED_Stat'
 
 type Props = RouteComponentProps<{view: string}> &
     ConnectedProps<typeof connector>
@@ -165,7 +165,7 @@ export class StatsContainer extends React.Component<Props> {
 
                         return (
                             <div style={{padding}} key={idx}>
-                                <Stat name={statName} />
+                                <DEPRECATED_Stat name={statName} />
                             </div>
                         )
                     }
@@ -178,7 +178,9 @@ export class StatsContainer extends React.Component<Props> {
 const connector = connect(
     (state: RootState, props: RouteComponentProps<{view: string}>) => {
         return {
-            filters: makeStatsFiltersSelector(props.match.params.view)(state),
+            filters: DEPRECATED_makeStatsFiltersSelector(
+                props.match.params.view
+            )(state),
         }
     },
     {notify, statFetched, fetchStatEnded, fetchStatStarted}
