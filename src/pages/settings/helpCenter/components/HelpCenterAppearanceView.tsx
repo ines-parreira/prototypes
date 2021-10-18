@@ -62,9 +62,11 @@ export const HelpCenterAppearanceView: React.FC = () => {
             const uploadedFile = await file.uploadFile()
 
             return uploadedFile?.url
-        } else if (primaryLogo.isTouched) {
+        } else if (file.isTouched) {
             return null
         }
+
+        return undefined
     }
 
     const [updateResponse, saveCurrentAppearance] = useAsyncFn(async () => {

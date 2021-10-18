@@ -38,11 +38,14 @@ exports[`<HelpCenterStartView/> should render the component 1`] = `
         Help Center is a tool that makes it easier to answer your client’s questions in an organic way. Set up a dedicated site to sideload your support flow.
          
         <a
-          to="#"
+          href="https://docs.gorgias.com/other-integrations/gorgias-help-center"
+          rel="noopener noreferrer"
+          target="_blank"
         >
           Read more
         </a>
-         about how to set it up.
+         
+        about how to set it up.
       </p>
     </div>
     <div

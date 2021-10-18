@@ -1,7 +1,7 @@
 import React, {useEffect, useCallback, useMemo, FunctionComponent} from 'react'
 import {useAsyncFn} from 'react-use'
 import {useSelector} from 'react-redux'
-import {Link, useHistory} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 import {Container, Button} from 'reactstrap'
 import produce from 'immer'
 import _keyBy from 'lodash/keyBy'
@@ -144,7 +144,14 @@ export const HelpCenterStartView: FunctionComponent = () => {
                     Help Center is a tool that makes it easier to answer your
                     client’s questions in an organic way. Set up a dedicated
                     site to sideload your support flow.{' '}
-                    <Link to="#">Read more</Link> about how to set it up.
+                    <a
+                        href="https://docs.gorgias.com/other-integrations/gorgias-help-center"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Read more
+                    </a>{' '}
+                    about how to set it up.
                 </p>
             </Container>
 

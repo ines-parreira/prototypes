@@ -1,5 +1,5 @@
 import React from 'react'
-import {fireEvent} from '@testing-library/react'
+import {fireEvent, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
@@ -110,4 +110,58 @@ describe('<HelpCenterAppearanceView/>', () => {
         fireEvent.click(cancelBtn)
         expect(saveBtn.disabled).toBeTruthy()
     })
+
+    it.each([
+        'brand_logo_url',
+        'favicon_url',
+        'brand_logo_light_url',
+        'banner_image_url',
+    ])(
+        'should update the Help center with the "%s" field set to null after dismissing it',
+        async (imageField) => {
+            mockedUpdateHelpCenter.mockResolvedValueOnce({
+                data: {},
+            })
+
+            const stateWithImage: Partial<RootState> = {
+                entities: {
+                    helpCenters: {
+                        '1': {
+                            ...getHelpCentersResponseFixture[0],
+                            [imageField]: 'https://picsum.photos/200',
+                        },
+                    },
+                } as any,
+                helpCenter: defaultState.helpCenter,
+            }
+
+            const {getByText, getByRole} = renderWithRouter(
+                <Provider store={mockedStore(stateWithImage)}>
+                    <HelpCenterAppearanceView />
+                </Provider>,
+                route
+            )
+
+            // dismissing the only image set to a URL value
+            fireEvent.click(getByText('close'))
+
+            fireEvent.click(
+                getByRole('button', {
+                    name: 'Save Changes',
+                })
+            )
+
+            await waitFor(() => {
+                expect(mockedUpdateHelpCenter).toHaveBeenCalledTimes(1)
+                expect(mockedUpdateHelpCenter).toHaveBeenCalledWith(
+                    {
+                        help_center_id: 1,
+                    },
+                    expect.objectContaining({
+                        [imageField]: null,
+                    })
+                )
+            })
+        }
+    )
 })
