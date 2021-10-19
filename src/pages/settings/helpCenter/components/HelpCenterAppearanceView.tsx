@@ -91,7 +91,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
 
                 dispatch(helpCenterUpdated(data))
 
-                resetCurrentAppearance()
+                discardAllFiles()
 
                 void dispatch(
                     notify({
@@ -162,13 +162,17 @@ export const HelpCenterAppearanceView: React.FC = () => {
         updateResponse,
     ])
 
-    const resetCurrentAppearance = () => {
-        setSelectedTheme(helpCenterTheme)
-        setCurrentColor(helpCenterColor)
+    const discardAllFiles = () => {
         primaryLogo.discardFile()
         lightLogo.discardFile()
         favicon.discardFile()
         bannerImage.discardFile()
+    }
+
+    const resetCurrentAppearance = () => {
+        setSelectedTheme(helpCenterTheme)
+        setCurrentColor(helpCenterColor)
+        discardAllFiles()
     }
 
     const getImageUploadHighlightText = (
