@@ -605,6 +605,44 @@ describe('ticket utils', () => {
             ).toEqualImmutable(expected)
         })
 
+        it('should return `from` field from default email when integration is not found (chat ticket)', () => {
+            const expected = channels.find((channel: Map<any, any>) => {
+                return (channel.get('type') === 'email' &&
+                    channel.get('preferred', false)) as boolean
+            })
+            const ticket = fromJS({
+                messages: [
+                    {
+                        source: {
+                            from: {
+                                address: '8765645678',
+                                name: 'Chani',
+                            },
+                            type: 'chat',
+                            to: [
+                                {
+                                    address: '1232353100194770',
+                                    name: 'Paul Atréides',
+                                },
+                            ],
+                            cc: [],
+                        },
+                        id: 189,
+                        from_agent: true,
+                        integration_id: 0,
+                    },
+                ],
+            })
+            expect(
+                getNewMessageSender(
+                    ticket,
+                    TicketMessageSourceType.Email,
+                    channels,
+                    fromJS(integrationsState)
+                )
+            ).toEqualImmutable(expected)
+        })
+
         it('should return channel in `to` field from last message from customer (email found in `to`)', () => {
             // delete last message from agent
             const _emailTicket = emailTicket.deleteIn(['messages', 1])

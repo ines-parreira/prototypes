@@ -600,17 +600,21 @@ export function getNewMessageSender(
     if (
         lastMessage.getIn(['source', 'type']) === TicketMessageSourceType.Chat
     ) {
-        const integration = (integrations.get('integrations') as List<
-            any
-        >).find(
-            (integration: Map<any, any>) =>
-                integration.get('id') === lastMessage.get('integration_id')
-        ) as Map<any, any>
+        const integration =
+            ((integrations.get('integrations') as List<any>).find(
+                (integration: Map<any, any>) =>
+                    integration.get('id') === lastMessage.get('integration_id')
+            ) as Map<any, any>) || fromJS({})
+
         const linkedEmailIntegration = integration.getIn([
             'meta',
             'preferences',
             'linked_email_integration',
         ])
+
+        if (!linkedEmailIntegration) {
+            return preferredChannel
+        }
 
         return (
             (channels.find(
