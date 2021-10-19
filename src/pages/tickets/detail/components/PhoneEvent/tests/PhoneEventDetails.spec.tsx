@@ -68,18 +68,10 @@ describe('<PhoneEventDetails/>', () => {
             expect(container.firstChild).toMatchSnapshot()
         })
 
-        it('should render completed call event details with call recording', () => {
+        it('should render call recording event', () => {
             const event = fromJS({
-                type: PhoneIntegrationEvent.CompletedPhoneCall,
+                type: PhoneIntegrationEvent.CallRecording,
                 data: {
-                    call: {
-                        call_duration: '6',
-                    },
-                    customer: {
-                        id: 6,
-                        name: null,
-                        phone_number: '+16624424075',
-                    },
                     recording: {
                         file: {
                             url:

@@ -65,13 +65,6 @@ export default function PhoneEventDetails({
                 eventData.getIn(['call', 'call_duration'], 0)
             )
 
-            const callRecording = eventData.get('recording') as Map<string, any>
-            const callRecordingPath = callRecording
-                ? callRecording.getIn(['file', 'url'])
-                : null
-            const callRecordingMessage = callRecordingPath
-                ? callRecording.get('message')
-                : null
             content = (
                 <>
                     <div>
@@ -81,14 +74,29 @@ export default function PhoneEventDetails({
                     <div>
                         <b>Duration:</b> {callDuration}
                     </div>
+                </>
+            )
+            break
+        }
+        case PhoneIntegrationEvent.CallRecording: {
+            const callRecordingDuration = getDuration(
+                eventData.getIn(['recording', 'original', 'duration'], 0)
+            )
+
+            const callRecording = eventData.get('recording') as Map<string, any>
+            const callRecordingPath = callRecording
+                ? callRecording.getIn(['file', 'url'])
+                : null
+
+            content = (
+                <>
+                    <div>
+                        <b>Duration:</b> {callRecordingDuration}
+                    </div>
 
                     {callRecording && (
                         <div>
                             <b>Recording: </b>
-                            {callRecordingMessage && (
-                                <span>{callRecordingMessage}</span>
-                            )}
-
                             {callRecordingPath && (
                                 <>
                                     {/* eslint-disable-next-line jsx-a11y/media-has-caption */}

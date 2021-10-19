@@ -1,5 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<PhoneEventDetails/> render() should render call recording event 1`] = `
+<div
+  class="eventDetails"
+>
+  <div
+    class="content"
+  >
+    <div>
+      <b>
+        Duration:
+      </b>
+       
+      0min 5s
+    </div>
+    <div>
+      <b>
+        Recording: 
+      </b>
+      <audio
+        controls=""
+        src="https://uploads.gorgi.us/development/some-file.mp3"
+      />
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<PhoneEventDetails/> render() should render completed call event details 1`] = `
 <div
   class="eventDetails"
@@ -21,41 +48,6 @@ exports[`<PhoneEventDetails/> render() should render completed call event detail
       </b>
        
       0min 6s
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<PhoneEventDetails/> render() should render completed call event details with call recording 1`] = `
-<div
-  class="eventDetails"
->
-  <div
-    class="content"
-  >
-    <div>
-      <b>
-        Phone number
-        :
-      </b>
-       
-      +1 662 442 4075
-    </div>
-    <div>
-      <b>
-        Duration:
-      </b>
-       
-      0min 6s
-    </div>
-    <div>
-      <b>
-        Recording: 
-      </b>
-      <audio
-        controls=""
-        src="https://uploads.gorgi.us/development/some-file.mp3"
-      />
     </div>
   </div>
 </div>

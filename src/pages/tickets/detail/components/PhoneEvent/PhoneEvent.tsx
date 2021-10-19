@@ -20,6 +20,7 @@ const icons = new window.Map<string, string>([
     [PhoneIntegrationEvent.IncomingPhoneCall, callIncomingIcon],
     [PhoneIntegrationEvent.OutgoingPhoneCall, callOutgoingIcon],
     [PhoneIntegrationEvent.CompletedPhoneCall, callCompletedIcon],
+    [PhoneIntegrationEvent.CallRecording, callCompletedIcon],
     [PhoneIntegrationEvent.MissedPhoneCall, callMissedIcon],
     [PhoneIntegrationEvent.VoicemailRecording, voicemailLeftIcon],
     [PhoneIntegrationEvent.PhoneCallAnswered, callAnsweredIcon],
@@ -30,6 +31,7 @@ const names = new window.Map<string, string>([
     [PhoneIntegrationEvent.IncomingPhoneCall, 'Incoming call'],
     [PhoneIntegrationEvent.OutgoingPhoneCall, 'Outgoing call placed'],
     [PhoneIntegrationEvent.CompletedPhoneCall, 'Call ended'],
+    [PhoneIntegrationEvent.CallRecording, 'Call recording'],
     [PhoneIntegrationEvent.MissedPhoneCall, 'Missed call'],
     [PhoneIntegrationEvent.PhoneCallAnswered, 'Call answered'],
     [PhoneIntegrationEvent.VoicemailRecording, 'Voicemail left'],
@@ -39,6 +41,7 @@ const customerBasedEvents = [
     PhoneIntegrationEvent.IncomingPhoneCall,
     PhoneIntegrationEvent.MissedPhoneCall,
     PhoneIntegrationEvent.VoicemailRecording,
+    PhoneIntegrationEvent.CallRecording,
 ]
 const agentBasedEvents = [
     PhoneIntegrationEvent.PhoneCallAnswered,
@@ -51,6 +54,7 @@ const withDetailsEvents = [
     PhoneIntegrationEvent.OutgoingPhoneCall,
     PhoneIntegrationEvent.CompletedPhoneCall,
     PhoneIntegrationEvent.VoicemailRecording,
+    PhoneIntegrationEvent.CallRecording,
     PhoneIntegrationEvent.PhoneCallAnswered,
 ]
 
