@@ -9,7 +9,6 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
-import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
 import _omit from 'lodash/omit'
 import _uniqueId from 'lodash/uniqueId'
@@ -58,8 +57,7 @@ type Props = {
     title: ReactNode
     actionError?: string
     customerId?: number
-    updateModalStatus?: () => void
-    parentToggleAction?: () => void
+    setModalOpen?: (param: boolean) => void
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -97,7 +95,7 @@ export class ActionButtonContainer extends Component<Props, State> {
     componentDidMount() {
         const {options} = this.props
 
-        const actionId = this._generateActionId(this.props, this.context, {
+        const actionId = this.generateActionId(this.props, this.context, {
             actionName: this.props.options[0].value,
         } as any)
         this.setState({actionId})
@@ -128,7 +126,7 @@ export class ActionButtonContainer extends Component<Props, State> {
      * Everytime the action parameters are updated, update the actionId.
      */
     componentWillReceiveProps(nextProps: Props) {
-        const actionId = this._generateActionId(
+        const actionId = this.generateActionId(
             nextProps,
             this.context,
             this.state
@@ -144,7 +142,7 @@ export class ActionButtonContainer extends Component<Props, State> {
      * of the action once it has been sent to the server, and to identify in a unique fashion the target of the popover,
      * displayed to customize the action's parameters.
      */
-    _generateActionId = (
+    generateActionId = (
         props: Props,
         context: Record<string, unknown>,
         state: State
@@ -163,7 +161,7 @@ export class ActionButtonContainer extends Component<Props, State> {
         return actionButtonHashForData(data as any)
     }
 
-    _confirmAction = (event: FormEvent | null = null) => {
+    confirmAction = (event: FormEvent | null = null) => {
         if (event) {
             event.preventDefault()
         }
@@ -178,28 +176,19 @@ export class ActionButtonContainer extends Component<Props, State> {
             this.props.customerId?.toString(),
             payload as any
         )
-
-        if (this.props.updateModalStatus) this.props.updateModalStatus()
-        if (this.props.parentToggleAction) {
-            setTimeout(this.props.parentToggleAction)
-        }
-        this._toggleUi()
+        this.toggleUi()
     }
 
-    // If we don't debounce, when clicking on the button to close the Popover, toggle is called two times (once
-    // by the button's `onClick`, and once by the Popover's `onClickOutside`), resulting in the Popover not closing.
-    // There's probably an eventPropagation thing we can tweak to fix this, but so far we couldn't find out how.
-    _toggleUi = _debounce(
-        () => {
-            this.setState({
-                isUiOpen: !this.state.isUiOpen,
-            })
-        },
-        100,
-        {leading: true, trailing: false}
-    )
+    toggleUi = () => {
+        if (this.props.setModalOpen) {
+            this.props.setModalOpen(!this.state.isUiOpen)
+        }
+        this.setState({
+            isUiOpen: !this.state.isUiOpen,
+        })
+    }
 
-    _updateActionName = (actionName: string | number) => {
+    updateActionName = (actionName: string | number) => {
         const currentOption = this.props.options.find(
             (option) => option.value === actionName
         )
@@ -214,7 +203,7 @@ export class ActionButtonContainer extends Component<Props, State> {
         this.setState({actionName: actionName.toString(), parameters})
     }
 
-    _updateActionParameter = (
+    updateActionParameter = (
         name: string,
         value: string | number | boolean | Record<string, unknown>,
         callback: () => void = _noop
@@ -230,7 +219,7 @@ export class ActionButtonContainer extends Component<Props, State> {
         )
     }
 
-    _updateActionParameters = (
+    updateActionParameters = (
         values: Array<{
             name: string
             value: string | number | boolean | Record<string, unknown>
@@ -246,7 +235,7 @@ export class ActionButtonContainer extends Component<Props, State> {
         this.setState({parameters}, callback)
     }
 
-    _renderActionParameters = () => {
+    renderActionParameters = () => {
         const {options} = this.props
         const {actionName, parameters: actionParameters} = this.state
 
@@ -287,44 +276,30 @@ export class ActionButtonContainer extends Component<Props, State> {
                     }
                     {...inputAttributes}
                     onChange={(value: string | number | boolean) => {
-                        this._updateActionParameter(parameter.name, value)
+                        this.updateActionParameter(parameter.name, value)
                     }}
                 />
             )
         })
     }
 
-    _onOpenModalPreFunc = (actionName: string | number) => {
-        if (this.props.updateModalStatus) this.props.updateModalStatus()
-        this._updateActionName(actionName)
-    }
-
-    _onCloseModalPreFunc = () => {
-        if (this.props.updateModalStatus) this.props.updateModalStatus()
-        if (this.props.parentToggleAction) {
-            setTimeout(this.props.parentToggleAction)
-        }
-        this._toggleUi()
-    }
-
-    _renderModal(Modal: ComponentType<InfobarModalProps>) {
+    renderModal(Modal: ComponentType<InfobarModalProps>) {
         const {title, modalData} = this.props
         const {isUiOpen} = this.state
         return (
             <Modal
                 header={title}
                 isOpen={isUiOpen}
-                onOpen={this._onOpenModalPreFunc}
-                onChange={this._updateActionParameter}
-                onBulkChange={this._updateActionParameters}
-                onSubmit={this._confirmAction}
-                onClose={this._onCloseModalPreFunc}
+                onChange={this.updateActionParameter}
+                onBulkChange={this.updateActionParameters}
+                onSubmit={this.confirmAction}
+                onClose={this.toggleUi}
                 data={modalData}
             />
         )
     }
 
-    _renderPopover() {
+    renderPopover() {
         const {options, popover, title} = this.props
         const {actionName, isUiOpen} = this.state
         const multipleOptions = options.length > 1
@@ -334,7 +309,7 @@ export class ActionButtonContainer extends Component<Props, State> {
                 placement="bottom"
                 isOpen={isUiOpen}
                 target={this.id}
-                toggle={this._toggleUi}
+                toggle={this.toggleUi}
                 tether={{
                     // Necessary to avoid the popover being displayed outside of the window.
                     // http://tether.io/#constraints
@@ -352,14 +327,14 @@ export class ActionButtonContainer extends Component<Props, State> {
                 <PopoverHeader>{title}</PopoverHeader>
                 <PopoverBody>
                     {popover ? <p className={css.popover}>{popover}</p> : null}
-                    <Form onSubmit={this._confirmAction}>
+                    <Form onSubmit={this.confirmAction}>
                         {multipleOptions
                             ? [
                                   <Label key="label">Type</Label>,
                                   <SelectField
                                       key="input"
                                       style={{marginBottom: '1rem'}}
-                                      onChange={this._updateActionName}
+                                      onChange={this.updateActionName}
                                       value={actionName}
                                       options={options.map(
                                           (option: Option) => ({
@@ -370,7 +345,7 @@ export class ActionButtonContainer extends Component<Props, State> {
                                   />,
                               ]
                             : null}
-                        {this._renderActionParameters()}
+                        {this.renderActionParameters()}
                         <Button color="success" block>
                             Confirm
                         </Button>
@@ -394,7 +369,7 @@ export class ActionButtonContainer extends Component<Props, State> {
                     size="sm"
                     className={classnames(css.button, 'action-button')}
                     disabled={isLoading || hasError}
-                    onClick={this._toggleUi}
+                    onClick={this.toggleUi}
                     {...tagOptions}
                 >
                     <span
@@ -409,7 +384,7 @@ export class ActionButtonContainer extends Component<Props, State> {
                     />
                     {children}
                 </Tag>
-                {modal ? this._renderModal(modal) : this._renderPopover()}
+                {modal ? this.renderModal(modal) : this.renderPopover()}
                 {hasError && (
                     <Tooltip placement="top" target={tooltipTargetID}>
                         {actionError}

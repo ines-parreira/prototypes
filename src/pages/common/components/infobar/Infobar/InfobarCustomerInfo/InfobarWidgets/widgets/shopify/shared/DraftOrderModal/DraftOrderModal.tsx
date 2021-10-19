@@ -68,7 +68,6 @@ export function DraftOrderModalContainer(
         payload,
         products,
         onInit,
-        onOpen,
         onClose,
         onChange,
         onCancel,
@@ -195,7 +194,6 @@ export function DraftOrderModalContainer(
 
     useUpdateEffect(() => {
         if (!previousIsOpen && isOpen) {
-            onOpen(data.actionName!)
             if (hasScope) {
                 void onInit(
                     integrationId,
@@ -216,7 +214,6 @@ export function DraftOrderModalContainer(
     }, [
         isOpen,
         previousIsOpen,
-        onOpen,
         data,
         hasScope,
         integrationId,

@@ -32,7 +32,6 @@ export type InfobarAction = {
 export type InfobarModalProps = {
     header: ReactNode
     isOpen: boolean
-    onOpen: (actionName: string | number) => void
     onChange: (
         name: string,
         value: string | number | boolean | Record<string, unknown>,

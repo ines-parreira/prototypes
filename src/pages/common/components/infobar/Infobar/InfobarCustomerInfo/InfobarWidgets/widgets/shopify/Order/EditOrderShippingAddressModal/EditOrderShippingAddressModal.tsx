@@ -92,7 +92,6 @@ export function EditOrderShippingAddressModal(
         currentAccount,
         shippingAddresses,
         onInit,
-        onOpen,
         onChange,
         integrations,
         onSubmit,
@@ -266,7 +265,6 @@ export function EditOrderShippingAddressModal(
 
     useUpdateEffect(() => {
         if (!previousIsOpen && isOpen) {
-            onOpen(data.actionName!)
             if (hasScope) {
                 segmentTracker.logEvent(
                     SegmentEvent.ShopifyEditOrderAddressModalOpen,
@@ -288,7 +286,6 @@ export function EditOrderShippingAddressModal(
     }, [
         isOpen,
         previousIsOpen,
-        onOpen,
         data,
         hasScope,
         integrationId,

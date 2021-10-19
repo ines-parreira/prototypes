@@ -17,6 +17,7 @@ exports[`ActionButtonsGroup component should not render the dropdown if there 3 
       ]
     }
     payload={Object {}}
+    setModalOpen={[Function]}
     title={
       <div>
         Option 1
@@ -38,6 +39,7 @@ exports[`ActionButtonsGroup component should not render the dropdown if there 3 
       ]
     }
     payload={Object {}}
+    setModalOpen={[Function]}
     title={
       <div>
         Option 1
@@ -59,6 +61,7 @@ exports[`ActionButtonsGroup component should not render the dropdown if there 3 
       ]
     }
     payload={Object {}}
+    setModalOpen={[Function]}
     title={
       <div>
         Option 1
@@ -91,6 +94,7 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
       ]
     }
     payload={Object {}}
+    setModalOpen={[Function]}
     title={
       <div>
         Option 1
@@ -112,6 +116,7 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
       ]
     }
     payload={Object {}}
+    setModalOpen={[Function]}
     title={
       <div>
         Option 1
@@ -133,6 +138,7 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
       ]
     }
     payload={Object {}}
+    setModalOpen={[Function]}
     title={
       <div>
         Option 1
@@ -171,8 +177,8 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
             },
           ]
         }
-        parentToggleAction={[Function]}
         payload={Object {}}
+        setModalOpen={[Function]}
         tag={[Function]}
         tagOptions={
           Object {
@@ -184,7 +190,6 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
             Option 1
           </div>
         }
-        updateModalStatus={[Function]}
       >
         <div>
           Option 1

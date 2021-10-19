@@ -51,7 +51,6 @@ export const CancelOrderModalContainer = (
         onClose,
         onInit,
         onLineItemsChange,
-        onOpen,
         onPayloadChange,
         onReset,
         onSubmit,
@@ -79,12 +78,11 @@ export const CancelOrderModalContainer = (
 
     useUpdateEffect(() => {
         if (!previousIsOpen && isOpen) {
-            onOpen(data.actionName!)
             void onInit(integrationId, data.order)
             onChange('order_id', data.order.get('id'))
             shortcutManager.pause()
         }
-    }, [data, integrationId, isOpen, onChange, onOpen, previousIsOpen])
+    }, [data, integrationId, isOpen, onChange, previousIsOpen])
 
     const handleRefundPayloadChange = (refundPayload: Map<any, any>) => {
         const newPayload = payload?.set('refund', refundPayload)

@@ -30,17 +30,15 @@ export default class ActionButtonsGroup extends React.Component<Props, State> {
         hasModalOpen: false,
     }
 
-    toggleAction = () => {
-        this.setState({
-            actionDropdownIsOpen:
-                this.state.hasModalOpen || !this.state.actionDropdownIsOpen,
-        })
+    toggleDropdown = () => {
+        if (!this.state.hasModalOpen) {
+            this.setState({
+                actionDropdownIsOpen: !this.state.actionDropdownIsOpen,
+            })
+        }
     }
-
-    updateModalStatus = () => {
-        this.setState({
-            hasModalOpen: !this.state.hasModalOpen,
-        })
+    setModalOpen = (hasModalOpen: boolean) => {
+        this.setState({hasModalOpen})
     }
 
     render() {
@@ -52,7 +50,7 @@ export default class ActionButtonsGroup extends React.Component<Props, State> {
         }
 
         const buttons = actions.slice(0, NB_ACTIONS_DISPLAYED)
-        const dropdownOptions = actions.slice(NB_ACTIONS_DISPLAYED)
+        const dropdownButtons = actions.slice(NB_ACTIONS_DISPLAYED)
         return (
             <ButtonGroup className="action-buttons">
                 {buttons.map((action) => {
@@ -65,16 +63,17 @@ export default class ActionButtonsGroup extends React.Component<Props, State> {
                             title={action.title}
                             modal={action.modal}
                             modalData={action.modalData}
+                            setModalOpen={this.setModalOpen}
                         >
                             {action.child}
                         </ActionButton>
                     )
                 })}
-                {dropdownOptions.length > 0 && (
+                {dropdownButtons.length > 0 && (
                     <ButtonDropdown
                         className="action-dropdown"
                         isOpen={actionDropdownIsOpen}
-                        toggle={this.toggleAction}
+                        toggle={this.toggleDropdown}
                     >
                         <DropdownToggle
                             caret
@@ -84,7 +83,7 @@ export default class ActionButtonsGroup extends React.Component<Props, State> {
                             size="sm"
                         />
                         <DropdownMenu right>
-                            {dropdownOptions.map((action) => {
+                            {dropdownButtons.map((action) => {
                                 return (
                                     <ActionButton
                                         key={action.key}
@@ -96,10 +95,7 @@ export default class ActionButtonsGroup extends React.Component<Props, State> {
                                         title={action.title}
                                         modal={action.modal}
                                         modalData={action.modalData}
-                                        updateModalStatus={
-                                            this.updateModalStatus
-                                        }
-                                        parentToggleAction={this.toggleAction}
+                                        setModalOpen={this.setModalOpen}
                                     >
                                         {action.child}
                                     </ActionButton>

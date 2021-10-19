@@ -53,7 +53,6 @@ export const RefundOrderModalContainer = (
         onClose,
         onInit,
         onLineItemsChange,
-        onOpen,
         onPayloadChange,
         onReset,
         onSubmit,
@@ -67,12 +66,11 @@ export const RefundOrderModalContainer = (
 
     useUpdateEffect(() => {
         if (!previousIsOpen && isOpen) {
-            onOpen(data.actionName as string)
             void onInit(integrationId, data.order)
             onChange('order_id', data.order.get('id'))
             shortcutManager.pause()
         }
-    }, [data, integrationId, isOpen, onChange, onOpen, previousIsOpen])
+    }, [data, integrationId, isOpen, onChange, previousIsOpen])
 
     const integration = useMemo(
         () =>

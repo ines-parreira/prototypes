@@ -67,7 +67,6 @@ export function EditOrderModalContainer(
         products,
         calculatedEditOrder,
         onInit,
-        onOpen,
         onClose,
         onChange,
         onCancel,
@@ -165,7 +164,6 @@ export function EditOrderModalContainer(
 
     useUpdateEffect(() => {
         if (!previousIsOpen && isOpen) {
-            onOpen(data.actionName!)
             if (hasScope) {
                 void onInit(
                     integrationId,
@@ -186,7 +184,6 @@ export function EditOrderModalContainer(
     }, [
         isOpen,
         previousIsOpen,
-        onOpen,
         data,
         hasScope,
         integrationId,
