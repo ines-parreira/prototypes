@@ -11,6 +11,7 @@ import {failedImport, pendingImport, successImport} from './fixtures'
 interface DefaultProps {
     img: string
     zendeskImports: List<Map<any, any>>
+    timezone: string | null
 }
 
 const renderComponent = (props: DefaultProps): RenderResult => {
@@ -20,6 +21,7 @@ const renderComponent = (props: DefaultProps): RenderResult => {
 describe('<ImportZendeskDataList/>', () => {
     const defaultProps = {
         img: `/zendesk.png`,
+        timezone: 'UTC',
     }
     describe('rendering', () => {
         it('should render the list of imports', () => {

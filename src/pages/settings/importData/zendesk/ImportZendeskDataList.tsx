@@ -4,6 +4,7 @@ import {Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
 import {getIntegrationsByTypes} from '../../../../state/integrations/selectors'
+import {getTimezone} from '../../../../state/currentUser/selectors'
 import {IntegrationType} from '../../../../models/integration/types'
 import {RootState} from '../../../../state/types'
 import history from '../../../history'
@@ -14,7 +15,7 @@ import {ImportStatus} from './types'
 export const ImportZendeskDataList = (
     props: ConnectedProps<typeof connector>
 ) => {
-    const {zendeskImports, img} = props
+    const {zendeskImports, img, timezone} = props
     const renderImportStatus = (
         integrationMeta: Map<any, any>
     ): React.ReactChild => {
@@ -145,7 +146,8 @@ export const ImportZendeskDataList = (
                                         </b>
                                         <span className="text-muted">
                                             {getImportCompletionDate(
-                                                integration
+                                                integration,
+                                                timezone
                                             )}
                                         </span>
                                     </div>
@@ -169,6 +171,7 @@ const mapStateToProps = (state: RootState) => ({
         window.GORGIAS_ASSETS_URL || ''
     }/static/private/img/integrations/zendesk.png`,
     zendeskImports: getIntegrationsByTypes(IntegrationType.Zendesk)(state),
+    timezone: getTimezone(state),
 })
 
 const connector = connect(mapStateToProps, {})

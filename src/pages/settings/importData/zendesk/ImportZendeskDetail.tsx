@@ -18,6 +18,7 @@ import {
     fetchIntegration,
     updateOrCreateIntegration,
 } from '../../../../state/integrations/actions'
+import {getTimezone} from '../../../../state/currentUser/selectors'
 import {RootState, StoreDispatch} from '../../../../state/types'
 import {ZENDESK_INTEGRATION_TYPE} from '../../../../constants/integration'
 import PageHeader from '../../../common/components/PageHeader'
@@ -43,6 +44,7 @@ export const ImportZendeskDetail = (
         },
         integration,
         loading,
+        timezone,
     } = props
     const [isPopoverOpened, setIsPopoverOpened] = useState(false)
 
@@ -272,7 +274,7 @@ export const ImportZendeskDetail = (
                                 </tbody>
                             </Table>
                             <span className="text-muted">
-                                {getImportCompletionDate(integration)}
+                                {getImportCompletionDate(integration, timezone)}
                             </span>
                         </div>
                     </div>
@@ -305,6 +307,7 @@ const mapStateToProps = (state: RootState) => ({
         any
     >,
     loading: state.integrations.getIn(['state', 'loading', 'integration']),
+    timezone: getTimezone(state),
 })
 
 const mapDispatchToProps = (dispatch: StoreDispatch) =>

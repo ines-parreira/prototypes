@@ -51,3 +51,6 @@ export const failedImport = {
         display_import_stats: true,
     },
 }
+
+export const timezoneUtc = 'UTC'
+export const timezoneParis = 'Europe/Paris'
