@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {SyntheticEvent} from 'react'
 import {Link} from 'react-router-dom'
 import {Button as ReactstrapButton} from 'reactstrap'
 import classnames from 'classnames'
@@ -11,19 +11,15 @@ import css from './UpgradeButton.less'
 
 type Size = 'sm'
 
-type ButtonProps = {
-    className?: string
-    label?: string
-    onClick?: () => void
-    size?: Size
-}
-
 type Props = {
     hasInvertedColors?: boolean
     className?: string
     segmentEventToSend?: Partial<SegmentEventToSend>
     state?: any
-} & Omit<ButtonProps, 'className'>
+    label?: string
+    size?: Size
+    onClick?: (event?: SyntheticEvent) => void
+}
 
 type SegmentEventToSend = {
     name: string
@@ -42,26 +38,6 @@ function sendSegmentEvent(segmentEventToSend?: Partial<SegmentEventToSend>) {
         )
     }
 }
-
-const Button = ({label, className, onClick, size}: ButtonProps) => (
-    <ReactstrapButton
-        outline
-        color="warning"
-        className={classnames(css.upgradeButton, size && css[size], className)}
-        onClick={onClick}
-    >
-        <span
-            className={classnames('mr-2', css.upgradeLabel, size && css[size])}
-        >
-            {label}
-        </span>
-        <img
-            src={upgradeIcon}
-            alt="upgrade-icon"
-            className={classnames(css.upgradeIcon, size && css[size])}
-        />
-    </ReactstrapButton>
-)
 
 const UpgradeButton = ({
     className = '',
@@ -87,9 +63,9 @@ const UpgradeButton = ({
                             [css.invertedColors]: hasInvertedColors,
                         })}
                         label={label}
-                        onClick={() => {
+                        onClick={(e) => {
                             sendSegmentEvent(segmentEventToSend)
-                            onClick()
+                            onClick(e)
                         }}
                         size={size}
                     />
@@ -109,6 +85,41 @@ const UpgradeButton = ({
                 )}
             </div>
         </div>
+    )
+}
+
+function Button({
+    label,
+    className,
+    onClick,
+    size,
+}: Pick<Props, 'label' | 'className' | 'onClick' | 'size'>) {
+    return (
+        <ReactstrapButton
+            outline
+            color="warning"
+            className={classnames(
+                css.upgradeButton,
+                size && css[size],
+                className
+            )}
+            onClick={onClick}
+        >
+            <span
+                className={classnames(
+                    'mr-2',
+                    css.upgradeLabel,
+                    size && css[size]
+                )}
+            >
+                {label}
+            </span>
+            <img
+                src={upgradeIcon}
+                alt="upgrade-icon"
+                className={classnames(css.upgradeIcon, size && css[size])}
+            />
+        </ReactstrapButton>
     )
 }
 

@@ -18,6 +18,7 @@ export const TableActions = ({actions, onClick}: Props): JSX.Element => {
                     icon={action.icon}
                     name={action.name}
                     tooltip={action.tooltip}
+                    disabled={action.disabled}
                     onClick={onClick}
                 />
             ))}

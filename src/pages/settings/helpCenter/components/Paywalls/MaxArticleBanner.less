@@ -1,0 +1,45 @@
+@import '~css/new/colors';
+
+:local {
+    .banner {
+        background: white;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 20px;
+        border: 1px solid @orange;
+        border-radius: 4px;
+        min-height: 52px;
+        margin: 24px 16px;
+        justify-content: space-between;
+        & > div {
+            display: flex;
+            align-items: center;
+        }
+        img {
+            width: 20px;
+            height: 20px;
+        }
+        .bannerLabel {
+            margin-left: 18px;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: 400;
+        }
+        .closeBannerButton {
+            margin-left: 24px;
+            display: inline;
+            background-color: transparent;
+            outline: none;
+            padding: 0;
+            border: 0;
+            color: @neutral4;
+            i {
+                font-size: 20px;
+            }
+        }
+        .closeBannerButton:focus:not(:focus-visible) {
+            outline: none;
+        }
+    }
+}

@@ -11,7 +11,7 @@ import ToggleButton from '../../../../../common/components/ToggleButton'
 import PageHeader from '../../../../../common/components/PageHeader'
 import ForwardIcon from '../../ForwardIcon'
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
-import withPaywall from '../../../../../common/utils/withPaywall'
+import withFeaturePaywall from '../../../../../common/utils/withFeaturePaywall'
 
 type Props = {
     integration: Map<any, any>
@@ -101,9 +101,9 @@ export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
             </>
         )
 
-        const PaywalledCampaigns = withPaywall(AccountFeature.ChatCampaigns)(
-            CampaignsContent
-        )
+        const PaywalledCampaigns = withFeaturePaywall(
+            AccountFeature.ChatCampaigns
+        )(CampaignsContent)
 
         return (
             <div className="full-width">

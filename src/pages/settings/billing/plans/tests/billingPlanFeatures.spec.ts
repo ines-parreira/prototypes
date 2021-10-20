@@ -28,19 +28,21 @@ describe('billingPlanFeatures', () => {
         ])('%s', (suiteName, plan) => {
             it(`should return plan card features`, () => {
                 expect(
-                    getPlanCardFeaturesForPlan(
-                        {...plan, currencySign: '$'},
-                        false
-                    )
+                    getPlanCardFeaturesForPlan({
+                        plan: {...plan, currencySign: '$'},
+                        showPlanLegacyFeatures: false,
+                        showHelpCenterDisabled: false,
+                    })
                 ).toMatchSnapshot()
             })
 
             it(`should return legacy plan card features`, () => {
                 expect(
-                    getPlanCardFeaturesForPlan(
-                        {...plan, currencySign: '$'},
-                        true
-                    )
+                    getPlanCardFeaturesForPlan({
+                        plan: {...plan, currencySign: '$'},
+                        showPlanLegacyFeatures: true,
+                        showHelpCenterDisabled: false,
+                    })
                 ).toMatchSnapshot()
             })
         })

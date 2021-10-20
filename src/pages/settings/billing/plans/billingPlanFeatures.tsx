@@ -8,15 +8,18 @@ import {
 } from '../../../../state/currentAccount/types'
 import {PlanWithCurrencySign} from '../../../../state/billing/types'
 import magentoIcon from '../../../../../img/integrations/magento2-mono.svg'
+import {HELP_CENTER_PAYWALLS_ENABLED} from '../../helpCenter/constants'
 
 import {PlanCardFeature} from './PlanCard'
 import BillableTicketsLabel from './BillableTicketsLabel'
+import HelpCenterLabel from './HelpCenterLabel'
 import PlanFeatureMaterialIcon from './PlanFeatureMaterialIcon'
 import PlanFeatureVectorIcon from './PlanFeatureVectorIcon'
 
 type GetCommonPlanCardFeaturesArgs = {
     planId: string
     planName: string
+    showHelpCenterDisabled: boolean
     enabledFeatures: AccountFeature[]
     phoneNumbersLimit?: number
 }
@@ -24,6 +27,7 @@ type GetCommonPlanCardFeaturesArgs = {
 const getCommonPlanCardFeatures = ({
     planId,
     planName,
+    showHelpCenterDisabled,
     enabledFeatures,
     phoneNumbersLimit,
 }: GetCommonPlanCardFeaturesArgs): PlanCardFeature[] => {
@@ -36,6 +40,17 @@ const getCommonPlanCardFeatures = ({
             label: 'Macros and rules',
             icon: <PlanFeatureMaterialIcon icon="auto_awesome" />,
         },
+        ...(HELP_CENTER_PAYWALLS_ENABLED
+            ? [
+                  {
+                      label: (
+                          <HelpCenterLabel disabled={showHelpCenterDisabled} />
+                      ),
+                      icon: <PlanFeatureMaterialIcon icon="web_asset" />,
+                      isDisabled: showHelpCenterDisabled,
+                  },
+              ]
+            : []),
         planId === 'enterprise' || planName === 'Advanced'
             ? {
                   label: 'Full onboarding',
@@ -135,14 +150,22 @@ export const getEnterprisePlanCardFeatures = (): PlanCardFeature[] => {
             planId: 'enterprise',
             planName: 'Enterprise',
             enabledFeatures: Object.values(AccountFeature),
+            showHelpCenterDisabled: false,
         })
     )
 }
 
-export const getPlanCardFeaturesForPlan = (
-    plan: PlanWithCurrencySign,
+type GetPlanCardFeaturesForPlanArgs = {
+    plan: PlanWithCurrencySign
     showPlanLegacyFeatures: boolean
-): PlanCardFeature[] => {
+    showHelpCenterDisabled: boolean
+}
+
+export const getPlanCardFeaturesForPlan = ({
+    plan,
+    showPlanLegacyFeatures,
+    showHelpCenterDisabled,
+}: GetPlanCardFeaturesForPlanArgs): PlanCardFeature[] => {
     if (plan.id === 'enterprise') {
         return getEnterprisePlanCardFeatures()
     }
@@ -163,6 +186,7 @@ export const getPlanCardFeaturesForPlan = (
         getCommonPlanCardFeatures({
             planId: plan.id,
             planName: plan.name,
+            showHelpCenterDisabled,
             enabledFeatures: enabledFeaturesNames,
             phoneNumbersLimit:
                 planFeatures &&

@@ -27,6 +27,15 @@ Array [
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
+      icon="web_asset"
+    />,
+    "isDisabled": false,
+    "label": <HelpCenterLabel
+      disabled={false}
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
       icon="directions_car"
     />,
     "label": "Full onboarding",
@@ -291,6 +300,15 @@ Array [
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
+      icon="web_asset"
+    />,
+    "isDisabled": false,
+    "label": <HelpCenterLabel
+      disabled={false}
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
       icon="directions_car"
     />,
     "label": "Full onboarding",
@@ -552,6 +570,15 @@ Array [
       icon="auto_awesome"
     />,
     "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="web_asset"
+    />,
+    "isDisabled": false,
+    "label": <HelpCenterLabel
+      disabled={false}
+    />,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -891,6 +918,15 @@ Array [
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
+      icon="web_asset"
+    />,
+    "isDisabled": false,
+    "label": <HelpCenterLabel
+      disabled={false}
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
       icon="directions_walk"
     />,
     "label": "Self onboarding",
@@ -1222,6 +1258,15 @@ Array [
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
+      icon="web_asset"
+    />,
+    "isDisabled": false,
+    "label": <HelpCenterLabel
+      disabled={false}
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
       icon="directions_walk"
     />,
     "label": "Self onboarding",
@@ -1484,6 +1529,15 @@ Array [
       icon="auto_awesome"
     />,
     "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="web_asset"
+    />,
+    "isDisabled": false,
+    "label": <HelpCenterLabel
+      disabled={false}
+    />,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -1752,6 +1806,15 @@ Array [
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
+      icon="web_asset"
+    />,
+    "isDisabled": false,
+    "label": <HelpCenterLabel
+      disabled={false}
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
       icon="directions_bike"
     />,
     "label": "Lite onboarding",
@@ -1861,6 +1924,15 @@ Array [
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
+      icon="web_asset"
+    />,
+    "isDisabled": false,
+    "label": <HelpCenterLabel
+      disabled={false}
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
       icon="directions_car"
     />,
     "label": "Full onboarding",
@@ -1962,6 +2034,15 @@ Array [
       icon="auto_awesome"
     />,
     "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="web_asset"
+    />,
+    "isDisabled": false,
+    "label": <HelpCenterLabel
+      disabled={false}
+    />,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -2293,6 +2374,15 @@ Array [
       icon="auto_awesome"
     />,
     "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="web_asset"
+    />,
+    "isDisabled": false,
+    "label": <HelpCenterLabel
+      disabled={false}
+    />,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -2629,6 +2719,15 @@ Array [
       icon="auto_awesome"
     />,
     "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="web_asset"
+    />,
+    "isDisabled": false,
+    "label": <HelpCenterLabel
+      disabled={false}
+    />,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon

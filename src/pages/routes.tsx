@@ -54,7 +54,7 @@ import UserAuditList from './settings/audit/UserAuditList'
 import BusinessHours from './settings/businessHours/index.js'
 import TicketAssignment from './settings/ticketAssignment/index.js'
 
-import withPaywall from './common/utils/withPaywall'
+import withFeaturePaywall from './common/utils/withFeaturePaywall'
 import OnboardingContent from './onboarding/OnboardingContent'
 import SelfServicePreferencesContainer from './settings/selfService/components/PreferencesView'
 import SelfServiceCancellationsPolicyContainer from './settings/selfService/components/CancellationsPolicyView'
@@ -64,6 +64,9 @@ import SelfServiceReportIssueCaseEditorContainer from './settings/selfService/co
 import HelpCenterStartView from './settings/helpCenter/components/HelpCenterStartView'
 import HelpCenterNewView from './settings/helpCenter/components/HelpCenterNewView'
 import {CurrentHelpCenter} from './settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
+import HelpCenterPaywall from './settings/helpCenter/components/Paywalls/HelpCenterPaywall'
+import withLegacyPlanPaywall from './common/utils/withLegacyPlanPaywall'
+import {HELP_CENTER_PAYWALLS_ENABLED} from './settings/helpCenter/constants'
 
 const appRender = (props: {
     navbar: ComponentType<any>
@@ -442,9 +445,9 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/satisfaction-surveys`}
                 exact
                 render={appRender({
-                    content: withPaywall(AccountFeature.SatisfactionSurveys)(
-                        withUserRoleRequired(SatisfactionSurveyView, ADMIN_ROLE)
-                    ),
+                    content: withFeaturePaywall(
+                        AccountFeature.SatisfactionSurveys
+                    )(withUserRoleRequired(SatisfactionSurveyView, ADMIN_ROLE)),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -460,7 +463,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/ticket-assignment`}
                 exact
                 render={appRender({
-                    content: withPaywall(AccountFeature.AutoAssignment)(
+                    content: withFeaturePaywall(AccountFeature.AutoAssignment)(
                         withUserRoleRequired(TicketAssignment, ADMIN_ROLE)
                     ),
                     navbar: SettingsNavbarContainer,
@@ -508,10 +511,14 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
-                        HelpCenterStartView,
-                        ADMIN_ROLE
-                    ),
+                    content: HELP_CENTER_PAYWALLS_ENABLED
+                        ? withLegacyPlanPaywall(HelpCenterPaywall)(
+                              withUserRoleRequired(
+                                  HelpCenterStartView,
+                                  ADMIN_ROLE
+                              )
+                          )
+                        : withUserRoleRequired(HelpCenterStartView, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -519,20 +526,28 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/new`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
-                        HelpCenterNewView,
-                        ADMIN_ROLE
-                    ),
+                    content: HELP_CENTER_PAYWALLS_ENABLED
+                        ? withLegacyPlanPaywall(HelpCenterPaywall)(
+                              withUserRoleRequired(
+                                  HelpCenterNewView,
+                                  ADMIN_ROLE
+                              )
+                          )
+                        : withUserRoleRequired(HelpCenterNewView, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
             />
             <Route
                 path={`${path}/:helpcenterId`}
                 render={appRender({
-                    content: withUserRoleRequired(
-                        CurrentHelpCenter,
-                        ADMIN_ROLE
-                    ),
+                    content: HELP_CENTER_PAYWALLS_ENABLED
+                        ? withLegacyPlanPaywall(HelpCenterPaywall)(
+                              withUserRoleRequired(
+                                  CurrentHelpCenter,
+                                  ADMIN_ROLE
+                              )
+                          )
+                        : withUserRoleRequired(CurrentHelpCenter, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -699,7 +714,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: withPaywall(AccountFeature.Teams)(
+                    content: withFeaturePaywall(AccountFeature.Teams)(
                         withUserRoleRequired(TeamsList as any, ADMIN_ROLE)
                     ),
                     navbar: SettingsNavbarContainer,
@@ -709,7 +724,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/create`}
                 exact
                 render={appRender({
-                    content: withPaywall(AccountFeature.Teams)(
+                    content: withFeaturePaywall(AccountFeature.Teams)(
                         withUserRoleRequired(TeamsForm, ADMIN_ROLE)
                     ),
                     navbar: SettingsNavbarContainer,
@@ -719,7 +734,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:id`}
                 exact
                 render={appRender({
-                    content: withPaywall(AccountFeature.Teams)(
+                    content: withFeaturePaywall(AccountFeature.Teams)(
                         withUserRoleRequired(TeamsForm, ADMIN_ROLE)
                     ),
                     navbar: SettingsNavbarContainer,
@@ -729,7 +744,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:id/members`}
                 exact
                 render={appRender({
-                    content: withPaywall(AccountFeature.Teams)(
+                    content: withFeaturePaywall(AccountFeature.Teams)(
                         withUserRoleRequired(List, ADMIN_ROLE)
                     ),
                     navbar: SettingsNavbarContainer,

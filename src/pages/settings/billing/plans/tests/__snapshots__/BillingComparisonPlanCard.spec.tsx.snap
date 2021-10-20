@@ -100,6 +100,31 @@ exports[`<BillingComparisonPlanCard /> should not render plan as current plan 1`
           <i
             class="icon material-icons"
           >
+            web_asset
+          </i>
+        </span>
+        <span>
+          <b>
+            Unlimited
+             
+            <span
+              class="underline"
+              id="help-center-label-42"
+            >
+              Help centers
+            </span>
+          </b>
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
             directions_walk
           </i>
         </span>
@@ -424,6 +449,31 @@ exports[`<BillingComparisonPlanCard /> should render current legacy plan 1`] = `
         </span>
         <span>
           Macros and rules
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            web_asset
+          </i>
+        </span>
+        <span>
+          <b>
+            Unlimited
+             
+            <span
+              class="underline"
+              id="help-center-label-42"
+            >
+              Help centers
+            </span>
+          </b>
         </span>
       </li>
       <li
@@ -771,6 +821,31 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
           <i
             class="icon material-icons"
           >
+            web_asset
+          </i>
+        </span>
+        <span>
+          <b>
+            Unlimited
+             
+            <span
+              class="underline"
+              id="help-center-label-42"
+            >
+              Help centers
+            </span>
+          </b>
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
             directions_walk
           </i>
         </span>
@@ -1107,6 +1182,31 @@ exports[`<BillingComparisonPlanCard /> should render custom plan 1`] = `
           <i
             class="icon material-icons"
           >
+            web_asset
+          </i>
+        </span>
+        <span>
+          <b>
+            Unlimited
+             
+            <span
+              class="underline"
+              id="help-center-label-42"
+            >
+              Help centers
+            </span>
+          </b>
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
             directions_bike
           </i>
         </span>
@@ -1426,6 +1526,31 @@ exports[`<BillingComparisonPlanCard /> should render customLegacyPlan plan 1`] =
           <i
             class="icon material-icons"
           >
+            web_asset
+          </i>
+        </span>
+        <span>
+          <b>
+            Unlimited
+             
+            <span
+              class="underline"
+              id="help-center-label-42"
+            >
+              Help centers
+            </span>
+          </b>
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
             directions_bike
           </i>
         </span>
@@ -1727,6 +1852,31 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
         </span>
         <span>
           Macros and rules
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            web_asset
+          </i>
+        </span>
+        <span>
+          <b>
+            Unlimited
+             
+            <span
+              class="underline"
+              id="help-center-label-42"
+            >
+              Help centers
+            </span>
+          </b>
         </span>
       </li>
       <li

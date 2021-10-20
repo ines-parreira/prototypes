@@ -22,7 +22,12 @@ import PageHeader from '../../../common/components/PageHeader'
 
 import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
 import {useLocales} from '../hooks/useLocales'
-import {HELP_CENTER_BASE_PATH} from '../constants'
+import {
+    HELPCENTER_MAX_CREATION,
+    HELP_CENTER_BASE_PATH,
+    HELP_CENTER_PAYWALLS_ENABLED,
+} from '../constants'
+import Tooltip from '../../../common/components/Tooltip'
 
 import HelpCentersTable from './HelpCenterTable'
 
@@ -126,17 +131,37 @@ export const HelpCenterStartView: FunctionComponent = () => {
         [helpCenterList, client, dispatch]
     )
 
+    const addNewButtonDisabled =
+        HELP_CENTER_PAYWALLS_ENABLED &&
+        helpCenterList.length >= HELPCENTER_MAX_CREATION
+
     return (
         <div className="full-width">
             <PageHeader title="Help Center">
-                <Button
-                    color="success"
-                    onClick={() => history.push(`${HELP_CENTER_BASE_PATH}/new`)}
+                <div id="add-new-help-center-button-wrapper">
+                    <Button
+                        disabled={addNewButtonDisabled}
+                        color="success"
+                        onClick={() =>
+                            history.push(`${HELP_CENTER_BASE_PATH}/new`)
+                        }
+                    >
+                        <div className={css['create-new-btn']}>
+                            <i className="material-icons mr-2">add</i>Add New
+                        </div>
+                    </Button>
+                </div>
+                <Tooltip
+                    disabled={!addNewButtonDisabled}
+                    placement="bottom-end"
+                    target="add-new-help-center-button-wrapper"
+                    style={{
+                        textAlign: 'start',
+                        width: 180,
+                    }}
                 >
-                    <div className={css['create-new-btn']}>
-                        <i className="material-icons mr-2">add</i>Add New
-                    </div>
-                </Button>
+                    Please contact us to create more help centers.
+                </Tooltip>
             </PageHeader>
 
             <Container fluid className="page-container">

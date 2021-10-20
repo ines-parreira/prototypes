@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`withPaywall should not render the passed component when the feature is unavailable 1`] = `
+exports[`withFeaturePaywall should not render the passed component when the feature is unavailable 1`] = `
 <div>
   <div
     class="full-width"
@@ -111,7 +111,17 @@ Start using teams to automatically assign tickets to agents.
 </div>
 `;
 
-exports[`withPaywall should render the passed component when the feature is available 1`] = `
+exports[`withFeaturePaywall should not render the passed component when the feature is unavailable and use a custom paywall 1`] = `
+<div>
+  <div
+    data-testid="custom-paywall-component"
+  >
+    Custom Paywall
+  </div>
+</div>
+`;
+
+exports[`withFeaturePaywall should render the passed component when the feature is available 1`] = `
 <div>
   <div
     data-testid="paywalled-component"

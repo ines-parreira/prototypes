@@ -50,7 +50,7 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced plan 1`] =
         <span>
           <span
             class="billableTickets"
-            id="billable-ticket-label-2"
+            id="billable-ticket-label-3"
           >
             3000
              billable tickets
@@ -89,6 +89,31 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced plan 1`] =
         </span>
         <span>
           Macros and rules
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            web_asset
+          </i>
+        </span>
+        <span>
+          <b>
+            Unlimited
+             
+            <span
+              class="underline"
+              id="help-center-label-4"
+            >
+              Help centers
+            </span>
+          </b>
         </span>
       </li>
       <li
@@ -381,6 +406,31 @@ exports[`<BillingPlanCard /> should render plan card for the Basic plan 1`] = `
           <i
             class="icon material-icons"
           >
+            web_asset
+          </i>
+        </span>
+        <span>
+          <b>
+            Unlimited
+             
+            <span
+              class="underline"
+              id="help-center-label-2"
+            >
+              Help centers
+            </span>
+          </b>
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
             directions_walk
           </i>
         </span>
@@ -609,7 +659,7 @@ exports[`<BillingPlanCard /> should render plan card for the Custom plan 1`] = `
         <span>
           <span
             class="billableTickets"
-            id="billable-ticket-label-4"
+            id="billable-ticket-label-8"
           >
             2000
              billable tickets
@@ -648,6 +698,31 @@ exports[`<BillingPlanCard /> should render plan card for the Custom plan 1`] = `
         </span>
         <span>
           Macros and rules
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            web_asset
+          </i>
+        </span>
+        <span>
+          <b>
+            Unlimited
+             
+            <span
+              class="underline"
+              id="help-center-label-9"
+            >
+              Help centers
+            </span>
+          </b>
         </span>
       </li>
       <li
@@ -935,6 +1010,31 @@ exports[`<BillingPlanCard /> should render plan card for the Enterprise plan 1`]
           <i
             class="icon material-icons"
           >
+            web_asset
+          </i>
+        </span>
+        <span>
+          <b>
+            Unlimited
+             
+            <span
+              class="underline"
+              id="help-center-label-7"
+            >
+              Help centers
+            </span>
+          </b>
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
             directions_car
           </i>
         </span>
@@ -1163,7 +1263,7 @@ exports[`<BillingPlanCard /> should render plan card for the Legacy plan 1`] = `
         <span>
           <span
             class="billableTickets"
-            id="billable-ticket-label-5"
+            id="billable-ticket-label-10"
           >
             350
              billable tickets
@@ -1202,6 +1302,31 @@ exports[`<BillingPlanCard /> should render plan card for the Legacy plan 1`] = `
         </span>
         <span>
           Macros and rules
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            web_asset
+          </i>
+        </span>
+        <span>
+          <b>
+            Unlimited
+             
+            <span
+              class="underline"
+              id="help-center-label-11"
+            >
+              Help centers
+            </span>
+          </b>
         </span>
       </li>
       <li
@@ -1441,7 +1566,7 @@ exports[`<BillingPlanCard /> should render plan card for the Pro plan 1`] = `
         <span>
           <span
             class="billableTickets"
-            id="billable-ticket-label-3"
+            id="billable-ticket-label-5"
           >
             2000
              billable tickets
@@ -1480,6 +1605,31 @@ exports[`<BillingPlanCard /> should render plan card for the Pro plan 1`] = `
         </span>
         <span>
           Macros and rules
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            web_asset
+          </i>
+        </span>
+        <span>
+          <b>
+            Unlimited
+             
+            <span
+              class="underline"
+              id="help-center-label-6"
+            >
+              Help centers
+            </span>
+          </b>
         </span>
       </li>
       <li
@@ -1742,7 +1892,7 @@ exports[`<BillingPlanCard /> should render the legacy badge when account is curr
         <span>
           <span
             class="billableTickets"
-            id="billable-ticket-label-6"
+            id="billable-ticket-label-12"
           >
             350
              billable tickets
@@ -1781,6 +1931,24 @@ exports[`<BillingPlanCard /> should render the legacy badge when account is curr
         </span>
         <span>
           Macros and rules
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            web_asset
+          </i>
+        </span>
+        <span>
+          <span>
+            No Help center
+          </span>
         </span>
       </li>
       <li

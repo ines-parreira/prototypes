@@ -81,7 +81,6 @@ const DroppableCategoriesTableRow = ({
 
     // FIXME: the form language selector is broken for this case
     // cf. https://linear.app/gorgias/issue/SS-1019/cms-the-language-selector-is-broken-when-creating-an-article-inside-a
-    // const articleModal = useModalManager(MODALS.ARTICLE, {autoDestroy: false})
 
     const languageList = useMemo(() => {
         if (
@@ -108,12 +107,6 @@ const DroppableCategoriesTableRow = ({
 
         // FIXME: the form language selector is broken for this case
         // cf. https://linear.app/gorgias/issue/SS-1019/cms-the-language-selector-is-broken-when-creating-an-article-inside-a
-        // if (name === 'createInCategory') {
-        //     articleModal.openModal(MODALS.ARTICLE, true, {
-        //         categoryId: category.id,
-        //     })
-        //     return
-        // }
     }
 
     return (

@@ -10,11 +10,16 @@
     }
 
     .action {
+        background: transparent;
         font-size: 18px;
         color: @neutral6;
-        cursor: pointer;
+        border: none;
 
-        &:hover {
+        &:focus:not(:focus-visible) {
+            outline: none;
+        }
+
+        &:hover:not(:disabled) {
             color: @neutral10;
         }
     }

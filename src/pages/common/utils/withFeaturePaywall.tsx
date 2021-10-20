@@ -6,7 +6,10 @@ import {RootState} from '../../../state/types'
 import {currentAccountHasFeature} from '../../../state/currentAccount/selectors'
 import Paywall from '../components/Paywall/Paywall'
 
-export const withPaywall = (feature: AccountFeature) => {
+export const withFeaturePaywall = (
+    feature: AccountFeature,
+    CustomPaywall?: ComponentType<any>
+) => {
     return (Component: ComponentType<Record<string, unknown>>) => {
         return (ownProps: ComponentProps<typeof Component>) => {
             const hasFeature = useSelector<RootState, boolean>(
@@ -14,6 +17,8 @@ export const withPaywall = (feature: AccountFeature) => {
             )
             return hasFeature ? (
                 <Component {...ownProps} />
+            ) : CustomPaywall ? (
+                <CustomPaywall />
             ) : (
                 <Paywall feature={feature} />
             )
@@ -21,4 +26,4 @@ export const withPaywall = (feature: AccountFeature) => {
     }
 }
 
-export default withPaywall
+export default withFeaturePaywall

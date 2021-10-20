@@ -14,8 +14,8 @@ import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
-import {resetCategories} from '../../../../state/helpCenter/categories'
 import {resetArticles} from '../../../../state/helpCenter/articles'
+import {resetCategories} from '../../../../state/helpCenter/categories'
 import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
 
 import {useModalManager, Event} from '../../../../hooks/useModalManager'
@@ -43,6 +43,8 @@ import {
     getNewTranslation,
     slugify,
 } from '../utils/helpCenter.utils'
+import {useLimitations} from '../../../../hooks/helpCenter/useLimitations'
+import {reportError} from '../../../../utils/errors'
 
 import {ActionType, OptionItem} from './articles/ArticleLanguageSelect'
 import HelpCenterEditAdvancedArticleForm from './articles/HelpCenterEditAdvancedArticleForm'
@@ -56,6 +58,7 @@ import css from './HelpCenterArticlesView.less'
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
 import {CloseArticleModal} from './articles/CloseArticleModal'
+import MaxArticleBanner from './Paywalls/MaxArticleBanner'
 
 type HelpCenterModalState = {
     opened: boolean
@@ -101,7 +104,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         wordCount: number
     }>()
     const [customDomain, setCustomDomain] = useState<string | undefined>()
-
+    const limitations = useLimitations()
     const {client} = useHelpcenterApi()
     const helpCenter = useSelector(getCurrentHelpCenter)
     const articlesActions = useArticlesActions()
@@ -198,7 +201,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                         status: NotificationStatus.Error,
                     })
                 )
-                console.error(err)
+                reportError(err as Error)
             } finally {
                 setIsArticleLoading(false)
             }
@@ -710,7 +713,11 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                 <Button className="mr-2" onClick={createCategory}>
                     Create Category
                 </Button>
-                <Button color="success" onClick={createArticle}>
+                <Button
+                    color="success"
+                    onClick={createArticle}
+                    disabled={limitations.createArticle.disabled}
+                >
                     Create Article
                 </Button>
             </PageHeader>
@@ -721,6 +728,9 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                 </Container>
             ) : (
                 <SupportedLocalesProvider>
+                    <MaxArticleBanner
+                        nbArticles={limitations.createArticle.currentNumber}
+                    />
                     <CategoriesViews
                         helpCenter={helpCenter}
                         createArticle={createArticle}

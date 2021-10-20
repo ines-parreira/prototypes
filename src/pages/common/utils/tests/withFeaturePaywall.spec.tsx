@@ -13,15 +13,19 @@ import {
     proPlan,
 } from '../../../../fixtures/subscriptionPlan'
 
-import withPaywall from '../withPaywall'
+import withFeaturePaywall from '../withFeaturePaywall'
 
 const AnyComponent = () => (
     <div data-testid="paywalled-component">Just a component...</div>
 )
 
+const CustomPaywallComponent = () => (
+    <div data-testid="custom-paywall-component">Custom Paywall</div>
+)
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-describe('withPaywall', () => {
+describe('withFeaturePaywall', () => {
     const defaultState: Partial<RootState> = {
         currentAccount: fromJS({
             features: fromJS({
@@ -39,9 +43,9 @@ describe('withPaywall', () => {
     }
 
     it('should render the passed component when the feature is available', () => {
-        const PaywalledComponent = withPaywall(AccountFeature.InstagramComment)(
-            AnyComponent
-        )
+        const PaywalledComponent = withFeaturePaywall(
+            AccountFeature.InstagramComment
+        )(AnyComponent)
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
                 <PaywalledComponent />
@@ -52,9 +56,23 @@ describe('withPaywall', () => {
     })
 
     it('should not render the passed component when the feature is unavailable', () => {
-        const PaywalledComponent = withPaywall(AccountFeature.AutoAssignment)(
-            AnyComponent
+        const PaywalledComponent = withFeaturePaywall(
+            AccountFeature.AutoAssignment
+        )(AnyComponent)
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <PaywalledComponent />
+            </Provider>
         )
+
+        expect(container).toMatchSnapshot()
+    })
+
+    it('should not render the passed component when the feature is unavailable and use a custom paywall', () => {
+        const PaywalledComponent = withFeaturePaywall(
+            AccountFeature.AutoAssignment,
+            CustomPaywallComponent
+        )(AnyComponent)
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
                 <PaywalledComponent />

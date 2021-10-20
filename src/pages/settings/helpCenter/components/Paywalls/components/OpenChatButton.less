@@ -1,0 +1,17 @@
+@import '~css/new/colors';
+
+:local {
+    .button {
+        display: inline;
+        background-color: transparent;
+        outline: none;
+        color: @blue;
+        font-weight: bold;
+        padding: 0;
+        border: 0;
+        white-space: nowrap;
+    }
+    .button:focus:not(:focus-visible) {
+        outline: none;
+    }
+}

@@ -143,6 +143,31 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
                   <i
                     class="icon material-icons"
                   >
+                    web_asset
+                  </i>
+                </span>
+                <span>
+                  <b>
+                    Unlimited
+                     
+                    <span
+                      class="underline"
+                      id="help-center-label-42"
+                    >
+                      Help centers
+                    </span>
+                  </b>
+                </span>
+              </li>
+              <li
+                class="d-flex align-items-center featureListItem"
+              >
+                <span
+                  class="featureIcon mr-3"
+                >
+                  <i
+                    class="icon material-icons"
+                  >
                     directions_walk
                   </i>
                 </span>
@@ -468,6 +493,31 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
                 </span>
                 <span>
                   Macros and rules
+                </span>
+              </li>
+              <li
+                class="d-flex align-items-center featureListItem"
+              >
+                <span
+                  class="featureIcon mr-3"
+                >
+                  <i
+                    class="icon material-icons"
+                  >
+                    web_asset
+                  </i>
+                </span>
+                <span>
+                  <b>
+                    Unlimited
+                     
+                    <span
+                      class="underline"
+                      id="help-center-label-42"
+                    >
+                      Help centers
+                    </span>
+                  </b>
                 </span>
               </li>
               <li
@@ -817,6 +867,31 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
                   <i
                     class="icon material-icons"
                   >
+                    web_asset
+                  </i>
+                </span>
+                <span>
+                  <b>
+                    Unlimited
+                     
+                    <span
+                      class="underline"
+                      id="help-center-label-42"
+                    >
+                      Help centers
+                    </span>
+                  </b>
+                </span>
+              </li>
+              <li
+                class="d-flex align-items-center featureListItem"
+              >
+                <span
+                  class="featureIcon mr-3"
+                >
+                  <i
+                    class="icon material-icons"
+                  >
                     directions_car
                   </i>
                 </span>
@@ -1132,6 +1207,31 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
                 </span>
                 <span>
                   Macros and rules
+                </span>
+              </li>
+              <li
+                class="d-flex align-items-center featureListItem"
+              >
+                <span
+                  class="featureIcon mr-3"
+                >
+                  <i
+                    class="icon material-icons"
+                  >
+                    web_asset
+                  </i>
+                </span>
+                <span>
+                  <b>
+                    Unlimited
+                     
+                    <span
+                      class="underline"
+                      id="help-center-label-42"
+                    >
+                      Help centers
+                    </span>
+                  </b>
                 </span>
               </li>
               <li
@@ -1525,6 +1625,24 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
                 </span>
               </li>
               <li
+                class="d-flex align-items-center featureListItem disabledFeatureListItem"
+              >
+                <span
+                  class="featureIcon mr-3"
+                >
+                  <i
+                    class="icon material-icons"
+                  >
+                    web_asset
+                  </i>
+                </span>
+                <span>
+                  <span>
+                    No Help center
+                  </span>
+                </span>
+              </li>
+              <li
                 class="d-flex align-items-center featureListItem"
               >
                 <span
@@ -1837,6 +1955,31 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
                 </span>
                 <span>
                   Macros and rules
+                </span>
+              </li>
+              <li
+                class="d-flex align-items-center featureListItem"
+              >
+                <span
+                  class="featureIcon mr-3"
+                >
+                  <i
+                    class="icon material-icons"
+                  >
+                    web_asset
+                  </i>
+                </span>
+                <span>
+                  <b>
+                    Unlimited
+                     
+                    <span
+                      class="underline"
+                      id="help-center-label-42"
+                    >
+                      Help centers
+                    </span>
+                  </b>
                 </span>
               </li>
               <li
@@ -2171,6 +2314,31 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
                 </span>
                 <span>
                   Macros and rules
+                </span>
+              </li>
+              <li
+                class="d-flex align-items-center featureListItem"
+              >
+                <span
+                  class="featureIcon mr-3"
+                >
+                  <i
+                    class="icon material-icons"
+                  >
+                    web_asset
+                  </i>
+                </span>
+                <span>
+                  <b>
+                    Unlimited
+                     
+                    <span
+                      class="underline"
+                      id="help-center-label-42"
+                    >
+                      Help centers
+                    </span>
+                  </b>
                 </span>
               </li>
               <li
@@ -2519,6 +2687,31 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
                   <i
                     class="icon material-icons"
                   >
+                    web_asset
+                  </i>
+                </span>
+                <span>
+                  <b>
+                    Unlimited
+                     
+                    <span
+                      class="underline"
+                      id="help-center-label-42"
+                    >
+                      Help centers
+                    </span>
+                  </b>
+                </span>
+              </li>
+              <li
+                class="d-flex align-items-center featureListItem"
+              >
+                <span
+                  class="featureIcon mr-3"
+                >
+                  <i
+                    class="icon material-icons"
+                  >
                     directions_car
                   </i>
                 </span>
@@ -2833,6 +3026,31 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
                 </span>
                 <span>
                   Macros and rules
+                </span>
+              </li>
+              <li
+                class="d-flex align-items-center featureListItem"
+              >
+                <span
+                  class="featureIcon mr-3"
+                >
+                  <i
+                    class="icon material-icons"
+                  >
+                    web_asset
+                  </i>
+                </span>
+                <span>
+                  <b>
+                    Unlimited
+                     
+                    <span
+                      class="underline"
+                      id="help-center-label-42"
+                    >
+                      Help centers
+                    </span>
+                  </b>
                 </span>
               </li>
               <li
@@ -3192,6 +3410,31 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
                   <i
                     class="icon material-icons"
                   >
+                    web_asset
+                  </i>
+                </span>
+                <span>
+                  <b>
+                    Unlimited
+                     
+                    <span
+                      class="underline"
+                      id="help-center-label-42"
+                    >
+                      Help centers
+                    </span>
+                  </b>
+                </span>
+              </li>
+              <li
+                class="d-flex align-items-center featureListItem"
+              >
+                <span
+                  class="featureIcon mr-3"
+                >
+                  <i
+                    class="icon material-icons"
+                  >
                     directions_walk
                   </i>
                 </span>
@@ -3515,6 +3758,31 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
                 </span>
                 <span>
                   Macros and rules
+                </span>
+              </li>
+              <li
+                class="d-flex align-items-center featureListItem"
+              >
+                <span
+                  class="featureIcon mr-3"
+                >
+                  <i
+                    class="icon material-icons"
+                  >
+                    web_asset
+                  </i>
+                </span>
+                <span>
+                  <b>
+                    Unlimited
+                     
+                    <span
+                      class="underline"
+                      id="help-center-label-42"
+                    >
+                      Help centers
+                    </span>
+                  </b>
                 </span>
               </li>
               <li
@@ -3863,6 +4131,31 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
                   <i
                     class="icon material-icons"
                   >
+                    web_asset
+                  </i>
+                </span>
+                <span>
+                  <b>
+                    Unlimited
+                     
+                    <span
+                      class="underline"
+                      id="help-center-label-42"
+                    >
+                      Help centers
+                    </span>
+                  </b>
+                </span>
+              </li>
+              <li
+                class="d-flex align-items-center featureListItem"
+              >
+                <span
+                  class="featureIcon mr-3"
+                >
+                  <i
+                    class="icon material-icons"
+                  >
                     directions_car
                   </i>
                 </span>
@@ -4177,6 +4470,31 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
                 </span>
                 <span>
                   Macros and rules
+                </span>
+              </li>
+              <li
+                class="d-flex align-items-center featureListItem"
+              >
+                <span
+                  class="featureIcon mr-3"
+                >
+                  <i
+                    class="icon material-icons"
+                  >
+                    web_asset
+                  </i>
+                </span>
+                <span>
+                  <b>
+                    Unlimited
+                     
+                    <span
+                      class="underline"
+                      id="help-center-label-42"
+                    >
+                      Help centers
+                    </span>
+                  </b>
                 </span>
               </li>
               <li
@@ -4543,6 +4861,31 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
                   <i
                     class="icon material-icons"
                   >
+                    web_asset
+                  </i>
+                </span>
+                <span>
+                  <b>
+                    Unlimited
+                     
+                    <span
+                      class="underline"
+                      id="help-center-label-42"
+                    >
+                      Help centers
+                    </span>
+                  </b>
+                </span>
+              </li>
+              <li
+                class="d-flex align-items-center featureListItem"
+              >
+                <span
+                  class="featureIcon mr-3"
+                >
+                  <i
+                    class="icon material-icons"
+                  >
                     directions_walk
                   </i>
                 </span>
@@ -4867,6 +5210,31 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
                 </span>
                 <span>
                   Macros and rules
+                </span>
+              </li>
+              <li
+                class="d-flex align-items-center featureListItem"
+              >
+                <span
+                  class="featureIcon mr-3"
+                >
+                  <i
+                    class="icon material-icons"
+                  >
+                    web_asset
+                  </i>
+                </span>
+                <span>
+                  <b>
+                    Unlimited
+                     
+                    <span
+                      class="underline"
+                      id="help-center-label-42"
+                    >
+                      Help centers
+                    </span>
+                  </b>
                 </span>
               </li>
               <li
@@ -5216,6 +5584,31 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
                   <i
                     class="icon material-icons"
                   >
+                    web_asset
+                  </i>
+                </span>
+                <span>
+                  <b>
+                    Unlimited
+                     
+                    <span
+                      class="underline"
+                      id="help-center-label-42"
+                    >
+                      Help centers
+                    </span>
+                  </b>
+                </span>
+              </li>
+              <li
+                class="d-flex align-items-center featureListItem"
+              >
+                <span
+                  class="featureIcon mr-3"
+                >
+                  <i
+                    class="icon material-icons"
+                  >
                     directions_car
                   </i>
                 </span>
@@ -5531,6 +5924,31 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
                 </span>
                 <span>
                   Macros and rules
+                </span>
+              </li>
+              <li
+                class="d-flex align-items-center featureListItem"
+              >
+                <span
+                  class="featureIcon mr-3"
+                >
+                  <i
+                    class="icon material-icons"
+                  >
+                    web_asset
+                  </i>
+                </span>
+                <span>
+                  <b>
+                    Unlimited
+                     
+                    <span
+                      class="underline"
+                      id="help-center-label-42"
+                    >
+                      Help centers
+                    </span>
+                  </b>
                 </span>
               </li>
               <li

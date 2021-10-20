@@ -3,6 +3,29 @@ import {Plan, PlanInterval} from '../models/billing/types'
 
 import {isFeatureEnabled} from './account'
 
+export enum PlanName {
+    Basic = 'Basic',
+    Pro = 'Pro',
+    Advanced = 'Advanced',
+    Enterprise = 'Enterprise',
+}
+
+export const convertLegacyPlanNameToPublicPlanName = (
+    legacyPlanName: string
+): PlanName => {
+    const name = legacyPlanName.split(' ')[0]
+
+    return name === 'Standard'
+        ? PlanName.Basic
+        : name === 'Team'
+        ? PlanName.Pro
+        : ![PlanName.Basic, PlanName.Pro, PlanName.Advanced].includes(
+              name as PlanName
+          )
+        ? PlanName.Enterprise
+        : (name as PlanName)
+}
+
 export const getCheapestPlanNameForFeature = (
     featureName: AccountFeature,
     plans: Record<string, Plan>

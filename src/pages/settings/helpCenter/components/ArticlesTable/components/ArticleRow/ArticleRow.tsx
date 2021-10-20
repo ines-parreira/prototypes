@@ -1,6 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 
+import {useLimitations} from '../../../../../../../hooks/helpCenter/useLimitations'
 import {HelpCenterArticle} from '../../../../../../../models/helpCenter/types'
 
 import {LanguageList} from '../../../../../../common/components/LanguageBulletList'
@@ -44,6 +45,7 @@ export const ArticleRow = ({
     onClickSettings,
 }: Props): JSX.Element => {
     const localesByCode = useSupportedLocales()
+    const limitations = useLimitations()
     const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
         {
             position,
@@ -121,6 +123,7 @@ export const ArticleRow = ({
                                 content: tooltip,
                                 target: `${name}-${article.id}`,
                             },
+                            disabled: limitations[name]?.disabled,
                         })
                     )}
                     onClick={handleOnActionsClick}

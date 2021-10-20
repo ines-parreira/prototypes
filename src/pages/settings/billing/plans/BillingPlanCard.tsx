@@ -55,10 +55,12 @@ export default function BillingPlanCard({
             }
             planName={plan.name}
             headerBadge={badge}
-            features={getPlanCardFeaturesForPlan(
+            features={getPlanCardFeaturesForPlan({
                 plan,
-                isCurrentPlan && accountHasLegacyFeatures
-            )}
+                showPlanLegacyFeatures:
+                    isCurrentPlan && accountHasLegacyFeatures,
+                showHelpCenterDisabled: isCurrentPlan && accountHasLegacyPlan,
+            })}
             price={
                 <SubscriptionAmount
                     amount={plan.amount}

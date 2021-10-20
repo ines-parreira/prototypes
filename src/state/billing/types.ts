@@ -71,8 +71,19 @@ export type BillingContactResponse = {
 
 export type BillingState = Map<any, any>
 
-enum SubscriptionPlan {
+export enum SubscriptionPlan {
+    BasicMonthlyUSD2 = 'basic-monthly-usd-2',
+    BasicAutomationMonthlyUSD2 = 'basic-automation-monthly-usd-2',
+    ProMonthlyUSD2 = 'pro-monthly-usd-2',
+    ProAutomationMonthlyUSD2 = 'pro-automation-monthly-usd-2',
+    AdvancedMonthlyUSD2 = 'advanced-monthly-usd-2',
+    AdvancedAutomationMonthlyUSD2 = 'advanced-automation-monthly-usd-2',
+    BasicYearlyUSD2 = 'basic-yearly-usd-2',
+    BasicAutomationYearlyUSD2 = 'basic-automation-yearly-usd-2',
+    ProYearlyUSD2 = 'pro-yearly-usd-2',
+    ProAutomationYearlyUSD2 = 'pro-automation-yearly-usd-2',
     AdvancedYearlyUSD2 = 'advanced-yearly-usd-2',
+    AdvancedAutomationYearlyUSD2 = 'advanced-automation-yearly-usd-2',
 }
 
 export type Subscription = {

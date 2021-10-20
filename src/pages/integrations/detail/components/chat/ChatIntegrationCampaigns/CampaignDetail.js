@@ -27,7 +27,7 @@ import {AgentLabel} from '../../../../../common/utils/labels.tsx'
 
 import {sanitizeHtmlDefault} from '../../../../../../utils/html.ts'
 import {convertToHTML} from '../../../../../../utils/editor.tsx'
-import withPaywall from '../../../../../common/utils/withPaywall.tsx'
+import withFeaturePaywall from '../../../../../common/utils/withFeaturePaywall.tsx'
 
 import {notify} from '../../../../../../state/notifications/actions.ts'
 import * as campaignActions from '../../../../../../state/campaigns/actions'
@@ -245,7 +245,7 @@ export class CampaignDetail extends React.Component {
     }
 }
 
-@withPaywall(AccountFeature.ChatCampaigns)
+@withFeaturePaywall(AccountFeature.ChatCampaigns)
 export class CampaignForm extends React.Component {
     static propTypes = {
         id: PropTypes.string.isRequired,

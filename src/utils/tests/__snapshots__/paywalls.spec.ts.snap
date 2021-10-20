@@ -1,5 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`convertLegacyPlanNameToPublicPlanName() should return the public name for the legacy name Advanced 1`] = `"Advanced"`;
+
+exports[`convertLegacyPlanNameToPublicPlanName() should return the public name for the legacy name Advanced Plan 1`] = `"Advanced"`;
+
+exports[`convertLegacyPlanNameToPublicPlanName() should return the public name for the legacy name Basic 1`] = `"Basic"`;
+
+exports[`convertLegacyPlanNameToPublicPlanName() should return the public name for the legacy name Basic Plan 1`] = `"Basic"`;
+
+exports[`convertLegacyPlanNameToPublicPlanName() should return the public name for the legacy name Custom 1`] = `"Enterprise"`;
+
+exports[`convertLegacyPlanNameToPublicPlanName() should return the public name for the legacy name Pro 1`] = `"Pro"`;
+
+exports[`convertLegacyPlanNameToPublicPlanName() should return the public name for the legacy name Pro Plan 1`] = `"Pro"`;
+
+exports[`convertLegacyPlanNameToPublicPlanName() should return the public name for the legacy name Standard Plan 1`] = `"Basic"`;
+
+exports[`convertLegacyPlanNameToPublicPlanName() should return the public name for the legacy name Team Plan 1`] = `"Pro"`;
+
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature auto_assignment 1`] = `"Advanced"`;
 
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature automation_cancellations_flow 1`] = `"Basic"`;

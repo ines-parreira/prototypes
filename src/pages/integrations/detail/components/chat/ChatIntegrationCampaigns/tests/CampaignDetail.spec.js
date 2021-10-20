@@ -39,7 +39,7 @@ const commonProps = {
 }
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
-jest.mock('../../../../../../common/utils/withPaywall.tsx', () => () => {
+jest.mock('../../../../../../common/utils/withFeaturePaywall.tsx', () => () => {
     return (Component) => (props) => {
         return <Component {...props} />
     }

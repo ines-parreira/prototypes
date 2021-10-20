@@ -12,6 +12,7 @@ export type ActionSchema = {
         content: string | React.ReactNode
         target: string
     }
+    disabled?: boolean
 }
 
 type ActionProps = ActionSchema & {
@@ -22,18 +23,20 @@ export const Action = ({
     icon,
     name,
     tooltip,
+    disabled,
     onClick,
 }: ActionProps): JSX.Element => {
     return (
         <>
-            <span
+            <button
                 id={tooltip?.target}
                 data-testid={name}
                 className={classNames(css.action, 'material-icons')}
+                disabled={disabled}
                 onClick={(ev) => onClick(ev, name)}
             >
                 {icon}
-            </span>
+            </button>
             {tooltip && (
                 <Tooltip placement="top-end" target={tooltip.target}>
                     {tooltip.content}

@@ -2,7 +2,11 @@ import {
     LocaleCode,
     LocalSocialNavigationLink,
 } from '../../../models/helpCenter/types'
-import {isProduction} from '../../../utils/environment'
+import {
+    isDevelopment,
+    isProduction,
+    isStaging,
+} from '../../../utils/environment'
 
 import {HelpCenterThemes} from './types'
 
@@ -17,6 +21,14 @@ export const HELP_CENTER_LANGUAGE_DEFAULT: LocaleCode = 'en-US'
 export const HELP_CENTER_DOMAIN = isProduction()
     ? '.gorgias.help'
     : '.gorgias.rehab'
+
+export const HELP_CENTER_MAX_ARTICLES = 1000
+
+export const HELP_CENTER_MAX_ARTICLES_WARNING_THRESHOLD = 990
+
+export const HELPCENTER_MAX_CREATION = 200
+
+export const HELP_CENTER_PAYWALLS_ENABLED = isStaging() || isDevelopment()
 
 export const SOCIAL_NAVIGATION_LINKS: Record<
     string,

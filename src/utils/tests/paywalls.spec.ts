@@ -7,7 +7,10 @@ import {
 } from '../../fixtures/subscriptionPlan'
 import {AccountFeature} from '../../state/currentAccount/types'
 import {Plan} from '../../models/billing/types'
-import {getCheapestPlanNameForFeature} from '../paywalls'
+import {
+    getCheapestPlanNameForFeature,
+    convertLegacyPlanNameToPublicPlanName,
+} from '../paywalls'
 
 const publicPlans: Record<string, Plan> = {
     [basicPlan.id]: basicPlan,
@@ -32,4 +35,26 @@ describe('getCheapestPlanNameForFeature()', () => {
             getCheapestPlanNameForFeature(AccountFeature.InstagramComment, {})
         ).toBe(null)
     })
+})
+
+describe('convertLegacyPlanNameToPublicPlanName()', () => {
+    const legacyPlanNames = [
+        'Custom',
+        'Basic',
+        'Advanced',
+        'Pro',
+        'Basic Plan',
+        'Pro Plan',
+        'Advanced Plan',
+        'Standard Plan',
+        'Team Plan',
+    ]
+    it.each(legacyPlanNames)(
+        'should return the public name for the legacy name %s',
+        (name) => {
+            expect(
+                convertLegacyPlanNameToPublicPlanName(name)
+            ).toMatchSnapshot()
+        }
+    )
 })
