@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DefaultStatsFilters should render children 1`] = `
+<div>
+  Foo bar
+</div>
+`;
+
+exports[`DefaultStatsFilters should reset the filters on unmount 1`] = `
+Array [
+  Object {
+    "filters": Immutable.Map {
+      "period": Immutable.Map {
+        "start_datetime": "2019-08-28T00:00:00-07:00",
+        "end_datetime": "2019-09-03T23:59:59-07:00",
+      },
+    },
+    "type": "SET_STATS_FILTERS",
+  },
+  Object {
+    "type": "RESET_STATS_FILTERS",
+  },
+]
+`;
+
+exports[`DefaultStatsFilters should set the default filters on mount 1`] = `
+Array [
+  Object {
+    "filters": Immutable.Map {
+      "period": Immutable.Map {
+        "start_datetime": "2019-08-28T00:00:00-07:00",
+        "end_datetime": "2019-09-03T23:59:59-07:00",
+      },
+    },
+    "type": "SET_STATS_FILTERS",
+  },
+]
+`;
+
+exports[`DefaultStatsFilters should set the default period using user timezone  1`] = `
+Array [
+  Object {
+    "filters": Immutable.Map {
+      "period": Immutable.Map {
+        "start_datetime": "2019-08-28T00:00:00+02:00",
+        "end_datetime": "2019-09-03T23:59:59+02:00",
+      },
+    },
+    "type": "SET_STATS_FILTERS",
+  },
+]
+`;

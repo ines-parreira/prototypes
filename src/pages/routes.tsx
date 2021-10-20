@@ -64,6 +64,7 @@ import SelfServiceReportIssueCaseEditorContainer from './settings/selfService/co
 import HelpCenterStartView from './settings/helpCenter/components/HelpCenterStartView'
 import HelpCenterNewView from './settings/helpCenter/components/HelpCenterNewView'
 import {CurrentHelpCenter} from './settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
+import DefaultStatsFilters from './stats/DefaultStatsFilters'
 import HelpCenterPaywall from './settings/helpCenter/components/Paywalls/HelpCenterPaywall'
 import withLegacyPlanPaywall from './common/utils/withLegacyPlanPaywall'
 import {HELP_CENTER_PAYWALLS_ENABLED} from './settings/helpCenter/constants'
@@ -340,29 +341,31 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
     )
 
     return (
-        <Switch>
-            <Route
-                exact
-                path={`${path}/`}
-                render={() => (
-                    <Redirect
-                        to={`${path}/${
-                            hasLiveOverviewFeature
-                                ? 'live-overview'
-                                : 'support-performance-overview'
-                        }`}
-                    />
-                )}
-            />
-            <Route
-                path={`${path}/:view`}
-                exact
-                render={appRender({
-                    content: DEPRECATED_StatsPage,
-                    navbar: StatsNavbarContainer,
-                })}
-            />
-        </Switch>
+        <DefaultStatsFilters>
+            <Switch>
+                <Route
+                    exact
+                    path={`${path}/`}
+                    render={() => (
+                        <Redirect
+                            to={`${path}/${
+                                hasLiveOverviewFeature
+                                    ? 'live-overview'
+                                    : 'support-performance-overview'
+                            }`}
+                        />
+                    )}
+                />
+                <Route
+                    path={`${path}/:view`}
+                    exact
+                    render={appRender({
+                        content: DEPRECATED_StatsPage,
+                        navbar: StatsNavbarContainer,
+                    })}
+                />
+            </Switch>
+        </DefaultStatsFilters>
     )
 }
 

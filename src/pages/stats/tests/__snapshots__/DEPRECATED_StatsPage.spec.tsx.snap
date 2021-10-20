@@ -1,22 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`StatsPage should ensure that on component unmount we reset the stats filters 1`] = `
-Array [
-  Object {
-    "filters": Immutable.Map {
-      "period": Immutable.Map {
-        "start_datetime": "2019-08-28T00:00:00-07:00",
-        "end_datetime": "2019-09-03T23:59:59-07:00",
-      },
-    },
-    "type": "SET_STATS_FILTERS",
-  },
-  Object {
-    "type": "RESET_STATS_FILTERS",
-  },
-]
-`;
-
 exports[`StatsPage should not render statistics because there is no filter 1`] = `null`;
 
 exports[`StatsPage should render "Overview" statistics 1`] = `
@@ -186,32 +169,4 @@ exports[`StatsPage should restrict feature when on revenue statistics page and i
     </div>
   </div>
 </div>
-`;
-
-exports[`StatsPage testing default filters should ensure the default period is using user's timezone 1`] = `
-Array [
-  Object {
-    "filters": Immutable.Map {
-      "period": Immutable.Map {
-        "start_datetime": "2019-08-28T00:00:00+02:00",
-        "end_datetime": "2019-09-03T23:59:59+02:00",
-      },
-    },
-    "type": "SET_STATS_FILTERS",
-  },
-]
-`;
-
-exports[`StatsPage testing default filters should ensure the default value 1`] = `
-Array [
-  Object {
-    "filters": Immutable.Map {
-      "period": Immutable.Map {
-        "start_datetime": "2019-08-28T00:00:00-07:00",
-        "end_datetime": "2019-09-03T23:59:59-07:00",
-      },
-    },
-    "type": "SET_STATS_FILTERS",
-  },
-]
 `;

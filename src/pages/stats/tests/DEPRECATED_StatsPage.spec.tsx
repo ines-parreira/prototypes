@@ -17,14 +17,6 @@ import {
 } from '../../../fixtures/integrations'
 import {user} from '../../../fixtures/users'
 
-jest.mock('moment-timezone', () => () => {
-    const moment: (
-        date: string
-    ) => Record<string, unknown> = jest.requireActual('moment-timezone')
-
-    return moment('2019-09-03')
-})
-
 const mockUseParams = useParams
 jest.mock('../DEPRECATED_Stats', () => () => {
     const {view} = mockUseParams<{view?: string}>()
@@ -58,69 +50,6 @@ describe('StatsPage', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-    })
-
-    describe('testing default filters', () => {
-        it('should ensure the default value', () => {
-            const store = mockStore({
-                ...defaultState,
-                currentUser: defaultState.currentUser!.set(
-                    'timezone',
-                    undefined
-                ),
-            })
-
-            renderWithRouter(
-                <Provider store={store}>
-                    <DEPRECATED_StatsPage />
-                </Provider>,
-                {
-                    path: '/:view',
-                    route: `/satisfaction`,
-                }
-            )
-
-            expect(store.getActions()).toMatchSnapshot()
-        })
-
-        it("should ensure the default period is using user's timezone", () => {
-            const store = mockStore({
-                ...defaultState,
-                currentUser: defaultState.currentUser!.set(
-                    'timezone',
-                    'Europe/Paris'
-                ),
-            })
-
-            renderWithRouter(
-                <Provider store={store}>
-                    <DEPRECATED_StatsPage />
-                </Provider>,
-                {
-                    path: '/:view',
-                    route: `/satisfaction`,
-                }
-            )
-
-            expect(store.getActions()).toMatchSnapshot()
-        })
-    })
-
-    it('should ensure that on component unmount we reset the stats filters', () => {
-        const store = mockStore(defaultState)
-
-        const {unmount} = renderWithRouter(
-            <Provider store={store}>
-                <DEPRECATED_StatsPage />
-            </Provider>,
-            {
-                path: '/:view',
-                route: `/satisfaction`,
-            }
-        )
-        unmount()
-
-        expect(store.getActions()).toMatchSnapshot()
     })
 
     it('should render "Satisfaction" statistics', () => {
