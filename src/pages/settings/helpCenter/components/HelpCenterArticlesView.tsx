@@ -25,6 +25,7 @@ import {
     MODALS,
     HELP_CENTER_LANGUAGE_DEFAULT,
     DRAWER_TRANSITION_DURATION_MS,
+    EDITOR_MODAL_CONTAINER_ID,
 } from '../constants'
 
 import {SCREEN_SIZE, useScreenSize} from '../../../../hooks/useScreenSize'
@@ -305,7 +306,10 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         switch (editModal.content) {
             case HelpCenterModalContent.ARTICLE:
                 return (
-                    <span className={css.modalForm}>
+                    <span
+                        className={css.modalForm}
+                        id={EDITOR_MODAL_CONTAINER_ID}
+                    >
                         <HelpCenterEditModalHeader
                             title={selectedArticle.translation.title}
                             helpCenter={helpCenter}

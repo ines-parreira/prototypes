@@ -100,3 +100,5 @@ export const CATEGORY_ROW_ACTIONS = [
 ]
 
 export const DRAWER_TRANSITION_DURATION_MS = 300
+
+export const EDITOR_MODAL_CONTAINER_ID = 'editor-modal-container-id'

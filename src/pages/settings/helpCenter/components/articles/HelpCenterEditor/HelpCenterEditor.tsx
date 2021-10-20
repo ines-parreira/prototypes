@@ -40,7 +40,7 @@ import 'froala-editor/js/plugins/url.min.js'
 import 'froala-editor/js/plugins/video.min.js'
 import 'froala-editor/js/plugins/word_paste.min.js'
 
-import {MAX_IMAGE_SIZE} from '../../../constants'
+import {MAX_IMAGE_SIZE, EDITOR_MODAL_CONTAINER_ID} from '../../../constants'
 
 import {uploadFiles} from '../../../../../../utils'
 import {notify} from '../../../../../../state/notifications/actions'
@@ -94,6 +94,7 @@ const HelpCenterEditor = ({locale, value = '', onChange}: Props) => {
                 typingTimer: 150, // allows updating the model much faster
                 height: '100%',
                 heightMax: '100%',
+                scrollableContainer: `#${EDITOR_MODAL_CONTAINER_ID}`, // apply correct position for popups inside editor (e.g. table editor)
                 /**
                  * Image upload cf. https://froala.com/wysiwyg-editor/docs/concepts/image/upload/
                  */
