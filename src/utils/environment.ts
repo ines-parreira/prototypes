@@ -181,3 +181,11 @@ export function isDevelopment(): boolean {
 export function isHelpCenterEnabled(): boolean {
     return HELPCENTER_PRIVATE_BETA_LIST.includes(location.host)
 }
+
+export function getHelpCenterAuthApiBaseUrl(): string {
+    if (isDevelopment()) {
+        return 'http://acme.gorgias.docker:4001'
+    }
+
+    return ''
+}
