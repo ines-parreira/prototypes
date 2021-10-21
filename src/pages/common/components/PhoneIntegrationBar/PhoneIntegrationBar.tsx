@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useCallback, useEffect} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Call, Device} from '@twilio/voice-sdk'
 
@@ -10,6 +10,9 @@ import {
 } from '../../../../state/twilio/actions'
 import {RootState} from '../../../../state/types'
 import client from '../../../../models/api/resources'
+import useAppDispatch from '../../../../hooks/useAppDispatch'
+import {notify} from '../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../state/notifications/types'
 
 import OngoingPhoneCall from './OngoingPhoneCall/OngoingPhoneCall'
 import IncomingPhoneCall from './IncomingPhoneCall/IncomingPhoneCall'
@@ -61,6 +64,17 @@ function useDevice(
     setIsDialing: (isDialing: boolean) => void,
     setIsRinging: (isRinging: boolean) => void
 ) {
+    const dispatch = useAppDispatch()
+
+    const onCallAlreadyAccepted = useCallback(() => {
+        void dispatch(
+            notify({
+                status: NotificationStatus.Info,
+                message: 'Another agent already accepted the call',
+            })
+        )
+    }, [dispatch])
+
     useEffect(() => {
         if (device) {
             return
@@ -77,7 +91,8 @@ function useDevice(
                 token,
                 setCall,
                 setIsDialing,
-                setIsRinging
+                setIsRinging,
+                onCallAlreadyAccepted
             )
 
             setDevice(newDevice)
@@ -91,7 +106,14 @@ function useDevice(
                 setDevice(null)
             }
         }
-    }, [device, setCall, setDevice, setIsDialing, setIsRinging])
+    }, [
+        device,
+        setCall,
+        setDevice,
+        setIsDialing,
+        setIsRinging,
+        onCallAlreadyAccepted,
+    ])
 }
 
 async function getToken(): Promise<string | null> {
@@ -104,7 +126,8 @@ function instantiateDevice(
     token: string,
     setCall: (call: Call | null) => void,
     setIsDialing: (isDialing: boolean) => void,
-    setIsRinging: (isRinging: boolean) => void
+    setIsRinging: (isRinging: boolean) => void,
+    onCallAlreadyAccepted: () => void
 ): Device {
     const device = new Device(token, {
         closeProtection: true,
@@ -150,7 +173,7 @@ function instantiateDevice(
 
         call.on('accept', () => {
             setIsRinging(false)
-            onAccept(call).catch(console.error)
+            onAccept(call, onCallAlreadyAccepted).catch(console.error)
         })
 
         call.on('cancel', () => {
@@ -170,8 +193,23 @@ function instantiateDevice(
     return device
 }
 
-export async function onAccept(call: Call) {
+function sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+export async function onAccept(call: Call, onCallAlreadyAccepted: () => void) {
     try {
+        // When two agents pick up simultaneously, they both receive an "accept" event. However, the call is actually
+        // accepted by the first agent only. The second agent then receives a "cancel" event and the call status changes
+        // to "closed". Here, we wait a bit and then double-check the status, to avoid creating wrong events "Call
+        // answered by x". See issue APPC-795
+        await sleep(1000)
+        if (call.status() === Call.State.Closed) {
+            onCallAlreadyAccepted()
+            onCancel().catch(console.error)
+            return
+        }
+
         const integrationId = parseInt(
             call.customParameters.get('integration_id') as string
         )
