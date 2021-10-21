@@ -35,11 +35,19 @@ import {
 } from '../../../state/tags/selectors'
 import {RootState} from '../../../state/types'
 import {TagSortableProperty} from '../../../state/tags/types'
+import withCancellableRequest, {
+    CancellableRequestInjectedProps,
+} from '../../common/utils/withCancellableRequest'
 
 import Table from './Table'
 import css from './ManageTags.less'
 
-type Props = ConnectedProps<typeof connector>
+type Props = CancellableRequestInjectedProps<
+    'fetchTagsCancellable',
+    'cancelFetchTagsCancellable',
+    typeof fetchTags
+> &
+    ConnectedProps<typeof connector>
 
 type State = {
     sort: TagSortableProperty
@@ -62,9 +70,12 @@ export class ManageTagsContainer extends Component<Props, State> {
 
     componentDidMount() {
         this.setState({isFetching: true})
-        void this.props.fetch().then(() => {
-            this.setState({isFetching: false})
-        })
+
+        void this.props
+            .fetchTagsCancellable(undefined, undefined, undefined, undefined)
+            .then(() => {
+                this.setState({isFetching: false})
+            })
     }
 
     componentWillReceiveProps(nextProps: Props) {
@@ -76,7 +87,7 @@ export class ManageTagsContainer extends Component<Props, State> {
             // needed in case user deletes all tags on the last page. We want to now fetch tags for previous page
             this.props.setPage(nextNumPages)
         } else if (currentPage !== nextPage) {
-            void this.props.fetch(
+            void this.props.fetchTagsCancellable(
                 nextPage,
                 this.state.sort,
                 this.state.reverse,
@@ -85,8 +96,14 @@ export class ManageTagsContainer extends Component<Props, State> {
         }
     }
 
+    componentWillUnmount() {
+        const {cancelFetchTagsCancellable} = this.props
+
+        cancelFetchTagsCancellable()
+    }
+
     _fetchPage = () => {
-        void this.props.fetch(
+        void this.props.fetchTagsCancellable(
             this.props.currentPage,
             this.state.sort,
             this.state.reverse,
@@ -96,7 +113,7 @@ export class ManageTagsContainer extends Component<Props, State> {
 
     _onSearch = (search: string) => {
         this.setState({search}, () => {
-            void this.props.fetch(
+            void this.props.fetchTagsCancellable(
                 1,
                 this.state.sort,
                 this.state.reverse,
@@ -107,7 +124,12 @@ export class ManageTagsContainer extends Component<Props, State> {
 
     _onSort = (sort: TagSortableProperty, reverse: boolean) => {
         void this.props
-            .fetch(this.props.currentPage, sort, reverse, this.state.search)
+            .fetchTagsCancellable(
+                this.props.currentPage,
+                sort,
+                reverse,
+                this.state.search
+            )
             .then(() => {
                 this.setState({
                     sort,
@@ -303,7 +325,6 @@ const connector = connect(
         }
     },
     {
-        fetch: fetchTags,
         create,
         remove,
         selectAll,
@@ -313,4 +334,7 @@ const connector = connect(
     }
 )
 
-export default connector(ManageTagsContainer)
+export default withCancellableRequest(
+    'fetchTagsCancellable',
+    fetchTags
+)(connector(ManageTagsContainer))

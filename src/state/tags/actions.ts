@@ -1,4 +1,4 @@
-import axios, {AxiosError} from 'axios'
+import axios, {AxiosError, CancelToken} from 'axios'
 
 import {List} from 'immutable'
 
@@ -28,12 +28,10 @@ export function fetchTags(
     page?: Maybe<number>,
     sort: TagSortableProperty = TagSortableProperty.Usage,
     reverse = true,
-    search = ''
+    search = '',
+    cancelToken?: CancelToken
 ) {
-    return (
-        dispatch: StoreDispatch,
-        getState: () => RootState
-    ): Promise<ReturnType<StoreDispatch>> => {
+    return (dispatch: StoreDispatch, getState: () => RootState) => {
         dispatch({
             type: constants.FETCH_TAG_LIST_START,
         })
@@ -42,6 +40,7 @@ export function fetchTags(
 
         return axios
             .get<ApiListResponsePagination<Tag[]>>('/api/tags/', {
+                cancelToken,
                 params: {
                     page: tags
                         ? tags.getIn(['_internal', 'pagination', 'page'], 1)
@@ -60,6 +59,9 @@ export function fetchTags(
                     })
                 },
                 (error: AxiosError) => {
+                    if (axios.isCancel(error)) {
+                        return Promise.reject(error)
+                    }
                     return dispatch({
                         type: constants.FETCH_TAG_LIST_ERROR,
                         error,

@@ -8,9 +8,15 @@ type InjectedRequest<T> = T extends (
     a: infer A,
     b: infer B,
     c: infer C,
-    d: infer D
+    d: infer D,
+    e: infer E,
+    f: infer F
 ) => (...args: any) => infer R
-    ? D extends CancelToken
+    ? F extends CancelToken
+        ? (a: A, b: B, c: C, d: D, e: E) => R
+        : E extends CancelToken
+        ? (a: A, b: B, c: C, d: D) => R
+        : D extends CancelToken
         ? (a: A, b: B, c: C) => R
         : C extends CancelToken
         ? (a: A, b: B) => R

@@ -105,6 +105,24 @@ describe('tags actions', () => {
                     expect(store.getActions()).toEqual(expectedActions)
                 })
         })
+
+        it('should reject when cancelled', async () => {
+            mockServer.onGet('/api/tags/').reply(200, {})
+            const source = axios.CancelToken.source()
+
+            source.cancel()
+            await expect(
+                store.dispatch(
+                    actions.fetchTags(
+                        1,
+                        undefined,
+                        undefined,
+                        undefined,
+                        source.token
+                    )
+                )
+            ).rejects.toEqual(new axios.Cancel())
+        })
     })
 
     it('select', () => {

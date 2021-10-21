@@ -10,6 +10,7 @@ describe('ManageTags component', () => {
     let component
     let tagData
 
+    const mockedCancelFetchTagsCancellable = jest.fn()
     beforeEach(() => {
         tagData = fromJS({
             items: [
@@ -52,7 +53,8 @@ describe('ManageTags component', () => {
                 meta={tagData.get('meta')}
                 currentPage={1}
                 numberPages={1}
-                fetch={() => Promise.resolve()}
+                cancelFetchTagsCancellable={mockedCancelFetchTagsCancellable}
+                fetchTagsCancellable={() => Promise.resolve()}
                 create={() => Promise.resolve()}
                 remove={() => Promise.resolve()}
                 selectAll={() => Promise.resolve()}
@@ -61,10 +63,17 @@ describe('ManageTags component', () => {
                 bulkDelete={() => Promise.resolve()}
             />
         )
+        jest.resetAllMocks()
     })
 
     it('mounts correctly', () => {
         expect(component).toMatchSnapshot()
+    })
+
+    it('should cancel tags fetching when unmounting', () => {
+        component.unmount()
+
+        expect(mockedCancelFetchTagsCancellable).toHaveBeenCalled()
     })
 
     it('should display loader when fetching tags', () => {
