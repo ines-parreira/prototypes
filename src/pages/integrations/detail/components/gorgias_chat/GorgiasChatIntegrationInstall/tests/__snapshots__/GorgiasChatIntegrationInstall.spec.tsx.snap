@@ -926,21 +926,19 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                         className="tab-item"
                                         key="tab-link-GOOGLE_TAG_MANAGER"
                                         tag="li"
-                                        title="Coming soon!"
                                       >
                                         <li
                                           className="tab-item nav-item"
-                                          title="Coming soon!"
                                         >
                                           <NavLink
                                             className="tabLink"
-                                            disabled={true}
+                                            href="#"
                                             onClick={[Function]}
                                             tag="a"
                                           >
                                             <a
-                                              className="tabLink nav-link disabled"
-                                              disabled={true}
+                                              className="tabLink nav-link"
+                                              href="#"
                                               onClick={[Function]}
                                             >
                                               Google Tag Manager
@@ -1462,7 +1460,117 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                       >
                                         <div
                                           className="tab-pane"
-                                        />
+                                        >
+                                          <CustomInstallationGTMTab
+                                            code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                          >
+                                            <div
+                                              className="wrapper"
+                                            >
+                                              <div
+                                                className="instruction"
+                                              >
+                                                <div>
+                                                  <span
+                                                    className="instruction-number"
+                                                  >
+                                                    1
+                                                  </span>
+                                                </div>
+                                                <div
+                                                  className="instruction-text"
+                                                >
+                                                  In Google Tag Manager, click "Tags" in the menu.
+                                                </div>
+                                              </div>
+                                              <div
+                                                className="instruction"
+                                              >
+                                                <div>
+                                                  <span
+                                                    className="instruction-number"
+                                                  >
+                                                    2
+                                                  </span>
+                                                </div>
+                                                <div
+                                                  className="instruction-text"
+                                                >
+                                                  <b>
+                                                    Click "New" to create a new tag.
+                                                  </b>
+                                                </div>
+                                              </div>
+                                              <div
+                                                className="instruction"
+                                              >
+                                                <div>
+                                                  <span
+                                                    className="instruction-number"
+                                                  >
+                                                    3
+                                                  </span>
+                                                </div>
+                                                <div
+                                                  className="instruction-text"
+                                                >
+                                                  Search for "Gorgias Chat" and select it.
+                                                </div>
+                                              </div>
+                                              <div
+                                                className="instruction"
+                                              >
+                                                <div>
+                                                  <span
+                                                    className="instruction-number"
+                                                  >
+                                                    4
+                                                  </span>
+                                                </div>
+                                                <div
+                                                  className="instruction-text"
+                                                >
+                                                  <b>
+                                                    Enter your
+                                                  </b>
+                                                   Gorgias Chat App ID : 
+                                                </div>
+                                              </div>
+                                              <div
+                                                className="instruction"
+                                              >
+                                                <div>
+                                                  <span
+                                                    className="instruction-number"
+                                                  >
+                                                    5
+                                                  </span>
+                                                </div>
+                                                <div
+                                                  className="instruction-text"
+                                                >
+                                                  Select "All Pages - Page view" in the Trigger section.
+                                                </div>
+                                              </div>
+                                              <div
+                                                className="instruction"
+                                              >
+                                                <div>
+                                                  <span
+                                                    className="instruction-number"
+                                                  >
+                                                    6
+                                                  </span>
+                                                </div>
+                                                <div
+                                                  className="instruction-text"
+                                                >
+                                                  Save and publish.
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </CustomInstallationGTMTab>
+                                        </div>
                                       </TabPane>
                                     </div>
                                   </TabContent>
@@ -1936,21 +2044,19 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                                         className="tab-item"
                                         key="tab-link-GOOGLE_TAG_MANAGER"
                                         tag="li"
-                                        title="Coming soon!"
                                       >
                                         <li
                                           className="tab-item nav-item"
-                                          title="Coming soon!"
                                         >
                                           <NavLink
                                             className="tabLink"
-                                            disabled={true}
+                                            href="#"
                                             onClick={[Function]}
                                             tag="a"
                                           >
                                             <a
-                                              className="tabLink nav-link disabled"
-                                              disabled={true}
+                                              className="tabLink nav-link"
+                                              href="#"
                                               onClick={[Function]}
                                             >
                                               Google Tag Manager
@@ -2201,7 +2307,117 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                                       >
                                         <div
                                           className="tab-pane"
-                                        />
+                                        >
+                                          <CustomInstallationGTMTab
+                                            code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                          >
+                                            <div
+                                              className="wrapper"
+                                            >
+                                              <div
+                                                className="instruction"
+                                              >
+                                                <div>
+                                                  <span
+                                                    className="instruction-number"
+                                                  >
+                                                    1
+                                                  </span>
+                                                </div>
+                                                <div
+                                                  className="instruction-text"
+                                                >
+                                                  In Google Tag Manager, click "Tags" in the menu.
+                                                </div>
+                                              </div>
+                                              <div
+                                                className="instruction"
+                                              >
+                                                <div>
+                                                  <span
+                                                    className="instruction-number"
+                                                  >
+                                                    2
+                                                  </span>
+                                                </div>
+                                                <div
+                                                  className="instruction-text"
+                                                >
+                                                  <b>
+                                                    Click "New" to create a new tag.
+                                                  </b>
+                                                </div>
+                                              </div>
+                                              <div
+                                                className="instruction"
+                                              >
+                                                <div>
+                                                  <span
+                                                    className="instruction-number"
+                                                  >
+                                                    3
+                                                  </span>
+                                                </div>
+                                                <div
+                                                  className="instruction-text"
+                                                >
+                                                  Search for "Gorgias Chat" and select it.
+                                                </div>
+                                              </div>
+                                              <div
+                                                className="instruction"
+                                              >
+                                                <div>
+                                                  <span
+                                                    className="instruction-number"
+                                                  >
+                                                    4
+                                                  </span>
+                                                </div>
+                                                <div
+                                                  className="instruction-text"
+                                                >
+                                                  <b>
+                                                    Enter your
+                                                  </b>
+                                                   Gorgias Chat App ID : 
+                                                </div>
+                                              </div>
+                                              <div
+                                                className="instruction"
+                                              >
+                                                <div>
+                                                  <span
+                                                    className="instruction-number"
+                                                  >
+                                                    5
+                                                  </span>
+                                                </div>
+                                                <div
+                                                  className="instruction-text"
+                                                >
+                                                  Select "All Pages - Page view" in the Trigger section.
+                                                </div>
+                                              </div>
+                                              <div
+                                                className="instruction"
+                                              >
+                                                <div>
+                                                  <span
+                                                    className="instruction-number"
+                                                  >
+                                                    6
+                                                  </span>
+                                                </div>
+                                                <div
+                                                  className="instruction-text"
+                                                >
+                                                  Save and publish.
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </CustomInstallationGTMTab>
+                                        </div>
                                       </TabPane>
                                     </div>
                                   </TabContent>
@@ -2841,21 +3057,19 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                         className="tab-item"
                                         key="tab-link-GOOGLE_TAG_MANAGER"
                                         tag="li"
-                                        title="Coming soon!"
                                       >
                                         <li
                                           className="tab-item nav-item"
-                                          title="Coming soon!"
                                         >
                                           <NavLink
                                             className="tabLink"
-                                            disabled={true}
+                                            href="#"
                                             onClick={[Function]}
                                             tag="a"
                                           >
                                             <a
-                                              className="tabLink nav-link disabled"
-                                              disabled={true}
+                                              className="tabLink nav-link"
+                                              href="#"
                                               onClick={[Function]}
                                             >
                                               Google Tag Manager
@@ -3377,7 +3591,117 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                       >
                                         <div
                                           className="tab-pane"
-                                        />
+                                        >
+                                          <CustomInstallationGTMTab
+                                            code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                          >
+                                            <div
+                                              className="wrapper"
+                                            >
+                                              <div
+                                                className="instruction"
+                                              >
+                                                <div>
+                                                  <span
+                                                    className="instruction-number"
+                                                  >
+                                                    1
+                                                  </span>
+                                                </div>
+                                                <div
+                                                  className="instruction-text"
+                                                >
+                                                  In Google Tag Manager, click "Tags" in the menu.
+                                                </div>
+                                              </div>
+                                              <div
+                                                className="instruction"
+                                              >
+                                                <div>
+                                                  <span
+                                                    className="instruction-number"
+                                                  >
+                                                    2
+                                                  </span>
+                                                </div>
+                                                <div
+                                                  className="instruction-text"
+                                                >
+                                                  <b>
+                                                    Click "New" to create a new tag.
+                                                  </b>
+                                                </div>
+                                              </div>
+                                              <div
+                                                className="instruction"
+                                              >
+                                                <div>
+                                                  <span
+                                                    className="instruction-number"
+                                                  >
+                                                    3
+                                                  </span>
+                                                </div>
+                                                <div
+                                                  className="instruction-text"
+                                                >
+                                                  Search for "Gorgias Chat" and select it.
+                                                </div>
+                                              </div>
+                                              <div
+                                                className="instruction"
+                                              >
+                                                <div>
+                                                  <span
+                                                    className="instruction-number"
+                                                  >
+                                                    4
+                                                  </span>
+                                                </div>
+                                                <div
+                                                  className="instruction-text"
+                                                >
+                                                  <b>
+                                                    Enter your
+                                                  </b>
+                                                   Gorgias Chat App ID : 
+                                                </div>
+                                              </div>
+                                              <div
+                                                className="instruction"
+                                              >
+                                                <div>
+                                                  <span
+                                                    className="instruction-number"
+                                                  >
+                                                    5
+                                                  </span>
+                                                </div>
+                                                <div
+                                                  className="instruction-text"
+                                                >
+                                                  Select "All Pages - Page view" in the Trigger section.
+                                                </div>
+                                              </div>
+                                              <div
+                                                className="instruction"
+                                              >
+                                                <div>
+                                                  <span
+                                                    className="instruction-number"
+                                                  >
+                                                    6
+                                                  </span>
+                                                </div>
+                                                <div
+                                                  className="instruction-text"
+                                                >
+                                                  Save and publish.
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </CustomInstallationGTMTab>
+                                        </div>
                                       </TabPane>
                                     </div>
                                   </TabContent>

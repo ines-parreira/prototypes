@@ -97,11 +97,10 @@ exports[`<GorgiasChatIntegrationCustomInstallationCard/> render() should display
           className="tab-item"
           key="tab-link-GOOGLE_TAG_MANAGER"
           tag="li"
-          title="Coming soon!"
         >
           <NavLink
             className="tabLink"
-            disabled={true}
+            href="#"
             onClick={[Function]}
             tag="a"
           >
@@ -137,7 +136,11 @@ exports[`<GorgiasChatIntegrationCustomInstallationCard/> render() should display
           key="tab-pane-GOOGLE_TAG_MANAGER"
           tabId="GOOGLE_TAG_MANAGER"
           tag="div"
-        />
+        >
+          <CustomInstallationGTMTab
+            code="<script>installChat();</script>"
+          />
+        </TabPane>
       </TabContent>
     </CardBody>
   </Collapse>

@@ -14,6 +14,7 @@ import classnames from 'classnames'
 
 import CustomInstallationShopifyTab from './GorgiasChatIntegrationCustomInstallationTabs/CustomInstallationShopifyTab'
 import CustomInstallationOtherWebsiteTab from './GorgiasChatIntegrationCustomInstallationTabs/CustomInstallationOtherWebsiteTab'
+import CustomInstallationGTMTab from './GorgiasChatIntegrationCustomInstallationTabs/CustomInstallationGTMTab'
 import css from './GorgiasChatIntegrationCustomInstallationCard.less'
 
 enum CustomInstallationTab {
@@ -59,9 +60,7 @@ export function GorgiasChatIntegrationCustomInstallationCard({
         {
             title: 'Google Tag Manager',
             tabId: CustomInstallationTab.GOOGLE_TAG_MANAGER,
-            tabComponent: null,
-            disabled: true,
-            hoverTitle: 'Coming soon!',
+            tabComponent: <CustomInstallationGTMTab code={code} />,
         },
     ]
 
