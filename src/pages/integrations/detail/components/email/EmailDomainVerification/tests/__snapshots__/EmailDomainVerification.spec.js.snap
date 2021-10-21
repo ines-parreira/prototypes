@@ -129,3 +129,83 @@ exports[`<EmailDomainVerificationContainer/> render() should render the page whe
   </div>
 </div>
 `;
+
+exports[`<EmailDomainVerificationContainer/> render() should render the page with an optional verification information box when there is no domain 1`] = `
+<div>
+  <div
+    class="page-container container-fluid"
+  >
+    <div
+      class="alert alert-info fade"
+      role="alert"
+    >
+      Domain verification is 
+      <b>
+        not required
+      </b>
+       
+      for 
+      <b>
+        Gmail and Outlook
+      </b>
+       integrations
+       
+      <i>
+        unless you have disabled the "email sending" setting in Gorgias for a Gmail integration.
+      </i>
+      <br />
+      <br />
+      While it is not required, you can verify the domain of a Gmail or Outlook integration, which may allow you to continue to send emails in the event of an outage on either platform, as we will be able to attempt to route your emails through our system as a backup.
+    </div>
+    <div>
+      No domain and DKIM configuration has been created yet.
+    </div>
+    <button
+      class="mt-3 btn btn-success"
+      type="submit"
+    >
+      Add Domain
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<EmailDomainVerificationContainer/> render() should render the page with an optional verification information box when there is no domain 2`] = `
+<div>
+  <div
+    class="page-container container-fluid"
+  >
+    <div
+      class="alert alert-info fade"
+      role="alert"
+    >
+      Domain verification is 
+      <b>
+        not required
+      </b>
+       
+      for 
+      <b>
+        Gmail and Outlook
+      </b>
+       integrations
+       
+      <i>
+        unless you have disabled the "email sending" setting in Gorgias for a Gmail integration.
+      </i>
+      <br />
+      <br />
+      While it is not required, you can verify the domain of a Gmail or Outlook integration, which may allow you to continue to send emails in the event of an outage on either platform, as we will be able to attempt to route your emails through our system as a backup.
+    </div>
+    <div>
+      No domain and DKIM configuration has been created yet.
+    </div>
+    <button
+      class="mt-3 btn btn-success"
+      type="submit"
+    >
+      Add Domain
+    </button>
+  </div>
+</div>
+`;

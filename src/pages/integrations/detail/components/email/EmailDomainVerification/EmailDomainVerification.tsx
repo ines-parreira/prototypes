@@ -7,6 +7,7 @@ import {Alert, Button, Container} from 'reactstrap'
 import Loader from '../../../../../common/components/Loader/Loader'
 
 import {RootState} from '../../../../../../state/types'
+import {IntegrationType} from '../../../../../../models/integration/constants'
 
 import './EmailDomainVerification.less'
 import RecordsTable from './components/RecordsTable'
@@ -39,6 +40,8 @@ export const EmailDomainVerificationContainer = (props: Props) => {
     const isBaseEmailIntegration = address.endsWith(
         window.EMAIL_FORWARDING_DOMAIN
     )
+    const isGmail = integration.get('type') === IntegrationType.Gmail
+    const isOutlook = integration.get('type') === IntegrationType.Outlook
 
     return (
         <Container fluid className="page-container">
@@ -83,6 +86,26 @@ export const EmailDomainVerificationContainer = (props: Props) => {
                     )}
                     {!isBaseEmailIntegration && (
                         <>
+                            {(isGmail || isOutlook) && (
+                                <Alert color="info">
+                                    Domain verification is <b>not required</b>{' '}
+                                    for <b>Gmail and Outlook</b> integrations{' '}
+                                    <i>
+                                        unless you have disabled the "email
+                                        sending" setting in Gorgias for a Gmail
+                                        integration.
+                                    </i>
+                                    <br />
+                                    <br />
+                                    While it is not required, you can verify the
+                                    domain of a Gmail or Outlook integration,
+                                    which may allow you to continue to send
+                                    emails in the event of an outage on either
+                                    platform, as we will be able to attempt to
+                                    route your emails through our system as a
+                                    backup.
+                                </Alert>
+                            )}
                             <div>
                                 No domain and DKIM configuration has been
                                 created yet.

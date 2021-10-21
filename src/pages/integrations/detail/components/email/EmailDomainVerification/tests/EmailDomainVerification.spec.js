@@ -3,6 +3,7 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 
+import {IntegrationType} from '../../../../../../../models/integration/constants.ts'
 import {EmailDomainVerificationContainer} from '../EmailDomainVerification.tsx'
 
 describe('<EmailDomainVerificationContainer/>', () => {
@@ -58,5 +59,19 @@ describe('<EmailDomainVerificationContainer/>', () => {
 
             expect(container).toMatchSnapshot()
         })
+        it.each([IntegrationType.Gmail, IntegrationType.Outlook])(
+            'should render the page with an optional verification information box when there is no domain',
+            (integrationType) => {
+                const {container} = render(
+                    <EmailDomainVerificationContainer
+                        emailDomain={null}
+                        {...commonProps}
+                        integration={fromJS({id: 1, type: integrationType})}
+                    />
+                )
+
+                expect(container).toMatchSnapshot()
+            }
+        )
     })
 })
