@@ -42,6 +42,7 @@ import withCancellableRequest, {
 import history from '../../../history'
 import {JobType} from '../../../../models/job/types'
 import {getTickets} from '../../../../state/tickets/selectors'
+import {UserRole} from '../../../../config/types/user'
 
 import css from './TicketListActions.less'
 
@@ -310,7 +311,10 @@ export const TicketListActionsContainer = ({
             },
             DELETE_TICKET: {
                 action: () => {
-                    if (!hasSelectedItems) {
+                    if (
+                        !hasSelectedItems ||
+                        !hasRole(currentUser, UserRole.Agent)
+                    ) {
                         return
                     }
                     toggleTrashConfirmation()
@@ -688,33 +692,37 @@ export const TicketListActionsContainer = ({
                                 Export tickets
                             </DropdownItem>
                         )}
-                        <DropdownItem divider />
-                        {isActiveViewTrashView ? (
-                            [
-                                <DropdownItem
-                                    key="undelete-button"
-                                    type="button"
-                                    onClick={bulkUnTrash}
-                                >
-                                    Undelete
-                                </DropdownItem>,
-                                <DropdownItem
-                                    key="delete-button"
-                                    type="button"
-                                    className="text-danger"
-                                    onClick={toggleDeleteConfirmation}
-                                >
-                                    Delete forever
-                                </DropdownItem>,
-                            ]
-                        ) : (
-                            <DropdownItem
-                                type="button"
-                                className="text-danger"
-                                onClick={toggleTrashConfirmation}
-                            >
-                                Delete
-                            </DropdownItem>
+                        {hasRole(currentUser, UserRole.Agent) && (
+                            <>
+                                <DropdownItem divider />
+                                {isActiveViewTrashView ? (
+                                    [
+                                        <DropdownItem
+                                            key="undelete-button"
+                                            type="button"
+                                            onClick={bulkUnTrash}
+                                        >
+                                            Undelete
+                                        </DropdownItem>,
+                                        <DropdownItem
+                                            key="delete-button"
+                                            type="button"
+                                            className="text-danger"
+                                            onClick={toggleDeleteConfirmation}
+                                        >
+                                            Delete forever
+                                        </DropdownItem>,
+                                    ]
+                                ) : (
+                                    <DropdownItem
+                                        type="button"
+                                        className="text-danger"
+                                        onClick={toggleTrashConfirmation}
+                                    >
+                                        Delete
+                                    </DropdownItem>
+                                )}
+                            </>
                         )}
                     </DropdownMenu>
                     <div

@@ -9,7 +9,6 @@ import {
 } from '@testing-library/react'
 import _noop from 'lodash/noop'
 
-import {initialState as currentUser} from '../../../../../state/currentUser/reducers'
 import {TicketListActionsContainer} from '../TicketListActions'
 import {AGENT_ROLE, LITE_AGENT_ROLE} from '../../../../../config/user'
 import * as viewsActions from '../../../../../state/views/actions'
@@ -19,6 +18,8 @@ import shortcutManager from '../../../../../services/shortcutManager/shortcutMan
 import history from '../../../../history'
 import {ticket} from '../../../../../fixtures/ticket'
 import {makeExecuteKeyboardAction} from '../../../../../utils/testing'
+import {user} from '../../../../../fixtures/users'
+import {UserRole} from '../../../../../config/types/user'
 
 jest.mock('../../../../../services/shortcutManager/shortcutManager')
 jest.mock('../../../../../state/views/actions')
@@ -38,7 +39,7 @@ const fieldEnumSearchCancellableMock = jest.fn()
 
 describe('TicketListActions component', () => {
     const minProps: ComponentProps<typeof TicketListActionsContainer> = {
-        currentUser,
+        currentUser: fromJS(user),
         areFiltersValid: true,
         isActiveViewTrashView: false,
         allViewItemsSelected: false,
@@ -155,12 +156,46 @@ describe('TicketListActions component', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should render special actions for trash view', () => {
+    it('should render the delete action for lead and admin agents', () => {
         const {container} = render(
             <TicketListActionsContainer
                 {...minProps}
-                selectedItemsIds={fromJS([])}
+                currentUser={fromJS({
+                    id: 1,
+                    name: 'Peter Parker',
+                    roles: [{id: 1, name: UserRole.Agent}],
+                })}
+            />
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render the special actions for lead and admin agents', () => {
+        const {container} = render(
+            <TicketListActionsContainer
+                {...minProps}
                 isActiveViewTrashView={true}
+                currentUser={fromJS({
+                    id: 1,
+                    name: 'Peter Parker',
+                    roles: [{id: 1, name: UserRole.Agent}],
+                })}
+            />
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should not render the delete button for basic, lite and observer agents', () => {
+        const {container} = render(
+            <TicketListActionsContainer
+                {...minProps}
+                currentUser={fromJS({
+                    id: 1,
+                    name: 'Peter Parker',
+                    roles: [{id: 1, name: UserRole.LiteAgent}],
+                })}
             />
         )
 
@@ -376,6 +411,24 @@ describe('TicketListActions component', () => {
     it('should not show delete confirmation on delete ticket shortcut when no selected items', () => {
         const {queryByText} = render(
             <TicketListActionsContainer {...minProps} />
+        )
+
+        hitShortcut('DELETE_TICKET')
+
+        expect(queryByText(/Are you sure you want to delete/)).toBe(null)
+    })
+
+    it("should not show delete confirmation on delete ticket shortcut when the user's role is basic, lite or observer", () => {
+        const {queryByText} = render(
+            <TicketListActionsContainer
+                {...minProps}
+                selectedItemsIds={fromJS([1])}
+                currentUser={fromJS({
+                    id: 1,
+                    name: 'Peter Parker',
+                    roles: [{id: 1, name: UserRole.LiteAgent}],
+                })}
+            />
         )
 
         hitShortcut('DELETE_TICKET')

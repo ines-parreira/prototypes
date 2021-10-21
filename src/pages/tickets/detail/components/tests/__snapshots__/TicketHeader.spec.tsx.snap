@@ -158,6 +158,62 @@ exports[`<TicketHeader /> should change snooze label and display the clear snooz
 </DropdownMenu>
 `;
 
+exports[`<TicketHeader /> should display the delete action for lead and admin agents 1`] = `
+<DropdownItem
+  onClick={[Function]}
+  tag="button"
+  toggle={true}
+  type="button"
+>
+  <div
+    className="text-danger"
+  >
+    <i
+      className="icon material-icons"
+    >
+      delete
+    </i>
+    Delete
+  </div>
+  <Popover
+    fade={false}
+    isOpen={false}
+    placement="bottom"
+    placementPrefix="bs-popover"
+    target="ticket-actions-button"
+    toggle={[Function]}
+    trigger="legacy"
+  >
+    <PopoverHeader
+      tag="h3"
+    >
+      Are you sure?
+    </PopoverHeader>
+    <PopoverBody
+      tag="div"
+    >
+      <p>
+        You are about to
+         
+        <b>
+          delete
+        </b>
+         this ticket.
+      </p>
+      <Button
+        autoFocus={true}
+        color="success"
+        onClick={[Function]}
+        tag="button"
+        type="submit"
+      >
+        Confirm
+      </Button>
+    </PopoverBody>
+  </Popover>
+</DropdownItem>
+`;
+
 exports[`<TicketHeader /> should display the snooze icon when the snooze picker is opened 1`] = `
 <DropdownToggle
   aria-haspopup={true}

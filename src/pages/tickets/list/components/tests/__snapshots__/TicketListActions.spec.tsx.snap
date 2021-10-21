@@ -255,17 +255,255 @@ exports[`TicketListActions component should not render export tickets button for
         >
           Apply macro
         </button>
+      </div>
+      <div
+        class="delete-popover-target"
+        id="bulk-more-button"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`TicketListActions component should not render the delete button for basic, lite and observer agents 1`] = `
+<div
+  class="d-none d-md-inline-flex align-items-center"
+>
+  <div
+    class="d-inline-flex align-items-center"
+  >
+    <div
+      class="mr-2 btn-group btn-group-sm"
+    >
+      <button
+        class="btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        Close
+      </button>
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        <span
+          class="sr-only"
+        >
+          Toggle Dropdown
+        </span>
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
+        >
+          SET STATUS
+        </h6>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          Open
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
+    >
+      <button
+        class="btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        Assign to me
+      </button>
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        <span
+          class="sr-only"
+        >
+          Toggle Dropdown
+        </span>
+      </button>
+      <div
+        aria-hidden="true"
+        class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
+        >
+          ASSIGN TO:
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
+        />
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
+        >
+          Could not find any agent
+        </h6>
         <div
           class="dropdown-divider"
           tabindex="-1"
         />
         <button
-          class="text-danger dropdown-item"
+          class="dropdown-item"
           role="menuitem"
           tabindex="0"
           type="button"
         >
-          Delete
+          <span
+            class="text-warning clear-assignee"
+          >
+            Clear assignee
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
+    >
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        Assign to team
+      </button>
+      <div
+        aria-hidden="true"
+        class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
+        >
+          ASSIGN TO:
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
+        />
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
+        >
+          Could not find any team
+        </h6>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="text-warning clear-assignee"
+          >
+            Clear assignee
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
+    >
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        Add tag
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        disabled=""
+        role="menu"
+        style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+        tabindex="-1"
+      >
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
+        >
+          ADD TAG:
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
+        />
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+      </div>
+    </div>
+    <div
+      class="btn-group btn-group-sm"
+    >
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        More
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          Apply macro
         </button>
       </div>
       <div
@@ -600,6 +838,14 @@ exports[`TicketListActions component should render agents options in assign agen
         >
           Apply macro
         </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          Export tickets
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -853,6 +1099,14 @@ exports[`TicketListActions component should render enabled buttons when some tic
           type="button"
         >
           Apply macro
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          Export tickets
         </button>
         <div
           class="dropdown-divider"
@@ -1135,276 +1389,6 @@ exports[`TicketListActions component should render export tickets button for age
           type="button"
         >
           Delete
-        </button>
-      </div>
-      <div
-        class="delete-popover-target"
-        id="bulk-more-button"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`TicketListActions component should render special actions for trash view 1`] = `
-<div
-  class="d-none d-md-inline-flex align-items-center"
->
-  <div
-    class="d-inline-flex align-items-center"
-  >
-    <div
-      class="mr-2 btn-group btn-group-sm"
-    >
-      <button
-        class="btn btn-secondary disabled"
-        disabled=""
-        type="button"
-      >
-        Close
-      </button>
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
-        disabled=""
-        type="button"
-      >
-        <span
-          class="sr-only"
-        >
-          Toggle Dropdown
-        </span>
-      </button>
-      <div
-        aria-hidden="true"
-        class="dropdown-menu dropdown-menu-right"
-        role="menu"
-        tabindex="-1"
-      >
-        <h6
-          class="dropdown-header"
-          tabindex="-1"
-        >
-          SET STATUS
-        </h6>
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          Open
-        </button>
-      </div>
-    </div>
-    <div
-      class="mr-2 btn-group btn-group-sm"
-    >
-      <button
-        class="btn btn-secondary disabled"
-        disabled=""
-        type="button"
-      >
-        Assign to me
-      </button>
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
-        disabled=""
-        type="button"
-      >
-        <span
-          class="sr-only"
-        >
-          Toggle Dropdown
-        </span>
-      </button>
-      <div
-        aria-hidden="true"
-        class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
-        role="menu"
-        tabindex="-1"
-      >
-        <h6
-          class="mb-2 dropdown-header"
-          tabindex="-1"
-        >
-          ASSIGN TO:
-        </h6>
-        <button
-          class="dropdown-item-input dropdown-item"
-          role="menuitem"
-          tabindex="0"
-        />
-        <div
-          class="dropdown-divider"
-          tabindex="-1"
-        />
-        <h6
-          class="dropdown-header"
-          tabindex="-1"
-        >
-          Could not find any agent
-        </h6>
-        <div
-          class="dropdown-divider"
-          tabindex="-1"
-        />
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          <span
-            class="text-warning clear-assignee"
-          >
-            Clear assignee
-          </span>
-        </button>
-      </div>
-    </div>
-    <div
-      class="mr-2 btn-group btn-group-sm"
-    >
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
-        disabled=""
-        type="button"
-      >
-        Assign to team
-      </button>
-      <div
-        aria-hidden="true"
-        class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
-        role="menu"
-        tabindex="-1"
-      >
-        <h6
-          class="mb-2 dropdown-header"
-          tabindex="-1"
-        >
-          ASSIGN TO:
-        </h6>
-        <button
-          class="dropdown-item-input dropdown-item"
-          role="menuitem"
-          tabindex="0"
-        />
-        <div
-          class="dropdown-divider"
-          tabindex="-1"
-        />
-        <h6
-          class="dropdown-header"
-          tabindex="-1"
-        >
-          Could not find any team
-        </h6>
-        <div
-          class="dropdown-divider"
-          tabindex="-1"
-        />
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          <span
-            class="text-warning clear-assignee"
-          >
-            Clear assignee
-          </span>
-        </button>
-      </div>
-    </div>
-    <div
-      class="mr-2 btn-group btn-group-sm"
-    >
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
-        disabled=""
-        type="button"
-      >
-        Add tag
-      </button>
-      <div
-        aria-hidden="true"
-        class="dropdown-menu dropdown-menu-right"
-        disabled=""
-        role="menu"
-        style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
-        tabindex="-1"
-      >
-        <h6
-          class="mb-2 dropdown-header"
-          tabindex="-1"
-        >
-          ADD TAG:
-        </h6>
-        <button
-          class="dropdown-item-input dropdown-item"
-          role="menuitem"
-          tabindex="0"
-        />
-        <div
-          class="dropdown-divider"
-          tabindex="-1"
-        />
-      </div>
-    </div>
-    <div
-      class="btn-group btn-group-sm"
-    >
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
-        disabled=""
-        type="button"
-      >
-        More
-      </button>
-      <div
-        aria-hidden="true"
-        class="dropdown-menu dropdown-menu-right"
-        role="menu"
-        tabindex="-1"
-      >
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          Apply macro
-        </button>
-        <div
-          class="dropdown-divider"
-          tabindex="-1"
-        />
-        <button
-          class="dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          Undelete
-        </button>
-        <button
-          class="text-danger dropdown-item"
-          role="menuitem"
-          tabindex="0"
-          type="button"
-        >
-          Delete forever
         </button>
       </div>
       <div
@@ -1739,6 +1723,14 @@ exports[`TicketListActions component should render teams in assign team dropdown
         >
           Apply macro
         </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          Export tickets
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -1750,6 +1742,554 @@ exports[`TicketListActions component should render teams in assign team dropdown
           type="button"
         >
           Delete
+        </button>
+      </div>
+      <div
+        class="delete-popover-target"
+        id="bulk-more-button"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`TicketListActions component should render the delete action for lead and admin agents 1`] = `
+<div
+  class="d-none d-md-inline-flex align-items-center"
+>
+  <div
+    class="d-inline-flex align-items-center"
+  >
+    <div
+      class="mr-2 btn-group btn-group-sm"
+    >
+      <button
+        class="btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        Close
+      </button>
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        <span
+          class="sr-only"
+        >
+          Toggle Dropdown
+        </span>
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
+        >
+          SET STATUS
+        </h6>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          Open
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
+    >
+      <button
+        class="btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        Assign to me
+      </button>
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        <span
+          class="sr-only"
+        >
+          Toggle Dropdown
+        </span>
+      </button>
+      <div
+        aria-hidden="true"
+        class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
+        >
+          ASSIGN TO:
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
+        />
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
+        >
+          Could not find any agent
+        </h6>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="text-warning clear-assignee"
+          >
+            Clear assignee
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
+    >
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        Assign to team
+      </button>
+      <div
+        aria-hidden="true"
+        class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
+        >
+          ASSIGN TO:
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
+        />
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
+        >
+          Could not find any team
+        </h6>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="text-warning clear-assignee"
+          >
+            Clear assignee
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
+    >
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        Add tag
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        disabled=""
+        role="menu"
+        style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+        tabindex="-1"
+      >
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
+        >
+          ADD TAG:
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
+        />
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+      </div>
+    </div>
+    <div
+      class="btn-group btn-group-sm"
+    >
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        More
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          Apply macro
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          Export tickets
+        </button>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+        <button
+          class="text-danger dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          Delete
+        </button>
+      </div>
+      <div
+        class="delete-popover-target"
+        id="bulk-more-button"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`TicketListActions component should render the special actions for lead and admin agents 1`] = `
+<div
+  class="d-none d-md-inline-flex align-items-center"
+>
+  <div
+    class="d-inline-flex align-items-center"
+  >
+    <div
+      class="mr-2 btn-group btn-group-sm"
+    >
+      <button
+        class="btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        Close
+      </button>
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        <span
+          class="sr-only"
+        >
+          Toggle Dropdown
+        </span>
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
+        >
+          SET STATUS
+        </h6>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          Open
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
+    >
+      <button
+        class="btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        Assign to me
+      </button>
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        <span
+          class="sr-only"
+        >
+          Toggle Dropdown
+        </span>
+      </button>
+      <div
+        aria-hidden="true"
+        class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
+        >
+          ASSIGN TO:
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
+        />
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
+        >
+          Could not find any agent
+        </h6>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="text-warning clear-assignee"
+          >
+            Clear assignee
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
+    >
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        Assign to team
+      </button>
+      <div
+        aria-hidden="true"
+        class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
+        >
+          ASSIGN TO:
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
+        />
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
+        >
+          Could not find any team
+        </h6>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="text-warning clear-assignee"
+          >
+            Clear assignee
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
+    >
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        Add tag
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        disabled=""
+        role="menu"
+        style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+        tabindex="-1"
+      >
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
+        >
+          ADD TAG:
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
+        />
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+      </div>
+    </div>
+    <div
+      class="btn-group btn-group-sm"
+    >
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        More
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          Apply macro
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          Export tickets
+        </button>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          Undelete
+        </button>
+        <button
+          class="text-danger dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          Delete forever
         </button>
       </div>
       <div

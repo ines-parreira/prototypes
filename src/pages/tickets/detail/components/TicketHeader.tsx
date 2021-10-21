@@ -38,6 +38,8 @@ import {shouldDisplayAuditLogEvents} from '../../../../state/ticket/selectors'
 import {getTimezone} from '../../../../state/currentUser/selectors'
 import {RootState} from '../../../../state/types'
 import {NotificationStatus} from '../../../../state/notifications/types'
+import {UserRole} from '../../../../config/types/user'
+import {hasRole} from '../../../../utils'
 
 import TicketTags from './TicketDetails/TicketTags'
 import TicketStatus from './TicketDetails/TicketStatus'
@@ -163,6 +165,7 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
     }
 
     _bindKeys() {
+        const {currentUser} = this.props
         shortcutManager.bind('TicketDetailContainer', {
             CLOSE_TICKET: {
                 action: () => {
@@ -176,6 +179,9 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
             },
             DELETE_TICKET: {
                 action: () => {
+                    if (!hasRole(currentUser, UserRole.Agent)) {
+                        return
+                    }
                     this._toggleTrashConfirmation()
                 },
             },
@@ -203,6 +209,7 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
         const {
             addTags,
             className,
+            currentUser,
             removeTag,
             setAgent,
             setSubject,
@@ -371,7 +378,10 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                                         </span>
                                     )}
                                 </DropdownItem>
-                                {isTrashed ? (
+                                {!hasRole(
+                                    currentUser,
+                                    UserRole.Agent
+                                ) ? null : isTrashed ? (
                                     <DropdownItem
                                         type="button"
                                         onClick={this._unTrashTicket}
@@ -477,6 +487,7 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
 
 const connector = connect(
     (state: RootState) => ({
+        currentUser: state.currentUser,
         timezone: getTimezone(state),
         shouldDisplayAuditLogEvents: shouldDisplayAuditLogEvents(state),
     }),

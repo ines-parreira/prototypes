@@ -1,10 +1,23 @@
 import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
-import {DropdownItem, DropdownToggle, DropdownMenu} from 'reactstrap'
+import {DropdownItem, DropdownToggle, DropdownMenu, Popover} from 'reactstrap'
 
+import {UserRole} from '../../../../../config/types/user'
+import {user} from '../../../../../fixtures/users'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {TicketHeaderContainer} from '../TicketHeader'
+import shortcutManager from '../../../../../services/shortcutManager'
+import {makeExecuteKeyboardAction} from '../../../../../utils/testing'
+
+jest.mock('../../../../../services/shortcutManager')
+
+const shortcutManagerMock = shortcutManager as jest.Mocked<
+    typeof shortcutManager
+>
+const shortcutEventMock = ({
+    preventDefault: jest.fn(),
+} as unknown) as jest.Mocked<Event>
 
 // mock Date object
 const DATE_TO_USE = new Date('2017')
@@ -14,6 +27,7 @@ describe('<TicketHeader />', () => {
     const minProps = ({
         addTags: jest.fn(),
         className: '',
+        currentUser: fromJS(user),
         clearTicket: jest.fn(),
         displayAuditLogEvents: jest.fn(),
         goToNextTicket: jest.fn(),
@@ -176,5 +190,68 @@ describe('<TicketHeader />', () => {
         component.find(DropdownToggle).simulate('click')
         component.find(DropdownItem).at(1).simulate('click')
         expect(minProps.snoozeTicket).toHaveBeenNthCalledWith(1, null)
+    })
+
+    it('should display the delete action for lead and admin agents', () => {
+        const component = shallow(
+            <TicketHeaderContainer
+                {...minProps}
+                ticket={fromJS({
+                    id: 1,
+                    ...commonTicketProps,
+                })}
+            />
+        )
+
+        expect(component.find(DropdownItem).at(6)).toMatchSnapshot()
+    })
+
+    it('should not display the delete action for basic, lite and observer agents', () => {
+        const component = shallow(
+            <TicketHeaderContainer
+                {...minProps}
+                ticket={fromJS({
+                    id: 1,
+                    ...commonTicketProps,
+                })}
+                currentUser={fromJS({
+                    ...user,
+                    roles: [
+                        {
+                            name: UserRole.LiteAgent,
+                        },
+                    ],
+                })}
+            />
+        )
+
+        expect(component.find(DropdownItem).at(6).exists()).toBe(false)
+    })
+
+    it('should not register the delete action shortcut for basic, lite and observer agents', () => {
+        const component = shallow(
+            <TicketHeaderContainer
+                {...minProps}
+                ticket={fromJS({
+                    id: 1,
+                    ...commonTicketProps,
+                })}
+                currentUser={fromJS({
+                    ...user,
+                    roles: [
+                        {
+                            name: UserRole.LiteAgent,
+                        },
+                    ],
+                })}
+            />
+        )
+
+        makeExecuteKeyboardAction(
+            shortcutManagerMock,
+            shortcutEventMock
+        )('DELETE_TICKET')
+
+        expect(component.find(Popover).exists()).toBe(false)
     })
 })
