@@ -1,0 +1,116 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TicketMacros /> should display macros list, and selected macro 1`] = `
+<div
+  class="component"
+>
+  <a
+    class="clearMacros"
+    id="clear-macro-button"
+  >
+    <i
+      class="material-icons d-none d-md-inline-block"
+    >
+      close
+    </i>
+    <button
+      class="d-md-none btn btn-secondary btn-sm"
+    >
+      Close
+    </button>
+  </a>
+  <div
+    class="content"
+  >
+    Macro list
+    <div
+      class="previewContainer"
+    >
+      <div
+        class="dropdown"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="manageMacros dropdown-toggle btn btn-secondary"
+          type="button"
+        >
+          <i
+            class="material-icons"
+          >
+            settings
+          </i>
+          <div
+            class="deletePopoverTarget"
+            id="deleteMacroTarget"
+          />
+        </button>
+        <div
+          aria-hidden="true"
+          class="dropdown-menu"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="cursor-pointer dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i
+              class="material-icons"
+            >
+              settings
+            </i>
+             
+            Manage macros
+          </button>
+          <button
+            class="cursor-pointer dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i
+              class="material-icons"
+            >
+              mode_edit
+            </i>
+             
+            Edit macro
+          </button>
+          <button
+            class="cursor-pointer dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i
+              class="material-icons"
+            >
+              add
+            </i>
+             
+            Create new macro
+          </button>
+          <button
+            class="cursor-pointer dropdown-item"
+            id="deleteButtonMenuItem"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i
+              class="material-icons text-danger"
+            >
+              delete
+            </i>
+             
+            Delete macro
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

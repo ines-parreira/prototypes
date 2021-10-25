@@ -25,8 +25,9 @@ import Loader from '../../../../common/components/Loader/Loader'
 import MacroList from '../../../common/macros/components/MacroList'
 import MacroNoResults from '../../../common/macros/components/MacroNoResults'
 import MacroContainer from '../../../common/macros/MacroContainer'
-
-import {notify} from './../../../../../state/notifications/actions'
+import {hasRole} from '../../../../../utils'
+import {UserRole} from '../../../../../config/types/user'
+import {notify} from '../../../../../state/notifications/actions'
 
 import css from './TicketMacros.less'
 
@@ -135,6 +136,7 @@ export class TicketMacrosContainer extends Component<Props, State> {
 
     render() {
         const {
+            currentUser,
             macros,
             newMessageType,
             className,
@@ -175,84 +177,104 @@ export class TicketMacrosContainer extends Component<Props, State> {
                         className={css.previewContainer}
                         ref={(ref) => (this.previewContainerRef = ref)}
                     >
-                        <Dropdown
-                            isOpen={this.state.macroDropdownOpen}
-                            toggle={this._toggleMacroDropdown}
-                        >
-                            <DropdownToggle
-                                caret
-                                className={classnames(css.manageMacros)}
-                            >
-                                <i className="material-icons">settings</i>
-                                <div
-                                    className={css['deletePopoverTarget']}
-                                    id="deleteMacroTarget"
-                                />
-                            </DropdownToggle>
-                            <DropdownMenu>
-                                <DropdownItem
-                                    onClick={this.openMacroModal}
-                                    className="cursor-pointer"
+                        {hasRole(currentUser, UserRole.Agent) && (
+                            <>
+                                <Dropdown
+                                    isOpen={this.state.macroDropdownOpen}
+                                    toggle={this._toggleMacroDropdown}
                                 >
-                                    <i className="material-icons">settings</i>{' '}
-                                    Manage macros
-                                </DropdownItem>
-                                <DropdownItem
-                                    onClick={this.openMacroModal}
-                                    className="cursor-pointer"
-                                >
-                                    <i className="material-icons">mode_edit</i>{' '}
-                                    Edit macro
-                                </DropdownItem>
-                                <DropdownItem
-                                    onClick={(e) =>
-                                        this.openMacroModal(e, true)
-                                    }
-                                    className="cursor-pointer"
-                                >
-                                    <i className="material-icons">add</i> Create
-                                    new macro
-                                </DropdownItem>
-                                <DropdownItem
-                                    id="deleteButtonMenuItem"
-                                    onClick={this.toggleMacroDeleteConfirmOpen}
-                                    className="cursor-pointer"
-                                >
-                                    <i className="material-icons text-danger">
-                                        delete
-                                    </i>{' '}
-                                    Delete macro
-                                </DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
+                                    <DropdownToggle
+                                        caret
+                                        className={classnames(css.manageMacros)}
+                                    >
+                                        <i className="material-icons">
+                                            settings
+                                        </i>
+                                        <div
+                                            className={
+                                                css['deletePopoverTarget']
+                                            }
+                                            id="deleteMacroTarget"
+                                        />
+                                    </DropdownToggle>
+                                    <DropdownMenu>
+                                        <DropdownItem
+                                            onClick={this.openMacroModal}
+                                            className="cursor-pointer"
+                                        >
+                                            <i className="material-icons">
+                                                settings
+                                            </i>{' '}
+                                            Manage macros
+                                        </DropdownItem>
+                                        <DropdownItem
+                                            onClick={this.openMacroModal}
+                                            className="cursor-pointer"
+                                        >
+                                            <i className="material-icons">
+                                                mode_edit
+                                            </i>{' '}
+                                            Edit macro
+                                        </DropdownItem>
+                                        <DropdownItem
+                                            onClick={(e) =>
+                                                this.openMacroModal(e, true)
+                                            }
+                                            className="cursor-pointer"
+                                        >
+                                            <i className="material-icons">
+                                                add
+                                            </i>{' '}
+                                            Create new macro
+                                        </DropdownItem>
+                                        <DropdownItem
+                                            id="deleteButtonMenuItem"
+                                            onClick={
+                                                this
+                                                    .toggleMacroDeleteConfirmOpen
+                                            }
+                                            className="cursor-pointer"
+                                        >
+                                            <i className="material-icons text-danger">
+                                                delete
+                                            </i>{' '}
+                                            Delete macro
+                                        </DropdownItem>
+                                    </DropdownMenu>
+                                </Dropdown>
 
-                        <Popover
-                            placement="bottom"
-                            target="deleteMacroTarget"
-                            isOpen={this.state.isDeleteConfirmOpen}
-                            toggle={this.toggleMacroDeleteConfirmOpen}
-                            trigger="legacy"
-                            fade={false}
-                        >
-                            <PopoverBody>
-                                <p>
-                                    Are you sure you want to delete '
-                                    {currentMacro.get('name')}'?
-                                </p>
-                                <Button
-                                    onClick={this.deleteMacro}
-                                    color="danger"
+                                <Popover
+                                    placement="bottom"
+                                    target="deleteMacroTarget"
+                                    isOpen={this.state.isDeleteConfirmOpen}
+                                    toggle={this.toggleMacroDeleteConfirmOpen}
+                                    trigger="legacy"
+                                    fade={false}
                                 >
-                                    Delete macro
-                                </Button>
-                                <Button
-                                    onClick={this.toggleMacroDeleteConfirmOpen}
-                                    className="float-right"
-                                >
-                                    Cancel
-                                </Button>
-                            </PopoverBody>
-                        </Popover>
+                                    <PopoverBody>
+                                        <p>
+                                            Are you sure you want to delete '
+                                            {currentMacro.get('name')}'?
+                                        </p>
+                                        <Button
+                                            onClick={this.deleteMacro}
+                                            color="danger"
+                                        >
+                                            Delete macro
+                                        </Button>
+                                        <Button
+                                            onClick={
+                                                this
+                                                    .toggleMacroDeleteConfirmOpen
+                                            }
+                                            className="float-right"
+                                        >
+                                            Cancel
+                                        </Button>
+                                    </PopoverBody>
+                                </Popover>
+                            </>
+                        )}
 
                         <Preview
                             ticketMessageSourceType={newMessageType}
@@ -297,6 +319,7 @@ export class TicketMacrosContainer extends Component<Props, State> {
 
 const connector = connect(
     (state: RootState) => ({
+        currentUser: state.currentUser,
         newMessageType: newMessageSelectors.getNewMessageType(state),
     }),
     {

@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MacroNoResults /> should display no macros available without search query 1`] = `
+<div
+  class="no-result-container"
+>
+  <p>
+    <span>
+      You don't have any macros yet
+    </span>
+  </p>
+  <button
+    class="btn btn-info"
+    type="button"
+  >
+    <i
+      class="material-icons mr-2"
+    >
+      add
+    </i>
+    Create a new macro
+  </button>
+</div>
+`;
+
+exports[`<MacroNoResults /> should display no macros found with search query 1`] = `
+<div
+  class="no-result-container"
+>
+  <p>
+    <span>
+      No macros found
+    </span>
+  </p>
+  <button
+    class="btn btn-info"
+    type="button"
+  >
+    <i
+      class="material-icons mr-2"
+    >
+      add
+    </i>
+    Create a new macro
+  </button>
+</div>
+`;
