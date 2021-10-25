@@ -22,6 +22,7 @@ type GetCommonPlanCardFeaturesArgs = {
     showHelpCenterDisabled: boolean
     enabledFeatures: AccountFeature[]
     phoneNumbersLimit?: number
+    isCustom?: boolean
 }
 
 const getCommonPlanCardFeatures = ({
@@ -30,6 +31,7 @@ const getCommonPlanCardFeatures = ({
     showHelpCenterDisabled,
     enabledFeatures,
     phoneNumbersLimit,
+    isCustom = false,
 }: GetCommonPlanCardFeaturesArgs): PlanCardFeature[] => {
     return [
         {
@@ -123,13 +125,15 @@ const getCommonPlanCardFeatures = ({
             label: 'Dedicated success manager',
             icon: <PlanFeatureMaterialIcon icon="person_pin" />,
             isDisabled: !(
-                planId.includes('advanced') || planId.includes('enterprise')
+                planId.includes('advanced') ||
+                planId.includes('enterprise') ||
+                isCustom
             ),
         },
         {
             label: 'Custom services',
             icon: <PlanFeatureMaterialIcon icon="blur_on" />,
-            isDisabled: !planId.includes('enterprise'),
+            isDisabled: !(planId.includes('enterprise') || isCustom),
         },
     ]
 }
@@ -191,6 +195,7 @@ export const getPlanCardFeaturesForPlan = ({
             phoneNumbersLimit:
                 planFeatures &&
                 planFeatures[AccountFeature.PhoneIntegration]?.limit,
+            isCustom: plan.custom,
         })
     )
 }

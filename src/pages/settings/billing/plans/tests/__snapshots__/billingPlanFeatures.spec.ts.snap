@@ -1605,14 +1605,14 @@ Array [
     "icon": <PlanFeatureMaterialIcon
       icon="person_pin"
     />,
-    "isDisabled": true,
+    "isDisabled": false,
     "label": "Dedicated success manager",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
       icon="blur_on"
     />,
-    "isDisabled": true,
+    "isDisabled": false,
     "label": "Custom services",
   },
 ]
@@ -1884,14 +1884,14 @@ Array [
     "icon": <PlanFeatureMaterialIcon
       icon="person_pin"
     />,
-    "isDisabled": true,
+    "isDisabled": false,
     "label": "Dedicated success manager",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
       icon="blur_on"
     />,
-    "isDisabled": true,
+    "isDisabled": false,
     "label": "Custom services",
   },
 ]
