@@ -1,0 +1,34 @@
+import {Meta} from '@storybook/addon-docs'
+
+<Meta title="Docs Overview/Get Started" />
+
+# Get Started
+
+## Table of contents
+
+-   [Contributing](#contributing)
+-   [Stories Guidelines](#get-started--page#story-guidelines)
+-   [Component Review Process](#component-review-process)
+-   [Folder Structure](#folder-structure)
+
+## Contributing
+
+-   [Gorgias Style Guide](https://github.com/gorgias/gorgias-style-guide)
+
+## Story Guidelines
+
+1. Create a story for each state of the component.
+1. Think about forwarding refs and memoized components
+1. Each component that is shared should be placed in `pages/common` folder and needs to have a file `{fileName}.stories.tsx` for stories.
+1. [Use args](https://storybook.js.org/docs/react/writing-stories/introduction#using-args) and never hardcode the props passed to the story → Allow UI [Controls](https://storybook.js.org/docs/react/essentials/controls) to manipulate the component.
+1. [Use decorators](https://storybook.js.org/docs/react/writing-stories/introduction#using-decorators) if your component has dependencies that need to be injected (e.g. drag and drop provider).
+
+## Folder Structure
+
+-   **General**: Composable components e.g. buttons, icon, text that we will reuse to build the rest of our component library
+-   **Navigation**: Components related to navigation like menu, breadcrumbs, page header, dropdowns
+-   **Data Entry**: Forms related components (inputs, checkboxes, uploads etc.)
+-   **Data Display**: Badges, Cards, Images, Lists, Avatars, Tables etc.
+-   **Charts (could be nested in Data Display)**: This falls in the data display category but we can make its own category if it gets big enough
+-   **Feedback**: Components that we display as consequence of an user action like Alerts, Notifications, Modals, Loaders
+-   **Layout**: Components that we use to build a page skeleton like grid system, dividers
