@@ -17,6 +17,7 @@ import Loader from '../../../../common/components/Loader/Loader'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import InputField from '../../../../common/forms/InputField.js'
 import PageHeader from '../../../../common/components/PageHeader'
+import BooleanField from '../../../../common/forms/BooleanField.js'
 import {
     deleteIntegration,
     fetchIntegration,
@@ -32,7 +33,7 @@ interface IActions {
 }
 
 type Props = {
-    integration: Map<string, unknown>
+    integration: Map<string, any>
     loading: Map<string, string>
     actions: IActions
     redirectUri: string
@@ -41,11 +42,18 @@ type Props = {
 export class YotpoIntegrationDetailComponent extends React.Component<Props> {
     state = {
         integrationName: '',
+        enable_yotpo_tickets: false,
     }
 
     componentDidMount(): void {
         if (!this.props.integration.isEmpty()) {
-            this.setState({integrationName: this.props.integration.get('name')})
+            this.setState({
+                integrationName: this.props.integration.get('name'),
+                enable_yotpo_tickets: this.props.integration.getIn(
+                    ['meta', 'enable_yotpo_tickets'],
+                    false
+                ),
+            })
         }
     }
 
@@ -54,7 +62,13 @@ export class YotpoIntegrationDetailComponent extends React.Component<Props> {
             this.props.integration.isEmpty() &&
             !nextProps.integration.isEmpty()
         ) {
-            this.setState({integrationName: nextProps.integration.get('name')})
+            this.setState({
+                integrationName: nextProps.integration.get('name'),
+                enable_yotpo_tickets: nextProps.integration.getIn(
+                    ['meta', 'enable_yotpo_tickets'],
+                    false
+                ),
+            })
             const authenticationRequired =
                 nextProps.integration.getIn(['meta', 'oauth', 'status']) ===
                 PENDING_AUTHENTICATION_STATUS
@@ -85,18 +99,35 @@ export class YotpoIntegrationDetailComponent extends React.Component<Props> {
             fromJS({
                 id: this.props.integration.get('id'),
                 name: this.state.integrationName,
+                meta: (this.props.integration.get('meta') as Map<
+                    any,
+                    any
+                >).setIn(
+                    ['enable_yotpo_tickets'],
+                    this.state.enable_yotpo_tickets
+                ),
             })
         )
     }
 
     render(): JSX.Element {
         const {actions, integration, loading} = this.props
+        const {enable_yotpo_tickets} = this.state
 
         const isSubmitting = loading.get('updateIntegration')
 
         if (loading.get('integration')) {
             return <Loader />
         }
+
+        const enableYotpoTicketsHelp = (
+            <div>
+                By Enabling Yotpo tickets, you will allow Yotpo reviews to
+                create tickets on Gorgias. If you are using emails to integrate
+                Yotpo reviews you should disable the emails to avoid Yotpo
+                reviews ticket being duplicated.
+            </div>
+        )
 
         return (
             <div className="full-width">
@@ -131,7 +162,19 @@ export class YotpoIntegrationDetailComponent extends React.Component<Props> {
                                     this.setState({integrationName: value})
                                 }
                             />
-
+                            <BooleanField
+                                name="enable_yotpo_tickets"
+                                type="checkbox"
+                                label="Enable Yotpo tickets"
+                                help={enableYotpoTicketsHelp}
+                                value={enable_yotpo_tickets}
+                                onChange={(value: boolean) =>
+                                    this.setState({
+                                        enable_yotpo_tickets: value,
+                                    })
+                                }
+                            />
+                            <br />
                             <div>
                                 <Button
                                     type="submit"

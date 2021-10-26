@@ -2,36 +2,42 @@
 
 exports[`<YotpoIntegrationDetailComponent/> componentDidMount() should set the integration's name in the state 1`] = `
 Object {
+  "enable_yotpo_tickets": true,
   "integrationName": "test",
 }
 `;
 
 exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should not do anything because the previous integration was not empty 1`] = `
 Object {
+  "enable_yotpo_tickets": true,
   "integrationName": "foo",
 }
 `;
 
 exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should not do anything because there is no integration 1`] = `
 Object {
+  "enable_yotpo_tickets": false,
   "integrationName": "",
 }
 `;
 
 exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should set the name of the integration in the state because there was no integration before and there is one now 1`] = `
 Object {
+  "enable_yotpo_tickets": true,
   "integrationName": "test",
 }
 `;
 
 exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should set the name of the integration the state and set a timeout to fetch the integration because the action in the URL is set to \`authentication\` and the integration is not yet authenticated 1`] = `
 Object {
+  "enable_yotpo_tickets": true,
   "integrationName": "foo",
 }
 `;
 
 exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should set the name of the integration the state and trigger a success notification because the action in the URL is set to \`authentication\` and the integration is already authenticated 1`] = `
 Object {
+  "enable_yotpo_tickets": true,
   "integrationName": "foo",
 }
 `;
@@ -108,6 +114,19 @@ exports[`<YotpoIntegrationDetailComponent/> render() should not render anything 
           onChange={[Function]}
           type="text"
         />
+        <BooleanField
+          help={
+            <div>
+              By Enabling Yotpo tickets, you will allow Yotpo reviews to create tickets on Gorgias. If you are using emails to integrate Yotpo reviews you should disable the emails to avoid Yotpo reviews ticket being duplicated.
+            </div>
+          }
+          label="Enable Yotpo tickets"
+          name="enable_yotpo_tickets"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+        <br />
         <div>
           <Button
             className="mr-2"
@@ -230,6 +249,19 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render a small parag
           onChange={[Function]}
           type="text"
         />
+        <BooleanField
+          help={
+            <div>
+              By Enabling Yotpo tickets, you will allow Yotpo reviews to create tickets on Gorgias. If you are using emails to integrate Yotpo reviews you should disable the emails to avoid Yotpo reviews ticket being duplicated.
+            </div>
+          }
+          label="Enable Yotpo tickets"
+          name="enable_yotpo_tickets"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+        <br />
         <div>
           <Button
             className="mr-2"
@@ -344,6 +376,19 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render an alert beca
           onChange={[Function]}
           type="text"
         />
+        <BooleanField
+          help={
+            <div>
+              By Enabling Yotpo tickets, you will allow Yotpo reviews to create tickets on Gorgias. If you are using emails to integrate Yotpo reviews you should disable the emails to avoid Yotpo reviews ticket being duplicated.
+            </div>
+          }
+          label="Enable Yotpo tickets"
+          name="enable_yotpo_tickets"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+        <br />
         <div>
           <Button
             className="mr-2"
@@ -458,6 +503,19 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render buttons loadi
           onChange={[Function]}
           type="text"
         />
+        <BooleanField
+          help={
+            <div>
+              By Enabling Yotpo tickets, you will allow Yotpo reviews to create tickets on Gorgias. If you are using emails to integrate Yotpo reviews you should disable the emails to avoid Yotpo reviews ticket being duplicated.
+            </div>
+          }
+          label="Enable Yotpo tickets"
+          name="enable_yotpo_tickets"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+        <br />
         <div>
           <Button
             className="mr-2 btn-loading"
@@ -572,6 +630,19 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render not render de
           onChange={[Function]}
           type="text"
         />
+        <BooleanField
+          help={
+            <div>
+              By Enabling Yotpo tickets, you will allow Yotpo reviews to create tickets on Gorgias. If you are using emails to integrate Yotpo reviews you should disable the emails to avoid Yotpo reviews ticket being duplicated.
+            </div>
+          }
+          label="Enable Yotpo tickets"
+          name="enable_yotpo_tickets"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+        <br />
         <div>
           <Button
             className="mr-2"

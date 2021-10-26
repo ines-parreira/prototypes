@@ -5,7 +5,7 @@ import {shallow} from 'enzyme'
 import {YotpoIntegrationDetailComponent} from '../YotpoIntegrationDetail.tsx'
 import {
     PENDING_AUTHENTICATION_STATUS,
-    SMILE_INTEGRATION_TYPE,
+    YOTPO_INTEGRATION_TYPE,
     SUCCESS_AUTHENTICATION_STATUS,
 } from '../../../../../../constants/integration.ts'
 
@@ -37,6 +37,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                 meta: {
                     oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
                     sync_state: {is_initialized: false},
+                    enable_yotpo_tickets: true,
                 },
                 name: 'test',
             })
@@ -78,6 +79,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                     meta: {
                         oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
                         sync_state: {is_initialized: false},
+                        enable_yotpo_tickets: true,
                     },
                 })
 
@@ -108,6 +110,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                 meta: {
                     oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
                     sync_state: {is_initialized: false},
+                    enable_yotpo_tickets: true,
                 },
                 name: 'foo',
             })
@@ -138,10 +141,11 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
 
                 const integration = fromJS({
                     id: 1,
-                    type: SMILE_INTEGRATION_TYPE,
+                    type: YOTPO_INTEGRATION_TYPE,
                     meta: {
                         oauth: {status: PENDING_AUTHENTICATION_STATUS},
                         sync_state: {is_initialized: false},
+                        enable_yotpo_tickets: true,
                     },
                     name: 'foo',
                 })
@@ -182,10 +186,11 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
             () => {
                 const integration = fromJS({
                     id: 1,
-                    type: SMILE_INTEGRATION_TYPE,
+                    type: YOTPO_INTEGRATION_TYPE,
                     meta: {
                         oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
                         sync_state: {is_initialized: false},
+                        enable_yotpo_tickets: true,
                     },
                     name: 'foo',
                 })
@@ -224,6 +229,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                     meta: {
                         oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
                         sync_state: {is_initialized: false},
+                        enable_yotpo_tickets: true,
                     },
                     name: 'foo',
                 })
@@ -238,7 +244,10 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                 const newName = 'bar'
                 const preventDefault = jest.fn()
 
-                component.setState({integrationName: newName})
+                component.setState({
+                    integrationName: newName,
+                    enable_yotpo_tickets: false,
+                })
                 component.instance()._handleUpdate({preventDefault})
 
                 expect(preventDefault).toHaveBeenCalled()
@@ -248,6 +257,9 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                     fromJS({
                         id: integration.get('id'),
                         name: newName,
+                        meta: integration
+                            .get('meta')
+                            .set('enable_yotpo_tickets', false),
                     })
                 )
             }
@@ -263,6 +275,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                         meta: {
                             oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
                             sync_state: {is_initialized: false},
+                            enable_yotpo_tickets: true,
                         },
                     })}
                     loading={fromJS({integration: true})}
@@ -281,6 +294,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                         meta: {
                             oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
                             sync_state: {is_initialized: false},
+                            enable_yotpo_tickets: true,
                         },
                     })}
                 />
@@ -298,6 +312,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                         meta: {
                             oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
                             sync_state: {is_initialized: true},
+                            enable_yotpo_tickets: true,
                         },
                     })}
                 />
@@ -315,6 +330,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                         meta: {
                             oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
                             sync_state: {is_initialized: false},
+                            enable_yotpo_tickets: true,
                         },
                     })}
                     loading={fromJS({updateIntegration: true})}
@@ -333,6 +349,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                         meta: {
                             oauth: {status: PENDING_AUTHENTICATION_STATUS},
                             sync_state: {is_initialized: false},
+                            enable_yotpo_tickets: true,
                         },
                     })}
                 />
@@ -353,6 +370,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                             meta: {
                                 oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
                                 sync_state: {is_initialized: false},
+                                enable_yotpo_tickets: true,
                             },
                             deactivated_datetime: '2018-01-01 10:12',
                         })}
