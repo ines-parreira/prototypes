@@ -102,3 +102,20 @@ export const getMaxAttachmentSize = (
     const inlineImagesSize = getInlineImagesSize(editorState)
     return MAX_ATTACHMENTS_SIZE - attachmentsSize - inlineImagesSize
 }
+
+export const getBase64 = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+        const reader = new FileReader()
+
+        reader.onload = () => {
+            if (reader.result) {
+                resolve(reader.result.toString())
+            } else {
+                reject(reader.result)
+            }
+        }
+
+        reader.onerror = reject
+
+        reader.readAsDataURL(file)
+    })

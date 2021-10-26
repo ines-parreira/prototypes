@@ -6,10 +6,11 @@ import {
     PhoneIntegrationGreetingMessage,
     GreetingMessageType,
 } from '../PhoneIntegrationGreetingMessage'
+import {UpdateGreetingMessagePayload} from '../actions'
 
 describe('<PhoneIntegrationGreetingMessage/>', () => {
     let updatePhoneVoicemailConfiguration: jest.MockedFunction<(
-        formData: FormData
+        payload: UpdateGreetingMessagePayload
     ) => Promise<unknown>>
     let integration: Map<string, any>
     const notify = jest.fn()
@@ -37,14 +38,6 @@ describe('<PhoneIntegrationGreetingMessage/>', () => {
     })
 
     describe('render()', () => {
-        function getFormData(payload: Map<string, string | Blob>): FormData {
-            const formData = new FormData()
-            payload.forEach((value, key) => {
-                formData.append(key as string, value as string | Blob)
-            })
-            return formData
-        }
-
         it('should render with default values', () => {
             const {container} = render(
                 <PhoneIntegrationGreetingMessage
@@ -82,14 +75,10 @@ describe('<PhoneIntegrationGreetingMessage/>', () => {
             fireEvent.change(input, {target: {value: newText}})
             getByText('Save changes').click()
 
-            expect(updatePhoneVoicemailConfiguration).toHaveBeenCalledWith(
-                getFormData(
-                    fromJS({
-                        voice_message_type: GreetingMessageType.TextToSpeech,
-                        text_to_speech_content: newText,
-                    })
-                )
-            )
+            expect(updatePhoneVoicemailConfiguration).toHaveBeenCalledWith({
+                voice_message_type: GreetingMessageType.TextToSpeech,
+                text_to_speech_content: newText,
+            })
         })
 
         it('should render with voice recording type', () => {
@@ -118,7 +107,7 @@ describe('<PhoneIntegrationGreetingMessage/>', () => {
             expect(container.firstChild).toMatchSnapshot()
             getByText('Save changes').click()
             expect(updatePhoneVoicemailConfiguration).toHaveBeenCalledWith(
-                getFormData(fromJS(expectedCall))
+                expectedCall
             )
         })
     })

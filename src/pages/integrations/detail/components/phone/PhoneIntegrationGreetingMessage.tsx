@@ -15,19 +15,19 @@ import {
     Label,
     Row,
 } from 'reactstrap'
-
 import classnames from 'classnames'
 
 import PageHeader from '../../../../common/components/PageHeader'
 import {IntegrationType} from '../../../../../models/integration/types'
-
 import {notify} from '../../../../../state/notifications/actions'
-
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {countLines} from '../../../../../utils/string'
+import {getBase64} from '../../../../../utils/file'
 
-import {updatePhoneGreetingMessageConfiguration} from './actions'
-
+import {
+    UpdateGreetingMessagePayload,
+    updatePhoneGreetingMessageConfiguration,
+} from './actions'
 import PhoneIntegrationNavigation from './PhoneIntegrationNavigation'
 import css from './PhoneIntegrationVoicemail.less'
 
@@ -127,26 +127,28 @@ export function PhoneIntegrationGreetingMessage({
     const onSubmit = useCallback(
         async (event: React.FormEvent) => {
             event.preventDefault()
-            const formData = new FormData()
 
-            formData.append('voice_message_type', voiceMessageType as string)
-
-            if (voiceMessageType === GreetingMessageType.TextToSpeech) {
-                formData.append(
-                    'text_to_speech_content',
-                    textToSpeechContent as string
-                )
-            } else if (newVoiceRecordingFile) {
-                formData.append(
-                    'new_voice_recording_file',
-                    newVoiceRecordingFile
-                )
-            }
-
-            setIsLoading(true)
             try {
+                setIsLoading(true)
                 setError(null)
-                await updatePhoneGreetingMessageConfiguration(formData)
+
+                const payload: UpdateGreetingMessagePayload = {
+                    voice_message_type: voiceMessageType,
+                }
+
+                if (voiceMessageType === GreetingMessageType.TextToSpeech) {
+                    payload.text_to_speech_content = textToSpeechContent
+                } else if (newVoiceRecordingFile) {
+                    payload.new_voice_recording_file = await getBase64(
+                        newVoiceRecordingFile
+                    )
+                    payload.new_voice_recording_file_name =
+                        newVoiceRecordingFile.name
+                    payload.new_voice_recording_file_type =
+                        newVoiceRecordingFile.type
+                }
+
+                await updatePhoneGreetingMessageConfiguration(payload)
             } catch (error) {
                 setError(error)
             } finally {

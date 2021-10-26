@@ -520,7 +520,7 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with voice recordin
                 class="mt-2"
               >
                 <input
-                  accept=".mp3"
+                  accept="audio/mpeg"
                   class="d-none"
                   name="new_voice_recording_file"
                   type="file"

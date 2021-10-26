@@ -9,37 +9,62 @@ import * as constants from '../../../../../state/integrations/constants.js'
 import {IntegrationType} from '../../../../../models/integration/types'
 import client from '../../../../../models/api/resources'
 
+import {VoiceMailType} from './PhoneIntegrationVoicemail'
+import {GreetingMessageType} from './PhoneIntegrationGreetingMessage'
+
 enum VoiceMessagePaths {
     VoiceMail = 'voicemail-preferences',
     GreetingMessage = 'greeting-message',
 }
 
-export const updatePhoneVoicemailConfiguration = (formData: FormData) => (
+type UpdateVoiceMessagePayload = {
+    text_to_speech_content?: string | null
+    new_voice_recording_file?: string | null
+    new_voice_recording_file_name?: string | null
+    new_voice_recording_file_type?: string | null
+}
+
+export type UpdateVoicemailPayload = UpdateVoiceMessagePayload & {
+    voice_message_type: VoiceMailType | null
+    allow_to_leave_voicemail: boolean
+}
+
+export type UpdateGreetingMessagePayload = UpdateVoiceMessagePayload & {
+    voice_message_type: GreetingMessageType | null
+}
+
+type UpdatePayload = UpdateVoicemailPayload | UpdateGreetingMessagePayload
+
+export const updatePhoneVoicemailConfiguration = (
+    payload: UpdateVoicemailPayload
+) => (
     dispatch: StoreDispatch,
     getState: () => RootState
 ): Promise<ReturnType<StoreDispatch>> => {
     const path = VoiceMessagePaths.VoiceMail
 
-    return updatePhoneVoiceMessageConfiguration(formData, path)(
+    return updatePhoneVoiceMessageConfiguration(payload, path)(
         dispatch,
         getState
     )
 }
 
-export const updatePhoneGreetingMessageConfiguration = (formData: FormData) => (
+export const updatePhoneGreetingMessageConfiguration = (
+    payload: UpdateGreetingMessagePayload
+) => (
     dispatch: StoreDispatch,
     getState: () => RootState
 ): Promise<ReturnType<StoreDispatch>> => {
     const path = VoiceMessagePaths.GreetingMessage
 
-    return updatePhoneVoiceMessageConfiguration(formData, path)(
+    return updatePhoneVoiceMessageConfiguration(payload, path)(
         dispatch,
         getState
     )
 }
 
-export const updatePhoneVoiceMessageConfiguration = (
-    formData: FormData,
+const updatePhoneVoiceMessageConfiguration = (
+    payload: UpdatePayload,
     path: string
 ) => (
     dispatch: StoreDispatch,
@@ -51,7 +76,7 @@ export const updatePhoneVoiceMessageConfiguration = (
         .get('id') as number
 
     return client
-        .put(`/integrations/phone/${integrationId}/${path}/`, formData)
+        .put(`/integrations/phone/${integrationId}/${path}/`, payload)
         .then(
             () => {
                 void fetchIntegration(

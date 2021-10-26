@@ -1,7 +1,10 @@
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 
-import {updatePhoneVoicemailConfiguration} from '../actions'
+import {
+    updatePhoneVoicemailConfiguration,
+    UpdateVoicemailPayload,
+} from '../actions'
 import client from '../../../../../../models/api/resources'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
 import {IntegrationType} from '../../../../../../models/integration/types'
@@ -20,7 +23,7 @@ describe('updatePhoneVoicemailConfiguration', () => {
                 },
             }),
         } as RootState)
-    const formData = new FormData()
+    const payload = {} as UpdateVoicemailPayload
 
     beforeEach(() => {
         dispatch = jest.fn()
@@ -38,7 +41,7 @@ describe('updatePhoneVoicemailConfiguration', () => {
                 },
             })
 
-        await updatePhoneVoicemailConfiguration(formData)(dispatch, getState)
+        await updatePhoneVoicemailConfiguration(payload)(dispatch, getState)
 
         expect((dispatch as jest.Mock).mock.calls).toMatchSnapshot()
     })
@@ -53,7 +56,7 @@ describe('updatePhoneVoicemailConfiguration', () => {
         mockedServer
             .onPut('/integrations/phone/1/voicemail-preferences/')
             .reply(202, {})
-        await updatePhoneVoicemailConfiguration(formData)(dispatch, getState)
+        await updatePhoneVoicemailConfiguration(payload)(dispatch, getState)
 
         expect(fetchIntegration).toBeCalledWith('1', IntegrationType.Phone)
         expect(notify.mock.calls).toMatchSnapshot()

@@ -15,20 +15,20 @@ import {
     Label,
     Row,
 } from 'reactstrap'
-
 import classnames from 'classnames'
 
 import PageHeader from '../../../../common/components/PageHeader'
 import {IntegrationType} from '../../../../../models/integration/types'
 import BooleanField from '../../../../common/forms/BooleanField.js'
-
 import {notify} from '../../../../../state/notifications/actions'
-
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {countLines} from '../../../../../utils/string'
+import {getBase64} from '../../../../../utils/file'
 
-import {updatePhoneVoicemailConfiguration} from './actions'
-
+import {
+    updatePhoneVoicemailConfiguration,
+    UpdateVoicemailPayload,
+} from './actions'
 import PhoneIntegrationNavigation from './PhoneIntegrationNavigation'
 import css from './PhoneIntegrationVoicemail.less'
 
@@ -135,29 +135,29 @@ export function PhoneIntegrationVoicemail({
     const onSubmit = useCallback(
         async (event: React.FormEvent) => {
             event.preventDefault()
-            const formData = new FormData()
 
-            formData.append('voice_message_type', voicemailType as string)
-            formData.append(
-                'allow_to_leave_voicemail',
-                allowToLeaveVoicemail.toString()
-            )
-            if (voicemailType === VoiceMailType.TextToSpeech) {
-                formData.append(
-                    'text_to_speech_content',
-                    textToSpeechContent as string
-                )
-            } else if (newVoiceRecordingFile) {
-                formData.append(
-                    'new_voice_recording_file',
-                    newVoiceRecordingFile
-                )
-            }
-
-            setIsLoading(true)
             try {
+                setIsLoading(true)
                 setError(null)
-                await updatePhoneVoicemailConfiguration(formData)
+
+                const payload: UpdateVoicemailPayload = {
+                    voice_message_type: voicemailType,
+                    allow_to_leave_voicemail: allowToLeaveVoicemail,
+                }
+
+                if (voicemailType === VoiceMailType.TextToSpeech) {
+                    payload.text_to_speech_content = textToSpeechContent
+                } else if (newVoiceRecordingFile) {
+                    payload.new_voice_recording_file = await getBase64(
+                        newVoiceRecordingFile
+                    )
+                    payload.new_voice_recording_file_name =
+                        newVoiceRecordingFile.name
+                    payload.new_voice_recording_file_type =
+                        newVoiceRecordingFile.type
+                }
+
+                await updatePhoneVoicemailConfiguration(payload)
             } catch (error) {
                 setError(error)
             } finally {
@@ -293,7 +293,7 @@ export function PhoneIntegrationVoicemail({
                                                 className="d-none"
                                                 type="file"
                                                 name="new_voice_recording_file"
-                                                accept=".mp3"
+                                                accept="audio/mpeg"
                                                 ref={voiceRecordingFileInput}
                                                 onChange={
                                                     uploadVoiceRecordingFile
