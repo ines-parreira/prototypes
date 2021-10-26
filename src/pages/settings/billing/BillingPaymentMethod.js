@@ -14,7 +14,7 @@ import {
 import Loader from '../../common/components/Loader/Loader.tsx'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 
-export class BillingPaymentMethod extends Component {
+export class BillingPaymentMethodContainer extends Component {
     static propTypes = {
         currentPlan: PropTypes.object.isRequired,
         fetchPaymentMethod: PropTypes.func.isRequired,
@@ -266,4 +266,4 @@ export default connect(
         }
     },
     {fetchPaymentMethod, fetchCreditCard}
-)(BillingPaymentMethod)
+)(BillingPaymentMethodContainer)

@@ -26,6 +26,7 @@ module.exports = {
         ...commonRules,
         'no-prototype-builtins': ['off'],
         'no-async-promise-executor': ['off'],
+        'import/no-named-as-default': ['error'],
     },
     extends: commonConfigs,
     globals: {
@@ -44,7 +45,7 @@ module.exports = {
                 'import/default': ['off'],
                 'import/namespace': ['off'],
                 'import/no-named-as-default-member': ['off'],
-                'import/no-named-as-default': ['off'],
+                'import/no-named-as-default': ['error'],
                 '@typescript-eslint/no-unsafe-assignment': ['off'],
                 '@typescript-eslint/no-floating-promises': [
                     2,
@@ -68,6 +69,9 @@ module.exports = {
                         ],
                     },
                 ],
+                '@typescript-eslint/no-explicit-any': ['off'],
+                '@typescript-eslint/explicit-module-boundary-types': ['off'],
+                '@typescript-eslint/no-non-null-assertion': ['off'],
             },
             extends: [
                 ...commonConfigs,

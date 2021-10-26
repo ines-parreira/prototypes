@@ -2,13 +2,13 @@ import React from 'react'
 import {mount, shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {BillingPaymentMethod} from '../BillingPaymentMethod'
+import {BillingPaymentMethodContainer} from '../BillingPaymentMethod'
 
 describe('BillingPaymentMethod', () => {
     describe('Stripe', () => {
         it('should render a loader', () => {
             const component = mount(
-                <BillingPaymentMethod
+                <BillingPaymentMethodContainer
                     currentPlan={fromJS({})}
                     fetchPaymentMethod={() => Promise.resolve()}
                     fetchCreditCard={() => Promise.resolve()}
@@ -22,7 +22,7 @@ describe('BillingPaymentMethod', () => {
 
         it('should render a button', () => {
             const component = mount(
-                <BillingPaymentMethod
+                <BillingPaymentMethodContainer
                     currentPlan={fromJS({})}
                     fetchPaymentMethod={() => Promise.resolve()}
                     fetchCreditCard={() => Promise.resolve()}
@@ -38,7 +38,7 @@ describe('BillingPaymentMethod', () => {
 
         it('should render a disabled button', () => {
             const component = shallow(
-                <BillingPaymentMethod
+                <BillingPaymentMethodContainer
                     currentPlan={fromJS({})}
                     fetchPaymentMethod={() => Promise.resolve()}
                     fetchCreditCard={() => Promise.resolve()}
@@ -53,7 +53,7 @@ describe('BillingPaymentMethod', () => {
 
         it('should render a button to update a credit card', () => {
             const component = mount(
-                <BillingPaymentMethod
+                <BillingPaymentMethodContainer
                     currentPlan={fromJS({})}
                     fetchPaymentMethod={() => Promise.resolve()}
                     fetchCreditCard={() => Promise.resolve()}
@@ -76,7 +76,7 @@ describe('BillingPaymentMethod', () => {
     describe('Shopify', () => {
         it('should render an active status', () => {
             const component = mount(
-                <BillingPaymentMethod
+                <BillingPaymentMethodContainer
                     currentPlan={fromJS({})}
                     fetchPaymentMethod={() => Promise.resolve()}
                     fetchCreditCard={() => Promise.resolve()}
@@ -93,7 +93,7 @@ describe('BillingPaymentMethod', () => {
 
         it('should render a disabled button', () => {
             const component = shallow(
-                <BillingPaymentMethod
+                <BillingPaymentMethodContainer
                     currentPlan={fromJS({})}
                     fetchPaymentMethod={() => Promise.resolve()}
                     fetchCreditCard={() => Promise.resolve()}
@@ -110,7 +110,7 @@ describe('BillingPaymentMethod', () => {
 
         it('should render a button to reactivate billing', () => {
             const component = shallow(
-                <BillingPaymentMethod
+                <BillingPaymentMethodContainer
                     currentPlan={fromJS({})}
                     fetchPaymentMethod={() => Promise.resolve()}
                     fetchCreditCard={() => Promise.resolve()}
@@ -127,7 +127,7 @@ describe('BillingPaymentMethod', () => {
 
         it('should render a button', () => {
             const component = mount(
-                <BillingPaymentMethod
+                <BillingPaymentMethodContainer
                     currentPlan={fromJS({
                         amount: 12,
                         currencySign: '$',

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`BillingPaymentMethod Shopify should render a button 1`] = `
-<BillingPaymentMethod
+<BillingPaymentMethodContainer
   creditCard={Immutable.Map {}}
   currentPlan={
     Immutable.Map {
@@ -75,7 +75,7 @@ exports[`BillingPaymentMethod Shopify should render a button 1`] = `
       </div>
     </Card>
   </div>
-</BillingPaymentMethod>
+</BillingPaymentMethodContainer>
 `;
 
 exports[`BillingPaymentMethod Shopify should render a button to reactivate billing 1`] = `
@@ -169,7 +169,7 @@ exports[`BillingPaymentMethod Shopify should render a disabled button 1`] = `
 `;
 
 exports[`BillingPaymentMethod Shopify should render an active status 1`] = `
-<BillingPaymentMethod
+<BillingPaymentMethodContainer
   creditCard={Immutable.Map {}}
   currentPlan={Immutable.Map {}}
   fetchCreditCard={[Function]}
@@ -222,11 +222,11 @@ exports[`BillingPaymentMethod Shopify should render an active status 1`] = `
       </div>
     </Card>
   </div>
-</BillingPaymentMethod>
+</BillingPaymentMethodContainer>
 `;
 
 exports[`BillingPaymentMethod Stripe should render a button 1`] = `
-<BillingPaymentMethod
+<BillingPaymentMethodContainer
   creditCard={Immutable.Map {}}
   currentPlan={Immutable.Map {}}
   fetchCreditCard={[Function]}
@@ -368,11 +368,11 @@ exports[`BillingPaymentMethod Stripe should render a button 1`] = `
       </div>
     </Card>
   </div>
-</BillingPaymentMethod>
+</BillingPaymentMethodContainer>
 `;
 
 exports[`BillingPaymentMethod Stripe should render a button to update a credit card 1`] = `
-<BillingPaymentMethod
+<BillingPaymentMethodContainer
   creditCard={
     Immutable.Map {
       "brand": "Visa",
@@ -526,7 +526,7 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
       </div>
     </Card>
   </div>
-</BillingPaymentMethod>
+</BillingPaymentMethodContainer>
 `;
 
 exports[`BillingPaymentMethod Stripe should render a disabled button 1`] = `
@@ -632,7 +632,7 @@ exports[`BillingPaymentMethod Stripe should render a disabled button 1`] = `
 `;
 
 exports[`BillingPaymentMethod Stripe should render a loader 1`] = `
-<BillingPaymentMethod
+<BillingPaymentMethodContainer
   creditCard={Immutable.Map {}}
   currentPlan={Immutable.Map {}}
   fetchCreditCard={[Function]}
@@ -667,5 +667,5 @@ exports[`BillingPaymentMethod Stripe should render a loader 1`] = `
       </div>
     </div>
   </Loader>
-</BillingPaymentMethod>
+</BillingPaymentMethodContainer>
 `;
