@@ -2,6 +2,7 @@ import React from 'react'
 import {render} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 
+import {PhoneFunction} from '../../../../../../business/twilio'
 import PhoneIntegrationPreferences from '../PhoneIntegrationPreferences'
 
 describe('<PhoneIntegrationPreferences/>', () => {
@@ -18,6 +19,7 @@ describe('<PhoneIntegrationPreferences/>', () => {
             name: 'Fake phone integration',
             meta: {
                 emoji: '🍏',
+                function: PhoneFunction.STANDARD,
                 twilio: {
                     incoming_phone_number: {
                         friendly_name: '(415) 111-2222',
@@ -44,6 +46,22 @@ describe('<PhoneIntegrationPreferences/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
+            const {container} = render(
+                <PhoneIntegrationPreferences
+                    integration={integration}
+                    actions={{updateOrCreateIntegration, deleteIntegration}}
+                />
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render with IVR integration', () => {
+            integration = integration.setIn(
+                ['meta', 'function'],
+                PhoneFunction.IVR
+            )
+
             const {container} = render(
                 <PhoneIntegrationPreferences
                     integration={integration}

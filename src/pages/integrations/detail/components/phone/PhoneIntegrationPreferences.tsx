@@ -21,6 +21,7 @@ import {
 
 import classnames from 'classnames'
 
+import {PhoneFunction} from '../../../../../business/twilio'
 import PageHeader from '../../../../common/components/PageHeader'
 import {IntegrationType} from '../../../../../models/integration/types'
 import EmojiTextInput from '../../../../common/forms/EmojiTextInput/EmojiTextInput'
@@ -61,6 +62,7 @@ export default function PhoneIntegrationPreferences({
         voicemailOutsideBusinessHours,
         setVoicemailOutsideBusinessHours,
     ] = useState(true)
+    const isIvr = integration.getIn(['meta', 'function']) === PhoneFunction.IVR
 
     const onSubmit = useCallback(
         async (event: React.FormEvent) => {
@@ -282,6 +284,7 @@ export default function PhoneIntegrationPreferences({
                                     type="checkbox"
                                     label="Start recording automatically"
                                     value={recordInboundCalls}
+                                    disabled={isIvr}
                                     onChange={setRecordInboundCalls}
                                 />
                                 <BooleanField
@@ -304,6 +307,7 @@ export default function PhoneIntegrationPreferences({
                                     type="checkbox"
                                     label="Start recording automatically"
                                     value={recordOutboundCalls}
+                                    disabled={isIvr}
                                     onChange={setRecordOutboundCalls}
                                 />
                             </FormGroup>

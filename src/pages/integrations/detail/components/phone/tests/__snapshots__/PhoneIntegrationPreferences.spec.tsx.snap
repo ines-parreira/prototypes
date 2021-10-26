@@ -272,3 +272,278 @@ exports[`<PhoneIntegrationPreferences/> render() should render 1`] = `
   </div>
 </div>
 `;
+
+exports[`<PhoneIntegrationPreferences/> render() should render with IVR integration 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/phone"
+          >
+            Phone
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          🍏
+           
+          Fake phone integration
+          <small
+            class="text-muted ml-2"
+          >
+            (415) 111-2222
+          </small>
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <nav
+    class="navbar navbar"
+  >
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/phone/1/preferences"
+    >
+      Preferences
+    </a>
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/phone/1/voicemail"
+    >
+      Voicemail
+    </a>
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/phone/1/greeting-message"
+    >
+      Greeting Message
+    </a>
+  </nav>
+  <div
+    class="page-container container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-lg-6 col-xl-7"
+      >
+        <form
+          class=""
+        >
+          <div
+            class="form-group"
+          >
+            <label
+              class="control-label"
+              for="title"
+            >
+              Phone title
+            </label>
+            <div
+              class="container"
+            >
+              <div
+                class="picker emojiPicker"
+              >
+                <span
+                  class="icon"
+                >
+                  🍏
+                </span>
+              </div>
+              <input
+                class="input form-control"
+                id="title"
+                placeholder="Ex: Company Support Line"
+                required=""
+                tabindex="0"
+                type="text"
+                value="Fake phone integration"
+              />
+            </div>
+          </div>
+          <div
+            class="form-group"
+          >
+            <label
+              class="control-label"
+              for="phone-number"
+            >
+              Phone number
+            </label>
+            <div
+              class="input-group"
+            >
+              <input
+                class="form-control"
+                id="phone-number"
+                readonly=""
+                type="text"
+                value="(415) 111-2222"
+              />
+              <div
+                class="input-group-append"
+              >
+                <button
+                  class="copy-phone-number-button btn btn-secondary"
+                  data-clipboard-target="#phone-number"
+                  type="button"
+                >
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    file_copy
+                  </i>
+                  Copy
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="form-group"
+          >
+            <label
+              class="control-label"
+            >
+              Inbound calls
+            </label>
+            <div
+              class="text-muted form-check"
+              color=""
+            >
+              <label
+                class="control-label form-check-label"
+                for="id-input-4"
+              >
+                <input
+                  checked=""
+                  class="form-check-input form-check-input"
+                  disabled=""
+                  id="id-input-4"
+                  type="checkbox"
+                />
+                <span
+                  style="vertical-align: middle;"
+                >
+                  Start recording automatically
+                </span>
+              </label>
+            </div>
+            <div
+              class="form-check"
+              color=""
+            >
+              <label
+                class="control-label form-check-label"
+                for="id-input-5"
+              >
+                <input
+                  checked=""
+                  class="form-check-input form-check-input"
+                  id="id-input-5"
+                  type="checkbox"
+                />
+                <span
+                  style="vertical-align: middle;"
+                >
+                  Send calls to voicemail outside business hours
+                </span>
+              </label>
+            </div>
+            <small
+              class="pl-4 form-text text-muted"
+            >
+              If a customer calls outside of business hours, they will be immediately forwarded to voicemail.
+            </small>
+          </div>
+          <div
+            class="form-group"
+          >
+            <label
+              class="control-label"
+            >
+              Outbound calls
+            </label>
+            <div
+              class="text-muted form-check"
+              color=""
+            >
+              <label
+                class="control-label form-check-label"
+                for="id-input-6"
+              >
+                <input
+                  checked=""
+                  class="form-check-input form-check-input"
+                  disabled=""
+                  id="id-input-6"
+                  type="checkbox"
+                />
+                <span
+                  style="vertical-align: middle;"
+                >
+                  Start recording automatically
+                </span>
+              </label>
+            </div>
+          </div>
+          <div
+            class="mt-5"
+          >
+            <button
+              class="btn btn-success"
+              type="submit"
+            >
+              Save changes
+            </button>
+            <div
+              class="component d-inline-block float-right"
+              id=""
+            >
+              <button
+                class="btn btn-secondary"
+                id="confirm-button-1615240000000"
+                type="button"
+              >
+                <i
+                  class="material-icons mr-1 text-danger"
+                >
+                  delete
+                </i>
+                Delete phone number
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+`;
