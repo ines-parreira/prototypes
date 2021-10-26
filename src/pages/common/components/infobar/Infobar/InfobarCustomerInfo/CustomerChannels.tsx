@@ -73,7 +73,7 @@ export class CustomerChannels extends Component<Props> {
             let addressComponent = null
             const channelType = channel.get('type')
             const componentId = `address-copied-${channel.get('id') as number}`
-            let channelAddress = (channel.get('address') as string) || ''
+            const channelAddress = (channel.get('address') as string) || ''
 
             if (!channelAddress) {
                 return null
@@ -83,20 +83,6 @@ export class CustomerChannels extends Component<Props> {
                 case TicketChannel.Email:
                     addressComponent = (
                         <a id={componentId} href={`mailto:${channelAddress}`}>
-                            {channelAddress}
-                        </a>
-                    )
-                    break
-                case TicketChannel.Twitter:
-                    // Display the twitter handle instead of the address
-                    channelAddress = channel.getIn(['customer', 'name']) || ''
-                    addressComponent = (
-                        <a
-                            id={componentId}
-                            href={`https://twitter.com/${channelAddress}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
                             {channelAddress}
                         </a>
                     )

@@ -21,12 +21,11 @@ const defaultContent = {
     name: '',
     note: '',
     email: [{address: ''}],
-    twitter: [{address: ''}],
     phone: [{address: ''}],
     channels: [],
 }
 
-const updatableChannels = ['email', 'twitter', 'phone']
+const updatableChannels = ['email', 'phone']
 
 class CustomerForm extends React.Component {
     constructor(props) {
@@ -95,7 +94,7 @@ class CustomerForm extends React.Component {
         }
 
         // divide channels by their types in separated groups
-        // ex: email, twitter, etc.
+        // ex: email, phone, etc.
         updatableChannels.forEach((updatableChannel) => {
             doc[updatableChannel] = channels.filter(
                 (channel) => channel.type === updatableChannel
@@ -204,6 +203,7 @@ class CustomerForm extends React.Component {
                         required
                         value={this.state.name}
                         onChange={(name) => this._updateField({name})}
+                        error={this.state.errors.name}
                     />
                     <InputField
                         type="textarea"
@@ -239,15 +239,6 @@ class CustomerForm extends React.Component {
                         fields={this.state.phone}
                         onChange={(phone) => this._updateField({phone})}
                         errors={this.state.errors.phone}
-                    />
-                    <CustomerChannelFieldArray
-                        name="twitter"
-                        label="Twitter accounts"
-                        placeholder="johnSnow"
-                        addLabel="Add a Twitter account"
-                        meta={{}}
-                        fields={this.state.twitter}
-                        onChange={(twitter) => this._updateField({twitter})}
                     />
                 </div>
 
