@@ -70,5 +70,7 @@ export type ProductCardDetails = {
     variantTitle?: string
     price?: string
     productTitle?: string
+    productId: number
+    variantId: number
     currency?: string
 }

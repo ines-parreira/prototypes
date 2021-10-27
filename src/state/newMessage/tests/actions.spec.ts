@@ -1393,6 +1393,8 @@ describe('actions', () => {
             price: '1.00',
             productTitle: 'bar',
             variantTitle: 'baz',
+            productId: 1,
+            variantId: 2,
         }
         it('should dispatch NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS when successfully adding attachments', (done) => {
             mockedUploadFiles.mockReturnValue(Promise.resolve([]))

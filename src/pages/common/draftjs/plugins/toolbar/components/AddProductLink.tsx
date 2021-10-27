@@ -31,8 +31,12 @@ import {getIconFromType} from '../../../../../../state/integrations/helpers'
 
 import {UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS} from '../../../../../../config/integrations/shopify'
 
-import Popover from './ButtonPopover'
+import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker.js'
+import {SegmentEvent} from '../../../../../../store/middlewares/types/segmentTracker'
+import {getCurrentAccountState} from '../../../../../../state/currentAccount/selectors'
+
 import css from './AddProductLink.less'
+import Popover from './ButtonPopover'
 
 type OwnProps = {
     getEditorState: EditorStateGetter
@@ -48,6 +52,7 @@ export function AddProductLink({
     addProductCardAttachments,
     newMessageChannel,
     isNewMessagePublic,
+    currentAccount,
 }: ConnectedProps<typeof connector> & OwnProps) {
     const [isOpen, setOpen] = useState(false)
     const [pickedShopifyIntegration, setPickedShopifyIntegration] = useState(
@@ -60,13 +65,18 @@ export function AddProductLink({
 
     const handlePopoverOpen = useCallback(() => {
         setOpen(true)
+        segmentTracker.logEvent(SegmentEvent.ShopifyInsertProductLinkOpen, {
+            account_id: currentAccount?.get('domain'),
+            channel: newMessageChannel,
+            ticket: ticket?.get('id') || 'new',
+        })
     }, [setOpen])
 
     const handlePopoverClose = useCallback(() => {
         setOpen(false)
     }, [setOpen])
 
-    const handleIntegrationClicked = (index: number) => {
+    const pickIntegration = (index: number) => {
         const integrationRow = integrations.toArray()[index] as Map<any, any>
 
         setPickedShopifyIntegration(
@@ -117,6 +127,17 @@ export function AddProductLink({
                 )
                 setEditorState(newEditorState)
             }
+
+            segmentTracker.logEvent(
+                SegmentEvent.ShopifyInsertProductLinkAdded,
+                {
+                    account_id: currentAccount?.get('domain'),
+                    channel: newMessageChannel,
+                    product_id: productCardDetails.productId,
+                    variant_id: productCardDetails.variantId,
+                    ticket: ticket?.get('id') || 'new',
+                }
+            )
             setOpen(false)
         },
         [
@@ -131,7 +152,7 @@ export function AddProductLink({
     useEffect(() => {
         const integrationsArr = integrations.toArray()
         if (!pickedShopifyIntegration && integrationsArr.length === 1) {
-            setPickedShopifyIntegration(integrationsArr[0])
+            pickIntegration(0)
         }
         shortcutManager.bind('AddProductLink', {
             CLOSE_POPOVER: {
@@ -165,7 +186,7 @@ export function AddProductLink({
                                     action
                                     onClick={(event) => {
                                         event.preventDefault()
-                                        handleIntegrationClicked(index!)
+                                        pickIntegration(index!)
                                     }}
                                 >
                                     <div
@@ -212,6 +233,7 @@ export function AddProductLink({
 
 const connector = connect(
     (state: RootState) => ({
+        currentAccount: getCurrentAccountState(state),
         ticket: state.ticket,
         newMessageChannel: getNewMessageChannel(state),
         isNewMessagePublic: isNewMessagePublic(state),

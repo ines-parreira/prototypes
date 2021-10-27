@@ -145,8 +145,7 @@ export class Toolbar extends Component<Props, State> {
                     </div>
 
                     {this._isDisplayedAction(ActionName.ProductPicker) &&
-                    integrations.size > 0 &&
-                    false /* todo(@maximelandry): remove the false flag when making it available to users */ && (
+                        integrations.size > 0 && (
                             <div className={css.separatorContainer}>
                                 <div className={css.verticalSeparator}></div>
                                 <AddProductLink

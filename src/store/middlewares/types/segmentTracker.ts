@@ -39,6 +39,8 @@ export enum SegmentEvent {
     ShopifyCreateOrderTaxesPopoverClose = 'shopify/create-order/taxes-popover/close',
     ShopifyCreateOrderTaxesPopoverOpen = 'shopify/create-order/taxes-popover/open',
     ShopifyDuplicateOrderCancel = 'shopify/duplicate-order/cancel',
+    ShopifyInsertProductLinkOpen = 'shopify/insert-product-link/open',
+    ShopifyInsertProductLinkAdded = 'shopify/insert-product-link/product-link-added',
     ShopifyEditOrderCancel = 'shopify/edit-order/cancel',
     ShopifyEditOrderAddressModalOpen = 'shopify/edit-order-address/modal-opened',
     ShopifyEditOrderAddressAddressDropdownOpen = 'shopify/edit-order-address/customer-address-dropdown-opened',

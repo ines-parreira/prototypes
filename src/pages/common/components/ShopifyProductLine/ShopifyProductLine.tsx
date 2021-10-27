@@ -114,7 +114,6 @@ export default function ShopifyProductLine({
     const handleProductClick = useCallback(
         (index: number) => {
             const result = shopifyProducts[index]
-
             const variants = result?.data?.variants || []
 
             if (variants.length === 1 && result) {
@@ -128,6 +127,8 @@ export default function ShopifyProductLine({
                         'shop_domain'
                     )}/products/${result?.data?.handle || ''}`,
                     productTitle: result?.data?.title,
+                    productId: result?.data?.id,
+                    variantId: result?.data?.variants?.[0]?.id,
                 } as ProductCardDetails
 
                 productClicked(productCardDetails)
@@ -172,6 +173,8 @@ export default function ShopifyProductLine({
                 productTitle: clickedResult?.data?.title,
                 variantTitle: variantTitle,
                 fullProductTitle: fullProductTitle,
+                productId: clickedResult?.data?.id,
+                variantId: result?.id,
             } as ProductCardDetails
 
             productClicked(variantCardDetails)
