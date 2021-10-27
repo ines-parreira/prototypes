@@ -20,9 +20,14 @@ import PageHeader from '../../../common/components/PageHeader'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 
 import {notify} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
+import {
+    Notification,
+    NotificationStatus,
+} from '../../../../state/notifications/types'
 
 import {HELP_CENTER_BASE_PATH} from '../constants'
+
+import {Components} from '../../../../../../../rest_api/help_center_api/client.generated'
 
 import CsvColumnMatching from './Imports/components/CsvColumnMatching/CsvColumnMatching'
 
@@ -45,6 +50,32 @@ const urlToInstallation = (
     )[0]
 
     return `${helpCenterRootPath}${helpCenterId}/installation`
+}
+
+const notifyPartialImport = (
+    reportPartial: Components.Schemas.ProcessCsvResponsePartialDto
+): Notification => {
+    const {
+        num_erroneous_csv_rows,
+        num_imported_csv_rows,
+        erroneous_csv_rows_file_url: reportUrl,
+    } = reportPartial
+
+    const totalRows = num_imported_csv_rows + num_erroneous_csv_rows
+
+    const linkToFile =
+        reportUrl === undefined
+            ? ''
+            : ` <a href="${reportUrl}" target="_blank">Download a file with just the missing articles</a>, correct them and try uploading again to complete your import.`
+
+    return {
+        status: NotificationStatus.Error,
+        message: `\
+${num_imported_csv_rows}/${totalRows} articles successfully imported. \
+There was an error importing ${num_erroneous_csv_rows} articles.${linkToFile}`,
+        noAutoDismiss: true,
+        allowHTML: true,
+    }
 }
 
 export const HelpCenterImportCsvColumnMatchingView = (): JSX.Element | null => {
@@ -183,20 +214,7 @@ export const HelpCenterImportCsvColumnMatchingView = (): JSX.Element | null => {
 
                     return history.push(`${baseHelpCenterPath}/articles`)
                 } else if (importPartial(report)) {
-                    const {
-                        num_erroneous_csv_rows,
-                        num_imported_csv_rows,
-                    } = report
-
-                    const totalRows =
-                        num_imported_csv_rows + num_erroneous_csv_rows
-
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message: `${num_imported_csv_rows}/${totalRows} articles successfully imported. There was an error importing ${num_erroneous_csv_rows} articles. Download a file with just the missing articles, correct them and try uploading again to complete your import.`,
-                        })
-                    )
+                    void dispatch(notify(notifyPartialImport(report)))
 
                     return history.push(`${baseHelpCenterPath}/installation`)
                 } else if (importFailed(report)) {
