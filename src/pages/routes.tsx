@@ -56,6 +56,7 @@ import TicketAssignment from './settings/ticketAssignment/index.js'
 
 import withFeaturePaywall from './common/utils/withFeaturePaywall'
 import OnboardingContent from './onboarding/OnboardingContent'
+import ReferralContent from './referral/ReferralContent'
 import SelfServicePreferencesContainer from './settings/selfService/components/PreferencesView'
 import SelfServiceCancellationsPolicyContainer from './settings/selfService/components/CancellationsPolicyView'
 import SelfServiceReturnsPolicyContainer from './settings/selfService/components/ReturnsPolicyView'
@@ -117,6 +118,14 @@ export function AppRoutes({match: {path}}: RouteComponentProps) {
                 exact
                 render={appRender({
                     content: OnboardingContent,
+                    navbar: TicketNavbar,
+                })}
+            />
+            <Route
+                path={`${path}/referral-program`}
+                exact
+                render={appRender({
+                    content: ReferralContent,
                     navbar: TicketNavbar,
                 })}
             />
