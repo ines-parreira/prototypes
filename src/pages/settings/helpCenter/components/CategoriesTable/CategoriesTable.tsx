@@ -19,12 +19,14 @@ export type CategoriesTableProps = Pick<
 > & {
     categories?: Category[]
     onReorderFinish?: (categories: Category[]) => void
+    shouldRenderEmptyUncategorizedRow: boolean
 }
 
 export const CategoriesTable = ({
     categories = [],
     onReorderFinish,
     renderArticleList,
+    shouldRenderEmptyUncategorizedRow,
 }: CategoriesTableProps): JSX.Element => {
     const [records, setRecords] = useState(
         _chain(categories).sortBy(['position']).value()
@@ -69,6 +71,9 @@ export const CategoriesTable = ({
             <TableBody className={css['main-table']}>
                 <CategoriesTableRow
                     categoryId={-1}
+                    shouldRenderRowWithoutArticles={
+                        shouldRenderEmptyUncategorizedRow
+                    }
                     title="Uncategorized articles"
                     renderArticleList={renderArticleList}
                     tooltip="Uncategorized articles will always be the last ones on the list in the live Help Center."

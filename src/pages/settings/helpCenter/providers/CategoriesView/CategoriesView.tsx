@@ -13,6 +13,9 @@ import {
 import {CATEGORIES_PER_PAGE} from '../../constants'
 import {useCategoriesActions} from '../../hooks/useCategoriesActions'
 import {useHelpCenterCategories} from '../../hooks/useHelpcenterCategories'
+import {ImportSection} from '../../components/Imports/components/ImportSection'
+
+import css from './CategoriesView.less'
 
 type Props = Pick<CategoriesTableProps, 'renderArticleList'> & {
     helpCenter: HelpCenter
@@ -79,6 +82,8 @@ export const CategoriesViews = ({
                         <i className="material-icons mr-1">list</i>
                         Create Category
                     </Button>
+
+                    <ImportSection className={css.importSection} />
                 </Container>
             )}
             <InfiniteScroll
@@ -87,6 +92,7 @@ export const CategoriesViews = ({
                 loaderSize={20}
             >
                 <CategoriesTable
+                    shouldRenderEmptyUncategorizedRow={!showCreateFirst}
                     categories={categories}
                     renderArticleList={renderArticleList}
                     onReorderFinish={handleOnReorder}

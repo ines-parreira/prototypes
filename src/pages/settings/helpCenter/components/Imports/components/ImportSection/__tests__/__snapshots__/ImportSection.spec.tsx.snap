@@ -6,7 +6,7 @@ exports[`<ImportSection /> renders import modal 1`] = `
     Import articles from another Help Center
   </h4>
   <p>
-    You can import CSV files with your existing articles of another Help Center.
+    You can import your existing articles from another help center solution we support or by uploading a CSV.
   </p>
   <button
     class="btn btn-secondary"

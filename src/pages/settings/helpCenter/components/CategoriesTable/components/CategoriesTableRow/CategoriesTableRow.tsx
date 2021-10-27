@@ -36,6 +36,7 @@ type BaseCategoriesTableRowProps = {
         categoryId: number,
         articles: HelpCenterArticle[]
     ) => ReactElement
+    shouldRenderRowWithoutArticles?: boolean
 }
 
 type FixedCategoriesTableRowProps = {
@@ -160,8 +161,9 @@ export const CategoriesTableRow = ({
     renderArticleList,
     title,
     tooltip,
+    shouldRenderRowWithoutArticles = true,
     ...props
-}: CategoriesTableRowProps): JSX.Element => {
+}: CategoriesTableRowProps): JSX.Element | null => {
     const [isOpen, setOpen] = useState(false)
     const {articles, isLoading} = useArticles(categoryId)
     const count = useMemo(() => articles.length, [articles])
@@ -219,6 +221,10 @@ export const CategoriesTableRow = ({
     )
 
     const shouldCollapseRow = isOpen && articles.length > 0
+
+    if (!shouldRenderRowWithoutArticles && articles.length === 0) {
+        return null
+    }
 
     return (
         <>

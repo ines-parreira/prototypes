@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import React, {ChangeEvent, useRef, useState} from 'react'
+import React, {ChangeEvent, useRef, useState, useEffect} from 'react'
 import {useSelector} from 'react-redux'
 import {Link, useHistory} from 'react-router-dom'
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
@@ -20,6 +20,9 @@ import {uploadFiles} from '../../../../../../../utils'
 import {useHelpcenterApi} from '../../../../hooks/useHelpcenterApi'
 
 import {saveFileAsDownloaded} from '../../../../../../../utils/file'
+
+import zendeskLogo from '../../../../../../../../img/integrations/zendesk.png'
+import helpdocsLogo from '../../../../../../../../img/integrations/helpdocs.png'
 
 import css from './ImportSection.less'
 
@@ -47,13 +50,29 @@ type ModalState =
     | ModalStateFileSelected
     | ModalStateImporting
 
-export const ImportSection = (): JSX.Element | null => {
+interface ImportSectionProps {
+    className?: string
+}
+
+export const ImportSection = ({
+    className,
+}: ImportSectionProps): JSX.Element | null => {
     const [modalState, setModalState] = useState<ModalState | null>(null)
     const hiddenFileInputRef = useRef<HTMLInputElement>(null)
     const dispatch = useAppDispatch()
     const history = useHistory()
     const helpCenter = useSelector(getCurrentHelpCenter)
     const {isReady, client} = useHelpcenterApi()
+
+    useEffect(() => {
+        const script = document.createElement('script')
+        script.src = 'https://widget.hotswap.app/js/hotswap.js'
+        document.head.appendChild(script)
+
+        return () => {
+            document.head.removeChild(script)
+        }
+    }, [])
 
     if (helpCenter === null || !isReady || client === undefined) {
         return null
@@ -140,13 +159,28 @@ export const ImportSection = (): JSX.Element | null => {
 
     const closeModal = () => setModalState(null)
 
+    const shouldShowModalFooter =
+        modalState?.state === 'FILE_SELECTED' && !fileIsTooBig(modalState?.file)
+
+    const handleAnotherProviderImportClick = async () => {
+        if (!window.Hotswap) {
+            return
+        }
+
+        closeModal()
+        const {
+            data: {token},
+        } = await client.createHotswapSessionToken(helpCenter.id)
+        window.Hotswap({token}).open()
+    }
+
     return (
-        <section>
+        <section className={className}>
             <h4>Import articles from another Help Center</h4>
 
             <p>
-                You can import CSV files with your existing articles of another
-                Help Center.
+                You can import your existing articles from another help center
+                solution we support or by uploading a CSV.
             </p>
 
             <Button onClick={() => setModalState({state: 'NO_FILE_SELECTED'})}>
@@ -154,7 +188,12 @@ export const ImportSection = (): JSX.Element | null => {
                 Articles
             </Button>
 
-            <Modal isOpen={modalState !== null} onClose={closeModal} centered>
+            <Modal
+                size="lg"
+                isOpen={modalState !== null}
+                onClose={closeModal}
+                centered
+            >
                 <ModalHeader
                     toggle={
                         modalState?.state !== 'IMPORTING'
@@ -162,7 +201,7 @@ export const ImportSection = (): JSX.Element | null => {
                             : undefined
                     }
                 >
-                    Import articles from CSV
+                    Import articles
                 </ModalHeader>
                 <ModalBody>
                     {modalState?.state === 'IMPORTING' ? (
@@ -207,29 +246,67 @@ export const ImportSection = (): JSX.Element | null => {
                                     ) : null}
                                 </div>
                             ) : (
-                                <div
-                                    className={css.fileDropArea}
-                                    onClick={openFileDialog}
-                                    onDrop={handleFileDropped}
-                                    onDragOver={(e) => e.preventDefault()}
-                                >
-                                    <i
-                                        className={classNames(
-                                            'material-icons',
-                                            css.modalCloudIcon
-                                        )}
+                                <div className={css.dropAreasContainer}>
+                                    <div
+                                        className={css.fileDropArea}
+                                        onClick={openFileDialog}
+                                        onDrop={handleFileDropped}
+                                        onDragOver={(e) => e.preventDefault()}
                                     >
-                                        cloud_upload
-                                    </i>
-                                    Drop your CSV here, or{' '}
-                                    <a
-                                        href=""
-                                        onClick={(ev) => {
-                                            ev.preventDefault()
-                                        }}
+                                        <i
+                                            className={classNames(
+                                                'material-icons',
+                                                css.modalCloudIcon
+                                            )}
+                                        >
+                                            cloud_upload
+                                        </i>
+
+                                        <b className={css.dropAreaText}>
+                                            Drop your CSV here, or{' '}
+                                            <a
+                                                href=""
+                                                onClick={(ev) => {
+                                                    ev.preventDefault()
+                                                }}
+                                            >
+                                                browse
+                                            </a>
+                                        </b>
+                                    </div>
+                                    <div
+                                        className={css.fileDropArea}
+                                        onClick={
+                                            handleAnotherProviderImportClick
+                                        }
                                     >
-                                        browse
-                                    </a>
+                                        <span
+                                            className={
+                                                css.supportedProvidersText
+                                            }
+                                        >
+                                            Currently supported providers:
+                                        </span>
+                                        <div
+                                            className={
+                                                css.providersLogosContainer
+                                            }
+                                        >
+                                            <img
+                                                src={helpdocsLogo}
+                                                alt="Helpdocs"
+                                                className={css.providerLogo}
+                                            />
+                                            <img
+                                                src={zendeskLogo}
+                                                alt="Zendesk"
+                                                className={css.providerLogo}
+                                            />
+                                        </div>
+                                        <b className={css.dropAreaText}>
+                                            Import from another provider
+                                        </b>
+                                    </div>
                                 </div>
                             )}
 
@@ -259,25 +336,16 @@ export const ImportSection = (): JSX.Element | null => {
                         </div>
                     )}
                 </ModalBody>
-                <ModalFooter className={css.modalFooter}>
-                    <Button
-                        color="secondary"
-                        disabled={modalState?.state === 'IMPORTING'}
-                        onClick={closeModal}
-                    >
-                        Cancel
-                    </Button>
-                    <Button
-                        color="primary"
-                        disabled={
-                            modalState?.state !== 'FILE_SELECTED' ||
-                            fileIsTooBig(modalState.file)
-                        }
-                        onClick={handleImport}
-                    >
-                        Import File
-                    </Button>
-                </ModalFooter>
+                {shouldShowModalFooter && (
+                    <ModalFooter className={css.modalFooter}>
+                        <Button color="secondary" onClick={closeModal}>
+                            Cancel
+                        </Button>
+                        <Button color="primary" onClick={handleImport}>
+                            Import File
+                        </Button>
+                    </ModalFooter>
+                )}
             </Modal>
         </section>
     )
