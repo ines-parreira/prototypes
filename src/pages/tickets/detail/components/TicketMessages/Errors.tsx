@@ -26,6 +26,9 @@ const Errors = (props: Props) => {
         message.last_sending_error.error === 'Review already has a comment'
     ) {
         message.is_retriable = false
+        message.last_sending_error.error = `This comment can not be sent as this review has already received a comment from your account.
+         Check out Yotpo's <a style='color:#d6273a;' rel='noopener noreferrer' target='_blank' href='https://www.yotpo.com/blog/comments-complete-guide/'><b>Comment guide</b></a>
+         for more information.`
     }
 
     return (
