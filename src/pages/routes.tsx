@@ -475,9 +475,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/ticket-assignment`}
                 exact
                 render={appRender({
-                    content: withFeaturePaywall(AccountFeature.AutoAssignment)(
-                        withUserRoleRequired(TicketAssignment, ADMIN_ROLE)
-                    ),
+                    content: withUserRoleRequired(TicketAssignment, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -726,9 +724,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: withFeaturePaywall(AccountFeature.Teams)(
-                        withUserRoleRequired(TeamsList as any, ADMIN_ROLE)
-                    ),
+                    content: withUserRoleRequired(TeamsList as any, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -736,9 +732,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/create`}
                 exact
                 render={appRender({
-                    content: withFeaturePaywall(AccountFeature.Teams)(
-                        withUserRoleRequired(TeamsForm, ADMIN_ROLE)
-                    ),
+                    content: withUserRoleRequired(TeamsForm, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -746,9 +740,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:id`}
                 exact
                 render={appRender({
-                    content: withFeaturePaywall(AccountFeature.Teams)(
-                        withUserRoleRequired(TeamsForm, ADMIN_ROLE)
-                    ),
+                    content: withUserRoleRequired(TeamsForm, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -756,9 +748,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:id/members`}
                 exact
                 render={appRender({
-                    content: withFeaturePaywall(AccountFeature.Teams)(
-                        withUserRoleRequired(List, ADMIN_ROLE)
-                    ),
+                    content: withUserRoleRequired(List, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
             />

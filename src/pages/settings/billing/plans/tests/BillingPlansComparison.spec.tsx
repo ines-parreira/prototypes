@@ -211,9 +211,10 @@ describe('<BillingPlansComparison />', () => {
             <Provider
                 store={mockStore({
                     ...defaultState,
-                    currentAccount: defaultState.currentAccount
-                        ?.setIn(['current_subscription', 'plan'], legacyPlan.id)
-                        .setIn(['meta', 'has_legacy_features'], true),
+                    currentAccount: defaultState.currentAccount?.setIn(
+                        ['current_subscription', 'plan'],
+                        legacyPlan.id
+                    ),
                     billing: fromJS({
                         ...billingState,
                         plans: {

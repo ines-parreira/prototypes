@@ -7,7 +7,6 @@ import {user} from '../../../../../fixtures/users'
 import {BASIC_AGENT_ROLE} from '../../../../../config/user'
 import {SYSTEM_VIEW_CATEGORY} from '../../../../../constants/view'
 import {ViewVisibility} from '../../../../../models/view/types'
-import {AccountFeature} from '../../../../../state/currentAccount/types'
 
 const minProps = {
     currentUser: fromJS(user),
@@ -24,9 +23,6 @@ const minProps = {
             '2': {id: 2, name: 'Team 2'},
             '3': {id: 3, name: 'Team 3'},
         },
-    }),
-    currentAccount: fromJS({
-        features: fromJS({[AccountFeature.ViewSharing]: {enabled: true}}),
     }),
     hasViewSharingFeature: true,
     dispatch: jest.fn(),

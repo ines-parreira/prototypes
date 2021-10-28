@@ -14,11 +14,13 @@ import {
     proPlan,
 } from '../../../../../fixtures/subscriptionPlan'
 import {account} from '../../../../../fixtures/account'
-import {RootState, StoreDispatch} from '../../../../../state/types'
-import BillingPlanCard from '../BillingPlanCard'
 import {Plan} from '../../../../../models/billing/types'
+import {RootState, StoreDispatch} from '../../../../../state/types'
+import * as billingSelectors from '../../../../../state/billing/selectors'
+import BillingPlanCard from '../BillingPlanCard'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
 
 describe('<BillingPlanCard />', () => {
     const defaultState: Partial<RootState> = {
@@ -51,22 +53,15 @@ describe('<BillingPlanCard />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should render the legacy badge when account is current and account has legacy features', () => {
+    it('should render the legacy badge for legacy plan when the account is current', () => {
+        const hasLegacyPlanSpy = jest.spyOn(billingSelectors, 'hasLegacyPlan')
+        hasLegacyPlanSpy.mockImplementation(() => true)
+
         const {container} = render(
-            <Provider
-                store={mockStore({
-                    ...defaultState,
-                    currentAccount: fromJS({
-                        ...account,
-                        meta: {
-                            has_legacy_features: true,
-                        },
-                    }),
-                })}
-            >
+            <Provider store={mockStore(defaultState)}>
                 <BillingPlanCard
                     {...minProps}
-                    plan={{...basicPlan, currencySign: '$'}}
+                    plan={{...legacyPlan, currencySign: '$'}}
                     isCurrentPlan
                 />
             </Provider>

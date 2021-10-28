@@ -50,13 +50,30 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced plan 1`] =
         <span>
           <span
             class="billableTickets"
-            id="billable-ticket-label-3"
+            id="billable-ticket-label-42"
           >
-            3000
-             billable tickets
+            3,000
+             
+            billable tickets
           </span>
            
           included
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            thumb_up
+          </i>
+        </span>
+        <span>
+          Facebook, Messenger, Instagram & DMs
         </span>
       </li>
       <li
@@ -72,7 +89,27 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced plan 1`] =
           </i>
         </span>
         <span>
-          Social media & chat
+          Live chat
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            phone
+          </i>
+        </span>
+        <span>
+          <b>
+            10
+          </b>
+           Phone number
+          s
         </span>
       </li>
       <li
@@ -100,6 +137,22 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced plan 1`] =
           <i
             class="icon material-icons"
           >
+            insert_emoticon
+          </i>
+        </span>
+        <span>
+          Satisfaction surveys
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
             web_asset
           </i>
         </span>
@@ -109,7 +162,7 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced plan 1`] =
              
             <span
               class="underline"
-              id="help-center-label-4"
+              id="help-center-label-42"
             >
               Help centers
             </span>
@@ -129,121 +182,10 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced plan 1`] =
           </i>
         </span>
         <span>
-          Full onboarding
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon"
-            style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
-          />
-        </span>
-        <span>
-          Magento integration
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            supervised_user_circle
-          </i>
-        </span>
-        <span>
-          User permissions
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            insert_emoticon
-          </i>
-        </span>
-        <span>
-          Satisfaction surveys
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            chat
-          </i>
-        </span>
-        <span>
-          Chat campaigns
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            phone
-          </i>
-        </span>
-        <span>
           <b>
-            10
+            Full
           </b>
-           Phone numbers
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            people_outline
-          </i>
-        </span>
-        <span>
-          Team Management
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            view_carousel
-          </i>
-        </span>
-        <span>
-          View sharing
+           onboarding
         </span>
       </li>
       <li
@@ -260,6 +202,21 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced plan 1`] =
         </span>
         <span>
           Revenue statistics
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon"
+            style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+          />
+        </span>
+        <span>
+          Magento integration
         </span>
       </li>
       <li
@@ -356,13 +313,30 @@ exports[`<BillingPlanCard /> should render plan card for the Basic plan 1`] = `
         <span>
           <span
             class="billableTickets"
-            id="billable-ticket-label-1"
+            id="billable-ticket-label-42"
           >
             350
-             billable tickets
+             
+            billable tickets
           </span>
            
           included
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            thumb_up
+          </i>
+        </span>
+        <span>
+          Facebook, Messenger, Instagram & DMs
         </span>
       </li>
       <li
@@ -378,7 +352,26 @@ exports[`<BillingPlanCard /> should render plan card for the Basic plan 1`] = `
           </i>
         </span>
         <span>
-          Social media & chat
+          Live chat
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            phone
+          </i>
+        </span>
+        <span>
+          <b>
+            1
+          </b>
+           Phone number
         </span>
       </li>
       <li
@@ -395,6 +388,22 @@ exports[`<BillingPlanCard /> should render plan card for the Basic plan 1`] = `
         </span>
         <span>
           Macros and rules
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            insert_emoticon
+          </i>
+        </span>
+        <span>
+          Satisfaction surveys
         </span>
       </li>
       <li
@@ -415,7 +424,7 @@ exports[`<BillingPlanCard /> should render plan card for the Basic plan 1`] = `
              
             <span
               class="underline"
-              id="help-center-label-2"
+              id="help-center-label-42"
             >
               Help centers
             </span>
@@ -435,118 +444,10 @@ exports[`<BillingPlanCard /> should render plan card for the Basic plan 1`] = `
           </i>
         </span>
         <span>
-          Self onboarding
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon"
-            style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
-          />
-        </span>
-        <span>
-          Magento integration
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            supervised_user_circle
-          </i>
-        </span>
-        <span>
-          User permissions
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            insert_emoticon
-          </i>
-        </span>
-        <span>
-          Satisfaction surveys
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            chat
-          </i>
-        </span>
-        <span>
-          Chat campaigns
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            phone
-          </i>
-        </span>
-        <span>
-          Phone
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            people_outline
-          </i>
-        </span>
-        <span>
-          Team Management
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            view_carousel
-          </i>
-        </span>
-        <span>
-          View sharing
+          <b>
+            Self
+          </b>
+           onboarding
         </span>
       </li>
       <li
@@ -563,6 +464,21 @@ exports[`<BillingPlanCard /> should render plan card for the Basic plan 1`] = `
         </span>
         <span>
           Revenue statistics
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon"
+            style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+          />
+        </span>
+        <span>
+          Magento integration
         </span>
       </li>
       <li
@@ -659,13 +575,30 @@ exports[`<BillingPlanCard /> should render plan card for the Custom plan 1`] = `
         <span>
           <span
             class="billableTickets"
-            id="billable-ticket-label-8"
+            id="billable-ticket-label-42"
           >
-            2000
-             billable tickets
+            2,000
+             
+            billable tickets
           </span>
            
           included
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            thumb_up
+          </i>
+        </span>
+        <span>
+          Facebook, Messenger, Instagram & DMs
         </span>
       </li>
       <li
@@ -681,7 +614,27 @@ exports[`<BillingPlanCard /> should render plan card for the Custom plan 1`] = `
           </i>
         </span>
         <span>
-          Social media & chat
+          Live chat
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            phone
+          </i>
+        </span>
+        <span>
+          <b>
+            50
+          </b>
+           Phone number
+          s
         </span>
       </li>
       <li
@@ -709,6 +662,22 @@ exports[`<BillingPlanCard /> should render plan card for the Custom plan 1`] = `
           <i
             class="icon material-icons"
           >
+            insert_emoticon
+          </i>
+        </span>
+        <span>
+          Satisfaction surveys
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
             web_asset
           </i>
         </span>
@@ -718,7 +687,7 @@ exports[`<BillingPlanCard /> should render plan card for the Custom plan 1`] = `
              
             <span
               class="underline"
-              id="help-center-label-9"
+              id="help-center-label-42"
             >
               Help centers
             </span>
@@ -738,121 +707,10 @@ exports[`<BillingPlanCard /> should render plan card for the Custom plan 1`] = `
           </i>
         </span>
         <span>
-          Lite onboarding
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon"
-            style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
-          />
-        </span>
-        <span>
-          Magento integration
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            supervised_user_circle
-          </i>
-        </span>
-        <span>
-          User permissions
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            insert_emoticon
-          </i>
-        </span>
-        <span>
-          Satisfaction surveys
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            chat
-          </i>
-        </span>
-        <span>
-          Chat campaigns
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            phone
-          </i>
-        </span>
-        <span>
           <b>
-            50
+            Lite
           </b>
-           Phone numbers
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            people_outline
-          </i>
-        </span>
-        <span>
-          Team Management
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            view_carousel
-          </i>
-        </span>
-        <span>
-          View sharing
+           onboarding
         </span>
       </li>
       <li
@@ -869,6 +727,21 @@ exports[`<BillingPlanCard /> should render plan card for the Custom plan 1`] = `
         </span>
         <span>
           Revenue statistics
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon"
+            style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+          />
+        </span>
+        <span>
+          Magento integration
         </span>
       </li>
       <li
@@ -965,8 +838,24 @@ exports[`<BillingPlanCard /> should render plan card for the Enterprise plan 1`]
         <span>
           Discounted prices for 
           <b>
-            volumes of 10k+ tickets
+            10k+ tickets
           </b>
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            thumb_up
+          </i>
+        </span>
+        <span>
+          Facebook, Messenger, Instagram & DMs
         </span>
       </li>
       <li
@@ -982,7 +871,23 @@ exports[`<BillingPlanCard /> should render plan card for the Enterprise plan 1`]
           </i>
         </span>
         <span>
-          Social media & chat
+          Live chat
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            phone
+          </i>
+        </span>
+        <span>
+          Custom limit of phone numbers
         </span>
       </li>
       <li
@@ -1010,6 +915,22 @@ exports[`<BillingPlanCard /> should render plan card for the Enterprise plan 1`]
           <i
             class="icon material-icons"
           >
+            insert_emoticon
+          </i>
+        </span>
+        <span>
+          Satisfaction surveys
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
             web_asset
           </i>
         </span>
@@ -1019,7 +940,7 @@ exports[`<BillingPlanCard /> should render plan card for the Enterprise plan 1`]
              
             <span
               class="underline"
-              id="help-center-label-7"
+              id="help-center-label-42"
             >
               Help centers
             </span>
@@ -1039,118 +960,10 @@ exports[`<BillingPlanCard /> should render plan card for the Enterprise plan 1`]
           </i>
         </span>
         <span>
-          Full onboarding
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon"
-            style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
-          />
-        </span>
-        <span>
-          Magento integration
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            supervised_user_circle
-          </i>
-        </span>
-        <span>
-          User permissions
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            insert_emoticon
-          </i>
-        </span>
-        <span>
-          Satisfaction surveys
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            chat
-          </i>
-        </span>
-        <span>
-          Chat campaigns
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            phone
-          </i>
-        </span>
-        <span>
-          Phone
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            people_outline
-          </i>
-        </span>
-        <span>
-          Team Management
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            view_carousel
-          </i>
-        </span>
-        <span>
-          View sharing
+          <b>
+            Full
+          </b>
+           onboarding
         </span>
       </li>
       <li
@@ -1167,6 +980,21 @@ exports[`<BillingPlanCard /> should render plan card for the Enterprise plan 1`]
         </span>
         <span>
           Revenue statistics
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon"
+            style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+          />
+        </span>
+        <span>
+          Magento integration
         </span>
       </li>
       <li
@@ -1263,13 +1091,30 @@ exports[`<BillingPlanCard /> should render plan card for the Legacy plan 1`] = `
         <span>
           <span
             class="billableTickets"
-            id="billable-ticket-label-10"
+            id="billable-ticket-label-42"
           >
             350
-             billable tickets
+             
+            billable tickets
           </span>
            
           included
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            thumb_up
+          </i>
+        </span>
+        <span>
+          Facebook, Messenger, Instagram & DMs
         </span>
       </li>
       <li
@@ -1285,127 +1130,7 @@ exports[`<BillingPlanCard /> should render plan card for the Legacy plan 1`] = `
           </i>
         </span>
         <span>
-          Social media & chat
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            auto_awesome
-          </i>
-        </span>
-        <span>
-          Macros and rules
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            web_asset
-          </i>
-        </span>
-        <span>
-          <b>
-            Unlimited
-             
-            <span
-              class="underline"
-              id="help-center-label-11"
-            >
-              Help centers
-            </span>
-          </b>
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            directions_bike
-          </i>
-        </span>
-        <span>
-          Lite onboarding
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon"
-            style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
-          />
-        </span>
-        <span>
-          Magento integration
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            supervised_user_circle
-          </i>
-        </span>
-        <span>
-          User permissions
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            insert_emoticon
-          </i>
-        </span>
-        <span>
-          Satisfaction surveys
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            chat
-          </i>
-        </span>
-        <span>
-          Chat campaigns
+          Live chat
         </span>
       </li>
       <li
@@ -1433,11 +1158,27 @@ exports[`<BillingPlanCard /> should render plan card for the Legacy plan 1`] = `
           <i
             class="icon material-icons"
           >
-            people_outline
+            auto_awesome
           </i>
         </span>
         <span>
-          Team Management
+          Macros and rules
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            insert_emoticon
+          </i>
+        </span>
+        <span>
+          Satisfaction surveys
         </span>
       </li>
       <li
@@ -1449,11 +1190,39 @@ exports[`<BillingPlanCard /> should render plan card for the Legacy plan 1`] = `
           <i
             class="icon material-icons"
           >
-            view_carousel
+            web_asset
           </i>
         </span>
         <span>
-          View sharing
+          <b>
+            Unlimited
+             
+            <span
+              class="underline"
+              id="help-center-label-42"
+            >
+              Help centers
+            </span>
+          </b>
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            directions_bike
+          </i>
+        </span>
+        <span>
+          <b>
+            Lite
+          </b>
+           onboarding
         </span>
       </li>
       <li
@@ -1470,6 +1239,21 @@ exports[`<BillingPlanCard /> should render plan card for the Legacy plan 1`] = `
         </span>
         <span>
           Revenue statistics
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon"
+            style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+          />
+        </span>
+        <span>
+          Magento integration
         </span>
       </li>
       <li
@@ -1566,13 +1350,30 @@ exports[`<BillingPlanCard /> should render plan card for the Pro plan 1`] = `
         <span>
           <span
             class="billableTickets"
-            id="billable-ticket-label-5"
+            id="billable-ticket-label-42"
           >
-            2000
-             billable tickets
+            2,000
+             
+            billable tickets
           </span>
            
           included
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            thumb_up
+          </i>
+        </span>
+        <span>
+          Facebook, Messenger, Instagram & DMs
         </span>
       </li>
       <li
@@ -1588,7 +1389,27 @@ exports[`<BillingPlanCard /> should render plan card for the Pro plan 1`] = `
           </i>
         </span>
         <span>
-          Social media & chat
+          Live chat
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            phone
+          </i>
+        </span>
+        <span>
+          <b>
+            3
+          </b>
+           Phone number
+          s
         </span>
       </li>
       <li
@@ -1616,6 +1437,22 @@ exports[`<BillingPlanCard /> should render plan card for the Pro plan 1`] = `
           <i
             class="icon material-icons"
           >
+            insert_emoticon
+          </i>
+        </span>
+        <span>
+          Satisfaction surveys
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
             web_asset
           </i>
         </span>
@@ -1625,7 +1462,7 @@ exports[`<BillingPlanCard /> should render plan card for the Pro plan 1`] = `
              
             <span
               class="underline"
-              id="help-center-label-6"
+              id="help-center-label-42"
             >
               Help centers
             </span>
@@ -1645,121 +1482,10 @@ exports[`<BillingPlanCard /> should render plan card for the Pro plan 1`] = `
           </i>
         </span>
         <span>
-          Lite onboarding
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon"
-            style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
-          />
-        </span>
-        <span>
-          Magento integration
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            supervised_user_circle
-          </i>
-        </span>
-        <span>
-          User permissions
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            insert_emoticon
-          </i>
-        </span>
-        <span>
-          Satisfaction surveys
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            chat
-          </i>
-        </span>
-        <span>
-          Chat campaigns
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            phone
-          </i>
-        </span>
-        <span>
           <b>
-            3
+            Lite
           </b>
-           Phone numbers
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            people_outline
-          </i>
-        </span>
-        <span>
-          Team Management
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            view_carousel
-          </i>
-        </span>
-        <span>
-          View sharing
+           onboarding
         </span>
       </li>
       <li
@@ -1776,6 +1502,21 @@ exports[`<BillingPlanCard /> should render plan card for the Pro plan 1`] = `
         </span>
         <span>
           Revenue statistics
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon"
+            style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+          />
+        </span>
+        <span>
+          Magento integration
         </span>
       </li>
       <li
@@ -1822,7 +1563,7 @@ exports[`<BillingPlanCard /> should render plan card for the Pro plan 1`] = `
 </div>
 `;
 
-exports[`<BillingPlanCard /> should render the legacy badge when account is current and account has legacy features 1`] = `
+exports[`<BillingPlanCard /> should render the legacy badge for legacy plan when the account is current 1`] = `
 <div
   class="plan greyTheme fooClass card"
 >
@@ -1855,7 +1596,7 @@ exports[`<BillingPlanCard /> should render the legacy badge when account is curr
       <div
         class="planName"
       >
-        Basic
+        Standard
       </div>
       <span
         class="headerPrice"
@@ -1863,7 +1604,7 @@ exports[`<BillingPlanCard /> should render the legacy badge when account is curr
         <div
           class="amount"
         >
-          $6,000
+          $3,000
            
           / 
           month
@@ -1892,13 +1633,30 @@ exports[`<BillingPlanCard /> should render the legacy badge when account is curr
         <span>
           <span
             class="billableTickets"
-            id="billable-ticket-label-12"
+            id="billable-ticket-label-42"
           >
             350
-             billable tickets
+             
+            billable tickets
           </span>
            
           included
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            thumb_up
+          </i>
+        </span>
+        <span>
+          Facebook, Messenger, Instagram
         </span>
       </li>
       <li
@@ -1914,7 +1672,23 @@ exports[`<BillingPlanCard /> should render the legacy badge when account is curr
           </i>
         </span>
         <span>
-          Social media & chat
+          Live chat
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            phone
+          </i>
+        </span>
+        <span>
+          Phone
         </span>
       </li>
       <li
@@ -1931,6 +1705,22 @@ exports[`<BillingPlanCard /> should render the legacy badge when account is curr
         </span>
         <span>
           Macros and rules
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            insert_emoticon
+          </i>
+        </span>
+        <span>
+          Satisfaction surveys
         </span>
       </li>
       <li
@@ -1960,122 +1750,14 @@ exports[`<BillingPlanCard /> should render the legacy badge when account is curr
           <i
             class="icon material-icons"
           >
-            directions_walk
+            directions_bike
           </i>
         </span>
         <span>
-          Self onboarding
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon"
-            style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
-          />
-        </span>
-        <span>
-          Magento integration
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            supervised_user_circle
-          </i>
-        </span>
-        <span>
-          User permissions
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            insert_emoticon
-          </i>
-        </span>
-        <span>
-          Satisfaction surveys
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            chat
-          </i>
-        </span>
-        <span>
-          Chat campaigns
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            phone
-          </i>
-        </span>
-        <span>
-          Phone
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            people_outline
-          </i>
-        </span>
-        <span>
-          Team Management
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            view_carousel
-          </i>
-        </span>
-        <span>
-          View sharing
+          <b>
+            Lite
+          </b>
+           onboarding
         </span>
       </li>
       <li
@@ -2092,6 +1774,21 @@ exports[`<BillingPlanCard /> should render the legacy badge when account is curr
         </span>
         <span>
           Revenue statistics
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon"
+            style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+          />
+        </span>
+        <span>
+          Magento integration
         </span>
       </li>
       <li

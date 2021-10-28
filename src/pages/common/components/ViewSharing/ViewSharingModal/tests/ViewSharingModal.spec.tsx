@@ -43,19 +43,6 @@ describe('<ViewSharingModal/>', () => {
     })
 
     describe('render()', () => {
-        it('should render the paywall modal information when view sharing feature is missing', () => {
-            const view = fromJS({visibility: ViewVisibility.Public})
-            const component = shallow(
-                <ViewSharingModalContainer
-                    {...minProps}
-                    view={view}
-                    showPaywall={true}
-                />
-            )
-
-            expect(component).toMatchSnapshot()
-        })
-
         it('should render as public', () => {
             const view = fromJS({visibility: ViewVisibility.Public})
 

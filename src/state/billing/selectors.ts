@@ -185,18 +185,7 @@ export const makeIsAllowedToChangePlan = (state: RootState) => (
     planId: string
 ) => isAllowedToChangePlan(planId)(state)
 
-export const hasLegacyPlan = createSelector<
-    RootState,
-    boolean,
-    Map<any, any>,
-    Map<any, any>
->(
+export const hasLegacyPlan = createSelector<RootState, boolean, Map<any, any>>(
     getCurrentPlan,
-    getCurrentAccountState as (state: RootState) => CurrentAccountState,
-    (plan, account) => {
-        return (
-            !!account.getIn(['meta', 'has_legacy_features']) ||
-            (!plan.isEmpty() && !plan.get('public'))
-        )
-    }
+    (plan) => !plan.isEmpty() && !plan.get('public')
 )

@@ -1,7 +1,6 @@
 import React, {ComponentProps} from 'react'
 import {useSelector} from 'react-redux'
 
-import {RootState} from '../../../../state/types'
 import {PlanWithCurrencySign} from '../../../../state/billing/types'
 import {hasLegacyPlan} from '../../../../state/billing/selectors'
 import LegacyPlanBadge from '../../../common/components/LegacyPlanBadge'
@@ -30,14 +29,7 @@ export default function BillingPlanCard({
     headerBadge,
     ...planCardProps
 }: Props) {
-    const currentAccount = useSelector(
-        (state: RootState) => state.currentAccount
-    )
     const accountHasLegacyPlan = useSelector(hasLegacyPlan)
-    const accountHasLegacyFeatures = currentAccount.getIn(
-        ['meta', 'has_legacy_features'],
-        false
-    )
     const badge =
         isCurrentPlan && accountHasLegacyPlan ? (
             <LegacyPlanBadge />
@@ -47,19 +39,14 @@ export default function BillingPlanCard({
     return (
         <PlanCard
             {...planCardProps}
-            theme={
-                theme ||
-                (isCurrentPlan && accountHasLegacyFeatures
-                    ? PlanCardTheme.Grey
-                    : PLAN_THEMES[plan.name])
-            }
+            theme={theme || PLAN_THEMES[plan.name]}
             planName={plan.name}
             headerBadge={badge}
             features={getPlanCardFeaturesForPlan({
                 plan,
-                showPlanLegacyFeatures:
-                    isCurrentPlan && accountHasLegacyFeatures,
-                showHelpCenterDisabled: isCurrentPlan && accountHasLegacyPlan,
+                enableHardCodedFeatures: !(
+                    isCurrentPlan && accountHasLegacyPlan
+                ),
             })}
             price={
                 <SubscriptionAmount

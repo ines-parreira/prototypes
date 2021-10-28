@@ -11,7 +11,8 @@ export default function IntegrationListLimitAlert({
     totalIntegrations,
     maxIntegrations,
 }: Props): JSX.Element | null {
-    const isLimitAlmostReached = totalIntegrations === maxIntegrations - 1
+    const isLimitAlmostReached =
+        maxIntegrations > 1 && totalIntegrations === maxIntegrations - 1
     const isLimitReached = totalIntegrations >= maxIntegrations
 
     if (!isLimitAlmostReached && !isLimitReached) {

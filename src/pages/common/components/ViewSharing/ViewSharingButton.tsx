@@ -9,8 +9,6 @@ import {RootState} from '../../../../state/types'
 import {hasRole} from '../../../../utils'
 import {AGENT_ROLE} from '../../../../config/user'
 import {SYSTEM_VIEW_CATEGORY} from '../../../../constants/view'
-import {AccountFeature} from '../../../../state/currentAccount/types'
-import {currentAccountHasFeature} from '../../../../state/currentAccount/selectors'
 
 import ViewSharingButtonTooltip from './ViewSharingButtonTooltip'
 import ViewSharingModal from './ViewSharingModal/ViewSharingModal'
@@ -27,7 +25,6 @@ export function ViewSharingButtonContainer({
     currentUser,
     view,
     className,
-    hasViewSharingFeature,
 }: Props) {
     const isSystem = view.get('category') === SYSTEM_VIEW_CATEGORY
     const label = _capitalize(view.get('visibility'))
@@ -50,12 +47,7 @@ export function ViewSharingButtonContainer({
                 <b>{label}</b>
             </Button>
             {isEditable && isOpen && (
-                <ViewSharingModal
-                    view={view}
-                    isOpen={isOpen}
-                    toggle={toggle}
-                    showPaywall={!hasViewSharingFeature}
-                />
+                <ViewSharingModal view={view} isOpen={isOpen} toggle={toggle} />
             )}
             <ViewSharingButtonTooltip
                 isSystem={isSystem}
@@ -67,9 +59,6 @@ export function ViewSharingButtonContainer({
 
 const connector = connect((state: RootState) => ({
     currentUser: state.currentUser,
-    hasViewSharingFeature: currentAccountHasFeature(AccountFeature.ViewSharing)(
-        state
-    ),
 }))
 
 export default connector(ViewSharingButtonContainer)

@@ -9,21 +9,41 @@ Array [
     "label": <React.Fragment>
       Discounted prices for 
       <b>
-        volumes of 10k+ tickets
+        10k+ tickets
       </b>
     </React.Fragment>,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
+      icon="thumb_up"
+    />,
+    "label": "Facebook, Messenger, Instagram & DMs",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
       icon="forum"
     />,
-    "label": "Social media & chat",
+    "label": "Live chat",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="phone"
+    />,
+    "isDisabled": false,
+    "label": "Custom limit of phone numbers",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
       icon="auto_awesome"
     />,
     "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="insert_emoticon"
+    />,
+    "isDisabled": false,
+    "label": "Satisfaction surveys",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -38,56 +58,12 @@ Array [
     "icon": <PlanFeatureMaterialIcon
       icon="directions_car"
     />,
-    "label": "Full onboarding",
-  },
-  Object {
-    "icon": <PlanFeatureVectorIcon
-      url="test-file-stub"
-    />,
-    "isDisabled": false,
-    "label": "Magento integration",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="supervised_user_circle"
-    />,
-    "isDisabled": false,
-    "label": "User permissions",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="insert_emoticon"
-    />,
-    "isDisabled": false,
-    "label": "Satisfaction surveys",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="chat"
-    />,
-    "isDisabled": false,
-    "label": "Chat campaigns",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="phone"
-    />,
-    "isDisabled": false,
-    "label": "Phone",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="people_outline"
-    />,
-    "isDisabled": false,
-    "label": "Team Management",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="view_carousel"
-    />,
-    "isDisabled": false,
-    "label": "View sharing",
+    "label": <React.Fragment>
+      <b>
+        Full
+      </b>
+       onboarding
+    </React.Fragment>,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -95,6 +71,13 @@ Array [
     />,
     "isDisabled": false,
     "label": "Revenue statistics",
+  },
+  Object {
+    "icon": <PlanFeatureVectorIcon
+      url="test-file-stub"
+    />,
+    "isDisabled": false,
+    "label": "Magento integration",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -113,7 +96,7 @@ Array [
 ]
 `;
 
-exports[`billingPlanFeatures getPlanCardFeaturesForPlan Advanced plan should return legacy plan card features 1`] = `
+exports[`billingPlanFeatures getPlanCardFeaturesForPlan should return plan card features for Advanced plan plan 1`] = `
 Array [
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -288,331 +271,15 @@ Array [
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
-      icon="forum"
+      icon="thumb_up"
     />,
-    "label": "Social media & chat",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="auto_awesome"
-    />,
-    "label": "Macros and rules",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="web_asset"
-    />,
-    "isDisabled": false,
-    "label": <HelpCenterLabel
-      disabled={false}
-    />,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="directions_car"
-    />,
-    "label": "Full onboarding",
-  },
-  Object {
-    "icon": <PlanFeatureVectorIcon
-      url="test-file-stub"
-    />,
-    "isDisabled": true,
-    "label": "Magento integration",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="supervised_user_circle"
-    />,
-    "isDisabled": true,
-    "label": "User permissions",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="insert_emoticon"
-    />,
-    "isDisabled": true,
-    "label": "Satisfaction surveys",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="chat"
-    />,
-    "isDisabled": true,
-    "label": "Chat campaigns",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="phone"
-    />,
-    "isDisabled": true,
-    "label": "Phone",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="people_outline"
-    />,
-    "isDisabled": true,
-    "label": "Team Management",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="view_carousel"
-    />,
-    "isDisabled": true,
-    "label": "View sharing",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="attach_money"
-    />,
-    "isDisabled": true,
-    "label": "Revenue statistics",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="person_pin"
-    />,
-    "isDisabled": false,
-    "label": "Dedicated success manager",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="blur_on"
-    />,
-    "isDisabled": true,
-    "label": "Custom services",
-  },
-]
-`;
-
-exports[`billingPlanFeatures getPlanCardFeaturesForPlan Advanced plan should return plan card features 1`] = `
-Array [
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="playlist_add_check"
-    />,
-    "label": <BillableTicketsLabel
-      plan={
-        Object {
-          "amount": 70000,
-          "automation_addon_equivalent_plan": "advanced-automation-monthly-usd-2",
-          "automation_addon_included": false,
-          "cost_per_ticket": 0.2,
-          "currency": "usd",
-          "currencySign": "$",
-          "features": Object {
-            "auto_assignment": Object {
-              "enabled": true,
-            },
-            "automation_cancellations_flow": Object {
-              "enabled": false,
-            },
-            "automation_report_issue_flow": Object {
-              "enabled": false,
-            },
-            "automation_return_flow": Object {
-              "enabled": false,
-            },
-            "automation_self_service_statistics": Object {
-              "enabled": false,
-            },
-            "automation_track_order_flow": Object {
-              "enabled": false,
-            },
-            "chat_campaigns": Object {
-              "enabled": true,
-            },
-            "facebook_comment": Object {
-              "enabled": true,
-            },
-            "instagram_comment": Object {
-              "enabled": true,
-            },
-            "instagram_dm": Object {
-              "enabled": true,
-            },
-            "magento_integration": Object {
-              "enabled": true,
-            },
-            "overview_live_statistics": Object {
-              "enabled": true,
-            },
-            "phone_integration": Object {
-              "enabled": true,
-              "limit": 10,
-            },
-            "revenue_statistics": Object {
-              "enabled": true,
-            },
-            "satisfaction_surveys": Object {
-              "enabled": true,
-            },
-            "teams": Object {
-              "enabled": true,
-            },
-            "twitter_integration": Object {
-              "enabled": false,
-              "limit": 0,
-            },
-            "user_roles": Object {
-              "enabled": true,
-            },
-            "users_live_statistics": Object {
-              "enabled": true,
-            },
-            "view_sharing": Object {
-              "enabled": true,
-            },
-            "yotpo_integration": Object {
-              "enabled": true,
-            },
-          },
-          "free_tickets": 3000,
-          "id": "advanced-monthly-usd-2",
-          "integrations": 200,
-          "interval": "month",
-          "legacy_automation_addon_features": Object {
-            "auto_assignment": Object {
-              "enabled": true,
-            },
-            "automation_cancellations_flow": Object {
-              "enabled": true,
-            },
-            "automation_report_issue_flow": Object {
-              "enabled": true,
-            },
-            "automation_return_flow": Object {
-              "enabled": true,
-            },
-            "automation_self_service_statistics": Object {
-              "enabled": false,
-            },
-            "automation_track_order_flow": Object {
-              "enabled": true,
-            },
-            "chat_campaigns": Object {
-              "enabled": true,
-            },
-            "facebook_comment": Object {
-              "enabled": true,
-            },
-            "instagram_comment": Object {
-              "enabled": true,
-            },
-            "instagram_dm": Object {
-              "enabled": true,
-            },
-            "magento_integration": Object {
-              "enabled": true,
-            },
-            "overview_live_statistics": Object {
-              "enabled": true,
-            },
-            "phone_integration": Object {
-              "enabled": true,
-              "limit": 10,
-            },
-            "revenue_statistics": Object {
-              "enabled": true,
-            },
-            "satisfaction_surveys": Object {
-              "enabled": true,
-            },
-            "teams": Object {
-              "enabled": true,
-            },
-            "twitter_integration": Object {
-              "enabled": false,
-              "limit": 0,
-            },
-            "user_roles": Object {
-              "enabled": true,
-            },
-            "users_live_statistics": Object {
-              "enabled": true,
-            },
-            "view_sharing": Object {
-              "enabled": true,
-            },
-            "yotpo_integration": Object {
-              "enabled": true,
-            },
-          },
-          "limits": Object {
-            "messages": Object {
-              "default": 1000,
-              "max": 1000,
-              "min": 800,
-            },
-            "tickets": Object {
-              "default": 350,
-              "max": 350,
-              "min": 300,
-            },
-          },
-          "name": "Advanced",
-          "order": 3,
-          "public": true,
-          "trial_period_days": 7,
-        }
-      }
-    />,
+    "label": "Facebook, Messenger, Instagram & DMs",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
       icon="forum"
     />,
-    "label": "Social media & chat",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="auto_awesome"
-    />,
-    "label": "Macros and rules",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="web_asset"
-    />,
-    "isDisabled": false,
-    "label": <HelpCenterLabel
-      disabled={false}
-    />,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="directions_car"
-    />,
-    "label": "Full onboarding",
-  },
-  Object {
-    "icon": <PlanFeatureVectorIcon
-      url="test-file-stub"
-    />,
-    "isDisabled": false,
-    "label": "Magento integration",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="supervised_user_circle"
-    />,
-    "isDisabled": false,
-    "label": "User permissions",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="insert_emoticon"
-    />,
-    "isDisabled": false,
-    "label": "Satisfaction surveys",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="chat"
-    />,
-    "isDisabled": false,
-    "label": "Chat campaigns",
+    "label": "Live chat",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -623,22 +290,42 @@ Array [
       <b>
         10
       </b>
-       Phone numbers
+       Phone number
+      s
     </React.Fragment>,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
-      icon="people_outline"
+      icon="auto_awesome"
     />,
-    "isDisabled": false,
-    "label": "Team Management",
+    "label": "Macros and rules",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
-      icon="view_carousel"
+      icon="insert_emoticon"
     />,
     "isDisabled": false,
-    "label": "View sharing",
+    "label": "Satisfaction surveys",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="web_asset"
+    />,
+    "isDisabled": false,
+    "label": <HelpCenterLabel
+      disabled={false}
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="directions_car"
+    />,
+    "label": <React.Fragment>
+      <b>
+        Full
+      </b>
+       onboarding
+    </React.Fragment>,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -646,6 +333,13 @@ Array [
     />,
     "isDisabled": false,
     "label": "Revenue statistics",
+  },
+  Object {
+    "icon": <PlanFeatureVectorIcon
+      url="test-file-stub"
+    />,
+    "isDisabled": false,
+    "label": "Magento integration",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -664,7 +358,7 @@ Array [
 ]
 `;
 
-exports[`billingPlanFeatures getPlanCardFeaturesForPlan Basic plan should return legacy plan card features 1`] = `
+exports[`billingPlanFeatures getPlanCardFeaturesForPlan should return plan card features for Basic plan plan 1`] = `
 Array [
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -681,7 +375,7 @@ Array [
           "currencySign": "$",
           "features": Object {
             "auto_assignment": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "automation_cancellations_flow": Object {
               "enabled": false,
@@ -699,26 +393,26 @@ Array [
               "enabled": false,
             },
             "chat_campaigns": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "facebook_comment": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "instagram_comment": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "instagram_dm": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "magento_integration": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "overview_live_statistics": Object {
               "enabled": false,
             },
             "phone_integration": Object {
-              "enabled": false,
-              "limit": 0,
+              "enabled": true,
+              "limit": 1,
             },
             "revenue_statistics": Object {
               "enabled": false,
@@ -727,23 +421,23 @@ Array [
               "enabled": false,
             },
             "teams": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "twitter_integration": Object {
               "enabled": false,
               "limit": 0,
             },
             "user_roles": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "users_live_statistics": Object {
               "enabled": false,
             },
             "view_sharing": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "yotpo_integration": Object {
-              "enabled": false,
+              "enabled": true,
             },
           },
           "free_tickets": 350,
@@ -752,73 +446,6 @@ Array [
           "interval": "month",
           "legacy_automation_addon_features": Object {
             "auto_assignment": Object {
-              "enabled": false,
-            },
-            "automation_cancellations_flow": Object {
-              "enabled": true,
-            },
-            "automation_report_issue_flow": Object {
-              "enabled": true,
-            },
-            "automation_return_flow": Object {
-              "enabled": true,
-            },
-            "automation_self_service_statistics": Object {
-              "enabled": false,
-            },
-            "automation_track_order_flow": Object {
-              "enabled": true,
-            },
-            "chat_campaigns": Object {
-              "enabled": false,
-            },
-            "facebook_comment": Object {
-              "enabled": false,
-            },
-            "instagram_comment": Object {
-              "enabled": false,
-            },
-            "instagram_dm": Object {
-              "enabled": false,
-            },
-            "magento_integration": Object {
-              "enabled": false,
-            },
-            "overview_live_statistics": Object {
-              "enabled": false,
-            },
-            "phone_integration": Object {
-              "enabled": false,
-              "limit": 0,
-            },
-            "revenue_statistics": Object {
-              "enabled": false,
-            },
-            "satisfaction_surveys": Object {
-              "enabled": false,
-            },
-            "teams": Object {
-              "enabled": false,
-            },
-            "twitter_integration": Object {
-              "enabled": false,
-              "limit": 0,
-            },
-            "user_roles": Object {
-              "enabled": false,
-            },
-            "users_live_statistics": Object {
-              "enabled": false,
-            },
-            "view_sharing": Object {
-              "enabled": false,
-            },
-            "yotpo_integration": Object {
-              "enabled": false,
-            },
-          },
-          "legacy_features": Object {
-            "auto_assignment": Object {
               "enabled": true,
             },
             "automation_cancellations_flow": Object {
@@ -846,7 +473,7 @@ Array [
               "enabled": true,
             },
             "instagram_dm": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "magento_integration": Object {
               "enabled": true,
@@ -856,7 +483,7 @@ Array [
             },
             "phone_integration": Object {
               "enabled": true,
-              "limit": 0,
+              "limit": 1,
             },
             "revenue_statistics": Object {
               "enabled": false,
@@ -906,15 +533,40 @@ Array [
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
+      icon="thumb_up"
+    />,
+    "label": "Facebook, Messenger, Instagram & DMs",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
       icon="forum"
     />,
-    "label": "Social media & chat",
+    "label": "Live chat",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="phone"
+    />,
+    "isDisabled": false,
+    "label": <React.Fragment>
+      <b>
+        1
+      </b>
+       Phone number
+    </React.Fragment>,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
       icon="auto_awesome"
     />,
     "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="insert_emoticon"
+    />,
+    "isDisabled": true,
+    "label": "Satisfaction surveys",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -929,56 +581,12 @@ Array [
     "icon": <PlanFeatureMaterialIcon
       icon="directions_walk"
     />,
-    "label": "Self onboarding",
-  },
-  Object {
-    "icon": <PlanFeatureVectorIcon
-      url="test-file-stub"
-    />,
-    "isDisabled": false,
-    "label": "Magento integration",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="supervised_user_circle"
-    />,
-    "isDisabled": false,
-    "label": "User permissions",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="insert_emoticon"
-    />,
-    "isDisabled": true,
-    "label": "Satisfaction surveys",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="chat"
-    />,
-    "isDisabled": false,
-    "label": "Chat campaigns",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="phone"
-    />,
-    "isDisabled": false,
-    "label": "Phone",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="people_outline"
-    />,
-    "isDisabled": false,
-    "label": "Team Management",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="view_carousel"
-    />,
-    "isDisabled": false,
-    "label": "View sharing",
+    "label": <React.Fragment>
+      <b>
+        Self
+      </b>
+       onboarding
+    </React.Fragment>,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -986,6 +594,13 @@ Array [
     />,
     "isDisabled": true,
     "label": "Revenue statistics",
+  },
+  Object {
+    "icon": <PlanFeatureVectorIcon
+      url="test-file-stub"
+    />,
+    "isDisabled": false,
+    "label": "Magento integration",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -1004,347 +619,7 @@ Array [
 ]
 `;
 
-exports[`billingPlanFeatures getPlanCardFeaturesForPlan Basic plan should return plan card features 1`] = `
-Array [
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="playlist_add_check"
-    />,
-    "label": <BillableTicketsLabel
-      plan={
-        Object {
-          "amount": 6000,
-          "automation_addon_equivalent_plan": "basic-automation-monthly-usd-2",
-          "automation_addon_included": false,
-          "cost_per_ticket": 0.25,
-          "currency": "usd",
-          "currencySign": "$",
-          "features": Object {
-            "auto_assignment": Object {
-              "enabled": false,
-            },
-            "automation_cancellations_flow": Object {
-              "enabled": false,
-            },
-            "automation_report_issue_flow": Object {
-              "enabled": false,
-            },
-            "automation_return_flow": Object {
-              "enabled": false,
-            },
-            "automation_self_service_statistics": Object {
-              "enabled": false,
-            },
-            "automation_track_order_flow": Object {
-              "enabled": false,
-            },
-            "chat_campaigns": Object {
-              "enabled": false,
-            },
-            "facebook_comment": Object {
-              "enabled": false,
-            },
-            "instagram_comment": Object {
-              "enabled": false,
-            },
-            "instagram_dm": Object {
-              "enabled": false,
-            },
-            "magento_integration": Object {
-              "enabled": false,
-            },
-            "overview_live_statistics": Object {
-              "enabled": false,
-            },
-            "phone_integration": Object {
-              "enabled": false,
-              "limit": 0,
-            },
-            "revenue_statistics": Object {
-              "enabled": false,
-            },
-            "satisfaction_surveys": Object {
-              "enabled": false,
-            },
-            "teams": Object {
-              "enabled": false,
-            },
-            "twitter_integration": Object {
-              "enabled": false,
-              "limit": 0,
-            },
-            "user_roles": Object {
-              "enabled": false,
-            },
-            "users_live_statistics": Object {
-              "enabled": false,
-            },
-            "view_sharing": Object {
-              "enabled": false,
-            },
-            "yotpo_integration": Object {
-              "enabled": false,
-            },
-          },
-          "free_tickets": 350,
-          "id": "basic-monthly-usd-2",
-          "integrations": 200,
-          "interval": "month",
-          "legacy_automation_addon_features": Object {
-            "auto_assignment": Object {
-              "enabled": false,
-            },
-            "automation_cancellations_flow": Object {
-              "enabled": true,
-            },
-            "automation_report_issue_flow": Object {
-              "enabled": true,
-            },
-            "automation_return_flow": Object {
-              "enabled": true,
-            },
-            "automation_self_service_statistics": Object {
-              "enabled": false,
-            },
-            "automation_track_order_flow": Object {
-              "enabled": true,
-            },
-            "chat_campaigns": Object {
-              "enabled": false,
-            },
-            "facebook_comment": Object {
-              "enabled": false,
-            },
-            "instagram_comment": Object {
-              "enabled": false,
-            },
-            "instagram_dm": Object {
-              "enabled": false,
-            },
-            "magento_integration": Object {
-              "enabled": false,
-            },
-            "overview_live_statistics": Object {
-              "enabled": false,
-            },
-            "phone_integration": Object {
-              "enabled": false,
-              "limit": 0,
-            },
-            "revenue_statistics": Object {
-              "enabled": false,
-            },
-            "satisfaction_surveys": Object {
-              "enabled": false,
-            },
-            "teams": Object {
-              "enabled": false,
-            },
-            "twitter_integration": Object {
-              "enabled": false,
-              "limit": 0,
-            },
-            "user_roles": Object {
-              "enabled": false,
-            },
-            "users_live_statistics": Object {
-              "enabled": false,
-            },
-            "view_sharing": Object {
-              "enabled": false,
-            },
-            "yotpo_integration": Object {
-              "enabled": false,
-            },
-          },
-          "legacy_features": Object {
-            "auto_assignment": Object {
-              "enabled": true,
-            },
-            "automation_cancellations_flow": Object {
-              "enabled": true,
-            },
-            "automation_report_issue_flow": Object {
-              "enabled": true,
-            },
-            "automation_return_flow": Object {
-              "enabled": true,
-            },
-            "automation_self_service_statistics": Object {
-              "enabled": false,
-            },
-            "automation_track_order_flow": Object {
-              "enabled": true,
-            },
-            "chat_campaigns": Object {
-              "enabled": true,
-            },
-            "facebook_comment": Object {
-              "enabled": true,
-            },
-            "instagram_comment": Object {
-              "enabled": true,
-            },
-            "instagram_dm": Object {
-              "enabled": false,
-            },
-            "magento_integration": Object {
-              "enabled": true,
-            },
-            "overview_live_statistics": Object {
-              "enabled": false,
-            },
-            "phone_integration": Object {
-              "enabled": true,
-              "limit": 0,
-            },
-            "revenue_statistics": Object {
-              "enabled": false,
-            },
-            "satisfaction_surveys": Object {
-              "enabled": false,
-            },
-            "teams": Object {
-              "enabled": true,
-            },
-            "twitter_integration": Object {
-              "enabled": false,
-              "limit": 0,
-            },
-            "user_roles": Object {
-              "enabled": true,
-            },
-            "users_live_statistics": Object {
-              "enabled": false,
-            },
-            "view_sharing": Object {
-              "enabled": true,
-            },
-            "yotpo_integration": Object {
-              "enabled": true,
-            },
-          },
-          "limits": Object {
-            "messages": Object {
-              "default": 1000,
-              "max": 1000,
-              "min": 800,
-            },
-            "tickets": Object {
-              "default": 350,
-              "max": 350,
-              "min": 300,
-            },
-          },
-          "name": "Basic",
-          "order": 1,
-          "public": true,
-          "trial_period_days": 7,
-        }
-      }
-    />,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="forum"
-    />,
-    "label": "Social media & chat",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="auto_awesome"
-    />,
-    "label": "Macros and rules",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="web_asset"
-    />,
-    "isDisabled": false,
-    "label": <HelpCenterLabel
-      disabled={false}
-    />,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="directions_walk"
-    />,
-    "label": "Self onboarding",
-  },
-  Object {
-    "icon": <PlanFeatureVectorIcon
-      url="test-file-stub"
-    />,
-    "isDisabled": true,
-    "label": "Magento integration",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="supervised_user_circle"
-    />,
-    "isDisabled": true,
-    "label": "User permissions",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="insert_emoticon"
-    />,
-    "isDisabled": true,
-    "label": "Satisfaction surveys",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="chat"
-    />,
-    "isDisabled": true,
-    "label": "Chat campaigns",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="phone"
-    />,
-    "isDisabled": true,
-    "label": "Phone",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="people_outline"
-    />,
-    "isDisabled": true,
-    "label": "Team Management",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="view_carousel"
-    />,
-    "isDisabled": true,
-    "label": "View sharing",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="attach_money"
-    />,
-    "isDisabled": true,
-    "label": "Revenue statistics",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="person_pin"
-    />,
-    "isDisabled": true,
-    "label": "Dedicated success manager",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="blur_on"
-    />,
-    "isDisabled": true,
-    "label": "Custom services",
-  },
-]
-`;
-
-exports[`billingPlanFeatures getPlanCardFeaturesForPlan Custom plan should return legacy plan card features 1`] = `
+exports[`billingPlanFeatures getPlanCardFeaturesForPlan should return plan card features for Custom plan plan 1`] = `
 Array [
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -1362,7 +637,7 @@ Array [
           "custom": true,
           "features": Object {
             "auto_assignment": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "automation_cancellations_flow": Object {
               "enabled": false,
@@ -1408,7 +683,7 @@ Array [
               "enabled": true,
             },
             "teams": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "twitter_integration": Object {
               "enabled": true,
@@ -1421,7 +696,7 @@ Array [
               "enabled": true,
             },
             "view_sharing": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "yotpo_integration": Object {
               "enabled": true,
@@ -1433,7 +708,7 @@ Array [
           "interval": "month",
           "legacy_automation_addon_features": Object {
             "auto_assignment": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "automation_cancellations_flow": Object {
               "enabled": true,
@@ -1479,7 +754,7 @@ Array [
               "enabled": true,
             },
             "teams": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "twitter_integration": Object {
               "enabled": true,
@@ -1492,7 +767,7 @@ Array [
               "enabled": true,
             },
             "view_sharing": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "yotpo_integration": Object {
               "enabled": true,
@@ -1520,332 +795,15 @@ Array [
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
-      icon="forum"
+      icon="thumb_up"
     />,
-    "label": "Social media & chat",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="auto_awesome"
-    />,
-    "label": "Macros and rules",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="web_asset"
-    />,
-    "isDisabled": false,
-    "label": <HelpCenterLabel
-      disabled={false}
-    />,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="directions_bike"
-    />,
-    "label": "Lite onboarding",
-  },
-  Object {
-    "icon": <PlanFeatureVectorIcon
-      url="test-file-stub"
-    />,
-    "isDisabled": true,
-    "label": "Magento integration",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="supervised_user_circle"
-    />,
-    "isDisabled": true,
-    "label": "User permissions",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="insert_emoticon"
-    />,
-    "isDisabled": true,
-    "label": "Satisfaction surveys",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="chat"
-    />,
-    "isDisabled": true,
-    "label": "Chat campaigns",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="phone"
-    />,
-    "isDisabled": true,
-    "label": "Phone",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="people_outline"
-    />,
-    "isDisabled": true,
-    "label": "Team Management",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="view_carousel"
-    />,
-    "isDisabled": true,
-    "label": "View sharing",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="attach_money"
-    />,
-    "isDisabled": true,
-    "label": "Revenue statistics",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="person_pin"
-    />,
-    "isDisabled": false,
-    "label": "Dedicated success manager",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="blur_on"
-    />,
-    "isDisabled": false,
-    "label": "Custom services",
-  },
-]
-`;
-
-exports[`billingPlanFeatures getPlanCardFeaturesForPlan Custom plan should return plan card features 1`] = `
-Array [
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="playlist_add_check"
-    />,
-    "label": <BillableTicketsLabel
-      plan={
-        Object {
-          "amount": 54000,
-          "automation_addon_equivalent_plan": "custom-automation-monthly-usd-2",
-          "automation_addon_included": false,
-          "cost_per_ticket": 0.23,
-          "currency": "usd",
-          "currencySign": "$",
-          "custom": true,
-          "features": Object {
-            "auto_assignment": Object {
-              "enabled": false,
-            },
-            "automation_cancellations_flow": Object {
-              "enabled": false,
-            },
-            "automation_report_issue_flow": Object {
-              "enabled": false,
-            },
-            "automation_return_flow": Object {
-              "enabled": false,
-            },
-            "automation_self_service_statistics": Object {
-              "enabled": false,
-            },
-            "automation_track_order_flow": Object {
-              "enabled": false,
-            },
-            "chat_campaigns": Object {
-              "enabled": true,
-            },
-            "facebook_comment": Object {
-              "enabled": true,
-            },
-            "instagram_comment": Object {
-              "enabled": true,
-            },
-            "instagram_dm": Object {
-              "enabled": true,
-            },
-            "magento_integration": Object {
-              "enabled": true,
-            },
-            "overview_live_statistics": Object {
-              "enabled": true,
-            },
-            "phone_integration": Object {
-              "enabled": true,
-              "limit": 50,
-            },
-            "revenue_statistics": Object {
-              "enabled": false,
-            },
-            "satisfaction_surveys": Object {
-              "enabled": true,
-            },
-            "teams": Object {
-              "enabled": false,
-            },
-            "twitter_integration": Object {
-              "enabled": true,
-              "limit": 5,
-            },
-            "user_roles": Object {
-              "enabled": true,
-            },
-            "users_live_statistics": Object {
-              "enabled": true,
-            },
-            "view_sharing": Object {
-              "enabled": false,
-            },
-            "yotpo_integration": Object {
-              "enabled": true,
-            },
-          },
-          "free_tickets": 2000,
-          "id": "custom-monthly-usd-2",
-          "integrations": 200,
-          "interval": "month",
-          "legacy_automation_addon_features": Object {
-            "auto_assignment": Object {
-              "enabled": false,
-            },
-            "automation_cancellations_flow": Object {
-              "enabled": true,
-            },
-            "automation_report_issue_flow": Object {
-              "enabled": true,
-            },
-            "automation_return_flow": Object {
-              "enabled": true,
-            },
-            "automation_self_service_statistics": Object {
-              "enabled": false,
-            },
-            "automation_track_order_flow": Object {
-              "enabled": true,
-            },
-            "chat_campaigns": Object {
-              "enabled": true,
-            },
-            "facebook_comment": Object {
-              "enabled": true,
-            },
-            "instagram_comment": Object {
-              "enabled": true,
-            },
-            "instagram_dm": Object {
-              "enabled": true,
-            },
-            "magento_integration": Object {
-              "enabled": true,
-            },
-            "overview_live_statistics": Object {
-              "enabled": true,
-            },
-            "phone_integration": Object {
-              "enabled": true,
-              "limit": 50,
-            },
-            "revenue_statistics": Object {
-              "enabled": false,
-            },
-            "satisfaction_surveys": Object {
-              "enabled": true,
-            },
-            "teams": Object {
-              "enabled": false,
-            },
-            "twitter_integration": Object {
-              "enabled": true,
-              "limit": 5,
-            },
-            "user_roles": Object {
-              "enabled": true,
-            },
-            "users_live_statistics": Object {
-              "enabled": true,
-            },
-            "view_sharing": Object {
-              "enabled": false,
-            },
-            "yotpo_integration": Object {
-              "enabled": true,
-            },
-          },
-          "limits": Object {
-            "messages": Object {
-              "default": 1000,
-              "max": 1000,
-              "min": 800,
-            },
-            "tickets": Object {
-              "default": 350,
-              "max": 350,
-              "min": 300,
-            },
-          },
-          "name": "Custom",
-          "order": 4,
-          "public": true,
-          "trial_period_days": 7,
-        }
-      }
-    />,
+    "label": "Facebook, Messenger, Instagram & DMs",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
       icon="forum"
     />,
-    "label": "Social media & chat",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="auto_awesome"
-    />,
-    "label": "Macros and rules",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="web_asset"
-    />,
-    "isDisabled": false,
-    "label": <HelpCenterLabel
-      disabled={false}
-    />,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="directions_bike"
-    />,
-    "label": "Lite onboarding",
-  },
-  Object {
-    "icon": <PlanFeatureVectorIcon
-      url="test-file-stub"
-    />,
-    "isDisabled": false,
-    "label": "Magento integration",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="supervised_user_circle"
-    />,
-    "isDisabled": false,
-    "label": "User permissions",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="insert_emoticon"
-    />,
-    "isDisabled": false,
-    "label": "Satisfaction surveys",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="chat"
-    />,
-    "isDisabled": false,
-    "label": "Chat campaigns",
+    "label": "Live chat",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -1856,22 +814,42 @@ Array [
       <b>
         50
       </b>
-       Phone numbers
+       Phone number
+      s
     </React.Fragment>,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
-      icon="people_outline"
+      icon="auto_awesome"
     />,
-    "isDisabled": true,
-    "label": "Team Management",
+    "label": "Macros and rules",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
-      icon="view_carousel"
+      icon="insert_emoticon"
     />,
-    "isDisabled": true,
-    "label": "View sharing",
+    "isDisabled": false,
+    "label": "Satisfaction surveys",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="web_asset"
+    />,
+    "isDisabled": false,
+    "label": <HelpCenterLabel
+      disabled={false}
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="directions_bike"
+    />,
+    "label": <React.Fragment>
+      <b>
+        Lite
+      </b>
+       onboarding
+    </React.Fragment>,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -1879,6 +857,13 @@ Array [
     />,
     "isDisabled": true,
     "label": "Revenue statistics",
+  },
+  Object {
+    "icon": <PlanFeatureVectorIcon
+      url="test-file-stub"
+    />,
+    "isDisabled": false,
+    "label": "Magento integration",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -1897,7 +882,7 @@ Array [
 ]
 `;
 
-exports[`billingPlanFeatures getPlanCardFeaturesForPlan Enterprise plan should return legacy plan card features 1`] = `
+exports[`billingPlanFeatures getPlanCardFeaturesForPlan should return plan card features for Enterprise plan plan 1`] = `
 Array [
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -1906,21 +891,41 @@ Array [
     "label": <React.Fragment>
       Discounted prices for 
       <b>
-        volumes of 10k+ tickets
+        10k+ tickets
       </b>
     </React.Fragment>,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
+      icon="thumb_up"
+    />,
+    "label": "Facebook, Messenger, Instagram & DMs",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
       icon="forum"
     />,
-    "label": "Social media & chat",
+    "label": "Live chat",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="phone"
+    />,
+    "isDisabled": false,
+    "label": "Custom limit of phone numbers",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
       icon="auto_awesome"
     />,
     "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="insert_emoticon"
+    />,
+    "isDisabled": false,
+    "label": "Satisfaction surveys",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -1935,120 +940,19 @@ Array [
     "icon": <PlanFeatureMaterialIcon
       icon="directions_car"
     />,
-    "label": "Full onboarding",
-  },
-  Object {
-    "icon": <PlanFeatureVectorIcon
-      url="test-file-stub"
-    />,
-    "isDisabled": false,
-    "label": "Magento integration",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="supervised_user_circle"
-    />,
-    "isDisabled": false,
-    "label": "User permissions",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="insert_emoticon"
-    />,
-    "isDisabled": false,
-    "label": "Satisfaction surveys",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="chat"
-    />,
-    "isDisabled": false,
-    "label": "Chat campaigns",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="phone"
-    />,
-    "isDisabled": false,
-    "label": "Phone",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="people_outline"
-    />,
-    "isDisabled": false,
-    "label": "Team Management",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="view_carousel"
-    />,
-    "isDisabled": false,
-    "label": "View sharing",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="attach_money"
-    />,
-    "isDisabled": false,
-    "label": "Revenue statistics",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="person_pin"
-    />,
-    "isDisabled": false,
-    "label": "Dedicated success manager",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="blur_on"
-    />,
-    "isDisabled": false,
-    "label": "Custom services",
-  },
-]
-`;
-
-exports[`billingPlanFeatures getPlanCardFeaturesForPlan Enterprise plan should return plan card features 1`] = `
-Array [
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="playlist_add_check"
-    />,
     "label": <React.Fragment>
-      Discounted prices for 
       <b>
-        volumes of 10k+ tickets
+        Full
       </b>
+       onboarding
     </React.Fragment>,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
-      icon="forum"
-    />,
-    "label": "Social media & chat",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="auto_awesome"
-    />,
-    "label": "Macros and rules",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="web_asset"
+      icon="attach_money"
     />,
     "isDisabled": false,
-    "label": <HelpCenterLabel
-      disabled={false}
-    />,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="directions_car"
-    />,
-    "label": "Full onboarding",
+    "label": "Revenue statistics",
   },
   Object {
     "icon": <PlanFeatureVectorIcon
@@ -2056,55 +960,6 @@ Array [
     />,
     "isDisabled": false,
     "label": "Magento integration",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="supervised_user_circle"
-    />,
-    "isDisabled": false,
-    "label": "User permissions",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="insert_emoticon"
-    />,
-    "isDisabled": false,
-    "label": "Satisfaction surveys",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="chat"
-    />,
-    "isDisabled": false,
-    "label": "Chat campaigns",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="phone"
-    />,
-    "isDisabled": false,
-    "label": "Phone",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="people_outline"
-    />,
-    "isDisabled": false,
-    "label": "Team Management",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="view_carousel"
-    />,
-    "isDisabled": false,
-    "label": "View sharing",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="attach_money"
-    />,
-    "isDisabled": false,
-    "label": "Revenue statistics",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -2123,7 +978,7 @@ Array [
 ]
 `;
 
-exports[`billingPlanFeatures getPlanCardFeaturesForPlan Pro plan should return legacy plan card features 1`] = `
+exports[`billingPlanFeatures getPlanCardFeaturesForPlan should return plan card features for Pro plan plan 1`] = `
 Array [
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -2140,7 +995,7 @@ Array [
           "currencySign": "$",
           "features": Object {
             "auto_assignment": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "automation_cancellations_flow": Object {
               "enabled": false,
@@ -2186,7 +1041,7 @@ Array [
               "enabled": true,
             },
             "teams": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "twitter_integration": Object {
               "enabled": false,
@@ -2199,7 +1054,7 @@ Array [
               "enabled": false,
             },
             "view_sharing": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "yotpo_integration": Object {
               "enabled": true,
@@ -2211,7 +1066,7 @@ Array [
           "interval": "month",
           "legacy_automation_addon_features": Object {
             "auto_assignment": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "automation_cancellations_flow": Object {
               "enabled": true,
@@ -2252,73 +1107,6 @@ Array [
             },
             "revenue_statistics": Object {
               "enabled": false,
-            },
-            "satisfaction_surveys": Object {
-              "enabled": true,
-            },
-            "teams": Object {
-              "enabled": false,
-            },
-            "twitter_integration": Object {
-              "enabled": false,
-              "limit": 0,
-            },
-            "user_roles": Object {
-              "enabled": true,
-            },
-            "users_live_statistics": Object {
-              "enabled": false,
-            },
-            "view_sharing": Object {
-              "enabled": false,
-            },
-            "yotpo_integration": Object {
-              "enabled": true,
-            },
-          },
-          "legacy_features": Object {
-            "auto_assignment": Object {
-              "enabled": true,
-            },
-            "automation_cancellations_flow": Object {
-              "enabled": true,
-            },
-            "automation_report_issue_flow": Object {
-              "enabled": true,
-            },
-            "automation_return_flow": Object {
-              "enabled": true,
-            },
-            "automation_self_service_statistics": Object {
-              "enabled": false,
-            },
-            "automation_track_order_flow": Object {
-              "enabled": true,
-            },
-            "chat_campaigns": Object {
-              "enabled": true,
-            },
-            "facebook_comment": Object {
-              "enabled": true,
-            },
-            "instagram_comment": Object {
-              "enabled": true,
-            },
-            "instagram_dm": Object {
-              "enabled": false,
-            },
-            "magento_integration": Object {
-              "enabled": true,
-            },
-            "overview_live_statistics": Object {
-              "enabled": false,
-            },
-            "phone_integration": Object {
-              "enabled": true,
-              "limit": 3,
-            },
-            "revenue_statistics": Object {
-              "enabled": true,
             },
             "satisfaction_surveys": Object {
               "enabled": true,
@@ -2365,15 +1153,41 @@ Array [
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
+      icon="thumb_up"
+    />,
+    "label": "Facebook, Messenger, Instagram & DMs",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
       icon="forum"
     />,
-    "label": "Social media & chat",
+    "label": "Live chat",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="phone"
+    />,
+    "isDisabled": false,
+    "label": <React.Fragment>
+      <b>
+        3
+      </b>
+       Phone number
+      s
+    </React.Fragment>,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
       icon="auto_awesome"
     />,
     "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="insert_emoticon"
+    />,
+    "isDisabled": false,
+    "label": "Satisfaction surveys",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -2388,7 +1202,19 @@ Array [
     "icon": <PlanFeatureMaterialIcon
       icon="directions_bike"
     />,
-    "label": "Lite onboarding",
+    "label": <React.Fragment>
+      <b>
+        Lite
+      </b>
+       onboarding
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="attach_money"
+    />,
+    "isDisabled": true,
+    "label": "Revenue statistics",
   },
   Object {
     "icon": <PlanFeatureVectorIcon
@@ -2396,60 +1222,6 @@ Array [
     />,
     "isDisabled": false,
     "label": "Magento integration",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="supervised_user_circle"
-    />,
-    "isDisabled": false,
-    "label": "User permissions",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="insert_emoticon"
-    />,
-    "isDisabled": false,
-    "label": "Satisfaction surveys",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="chat"
-    />,
-    "isDisabled": false,
-    "label": "Chat campaigns",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="phone"
-    />,
-    "isDisabled": false,
-    "label": <React.Fragment>
-      <b>
-        3
-      </b>
-       Phone numbers
-    </React.Fragment>,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="people_outline"
-    />,
-    "isDisabled": false,
-    "label": "Team Management",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="view_carousel"
-    />,
-    "isDisabled": false,
-    "label": "View sharing",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="attach_money"
-    />,
-    "isDisabled": false,
-    "label": "Revenue statistics",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -2468,7 +1240,7 @@ Array [
 ]
 `;
 
-exports[`billingPlanFeatures getPlanCardFeaturesForPlan Pro plan should return plan card features 1`] = `
+exports[`billingPlanFeatures getPlanCardFeaturesForPlan should return plan card features for legacy plan 1`] = `
 Array [
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -2477,15 +1249,15 @@ Array [
     "label": <BillableTicketsLabel
       plan={
         Object {
-          "amount": 30000,
-          "automation_addon_equivalent_plan": "pro-automation-monthly-usd-2",
+          "amount": 6000,
+          "automation_addon_equivalent_plan": "basic-automation-monthly-usd-2",
           "automation_addon_included": false,
-          "cost_per_ticket": 0.23,
+          "cost_per_ticket": 0.25,
           "currency": "usd",
           "currencySign": "$",
           "features": Object {
             "auto_assignment": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "automation_cancellations_flow": Object {
               "enabled": false,
@@ -2518,20 +1290,20 @@ Array [
               "enabled": true,
             },
             "overview_live_statistics": Object {
-              "enabled": true,
+              "enabled": false,
             },
             "phone_integration": Object {
               "enabled": true,
-              "limit": 3,
+              "limit": 1,
             },
             "revenue_statistics": Object {
               "enabled": false,
             },
             "satisfaction_surveys": Object {
-              "enabled": true,
+              "enabled": false,
             },
             "teams": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "twitter_integration": Object {
               "enabled": false,
@@ -2544,19 +1316,19 @@ Array [
               "enabled": false,
             },
             "view_sharing": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "yotpo_integration": Object {
               "enabled": true,
             },
           },
-          "free_tickets": 2000,
-          "id": "pro-monthly-usd-2",
+          "free_tickets": 350,
+          "id": "basic-monthly-usd-2",
           "integrations": 200,
           "interval": "month",
           "legacy_automation_addon_features": Object {
             "auto_assignment": Object {
-              "enabled": false,
+              "enabled": true,
             },
             "automation_cancellations_flow": Object {
               "enabled": true,
@@ -2589,84 +1361,17 @@ Array [
               "enabled": true,
             },
             "overview_live_statistics": Object {
-              "enabled": true,
+              "enabled": false,
             },
             "phone_integration": Object {
               "enabled": true,
-              "limit": 3,
+              "limit": 1,
             },
             "revenue_statistics": Object {
               "enabled": false,
             },
             "satisfaction_surveys": Object {
-              "enabled": true,
-            },
-            "teams": Object {
               "enabled": false,
-            },
-            "twitter_integration": Object {
-              "enabled": false,
-              "limit": 0,
-            },
-            "user_roles": Object {
-              "enabled": true,
-            },
-            "users_live_statistics": Object {
-              "enabled": false,
-            },
-            "view_sharing": Object {
-              "enabled": false,
-            },
-            "yotpo_integration": Object {
-              "enabled": true,
-            },
-          },
-          "legacy_features": Object {
-            "auto_assignment": Object {
-              "enabled": true,
-            },
-            "automation_cancellations_flow": Object {
-              "enabled": true,
-            },
-            "automation_report_issue_flow": Object {
-              "enabled": true,
-            },
-            "automation_return_flow": Object {
-              "enabled": true,
-            },
-            "automation_self_service_statistics": Object {
-              "enabled": false,
-            },
-            "automation_track_order_flow": Object {
-              "enabled": true,
-            },
-            "chat_campaigns": Object {
-              "enabled": true,
-            },
-            "facebook_comment": Object {
-              "enabled": true,
-            },
-            "instagram_comment": Object {
-              "enabled": true,
-            },
-            "instagram_dm": Object {
-              "enabled": false,
-            },
-            "magento_integration": Object {
-              "enabled": true,
-            },
-            "overview_live_statistics": Object {
-              "enabled": false,
-            },
-            "phone_integration": Object {
-              "enabled": true,
-              "limit": 3,
-            },
-            "revenue_statistics": Object {
-              "enabled": true,
-            },
-            "satisfaction_surveys": Object {
-              "enabled": true,
             },
             "teams": Object {
               "enabled": true,
@@ -2700,8 +1405,8 @@ Array [
               "min": 300,
             },
           },
-          "name": "Pro",
-          "order": 2,
+          "name": "Basic",
+          "order": 1,
           "public": true,
           "trial_period_days": 7,
         }
@@ -2710,9 +1415,27 @@ Array [
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
+      icon="thumb_up"
+    />,
+    "label": "Facebook, Messenger, Instagram",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
       icon="forum"
     />,
-    "label": "Social media & chat",
+    "label": "Live chat",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="phone"
+    />,
+    "isDisabled": false,
+    "label": <React.Fragment>
+      <b>
+        1
+      </b>
+       Phone number
+    </React.Fragment>,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -2722,18 +1445,37 @@ Array [
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
+      icon="insert_emoticon"
+    />,
+    "isDisabled": true,
+    "label": "Satisfaction surveys",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
       icon="web_asset"
     />,
-    "isDisabled": false,
+    "isDisabled": true,
     "label": <HelpCenterLabel
-      disabled={false}
+      disabled={true}
     />,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
-      icon="directions_bike"
+      icon="directions_walk"
     />,
-    "label": "Lite onboarding",
+    "label": <React.Fragment>
+      <b>
+        Self
+      </b>
+       onboarding
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="attach_money"
+    />,
+    "isDisabled": true,
+    "label": "Revenue statistics",
   },
   Object {
     "icon": <PlanFeatureVectorIcon
@@ -2744,24 +1486,205 @@ Array [
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
-      icon="supervised_user_circle"
+      icon="person_pin"
     />,
-    "isDisabled": false,
-    "label": "User permissions",
+    "isDisabled": true,
+    "label": "Dedicated success manager",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
-      icon="insert_emoticon"
+      icon="blur_on"
     />,
-    "isDisabled": false,
-    "label": "Satisfaction surveys",
+    "isDisabled": true,
+    "label": "Custom services",
+  },
+]
+`;
+
+exports[`billingPlanFeatures getPlanCardFeaturesForPlan should return plan card features with disabled help center 1`] = `
+Array [
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add_check"
+    />,
+    "label": <BillableTicketsLabel
+      plan={
+        Object {
+          "amount": 6000,
+          "automation_addon_equivalent_plan": "basic-automation-monthly-usd-2",
+          "automation_addon_included": false,
+          "cost_per_ticket": 0.25,
+          "currency": "usd",
+          "currencySign": "$",
+          "features": Object {
+            "auto_assignment": Object {
+              "enabled": true,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": false,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": false,
+            },
+            "automation_return_flow": Object {
+              "enabled": false,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": false,
+            },
+            "chat_campaigns": Object {
+              "enabled": true,
+            },
+            "facebook_comment": Object {
+              "enabled": true,
+            },
+            "instagram_comment": Object {
+              "enabled": true,
+            },
+            "instagram_dm": Object {
+              "enabled": true,
+            },
+            "magento_integration": Object {
+              "enabled": true,
+            },
+            "overview_live_statistics": Object {
+              "enabled": false,
+            },
+            "phone_integration": Object {
+              "enabled": true,
+              "limit": 1,
+            },
+            "revenue_statistics": Object {
+              "enabled": false,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": false,
+            },
+            "teams": Object {
+              "enabled": true,
+            },
+            "twitter_integration": Object {
+              "enabled": false,
+              "limit": 0,
+            },
+            "user_roles": Object {
+              "enabled": true,
+            },
+            "users_live_statistics": Object {
+              "enabled": false,
+            },
+            "view_sharing": Object {
+              "enabled": true,
+            },
+            "yotpo_integration": Object {
+              "enabled": true,
+            },
+          },
+          "free_tickets": 350,
+          "id": "basic-monthly-usd-2",
+          "integrations": 200,
+          "interval": "month",
+          "legacy_automation_addon_features": Object {
+            "auto_assignment": Object {
+              "enabled": true,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": true,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": true,
+            },
+            "automation_return_flow": Object {
+              "enabled": true,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": true,
+            },
+            "chat_campaigns": Object {
+              "enabled": true,
+            },
+            "facebook_comment": Object {
+              "enabled": true,
+            },
+            "instagram_comment": Object {
+              "enabled": true,
+            },
+            "instagram_dm": Object {
+              "enabled": true,
+            },
+            "magento_integration": Object {
+              "enabled": true,
+            },
+            "overview_live_statistics": Object {
+              "enabled": false,
+            },
+            "phone_integration": Object {
+              "enabled": true,
+              "limit": 1,
+            },
+            "revenue_statistics": Object {
+              "enabled": false,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": false,
+            },
+            "teams": Object {
+              "enabled": true,
+            },
+            "twitter_integration": Object {
+              "enabled": false,
+              "limit": 0,
+            },
+            "user_roles": Object {
+              "enabled": true,
+            },
+            "users_live_statistics": Object {
+              "enabled": false,
+            },
+            "view_sharing": Object {
+              "enabled": true,
+            },
+            "yotpo_integration": Object {
+              "enabled": true,
+            },
+          },
+          "limits": Object {
+            "messages": Object {
+              "default": 1000,
+              "max": 1000,
+              "min": 800,
+            },
+            "tickets": Object {
+              "default": 350,
+              "max": 350,
+              "min": 300,
+            },
+          },
+          "name": "Basic",
+          "order": 1,
+          "public": true,
+          "trial_period_days": 7,
+        }
+      }
+    />,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
-      icon="chat"
+      icon="thumb_up"
     />,
-    "isDisabled": false,
-    "label": "Chat campaigns",
+    "label": "Facebook, Messenger, Instagram",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="forum"
+    />,
+    "label": "Live chat",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -2770,24 +1693,43 @@ Array [
     "isDisabled": false,
     "label": <React.Fragment>
       <b>
-        3
+        1
       </b>
-       Phone numbers
+       Phone number
     </React.Fragment>,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
-      icon="people_outline"
+      icon="auto_awesome"
     />,
-    "isDisabled": true,
-    "label": "Team Management",
+    "label": "Macros and rules",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
-      icon="view_carousel"
+      icon="insert_emoticon"
     />,
     "isDisabled": true,
-    "label": "View sharing",
+    "label": "Satisfaction surveys",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="web_asset"
+    />,
+    "isDisabled": true,
+    "label": <HelpCenterLabel
+      disabled={true}
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="directions_walk"
+    />,
+    "label": <React.Fragment>
+      <b>
+        Self
+      </b>
+       onboarding
+    </React.Fragment>,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -2795,6 +1737,13 @@ Array [
     />,
     "isDisabled": true,
     "label": "Revenue statistics",
+  },
+  Object {
+    "icon": <PlanFeatureVectorIcon
+      url="test-file-stub"
+    />,
+    "isDisabled": false,
+    "label": "Magento integration",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon

@@ -27,13 +27,11 @@ import {AgentLabel} from '../../../../../common/utils/labels.tsx'
 
 import {sanitizeHtmlDefault} from '../../../../../../utils/html.ts'
 import {convertToHTML} from '../../../../../../utils/editor.tsx'
-import withFeaturePaywall from '../../../../../common/utils/withFeaturePaywall.tsx'
 
 import {notify} from '../../../../../../state/notifications/actions.ts'
 import * as campaignActions from '../../../../../../state/campaigns/actions'
 import * as integrationsSelectors from '../../../../../../state/integrations/selectors.ts'
 import * as agentSelectors from '../../../../../../state/agents/selectors.ts'
-import {AccountFeature} from '../../../../../../state/currentAccount/types.ts'
 
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation.tsx'
 
@@ -245,7 +243,6 @@ export class GorgiasChatCampaignDetailComponent extends React.Component {
     }
 }
 
-@withFeaturePaywall(AccountFeature.ChatCampaigns)
 export class CampaignForm extends React.Component {
     static propTypes = {
         id: PropTypes.string.isRequired,

@@ -20,13 +20,12 @@ exports[`withFeaturePaywall should not render the passed component when the feat
             <h1
               class="header"
             >
-              Auto-assign tickets with teams
+              Track revenue from support
             </h1>
             <p
               class="infoText"
             >
-              As your team grows, free for all doesn’t work anymore. You waste time manually assigning tickets and cherry picking becomes an issue. 
-Start using teams to automatically assign tickets to agents.
+              Uncover upsell opportunities, track revenue generated per agents to compensate your team based on actual sales.
             </p>
             <div
               class="mt-3 mb-5 d-inline-block"
@@ -55,45 +54,6 @@ Start using teams to automatically assign tickets to agents.
                 </a>
               </div>
             </div>
-            <p
-              class="testimonialText"
-            >
-              With Auto-assign, we have been able to utilize rules to assign tickets to certain teams based on the ticket parameters. It has saved us time instead of having our lead agents manually assigning tickets to teams based on the ticket request type.
-            </p>
-            <div
-              class="d-flex mt-4"
-            >
-              <img
-                alt="avatar"
-                class="mr-3 avatar"
-                src="/static/private/img/paywalls/avatars/amir-mot.png"
-              />
-              <div>
-                <p
-                  class="testimonialDetails"
-                >
-                  <strong>
-                    Amir Mot
-                  </strong>
-                </p>
-                <p
-                  class="testimonialDetails"
-                >
-                  CEO
-                   
-                  at
-                   
-                  <a
-                    class="companyLink"
-                    href="https://www.bradza.com/"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    Bradza
-                  </a>
-                </p>
-              </div>
-            </div>
           </div>
           <div
             class="mt-5 mt-lg-0 pl-lg-5 preview col-12 col-lg-8 col-xl-7"
@@ -101,7 +61,7 @@ Start using teams to automatically assign tickets to agents.
             <img
               alt="Feature preview"
               class="img-fluid previewImage"
-              src="/static/private/img/paywalls/screens/auto-assignment.png"
+              src="/static/private/img/paywalls/screens/revenue-statistics.png"
             />
           </div>
         </div>

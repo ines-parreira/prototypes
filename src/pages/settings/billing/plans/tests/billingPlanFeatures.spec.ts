@@ -19,32 +19,40 @@ describe('billingPlanFeatures', () => {
     })
 
     describe('getPlanCardFeaturesForPlan', () => {
-        describe.each<[string, Plan]>([
+        it.each<[string, Plan]>([
             ['Basic plan', basicPlan],
             ['Pro plan', proPlan],
             ['Advanced plan', advancedPlan],
             ['Enterprise plan', enterprisePlan],
             ['Custom plan', customPlan],
-        ])('%s', (suiteName, plan) => {
-            it(`should return plan card features`, () => {
+        ])(
+            'should return plan card features for %s plan',
+            (suiteName, plan) => {
                 expect(
                     getPlanCardFeaturesForPlan({
                         plan: {...plan, currencySign: '$'},
-                        showPlanLegacyFeatures: false,
-                        showHelpCenterDisabled: false,
+                        enableHardCodedFeatures: true,
                     })
                 ).toMatchSnapshot()
-            })
+            }
+        )
 
-            it(`should return legacy plan card features`, () => {
-                expect(
-                    getPlanCardFeaturesForPlan({
-                        plan: {...plan, currencySign: '$'},
-                        showPlanLegacyFeatures: true,
-                        showHelpCenterDisabled: false,
-                    })
-                ).toMatchSnapshot()
-            })
+        it(`should return plan card features for legacy plan`, () => {
+            expect(
+                getPlanCardFeaturesForPlan({
+                    plan: {...basicPlan, currencySign: '$'},
+                    enableHardCodedFeatures: false,
+                })
+            ).toMatchSnapshot()
+        })
+
+        it(`should return plan card features with disabled help center`, () => {
+            expect(
+                getPlanCardFeaturesForPlan({
+                    plan: {...basicPlan, currencySign: '$'},
+                    enableHardCodedFeatures: false,
+                })
+            ).toMatchSnapshot()
         })
     })
 })

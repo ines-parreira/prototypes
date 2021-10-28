@@ -16,12 +16,13 @@ export default function BillableTicketsLabel({
     costMultiplier = 100,
 }: Props) {
     const id = _uniqueId('billable-ticket-label-')
-    const costPerTicket = (plan.cost_per_ticket * costMultiplier).toFixed(2)
+    const costPerTicket = plan.cost_per_ticket * costMultiplier
 
     return (
         <>
             <span id={id} className={css.billableTickets}>
-                {plan.free_tickets} billable tickets
+                {new Intl.NumberFormat('en-US').format(plan.free_tickets)}{' '}
+                billable tickets
             </span>{' '}
             included
             <Tooltip
@@ -29,8 +30,13 @@ export default function BillableTicketsLabel({
                 placement="top-start"
                 innerClassName={css.tooltip}
             >
-                {plan.currencySign}
-                {costPerTicket} per {costMultiplier} extra tickets
+                {new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: plan.currency,
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                }).format(costPerTicket)}{' '}
+                per {costMultiplier} extra tickets
             </Tooltip>
         </>
     )

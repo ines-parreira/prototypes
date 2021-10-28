@@ -6,12 +6,10 @@ import moment from 'moment'
 import {Breadcrumb, BreadcrumbItem, Button, Container, Table} from 'reactstrap'
 
 import * as campaignActions from '../../../../../../state/campaigns/actions.js'
-import {AccountFeature} from '../../../../../../state/currentAccount/types'
 import ToggleButton from '../../../../../common/components/ToggleButton'
 import PageHeader from '../../../../../common/components/PageHeader'
 import ForwardIcon from '../../ForwardIcon'
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
-import withFeaturePaywall from '../../../../../common/utils/withFeaturePaywall'
 
 type Props = {
     integration: Map<any, any>
@@ -37,8 +35,42 @@ export class ChatIntegrationCampaignsContainer extends Component<Props> {
         const campaigns = (integration.getIn(['meta', 'campaigns']) ||
             fromJS([])) as List<any>
 
-        const CampaignsContent = () => (
-            <>
+        return (
+            <div className="full-width">
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations">
+                                    Integrations
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                <Link
+                                    to={`/app/settings/integrations/${
+                                        integration.get('type') as string
+                                    }`}
+                                >
+                                    Chat (Deprecated)
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                {integration.get('name')}
+                            </BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                >
+                    <Button
+                        tag={Link}
+                        color="success"
+                        to={`/app/settings/integrations/${
+                            integration.get('type') as string
+                        }/${integration.get('id') as number}/campaigns/new`}
+                    >
+                        Create campaign
+                    </Button>
+                </PageHeader>
+                <ChatIntegrationNavigation integration={integration} />
                 <Container fluid className="page-container">
                     <p>
                         Use campaigns to prompt visitors of your website to
@@ -96,50 +128,6 @@ export class ChatIntegrationCampaignsContainer extends Component<Props> {
                         </tbody>
                     </Table>
                 )}
-            </>
-        )
-
-        const PaywalledCampaigns = withFeaturePaywall(
-            AccountFeature.ChatCampaigns
-        )(CampaignsContent)
-
-        return (
-            <div className="full-width">
-                <PageHeader
-                    title={
-                        <Breadcrumb>
-                            <BreadcrumbItem>
-                                <Link to="/app/settings/integrations">
-                                    Integrations
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>
-                                <Link
-                                    to={`/app/settings/integrations/${
-                                        integration.get('type') as string
-                                    }`}
-                                >
-                                    Chat (Deprecated)
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>
-                                {integration.get('name')}
-                            </BreadcrumbItem>
-                        </Breadcrumb>
-                    }
-                >
-                    <Button
-                        tag={Link}
-                        color="success"
-                        to={`/app/settings/integrations/${
-                            integration.get('type') as string
-                        }/${integration.get('id') as number}/campaigns/new`}
-                    >
-                        Create campaign
-                    </Button>
-                </PageHeader>
-                <ChatIntegrationNavigation integration={integration} />
-                <PaywalledCampaigns />
             </div>
         )
     }

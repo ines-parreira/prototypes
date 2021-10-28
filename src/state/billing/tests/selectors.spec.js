@@ -137,7 +137,7 @@ describe('billing selectors', () => {
             state = {
                 ...state,
                 currentAccount: fromJS({
-                    current_subscription: {plan: 'growth-usd-1'},
+                    current_subscription: {plan: 'pro-monthly-usd-2'},
                 }),
             }
             expect(selectors.hasLegacyPlan(state)).toBe(false)
@@ -145,7 +145,6 @@ describe('billing selectors', () => {
                 ...state,
                 currentAccount: fromJS({
                     current_subscription: {plan: 'growth-usd-1'},
-                    meta: {has_legacy_features: true},
                 }),
             }
             expect(selectors.hasLegacyPlan(state)).toBe(true)

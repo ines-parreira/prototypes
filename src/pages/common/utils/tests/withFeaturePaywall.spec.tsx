@@ -30,7 +30,7 @@ describe('withFeaturePaywall', () => {
         currentAccount: fromJS({
             features: fromJS({
                 [AccountFeature.InstagramComment]: {enabled: true},
-                [AccountFeature.AutoAssignment]: {enabled: false},
+                [AccountFeature.RevenueStatistics]: {enabled: false},
             }),
         }),
         billing: fromJS({
@@ -57,7 +57,7 @@ describe('withFeaturePaywall', () => {
 
     it('should not render the passed component when the feature is unavailable', () => {
         const PaywalledComponent = withFeaturePaywall(
-            AccountFeature.AutoAssignment
+            AccountFeature.RevenueStatistics
         )(AnyComponent)
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
@@ -70,7 +70,7 @@ describe('withFeaturePaywall', () => {
 
     it('should not render the passed component when the feature is unavailable and use a custom paywall', () => {
         const PaywalledComponent = withFeaturePaywall(
-            AccountFeature.AutoAssignment,
+            AccountFeature.RevenueStatistics,
             CustomPaywallComponent
         )(AnyComponent)
         const {container} = render(

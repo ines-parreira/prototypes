@@ -11,7 +11,6 @@ import {
     getPlan,
     hasLegacyPlan,
 } from '../../../../state/billing/selectors'
-import {RootState} from '../../../../state/types'
 import {AccountFeatures} from '../../../../state/currentAccount/types'
 import {isFeatureEnabled} from '../../../../utils/account'
 
@@ -54,9 +53,6 @@ export default function BillingComparisonPlanCard({
     const currentPlan = useSelector(getCurrentPlan)
     const regularCurrentPlan = useSelector(getEquivalentRegularCurrentPlan)
     const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
-    const currentAccount = useSelector(
-        (state: RootState) => state.currentAccount
-    )
 
     const equivalentAutomationPlan = useSelector(
         getPlan(plan.automation_addon_equivalent_plan!)
@@ -73,18 +69,14 @@ export default function BillingComparisonPlanCard({
         isAutomationChecked,
     ])
 
-    const accountHasLegacyFeatures = currentAccount.getIn(
-        ['meta', 'has_legacy_features'],
-        false
-    )
     const hasLessFeatures =
         regularCurrentPlan &&
         countFeatures(plan.features) <
             countFeatures(
-                (regularCurrentPlan.get(
-                    accountHasLegacyFeatures ? 'legacy_features' : 'features',
-                    fromJS({})
-                ) as Map<any, any>).toJS()
+                (regularCurrentPlan.get('features', fromJS({})) as Map<
+                    any,
+                    any
+                >).toJS()
             )
     const isDowngrade =
         !isCurrentPlan &&

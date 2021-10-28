@@ -19,7 +19,7 @@ export const billingState = {
         'growth-usd-1': {
             cost_per_ticket: 0.045,
             interval: 'month',
-            public: true,
+            public: false,
             name: 'Growth Plan',
             trial_period_days: 14,
             order: 3,
@@ -55,6 +55,7 @@ export const billingState = {
             amount: 0,
             cost_per_ticket: 0.05,
             currency: 'usd',
+            public: false,
             free_tickets: 300,
             integrations: 15,
             interval: 'month',
@@ -70,7 +71,7 @@ export const billingState = {
         'standard-usd-1': {
             cost_per_ticket: 0.06,
             interval: 'month',
-            public: true,
+            public: false,
             name: 'Standard Plan',
             trial_period_days: 14,
             order: 1,
@@ -89,7 +90,7 @@ export const billingState = {
         'team-usd-1': {
             cost_per_ticket: 0.05,
             interval: 'month',
-            public: true,
+            public: false,
             name: 'Team Plan',
             trial_period_days: 14,
             order: 2,

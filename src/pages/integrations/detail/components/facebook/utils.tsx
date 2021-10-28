@@ -270,7 +270,7 @@ export function getInstagramDMSettingsInlineComponent(
             props: {
                 domain: currentAccount.get('domain'),
                 current_plan: currentPlan.get('name'),
-                paywall_feature: 'instagram_dm',
+                paywall_feature: AccountFeature.InstagramDirectMessage,
             },
         }
 

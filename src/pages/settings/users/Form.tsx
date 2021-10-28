@@ -16,14 +16,11 @@ import {
 } from 'reactstrap'
 import {AxiosError} from 'axios'
 
-import {getCheapestPlanNameForFeature} from '../../../utils/paywalls'
-import {getBillingState} from '../../../state/billing/selectors'
 import {toJS} from '../../../utils'
 import Loader from '../../common/components/Loader/Loader'
 import ConfirmButton from '../../common/components/ConfirmButton'
 import RichDropdown from '../../common/components/RichDropdown/RichDropdown'
 import {Option} from '../../common/components/RichDropdown/types'
-import UpgradeButton from '../../common/components/UpgradeButton/UpgradeButton'
 import {ORDERED_ROLES_META_BY_USER_ROLE} from '../../../config/user'
 import {
     MetaByAgentRole,
@@ -31,9 +28,7 @@ import {
     UserDraft,
     UserRole,
 } from '../../../config/types/user'
-import {paywallConfigs} from '../../../config/paywalls'
 import InputField from '../../common/forms/InputField.js'
-import {currentAccountHasFeature} from '../../../state/currentAccount/selectors'
 import {
     updateAgent,
     inviteAgent,
@@ -42,7 +37,6 @@ import {
     createAgent,
 } from '../../../state/agents/actions'
 import {updateAccountOwner} from '../../../state/currentAccount/actions'
-import {AccountFeature} from '../../../state/currentAccount/types'
 import * as helpers from '../../../state/agents/helpers'
 import PageHeader from '../../common/components/PageHeader'
 import PopoverModal from '../../common/components/PopoverModal'
@@ -82,9 +76,7 @@ export class FormContainer extends Component<Props, State> {
         isFetching: false,
         isSubmitting: false,
         name: '',
-        role: this.props.hasUserRolesFeature
-            ? UserRole.BasicAgent
-            : UserRole.Admin,
+        role: UserRole.BasicAgent,
     }
 
     componentDidMount() {
@@ -160,11 +152,7 @@ export class FormContainer extends Component<Props, State> {
     )
 
     render() {
-        const {
-            hasUserRolesFeature,
-            orderedRoleMetaByUserRole,
-            plans,
-        } = this.props
+        const {orderedRoleMetaByUserRole} = this.props
         const {agent, role} = this.state
 
         if (this.state.isFetching) {
@@ -177,11 +165,6 @@ export class FormContainer extends Component<Props, State> {
             this.props.accountOwnerId === this.props.currentUserId
         const isAgentAccountOwner =
             this.props.agentId === this.props.accountOwnerId
-        const paywallConfig = paywallConfigs[AccountFeature.UserRoles]
-        const requiredPlanName = getCheapestPlanNameForFeature(
-            AccountFeature.UserRoles,
-            toJS(plans)
-        )
 
         return (
             <div className="full-width">
@@ -239,9 +222,7 @@ export class FormContainer extends Component<Props, State> {
                         <RichDropdown
                             className={css.roleDropdown}
                             options={this.getRolesOptionsFromRoles(
-                                hasUserRolesFeature
-                                    ? orderedRoleMetaByUserRole
-                                    : {[role]: orderedRoleMetaByUserRole[role]}
+                                orderedRoleMetaByUserRole
                             )}
                             onClick={(role) =>
                                 this.setState({role: role as UserRole})
@@ -286,20 +267,6 @@ export class FormContainer extends Component<Props, State> {
                                 </PopoverModal>
                             </div>
                         </RichDropdown>
-                        {!hasUserRolesFeature && (
-                            <div className={classnames('mb-3', css.paywall)}>
-                                <h3>{paywallConfig!.header}</h3>
-
-                                {paywallConfig!.description}
-                                <UpgradeButton
-                                    className="mt-3"
-                                    label={`Upgrade to ${requiredPlanName!}`}
-                                    state={{
-                                        openedPlanModal: requiredPlanName,
-                                    }}
-                                />
-                            </div>
-                        )}
                         <FormGroup>
                             <Button
                                 type="submit"
@@ -370,10 +337,6 @@ const connector = connect(
             agentId: parseInt(ownProps.match.params.id),
             accountOwnerId: state.currentAccount.get('user_id'),
             currentUserId: state.currentUser.get('id'),
-            hasUserRolesFeature: currentAccountHasFeature(
-                AccountFeature.UserRoles
-            )(state),
-            plans: getBillingState(state).get('plans'),
         }
     },
     {

@@ -38,5 +38,4 @@ export type Plan = {
         AccountFeature,
         AccountFeatureMetadata
     >
-    legacy_features?: Record<AccountFeature, AccountFeatureMetadata>
 }

@@ -33,20 +33,13 @@ describe('<BillingComparisonPlanCard />', () => {
     let getCurrentPlanSpy: jest.SpyInstance
     let getHasLegacyPlan: jest.SpyInstance
 
-    const plans = [
-        basicPlan,
-        advancedPlan,
-        proPlan,
-        basicAutomationPlan,
-        proAutomationPlan,
-        advancedAutomationPlan,
-        legacyAutomationPlan,
-    ]
+    const plans = [basicPlan, advancedPlan, proPlan]
 
     const statePlans = [
         basicPlan,
         advancedPlan,
         proPlan,
+        legacyPlan,
         basicAutomationPlan,
         proAutomationPlan,
         advancedAutomationPlan,
@@ -114,15 +107,7 @@ describe('<BillingComparisonPlanCard />', () => {
             () => fromJS(legacyPlan) as Map<any, any>
         )
         const {container} = render(
-            <Provider
-                store={mockStore({
-                    ...defaultState,
-                    currentAccount: fromJS({
-                        ...account,
-                        meta: {has_legacy_features: true},
-                    }),
-                })}
-            >
+            <Provider store={mockStore(defaultState)}>
                 <BillingComparisonPlanCard
                     {...minProps}
                     isCurrentPlan

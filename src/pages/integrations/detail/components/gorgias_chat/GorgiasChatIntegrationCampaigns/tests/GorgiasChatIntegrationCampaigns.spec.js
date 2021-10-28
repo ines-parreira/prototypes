@@ -9,12 +9,6 @@ import GorgiasChatIntegrationCampaigns from '../GorgiasChatIntegrationCampaigns.
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-jest.mock('../../../../../../common/utils/withFeaturePaywall.tsx', () => () => {
-    return (Component) => (props) => {
-        return <Component {...props} />
-    }
-})
-
 describe('<GorgiasChatIntegrationCampaigns/>', () => {
     let store
 

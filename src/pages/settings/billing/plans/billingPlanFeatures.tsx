@@ -19,7 +19,7 @@ import PlanFeatureVectorIcon from './PlanFeatureVectorIcon'
 type GetCommonPlanCardFeaturesArgs = {
     planId: string
     planName: string
-    showHelpCenterDisabled: boolean
+    enableHardCodedFeatures: boolean
     enabledFeatures: AccountFeature[]
     phoneNumbersLimit?: number
     isCustom?: boolean
@@ -28,56 +28,43 @@ type GetCommonPlanCardFeaturesArgs = {
 const getCommonPlanCardFeatures = ({
     planId,
     planName,
-    showHelpCenterDisabled,
+    enableHardCodedFeatures,
     enabledFeatures,
     phoneNumbersLimit,
     isCustom = false,
 }: GetCommonPlanCardFeaturesArgs): PlanCardFeature[] => {
+    const hasPhone = enabledFeatures.includes(AccountFeature.PhoneIntegration)
+
     return [
         {
-            label: 'Social media & chat',
+            label: `Facebook, Messenger, Instagram${
+                enableHardCodedFeatures ? ' & DMs' : ''
+            }`,
+            icon: <PlanFeatureMaterialIcon icon="thumb_up" />,
+        },
+        {
+            label: 'Live chat',
             icon: <PlanFeatureMaterialIcon icon="forum" />,
+        },
+        {
+            label: hasPhone ? (
+                phoneNumbersLimit ? (
+                    <>
+                        <b>{phoneNumbersLimit}</b> Phone number
+                        {phoneNumbersLimit > 1 && 's'}
+                    </>
+                ) : (
+                    'Custom limit of phone numbers'
+                )
+            ) : (
+                'Phone'
+            ),
+            icon: <PlanFeatureMaterialIcon icon="phone" />,
+            isDisabled: !hasPhone,
         },
         {
             label: 'Macros and rules',
             icon: <PlanFeatureMaterialIcon icon="auto_awesome" />,
-        },
-        ...(HELP_CENTER_PAYWALLS_ENABLED
-            ? [
-                  {
-                      label: (
-                          <HelpCenterLabel disabled={showHelpCenterDisabled} />
-                      ),
-                      icon: <PlanFeatureMaterialIcon icon="web_asset" />,
-                      isDisabled: showHelpCenterDisabled,
-                  },
-              ]
-            : []),
-        planId === 'enterprise' || planName === 'Advanced'
-            ? {
-                  label: 'Full onboarding',
-                  icon: <PlanFeatureMaterialIcon icon="directions_car" />,
-              }
-            : planName === 'Basic'
-            ? {
-                  label: 'Self onboarding',
-                  icon: <PlanFeatureMaterialIcon icon="directions_walk" />,
-              }
-            : {
-                  label: 'Lite onboarding',
-                  icon: <PlanFeatureMaterialIcon icon="directions_bike" />,
-              },
-        {
-            label: 'Magento integration',
-            icon: <PlanFeatureVectorIcon url={magentoIcon} />,
-            isDisabled: !enabledFeatures.includes(
-                AccountFeature.MagentoIntegration
-            ),
-        },
-        {
-            label: 'User permissions',
-            icon: <PlanFeatureMaterialIcon icon="supervised_user_circle" />,
-            isDisabled: !enabledFeatures.includes(AccountFeature.UserRoles),
         },
         {
             label: 'Satisfaction surveys',
@@ -86,39 +73,57 @@ const getCommonPlanCardFeatures = ({
                 AccountFeature.SatisfactionSurveys
             ),
         },
-        {
-            label: 'Chat campaigns',
-            icon: <PlanFeatureMaterialIcon icon="chat" />,
-            isDisabled: !enabledFeatures.includes(AccountFeature.ChatCampaigns),
-        },
-        {
-            label: phoneNumbersLimit ? (
-                <>
-                    <b>{phoneNumbersLimit}</b> Phone numbers
-                </>
-            ) : (
-                'Phone'
-            ),
-            icon: <PlanFeatureMaterialIcon icon="phone" />,
-            isDisabled: !enabledFeatures.includes(
-                AccountFeature.PhoneIntegration
-            ),
-        },
-        {
-            label: 'Team Management',
-            icon: <PlanFeatureMaterialIcon icon="people_outline" />,
-            isDisabled: !enabledFeatures.includes(AccountFeature.Teams),
-        },
-        {
-            label: 'View sharing',
-            icon: <PlanFeatureMaterialIcon icon="view_carousel" />,
-            isDisabled: !enabledFeatures.includes(AccountFeature.ViewSharing),
-        },
+        ...(HELP_CENTER_PAYWALLS_ENABLED
+            ? [
+                  {
+                      label: (
+                          <HelpCenterLabel
+                              disabled={!enableHardCodedFeatures}
+                          />
+                      ),
+                      icon: <PlanFeatureMaterialIcon icon="web_asset" />,
+                      isDisabled: !enableHardCodedFeatures,
+                  },
+              ]
+            : []),
+        planId === 'enterprise' || planName === 'Advanced'
+            ? {
+                  label: (
+                      <>
+                          <b>Full</b> onboarding
+                      </>
+                  ),
+                  icon: <PlanFeatureMaterialIcon icon="directions_car" />,
+              }
+            : planName === 'Basic'
+            ? {
+                  label: (
+                      <>
+                          <b>Self</b> onboarding
+                      </>
+                  ),
+                  icon: <PlanFeatureMaterialIcon icon="directions_walk" />,
+              }
+            : {
+                  label: (
+                      <>
+                          <b>Lite</b> onboarding
+                      </>
+                  ),
+                  icon: <PlanFeatureMaterialIcon icon="directions_bike" />,
+              },
         {
             label: 'Revenue statistics',
             icon: <PlanFeatureMaterialIcon icon="attach_money" />,
             isDisabled: !enabledFeatures.includes(
                 AccountFeature.RevenueStatistics
+            ),
+        },
+        {
+            label: 'Magento integration',
+            icon: <PlanFeatureVectorIcon url={magentoIcon} />,
+            isDisabled: !enabledFeatures.includes(
+                AccountFeature.MagentoIntegration
             ),
         },
         {
@@ -144,7 +149,7 @@ export const getEnterprisePlanCardFeatures = (): PlanCardFeature[] => {
             icon: <PlanFeatureMaterialIcon icon="playlist_add_check" />,
             label: (
                 <>
-                    Discounted prices for <b>volumes of 10k+ tickets</b>
+                    Discounted prices for <b>10k+ tickets</b>
                 </>
             ),
         },
@@ -154,27 +159,24 @@ export const getEnterprisePlanCardFeatures = (): PlanCardFeature[] => {
             planId: 'enterprise',
             planName: 'Enterprise',
             enabledFeatures: Object.values(AccountFeature),
-            showHelpCenterDisabled: false,
+            enableHardCodedFeatures: true,
         })
     )
 }
 
 type GetPlanCardFeaturesForPlanArgs = {
     plan: PlanWithCurrencySign
-    showPlanLegacyFeatures: boolean
-    showHelpCenterDisabled: boolean
+    enableHardCodedFeatures: boolean
 }
 
 export const getPlanCardFeaturesForPlan = ({
     plan,
-    showPlanLegacyFeatures,
-    showHelpCenterDisabled,
+    enableHardCodedFeatures,
 }: GetPlanCardFeaturesForPlanArgs): PlanCardFeature[] => {
     if (plan.id === 'enterprise') {
         return getEnterprisePlanCardFeatures()
     }
-    const planFeatures =
-        plan[showPlanLegacyFeatures ? 'legacy_features' : 'features']
+    const planFeatures = plan.features
     const enabledFeatures = _pickBy(planFeatures, (featureMetadata) =>
         isFeatureEnabled(featureMetadata)
     ) as AccountFeatures
@@ -190,7 +192,7 @@ export const getPlanCardFeaturesForPlan = ({
         getCommonPlanCardFeatures({
             planId: plan.id,
             planName: plan.name,
-            showHelpCenterDisabled,
+            enableHardCodedFeatures,
             enabledFeatures: enabledFeaturesNames,
             phoneNumbersLimit:
                 planFeatures &&
