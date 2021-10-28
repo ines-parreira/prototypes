@@ -5,6 +5,10 @@ import {useSelector} from 'react-redux'
 import {ADMIN_ROLE, AGENT_ROLE} from '../config/user'
 import {currentAccountHasFeature} from '../state/currentAccount/selectors'
 import {AccountFeature} from '../state/currentAccount/types'
+import {
+    PaywallConfig,
+    paywallConfigs as defaultPaywallConfigs,
+} from '../config/paywalls'
 
 import App from './App'
 import IntegrationDetailContainer from './integrations/detail/IntegrationDetailContainer'
@@ -69,6 +73,8 @@ import DefaultStatsFilters from './stats/DefaultStatsFilters'
 import HelpCenterPaywall from './settings/helpCenter/components/Paywalls/HelpCenterPaywall'
 import withLegacyPlanPaywall from './common/utils/withLegacyPlanPaywall'
 import {HELP_CENTER_PAYWALLS_ENABLED} from './settings/helpCenter/constants'
+
+const assetsURL = window.GORGIAS_ASSETS_URL || ''
 
 const appRender = (props: {
     navbar: ComponentType<any>
@@ -379,6 +385,13 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
 }
 
 export function SettingsRoutes({match: {path}}: RouteComponentProps) {
+    const satisfactionPaywallConfig = {
+        [AccountFeature.SatisfactionSurveys]: {
+            ...defaultPaywallConfigs[AccountFeature.SatisfactionSurveys],
+            preview: `${assetsURL}/static/private/img/paywalls/screens/satisfaction-surveys-settings.png`,
+        } as PaywallConfig,
+    }
+
     return (
         <Switch>
             <Route
@@ -458,7 +471,9 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 exact
                 render={appRender({
                     content: withFeaturePaywall(
-                        AccountFeature.SatisfactionSurveys
+                        AccountFeature.SatisfactionSurveys,
+                        undefined,
+                        satisfactionPaywallConfig
                     )(withUserRoleRequired(SatisfactionSurveyView, ADMIN_ROLE)),
                     navbar: SettingsNavbarContainer,
                 })}

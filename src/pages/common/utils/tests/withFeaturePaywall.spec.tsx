@@ -12,6 +12,7 @@ import {
     basicPlan,
     proPlan,
 } from '../../../../fixtures/subscriptionPlan'
+import {PaywallConfig, paywallConfigs} from '../../../../config/paywalls'
 
 import withFeaturePaywall from '../withFeaturePaywall'
 
@@ -72,6 +73,28 @@ describe('withFeaturePaywall', () => {
         const PaywalledComponent = withFeaturePaywall(
             AccountFeature.RevenueStatistics,
             CustomPaywallComponent
+        )(AnyComponent)
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <PaywalledComponent />
+            </Provider>
+        )
+
+        expect(container).toMatchSnapshot()
+    })
+
+    it('should pass custom paywall configuration props', () => {
+        const customPaywallConfigs = {
+            [AccountFeature.RevenueStatistics]: {
+                ...paywallConfigs[AccountFeature.RevenueStatistics],
+                pageHeader: 'Custom page header',
+            } as PaywallConfig,
+        }
+
+        const PaywalledComponent = withFeaturePaywall(
+            AccountFeature.RevenueStatistics,
+            undefined,
+            customPaywallConfigs
         )(AnyComponent)
         const {container} = render(
             <Provider store={mockStore(defaultState)}>

@@ -181,6 +181,24 @@ describe('<Paywall />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
+    it('should render a page header for the feature with a page header', () => {
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <Paywall
+                    {...minProps}
+                    paywallConfigs={{
+                        [AccountFeature.RevenueStatistics]: {
+                            ...defaultPaywallConfig,
+                            pageHeader: 'Feature page header',
+                        },
+                    }}
+                />
+            </Provider>
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
     it('should render lightbox for the feature with a preview', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>

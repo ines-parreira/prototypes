@@ -4,70 +4,213 @@
 @medium-and-large-screens: ~'only screen and (min-width: 992px) and (max-width: 1500px)';
 
 :local {
-    .page {
-        @media @medium-and-large-screens {
-            padding-right: 0;
+    .pageWrapper {
+        overflow-x: hidden;
+
+        :global(.page-header) {
+            position: fixed;
+            width: 100%;
+            background: @white;
+            z-index: 1;
         }
-        .paywallContainer {
-            margin-top: 64px;
 
-            .header {
-                font-size: 2.1em;
-            }
-
-            .infoText {
-                color: @neutral8;
-                line-height: 1.2em;
-                white-space: pre-wrap;
-            }
-
-            .testimonialText {
-                color: @neutral8;
-                font-size: 16px;
-                font-style: italic;
-            }
-
-            .avatar {
-                height: 40px;
-                width: 40px;
-                overflow: hidden;
-                border-radius: 50%;
-            }
-
-            .testimonialDetails {
-                margin-bottom: 0;
-                line-height: 1.3rem;
-                font-size: 15px;
-
-                &:nth-of-type(2) {
-                    line-height: 1.2rem;
-                    font-size: unset;
+        [class*='col-xl'] {
+            &:nth-of-type(2) {
+                @media (min-width: 1500px) {
+                    flex: 0 0 530px;
+                    max-width: 530px;
                 }
+            }
+        }
 
-                .companyLink {
-                    display: inline-block;
-                    color: inherit;
-                    border-bottom: 1px solid @neutral7;
-                    &:hover {
-                        border-bottom: 1px solid @indigo;
+        .page {
+            @media @medium-and-large-screens {
+                padding-right: 0;
+            }
+            @media @desktops and (max-height: 1000px) {
+                height: ~'calc(100% - 60px)';
+                margin-top: 60px;
+                display: flex;
+                align-items: center;
+            }
+
+            .paywallContainer {
+                :global(.row) {
+                    @media @desktops and (min-height: 1000px) {
+                        margin-top: 234px;
                     }
                 }
-            }
 
-            .preview {
-                .previewImage {
-                    cursor: pointer;
-                    border-radius: 6px;
-                    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15),
-                        0px 6px 39px rgba(0, 0, 0, 0.15);
-                }
-
-                @media @medium-and-large-screens {
+                .preview {
                     display: flex;
                     justify-content: flex-end;
-                    padding-right: 0;
-                    .previewImage {
-                        align-self: baseline;
+
+                    div {
+                        position: relative;
+                        &::after {
+                            content: '';
+                            position: absolute;
+                            bottom: 8px;
+                            left: 0;
+                            right: 0;
+                            margin: auto;
+                            height: 37px;
+                            width: 60%;
+                            z-index: -1;
+                            box-shadow: 0px 16px 64px rgba(51, 115, 219, 0.16);
+                        }
+
+                        img {
+                            cursor: pointer;
+                            border-radius: 8px;
+                            box-shadow: 0px 4px 24px rgba(74, 141, 249, 0.08);
+                        }
+                    }
+
+                    &.advanced {
+                        div {
+                            &::after {
+                                box-shadow: 0px 16px 64px
+                                    rgba(32, 192, 140, 0.16);
+                            }
+
+                            img {
+                                box-shadow: 0px 4px 24px
+                                    rgba(36, 214, 157, 0.08);
+                            }
+                        }
+                    }
+
+                    &.enterprise {
+                        div {
+                            &::after {
+                                box-shadow: 0px 16px 64px
+                                    rgba(253, 155, 90, 0.16);
+                            }
+
+                            img {
+                                box-shadow: 0px 4px 24px
+                                    rgba(253, 155, 90, 0.08);
+                            }
+                        }
+                    }
+
+                    @media @desktops {
+                        max-width: 572px;
+                        box-sizing: content-box;
+
+                        &::before {
+                            content: url('data:image/svg+xml;utf8,<svg width="824" height="900" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h374c248.528 0 450 201.472 450 450S622.528 900 374 900H0V0Z" fill="rgb(246, 249, 255)"/></svg>');
+                            position: absolute;
+                            top: -250px;
+                            z-index: -1;
+                        }
+
+                        &.advanced {
+                            &::before {
+                                content: url('data:image/svg+xml;utf8,<svg width="824" height="900" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h374c248.528 0 450 201.472 450 450S622.528 900 374 900H0V0Z" fill="rgb(244, 253, 250)"/></svg>');
+                            }
+                        }
+
+                        &.enterprise {
+                            &::before {
+                                content: url('data:image/svg+xml;utf8,<svg width="824" height="900" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h374c248.528 0 450 201.472 450 450S622.528 900 374 900H0V0Z" fill="rgb(255, 251, 247)"/></svg>');
+                            }
+                        }
+                    }
+                }
+
+                .content {
+                    .contentTitle {
+                        margin: 20px 0 8px;
+                        font-weight: 600;
+                        color: @neutral10;
+
+                        @media @mobiles {
+                            font-size: 20px;
+                        }
+                    }
+
+                    .description {
+                        color: @neutral8;
+                        font-size: 16px;
+
+                        @media @mobiles {
+                            font-size: 14px;
+                        }
+                    }
+
+                    .badge {
+                        padding: 3px 8px 4px;
+                        height: 18px;
+                        font-weight: 600;
+                        letter-spacing: 0.05em;
+                        text-transform: uppercase;
+                        border-radius: 100px;
+                        transition: none;
+
+                        &.pro {
+                            background-color: #0024a1;
+                        }
+                        &.advanced {
+                            background-color: #24d69d;
+                        }
+                        &.enterprise {
+                            background-color: @orange;
+                        }
+                    }
+
+                    .upgradeChevron {
+                        color: @neutral6;
+                        margin: 0 8px;
+                    }
+
+                    .testimonial {
+                        margin-top: 40px;
+
+                        .testimonialText {
+                            color: @neutral8;
+                            font-size: 14px;
+                            font-style: italic;
+                            letter-spacing: -0.01em;
+                            line-height: 20px;
+                        }
+
+                        .avatar {
+                            height: 40px;
+                            width: 40px;
+                            overflow: hidden;
+                            border-radius: 50%;
+                        }
+
+                        .author {
+                            margin-top: 16px;
+
+                            .authorName {
+                                letter-spacing: -0.01em;
+                                line-height: 21px;
+                            }
+
+                            .authorDetails {
+                                margin-bottom: 0;
+                                font-size: 12px;
+                                color: @neutral8;
+                                line-height: 16px;
+
+                                a {
+                                    display: inline-block;
+                                    color: @blue;
+                                    transition: color 200ms;
+                                    &:hover {
+                                        color: darken(@blue, 10%);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .upgradeButton {
+                        margin-top: 40px;
                     }
                 }
             }

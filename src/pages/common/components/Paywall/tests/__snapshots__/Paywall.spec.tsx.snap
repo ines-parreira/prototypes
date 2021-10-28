@@ -2,100 +2,133 @@
 
 exports[`<Paywall /> should ask to upgrade custom plan when missing feature 1`] = `
 <div
-  class="full-width"
+  class="full-width pageWrapper"
 >
   <div
-    class="page-container pl-lg-5 page container-fluid"
+    class="page-container page container-fluid"
   >
     <div
       class="paywallContainer"
     >
       <div
-        class="row"
+        class="align-items-center row"
       >
         <div
-          class="col-12 col-lg-4 col-xl-5"
+          class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview enterprise col-12 col-lg-6 col-xl-6"
+        />
+        <div
+          class="pl-lg-5 col-12 col-lg-5 col-xl-5"
         >
-          <h1
-            class="header"
-          >
-            Paywall header
-          </h1>
-          <p
-            class="infoText"
-          >
-            Paywall description
-          </p>
           <div
-            class="mt-3 mb-5 d-inline-block"
+            class="content"
           >
             <div
-              class="d-flex align-items-center upgradeLink"
+              class="flex align-items-center"
             >
-              <a
-                to="[object Object]"
+              <span
+                class="badge badge badge-danger"
               >
-                <button
-                  class="upgradeButton btn btn-outline-warning"
-                  type="button"
+                <i
+                  class="material-icons mr-1"
                 >
-                  <span
-                    class="mr-2 upgradeLabel"
-                  >
-                    Upgrade to new Enterprise Plan
-                  </span>
-                  <img
-                    alt="upgrade-icon"
-                    class="upgradeIcon"
-                    src="test-file-stub"
-                  />
-                </button>
-              </a>
+                  warning
+                </i>
+                Legacy plan
+              </span>
+              <i
+                class="material-icons upgradeChevron"
+              >
+                chevron_right
+              </i>
+              <span
+                class="badge enterprise badge badge-primary"
+              >
+                Enterprise Plan
+              </span>
             </div>
-          </div>
-          <p
-            class="testimonialText"
-          >
-            Testimonial text
-          </p>
-          <div
-            class="d-flex mt-4"
-          >
-            <img
-              alt="avatar"
-              class="mr-3 avatar"
-              src="/static/private/img/paywalls/avatars/johndoe.jpg"
-            />
-            <div>
-              <p
-                class="testimonialDetails"
-              >
-                <strong>
-                  John Doe
-                </strong>
+            <h1
+              class="contentTitle"
+            >
+              Paywall header
+            </h1>
+            <div
+              class="description"
+            >
+              <p>
+                Paywall description
               </p>
+            </div>
+            <div
+              class="testimonial"
+            >
               <p
-                class="testimonialDetails"
+                class="testimonialText"
               >
-                Customer Experience Manager
-                 
-                at
-                 
+                Testimonial text
+              </p>
+              <div
+                class="d-flex author"
+              >
+                <img
+                  alt="avatar"
+                  class="mr-3 avatar"
+                  src="/static/private/img/paywalls/avatars/johndoe.jpg"
+                />
+                <div>
+                  <p
+                    class="authorName mb-1"
+                  >
+                    <strong>
+                      John Doe
+                    </strong>
+                  </p>
+                  <p
+                    class="authorDetails"
+                  >
+                    Customer Experience Manager
+                     
+                    at
+                     
+                    <a
+                      href="https://acme.com/"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Acme Inc.
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="upgradeButton"
+            >
+              <div
+                class="d-flex align-items-center upgradeLink"
+              >
                 <a
-                  class="companyLink"
-                  href="https://acme.com/"
-                  rel="noopener noreferrer"
-                  target="_blank"
+                  to="[object Object]"
                 >
-                  Acme Inc.
+                  <button
+                    class="upgradeButton btn btn-outline-warning"
+                    type="button"
+                  >
+                    <span
+                      class="mr-2 upgradeLabel"
+                    >
+                      Upgrade to New Enterprise
+                    </span>
+                    <img
+                      alt="upgrade-icon"
+                      class="upgradeIcon"
+                      src="test-file-stub"
+                    />
+                  </button>
                 </a>
-              </p>
+              </div>
             </div>
           </div>
         </div>
-        <div
-          class="mt-5 mt-lg-0 pl-lg-5 preview col-12 col-lg-8 col-xl-7"
-        />
       </div>
     </div>
   </div>
@@ -104,100 +137,262 @@ exports[`<Paywall /> should ask to upgrade custom plan when missing feature 1`] 
 
 exports[`<Paywall /> should ask to upgrade legacy plan into new plan 1`] = `
 <div
-  class="full-width"
+  class="full-width pageWrapper"
 >
   <div
-    class="page-container pl-lg-5 page container-fluid"
+    class="page-container page container-fluid"
   >
     <div
       class="paywallContainer"
     >
       <div
-        class="row"
+        class="align-items-center row"
       >
         <div
-          class="col-12 col-lg-4 col-xl-5"
+          class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview advanced col-12 col-lg-6 col-xl-6"
+        />
+        <div
+          class="pl-lg-5 col-12 col-lg-5 col-xl-5"
         >
-          <h1
-            class="header"
-          >
-            Paywall header
-          </h1>
-          <p
-            class="infoText"
-          >
-            Paywall description
-          </p>
           <div
-            class="mt-3 mb-5 d-inline-block"
+            class="content"
           >
             <div
-              class="d-flex align-items-center upgradeLink"
+              class="flex align-items-center"
             >
-              <a
-                to="[object Object]"
+              <span
+                class="badge badge badge-danger"
               >
-                <button
-                  class="upgradeButton btn btn-outline-warning"
-                  type="button"
+                <i
+                  class="material-icons mr-1"
                 >
-                  <span
-                    class="mr-2 upgradeLabel"
-                  >
-                    Upgrade to new Advanced Plan
-                  </span>
-                  <img
-                    alt="upgrade-icon"
-                    class="upgradeIcon"
-                    src="test-file-stub"
-                  />
-                </button>
-              </a>
+                  warning
+                </i>
+                Legacy plan
+              </span>
+              <i
+                class="material-icons upgradeChevron"
+              >
+                chevron_right
+              </i>
+              <span
+                class="badge advanced badge badge-primary"
+              >
+                Advanced Plan
+              </span>
             </div>
-          </div>
-          <p
-            class="testimonialText"
-          >
-            Testimonial text
-          </p>
-          <div
-            class="d-flex mt-4"
-          >
-            <img
-              alt="avatar"
-              class="mr-3 avatar"
-              src="/static/private/img/paywalls/avatars/johndoe.jpg"
-            />
-            <div>
-              <p
-                class="testimonialDetails"
-              >
-                <strong>
-                  John Doe
-                </strong>
+            <h1
+              class="contentTitle"
+            >
+              Paywall header
+            </h1>
+            <div
+              class="description"
+            >
+              <p>
+                Paywall description
               </p>
+            </div>
+            <div
+              class="testimonial"
+            >
               <p
-                class="testimonialDetails"
+                class="testimonialText"
               >
-                Customer Experience Manager
-                 
-                at
-                 
+                Testimonial text
+              </p>
+              <div
+                class="d-flex author"
+              >
+                <img
+                  alt="avatar"
+                  class="mr-3 avatar"
+                  src="/static/private/img/paywalls/avatars/johndoe.jpg"
+                />
+                <div>
+                  <p
+                    class="authorName mb-1"
+                  >
+                    <strong>
+                      John Doe
+                    </strong>
+                  </p>
+                  <p
+                    class="authorDetails"
+                  >
+                    Customer Experience Manager
+                     
+                    at
+                     
+                    <a
+                      href="https://acme.com/"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Acme Inc.
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="upgradeButton"
+            >
+              <div
+                class="d-flex align-items-center upgradeLink"
+              >
                 <a
-                  class="companyLink"
-                  href="https://acme.com/"
-                  rel="noopener noreferrer"
-                  target="_blank"
+                  to="[object Object]"
                 >
-                  Acme Inc.
+                  <button
+                    class="upgradeButton btn btn-outline-warning"
+                    type="button"
+                  >
+                    <span
+                      class="mr-2 upgradeLabel"
+                    >
+                      Upgrade to New Advanced
+                    </span>
+                    <img
+                      alt="upgrade-icon"
+                      class="upgradeIcon"
+                      src="test-file-stub"
+                    />
+                  </button>
                 </a>
-              </p>
+              </div>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Paywall /> should render a page header for the feature with a page header 1`] = `
+<div
+  class="full-width pageWrapper"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header pageHeader"
+  >
+    <h1
+      class="d-flex align-items-center"
+    >
+      Feature page header
+    </h1>
+  </div>
+  <div
+    class="page-container page container-fluid"
+  >
+    <div
+      class="paywallContainer"
+    >
+      <div
+        class="align-items-center row"
+      >
         <div
-          class="mt-5 mt-lg-0 pl-lg-5 preview col-12 col-lg-8 col-xl-7"
+          class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview advanced col-12 col-lg-6 col-xl-6"
         />
+        <div
+          class="pl-lg-5 col-12 col-lg-5 col-xl-5"
+        >
+          <div
+            class="content"
+          >
+            <div
+              class="flex align-items-center"
+            >
+              <span
+                class="badge advanced badge badge-primary"
+              >
+                Advanced Plan
+              </span>
+            </div>
+            <h1
+              class="contentTitle"
+            >
+              Paywall header
+            </h1>
+            <div
+              class="description"
+            >
+              <p>
+                Paywall description
+              </p>
+            </div>
+            <div
+              class="testimonial"
+            >
+              <p
+                class="testimonialText"
+              >
+                Testimonial text
+              </p>
+              <div
+                class="d-flex author"
+              >
+                <img
+                  alt="avatar"
+                  class="mr-3 avatar"
+                  src="/static/private/img/paywalls/avatars/johndoe.jpg"
+                />
+                <div>
+                  <p
+                    class="authorName mb-1"
+                  >
+                    <strong>
+                      John Doe
+                    </strong>
+                  </p>
+                  <p
+                    class="authorDetails"
+                  >
+                    Customer Experience Manager
+                     
+                    at
+                     
+                    <a
+                      href="https://acme.com/"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Acme Inc.
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="upgradeButton"
+            >
+              <div
+                class="d-flex align-items-center upgradeLink"
+              >
+                <a
+                  to="[object Object]"
+                >
+                  <button
+                    class="upgradeButton btn btn-outline-warning"
+                    type="button"
+                  >
+                    <span
+                      class="mr-2 upgradeLabel"
+                    >
+                      Upgrade to Advanced
+                    </span>
+                    <img
+                      alt="upgrade-icon"
+                      class="upgradeIcon"
+                      src="test-file-stub"
+                    />
+                  </button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -206,105 +401,125 @@ exports[`<Paywall /> should ask to upgrade legacy plan into new plan 1`] = `
 
 exports[`<Paywall /> should render lightbox for the feature with a preview 1`] = `
 <div
-  class="full-width"
+  class="full-width pageWrapper"
 >
   <div
-    class="page-container pl-lg-5 page container-fluid"
+    class="page-container page container-fluid"
   >
     <div
       class="paywallContainer"
     >
       <div
-        class="row"
+        class="align-items-center row"
       >
         <div
-          class="col-12 col-lg-4 col-xl-5"
+          class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview advanced col-12 col-lg-6 col-xl-6"
         >
-          <h1
-            class="header"
-          >
-            Paywall header
-          </h1>
-          <p
-            class="infoText"
-          >
-            Paywall description
-          </p>
-          <div
-            class="mt-3 mb-5 d-inline-block"
-          >
-            <div
-              class="d-flex align-items-center upgradeLink"
-            >
-              <a
-                to="[object Object]"
-              >
-                <button
-                  class="upgradeButton btn btn-outline-warning"
-                  type="button"
-                >
-                  <span
-                    class="mr-2 upgradeLabel"
-                  >
-                    Upgrade to Advanced
-                  </span>
-                  <img
-                    alt="upgrade-icon"
-                    class="upgradeIcon"
-                    src="test-file-stub"
-                  />
-                </button>
-              </a>
-            </div>
-          </div>
-          <p
-            class="testimonialText"
-          >
-            Testimonial text
-          </p>
-          <div
-            class="d-flex mt-4"
-          >
+          <div>
             <img
-              alt="avatar"
-              class="mr-3 avatar"
-              src="/static/private/img/paywalls/avatars/johndoe.jpg"
+              alt="Feature preview"
+              class="img-fluid"
+              src="/static/private/img/paywalls/screens/paywall.png"
             />
-            <div>
-              <p
-                class="testimonialDetails"
-              >
-                <strong>
-                  John Doe
-                </strong>
-              </p>
-              <p
-                class="testimonialDetails"
-              >
-                Customer Experience Manager
-                 
-                at
-                 
-                <a
-                  class="companyLink"
-                  href="https://acme.com/"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  Acme Inc.
-                </a>
-              </p>
-            </div>
           </div>
         </div>
         <div
-          class="mt-5 mt-lg-0 pl-lg-5 preview col-12 col-lg-8 col-xl-7"
+          class="pl-lg-5 col-12 col-lg-5 col-xl-5"
         >
-          <img
-            alt="Feature preview"
-            class="img-fluid previewImage"
-            src="/static/private/img/paywalls/screens/paywall.png"
-          />
+          <div
+            class="content"
+          >
+            <div
+              class="flex align-items-center"
+            >
+              <span
+                class="badge advanced badge badge-primary"
+              >
+                Advanced Plan
+              </span>
+            </div>
+            <h1
+              class="contentTitle"
+            >
+              Paywall header
+            </h1>
+            <div
+              class="description"
+            >
+              <p>
+                Paywall description
+              </p>
+            </div>
+            <div
+              class="testimonial"
+            >
+              <p
+                class="testimonialText"
+              >
+                Testimonial text
+              </p>
+              <div
+                class="d-flex author"
+              >
+                <img
+                  alt="avatar"
+                  class="mr-3 avatar"
+                  src="/static/private/img/paywalls/avatars/johndoe.jpg"
+                />
+                <div>
+                  <p
+                    class="authorName mb-1"
+                  >
+                    <strong>
+                      John Doe
+                    </strong>
+                  </p>
+                  <p
+                    class="authorDetails"
+                  >
+                    Customer Experience Manager
+                     
+                    at
+                     
+                    <a
+                      href="https://acme.com/"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Acme Inc.
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="upgradeButton"
+            >
+              <div
+                class="d-flex align-items-center upgradeLink"
+              >
+                <a
+                  to="[object Object]"
+                >
+                  <button
+                    class="upgradeButton btn btn-outline-warning"
+                    type="button"
+                  >
+                    <span
+                      class="mr-2 upgradeLabel"
+                    >
+                      Upgrade to Advanced
+                    </span>
+                    <img
+                      alt="upgrade-icon"
+                      class="upgradeIcon"
+                      src="test-file-stub"
+                    />
+                  </button>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -330,100 +545,118 @@ exports[`<Paywall /> should render lightbox for the feature with a preview 1`] =
 
 exports[`<Paywall /> should render paywall screen for the feature 1`] = `
 <div
-  class="full-width"
+  class="full-width pageWrapper"
 >
   <div
-    class="page-container pl-lg-5 page container-fluid"
+    class="page-container page container-fluid"
   >
     <div
       class="paywallContainer"
     >
       <div
-        class="row"
+        class="align-items-center row"
       >
         <div
-          class="col-12 col-lg-4 col-xl-5"
+          class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview advanced col-12 col-lg-6 col-xl-6"
+        />
+        <div
+          class="pl-lg-5 col-12 col-lg-5 col-xl-5"
         >
-          <h1
-            class="header"
-          >
-            Paywall header
-          </h1>
-          <p
-            class="infoText"
-          >
-            Paywall description
-          </p>
           <div
-            class="mt-3 mb-5 d-inline-block"
+            class="content"
           >
             <div
-              class="d-flex align-items-center upgradeLink"
+              class="flex align-items-center"
             >
-              <a
-                to="[object Object]"
+              <span
+                class="badge advanced badge badge-primary"
               >
-                <button
-                  class="upgradeButton btn btn-outline-warning"
-                  type="button"
-                >
-                  <span
-                    class="mr-2 upgradeLabel"
-                  >
-                    Upgrade to Advanced
-                  </span>
-                  <img
-                    alt="upgrade-icon"
-                    class="upgradeIcon"
-                    src="test-file-stub"
-                  />
-                </button>
-              </a>
+                Advanced Plan
+              </span>
             </div>
-          </div>
-          <p
-            class="testimonialText"
-          >
-            Testimonial text
-          </p>
-          <div
-            class="d-flex mt-4"
-          >
-            <img
-              alt="avatar"
-              class="mr-3 avatar"
-              src="/static/private/img/paywalls/avatars/johndoe.jpg"
-            />
-            <div>
-              <p
-                class="testimonialDetails"
-              >
-                <strong>
-                  John Doe
-                </strong>
+            <h1
+              class="contentTitle"
+            >
+              Paywall header
+            </h1>
+            <div
+              class="description"
+            >
+              <p>
+                Paywall description
               </p>
+            </div>
+            <div
+              class="testimonial"
+            >
               <p
-                class="testimonialDetails"
+                class="testimonialText"
               >
-                Customer Experience Manager
-                 
-                at
-                 
+                Testimonial text
+              </p>
+              <div
+                class="d-flex author"
+              >
+                <img
+                  alt="avatar"
+                  class="mr-3 avatar"
+                  src="/static/private/img/paywalls/avatars/johndoe.jpg"
+                />
+                <div>
+                  <p
+                    class="authorName mb-1"
+                  >
+                    <strong>
+                      John Doe
+                    </strong>
+                  </p>
+                  <p
+                    class="authorDetails"
+                  >
+                    Customer Experience Manager
+                     
+                    at
+                     
+                    <a
+                      href="https://acme.com/"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Acme Inc.
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="upgradeButton"
+            >
+              <div
+                class="d-flex align-items-center upgradeLink"
+              >
                 <a
-                  class="companyLink"
-                  href="https://acme.com/"
-                  rel="noopener noreferrer"
-                  target="_blank"
+                  to="[object Object]"
                 >
-                  Acme Inc.
+                  <button
+                    class="upgradeButton btn btn-outline-warning"
+                    type="button"
+                  >
+                    <span
+                      class="mr-2 upgradeLabel"
+                    >
+                      Upgrade to Advanced
+                    </span>
+                    <img
+                      alt="upgrade-icon"
+                      class="upgradeIcon"
+                      src="test-file-stub"
+                    />
+                  </button>
                 </a>
-              </p>
+              </div>
             </div>
           </div>
         </div>
-        <div
-          class="mt-5 mt-lg-0 pl-lg-5 preview col-12 col-lg-8 col-xl-7"
-        />
       </div>
     </div>
   </div>
@@ -432,12 +665,12 @@ exports[`<Paywall /> should render paywall screen for the feature 1`] = `
 
 exports[`<Paywall /> should render the empty container when paywall config is undefined 1`] = `
 <div
-  class="full-width"
+  class="full-width pageWrapper"
 />
 `;
 
 exports[`<Paywall /> should render the empty container when required plan name was not found 1`] = `
 <div
-  class="full-width"
+  class="full-width pageWrapper"
 />
 `;

@@ -3,66 +3,134 @@
 exports[`withFeaturePaywall should not render the passed component when the feature is unavailable 1`] = `
 <div>
   <div
-    class="full-width"
+    class="full-width pageWrapper"
   >
     <div
-      class="page-container pl-lg-5 page container-fluid"
+      class="d-flex align-items-center justify-content-between flex-wrap page-header pageHeader"
+    >
+      <h1
+        class="d-flex align-items-center"
+      >
+        Revenue
+      </h1>
+    </div>
+    <div
+      class="page-container page container-fluid"
     >
       <div
         class="paywallContainer"
       >
         <div
-          class="row"
+          class="align-items-center row"
         >
           <div
-            class="col-12 col-lg-4 col-xl-5"
+            class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview advanced col-12 col-lg-6 col-xl-6"
           >
-            <h1
-              class="header"
-            >
-              Track revenue from support
-            </h1>
-            <p
-              class="infoText"
-            >
-              Uncover upsell opportunities, track revenue generated per agents to compensate your team based on actual sales.
-            </p>
-            <div
-              class="mt-3 mb-5 d-inline-block"
-            >
-              <div
-                class="d-flex align-items-center upgradeLink"
-              >
-                <a
-                  to="[object Object]"
-                >
-                  <button
-                    class="upgradeButton btn btn-outline-warning"
-                    type="button"
-                  >
-                    <span
-                      class="mr-2 upgradeLabel"
-                    >
-                      Upgrade to Advanced
-                    </span>
-                    <img
-                      alt="upgrade-icon"
-                      class="upgradeIcon"
-                      src="test-file-stub"
-                    />
-                  </button>
-                </a>
-              </div>
+            <div>
+              <img
+                alt="Feature preview"
+                class="img-fluid"
+                src="/static/private/img/paywalls/screens/revenue-statistics.png"
+              />
             </div>
           </div>
           <div
-            class="mt-5 mt-lg-0 pl-lg-5 preview col-12 col-lg-8 col-xl-7"
+            class="pl-lg-5 col-12 col-lg-5 col-xl-5"
           >
-            <img
-              alt="Feature preview"
-              class="img-fluid previewImage"
-              src="/static/private/img/paywalls/screens/revenue-statistics.png"
-            />
+            <div
+              class="content"
+            >
+              <div
+                class="flex align-items-center"
+              >
+                <span
+                  class="badge advanced badge badge-primary"
+                >
+                  Advanced Plan
+                </span>
+              </div>
+              <h1
+                class="contentTitle"
+              >
+                Track revenue from support
+              </h1>
+              <div
+                class="description"
+              >
+                <p>
+                  Uncover upsell opportunities, track revenue generated per agents to compensate your team based on actual sales.
+                </p>
+              </div>
+              <div
+                class="testimonial"
+              >
+                <p
+                  class="testimonialText"
+                >
+                  At Shinesty, our agents convert visitors into customers by using pre-sell questions sent via chat campaigns. I see the concrete results of our actions thanks to Revenue Statistics.
+                </p>
+                <div
+                  class="d-flex author"
+                >
+                  <img
+                    alt="avatar"
+                    class="mr-3 avatar"
+                    src="/static/private/img/paywalls/avatars/cody-szymanski.png"
+                  />
+                  <div>
+                    <p
+                      class="authorName mb-1"
+                    >
+                      <strong>
+                        Cody Szymanski
+                      </strong>
+                    </p>
+                    <p
+                      class="authorDetails"
+                    >
+                      Customer Experience Manager
+                       
+                      at
+                       
+                      <a
+                        href="https://www.shinesty.com/"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        Shinesty
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="upgradeButton"
+              >
+                <div
+                  class="d-flex align-items-center upgradeLink"
+                >
+                  <a
+                    to="[object Object]"
+                  >
+                    <button
+                      class="upgradeButton btn btn-outline-warning"
+                      type="button"
+                    >
+                      <span
+                        class="mr-2 upgradeLabel"
+                      >
+                        Upgrade to Advanced
+                      </span>
+                      <img
+                        alt="upgrade-icon"
+                        class="upgradeIcon"
+                        src="test-file-stub"
+                      />
+                    </button>
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -77,6 +145,145 @@ exports[`withFeaturePaywall should not render the passed component when the feat
     data-testid="custom-paywall-component"
   >
     Custom Paywall
+  </div>
+</div>
+`;
+
+exports[`withFeaturePaywall should pass custom paywall configuration props 1`] = `
+<div>
+  <div
+    class="full-width pageWrapper"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header pageHeader"
+    >
+      <h1
+        class="d-flex align-items-center"
+      >
+        Custom page header
+      </h1>
+    </div>
+    <div
+      class="page-container page container-fluid"
+    >
+      <div
+        class="paywallContainer"
+      >
+        <div
+          class="align-items-center row"
+        >
+          <div
+            class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview advanced col-12 col-lg-6 col-xl-6"
+          >
+            <div>
+              <img
+                alt="Feature preview"
+                class="img-fluid"
+                src="/static/private/img/paywalls/screens/revenue-statistics.png"
+              />
+            </div>
+          </div>
+          <div
+            class="pl-lg-5 col-12 col-lg-5 col-xl-5"
+          >
+            <div
+              class="content"
+            >
+              <div
+                class="flex align-items-center"
+              >
+                <span
+                  class="badge advanced badge badge-primary"
+                >
+                  Advanced Plan
+                </span>
+              </div>
+              <h1
+                class="contentTitle"
+              >
+                Track revenue from support
+              </h1>
+              <div
+                class="description"
+              >
+                <p>
+                  Uncover upsell opportunities, track revenue generated per agents to compensate your team based on actual sales.
+                </p>
+              </div>
+              <div
+                class="testimonial"
+              >
+                <p
+                  class="testimonialText"
+                >
+                  At Shinesty, our agents convert visitors into customers by using pre-sell questions sent via chat campaigns. I see the concrete results of our actions thanks to Revenue Statistics.
+                </p>
+                <div
+                  class="d-flex author"
+                >
+                  <img
+                    alt="avatar"
+                    class="mr-3 avatar"
+                    src="/static/private/img/paywalls/avatars/cody-szymanski.png"
+                  />
+                  <div>
+                    <p
+                      class="authorName mb-1"
+                    >
+                      <strong>
+                        Cody Szymanski
+                      </strong>
+                    </p>
+                    <p
+                      class="authorDetails"
+                    >
+                      Customer Experience Manager
+                       
+                      at
+                       
+                      <a
+                        href="https://www.shinesty.com/"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        Shinesty
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="upgradeButton"
+              >
+                <div
+                  class="d-flex align-items-center upgradeLink"
+                >
+                  <a
+                    to="[object Object]"
+                  >
+                    <button
+                      class="upgradeButton btn btn-outline-warning"
+                      type="button"
+                    >
+                      <span
+                        class="mr-2 upgradeLabel"
+                      >
+                        Upgrade to Advanced
+                      </span>
+                      <img
+                        alt="upgrade-icon"
+                        class="upgradeIcon"
+                        src="test-file-stub"
+                      />
+                    </button>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 `;
