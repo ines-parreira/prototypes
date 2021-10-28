@@ -14,6 +14,7 @@ import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {usePhoneError} from '../../../../hooks/integrations/phone/usePhoneError'
+import {TwilioErrorCode} from '../../../../business/twilio'
 
 import OngoingPhoneCall from './OngoingPhoneCall/OngoingPhoneCall'
 import IncomingPhoneCall from './IncomingPhoneCall/IncomingPhoneCall'
@@ -80,7 +81,7 @@ function useDevice() {
                 dispatch(setDevice(null))
             }
         }
-    }, [device, instantiateDevice, dispatch, onErrorMessage, onError])
+    }, [])
 }
 
 async function getToken(): Promise<string | null> {
@@ -91,7 +92,9 @@ async function getToken(): Promise<string | null> {
 
 function useInstantiateDevice() {
     const dispatch = useAppDispatch()
-    const {onErrorMessage, onError, onTwilioError} = usePhoneError()
+    const {onErrorMessage, onError, onTwilioError} = usePhoneError({
+        ignoredErrorCodes: [TwilioErrorCode.AuthorizationAccessTokenExpired],
+    })
 
     const onCallAlreadyAccepted = useCallback(() => {
         void dispatch(
