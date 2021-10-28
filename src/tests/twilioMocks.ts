@@ -15,6 +15,7 @@ export const mockIncomingCall = (
 ): Partial<Call> => ({
     ...mockCall(),
     direction: Call.CallDirection.Incoming,
+    status: () => Call.State.Pending,
     customParameters: new Map([
         ['integration_id', integrationId.toString()],
         ['ticket_id', ticketId.toString()],
@@ -29,6 +30,7 @@ export const mockIncomingCall = (
 export const mockOutgoingCall = (integrationId = 1): Partial<Call> => ({
     ...mockCall(),
     direction: Call.CallDirection.Outgoing,
+    status: () => Call.State.Ringing,
     customParameters: new Map([
         ['integration_id', integrationId.toString()],
         ['customer_name', 'Bob'],

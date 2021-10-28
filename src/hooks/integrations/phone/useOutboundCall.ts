@@ -1,8 +1,14 @@
 import {useCallback} from 'react'
-import {Call, Device} from '@twilio/voice-sdk'
+import {TwilioError} from '@twilio/voice-sdk'
+import {useSelector} from 'react-redux'
 
-import {PhoneCallDirection} from '../../../business/twilio'
+import {PhoneCallDirection, TwilioErrorCode} from '../../../business/twilio'
+import {setCall, setIsDialing} from '../../../state/twilio/actions'
 import client from '../../../models/api/resources'
+import useAppDispatch from '../../useAppDispatch'
+import {RootState} from '../../../state/types'
+
+import {usePhoneError} from './usePhoneError'
 
 type Options = {
     fromAddress: string
@@ -13,11 +19,15 @@ type Options = {
     agentId: number
 }
 
-export function useOutboundCall(
-    device: Device | null,
-    setIsDialing: (isDialing: boolean) => void,
-    setCall: (call: Call | null) => void
-): (options: Options) => void {
+export function useOutboundCall(): (options: Options) => void {
+    const dispatch = useAppDispatch()
+    const device = useSelector((state: RootState) => state.twilio.device)
+
+    const {onError, onTwilioError} = usePhoneError({
+        // Twilio throws this error when the customer doesn't pick up the call
+        ignoredErrorCodes: [TwilioErrorCode.GeneralConnection],
+    })
+
     return useCallback(
         async ({
             fromAddress,
@@ -51,43 +61,45 @@ export function useOutboundCall(
             }
 
             call.on('accept', () => {
-                setIsDialing(false)
+                dispatch(setIsDialing(false))
             })
 
             call.on('cancel', () => {
-                setIsDialing(false)
-                setCall(null)
-                onDisconnect().catch(console.error)
+                dispatch(setIsDialing(false))
+                dispatch(setCall(null))
+                void onDisconnect(onError)
             })
 
             call.on('disconnect', () => {
-                setIsDialing(false)
-                setCall(null)
-                onDisconnect().catch(console.error)
+                dispatch(setIsDialing(false))
+                dispatch(setCall(null))
+                void onDisconnect(onError)
             })
 
-            call.on('error', console.error)
+            call.on('error', (error: TwilioError.TwilioError) => {
+                onTwilioError(error, 'Outgoing phone call error')
+            })
 
-            setIsDialing(true)
-            setCall(call)
-            onConnect().catch(console.error)
+            dispatch(setIsDialing(true))
+            dispatch(setCall(call))
+            await onConnect(onError)
         },
-        [device, setIsDialing, setCall]
+        [device, dispatch, onError, onTwilioError]
     )
 }
 
-async function onConnect() {
+async function onConnect(onError: (error: Error, title?: string) => void) {
     try {
         await client.post('/integrations/phone/call/connected')
     } catch (error) {
-        console.error(error)
+        onError(error, "Couldn't mark phone call as connected")
     }
 }
 
-async function onDisconnect() {
+async function onDisconnect(onError: (error: Error, title?: string) => void) {
     try {
         await client.post('/integrations/phone/call/disconnected')
     } catch (error) {
-        console.error(error)
+        onError(error, "Couldn't mark phone call as disconnected")
     }
 }

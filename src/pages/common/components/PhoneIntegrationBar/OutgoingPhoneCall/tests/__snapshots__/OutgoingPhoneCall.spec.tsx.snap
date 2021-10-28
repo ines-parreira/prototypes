@@ -55,8 +55,11 @@ exports[`<OutgoingPhoneCall/> should render 1`] = `
     <div
       class="inner"
     >
-      <span>
-        Dialing up...
+      <span
+        class="text-capitalize"
+      >
+        ringing
+        ...
       </span>
     </div>
   </div>

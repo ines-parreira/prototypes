@@ -4,14 +4,12 @@ import classnames from 'classnames'
 import {Button} from 'reactstrap'
 import {Map} from 'immutable'
 import parsePhoneNumber from 'libphonenumber-js'
-import {Call, Device} from '@twilio/voice-sdk'
 
 import {getNewMessageSource} from '../../../../../state/newMessage/selectors'
 import {RootState} from '../../../../../state/types'
 import {getTicket} from '../../../../../state/ticket/selectors'
 import {getCurrentUser} from '../../../../../state/currentUser/selectors'
 import {useOutboundCall} from '../../../../../hooks/integrations/phone/useOutboundCall'
-import {setCall, setIsDialing} from '../../../../../state/twilio/actions'
 
 import css from './PhoneTicketSubmitButtons.less'
 
@@ -23,17 +21,8 @@ function PhoneTicketSubmitButtons({
     source,
     ticketId,
     agentId,
-    setIsDialing,
-    setCall,
 }: Props) {
-    const {isValid, onSubmit} = useSubmit(
-        device,
-        source,
-        ticketId,
-        agentId,
-        setIsDialing,
-        setCall
-    )
+    const {isValid, onSubmit} = useSubmit(source, ticketId, agentId)
     const isDisabled = !device || !!call || !isValid
 
     return (
@@ -64,29 +53,17 @@ const mapStateToProps = (state: RootState) => ({
     agentId: getCurrentUser(state).get('id'),
 })
 
-const mapDispatchToProps = {
-    setIsDialing,
-    setCall,
-}
-
-const connector = connect(mapStateToProps, mapDispatchToProps)
+const connector = connect(mapStateToProps)
 export default connector(PhoneTicketSubmitButtons)
 
-function useSubmit(
-    device: Device | null,
-    source: Map<any, any>,
-    ticketId: number,
-    agentId: number,
-    setIsDialing: (isDialing: boolean) => void,
-    setCall: (call: Call | null) => void
-) {
+function useSubmit(source: Map<any, any>, ticketId: number, agentId: number) {
     const [fromAddress, setFromAddress] = useState<string>('')
     const [toAddress, setToAddress] = useState<string>('')
     const [customerName, setCustomerName] = useState<string>('')
     const [integrationId, setIntegrationId] = useState<number>(0)
     const [isValid, setIsValid] = useState(false)
 
-    const onCall = useOutboundCall(device, setIsDialing, setCall)
+    const onCall = useOutboundCall()
     const options = {
         fromAddress,
         toAddress,

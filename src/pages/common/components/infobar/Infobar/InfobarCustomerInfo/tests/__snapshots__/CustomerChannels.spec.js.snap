@@ -515,10 +515,9 @@ exports[`CustomerChannels component should display all passed channels (includin
           call={null}
           customerName="Foo"
           device={null}
+          dispatch={[Function]}
           id="address-copied-4"
           integrations={Immutable.List []}
-          setCall={[Function]}
-          setIsDialing={[Function]}
         >
           <a
             href="tel:+15551238523"
@@ -624,10 +623,9 @@ exports[`CustomerChannels component should display all passed channels (includin
           call={null}
           customerName="Foo"
           device={null}
+          dispatch={[Function]}
           id="address-copied-5"
           integrations={Immutable.List []}
-          setCall={[Function]}
-          setIsDialing={[Function]}
         >
           <a
             href="tel:+15554567852"
@@ -733,10 +731,9 @@ exports[`CustomerChannels component should display all passed channels (includin
           call={null}
           customerName="Foo"
           device={null}
+          dispatch={[Function]}
           id="address-copied-6"
           integrations={Immutable.List []}
-          setCall={[Function]}
-          setIsDialing={[Function]}
         >
           <a
             href="tel:+15557899632"

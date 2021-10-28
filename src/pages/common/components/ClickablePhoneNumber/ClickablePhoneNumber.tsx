@@ -13,7 +13,6 @@ import parsePhoneNumber from 'libphonenumber-js'
 import {RootState} from '../../../../state/types'
 import {getPhoneIntegrations} from '../../../../state/integrations/selectors'
 import {useOutboundCall} from '../../../../hooks/integrations/phone/useOutboundCall'
-import {setCall, setIsDialing} from '../../../../state/twilio/actions'
 import {getTicket} from '../../../../state/ticket/selectors'
 import {getCurrentUser} from '../../../../state/currentUser/selectors'
 
@@ -36,12 +35,10 @@ const ClickablePhoneNumberContainer = ({
     customerName,
     ticketId,
     agentId,
-    setIsDialing,
-    setCall,
 }: Props): JSX.Element => {
     const toAddress = parsePhoneNumber(address)?.format('E.164') || ''
     const isDisabled = !device || !!call || !toAddress
-    const onCall = useOutboundCall(device, setIsDialing, setCall)
+    const onCall = useOutboundCall()
     const onClick = useCallback(
         (integration: Map<any, any>) => {
             const integrationId: number = integration.get('id')
@@ -119,11 +116,6 @@ const mapStateToProps = (state: RootState) => ({
     agentId: getCurrentUser(state).get('id'),
 })
 
-const mapDispatchToProps = {
-    setIsDialing,
-    setCall,
-}
-
-const connector = connect(mapStateToProps, mapDispatchToProps)
+const connector = connect(mapStateToProps)
 
 export const ClickablePhoneNumber = connector(ClickablePhoneNumberContainer)
