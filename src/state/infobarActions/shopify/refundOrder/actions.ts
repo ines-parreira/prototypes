@@ -140,17 +140,22 @@ export const onInit = (integrationId: number, order: Map<any, any>) => async (
     }
 }
 
-export const onLineItemsChange = (
+export const onLineItemChange = (
     integrationId: number,
-    lineItems: List<any>
+    lineItem: Map<string, any>,
+    index: number
 ) => async (dispatch: StoreDispatch, getState: () => RootState) => {
-    const state = getState()
-    let newPayload = getRefundOrderState(state).get('payload') as Map<any, any>
+    const cancelOrderState = getRefundOrderState(getState())
+    let newPayload = cancelOrderState.get('payload') as Map<any, any>
+    let newLineItems = (cancelOrderState.get('lineItems') || List([])) as List<
+        any
+    >
 
-    // Ignore already refunded line items
+    newLineItems = newLineItems.set(index, lineItem)
+
     newPayload = newPayload.set(
         'refund_line_items',
-        lineItems
+        newLineItems
             .map((lineItem: Map<any, any>) => {
                 const refundLineItem = (newPayload.get(
                     'refund_line_items'
@@ -158,16 +163,16 @@ export const onLineItemsChange = (
                     (refundLineItem: Map<any, any>) =>
                         refundLineItem.get('line_item_id') ===
                         lineItem.get('id')
-                ) as Map<any, any>
+                ) as Maybe<Map<any, any>>
 
                 return refundLineItem
                     ? refundLineItem.set('quantity', lineItem.get('quantity'))
-                    : refundLineItem
+                    : undefined
             })
             .filter((lineItem) => !!lineItem)
     )
 
-    dispatch(setLineItems(lineItems))
+    dispatch(setLineItems(newLineItems))
     return dispatch(onPayloadChange(integrationId, newPayload))
 }
 

@@ -106,7 +106,7 @@ describe('<RefundOrderModal />', () => {
             ),
         onClose: jest.fn(),
         onInit: jest.fn(),
-        onLineItemsChange: jest.fn(),
+        onLineItemChange: jest.fn(),
         onOpen: jest.fn(),
         onPayloadChange: jest.fn(),
         onReset: jest.fn(),
@@ -188,7 +188,7 @@ describe('<RefundOrderModal />', () => {
         )
     })
 
-    it('should call onLineItemsChange() when quantity of a product is changed', async () => {
+    it('should call onLineItemChange() when quantity of a product is changed', async () => {
         const lineItems = fromJS([
             shopifyLineItemFixture({currencyCode: 'USD'}),
         ]) as List<Map<any, any>>
@@ -213,9 +213,10 @@ describe('<RefundOrderModal />', () => {
         )
 
         await waitFor(() =>
-            expect(minProps.onLineItemsChange).toHaveBeenCalledWith(
+            expect(minProps.onLineItemChange).toHaveBeenCalledWith(
                 1,
-                newLineItems
+                newLineItems.get(0),
+                0
             )
         )
     })

@@ -1,8 +1,8 @@
-import React, {ChangeEvent} from 'react'
+import React, {ChangeEvent, memo, useCallback, useState} from 'react'
 import {Button, Input, InputGroup, InputGroupAddon} from 'reactstrap'
-import {Map, List} from 'immutable'
+import {Map} from 'immutable'
 import classnames from 'classnames'
-import _debounce from 'lodash/debounce'
+import {useDebounce} from 'react-use'
 
 import {
     getOrderLineItemDiscountedPrice,
@@ -14,88 +14,62 @@ import MoneyAmount from '../../../../MoneyAmount'
 import css from './OrderLineItemRow.less'
 
 type Props = {
-    lineItem: Map<any, any>
-    refund: Map<any, any> | null
+    index: number
+    lineItem: Map<string, any>
+    isRestockable: boolean | null
     shopName: string
     currencyCode: string
     shopCurrencyCode: string
-    onChange: (value: Map<any, any>) => void
+    onChange: (lineItem: Map<string, any>, index: number) => void
 }
 
-type State = {
-    quantity: number
-    restockable: null | boolean
-}
+function OrderLineItemRow({
+    index,
+    lineItem,
+    isRestockable,
+    shopName,
+    currencyCode,
+    shopCurrencyCode,
+    onChange,
+}: Props) {
+    const [quantity, setQuantity] = useState<number>(lineItem.get('quantity'))
+    const [maxQuantity] = useState<number>(lineItem.get('quantity'))
 
-export class OrderLineItemRow extends React.PureComponent<Props, State> {
-    state = {
-        quantity: this.props.lineItem.get('quantity') as number,
-        restockable: null,
-    }
+    const onQuantityChange = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            const value = Number.parseInt(event.target.value, 10)
+            let newQuantity = Number.isNaN(value) ? 0 : value
 
-    _maxQuantity = this.props.lineItem.get('quantity')
-
-    static getDerivedStateFromProps({refund, lineItem}: Props, state: State) {
-        // When we receive the "suggested refund" for the first time
-        if (!!refund && !refund.isEmpty() && state.restockable === null) {
-            const refundLineItem = (refund.get('refund_line_items', []) as List<
-                any
-            >).find(
-                (refundLineItem: Map<any, any>) =>
-                    refundLineItem.get('line_item_id') === lineItem.get('id')
-            ) as Map<any, any>
-
-            return {
-                ...state,
-                restockable: refundLineItem
-                    ? !!refundLineItem.get('location_id')
-                    : true,
+            if (newQuantity < 0) {
+                newQuantity = 0
+            } else if (newQuantity > maxQuantity) {
+                newQuantity = maxQuantity
             }
-        }
 
-        return null
-    }
+            setQuantity(newQuantity)
+        },
+        [maxQuantity]
+    )
 
-    _onQuantityChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const value = parseInt(event.target.value)
-        let quantity = isNaN(value) ? 0 : value
+    const onQuantityUp = useCallback(() => {
+        setQuantity((previousQuantity) => previousQuantity + 1)
+    }, [])
 
-        if (quantity < 0) {
-            quantity = 0
-        } else if (quantity > this._maxQuantity) {
-            quantity = this._maxQuantity
-        }
+    const onQuantityDown = useCallback(() => {
+        setQuantity((previousQuantity) => previousQuantity - 1)
+    }, [])
 
-        this.setState({quantity})
-        this._updateLineItem()
-    }
+    useDebounce(
+        () => {
+            if (quantity !== lineItem.get('quantity')) {
+                onChange(lineItem.set('quantity', quantity), index)
+            }
+        },
+        250,
+        [quantity, lineItem, onChange, index]
+    )
 
-    _onQuantityUp = () => {
-        const {quantity} = this.state
-        const newQuantity = quantity + 1
-
-        this.setState({quantity: newQuantity})
-        this._updateLineItem()
-    }
-
-    _onQuantityDown = () => {
-        const {quantity} = this.state
-        const newQuantity = quantity - 1
-
-        this.setState({quantity: newQuantity})
-        this._updateLineItem()
-    }
-
-    _updateLineItem = _debounce(() => {
-        const {onChange, lineItem} = this.props
-        const {quantity} = this.state
-        const newLineItem = lineItem.set('quantity', quantity)
-
-        onChange(newLineItem)
-    }, 250)
-
-    _renderTitle() {
-        const {shopName, lineItem} = this.props
+    const renderTitle = useCallback(() => {
         const productId = lineItem.get('product_id') as number | undefined
         if (!productId) {
             return (
@@ -120,26 +94,23 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
                 </a>
             </div>
         )
-    }
+    }, [lineItem, shopName])
 
-    _renderProduct() {
-        const {lineItem} = this.props
-        const {restockable} = this.state
+    const renderProduct = useCallback(() => {
         const variantTitle = lineItem.get('variant_title')
         const shouldRenderVariantTitle =
             !!variantTitle && variantTitle !== 'Default Title'
         const sku = lineItem.get('sku')
-        const cannotRestock = restockable === false
 
         return (
             <td className={css.container}>
                 <div className={css.legend}>
-                    {this._renderTitle()}
+                    {renderTitle()}
                     {shouldRenderVariantTitle && (
                         <div className={css.subtitle}>{variantTitle}</div>
                     )}
                     {!!sku && <div className={css.subtitle}>SKU: {sku}</div>}
-                    {cannotRestock && (
+                    {!isRestockable && (
                         <div className="text-danger">
                             This product can't be restocked.
                         </div>
@@ -147,12 +118,10 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
                 </div>
             </td>
         )
-    }
+    }, [lineItem, renderTitle, isRestockable])
 
-    _renderPrice() {
-        const {lineItem, shopCurrencyCode} = this.props
-
-        if (this._maxQuantity === 0) {
+    const renderPrice = useCallback(() => {
+        if (maxQuantity === 0) {
             return (
                 <td colSpan={2} className="text-center text-muted">
                     <small>Already returned</small>
@@ -164,7 +133,7 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
         const discountedPrice = getOrderLineItemDiscountedPrice(
             lineItem,
             shopCurrencyCode,
-            this._maxQuantity
+            maxQuantity
         )
         const formattedDiscountedPrice = formatPrice(
             discountedPrice,
@@ -197,12 +166,10 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
                 </div>
             </td>
         )
-    }
+    }, [lineItem, maxQuantity, shopCurrencyCode])
 
-    _renderQuantity() {
-        const {quantity} = this.state
-
-        if (this._maxQuantity === 0) {
+    const renderQuantity = useCallback(() => {
+        if (maxQuantity === 0) {
             return null
         }
 
@@ -214,11 +181,9 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
                             pattern="\d+"
                             value={quantity}
                             className={css.quantityInput}
-                            onChange={this._onQuantityChange}
+                            onChange={onQuantityChange}
                         />
-                        <span className={css.quantityMax}>
-                            / {this._maxQuantity}
-                        </span>
+                        <span className={css.quantityMax}>/ {maxQuantity}</span>
                     </span>
                     <InputGroupAddon
                         addonType="append"
@@ -232,8 +197,8 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
                                 css.quantityBtn,
                                 css.quantityBtnUp
                             )}
-                            disabled={quantity === this._maxQuantity}
-                            onClick={this._onQuantityUp}
+                            disabled={quantity === maxQuantity}
+                            onClick={onQuantityUp}
                         >
                             &#9650;
                         </Button>
@@ -246,7 +211,7 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
                                 css.quantityBtnDown
                             )}
                             disabled={quantity === 0}
-                            onClick={this._onQuantityDown}
+                            onClick={onQuantityDown}
                         >
                             &#9660;
                         </Button>
@@ -254,15 +219,13 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
                 </InputGroup>
             </td>
         )
-    }
+    }, [maxQuantity, quantity, onQuantityChange, onQuantityDown, onQuantityUp])
 
-    _renderTotal() {
-        const {lineItem, currencyCode} = this.props
-        const {quantity} = this.state
+    const renderTotal = useCallback(() => {
         const discountedPrice = getOrderLineItemDiscountedPrice(
             lineItem,
             currencyCode,
-            this._maxQuantity
+            maxQuantity
         )
         const total = discountedPrice * quantity
 
@@ -279,16 +242,16 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
                 </div>
             </td>
         )
-    }
+    }, [currencyCode, maxQuantity, quantity, lineItem])
 
-    render() {
-        return (
-            <tr>
-                {this._renderProduct()}
-                {this._renderPrice()}
-                {this._renderQuantity()}
-                {this._renderTotal()}
-            </tr>
-        )
-    }
+    return (
+        <tr>
+            {renderProduct()}
+            {renderPrice()}
+            {renderQuantity()}
+            {renderTotal()}
+        </tr>
+    )
 }
+
+export default memo(OrderLineItemRow)

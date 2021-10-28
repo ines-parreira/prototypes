@@ -1,81 +1,118 @@
 import React from 'react'
 import {fromJS, Map, List} from 'immutable'
-import {shallow} from 'enzyme'
+import {render, fireEvent, screen} from '@testing-library/react'
 
 import {
-    shopifyDraftOrderPayloadFixture,
+    shopifyOrderFixture,
     shopifySuggestedRefundFixture,
 } from '../../../../../../../../../../../../../fixtures/shopify'
 import OrderTable from '../OrderTable'
 
 describe('<OrderTable/>', () => {
-    let onChange: jest.MockedFunction<any>
+    let onLineItemChange: jest.MockedFunction<any>
 
-    const payload = fromJS(shopifyDraftOrderPayloadFixture()) as Map<any, any>
+    const lineItems = (fromJS(shopifyOrderFixture()) as Map<any, any>).get(
+        'line_items'
+    ) as List<Map<string, any>>
     const refund = fromJS(shopifySuggestedRefundFixture()) as Map<any, any>
 
     beforeEach(() => {
-        onChange = jest.fn()
+        jest.useFakeTimers()
+        onLineItemChange = jest.fn()
     })
 
-    describe('render()', () => {
-        it('should render', () => {
-            const component = shallow(
-                <OrderTable
-                    shopName="storegorgias3"
-                    currencyCode="USD"
-                    shopCurrencyCode="USD"
-                    lineItems={payload.get('line_items', [])}
-                    refund={refund}
-                    onChange={onChange}
-                />
-            )
-
-            expect(component).toMatchSnapshot()
-        })
-
-        it('should render for multi-currency order', () => {
-            const component = shallow(
-                <OrderTable
-                    shopName="storegorgias3"
-                    currencyCode="USD"
-                    shopCurrencyCode="JPY"
-                    lineItems={payload.get('line_items', [])}
-                    refund={refund}
-                    onChange={onChange}
-                />
-            )
-
-            expect(component).toMatchSnapshot()
-        })
+    afterEach(() => {
+        jest.useRealTimers()
     })
 
-    describe('_onLineItemChange()', () => {
-        it('should call onChange() with updated payload', () => {
-            const component = shallow(
-                <OrderTable
-                    shopName="storegorgias3"
-                    currencyCode="USD"
-                    shopCurrencyCode="USD"
-                    lineItems={payload.get('line_items', [])}
-                    refund={refund}
-                    onChange={onChange}
-                />
-            )
+    it('should render', () => {
+        const {container} = render(
+            <OrderTable
+                shopName="storegorgias3"
+                currencyCode="USD"
+                shopCurrencyCode="USD"
+                lineItems={lineItems}
+                refund={refund}
+                onLineItemChange={onLineItemChange}
+            />
+        )
 
-            const updatedLineItem = (payload.getIn(['line_items', 0]) as Map<
-                any,
-                any
-            >).set('quantity', 5)
-            ;(component.instance() as InstanceType<
-                typeof OrderTable
-            >)._onLineItemChange(0, updatedLineItem)
+        expect(container.firstChild).toMatchSnapshot()
+    })
 
-            const newLineItems = (payload.get('line_items') as List<any>).set(
-                0,
-                updatedLineItem
-            )
-            expect(onChange).toHaveBeenCalledWith(newLineItems)
+    it('should render for multi-currency order', () => {
+        const {container} = render(
+            <OrderTable
+                shopName="storegorgias3"
+                currencyCode="USD"
+                shopCurrencyCode="JPY"
+                lineItems={lineItems}
+                refund={refund}
+                onLineItemChange={onLineItemChange}
+            />
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render a non restockable item', () => {
+        render(
+            <OrderTable
+                shopName="storegorgias3"
+                currencyCode="USD"
+                shopCurrencyCode="JPY"
+                lineItems={lineItems}
+                refund={refund
+                    .setIn(
+                        ['refund_line_items', 0, 'line_item_id'],
+                        lineItems.getIn([0, 'id'])
+                    )
+                    .setIn(['refund_line_items', 0, 'location_id'], null)}
+                onLineItemChange={onLineItemChange}
+            />
+        )
+        expect(screen.getByText("This product can't be restocked."))
+    })
+
+    it('should call onLineItemChange() with updated payload', () => {
+        render(
+            <OrderTable
+                shopName="storegorgias3"
+                currencyCode="USD"
+                shopCurrencyCode="USD"
+                lineItems={lineItems}
+                refund={refund}
+                onLineItemChange={onLineItemChange}
+            />
+        )
+        fireEvent.change(screen.getAllByRole('textbox')[0], {
+            target: {value: '0'},
         })
+        jest.advanceTimersByTime(300)
+        expect(onLineItemChange).toHaveBeenCalledWith(
+            lineItems.get(0).set('quantity', 0),
+            0
+        )
+    })
+    it('should keep the initial maximum quantity', () => {
+        render(
+            <OrderTable
+                shopName="storegorgias3"
+                currencyCode="USD"
+                shopCurrencyCode="USD"
+                lineItems={lineItems.setIn([0, 'quantity'], 3)}
+                refund={refund}
+                onLineItemChange={onLineItemChange}
+            />
+        )
+        fireEvent.click(screen.getAllByText('▼')[0])
+        fireEvent.click(screen.getAllByText('▼')[0])
+        jest.advanceTimersByTime(300)
+        fireEvent.click(screen.getAllByText('▲')[0])
+        jest.advanceTimersByTime(300)
+        expect(onLineItemChange).toHaveBeenLastCalledWith(
+            lineItems.get(0).set('quantity', 2),
+            0
+        )
     })
 })

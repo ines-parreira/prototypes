@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useMemo} from 'react'
+import React, {ChangeEvent, useCallback, useMemo} from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
@@ -9,7 +9,7 @@ import {useUpdateEffect, usePrevious} from 'react-use'
 import {
     onCancel,
     onInit,
-    onLineItemsChange,
+    onLineItemChange,
     onPayloadChange,
     onReset,
     setPayload,
@@ -52,7 +52,7 @@ export const RefundOrderModalContainer = (
         onChange,
         onClose,
         onInit,
-        onLineItemsChange,
+        onLineItemChange,
         onPayloadChange,
         onReset,
         onSubmit,
@@ -124,6 +124,13 @@ export const RefundOrderModalContainer = (
         }
     }
 
+    const onLineChange = useCallback(
+        (lineItem: Map<string, any>, index: number) => {
+            void onLineItemChange(integrationId, lineItem, index)
+        },
+        [integrationId, onLineItemChange]
+    )
+
     return integration ? (
         <Modal
             header={header}
@@ -152,9 +159,7 @@ export const RefundOrderModalContainer = (
                         onPayloadChange={(payload) => {
                             void onPayloadChange(integrationId, payload)
                         }}
-                        onLineItemsChange={(lineItems) => {
-                            void onLineItemsChange(integrationId, lineItems)
-                        }}
+                        onLineItemChange={onLineChange}
                         onReasonChange={handleReasonChange}
                         onNotifyChange={handleNotifyChange}
                     />
@@ -215,7 +220,7 @@ const connector = connect(
     {
         onCancel,
         onInit,
-        onLineItemsChange,
+        onLineItemChange,
         onPayloadChange,
         onReset,
         setPayload,

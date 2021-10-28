@@ -20,13 +20,13 @@ describe('<RefundOrderForm/>', () => {
 
     let setPayload: jest.MockedFunction<any>
     let onPayloadChange: jest.MockedFunction<any>
-    let onLineItemsChange: jest.MockedFunction<any>
+    let onLineItemChange: jest.MockedFunction<any>
     let onReasonChange: jest.MockedFunction<any>
 
     beforeEach(() => {
         setPayload = jest.fn()
         onPayloadChange = jest.fn()
-        onLineItemsChange = jest.fn()
+        onLineItemChange = jest.fn()
         onReasonChange = jest.fn()
     })
 
@@ -44,7 +44,7 @@ describe('<RefundOrderForm/>', () => {
                     lineItems={lineItems}
                     setPayload={setPayload}
                     onPayloadChange={onPayloadChange}
-                    onLineItemsChange={onLineItemsChange}
+                    onLineItemChange={onLineItemChange}
                     onReasonChange={onReasonChange}
                     notify={false}
                     onNotifyChange={jest.fn()}
@@ -71,7 +71,7 @@ describe('<RefundOrderForm/>', () => {
                     lineItems={lineItems}
                     setPayload={setPayload}
                     onPayloadChange={onPayloadChange}
-                    onLineItemsChange={onLineItemsChange}
+                    onLineItemChange={onLineItemChange}
                     onReasonChange={onReasonChange}
                     notify={false}
                     onNotifyChange={jest.fn()}

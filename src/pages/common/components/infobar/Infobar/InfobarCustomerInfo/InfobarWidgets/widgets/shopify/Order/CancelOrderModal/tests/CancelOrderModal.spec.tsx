@@ -106,7 +106,7 @@ describe('<CancelOrderContainer />', () => {
             ),
         onClose: jest.fn(),
         onInit: jest.fn(),
-        onLineItemsChange: jest.fn(),
+        onLineItemChange: jest.fn(),
         onOpen: jest.fn(),
         onPayloadChange: jest.fn(),
         onReset: jest.fn(),
@@ -186,9 +186,10 @@ describe('<CancelOrderContainer />', () => {
         )
 
         await waitFor(() =>
-            expect(minProps.onLineItemsChange).toHaveBeenCalledWith(
+            expect(minProps.onLineItemChange).toHaveBeenCalledWith(
                 1,
-                newLineItems
+                newLineItems.get(0),
+                0
             )
         )
     })

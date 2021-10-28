@@ -103,11 +103,15 @@ describe('infobarActions.shopify.refundOrder actions', () => {
                     })
             })
 
-            describe('onLineItemsChange()', () => {
-                it('should set line items and calculate refund', async () => {
+            describe('onLineItemChange()', () => {
+                it('should set line item and calculate refund', async () => {
                     const lineItems = initRefundOrderLineItems(order)
                     await store.dispatch(
-                        actions.onLineItemsChange(integrationId, lineItems)
+                        actions.onLineItemChange(
+                            integrationId,
+                            lineItems.get(0),
+                            0
+                        )
                     )
                     expect(getActions()).toMatchSnapshot()
                 })

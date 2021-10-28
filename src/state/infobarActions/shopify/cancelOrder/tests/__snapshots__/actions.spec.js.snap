@@ -481,7 +481,7 @@ Array [
 ]
 `;
 
-exports[`infobarActions.shopify.cancelOrder actions on success on initialized onLineItemsChange() should set line items and calculate refund 1`] = `
+exports[`infobarActions.shopify.cancelOrder actions on success on initialized onLineItemChange() should set line item and calculate refund 1`] = `
 Array [
   Object {
     "lineItems": Immutable.List [
@@ -503,35 +503,6 @@ Array [
         "id": 4193100136471,
         "sku": "0987654321-1",
         "variant_title": "Red / A",
-        "total_discount_set": Immutable.Map {
-          "shop_money": Immutable.Map {
-            "amount": "0.0",
-            "currency_code": "USD",
-          },
-          "presentment_money": Immutable.Map {
-            "amount": "0.0",
-            "currency_code": "USD",
-          },
-        },
-      },
-      Immutable.Map {
-        "quantity": 4,
-        "product_id": 8345093387,
-        "price_set": Immutable.Map {
-          "shop_money": Immutable.Map {
-            "amount": "1.0",
-            "currency_code": "USD",
-          },
-          "presentment_money": Immutable.Map {
-            "amount": "1.0",
-            "currency_code": "USD",
-          },
-        },
-        "variant_id": 31128766349335,
-        "title": "Acidulous candy",
-        "id": 4193100169239,
-        "sku": "0987654321-2",
-        "variant_title": "Red / B",
         "total_discount_set": Immutable.Map {
           "shop_money": Immutable.Map {
             "amount": "0.0",

@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<LineItemRow/> render() should render 1`] = `
+exports[`<LineItemRow/> should render 1`] = `
 <tr>
   <td
-    className="container"
+    class="container"
   >
     <div
-      className="legend"
+      class="legend"
     >
       <div>
         <a
-          className="title"
+          class="title"
           href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
           rel="noopener noreferrer"
           target="_blank"
@@ -19,12 +19,12 @@ exports[`<LineItemRow/> render() should render 1`] = `
         </a>
       </div>
       <div
-        className="subtitle"
+        class="subtitle"
       >
         Red / A
       </div>
       <div
-        className="subtitle"
+        class="subtitle"
       >
         SKU: 
         0987654321-1
@@ -32,514 +32,106 @@ exports[`<LineItemRow/> render() should render 1`] = `
     </div>
   </td>
   <td
-    className="numberCol"
+    class="numberCol"
   >
     <div
-      className="d-flex"
+      class="d-flex"
     >
       <div
-        className="d-inline-block text-center"
-      >
-        <MoneyAmount
-          amount="1.00"
-          currencyCode="USD"
-          negative={false}
-          renderIfZero={true}
-        />
-      </div>
-      <span
-        className="times"
-      >
-        x
-      </span>
-    </div>
-  </td>
-  <td
-    className="quantityCol"
-  >
-    <InputGroup
-      tag="div"
-    >
-      <span
-        className="quantityContainer"
-      >
-        <Input
-          className="quantityInput"
-          onChange={[Function]}
-          pattern="\\\\d+"
-          type="text"
-          value={1}
-        />
-        <span
-          className="quantityMax"
-        >
-          / 
-          1
-        </span>
-      </span>
-      <InputGroupAddon
-        addonType="append"
-        className="quantityButtonsContainer"
-        tag="div"
-      >
-        <Button
-          className="focusable quantityBtn quantityBtnUp"
-          color="secondary"
-          disabled={true}
-          onClick={[Function]}
-          tabIndex={0}
-          tag="button"
-          type="button"
-        >
-          ▲
-        </Button>
-        <Button
-          className="focusable quantityBtn quantityBtnDown"
-          color="secondary"
-          disabled={false}
-          onClick={[Function]}
-          tabIndex={0}
-          tag="button"
-          type="button"
-        >
-          ▼
-        </Button>
-      </InputGroupAddon>
-    </InputGroup>
-  </td>
-  <td
-    className="numberCol"
-  >
-    <div
-      className="d-flex"
-    >
-      <strong
-        className="mt-auto mb-auto ml-auto"
-      >
-        <MoneyAmount
-          amount="1.00"
-          currencyCode="USD"
-          negative={false}
-          renderIfZero={true}
-        />
-      </strong>
-    </div>
-  </td>
-</tr>
-`;
-
-exports[`<LineItemRow/> render() should render for multi-currency order 1`] = `
-<tr>
-  <td
-    className="container"
-  >
-    <div
-      className="legend"
-    >
-      <div>
-        <a
-          className="title"
-          href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Acidulous candy
-        </a>
-      </div>
-      <div
-        className="subtitle"
-      >
-        Red / A
-      </div>
-      <div
-        className="subtitle"
-      >
-        SKU: 
-        0987654321-1
-      </div>
-    </div>
-  </td>
-  <td
-    className="numberCol"
-  >
-    <div
-      className="d-flex"
-    >
-      <div
-        className="d-inline-block text-center"
-      >
-        <MoneyAmount
-          amount="1.00"
-          currencyCode="USD"
-          negative={false}
-          renderIfZero={true}
-        />
-      </div>
-      <span
-        className="times"
-      >
-        x
-      </span>
-    </div>
-  </td>
-  <td
-    className="quantityCol"
-  >
-    <InputGroup
-      tag="div"
-    >
-      <span
-        className="quantityContainer"
-      >
-        <Input
-          className="quantityInput"
-          onChange={[Function]}
-          pattern="\\\\d+"
-          type="text"
-          value={1}
-        />
-        <span
-          className="quantityMax"
-        >
-          / 
-          1
-        </span>
-      </span>
-      <InputGroupAddon
-        addonType="append"
-        className="quantityButtonsContainer"
-        tag="div"
-      >
-        <Button
-          className="focusable quantityBtn quantityBtnUp"
-          color="secondary"
-          disabled={true}
-          onClick={[Function]}
-          tabIndex={0}
-          tag="button"
-          type="button"
-        >
-          ▲
-        </Button>
-        <Button
-          className="focusable quantityBtn quantityBtnDown"
-          color="secondary"
-          disabled={false}
-          onClick={[Function]}
-          tabIndex={0}
-          tag="button"
-          type="button"
-        >
-          ▼
-        </Button>
-      </InputGroupAddon>
-    </InputGroup>
-  </td>
-  <td
-    className="numberCol"
-  >
-    <div
-      className="d-flex"
-    >
-      <strong
-        className="mt-auto mb-auto ml-auto"
-      >
-        <MoneyAmount
-          amount="100"
-          currencyCode="JPY"
-          negative={false}
-          renderIfZero={true}
-        />
-      </strong>
-    </div>
-  </td>
-</tr>
-`;
-
-exports[`<LineItemRow/> render() should render with "not restockable" message 1`] = `
-<tr>
-  <td
-    className="container"
-  >
-    <div
-      className="legend"
-    >
-      <div>
-        <a
-          className="title"
-          href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Acidulous candy
-        </a>
-      </div>
-      <div
-        className="subtitle"
-      >
-        Red / A
-      </div>
-      <div
-        className="subtitle"
-      >
-        SKU: 
-        0987654321-1
-      </div>
-      <div
-        className="text-danger"
-      >
-        This product can't be restocked.
-      </div>
-    </div>
-  </td>
-  <td
-    className="numberCol"
-  >
-    <div
-      className="d-flex"
-    >
-      <div
-        className="d-inline-block text-center"
-      >
-        <MoneyAmount
-          amount="1.00"
-          currencyCode="USD"
-          negative={false}
-          renderIfZero={true}
-        />
-      </div>
-      <span
-        className="times"
-      >
-        x
-      </span>
-    </div>
-  </td>
-  <td
-    className="quantityCol"
-  >
-    <InputGroup
-      tag="div"
-    >
-      <span
-        className="quantityContainer"
-      >
-        <Input
-          className="quantityInput"
-          onChange={[Function]}
-          pattern="\\\\d+"
-          type="text"
-          value={1}
-        />
-        <span
-          className="quantityMax"
-        >
-          / 
-          1
-        </span>
-      </span>
-      <InputGroupAddon
-        addonType="append"
-        className="quantityButtonsContainer"
-        tag="div"
-      >
-        <Button
-          className="focusable quantityBtn quantityBtnUp"
-          color="secondary"
-          disabled={true}
-          onClick={[Function]}
-          tabIndex={0}
-          tag="button"
-          type="button"
-        >
-          ▲
-        </Button>
-        <Button
-          className="focusable quantityBtn quantityBtnDown"
-          color="secondary"
-          disabled={false}
-          onClick={[Function]}
-          tabIndex={0}
-          tag="button"
-          type="button"
-        >
-          ▼
-        </Button>
-      </InputGroupAddon>
-    </InputGroup>
-  </td>
-  <td
-    className="numberCol"
-  >
-    <div
-      className="d-flex"
-    >
-      <strong
-        className="mt-auto mb-auto ml-auto"
-      >
-        <MoneyAmount
-          amount="1.00"
-          currencyCode="USD"
-          negative={false}
-          renderIfZero={true}
-        />
-      </strong>
-    </div>
-  </td>
-</tr>
-`;
-
-exports[`<LineItemRow/> render() should render with discounted price 1`] = `
-<tr>
-  <td
-    className="container"
-  >
-    <div
-      className="legend"
-    >
-      <div>
-        <a
-          className="title"
-          href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Acidulous candy
-        </a>
-      </div>
-      <div
-        className="subtitle"
-      >
-        Red / A
-      </div>
-      <div
-        className="subtitle"
-      >
-        SKU: 
-        0987654321-1
-      </div>
-    </div>
-  </td>
-  <td
-    className="numberCol"
-  >
-    <div
-      className="d-flex"
-    >
-      <div
-        className="d-inline-block text-center"
+        class="d-inline-block text-center"
       >
         <small
-          className="d-block text-muted"
+          class="d-block text-muted"
         >
           <del>
-            <MoneyAmount
-              amount="1.00"
-              currencyCode="USD"
-              negative={false}
-              renderIfZero={true}
-            />
+            <span>
+              $1.00
+            </span>
           </del>
         </small>
-        <MoneyAmount
-          amount="0.50"
-          currencyCode="USD"
-          negative={false}
-          renderIfZero={true}
-        />
+        <span>
+          $0.00
+        </span>
       </div>
       <span
-        className="times"
+        class="times"
       >
         x
       </span>
     </div>
   </td>
   <td
-    className="quantityCol"
+    class="quantityCol"
   >
-    <InputGroup
-      tag="div"
+    <div
+      class="input-group"
     >
       <span
-        className="quantityContainer"
+        class="quantityContainer"
       >
-        <Input
-          className="quantityInput"
-          onChange={[Function]}
+        <input
+          class="quantityInput form-control"
           pattern="\\\\d+"
           type="text"
-          value={1}
+          value="1"
         />
         <span
-          className="quantityMax"
+          class="quantityMax"
         >
           / 
           1
         </span>
       </span>
-      <InputGroupAddon
-        addonType="append"
-        className="quantityButtonsContainer"
-        tag="div"
+      <div
+        class="quantityButtonsContainer input-group-append"
       >
-        <Button
-          className="focusable quantityBtn quantityBtnUp"
-          color="secondary"
-          disabled={true}
-          onClick={[Function]}
-          tabIndex={0}
-          tag="button"
+        <button
+          class="focusable quantityBtn quantityBtnUp btn btn-secondary disabled"
+          disabled=""
+          tabindex="0"
           type="button"
         >
           ▲
-        </Button>
-        <Button
-          className="focusable quantityBtn quantityBtnDown"
-          color="secondary"
-          disabled={false}
-          onClick={[Function]}
-          tabIndex={0}
-          tag="button"
+        </button>
+        <button
+          class="focusable quantityBtn quantityBtnDown btn btn-secondary"
+          tabindex="0"
           type="button"
         >
           ▼
-        </Button>
-      </InputGroupAddon>
-    </InputGroup>
+        </button>
+      </div>
+    </div>
   </td>
   <td
-    className="numberCol"
+    class="numberCol"
   >
     <div
-      className="d-flex"
+      class="d-flex"
     >
       <strong
-        className="mt-auto mb-auto ml-auto"
+        class="mt-auto mb-auto ml-auto"
       >
-        <MoneyAmount
-          amount="0.50"
-          currencyCode="USD"
-          negative={false}
-          renderIfZero={true}
-        />
+        <span>
+          $0.00
+        </span>
       </strong>
     </div>
   </td>
 </tr>
 `;
 
-exports[`<LineItemRow/> render() should render without quantity and without price 1`] = `
+exports[`<LineItemRow/> should render for multi-currency order 1`] = `
 <tr>
   <td
-    className="container"
+    class="container"
   >
     <div
-      className="legend"
+      class="legend"
     >
       <div>
         <a
-          className="title"
+          class="title"
           href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
           rel="noopener noreferrer"
           target="_blank"
@@ -548,12 +140,12 @@ exports[`<LineItemRow/> render() should render without quantity and without pric
         </a>
       </div>
       <div
-        className="subtitle"
+        class="subtitle"
       >
         Red / A
       </div>
       <div
-        className="subtitle"
+        class="subtitle"
       >
         SKU: 
         0987654321-1
@@ -561,28 +153,258 @@ exports[`<LineItemRow/> render() should render without quantity and without pric
     </div>
   </td>
   <td
-    className="text-center text-muted"
-    colSpan={2}
+    class="numberCol"
+  >
+    <div
+      class="d-flex"
+    >
+      <div
+        class="d-inline-block text-center"
+      >
+        <span>
+          $1.00
+        </span>
+      </div>
+      <span
+        class="times"
+      >
+        x
+      </span>
+    </div>
+  </td>
+  <td
+    class="quantityCol"
+  >
+    <div
+      class="input-group"
+    >
+      <span
+        class="quantityContainer"
+      >
+        <input
+          class="quantityInput form-control"
+          pattern="\\\\d+"
+          type="text"
+          value="1"
+        />
+        <span
+          class="quantityMax"
+        >
+          / 
+          1
+        </span>
+      </span>
+      <div
+        class="quantityButtonsContainer input-group-append"
+      >
+        <button
+          class="focusable quantityBtn quantityBtnUp btn btn-secondary disabled"
+          disabled=""
+          tabindex="0"
+          type="button"
+        >
+          ▲
+        </button>
+        <button
+          class="focusable quantityBtn quantityBtnDown btn btn-secondary"
+          tabindex="0"
+          type="button"
+        >
+          ▼
+        </button>
+      </div>
+    </div>
+  </td>
+  <td
+    class="numberCol"
+  >
+    <div
+      class="d-flex"
+    >
+      <strong
+        class="mt-auto mb-auto ml-auto"
+      >
+        <span>
+          ¥100
+        </span>
+      </strong>
+    </div>
+  </td>
+</tr>
+`;
+
+exports[`<LineItemRow/> should render with discounted price 1`] = `
+<tr>
+  <td
+    class="container"
+  >
+    <div
+      class="legend"
+    >
+      <div>
+        <a
+          class="title"
+          href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Acidulous candy
+        </a>
+      </div>
+      <div
+        class="subtitle"
+      >
+        Red / A
+      </div>
+      <div
+        class="subtitle"
+      >
+        SKU: 
+        0987654321-1
+      </div>
+    </div>
+  </td>
+  <td
+    class="numberCol"
+  >
+    <div
+      class="d-flex"
+    >
+      <div
+        class="d-inline-block text-center"
+      >
+        <small
+          class="d-block text-muted"
+        >
+          <del>
+            <span>
+              $1.00
+            </span>
+          </del>
+        </small>
+        <span>
+          $0.50
+        </span>
+      </div>
+      <span
+        class="times"
+      >
+        x
+      </span>
+    </div>
+  </td>
+  <td
+    class="quantityCol"
+  >
+    <div
+      class="input-group"
+    >
+      <span
+        class="quantityContainer"
+      >
+        <input
+          class="quantityInput form-control"
+          pattern="\\\\d+"
+          type="text"
+          value="1"
+        />
+        <span
+          class="quantityMax"
+        >
+          / 
+          1
+        </span>
+      </span>
+      <div
+        class="quantityButtonsContainer input-group-append"
+      >
+        <button
+          class="focusable quantityBtn quantityBtnUp btn btn-secondary disabled"
+          disabled=""
+          tabindex="0"
+          type="button"
+        >
+          ▲
+        </button>
+        <button
+          class="focusable quantityBtn quantityBtnDown btn btn-secondary"
+          tabindex="0"
+          type="button"
+        >
+          ▼
+        </button>
+      </div>
+    </div>
+  </td>
+  <td
+    class="numberCol"
+  >
+    <div
+      class="d-flex"
+    >
+      <strong
+        class="mt-auto mb-auto ml-auto"
+      >
+        <span>
+          $0.50
+        </span>
+      </strong>
+    </div>
+  </td>
+</tr>
+`;
+
+exports[`<LineItemRow/> should render without quantity and without price 1`] = `
+<tr>
+  <td
+    class="container"
+  >
+    <div
+      class="legend"
+    >
+      <div>
+        <a
+          class="title"
+          href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Acidulous candy
+        </a>
+      </div>
+      <div
+        class="subtitle"
+      >
+        Red / A
+      </div>
+      <div
+        class="subtitle"
+      >
+        SKU: 
+        0987654321-1
+      </div>
+    </div>
+  </td>
+  <td
+    class="text-center text-muted"
+    colspan="2"
   >
     <small>
       Already returned
     </small>
   </td>
   <td
-    className="numberCol"
+    class="numberCol"
   >
     <div
-      className="d-flex"
+      class="d-flex"
     >
       <strong
-        className="mt-auto mb-auto ml-auto"
+        class="mt-auto mb-auto ml-auto"
       >
-        <MoneyAmount
-          amount="0.00"
-          currencyCode="USD"
-          negative={false}
-          renderIfZero={true}
-        />
+        <span>
+          $0.00
+        </span>
       </strong>
     </div>
   </td>

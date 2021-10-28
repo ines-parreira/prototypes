@@ -16,63 +16,59 @@ type Props = {
     lineItems: List<any>
     setPayload: (payload: Map<any, any>) => void
     onPayloadChange: (payload: Map<any, any>) => void
-    onLineItemsChange: (lineItems: List<any>) => void
+    onLineItemChange: (lineItem: Map<string, any>, index: number) => void
     onReasonChange: (event: ChangeEvent<HTMLInputElement>) => void
     onNotifyChange: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
-export default class RefundOrderForm extends React.PureComponent<Props> {
-    render() {
-        const {
-            shopName,
-            loading,
-            reason,
-            notify,
-            payload,
-            refund,
-            lineItems,
-            order,
-            actionName,
-            onLineItemsChange,
-            setPayload,
-            onPayloadChange,
-            onReasonChange,
-            onNotifyChange,
-        } = this.props
+export default function RefundOrderForm({
+    shopName,
+    loading,
+    reason,
+    notify,
+    payload,
+    refund,
+    lineItems,
+    order,
+    actionName,
+    onLineItemChange,
+    setPayload,
+    onPayloadChange,
+    onReasonChange,
+    onNotifyChange,
+}: Props) {
+    const currencyCode = payload.get('currency') as string
+    const shopCurrencyCode = order.getIn([
+        'total_price_set',
+        'shop_money',
+        'currency_code',
+    ]) as string
 
-        const currencyCode = payload.get('currency') as string
-        const shopCurrencyCode = order.getIn([
-            'total_price_set',
-            'shop_money',
-            'currency_code',
-        ]) as string
-
-        return (
-            <React.Fragment>
-                <OrderTable
-                    shopName={shopName}
-                    currencyCode={currencyCode}
-                    shopCurrencyCode={shopCurrencyCode}
-                    lineItems={lineItems}
-                    refund={refund}
-                    onChange={onLineItemsChange}
-                />
-                <OrderFooter
-                    editable
-                    reason={reason}
-                    notify={notify}
-                    actionName={actionName}
-                    hasShippingLine={!!order.getIn(['shipping_lines', 0])}
-                    currencyCode={currencyCode}
-                    payload={payload}
-                    refund={refund}
-                    loading={loading}
-                    setPayload={setPayload}
-                    onPayloadChange={onPayloadChange}
-                    onReasonChange={onReasonChange}
-                    onNotifyChange={onNotifyChange}
-                />
-            </React.Fragment>
-        )
-    }
+    return (
+        <React.Fragment>
+            <OrderTable
+                shopName={shopName}
+                currencyCode={currencyCode}
+                shopCurrencyCode={shopCurrencyCode}
+                lineItems={lineItems}
+                refund={refund}
+                onLineItemChange={onLineItemChange}
+            />
+            <OrderFooter
+                editable
+                reason={reason}
+                notify={notify}
+                actionName={actionName}
+                hasShippingLine={!!order.getIn(['shipping_lines', 0])}
+                currencyCode={currencyCode}
+                payload={payload}
+                refund={refund}
+                loading={loading}
+                setPayload={setPayload}
+                onPayloadChange={onPayloadChange}
+                onReasonChange={onReasonChange}
+                onNotifyChange={onNotifyChange}
+            />
+        </React.Fragment>
+    )
 }

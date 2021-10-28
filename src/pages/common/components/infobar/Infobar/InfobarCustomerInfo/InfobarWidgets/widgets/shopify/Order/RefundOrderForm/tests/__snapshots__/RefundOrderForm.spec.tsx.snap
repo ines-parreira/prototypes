@@ -2,7 +2,7 @@
 
 exports[`<RefundOrderForm/> render() should render 1`] = `
 <Fragment>
-  <OrderTable
+  <Memo(OrderTable)
     currencyCode="USD"
     lineItems={
       Immutable.List [
@@ -22,7 +22,7 @@ exports[`<RefundOrderForm/> render() should render 1`] = `
         },
       ]
     }
-    onChange={[MockFunction]}
+    onLineItemChange={[MockFunction]}
     refund={
       Immutable.Map {
         "shipping": Immutable.Map {
@@ -137,7 +137,7 @@ exports[`<RefundOrderForm/> render() should render 1`] = `
 
 exports[`<RefundOrderForm/> render() should render for multi-currency order 1`] = `
 <Fragment>
-  <OrderTable
+  <Memo(OrderTable)
     currencyCode="USD"
     lineItems={
       Immutable.List [
@@ -157,7 +157,7 @@ exports[`<RefundOrderForm/> render() should render for multi-currency order 1`] 
         },
       ]
     }
-    onChange={[MockFunction]}
+    onLineItemChange={[MockFunction]}
     refund={
       Immutable.Map {
         "shipping": Immutable.Map {
