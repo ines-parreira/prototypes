@@ -25,6 +25,15 @@ const StyleDictionary = require('style-dictionary').extend({
 StyleDictionary.registerTransform({
     name: 'name/cti/kebab',
     type: 'name',
-    transformer: (prop) => _.kebabCase(`${prop.attributes.type}-${prop.name}`),
+    transformer: (prop) =>
+        _.kebabCase(
+            escapeEmoji(
+                `${prop.attributes.category}-${prop.attributes.type}-${prop.name}`
+            )
+        ),
 })
 StyleDictionary.buildAllPlatforms()
+
+function escapeEmoji(value) {
+    return value.replace(/[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu, '')
+}
