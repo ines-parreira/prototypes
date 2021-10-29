@@ -1,26 +1,41 @@
 import {
     CreateArticleTranslationDto,
-    HelpCenterArticleTranslation,
-    HelpCenterLocaleCode,
+    CreateHelpCenterTranslationDto,
+    HelpCenter,
+    LocaleCode,
 } from '../../../../models/helpCenter/types'
 import {HELP_CENTER_DOMAIN} from '../constants'
 
 export const articleRequiredFields: Partial<
-    keyof HelpCenterArticleTranslation
+    keyof CreateArticleTranslationDto
 >[] = ['title', 'slug', 'content']
 
-export const articleOptionalFields: Partial<
-    keyof HelpCenterArticleTranslation
->[] = ['excerpt']
-
-export const getNewTranslation = (
-    locale: HelpCenterLocaleCode
+export const getNewArticleTranslation = (
+    locale: LocaleCode
 ): CreateArticleTranslationDto => ({
+    locale,
     title: '',
     content: '',
     excerpt: '',
     slug: '',
+    seo_meta: {
+        title: null,
+        description: null,
+    },
+})
+
+export const helpCenterSeoMetaFields: Partial<
+    keyof CreateHelpCenterTranslationDto['seo_meta']
+>[] = ['title', 'description']
+
+export const getNewHelpCenterTranslation = (
+    locale: LocaleCode
+): CreateHelpCenterTranslationDto => ({
     locale,
+    seo_meta: {
+        title: null,
+        description: null,
+    },
 })
 
 export function slugify(value: string): string {
@@ -37,18 +52,42 @@ export function slugify(value: string): string {
     return ''
 }
 
-export const getAbsoluteUrl = (value: string): string => {
-    const withProtocol = /^((http|https|ftp):\/\/)/
+export const getAbsoluteUrl = (
+    {
+        domain,
+        locale,
+        path,
+    }: {
+        domain: string
+        locale?: string
+        path?: string
+    },
+    trailingSlash = true
+): string => {
+    const hasProtocol = /^((http|https|ftp):\/\/)/
 
-    return withProtocol.test(value) ? value : `https://${value}`
+    let url = hasProtocol.test(domain) ? domain : `https://${domain}`
+
+    if (locale) {
+        url += `/${locale}`
+    }
+
+    if (path) {
+        url += `/${path}`
+    }
+
+    if (trailingSlash && !url.endsWith('/')) {
+        url += '/'
+    }
+
+    return url
 }
 
-export const getHelpCenterDomain = (
-    subdomain: string,
-    customDomain?: string
-): string => customDomain || `${subdomain}${HELP_CENTER_DOMAIN}`
+export const getHelpCenterDomain = (helpCenter: HelpCenter): string =>
+    helpCenter.customDomain?.hostname ||
+    `${helpCenter.subdomain}${HELP_CENTER_DOMAIN}`
 
-export const buildCategorySlug = ({
+export const getCategoryUrl = ({
     domain,
     locale,
     slug,
@@ -59,20 +98,20 @@ export const buildCategorySlug = ({
     slug?: string
     categoryId?: number
 }): string => {
-    let categorySlug = getAbsoluteUrl(`${domain}/${locale}/articles/`)
+    let url = getAbsoluteUrl({domain, locale, path: 'articles'})
 
     if (slug) {
-        categorySlug = `${categorySlug}${slug}`
+        url += slug
     }
 
     if (categoryId) {
-        categorySlug = `${categorySlug}-${categoryId.toString()}`
+        url += `-${categoryId.toString()}`
     }
 
-    return categorySlug
+    return url
 }
 
-export const buildArticleSlug = ({
+export const getArticleUrl = ({
     domain,
     locale,
     slug,
@@ -83,15 +122,15 @@ export const buildArticleSlug = ({
     slug?: string
     articleId?: number
 }): string => {
-    let articleSlug = getAbsoluteUrl(`${domain}/${locale}/`)
+    let url = getAbsoluteUrl({domain, locale})
 
     if (slug) {
-        articleSlug = `${articleSlug}${slug}`
+        url += slug
     }
 
     if (articleId) {
-        articleSlug = `${articleSlug}-${articleId.toString()}`
+        url += `-${articleId.toString()}`
     }
 
-    return articleSlug
+    return url
 }

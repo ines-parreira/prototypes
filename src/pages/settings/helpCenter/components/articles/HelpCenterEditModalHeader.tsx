@@ -6,14 +6,10 @@ import {
     OptionItem,
 } from '../articles/ArticleLanguageSelect'
 
-import {
-    HelpCenterArticle,
-    LocaleCode,
-    HelpCenter,
-} from '../../../../../models/helpCenter/types'
+import {LocaleCode, HelpCenter} from '../../../../../models/helpCenter/types'
 
-import {useLocaleSelectOptions} from '../../hooks/useLocaleSelectOptions'
 import {useLocales} from '../../hooks/useLocales'
+import {getLocaleSelectOptions} from '../../utils/localeSelectOptions'
 
 import ArticleCategorySelect from './ArticleCategorySelect'
 
@@ -25,18 +21,14 @@ type Props = {
     language: LocaleCode
     isFullscreen?: boolean
     supportedLocales: LocaleCode[]
-    selectedArticle: HelpCenterArticle
-    selectedCategory?: number | null
+    articleLocales?: LocaleCode[]
+    selectedCategoryId?: number | null
     onEditTitle?: (title: string) => void
     onEditCategory?: (categoryId: number | null) => void
-    onChangeLanguage: (ev: React.MouseEvent, value: LocaleCode) => void
+    onChangeLanguage: (localeCode: LocaleCode) => void
     onResize?: () => void
     onClose: () => void
-    onClickAction: (
-        ev: React.MouseEvent,
-        action: ActionType,
-        currentOption: OptionItem
-    ) => void
+    onClickAction: (action: ActionType, currentOption: OptionItem) => void
     toggleModalBtn?: ReactChild
 }
 
@@ -46,7 +38,7 @@ export const HelpCenterEditModalHeader = ({
     isFullscreen,
     language,
     supportedLocales,
-    selectedArticle,
+    articleLocales,
     onEditTitle,
     onEditCategory,
     onClose,
@@ -54,10 +46,9 @@ export const HelpCenterEditModalHeader = ({
     onChangeLanguage,
     onClickAction,
     toggleModalBtn,
-    selectedCategory,
+    selectedCategoryId,
 }: Props): JSX.Element => {
     const locales = useLocales()
-    const localeOptions = useLocaleSelectOptions(locales, supportedLocales)
 
     const getResizeModalButton = () =>
         isFullscreen ? (
@@ -82,16 +73,13 @@ export const HelpCenterEditModalHeader = ({
 
     const localeSelectOptions = React.useMemo(
         () =>
-            localeOptions.map((option) => {
+            getLocaleSelectOptions(locales, supportedLocales).map((option) => {
                 let isComplete = false
                 let canBeDeleted = true
 
-                if (selectedArticle?.available_locales) {
-                    isComplete = selectedArticle.available_locales.includes(
-                        option.value
-                    )
-                    canBeDeleted =
-                        selectedArticle?.available_locales?.length > 1
+                if (articleLocales) {
+                    isComplete = articleLocales.includes(option.value)
+                    canBeDeleted = articleLocales.length > 1
                 }
 
                 return {
@@ -100,7 +88,7 @@ export const HelpCenterEditModalHeader = ({
                     canBeDeleted,
                 }
             }),
-        [localeOptions, selectedArticle.available_locales]
+        [locales, supportedLocales, articleLocales]
     )
 
     return (
@@ -136,12 +124,12 @@ export const HelpCenterEditModalHeader = ({
                 </div>
             </div>
             <div className={css.break} />
-            {onEditCategory && selectedCategory !== undefined && (
+            {onEditCategory && selectedCategoryId !== undefined && (
                 <div className={css.categorySelect}>
                     <ArticleCategorySelect
                         locale={language}
                         helpCenterId={helpCenter.id}
-                        categoryId={selectedCategory}
+                        categoryId={selectedCategoryId}
                         onChange={(value: number | null) => {
                             onEditCategory(value)
                         }}

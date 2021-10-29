@@ -10,7 +10,7 @@ import {
     saveCategories,
 } from '../../../../state/helpCenter/categories'
 
-import {useHelpcenterApi} from './useHelpcenterApi'
+import {useHelpCenterApi} from './useHelpCenterApi'
 
 type HelpCenterCategoriesHook = {
     categories: Category[]
@@ -31,7 +31,7 @@ export const useHelpCenterCategories = (
     const dispatch = useAppDispatch()
     const categories = useSelector(getCategories)
 
-    const {client} = useHelpcenterApi()
+    const {client} = useHelpCenterApi()
     const [isLoading, setLoading] = useState(true)
     const [pagination, setPagination] = useState<Pagination>({
         page: 0,

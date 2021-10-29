@@ -9,9 +9,9 @@ import {Components} from '../../../../../../../../../rest_api/help_center_api/cl
 import {UpdateToggle} from '../UpdateToggle'
 
 const mockedUpdateHelpCenter = jest.fn()
-jest.mock('../../../hooks/useHelpcenterApi', () => {
+jest.mock('../../../hooks/useHelpCenterApi', () => {
     return {
-        useHelpcenterApi: () => ({
+        useHelpCenterApi: () => ({
             isReady: true,
             client: {
                 updateHelpCenter: mockedUpdateHelpCenter.mockResolvedValue({

@@ -2,10 +2,10 @@ import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
 import _keyBy from 'lodash/keyBy'
 
-import {HelpCenterLocale} from '../../../../../models/helpCenter/types'
+import {Locale} from '../../../../../models/helpCenter/types'
 
 import HelpCenterTable from '../HelpCenterTable'
-import {getHelpCentersResponseFixture} from '../../fixtures/getHelpcenterResponse.fixture'
+import {getHelpCentersResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
 import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
 
 describe('<HelpCenterTable/>', () => {
@@ -14,8 +14,8 @@ describe('<HelpCenterTable/>', () => {
 
     const props = {
         isLoading: false,
-        list: getHelpCentersResponseFixture,
-        locales: _keyBy<HelpCenterLocale>(getLocalesResponseFixture, 'code'),
+        list: getHelpCentersResponseFixture.data,
+        locales: _keyBy<Locale>(getLocalesResponseFixture, 'code'),
         onClick: mockedOnClick,
         onToggle: mockedOnToggle,
     }
@@ -38,7 +38,7 @@ describe('<HelpCenterTable/>', () => {
 
     it('should call the onClick callback when clicking on a row', () => {
         const {getByRole} = render(<HelpCenterTable {...props} />)
-        const tableRow = getByRole('row', {name: /ACME Helpcenter 2/i})
+        const tableRow = getByRole('row', {name: /ACME Help Center 2/i})
         fireEvent.click(tableRow)
         expect(mockedOnClick).toHaveBeenCalledWith(2)
     })

@@ -22,6 +22,7 @@ describe('<ArticleLanguageSelect>', () => {
                 selected="en-US"
                 list={list}
                 onSelect={() => null}
+                onClickAction={() => null}
             />
         )
 
@@ -36,6 +37,7 @@ describe('<ArticleLanguageSelect>', () => {
                 selected="en-US"
                 list={list}
                 onSelect={() => null}
+                onClickAction={() => null}
             />
         )
 
@@ -54,6 +56,7 @@ describe('<ArticleLanguageSelect>', () => {
                 selected="en-US"
                 list={list}
                 onSelect={selectFn}
+                onClickAction={() => null}
             />
         )
         fireEvent.click(getByRole('button'))
@@ -62,7 +65,7 @@ describe('<ArticleLanguageSelect>', () => {
 
         expect(selectFn).toHaveBeenCalled()
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        expect(selectFn.mock.calls[0][1]).toEqual('fr-FR')
+        expect(selectFn.mock.calls[0][0]).toEqual('fr-FR')
     })
 
     it('shows the create button if locale is not created', () => {
@@ -78,6 +81,7 @@ describe('<ArticleLanguageSelect>', () => {
                 selected="en-US"
                 list={mock}
                 onSelect={() => null}
+                onClickAction={() => null}
             />
         )
 
@@ -101,6 +105,7 @@ describe('<ArticleLanguageSelect>', () => {
                 selected="en-US"
                 list={mock}
                 onSelect={() => null}
+                onClickAction={() => null}
             />
         )
 
@@ -125,6 +130,7 @@ describe('<ArticleLanguageSelect>', () => {
                 selected="en-US"
                 list={mock}
                 onSelect={() => null}
+                onClickAction={() => null}
             />
         )
 

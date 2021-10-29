@@ -21,12 +21,12 @@ import {useArticles} from '../useArticles'
 
 jest.mock('react-router')
 ;(useParams as jest.MockedFunction<typeof useParams>).mockReturnValue({
-    helpcenterId: '1',
+    helpCenterId: '1',
 })
 
-jest.mock('../useHelpcenterApi', () => {
+jest.mock('../useHelpCenterApi', () => {
     return {
-        useHelpcenterApi: jest.fn().mockReturnValue({
+        useHelpCenterApi: jest.fn().mockReturnValue({
             isReady: true,
             client: {
                 listCategoryArticles: () =>

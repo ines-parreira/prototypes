@@ -1,13 +1,14 @@
 import React, {useEffect} from 'react'
+import axios from 'axios'
 import {useAsyncFn} from 'react-use'
 import {useSelector} from 'react-redux'
 
 import {
     Category,
-    CategoryTranslation,
-    CreateCategoryDto,
+    CreateCategoryTranslationDto,
     HelpCenter,
     LocaleCode,
+    UpdateCategoryTranslationDto,
 } from '../../../../../models/helpCenter/types'
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
 
@@ -24,20 +25,16 @@ import {MODALS} from '../../constants'
 
 type Props = {
     helpCenter: HelpCenter
-    customDomain?: string
 }
 
-export const CategoryDrawer = ({
-    helpCenter,
-    customDomain,
-}: Props): JSX.Element => {
+export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
     const dispatch = useAppDispatch()
     const {isOpen, closeModal, getParams} = useModalManager(MODALS.CATEGORY)
     const params = getParams() as Category & {isCreate?: boolean}
     const category = useSelector(getCategoryById(params?.id))
     const categoriesActions = useCategoriesActions()
 
-    const [translation, readTranslation] = useAsyncFn(
+    const [{loading, value: translation}, getCategoryTranslation] = useAsyncFn(
         (categoryId: number, locale: LocaleCode) => {
             if (category.available_locales.includes(locale)) {
                 return categoriesActions.getCategoryTranslation(
@@ -48,21 +45,24 @@ export const CategoryDrawer = ({
 
             return Promise.resolve(undefined)
         },
-        [categoriesActions]
+        [category, categoriesActions]
     )
 
     useEffect(() => {
-        if (category?.id && category?.translation?.locale) {
-            void readTranslation(category.id, category.translation.locale)
+        if (category?.id) {
+            void getCategoryTranslation(
+                category.id,
+                category.translation.locale
+            )
         }
-    }, [helpCenter, category, params])
+    }, [category])
 
     const handleOnSave = async (
-        payload: Partial<CategoryTranslation>,
+        payload: UpdateCategoryTranslationDto,
         locale: LocaleCode
     ) => {
         try {
-            if (category?.available_locales.includes(locale)) {
+            if (category.available_locales.includes(locale)) {
                 // Update translation
                 await categoriesActions.updateCategoryTranslation(
                     params.id,
@@ -72,10 +72,14 @@ export const CategoryDrawer = ({
             } else {
                 // Create translation
                 await categoriesActions.createCategoryTranslation(params.id, {
-                    title: payload?.title || '',
-                    description: payload?.description || '',
-                    slug: payload?.slug || '',
                     locale,
+                    title: payload.title || '',
+                    description: payload.description || '',
+                    slug: payload.slug || '',
+                    seo_meta: {
+                        title: payload.seo_meta?.title || null,
+                        description: payload.seo_meta?.description || null,
+                    },
                 })
             }
 
@@ -88,19 +92,27 @@ export const CategoryDrawer = ({
 
             closeModal()
         } catch (err) {
-            console.error(err)
+            const errorMessage =
+                axios.isAxiosError(err) && err.response?.status === 400
+                    ? 'some fields are empty or invalid.'
+                    : 'please try again later.'
+
             void dispatch(
                 notify({
-                    message: 'Something went wrong',
+                    message: `Failed to save the category: ${errorMessage}`,
                     status: NotificationStatus.Error,
                 })
             )
+
+            console.error(err)
         }
     }
 
-    const handleOnCreate = async (payload: CreateCategoryDto) => {
+    const handleOnCreate = async (
+        translation: CreateCategoryTranslationDto
+    ) => {
         try {
-            await categoriesActions.createCategory(payload)
+            await categoriesActions.createCategory({translation})
 
             void dispatch(
                 notify({
@@ -111,13 +123,19 @@ export const CategoryDrawer = ({
 
             closeModal()
         } catch (err) {
-            console.error(err)
+            const errorMessage =
+                axios.isAxiosError(err) && err.response?.status === 400
+                    ? 'some fields are empty or invalid.'
+                    : 'please try again later.'
+
             void dispatch(
                 notify({
-                    message: 'Something went wrong',
+                    message: `Failed to create the category: ${errorMessage}`,
                     status: NotificationStatus.Error,
                 })
             )
+
+            console.error(err)
         }
     }
 
@@ -133,13 +151,14 @@ export const CategoryDrawer = ({
             )
             closeModal()
         } catch (err) {
-            console.error(err)
             void dispatch(
                 notify({
                     message: 'Something went wrong',
                     status: NotificationStatus.Error,
                 })
             )
+
+            console.error(err)
         }
     }
 
@@ -160,7 +179,6 @@ export const CategoryDrawer = ({
                 })
             )
         } catch (err) {
-            console.error(err)
             void dispatch(
                 notify({
                     message:
@@ -168,22 +186,23 @@ export const CategoryDrawer = ({
                     status: NotificationStatus.Error,
                 })
             )
+
+            console.error(err)
         }
     }
 
     return (
         <HelpCenterCategory
-            isLoading={translation.loading}
+            isLoading={loading}
             isCreate={params?.isCreate}
             category={category}
             helpCenter={helpCenter}
-            customDomain={customDomain}
             isOpen={isOpen()}
             canSave={!categoriesActions.isLoading}
-            translation={translation.value}
+            translation={translation}
             onLocaleChange={(locale) => {
                 if (category?.id) {
-                    void readTranslation(category.id, locale)
+                    void getCategoryTranslation(category.id, locale)
                 }
             }}
             onSave={handleOnSave}

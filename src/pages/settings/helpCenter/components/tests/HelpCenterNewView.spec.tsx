@@ -7,13 +7,13 @@ import HelpCenterNewView from '../HelpCenterNewView'
 import {renderWithRouter} from '../../../../../utils/testing'
 import {RootState, StoreDispatch} from '../../../../../state/types'
 
-import {useHelpcenterApi} from '../../hooks/useHelpcenterApi'
+import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
-jest.mock('../../hooks/useHelpcenterApi', () => {
+jest.mock('../../hooks/useHelpCenterApi', () => {
     return {
-        useHelpcenterApi: () => ({
+        useHelpCenterApi: () => ({
             isReady: true,
             client: {
                 createHelpCenter: jest
@@ -114,7 +114,7 @@ describe('<HelpCenterNewView/>', () => {
             expect(submitButton.className).not.toMatch(/disabled/i)
         })
 
-        it('should call helpcenter API on submit a new helpcenter', async () => {
+        it('should call helpcenter API on submit a new help center', async () => {
             const {findByRole, getByTestId} = renderWithRouter(
                 <Provider store={mockedStore(defaultState)}>
                     <HelpCenterNewView {...props} />
@@ -134,7 +134,7 @@ describe('<HelpCenterNewView/>', () => {
                 await waitFor(() => getByTestId('loading'))
 
                 expect(
-                    useHelpcenterApi().client?.createHelpCenter
+                    useHelpCenterApi().client?.createHelpCenter
                 ).toHaveBeenLastCalledWith(null, {
                     name: 'My brand',
                     default_locale: 'en-US',

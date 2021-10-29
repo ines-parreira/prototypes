@@ -5,14 +5,14 @@ import {LocaleCode} from '../../../../../models/helpCenter/types'
 
 import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
 
-import {useLocaleSelectOptions} from '../useLocaleSelectOptions'
+import {getLocaleSelectOptions} from '../localeSelectOptions'
 
-const availableLanguages: LocaleCode[] = ['en-US']
+const helpCenterLocales: LocaleCode[] = ['en-US']
 
 const Example = () => {
-    const options = useLocaleSelectOptions(
+    const options = getLocaleSelectOptions(
         getLocalesResponseFixture,
-        availableLanguages
+        helpCenterLocales
     )
 
     return (
@@ -34,7 +34,7 @@ const Example = () => {
     )
 }
 
-describe('useLocaleSelectOptions', () => {
+describe('getLocaleSelectOptions()', () => {
     it('options has a label, text and value', () => {
         const {getByTestId, getByText} = render(<Example />)
 

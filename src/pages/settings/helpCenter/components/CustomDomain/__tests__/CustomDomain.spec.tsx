@@ -8,7 +8,6 @@ import {
     fireEvent,
     render,
     screen,
-    waitFor,
     waitForElementToBeRemoved,
 } from '@testing-library/react'
 
@@ -16,7 +15,7 @@ import {initialState as articlesState} from '../../../../../../state/helpCenter/
 import {initialState as categoriesState} from '../../../../../../state/helpCenter/categories/reducer'
 import {initialState as uiState} from '../../../../../../state/helpCenter/ui/reducer'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
-import {getHelpCentersResponseFixture} from '../../../fixtures/getHelpcenterResponse.fixture'
+import {getHelpCentersResponseFixture} from '../../../fixtures/getHelpCentersResponse.fixture'
 import {CustomDomain} from '../CustomDomain'
 
 jest.mock('../../../hooks/useHelpCenterIdParam', () => {
@@ -25,9 +24,9 @@ jest.mock('../../../hooks/useHelpCenterIdParam', () => {
     }
 })
 
-jest.mock('../../../hooks/useHelpcenterApi', () => {
+jest.mock('../../../hooks/useHelpCenterApi', () => {
     return {
-        useHelpcenterApi: jest.fn().mockReturnValue({
+        useHelpCenterApi: jest.fn().mockReturnValue({
             isReady: true,
             client: {
                 deleteCustomDomain: () =>
@@ -82,7 +81,7 @@ jest.mock('../../../hooks/useHelpcenterApi', () => {
                         data: {
                             id: 1,
                             subdomain: 'acme',
-                            name: 'ACME Helpcenter',
+                            name: 'ACME Help Center',
                             deactivated_datetime: null,
                             created_datetime: '2021-05-17T18:21:42.022Z',
                             updated_datetime: '2021-05-17T18:21:42.022Z',
@@ -108,7 +107,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const defaultState: Partial<RootState> = {
     entities: {
         helpCenters: {
-            '1': getHelpCentersResponseFixture[0],
+            '1': getHelpCentersResponseFixture.data[0],
         },
     } as any,
     helpCenter: {
@@ -127,19 +126,6 @@ const ReduxProvider = ({children}: {children?: React.ReactNode}) => (
 describe('<CustomDomain />', () => {
     beforeEach(() => {
         store.clearActions()
-    })
-
-    it('renders in disabled state while fetching data', async () => {
-        render(<CustomDomain />, {wrapper: ReduxProvider})
-
-        const input = screen.queryByPlaceholderText(
-            'help.brand-name.com'
-        ) as HTMLInputElement
-
-        expect(input.value).toEqual('')
-        expect(input.disabled).toBeTruthy()
-
-        await waitFor(() => expect(input.disabled).toBeFalsy())
     })
 
     it('has Add Domain button enabled if custom domain feature is enabled and input has value', () => {

@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AutoPopulateInput /> render() should render checked 1`] = `
+<div
+  className="container"
+>
+  <InputField
+    disabled={true}
+    onChange={[MockFunction]}
+    type="text"
+    value="I am a title"
+  />
+  <BooleanField
+    label="Use the same as Title"
+    onChange={[Function]}
+    type="checkbox"
+    value={true}
+  />
+</div>
+`;
+
+exports[`<AutoPopulateInput /> render() should render unchecked 1`] = `
+<div
+  className="container"
+>
+  <InputField
+    disabled={false}
+    onChange={[MockFunction]}
+    type="text"
+    value="Custom title"
+  />
+  <BooleanField
+    label="Use the same as Title"
+    onChange={[Function]}
+    type="checkbox"
+    value={false}
+  />
+</div>
+`;

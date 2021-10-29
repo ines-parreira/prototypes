@@ -1,22 +1,21 @@
 import React from 'react'
 import {Button} from 'reactstrap'
 
-import {useLanguagePreferencesSettings} from '../../../../providers/LanguagePreferencesSettings'
+import {useHelpCenterPreferencesSettings} from '../../../../providers/HelpCenterPreferencesSettings'
 
-export const FooterActions = () => {
+export const FooterActions: React.FC = () => {
     const {
         savePreferences,
         resetPreferences,
-        arePreferencesChanged,
+        havePreferencesChanged,
         areChangesValid,
-    } = useLanguagePreferencesSettings()
-    const $ref = React.createRef<HTMLElement>()
+    } = useHelpCenterPreferencesSettings()
 
     return (
-        <footer ref={$ref}>
+        <footer>
             <Button
                 color="success"
-                disabled={!(arePreferencesChanged() && areChangesValid())}
+                disabled={!(havePreferencesChanged && areChangesValid)}
                 onClick={savePreferences}
             >
                 Save Changes

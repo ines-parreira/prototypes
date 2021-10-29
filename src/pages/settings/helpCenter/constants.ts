@@ -8,15 +8,15 @@ import {
     isStaging,
 } from '../../../utils/environment'
 
-import {HelpCenterThemes} from './types'
+import {HelpCenterTheme} from './types'
 
 export const HELP_CENTER_BASE_PATH = '/app/settings/help-center'
 
 export const HELP_CENTER_DEFAULT_COLOR = '#4A8DF9'
 
-export const DEFAULT_THEME = HelpCenterThemes.LIGHT
+export const HELP_CENTER_DEFAULT_THEME = HelpCenterTheme.LIGHT
 
-export const HELP_CENTER_LANGUAGE_DEFAULT: LocaleCode = 'en-US'
+export const HELP_CENTER_DEFAULT_LOCALE: LocaleCode = 'en-US'
 
 export const HELP_CENTER_DOMAIN = isProduction()
     ? '.gorgias.help'

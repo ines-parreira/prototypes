@@ -3,18 +3,14 @@ import {useState} from 'react'
 import {useSelector} from 'react-redux'
 
 import {
-    LocaleCode,
-    CategoryTranslation,
-    CreateCategoryDto,
     Category,
-    CreateCategoryTranslationBody,
+    CreateCategoryDto,
+    CreateCategoryTranslationDto,
+    LocaleCode,
+    UpdateCategoryTranslationDto,
 } from '../../../../models/helpCenter/types'
-import {
-    createCategoryFromDto,
-    createCategoryTranslationFromDto,
-} from '../../../../models/helpCenter/utils'
+import {createCategoryFromDto} from '../../../../models/helpCenter/utils'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
-
 import {
     deleteCategory,
     pushCategorySupportedLocales,
@@ -25,13 +21,13 @@ import {
 } from '../../../../state/helpCenter/categories'
 import {getViewLanguage} from '../../../../state/helpCenter/ui'
 
-import {useHelpcenterApi} from './useHelpcenterApi'
+import {useHelpCenterApi} from './useHelpCenterApi'
 import {useHelpCenterIdParam} from './useHelpCenterIdParam'
 
 export const useCategoriesActions = () => {
     const helpCenterId = useHelpCenterIdParam()
     const dispatch = useAppDispatch()
-    const {client} = useHelpcenterApi()
+    const {client} = useHelpCenterApi()
     const viewLanguage = useSelector(getViewLanguage)
     const [isLoading, setIsLoading] = useState(false)
 
@@ -41,160 +37,185 @@ export const useCategoriesActions = () => {
         async getCategoryTranslation(categoryId: number, locale: LocaleCode) {
             if (!client) throw new Error('HTTP client not initialized!')
 
-            setIsLoading(true)
+            try {
+                setIsLoading(true)
 
-            const {data} = await client.getCategory({
-                help_center_id: helpCenterId,
-                id: categoryId,
-                locale,
-            })
+                const {data} = await client.getCategory({
+                    help_center_id: helpCenterId,
+                    id: categoryId,
+                    locale,
+                })
 
-            setIsLoading(false)
+                setIsLoading(false)
 
-            if (!data?.translation) {
-                throw new Error('Category translation missing')
+                return data.translation
+            } catch (error) {
+                setIsLoading(false)
+
+                throw error
             }
-
-            return data.translation
         },
 
         async createCategory(payload: CreateCategoryDto) {
             if (!client) throw new Error('HTTP client not initialized!')
 
-            setIsLoading(true)
+            try {
+                setIsLoading(true)
 
-            const newCategory = await client
-                .createCategory(
-                    {
-                        help_center_id: helpCenterId,
-                    },
-                    payload
-                )
-                .then((response) => response.data)
-
-            const position = await client
-                .getCategoriesPositions({
-                    help_center_id: helpCenterId,
-                })
-                .then((response) => response.data)
-                .then((positions) =>
-                    positions.findIndex(
-                        (categoryId) => categoryId === newCategory.id
+                const newCategory = await client
+                    .createCategory(
+                        {
+                            help_center_id: helpCenterId,
+                        },
+                        payload
                     )
-                )
+                    .then((response) => response.data)
 
-            const output = createCategoryFromDto(newCategory, position)
+                const position = await client
+                    .getCategoriesPositions({
+                        help_center_id: helpCenterId,
+                    })
+                    .then((response) => response.data)
+                    .then((positions) =>
+                        positions.findIndex(
+                            (categoryId) => categoryId === newCategory.id
+                        )
+                    )
 
-            dispatch(saveCategories([output]))
+                const output = createCategoryFromDto(newCategory, position)
 
-            setIsLoading(false)
+                dispatch(saveCategories([output]))
 
-            return output
+                setIsLoading(false)
+
+                return output
+            } catch (error) {
+                setIsLoading(false)
+
+                throw error
+            }
         },
 
         async updateCategoryTranslation(
             categoryId: number,
             locale: LocaleCode,
-            payload: Partial<CategoryTranslation>
+            payload: UpdateCategoryTranslationDto
         ) {
             if (!client) throw new Error('HTTP client not initialized!')
 
-            setIsLoading(true)
+            try {
+                setIsLoading(true)
 
-            const translation = await client
-                .updateCategoryTranslation(
-                    {
-                        help_center_id: helpCenterId,
-                        category_id: categoryId,
-                        locale,
-                    },
-                    payload
-                )
-                .then((response) => response.data)
-                .then(createCategoryTranslationFromDto)
+                const translation = await client
+                    .updateCategoryTranslation(
+                        {
+                            help_center_id: helpCenterId,
+                            category_id: categoryId,
+                            locale,
+                        },
+                        payload
+                    )
+                    .then((response) => response.data)
 
-            const output = translation
+                const output = translation
 
-            if (locale === viewLanguage) {
-                dispatch(updateCategoryTranslation(output))
+                if (locale === viewLanguage) {
+                    dispatch(updateCategoryTranslation(output))
+                }
+
+                setIsLoading(false)
+
+                return output
+            } catch (error) {
+                setIsLoading(false)
+
+                throw error
             }
-
-            setIsLoading(false)
-
-            return output
         },
 
         async createCategoryTranslation(
             categoryId: number,
-            payload: CreateCategoryTranslationBody
+            payload: CreateCategoryTranslationDto
         ) {
             if (!client) throw new Error('HTTP client not initialized!')
 
-            setIsLoading(true)
+            try {
+                setIsLoading(true)
 
-            const translation = await client.createCategoryTranslation(
-                {
-                    help_center_id: helpCenterId,
-                    category_id: categoryId,
-                },
-                payload
-            )
-
-            if (payload.locale !== viewLanguage) {
-                dispatch(
-                    pushCategorySupportedLocales({
-                        categoryId,
-                        supportedLocales: [payload.locale],
-                    })
+                const translation = await client.createCategoryTranslation(
+                    {
+                        help_center_id: helpCenterId,
+                        category_id: categoryId,
+                    },
+                    payload
                 )
+
+                if (payload.locale !== viewLanguage) {
+                    dispatch(
+                        pushCategorySupportedLocales({
+                            categoryId,
+                            supportedLocales: [payload.locale],
+                        })
+                    )
+                }
+
+                setIsLoading(false)
+
+                return translation
+            } catch (error) {
+                setIsLoading(false)
+
+                throw error
             }
-
-            setIsLoading(false)
-
-            return translation
         },
 
         async updateCategoriesPositions(categories: Category[]) {
             if (!client) throw new Error('HTTP client not initialized!')
 
-            setIsLoading(true)
+            try {
+                setIsLoading(true)
 
-            const {
-                data: previousPositions,
-            } = await client.getCategoriesPositions({
-                help_center_id: helpCenterId,
-            })
+                const {
+                    data: previousPositions,
+                } = await client.getCategoriesPositions({
+                    help_center_id: helpCenterId,
+                })
 
-            const sortedCategories = _chain(categories)
-                .sortBy(['position'])
-                .map((category) => category.id)
-                .value()
+                const sortedCategories = _chain(categories)
+                    .sortBy(['position'])
+                    .map((category) => category.id)
+                    .value()
 
-            // This allows to sort only a subset of categories (when using pagination for example)
-            const categoriesPositions = Array.from(
-                new Set([...sortedCategories, ...previousPositions])
-            )
-
-            const positions = await client
-                .setCategoriesPositions(
-                    {
-                        help_center_id: helpCenterId,
-                    },
-                    categoriesPositions
+                // This allows to sort only a subset of categories (when using pagination for example)
+                const categoriesPositions = Array.from(
+                    new Set([...sortedCategories, ...previousPositions])
                 )
-                .then((response) => response.data)
 
-            dispatch(
-                updateCategoriesOrder(
-                    positions.filter((categoryId) =>
-                        sortedCategories.includes(categoryId)
+                const positions = await client
+                    .setCategoriesPositions(
+                        {
+                            help_center_id: helpCenterId,
+                        },
+                        categoriesPositions
+                    )
+                    .then((response) => response.data)
+
+                dispatch(
+                    updateCategoriesOrder(
+                        positions.filter((categoryId) =>
+                            sortedCategories.includes(categoryId)
+                        )
                     )
                 )
-            )
 
-            setIsLoading(false)
+                setIsLoading(false)
 
-            return positions
+                return positions
+            } catch (error) {
+                setIsLoading(false)
+
+                throw error
+            }
         },
 
         async deleteCategoryTranslation(
@@ -203,43 +224,55 @@ export const useCategoriesActions = () => {
         ) {
             if (!client) throw new Error('HTTP client not initialized!')
 
-            setIsLoading(true)
+            try {
+                setIsLoading(true)
 
-            await client.deleteCategoryTranslation({
-                help_center_id: helpCenterId,
-                category_id: categoryId,
-                locale,
-            })
+                await client.deleteCategoryTranslation({
+                    help_center_id: helpCenterId,
+                    category_id: categoryId,
+                    locale,
+                })
 
-            dispatch(removeLocaleFromCategory({categoryId, locale}))
+                dispatch(removeLocaleFromCategory({categoryId, locale}))
 
-            if (locale === viewLanguage) {
-                dispatch(deleteCategory(categoryId))
+                if (locale === viewLanguage) {
+                    dispatch(deleteCategory(categoryId))
+                }
+
+                setIsLoading(false)
+            } catch (error) {
+                setIsLoading(false)
+
+                throw error
             }
-
-            setIsLoading(false)
         },
 
         async deleteCategory(categoryId: number) {
             if (!client) throw new Error('HTTP client not initialized!')
 
-            setIsLoading(true)
+            try {
+                setIsLoading(true)
 
-            await client.deleteCategoryArticles({
-                help_center_id: helpCenterId,
-                category_id: categoryId,
-            })
+                await client.deleteCategoryArticles({
+                    help_center_id: helpCenterId,
+                    category_id: categoryId,
+                })
 
-            const response = await client.deleteCategory({
-                help_center_id: helpCenterId,
-                id: categoryId,
-            })
+                const response = await client.deleteCategory({
+                    help_center_id: helpCenterId,
+                    id: categoryId,
+                })
 
-            dispatch(deleteCategory(categoryId))
+                dispatch(deleteCategory(categoryId))
 
-            setIsLoading(false)
+                setIsLoading(false)
 
-            return response
+                return response
+            } catch (error) {
+                setIsLoading(false)
+
+                throw error
+            }
         },
     }
 }

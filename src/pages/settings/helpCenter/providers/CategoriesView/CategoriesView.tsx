@@ -10,10 +10,10 @@ import {
     CategoriesTable,
     CategoriesTableProps,
 } from '../../components/CategoriesTable'
+import {ImportSection} from '../../components/Imports/components/ImportSection'
 import {CATEGORIES_PER_PAGE} from '../../constants'
 import {useCategoriesActions} from '../../hooks/useCategoriesActions'
-import {useHelpCenterCategories} from '../../hooks/useHelpcenterCategories'
-import {ImportSection} from '../../components/Imports/components/ImportSection'
+import {useHelpCenterCategories} from '../../hooks/useHelpCenterCategories'
 
 import css from './CategoriesView.less'
 

@@ -1,15 +1,11 @@
 import React from 'react'
-import thunk from 'redux-thunk'
+import {renderHook} from 'react-hooks-testing-library'
 import {Provider} from 'react-redux'
 import {useParams} from 'react-router-dom'
-
-import {renderHook} from 'react-hooks-testing-library'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {RootState, StoreDispatch} from '../../../../../state/types'
-import {initialState as articlesState} from '../../../../../state/helpCenter/articles/reducer'
-import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
-import {initialState as categoriesState} from '../../../../../state/helpCenter/categories/reducer'
+import {CreateArticleTranslationDto} from '../../../../../models/helpCenter/types'
 import {
     deleteArticle,
     pushArticleSupportedLocales,
@@ -18,32 +14,101 @@ import {
     updateArticle,
     updateArticlesOrder,
 } from '../../../../../state/helpCenter/articles'
-
+import {initialState as articlesState} from '../../../../../state/helpCenter/articles/reducer'
+import {initialState as categoriesState} from '../../../../../state/helpCenter/categories/reducer'
+import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
+import {RootState, StoreDispatch} from '../../../../../state/types'
 import {getSingleArticleEnglish} from '../../fixtures/getArticlesResponse.fixture'
-
 import {useArticlesActions} from '../useArticlesActions'
-import {useHelpcenterApi} from '../useHelpcenterApi'
+import {useHelpCenterApi} from '../useHelpCenterApi'
 
 jest.mock('react-router')
 ;(useParams as jest.MockedFunction<typeof useParams>).mockReturnValue({
-    helpcenterId: '1',
+    helpCenterId: '1',
 })
 
-jest.mock('../useHelpcenterApi', () => {
+jest.mock('../useHelpCenterApi', () => {
     return {
-        useHelpcenterApi: jest.fn().mockReturnValue({
+        useHelpCenterApi: jest.fn().mockReturnValue({
             isReady: true,
             client: {
-                createArticle: jest.fn().mockResolvedValue({
-                    data: {
-                        translation: {},
-                    },
-                }),
-                updateArticle: jest.fn().mockResolvedValue({
-                    data: {
-                        translation: {},
-                    },
-                }),
+                createArticle: jest
+                    .fn()
+                    .mockImplementation(
+                        (
+                            {help_center_id}: {help_center_id: number},
+                            {
+                                category_id,
+                                translation,
+                            }: {
+                                category_id: number | null
+                                translation: CreateArticleTranslationDto
+                            }
+                        ) =>
+                            Promise.resolve({
+                                data: {
+                                    id: 1,
+                                    category_id,
+                                    help_center_id,
+                                    available_locales: [translation.locale],
+                                    created_datetime:
+                                        '2021-06-01T09:46:30.044Z',
+                                    updated_datetime:
+                                        '2021-06-01T09:46:30.044Z',
+                                    deleted_datetime: null,
+                                    translation: {
+                                        article_id: 1,
+                                        ...translation,
+                                        created_datetime:
+                                            '2021-06-01T09:46:30.044Z',
+                                        updated_datetime:
+                                            '2021-06-01T09:46:30.044Z',
+                                        deleted_datetime: null,
+                                    },
+                                },
+                            })
+                    ),
+                updateArticle: jest
+                    .fn()
+                    .mockImplementation(
+                        (
+                            {
+                                id,
+                                help_center_id,
+                            }: {id: number; help_center_id: number},
+                            {category_id}: {category_id: number | null}
+                        ) =>
+                            Promise.resolve({
+                                data: {
+                                    id,
+                                    category_id,
+                                    help_center_id,
+                                    available_locales: ['fr-FR'],
+                                    created_datetime:
+                                        '2021-06-01T09:46:30.044Z',
+                                    updated_datetime:
+                                        '2021-06-01T09:46:30.044Z',
+                                    deleted_datetime: null,
+                                    translation: {
+                                        article_id: id,
+                                        locale: 'fr-FR',
+                                        title: '',
+                                        excerpt: '',
+                                        content: '',
+                                        slug: '',
+                                        seo_meta: {
+                                            title: null,
+                                            description: null,
+                                        },
+                                        created_datetime:
+                                            '2021-06-01T09:46:30.044Z',
+                                        updated_datetime:
+                                            '2021-06-01T09:46:30.044Z',
+                                        deleted_datetime: null,
+                                    },
+                                },
+                            })
+                    ),
                 updateArticleTranslation: jest
                     .fn()
                     .mockResolvedValueOnce({
@@ -152,7 +217,7 @@ describe('useArticlesActions', () => {
     })
 
     describe('createArticle()', () => {
-        it('dispatches saveArticles action for article in category', async () => {
+        it('dispatches saveArticles action for uncategorized article', async () => {
             const {result} = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,
             })
@@ -163,12 +228,16 @@ describe('useArticlesActions', () => {
                 excerpt: '',
                 content: '',
                 slug: '',
+                seo_meta: {
+                    title: null,
+                    description: null,
+                },
             })
 
             expect(saveArticles).toHaveBeenCalled()
         })
 
-        it('dispatches saveArticles action for uncategorized article', async () => {
+        it('dispatches saveArticles action for article in category', async () => {
             const {result} = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,
             })
@@ -180,6 +249,10 @@ describe('useArticlesActions', () => {
                     excerpt: '',
                     content: '',
                     slug: '',
+                    seo_meta: {
+                        title: null,
+                        description: null,
+                    },
                 },
                 1
             )
@@ -202,14 +275,18 @@ describe('useArticlesActions', () => {
                 updated_datetime: '',
                 available_locales: ['en-US'],
                 translation: {
+                    article_id: 1,
                     locale: 'fr-FR',
                     title: '',
                     excerpt: '',
                     content: '',
                     slug: '',
+                    seo_meta: {
+                        title: null,
+                        description: null,
+                    },
                     created_datetime: '',
                     updated_datetime: '',
-                    article_id: 1,
                 },
             })
 
@@ -261,7 +338,7 @@ describe('useArticlesActions', () => {
     })
 
     describe('deleteArticleTranslation()', () => {
-        it('dispatches the removeLocaleFromArticle', async () => {
+        it('dispatches the removeLocaleFromArticle action', async () => {
             const {result} = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,
             })
@@ -269,16 +346,6 @@ describe('useArticlesActions', () => {
             await result.current.deleteArticleTranslation(1, 'en-US')
 
             expect(removeLocaleFromArticle).toHaveBeenCalled()
-        })
-
-        it('dispatches the deleteArticle action if locale param is equal to view language', async () => {
-            const {result} = renderHook(useArticlesActions, {
-                wrapper: dependencyWrapper,
-            })
-
-            await result.current.deleteArticleTranslation(1, 'en-US')
-
-            expect(deleteArticle).toHaveBeenCalled()
         })
     })
 
@@ -291,7 +358,7 @@ describe('useArticlesActions', () => {
             await result.current.cloneArticle(getSingleArticleEnglish)
 
             expect(
-                useHelpcenterApi().client?.listArticleTranslations
+                useHelpCenterApi().client?.listArticleTranslations
             ).toHaveBeenCalled()
         })
 
@@ -302,7 +369,7 @@ describe('useArticlesActions', () => {
 
             await result.current.cloneArticle(getSingleArticleEnglish)
 
-            expect(useHelpcenterApi().client?.createArticle).toHaveBeenCalled()
+            expect(useHelpCenterApi().client?.createArticle).toHaveBeenCalled()
         })
 
         it('calls createArticleTranslation to append all the translations', async () => {
@@ -313,7 +380,7 @@ describe('useArticlesActions', () => {
             await result.current.cloneArticle(getSingleArticleEnglish)
 
             expect(
-                useHelpcenterApi().client?.createArticleTranslation
+                useHelpCenterApi().client?.createArticleTranslation
             ).toHaveBeenCalledTimes(1)
         })
     })

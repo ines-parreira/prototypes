@@ -2,7 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 
 import {useLimitations} from '../../../../../../../hooks/helpCenter/useLimitations'
-import {HelpCenterArticle} from '../../../../../../../models/helpCenter/types'
+import {Article} from '../../../../../../../models/helpCenter/types'
 
 import {LanguageList} from '../../../../../../common/components/LanguageBulletList'
 import BodyCell from '../../../../../../common/components/table/cells/BodyCell'
@@ -19,17 +19,17 @@ import css from './ArticleRow.less'
 export type RowEventListeners = {
     onMoveEntity: Callbacks['onHover']
     onDropEntity?: Callbacks['onDrop']
-    onClickRow: (article: HelpCenterArticle) => void
+    onClickRow: (article: Article) => void
     onClickSettings: (
         ev: React.MouseEvent,
         name: string,
-        article: HelpCenterArticle
+        article: Article
     ) => void
 }
 
 type Props = RowEventListeners & {
     isNested?: boolean
-    article: HelpCenterArticle
+    article: Article
     categoryId: number
     position: number
 }
@@ -62,11 +62,7 @@ export const ArticleRow = ({
             return article.available_locales.map((code) => localesByCode[code])
         }
 
-        if (article?.translation) {
-            return [localesByCode[article.translation.locale]]
-        }
-
-        return []
+        return [localesByCode[article.translation.locale]]
     }, [article, localesByCode])
 
     const handleOnActionsClick = (ev: React.MouseEvent, name: string) => {
@@ -100,12 +96,12 @@ export const ArticleRow = ({
                 </div>
             </BodyCell>
             <BodyCell className={css['nested-cell']}>
-                {article.translation?.title}
+                {article.translation.title}
             </BodyCell>
             <BodyCell>
                 {article.translation && (
                     <LanguageList
-                        helpcenterId={article.id}
+                        id={article.id}
                         defaultLanguage={
                             localesByCode[article.translation.locale]
                         }

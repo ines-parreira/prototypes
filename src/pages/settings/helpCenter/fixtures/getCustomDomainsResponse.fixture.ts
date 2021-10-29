@@ -1,9 +1,9 @@
 import {
     CustomDomain,
-    HelpCenterCustomDomainsListPage,
+    CustomDomainsListPage,
 } from '../../../../models/helpCenter/types'
 
-export const getCustomDomainsResponseFixture: HelpCenterCustomDomainsListPage = {
+export const getCustomDomainsResponseFixture: CustomDomainsListPage = {
     object: 'list',
     data: [
         {

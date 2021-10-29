@@ -141,7 +141,7 @@ exports[`<HelpCenterTable/> should display the table correctly when not loading 
           <div
             class="cellContent"
           >
-            ACME Helpcenter
+            ACME Help Center
           </div>
         </td>
         <td>
@@ -215,7 +215,7 @@ exports[`<HelpCenterTable/> should display the table correctly when not loading 
           <div
             class="cellContent"
           >
-            ACME Helpcenter 2
+            ACME Help Center 2
           </div>
         </td>
         <td>
@@ -300,7 +300,7 @@ exports[`<HelpCenterTable/> should display the table correctly when not loading 
           <div
             class="cellContent"
           >
-            ACME Helpcenter 3
+            ACME Help Center 3
           </div>
         </td>
         <td>

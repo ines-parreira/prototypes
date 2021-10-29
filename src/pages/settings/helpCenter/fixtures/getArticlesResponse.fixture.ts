@@ -1,9 +1,6 @@
-import {
-    HelpCenterArticle,
-    HelpCenterArticlesListPage,
-} from '../../../../models/helpCenter/types'
+import {Article, ArticlesListPage} from '../../../../models/helpCenter/types'
 
-export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
+export const getArticlesResponseFixture: ArticlesListPage = {
     data: [
         {
             id: 1,
@@ -23,6 +20,10 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
                 deleted_datetime: undefined,
                 locale: 'en-US',
                 content: 'Article content',
+                seo_meta: {
+                    title: null,
+                    description: null,
+                },
             },
         },
         {
@@ -43,6 +44,10 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
                 deleted_datetime: undefined,
                 locale: 'en-US',
                 content: 'Article content',
+                seo_meta: {
+                    title: null,
+                    description: null,
+                },
             },
         },
         {
@@ -63,6 +68,10 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
                 deleted_datetime: undefined,
                 locale: 'en-US',
                 content: 'Article content',
+                seo_meta: {
+                    title: null,
+                    description: null,
+                },
             },
         },
         {
@@ -83,6 +92,10 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
                 deleted_datetime: undefined,
                 locale: 'en-US',
                 content: 'Article content',
+                seo_meta: {
+                    title: null,
+                    description: null,
+                },
             },
         },
         {
@@ -103,6 +116,10 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
                 deleted_datetime: undefined,
                 locale: 'en-US',
                 content: 'Article content',
+                seo_meta: {
+                    title: null,
+                    description: null,
+                },
             },
         },
         {
@@ -123,6 +140,10 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
                 deleted_datetime: undefined,
                 locale: 'en-US',
                 content: 'Article content',
+                seo_meta: {
+                    title: null,
+                    description: null,
+                },
             },
         },
         {
@@ -143,6 +164,10 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
                 deleted_datetime: undefined,
                 locale: 'en-US',
                 content: 'Article content',
+                seo_meta: {
+                    title: null,
+                    description: null,
+                },
             },
         },
         {
@@ -163,6 +188,10 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
                 deleted_datetime: undefined,
                 locale: 'en-US',
                 content: 'Article content',
+                seo_meta: {
+                    title: null,
+                    description: null,
+                },
             },
         },
         {
@@ -183,6 +212,10 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
                 deleted_datetime: undefined,
                 locale: 'en-US',
                 content: 'Article content',
+                seo_meta: {
+                    title: null,
+                    description: null,
+                },
             },
         },
         {
@@ -203,6 +236,10 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
                 deleted_datetime: undefined,
                 locale: 'en-US',
                 content: 'Article content',
+                seo_meta: {
+                    title: null,
+                    description: null,
+                },
             },
         },
         {
@@ -223,6 +260,10 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
                 deleted_datetime: undefined,
                 locale: 'en-US',
                 content: 'Article content',
+                seo_meta: {
+                    title: null,
+                    description: null,
+                },
             },
         },
         {
@@ -243,6 +284,10 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
                 deleted_datetime: undefined,
                 locale: 'en-US',
                 content: 'Article content',
+                seo_meta: {
+                    title: null,
+                    description: null,
+                },
             },
         },
         {
@@ -263,21 +308,24 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
                 deleted_datetime: undefined,
                 locale: 'en-US',
                 content: 'Article content',
+                seo_meta: {
+                    title: null,
+                    description: null,
+                },
             },
         },
     ],
     object: 'list',
     meta: {
+        page: 1,
+        per_page: 20,
         current_page: '/help-centers/1/articles?per_page=20&page=1',
         item_count: 13,
         nb_pages: 1,
-        page: 1,
-        per_page: 20,
-        next_page: '',
     },
 }
 
-export const getSingleArticleEnglish: HelpCenterArticle = {
+export const getSingleArticleEnglish: Article = {
     id: 1,
     category_id: null,
     position: 0,
@@ -296,5 +344,9 @@ export const getSingleArticleEnglish: HelpCenterArticle = {
         deleted_datetime: undefined,
         locale: 'en-US',
         content: 'Article content',
+        seo_meta: {
+            title: null,
+            description: null,
+        },
     },
 }

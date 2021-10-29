@@ -8,6 +8,35 @@ exports[`<HelpCenterArticlesView/> should render the component 1`] = `
     <div
       class="d-flex align-items-center justify-content-between flex-wrap page-header"
     >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/help-center"
+            >
+              Help Center
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            ACME Help Center
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            Articles
+          </li>
+        </ol>
+      </nav>
       <div>
         <button
           class="mr-2 btn btn-secondary"
@@ -62,23 +91,7 @@ exports[`<HelpCenterArticlesView/> should render the component 1`] = `
         Installation
       </a>
     </nav>
-    <div
-      class="page-container container-fluid"
-    >
-      <div
-        class="container"
-      >
-        <div
-          class="inner"
-          style="min-height: 500px;"
-        >
-          <i
-            class="icon-custom icon-circle-o-notch md-spin"
-            style="font-size: 40px;"
-          />
-        </div>
-      </div>
-    </div>
+    <div />
   </div>
 </div>
 `;

@@ -12,7 +12,7 @@ import css from './ArticleCategorySelect.less'
 
 interface ArticleCategorySelectProps {
     locale: LocaleCode
-    categoryId: number | null | undefined
+    categoryId: number | null
     helpCenterId: number
     onChange?: (value: number | null) => void
 }

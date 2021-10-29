@@ -1,31 +1,33 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 
-import {
-    HelpCenterLocale,
-    LocaleCode,
-} from '../../../../../../../models/helpCenter/types'
+import {Locale, LocaleCode} from '../../../../../../../models/helpCenter/types'
+import {localeToSelectOption} from '../../../../utils/localeSelectOptions'
 
 import {
     DynamicBadgeList,
     BadgeItemProps,
 } from '../../../HelpCenterPreferencesView/components/BadgeList'
 
-import {localeToLanguageSelectOption, localeToSelectedLanguage} from './utils'
+import {localeToSelectedLanguage} from './utils'
 
 type Props = {
-    availableLocales: HelpCenterLocale[]
+    availableLocales: Locale[]
     selectedLocales: LocaleCode[]
     onSelectedLocalesChange: (selectedLocales: LocaleCode[]) => void
 }
 
-export const ImportedLanguagesTags = ({
+export const ImportedLanguagesTags: React.FC<Props> = ({
     availableLocales,
     selectedLocales,
     onSelectedLocalesChange,
-}: Props): JSX.Element => {
-    const selectedLocalesEntities: HelpCenterLocale[] = React.useMemo(
+}: Props) => {
+    const selectedList = useMemo(
         () =>
-            availableLocales.filter(({code}) => selectedLocales.includes(code)),
+            availableLocales
+                .filter(({code}) => selectedLocales.includes(code))
+                .map((l) =>
+                    localeToSelectedLanguage(l, selectedLocales.length > 1)
+                ),
         [availableLocales, selectedLocales]
     )
 
@@ -49,13 +51,9 @@ export const ImportedLanguagesTags = ({
     return (
         <section>
             <DynamicBadgeList
-                availableList={availableLocales.map(
-                    localeToLanguageSelectOption
-                )}
+                availableList={availableLocales.map(localeToSelectOption)}
                 searchPlaceholder="Search Languages"
-                selectedList={selectedLocalesEntities.map((locale) =>
-                    localeToSelectedLanguage(locale, selectedLocales.length > 1)
-                )}
+                selectedList={selectedList}
                 onSelectItem={handleOnAddLocale}
                 onRemoveItem={handleOnRemoveLocale}
             />

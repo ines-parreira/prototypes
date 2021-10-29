@@ -4,7 +4,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import HelpCenterEditAdvancedArticleForm from '../HelpCenterEditAdvancedArticleForm'
-import {getTranslationResponseFixture} from '../../../fixtures/getTranslationResponse.fixture'
+import {getSingleArticleEnglish} from '../../../fixtures/getArticlesResponse.fixture'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>()
@@ -14,11 +14,11 @@ const mockedOnChange = jest.fn()
 describe('<HelpCenterEditAdvancedArticleForm/>', () => {
     const defaultState: Partial<RootState> = {}
 
-    const translation = getTranslationResponseFixture
+    const {translation} = getSingleArticleEnglish
     const props = {
         articleId: 1,
         translation,
-        helpCenterDomain: 'acme.gorgias.rehab',
+        domain: 'acme.gorgias.rehab',
         onChange: mockedOnChange,
     }
 

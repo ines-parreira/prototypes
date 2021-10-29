@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {HelpCenterArticle} from '../../../../../../../models/helpCenter/types'
+import {Article} from '../../../../../../../models/helpCenter/types'
 
 import TableBody from '../../../../../../common/components/table/TableBody'
 
@@ -9,7 +9,7 @@ import {ArticleRow, RowEventListeners} from '../ArticleRow'
 type Props = RowEventListeners & {
     isNested?: boolean
     categoryId: number
-    list: HelpCenterArticle[]
+    list: Article[]
 }
 
 export const ArticlesTableBody = ({

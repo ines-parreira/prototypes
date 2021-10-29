@@ -1,83 +1,65 @@
-import {
-    Components,
-    Paths,
-} from '../../../../../rest_api/help_center_api/client.generated'
+import {Components} from '../../../../../rest_api/help_center_api/client.generated'
 
 // GENERAL
 
+export type Locale = Components.Schemas.LocaleEntity
 export type LocaleCode = Components.Schemas.LocaleEntity['code']
-export type LocaleEntity = Components.Schemas.LocaleEntity
 
 // HELP CENTER
 
 export type CreateHelpCenterDto = Components.Schemas.CreateHelpCenterDto
+export type CreateHelpCenterTranslationDto = Components.Schemas.CreateHelpCenterTranslationDto
+export type UpdateHelpCenterTranslationDto = Components.Schemas.UpdateHelpCenterTranslationDto
+
+export type HelpCentersListPage = Components.Schemas.HelpCentersListPageDto
+export type HelpCenterTranslation = Components.Schemas.HelpCenterTranslationEntity
+export type HelpCenterTranslationSeoMeta = Components.Schemas.HelpCenterTranslationSeoMeta
+
 export type HelpCenter = Components.Schemas.HelpCenterEntity & {
-    supported_locales?: LocaleCode[]
-}
-export type HelpCenterArticlesListPage = Components.Schemas.ArticlesListPageDto
-export type HelpCenterArticleTranslation = Components.Schemas.ArticleTranslationEntity
-
-export type HelpCenterCustomDomainsListPage = Components.Schemas.CustomDomainsListPageDto
-
-export type HelpCenterLocaleCode = HelpCenter['default_locale']
-export type HelpCenterLocale = Components.Schemas.LocaleEntity
-
-export type HelpCenterPreferences = {
-    id: number
-    subdomain: string
-    name: string
-    deactivated_datetime: string | null
-    created_datetime: string | null
-    updated_datetime: string | null
-    deleted_datetime?: string | null
-    supported_locales: HelpCenterLocale[]
-    default_locale: HelpCenterLocale
+    customDomain?: CustomDomain
+    translations?: HelpCenterTranslation[]
 }
 
 // CATEGORIES
 
 export type CreateCategoryDto = Components.Schemas.CreateCategoryDto
-export type CategoryTranslation = Components.Schemas.LocalCategoryTranslation
-export type CategoriesListPage = Components.Schemas.CategoriesListPage
-export type CategoryWithLocalTranslation = Components.Schemas.CategoryWithLocalTranslation
-export type CreateCategoryTranslationBody = Paths.CreateCategoryTranslation.RequestBody
-export type CreateCategoryResponse = Components.Schemas.CategoryWithLocalTranslation
-export type UpdateCategoryTranslationResponse = Components.Schemas.CategoryTranslationEntity
+export type CreateCategoryTranslationDto = Components.Schemas.CreateCategoryTranslationDto
+export type UpdateCategoryTranslationDto = Components.Schemas.UpdateCategoryTranslationDto
 
-export type Category = {
-    created_datetime: string
-    updated_datetime: string
-    deleted_datetime?: string | null
-    id: number
+export type CategoriesListPage = Components.Schemas.CategoriesListPageDto
+export type CategoryWithLocalTranslation = Components.Schemas.CategoryWithLocalTranslation
+export type CategoryTranslation = Components.Schemas.CategoryTranslationEntity
+export type CategoryTranslationSeoMeta = Components.Schemas.CategoryTranslationSeoMeta
+export type LocalCategoryTranslation = Components.Schemas.LocalCategoryTranslation
+
+export type Category = CategoryWithLocalTranslation & {
     position: number
-    help_center_id: number
-    available_locales: LocaleCode[]
-    articles: HelpCenterArticle[]
-    translation?: CategoryTranslation
+    articles: Article[]
 }
 
 // ARTICLES
 
 export type CreateArticleDto = Components.Schemas.CreateArticleDto
 export type CreateArticleTranslationDto = Components.Schemas.CreateArticleTranslationDto
-export type UpdateArticleTranslationParameters = Paths.UpdateArticleTranslation.PathParameters
+export type UpdateArticleTranslationDto = Components.Schemas.UpdateArticleTranslationDto
 
+export type ArticlesListPage = Components.Schemas.ArticlesListPageDto
 export type ArticleWithLocalTranslation = Components.Schemas.ArticleWithLocalTranslation
-export type ArticleTranslation = Components.Schemas.LocalArticleTranslation
-export type HelpCenterArticle = Omit<
-    Components.Schemas.ArticleWithLocalTranslation,
-    'translation'
-> & {
+export type ArticleTranslation = Components.Schemas.ArticleTranslationEntity
+export type ArticleTranslationSeoMeta = Components.Schemas.ArticleTranslationSeoMeta
+export type LocalArticleTranslation = Components.Schemas.LocalArticleTranslation
+
+export type Article = ArticleWithLocalTranslation & {
     position: number
-    available_locales: LocaleCode[]
-    translation: ArticleTranslation
 }
 
 // NAVIGATION
 
 export type CreateNavigationLinkDto = Components.Schemas.CreateNavigationLinkDto
 export type UpdateNavigationLinkDto = Components.Schemas.UpdateNavigationLinkDto
-export type NavigationLinkDto = Components.Schemas.NavigationLinkEntity
+
+export type NavigationLinksListPage = Components.Schemas.NavigationLinksListPageDto
+export type NavigationLink = Components.Schemas.NavigationLinkEntity
 export type NavigationLinkMeta = Components.Schemas.NavigationLinkMeta
 export type NavigationLinkGroup = Components.Schemas.NavigationLinkEntity['group']
 
@@ -107,6 +89,7 @@ export type LocalSocialNavigationLink = Pick<
 // CUSTOM DOMAIN
 
 export type CustomDomain = Components.Schemas.CustomDomain
+export type CustomDomainsListPage = Components.Schemas.CustomDomainsListPageDto
 
 // IMPORTS
 

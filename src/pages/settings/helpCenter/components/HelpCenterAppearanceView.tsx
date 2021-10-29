@@ -1,44 +1,47 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import axios from 'axios'
 import classNames from 'classnames'
-import {useSelector} from 'react-redux'
 import {useAsyncFn} from 'react-use'
 import {Button, Container, FormGroup} from 'reactstrap'
 import isHexColor from 'validator/lib/isHexColor'
 
-import {HelpCenter} from '../../../../models/helpCenter/types'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
+import {HelpCenter} from '../../../../models/helpCenter/types'
 import {helpCenterUpdated} from '../../../../state/entities/helpCenters/actions'
-import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
+import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
-import {DEFAULT_THEME, HELP_CENTER_DEFAULT_COLOR} from '../constants'
-import {HelpCenterThemes, isHelpCenterTheme} from '../types'
+import {
+    HELP_CENTER_DEFAULT_COLOR,
+    HELP_CENTER_DEFAULT_THEME,
+} from '../constants'
+import {useCurrentHelpCenter} from '../hooks/useCurrentHelpCenter'
 import {FileUpload, useFileUpload} from '../hooks/useFileUpload'
-import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
+import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
+import {HelpCenterTheme, isHelpCenterTheme} from '../types'
 
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
-import {UpdateToggle} from './UpdateToggle'
 import {ImageUpload} from './ImageUpload'
 import {ThemeSwitch} from './ThemeSwitch'
+import {UpdateToggle} from './UpdateToggle'
 
 import css from './HelpCenterAppearanceView.less'
 
 export const HelpCenterAppearanceView: React.FC = () => {
     const dispatch = useAppDispatch()
     const helpCenterId = useHelpCenterIdParam()
-    const helpCenter = useSelector(getCurrentHelpCenter)
-    const {client} = useHelpcenterApi()
-    const helpCenterTheme: HelpCenterThemes =
+    const {helpCenter} = useCurrentHelpCenter()
+    const {client} = useHelpCenterApi()
+    const helpCenterTheme: HelpCenterTheme =
         helpCenter?.theme && isHelpCenterTheme(helpCenter?.theme)
             ? helpCenter.theme
-            : DEFAULT_THEME
+            : HELP_CENTER_DEFAULT_THEME
     const helpCenterColor =
         helpCenter?.primary_color || HELP_CENTER_DEFAULT_COLOR
-    const [selectedTheme, setSelectedTheme] = useState<HelpCenterThemes>(
+    const [selectedTheme, setSelectedTheme] = useState<HelpCenterTheme>(
         helpCenterTheme
     )
     const [currentColor, setCurrentColor] = useState(helpCenterColor)
@@ -186,7 +189,11 @@ export const HelpCenterAppearanceView: React.FC = () => {
     }
 
     if (!helpCenter) {
-        return null
+        return (
+            <Container fluid className="page-container">
+                <Loader />
+            </Container>
+        )
     }
 
     return (
@@ -194,12 +201,12 @@ export const HelpCenterAppearanceView: React.FC = () => {
             <PageHeader
                 title={
                     <HelpCenterDetailsBreadcrumb
-                        helpcenterName={helpCenter.name}
+                        helpCenterName={helpCenter.name}
                         activeLabel="Appearance"
                     />
                 }
             />
-            <HelpCenterNavigation helpcenterId={helpCenterId} />
+            <HelpCenterNavigation helpCenterId={helpCenterId} />
             <Container
                 fluid
                 className={classNames('page-container', css.container)}

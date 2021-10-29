@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {createRef, useMemo} from 'react'
 
 import {LocaleCode} from '../../../../../../models/helpCenter/types'
 import {useOpenToggle} from '../../../../../common/hooks/useOpenToggle'
@@ -20,13 +20,8 @@ export type OptionItem = {
 type Props = {
     selected?: LocaleCode
     list?: OptionItem[]
-    onSelect: (ev: React.MouseEvent, value: LocaleCode) => void
-    // TODO: Remove the optional flag once the articles and categories are using this
-    onClickAction?: (
-        ev: React.MouseEvent,
-        action: ActionType,
-        currentOption: OptionItem
-    ) => void
+    onSelect: (localeCode: LocaleCode) => void
+    onClickAction: (action: ActionType, currentOption: OptionItem) => void
 }
 
 export const ArticleLanguageSelect = ({
@@ -35,25 +30,22 @@ export const ArticleLanguageSelect = ({
     onSelect,
     onClickAction,
 }: Props): JSX.Element => {
-    const $ref = React.createRef<HTMLDivElement>()
+    const $ref = createRef<HTMLDivElement>()
     const {isOpen, onOpen, onClose} = useOpenToggle($ref, false)
 
-    const selectedOption = React.useMemo(() => {
-        return list.find((option) => option.value === selected) || null
-    }, [selected, list])
-
-    const handleOnClickAction = React.useCallback(
-        (
-            ev: React.MouseEvent,
-            action: ActionType,
-            currentOption: OptionItem
-        ) => {
-            onClickAction && onClickAction(ev, action, currentOption)
-        },
-        [onClickAction]
+    const selectedOption = useMemo(
+        () => list.find((option) => option.value === selected) || null,
+        [selected, list]
     )
 
     const renderActions = (option: OptionItem) => {
+        const handleOnClickAction = (action: ActionType) => (
+            event: React.MouseEvent
+        ) => {
+            event.stopPropagation()
+            onClickAction(action, option)
+        }
+
         if (option.isComplete) {
             return (
                 <div className={css.actions}>
@@ -62,18 +54,14 @@ export const ArticleLanguageSelect = ({
                             className="mr-4"
                             variant="danger"
                             help="Delete language version"
-                            onClick={(ev) =>
-                                handleOnClickAction(ev, 'delete', option)
-                            }
+                            onClick={handleOnClickAction('delete')}
                         >
                             delete
                         </ActionButton>
                     )}
                     <ActionButton
                         variant="neutral"
-                        onClick={(ev) =>
-                            handleOnClickAction(ev, 'view', option)
-                        }
+                        onClick={handleOnClickAction('view')}
                     >
                         view
                     </ActionButton>
@@ -84,7 +72,7 @@ export const ArticleLanguageSelect = ({
             <div className={css.actions}>
                 <ActionButton
                     help="Add language version"
-                    onClick={(ev) => handleOnClickAction(ev, 'create', option)}
+                    onClick={handleOnClickAction('create')}
                 >
                     create
                 </ActionButton>
@@ -92,11 +80,8 @@ export const ArticleLanguageSelect = ({
         )
     }
 
-    const handleOnSelect = (
-        ev: React.MouseEvent<HTMLLIElement>,
-        option: OptionItem
-    ) => {
-        onSelect && onSelect(ev, option.value)
+    const handleOnSelect = (option: OptionItem) => {
+        onSelect(option.value)
         onClose()
     }
 
@@ -117,7 +102,7 @@ export const ArticleLanguageSelect = ({
                             <li
                                 key={option.value}
                                 data-testid={`option-${option.value}`}
-                                onClick={(ev) => handleOnSelect(ev, option)}
+                                onClick={() => handleOnSelect(option)}
                             >
                                 <span className={css.label}>
                                     {option.label}

@@ -9,10 +9,10 @@ import thunk from 'redux-thunk'
 
 import {renderWithRouter} from '../../../../../../utils/testing'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
-import {getSingleHelpcenterResponseFixture as helpCenterMock} from '../../../fixtures/getHelpcenterResponse.fixture'
+import {getSingleHelpCenterResponseFixture as helpCenterMock} from '../../../fixtures/getHelpCentersResponse.fixture'
 import {getSingleArticleEnglish as articleMock} from '../../../fixtures/getArticlesResponse.fixture'
 import {getSingleCategoryEnglish as categoryMock} from '../../../fixtures/getCategoriesResponse.fixtures'
-import {useHelpcenterApi} from '../../../hooks/useHelpcenterApi'
+import {useHelpCenterApi} from '../../../hooks/useHelpCenterApi'
 
 import {CategoriesViews} from '../CategoriesView'
 
@@ -25,10 +25,10 @@ jest.mock('../../../hooks/useHelpCenterIdParam', () => {
         useHelpCenterIdParam: jest.fn().mockReturnValue(1),
     }
 })
-jest.mock('../../../hooks/useHelpcenterApi')
-const useHelpcenterApiMock = useHelpcenterApi as jest.Mock
+jest.mock('../../../hooks/useHelpCenterApi')
+const useHelpCenterApiMock = useHelpCenterApi as jest.Mock
 
-useHelpcenterApiMock.mockImplementation(() => ({
+useHelpCenterApiMock.mockImplementation(() => ({
     isReady: true,
     client: {
         listCategories: jest.fn().mockResolvedValue({
@@ -55,6 +55,11 @@ useHelpcenterApiMock.mockImplementation(() => ({
 describe('<CategoriesViews />', () => {
     it('should show starter screen', async () => {
         const initialState: Partial<RootState> = {
+            entities: {
+                helpCenters: {
+                    '1': helpCenterMock,
+                },
+            } as any,
             helpCenter: {
                 articles: {
                     articlesById: {},
@@ -86,6 +91,11 @@ describe('<CategoriesViews />', () => {
 
     it('should show uncategorized row', async () => {
         const initialState: Partial<RootState> = {
+            entities: {
+                helpCenters: {
+                    '1': helpCenterMock,
+                },
+            } as any,
             helpCenter: {
                 articles: {
                     articlesById: {
@@ -118,6 +128,11 @@ describe('<CategoriesViews />', () => {
 
     it('should show uncategorized row and category row', async () => {
         const initialState: Partial<RootState> = {
+            entities: {
+                helpCenters: {
+                    '1': helpCenterMock,
+                },
+            } as any,
             helpCenter: {
                 articles: {
                     articlesById: {},

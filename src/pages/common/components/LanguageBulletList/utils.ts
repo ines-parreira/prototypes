@@ -1,4 +1,4 @@
-import {HelpCenterLocale} from '../../../../models/helpCenter/types'
+import {Locale} from '../../../../models/helpCenter/types'
 
 import enUs from '../../../../../img/flags/en-us.svg'
 import frFr from '../../../../../img/flags/fr-fr.svg'
@@ -32,9 +32,9 @@ export function getEmojiFlag(code: string): string {
 }
 
 export function moveLocaleToFront(
-    list: HelpCenterLocale[],
-    defaultLocale: HelpCenterLocale
-): HelpCenterLocale[] {
+    list: Locale[],
+    defaultLocale: Locale
+): Locale[] {
     return [
         defaultLocale,
         ...list.filter((locale) => locale.code !== defaultLocale.code),
@@ -42,9 +42,9 @@ export function moveLocaleToFront(
 }
 
 export function moveLocaleToBack(
-    list: HelpCenterLocale[],
-    defaultLocale: HelpCenterLocale
-): HelpCenterLocale[] {
+    list: Locale[],
+    defaultLocale: Locale
+): Locale[] {
     return [
         ...list.filter((locale) => locale.code !== defaultLocale.code),
         defaultLocale,

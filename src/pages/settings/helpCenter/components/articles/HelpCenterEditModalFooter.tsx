@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {FormEvent} from 'react'
 import {Button} from 'reactstrap'
 
 import {ConfirmationModal} from '../ConfirmationModal'
@@ -24,6 +24,11 @@ export const HelpCenterEditModalFooter = ({
         false
     )
 
+    const handleOnSave = (event: FormEvent) => {
+        event.preventDefault()
+        onSave()
+    }
+
     const handleOnClickConfirm = () => {
         onDelete()
         setPendingDeleteArticle(false)
@@ -33,10 +38,10 @@ export const HelpCenterEditModalFooter = ({
         <footer className={css.footer}>
             <div>
                 <Button
-                    disabled={!canSave}
                     color="primary"
+                    onClick={handleOnSave}
+                    disabled={!canSave}
                     className={css.submitButton}
-                    onClick={onSave}
                 >
                     Save Article
                 </Button>

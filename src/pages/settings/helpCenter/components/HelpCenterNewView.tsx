@@ -12,22 +12,22 @@ import {validLocaleCode} from '../../../../models/helpCenter/utils'
 import {helpCenterCreated} from '../../../../state/entities/helpCenters/actions'
 import {notify as notifyAction} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
-import {FlagLanguageItem} from '../../../common/components/LanguageBulletList'
 import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
 import InputField from '../../../common/forms/InputField.js'
 import SelectField from '../../../common/forms/SelectField/SelectField'
 import {SubdomainInput} from '../components/SubdomainSection'
 import {
-    DEFAULT_THEME,
     HELP_CENTER_BASE_PATH,
     HELP_CENTER_DEFAULT_COLOR,
-    HELP_CENTER_LANGUAGE_DEFAULT,
+    HELP_CENTER_DEFAULT_LOCALE,
+    HELP_CENTER_DEFAULT_THEME,
 } from '../constants'
-import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
+import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useLocales} from '../hooks/useLocales'
-import {HelpCenterThemes} from '../types'
+import {HelpCenterTheme} from '../types'
 import {slugify} from '../utils/helpCenter.utils'
+import {localeToSelectOption} from '../utils/localeSelectOptions'
 import {
     getSubdomainValidationError,
     isValidSubdomain,
@@ -40,15 +40,15 @@ import css from './HelpCenterNewView.less'
 type Props = ConnectedProps<typeof connector>
 
 type CreateHelpCenterPayload = CreateHelpCenterDto & {
-    theme: HelpCenterThemes
+    theme: HelpCenterTheme
     primary_color: string
 }
 
 const initialFormState: CreateHelpCenterPayload = {
     name: '',
     subdomain: '',
-    default_locale: HELP_CENTER_LANGUAGE_DEFAULT,
-    theme: DEFAULT_THEME,
+    default_locale: HELP_CENTER_DEFAULT_LOCALE,
+    theme: HELP_CENTER_DEFAULT_THEME,
     primary_color: HELP_CENTER_DEFAULT_COLOR,
 }
 
@@ -59,18 +59,14 @@ export const HelpCenterNewView = ({
     const history = useHistory()
     const location = useLocation()
     const locales = useLocales()
-    const {client} = useHelpcenterApi()
+    const {client} = useHelpCenterApi()
     const [newHelpCenter, setNewHelpCenter] = useState<CreateHelpCenterPayload>(
         initialFormState
     )
     const [isLoading, setIsLoading] = useState(false)
     const [isPristineSubdomain, setPristineSubdomain] = useState(true)
     const [isSubdomainAvailable, setIsSubdomainAvailable] = useState(true)
-    const localeOptions = locales.map((locale) => ({
-        label: <FlagLanguageItem code={locale.code} name={locale.name} />,
-        text: locale.name,
-        value: locale.code,
-    }))
+    const localeOptions = locales.map(localeToSelectOption)
 
     const subdomainError = useMemo(
         () =>

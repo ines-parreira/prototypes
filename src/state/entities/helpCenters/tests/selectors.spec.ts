@@ -2,13 +2,13 @@ import _keyBy from 'lodash/keyBy'
 
 import {StoreState} from '../../../types'
 
-import {getHelpCentersResponseFixture} from '../../../../pages/settings/helpCenter/fixtures/getHelpcenterResponse.fixture'
+import {getHelpCentersResponseFixture} from '../../../../pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 
 import {initialState as uiState} from '../../../helpCenter/ui/reducer'
 import {initialState as articlesState} from '../../../helpCenter/articles/reducer'
 import {initialState as categoriesState} from '../../../helpCenter/categories/reducer'
 
-import {getCurrentHelpCenter, getHelpcenterSortedList} from '../selectors'
+import {getCurrentHelpCenter, getHelpCenterSortedList} from '../selectors'
 
 describe('Entities/Help Center', () => {
     describe('getCurrentHelpCenter', () => {
@@ -29,7 +29,10 @@ describe('Entities/Help Center', () => {
         it('returns the right help center by currentId', () => {
             const dataStore: Partial<StoreState> = {
                 entities: {
-                    helpCenters: _keyBy(getHelpCentersResponseFixture, 'id'),
+                    helpCenters: _keyBy(
+                        getHelpCentersResponseFixture.data,
+                        'id'
+                    ),
                 } as any,
                 helpCenter: {
                     ui: {
@@ -42,19 +45,22 @@ describe('Entities/Help Center', () => {
             }
 
             expect(getCurrentHelpCenter(dataStore as StoreState)).toEqual(
-                getHelpCentersResponseFixture[0]
+                getHelpCentersResponseFixture.data[0]
             )
         })
     })
 
-    describe('getHelpcenterSortedList', () => {
+    describe('getHelpCenterSortedList', () => {
         it('returns the list sorted by created date', () => {
             const dataStore: Partial<StoreState> = {
                 entities: {
-                    helpCenters: _keyBy(getHelpCentersResponseFixture, 'id'),
+                    helpCenters: _keyBy(
+                        getHelpCentersResponseFixture.data,
+                        'id'
+                    ),
                 } as any,
             }
-            const sortedFixture = getHelpCentersResponseFixture.sort(
+            const sortedFixture = getHelpCentersResponseFixture.data.sort(
                 (
                     {created_datetime: createdDate1},
                     {created_datetime: createdDate2}
@@ -69,7 +75,7 @@ describe('Entities/Help Center', () => {
                 }
             )
 
-            expect(getHelpcenterSortedList(dataStore as StoreState)).toEqual(
+            expect(getHelpCenterSortedList(dataStore as StoreState)).toEqual(
                 sortedFixture
             )
         })

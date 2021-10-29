@@ -112,7 +112,7 @@ export const HelpCenterApiClientProvider = ({
     )
 }
 
-export const useHelpcenterApi = (): UseHelpCenterApiInterface => {
+export const useHelpCenterApi = (): UseHelpCenterApiInterface => {
     const {isReady, client} = useContext(HelpCenterApiClientContext)
 
     return {

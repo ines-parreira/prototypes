@@ -9,7 +9,7 @@ import {initialState as articlesState} from '../../../../../state/helpCenter/art
 import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
 import {initialState as categoriesState} from '../../../../../state/helpCenter/categories/reducer'
 import {renderWithRouter} from '../../../../../utils/testing'
-import {getHelpCentersResponseFixture} from '../../fixtures/getHelpcenterResponse.fixture'
+import {getHelpCentersResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
 import HelpCenterAppearanceView from '../HelpCenterAppearanceView'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
@@ -19,7 +19,7 @@ const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
 const defaultState: Partial<RootState> = {
     entities: {
         helpCenters: {
-            '1': getHelpCentersResponseFixture[0],
+            '1': getHelpCentersResponseFixture.data[0],
         },
     } as any,
     helpCenter: {
@@ -30,12 +30,12 @@ const defaultState: Partial<RootState> = {
 }
 
 const mockedUpdateHelpCenter = jest.fn().mockResolvedValue({
-    data: getHelpCentersResponseFixture[0],
+    data: getHelpCentersResponseFixture.data[0],
 })
 
-jest.mock('../../hooks/useHelpcenterApi', () => {
+jest.mock('../../hooks/useHelpCenterApi', () => {
     return {
-        useHelpcenterApi: () => ({
+        useHelpCenterApi: () => ({
             isReady: true,
             client: {
                 updateHelpCenter: mockedUpdateHelpCenter,
@@ -45,7 +45,7 @@ jest.mock('../../hooks/useHelpcenterApi', () => {
 })
 
 const route = {
-    path: '/app/settings/help-center/:helpcenterId/appearance',
+    path: '/app/settings/help-center/:helpCenterId/appearance',
     route: '/app/settings/help-center/1/appearance',
 }
 
@@ -127,7 +127,7 @@ describe('<HelpCenterAppearanceView/>', () => {
                 entities: {
                     helpCenters: {
                         '1': {
-                            ...getHelpCentersResponseFixture[0],
+                            ...getHelpCentersResponseFixture.data[0],
                             [imageField]: 'https://picsum.photos/200',
                         },
                     },

@@ -1,19 +1,17 @@
 import React from 'react'
+import {act, fireEvent, render, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {act, fireEvent, render, waitFor} from '@testing-library/react'
 
-import {getSingleHelpcenterResponseFixture as helpCenter} from '../../../../fixtures/getHelpcenterResponse.fixture'
-import {getSingleCustomDomainResponseFixture as customDomain} from '../../../../fixtures/getCustomDomainsResponse.fixture'
-
-import {RootState, StoreDispatch} from '../../../../../../../state/types'
+import {HelpCenter} from '../../../../../../../models/helpCenter/types'
 import {initialState as articlesState} from '../../../../../../../state/helpCenter/articles/reducer'
-import {initialState as uiState} from '../../../../../../../state/helpCenter/ui/reducer'
 import {initialState as categoriesState} from '../../../../../../../state/helpCenter/categories/reducer'
-
+import {initialState as uiState} from '../../../../../../../state/helpCenter/ui/reducer'
+import {RootState, StoreDispatch} from '../../../../../../../state/types'
 import {HELP_CENTER_DOMAIN} from '../../../../constants'
-
+import {getSingleCustomDomainResponseFixture as customDomain} from '../../../../fixtures/getCustomDomainsResponse.fixture'
+import {getSingleHelpCenterResponseFixture} from '../../../../fixtures/getHelpCentersResponse.fixture'
 import {HelpCenterCategory} from '../HelpCenterCategory'
 
 jest.mock('../../../../hooks/useLocales', () => ({
@@ -52,10 +50,14 @@ const defaultState: Partial<RootState> = {
 type Props = {
     isOpen?: boolean
     canSave?: boolean
-    customDomain?: string
+    helpCenter?: HelpCenter
 }
 
-const Example = ({isOpen = false, canSave = true, customDomain}: Props) => {
+const Example = ({
+    isOpen = false,
+    canSave = true,
+    helpCenter = getSingleHelpCenterResponseFixture,
+}: Props) => {
     const [open, setOpen] = React.useState(isOpen)
 
     return (
@@ -68,7 +70,6 @@ const Example = ({isOpen = false, canSave = true, customDomain}: Props) => {
                 isLoading={false}
                 canSave={canSave}
                 helpCenter={helpCenter}
-                customDomain={customDomain}
                 onClose={() => setOpen(false)}
                 onLocaleChange={jest.fn()}
                 onDeleteTranslation={jest.fn()}
@@ -85,7 +86,7 @@ describe('<HelpCenterCategory>', () => {
                     isOpen={false}
                     isLoading={false}
                     canSave
-                    helpCenter={helpCenter}
+                    helpCenter={getSingleHelpCenterResponseFixture}
                     onClose={jest.fn()}
                     onLocaleChange={jest.fn()}
                     onDeleteTranslation={jest.fn()}
@@ -152,20 +153,26 @@ describe('<HelpCenterCategory>', () => {
         const {getByTestId} = render(<Example isOpen />)
 
         expect(getByTestId('slug-prefix').textContent).toEqual(
-            `https://${helpCenter.subdomain}${HELP_CENTER_DOMAIN}/en-US/articles/`
+            `https://${getSingleHelpCenterResponseFixture.subdomain}${HELP_CENTER_DOMAIN}/en-US/articles/`
         )
 
         fireEvent.click(getByTestId('dropdown-select-trigger'))
         fireEvent.click(getByTestId('option-fr-FR'))
 
         expect(getByTestId('slug-prefix').textContent).toEqual(
-            `https://${helpCenter.subdomain}${HELP_CENTER_DOMAIN}/fr-FR/articles/`
+            `https://${getSingleHelpCenterResponseFixture.subdomain}${HELP_CENTER_DOMAIN}/fr-FR/articles/`
         )
     })
 
     it("displays the custom domain's hostname in slug", () => {
         const {getByTestId} = render(
-            <Example isOpen customDomain={customDomain.hostname} />
+            <Example
+                isOpen
+                helpCenter={{
+                    ...getSingleHelpCenterResponseFixture,
+                    customDomain,
+                }}
+            />
         )
 
         expect(getByTestId('slug-prefix').textContent).toEqual(

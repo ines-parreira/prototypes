@@ -3,9 +3,9 @@ import {render, screen} from '@testing-library/react'
 
 import ArticleCategorySelect from '../ArticleCategorySelect'
 
-import {useHelpcenterApi} from '../../../../hooks/useHelpcenterApi'
+import {useHelpCenterApi} from '../../../../hooks/useHelpCenterApi'
 
-jest.mock('../../../../hooks/useHelpcenterApi')
+jest.mock('../../../../hooks/useHelpCenterApi')
 
 describe('<ArticleCategorySelect />', () => {
     let listCategoriesMock: jest.Mock
@@ -20,7 +20,7 @@ describe('<ArticleCategorySelect />', () => {
                 ],
             },
         }))
-        ;(useHelpcenterApi as jest.Mock).mockImplementation(() => ({
+        ;(useHelpCenterApi as jest.Mock).mockImplementation(() => ({
             client: {
                 listCategories: listCategoriesMock,
             },
@@ -48,7 +48,7 @@ describe('<ArticleCategorySelect />', () => {
             />
         )
         await screen.findByText('Hello')
-        ;(useHelpcenterApi as jest.Mock).mockImplementation(() => ({
+        ;(useHelpCenterApi as jest.Mock).mockImplementation(() => ({
             client: {
                 listCategories: () => ({
                     data: {

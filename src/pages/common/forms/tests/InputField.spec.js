@@ -42,6 +42,13 @@ describe('InputField', () => {
         expect(component).toMatchSnapshot()
     })
 
+    it('should render a tooltip next to the label', () => {
+        const component = shallow(
+            <InputField {...minProps} label="Label" tooltip="I am a tooltip" />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
     it('should render an inline required text input', () => {
         const component = shallow(<InputField {...minProps} required inline />)
         expect(component).toMatchSnapshot()

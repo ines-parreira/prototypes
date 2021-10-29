@@ -1,14 +1,14 @@
 import React from 'react'
 import _keyBy from 'lodash/keyBy'
 
-import {HelpCenterLocale} from '../../../../../models/helpCenter/types'
+import {Locale} from '../../../../../models/helpCenter/types'
 
-import {useHelpcenterApi} from '../../hooks/useHelpcenterApi'
+import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 
 const LocaleContext = React.createContext<LocalesByKey>({})
 
 export type LocalesByKey = {
-    [key: string]: HelpCenterLocale
+    [key: string]: Locale
 }
 
 type Props = {
@@ -18,7 +18,7 @@ type Props = {
 export const SupportedLocalesProvider = ({children}: Props): JSX.Element => {
     const [locales, setLocales] = React.useState<LocalesByKey>({})
     const [isLoading, setLoading] = React.useState(true)
-    const {isReady, client} = useHelpcenterApi()
+    const {isReady, client} = useHelpCenterApi()
 
     React.useEffect(() => {
         async function init() {

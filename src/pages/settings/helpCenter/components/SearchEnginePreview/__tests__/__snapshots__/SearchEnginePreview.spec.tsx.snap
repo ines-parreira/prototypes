@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SearchEnginePreview /> matches snapshot 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <div
+      class="label"
+    >
+      Search Engine Preview
+    </div>
+    <div
+      class="preview"
+    >
+      <div
+        class="url"
+      >
+        https://acme.gorgias.rehab
+        <span
+          class="url-item"
+        >
+           › 
+          free-article-1
+        </span>
+      </div>
+      <div
+        class="title"
+      >
+        Free article (EN)
+      </div>
+      <div
+        class="description"
+      >
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur finibus condimentum dolor, fermentum ultrices ex tempus non. Nulla porttitor euismod luctus. Vestibulum in dictum nulla. Etiam eu urna arcu. Mauris pulvinar iaculis metus id sollicitudin. Proin auctor sapien sit amet mi rutrum porta. Duis varius et nulla id sodales.
+      </div>
+    </div>
+  </div>
+</div>
+`;

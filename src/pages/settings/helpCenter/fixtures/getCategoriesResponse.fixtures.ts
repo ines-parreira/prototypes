@@ -19,6 +19,10 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
                 slug: 'orders',
                 category_id: 1,
                 locale: 'en-US',
+                seo_meta: {
+                    title: null,
+                    description: null,
+                },
             },
         },
         {
@@ -38,6 +42,10 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
                 slug: 'refunds',
                 category_id: 2,
                 locale: 'en-US',
+                seo_meta: {
+                    title: null,
+                    description: null,
+                },
             },
         },
         {
@@ -57,6 +65,10 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
                 slug: 'size-charts',
                 category_id: 3,
                 locale: 'en-US',
+                seo_meta: {
+                    title: null,
+                    description: null,
+                },
             },
         },
         {
@@ -75,17 +87,20 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
                 slug: 'orders',
                 category_id: 4,
                 locale: 'en-US',
+                seo_meta: {
+                    title: null,
+                    description: null,
+                },
             },
         },
     ],
     object: 'list',
     meta: {
+        page: 1,
+        per_page: 20,
         current_page: '/help-centers/1/categories?per_page=20&page=1',
         item_count: 4,
         nb_pages: 1,
-        page: 1,
-        per_page: 20,
-        next_page: '',
     },
 }
 
@@ -108,5 +123,9 @@ export const getSingleCategoryEnglish: Category = {
         slug: 'orders',
         category_id: 1,
         locale: 'en-US',
+        seo_meta: {
+            title: null,
+            description: null,
+        },
     },
 }

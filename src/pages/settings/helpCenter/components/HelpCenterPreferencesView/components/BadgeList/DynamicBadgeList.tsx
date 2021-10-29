@@ -28,7 +28,7 @@ type Props = {
     onRemoveItem: (ev: React.MouseEvent, item: BadgeItemProps) => void
 }
 
-export const DynamicBadgeList = ({
+export const DynamicBadgeList: React.FC<Props> = ({
     availableList,
     maxHeight = 215,
     searchPlaceholder = 'Start typing',

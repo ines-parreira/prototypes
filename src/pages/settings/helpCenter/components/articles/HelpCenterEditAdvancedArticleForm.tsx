@@ -1,52 +1,79 @@
 import React from 'react'
 import copy from 'copy-to-clipboard'
 
-import {HelpCenterArticleTranslation} from '../../../../../models/helpCenter/types'
-import InputField from '../../../../common/forms/InputField.js'
+import useAppDispatch from '../../../../../hooks/useAppDispatch'
+import {
+    ArticleTranslationSeoMeta,
+    CreateArticleTranslationDto,
+    LocalArticleTranslation,
+} from '../../../../../models/helpCenter/types'
 import {notify} from '../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../state/notifications/types'
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
-import {buildArticleSlug, slugify} from '../../utils/helpCenter.utils'
+import AutoPopulateInput from '../../../../common/forms/AutoPopulateInput/AutoPopulateInput'
+import InputField from '../../../../common/forms/InputField.js'
+import {
+    getAbsoluteUrl,
+    getArticleUrl,
+    slugify,
+} from '../../utils/helpCenter.utils'
+import {SearchEnginePreview} from '../SearchEnginePreview'
 
 import css from './HelpCenterEditAdvancedArticleForm.less'
 
 type Props = {
     articleId?: number
-    translation: HelpCenterArticleTranslation
-    helpCenterDomain: string
-    onChange: (translation: HelpCenterArticleTranslation) => void
+    translation: CreateArticleTranslationDto | LocalArticleTranslation
+    domain: string
+    onChange: (
+        translation: CreateArticleTranslationDto | LocalArticleTranslation
+    ) => void
 }
 
 export const HelpCenterEditAdvancedArticleForm = ({
     articleId,
     translation,
-    helpCenterDomain: domain,
+    domain,
     onChange,
 }: Props): JSX.Element => {
     const dispatch = useAppDispatch()
 
-    const slugPrefix = buildArticleSlug({domain, locale: translation.locale})
+    const slugPrefix = getAbsoluteUrl({domain, locale: translation.locale})
     const slugSuffix = articleId ? `-${articleId.toString()}` : ''
 
-    const onEditArticle = (editKey: string) => (newValue: string) => {
+    const onEditArticle = (editKey: keyof CreateArticleTranslationDto) => (
+        value: string
+    ) => {
         if (editKey === 'title') {
             onChange({
                 ...translation,
-                [editKey]: newValue,
-                slug: slugify(newValue),
+                [editKey]: value,
+                slug: slugify(value),
             })
             return
         }
+
         onChange({
             ...translation,
-            [editKey]: editKey === 'slug' ? slugify(newValue) : newValue,
+            [editKey]: editKey === 'slug' ? slugify(value) : value,
+        })
+    }
+
+    const onEditSeoMeta = (editKey: keyof ArticleTranslationSeoMeta) => (
+        value: string | null
+    ) => {
+        onChange({
+            ...translation,
+            seo_meta: {
+                ...translation.seo_meta,
+                [editKey]: value,
+            },
         })
     }
 
     const copyURL = () => {
         const {locale, slug} = translation
 
-        copy(buildArticleSlug({domain, locale, slug, articleId}))
+        copy(getArticleUrl({domain, locale, slug, articleId}))
 
         void dispatch(
             notify({
@@ -97,6 +124,38 @@ export const HelpCenterEditAdvancedArticleForm = ({
                 value={translation.excerpt}
                 onChange={onEditArticle('excerpt')}
                 help="Displayed under the title of this article inside your Help Center."
+            />
+            <AutoPopulateInput
+                type="text"
+                name="seoTitle"
+                label="Meta Title"
+                value={translation.seo_meta.title}
+                onChange={onEditSeoMeta('title')}
+                populateLabel="Use the same as Title"
+                populateValue={translation.title}
+                help="SEO Title tag is how your article is going to be displayed in search engines."
+                required
+            />
+            <AutoPopulateInput
+                type="textarea"
+                name="seoDescription"
+                label="Meta Description"
+                value={translation.seo_meta.description}
+                onChange={onEditSeoMeta('description')}
+                populateLabel="Use the same as Excerpt"
+                populateValue={translation.excerpt}
+                help="Article description is displayed in search engines to help people find it."
+                rows="2"
+                required
+            />
+            <SearchEnginePreview
+                baseUrl={getAbsoluteUrl({domain}, false)}
+                title={translation.seo_meta.title ?? translation.title}
+                description={
+                    translation.seo_meta.description ?? translation.excerpt
+                }
+                urlItems={[`${translation.slug}${slugSuffix}`]}
+                help="This is a preview of how your article is going to look like in search engines (e.g. Google, Duckduckgo, Bing...)"
             />
             {articleId && (
                 <i

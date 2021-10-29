@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react'
 import {useSelector} from 'react-redux'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
-import {HelpCenterArticle} from '../../../../models/helpCenter/types'
+import {Article} from '../../../../models/helpCenter/types'
 import {createArticleFromDto} from '../../../../models/helpCenter/utils'
 import {
     getArticlesInCategory,
@@ -10,18 +10,18 @@ import {
     saveArticles,
 } from '../../../../state/helpCenter/articles'
 
-import {useHelpcenterApi} from './useHelpcenterApi'
+import {useHelpCenterApi} from './useHelpCenterApi'
 import {useHelpCenterIdParam} from './useHelpCenterIdParam'
 
 export const useArticles = (
     categoryId?: number
 ): {
-    articles: HelpCenterArticle[]
+    articles: Article[]
     isLoading: boolean
 } => {
     const dispatch = useAppDispatch()
     const helpCenterId = useHelpCenterIdParam()
-    const {isReady, client} = useHelpcenterApi()
+    const {isReady, client} = useHelpCenterApi()
 
     const articles = useSelector(
         categoryId && categoryId >= 0
@@ -34,6 +34,7 @@ export const useArticles = (
         async function init() {
             if (isReady && client) {
                 setLoading(true)
+
                 try {
                     const getArticlesPromise =
                         categoryId && categoryId >= 0
@@ -55,20 +56,18 @@ export const useArticles = (
                                   help_center_id: helpCenterId,
                               })
 
-                    const articlesResponse = await getArticlesPromise.then(
+                    const articles = await getArticlesPromise.then(
                         (response) => response.data.data
                     )
 
-                    const positionsResponse = await getPositionsResponse.then(
+                    const positions = await getPositionsResponse.then(
                         (response) => response.data
                     )
 
-                    const payload = articlesResponse.map((article) =>
+                    const payload = articles.map((article) =>
                         createArticleFromDto(
                             article,
-                            positionsResponse.findIndex(
-                                (index) => index === article.id
-                            )
+                            positions.findIndex((index) => index === article.id)
                         )
                     )
 

@@ -11,18 +11,18 @@ import {HelpCenterNavigation} from './HelpCenterNavigation'
 // type Props = RouteComponentProps & ConnectedProps<typeof connector>
 
 export const HelpCenterContactUsView = () => {
-    const {helpcenterId} = useParams<{helpcenterId: string}>()
+    const {helpCenterId} = useParams<{helpCenterId: string}>()
     return (
         <div className="full-width">
             <PageHeader
                 title={
                     <HelpCenterDetailsBreadcrumb
-                        helpcenterName="Help Center Name"
+                        helpCenterName="Help Center Name"
                         activeLabel="Contact Us"
                     />
                 }
             />
-            <HelpCenterNavigation helpcenterId={helpcenterId} />
+            <HelpCenterNavigation helpCenterId={helpCenterId} />
             <Container fluid className="page-container">
                 Contact Us page
             </Container>

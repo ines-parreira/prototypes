@@ -1,7 +1,6 @@
 import React from 'react'
 
-import {HelpCenterLocale} from '../../../../models/helpCenter/types'
-
+import {Locale} from '../../../../models/helpCenter/types'
 import Tooltip from '../Tooltip'
 
 import {FlagLanguageItem} from './FlagLanguageItem'
@@ -12,9 +11,9 @@ import {moveLocaleToBack, moveLocaleToFront} from './utils'
 import css from './LanguageList.less'
 
 type Props = {
-    defaultLanguage: HelpCenterLocale
-    helpcenterId: number | string
-    languageList: HelpCenterLocale[]
+    id: number | string
+    defaultLanguage: Locale
+    languageList: Locale[]
     bulletLimit?: number
 }
 
@@ -28,9 +27,9 @@ type Props = {
 //
 //   The tooltip will be rendered in the expected order, but it will
 // move the defaultLanguage to the top of the list.
-export const LanguageList = ({
+export const LanguageList: React.FC<Props> = ({
+    id,
     defaultLanguage,
-    helpcenterId,
     languageList,
     bulletLimit = 2,
 }: Props) => {
@@ -63,14 +62,11 @@ export const LanguageList = ({
             {itemsExceedLimit && (
                 <>
                     <LanguageBullet
-                        id={`more-items-${helpcenterId}`}
+                        id={`more-items-${id}`}
                         key="more"
                         count={languageList.length - middleContent.length}
                     />
-                    <Tooltip
-                        target={`more-items-${helpcenterId}`}
-                        placement="top-start"
-                    >
+                    <Tooltip target={`more-items-${id}`} placement="top-start">
                         <div className={css['language-tooltip']}>
                             {moveLocaleToFront(
                                 languageList,

@@ -7,8 +7,8 @@ import useAppDispatch from '../../../../hooks/useAppDispatch'
 
 import {HelpCenterClient} from '../../../../../../../rest_api/help_center_api/index'
 import {
-    CreateArticleDto,
-    HelpCenterArticle,
+    Article,
+    CreateArticleTranslationDto,
     LocaleCode,
 } from '../../../../models/helpCenter/types'
 import {createArticleFromDto} from '../../../../models/helpCenter/utils'
@@ -23,12 +23,12 @@ import {
 } from '../../../../state/helpCenter/articles'
 import {getViewLanguage} from '../../../../state/helpCenter/ui'
 
-import {useHelpcenterApi} from './useHelpcenterApi'
+import {useHelpCenterApi} from './useHelpCenterApi'
 import {useHelpCenterIdParam} from './useHelpCenterIdParam'
 
 function updatePositionRequest(
     client: HelpCenterClient,
-    articles: HelpCenterArticle[],
+    articles: Article[],
     params: {helpCenterId: number; categoryId?: number}
 ) {
     const sortedArticlesIds = _chain(articles)
@@ -61,7 +61,7 @@ function updatePositionRequest(
 export const useArticlesActions = () => {
     const helpCenterId = useHelpCenterIdParam()
     const dispatch = useAppDispatch()
-    const {client} = useHelpcenterApi()
+    const {client} = useHelpCenterApi()
     const viewLanguage = useSelector(getViewLanguage)
     const [isLoading, setIsLoading] = useState(false)
 
@@ -69,106 +69,116 @@ export const useArticlesActions = () => {
         isLoading,
 
         async createArticle(
-            translation: CreateArticleDto['translation'],
+            translation: CreateArticleTranslationDto,
             categoryId?: number | null
         ) {
             if (!client) throw new Error('HTTP client not initialized!')
 
             setIsLoading(true)
 
-            const {data: response} = await client.createArticle(
-                {
-                    help_center_id: helpCenterId,
-                },
-                {category_id: categoryId, translation}
-            )
+            try {
+                const {data} = await client.createArticle(
+                    {
+                        help_center_id: helpCenterId,
+                    },
+                    {category_id: categoryId, translation}
+                )
 
-            const {data: positions} = categoryId
-                ? await client.getCategoryArticlesPositions({
-                      help_center_id: helpCenterId,
-                      category_id: categoryId,
-                  })
-                : await client.getUncategorizedArticlesPositions({
-                      help_center_id: helpCenterId,
-                  })
+                const {data: positions} = categoryId
+                    ? await client.getCategoryArticlesPositions({
+                          help_center_id: helpCenterId,
+                          category_id: categoryId,
+                      })
+                    : await client.getUncategorizedArticlesPositions({
+                          help_center_id: helpCenterId,
+                      })
 
-            const article = createArticleFromDto(
-                response,
-                positions.findIndex((index) => index === response.id)
-            )
+                const createdArticle = createArticleFromDto(
+                    data,
+                    positions.findIndex((index) => index === data.id)
+                )
 
-            dispatch(saveArticles([article]))
+                dispatch(saveArticles([createdArticle]))
 
-            setIsLoading(false)
+                setIsLoading(false)
 
-            return article
+                return createdArticle
+            } catch (error) {
+                setIsLoading(false)
+
+                throw error
+            }
         },
 
-        async updateArticle(
-            article: HelpCenterArticle,
-            categoryId?: number | null
-        ) {
+        async updateArticle(article: Article, categoryId?: number | null) {
             if (!client) throw new Error('HTTP client not initialized!')
 
             setIsLoading(true)
 
-            await client.updateArticle(
-                {
-                    id: article.id,
-                    help_center_id: helpCenterId,
-                },
-                {category_id: categoryId}
-            )
+            try {
+                const {data} = await client.updateArticle(
+                    {
+                        id: article.id,
+                        help_center_id: helpCenterId,
+                    },
+                    {category_id: categoryId}
+                )
 
-            const {data: positions} = categoryId
-                ? await client.getCategoryArticlesPositions({
-                      help_center_id: helpCenterId,
-                      category_id: categoryId,
-                  })
-                : await client.getUncategorizedArticlesPositions({
-                      help_center_id: helpCenterId,
-                  })
+                const {data: positions} = categoryId
+                    ? await client.getCategoryArticlesPositions({
+                          help_center_id: helpCenterId,
+                          category_id: categoryId,
+                      })
+                    : await client.getUncategorizedArticlesPositions({
+                          help_center_id: helpCenterId,
+                      })
 
-            const updatedArticle: HelpCenterArticle = {
-                ...article,
-                category_id: categoryId,
-                position: positions.findIndex((index) => index === article.id),
+                const updatedArticle: Article = {
+                    ...data,
+                    translation: article.translation,
+                    position: positions.findIndex(
+                        (index) => index === article.id
+                    ),
+                }
+
+                const localeIsAvailable = updatedArticle.available_locales.includes(
+                    article.translation.locale
+                )
+
+                updatedArticle.translation = localeIsAvailable
+                    ? await this.updateArticleTranslation(updatedArticle)
+                    : await this.createArticleTranslation(updatedArticle)
+
+                if (updatedArticle.translation.locale !== viewLanguage) {
+                    const {
+                        data: {data: translations},
+                    } = await client.listArticleTranslations({
+                        help_center_id: helpCenterId,
+                        article_id: article.id,
+                    })
+
+                    updatedArticle.translation =
+                        translations.find((t) => t.locale === viewLanguage) ||
+                        updatedArticle.translation
+                }
+
+                dispatch(updateArticle(updatedArticle))
+                dispatch(
+                    pushArticleSupportedLocales({
+                        articleId: article.id,
+                        supportedLocales: [article.translation.locale],
+                    })
+                )
+
+                setIsLoading(false)
+            } catch (err) {
+                setIsLoading(false)
+
+                throw err
             }
-
-            const localeIsAvailable =
-                article?.available_locales?.includes(
-                    article?.translation?.locale
-                ) || false
-
-            updatedArticle.translation = localeIsAvailable
-                ? await this.updateArticleTranslation(updatedArticle)
-                : await this.createArticleTranslation(updatedArticle)
-
-            if (updatedArticle.translation.locale !== viewLanguage) {
-                const {
-                    data: {data: translations},
-                } = await client.listArticleTranslations({
-                    help_center_id: helpCenterId,
-                    article_id: article.id,
-                })
-
-                updatedArticle.translation =
-                    translations.find((t) => t.locale === viewLanguage) ||
-                    updatedArticle.translation
-            }
-
-            dispatch(updateArticle(updatedArticle))
-            dispatch(
-                pushArticleSupportedLocales({
-                    articleId: article.id,
-                    supportedLocales: [article.translation.locale],
-                })
-            )
-
-            setIsLoading(false)
         },
 
-        async updateArticleTranslation(article: HelpCenterArticle) {
+        async updateArticleTranslation(article: Article) {
             if (!client) throw new Error('HTTP client not initialized!')
 
             const {data: translation} = await client.updateArticleTranslation(
@@ -182,13 +192,14 @@ export const useArticlesActions = () => {
                     content: article.translation.content,
                     excerpt: article.translation.excerpt,
                     slug: article.translation.slug,
+                    seo_meta: article.translation.seo_meta,
                 }
             )
 
             return translation
         },
 
-        async createArticleTranslation(article: HelpCenterArticle) {
+        async createArticleTranslation(article: Article) {
             if (!client) throw new Error('HTTP client not initialized!')
 
             const {data: translation} = await client.createArticleTranslation(
@@ -202,6 +213,7 @@ export const useArticlesActions = () => {
                     content: article.translation.content,
                     excerpt: article.translation.excerpt,
                     slug: article.translation.slug,
+                    seo_meta: article.translation.seo_meta,
                 }
             )
 
@@ -213,34 +225,46 @@ export const useArticlesActions = () => {
 
             setIsLoading(true)
 
-            const response = await client.deleteArticle({
-                help_center_id: helpCenterId,
-                id: articleId,
-            })
+            try {
+                const response = await client.deleteArticle({
+                    help_center_id: helpCenterId,
+                    id: articleId,
+                })
 
-            dispatch(deleteArticle(articleId))
+                dispatch(deleteArticle(articleId))
 
-            setIsLoading(false)
+                setIsLoading(false)
 
-            return response
+                return response
+            } catch (err) {
+                setIsLoading(false)
+
+                throw err
+            }
         },
 
         async updateArticlesPositions(
-            articles: HelpCenterArticle[],
+            articles: Article[],
             categoryId?: number
         ) {
             if (!client) throw new Error('HTTP client not initialized!')
 
             setIsLoading(true)
 
-            const response = await updatePositionRequest(client, articles, {
-                helpCenterId,
-                categoryId,
-            })
+            try {
+                const response = await updatePositionRequest(client, articles, {
+                    helpCenterId,
+                    categoryId,
+                })
 
-            dispatch(updateArticlesOrder(response))
+                dispatch(updateArticlesOrder(response))
 
-            setIsLoading(false)
+                setIsLoading(false)
+            } catch (err) {
+                setIsLoading(false)
+
+                throw err
+            }
         },
 
         async deleteArticleTranslation(articleId: number, locale: LocaleCode) {
@@ -248,80 +272,93 @@ export const useArticlesActions = () => {
 
             setIsLoading(true)
 
-            await client.deleteArticleTranslation({
-                help_center_id: helpCenterId,
-                article_id: articleId,
-                locale,
-            })
+            try {
+                await client.deleteArticleTranslation({
+                    help_center_id: helpCenterId,
+                    article_id: articleId,
+                    locale,
+                })
 
-            dispatch(removeLocaleFromArticle({articleId, locale}))
+                dispatch(removeLocaleFromArticle({articleId, locale}))
 
-            if (locale === viewLanguage) {
-                dispatch(deleteArticle(articleId))
+                setIsLoading(false)
+            } catch (err) {
+                setIsLoading(false)
+
+                throw err
             }
-
-            setIsLoading(false)
         },
 
-        async cloneArticle(article: HelpCenterArticle) {
+        async cloneArticle(article: Article) {
             if (!client) throw new Error('HTTP client not initialized!')
 
-            const payload: CreateArticleDto['translation'] = {
+            const translation: CreateArticleTranslationDto = {
                 locale: article.translation.locale,
+                title: `${article.translation.title} copy`,
                 excerpt: article.translation.excerpt,
                 content: article.translation.content || '',
                 slug: `${article.translation.slug}-copy`,
-                title: `${article.translation.title} copy`,
+                seo_meta: {
+                    title: null,
+                    description: null,
+                },
             }
 
-            setIsLoading(true)
+            try {
+                setIsLoading(true)
 
-            const translations = await client
-                .listArticleTranslations({
-                    help_center_id: helpCenterId,
-                    article_id: article.id,
-                })
-                .then((response) => response.data.data)
+                const translations = await client
+                    .listArticleTranslations({
+                        help_center_id: helpCenterId,
+                        article_id: article.id,
+                    })
+                    .then((response) => response.data.data)
 
-            const duplicateArticle = _isNumber(article.category_id)
-                ? await this.createArticle(payload, article.category_id)
-                : await this.createArticle(payload)
+                const clonedArticle = _isNumber(article.category_id)
+                    ? await this.createArticle(translation, article.category_id)
+                    : await this.createArticle(translation)
 
-            await Promise.all(
-                translations
-                    .filter(
-                        (translation) =>
-                            translation.locale !== article.translation.locale
-                    )
-                    .map((translation) =>
-                        client.createArticleTranslation(
-                            {
-                                help_center_id: helpCenterId,
-                                article_id: duplicateArticle.id,
-                            },
-                            {
-                                locale: translation.locale,
-                                title: `${translation.title} copy`,
-                                excerpt: translation.excerpt,
-                                content: translation.content,
-                                slug: `${translation.slug}-copy`,
-                            }
+                await Promise.all(
+                    translations
+                        .filter((t) => t.locale !== article.translation.locale)
+                        .map((t) =>
+                            client.createArticleTranslation(
+                                {
+                                    help_center_id: helpCenterId,
+                                    article_id: clonedArticle.id,
+                                },
+                                {
+                                    locale: t.locale,
+                                    title: `${t.title} copy`,
+                                    excerpt: t.excerpt,
+                                    content: t.content,
+                                    slug: `${t.slug}-copy`,
+                                    seo_meta: {
+                                        title: null,
+                                        description: null,
+                                    },
+                                }
+                            )
                         )
-                    )
-            )
+                )
 
-            dispatch(
-                pushArticleSupportedLocales({
-                    articleId: duplicateArticle.id,
-                    supportedLocales: translations.map(
-                        (translation) => translation.locale
-                    ),
-                })
-            )
+                dispatch(
+                    pushArticleSupportedLocales({
+                        articleId: clonedArticle.id,
+                        supportedLocales: translations.map(
+                            (translation) => translation.locale
+                        ),
+                    })
+                )
 
-            setIsLoading(false)
+                setIsLoading(false)
 
-            return duplicateArticle
+                return clonedArticle
+            } catch (err) {
+                setIsLoading(false)
+
+                throw err
+            }
         },
     }
 }

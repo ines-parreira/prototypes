@@ -1,6 +1,6 @@
 import {createSelector} from 'reselect'
 
-import {HelpCenterArticle} from '../../../models/helpCenter/types'
+import {Article} from '../../../models/helpCenter/types'
 import {getHelpCenterStore} from '../selectors'
 
 const helpCenterArticlesStore = createSelector(
@@ -21,7 +21,7 @@ export const getArticleById = (articleId: number) =>
     createSelector(getArticlesById, (articles) => articles[articleId])
 
 export const getArticlesInCategory = (categoryId: number) =>
-    createSelector(getArticles, (articles: HelpCenterArticle[]) =>
+    createSelector(getArticles, (articles: Article[]) =>
         articles.filter(
             (article) =>
                 article.category_id && article.category_id === categoryId
@@ -30,6 +30,6 @@ export const getArticlesInCategory = (categoryId: number) =>
 
 export const getUncategorizedArticles = createSelector(
     getArticles,
-    (articles: HelpCenterArticle[]) =>
+    (articles: Article[]) =>
         articles.filter((article) => article.category_id === null)
 )

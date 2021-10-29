@@ -1,16 +1,12 @@
 import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
 
-import {NavigationLinkDto} from '../../../../../models/helpCenter/types'
 import {getHelpCenterAllNavigationLinksEnglishFixture as mockData} from '../../fixtures/getNavigationLinksResponse.fixtures'
 
 import {useNavigationLinks} from '../useNavigationLinks'
 
 const Example = () => {
-    const navigation = useNavigationLinks(
-        'header',
-        mockData.data as NavigationLinkDto[]
-    )
+    const navigation = useNavigationLinks('header', mockData.data)
 
     return (
         <div>

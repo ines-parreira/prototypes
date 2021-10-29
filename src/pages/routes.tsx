@@ -69,7 +69,7 @@ import SelfServiceReportIssueCaseEditorContainer from './settings/selfService/co
 import HelpCenterStartView from './settings/helpCenter/components/HelpCenterStartView'
 import HelpCenterNewView from './settings/helpCenter/components/HelpCenterNewView'
 import {CurrentHelpCenter} from './settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
-import {HelpCenterApiClientProvider} from './settings/helpCenter/hooks/useHelpcenterApi'
+import {HelpCenterApiClientProvider} from './settings/helpCenter/hooks/useHelpCenterApi'
 import DefaultStatsFilters from './stats/DefaultStatsFilters'
 import HelpCenterPaywall from './settings/helpCenter/components/Paywalls/HelpCenterPaywall'
 import withLegacyPlanPaywall from './common/utils/withLegacyPlanPaywall'
@@ -571,7 +571,7 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                     })}
                 />
                 <Route
-                    path={`${path}/:helpcenterId`}
+                    path={`${path}/:helpCenterId`}
                     render={appRender({
                         content: HELP_CENTER_PAYWALLS_ENABLED
                             ? withLegacyPlanPaywall(HelpCenterPaywall)(

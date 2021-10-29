@@ -3,10 +3,7 @@ import React, {MouseEvent, ReactElement, useMemo, useState} from 'react'
 import {Badge, Spinner} from 'reactstrap'
 
 import {useModalManager} from '../../../../../../../hooks/useModalManager'
-import {
-    Category,
-    HelpCenterArticle,
-} from '../../../../../../../models/helpCenter/types'
+import {Article, Category} from '../../../../../../../models/helpCenter/types'
 import {LanguageList} from '../../../../../../common/components/LanguageBulletList'
 import BodyCell from '../../../../../../common/components/table/cells/BodyCell'
 import TableBodyRow from '../../../../../../common/components/table/TableBodyRow'
@@ -34,7 +31,7 @@ type BaseCategoriesTableRowProps = {
     tooltip?: string
     renderArticleList?: (
         categoryId: number,
-        articles: HelpCenterArticle[]
+        articles: Article[]
     ) => ReactElement
     shouldRenderRowWithoutArticles?: boolean
 }
@@ -84,18 +81,11 @@ const DroppableCategoriesTableRow = ({
     // cf. https://linear.app/gorgias/issue/SS-1019/cms-the-language-selector-is-broken-when-creating-an-article-inside-a
 
     const languageList = useMemo(() => {
-        if (
-            category?.available_locales &&
-            category.available_locales.length > 0
-        ) {
+        if (category.available_locales.length > 0) {
             return category.available_locales.map((code) => localesByCode[code])
         }
 
-        if (category?.translation) {
-            return [localesByCode[category.translation.locale]]
-        }
-
-        return []
+        return [localesByCode[category.translation.locale]]
     }, [category, localesByCode])
 
     const handleOnActionClick = (ev: MouseEvent, name: string) => {
@@ -126,7 +116,7 @@ const DroppableCategoriesTableRow = ({
             <BodyCell innerClassName={bodyInnerClass}>
                 {category.translation && (
                     <LanguageList
-                        helpcenterId={category.id}
+                        id={category.id}
                         defaultLanguage={
                             localesByCode[category.translation.locale]
                         }

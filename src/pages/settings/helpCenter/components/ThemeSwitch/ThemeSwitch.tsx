@@ -6,14 +6,14 @@ import previewDark from '../../../../../../img/help-center/preview-dark.svg'
 import {PreviewRadioButton} from '../../../../common/components/PreviewRadioButton'
 import ColorField from '../../../../common/forms/ColorField.js'
 
-import {HelpCenterThemes} from '../../types'
+import {HelpCenterTheme} from '../../types'
 
 import css from './ThemeSwitch.less'
 
 type ThemeSwitchProps = {
-    selectedTheme: HelpCenterThemes
+    selectedTheme: HelpCenterTheme
     currentColor: string
-    onThemeChange: (theme: HelpCenterThemes) => void
+    onThemeChange: (theme: HelpCenterTheme) => void
     onColorChange: (color: string) => void
 }
 
@@ -32,16 +32,16 @@ export const ThemeSwitch: FunctionComponent<ThemeSwitchProps> = ({
             </p>
             <div className={css.list}>
                 <PreviewRadioButton
-                    isSelected={selectedTheme === HelpCenterThemes.LIGHT}
+                    isSelected={selectedTheme === HelpCenterTheme.LIGHT}
                     preview={<img src={previewLight} alt="preview-light" />}
                     title="Light Theme"
-                    onClick={() => onThemeChange(HelpCenterThemes.LIGHT)}
+                    onClick={() => onThemeChange(HelpCenterTheme.LIGHT)}
                 />
                 <PreviewRadioButton
-                    isSelected={selectedTheme === HelpCenterThemes.DARK}
+                    isSelected={selectedTheme === HelpCenterTheme.DARK}
                     preview={<img src={previewDark} alt="preview-dark" />}
                     title="Dark Theme"
-                    onClick={() => onThemeChange(HelpCenterThemes.DARK)}
+                    onClick={() => onThemeChange(HelpCenterTheme.DARK)}
                 />
             </div>
 

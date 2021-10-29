@@ -20,11 +20,7 @@ const LOCALE = {
 describe('<LanguageList />', () => {
     it('renders nothing if list is empty or defaultLocale is missing', () => {
         const {container} = render(
-            <LanguageList
-                helpcenterId="1"
-                defaultLanguage={LOCALE}
-                languageList={[]}
-            />
+            <LanguageList id="1" defaultLanguage={LOCALE} languageList={[]} />
         )
         expect(container.firstChild).toBeNull()
     })
@@ -32,7 +28,7 @@ describe('<LanguageList />', () => {
     it('renders the default language last', () => {
         const {getAllByTestId} = render(
             <LanguageList
-                helpcenterId="1"
+                id="1"
                 defaultLanguage={LOCALE}
                 languageList={LOCALE_LIST}
             />
@@ -47,7 +43,7 @@ describe('<LanguageList />', () => {
             const fewerLocales = LOCALE_LIST.slice(0, 2)
             const {getAllByTestId} = render(
                 <LanguageList
-                    helpcenterId="1"
+                    id="1"
                     defaultLanguage={LOCALE}
                     languageList={fewerLocales}
                 />
@@ -65,7 +61,7 @@ describe('<LanguageList />', () => {
         it('limits the bullets and shows the overflow', () => {
             const {getByTestId} = render(
                 <LanguageList
-                    helpcenterId="1"
+                    id="1"
                     defaultLanguage={LOCALE}
                     languageList={LOCALE_LIST}
                 />

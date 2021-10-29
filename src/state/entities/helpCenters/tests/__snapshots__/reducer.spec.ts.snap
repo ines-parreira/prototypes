@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`helpCenters reducer createHelpcenter action should add a new helpcenter to the state 1`] = `
+exports[`helpCenters reducer createHelpCenter action should add a new help center to the state 1`] = `
 Object {
   "1": Object {
     "algolia_api_key": null,
@@ -9,7 +9,7 @@ Object {
     "default_locale": "en-US",
     "deleted_datetime": undefined,
     "id": 1,
-    "name": "ACME Helpcenter",
+    "name": "ACME Help Center",
     "powered_by_deactivated_datetime": null,
     "primary_color": "#4A8DF9",
     "search_deactivated_datetime": "2021-05-17T18:21:42.022Z",
@@ -23,7 +23,7 @@ Object {
 }
 `;
 
-exports[`helpCenters reducer deleteHelpcenter action should delete a helpcenter from the state 1`] = `
+exports[`helpCenters reducer deleteHelpCenter action should delete a help center from the state 1`] = `
 Object {
   "2": Object {
     "algolia_api_key": null,
@@ -32,7 +32,7 @@ Object {
     "default_locale": "de-DE",
     "deleted_datetime": undefined,
     "id": 2,
-    "name": "ACME Helpcenter 2",
+    "name": "ACME Help Center 2",
     "powered_by_deactivated_datetime": "2021-05-17T18:22:42.022Z",
     "primary_color": "#4A8DF9",
     "search_deactivated_datetime": null,
@@ -47,7 +47,7 @@ Object {
 }
 `;
 
-exports[`helpCenters reducer fetchHelpcenter action should add a new helpcenter to the state 1`] = `
+exports[`helpCenters reducer fetchHelpCenter action should add a new help center to the state 1`] = `
 Object {
   "1": Object {
     "algolia_api_key": null,
@@ -56,7 +56,7 @@ Object {
     "default_locale": "en-US",
     "deleted_datetime": undefined,
     "id": 1,
-    "name": "ACME Helpcenter",
+    "name": "ACME Help Center",
     "powered_by_deactivated_datetime": null,
     "primary_color": "#4A8DF9",
     "search_deactivated_datetime": "2021-05-17T18:21:42.022Z",
@@ -70,7 +70,7 @@ Object {
 }
 `;
 
-exports[`helpCenters reducer fetchHelpcenters action should add the helpcenters to the state 1`] = `
+exports[`helpCenters reducer fetchHelpCenters action should add the help centers to the state 1`] = `
 Object {
   "1": Object {
     "algolia_api_key": null,
@@ -79,7 +79,7 @@ Object {
     "default_locale": "en-US",
     "deleted_datetime": undefined,
     "id": 1,
-    "name": "ACME Helpcenter",
+    "name": "ACME Help Center",
     "powered_by_deactivated_datetime": null,
     "primary_color": "#4A8DF9",
     "search_deactivated_datetime": "2021-05-17T18:21:42.022Z",
@@ -97,7 +97,7 @@ Object {
     "default_locale": "de-DE",
     "deleted_datetime": undefined,
     "id": 2,
-    "name": "ACME Helpcenter 2",
+    "name": "ACME Help Center 2",
     "powered_by_deactivated_datetime": "2021-05-17T18:22:42.022Z",
     "primary_color": "#4A8DF9",
     "search_deactivated_datetime": null,
@@ -116,7 +116,7 @@ Object {
     "default_locale": "fr-FR",
     "deleted_datetime": undefined,
     "id": 3,
-    "name": "ACME Helpcenter 3",
+    "name": "ACME Help Center 3",
     "powered_by_deactivated_datetime": null,
     "primary_color": "#4A8DF9",
     "search_deactivated_datetime": null,
@@ -131,7 +131,7 @@ Object {
 }
 `;
 
-exports[`helpCenters reducer updateHelpcenter action should replace an existing helpcenter in the state 1`] = `
+exports[`helpCenters reducer updateHelpCenter action should replace an existing help center in the state 1`] = `
 Object {
   "1": Object {
     "algolia_api_key": null,
@@ -158,7 +158,7 @@ Object {
     "default_locale": "de-DE",
     "deleted_datetime": undefined,
     "id": 2,
-    "name": "ACME Helpcenter 2",
+    "name": "ACME Help Center 2",
     "powered_by_deactivated_datetime": "2021-05-17T18:22:42.022Z",
     "primary_color": "#4A8DF9",
     "search_deactivated_datetime": null,

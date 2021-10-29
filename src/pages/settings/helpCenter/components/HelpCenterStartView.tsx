@@ -8,11 +8,11 @@ import _keyBy from 'lodash/keyBy'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 
-import {HelpCenterLocale} from '../../../../models/helpCenter/types'
+import {Locale} from '../../../../models/helpCenter/types'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {helpCentersFetched} from '../../../../state/entities/helpCenters/actions'
-import {getHelpcenterSortedList} from '../../../..//state/entities/helpCenters/selectors'
+import {getHelpCenterSortedList} from '../../../..//state/entities/helpCenters/selectors'
 import {
     changeHelpCenterId,
     changeViewLanguage,
@@ -20,7 +20,7 @@ import {
 
 import PageHeader from '../../../common/components/PageHeader'
 
-import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
+import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useLocales} from '../hooks/useLocales'
 import {
     HELPCENTER_MAX_CREATION,
@@ -36,15 +36,13 @@ import css from './HelpCenterStartView.less'
 export const HelpCenterStartView: FunctionComponent = () => {
     const dispatch = useAppDispatch()
     const history = useHistory()
-
-    const {client} = useHelpcenterApi()
+    const {client} = useHelpCenterApi()
     const localeOptions = useLocales()
+    const helpCenterList = useSelector(getHelpCenterSortedList)
+    const localesByCode = useMemo(() => _keyBy<Locale>(localeOptions, 'code'), [
+        localeOptions,
+    ])
 
-    const helpCenterList = useSelector(getHelpcenterSortedList)
-    const localesByCode = useMemo(
-        () => _keyBy<HelpCenterLocale>(localeOptions, 'code'),
-        [localeOptions]
-    )
     const [{loading}, getHelpCentersList] = useAsyncFn(async () => {
         if (client) {
             try {
@@ -92,10 +90,10 @@ export const HelpCenterStartView: FunctionComponent = () => {
         async (helpCenterId: number, activated: boolean) => {
             if (client) {
                 try {
-                    const helpcenterIndex = helpCenterList.findIndex(
+                    const helpCenterIndex = helpCenterList.findIndex(
                         ({id}) => id === helpCenterId
                     )
-                    const helpCenter = await client.updateHelpCenter(
+                    const {data} = await client.updateHelpCenter(
                         {help_center_id: helpCenterId},
                         {
                             deactivated: !activated,
@@ -104,7 +102,7 @@ export const HelpCenterStartView: FunctionComponent = () => {
                     const helpCenterListUpdated = produce(
                         helpCenterList,
                         (helpCenters) => {
-                            helpCenters[helpcenterIndex] = helpCenter.data
+                            helpCenters[helpCenterIndex] = data
                         }
                     )
                     dispatch(helpCentersFetched(helpCenterListUpdated))

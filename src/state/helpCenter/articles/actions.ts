@@ -1,6 +1,6 @@
 import {createAction} from '@reduxjs/toolkit'
 
-import {HelpCenterArticle, LocaleCode} from '../../../models/helpCenter/types'
+import {Article, LocaleCode} from '../../../models/helpCenter/types'
 
 import {ArticleActions} from './types'
 
@@ -8,11 +8,11 @@ import {ArticleActions} from './types'
  * Articles actions
  */
 
-export const saveArticles = createAction<HelpCenterArticle[]>(
+export const saveArticles = createAction<Article[]>(
     ArticleActions.SAVE_ARTICLES
 )
 
-export const updateArticle = createAction<HelpCenterArticle>(
+export const updateArticle = createAction<Article>(
     ArticleActions.UPDATE_ARTICLE
 )
 

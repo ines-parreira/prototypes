@@ -1,6 +1,6 @@
 import {PayloadActionCreator} from '@reduxjs/toolkit'
 
-import {HelpCenterArticle, LocaleCode} from '../../../models/helpCenter/types'
+import {Article, LocaleCode} from '../../../models/helpCenter/types'
 
 export enum ArticleActions {
     SAVE_ARTICLES = 'HELPCENTER/ARTICLES/SAVE_ARTICLES',
@@ -14,17 +14,17 @@ export enum ArticleActions {
 }
 
 export type SaveArticleAction = PayloadActionCreator<
-    HelpCenterArticle,
+    Article,
     ArticleActions.SAVE_ARTICLES
 >
 
 export type UpdateArticleAction = PayloadActionCreator<
-    HelpCenterArticle,
+    Article,
     ArticleActions.UPDATE_ARTICLE
 >
 
 export type DeleteArticleAction = PayloadActionCreator<
-    HelpCenterArticle,
+    Article,
     ArticleActions.DELETE_ARTICLE
 >
 
@@ -37,7 +37,7 @@ export type RemoveArticleSupportedLocales = PayloadActionCreator<
 >
 
 export type UpdateArticlesOrder = PayloadActionCreator<
-    HelpCenterArticle,
+    Article,
     ArticleActions.UPDATE_ARTICLES_ORDER
 >
 
@@ -50,7 +50,7 @@ export type PushArticleSupportedLocales = PayloadActionCreator<
 >
 
 export type ResetArticlesAction = PayloadActionCreator<
-    HelpCenterArticle,
+    Article,
     ArticleActions.RESET_ARTICLES
 >
 
@@ -64,5 +64,5 @@ export type ArticlesAction =
     | RemoveArticleSupportedLocales
 
 export type HelpCenterArticlesState = {
-    articlesById: Record<number, HelpCenterArticle>
+    articlesById: Record<number, Article>
 }

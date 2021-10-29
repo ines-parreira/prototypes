@@ -24,16 +24,16 @@ import {
 import {getSingleCategoryEnglish} from '../../fixtures/getCategoriesResponse.fixtures'
 
 import {useCategoriesActions} from '../useCategoriesActions'
-import {useHelpcenterApi} from '../useHelpcenterApi'
+import {useHelpCenterApi} from '../useHelpCenterApi'
 
 jest.mock('react-router')
 ;(useParams as jest.MockedFunction<typeof useParams>).mockReturnValue({
-    helpcenterId: '1',
+    helpCenterId: '1',
 })
 
-jest.mock('../useHelpcenterApi', () => {
+jest.mock('../useHelpCenterApi', () => {
     return {
-        useHelpcenterApi: jest.fn().mockReturnValue({
+        useHelpCenterApi: jest.fn().mockReturnValue({
             isReady: true,
             client: {
                 createCategory: jest.fn().mockResolvedValue({
@@ -143,7 +143,7 @@ describe('useCategoriesActions', () => {
 
             await result.current.getCategoryTranslation(1, 'en-US')
 
-            expect(useHelpcenterApi().client?.getCategory).toHaveBeenCalledWith(
+            expect(useHelpCenterApi().client?.getCategory).toHaveBeenCalledWith(
                 {
                     help_center_id: 1,
                     id: 1,
@@ -165,6 +165,10 @@ describe('useCategoriesActions', () => {
                     title: '',
                     slug: '',
                     description: '',
+                    seo_meta: {
+                        title: null,
+                        description: null,
+                    },
                 },
             })
 
@@ -179,7 +183,6 @@ describe('useCategoriesActions', () => {
             })
 
             await result.current.updateCategoryTranslation(1, 'en-US', {
-                category_id: 1,
                 title: '',
                 slug: '',
                 description: '',
@@ -200,6 +203,10 @@ describe('useCategoriesActions', () => {
                 title: ',',
                 description: ',',
                 slug: ',',
+                seo_meta: {
+                    title: null,
+                    description: null,
+                },
             })
 
             expect(pushCategorySupportedLocales).toHaveBeenCalledWith({
@@ -218,6 +225,10 @@ describe('useCategoriesActions', () => {
                 title: ',',
                 description: ',',
                 slug: ',',
+                seo_meta: {
+                    title: null,
+                    description: null,
+                },
             })
 
             expect(pushCategorySupportedLocales).not.toHaveBeenCalled()

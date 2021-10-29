@@ -1,14 +1,14 @@
 import React from 'react'
 
 import InputField from '../../../../../../common/forms/InputField'
-import {useLanguagePreferencesSettings} from '../../../../providers/LanguagePreferencesSettings'
+import {useHelpCenterPreferencesSettings} from '../../../../providers/HelpCenterPreferencesSettings'
 
 import css from './DisplayName.less'
 
-export const DisplayName = () => {
-    const {preferences, updatePreference} = useLanguagePreferencesSettings()
+export const DisplayName: React.FC = () => {
+    const {preferences, updatePreferences} = useHelpCenterPreferencesSettings()
     const onChangeName = (name: string) => {
-        updatePreference({
+        updatePreferences({
             name,
         })
     }

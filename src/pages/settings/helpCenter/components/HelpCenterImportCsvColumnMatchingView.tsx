@@ -9,7 +9,7 @@ import {CsvColumnPreview} from '../../../../models/helpCenter/types'
 
 import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
 
-import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
+import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 
 import {useLocales} from '../hooks/useLocales'
 
@@ -77,7 +77,7 @@ export const HelpCenterImportCsvColumnMatchingView = (): JSX.Element | null => {
     const location = useLocation()
     const helpCenter = useSelector(getCurrentHelpCenter)
     const [fileUrl, setFileUrl] = useState<string | null>(null)
-    const {isReady, client} = useHelpcenterApi()
+    const {isReady, client} = useHelpCenterApi()
     const [csvColumns, setCsvColumns] = useState<CsvColumnPreview[] | null>(
         null
     )
@@ -272,7 +272,7 @@ export const HelpCenterImportCsvColumnMatchingView = (): JSX.Element | null => {
             <PageHeader
                 title={
                     <HelpCenterDetailsBreadcrumb
-                        helpcenterName={helpCenter.name}
+                        helpCenterName={helpCenter.name}
                         activeLabel="Import CSV"
                     />
                 }

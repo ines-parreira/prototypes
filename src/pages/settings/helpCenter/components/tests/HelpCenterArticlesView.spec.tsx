@@ -1,21 +1,21 @@
 import React from 'react'
+import {DndProvider} from 'react-dnd'
+import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
 
-import {renderWithRouter} from '../../../../../utils/testing'
-import {RootState, StoreDispatch} from '../../../../../state/types'
 import {initialState as articlesState} from '../../../../../state/helpCenter/articles/reducer'
-import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
 import {initialState as categoriesState} from '../../../../../state/helpCenter/categories/reducer'
-
+import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
+import {RootState, StoreDispatch} from '../../../../../state/types'
+import {renderWithRouter} from '../../../../../utils/testing'
+import {getHelpCentersResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
 import HelpCenterArticlesView from '../HelpCenterArticlesView'
 
-jest.mock('../../hooks/useHelpcenterApi', () => {
+jest.mock('../../hooks/useHelpCenterApi', () => {
     return {
-        useHelpcenterApi: () => ({
+        useHelpCenterApi: () => ({
             isReady: true,
             client: {
                 listArticleTranslations: jest.fn().mockResolvedValue({
@@ -57,15 +57,20 @@ const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
 ])
 
 const defaultState: Partial<RootState> = {
+    entities: {
+        helpCenters: {
+            '1': getHelpCentersResponseFixture.data[0],
+        },
+    } as any,
     helpCenter: {
-        ui: uiState,
+        ui: {...uiState, currentId: 1},
         articles: articlesState,
         categories: categoriesState,
     },
 }
 
 const route = {
-    path: '/app/settings/help-center/:helpcenterId/articles',
+    path: '/app/settings/help-center/:helpCenterId/articles',
     route: '/app/settings/help-center/1/articles',
 }
 

@@ -1,18 +1,17 @@
 import React, {useEffect, useState} from 'react'
 import classNames from 'classnames'
-import {useSelector} from 'react-redux'
 import {useAsyncFn} from 'react-use'
 import {Button} from 'reactstrap/lib'
 
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
 import {CustomDomain as CustomDomainEntity} from '../../../../../models/helpCenter/types'
-import {getCurrentHelpCenter} from '../../../../../state/entities/helpCenters/selectors'
 import {notify} from '../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {isProduction} from '../../../../../utils/environment'
 import Loader from '../../../../common/components/Loader/Loader'
 import InputField from '../../../../common/forms/InputField'
-import {useHelpcenterApi} from '../../hooks/useHelpcenterApi'
+import {useCurrentHelpCenter} from '../../hooks/useCurrentHelpCenter'
+import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../../hooks/useHelpCenterIdParam'
 
 import {
@@ -21,6 +20,7 @@ import {
 } from './components/ConnectionStatus'
 import {HelpText} from './components/HelpText'
 import {StatusCheck} from './components/StatusCheck'
+
 import css from './CustomDomain.less'
 
 const labels = {
@@ -40,37 +40,12 @@ const tooltips = {
 
 export const CustomDomain = () => {
     const dispatch = useAppDispatch()
-    const {client} = useHelpcenterApi()
+    const {client} = useHelpCenterApi()
     const helpCenterId = useHelpCenterIdParam()
-    const helpCenter = useSelector(getCurrentHelpCenter)
+    const {helpCenter, getHelpCenterCustomDomain} = useCurrentHelpCenter()
 
     const [domainValue, setDomainValue] = useState('')
     const [currentDomain, setCurrentDomain] = useState<CustomDomainEntity>()
-
-    const [domainsDto, fetchDomains] = useAsyncFn(async () => {
-        if (client) {
-            try {
-                const response = await client
-                    .listCustomDomains({
-                        help_center_id: helpCenterId,
-                    })
-                    .then((response) => response.data)
-
-                if (response.data.length > 0) {
-                    const singleDomain = response.data[0]
-
-                    if (singleDomain.hostname) {
-                        setDomainValue(singleDomain.hostname)
-                        setCurrentDomain(singleDomain)
-                    }
-                }
-
-                return response.data
-            } catch (err) {
-                console.error(err)
-            }
-        }
-    }, [client])
 
     const [deleteDomainDto, deleteDomain] = useAsyncFn(async () => {
         if (client && currentDomain) {
@@ -174,8 +149,15 @@ export const CustomDomain = () => {
     }, [client, helpCenterId, currentDomain])
 
     useEffect(() => {
-        void fetchDomains()
-    }, [client])
+        void getHelpCenterCustomDomain()
+    }, [helpCenter !== null])
+
+    useEffect(() => {
+        if (helpCenter?.customDomain) {
+            setDomainValue(helpCenter.customDomain.hostname)
+            setCurrentDomain(helpCenter.customDomain)
+        }
+    }, [helpCenter?.customDomain])
 
     const domain = isProduction() ? 'gorgias.help' : 'gorgias.rehab'
 
@@ -241,10 +223,6 @@ export const CustomDomain = () => {
         )
     }
 
-    if (helpCenter == null) {
-        return null
-    }
-
     return (
         <section>
             <div>
@@ -257,14 +235,12 @@ export const CustomDomain = () => {
                 </p>
             </div>
             <HelpText
-                isHidden={
-                    domainsDto.loading || currentDomain?.status === 'active'
-                }
+                isHidden={!helpCenter || currentDomain?.status === 'active'}
             />
             <div className={css.domainForm}>
                 <div className={css.domainInput}>
                     <InputField
-                        disabled={domainsDto.loading || !!currentDomain?.status}
+                        disabled={!helpCenter || !!currentDomain?.status}
                         help="Add a custom domain"
                         label="Custom domain"
                         name="domain"

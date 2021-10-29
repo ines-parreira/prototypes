@@ -1,11 +1,12 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import _omit from 'lodash/omit'
 import _uniqueId from 'lodash/uniqueId'
-import {FormGroup, Label, Input as BootstrapInput, FormText} from 'reactstrap'
+import PropTypes from 'prop-types'
+import {FormGroup, FormText, Input as BootstrapInput, Label} from 'reactstrap'
 
 import {defined} from '../../../utils.ts'
+import Tooltip from '../components/Tooltip.tsx'
 
 import Errors from './Errors'
 import FormField from './FormField'
@@ -22,6 +23,7 @@ export default class InputField extends FormField {
             leftAddon: PropTypes.string,
             rightAddon: PropTypes.string,
             caseInsensitive: PropTypes.bool,
+            tooltip: PropTypes.string,
         },
         FormField.propTypes
     )
@@ -66,6 +68,7 @@ export default class InputField extends FormField {
             'label',
             'name',
             'onChange',
+            'tooltip',
             'className',
         ])
 
@@ -94,6 +97,7 @@ export default class InputField extends FormField {
             leftAddon,
             rightAddon,
             help,
+            tooltip,
             className,
         } = this.props
 
@@ -120,6 +124,22 @@ export default class InputField extends FormField {
                 {label && (
                     <Label htmlFor={this.id} className="control-label">
                         {label}
+                        {tooltip && (
+                            <>
+                                <i
+                                    id={`${this.id}-tooltip`}
+                                    className={classnames(
+                                        'material-icons-outlined',
+                                        css.tooltip
+                                    )}
+                                >
+                                    info
+                                </i>
+                                <Tooltip target={`${this.id}-tooltip`}>
+                                    {tooltip}
+                                </Tooltip>
+                            </>
+                        )}
                     </Label>
                 )}
                 <div

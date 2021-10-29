@@ -75,7 +75,7 @@ exports[`InputField should render a hidden text input 1`] = `
     <Input
       className=""
       hidden={true}
-      id="id-input-10"
+      id="id-input-11"
       onChange={[Function]}
       type="text"
       value="value"
@@ -105,14 +105,14 @@ exports[`InputField should render a lowercase value and convert any uppercase in
       >
         <Input
           className=""
-          id="id-input-12"
+          id="id-input-13"
           onChange={[Function]}
           type="text"
           value="value"
         >
           <input
             className="form-control"
-            id="id-input-12"
+            id="id-input-13"
             onChange={[Function]}
             type="text"
             value="value"
@@ -144,14 +144,14 @@ exports[`InputField should render a number input with an onChange handler, and c
       >
         <Input
           className=""
-          id="id-input-9"
+          id="id-input-10"
           onChange={[Function]}
           type="number"
           value="value"
         >
           <input
             className="form-control"
-            id="id-input-9"
+            id="id-input-10"
             onChange={[Function]}
             type="number"
             value="value"
@@ -195,7 +195,7 @@ exports[`InputField should render a text input with a right addon 1`] = `
   >
     <Input
       className=""
-      id="id-input-7"
+      id="id-input-8"
       onChange={[Function]}
       type="text"
       value="value"
@@ -233,14 +233,14 @@ exports[`InputField should render a text input with an onChange handler, and cal
       >
         <Input
           className=""
-          id="id-input-8"
+          id="id-input-9"
           onChange={[Function]}
           type="text"
           value="value"
         >
           <input
             className="form-control"
-            id="id-input-8"
+            id="id-input-9"
             onChange={[Function]}
             type="text"
             value="value"
@@ -250,6 +250,53 @@ exports[`InputField should render a text input with an onChange handler, and cal
     </div>
   </FormGroup>
 </InputField>
+`;
+
+exports[`InputField should render a tooltip next to the label 1`] = `
+<FormGroup
+  className="InputField"
+  color=""
+  tag="div"
+>
+  <Label
+    className="control-label"
+    htmlFor="id-input-6"
+    tag="label"
+    widths={
+      Array [
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+      ]
+    }
+  >
+    Label
+    <i
+      className="material-icons-outlined tooltip"
+      id="id-input-6-tooltip"
+    >
+      info
+    </i>
+    <Tooltip
+      target="id-input-6-tooltip"
+    >
+      I am a tooltip
+    </Tooltip>
+  </Label>
+  <div
+    className=""
+  >
+    <Input
+      className=""
+      id="id-input-6"
+      onChange={[Function]}
+      type="text"
+      value="value"
+    />
+  </div>
+</FormGroup>
 `;
 
 exports[`InputField should render an inline required text input 1`] = `
@@ -263,7 +310,7 @@ exports[`InputField should render an inline required text input 1`] = `
   >
     <Input
       className=""
-      id="id-input-6"
+      id="id-input-7"
       onChange={[Function]}
       required={true}
       type="text"
@@ -304,7 +351,7 @@ exports[`InputField should render the input with an error 1`] = `
   >
     <Input
       className="form-control-danger is-invalid"
-      id="id-input-11"
+      id="id-input-12"
       onChange={[Function]}
       type="text"
       value="value"

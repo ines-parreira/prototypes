@@ -5,7 +5,7 @@ import {
     LocaleCode,
     LocalNavigationLink,
     LocalSocialNavigationLink,
-    NavigationLinkDto,
+    NavigationLink,
     NavigationLinkMeta,
 } from '../../../../models/helpCenter/types'
 
@@ -45,7 +45,10 @@ export async function saveSocialLinks(
                     },
                     {
                         label: socialLink.label,
-                        value: getAbsoluteUrl(socialLink.value),
+                        value: getAbsoluteUrl(
+                            {domain: socialLink.value},
+                            false
+                        ),
                     }
                 )
             }
@@ -56,7 +59,7 @@ export async function saveSocialLinks(
                 },
                 {
                     label: socialLink.label,
-                    value: getAbsoluteUrl(socialLink.value),
+                    value: getAbsoluteUrl({domain: socialLink.value}, false),
                     locale: context.locale,
                     group,
                     meta,
@@ -71,7 +74,7 @@ export async function saveSocialLinks(
 
 export async function saveNavigationLinks(
     client: HelpCenterClient,
-    remoteLinks: NavigationLinkDto[],
+    remoteLinks: NavigationLink[],
     localLinks: LocalNavigationLink[],
     context: {
         group: 'header' | 'footer'
@@ -120,7 +123,7 @@ export async function saveNavigationLinks(
                     },
                     {
                         label: link.label,
-                        value: getAbsoluteUrl(link.value),
+                        value: getAbsoluteUrl({domain: link.value}, false),
                         locale: context.locale,
                         group: context.group,
                     }
@@ -139,7 +142,7 @@ export async function saveNavigationLinks(
                     },
                     {
                         label: link.label,
-                        value: getAbsoluteUrl(link.value),
+                        value: getAbsoluteUrl({domain: link.value}, false),
                     }
                 )
             )

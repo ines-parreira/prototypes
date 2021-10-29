@@ -5,7 +5,7 @@ import CsvColumnMatching, {
     Props as CsvColumnMatchingProps,
 } from '../CsvColumnMatching'
 
-import {getSingleHelpcenterResponseFixture as helpCenter} from '../../../../../fixtures/getHelpcenterResponse.fixture'
+import {getSingleHelpCenterResponseFixture as helpCenter} from '../../../../../fixtures/getHelpCentersResponse.fixture'
 
 import {getLocalesResponseFixture as locales} from '../../../../../fixtures/getLocalesResponse.fixtures'
 

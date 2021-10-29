@@ -8,7 +8,7 @@ import {getCurrentHelpCenterId} from '../../helpCenter/ui/selectors'
 import {HelpCentersState} from './types'
 
 export const getHelpCenters = (state: StoreState): HelpCentersState =>
-    state.entities?.helpCenters || {}
+    state.entities.helpCenters || {}
 
 export const getCurrentHelpCenter = createSelector(
     getCurrentHelpCenterId,
@@ -21,22 +21,16 @@ export const getCurrentHelpCenter = createSelector(
     }
 )
 
-export const getHelpcenterSortedList = createSelector(
+export const getHelpCenterSortedList = createSelector(
     getHelpCenters,
     (helpCenters) => {
         return Object.values(helpCenters).sort(
             (
                 {created_datetime: createdDate1},
                 {created_datetime: createdDate2}
-            ) => {
-                if (
-                    new Date(createdDate1).getTime() >
-                    new Date(createdDate2).getTime()
-                ) {
-                    return -1
-                }
-                return 1
-            }
+            ) =>
+                new Date(createdDate2).getTime() -
+                new Date(createdDate1).getTime()
         )
     }
 )

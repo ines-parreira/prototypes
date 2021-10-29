@@ -1,12 +1,12 @@
 import {waitFor} from '@testing-library/react'
 import {renderHook} from 'react-hooks-testing-library'
 
-import {useHelpcenterApi} from '../useHelpcenterApi'
+import {useHelpCenterApi} from '../useHelpCenterApi'
 import {useLocales} from '../useLocales'
 
-jest.mock('../useHelpcenterApi', () => {
+jest.mock('../useHelpCenterApi', () => {
     return {
-        useHelpcenterApi: jest.fn().mockReturnValue({
+        useHelpCenterApi: jest.fn().mockReturnValue({
             isReady: true,
             client: {
                 listLocales: jest.fn().mockReturnValue(
@@ -72,6 +72,6 @@ describe('useLocales()', () => {
         const {result} = renderHook(useLocales)
 
         expect(result.current.length).toBeGreaterThan(0)
-        expect(useHelpcenterApi().client?.listLocales).toHaveBeenCalledTimes(0)
+        expect(useHelpCenterApi().client?.listLocales).toHaveBeenCalledTimes(0)
     })
 })

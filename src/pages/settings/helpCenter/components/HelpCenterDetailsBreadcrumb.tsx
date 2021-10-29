@@ -5,19 +5,19 @@ import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import {HELP_CENTER_BASE_PATH} from '../constants'
 
 type Props = {
-    helpcenterName: string
+    helpCenterName: string
     activeLabel: string
 }
 
-export const HelpCenterDetailsBreadcrumb = ({
+export const HelpCenterDetailsBreadcrumb: React.FC<Props> = ({
     activeLabel,
-    helpcenterName,
+    helpCenterName,
 }: Props) => (
     <Breadcrumb>
         <BreadcrumbItem>
             <Link to={HELP_CENTER_BASE_PATH}>Help Center</Link>
         </BreadcrumbItem>
-        <BreadcrumbItem>{helpcenterName}</BreadcrumbItem>
+        <BreadcrumbItem>{helpCenterName}</BreadcrumbItem>
         <BreadcrumbItem active>{activeLabel}</BreadcrumbItem>
     </Breadcrumb>
 )

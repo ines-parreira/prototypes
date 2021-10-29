@@ -3,7 +3,7 @@ import {useAsyncFn} from 'react-use'
 import {FormGroup, Label} from 'reactstrap'
 
 import ToggleButton from '../../../../common/components/ToggleButton'
-import {useHelpcenterApi} from '../../hooks/useHelpcenterApi'
+import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {helpCenterUpdated} from '../../../../../state/entities/helpCenters/actions'
@@ -24,7 +24,7 @@ export const UpdateToggle = ({
     description,
     fieldName,
 }: Props) => {
-    const {client} = useHelpcenterApi()
+    const {client} = useHelpCenterApi()
     const helpCenterId = useHelpCenterIdParam()
     const dispatch = useAppDispatch()
 

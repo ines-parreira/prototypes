@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react'
-import axios from 'axios'
 import {
     useHistory,
     useLocation,
@@ -11,8 +10,6 @@ import {useSelector} from 'react-redux'
 
 import {Container} from 'reactstrap'
 
-import {NotificationStatus} from '../../../../../state/notifications/types'
-import {notify} from '../../../../../state/notifications/actions'
 import {
     changeHelpCenterId,
     changeViewLanguage,
@@ -42,7 +39,7 @@ export const CurrentHelpCenter = (): JSX.Element => {
     const location = useLocation()
     const helpCenterId = useHelpCenterIdParam()
 
-    const {isLoading, error, data: helpCenter} = useCurrentHelpCenter()
+    const {error, helpCenter} = useCurrentHelpCenter()
     const viewLanguage = useSelector(getViewLanguage)
 
     // ? If we access the help center via URL, set the current help center
@@ -58,26 +55,10 @@ export const CurrentHelpCenter = (): JSX.Element => {
     }, [helpCenter, viewLanguage, helpCenterId, dispatch])
 
     if (error) {
-        let message = 'Something went wrong'
-
-        if (axios.isAxiosError(error)) {
-            const err: {statusCode: number} = error.response?.data
-
-            if (err?.statusCode === 404) {
-                message = 'Help Center not found'
-            }
-        }
-
         history.push(location.pathname.split(helpCenterId.toString())[0])
-        void dispatch(
-            notify({
-                message: message,
-                status: NotificationStatus.Error,
-            })
-        )
     }
 
-    if (isLoading) {
+    if (!helpCenter) {
         return (
             <Container fluid className="page-container">
                 <Loader />

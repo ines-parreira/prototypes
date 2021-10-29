@@ -1,10 +1,6 @@
-/**
- * This file will be removed once the CMS deployed in production
- */
+import {Locale} from '../../../../models/helpCenter/types'
 
-import {LocaleEntity} from '../../../../models/helpCenter/types'
-
-export const getLocalesResponseFixture: LocaleEntity[] = [
+export const getLocalesResponseFixture: Locale[] = [
     {
         name: 'English - USA',
         code: 'en-US',

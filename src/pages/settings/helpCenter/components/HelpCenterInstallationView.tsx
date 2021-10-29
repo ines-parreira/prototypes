@@ -2,7 +2,6 @@ import React, {useCallback, useEffect, useState} from 'react'
 import axios from 'axios'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
-import {useSelector} from 'react-redux'
 import {useHistory, useLocation} from 'react-router-dom'
 import {Button, Container} from 'reactstrap'
 
@@ -11,13 +10,14 @@ import {
     helpCenterDeleted,
     helpCenterUpdated,
 } from '../../../../state/entities/helpCenters/actions'
-import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {ConfirmModalAction} from '../../../common/components/ConfirmModalAction'
+import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
 import InputField from '../../../common/forms/InputField'
-import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
+import {useCurrentHelpCenter} from '../hooks/useCurrentHelpCenter'
+import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 import {getAbsoluteUrl, getHelpCenterDomain} from '../utils/helpCenter.utils'
 import {
@@ -38,11 +38,9 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
     const helpCenterId = useHelpCenterIdParam()
     const history = useHistory()
     const location = useLocation()
-    const helpCenter = useSelector(getCurrentHelpCenter)
-    const {isReady, client} = useHelpcenterApi()
-    const [subdomainValue, setSubdomainValue] = useState(
-        helpCenter?.subdomain || ''
-    )
+    const {helpCenter} = useCurrentHelpCenter()
+    const {isReady, client} = useHelpCenterApi()
+    const [subdomainValue, setSubdomainValue] = useState('')
     const [isSubdomainAvailable, setIsSubdomainAvailable] = useState(true)
     const [deleteModalConfirmation, setDeleteModalConfirmation] = useState('')
 
@@ -74,7 +72,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
         [subdomainValue]
     )
 
-    const handleOnDeleteHelpcenter = () => {
+    const handleOnDeleteHelpCenter = () => {
         if (isReady && client) {
             void client
                 .deleteHelpCenter({
@@ -139,13 +137,17 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
     const deleteBtnDisabled = deleteModalConfirmation !== helpCenter?.name
 
     useEffect(() => {
-        if (helpCenter) {
+        if (helpCenter?.subdomain) {
             setSubdomainValue(helpCenter.subdomain)
         }
-    }, [helpCenter])
+    }, [helpCenter?.subdomain])
 
-    if (helpCenter === null) {
-        return null
+    if (!helpCenter) {
+        return (
+            <Container fluid className="page-container">
+                <Loader />
+            </Container>
+        )
     }
 
     const subdomainError = getSubdomainValidationError(
@@ -154,26 +156,26 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
     )
     const isNewSubdomainValid =
         !subdomainError && subdomainValue !== helpCenter.subdomain
-    const helpCenterDomain = getHelpCenterDomain(helpCenter.subdomain)
+    const helpCenterDomain = getHelpCenterDomain(helpCenter)
 
     return (
         <div className="full-width">
             <PageHeader
                 title={
                     <HelpCenterDetailsBreadcrumb
-                        helpcenterName={helpCenter?.name || ''}
+                        helpCenterName={helpCenter?.name || ''}
                         activeLabel="Installation"
                     />
                 }
             />
-            <HelpCenterNavigation helpcenterId={helpCenterId} />
+            <HelpCenterNavigation helpCenterId={helpCenterId} />
             <Container
                 fluid
                 className={classnames('page-container', css.container)}
             >
                 <SubdomainSection
                     value={subdomainValue}
-                    href={getAbsoluteUrl(helpCenterDomain)}
+                    href={getAbsoluteUrl({domain: helpCenterDomain})}
                     placeholder="brand-name"
                     onChange={setSubdomainValue}
                     error={subdomainError}
@@ -202,7 +204,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
                                 </Button>
                                 <Button
                                     className={css['delete-btn']}
-                                    onClick={handleOnDeleteHelpcenter}
+                                    onClick={handleOnDeleteHelpCenter}
                                     disabled={deleteBtnDisabled}
                                 >
                                     <i className="material-icons">delete</i>

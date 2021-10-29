@@ -1,62 +1,133 @@
-import {useEffect} from 'react'
-
-import {useAsyncFn} from 'react-use'
+import {useCallback, useEffect} from 'react'
+import axios from 'axios'
 import {useSelector} from 'react-redux'
-
-import {helpCentersFetched} from '../../../../state/entities/helpCenters/actions'
-import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
-import {getCurrentHelpCenterId} from '../../../../state/helpCenter/ui'
+import {useAsyncFn} from 'react-use'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {HelpCenter} from '../../../../models/helpCenter/types'
+import {
+    helpCentersFetched,
+    helpCenterUpdated,
+} from '../../../../state/entities/helpCenters/actions'
+import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
+import {getCurrentHelpCenterId} from '../../../../state/helpCenter/ui'
+import {notify} from '../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../state/notifications/types'
+import {reportError} from '../../../../utils/errors'
 
-import {useHelpcenterApi} from './useHelpcenterApi'
+import {useHelpCenterApi} from './useHelpCenterApi'
 
-type useCurrentHelpCenterApi = {
-    isLoading: boolean
-    data: HelpCenter | null
+type CurrentHelpCenterApi = {
+    helpCenter: HelpCenter | null
     error: Error | undefined
+    getHelpCenterCustomDomain: () => Promise<void>
+    fetchHelpCenterTranslations: () => Promise<void>
 }
 
-//    We make us of this to not trigger more than 1 request
+// We make us of this to not trigger more than 1 request
 // if the hook is called multiple times before we have the data.
 let fetchInProgress = false
 
-export const useCurrentHelpCenter = (): useCurrentHelpCenterApi => {
+export const useCurrentHelpCenter = (): CurrentHelpCenterApi => {
     const dispatch = useAppDispatch()
-    const {client} = useHelpcenterApi()
+    const {client} = useHelpCenterApi()
 
-    const localeHelpCenterId = useSelector(getCurrentHelpCenterId)
-    const localHelpCenter = useSelector(getCurrentHelpCenter)
+    const helpCenterId = useSelector(getCurrentHelpCenterId)
+    const helpCenter = useSelector(getCurrentHelpCenter)
 
-    const [helpCenter, getHelpCenter] = useAsyncFn(async () => {
-        if (client && localeHelpCenterId) {
-            fetchInProgress = true
-            const response = await client.getHelpCenter({
-                help_center_id: localeHelpCenterId,
-            })
-            fetchInProgress = false
-            return response.data
-        }
-    }, [client, localeHelpCenterId])
+    const [{error}, fetchHelpCenter] = useAsyncFn(async () => {
+        if (client && helpCenterId) {
+            try {
+                fetchInProgress = true
 
-    // ? Ensure we have the current help center loaded in store
-    useEffect(() => {
-        async function requestHelpCenter() {
-            const response = await getHelpCenter()
-            if (response) {
-                dispatch(helpCentersFetched([response]))
+                const {data} = await client.getHelpCenter({
+                    help_center_id: helpCenterId,
+                })
+
+                dispatch(helpCentersFetched([data]))
+            } catch (error) {
+                let message = 'Something went wrong'
+
+                if (axios.isAxiosError(error)) {
+                    const err: {statusCode: number} = error.response?.data
+
+                    if (err?.statusCode === 404) {
+                        message = 'Help Center not found'
+                    }
+
+                    void dispatch(
+                        notify({
+                            message: message,
+                            status: NotificationStatus.Error,
+                        })
+                    )
+                }
+            } finally {
+                fetchInProgress = false
             }
         }
+    }, [client, helpCenterId])
 
-        if (!localHelpCenter && !fetchInProgress) {
-            void requestHelpCenter()
+    const fetchHelpCenterTranslations = useCallback(async () => {
+        if (client && helpCenter) {
+            try {
+                const {
+                    data: {data: translations},
+                } = await client.listHelpCenterTranslations({
+                    help_center_id: helpCenter.id,
+                })
+
+                dispatch(helpCenterUpdated({...helpCenter, translations}))
+            } catch (err) {
+                void dispatch(
+                    notify({
+                        message: "Failed to fetch Help center's translations",
+                        status: NotificationStatus.Error,
+                    })
+                )
+
+                reportError(err as Error)
+            }
         }
-    }, [localeHelpCenterId, localHelpCenter, dispatch, getHelpCenter])
+    }, [client, helpCenter, dispatch])
+
+    const getHelpCenterCustomDomain = useCallback(async () => {
+        if (client && helpCenter) {
+            try {
+                const {
+                    data: {data: customDomains},
+                } = await client.listCustomDomains({
+                    help_center_id: helpCenter.id,
+                })
+
+                const customDomain = customDomains.find(
+                    (domain) => domain.status === 'active'
+                )
+
+                dispatch(helpCenterUpdated({...helpCenter, customDomain}))
+            } catch (err) {
+                void dispatch(
+                    notify({
+                        message: "Failed to fetch Help center's custom domains",
+                        status: NotificationStatus.Error,
+                    })
+                )
+
+                reportError(err as Error)
+            }
+        }
+    }, [client, helpCenter, dispatch])
+
+    useEffect(() => {
+        if (!helpCenter && !fetchInProgress) {
+            void fetchHelpCenter()
+        }
+    }, [helpCenter, fetchHelpCenter])
 
     return {
-        isLoading: helpCenter.loading,
-        data: localHelpCenter,
-        error: helpCenter.error,
+        helpCenter,
+        error,
+        getHelpCenterCustomDomain,
+        fetchHelpCenterTranslations,
     }
 }

@@ -3,7 +3,7 @@ import {chain as _chain} from 'lodash'
 import _sortBy from 'lodash/sortBy'
 import classNames from 'classnames'
 
-import {HelpCenterArticle} from '../../../../../models/helpCenter/types'
+import {Article} from '../../../../../models/helpCenter/types'
 import HeaderCell from '../../../../common/components/table/cells/HeaderCell'
 import TableHead from '../../../../common/components/table/TableHead'
 
@@ -16,13 +16,10 @@ import css from './ArticlesTable.less'
 type Props = {
     isNested?: boolean
     categoryId: number
-    list: HelpCenterArticle[]
-    onClick: (article: HelpCenterArticle) => void
-    onClickSettings: (name: string, article: HelpCenterArticle) => void
-    onReorderFinish?: (
-        categoryId: number,
-        articles: HelpCenterArticle[]
-    ) => void
+    list: Article[]
+    onClick: (article: Article) => void
+    onClickSettings: (name: string, article: Article) => void
+    onReorderFinish?: (categoryId: number, articles: Article[]) => void
 }
 
 export const ArticlesTable = ({
@@ -39,13 +36,13 @@ export const ArticlesTable = ({
         setRecords(_sortBy(list, ['position']))
     }, [list])
 
-    const handleOnClickRow = (article: HelpCenterArticle) => {
+    const handleOnClickRow = (article: Article) => {
         onClick(article)
     }
     const handleOnClickSettings = (
         event: React.MouseEvent,
         name: string,
-        article: HelpCenterArticle
+        article: Article
     ) => {
         event.stopPropagation()
 
@@ -61,7 +58,7 @@ export const ArticlesTable = ({
             nextRecords.splice(hoverIndex, 0, dragRecord)
 
             nextRecords = _chain(nextRecords)
-                .map((article: HelpCenterArticle, index: number) => ({
+                .map((article: Article, index: number) => ({
                     ...article,
                     position: index,
                 }))

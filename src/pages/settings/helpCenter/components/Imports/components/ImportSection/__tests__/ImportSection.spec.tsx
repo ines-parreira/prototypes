@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 
 import ImportSection from '../ImportSection'
 
-import {getSingleHelpcenterResponseFixture as helpCenter} from '../../../../../fixtures/getHelpcenterResponse.fixture'
+import {getSingleHelpCenterResponseFixture as helpCenter} from '../../../../../fixtures/getHelpCentersResponse.fixture'
 
 import {RootState, StoreDispatch} from '../../../../../../../../state/types'
 import {initialState as articlesState} from '../../../../../../../../state/helpCenter/articles/reducer'
@@ -20,9 +20,9 @@ beforeEach(() => {
     jest.clearAllMocks()
 })
 
-jest.mock('../../../../../hooks/useHelpcenterApi', () => {
+jest.mock('../../../../../hooks/useHelpCenterApi', () => {
     return {
-        useHelpcenterApi: () => ({
+        useHelpCenterApi: () => ({
             isReady: true,
             client: {
                 generateCsvTemplate: jest.fn(),

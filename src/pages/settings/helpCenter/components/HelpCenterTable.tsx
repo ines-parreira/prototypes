@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import moment from 'moment'
 import {Container} from 'reactstrap'
 
-import {HelpCenter, HelpCenterLocale} from '../../../../models/helpCenter/types'
+import {HelpCenter, Locale} from '../../../../models/helpCenter/types'
 import {LanguageList} from '../../../common/components/LanguageBulletList'
 import Loader from '../../../common/components/Loader/Loader'
 import BodyCell from '../../../common/components/table/cells/BodyCell'
@@ -21,7 +21,7 @@ type HelpCentersTableProps = {
     isLoading: boolean
     list: HelpCenter[]
     locales: {
-        [key: string]: HelpCenterLocale
+        [key: string]: Locale
     }
     onToggle: (helpCenterId: number, toggle: boolean) => void
     onClick: (helpCenterId: number) => void
@@ -96,7 +96,7 @@ export function HelpCentersTable({
                                 </BodyCell>
                                 <BodyCell>
                                     <LanguageList
-                                        helpcenterId={id}
+                                        id={id}
                                         defaultLanguage={
                                             locales[default_locale]
                                         }

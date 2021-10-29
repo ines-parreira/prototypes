@@ -4,11 +4,13 @@ import {NavLink} from 'react-router-dom'
 import SecondaryNavbar from '../../../common/components/SecondaryNavbar/SecondaryNavbar'
 
 type Props = {
-    helpcenterId: string | number
+    helpCenterId: string | number
 }
 
-export const HelpCenterNavigation = ({helpcenterId}: Props) => {
-    const baseURL = `/app/settings/help-center/${helpcenterId}`
+export const HelpCenterNavigation: React.FC<Props> = ({
+    helpCenterId,
+}: Props) => {
+    const baseURL = `/app/settings/help-center/${helpCenterId}`
 
     return (
         <SecondaryNavbar>

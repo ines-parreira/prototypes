@@ -1,13 +1,7 @@
-import React, {
-    ChangeEvent,
-    MouseEvent,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
-import {useSelector} from 'react-redux'
+import React, {ChangeEvent, useEffect, useMemo, useRef, useState} from 'react'
 import classNames from 'classnames'
+import copy from 'copy-to-clipboard'
+import {useSelector} from 'react-redux'
 import {
     Button,
     FormGroup,
@@ -17,35 +11,36 @@ import {
     InputGroupAddon,
     Label,
 } from 'reactstrap'
-import copy from 'copy-to-clipboard'
 
 import useAppDispatch from '../../../../../../hooks/useAppDispatch'
-import {NotificationStatus} from '../../../../../../state/notifications/types'
-import {notify} from '../../../../../../state/notifications/actions'
 import {SCREEN_SIZE, useScreenSize} from '../../../../../../hooks/useScreenSize'
-
 import {
     Category,
-    CategoryTranslation,
-    CreateCategoryDto,
+    CreateCategoryTranslationDto,
     HelpCenter,
+    LocalCategoryTranslation,
     LocaleCode,
+    UpdateCategoryTranslationDto,
 } from '../../../../../../models/helpCenter/types'
 import {getViewLanguage} from '../../../../../../state/helpCenter/ui'
-
+import {notify} from '../../../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../../../state/notifications/types'
 import {Drawer} from '../../../../../common/components/Drawer'
+import AutoPopulateInput from '../../../../../common/forms/AutoPopulateInput/AutoPopulateInput'
 import {
     DRAWER_TRANSITION_DURATION_MS,
-    HELP_CENTER_LANGUAGE_DEFAULT,
+    HELP_CENTER_DEFAULT_LOCALE,
 } from '../../../constants'
 import {useLocales} from '../../../hooks/useLocales'
-import {useLocaleSelectOptions} from '../../../hooks/useLocaleSelectOptions'
 import {
-    buildCategorySlug,
+    getAbsoluteUrl,
+    getCategoryUrl,
     getHelpCenterDomain,
     slugify,
 } from '../../../utils/helpCenter.utils'
+import {getLocaleSelectOptions} from '../../../utils/localeSelectOptions'
 import {ConfirmationModal} from '../../ConfirmationModal'
+import {SearchEnginePreview} from '../../SearchEnginePreview'
 import {
     ActionType,
     ArticleLanguageSelect,
@@ -60,12 +55,14 @@ type Props = {
     isLoading: boolean
     canSave: boolean
     helpCenter: HelpCenter
-    customDomain?: string
     category?: Category
-    translation?: CategoryTranslation
+    translation?: LocalCategoryTranslation
     onLocaleChange: (locale: LocaleCode) => void
-    onCreate?: (payload: CreateCategoryDto) => void
-    onSave?: (payload: Partial<CategoryTranslation>, locale: LocaleCode) => void
+    onCreate?: (translation: CreateCategoryTranslationDto) => void
+    onSave?: (
+        translation: UpdateCategoryTranslationDto,
+        locale: LocaleCode
+    ) => void
     onClose: () => void
     onDeleteTranslation: (categoryId: number, locale: LocaleCode) => void
     onDelete?: (categoryId: number) => void
@@ -79,7 +76,6 @@ export const HelpCenterCategory = ({
     translation,
     category,
     helpCenter,
-    customDomain,
     onLocaleChange,
     onSave,
     onCreate,
@@ -89,48 +85,44 @@ export const HelpCenterCategory = ({
 }: Props): JSX.Element => {
     const dispatch = useAppDispatch()
     const viewLanguage =
-        useSelector(getViewLanguage) || HELP_CENTER_LANGUAGE_DEFAULT
+        useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const locales = useLocales()
     const [title, setTitle] = useState('')
     const [slug, setSlug] = useState('')
     const [isPristineSlug, setPristineSlug] = useState(true)
     const [description, setDescription] = useState('')
+    const [metaTitle, setMetaTitle] = useState<string | null>(null)
+    const [metaDescription, setMetaDescription] = useState<string | null>(null)
     const [locale, setLocale] = useState(viewLanguage)
     const [pendingDeleteLocale, setPendingDeleteLocale] = useState<OptionItem>()
     const [pendingDeleteCategory, setPendingDeleteCategory] = useState(false)
     const categoryTitleRef = useRef<HTMLInputElement>(null)
     const screenSize = useScreenSize()
 
-    const localeOptions = useLocaleSelectOptions(
-        locales,
-        helpCenter.supported_locales
-    )
-
-    const domain = useMemo(
-        () => getHelpCenterDomain(helpCenter.subdomain, customDomain),
-        [customDomain, helpCenter.subdomain]
-    )
+    const domain = useMemo(() => getHelpCenterDomain(helpCenter), [helpCenter])
 
     const options: OptionItem[] = useMemo(
         () =>
-            localeOptions.map((option) => {
-                let isComplete = false
-                let canBeDeleted = true
+            getLocaleSelectOptions(locales, helpCenter.supported_locales).map(
+                (option) => {
+                    let isComplete = false
+                    let canBeDeleted = true
 
-                if (category?.available_locales) {
-                    isComplete = category.available_locales.includes(
-                        option.value
-                    )
-                    canBeDeleted = category?.available_locales?.length > 1
-                }
+                    if (category?.available_locales) {
+                        isComplete = category.available_locales.includes(
+                            option.value
+                        )
+                        canBeDeleted = category.available_locales.length > 1
+                    }
 
-                return {
-                    ...option,
-                    isComplete,
-                    canBeDeleted,
+                    return {
+                        ...option,
+                        isComplete,
+                        canBeDeleted,
+                    }
                 }
-            }),
-        [category, localeOptions]
+            ),
+        [category, locales, helpCenter.supported_locales]
     )
 
     useEffect(() => {
@@ -142,6 +134,9 @@ export const HelpCenterCategory = ({
             setTitle(translation?.title || '')
             setSlug(translation?.slug || '')
             setDescription(translation?.description || '')
+            setMetaTitle(translation?.seo_meta.title || null)
+            setMetaDescription(translation?.seo_meta.description || null)
+
             if (translation?.locale) {
                 setLocale(translation?.locale)
             }
@@ -149,6 +144,8 @@ export const HelpCenterCategory = ({
             setTitle('')
             setSlug('')
             setDescription('')
+            setMetaTitle(null)
+            setMetaDescription(null)
             setLocale(viewLanguage)
         }
     }, [isOpen, category, translation, viewLanguage])
@@ -165,12 +162,10 @@ export const HelpCenterCategory = ({
     }, [isOpen])
 
     const handleOnClickAction = (
-        ev: MouseEvent,
         action: ActionType,
         currentOption: OptionItem
     ) => {
         if (action === 'delete' && category?.id) {
-            ev.stopPropagation()
             setPendingDeleteLocale(currentOption)
         }
     }
@@ -182,9 +177,9 @@ export const HelpCenterCategory = ({
         }
     }
 
-    const handleOnChangeLocale = (ev: MouseEvent, value: LocaleCode) => {
-        setLocale(value)
-        onLocaleChange(value)
+    const handleOnChangeLocale = (localeCode: LocaleCode) => {
+        setLocale(localeCode)
+        onLocaleChange(localeCode)
     }
 
     const handleOnConfirmDelete = () => {
@@ -218,11 +213,13 @@ export const HelpCenterCategory = ({
     const handleOnSave = () => {
         if (isCreate) {
             onCreate?.({
-                translation: {
-                    title,
-                    slug,
-                    description,
-                    locale,
+                locale,
+                title,
+                slug,
+                description,
+                seo_meta: {
+                    title: metaTitle,
+                    description: metaDescription,
                 },
             })
 
@@ -234,6 +231,10 @@ export const HelpCenterCategory = ({
                 title,
                 slug,
                 description,
+                seo_meta: {
+                    title: metaTitle,
+                    description: metaDescription,
+                },
             },
             locale
         )
@@ -242,7 +243,7 @@ export const HelpCenterCategory = ({
     const copyURL = () => {
         const categoryId = category?.id
 
-        copy(buildCategorySlug({domain, locale, slug, categoryId}))
+        copy(getCategoryUrl({domain, locale, slug, categoryId}))
 
         void dispatch(
             notify({
@@ -256,6 +257,9 @@ export const HelpCenterCategory = ({
         () => canSave && title.trim() !== '' && slug.trim() !== '',
         [canSave, title, slug]
     )
+
+    const slugPrefix = getCategoryUrl({domain, locale})
+    const slugSuffix = category?.id ? `-${category.id.toString()}` : ''
 
     const content = () => (
         <>
@@ -308,7 +312,7 @@ export const HelpCenterCategory = ({
                                 data-testid="slug-prefix"
                                 className={css['slug-prefix']}
                             >
-                                {buildCategorySlug({domain, locale})}
+                                {slugPrefix}
                             </span>
                         </InputGroupAddon>
                         <Input
@@ -319,13 +323,13 @@ export const HelpCenterCategory = ({
                             placeholder="Category slug"
                             onChange={handleChangeSlug}
                         />
-                        {category?.id && (
+                        {slugSuffix && (
                             <InputGroupAddon addonType="append">
                                 <span
                                     data-testid="slug-suffix"
                                     className={css['slug-suffix']}
                                 >
-                                    -{category.id}
+                                    {slugSuffix}
                                 </span>
                             </InputGroupAddon>
                         )}
@@ -351,6 +355,36 @@ export const HelpCenterCategory = ({
                         help people find it.
                     </FormText>
                 </FormGroup>
+                <AutoPopulateInput
+                    type="text"
+                    name="seoTitle"
+                    label="Meta Title"
+                    value={metaTitle}
+                    onChange={setMetaTitle}
+                    populateLabel="Use the same as Title"
+                    populateValue={title}
+                    help="SEO Title tag is how your category is going to be displayed in Search Engines."
+                    required
+                />
+                <AutoPopulateInput
+                    type="textarea"
+                    name="seoDescription"
+                    label="Meta Description"
+                    value={metaDescription}
+                    onChange={setMetaDescription}
+                    populateLabel="Use the same as Description"
+                    populateValue={description}
+                    help="Category description is displayed in search engines to help people find it."
+                    rows="2"
+                    required
+                />
+                <SearchEnginePreview
+                    baseUrl={getAbsoluteUrl({domain}, false)}
+                    title={metaTitle ?? title}
+                    description={metaDescription ?? description}
+                    urlItems={['articles', `${slug}${slugSuffix}`]}
+                    help="This is a preview of how your category is going to look like in search engines (e.g. Google, Duckduckgo, Bing...)"
+                />
             </Drawer.Content>
             <Drawer.Footer>
                 <Button

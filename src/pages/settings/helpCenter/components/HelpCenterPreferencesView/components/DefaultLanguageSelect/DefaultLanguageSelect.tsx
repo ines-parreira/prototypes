@@ -1,37 +1,36 @@
 import React from 'react'
 import {Col, Row} from 'reactstrap'
 
-import {HelpCenterLocale} from '../../../../../models/helpCenter/types'
-import {validLocaleCode} from '../../../../../models/helpCenter/utils'
-
-import SelectField from '../../../../common/forms/SelectField/SelectField'
-import type {Value} from '../../../../common/forms/SelectField/types'
-
-import {useLanguagePreferencesSettings} from '../../providers/LanguagePreferencesSettings'
-import {useLocaleSelectOptions} from '../../hooks/useLocaleSelectOptions'
+import {Locale} from '../../../../../../../models/helpCenter/types'
+import {validLocaleCode} from '../../../../../../../models/helpCenter/utils'
+import SelectField from '../../../../../../common/forms/SelectField/SelectField'
+import type {Value} from '../../../../../../common/forms/SelectField/types'
+import {useHelpCenterPreferencesSettings} from '../../../../providers/HelpCenterPreferencesSettings'
+import {getLocaleSelectOptions} from '../../../../utils/localeSelectOptions'
 
 import css from './DefaultLanguageSelect.less'
 
 type Props = {
-    localesAvailable: HelpCenterLocale[]
+    availableLocales: Locale[]
 }
 
-export const DefaultLanguageSelect = ({localesAvailable}: Props) => {
-    const {preferences, updatePreference} = useLanguagePreferencesSettings()
-    const localesOptions = useLocaleSelectOptions(
-        localesAvailable,
-        preferences?.availableLanguages
+export const DefaultLanguageSelect: React.FC<Props> = ({
+    availableLocales,
+}: Props) => {
+    const {preferences, updatePreferences} = useHelpCenterPreferencesSettings()
+    const localesOptions = getLocaleSelectOptions(
+        availableLocales,
+        preferences.availableLanguages
     )
 
     const onChangeLanguage = (value: Value) => {
-        updatePreference({
+        updatePreferences({
             defaultLanguage: validLocaleCode(value),
         })
     }
 
     return (
         <section className={css['container-default-language']}>
-            <h3 className={css.title}>Languages</h3>
             <h5>Default language</h5>
             <p>
                 Choose the default language that will be used every time it’s

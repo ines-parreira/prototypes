@@ -1,13 +1,39 @@
-import {getAbsoluteUrl, getNewTranslation, slugify} from '../helpCenter.utils'
+import {getSingleCustomDomainResponseFixture} from '../../fixtures/getCustomDomainsResponse.fixture'
+import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
+import {
+    getAbsoluteUrl,
+    getArticleUrl,
+    getCategoryUrl,
+    getHelpCenterDomain,
+    getNewArticleTranslation,
+    getNewHelpCenterTranslation,
+    slugify,
+} from '../helpCenter.utils'
 
-describe('getNewTranslation()', () => {
-    it('have the expected properties', () => {
-        expect(getNewTranslation('en-US')).toEqual({
+describe('getNewArticleTranslation()', () => {
+    it('returns a new article translation', () => {
+        expect(getNewArticleTranslation('en-US')).toEqual({
             title: '',
             content: '',
             excerpt: '',
             slug: '',
             locale: 'en-US',
+            seo_meta: {
+                title: null,
+                description: null,
+            },
+        })
+    })
+})
+
+describe('getNewHelpCenterTranslation()', () => {
+    it('returns a new help center translation', () => {
+        expect(getNewHelpCenterTranslation('en-US')).toEqual({
+            locale: 'en-US',
+            seo_meta: {
+                title: null,
+                description: null,
+            },
         })
     })
 })
@@ -48,25 +74,76 @@ describe('slugify()', () => {
 })
 
 describe('getAbsoluteUrl()', () => {
-    it(`returns a valid absolute URL for 'gorgias.com'`, () => {
-        expect(getAbsoluteUrl('gorgias.com')).toEqual('https://gorgias.com')
+    it(`returns a valid absolute URL for domain 'gorgias.com'`, () => {
+        expect(getAbsoluteUrl({domain: 'gorgias.com'})).toEqual(
+            'https://gorgias.com/'
+        )
     })
 
-    it(`returns a valid absolute URL for 'www.gorgias.com'`, () => {
-        expect(getAbsoluteUrl('www.gorgias.com')).toEqual(
+    it(`returns a valid absolute URL for domain 'www.gorgias.com'`, () => {
+        expect(getAbsoluteUrl({domain: 'www.gorgias.com'}, false)).toEqual(
             'https://www.gorgias.com'
         )
     })
 
-    it(`returns a valid absolute URL for 'http://gorgias.com'`, () => {
-        expect(getAbsoluteUrl('http://gorgias.com')).toEqual(
+    it(`returns a valid absolute URL for domain 'http://gorgias.com'`, () => {
+        expect(getAbsoluteUrl({domain: 'http://gorgias.com'}, false)).toEqual(
             'http://gorgias.com'
         )
     })
 
-    it(`returns a valid absolute URL for 'https://gorgias.com'`, () => {
-        expect(getAbsoluteUrl('https://gorgias.com')).toEqual(
+    it(`returns a valid absolute URL for domain 'https://gorgias.com'`, () => {
+        expect(getAbsoluteUrl({domain: 'https://gorgias.com'}, false)).toEqual(
             'https://gorgias.com'
         )
+    })
+
+    it(`returns a valid absolute URL for domain 'acme.gorgias.help' and locale 'fr-FR'`, () => {
+        expect(
+            getAbsoluteUrl({domain: 'acme.gorgias.help', locale: 'fr-FR'})
+        ).toEqual('https://acme.gorgias.help/fr-FR/')
+    })
+})
+
+describe('getHelpCenterDomain()', () => {
+    it(`returns the help center's preferred domain`, () => {
+        expect(getHelpCenterDomain(getSingleHelpCenterResponseFixture)).toEqual(
+            'acme.gorgias.rehab'
+        )
+    })
+
+    it(`returns the help center's preferred domain with custom domain`, () => {
+        expect(
+            getHelpCenterDomain({
+                ...getSingleHelpCenterResponseFixture,
+                customDomain: getSingleCustomDomainResponseFixture,
+            })
+        ).toEqual('chuck-norris.com')
+    })
+})
+
+describe('getArticleUrl()', () => {
+    it(`returns an absolute article URL`, () => {
+        expect(
+            getArticleUrl({
+                domain: 'acme.gorgias.rehab',
+                locale: 'en-US',
+                slug: 'great-article',
+                articleId: 2,
+            })
+        ).toEqual('https://acme.gorgias.rehab/en-US/great-article-2')
+    })
+})
+
+describe('getCategoryUrl()', () => {
+    it(`returns an absolute category URL`, () => {
+        expect(
+            getCategoryUrl({
+                domain: 'acme.gorgias.rehab',
+                locale: 'en-US',
+                slug: 'orders',
+                categoryId: 4,
+            })
+        ).toEqual('https://acme.gorgias.rehab/en-US/articles/orders-4')
     })
 })

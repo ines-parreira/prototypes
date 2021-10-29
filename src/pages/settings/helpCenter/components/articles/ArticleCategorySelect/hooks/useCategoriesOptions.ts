@@ -4,7 +4,7 @@ import {useMountedState} from 'react-use'
 import {LocaleCode} from '../../../../../../../models/helpCenter/types'
 import {SelectableOption} from '../../../../../../common/forms/SelectField/types'
 
-import {useHelpcenterApi} from '../../../../hooks/useHelpcenterApi'
+import {useHelpCenterApi} from '../../../../hooks/useHelpCenterApi'
 
 interface UseCategoriesOptions {
     locale: LocaleCode
@@ -15,7 +15,7 @@ export const NO_CATEGORY_OPTION = 'null'
 
 const useCategoriesOptions = ({locale, helpCenterId}: UseCategoriesOptions) => {
     const [options, setOptions] = useState<SelectableOption[]>([])
-    const {client} = useHelpcenterApi()
+    const {client} = useHelpCenterApi()
     const isMounted = useMountedState()
 
     const loadCategories = async (): Promise<void> => {
@@ -32,7 +32,7 @@ const useCategoriesOptions = ({locale, helpCenterId}: UseCategoriesOptions) => {
             per_page: 1000,
         })
         const newOptions = categories.map((category) => ({
-            label: category.translation?.title,
+            label: category.translation.title,
             value: category.id,
         }))
         if (isMounted()) {

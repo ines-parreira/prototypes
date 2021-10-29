@@ -1,65 +1,67 @@
-import React from 'react'
+import React, {useMemo, useState} from 'react'
 import produce from 'immer'
 import _keyBy from 'lodash/keyBy'
 import {Button} from 'reactstrap'
 
-import {HelpCenterLocale} from '../../../../../../../models/helpCenter/types'
-
-import Modal from '../../../../../../common/components/Modal'
-
-import {useLanguagePreferencesSettings} from '../../../../providers/LanguagePreferencesSettings'
-
-import {DynamicBadgeList, BadgeItemProps} from '../BadgeList'
+import {Locale} from '../../../../../../../models/helpCenter/types'
 import {FlagLanguageItem} from '../../../../../../common/components/LanguageBulletList'
+import Modal from '../../../../../../common/components/Modal'
+import {useHelpCenterPreferencesSettings} from '../../../../providers/HelpCenterPreferencesSettings'
+import {localeToSelectOption} from '../../../../utils/localeSelectOptions'
+import {BadgeItemProps, DynamicBadgeList} from '../BadgeList'
 
-import {transformToSelectOption, transformToSelectedLocale} from './utils'
+import {transformToSelectedLocale} from './utils'
+
 import css from './AvailableLanguagesTags.less'
 
-function ensureDefaultLanguageIsFirst(locale: string[], defaultLocale: string) {
-    const index = locale.findIndex((code) => code === defaultLocale)
-    const localeCopy = [...locale]
+function ensureDefaultLanguageIsFirst(
+    locales: string[],
+    defaultLocale: string
+) {
+    const index = locales.findIndex((code) => code === defaultLocale)
+    const localesCopy = [...locales]
 
     if (index > 0) {
-        localeCopy.splice(index, 1)
-        return [defaultLocale, ...localeCopy]
+        localesCopy.splice(index, 1)
+        return [defaultLocale, ...localesCopy]
     }
 
-    return locale
+    return locales
 }
 
 type Props = {
-    availableLocales: HelpCenterLocale[]
+    availableLocales: Locale[]
 }
 
-export const AvailableLanguagesTags = ({availableLocales}: Props) => {
-    const {preferences, updatePreference} = useLanguagePreferencesSettings()
-    const [
-        pendingLocale,
-        setPendingLocale,
-    ] = React.useState<BadgeItemProps | null>()
-    const supportedLocales = React.useMemo(
-        () => _keyBy(availableLocales, 'code'),
-        [availableLocales]
-    )
+export const AvailableLanguagesTags: React.FC<Props> = ({
+    availableLocales,
+}: Props) => {
+    const {preferences, updatePreferences} = useHelpCenterPreferencesSettings()
+    const [pendingLocale, setPendingLocale] = useState<BadgeItemProps | null>()
+    const supportedLocales = useMemo(() => _keyBy(availableLocales, 'code'), [
+        availableLocales,
+    ])
 
     const availableList = Object.values(supportedLocales).map(
-        transformToSelectOption
+        localeToSelectOption
     )
 
     const selectedLocales = ensureDefaultLanguageIsFirst(
         preferences.availableLanguages,
         preferences.defaultLanguage
     )
-        .filter((locale) => supportedLocales[locale])
-        .map((locale) =>
-            transformToSelectedLocale(
-                supportedLocales[locale],
-                preferences.defaultLanguage
+        .filter((localeCode) => supportedLocales[localeCode])
+        .map((localeCode) => {
+            const locale = supportedLocales[localeCode]
+
+            return transformToSelectedLocale(
+                locale,
+                locale.code !== preferences.defaultLanguage
             )
-        )
+        })
 
     const handleOnAddLocale = (_: React.MouseEvent, locale: BadgeItemProps) => {
-        updatePreference({
+        updatePreferences({
             availableLanguages: [...preferences.availableLanguages, locale.id],
         })
     }
@@ -74,13 +76,14 @@ export const AvailableLanguagesTags = ({availableLocales}: Props) => {
     const handleOnClickDeleteLocale = () => {
         if (!pendingLocale) return
 
-        updatePreference({
+        updatePreferences({
             availableLanguages: produce(
                 preferences.availableLanguages,
                 (draftLocales) => {
-                    const index = draftLocales.findIndex((locale) => {
-                        return locale === pendingLocale.id
-                    })
+                    const index = draftLocales.findIndex(
+                        (locale) => locale === pendingLocale.id
+                    )
+
                     if (index >= 0) {
                         draftLocales.splice(index, 1)
                     }

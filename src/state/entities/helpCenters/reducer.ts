@@ -24,14 +24,16 @@ const helpCenterReducer = createReducer<HelpCentersState>(
                 state[payload.id.toString()] = payload
             })
             .addCase(helpCenterUpdated, (state, {payload}) => {
-                state[payload.id.toString()] = payload
+                state[payload.id.toString()] = state[payload.id.toString()]
+                    ? {...state[payload.id.toString()], ...payload}
+                    : payload
             })
             .addCase(helpCenterDeleted, (state, {payload}) => {
                 delete state[payload.toString()]
             })
             .addCase(helpCentersFetched, (state, {payload}) => {
-                payload.map((helpCenterArticle: HelpCenter) => {
-                    state[helpCenterArticle.id.toString()] = helpCenterArticle
+                payload.map((helpCenter: HelpCenter) => {
+                    state[helpCenter.id.toString()] = helpCenter
                 })
             })
 )

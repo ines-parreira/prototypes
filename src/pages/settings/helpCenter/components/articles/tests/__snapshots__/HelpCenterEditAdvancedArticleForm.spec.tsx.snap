@@ -114,6 +114,152 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
         Displayed under the title of this article inside your Help Center.
       </small>
     </div>
+    <div
+      class="container"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-seoTitle"
+        >
+          Meta Title
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            disabled=""
+            id="id-seoTitle"
+            required=""
+            type="text"
+            value="Free article (EN)"
+          />
+        </div>
+        <small
+          class="form-text text-muted"
+        >
+          SEO Title tag is how your article is going to be displayed in search engines.
+        </small>
+      </div>
+      <div
+        class="form-check"
+        color=""
+      >
+        <label
+          class="control-label form-check-label"
+          for="id-input-1"
+        >
+          <input
+            checked=""
+            class="form-check-input form-check-input"
+            id="id-input-1"
+            type="checkbox"
+          />
+          <span
+            style="vertical-align: middle;"
+          >
+            Use the same as Title
+          </span>
+        </label>
+      </div>
+    </div>
+    <div
+      class="container"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-seoDescription"
+        >
+          Meta Description
+        </label>
+        <div
+          class=""
+        >
+          <textarea
+            class="form-control"
+            disabled=""
+            id="id-seoDescription"
+            required=""
+            rows="2"
+          >
+            Paragraph lorem ipsum, Yiddish xylophone wonder.
+          </textarea>
+        </div>
+        <small
+          class="form-text text-muted"
+        >
+          Article description is displayed in search engines to help people find it.
+        </small>
+      </div>
+      <div
+        class="form-check"
+        color=""
+      >
+        <label
+          class="control-label form-check-label"
+          for="id-input-2"
+        >
+          <input
+            checked=""
+            class="form-check-input form-check-input"
+            id="id-input-2"
+            type="checkbox"
+          />
+          <span
+            style="vertical-align: middle;"
+          >
+            Use the same as Excerpt
+          </span>
+        </label>
+      </div>
+    </div>
+    <div
+      class="container"
+    >
+      <div
+        class="label"
+      >
+        Search Engine Preview
+      </div>
+      <div
+        class="preview"
+      >
+        <div
+          class="url"
+        >
+          https://acme.gorgias.rehab
+          <span
+            class="url-item"
+          >
+             › 
+            free-article-1
+          </span>
+        </div>
+        <div
+          class="title"
+        >
+          Free article (EN)
+        </div>
+        <div
+          class="description"
+        >
+          Paragraph lorem ipsum, Yiddish xylophone wonder.
+        </div>
+      </div>
+      <small
+        class="form-text text-muted"
+      >
+        This is a preview of how your article is going to look like in search engines (e.g. Google, Duckduckgo, Bing...)
+      </small>
+    </div>
     <i
       class="articleIDHint"
     >

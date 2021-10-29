@@ -8,7 +8,7 @@ import {
     LocaleCode,
     LocalNavigationLink,
     LocalSocialNavigationLink,
-    NavigationLinkDto,
+    NavigationLink,
     NavigationLinkGroup,
 } from '../../../../models/helpCenter/types'
 import {isURLOptions} from '../utils/navigationLinks'
@@ -23,7 +23,7 @@ const DEFAULT_OPTIONS = {
 
 function decorateLocaleLinks(
     group: NavigationLinkGroup,
-    links: NavigationLinkDto[]
+    links: NavigationLink[]
 ): LocalNavigationLink[] {
     return _chain(links)
         .filter((link) => link.group === group)
@@ -87,7 +87,7 @@ function isListValid<T extends LocalNavigationLink | LocalSocialNavigationLink>(
 
 export const useNavigationLinks = (
     group: NavigationLinkGroup,
-    response: NavigationLinkDto[],
+    response: NavigationLink[],
     options?: Options
 ): {
     links: LocalNavigationLink[]

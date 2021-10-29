@@ -16,7 +16,7 @@ export type BadgeItemProps = {
     onClose?: (ev: React.MouseEvent) => void
 }
 
-export const BadgeItem = ({
+export const BadgeItem: React.FC<BadgeItemProps> = ({
     id,
     label,
     isClosable,

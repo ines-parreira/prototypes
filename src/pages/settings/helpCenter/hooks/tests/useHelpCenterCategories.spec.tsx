@@ -14,11 +14,11 @@ import {
     saveCategories,
 } from '../../../../../state/helpCenter/categories'
 
-import {useHelpCenterCategories} from '../useHelpcenterCategories'
+import {useHelpCenterCategories} from '../useHelpCenterCategories'
 
-jest.mock('../useHelpcenterApi', () => {
+jest.mock('../useHelpCenterApi', () => {
     return {
-        useHelpcenterApi: jest.fn().mockReturnValue({
+        useHelpCenterApi: jest.fn().mockReturnValue({
             isReady: true,
             client: {
                 listCategories: () =>

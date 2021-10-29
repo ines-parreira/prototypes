@@ -17,7 +17,7 @@ import {getCurrentHelpCenter} from '../../../../../../../state/entities/helpCent
 
 import {uploadFiles} from '../../../../../../../utils'
 
-import {useHelpcenterApi} from '../../../../hooks/useHelpcenterApi'
+import {useHelpCenterApi} from '../../../../hooks/useHelpCenterApi'
 
 import {saveFileAsDownloaded} from '../../../../../../../utils/file'
 
@@ -62,7 +62,7 @@ export const ImportSection = ({
     const dispatch = useAppDispatch()
     const history = useHistory()
     const helpCenter = useSelector(getCurrentHelpCenter)
-    const {isReady, client} = useHelpcenterApi()
+    const {isReady, client} = useHelpCenterApi()
 
     useEffect(() => {
         const script = document.createElement('script')
