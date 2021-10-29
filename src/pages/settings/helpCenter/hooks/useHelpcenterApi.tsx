@@ -1,4 +1,10 @@
-import React from 'react'
+import React, {
+    createContext,
+    useContext,
+    useState,
+    useEffect,
+    ReactNode,
+} from 'react'
 
 import {
     getHelpCenterClient,
@@ -11,10 +17,9 @@ type UseHelpCenterApiInterface = {
     client: HelpCenterClient | undefined
 }
 
-let client: HelpCenterClient
 let accessToken: string | null
 let createAccessTokenPendingRequest: ReturnType<
-    typeof client.createAccessToken
+    HelpCenterClient['createAccessToken']
 > | null = null
 
 const isValidAccessToken = (token: string | null) => {
@@ -49,38 +54,66 @@ const renewAccessToken = async (client: HelpCenterClient): Promise<void> => {
     createAccessTokenPendingRequest = null
 }
 
-export const useHelpcenterApi = (): UseHelpCenterApiInterface => {
-    const [isReady, setReady] = React.useState(client !== undefined)
+interface HelpCenterApiClientState {
+    isReady: boolean
+    client: HelpCenterClient | undefined
+}
 
-    React.useEffect(() => {
-        async function init() {
-            setReady(false)
-            client = await getHelpCenterClient()
-            client.interceptors.request.use(async (config) => {
-                // Prevent recursion while doing auth calls
-                if (config.url === '/api/help-center/auth') {
-                    return config
-                }
+const HelpCenterApiClientContext = createContext<HelpCenterApiClientState>({
+    isReady: false,
+    client: undefined,
+})
 
-                if (!isValidAccessToken(accessToken)) {
-                    await renewAccessToken(client)
-                }
+interface HelpCenterApiClientProviderProps {
+    children: ReactNode
+}
 
-                return {
-                    ...config,
-                    headers: {
-                        ...config.headers,
-                        authorization: `Bearer ${accessToken || ''}`,
-                    },
-                }
-            })
+export const HelpCenterApiClientProvider = ({
+    children,
+}: HelpCenterApiClientProviderProps) => {
+    const [state, setState] = useState<HelpCenterApiClientState>({
+        isReady: false,
+        client: undefined,
+    })
+    const initClient = async () => {
+        const newClient = await getHelpCenterClient()
+        newClient.interceptors.request.use(async (config) => {
+            // Prevent recursion while doing auth calls
+            if (config.url === '/api/help-center/auth') {
+                return config
+            }
 
-            setReady(true)
-        }
-        if (client === undefined) {
-            void init()
-        }
+            if (!isValidAccessToken(accessToken)) {
+                await renewAccessToken(newClient)
+            }
+
+            return {
+                ...config,
+                headers: {
+                    ...config.headers,
+                    authorization: `Bearer ${accessToken || ''}`,
+                },
+            }
+        })
+        setState({
+            client: newClient,
+            isReady: true,
+        })
+    }
+
+    useEffect(() => {
+        void initClient()
     }, [])
+
+    return (
+        <HelpCenterApiClientContext.Provider value={state}>
+            {children}
+        </HelpCenterApiClientContext.Provider>
+    )
+}
+
+export const useHelpcenterApi = (): UseHelpCenterApiInterface => {
+    const {isReady, client} = useContext(HelpCenterApiClientContext)
 
     return {
         isReady,

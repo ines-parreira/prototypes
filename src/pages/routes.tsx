@@ -69,6 +69,7 @@ import SelfServiceReportIssueCaseEditorContainer from './settings/selfService/co
 import HelpCenterStartView from './settings/helpCenter/components/HelpCenterStartView'
 import HelpCenterNewView from './settings/helpCenter/components/HelpCenterNewView'
 import {CurrentHelpCenter} from './settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
+import {HelpCenterApiClientProvider} from './settings/helpCenter/hooks/useHelpcenterApi'
 import DefaultStatsFilters from './stats/DefaultStatsFilters'
 import HelpCenterPaywall from './settings/helpCenter/components/Paywalls/HelpCenterPaywall'
 import withLegacyPlanPaywall from './common/utils/withLegacyPlanPaywall'
@@ -531,52 +532,63 @@ export function IntegrationsSettingsRoutes({
 
 export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
     return (
-        <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={appRender({
-                    content: HELP_CENTER_PAYWALLS_ENABLED
-                        ? withLegacyPlanPaywall(HelpCenterPaywall)(
-                              withUserRoleRequired(
+        <HelpCenterApiClientProvider>
+            <Switch>
+                <Route
+                    path={`${path}/`}
+                    exact
+                    render={appRender({
+                        content: HELP_CENTER_PAYWALLS_ENABLED
+                            ? withLegacyPlanPaywall(HelpCenterPaywall)(
+                                  withUserRoleRequired(
+                                      HelpCenterStartView,
+                                      ADMIN_ROLE
+                                  )
+                              )
+                            : withUserRoleRequired(
                                   HelpCenterStartView,
                                   ADMIN_ROLE
+                              ),
+                        navbar: SettingsNavbarContainer,
+                    })}
+                />
+                <Route
+                    path={`${path}/new`}
+                    exact
+                    render={appRender({
+                        content: HELP_CENTER_PAYWALLS_ENABLED
+                            ? withLegacyPlanPaywall(HelpCenterPaywall)(
+                                  withUserRoleRequired(
+                                      HelpCenterNewView,
+                                      ADMIN_ROLE
+                                  )
                               )
-                          )
-                        : withUserRoleRequired(HelpCenterStartView, ADMIN_ROLE),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/new`}
-                exact
-                render={appRender({
-                    content: HELP_CENTER_PAYWALLS_ENABLED
-                        ? withLegacyPlanPaywall(HelpCenterPaywall)(
-                              withUserRoleRequired(
+                            : withUserRoleRequired(
                                   HelpCenterNewView,
                                   ADMIN_ROLE
+                              ),
+                        navbar: SettingsNavbarContainer,
+                    })}
+                />
+                <Route
+                    path={`${path}/:helpcenterId`}
+                    render={appRender({
+                        content: HELP_CENTER_PAYWALLS_ENABLED
+                            ? withLegacyPlanPaywall(HelpCenterPaywall)(
+                                  withUserRoleRequired(
+                                      CurrentHelpCenter,
+                                      ADMIN_ROLE
+                                  )
                               )
-                          )
-                        : withUserRoleRequired(HelpCenterNewView, ADMIN_ROLE),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/:helpcenterId`}
-                render={appRender({
-                    content: HELP_CENTER_PAYWALLS_ENABLED
-                        ? withLegacyPlanPaywall(HelpCenterPaywall)(
-                              withUserRoleRequired(
+                            : withUserRoleRequired(
                                   CurrentHelpCenter,
                                   ADMIN_ROLE
-                              )
-                          )
-                        : withUserRoleRequired(CurrentHelpCenter, ADMIN_ROLE),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-        </Switch>
+                              ),
+                        navbar: SettingsNavbarContainer,
+                    })}
+                />
+            </Switch>
+        </HelpCenterApiClientProvider>
     )
 }
 
