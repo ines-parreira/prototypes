@@ -35,12 +35,6 @@ import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {GorgiasFieldsMappingsLocalized} from './Imports/components/CsvColumnMatching/types'
 import {gorgiasFieldsMappingsLocalizedToDto} from './Imports/components/CsvColumnMatching/utils'
 
-import {
-    importFailed,
-    importPartial,
-    importSuccessful,
-} from './Imports/utils/import-response-type'
-
 const urlToInstallation = (
     helpCenterId: number,
     locationPathname: string
@@ -120,10 +114,16 @@ export const HelpCenterImportCsvColumnMatchingView = (): JSX.Element | null => {
                 )
                 .then((response) => {
                     if (response.data.result.status === 'FAILED') {
-                        const error =
-                            response.data.result.error === 'MALFORMED_FILE'
-                                ? 'the file is not valid'
-                                : 'internal error'
+                        let error = 'internal error'
+
+                        switch (response.data.result.error) {
+                            case 'MALFORMED_FILE':
+                                error = 'the file is not valid'
+                                break
+                            case 'FILE_OVER_400_ROWS':
+                                error =
+                                    'the file contains more than 400 articles, please split it into several smaller files.'
+                        }
 
                         void dispatch(
                             notify({
@@ -146,6 +146,17 @@ export const HelpCenterImportCsvColumnMatchingView = (): JSX.Element | null => {
                     }
                 })
                 .catch((error: AxiosError) => {
+                    if (error.response?.status === 408) {
+                        return dispatch(
+                            notify({
+                                status: NotificationStatus.Error,
+                                message:
+                                    'The CSV analysis took too long, your file may be too big. Try to split it into several smaller files.',
+                                noAutoDismiss: true,
+                            })
+                        )
+                    }
+
                     void dispatch(
                         notify({
                             status: NotificationStatus.Error,
@@ -182,7 +193,7 @@ export const HelpCenterImportCsvColumnMatchingView = (): JSX.Element | null => {
         return <Loader />
     }
 
-    const handleOnImport = async (mappings: GorgiasFieldsMappingsLocalized) => {
+    const handleOnImport = (mappings: GorgiasFieldsMappingsLocalized) => {
         const mappingsDto = gorgiasFieldsMappingsLocalizedToDto(
             fileUrl,
             mappings
@@ -191,58 +202,64 @@ export const HelpCenterImportCsvColumnMatchingView = (): JSX.Element | null => {
         if (mappingsDto !== undefined) {
             setImportInProgress(true)
 
-            try {
-                const response = await client.importCsv(
+            void client
+                .importCsv(
                     {
                         help_center_id: helpCenter.id,
                     },
                     mappingsDto
                 )
+                .then((response) => {
+                    setImportInProgress(false)
 
-                setImportInProgress(false)
+                    const {report} = response.data
+                    const baseHelpCenterPath = `${HELP_CENTER_BASE_PATH}/${helpCenter.id}`
 
-                const {report} = response.data
-                const baseHelpCenterPath = `${HELP_CENTER_BASE_PATH}/${helpCenter.id}`
+                    if (report.status === 'SUCCESS') {
+                        void dispatch(
+                            notify({
+                                status: NotificationStatus.Success,
+                                message: `Successfully imported ${report.num_imported_csv_rows}/${report.num_imported_csv_rows} articles.`,
+                            })
+                        )
 
-                if (importSuccessful(report)) {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: `Successfully imported ${report.num_imported_csv_rows}/${report.num_imported_csv_rows} articles.`,
-                        })
-                    )
+                        return history.push(`${baseHelpCenterPath}/articles`)
+                    } else if (report.status === 'PARTIAL') {
+                        void dispatch(notify(notifyPartialImport(report)))
 
-                    return history.push(`${baseHelpCenterPath}/articles`)
-                } else if (importPartial(report)) {
-                    void dispatch(notify(notifyPartialImport(report)))
+                        return history.push(
+                            `${baseHelpCenterPath}/installation`
+                        )
+                    } else if (report.status === 'FAILED') {
+                        void dispatch(
+                            notify({
+                                status: NotificationStatus.Error,
+                                message:
+                                    'There was an error importing your CSV file. Please review it and try again.',
+                            })
+                        )
 
-                    return history.push(`${baseHelpCenterPath}/installation`)
-                } else if (importFailed(report)) {
-                    // should be else, not else if, but TypeScript fails to infer it
+                        return history.push(
+                            `${baseHelpCenterPath}/installation`
+                        )
+                    }
+                })
+                .catch((error: AxiosError) => {
+                    setImportInProgress(false)
+
+                    const errorMsg =
+                        error.response?.status === 408
+                            ? 'The import took too long, your file may be too big. Try to split it into several smaller files.'
+                            : 'An internal error occurred while importing the CSV, please try again later.'
+
                     void dispatch(
                         notify({
                             status: NotificationStatus.Error,
-                            message:
-                                'There was an error importing your CSV file. Please review it and try again.',
+                            message: errorMsg,
+                            noAutoDismiss: true,
                         })
                     )
-
-                    return history.push(`${baseHelpCenterPath}/installation`)
-                }
-            } catch (e) {
-                setImportInProgress(false)
-
-                console.error(e)
-
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message:
-                            'An internal error occurred while importing the CSV, please try again later.',
-                        noAutoDismiss: true,
-                    })
-                )
-            }
+                })
         }
     }
 
