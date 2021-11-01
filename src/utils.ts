@@ -10,16 +10,15 @@ import htmlparser from 'htmlparser2'
 import Immutable, {fromJS, Iterable, Map, List} from 'immutable'
 import _filter from 'lodash/filter'
 import _find from 'lodash/find'
-import _flatMapDeep from 'lodash/flatMapDeep'
 import _get from 'lodash/get'
 import _has from 'lodash/has'
 import _isNumber from 'lodash/isNumber'
 import _isString from 'lodash/isString'
 import _isUndefined from 'lodash/isUndefined'
 import _last from 'lodash/last'
-import _map from 'lodash/map'
 import _trim from 'lodash/trim'
 import _upperFirst from 'lodash/upperFirst'
+import _startCase from 'lodash/startCase'
 import md5 from 'md5'
 import moment from 'moment-timezone'
 import {
@@ -763,33 +762,36 @@ export const subdomain = (url: string): string => {
     return _last(split.split('://')) as string
 }
 
-/**
- * Deep flatten object, keeping only values.
- */
-const _valuesDeep = (obj: unknown[] | Record<string, unknown>): unknown[] => {
-    //eslint-disable-next-line no-prototype-builtins
-    if (typeof obj === 'object' && !obj.hasOwnProperty('length')) {
-        return _flatMapDeep(obj, _valuesDeep)
-    }
+type ValidationErrors = string | string[] | {[key: string]: ValidationErrors}
 
-    return obj as unknown[]
+function flattenErrors(
+    errors: ValidationErrors
+): {key: string; value: string}[] {
+    return Object.entries(errors).reduce(
+        (acc: {key: string; value: string}[], [key, currentValue]) => {
+            if (typeof currentValue === 'string') {
+                acc.push({key, value: currentValue})
+                return acc
+            }
+
+            if (Array.isArray(currentValue)) {
+                return [
+                    ...acc,
+                    ...currentValue.map((error: string) => ({
+                        key,
+                        value: error,
+                    })),
+                ]
+            }
+
+            return [...acc, ...flattenErrors(currentValue)]
+        },
+        []
+    )
 }
 
-/**
- * Add form errors coming from server to error.msg
- * This is used to display form errors in error notification
- * Ex: error: {msg: 'Failed to add message', data: {hello: ['world'], receiver: ['Missing data', 'Invalid value']}}
- * will return the same error with error.msg as:
- * "
- * Failed to add message
- *
- * - hello: world
- * - receiver: Missing data
- * - receiver: Invalid value
- * "
- */
 export const errorToChildren = (
-    incomingError: AxiosError<{error?: {data?: Record<string, unknown>}}>
+    incomingError: AxiosError<{error?: {data?: ValidationErrors}}>
 ): Maybe<string> => {
     const error = _get(incomingError, 'response.data.error', {})
     const {data} = error
@@ -801,15 +803,11 @@ export const errorToChildren = (
 
     return `
         <ul className="m-0">
-            ${_map(data, (fieldErrors: Record<string, string>, fieldName) => {
-                return (_valuesDeep(fieldErrors) as string[])
-                    .map((fieldError) => {
-                        return sanitizeHtmlDefault(
-                            `<li>${fieldName}: ${fieldError}</li>`
-                        )
-                    })
-                    .join('')
-            }).join('')}
+            ${flattenErrors(data)
+                .map(({key, value}) =>
+                    sanitizeHtmlDefault(`<li>${_startCase(key)}: ${value}</li>`)
+                )
+                .join('')}
         </ul>
     `
 }

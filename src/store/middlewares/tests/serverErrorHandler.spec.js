@@ -129,9 +129,9 @@ describe('middlewares', () => {
                 title: notificationTitle,
                 message: removeWhitespace(`
                     <ul className="m-0">
-                        <li>hello: world</li>
-                        <li>receiver: Missing data</li>
-                        <li>receiver: Invalid value</li>
+                        <li>Hello: world</li>
+                        <li>Receiver: Missing data</li>
+                        <li>Receiver: Invalid value</li>
                     </ul>
                 `),
             })

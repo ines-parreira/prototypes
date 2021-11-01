@@ -590,7 +590,34 @@ describe('global utils', () => {
             }
 
             expect(utils.errorToChildren(error)).toMatch(
-                '<li>hello: world</li><li>receiver: Missing data</li><li>receiver: Invalid value</li>'
+                '<li>Hello: world</li><li>Receiver: Missing data</li><li>Receiver: Invalid value</li>'
+            )
+        })
+
+        it('should work with (deeply) nested error payloads', () => {
+            const error = {
+                response: {
+                    data: {
+                        error: {
+                            data: {
+                                hello: ['world'],
+                                some: {
+                                    nested_field: [
+                                        'Invalid value',
+                                        'Try again',
+                                    ],
+                                    and_more: {
+                                        nested_data: ['Not good.'],
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            }
+
+            expect(utils.errorToChildren(error)).toMatch(
+                '<li>Hello: world</li><li>Nested Field: Invalid value</li><li>Nested Field: Try again</li><li>Nested Data: Not good.</li>'
             )
         })
 
@@ -610,7 +637,7 @@ describe('global utils', () => {
             }
 
             expect(utils.errorToChildren(error)).toMatch(
-                '<li>item: malicious <img src /></li>'
+                '<li>Item: malicious <img src /></li>'
             )
         })
     })
