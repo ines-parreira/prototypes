@@ -275,6 +275,7 @@ export const ImportSection = ({
                                         </b>
                                     </div>
                                     <div
+                                        style={{display: 'none'}} // TODO: remove
                                         className={css.fileDropArea}
                                         onClick={
                                             handleAnotherProviderImportClick
