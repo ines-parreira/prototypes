@@ -264,7 +264,7 @@ export const HelpCenterCategory = ({
     const content = () => (
         <>
             <Drawer.Header>
-                <span className={css.title}>Category Settings</span>
+                <h3>Category Settings</h3>
                 <Drawer.HeaderActions>
                     <ArticleLanguageSelect
                         selected={locale}

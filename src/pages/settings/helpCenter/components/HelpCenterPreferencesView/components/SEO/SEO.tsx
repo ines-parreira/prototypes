@@ -74,7 +74,7 @@ export const SEO = ({
     }, [helpCenter, viewLanguage])
 
     return (
-        <div className={css.container}>
+        <section>
             <div className={css.heading}>
                 <div>
                     <h3>Search Engine Optimization (SEO)</h3>
@@ -120,6 +120,6 @@ export const SEO = ({
                 }
                 help="This is a preview of how your help center is going to look like in search engines (e.g. Google, Duckduckgo, Bing...)"
             />
-        </div>
+        </section>
     )
 }

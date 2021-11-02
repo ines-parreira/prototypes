@@ -32,6 +32,7 @@ import {saveNavigationLinks, saveSocialLinks} from '../utils/navigationLinks'
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
 import {NavSection} from './NavSection'
+import {PageContainer} from './PageContainer'
 
 export const HelpCenterCustomizationView = () => {
     const dispatch = useAppDispatch()
@@ -198,11 +199,7 @@ export const HelpCenterCustomizationView = () => {
                 }
             />
             <HelpCenterNavigation helpCenterId={helpCenterId} />
-            <Container
-                fluid
-                className="page-container"
-                style={{paddingBottom: 24}}
-            >
+            <PageContainer>
                 <NavSection
                     availableLocales={localesOptions}
                     description="Change navigation elements at the top of the Help Center."
@@ -238,7 +235,7 @@ export const HelpCenterCustomizationView = () => {
                         socialNavigation.update(ev.target.value, id, key)
                     }}
                 />
-                <FormGroup className="mt-5">
+                <FormGroup>
                     <Button
                         disabled={
                             !headerNavigation.isListValid() ||
@@ -253,7 +250,7 @@ export const HelpCenterCustomizationView = () => {
                     </Button>
                     <Button onClick={handleOnReset}>Cancel</Button>
                 </FormGroup>
-            </Container>
+            </PageContainer>
         </div>
     )
 }

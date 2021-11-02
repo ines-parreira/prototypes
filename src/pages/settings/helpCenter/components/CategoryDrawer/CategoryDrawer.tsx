@@ -1,8 +1,10 @@
 import React, {useEffect} from 'react'
 import axios from 'axios'
-import {useAsyncFn} from 'react-use'
 import {useSelector} from 'react-redux'
+import {useAsyncFn} from 'react-use'
 
+import useAppDispatch from '../../../../../hooks/useAppDispatch'
+import {useModalManager} from '../../../../../hooks/useModalManager'
 import {
     Category,
     CreateCategoryTranslationDto,
@@ -10,18 +12,12 @@ import {
     LocaleCode,
     UpdateCategoryTranslationDto,
 } from '../../../../../models/helpCenter/types'
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
-
 import {getCategoryById} from '../../../../../state/helpCenter/categories'
-import {NotificationStatus} from '../../../../../state/notifications/types'
 import {notify} from '../../../../../state/notifications/actions'
-
-import {useModalManager} from '../../../../../hooks/useModalManager'
-
-import {HelpCenterCategory} from '../../components/articles/HelpCenterCategory'
-import {useCategoriesActions} from '../../hooks/useCategoriesActions'
-
+import {NotificationStatus} from '../../../../../state/notifications/types'
 import {MODALS} from '../../constants'
+import {useCategoriesActions} from '../../hooks/useCategoriesActions'
+import {HelpCenterCategory} from '../articles/HelpCenterCategory'
 
 type Props = {
     helpCenter: HelpCenter

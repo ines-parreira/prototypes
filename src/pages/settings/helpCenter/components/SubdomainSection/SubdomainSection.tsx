@@ -17,9 +17,9 @@ export const SubdomainSection = ({
     ...inputProps
 }: Props): JSX.Element => {
     return (
-        <section className={css.container}>
+        <section>
             <div className={css.header}>
-                <div className={css.title}>Subdomain</div>
+                <h4>Subdomain</h4>
                 <a
                     className={css.anchor}
                     href={href}

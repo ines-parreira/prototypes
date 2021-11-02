@@ -43,7 +43,7 @@ export const NavSection = ({
     }
 
     return (
-        <div className={css.wrapper}>
+        <section>
             <div className={css.heading}>
                 <div>
                     <h3>{title}</h3>
@@ -76,6 +76,6 @@ export const NavSection = ({
                 onDelete={onClickRemove}
                 onAddNew={onClickAdd}
             />
-        </div>
+        </section>
     )
 }

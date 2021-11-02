@@ -1,19 +1,19 @@
-@import (reference) '~css/new/colors.less';
+@import (reference) '~css/new/colorTokens';
 
 :local {
-    .subdomainInput {
+    .input {
         margin-bottom: 16px;
 
         &.error {
             input {
-                border-color: @red;
-                box-shadow: 0 0 0 0.2rem fade(@red, 10%);
+                border-color: @classic-feedback-error;
+                box-shadow: 0 0 0 0.2rem fade(@classic-feedback-error, 10%);
             }
         }
     }
 
-    .errorMessage {
-        color: @red;
+    .error {
+        color: @classic-feedback-error;
 
         i {
             margin-right: 4px;
@@ -21,6 +21,7 @@
     }
 
     .policy {
+        margin-bottom: 0;
         padding-inline-start: 1.5em;
     }
 }

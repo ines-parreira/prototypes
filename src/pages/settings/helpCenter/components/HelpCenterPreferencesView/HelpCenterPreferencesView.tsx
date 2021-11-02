@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react'
-import classNames from 'classnames'
 import {useSelector} from 'react-redux'
 import {Container} from 'reactstrap'
 
@@ -18,14 +17,13 @@ import {useLocales} from '../../hooks/useLocales'
 import {HelpCenterPreferencesSettings} from '../../providers/HelpCenterPreferencesSettings'
 import {HelpCenterDetailsBreadcrumb} from '../HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from '../HelpCenterNavigation'
+import {PageContainer} from '../PageContainer'
 
 import {AvailableLanguagesTags} from './components/AvailableLanguagesTags'
 import {DefaultLanguageSelect} from './components/DefaultLanguageSelect'
 import {DisplayName} from './components/DisplayName'
 import {FooterActions} from './components/FooterActions'
 import {SEO} from './components/SEO'
-
-import css from './HelpCenterPreferencesView.less'
 
 export const HelpCenterPreferencesView: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -74,10 +72,7 @@ export const HelpCenterPreferencesView: React.FC = () => {
             />
             <HelpCenterNavigation helpCenterId={helpCenterId} />
             <HelpCenterPreferencesSettings helpCenterId={helpCenterId}>
-                <Container
-                    fluid
-                    className={classNames('page-container', css.container)}
-                >
+                <PageContainer>
                     <DisplayName />
                     <section>
                         <h3>Languages</h3>
@@ -91,7 +86,7 @@ export const HelpCenterPreferencesView: React.FC = () => {
                         onChangeLocale={handleOnChangeLocale}
                     />
                     <FooterActions />
-                </Container>
+                </PageContainer>
             </HelpCenterPreferencesSettings>
         </div>
     )

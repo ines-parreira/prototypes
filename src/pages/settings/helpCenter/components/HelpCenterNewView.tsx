@@ -5,7 +5,7 @@ import produce from 'immer'
 import _debounce from 'lodash/debounce'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory, useLocation} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Button, Container, Label} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Button, Container} from 'reactstrap'
 
 import {CreateHelpCenterDto} from '../../../../models/helpCenter/types'
 import {validLocaleCode} from '../../../../models/helpCenter/utils'
@@ -33,6 +33,7 @@ import {
     isValidSubdomain,
 } from '../utils/validations'
 
+import {PageContainer} from './PageContainer'
 import {ThemeSwitch} from './ThemeSwitch'
 
 import css from './HelpCenterNewView.less'
@@ -193,6 +194,14 @@ export const HelpCenterNewView = ({
         return () => checkSubdomainAvailability.cancel()
     }, [newHelpCenter.subdomain, checkSubdomainAvailability])
 
+    if (isLoading) {
+        return (
+            <Container fluid className="page-container">
+                <Loader />
+            </Container>
+        )
+    }
+
     return (
         <div className="full-width">
             <PageHeader
@@ -205,101 +214,81 @@ export const HelpCenterNewView = ({
                     </Breadcrumb>
                 }
             />
-            <Container
-                fluid
-                className={classnames('page-container', css.container)}
-            >
-                {isLoading ? (
-                    <span data-testid="loading">
-                        <Loader />
-                    </span>
-                ) : (
-                    <>
-                        <div className={classnames(css.section, css.form)}>
-                            <InputField
-                                type="text"
-                                name="name"
-                                label="Help Center name"
-                                help="This is going to be displayed whenever your logo isn’t available and also in search engines."
-                                placeholder="Ex. Customer Support"
-                                className={classnames(css.formInput)}
-                                required
-                                value={newHelpCenter.name}
-                                onChange={handleChangeName}
-                            />
-                            <SubdomainInput
-                                help="This is the URL for your Help Center. If you don't provide a value, we will generate one for you."
-                                value={newHelpCenter?.subdomain}
-                                onChange={handleChangeSubdomain}
-                                error={subdomainError}
-                            />
-                        </div>
+            <PageContainer>
+                <section className={css.form}>
+                    <InputField
+                        type="text"
+                        name="name"
+                        label="Help Center name"
+                        tooltip="This is going to be displayed whenever your logo isn’t available and also in search engines."
+                        placeholder="Ex. Customer Support"
+                        className={classnames(css.formInput)}
+                        required
+                        value={newHelpCenter.name}
+                        onChange={handleChangeName}
+                    />
+                    <SubdomainInput
+                        value={newHelpCenter.subdomain}
+                        onChange={handleChangeSubdomain}
+                        tooltip="This is the URL for your Help Center. If you don't provide a value, we will generate one for you."
+                        error={subdomainError}
+                    />
+                </section>
 
-                        <div className={css.section}>
-                            <h3>Languages</h3>
-                            <Label
-                                htmlFor="language-select"
-                                className="control-label"
-                            >
-                                Default language
-                            </Label>
-                            <p>
-                                Choose the default language that will be used
-                                every time it’s not detected or as a second
-                                option if the selected language isn’t available.
-                            </p>
-                            <div id="language-select">
-                                <SelectField
-                                    options={localeOptions}
-                                    value={newHelpCenter.default_locale}
-                                    onChange={handleOnSelect}
-                                    style={{
-                                        display: 'inline-block',
-                                    }}
-                                />
-                            </div>
-                        </div>
+                <section>
+                    <h3>Languages</h3>
+                    <h4>Default language</h4>
+                    <p>
+                        Choose the default language that will be used every time
+                        it’s not detected or as a second option if the selected
+                        language isn’t available.
+                    </p>
+                    <div id="language-select">
+                        <SelectField
+                            options={localeOptions}
+                            value={newHelpCenter.default_locale}
+                            onChange={handleOnSelect}
+                            fullWidth
+                        />
+                    </div>
+                </section>
 
-                        <div className={css.section}>
-                            <h3 className="mb-3">Appearance</h3>
-                            <ThemeSwitch
-                                selectedTheme={newHelpCenter.theme}
-                                currentColor={newHelpCenter.primary_color}
-                                onThemeChange={(theme) => {
-                                    setNewHelpCenter((prevNewHelpCenter) => ({
-                                        ...prevNewHelpCenter,
-                                        theme,
-                                    }))
-                                }}
-                                onColorChange={(color) => {
-                                    setNewHelpCenter((prevNewHelpCenter) => ({
-                                        ...prevNewHelpCenter,
-                                        primary_color: color,
-                                    }))
-                                }}
-                            />
-                        </div>
+                <section>
+                    <h3 className="mb-3">Appearance</h3>
+                    <ThemeSwitch
+                        selectedTheme={newHelpCenter.theme}
+                        currentColor={newHelpCenter.primary_color}
+                        onThemeChange={(theme) => {
+                            setNewHelpCenter((prevNewHelpCenter) => ({
+                                ...prevNewHelpCenter,
+                                theme,
+                            }))
+                        }}
+                        onColorChange={(color) => {
+                            setNewHelpCenter((prevNewHelpCenter) => ({
+                                ...prevNewHelpCenter,
+                                primary_color: color,
+                            }))
+                        }}
+                    />
+                </section>
 
-                        <div className={css.section}>
-                            <div className="d-flex">
-                                <Button
-                                    color="success"
-                                    disabled={!canSubmit}
-                                    onClick={handleSubmit}
-                                >
-                                    Add new Help Center
-                                </Button>
-                                <Button
-                                    className={css.cancelButton}
-                                    onClick={navigateToStartView}
-                                >
-                                    Cancel
-                                </Button>
-                            </div>
-                        </div>
-                    </>
-                )}
-            </Container>
+                <div className="d-flex">
+                    <Button
+                        color="success"
+                        disabled={!canSubmit}
+                        onClick={handleSubmit}
+                    >
+                        Add new Help Center
+                    </Button>
+                    <Button
+                        className={css.cancelButton}
+                        onClick={navigateToStartView}
+                    >
+                        Cancel
+                    </Button>
+                </div>
+            </PageContainer>
         </div>
     )
 }

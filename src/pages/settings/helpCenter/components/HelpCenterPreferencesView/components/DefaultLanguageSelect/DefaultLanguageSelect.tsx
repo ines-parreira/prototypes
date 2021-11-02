@@ -30,8 +30,8 @@ export const DefaultLanguageSelect: React.FC<Props> = ({
     }
 
     return (
-        <section className={css['container-default-language']}>
-            <h5>Default language</h5>
+        <div className={css.container}>
+            <h4>Default language</h4>
             <p>
                 Choose the default language that will be used every time it’s
                 not detected or as a second option if the selected language
@@ -47,6 +47,6 @@ export const DefaultLanguageSelect: React.FC<Props> = ({
                     />
                 </Col>
             </Row>
-        </section>
+        </div>
     )
 }

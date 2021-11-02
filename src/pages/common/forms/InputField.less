@@ -1,11 +1,11 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 :local {
     .required {
         label {
             &::after {
                 content: ' *';
-                color: @red;
+                color: @classic-feedback-error;
             }
         }
     }
@@ -13,5 +13,6 @@
     .tooltip {
         margin-left: 4px;
         line-height: 16px;
+        color: @classic-neutral-grey-4;
     }
 }

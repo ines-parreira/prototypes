@@ -273,18 +273,23 @@ exports[`InputField should render a tooltip next to the label 1`] = `
     }
   >
     Label
-    <i
-      className="material-icons-outlined tooltip"
-      id="id-input-6-tooltip"
-    >
-      info
-    </i>
-    <Tooltip
-      target="id-input-6-tooltip"
-    >
-      I am a tooltip
-    </Tooltip>
   </Label>
+  <i
+    className="material-icons-outlined tooltip"
+    id="id-input-6-tooltip"
+  >
+    info
+  </i>
+  <Tooltip
+    style={
+      Object {
+        "textAlign": "left",
+      }
+    }
+    target="id-input-6-tooltip"
+  >
+    I am a tooltip
+  </Tooltip>
   <div
     className=""
   >

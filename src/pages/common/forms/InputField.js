@@ -122,8 +122,10 @@ export default class InputField extends FormField {
                 color={color}
             >
                 {label && (
-                    <Label htmlFor={this.id} className="control-label">
-                        {label}
+                    <>
+                        <Label htmlFor={this.id} className="control-label">
+                            {label}
+                        </Label>
                         {tooltip && (
                             <>
                                 <i
@@ -135,12 +137,15 @@ export default class InputField extends FormField {
                                 >
                                     info
                                 </i>
-                                <Tooltip target={`${this.id}-tooltip`}>
+                                <Tooltip
+                                    target={`${this.id}-tooltip`}
+                                    style={{textAlign: 'left'}}
+                                >
                                     {tooltip}
                                 </Tooltip>
                             </>
                         )}
-                    </Label>
+                    </>
                 )}
                 <div
                     className={classnames({

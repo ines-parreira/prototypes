@@ -1,6 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import axios from 'axios'
-import classNames from 'classnames'
 import {useAsyncFn} from 'react-use'
 import {Button, Container, FormGroup} from 'reactstrap'
 import isHexColor from 'validator/lib/isHexColor'
@@ -25,6 +24,7 @@ import {HelpCenterTheme, isHelpCenterTheme} from '../types'
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
 import {ImageUpload} from './ImageUpload'
+import {PageContainer} from './PageContainer'
 import {ThemeSwitch} from './ThemeSwitch'
 import {UpdateToggle} from './UpdateToggle'
 
@@ -207,15 +207,14 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 }
             />
             <HelpCenterNavigation helpCenterId={helpCenterId} />
-            <Container
-                fluid
-                className={classNames('page-container', css.container)}
-            >
-                <div className={css.section}>
-                    <h3>Appearance</h3>
-                    <p>Set up your Help Center’s logo, color and theme.</p>
-                </div>
-                <div className={classNames(css.section, css.logos)}>
+            <PageContainer>
+                <section>
+                    <div className={css.heading}>
+                        <h3>Appearance</h3>
+                        <p>Set up your Help Center’s logo, color and theme.</p>
+                    </div>
+                </section>
+                <section className={css.logos}>
                     <ImageUpload
                         id="primary_logo"
                         title="Standard Logo"
@@ -266,16 +265,23 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         accept="image/png,image/jpeg,image/x-icon"
                         size="small"
                     />
-                </div>
-                <div className={css.section}>
+                </section>
+                <section>
                     <ThemeSwitch
                         selectedTheme={selectedTheme}
                         currentColor={currentColor}
                         onThemeChange={setSelectedTheme}
                         onColorChange={setCurrentColor}
                     />
-                </div>
-                <div className={css.section}>
+                </section>
+                <section>
+                    <div className={css.heading}>
+                        <h3>Banner settings</h3>
+                        <p>
+                            This is displayed on top of your help center’s{' '}
+                            <strong>home page</strong>.
+                        </p>
+                    </div>
                     <ImageUpload
                         id="banner_image"
                         title="Banner Background"
@@ -293,9 +299,9 @@ export const HelpCenterAppearanceView: React.FC = () => {
                             text: 'recommended size 1440 x 316 - Maximum 10 MB',
                         }}
                     />
-                </div>
-                <div className={css.section}>
-                    <h3 className="mb-3">Other settings</h3>
+                </section>
+                <section>
+                    <h3>Other settings</h3>
                     <UpdateToggle
                         activated={
                             helpCenter.search_deactivated_datetime === null
@@ -313,9 +319,9 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         description="Turns on/off the ‘Powered by Gorgias’ label in your Help Center footer."
                         fieldName="powered_by_deactivated"
                     />
-                </div>
+                </section>
                 <footer>
-                    <FormGroup className="mt-5">
+                    <FormGroup>
                         <Button
                             className="mr-2"
                             color="success"
@@ -329,7 +335,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         <Button onClick={resetCurrentAppearance}>Cancel</Button>
                     </FormGroup>
                 </footer>
-            </Container>
+            </PageContainer>
         </div>
     )
 }

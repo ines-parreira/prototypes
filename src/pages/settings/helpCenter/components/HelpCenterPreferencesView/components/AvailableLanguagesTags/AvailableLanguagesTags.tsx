@@ -99,8 +99,8 @@ export const AvailableLanguagesTags: React.FC<Props> = ({
     }
 
     return (
-        <section>
-            <h5>Available languages</h5>
+        <div>
+            <h4>Available languages</h4>
             <p>
                 You will be able to edit and customize your Help Center in
                 regards to the languages added here.
@@ -144,6 +144,6 @@ export const AvailableLanguagesTags: React.FC<Props> = ({
                     </p>
                 )}
             </Modal>
-        </section>
+        </div>
     )
 }

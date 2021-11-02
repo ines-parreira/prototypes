@@ -80,18 +80,20 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
     <div
       class="page-container container container-fluid"
     >
-      <div
-        class="section"
-      >
-        <h3>
-          Appearance
-        </h3>
-        <p>
-          Set up your Help Center’s logo, color and theme.
-        </p>
-      </div>
-      <div
-        class="section logos"
+      <section>
+        <div
+          class="heading"
+        >
+          <h3>
+            Appearance
+          </h3>
+          <p>
+            Set up your Help Center’s logo, color and theme.
+          </p>
+        </div>
+      </section>
+      <section
+        class="logos"
       >
         <div
           class="container"
@@ -297,10 +299,8 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
             </span>
           </div>
         </div>
-      </div>
-      <div
-        class="section"
-      >
+      </section>
+      <section>
         <h4>
           Theme
         </h4>
@@ -405,10 +405,23 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
             This will be used as your primary color in hyperlinks, pagination and icons.
           </small>
         </div>
-      </div>
-      <div
-        class="section"
-      >
+      </section>
+      <section>
+        <div
+          class="heading"
+        >
+          <h3>
+            Banner settings
+          </h3>
+          <p>
+            This is displayed on top of your help center’s
+             
+            <strong>
+              home page
+            </strong>
+            .
+          </p>
+        </div>
         <div
           class="container"
         >
@@ -482,13 +495,9 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
             </span>
           </div>
         </div>
-      </div>
-      <div
-        class="section"
-      >
-        <h3
-          class="mb-3"
-        >
+      </section>
+      <section>
+        <h3>
           Other settings
         </h3>
         <div
@@ -546,10 +555,10 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
             Turns on/off the ‘Powered by Gorgias’ label in your Help Center footer.
           </p>
         </div>
-      </div>
+      </section>
       <footer>
         <div
-          class="mt-5 form-group"
+          class="form-group"
         >
           <button
             class="mr-2 btn btn-success disabled"

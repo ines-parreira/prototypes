@@ -1,4 +1,4 @@
-import React, {FunctionComponent} from 'react'
+import React, {useMemo} from 'react'
 import classNames from 'classnames'
 
 import Tooltip from '../../../../../../common/components/Tooltip'
@@ -10,7 +10,7 @@ import css from './SubdomainInput.less'
 
 export type SubdomainInputProps = {
     label?: string
-    help?: string
+    tooltip?: string
     name?: string
     placeholder?: string
     value?: string
@@ -18,24 +18,24 @@ export type SubdomainInputProps = {
     error?: string | null
 }
 
-export const SubdomainInput: FunctionComponent<SubdomainInputProps> = ({
+export const SubdomainInput: React.FC<SubdomainInputProps> = ({
     label = 'Subdomain',
-    help,
+    tooltip,
     name = 'subdomain',
-    value,
+    value = '',
     placeholder,
     onChange,
-    error,
+    error = null,
 }: SubdomainInputProps) => {
-    const renderHelp = () => {
-        if (!error) return help
+    const help = useMemo(() => {
+        if (!error) return null
 
         if (typeof value === 'string' && !isValidSubdomain(value)) {
             return (
                 <div>
                     <span
                         id="error-policy"
-                        className={css.errorMessage}
+                        className={css.error}
                         data-testid="error-message"
                     >
                         <i className="material-icons">error_outline</i>
@@ -46,6 +46,7 @@ export const SubdomainInput: FunctionComponent<SubdomainInputProps> = ({
                         placement="bottom-start"
                         style={{textAlign: 'left'}}
                     >
+                        <span>Valid subdomain criterias:</span>
                         <ul data-testid="error-policy" className={css.policy}>
                             <li>Should have less than 63 characters</li>
                             <li>Must begin and end with a letter or number</li>
@@ -58,21 +59,22 @@ export const SubdomainInput: FunctionComponent<SubdomainInputProps> = ({
         }
 
         return (
-            <span className={css.errorMessage} data-testid="error-message">
+            <span className={css.error} data-testid="error-message">
                 {error}
             </span>
         )
-    }
+    }, [value, error])
 
     return (
         <InputField
-            className={classNames(css.subdomainInput, {
+            className={classNames(css.input, {
                 [css.error]: !!error,
             })}
             type="text"
             name={name}
             label={label}
-            help={renderHelp()}
+            help={help}
+            tooltip={tooltip}
             placeholder={placeholder}
             rightAddon={HELP_CENTER_DOMAIN}
             value={value}

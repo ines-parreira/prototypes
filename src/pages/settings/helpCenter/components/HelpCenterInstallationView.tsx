@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import axios from 'axios'
-import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 import {useHistory, useLocation} from 'react-router-dom'
 import {Button, Container} from 'reactstrap'
@@ -30,6 +29,7 @@ import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
 import {ImportSection} from './Imports/components/ImportSection'
 import {SubdomainSection} from './SubdomainSection'
+import {PageContainer} from './PageContainer'
 
 import css from './HelpCenterInstallationView.less'
 
@@ -40,7 +40,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
     const location = useLocation()
     const {helpCenter} = useCurrentHelpCenter()
     const {isReady, client} = useHelpCenterApi()
-    const [subdomainValue, setSubdomainValue] = useState('')
+    const [subdomainValue, setSubdomainValue] = useState<string>()
     const [isSubdomainAvailable, setIsSubdomainAvailable] = useState(true)
     const [deleteModalConfirmation, setDeleteModalConfirmation] = useState('')
 
@@ -48,6 +48,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
         _debounce(async () => {
             if (
                 client &&
+                subdomainValue &&
                 isValidSubdomain(subdomainValue) &&
                 subdomainValue !== helpCenter?.subdomain
             ) {
@@ -94,7 +95,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
     }
 
     const handleOnUpdateHelpCenter = () => {
-        if (client) {
+        if (client && subdomainValue) {
             void client
                 .updateHelpCenter(
                     {
@@ -150,12 +151,13 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
         )
     }
 
-    const subdomainError = getSubdomainValidationError(
-        subdomainValue,
-        isSubdomainAvailable
-    )
+    const subdomainError = subdomainValue
+        ? getSubdomainValidationError(subdomainValue, isSubdomainAvailable)
+        : null
     const isNewSubdomainValid =
-        !subdomainError && subdomainValue !== helpCenter.subdomain
+        subdomainValue &&
+        subdomainValue !== helpCenter.subdomain &&
+        !subdomainError
     const helpCenterDomain = getHelpCenterDomain(helpCenter)
 
     return (
@@ -163,16 +165,13 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
             <PageHeader
                 title={
                     <HelpCenterDetailsBreadcrumb
-                        helpCenterName={helpCenter?.name || ''}
+                        helpCenterName={helpCenter.name}
                         activeLabel="Installation"
                     />
                 }
             />
             <HelpCenterNavigation helpCenterId={helpCenterId} />
-            <Container
-                fluid
-                className={classnames('page-container', css.container)}
-            >
+            <PageContainer className={css.container}>
                 <SubdomainSection
                     value={subdomainValue}
                     href={getAbsoluteUrl({domain: helpCenterDomain})}
@@ -258,7 +257,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
                         )}
                     </ConfirmModalAction>
                 </section>
-            </Container>
+            </PageContainer>
         </div>
     )
 }

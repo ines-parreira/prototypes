@@ -12,15 +12,13 @@ type FlagLanguageItemProps = {
 export const FlagLanguageItem: FunctionComponent<FlagLanguageItemProps> = ({
     code,
     name,
-}: FlagLanguageItemProps) => {
-    return (
-        <span>
-            <img
-                alt={code}
-                src={getEmojiFlag(code)}
-                className={css['flag-emoji']}
-            />
-            <span>{name}</span>
-        </span>
-    )
-}
+}: FlagLanguageItemProps) => (
+    <span>
+        <img
+            alt={code}
+            src={getEmojiFlag(code)}
+            className={css['flag-emoji']}
+        />
+        <span>{name}</span>
+    </span>
+)

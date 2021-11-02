@@ -3,8 +3,6 @@ import React from 'react'
 import InputField from '../../../../../../common/forms/InputField'
 import {useHelpCenterPreferencesSettings} from '../../../../providers/HelpCenterPreferencesSettings'
 
-import css from './DisplayName.less'
-
 export const DisplayName: React.FC = () => {
     const {preferences, updatePreferences} = useHelpCenterPreferencesSettings()
     const onChangeName = (name: string) => {
@@ -13,7 +11,7 @@ export const DisplayName: React.FC = () => {
         })
     }
     return (
-        <section className={css['display-name']}>
+        <section>
             <InputField
                 type="text"
                 name="name"

@@ -36,8 +36,8 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
     <div
       class="page-container container container-fluid"
     >
-      <div
-        class="section form"
+      <section
+        class="form"
       >
         <div
           class="InputField formInput required form-group"
@@ -49,6 +49,12 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
           >
             Help Center name
           </label>
+          <i
+            class="material-icons-outlined tooltip"
+            id="id-name-tooltip"
+          >
+            info
+          </i>
           <div
             class=""
           >
@@ -61,14 +67,9 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
               value=""
             />
           </div>
-          <small
-            class="form-text text-muted"
-          >
-            This is going to be displayed whenever your logo isn’t available and also in search engines.
-          </small>
         </div>
         <div
-          class="InputField subdomainInput form-group"
+          class="InputField input form-group"
           color=""
         >
           <label
@@ -77,6 +78,12 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
           >
             Subdomain
           </label>
+          <i
+            class="material-icons-outlined tooltip"
+            id="id-subdomain-tooltip"
+          >
+            info
+          </i>
           <div
             class="input-group"
           >
@@ -96,34 +103,22 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
               </span>
             </span>
           </div>
-          <small
-            class="form-text text-muted"
-          >
-            This is the URL for your Help Center. If you don't provide a value, we will generate one for you.
-          </small>
         </div>
-      </div>
-      <div
-        class="section"
-      >
+      </section>
+      <section>
         <h3>
           Languages
         </h3>
-        <label
-          class="control-label"
-          for="language-select"
-        >
+        <h4>
           Default language
-        </label>
+        </h4>
         <p>
           Choose the default language that will be used every time it’s not detected or as a second option if the selected language isn’t available.
         </p>
         <div
           id="language-select"
         >
-          <div
-            style="display: inline-block;"
-          >
+          <div>
             <div
               class="dropdown"
             >
@@ -134,7 +129,7 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
                 data-toggle="dropdown"
               >
                 <div
-                  class="select dropdown-toggle"
+                  class="select dropdown-toggle selectFullWidth"
                 >
                   <span
                     class="label"
@@ -162,7 +157,7 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
               </div>
               <div
                 aria-hidden="true"
-                class="options dropdown-menu"
+                class="options optionsFullWidth dropdown-menu"
                 role="menu"
                 tabindex="-1"
               >
@@ -228,10 +223,8 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
             </div>
           </div>
         </div>
-      </div>
-      <div
-        class="section"
-      >
+      </section>
+      <section>
         <h3
           class="mb-3"
         >
@@ -341,27 +334,23 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
             This will be used as your primary color in hyperlinks, pagination and icons.
           </small>
         </div>
-      </div>
+      </section>
       <div
-        class="section"
+        class="d-flex"
       >
-        <div
-          class="d-flex"
+        <button
+          class="btn btn-success disabled"
+          disabled=""
+          type="button"
         >
-          <button
-            class="btn btn-success disabled"
-            disabled=""
-            type="button"
-          >
-            Add new Help Center
-          </button>
-          <button
-            class="cancelButton btn btn-secondary"
-            type="button"
-          >
-            Cancel
-          </button>
-        </div>
+          Add new Help Center
+        </button>
+        <button
+          class="cancelButton btn btn-secondary"
+          type="button"
+        >
+          Cancel
+        </button>
       </div>
     </div>
   </div>
