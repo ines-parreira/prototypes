@@ -1,11 +1,11 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
+import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import * as actions from '../actions.ts'
 import * as constants from '../constants'
-import client from '../../../models/api/resources.ts'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -21,7 +21,7 @@ describe('macro actions', () => {
 
     beforeEach(() => {
         store = mockStore()
-        mockServer = new MockAdapter(client)
+        mockServer = new MockAdapter(axios)
     })
 
     describe('fetchMacros', () => {

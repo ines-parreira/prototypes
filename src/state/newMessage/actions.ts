@@ -36,7 +36,6 @@ import {
     IntegrationType,
     ProductCardDetails,
 } from '../../models/integration/types'
-import client from '../../models/api/resources'
 import {ApiListResponse} from '../../models/api/types'
 import {Ticket as TicketResponse} from '../../models/ticket/types'
 import {Customer} from '../customers/types'
@@ -553,7 +552,7 @@ export const updatePotentialCustomers = (
     type: SearchCustomerType = SearchCustomerType.UserChannelEmail,
     cancelToken?: CancelToken
 ) => (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> =>
-    client
+    axios
         .post<ApiListResponse<UserSearchResult[], unknown>>(
             '/api/search/',
             {
@@ -940,7 +939,7 @@ export function sendTicketMessage(
             let promise
 
             if (action) {
-                promise = client.put<Message>(
+                promise = axios.put<Message>(
                     `/api/tickets/${
                         ticketId || (ticket.get('id') as number)
                     }/messages/${messageToSend.id || ''}/${
@@ -949,7 +948,7 @@ export function sendTicketMessage(
                     messageToSend
                 )
             } else {
-                promise = client.post<Message>(
+                promise = axios.post<Message>(
                     `/api/tickets/${
                         ticketId || (ticket.get('id') as number)
                     }/messages/`,
@@ -1072,7 +1071,7 @@ export function submitTicket(
         const ticketToSend = dataToSend.ticket
         ticketToSend.messages.push(dataToSend.newMessage)
 
-        return client
+        return axios
             .post<TicketResponse>('/api/tickets/', ticketToSend)
             .then((json) => json?.data)
             .then(

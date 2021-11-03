@@ -1,8 +1,8 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-import client from '../../../models/api/resources.ts'
 import * as actions from '../actions.ts'
 import {initialState} from '../reducers.ts'
 
@@ -15,7 +15,7 @@ describe('users audit actions', () => {
 
     beforeEach(() => {
         store = mockStore({users: initialState})
-        mockServer = new MockAdapter(client)
+        mockServer = new MockAdapter(axios)
     })
 
     it('fetch user audit', () => {

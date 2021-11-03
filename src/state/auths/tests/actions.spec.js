@@ -2,9 +2,9 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
+import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-import client from '../../../models/api/resources.ts'
 import * as actions from '../actions.ts'
 
 const middlewares = [thunk]
@@ -18,7 +18,7 @@ describe('auths actions', () => {
 
     beforeEach(() => {
         store = mockStore({auths: fromJS({})})
-        mockServer = new MockAdapter(client)
+        mockServer = new MockAdapter(axios)
     })
 
     it("should successfully fetch user's auths and store the result", () => {

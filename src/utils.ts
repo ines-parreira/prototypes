@@ -2,7 +2,7 @@ import crypto from 'crypto'
 
 import {SyntheticEvent} from 'react'
 
-import {AxiosError} from 'axios'
+import axios, {AxiosError} from 'axios'
 import {EditorState, Modifier} from 'draft-js'
 import escodegen from 'escodegen'
 import esprima from 'esprima'
@@ -44,7 +44,6 @@ import {RootState} from './state/types'
 import {sanitizeHtmlDefault} from './utils/html'
 import {isProduction} from './utils/environment'
 import {linkify} from './utils/editor'
-import client from './models/api/resources'
 
 type Message = {
     created_datetime: Date
@@ -702,7 +701,7 @@ export const uploadFiles = (
         formData.append(file.name, file as any)
     }
 
-    return client
+    return axios
         .post<Attachment[]>('/api/upload/', formData, {params: params || {}})
         .then((json) => json?.data)
 }

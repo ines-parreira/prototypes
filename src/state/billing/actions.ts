@@ -1,6 +1,6 @@
+import axios from 'axios'
 import {Map} from 'immutable'
 
-import client from '../../models/api/resources'
 import {ApiListResponsePagination} from '../../models/api/types'
 import {notify} from '../notifications/actions'
 import {NotificationStatus} from '../notifications/types'
@@ -39,7 +39,7 @@ export const updateInvoiceInList = (
 
 export function fetchCurrentUsage() {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return client
+        return axios
             .get<CurrentUsage>('/api/billing/current-usage/')
             .then((json) => json?.data)
             .then(
@@ -62,7 +62,7 @@ export function fetchCurrentUsage() {
 
 export function fetchInvoices() {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return client
+        return axios
             .get<ApiListResponsePagination<Invoice[]>>('/api/billing/invoices/')
             .then((json) => json?.data?.data)
             .then(
@@ -85,7 +85,7 @@ export function fetchInvoices() {
 
 export function fetchPaymentMethod() {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return client
+        return axios
             .get<PaymentMethod>('/api/billing/payment-method/')
             .then((json) => json?.data)
             .then(
@@ -108,7 +108,7 @@ export function fetchPaymentMethod() {
 
 export function fetchCreditCard() {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return client
+        return axios
             .get<unknown>('/api/billing/credit-card/')
             .then((json) => json?.data)
             .then(
@@ -150,7 +150,7 @@ export const setCreditCard = (
  */
 export function fetchContact() {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return client
+        return axios
             .get<BillingContactResponse>('/api/billing/contact/')
             .then((json) => json?.data)
             .then(
@@ -178,7 +178,7 @@ export function fetchContact() {
  */
 export function updateContact(billingContact: BillingContact) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return client
+        return axios
             .put<BillingContactResponse>(
                 '/api/billing/contact/',
                 billingContact.toJS()

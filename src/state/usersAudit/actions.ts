@@ -1,4 +1,5 @@
-import client from '../../models/api/resources'
+import axios from 'axios'
+
 import {ApiListResponsePagination} from '../../models/api/types'
 import {StoreDispatch} from '../types'
 
@@ -7,7 +8,7 @@ import {UserAudit} from './types'
 
 export const fetchUsersAudit = (params: Record<string, unknown>) => {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return client
+        return axios
             .get<ApiListResponsePagination<UserAudit>>('/api/users/audit/', {
                 params,
             })

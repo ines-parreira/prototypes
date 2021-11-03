@@ -1,11 +1,12 @@
-import client from '../../models/api/resources.ts'
+import axios from 'axios'
+
 import history from '../../pages/history.ts'
 import {onUpdateSuccess, fetchIntegration} from '../integrations/actions.ts'
 import * as types from '../integrations/constants'
 
 export function createCampaign(campaign, integration) {
     return (dispatch) => {
-        return client
+        return axios
             .post(
                 `/api/integrations/${integration.get('type')}/${integration.get(
                     'id'
@@ -42,7 +43,7 @@ export function createCampaign(campaign, integration) {
 
 export function updateCampaign(campaign, integration) {
     return (dispatch) => {
-        return client
+        return axios
             .put(
                 `/api/integrations/${integration.get('type')}/${integration.get(
                     'id'
@@ -73,7 +74,7 @@ export function updateCampaign(campaign, integration) {
 
 export function deleteCampaign(campaign, integration) {
     return (dispatch) => {
-        return client
+        return axios
             .delete(
                 `/api/integrations/${integration.get('type')}/${integration.get(
                     'id'

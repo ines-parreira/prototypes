@@ -1,14 +1,14 @@
+import axios from 'axios'
 import type {CancelToken, AxiosResponse} from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import {renderHook} from 'react-hooks-testing-library'
 
 import useCancellableRequest from '../useCancellableRequest'
-import client from '../../models/api/resources'
 
 describe('useCancellableRequest', () => {
-    const mockApi = new MockAdapter(client)
+    const mockApi = new MockAdapter(axios)
     const mockCall = jest.fn((cancelToken: CancelToken) => () =>
-        client.get('/foo', {cancelToken})
+        axios.get('/foo', {cancelToken})
     )
 
     beforeEach(() => {

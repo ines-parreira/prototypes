@@ -1,4 +1,5 @@
 import MockAdapter from 'axios-mock-adapter'
+import axios from 'axios'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
@@ -8,7 +9,7 @@ import {
     NEXT_VIEW_NAV_DIRECTION,
     PREV_VIEW_NAV_DIRECTION,
 } from '../../../constants/view.ts'
-import client from '../../../models/api/resources.ts'
+
 import {mergeTickets, searchTickets} from '../actions.ts'
 
 const middlewares = [thunk]
@@ -25,7 +26,7 @@ describe('mergeTickets actions', () => {
 
     beforeEach(() => {
         store = mockStore({})
-        mockServer = new MockAdapter(client)
+        mockServer = new MockAdapter(axios)
     })
 
     describe('search', () => {

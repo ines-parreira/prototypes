@@ -40,7 +40,6 @@ import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
 } from '../errors'
-import client from '../../../models/api/resources'
 
 import {getReplyAreaStateSnapshot} from './testUtils'
 
@@ -77,7 +76,7 @@ describe('actions', () => {
     let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
 
     beforeEach(() => {
-        mockServer = new MockAdapter(client)
+        mockServer = new MockAdapter(axios)
     })
 
     describe('new message', () => {

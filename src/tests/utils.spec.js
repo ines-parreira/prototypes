@@ -1,5 +1,6 @@
 import moment from 'moment'
 import {fromJS} from 'immutable'
+import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import * as utils from '../utils.ts'
@@ -12,7 +13,6 @@ import {
     LITE_AGENT_ROLE,
     OBSERVER_AGENT_ROLE,
 } from '../config/user.ts'
-import client from '../models/api/resources.ts'
 
 describe('global utils', () => {
     describe('formatDatetime', () => {
@@ -672,7 +672,7 @@ describe('global utils', () => {
         let mockServer
 
         beforeEach(() => {
-            mockServer = new MockAdapter(client)
+            mockServer = new MockAdapter(axios)
         })
 
         it('should post files to the upload API', () => {

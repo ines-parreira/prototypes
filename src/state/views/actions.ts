@@ -28,7 +28,6 @@ import {
 import {buildJobMessage} from '../../utils/notificationUtils'
 import {getMoment} from '../../utils/date'
 import {StoreDispatch, RootState} from '../types'
-import client from '../../models/api/resources'
 
 import {activeViewUrl} from './utils'
 import * as viewsSelectors from './selectors'
@@ -137,7 +136,7 @@ export function fieldEnumSearch(
         >
         data.query = query
 
-        return client
+        return axios
             .post<ApiListResponsePagination<unknown[]>>('/api/search/', data, {
                 cancelToken,
             })
@@ -168,7 +167,7 @@ export function fetchViews(currentViewId: string) {
             type: types.FETCH_VIEW_LIST_START,
         })
 
-        return client
+        return axios
             .get<{data: View[]}>('/api/views/')
             .then((json) => json?.data)
             .then(
@@ -222,7 +221,7 @@ export function submitView(view: ViewImmutable) {
         let promise
 
         if (isUpdate) {
-            promise = client.put<View>(
+            promise = axios.put<View>(
                 `/api/views/${view.get('id') as number}/`,
                 view
                     .delete('dirty')
@@ -245,7 +244,7 @@ export function submitView(view: ViewImmutable) {
                         item.get('display_order', 0) as number
                 )
                 .toJS() as number[]) || [0]
-            promise = client.post<View>(
+            promise = axios.post<View>(
                 '/api/views/',
                 view
                     .set('display_order', (_max(orders) as number) + 1)
@@ -316,7 +315,7 @@ export function deleteView(view: ViewImmutable) {
             )
         }
 
-        return client.delete(`/api/views/${view.get('id') as number}/`).then(
+        return axios.delete(`/api/views/${view.get('id') as number}/`).then(
             () => {
                 const viewConfig = viewsConfig.getConfigByType(vType)
                 const destinationView = otherViewsOfType.first() as Map<
@@ -433,7 +432,7 @@ export function fetchViewItems(
         // when a view is dirty, just send the whole view data rather than just the id
         // this will allow us to test a view before submitting it to the DB
         if (isDirty) {
-            promise = client.put<ApiListResponsePagination<Ticket[]>>(
+            promise = axios.put<ApiListResponsePagination<Ticket[]>>(
                 url,
                 {
                     view: activeView
@@ -446,7 +445,7 @@ export function fetchViewItems(
                 options
             )
         } else {
-            promise = client.get<ApiListResponsePagination<Ticket[]>>(
+            promise = axios.get<ApiListResponsePagination<Ticket[]>>(
                 url,
                 options
             )
@@ -569,7 +568,7 @@ export function createJob(
             })
         ) as unknown) as Notification
 
-        return client
+        return axios
             .post<Job>('/api/jobs/', requestPayload)
             .then((json) => json?.data)
             .then(
@@ -580,7 +579,7 @@ export function createJob(
                             name: 'Cancel',
                             primary: true,
                             onClick: () => {
-                                return client
+                                return axios
                                     .delete<void>(`/api/jobs/${job.id}`)
                                     .then((json) => {
                                         notification.buttons = []

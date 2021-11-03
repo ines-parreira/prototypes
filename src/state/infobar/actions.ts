@@ -4,7 +4,6 @@ import _noop from 'lodash/noop'
 import {notify} from '../notifications/actions'
 import {isCurrentlyOnTicket, stripErrorMessage} from '../../utils'
 
-import client from '../../models/api/resources'
 import {ApiListResponsePagination} from '../../models/api/types'
 import history from '../../pages/history'
 import {Customer} from '../customers/types'
@@ -22,7 +21,7 @@ export const search = (query: string, cancelToken?: CancelToken) => (
     })
     const options = cancelToken ? {cancelToken} : {}
 
-    return client
+    return axios
         .post<ApiListResponsePagination<Customer>>(
             '/api/search/',
             {type: 'user_profile', query},
@@ -56,7 +55,7 @@ export const similarCustomer = (customerId: string) => (
         type: constants.SEARCH_SIMILAR_CUSTOMER_START,
     })
 
-    return client
+    return axios
         .get<Customer>(`/api/customers/${customerId}/similar/`)
         .then((json) => json?.data)
         .then(
@@ -87,7 +86,7 @@ export const fetchPreviewCustomer = (customerId: string) => (
         type: constants.FETCH_PREVIEW_CUSTOMER_START,
     })
 
-    return client
+    return axios
         .get<Customer>(`/api/customers/${customerId}/`)
         .then((json) => json?.data)
         .then(
@@ -173,7 +172,7 @@ export const executeAction = (
         callback,
     })
 
-    return client.post('/api/actions/execute/', data).then(
+    return axios.post('/api/actions/execute/', data).then(
         () => {
             return Promise.resolve()
         },

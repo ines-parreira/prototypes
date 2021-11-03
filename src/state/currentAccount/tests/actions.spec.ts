@@ -1,13 +1,13 @@
 import {fromJS, Map} from 'immutable'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import * as actions from '../actions'
 import {initialState} from '../reducers'
 import {StoreDispatch} from '../../types'
 import {AccountSettingType, AccountSetting} from '../types'
-import client from '../../../models/api/resources'
 
 type MockedRootState = {
     currentAccount: Map<any, any>
@@ -30,7 +30,7 @@ describe('current account actions', () => {
 
     beforeEach(() => {
         store = mockStore({currentAccount: initialState})
-        mockServer = new MockAdapter(client)
+        mockServer = new MockAdapter(axios)
     })
 
     it('update account', () => {

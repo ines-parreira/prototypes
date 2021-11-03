@@ -1,5 +1,6 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 
@@ -7,7 +8,6 @@ import * as actions from '../actions.ts'
 import {initialState} from '../reducers.ts'
 import * as types from '../constants'
 import {UserSettingType} from '../../../config/types/user.ts'
-import client from '../../../models/api/resources.ts'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -24,7 +24,7 @@ describe('current user actions', () => {
 
     beforeEach(() => {
         store = mockStore({currentUser: initialState})
-        mockServer = new MockAdapter(client)
+        mockServer = new MockAdapter(axios)
     })
 
     it('change password', () => {

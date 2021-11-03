@@ -1,4 +1,4 @@
-import client from '../models/api/resources.ts'
+import axios from 'axios'
 
 export const mockImageOnload = () => {
     let srcSet
@@ -7,7 +7,7 @@ export const mockImageOnload = () => {
         srcSet = Object.getOwnPropertyDescriptor(global.Image.prototype, 'src')
         Object.defineProperty(global.Image.prototype, 'src', {
             set(value) {
-                client
+                axios
                     .get(value)
                     .then(() => this.onload())
                     .catch(() => this.onerror())

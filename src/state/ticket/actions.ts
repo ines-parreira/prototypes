@@ -2,7 +2,7 @@ import {fromJS, Map, List} from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
 import _noop from 'lodash/noop'
 import _pick from 'lodash/pick'
-import {AxiosError} from 'axios'
+import axios, {AxiosError} from 'axios'
 import {createAction} from '@reduxjs/toolkit'
 import {removeNotification} from 'reapop'
 import {Moment} from 'moment'
@@ -47,7 +47,6 @@ import {
     NotificationButton,
 } from '../notifications/types'
 import history from '../../pages/history'
-import client from '../../models/api/resources'
 
 import {
     buildPartialUpdateFromAction,
@@ -147,7 +146,7 @@ export const ticketPartialUpdate = (args: Record<string, unknown>) => (
         args,
     })
 
-    return client
+    return axios
         .put<Ticket>(`/api/tickets/${ticketId}/`, args)
         .then((json) => json?.data)
         .then(
@@ -435,23 +434,21 @@ export const snoozeTicket = (
 export const deleteMessage = (ticketId: number, messageId: number) => (
     dispatch: StoreDispatch
 ): Promise<ReturnType<StoreDispatch>> => {
-    return client
-        .delete(`/api/tickets/${ticketId}/messages/${messageId}/`)
-        .then(
-            () => {
-                dispatch({
-                    type: types.DELETE_TICKET_MESSAGE_SUCCESS,
-                    messageId,
-                })
-            },
-            (error: AxiosError) => {
-                return dispatch({
-                    type: types.DELETE_TICKET_MESSAGE_ERROR,
-                    error,
-                    reason: `Failed to delete message ${messageId} from ticket ${ticketId}`,
-                })
-            }
-        )
+    return axios.delete(`/api/tickets/${ticketId}/messages/${messageId}/`).then(
+        () => {
+            dispatch({
+                type: types.DELETE_TICKET_MESSAGE_SUCCESS,
+                messageId,
+            })
+        },
+        (error: AxiosError) => {
+            return dispatch({
+                type: types.DELETE_TICKET_MESSAGE_ERROR,
+                error,
+                reason: `Failed to delete message ${messageId} from ticket ${ticketId}`,
+            })
+        }
+    )
 }
 
 export const deleteActionOnApplied = (
@@ -596,7 +593,7 @@ export const fetchTicket = (ticketId: string, discreetly = false) => (
 
     const url = `/api/tickets/${parsedTicketId}/`
 
-    return client
+    return axios
         .get<Ticket>(url)
         .then((json) => json?.data)
         .then(
@@ -738,7 +735,7 @@ export const _goToNextOrPrevTicket = (
             ])
         }
 
-        return client
+        return axios
             .put<Ticket>(url, payload_data)
             .then((json) => json?.data)
             .then(
@@ -996,7 +993,7 @@ export function updateTicketMessage(
             url = `${url}?action=${action}`
         }
 
-        return client
+        return axios
             .put<TicketMessage>(url, data)
             .then((json) => json?.data)
             .then(
@@ -1054,7 +1051,7 @@ export function displayHistoryOnNextPage(state = true) {
 
 export function deleteTicket(id: number) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return client.delete(`/api/tickets/${id}/`).then(
+        return axios.delete(`/api/tickets/${id}/`).then(
             () => {
                 return dispatch(
                     notify({
@@ -1087,7 +1084,7 @@ export function deleteTicketPendingMessage(message: Map<any, any>) {
 export const findAndSetCustomer = (email: string) => (
     dispatch: StoreDispatch
 ): Promise<ReturnType<StoreDispatch>> =>
-    client
+    axios
         .post<ApiListResponsePagination<UserSearchResult[]>>('/api/search/', {
             type: SearchCustomerType.UserChannelEmail,
             query: email,
@@ -1103,7 +1100,7 @@ export const findAndSetCustomer = (email: string) => (
 
             const channel = resp.data[0]
 
-            return client
+            return axios
                 .get<Customer>(`/api/customers/${channel.user?.id || ''}/`)
                 .then((json) => json?.data)
                 .then(

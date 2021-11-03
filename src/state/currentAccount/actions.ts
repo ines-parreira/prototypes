@@ -1,4 +1,4 @@
-import {AxiosError} from 'axios'
+import axios, {AxiosError} from 'axios'
 import _capitalize from 'lodash/capitalize'
 import {Map} from 'immutable'
 
@@ -7,7 +7,6 @@ import GorgiasApi from '../../services/gorgiasApi'
 import {notify} from '../notifications/actions'
 import {NotificationStatus} from '../notifications/types'
 import {StoreDispatch} from '../types'
-import client from '../../models/api/resources'
 
 import * as constants from './constants.js'
 import {Account, AccountSetting} from './types'
@@ -17,7 +16,7 @@ export const updateAccount = (values: Account) => (
 ): Promise<ReturnType<StoreDispatch>> => {
     dispatch({type: constants.UPDATE_ACCOUNT_START})
 
-    return client
+    return axios
         .put<Account>('/api/account/', values)
         .then((json) => json?.data)
         .then(
@@ -58,11 +57,11 @@ export function submitSetting(setting: AccountSetting) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         const isUpdate = !!setting.id
         const promise = isUpdate
-            ? client.put<AccountSetting>(
+            ? axios.put<AccountSetting>(
                   `/api/account/settings/${setting.id}/`,
                   setting
               )
-            : client.post<AccountSetting>('/api/account/settings/', setting)
+            : axios.post<AccountSetting>('/api/account/settings/', setting)
 
         return promise
             .then((json) => json?.data)
@@ -92,7 +91,7 @@ export function submitSetting(setting: AccountSetting) {
 
 export function updateSubscription(subscription: Subscription) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return client
+        return axios
             .put<Subscription>('/api/billing/subscription/', subscription)
             .then((json) => json?.data)
             .then(
@@ -135,7 +134,7 @@ export const setCurrentSubscription = (subscription: Map<any, any>) => {
 export const updateAccountOwner = (userId: number) => (
     dispatch: StoreDispatch
 ): Promise<ReturnType<StoreDispatch>> => {
-    return client.put('/api/account/owner/', {id: userId}).then(
+    return axios.put('/api/account/owner/', {id: userId}).then(
         () => {
             void dispatch(
                 notify({

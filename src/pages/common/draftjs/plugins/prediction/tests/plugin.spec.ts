@@ -1,16 +1,16 @@
 import {fromJS, Map} from 'immutable'
 import {ContentState, EditorState, SelectionState} from 'draft-js'
 import AxiosMock from 'axios-mock-adapter'
+import axios from 'axios'
 
 import createPredictionPlugin, {clearCache, setPredictionKey} from '../index'
 import * as DraftTestUtils from '../../../tests/draftTestUtils'
 import {Plugin, PluginMethods} from '../../types'
 import {flushPromises} from '../../../../../../utils/testing'
-import client from '../../../../../../models/api/resources'
 
 jest.mock('../../../../../../utils/errors')
 
-const axiosMock = new AxiosMock(client)
+const axiosMock = new AxiosMock(axios)
 
 const defaultContext: Map<any, any> = fromJS({})
 

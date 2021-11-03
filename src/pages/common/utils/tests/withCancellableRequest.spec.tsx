@@ -1,5 +1,5 @@
 import React from 'react'
-import {CancelToken} from 'axios'
+import axios, {CancelToken} from 'axios'
 import {Provider} from 'react-redux'
 import MockAdapter from 'axios-mock-adapter'
 import configureMockStore from 'redux-mock-store'
@@ -7,16 +7,15 @@ import thunk from 'redux-thunk'
 import {render, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import client from '../../../../models/api/resources'
 import {StoreDispatch} from '../../../../state/types'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from '../withCancellableRequest'
 
 const mockStore = configureMockStore([thunk])
-const mockApi = new MockAdapter(client)
+const mockApi = new MockAdapter(axios)
 const request = (cancelToken?: CancelToken) => (dispatch: StoreDispatch) => {
-    return client.get('/foo', {cancelToken}).then((res) =>
+    return axios.get('/foo', {cancelToken}).then((res) =>
         dispatch({
             type: 'foo',
             data: res.data,

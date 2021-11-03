@@ -3,7 +3,6 @@ import {fromJS, Map, List} from 'immutable'
 import _get from 'lodash/get'
 
 import {Macro} from '../../models/macro/types'
-import client from '../../models/api/resources'
 import {ApiListResponsePagination, GorgiasError} from '../../models/api/types'
 import {NotificationStatus} from '../notifications/types'
 import {notify} from '../notifications/actions'
@@ -64,7 +63,7 @@ export const fetchMacros = (
         params._fallback_order_by = filters['_fallbackOrderBy']
     }
 
-    return client
+    return axios
         .get<ApiListResponsePagination<Macro[]>>('/api/macros/', {
             params,
             ...(cancelToken ? {cancelToken} : {}),
@@ -114,7 +113,7 @@ export const getMacro = (id: string, cancelToken?: CancelToken) => async (
     dispatch: StoreDispatch
 ) => {
     try {
-        const {data} = await client.get<Macro>(
+        const {data} = await axios.get<Macro>(
             `/api/macros/${id}`,
             cancelToken && {cancelToken}
         )
@@ -139,7 +138,7 @@ export const getMacro = (id: string, cancelToken?: CancelToken) => async (
 export const createMacro = (macro: Map<any, any>) => (
     dispatch: StoreDispatch
 ): Promise<Macro> => {
-    return client
+    return axios
         .post<Macro>('/api/macros/', macro.toJS())
         .then((json) => json?.data)
         .then(
@@ -175,7 +174,7 @@ export const createMacro = (macro: Map<any, any>) => (
 export const updateMacro = (macro: Map<any, any>) => (
     dispatch: StoreDispatch
 ): Promise<Macro> => {
-    return client
+    return axios
         .put<Macro>(`/api/macros/${macro.get('id') as number}/`, macro.toJS())
         .then((json) => json?.data)
         .then(
@@ -211,7 +210,7 @@ export const updateMacro = (macro: Map<any, any>) => (
 export const deleteMacro = (macroId: string) => (
     dispatch: StoreDispatch
 ): Promise<ReturnType<StoreDispatch>> => {
-    return client.delete<undefined>(`/api/macros/${macroId}/`).then(
+    return axios.delete<undefined>(`/api/macros/${macroId}/`).then(
         () => {
             void dispatch(
                 notify({

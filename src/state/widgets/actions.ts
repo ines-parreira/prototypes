@@ -1,4 +1,4 @@
-import {AxiosError} from 'axios'
+import axios, {AxiosError} from 'axios'
 import _pick from 'lodash/pick'
 import _size from 'lodash/size'
 import _last from 'lodash/last'
@@ -12,7 +12,6 @@ import * as integrationsSelectors from '../integrations/selectors'
 import {notify} from '../notifications/actions'
 import {NotificationStatus} from '../notifications/types'
 import {StoreDispatch, RootState} from '../types'
-import client from '../../models/api/resources'
 
 import * as types from './constants.js'
 import {
@@ -28,7 +27,7 @@ export function fetchWidgets() {
             type: types.FETCH_WIDGETS_START,
         })
 
-        return client
+        return axios
             .get<{data: Widget[]}>('/api/widgets/', {
                 data: {
                     type: 'ticket-list',
@@ -241,7 +240,7 @@ export function submitWidgets(data: Maybe<Widget[]>) {
             ]) as Widget | WidgetDraft
         })
 
-        return client
+        return axios
             .put<{data: Widget[]}>('/api/widgets/', items)
             .then((json) => json?.data)
             .then(

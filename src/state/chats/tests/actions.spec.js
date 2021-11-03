@@ -1,9 +1,9 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import PushJS from 'push.js'
 
-import client from '../../../models/api/resources.ts'
 import browserNotification from '../../../services/browserNotification.ts'
 import * as actions from '../actions.ts'
 import {initialState} from '../reducers.ts'
@@ -29,7 +29,7 @@ describe('actions', () => {
 
     beforeEach(() => {
         store = mockStore({currentAccount: initialState})
-        mockServer = new MockAdapter(client)
+        mockServer = new MockAdapter(axios)
         jest.clearAllMocks()
     })
 
