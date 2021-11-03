@@ -1,15 +1,14 @@
-import React, {ReactChild, ChangeEvent} from 'react'
+import React, {ChangeEvent, ReactChild} from 'react'
 
+import {HelpCenter, LocaleCode} from '../../../../../models/helpCenter/types'
+import {HELP_CENTER_TITLE_MAX_LENGTH} from '../../constants'
+import {useLocales} from '../../hooks/useLocales'
+import {getLocaleSelectOptions} from '../../utils/localeSelectOptions'
 import {
     ActionType,
     ArticleLanguageSelect,
     OptionItem,
 } from '../articles/ArticleLanguageSelect'
-
-import {LocaleCode, HelpCenter} from '../../../../../models/helpCenter/types'
-
-import {useLocales} from '../../hooks/useLocales'
-import {getLocaleSelectOptions} from '../../utils/localeSelectOptions'
 
 import ArticleCategorySelect from './ArticleCategorySelect'
 
@@ -99,10 +98,11 @@ export const HelpCenterEditModalHeader = ({
                     value={title}
                     placeholder="Title"
                     onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        onEditTitle && onEditTitle(event.target.value)
+                        onEditTitle?.(event.target.value)
                     }
                     disabled={Boolean(!onEditTitle)}
                     className={css.titleInput}
+                    maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
                 />
                 <div className={css.headerControls}>
                     <ArticleLanguageSelect

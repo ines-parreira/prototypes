@@ -11,6 +11,7 @@ import {notify} from '../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import AutoPopulateInput from '../../../../common/forms/AutoPopulateInput/AutoPopulateInput'
 import InputField from '../../../../common/forms/InputField.js'
+import {HELP_CENTER_TITLE_MAX_LENGTH} from '../../constants'
 import {
     getAbsoluteUrl,
     getArticleUrl,
@@ -92,6 +93,7 @@ export const HelpCenterEditAdvancedArticleForm = ({
                 label="Title"
                 value={translation.title}
                 onChange={onEditArticle('title')}
+                maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
             />
             <div className={css.inputWrapper}>
                 <InputField
@@ -124,6 +126,7 @@ export const HelpCenterEditAdvancedArticleForm = ({
                 value={translation.excerpt}
                 onChange={onEditArticle('excerpt')}
                 help="Displayed under the title of this article inside your Help Center."
+                maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
             />
             <AutoPopulateInput
                 type="text"

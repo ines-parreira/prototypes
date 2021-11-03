@@ -30,6 +30,7 @@ import AutoPopulateInput from '../../../../../common/forms/AutoPopulateInput/Aut
 import {
     DRAWER_TRANSITION_DURATION_MS,
     HELP_CENTER_DEFAULT_LOCALE,
+    HELP_CENTER_TITLE_MAX_LENGTH,
 } from '../../../constants'
 import {useLocales} from '../../../hooks/useLocales'
 import {
@@ -294,6 +295,7 @@ export const HelpCenterCategory = ({
                         value={title}
                         placeholder="Category title"
                         onChange={handleChangeTitle}
+                        maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
                     />
                 </FormGroup>
                 <FormGroup className={classNames(css.textfield, css.required)}>
@@ -349,6 +351,7 @@ export const HelpCenterCategory = ({
                             minHeight: 52,
                         }}
                         onChange={handleChangeDescription}
+                        maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
                     />
                     <FormText>
                         Category description is displayed in search engines to

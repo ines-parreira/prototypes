@@ -23,7 +23,7 @@ import PageHeader from '../../../common/components/PageHeader'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useLocales} from '../hooks/useLocales'
 import {
-    HELPCENTER_MAX_CREATION,
+    HELP_CENTER_MAX_CREATION,
     HELP_CENTER_BASE_PATH,
     HELP_CENTER_PAYWALLS_ENABLED,
 } from '../constants'
@@ -131,7 +131,7 @@ export const HelpCenterStartView: FunctionComponent = () => {
 
     const addNewButtonDisabled =
         HELP_CENTER_PAYWALLS_ENABLED &&
-        helpCenterList.length >= HELPCENTER_MAX_CREATION
+        helpCenterList.length >= HELP_CENTER_MAX_CREATION
 
     return (
         <div className="full-width">

@@ -26,7 +26,7 @@ export const HELP_CENTER_MAX_ARTICLES = 1000
 
 export const HELP_CENTER_MAX_ARTICLES_WARNING_THRESHOLD = 990
 
-export const HELPCENTER_MAX_CREATION = 200
+export const HELP_CENTER_MAX_CREATION = 200
 
 export const HELP_CENTER_PAYWALLS_ENABLED = isStaging() || isDevelopment()
 
@@ -94,6 +94,8 @@ export const ARTICLE_ROW_ACTIONS = [
         tooltip: 'Copy link to clipboard.',
     },
 ]
+
+export const HELP_CENTER_TITLE_MAX_LENGTH = 250
 
 export const CATEGORIES_PER_PAGE = 30
 
