@@ -1,4 +1,3 @@
-import axios from 'axios'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
@@ -6,6 +5,7 @@ import MockAdapter from 'axios-mock-adapter'
 
 import * as actions from '../actions.ts'
 import {initialState} from '../reducers.ts'
+import client from '../../../models/api/resources.ts'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -29,7 +29,7 @@ describe('tickets actions', () => {
     let mockServer
 
     beforeEach(() => {
-        mockServer = new MockAdapter(axios)
+        mockServer = new MockAdapter(client)
     })
 
     beforeEach(() => {

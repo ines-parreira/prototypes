@@ -1,10 +1,11 @@
-import axios, {AxiosError} from 'axios'
+import {AxiosError} from 'axios'
 import _isUndefined from 'lodash/isUndefined'
 import {List} from 'immutable'
 import {updateNotification} from 'reapop'
 
 import * as viewsConfig from '../../config/views'
 
+import client from '../../models/api/resources'
 import {ApiListResponsePagination} from '../../models/api/types'
 import {Ticket} from '../../models/ticket/types'
 import {notify} from '../notifications/actions'
@@ -22,7 +23,7 @@ export function fetchCustomer(customerId: string) {
             type: types.FETCH_CUSTOMER_START,
         })
 
-        return axios
+        return client
             .get<Customer>(`/api/customers/${customerId}/`)
             .then((json) => json?.data)
             .then(
@@ -67,12 +68,12 @@ export function submitCustomer(data: CustomerDraft, customerId: number) {
         })
 
         if (isUpdate) {
-            promise = axios.put<CustomerDraft>(
+            promise = client.put<CustomerDraft>(
                 `/api/customers/${customerId}/`,
                 data
             )
         } else {
-            promise = axios.post<CustomerDraft>('/api/customers/', data)
+            promise = client.post<CustomerDraft>('/api/customers/', data)
         }
 
         return promise
@@ -116,7 +117,7 @@ export function deleteCustomer(customerId: number) {
             type: types.DELETE_CUSTOMER_START,
         })
 
-        return axios.delete(`/api/customers/${customerId}/`).then(
+        return client.delete(`/api/customers/${customerId}/`).then(
             () => {
                 dispatch({
                     type: types.DELETE_CUSTOMER_SUCCESS,
@@ -158,7 +159,7 @@ export function bulkDeleteCustomer(ids: List<any>) {
             })
         ) as Promise<any> & {status: NotificationStatus; message: string}
 
-        return axios
+        return client
             .delete(`/api/${viewConfig.get('api') as string}/`, {data: {ids}})
             .then(
                 () => {
@@ -196,7 +197,7 @@ export function fetchCustomerHistory(
             type: types.FETCH_CUSTOMER_HISTORY_START,
         })
 
-        return axios
+        return client
             .get<ApiListResponsePagination<Ticket>>(
                 `/api/customers/${customerId}/tickets/`
             )
@@ -257,7 +258,7 @@ export function mergeCustomers(
 
         data.channels = mergeChannels(data.channels)
 
-        return axios
+        return client
             .put<Customer>(
                 `/api/customers/merge?target_id=${baseCustomerId}&source_id=${mergeCustomerId}`,
                 data

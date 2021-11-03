@@ -18,7 +18,6 @@ import * as layoutSelectors from '../state/layout/selectors'
 import {RootState} from '../state/types'
 import * as viewsActions from '../state/views/actions'
 import * as segmentTracker from '../store/middlewares/segmentTracker.js'
-import {injectInterceptor} from '../utils/axios'
 import {handleUsageBanner} from '../state/notifications/actions'
 import {hasIntegrationOfTypes} from '../state/integrations/selectors'
 import {IntegrationType} from '../models/integration/types'
@@ -48,8 +47,6 @@ type Props = {
 
 class App extends React.Component<Props> {
     componentDidMount() {
-        this.props.injectInterceptor()
-
         const item = this.props.currentAccount
         const newAccountStatus = item.getIn(['status', 'status'])
         const notification: Map<any, any> | undefined = item.getIn([
@@ -247,7 +244,6 @@ const connector = connect(
         ),
     }),
     {
-        injectInterceptor: injectInterceptor,
         fetchVisibleViewsCounts: viewsActions.fetchVisibleViewsCounts,
         openPanel: layoutActions.openPanel,
         closePanels: layoutActions.closePanels,

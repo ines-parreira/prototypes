@@ -2,6 +2,7 @@ import axios, {CancelToken} from 'axios'
 import {Map, List} from 'immutable'
 
 import {UserRole, User, UserDraft} from '../../config/types/user'
+import client from '../../models/api/resources'
 import {toImmutable, toJS} from '../../utils'
 import {notify} from '../notifications/actions'
 import {NotificationStatus} from '../notifications/types'
@@ -21,7 +22,7 @@ export function fetchUsers(roles: UserRole[]) {
             rolesParam = `?roles[]=${roles.join('&roles[]=')}`
         }
 
-        return axios
+        return client
             .get<User[]>(`/api/users/${rolesParam}`)
             .then((json) => json.data)
             .then(
@@ -46,7 +47,7 @@ export function fetchUsers(roles: UserRole[]) {
 export const createAgent = (agent: UserDraft) => (
     dispatch: StoreDispatch
 ): Promise<ReturnType<StoreDispatch>> => {
-    return axios
+    return client
         .post<User>('/api/users/', toJS(agent))
         .then((json) => json.data)
         .then(
@@ -80,7 +81,7 @@ export const createAgent = (agent: UserDraft) => (
 export const deleteAgent = (id: number) => (
     dispatch: StoreDispatch
 ): Promise<ReturnType<StoreDispatch>> => {
-    return axios.delete(`/api/users/${id}/`).then(
+    return client.delete(`/api/users/${id}/`).then(
         () => {
             void dispatch(
                 notify({
@@ -108,7 +109,7 @@ export const deleteAgent = (id: number) => (
 export const fetchAgent = (id: number, cancelToken?: CancelToken) => (
     dispatch: StoreDispatch
 ): Promise<Map<any, any>> => {
-    return axios
+    return client
         .get<User>(`/api/users/${id}/`, cancelToken && {cancelToken})
         .then((json) => json.data)
         .then(
@@ -130,7 +131,7 @@ export const fetchAgent = (id: number, cancelToken?: CancelToken) => (
 export const fetchPagination = (page = 1) => (
     dispatch: StoreDispatch
 ): Promise<ReturnType<StoreDispatch>> => {
-    return axios
+    return client
         .get<User[]>('/api/users/', {
             params: {
                 roles: Object.values(UserRole),
@@ -158,7 +159,7 @@ export const fetchPagination = (page = 1) => (
 export const inviteAgent = (id: number) => (
     dispatch: StoreDispatch
 ): Promise<ReturnType<StoreDispatch>> => {
-    return axios.post(`/api/users/${id}/invite/`).then(
+    return client.post(`/api/users/${id}/invite/`).then(
         () => {
             return dispatch(
                 notify({
@@ -180,7 +181,7 @@ export const inviteAgent = (id: number) => (
 export const updateAgent = (id: number, agent: UserDraft) => (
     dispatch: StoreDispatch
 ): Promise<ReturnType<StoreDispatch>> => {
-    return axios
+    return client
         .put<User>(`/api/users/${id}/`, toJS(agent))
         .then((json) => json.data)
         .then(

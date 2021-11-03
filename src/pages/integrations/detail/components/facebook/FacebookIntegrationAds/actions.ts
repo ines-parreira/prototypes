@@ -1,5 +1,3 @@
-import axios from 'axios'
-
 import {notify} from '../../../../../../state/notifications/actions'
 import {
     addFacebookAdsLoadingAd,
@@ -10,11 +8,12 @@ import {
 } from '../../../../../../state/facebookAds/actions'
 import {StoreDispatch} from '../../../../../../state/types'
 import {NotificationStatus} from '../../../../../../state/notifications/types'
+import client from '../../../../../../models/api/resources'
 
 export const fetchAds = () => async (dispatch: StoreDispatch) => {
     try {
         dispatch(setFacebookAdsLoading(true))
-        const response = await axios.get('/integrations/facebook/fads/state/')
+        const response = await client.get('/integrations/facebook/fads/state/')
         dispatch(setFacebookAdsInternals(response.data))
     } catch (e) {
         void dispatch(
@@ -36,7 +35,7 @@ export const updateAd = (
     try {
         dispatch(addFacebookAdsLoadingAd(adId))
 
-        await axios.put('/integrations/facebook/fads/fad/activate/', {
+        await client.put('/integrations/facebook/fads/fad/activate/', {
             integration_id: integrationId,
             ad_id: adId,
             is_active: isActive,

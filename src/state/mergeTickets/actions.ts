@@ -1,4 +1,4 @@
-import axios, {AxiosError} from 'axios'
+import {AxiosError} from 'axios'
 import {Map} from 'immutable'
 
 import {StoreDispatch} from '../types'
@@ -10,6 +10,7 @@ import {ApiListResponsePagination} from '../../models/api/types'
 import {Ticket} from '../../models/ticket/types'
 import {MoveIndexDirection} from '../../pages/common/utils/keyboard'
 import {NotificationStatus} from '../notifications/types'
+import client from '../../models/api/resources'
 
 export const LIMIT = 5
 
@@ -40,7 +41,7 @@ export function searchTickets(
             }
         }
 
-        return axios
+        return client
             .put<ApiListResponsePagination<Ticket[]>>(
                 url,
                 {view},
@@ -72,7 +73,7 @@ export function mergeTickets(
     ticketData: Ticket
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return axios
+        return client
             .put<Ticket>(
                 `/api/tickets/merge?target_id=${targetTicketId}&source_id=${sourceTicketId}`,
                 ticketData

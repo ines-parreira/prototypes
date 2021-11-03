@@ -1,11 +1,12 @@
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
-import axios, {CancelToken} from 'axios'
+import {CancelToken} from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import * as actions from '../actions.ts'
 import {initialState} from '../reducers.ts'
+import client from '../../../models/api/resources.ts'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -34,7 +35,7 @@ describe('infobar actions', () => {
             infobar: initialState,
             ticket: fromJS({id: 1}),
         })
-        mockServer = new MockAdapter(axios)
+        mockServer = new MockAdapter(client)
     })
 
     describe('search', () => {

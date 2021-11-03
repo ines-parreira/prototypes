@@ -1,4 +1,4 @@
-import axios, {AxiosError} from 'axios'
+import {AxiosError} from 'axios'
 import _isUndefined from 'lodash/isUndefined'
 import _get from 'lodash/get'
 
@@ -13,6 +13,7 @@ import {
     UserSetting,
     UserPreferences,
 } from '../../config/types/user'
+import client from '../../models/api/resources'
 
 import * as constants from './constants.js'
 import * as currentUserSelectors from './selectors'
@@ -22,7 +23,7 @@ export const changePassword = (oldPassword: string, newPassword: string) => (
 ): Promise<ReturnType<StoreDispatch>> => {
     dispatch({type: constants.CHANGE_PASSWORD_START})
 
-    return axios
+    return client
         .put<User>('/api/users/0/', {
             old_password: oldPassword,
             new_password: newPassword,
@@ -57,7 +58,7 @@ export function updateCurrentUser(data: Partial<EditableUserProfile>) {
             type: constants.SUBMIT_CURRENT_USER_START,
         })
 
-        return axios
+        return client
             .put<User>('/api/users/0/', data)
             .then((json) => json?.data)
             .then(
@@ -114,11 +115,11 @@ export function submitSetting(data: UserSetting, notification: boolean) {
         })
 
         if (data.id != null) {
-            promise = axios.put<
+            promise = client.put<
                 UserSetting & Omit<{[key: string]: unknown}, keyof UserSetting>
             >(`/api/users/0/settings/${data.id}/`, data)
         } else {
-            promise = axios.post<
+            promise = client.post<
                 UserSetting & Omit<{[key: string]: unknown}, keyof UserSetting>
             >('/api/users/0/settings/', data)
         }

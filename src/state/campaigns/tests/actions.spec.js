@@ -1,5 +1,4 @@
 import {fromJS} from 'immutable'
-import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
@@ -8,6 +7,7 @@ const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
 import * as actions from '../actions'
+import client from '../../../models/api/resources.ts'
 
 // Would cause SecurityError
 jest.mock('../../../pages/history.ts')
@@ -20,7 +20,7 @@ describe('Campaign actions', () => {
         store = mockStore({
             integrations: fromJS({}),
         })
-        mockServer = new MockAdapter(axios)
+        mockServer = new MockAdapter(client)
     })
 
     const integration = fromJS({

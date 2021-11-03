@@ -1,6 +1,7 @@
-import axios, {AxiosError} from 'axios'
+import {AxiosError} from 'axios'
 import type {Map, Set} from 'immutable'
 
+import client from '../../models/api/resources'
 import {ApiListResponsePagination} from '../../models/api/types'
 import {toImmutable, toJS} from '../../utils'
 import {NotificationStatus} from '../notifications/types'
@@ -16,7 +17,7 @@ import {Team, TeamUser, MemberAddedTeam} from './types'
 export const fetchTeamsPagination = (page = 1) => (
     dispatch: StoreDispatch
 ): Promise<ReturnType<StoreDispatch>> => {
-    return axios
+    return client
         .get<ApiListResponsePagination<Team[]>>('/api/teams/', {
             params: {
                 page: page.toString(),
@@ -46,7 +47,7 @@ export const fetchTeamMembersPagination = (
     page = 1,
     search = ''
 ) => (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-    return axios
+    return client
         .get<ApiListResponsePagination<TeamUser[]>>(
             `/api/teams/${teamId}/members/`,
             {
@@ -78,7 +79,7 @@ export const fetchTeamMembersPagination = (
 export const addTeamMember = (teamId: number, userId: number) => (
     dispatch: StoreDispatch
 ): Promise<ReturnType<StoreDispatch>> => {
-    return axios
+    return client
         .post<MemberAddedTeam>(`/api/teams/${teamId}/members/`, {id: userId})
         .then((json) => json?.data)
         .then(
@@ -108,7 +109,7 @@ export const addTeamMember = (teamId: number, userId: number) => (
 export const deleteTeamMember = (teamId: number, userId: number) => (
     dispatch: StoreDispatch
 ): Promise<ReturnType<StoreDispatch>> => {
-    return axios.delete(`/api/teams/${teamId}/members/${userId}/`).then(
+    return client.delete(`/api/teams/${teamId}/members/${userId}/`).then(
         () => {
             void dispatch(
                 notify({
@@ -135,7 +136,7 @@ export const deleteTeamMember = (teamId: number, userId: number) => (
 export const deleteTeamMemberList = (teamId: number, userIds: Set<number>) => (
     dispatch: StoreDispatch
 ): Promise<ReturnType<StoreDispatch>> => {
-    return axios
+    return client
         .delete(`/api/teams/${teamId}/members/`, {data: {ids: userIds.toJS()}})
         .then(
             () => {
@@ -164,7 +165,7 @@ export const deleteTeamMemberList = (teamId: number, userIds: Set<number>) => (
 export const fetchTeam = (teamId: number) => (
     dispatch: StoreDispatch
 ): Promise<ReturnType<StoreDispatch>> => {
-    return axios
+    return client
         .get<Team>(`/api/teams/${teamId}/`)
         .then((json) => json?.data)
         .then(
@@ -193,7 +194,7 @@ export const updateTeam = (team: Map<any, any>) => (
     dispatch: StoreDispatch
 ): Promise<ReturnType<StoreDispatch>> => {
     const teamId = team.get('id') as number
-    return axios
+    return client
         .put<Team>(`/api/teams/${teamId}/`, toJS(team))
         .then((json) => json?.data)
         .then(
@@ -228,7 +229,7 @@ export const updateTeam = (team: Map<any, any>) => (
 export const createTeam = (team: Map<any, any>) => (
     dispatch: StoreDispatch
 ): Promise<ReturnType<StoreDispatch>> => {
-    return axios
+    return client
         .post<Team>('/api/teams/', toJS(team))
         .then((json) => json?.data)
         .then(
@@ -263,7 +264,7 @@ export const createTeam = (team: Map<any, any>) => (
 export const deleteTeam = (teamId: number) => (
     dispatch: StoreDispatch
 ): Promise<ReturnType<StoreDispatch>> => {
-    return axios.delete(`/api/teams/${teamId}/`).then(
+    return client.delete(`/api/teams/${teamId}/`).then(
         () => {
             void dispatch(
                 notify({

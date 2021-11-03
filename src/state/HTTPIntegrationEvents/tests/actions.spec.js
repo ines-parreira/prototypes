@@ -1,5 +1,4 @@
 import MockAdapter from 'axios-mock-adapter'
-import axios from 'axios'
 
 import {initialState} from '../reducers.ts'
 import {
@@ -7,6 +6,7 @@ import {
     fetchHTTPIntegrationEvents,
 } from '../actions.ts'
 import {mockStore} from '../../../utils/testing.tsx'
+import client from '../../../models/api/resources.ts'
 
 describe('HTTPIntegrationEvents', () => {
     let store = null
@@ -15,7 +15,7 @@ describe('HTTPIntegrationEvents', () => {
     describe('actions', () => {
         beforeEach(() => {
             store = mockStore({HTTPIntegrationEvent: initialState})
-            mockServer = new MockAdapter(axios)
+            mockServer = new MockAdapter(client)
         })
 
         describe('fetchHTTPIntegrationEvents', () => {

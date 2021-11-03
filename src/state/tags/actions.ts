@@ -1,13 +1,12 @@
 import axios, {AxiosError, CancelToken} from 'axios'
-
 import {List} from 'immutable'
 
 import {ApiListResponsePagination} from '../../models/api/types'
 import {notify} from '../notifications/actions'
 import {NotificationStatus} from '../notifications/types'
 import {createErrorNotification} from '../utils'
-
 import type {RootState, StoreDispatch} from '../types'
+import client from '../../models/api/resources'
 
 import * as constants from './constants.js'
 import {TagSortableProperty, Tag, TagDraft} from './types'
@@ -38,7 +37,7 @@ export function fetchTags(
 
         const {tags} = getState()
 
-        return axios
+        return client
             .get<ApiListResponsePagination<Tag[]>>('/api/tags/', {
                 cancelToken,
                 params: {
@@ -116,7 +115,7 @@ export function cancel(tag: Tag) {
  */
 export const save = (tag: Tag) => {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return axios
+        return client
             .put<Tag>(`/api/tags/${tag.id}/`, tag)
             .then(() => {
                 void dispatch(
@@ -150,7 +149,7 @@ export const create = (tag: TagDraft) => {
             tag,
         })
 
-        return axios.post<Tag>('/api/tags/', tag).then(
+        return client.post<Tag>('/api/tags/', tag).then(
             (resp) => {
                 void dispatch(
                     notify({
@@ -179,7 +178,7 @@ export const create = (tag: TagDraft) => {
  */
 export const remove = (id: string) => {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return axios.delete(`/api/tags/${id}/`).then(
+        return client.delete(`/api/tags/${id}/`).then(
             () => {
                 void dispatch(
                     notify({
@@ -204,7 +203,7 @@ export const remove = (id: string) => {
  */
 export const bulkDelete = (ids: Array<string>) => {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return axios.delete('/api/tags/', {data: {ids}}).then(
+        return client.delete('/api/tags/', {data: {ids}}).then(
             () => {
                 void dispatch(
                     notify({
@@ -236,7 +235,7 @@ export const merge = (ids: List<any>) => {
 
         const destinationId = ids.last() as string
 
-        return axios
+        return client
             .put<Tag>(`/api/tags/${destinationId}/merge/`, {
                 source_tags_ids: ids.pop().toJS(),
             })

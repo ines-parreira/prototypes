@@ -1,11 +1,11 @@
 import MockAdapter from 'axios-mock-adapter'
-import axios from 'axios'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
 import * as actions from '../../teams/actions.ts'
+import client from '../../../models/api/resources.ts'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -24,7 +24,7 @@ describe('team actions', () => {
 
     beforeEach(() => {
         store = mockStore()
-        mockServer = new MockAdapter(axios)
+        mockServer = new MockAdapter(client)
     })
 
     describe('fetchTeamsPagination()', () => {

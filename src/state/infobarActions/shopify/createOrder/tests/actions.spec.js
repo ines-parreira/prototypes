@@ -29,6 +29,9 @@ jest.mock('lodash/debounce', () => (fn) => {
 })
 
 jest.mock('../../../../infobar/actions.ts')
+jest.mock('../../../../../models/api/resources.ts', () =>
+    jest.requireActual('axios')
+)
 jest.useFakeTimers()
 
 describe('infobarActions.shopify.createOrder actions', () => {

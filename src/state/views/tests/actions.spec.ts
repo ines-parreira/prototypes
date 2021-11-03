@@ -20,6 +20,7 @@ import {notify} from '../../notifications/actions'
 import {MoveIndexDirection} from '../../../pages/common/utils/keyboard'
 import {getAST} from '../../../utils'
 import * as viewsSelectors from '../selectors'
+import client from '../../../models/api/resources'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -38,7 +39,7 @@ jest.mock('reapop', () => {
 const store = mockStore({
     views: initialState,
 })
-const mockServer = new MockAdapter(axios)
+const mockServer = new MockAdapter(client)
 
 beforeEach(() => {
     store.clearActions()
@@ -688,7 +689,7 @@ describe('actions', () => {
         }) as Map<any, any>
 
         it('should create view when id is 0', async () => {
-            const mockServer = new MockAdapter(axios)
+            const mockServer = new MockAdapter(client)
                 .onPost('/api/views/')
                 .reply(() => [200, {id: 1, slug: 'my-tickets'}])
 
@@ -704,7 +705,7 @@ describe('actions', () => {
 
         it('should update view', async () => {
             const viewToUpdate = view.set('id', 99)
-            const mockServer = new MockAdapter(axios)
+            const mockServer = new MockAdapter(client)
                 .onPut('/api/views/99/')
                 .reply(() => [
                     200,
