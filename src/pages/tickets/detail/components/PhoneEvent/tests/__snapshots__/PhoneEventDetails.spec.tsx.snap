@@ -9,19 +9,99 @@ exports[`<PhoneEventDetails/> render() should render call recording event 1`] = 
   >
     <div>
       <b>
-        Duration:
+        Phone number
+        :
       </b>
        
-      0min 5s
     </div>
     <div>
       <b>
-        Recording: 
+        Duration:
       </b>
-      <audio
-        controls=""
-        src="https://uploads.gorgi.us/development/some-file.mp3"
-      />
+       
+      5s
+    </div>
+    <div
+      class="d-flex flex-column"
+    >
+      <div
+        class="mb-3"
+      >
+        <b>
+          Recording:
+        </b>
+      </div>
+      <div
+        class="recording-wrapper"
+      >
+        <audio
+          controls=""
+          src="https://uploads.gorgi.us/development/some-file.mp3"
+        />
+        <div
+          class="recording-download"
+        >
+          <span
+            class=""
+          >
+            <button
+              class="btn btn-default"
+              data-testid="record-call-button"
+              id="download-button-3-tooltip-target"
+              type="button"
+            >
+              <i
+                class="material-icons"
+              >
+                download
+              </i>
+            </button>
+            <span />
+          </span>
+        </div>
+        <div
+          class="recording-delete"
+        >
+          <span
+            class=""
+          >
+            <div
+              class="component d-inline-block float-right"
+              id="delete-button-4-tooltip-target"
+            >
+              <button
+                class="btn btn-default"
+                id="confirm-button-delete-button-4-tooltip-target"
+                type="button"
+              >
+                <i
+                  class="material-icons"
+                >
+                  delete
+                </i>
+              </button>
+            </div>
+            <span />
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneEventDetails/> render() should render call recording event with message 1`] = `
+<div
+  class="eventDetails"
+>
+  <div
+    class="content"
+  >
+    <div>
+      Call recording manually deleted by 
+      <b>
+        Michael
+      </b>
     </div>
   </div>
 </div>
@@ -137,7 +217,7 @@ exports[`<PhoneEventDetails/> render() should render voicemail event details 1`]
         Duration:
       </b>
        
-      0min 6s
+      6s
     </div>
     <div
       class="d-flex flex-column"
@@ -149,12 +229,77 @@ exports[`<PhoneEventDetails/> render() should render voicemail event details 1`]
           Voicemail:
         </b>
       </div>
-      <div>
+      <div
+        class="recording-wrapper"
+      >
         <audio
           controls=""
-          src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/RE6fac6a901e0b886cec366ceb6365a8cd-a358dc82-a84b-4975-baef-7852d7c9c180"
+          src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/RE6fac6a901e0b886cec366ceb6365a8cd-a358dc82-a84b-4975-baef-7852d7c9c180.mp3"
         />
+        <div
+          class="recording-download"
+        >
+          <span
+            class=""
+          >
+            <button
+              class="btn btn-default"
+              data-testid="record-call-button"
+              id="download-button-1-tooltip-target"
+              type="button"
+            >
+              <i
+                class="material-icons"
+              >
+                download
+              </i>
+            </button>
+            <span />
+          </span>
+        </div>
+        <div
+          class="recording-delete"
+        >
+          <span
+            class=""
+          >
+            <div
+              class="component d-inline-block float-right"
+              id="delete-button-2-tooltip-target"
+            >
+              <button
+                class="btn btn-default"
+                id="confirm-button-delete-button-2-tooltip-target"
+                type="button"
+              >
+                <i
+                  class="material-icons"
+                >
+                  delete
+                </i>
+              </button>
+            </div>
+            <span />
+          </span>
+        </div>
       </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneEventDetails/> render() should render voicemail event details with message 1`] = `
+<div
+  class="eventDetails"
+>
+  <div
+    class="content"
+  >
+    <div>
+      Voicemail recording manually deleted by 
+      <b>
+        Michael
+      </b>
     </div>
   </div>
 </div>

@@ -7,6 +7,8 @@ import moment from 'moment'
 import {PhoneIntegrationEvent} from '../../../../../constants/integrations/types/event'
 
 import css from './PhoneEventDetails.less'
+import PhoneEventDetailsVoicemail from './PhoneEventDetailsVoicemail'
+import PhoneEventDetailsCallRecording from './PhoneEventDetailsCallRecording'
 
 type PhoneEventDetailsProps = {
     event: Map<string, any>
@@ -33,30 +35,12 @@ export default function PhoneEventDetails({
 
     switch (eventType) {
         case PhoneIntegrationEvent.VoicemailRecording: {
-            const recordingDuration = getDuration(
-                eventData.getIn(['call', 'recording_duration'], 0)
-            )
-            const recordingUrl = eventData.getIn(['call', 'recording_url'])
-
             content = (
-                <>
-                    <div>
-                        <b>{customerName ? customerName : 'Phone number'}:</b>{' '}
-                        {formattedCustomerPhoneNumber}
-                    </div>
-                    <div>
-                        <b>Duration:</b> {recordingDuration}
-                    </div>
-                    <div className="d-flex flex-column">
-                        <div className="mb-3">
-                            <b>Voicemail:</b>
-                        </div>
-                        <div>
-                            {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                            <audio controls src={recordingUrl} />
-                        </div>
-                    </div>
-                </>
+                <PhoneEventDetailsVoicemail
+                    eventData={eventData}
+                    customerName={customerName}
+                    phoneNumber={formattedCustomerPhoneNumber}
+                />
             )
             break
         }
@@ -79,33 +63,12 @@ export default function PhoneEventDetails({
             break
         }
         case PhoneIntegrationEvent.CallRecording: {
-            const callRecordingDuration = getDuration(
-                eventData.getIn(['recording', 'original', 'duration'], 0)
-            )
-
-            const callRecording = eventData.get('recording') as Map<string, any>
-            const callRecordingPath = callRecording
-                ? callRecording.getIn(['file', 'url'])
-                : null
-
             content = (
-                <>
-                    <div>
-                        <b>Duration:</b> {callRecordingDuration}
-                    </div>
-
-                    {callRecording && (
-                        <div>
-                            <b>Recording: </b>
-                            {callRecordingPath && (
-                                <>
-                                    {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                                    <audio controls src={callRecordingPath} />
-                                </>
-                            )}
-                        </div>
-                    )}
-                </>
+                <PhoneEventDetailsCallRecording
+                    eventData={eventData}
+                    customerName={customerName}
+                    phoneNumber={formattedCustomerPhoneNumber}
+                />
             )
             break
         }

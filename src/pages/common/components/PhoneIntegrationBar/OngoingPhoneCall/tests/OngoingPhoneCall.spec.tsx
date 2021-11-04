@@ -11,7 +11,7 @@ import {mockIncomingCall} from '../../../../../../tests/twilioMocks'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
 import client from '../../../../../../models/api/resources'
 import OngoingPhoneCall from '../OngoingPhoneCall'
-import {CallRecordingStatus} from '../../constants'
+import {CallRecordingStatus, TWILIO_CURRENT_ITEM} from '../../constants'
 
 jest.mock('@twilio/voice-sdk')
 
@@ -94,7 +94,7 @@ describe('<OngoingPhoneCall/>', () => {
     it('should start recording', async () => {
         const call = mockIncomingCall(integrationId) as Call
 
-        const url = `/api/integrations/${integrationId}/calls/fake-call-sid/recording`
+        const url = `/api/integrations/${integrationId}/calls/fake-call-sid/recordings/${TWILIO_CURRENT_ITEM}`
 
         mockedServer.onPut(url).reply(200, {
             status: CallRecordingStatus.InProgress,

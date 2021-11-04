@@ -210,38 +210,7 @@ exports[`<PhoneEvent/> render() should render with closed details 5`] = `
   >
     <div
       class="content"
-    >
-      <div>
-        <b>
-          Phone number
-          :
-        </b>
-         
-      </div>
-      <div>
-        <b>
-          Duration:
-        </b>
-         
-        0min 0s
-      </div>
-      <div
-        class="d-flex flex-column"
-      >
-        <div
-          class="mb-3"
-        >
-          <b>
-            Voicemail:
-          </b>
-        </div>
-        <div>
-          <audio
-            controls=""
-          />
-        </div>
-      </div>
-    </div>
+    />
   </div>
 </div>
 `;
@@ -318,39 +287,7 @@ exports[`<PhoneEvent/> render() should render with opened details 1`] = `
   >
     <div
       class="content"
-    >
-      <div>
-        <b>
-          Michael Gorgias
-          :
-        </b>
-         
-        +1 662 442 4075
-      </div>
-      <div>
-        <b>
-          Duration:
-        </b>
-         
-        0min 0s
-      </div>
-      <div
-        class="d-flex flex-column"
-      >
-        <div
-          class="mb-3"
-        >
-          <b>
-            Voicemail:
-          </b>
-        </div>
-        <div>
-          <audio
-            controls=""
-          />
-        </div>
-      </div>
-    </div>
+    />
   </div>
 </div>
 `;

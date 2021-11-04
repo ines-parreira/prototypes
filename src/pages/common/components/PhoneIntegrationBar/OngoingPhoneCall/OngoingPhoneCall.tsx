@@ -11,7 +11,7 @@ import PhoneCustomerName from '../PhoneCustomerName/PhoneCustomerName'
 import {useConnectionParameters} from '../hooks'
 
 import client from '../../../../../models/api/resources'
-import {CallRecordingStatus} from '../constants'
+import {CallRecordingStatus, TWILIO_CURRENT_ITEM} from '../constants'
 import {RootState} from '../../../../../state/types'
 import {setIsRecording} from '../../../../../state/twilio/actions'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
@@ -162,7 +162,7 @@ function useRecording(
 
         try {
             await client.put(
-                `/api/integrations/${integrationId}/calls/${callSid}/recording`,
+                `/api/integrations/${integrationId}/calls/${callSid}/recordings/${TWILIO_CURRENT_ITEM}`,
                 {status}
             )
             setIsRecording(!isRecording)

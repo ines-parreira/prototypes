@@ -8,6 +8,7 @@ import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import {PhoneIntegrationEvent} from '../../../../../../constants/integrations/types/event'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
 import PhoneEventDetails from '../PhoneEventDetails'
+import {user} from '../../../../../../fixtures/users'
 
 describe('<PhoneEventDetails/>', () => {
     let store: MockStoreEnhanced
@@ -16,7 +17,7 @@ describe('<PhoneEventDetails/>', () => {
     ])
 
     beforeEach(() => {
-        store = mockStore()
+        store = mockStore({currentUser: fromJS(user)})
     })
 
     describe('render()', () => {
@@ -34,6 +35,32 @@ describe('<PhoneEventDetails/>', () => {
                         name: null,
                         phone_number: '+16624424075',
                     },
+                },
+            })
+            const {container} = render(
+                <Provider store={store}>
+                    <PhoneEventDetails event={event} />
+                </Provider>
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render voicemail event details with message', () => {
+            const event = fromJS({
+                type: PhoneIntegrationEvent.VoicemailRecording,
+                data: {
+                    call: {
+                        recording_url:
+                            'https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/RE6fac6a901e0b886cec366ceb6365a8cd-a358dc82-a84b-4975-baef-7852d7c9c180',
+                        recording_duration: '6',
+                    },
+                    customer: {
+                        id: 6,
+                        name: null,
+                        phone_number: '+16624424075',
+                    },
+                    deleted_by: 'Michael',
                 },
             })
             const {container} = render(
@@ -94,6 +121,44 @@ describe('<PhoneEventDetails/>', () => {
                         },
                         created_datetime: '2021-07-27T11:15:57.749720',
                     },
+                },
+            })
+            const {container} = render(
+                <Provider store={store}>
+                    <PhoneEventDetails event={event} />
+                </Provider>
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render call recording event with message', () => {
+            const event = fromJS({
+                type: PhoneIntegrationEvent.CallRecording,
+                data: {
+                    recording: {
+                        file: {
+                            url:
+                                'https://uploads.gorgi.us/development/some-file.mp3',
+                            name: 'phone-123ABC.mp3',
+                            size: 17763,
+                            content_type: 'audio/mpeg',
+                        },
+                        original: {
+                            sid: '123ABC',
+                            url:
+                                'https://api.twilio.com/2010-04-01/Accounts/123/Recordings/ABC',
+                            track: 'both',
+                            status: 'completed',
+                            call_sid: 'CAb8068b6d8cdc2112e42957f61d90f737',
+                            duration: '5',
+                            error_code: '0',
+                            start_time: 'Tue, 27 Jul 2021 11:15:46 +0000',
+                            account_sid: 'ABCCBA',
+                        },
+                        created_datetime: '2021-07-27T11:15:57.749720',
+                    },
+                    deleted_by: 'Michael',
                 },
             })
             const {container} = render(
