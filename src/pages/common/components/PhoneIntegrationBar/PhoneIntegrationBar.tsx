@@ -93,7 +93,10 @@ async function getToken(): Promise<string | null> {
 function useInstantiateDevice() {
     const dispatch = useAppDispatch()
     const {onErrorMessage, onError, onTwilioError} = usePhoneError({
-        ignoredErrorCodes: [TwilioErrorCode.AuthorizationAccessTokenExpired],
+        ignoredErrorCodes: [
+            TwilioErrorCode.AuthorizationAccessTokenExpired, // we refresh the token when it expires
+            TwilioErrorCode.GeneralTransport, // Twilio has a retry mechanism when it happens
+        ],
     })
 
     const onCallAlreadyAccepted = useCallback(() => {
