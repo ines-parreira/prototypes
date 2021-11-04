@@ -1,6 +1,8 @@
 import React, {FormEvent} from 'react'
 import {Button} from 'reactstrap'
 
+import Tooltip from '../../../../common/components/Tooltip'
+import {articleRequiredFields} from '../../utils/helpCenter.utils'
 import {ConfirmationModal} from '../ConfirmationModal'
 
 import css from './HelpCenterEditModalFooter.less'
@@ -8,6 +10,7 @@ import css from './HelpCenterEditModalFooter.less'
 type Props = {
     counters?: {charCount: number; wordCount: number}
     canSave: boolean
+    requiredFields: typeof articleRequiredFields
     canDelete: boolean
     onSave: () => void
     onDelete: () => void
@@ -18,6 +21,7 @@ export const HelpCenterEditModalFooter = ({
     canSave,
     canDelete,
     onSave,
+    requiredFields,
     onDelete,
 }: Props): JSX.Element => {
     const [pendingDeleteArticle, setPendingDeleteArticle] = React.useState(
@@ -36,15 +40,26 @@ export const HelpCenterEditModalFooter = ({
 
     return (
         <footer className={css.footer}>
-            <div>
-                <Button
-                    color="primary"
-                    onClick={handleOnSave}
-                    disabled={!canSave}
-                    className={css.submitButton}
-                >
-                    Save Article
-                </Button>
+            <div className={css.buttonsWrapper}>
+                <div id="article-save-button-wrapper">
+                    <Button
+                        disabled={!canSave}
+                        color="primary"
+                        onClick={handleOnSave}
+                        className={css.submitButton}
+                    >
+                        Save Article
+                    </Button>
+                </div>
+                {requiredFields?.length >= 1 && (
+                    <Tooltip
+                        disabled={canSave}
+                        placement="top-start"
+                        target="article-save-button-wrapper"
+                    >
+                        You need to add a {requiredFields[0]}
+                    </Tooltip>
+                )}
 
                 {canDelete && (
                     <Button

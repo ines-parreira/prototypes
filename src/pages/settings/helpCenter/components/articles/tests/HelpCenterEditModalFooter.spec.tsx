@@ -12,6 +12,7 @@ describe('<HelpCenterEditModalFooter/>', () => {
         onSave: mockedOnSave,
         onDelete: mockedOnDelete,
         canDelete: true,
+        requiredFields: [],
     }
 
     beforeEach(() => {

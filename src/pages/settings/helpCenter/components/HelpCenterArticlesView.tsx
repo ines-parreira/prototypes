@@ -234,19 +234,36 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         handleOnArticleModalClose()
     }
 
-    const canSaveArticle: boolean = useMemo(() => {
+    const {
+        canSaveArticle,
+        requiredFieldsArticle,
+    }: {
+        canSaveArticle: boolean
+        requiredFieldsArticle: typeof articleRequiredFields
+    } = useMemo(() => {
         const currentTranslation = selectedArticle?.translation
+        const requiredFieldsArticle: typeof articleRequiredFields = []
 
         if (articlesActions.isLoading || !currentTranslation) {
-            return false
+            return {
+                canSaveArticle: false,
+                requiredFieldsArticle,
+            }
         }
+        const filledRequired = articleRequiredFields.every((key) => {
+            const isFieldFilled = Boolean(currentTranslation[key])
+            if (!isFieldFilled) {
+                requiredFieldsArticle.push(key)
+            }
 
-        const filledRequired = articleRequiredFields.every((key) =>
-            Boolean(currentTranslation[key])
-        )
+            return isFieldFilled
+        })
 
         if (!savedTranslation) {
-            return filledRequired
+            return {
+                canSaveArticle: filledRequired,
+                requiredFieldsArticle,
+            }
         }
 
         const translationHasBeenChanged = !_isEqual(
@@ -256,10 +273,12 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         const categoryHasBeenChanged =
             selectedArticle?.category_id !== selectedCategoryId
 
-        return (
-            filledRequired &&
-            (categoryHasBeenChanged || translationHasBeenChanged)
-        )
+        return {
+            canSaveArticle:
+                filledRequired &&
+                (categoryHasBeenChanged || translationHasBeenChanged),
+            requiredFieldsArticle,
+        }
     }, [
         articlesActions.isLoading,
         selectedArticle,
@@ -359,6 +378,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                         <HelpCenterEditModalFooter
                             counters={counters}
                             canSave={canSaveArticle}
+                            requiredFields={requiredFieldsArticle}
                             canDelete={isExistingArticle(selectedArticle)}
                             onSave={saveArticle}
                             onDelete={deleteArticle}
@@ -414,6 +434,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                         <HelpCenterEditModalFooter
                             counters={counters}
                             canSave={canSaveArticle}
+                            requiredFields={requiredFieldsArticle}
                             canDelete={isExistingArticle(selectedArticle)}
                             onSave={saveArticle}
                             onDelete={deleteArticle}
