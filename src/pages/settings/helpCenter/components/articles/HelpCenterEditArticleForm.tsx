@@ -13,11 +13,13 @@ type Props = {
         translation: LocalArticleTranslation | CreateArticleTranslationDto,
         extra?: {wordCount: number; charCount: number}
     ) => void
+    onEditorCodeViewToggle: (value: boolean) => void
 }
 
 export const HelpCenterEditArticleForm: React.FC<Props> = ({
     translation,
     onChange,
+    onEditorCodeViewToggle,
 }: Props) => {
     const articleId =
         'article_id' in translation ? translation.article_id : undefined
@@ -38,6 +40,7 @@ export const HelpCenterEditArticleForm: React.FC<Props> = ({
             locale={translation.locale}
             value={translation.content}
             onChange={onEditArticleContent}
+            onEditorCodeViewToggle={onEditorCodeViewToggle}
         />
     )
 }

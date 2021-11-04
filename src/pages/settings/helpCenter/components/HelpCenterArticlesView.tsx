@@ -107,11 +107,11 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         charCount: number
         wordCount: number
     }>()
+    const [isEditorCodeViewActive, setIsEditorCodeViewActive] = useState(false)
     const limitations = useLimitations()
     const {client} = useHelpCenterApi()
     const {helpCenter, getHelpCenterCustomDomain} = useCurrentHelpCenter()
     const articlesActions = useArticlesActions()
-
     const categoryModal = useModalManager(MODALS.CATEGORY, {autoDestroy: false})
     const articleModal = useModalManager(MODALS.ARTICLE, {autoDestroy: false})
 
@@ -244,12 +244,17 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         const currentTranslation = selectedArticle?.translation
         const requiredFieldsArticle: typeof articleRequiredFields = []
 
-        if (articlesActions.isLoading || !currentTranslation) {
+        if (
+            articlesActions.isLoading ||
+            !currentTranslation ||
+            isEditorCodeViewActive
+        ) {
             return {
                 canSaveArticle: false,
                 requiredFieldsArticle,
             }
         }
+
         const filledRequired = articleRequiredFields.every((key) => {
             const isFieldFilled = Boolean(currentTranslation[key])
             if (!isFieldFilled) {
@@ -284,6 +289,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         selectedArticle,
         savedTranslation,
         selectedCategoryId,
+        isEditorCodeViewActive,
     ])
 
     const onArticleChange = useCallback(
@@ -374,6 +380,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                         <HelpCenterEditArticleForm
                             translation={selectedArticle.translation}
                             onChange={onArticleChange}
+                            onEditorCodeViewToggle={setIsEditorCodeViewActive}
                         />
                         <HelpCenterEditModalFooter
                             counters={counters}
@@ -721,7 +728,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                     isLoading={isArticleLoading}
                     portalRootId="app-root"
                     onBackdropClick={() => {
-                        if (canSaveArticle) {
+                        if (canSaveArticle || isEditorCodeViewActive) {
                             setPendingCloseArticle(true)
                         } else {
                             setEditModal((prevState) => ({
@@ -736,16 +743,22 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                 </HelpCenterEditModal>
                 {pendingCloseArticle && (
                     <CloseArticleModal
-                        isOpen={!!pendingCloseArticle && canSaveArticle}
+                        isOpen={
+                            !!pendingCloseArticle &&
+                            (canSaveArticle || isEditorCodeViewActive)
+                        }
                         title={<span>Are you sure?</span>}
                         style={{width: '100%', maxWidth: 500}}
                         onDiscard={handleOnDiscard}
                         onContinueEditing={handleOnEdit}
-                        onSave={handleOnSave}
+                        {...(canSaveArticle && {onSave: handleOnSave})}
                     >
                         <span>
                             If you close this article, you'll lose all changes
-                            made. Do you want to save them?
+                            made.{' '}
+                            {canSaveArticle && (
+                                <span>Do you want to save them?</span>
+                            )}
                         </span>
                     </CloseArticleModal>
                 )}

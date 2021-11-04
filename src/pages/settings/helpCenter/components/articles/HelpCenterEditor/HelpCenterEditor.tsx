@@ -54,6 +54,7 @@ type Props = {
     locale: LocaleCode
     value?: string
     onChange: (value: string) => void
+    onEditorCodeViewToggle: (value: boolean) => void
 }
 
 type FroalaEditorInstance = FroalaEditor & {
@@ -64,9 +65,18 @@ type FroalaEditorInstance = FroalaEditor & {
     editor: any
 }
 
-const HelpCenterEditor = ({locale, value = '', onChange}: Props) => {
+const HelpCenterEditor = ({
+    locale,
+    value = '',
+    onChange,
+    onEditorCodeViewToggle,
+}: Props) => {
     const dispatch = useAppDispatch()
     const editorRef = useRef<FroalaEditorInstance | null>(null)
+
+    useEffect(() => {
+        onEditorCodeViewToggle(false)
+    }, [])
 
     useEffect(() => {
         if (editorRef.current && editorRef.current.editorInitialized) {
@@ -139,6 +149,11 @@ const HelpCenterEditor = ({locale, value = '', onChange}: Props) => {
 
                         // return false so that Froala next actions won't be triggered
                         return false
+                    },
+                    'commands.after': function () {
+                        onEditorCodeViewToggle(
+                            (this as any).codeView.isActive()
+                        )
                     },
                 },
                 toolbarButtons: {

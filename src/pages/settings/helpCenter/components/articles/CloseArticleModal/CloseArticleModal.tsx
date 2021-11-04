@@ -14,7 +14,7 @@ export type ConfirmationModalProps = {
     title: React.ReactNode
     onDiscard: () => void
     onContinueEditing: () => void
-    onSave: () => void
+    onSave?: () => void
 }
 
 export const CloseArticleModal = ({
@@ -42,14 +42,16 @@ export const CloseArticleModal = ({
                         <Button name="edit" onClick={onContinueEditing}>
                             Edit article
                         </Button>
-                        <Button
-                            color="primary"
-                            name="save"
-                            className={classNames('ml-3', css.confirmBtn)}
-                            onClick={onSave}
-                        >
-                            Save article
-                        </Button>
+                        {onSave && (
+                            <Button
+                                color="primary"
+                                name="save"
+                                className={classNames('ml-3', css.confirmBtn)}
+                                onClick={onSave}
+                            >
+                                Save article
+                            </Button>
+                        )}
                     </div>
                 </div>
             }
