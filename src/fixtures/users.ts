@@ -9,7 +9,6 @@ export const user: User = {
                 show_macros: true,
                 available: true,
                 hide_tips: true,
-                forward_calls: false,
             },
             id: 3,
             type: UserSettingType.Preferences,

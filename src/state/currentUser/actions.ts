@@ -12,7 +12,6 @@ import {
     EditableUserProfile,
     UserSetting,
     UserPreferences,
-    UserSettingType,
 } from '../../config/types/user'
 
 import * as constants from './constants.js'
@@ -161,7 +160,6 @@ export function submitSetting(data: UserSetting, notification: boolean) {
                         settingType: data.type,
                         error,
                         reason: 'Failed to update settings',
-                        verbose: data.type === UserSettingType.Preferences,
                     })
                 }
             )
