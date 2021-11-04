@@ -1,11 +1,18 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+import {Provider} from 'react-redux'
+import {render, fireEvent} from '@testing-library/react'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import YourProfileView from '../components/YourProfileView.tsx'
 import {user} from '../../../../fixtures/users.ts'
 
 const mockUpdateCurrentUser = jest.fn()
+
+const mockedStore = configureMockStore([thunk])
+const defaultState = {}
 
 describe('YourProfileView', () => {
     const realDateNow = Date.now.bind(global.Date)
@@ -30,6 +37,23 @@ describe('YourProfileView', () => {
             )
 
             expect(component).toMatchSnapshot()
+        })
+
+        it('should expand to show the phone number field when enabling call forwarding', async () => {
+            const {findByText, getByText} = render(
+                <Provider store={mockedStore(defaultState)}>
+                    <YourProfileView
+                        updateCurrentUser={mockUpdateCurrentUser}
+                        currentUser={fromJS(user)}
+                        submitSetting={jest.fn()}
+                        preferences={fromJS({data: {}})}
+                    />
+                </Provider>
+            )
+
+            fireEvent.click(getByText(/Enable call forwarding/))
+            const countrySelector = await findByText('+1')
+            expect(countrySelector).toMatchSnapshot()
         })
     })
 

@@ -45,6 +45,7 @@ type Props = {
     fixedWidth: boolean
     focusedPlaceholder?: string
     fullWidth?: boolean
+    shouldFocus?: boolean
 }
 
 type State = {
@@ -86,6 +87,15 @@ export default class SelectField extends Component<Props, State> {
                 props.value
             ),
             isFocused: false,
+        }
+    }
+
+    componentDidMount() {
+        const {shouldFocus} = this.props
+
+        if (shouldFocus) {
+            this._toggleDropdown()
+            this._focusInput()
         }
     }
 
