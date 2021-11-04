@@ -51,7 +51,7 @@ describe('Entities/Help Center', () => {
     })
 
     describe('getHelpCenterSortedList', () => {
-        it('returns the list sorted by created date', () => {
+        it('returns the list sorted by alphabetical order', () => {
             const dataStore: Partial<StoreState> = {
                 entities: {
                     helpCenters: _keyBy(
@@ -61,18 +61,7 @@ describe('Entities/Help Center', () => {
                 } as any,
             }
             const sortedFixture = getHelpCentersResponseFixture.data.sort(
-                (
-                    {created_datetime: createdDate1},
-                    {created_datetime: createdDate2}
-                ) => {
-                    if (
-                        new Date(createdDate1).getTime() >
-                        new Date(createdDate2).getTime()
-                    ) {
-                        return -1
-                    }
-                    return 1
-                }
+                ({name: nameA}, {name: nameB}) => nameA.localeCompare(nameB)
             )
 
             expect(getHelpCenterSortedList(dataStore as StoreState)).toEqual(
