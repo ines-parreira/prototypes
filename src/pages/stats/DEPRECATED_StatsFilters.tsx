@@ -1,12 +1,12 @@
-import React, {ComponentProps, useMemo, useState} from 'react'
+import React, {ComponentProps, useCallback, useMemo, useState} from 'react'
 import {fromJS, List, Map} from 'immutable'
-import _debounce from 'lodash/debounce'
 import moment from 'moment-timezone'
 import {connect, ConnectedProps} from 'react-redux'
 import _upperFirst from 'lodash/upperFirst'
 import {withRouter, RouteComponentProps} from 'react-router-dom'
 import {DropdownItem, Button} from 'reactstrap'
 import {CancelToken} from 'axios'
+import {useDebounce} from 'react-use'
 
 import {makeGetPlainJS} from '../../utils'
 import {views as statViewsConfig} from '../../config/stats'
@@ -30,12 +30,10 @@ import {mergeStatsFilters} from '../../state/stats/actions'
 import {DEPRECATED_makeStatsFiltersSelector} from '../../state/stats/selectors'
 import {getLabelledTeams} from '../../state/teams/selectors'
 import {RootState} from '../../state/types'
-
 import InfiniteScroll from '../common/components/InfiniteScroll/InfiniteScroll'
 import PageHeader from '../common/components/PageHeader'
 import PopoverModal from '../common/components/PopoverModal'
 import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMenu'
-
 import gmail from '../../../img/integrations/gmail.png'
 import outlook from '../../../img/integrations/outlook.svg'
 import aircall from '../../../img/integrations/aircall.png'
@@ -74,6 +72,7 @@ export const StatsFiltersContainer = ({
 }: Props) => {
     const [tagIds, setTagIds] = useState<string[]>([])
     const [tagSearch, setTagSearch] = useState('')
+    const [debouncedTagSearch, setDebouncedTagSearch] = useState('')
     const [pagination, setPagination] = useState({
         page: 0,
         nbPages: 1,
@@ -150,7 +149,22 @@ export const StatsFiltersContainer = ({
         }
     }
 
-    const onSearchTags = _debounce(handleFetchTags, 300)
+    useDebounce(
+        () => {
+            void handleFetchTags(debouncedTagSearch)
+        },
+        300,
+        [debouncedTagSearch]
+    )
+
+    const handleTagsSearch = useCallback(
+        (search) => {
+            if (tagSearch !== search) {
+                setDebouncedTagSearch(search)
+            }
+        },
+        [setDebouncedTagSearch, tagSearch]
+    )
 
     const renderFilterInput = (filter: Map<string, any>) => {
         const filterType: string = filter.get('type')
@@ -243,7 +257,7 @@ export const StatsFiltersContainer = ({
                         value={(filters!.get('tags', fromJS([])) as List<
                             any
                         >).toJS()}
-                        onSearch={onSearchTags}
+                        onSearch={handleTagsSearch}
                         dropdownMenu={TagDropdownMenuWrapper}
                     >
                         <InfiniteScroll

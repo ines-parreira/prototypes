@@ -1,21 +1,23 @@
 import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
-import {render, waitFor} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
+import {act, fireEvent, render, waitFor} from '@testing-library/react'
 
-import client from '../../../models/api/resources'
 import {views} from '../../../config/stats'
 import {agents as agentsFixtures} from '../../../fixtures/agents'
 import {integrationsState} from '../../../fixtures/integrations'
 import {tags as tagsFixtures} from '../../../fixtures/tag'
 import {TagsState} from '../../../state/entities/tags/types'
 import {StatsFiltersContainer} from '../DEPRECATED_StatsFilters'
+import {fetchTags} from '../../../models/tag/resources'
+import {TagSortableProperties} from '../../../models/tag/types'
+import {OrderDirection} from '../../../models/api/types'
 
 jest.mock('../common/PeriodPicker', () => () => 'PeriodPicker')
+jest.mock('../../../models/tag/resources')
+
+const fetchTagsMock = fetchTags as jest.MockedFunction<typeof fetchTags>
 
 describe('<StatsFilters />', () => {
-    const mockedServer = new MockAdapter(client)
-
     const minProps = ({
         agents: agentsFixtures.map(({id, name}) => ({id, label: name})),
         channels: [],
@@ -38,18 +40,10 @@ describe('<StatsFilters />', () => {
         notify: jest.fn(),
     } as unknown) as ComponentProps<typeof StatsFiltersContainer>
 
-    afterEach(() => {
+    beforeEach(() => {
         jest.clearAllMocks()
-    })
-
-    it('should display the page', () => {
-        const {container} = render(<StatsFiltersContainer {...minProps} />)
-
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
-    it('should retrieve tags on first render', async () => {
-        mockedServer.onGet('/api/tags/').reply(200, {
+        fetchTagsMock.mockResolvedValue({
+            uri: '/api/tags/',
             data: tagsFixtures,
             meta: {
                 current_page: 'url',
@@ -60,11 +54,62 @@ describe('<StatsFilters />', () => {
             },
             object: 'list',
         })
+    })
 
+    it('should display the page', () => {
+        const {container} = render(<StatsFiltersContainer {...minProps} />)
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should retrieve tags on first render', async () => {
         render(<StatsFiltersContainer {...minProps} />)
 
         await waitFor(() =>
             expect(minProps.tagsFetched).toHaveBeenCalledWith(tagsFixtures)
         )
+    })
+
+    describe('tags search', () => {
+        beforeEach(() => {
+            jest.useFakeTimers()
+        })
+
+        afterEach(() => {
+            jest.useRealTimers()
+        })
+
+        it('should debounce tag search requests', async () => {
+            const {getByPlaceholderText} = render(
+                <StatsFiltersContainer {...minProps} />
+            )
+
+            fireEvent.change(getByPlaceholderText('Search tags...'), {
+                target: {value: 'foo'},
+            })
+            act(() => {
+                jest.advanceTimersByTime(100)
+            })
+            fireEvent.change(getByPlaceholderText('Search tags...'), {
+                target: {value: 'bar'},
+            })
+            act(() => {
+                jest.runAllTimers()
+            })
+            await waitFor(() =>
+                expect(minProps.tagsFetched).toHaveBeenCalledWith(tagsFixtures)
+            )
+
+            expect(fetchTags).toHaveBeenCalledTimes(1)
+            expect(fetchTags).toHaveBeenLastCalledWith(
+                {
+                    orderBy: TagSortableProperties.Name,
+                    orderDir: OrderDirection.Asc,
+                    page: 1,
+                    search: 'bar',
+                },
+                expect.anything()
+            )
+        })
     })
 })
