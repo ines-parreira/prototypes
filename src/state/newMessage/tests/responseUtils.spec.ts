@@ -70,8 +70,7 @@ describe('responseUtils', () => {
             }
             const newContext = applyMacro(context)
 
-            const expectedValue = `<div>Hello, check this out</div><div><br></div><figure style="display:inline-block;margin:0"><img src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png" width="400px" style="max-width: 100%"></figure><div><br></div><div>should be good now</div>`
-            expect(convertToHTML(newContext.contentState)).toBe(expectedValue)
+            expect(convertToHTML(newContext.contentState)).toMatchSnapshot()
             expect(newContext.forceUpdate).toBe(true)
             expect(newContext.forceFocus).toBe(true)
         })
@@ -86,8 +85,7 @@ describe('responseUtils', () => {
             }
             const newContext = applyMacro(context)
 
-            const expectedValue = `<div><strong>Hello, check this out</strong></div><div><br></div><figure style="display:inline-block;margin:0"><img src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png" width="400px" style="max-width: 100%"></figure><div><br></div><div><em>should be good now</em></div>`
-            expect(convertToHTML(newContext.contentState)).toBe(expectedValue)
+            expect(convertToHTML(newContext.contentState)).toMatchSnapshot()
             expect(newContext.forceUpdate).toBe(true)
             expect(newContext.forceFocus).toBe(true)
         })

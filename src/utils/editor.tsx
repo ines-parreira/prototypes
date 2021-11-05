@@ -227,7 +227,7 @@ export function convertToHTML(contentState: ContentState): string {
                     // keep the start/end way of doing until https://github.com/HubSpot/draft-convert/issues/47 is fixed
                     return `<img src="${entity.data.src as string}" width="${
                         width as number
-                    }px" style="max-width: 100%" />`
+                    }" style="max-width: 100%" />`
                 }
 
                 if (entity.type === 'mention') {
