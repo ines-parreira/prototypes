@@ -41,15 +41,3 @@ export enum TwilioErrorCode {
     MediaClientRemoteDescFailed = 53402,
     MediaConnectionError = 53405,
 }
-
-export enum CallForwardingCountries {
-    US = 'US',
-    CA = 'CA',
-    FR = 'FR',
-    DE = 'DE',
-    GB = 'GB',
-    IN = 'IN',
-    IL = 'IL',
-    JP = 'JP',
-    AU = 'AU',
-}

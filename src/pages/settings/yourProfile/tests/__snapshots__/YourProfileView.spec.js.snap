@@ -75,15 +75,6 @@ Array [
 ]
 `;
 
-exports[`YourProfileView render should expand to show the phone number field when enabling call forwarding 1`] = `
-<span
-  class="ml-2 dropdown-toggle"
->
-  +
-  1
-</span>
-`;
-
 exports[`YourProfileView render should render current user profile form 1`] = `
 <div
   className="full-width"
@@ -2692,94 +2683,41 @@ exports[`YourProfileView render should render current user profile form 1`] = `
         Save your profile
       </Button>
     </Form>
-    <Row
-      tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+    <h4>
+      Preferences
+    </h4>
+    <form
+      onSubmit={[Function]}
     >
-      <Col
-        md="9"
+      <FormGroup
         tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
       >
-        <Form
-          className="mb-4 mt-3"
-          onSubmit={[Function]}
-          tag="form"
+        <BooleanField
+          label="Display macros by default on emails"
+          name="show_macros"
+          onChange={[Function]}
+          type="checkbox"
+        />
+        <BooleanField
+          label="Display macros suggestions in message editor"
+          name="show_macros_suggestions"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+      </FormGroup>
+      <div>
+        <Button
+          className=""
+          color="success"
+          disabled={false}
+          tag="button"
+          type="submit"
         >
-          <h3>
-            Preferences
-          </h3>
-          <FormGroup
-            tag="div"
-          >
-            <BooleanField
-              label="Display macros by default on emails"
-              name="show_macros"
-              onChange={[Function]}
-              type="checkbox"
-            />
-          </FormGroup>
-          <FormGroup
-            tag="div"
-          >
-            <BooleanField
-              label="Display macros suggestions in message editor"
-              name="show_macros_suggestions"
-              onChange={[Function]}
-              type="checkbox"
-              value={true}
-            />
-          </FormGroup>
-          <FormGroup
-            tag="div"
-          >
-            <h4
-              className="mb-1 mt-5"
-            >
-              Forward calls to an external number
-            </h4>
-            <p>
-              When you are routed a call in Gorgias, forward the call to a mobile device or landline.
-            </p>
-            <ToggleField
-              label="Enable call forwarding"
-              name="forward_calls"
-              onChange={[Function]}
-              value={false}
-            />
-          </FormGroup>
-          <div
-            className="mt-4"
-          >
-            <Button
-              className=""
-              color="success"
-              disabled={false}
-              tag="button"
-              type="submit"
-            >
-              Save preferences
-            </Button>
-          </div>
-        </Form>
-      </Col>
-    </Row>
+          Save preferences
+        </Button>
+      </div>
+    </form>
   </Container>
 </div>
 `;

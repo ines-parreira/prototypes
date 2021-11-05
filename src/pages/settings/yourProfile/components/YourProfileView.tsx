@@ -22,11 +22,8 @@ import InputField from '../../../common/forms/InputField.js'
 import Avatar from '../../../common/components/Avatar/Avatar'
 import FileField from '../../../common/forms/FileField'
 import SelectField from '../../../common/forms/SelectField/SelectField'
-import ToggleField from '../../../common/forms/ToggleField'
-import PhoneNumberInput from '../../../common/forms/PhoneNumberInput/PhoneNumberInput'
 import PageHeader from '../../../common/components/PageHeader'
 import {AVAILABLE_LANGUAGES} from '../../../../config'
-import {CallForwardingCountries} from '../../../../business/twilio'
 import {
     EditableUserProfile,
     User,
@@ -369,129 +366,59 @@ export default class YourProfileView extends Component<Props, State> {
                         </Button>
                     </Form>
 
-                    <Row>
-                        <Col md="9">
-                            <Form
-                                className="mb-4 mt-3"
-                                onSubmit={this._savePreferences}
-                            >
-                                <h3>Preferences</h3>
+                    <h4>Preferences</h4>
 
-                                <FormGroup>
-                                    <BooleanField
-                                        name="show_macros"
-                                        type="checkbox"
-                                        label="Display macros by default on emails"
-                                        value={this.state.preferences.get(
-                                            'show_macros'
-                                        )}
-                                        onChange={(value: boolean) =>
-                                            this.setState({
-                                                preferences: this.state.preferences.set(
-                                                    'show_macros',
-                                                    value
-                                                ),
-                                            })
-                                        }
-                                    />
-                                </FormGroup>
-                                <FormGroup>
-                                    <BooleanField
-                                        name="show_macros_suggestions"
-                                        type="checkbox"
-                                        label="Display macros suggestions in message editor"
-                                        value={this.state.preferences.get(
+                    <form onSubmit={this._savePreferences}>
+                        <FormGroup>
+                            <BooleanField
+                                name="show_macros"
+                                type="checkbox"
+                                label="Display macros by default on emails"
+                                value={this.state.preferences.get(
+                                    'show_macros'
+                                )}
+                                onChange={(value: boolean) =>
+                                    this.setState({
+                                        preferences: this.state.preferences.set(
+                                            'show_macros',
+                                            value
+                                        ),
+                                    })
+                                }
+                            />
+                            <BooleanField
+                                name="show_macros_suggestions"
+                                type="checkbox"
+                                label="Display macros suggestions in message editor"
+                                value={this.state.preferences.get(
+                                    'show_macros_suggestions',
+                                    true
+                                )}
+                                onChange={(value: boolean) =>
+                                    this.setState({
+                                        preferences: this.state.preferences.set(
                                             'show_macros_suggestions',
-                                            true
-                                        )}
-                                        onChange={(value: boolean) =>
-                                            this.setState({
-                                                preferences: this.state.preferences.set(
-                                                    'show_macros_suggestions',
-                                                    value
-                                                ),
-                                            })
-                                        }
-                                    />
-                                </FormGroup>
+                                            value
+                                        ),
+                                    })
+                                }
+                            />
+                        </FormGroup>
 
-                                <FormGroup>
-                                    <h4 className="mb-1 mt-5">
-                                        Forward calls to an external number
-                                    </h4>
-                                    <p>
-                                        When you are routed a call in Gorgias,
-                                        forward the call to a mobile device or
-                                        landline.
-                                    </p>
-
-                                    <ToggleField
-                                        name="forward_calls"
-                                        label="Enable call forwarding"
-                                        value={
-                                            (this.state.preferences.get(
-                                                'forward_calls'
-                                            ) as boolean) ?? false
-                                        }
-                                        onChange={(value: boolean) => {
-                                            this.setState({
-                                                preferences: this.state.preferences.set(
-                                                    'forward_calls',
-                                                    value
-                                                ),
-                                            })
-                                        }}
-                                    />
-                                    {this.state.preferences.get(
-                                        'forward_calls'
-                                    ) && (
-                                        <div style={{marginLeft: '47px'}}>
-                                            <Row>
-                                                <Col md="6">
-                                                    <PhoneNumberInput
-                                                        value={
-                                                            (this.state.preferences.get(
-                                                                'forwarding_phone_number'
-                                                            ) as string) ?? ''
-                                                        }
-                                                        onChange={(
-                                                            value: string
-                                                        ) => {
-                                                            this.setState({
-                                                                preferences: this.state.preferences.set(
-                                                                    'forwarding_phone_number',
-                                                                    value === ''
-                                                                        ? null
-                                                                        : value
-                                                                ),
-                                                            })
-                                                        }}
-                                                        allowedCountries={Object.values(
-                                                            CallForwardingCountries
-                                                        )}
-                                                    />
-                                                </Col>
-                                            </Row>
-                                        </div>
-                                    )}
-                                </FormGroup>
-
-                                <div className="mt-4">
-                                    <Button
-                                        type="submit"
-                                        color="success"
-                                        className={classnames({
-                                            'btn-loading': this.state
-                                                .loadingPreferences,
-                                        })}
-                                        disabled={this.state.loadingPreferences}
-                                    >
-                                        Save preferences
-                                    </Button>
-                                </div>
-                            </Form>
-                        </Col>
-                    </Row>
+                        <div>
+                            <Button
+                                type="submit"
+                                color="success"
+                                className={classnames({
+                                    'btn-loading': this.state
+                                        .loadingPreferences,
+                                })}
+                                disabled={this.state.loadingPreferences}
+                            >
+                                Save preferences
+                            </Button>
+                        </div>
+                    </form>
                 </Container>
             </div>
         )

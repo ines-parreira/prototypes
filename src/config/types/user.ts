@@ -76,8 +76,6 @@ export type UserPreferences = {
     available: boolean
     show_macros: boolean
     hide_tips?: boolean
-    forward_calls?: boolean
-    forwarding_phone_number?: string
 }
 
 export type UserTicketSettings = {
