@@ -7,7 +7,6 @@ import {Map} from 'immutable'
 import {hasRole} from '../../../../utils'
 import {ADMIN_ROLE, AGENT_ROLE} from '../../../../config/user'
 import {UserRole} from '../../../../config/types/user'
-import {isHelpCenterEnabled} from '../../../../utils/environment'
 
 type Props = {
     currentUser: Map<any, any>
@@ -75,7 +74,6 @@ export default class SettingsNavbar extends Component<Props> {
                         to: 'help-center',
                         text: 'Help Center',
                         className: 'd-none d-md-block',
-                        isHidden: !isHelpCenterEnabled(),
                     },
                     {
                         requiredRole: AGENT_ROLE,

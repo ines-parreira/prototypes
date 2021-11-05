@@ -2,11 +2,7 @@ import {
     LocaleCode,
     LocalSocialNavigationLink,
 } from '../../../models/helpCenter/types'
-import {
-    isDevelopment,
-    isProduction,
-    isStaging,
-} from '../../../utils/environment'
+import {isProduction} from '../../../utils/environment'
 
 import {HelpCenterTheme} from './types'
 
@@ -27,8 +23,6 @@ export const HELP_CENTER_MAX_ARTICLES = 1000
 export const HELP_CENTER_MAX_ARTICLES_WARNING_THRESHOLD = 990
 
 export const HELP_CENTER_MAX_CREATION = 200
-
-export const HELP_CENTER_PAYWALLS_ENABLED = isStaging() || isDevelopment()
 
 export const SOCIAL_NAVIGATION_LINKS: Record<
     string,

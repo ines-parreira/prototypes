@@ -4,7 +4,6 @@ import {getArticles} from '../../state/helpCenter/articles'
 import {
     HELP_CENTER_MAX_ARTICLES,
     HELP_CENTER_MAX_ARTICLES_WARNING_THRESHOLD,
-    HELP_CENTER_PAYWALLS_ENABLED,
 } from '../../pages/settings/helpCenter/constants'
 
 type Limitation = {
@@ -18,11 +17,8 @@ export const useLimitations = (): {[actionName: string]: Limitation} => {
 
     const articleCreationLimitation = {
         currentNumber: articles.length,
-        disabled:
-            HELP_CENTER_PAYWALLS_ENABLED &&
-            articles.length >= HELP_CENTER_MAX_ARTICLES,
+        disabled: articles.length >= HELP_CENTER_MAX_ARTICLES,
         warningThreshold:
-            HELP_CENTER_PAYWALLS_ENABLED &&
             articles.length >= HELP_CENTER_MAX_ARTICLES_WARNING_THRESHOLD,
     }
 

@@ -8,7 +8,6 @@ import {
 } from '../../../../state/currentAccount/types'
 import {PlanWithCurrencySign} from '../../../../state/billing/types'
 import magentoIcon from '../../../../../img/integrations/magento2-mono.svg'
-import {HELP_CENTER_PAYWALLS_ENABLED} from '../../helpCenter/constants'
 
 import {PlanCardFeature} from './PlanCard'
 import BillableTicketsLabel from './BillableTicketsLabel'
@@ -73,19 +72,11 @@ const getCommonPlanCardFeatures = ({
                 AccountFeature.SatisfactionSurveys
             ),
         },
-        ...(HELP_CENTER_PAYWALLS_ENABLED
-            ? [
-                  {
-                      label: (
-                          <HelpCenterLabel
-                              disabled={!enableHardCodedFeatures}
-                          />
-                      ),
-                      icon: <PlanFeatureMaterialIcon icon="web_asset" />,
-                      isDisabled: !enableHardCodedFeatures,
-                  },
-              ]
-            : []),
+        {
+            label: <HelpCenterLabel disabled={!enableHardCodedFeatures} />,
+            icon: <PlanFeatureMaterialIcon icon="web_asset" />,
+            isDisabled: !enableHardCodedFeatures,
+        },
         planId === 'enterprise' || planName === 'Advanced'
             ? {
                   label: (

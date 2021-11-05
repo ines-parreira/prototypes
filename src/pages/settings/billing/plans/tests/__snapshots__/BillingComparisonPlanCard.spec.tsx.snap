@@ -156,7 +156,7 @@ exports[`<BillingComparisonPlanCard /> should not render plan as current plan 1`
           </i>
         </span>
         <span>
-          <b>
+          <div>
             Unlimited
              
             <span
@@ -165,7 +165,7 @@ exports[`<BillingComparisonPlanCard /> should not render plan as current plan 1`
             >
               Help centers
             </span>
-          </b>
+          </div>
         </span>
       </li>
       <li
@@ -472,7 +472,7 @@ exports[`<BillingComparisonPlanCard /> should render current legacy plan 1`] = `
           </i>
         </span>
         <span>
-          <b>
+          <div>
             Unlimited
              
             <span
@@ -481,7 +481,7 @@ exports[`<BillingComparisonPlanCard /> should render current legacy plan 1`] = `
             >
               Help centers
             </span>
-          </b>
+          </div>
         </span>
       </li>
       <li
@@ -792,7 +792,7 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
           </i>
         </span>
         <span>
-          <b>
+          <div>
             Unlimited
              
             <span
@@ -801,7 +801,7 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
             >
               Help centers
             </span>
-          </b>
+          </div>
         </span>
       </li>
       <li
@@ -1113,7 +1113,7 @@ exports[`<BillingComparisonPlanCard /> should render custom plan 1`] = `
           </i>
         </span>
         <span>
-          <b>
+          <div>
             Unlimited
              
             <span
@@ -1122,7 +1122,7 @@ exports[`<BillingComparisonPlanCard /> should render custom plan 1`] = `
             >
               Help centers
             </span>
-          </b>
+          </div>
         </span>
       </li>
       <li
@@ -1414,7 +1414,7 @@ exports[`<BillingComparisonPlanCard /> should render customLegacyPlan plan 1`] =
           </i>
         </span>
         <span>
-          <b>
+          <div>
             Unlimited
              
             <span
@@ -1423,7 +1423,7 @@ exports[`<BillingComparisonPlanCard /> should render customLegacyPlan plan 1`] =
             >
               Help centers
             </span>
-          </b>
+          </div>
         </span>
       </li>
       <li
@@ -1707,7 +1707,7 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
           </i>
         </span>
         <span>
-          <b>
+          <div>
             Unlimited
              
             <span
@@ -1716,7 +1716,7 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
             >
               Help centers
             </span>
-          </b>
+          </div>
         </span>
       </li>
       <li

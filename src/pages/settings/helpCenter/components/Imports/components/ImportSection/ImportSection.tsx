@@ -14,6 +14,7 @@ import {NotificationStatus} from '../../../../../../../state/notifications/types
 import Loader from '../../../../../../common/components/Loader/Loader'
 import useAppDispatch from '../../../../../../../hooks/useAppDispatch'
 import {getCurrentHelpCenter} from '../../../../../../../state/entities/helpCenters/selectors'
+import {helpCenterUpdated} from '../../../../../../../state/entities/helpCenters/actions'
 
 import {uploadFiles} from '../../../../../../../utils'
 
@@ -23,6 +24,7 @@ import {saveFileAsDownloaded} from '../../../../../../../utils/file'
 
 import zendeskLogo from '../../../../../../../../img/integrations/zendesk.png'
 import helpdocsLogo from '../../../../../../../../img/integrations/helpdocs.png'
+import {HOTSWAP_SDK_URL} from '../../../../../../../config'
 
 import css from './ImportSection.less'
 
@@ -65,13 +67,13 @@ export const ImportSection = ({
     const {isReady, client} = useHelpCenterApi()
 
     useEffect(() => {
-        const script = document.createElement('script')
-        script.src = 'https://widget.hotswap.app/js/hotswap.js'
-        document.head.appendChild(script)
-
-        return () => {
-            document.head.removeChild(script)
+        if (document.querySelector(`script[src="${HOTSWAP_SDK_URL}"]`)) {
+            return
         }
+
+        const script = document.createElement('script')
+        script.src = HOTSWAP_SDK_URL
+        document.head.appendChild(script)
     }, [])
 
     if (helpCenter === null || !isReady || client === undefined) {
@@ -168,9 +170,19 @@ export const ImportSection = ({
         }
 
         closeModal()
-        const {
-            data: {token},
-        } = await client.createHotswapSessionToken(helpCenter.id)
+
+        let token = helpCenter.hotswap_session_token
+        if (!token) {
+            const {data} = await client.createHotswapSessionToken(helpCenter.id)
+            token = data.token
+            dispatch(
+                helpCenterUpdated({
+                    ...helpCenter,
+                    hotswap_session_token: token,
+                })
+            )
+        }
+
         window.Hotswap({token}).open()
     }
 
@@ -275,7 +287,6 @@ export const ImportSection = ({
                                         </b>
                                     </div>
                                     <div
-                                        style={{display: 'none'}} // TODO: remove
                                         className={css.fileDropArea}
                                         onClick={
                                             handleAnotherProviderImportClick

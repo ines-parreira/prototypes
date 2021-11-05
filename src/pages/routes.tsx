@@ -73,7 +73,6 @@ import {HelpCenterApiClientProvider} from './settings/helpCenter/hooks/useHelpCe
 import DefaultStatsFilters from './stats/DefaultStatsFilters'
 import HelpCenterPaywall from './settings/helpCenter/components/Paywalls/HelpCenterPaywall'
 import withLegacyPlanPaywall from './common/utils/withLegacyPlanPaywall'
-import {HELP_CENTER_PAYWALLS_ENABLED} from './settings/helpCenter/constants'
 
 const assetsURL = window.GORGIAS_ASSETS_URL || ''
 
@@ -538,17 +537,12 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                     path={`${path}/`}
                     exact
                     render={appRender({
-                        content: HELP_CENTER_PAYWALLS_ENABLED
-                            ? withLegacyPlanPaywall(HelpCenterPaywall)(
-                                  withUserRoleRequired(
-                                      HelpCenterStartView,
-                                      ADMIN_ROLE
-                                  )
-                              )
-                            : withUserRoleRequired(
-                                  HelpCenterStartView,
-                                  ADMIN_ROLE
-                              ),
+                        content: withLegacyPlanPaywall(HelpCenterPaywall)(
+                            withUserRoleRequired(
+                                HelpCenterStartView,
+                                ADMIN_ROLE
+                            )
+                        ),
                         navbar: SettingsNavbarContainer,
                     })}
                 />
@@ -556,34 +550,18 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                     path={`${path}/new`}
                     exact
                     render={appRender({
-                        content: HELP_CENTER_PAYWALLS_ENABLED
-                            ? withLegacyPlanPaywall(HelpCenterPaywall)(
-                                  withUserRoleRequired(
-                                      HelpCenterNewView,
-                                      ADMIN_ROLE
-                                  )
-                              )
-                            : withUserRoleRequired(
-                                  HelpCenterNewView,
-                                  ADMIN_ROLE
-                              ),
+                        content: withLegacyPlanPaywall(HelpCenterPaywall)(
+                            withUserRoleRequired(HelpCenterNewView, ADMIN_ROLE)
+                        ),
                         navbar: SettingsNavbarContainer,
                     })}
                 />
                 <Route
                     path={`${path}/:helpCenterId`}
                     render={appRender({
-                        content: HELP_CENTER_PAYWALLS_ENABLED
-                            ? withLegacyPlanPaywall(HelpCenterPaywall)(
-                                  withUserRoleRequired(
-                                      CurrentHelpCenter,
-                                      ADMIN_ROLE
-                                  )
-                              )
-                            : withUserRoleRequired(
-                                  CurrentHelpCenter,
-                                  ADMIN_ROLE
-                              ),
+                        content: withLegacyPlanPaywall(HelpCenterPaywall)(
+                            withUserRoleRequired(CurrentHelpCenter, ADMIN_ROLE)
+                        ),
                         navbar: SettingsNavbarContainer,
                     })}
                 />

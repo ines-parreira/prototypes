@@ -22,11 +22,7 @@ import PageHeader from '../../../common/components/PageHeader'
 
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useLocales} from '../hooks/useLocales'
-import {
-    HELP_CENTER_MAX_CREATION,
-    HELP_CENTER_BASE_PATH,
-    HELP_CENTER_PAYWALLS_ENABLED,
-} from '../constants'
+import {HELP_CENTER_MAX_CREATION, HELP_CENTER_BASE_PATH} from '../constants'
 import Tooltip from '../../../common/components/Tooltip'
 
 import HelpCentersTable from './HelpCenterTable'
@@ -130,7 +126,6 @@ export const HelpCenterStartView: FunctionComponent = () => {
     )
 
     const addNewButtonDisabled =
-        HELP_CENTER_PAYWALLS_ENABLED &&
         helpCenterList.length >= HELP_CENTER_MAX_CREATION
 
     return (

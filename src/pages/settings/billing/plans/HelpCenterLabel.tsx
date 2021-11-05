@@ -41,12 +41,12 @@ export default function HelpCenterLabel({disabled}: Props) {
 
     return (
         <>
-            <b>
+            <div>
                 Unlimited{' '}
                 <span id={id} className={css.underline}>
                     Help centers
                 </span>
-            </b>
+            </div>
             <Tooltip
                 target={id}
                 placement="top-start"

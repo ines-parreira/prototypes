@@ -20,6 +20,9 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             algolia_api_key: null,
             primary_color: '#4A8DF9',
             theme: 'light',
+            hotswap_session_token: null,
+            self_service_enabled: false,
+            shop_name: null,
         },
         {
             id: 2,
@@ -36,6 +39,9 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             algolia_api_key: null,
             primary_color: '#4A8DF9',
             theme: 'light',
+            hotswap_session_token: null,
+            self_service_enabled: false,
+            shop_name: null,
         },
         {
             id: 3,
@@ -52,6 +58,9 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             algolia_api_key: null,
             primary_color: '#4A8DF9',
             theme: 'light',
+            hotswap_session_token: null,
+            self_service_enabled: false,
+            shop_name: null,
         },
     ],
     object: 'list',
@@ -79,4 +88,7 @@ export const getSingleHelpCenterResponseFixture: HelpCenter = {
     algolia_api_key: null,
     primary_color: '#4A8DF9',
     theme: 'light',
+    hotswap_session_token: null,
+    self_service_enabled: false,
+    shop_name: null,
 }
