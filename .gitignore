@@ -90,7 +90,6 @@ docker-compose.dev.yml
 .mypy_cache/
 
 db_fixtures
-secrets.yaml
 
 # gcloud tmp files
 transaction.yaml
