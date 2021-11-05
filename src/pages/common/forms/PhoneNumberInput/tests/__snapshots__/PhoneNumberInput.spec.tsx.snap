@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PhoneNumberInput/> should render 1`] = `
+<div>
+  <div
+    class="form-group"
+  >
+    <label
+      class="control-label"
+    >
+      Your phone number
+    </label>
+    <div
+      class="input-group"
+    >
+      <div
+        class="countryFlagButton dropdown input-group-prepend"
+      >
+        <span
+          class="input-group-text"
+        >
+          <img
+            src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.3/flags/4x3/us.svg"
+            style="display: inline-block; width: 1.5em; height: 1em; vertical-align: middle;"
+          />
+          <span
+            class="ml-2 dropdown-toggle"
+          >
+            +
+            1
+          </span>
+        </span>
+      </div>
+      <input
+        class="form-control-danger is-invalid form-control"
+        type="text"
+        value="234 567 890"
+      />
+      <div
+        class="invalid-feedback"
+      >
+        Is not a valid phone number
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneNumberInput/> should report an error if the default country is not allowed 1`] = `
+Array [
+  Array [
+    [Error: Wrong props passed to PhoneNumberInput],
+    Object {
+      "extra": Object {
+        "allowedCountries": Array [
+          "US",
+          "CA",
+        ],
+        "currentCountry": "FR",
+        "defaultCountry": "FR",
+      },
+    },
+  ],
+]
+`;
