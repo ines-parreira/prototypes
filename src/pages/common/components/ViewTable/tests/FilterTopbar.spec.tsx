@@ -1,18 +1,38 @@
 import React, {ComponentProps} from 'react'
 import {fromJS, Map} from 'immutable'
 import {render, fireEvent, waitFor} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {FilterTopbarContainer} from '../FilterTopbar'
 import {view as viewFixture} from '../../../../../fixtures/views'
-import ConfirmButton from '../../ConfirmButton'
-import * as viewsConfig from '../../../../../config/views'
+import {RootState, StoreDispatch} from '../../../../../state/types'
 import * as utils from '../../../../../utils'
+import {
+    viewCreated,
+    viewUpdated,
+} from '../../../../../state/entities/views/actions'
+import {activeViewIdSet} from '../../../../../state/ui/views/actions'
 import {
     SUBMIT_NEW_VIEW_ERROR,
     SUBMIT_UPDATE_VIEW_ERROR,
 } from '../../../../../state/views/constants.js'
+import {
+    addFieldFilter,
+    deleteView,
+    fetchViewItems,
+    resetView,
+    submitView,
+} from '../../../../../state/views/actions'
+import * as viewSelectors from '../../../../../state/views/selectors'
+import ConfirmButton from '../../ConfirmButton'
+import {FilterTopbar} from '../FilterTopbar'
 
 const ticketChannelEqualsEmailFilter = "eq('ticket.channel', 'email')"
+
+jest.mock('../../../../../state/entities/views/actions')
+jest.mock('../../../../../state/ui/views/actions')
+jest.mock('../../../../../state/views/actions')
 
 const createViewWithFilters = (filters: string) =>
     fromJS({
@@ -22,68 +42,30 @@ const createViewWithFilters = (filters: string) =>
         filters_ast: utils.getAST(filters),
     }) as Map<any, any>
 
-const fetchViewItemsMock = jest.fn()
-const submitViewMock = jest.fn()
-const deleteViewMock = jest.fn()
-const minProps = ({
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const defaultState: Partial<RootState> = {
     agents: fromJS({}),
-    teams: fromJS({}),
-    activeView: createViewWithFilters(ticketChannelEqualsEmailFilter),
-    areFiltersValid: true,
     currentUser: fromJS({first_name: 'Steve', id: 2}),
-    isDirty: false,
-    pristineActiveView: fromJS({}),
     schemas: fromJS({}),
-    updateView: jest.fn(),
-    addFieldFilter: jest.fn(),
-    removeFieldFilter: jest.fn(),
-    updateFieldFilter: jest.fn(),
-    type: 'ticket',
-    isSearch: false,
-    fetchViewItems: fetchViewItemsMock,
-    isUpdate: true,
-    updateFieldFilterOperator: jest.fn(),
-    resetView: jest.fn(),
-    submitView: submitViewMock,
-    deleteView: deleteViewMock,
-    activeViewIdSet: jest.fn(),
-    viewCreated: jest.fn(),
-    viewDeleted: jest.fn(),
-    viewUpdated: jest.fn(),
-    config: viewsConfig.getConfigByName('ticket'),
-} as unknown) as ComponentProps<typeof FilterTopbarContainer>
+    teams: fromJS({}),
+    views: fromJS({
+        active: createViewWithFilters(ticketChannelEqualsEmailFilter),
+        items: [createViewWithFilters(ticketChannelEqualsEmailFilter)],
+    }),
+}
+
+const submitViewMock: jest.SpyInstance = submitView as jest.MockedFunction<
+    typeof submitView
+>
+const deleteViewMock: jest.SpyInstance = deleteView as jest.MockedFunction<
+    typeof deleteView
+>
+const fetchViewItemsMock: jest.SpyInstance = fetchViewItems as jest.MockedFunction<
+    typeof fetchViewItems
+>
 
 jest.mock('../Filters/ViewFilters', () => {
-    return ({
-        view,
-        removeFieldFilter,
-        updateFieldFilter,
-        updateFieldFilterOperator,
-    }: {
-        view: Map<any, any>
-        removeFieldFilter: (index: number) => void
-        updateFieldFilter: (index: number, value: string) => void
-        updateFieldFilterOperator: (index: number, operator: string) => void
-    }) => (
-        <div>
-            <div>Filters: {view.get('filters')}</div>
-            <button
-                data-testid="remove-field"
-                onClick={() => removeFieldFilter(0)}
-                value="remove field"
-            />
-            <button
-                data-testid="update-field"
-                onClick={() => updateFieldFilter(0, 'foo')}
-                value="update field"
-            />
-            <button
-                data-testid="update-field-operator"
-                onClick={() => updateFieldFilterOperator(0, 'foo')}
-                value="update field operator"
-            />
-        </div>
-    )
+    return () => <div>ViewFilters</div>
 })
 
 jest.mock('../../ViewSharing/ViewSharingButton', () => () => null)
@@ -99,73 +81,72 @@ beforeEach(() => {
     jest.clearAllMocks()
     jest.spyOn(utils, 'getDefaultOperator').mockImplementation(() => 'foo')
     jest.spyOn(global.Date, 'now').mockImplementation(() => 0) // ConfirmButton generates ids based on the date
-    fetchViewItemsMock.mockResolvedValue(undefined)
-    submitViewMock.mockResolvedValue(viewFixture)
-    deleteViewMock.mockResolvedValue(fromJS({...viewFixture, id: 8}))
+    submitViewMock.mockImplementation(() => () => Promise.resolve(viewFixture))
+    deleteViewMock.mockImplementation(() => () =>
+        fromJS({...viewFixture, id: 8}) as Map<any, any>
+    )
+    fetchViewItemsMock.mockImplementation(() => () => ({}))
 })
 
 afterEach(() => {
     ;((utils.getDefaultOperator as unknown) as jest.SpyInstance).mockRestore()
     ;((global.Date.now as unknown) as jest.SpyInstance).mockRestore()
+    fetchViewItemsMock.mockRestore()
 })
 
-describe('<FilterTopbar/>', () => {
+const minProps = ({
+    cancelFetchViewItemsCancellable: jest.fn(),
+    fetchViewItemsCancellable: jest.fn(),
+    isSearch: false,
+    isUpdate: true,
+    type: 'ticket',
+} as unknown) as ComponentProps<typeof FilterTopbar>
+
+describe('<FilterTopbar />', () => {
     describe('render', () => {
         it('should render active view filters', () => {
-            const {container} = render(<FilterTopbarContainer {...minProps} />)
+            const {container} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <FilterTopbar {...minProps} />
+                </Provider>
+            )
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should not render delete button when creating new view', () => {
             const {container} = render(
-                <FilterTopbarContainer {...minProps} isUpdate={false} />
+                <Provider store={mockStore(defaultState)}>
+                    <FilterTopbar {...minProps} isUpdate={false} />
+                </Provider>
             )
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should not render footer when in search mode', () => {
             const {container} = render(
-                <FilterTopbarContainer {...minProps} isSearch={true} />
+                <Provider store={mockStore(defaultState)}>
+                    <FilterTopbar {...minProps} isSearch={true} />
+                </Provider>
             )
             expect(container.firstChild).toMatchSnapshot()
         })
     })
 
     describe('updating filters', () => {
-        it('should update active view on remove field', () => {
-            const {getByTestId} = render(
-                <FilterTopbarContainer {...minProps} />
-            )
-            fireEvent.click(getByTestId('remove-field'))
-            expect(minProps.removeFieldFilter).toHaveBeenLastCalledWith(0)
-        })
-
-        it('should update active view on update field', () => {
-            const {getByTestId} = render(
-                <FilterTopbarContainer {...minProps} />
-            )
-            fireEvent.click(getByTestId('update-field'))
-            expect(minProps.updateFieldFilter).toHaveBeenLastCalledWith(
-                0,
-                'foo'
-            )
-        })
-
-        it('should update active view on update field operator', () => {
-            const {getByTestId} = render(
-                <FilterTopbarContainer {...minProps} />
-            )
-            fireEvent.click(getByTestId('update-field-operator'))
-            expect(minProps.updateFieldFilterOperator).toHaveBeenLastCalledWith(
-                0,
-                'foo'
-            )
+        beforeEach(() => {
+            ;((addFieldFilter as jest.MockedFunction<
+                typeof addFieldFilter
+            >) as jest.SpyInstance).mockImplementation(() => () => ({}))
         })
 
         it('should update active view on add field', () => {
-            const {getByText} = render(<FilterTopbarContainer {...minProps} />)
+            const {getByText} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <FilterTopbar {...minProps} />
+                </Provider>
+            )
             fireEvent.click(getByText('Channel'))
-            expect(minProps.addFieldFilter).toHaveBeenLastCalledWith(
+            expect(addFieldFilter).toHaveBeenLastCalledWith(
                 expect.objectContaining({
                     name: 'channel',
                 }),
@@ -179,68 +160,135 @@ describe('<FilterTopbar/>', () => {
 
     describe('on active view change', () => {
         it('should fetch view items', () => {
-            const {rerender} = render(<FilterTopbarContainer {...minProps} />)
-            rerender(
-                <FilterTopbarContainer
-                    {...minProps}
-                    activeView={createViewWithFilters('')}
-                />
+            const {rerender} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <FilterTopbar {...minProps} />
+                </Provider>
             )
-            expect(minProps.fetchViewItems).toHaveBeenLastCalledWith()
+            rerender(
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        views: defaultState.views!.set(
+                            'active',
+                            createViewWithFilters('')
+                        ),
+                    })}
+                >
+                    <FilterTopbar {...minProps} />
+                </Provider>
+            )
+            expect(minProps.fetchViewItemsCancellable).toHaveBeenLastCalledWith(
+                undefined,
+                undefined,
+                undefined
+            )
         })
 
         it('should not fetch view items when filters did not change', () => {
-            const {rerender} = render(<FilterTopbarContainer {...minProps} />)
-            rerender(
-                <FilterTopbarContainer
-                    {...minProps}
-                    activeView={minProps.activeView.set(
-                        'name',
-                        viewFixture.name + ' foo'
-                    )}
-                />
+            const {rerender} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <FilterTopbar {...minProps} />
+                </Provider>
             )
-            expect(minProps.fetchViewItems).not.toHaveBeenCalled()
+            rerender(
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        views: fromJS({
+                            ...defaultState.views,
+                            active: createViewWithFilters(
+                                ticketChannelEqualsEmailFilter
+                            ).set('name', viewFixture.name + ' foo'),
+                        }),
+                    })}
+                >
+                    <FilterTopbar {...minProps} />
+                </Provider>
+            )
+            expect(minProps.fetchViewItemsCancellable).not.toHaveBeenCalled()
         })
 
         it('should not fetch view items when view id changed', () => {
-            const {rerender} = render(<FilterTopbarContainer {...minProps} />)
-            rerender(
-                <FilterTopbarContainer
-                    {...minProps}
-                    activeView={minProps.activeView.set(
-                        'id',
-                        viewFixture.id + 1
-                    )}
-                />
+            const {rerender} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <FilterTopbar {...minProps} />
+                </Provider>
             )
-            expect(minProps.fetchViewItems).not.toHaveBeenCalled()
+            rerender(
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        views: fromJS({
+                            ...defaultState.views,
+                            active: createViewWithFilters(
+                                ticketChannelEqualsEmailFilter
+                            ).set('id', viewFixture.id + 1),
+                        }),
+                    })}
+                >
+                    <FilterTopbar {...minProps} />
+                </Provider>
+            )
+            expect(minProps.fetchViewItemsCancellable).not.toHaveBeenCalled()
         })
 
         it('should not fetch view items when filters are not valid', () => {
-            const {rerender} = render(<FilterTopbarContainer {...minProps} />)
-            rerender(
-                <FilterTopbarContainer
-                    {...minProps}
-                    activeView={createViewWithFilters('')}
-                    areFiltersValid={false}
-                />
+            const {rerender} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <FilterTopbar {...minProps} />
+                </Provider>
             )
-            expect(minProps.fetchViewItems).not.toHaveBeenCalled()
+            const getAreFiltersValidSpy = jest.spyOn(
+                viewSelectors,
+                'areFiltersValid'
+            )
+            getAreFiltersValidSpy.mockImplementationOnce(() => false)
+
+            rerender(
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        views: fromJS({
+                            ...defaultState.views,
+                            active: createViewWithFilters(''),
+                        }),
+                    })}
+                >
+                    <FilterTopbar {...minProps} />
+                </Provider>
+            )
+            expect(minProps.fetchViewItemsCancellable).not.toHaveBeenCalled()
         })
     })
 
     it('should not update the view and not set active view if update view request failed', async () => {
-        submitViewMock.mockResolvedValue({
-            type: SUBMIT_UPDATE_VIEW_ERROR,
-            error: {
-                message: 'Request failed with status code 403',
-                name: 'Error',
-            },
-            reason: 'Failed to submit view. Please try again',
-        })
+        const isDirtyMock = jest.spyOn(viewSelectors, 'isDirty')
+        isDirtyMock.mockImplementation(() => true)
+        const viewUpdatedMock = viewUpdated as jest.MockedFunction<
+            typeof viewUpdated
+        >
+        viewUpdatedMock.mockImplementation(jest.fn())
+        const activeViewIdSetMock = activeViewIdSet as jest.MockedFunction<
+            typeof activeViewIdSet
+        >
+        activeViewIdSetMock.mockImplementation(jest.fn())
+
+        submitViewMock.mockImplementation(() => () =>
+            Promise.resolve({
+                type: SUBMIT_UPDATE_VIEW_ERROR,
+                error: {
+                    message: 'Request failed with status code 403',
+                    name: 'Error',
+                },
+                reason: 'Failed to submit view. Please try again',
+            })
+        )
+
         const {getByText} = render(
-            <FilterTopbarContainer {...minProps} isDirty />
+            <Provider store={mockStore(defaultState)}>
+                <FilterTopbar {...minProps} />
+            </Provider>
         )
 
         fireEvent.click(getByText('Update view'))
@@ -251,26 +299,46 @@ describe('<FilterTopbar/>', () => {
             ).toBe(false)
         })
 
-        expect(minProps.viewUpdated).not.toHaveBeenCalled()
-        expect(minProps.activeViewIdSet).not.toHaveBeenCalled()
+        expect(viewUpdatedMock).not.toHaveBeenCalled()
+        expect(activeViewIdSetMock).not.toHaveBeenCalled()
     })
 
     it('should not update the view and not set active view if create view request failed', async () => {
-        submitViewMock.mockResolvedValue({
-            type: SUBMIT_NEW_VIEW_ERROR,
-            error: {
-                message: 'Request failed with status code 403',
-                name: 'Error',
-            },
-            reason: 'Failed to submit view. Please try again',
-        })
+        const isDirtyMock = jest.spyOn(viewSelectors, 'isDirty')
+        isDirtyMock.mockImplementation(() => true)
+        const viewCreatedMock = viewCreated as jest.MockedFunction<
+            typeof viewCreated
+        >
+        viewCreatedMock.mockImplementation(jest.fn())
+        const activeViewIdSetMock = activeViewIdSet as jest.MockedFunction<
+            typeof activeViewIdSet
+        >
+        activeViewIdSetMock.mockImplementation(jest.fn())
+
+        submitViewMock.mockImplementation(() => () =>
+            Promise.resolve({
+                type: SUBMIT_NEW_VIEW_ERROR,
+                error: {
+                    message: 'Request failed with status code 403',
+                    name: 'Error',
+                },
+                reason: 'Failed to submit view. Please try again',
+            })
+        )
         const {getByText} = render(
-            <FilterTopbarContainer
-                {...minProps}
-                activeView={minProps.activeView.delete('id')}
-                isUpdate={false}
-                isDirty
-            />
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    views: fromJS({
+                        ...defaultState.views,
+                        active: createViewWithFilters(
+                            ticketChannelEqualsEmailFilter
+                        ).delete('id'),
+                    }),
+                })}
+            >
+                <FilterTopbar {...minProps} isUpdate={false} />
+            </Provider>
         )
 
         fireEvent.click(getByText('Create view'))
@@ -280,13 +348,15 @@ describe('<FilterTopbar/>', () => {
             ).toBe(false)
         })
 
-        expect(minProps.viewCreated).not.toHaveBeenCalled()
-        expect(minProps.activeViewIdSet).not.toHaveBeenCalled()
+        expect(viewCreatedMock).not.toHaveBeenCalled()
+        expect(activeViewIdSetMock).not.toHaveBeenCalled()
     })
 
     it('should close popover on view change', async () => {
         const {rerender, getByText, queryByText} = render(
-            <FilterTopbarContainer {...minProps} />
+            <Provider store={mockStore(defaultState)}>
+                <FilterTopbar {...minProps} />
+            </Provider>
         )
 
         fireEvent.click(getByText('Update view'))
@@ -295,15 +365,28 @@ describe('<FilterTopbar/>', () => {
         })
 
         rerender(
-            <FilterTopbarContainer
-                {...minProps}
-                activeView={fromJS({
-                    ...viewFixture,
-                    editMode: false,
-                    filters: ticketChannelEqualsEmailFilter,
-                    filters_ast: utils.getAST(ticketChannelEqualsEmailFilter),
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    views: fromJS({
+                        active: fromJS({
+                            ...viewFixture,
+                            editMode: false,
+                            filters: ticketChannelEqualsEmailFilter,
+                            filters_ast: utils.getAST(
+                                ticketChannelEqualsEmailFilter
+                            ),
+                        }),
+                        items: [
+                            createViewWithFilters(
+                                ticketChannelEqualsEmailFilter
+                            ),
+                        ],
+                    }),
                 })}
-            />
+            >
+                <FilterTopbar {...minProps} />
+            </Provider>
         )
         await waitFor(() => {
             expect(queryByText('Confirm')).toBeNull()
@@ -311,8 +394,15 @@ describe('<FilterTopbar/>', () => {
     })
 
     it('should close popover on cancel', async () => {
+        const resetViewMock: jest.SpyInstance = resetView as jest.MockedFunction<
+            typeof resetView
+        >
+        resetViewMock.mockImplementationOnce(() => () => ({}))
+
         const {getByText, queryByText} = render(
-            <FilterTopbarContainer {...minProps} />
+            <Provider store={mockStore(defaultState)}>
+                <FilterTopbar {...minProps} />
+            </Provider>
         )
 
         fireEvent.click(getByText('Update view'))

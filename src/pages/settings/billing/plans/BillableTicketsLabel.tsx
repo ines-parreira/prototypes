@@ -7,15 +7,16 @@ import {PlanWithCurrencySign} from '../../../../state/billing/types'
 import css from './BillableTicketsLabel.less'
 
 type Props = {
-    plan: PlanWithCurrencySign
+    id?: string
     costMultiplier?: number
+    plan: PlanWithCurrencySign
 }
 
 export default function BillableTicketsLabel({
-    plan,
+    id = _uniqueId('billable-ticket-label-'),
     costMultiplier = 100,
+    plan,
 }: Props) {
-    const id = _uniqueId('billable-ticket-label-')
     const costPerTicket = plan.cost_per_ticket * costMultiplier
 
     return (

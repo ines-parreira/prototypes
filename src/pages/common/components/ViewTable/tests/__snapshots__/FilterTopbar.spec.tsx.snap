@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<FilterTopbar/> render should not render delete button when creating new view 1`] = `
+exports[`<FilterTopbar /> render should not render delete button when creating new view 1`] = `
 <div
   class="component card"
 >
@@ -13,22 +13,7 @@ exports[`<FilterTopbar/> render should not render delete button when creating ne
       ADVANCED FILTERS
     </p>
     <div>
-      <div>
-        Filters: 
-        eq('ticket.channel', 'email')
-      </div>
-      <button
-        data-testid="remove-field"
-        value="remove field"
-      />
-      <button
-        data-testid="update-field"
-        value="update field"
-      />
-      <button
-        data-testid="update-field-operator"
-        value="update field operator"
-      />
+      ViewFilters
     </div>
     <div
       class="dropdown"
@@ -192,7 +177,7 @@ exports[`<FilterTopbar/> render should not render delete button when creating ne
 </div>
 `;
 
-exports[`<FilterTopbar/> render should not render footer when in search mode 1`] = `
+exports[`<FilterTopbar /> render should not render footer when in search mode 1`] = `
 <div
   class="component card"
 >
@@ -205,22 +190,7 @@ exports[`<FilterTopbar/> render should not render footer when in search mode 1`]
       ADVANCED FILTERS
     </p>
     <div>
-      <div>
-        Filters: 
-        eq('ticket.channel', 'email')
-      </div>
-      <button
-        data-testid="remove-field"
-        value="remove field"
-      />
-      <button
-        data-testid="update-field"
-        value="update field"
-      />
-      <button
-        data-testid="update-field-operator"
-        value="update field operator"
-      />
+      ViewFilters
     </div>
     <div
       class="dropdown"
@@ -362,7 +332,7 @@ exports[`<FilterTopbar/> render should not render footer when in search mode 1`]
 </div>
 `;
 
-exports[`<FilterTopbar/> render should render active view filters 1`] = `
+exports[`<FilterTopbar /> render should render active view filters 1`] = `
 <div
   class="component card"
 >
@@ -375,22 +345,7 @@ exports[`<FilterTopbar/> render should render active view filters 1`] = `
       ADVANCED FILTERS
     </p>
     <div>
-      <div>
-        Filters: 
-        eq('ticket.channel', 'email')
-      </div>
-      <button
-        data-testid="remove-field"
-        value="remove field"
-      />
-      <button
-        data-testid="update-field"
-        value="update field"
-      />
-      <button
-        data-testid="update-field-operator"
-        value="update field operator"
-      />
+      ViewFilters
     </div>
     <div
       class="dropdown"

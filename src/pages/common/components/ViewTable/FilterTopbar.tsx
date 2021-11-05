@@ -1,6 +1,6 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {Map, List} from 'immutable'
-import {connect, ConnectedProps} from 'react-redux'
+import {useSelector} from 'react-redux'
 import classnames from 'classnames'
 import {
     Button,
@@ -16,474 +16,404 @@ import {
     UncontrolledButtonDropdown,
     UncontrolledDropdown,
 } from 'reactstrap'
+import {useAsyncFn, usePrevious, useUnmount, useUpdateEffect} from 'react-use'
 
-import ConfirmButton from '../ConfirmButton'
-import {ViewVisibility, View} from '../../../../models/view/types'
-import {fieldPath, getDefaultOperator, slugify} from '../../../../utils'
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
-import ViewSharingButton from '../ViewSharing/ViewSharingButton'
-import * as viewsActions from '../../../../state/views/actions'
-import * as viewsSelectors from '../../../../state/views/selectors'
-import * as agentSelectors from '../../../../state/agents/selectors'
-import * as teamSelectors from '../../../../state/teams/selectors'
-import * as schemasSelectors from '../../../../state/schemas/selectors'
-import * as viewsConfig from '../../../../config/views'
+import {getConfigByName} from '../../../../config/views'
 import {SYSTEM_VIEW_CATEGORY} from '../../../../constants/view'
-import {RootState} from '../../../../state/types'
+import useAppDispatch from '../../../../hooks/useAppDispatch'
+import {ViewVisibility, View} from '../../../../models/view/types'
+import {getCurrentUser} from '../../../../state/currentUser/selectors'
 import {
     viewCreated,
     viewDeleted,
     viewUpdated,
 } from '../../../../state/entities/views/actions'
+import {
+    addFieldFilter,
+    deleteView,
+    fetchViewItems,
+    resetView,
+    submitView as submitViewAction,
+} from '../../../../state/views/actions'
+import {
+    areFiltersValid as getAreFiltersValid,
+    getActiveView,
+    getPristineActiveView,
+    isDirty as getIsDirty,
+} from '../../../../state/views/selectors'
+import {getSchemas} from '../../../../state/schemas/selectors'
+import {GorgiasAction} from '../../../../state/types'
 import {activeViewIdSet} from '../../../../state/ui/views/actions'
-import history from '../../../history'
 import {
     SUBMIT_NEW_VIEW_ERROR,
     SUBMIT_UPDATE_VIEW_ERROR,
 } from '../../../../state/views/constants.js'
+import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
+import {fieldPath, getDefaultOperator, slugify} from '../../../../utils'
+import {reportError} from '../../../../utils/errors'
+import history from '../../../history'
+import withCancellableRequest, {
+    CancellableRequestInjectedProps,
+} from '../../utils/withCancellableRequest'
+import ConfirmButton from '../ConfirmButton'
+import ViewSharingButton from '../ViewSharing/ViewSharingButton'
 
 import Filters from './Filters/ViewFilters'
 import css from './FilterTopbar.less'
 
-type OwnProps = {
-    isUpdate: boolean
+type Props = {
     isSearch: boolean
+    isUpdate: boolean
     type: string
-}
+} & CancellableRequestInjectedProps<
+    'fetchViewItemsCancellable',
+    'cancelFetchViewItemsCancellable',
+    typeof fetchViewItems
+>
 
-type Props = OwnProps & ConnectedProps<typeof connector>
+export const FilterTopbar = ({
+    cancelFetchViewItemsCancellable,
+    fetchViewItemsCancellable,
+    isSearch,
+    isUpdate,
+    type,
+}: Props) => {
+    const dispatch = useAppDispatch()
 
-type State = {
-    isSubmitting: boolean
-    askUpdateConfirmation: boolean
-}
+    const [askUpdateConfirmation, setAskUpdateConfirmation] = useState(false)
 
-export class FilterTopbarContainer extends React.Component<Props, State> {
-    state = {
-        isSubmitting: false,
-        askUpdateConfirmation: false,
-    }
+    const activeView = useSelector(getActiveView)
+    const previousActiveView = usePrevious(activeView)
+    const areFiltersValid = useSelector(getAreFiltersValid)
+    const config = getConfigByName(type)
+    const currentUser = useSelector(getCurrentUser)
+    const isDirty = useSelector(getIsDirty)
+    const pristineActiveView = useSelector(getPristineActiveView)
+    const schemas = useSelector(getSchemas)
 
-    componentDidUpdate(prevProps: Props) {
-        const {activeView, areFiltersValid, fetchViewItems} = this.props
-        const {askUpdateConfirmation} = this.state
-
-        // fetch page again when filters changed and that filters are valid
+    useUpdateEffect(() => {
         const isSameView =
-            prevProps.activeView.get('id') === activeView.get('id')
+            !!previousActiveView &&
+            previousActiveView.get('id') === activeView.get('id')
         const filtersHaveChanged =
-            prevProps.activeView.get('filters') !== activeView.get('filters')
+            !!previousActiveView &&
+            previousActiveView.get('filters') !== activeView.get('filters')
 
         if (isSameView && filtersHaveChanged && areFiltersValid) {
-            void fetchViewItems()
+            void fetchViewItemsCancellable(undefined, undefined, undefined)
         }
+    }, [activeView, areFiltersValid, previousActiveView])
+
+    useUpdateEffect(() => {
         if (
-            prevProps.activeView.get('editMode') !==
-                activeView.get('editMode') &&
+            previousActiveView &&
+            previousActiveView.get('editMode') !== activeView.get('editMode') &&
             askUpdateConfirmation
         ) {
-            this.setState({askUpdateConfirmation: false})
+            setAskUpdateConfirmation(false)
         }
-    }
+    }, [activeView, previousActiveView])
 
-    _onClickUpdate = () => {
-        if (!this.props.areFiltersValid) {
+    const [{loading: isSubmitting}, submitView] = useAsyncFn(
+        async (view: Map<any, any>) => {
+            try {
+                const resp = await dispatch(submitViewAction(view))
+
+                if (
+                    [SUBMIT_UPDATE_VIEW_ERROR, SUBMIT_NEW_VIEW_ERROR].includes(
+                        (resp as GorgiasAction).type
+                    )
+                ) {
+                    return
+                }
+                if (view.get('id') == null) {
+                    window.Raven?.captureBreadcrumb({
+                        message: 'View created from client',
+                        data: resp,
+                        level: 'log',
+                    })
+                    dispatch(viewCreated(resp as View))
+                } else {
+                    dispatch(viewUpdated(resp as View))
+                }
+                dispatch(activeViewIdSet((resp as View).id))
+            } catch (error) {
+                reportError(error)
+            }
+        },
+        []
+    )
+
+    const handleClickUpdate = async () => {
+        if (!areFiltersValid) {
             return
         }
 
-        this.setState({
-            isSubmitting: true,
-            askUpdateConfirmation: false,
-        })
+        setAskUpdateConfirmation(false)
 
-        this._submitView(this.props.activeView)
+        await submitView(activeView)
     }
 
-    _onClickNew = () => {
-        const {currentUser} = this.props
-        if (!this.props.areFiltersValid) {
+    const onClickNew = async () => {
+        if (!areFiltersValid) {
             return
         }
 
-        this.setState({
-            isSubmitting: true,
-        })
+        let newActiveView = activeView.delete('id')
 
-        let activeView = this.props.activeView
-        const original = this.props.pristineActiveView
-
-        // new means it has no id set
-        activeView = activeView.delete('id')
-
-        // if the name wasn't changed, add (copy) to it
-        if (original.get('name') === activeView.get('name')) {
-            const newName = `${activeView.get('name', '') as string} - copy`
+        if (pristineActiveView.get('name') === newActiveView.get('name')) {
+            const newName = `${newActiveView.get('name', '') as string} - copy`
             const newSlug = slugify(newName)
 
-            activeView = activeView.set('name', newName).set('slug', newSlug)
+            newActiveView = newActiveView
+                .set('name', newName)
+                .set('slug', newSlug)
         }
-        if (activeView.get('visibility') === ViewVisibility.Private) {
-            activeView = activeView.set('shared_with_users', [
+        if (newActiveView.get('visibility') === ViewVisibility.Private) {
+            newActiveView = newActiveView.set('shared_with_users', [
                 currentUser.get('id'),
             ])
         }
 
-        this._submitView(activeView)
+        await submitView(newActiveView)
     }
 
-    _left = (field: Map<any, any>) => {
-        const viewConfig = this.props.config
-        return `${viewConfig.get('singular') as string}.${fieldPath(field)}`
-    }
-
-    _onClickFilter = (field: Map<any, any>) => {
-        const left = this._left(field)
-        const operator = getDefaultOperator(left, this.props.schemas) as string
+    const handleClickFilter = (field: Map<any, any>) => {
+        const left = `${config.get('singular') as string}.${fieldPath(field)}`
+        const operator = getDefaultOperator(left, schemas) as string
         const filter = {
             left,
             operator,
         }
-        this.props.addFieldFilter(field.toJS(), filter)
+        dispatch(addFieldFilter(field.toJS(), filter))
     }
 
-    _cancel = () => {
-        const {config, isUpdate, fetchViewItems, resetView} = this.props
+    const cancel = () => {
+        setAskUpdateConfirmation(false)
 
-        this.setState({askUpdateConfirmation: false})
         if (isUpdate) {
-            // if is updating an existing view, on cancel we reset current view
-            resetView()
-            void fetchViewItems()
+            dispatch(resetView())
+            void dispatch(fetchViewItems())
         } else {
-            // if is updating an existing view, on cancel we leave edition
             history.push(`/app/${config.get('routeList') as string}/`)
         }
     }
 
-    _createView = () => {
-        const {currentUser} = this.props
-        if (!this.props.areFiltersValid) {
+    const createView = async () => {
+        if (!areFiltersValid) {
             return
         }
 
-        this.setState({
-            isSubmitting: true,
-        })
-
-        let activeView = this.props.activeView
-        // new means it has no id set
-        activeView = activeView
+        let newActiveView = activeView
             .delete('id')
             .set('name', activeView.get('name') || 'New view')
-        activeView = activeView.set('slug', slugify(activeView.get('name')))
-        if (activeView.get('visibility') === ViewVisibility.Private) {
-            activeView = activeView.set('shared_with_users', [
+            .set('slug', slugify(activeView.get('name')))
+        if (newActiveView.get('visibility') === ViewVisibility.Private) {
+            newActiveView = newActiveView.set('shared_with_users', [
                 currentUser.get('id'),
             ])
         }
 
-        this._submitView(activeView)
+        await submitView(newActiveView)
     }
 
-    _submitView = (view: Map<any, any>) => {
-        const {
-            viewCreated,
-            viewUpdated,
-            activeViewIdSet,
-            submitView,
-        } = this.props
-
-        void submitView(view).then((resp) => {
-            this.setState({
-                isSubmitting: false,
-            })
-            if (
-                [SUBMIT_UPDATE_VIEW_ERROR, SUBMIT_NEW_VIEW_ERROR].includes(
-                    (resp as {type: string}).type
-                )
-            ) {
-                return
-            }
-            if (view.get('id') == null) {
-                window.Raven?.captureBreadcrumb({
-                    message: 'View created from client',
-                    data: resp,
-                    level: 'log',
-                })
-                viewCreated(resp as View)
-            } else {
-                viewUpdated(resp as View)
-            }
-            activeViewIdSet((resp as View).id)
-        })
+    const toggleUpdateConfirmation = () => {
+        setAskUpdateConfirmation(!askUpdateConfirmation)
     }
 
-    _toggleUpdateConfirmation = () => {
-        this.setState({
-            askUpdateConfirmation: !this.state.askUpdateConfirmation,
-        })
+    const isSystemView = activeView.get('category') === SYSTEM_VIEW_CATEGORY
+
+    useUnmount(cancelFetchViewItemsCancellable)
+
+    if (!activeView.get('editMode') && !isSearch) {
+        return null
     }
 
-    render() {
-        const {
-            config,
-            activeView,
-            activeViewIdSet,
-            areFiltersValid,
-            isDirty,
-            isUpdate,
-            isSearch,
-            agents,
-            teams,
-            viewDeleted,
-        } = this.props
-        const {isSubmitting} = this.state
-        const isSystemView = activeView.get('category') === SYSTEM_VIEW_CATEGORY
+    const filterableFields = (config.get('fields') as List<any>)
+        .filter(
+            (field: Map<any, any>) =>
+                !!field.get('filter') &&
+                (field.getIn(['filter', 'show'], true) as boolean)
+        )
+        .sortBy((field: Map<any, any>) => field.get('title') as string)
 
-        if (!activeView.get('editMode') && !isSearch) {
-            return null
-        }
-
-        const filterableFields = (config.get('fields') as List<any>)
-            .filter(
-                (field: Map<any, any>) =>
-                    !!field.get('filter') &&
-                    (field.getIn(['filter', 'show'], true) as boolean)
-            )
-            .sortBy((field: Map<any, any>) => field.get('title') as string)
-
-        return (
-            <Card className={css.component}>
-                <CardBody className="filter-topbar-content">
-                    {isUpdate && !isSearch && (
-                        <ViewSharingButton
-                            view={activeView}
-                            className="float-right"
-                        />
-                    )}
-                    <p className={css.subtitle}>ADVANCED FILTERS</p>
-                    <Filters
+    return (
+        <Card className={css.component}>
+            <CardBody className="filter-topbar-content">
+                {isUpdate && !isSearch && (
+                    <ViewSharingButton
                         view={activeView}
-                        removeFieldFilter={this.props.removeFieldFilter}
-                        updateFieldFilter={this.props.updateFieldFilter}
-                        updateFieldFilterOperator={
-                            this.props.updateFieldFilterOperator
-                        }
-                        agents={agents}
-                        teams={teams}
+                        className="float-right"
                     />
+                )}
+                <p className={css.subtitle}>ADVANCED FILTERS</p>
+                <Filters />
 
-                    <UncontrolledDropdown>
-                        <DropdownToggle
-                            caret
-                            type="button"
-                            color="secondary"
-                            size="sm"
-                            className="mr-2"
-                            onClick={() => {
-                                segmentTracker.logEvent(
-                                    segmentTracker.EVENTS
-                                        .VIEW_FILTER_ADD_CLICKED
-                                )
-                            }}
-                        >
-                            <i className="material-icons mr-2">add</i>
-                            Add filter
-                        </DropdownToggle>
-                        <DropdownMenu>
-                            {filterableFields.map((field: Map<any, any>) => {
-                                return (
-                                    <DropdownItem
-                                        key={field.get('name')}
-                                        type="button"
-                                        onClick={() =>
-                                            this._onClickFilter(field)
-                                        }
-                                    >
-                                        {field.get('title')}
-                                    </DropdownItem>
-                                )
-                            })}
-                        </DropdownMenu>
-                    </UncontrolledDropdown>
-                </CardBody>
-                {!isSearch && (
-                    <CardFooter>
-                        <div className="d-flex align-items-center justify-content-between">
-                            <div>
-                                {isSystemView ? (
-                                    <span>
-                                        <i className="material-icons mr-2">
-                                            info
-                                        </i>
-                                        This view cannot be saved
-                                    </span>
-                                ) : isUpdate ? (
-                                    <UncontrolledButtonDropdown>
-                                        <Button
-                                            type="submit"
-                                            id="update-view-button"
-                                            color="success"
-                                            className={classnames({
-                                                'btn-loading': this.state
-                                                    .isSubmitting,
-                                            })}
-                                            disabled={
-                                                isSubmitting ||
-                                                !areFiltersValid ||
-                                                !isDirty
-                                            }
-                                            onClick={
-                                                this._toggleUpdateConfirmation
-                                            }
-                                        >
-                                            Update view
-                                        </Button>
-                                        <Popover
-                                            placement="bottom"
-                                            isOpen={
-                                                this.state.askUpdateConfirmation
-                                            }
-                                            target="update-view-button"
-                                            toggle={
-                                                this._toggleUpdateConfirmation
-                                            }
-                                            trigger="legacy"
-                                        >
-                                            <PopoverHeader>
-                                                Are you sure?
-                                            </PopoverHeader>
-                                            <PopoverBody>
-                                                <p>
-                                                    You are about to edit this
-                                                    view for <b>all users</b>.
-                                                </p>
-                                                <Button
-                                                    type="submit"
-                                                    color="success"
-                                                    onClick={
-                                                        this._onClickUpdate
-                                                    }
-                                                >
-                                                    Confirm
-                                                </Button>
-                                            </PopoverBody>
-                                        </Popover>
-                                        <DropdownToggle
-                                            caret
-                                            type="button"
-                                            color="success"
-                                        />
-                                        <DropdownMenu right>
-                                            <DropdownItem
-                                                key="open"
-                                                type="button"
-                                                disabled={
-                                                    isSubmitting ||
-                                                    !areFiltersValid
-                                                }
-                                                onClick={this._onClickNew}
-                                            >
-                                                Save as new view
-                                            </DropdownItem>
-                                        </DropdownMenu>
-                                    </UncontrolledButtonDropdown>
-                                ) : (
+                <UncontrolledDropdown>
+                    <DropdownToggle
+                        caret
+                        type="button"
+                        color="secondary"
+                        size="sm"
+                        className="mr-2"
+                        onClick={() => {
+                            segmentTracker.logEvent(
+                                segmentTracker.EVENTS.VIEW_FILTER_ADD_CLICKED
+                            )
+                        }}
+                    >
+                        <i className="material-icons mr-2">add</i>
+                        Add filter
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        {filterableFields.map((field: Map<any, any>) => (
+                            <DropdownItem
+                                key={field.get('name')}
+                                type="button"
+                                onClick={() => handleClickFilter(field)}
+                            >
+                                {field.get('title')}
+                            </DropdownItem>
+                        ))}
+                    </DropdownMenu>
+                </UncontrolledDropdown>
+            </CardBody>
+            {!isSearch && (
+                <CardFooter>
+                    <div className="d-flex align-items-center justify-content-between">
+                        <div>
+                            {isSystemView ? (
+                                <span>
+                                    <i className="material-icons mr-2">info</i>
+                                    This view cannot be saved
+                                </span>
+                            ) : isUpdate ? (
+                                <UncontrolledButtonDropdown>
                                     <Button
                                         type="submit"
-                                        color="primary"
+                                        id="update-view-button"
+                                        color="success"
                                         className={classnames({
-                                            'btn-loading': this.state
-                                                .isSubmitting,
+                                            'btn-loading': isSubmitting,
                                         })}
                                         disabled={
-                                            isSubmitting || !areFiltersValid
+                                            isSubmitting ||
+                                            !areFiltersValid ||
+                                            !isDirty
                                         }
-                                        onClick={this._createView}
+                                        onClick={toggleUpdateConfirmation}
                                     >
-                                        Create view
+                                        Update view
                                     </Button>
-                                )}
-                                {!isSearch && (
-                                    <Button
-                                        type="submit"
-                                        color="secondary"
-                                        className="ml-2"
-                                        disabled={isSubmitting}
-                                        onClick={this._cancel}
+                                    <Popover
+                                        placement="bottom"
+                                        isOpen={askUpdateConfirmation}
+                                        target="update-view-button"
+                                        toggle={toggleUpdateConfirmation}
+                                        trigger="legacy"
                                     >
-                                        Cancel
-                                    </Button>
-                                )}
-                            </div>
-                            {!isSearch && !isSystemView && isUpdate && (
-                                <ConfirmButton
-                                    id="delete-view"
-                                    content={
-                                        <span>
-                                            You are about to <b>delete</b> this
-                                            view for <b>all users</b>.
-                                        </span>
-                                    }
-                                    confirm={() => {
-                                        return this.props
-                                            .deleteView(activeView)
-                                            .then((destinationView) => {
-                                                viewDeleted(
-                                                    activeView.get('id')
-                                                )
-                                                activeViewIdSet(
-                                                    (destinationView as Map<
-                                                        any,
-                                                        any
-                                                    >).get('id')
-                                                )
-                                            })
-                                    }}
+                                        <PopoverHeader>
+                                            Are you sure?
+                                        </PopoverHeader>
+                                        <PopoverBody>
+                                            <p>
+                                                You are about to edit this view
+                                                for <b>all users</b>.
+                                            </p>
+                                            <Button
+                                                type="submit"
+                                                color="success"
+                                                onClick={handleClickUpdate}
+                                            >
+                                                Confirm
+                                            </Button>
+                                        </PopoverBody>
+                                    </Popover>
+                                    <DropdownToggle
+                                        caret
+                                        type="button"
+                                        color="success"
+                                    />
+                                    <DropdownMenu right>
+                                        <DropdownItem
+                                            key="open"
+                                            type="button"
+                                            disabled={
+                                                isSubmitting || !areFiltersValid
+                                            }
+                                            onClick={onClickNew}
+                                        >
+                                            Save as new view
+                                        </DropdownItem>
+                                    </DropdownMenu>
+                                </UncontrolledButtonDropdown>
+                            ) : (
+                                <Button
+                                    type="submit"
+                                    color="primary"
+                                    className={classnames({
+                                        'btn-loading': isSubmitting,
+                                    })}
+                                    disabled={isSubmitting || !areFiltersValid}
+                                    onClick={createView}
                                 >
-                                    <i className="material-icons md-2 mr-2 text-danger">
-                                        delete
-                                    </i>
-                                    Delete view
-                                </ConfirmButton>
+                                    Create view
+                                </Button>
+                            )}
+                            {!isSearch && (
+                                <Button
+                                    type="submit"
+                                    color="secondary"
+                                    className="ml-2"
+                                    disabled={isSubmitting}
+                                    onClick={cancel}
+                                >
+                                    Cancel
+                                </Button>
                             )}
                         </div>
-                    </CardFooter>
-                )}
-            </Card>
-        )
-    }
+                        {!isSearch && !isSystemView && isUpdate && (
+                            <ConfirmButton
+                                id="delete-view"
+                                content={
+                                    <span>
+                                        You are about to <b>delete</b> this view
+                                        for <b>all users</b>.
+                                    </span>
+                                }
+                                confirm={async () => {
+                                    const destinationView = await dispatch(
+                                        deleteView(activeView)
+                                    )
+                                    dispatch(viewDeleted(activeView.get('id')))
+                                    dispatch(
+                                        activeViewIdSet(
+                                            (destinationView as Map<
+                                                any,
+                                                any
+                                            >).get('id')
+                                        )
+                                    )
+                                }}
+                            >
+                                <i className="material-icons md-2 mr-2 text-danger">
+                                    delete
+                                </i>
+                                Delete view
+                            </ConfirmButton>
+                        )}
+                    </div>
+                </CardFooter>
+            )}
+        </Card>
+    )
 }
 
-const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
-    return {
-        agents: agentSelectors.getAgents(state),
-        teams: teamSelectors.getTeams(state),
-        activeView: viewsSelectors.getActiveView(state),
-        areFiltersValid: viewsSelectors.areFiltersValid(state),
-        config: viewsConfig.getConfigByName(ownProps.type),
-        currentUser: state.currentUser,
-        isDirty: viewsSelectors.isDirty(state),
-        pristineActiveView: viewsSelectors.getPristineActiveView(state),
-        schemas: schemasSelectors.getSchemas(state),
-    }
-}
-
-const mapDispatchToProps = {
-    fetchViewItems: viewsActions.fetchViewItems,
-    resetView: viewsActions.resetView,
-    submitView: viewsActions.submitView,
-    deleteView: viewsActions.deleteView,
-    addFieldFilter: viewsActions.addFieldFilter,
-    removeFieldFilter: viewsActions.removeFieldFilter,
-    updateFieldFilter: viewsActions.updateFieldFilter,
-    updateFieldFilterOperator: viewsActions.updateFieldFilterOperator,
-    viewCreated,
-    viewDeleted,
-    viewUpdated,
-    activeViewIdSet,
-}
-
-const connector = connect(mapStateToProps, mapDispatchToProps)
-
-export default connector(FilterTopbarContainer)
+export default withCancellableRequest<
+    'fetchViewItemsCancellable',
+    'cancelFetchViewItemsCancellable',
+    typeof fetchViewItems
+>(
+    'fetchViewItemsCancellable',
+    fetchViewItems
+)(FilterTopbar)

@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {List, Map, Seq} from 'immutable'
+import {List, Map} from 'immutable'
 import {
     Expression,
     LogicalExpression,
@@ -8,7 +8,10 @@ import {
     ExpressionStatement,
 } from 'estree'
 
-import * as schemasSelectors from '../../../../../state/schemas/selectors'
+import {getAgents} from '../../../../../state/agents/selectors'
+import {getSchemas} from '../../../../../state/schemas/selectors'
+import {getTeams} from '../../../../../state/teams/selectors'
+import {getActiveView} from '../../../../../state/views/selectors'
 import {
     removeFieldFilter,
     updateFieldFilter,
@@ -18,15 +21,7 @@ import {RootState} from '../../../../../state/types'
 
 import CallExpression from './CallExpression'
 
-type OwnProps = {
-    view: Map<any, any>
-    removeFieldFilter: typeof removeFieldFilter
-    agents: List<Map<any, any>>
-    teams: List<Map<any, any>> | Seq.Indexed<Map<any, any>>
-    updateFieldFilter: typeof updateFieldFilter
-    updateFieldFilterOperator: typeof updateFieldFilterOperator
-}
-type Props = OwnProps & ConnectedProps<typeof connector>
+type Props = ConnectedProps<typeof connector>
 
 export class ViewFilters extends React.Component<Props> {
     removeCondition = (index: number) => {
@@ -93,10 +88,18 @@ export class ViewFilters extends React.Component<Props> {
     }
 }
 
-const connector = connect((state: RootState) => {
-    return {
-        schemas: schemasSelectors.getSchemas(state),
+const connector = connect(
+    (state: RootState) => ({
+        agents: getAgents(state),
+        schemas: getSchemas(state),
+        teams: getTeams(state),
+        view: getActiveView(state),
+    }),
+    {
+        removeFieldFilter,
+        updateFieldFilter,
+        updateFieldFilterOperator,
     }
-})
+)
 
 export default connector(ViewFilters)
