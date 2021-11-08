@@ -1,0 +1,44 @@
+.font-family-mixin(@font, @style, @weight, @fileName) {
+    @font-face {
+        font-family: @font;
+        font-style: @style;
+        font-weight: @weight;
+        font-display: swap;
+        src: url('./fonts/@{fileName}.ttf') format('truetype');
+    }
+}
+
+// Merriweather
+.font-family-mixin('Merriweather', normal, 300, 'Merriweather-Light');
+.font-family-mixin('Merriweather', italic, 300, 'Merriweather-LightItalic');
+
+.font-family-mixin('Merriweather', normal, 400, 'Merriweather-Regular');
+.font-family-mixin('Merriweather', italic, 400, 'Merriweather-Italic');
+
+.font-family-mixin('Merriweather', normal, 700, 'Merriweather-Bold');
+.font-family-mixin('Merriweather', italic, 700, 'Merriweather-BoldItalic');
+
+.font-family-mixin('Merriweather', normal, 900, 'Merriweather-Black');
+.font-family-mixin('Merriweather', italic, 900, 'Merriweather-BlackItalic');
+
+// Source Code Pro
+.font-family-mixin('Source Code Pro', normal, 200, 'SourceCodePro-ExtraLight');
+.font-family-mixin('Source Code Pro', italic, 200, 'SourceCodePro-ExtraLightItalic');
+
+.font-family-mixin('Source Code Pro', normal, 300, 'SourceCodePro-Light');
+.font-family-mixin('Source Code Pro', italic, 300, 'SourceCodePro-LightItalic');
+
+.font-family-mixin('Source Code Pro', normal, 400, 'SourceCodePro-Regular');
+.font-family-mixin('Source Code Pro', italic, 400, 'SourceCodePro-Italic');
+
+.font-family-mixin('Source Code Pro', normal, 500, 'SourceCodePro-Medium');
+.font-family-mixin('Source Code Pro', italic, 500, 'SourceCodePro-MediumItalic');
+
+.font-family-mixin('Source Code Pro', normal, 600, 'SourceCodePro-SemiBold');
+.font-family-mixin('Source Code Pro', italic, 600, 'SourceCodePro-SemiBoldItalic');
+
+.font-family-mixin('Source Code Pro', normal, 700, 'SourceCodePro-Bold');
+.font-family-mixin('Source Code Pro', italic, 700, 'SourceCodePro-BoldItalic');
+
+.font-family-mixin('Source Code Pro', normal, 900, 'SourceCodePro-Black');
+.font-family-mixin('Source Code Pro', italic, 900, 'SourceCodePro-BlackItalic');

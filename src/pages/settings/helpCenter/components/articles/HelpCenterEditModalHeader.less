@@ -1,4 +1,4 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 :local {
     .header {
@@ -17,12 +17,13 @@
         height: 32px;
         font-size: 20px;
         line-height: 28px;
-        color: @neutral10;
+        color: @classic-neutral-grey-6;
         font-weight: 600;
         border: 0;
         background-color: white;
         margin-right: 8px;
         padding: 0 8px;
+        outline-color: @classic-main-primary;
     }
     .headerControls {
         display: flex;
@@ -33,7 +34,7 @@
     .controlButton {
         border: 0;
         background-color: white;
-        color: @neutral10;
+        color: @classic-neutral-grey-6;
     }
     .controlButton:focus:not(:focus-visible) {
         outline: none;
@@ -48,7 +49,7 @@
     .languageSelect > div > select {
         width: 110px;
         border: 0;
-        color: @neutral10;
+        color: @classic-neutral-grey-6;
         font-size: 14px;
         line-height: 20px;
     }

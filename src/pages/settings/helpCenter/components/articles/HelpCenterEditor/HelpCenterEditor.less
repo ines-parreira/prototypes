@@ -1,4 +1,6 @@
-@import '~css/new/colors';
+@import './font-family';
+
+@import '~css/new/colorTokens';
 @import '~froala-editor/css/froala_editor.pkgd.min.css';
 
 :local {
@@ -12,13 +14,18 @@
             .fr-element.fr-view {
                 padding: 16px;
             }
-
             .fr-toolbar.fr-top,
             .fr-second-toolbar {
                 border-radius: 0;
             }
             .fr-wrapper > .fr-view {
                 min-height: 100%;
+            }
+            .fr-action-buttons button.fr-command {
+                color: @classic-main-primary;
+            }
+            .fr-qi-helper a.fr-btn.fr-floating-btn {
+                padding: 0 10px;
             }
         }
     }

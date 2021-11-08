@@ -109,6 +109,17 @@ const HelpCenterEditor = ({
                  * Image upload cf. https://froala.com/wysiwyg-editor/docs/concepts/image/upload/
                  */
                 imageMaxSize: MAX_IMAGE_SIZE,
+                fontFamily: {
+                    'Arial,Helvetica,sans-serif': 'Arial',
+                    'Georgia,serif': 'Georgia',
+                    'Impact,Charcoal,sans-serif': 'Impact',
+                    Inter: 'Inter',
+                    Merriweather: 'Merriweather',
+                    'Source Code Pro': 'Source Code Pro',
+                    'Tahoma,Geneva,sans-serif': 'Tahoma',
+                    "'Times New Roman',Times,serif": 'Times New Roman',
+                    'Verdana,Geneva,sans-serif': 'Verdana',
+                },
                 events: {
                     'image.beforeUpload': function (images: FileList) {
                         if (images.length === 0) {
