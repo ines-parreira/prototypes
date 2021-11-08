@@ -54,6 +54,24 @@ describe('InfobarCustomerActions component', () => {
         expect(component).toMatchSnapshot()
     })
 
+    it('should not render "set as customer" in case of chat ticket', () => {
+        const component = shallow(
+            <InfobarCustomerActions
+                {...commonProps}
+                sources={fromJS({
+                    customer: {
+                        id: 1,
+                    },
+                    ticket: {
+                        channel: 'chat',
+                    },
+                })}
+            />
+        )
+
+        expect(component).toMatchSnapshot()
+    })
+
     it('should not render "merge" button because there is no customer to merge the selected customer with', () => {
         const component = shallow(
             <InfobarCustomerActions {...commonProps} customer={fromJS({})} />
