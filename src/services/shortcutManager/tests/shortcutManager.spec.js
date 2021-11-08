@@ -1,7 +1,7 @@
-import {ShortcutManager} from '../shortcutManager'
+import {ShortcutManager} from '../shortcutManager.ts'
 
 describe('shortcutManager', () => {
-    let sm: ShortcutManager
+    let sm
     let counter = 0
     const bump = () => counter++
 

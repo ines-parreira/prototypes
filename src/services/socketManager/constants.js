@@ -1,0 +1,12 @@
+export const BROADCAST_CHANNEL_NAME = 'WebsocketBroadcastChannel'
+
+export const BROADCAST_CHANNEL_EVENTS = Object.freeze({
+    SERVER_MESSAGE: 'SERVER_MESSAGE',
+    WS_CONNECTED: 'WS_CONNECTED',
+    WS_DISCONNECTED: 'WS_DISCONNECTED',
+})
+
+export const MESSAGE_PORT_EVENTS = Object.freeze({
+    CLIENT_CONNECTED: 'CLIENT_CONNECTED',
+    HEALTH_CHECK: 'HEALTH_CHECK',
+})

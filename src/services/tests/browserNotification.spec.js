@@ -1,8 +1,6 @@
 import PushJS from 'push.js'
 
-import browserNotification from '../browserNotification'
-
-const typedPushJS = PushJS as typeof PushJS & {getAll: () => any}
+import browserNotification from '../browserNotification.ts'
 
 describe('services', () => {
     describe('browserNotification', () => {
@@ -37,7 +35,7 @@ describe('services', () => {
                         title: 'title',
                         body: 'body',
                         ticketId: 12,
-                        playSoundNotification: playSoundNotification!,
+                        playSoundNotification: playSoundNotification,
                     })
                     expect(spy).toHaveBeenCalled()
                 }
@@ -49,7 +47,7 @@ describe('services', () => {
                     'play'
                 )
                 browserNotification.newMessage()
-                expect(typedPushJS.getAll()).toMatchSnapshot()
+                expect(PushJS.getAll()).toMatchSnapshot()
                 expect(spy).toHaveBeenCalled()
             })
 
@@ -61,9 +59,9 @@ describe('services', () => {
                 browserNotification.newMessage({
                     title: null,
                     body: null,
-                    ticketId: undefined,
+                    ticketId: null,
                 })
-                expect(typedPushJS.getAll()).toMatchSnapshot()
+                expect(PushJS.getAll()).toMatchSnapshot()
                 expect(spy).toHaveBeenCalled()
             })
 
@@ -76,7 +74,7 @@ describe('services', () => {
                     title: '',
                     body: '',
                 })
-                expect(typedPushJS.getAll()).toMatchSnapshot()
+                expect(PushJS.getAll()).toMatchSnapshot()
                 expect(spy).toHaveBeenCalled()
             })
 
@@ -89,7 +87,7 @@ describe('services', () => {
                     title: 1234,
                     body: 1234,
                 })
-                expect(typedPushJS.getAll()).toMatchSnapshot()
+                expect(PushJS.getAll()).toMatchSnapshot()
                 expect(spy).toHaveBeenCalled()
             })
 
@@ -103,7 +101,7 @@ describe('services', () => {
                     body: 'body',
                     ticketId: 12,
                 })
-                expect(typedPushJS.getAll()).toMatchSnapshot()
+                expect(PushJS.getAll()).toMatchSnapshot()
                 expect(spy).toHaveBeenCalled()
             })
 
@@ -113,7 +111,7 @@ describe('services', () => {
                     'play'
                 )
 
-                spy.mockRejectedValueOnce(undefined)
+                spy.mockRejectedValueOnce()
 
                 browserNotification.newMessage({
                     title: 'title',
@@ -122,7 +120,7 @@ describe('services', () => {
                 })
 
                 setImmediate(() => {
-                    expect(typedPushJS.getAll()).toMatchSnapshot()
+                    expect(PushJS.getAll()).toMatchSnapshot()
                     done()
                 })
                 expect(spy).toHaveBeenCalled()

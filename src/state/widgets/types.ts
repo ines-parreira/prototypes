@@ -17,13 +17,11 @@ export enum WidgetTemplateWidgetType {
     Card = 'card',
     Text = 'text',
     List = 'list',
-    Date = 'date',
-    Url = 'url',
 }
 
 export type WidgetTemplateWidget = {
     order?: number
-    title?: string
+    title: string
     type: WidgetTemplateWidgetType
     widgets?: WidgetTemplateWidget[]
     path?: string
@@ -45,7 +43,6 @@ export type WidgetDraft = {
 export type Widget = WidgetDraft & {
     created_datetime: string
     deactivated_datetime: Maybe<string>
-    deleted_datetime: Maybe<string>
     id: number
     integration_id: Maybe<number>
     updated_datetime: Maybe<string>

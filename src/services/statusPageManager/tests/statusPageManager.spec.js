@@ -4,29 +4,29 @@ import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import statusPageManager from '../statusPageManager'
+import statusPageManager from '../statusPageManager.ts'
 import {
     HELPDESK_GROUP_IDS,
+    MAINTENANCE_STATUSES,
     INCIDENTS_NOTIFICATION_ID,
     MAINTENANCE_NOTIFICATION_ID,
     CLUSTER_GROUP_ID,
     DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
-} from '../constants'
-import {
-    ComponentStatus,
-    IncidentImpact,
-    MaintenanceStatus,
-    StatusPageIncidentsResponseData,
-} from '../types'
+} from '../constants.ts'
+import {ComponentStatus, IncidentImpact} from '../types.ts'
 
-import {notify} from '../../../state/notifications/actions'
-import {IntegrationType} from '../../../models/integration/types'
+import {notify} from '../../../state/notifications/actions.ts'
+
+import {
+    FACEBOOK_INTEGRATION_TYPE,
+    GMAIL_INTEGRATION_TYPE,
+} from '../../../constants/integration.ts'
 
 const mockStore = configureMockStore([thunk])
 
-jest.mock('../../../state/notifications/actions', () => {
-    const notificationActions: Record<string, any> = jest.requireActual(
-        '../../../state/notifications/actions'
+jest.mock('../../../state/notifications/actions.ts', () => {
+    const notificationActions = jest.requireActual(
+        '../../../state/notifications/actions.ts'
     )
 
     return {
@@ -36,7 +36,7 @@ jest.mock('../../../state/notifications/actions', () => {
 })
 
 jest.mock('reapop', () => {
-    const reapop: Record<string, any> = jest.requireActual('reapop')
+    const reapop = jest.requireActual('reapop')
 
     return {
         ...reapop,
@@ -58,9 +58,7 @@ describe('statusPageManager', () => {
             'should throw an error if data is `%s`',
             (data) => {
                 expect(() => {
-                    statusPageManager.processIncidents(
-                        data as StatusPageIncidentsResponseData
-                    )
+                    statusPageManager.processIncidents(data)
                 }).toThrow()
             }
         )
@@ -99,7 +97,7 @@ describe('statusPageManager', () => {
                         ],
                     },
                 ],
-            } as StatusPageIncidentsResponseData
+            }
             statusPageManager.processIncidents(args)
             statusPageManager.processIncidents(args)
 
@@ -151,10 +149,8 @@ describe('statusPageManager', () => {
                             ],
                         },
                     ],
-                } as StatusPageIncidentsResponseData)
-                expect(
-                    (notify as jest.MockedFunction<typeof notify>).mock.calls
-                ).toMatchSnapshot()
+                })
+                expect(notify.mock.calls).toMatchSnapshot()
             }
         )
 
@@ -197,10 +193,8 @@ describe('statusPageManager', () => {
                         ],
                     },
                 ],
-            } as StatusPageIncidentsResponseData)
-            expect(
-                (notify as jest.MockedFunction<typeof notify>).mock.calls
-            ).toMatchSnapshot()
+            })
+            expect(notify.mock.calls).toMatchSnapshot()
         })
 
         it('should not dispatch notification if its incident id is present in localStorage', () => {
@@ -232,7 +226,7 @@ describe('statusPageManager', () => {
                         ],
                     },
                 ],
-            } as StatusPageIncidentsResponseData)
+            })
 
             expect(notify).not.toHaveBeenCalled()
         })
@@ -261,11 +255,9 @@ describe('statusPageManager', () => {
                         ],
                     },
                 ],
-            } as StatusPageIncidentsResponseData)
+            })
 
-            expect(
-                (notify as jest.MockedFunction<typeof notify>).mock.calls
-            ).toMatchSnapshot()
+            expect(notify.mock.calls).toMatchSnapshot()
         })
 
         describe('cluster filtering', () => {
@@ -297,7 +289,7 @@ describe('statusPageManager', () => {
                             ],
                         },
                     ],
-                } as StatusPageIncidentsResponseData)
+                })
                 expect(notify).not.toHaveBeenCalled()
             })
 
@@ -329,10 +321,8 @@ describe('statusPageManager', () => {
                             ],
                         },
                     ],
-                } as StatusPageIncidentsResponseData)
-                expect(
-                    (notify as jest.MockedFunction<typeof notify>).mock.calls
-                ).toMatchSnapshot()
+                })
+                expect(notify.mock.calls).toMatchSnapshot()
             })
 
             it('should notify if matches the second cluster', () => {
@@ -368,22 +358,19 @@ describe('statusPageManager', () => {
                             ],
                         },
                     ],
-                } as StatusPageIncidentsResponseData)
-                expect(
-                    (notify as jest.MockedFunction<typeof notify>).mock.calls
-                ).toMatchSnapshot()
+                })
+                expect(notify.mock.calls).toMatchSnapshot()
             })
         })
 
         describe('integration filtering', () => {
             it('should notify if matches an active integration', () => {
-                // @ts-ignore ts(2341)
                 statusPageManager.store = mockStore({
                     integrations: fromJS({
                         integrations: [
                             {
                                 id: 1,
-                                type: IntegrationType.Facebook,
+                                type: FACEBOOK_INTEGRATION_TYPE,
                                 deactivated_datetime: null,
                             },
                         ],
@@ -409,20 +396,17 @@ describe('statusPageManager', () => {
                             ],
                         },
                     ],
-                } as StatusPageIncidentsResponseData)
-                expect(
-                    (notify as jest.MockedFunction<typeof notify>).mock.calls
-                ).toMatchSnapshot()
+                })
+                expect(notify.mock.calls).toMatchSnapshot()
             })
 
             it('should not notify if matches an inactive integration', () => {
-                // @ts-ignore ts(2341)
                 statusPageManager.store = mockStore({
                     integrations: fromJS({
                         integrations: [
                             {
                                 id: 1,
-                                type: IntegrationType.Facebook,
+                                type: FACEBOOK_INTEGRATION_TYPE,
                                 deactivated_datetime: '2020-01-01',
                             },
                         ],
@@ -448,18 +432,17 @@ describe('statusPageManager', () => {
                             ],
                         },
                     ],
-                } as StatusPageIncidentsResponseData)
+                })
                 expect(notify).not.toHaveBeenCalled()
             })
 
             it('should not notify if integration type does not match', () => {
-                // @ts-ignore ts(2341)
                 statusPageManager.store = mockStore({
                     integrations: fromJS({
                         integrations: [
                             {
                                 id: 1,
-                                type: IntegrationType.Gmail,
+                                type: GMAIL_INTEGRATION_TYPE,
                                 deactivated_datetime: null,
                             },
                         ],
@@ -485,23 +468,22 @@ describe('statusPageManager', () => {
                             ],
                         },
                     ],
-                } as StatusPageIncidentsResponseData)
+                })
                 expect(notify).not.toHaveBeenCalled()
             })
 
             it('should notify active integrations and filter out inactive ones', () => {
-                // @ts-ignore ts(2341)
                 statusPageManager.store = mockStore({
                     integrations: fromJS({
                         integrations: [
                             {
                                 id: 1,
-                                type: IntegrationType.Gmail,
+                                type: GMAIL_INTEGRATION_TYPE,
                                 deactivated_datetime: null,
                             },
                             {
                                 id: 1,
-                                type: IntegrationType.Facebook,
+                                type: FACEBOOK_INTEGRATION_TYPE,
                                 deactivated_datetime: '2020-01-01',
                             },
                         ],
@@ -535,10 +517,8 @@ describe('statusPageManager', () => {
                             ],
                         },
                     ],
-                } as StatusPageIncidentsResponseData)
-                expect(
-                    (notify as jest.MockedFunction<typeof notify>).mock.calls
-                ).toMatchSnapshot()
+                })
+                expect(notify.mock.calls).toMatchSnapshot()
             })
         })
     })
@@ -548,12 +528,12 @@ describe('statusPageManager', () => {
             'should throw an error if data is `%s`',
             (data) => {
                 expect(() => {
-                    statusPageManager.processScheduledMaintenances(data as any)
+                    statusPageManager.processScheduledMaintenances(data)
                 }).toThrow()
             }
         )
 
-        it.each(Object.values(MaintenanceStatus))(
+        it.each(Object.values(MAINTENANCE_STATUSES))(
             'should dispatch notify or not according to %s status',
             (status) => {
                 statusPageManager.processScheduledMaintenances({
@@ -582,14 +562,12 @@ describe('statusPageManager', () => {
                             ],
                         },
                     ],
-                } as any)
+                })
                 expect(removeNotification).toHaveBeenCalledTimes(1)
                 expect(removeNotification).toBeCalledWith(
                     MAINTENANCE_NOTIFICATION_ID
                 )
-                expect(
-                    (notify as jest.MockedFunction<typeof notify>).mock.calls
-                ).toMatchSnapshot()
+                expect(notify.mock.calls).toMatchSnapshot()
             }
         )
 
@@ -622,7 +600,7 @@ describe('statusPageManager', () => {
                             ],
                         },
                     ],
-                } as any)
+                })
                 expect(notify).not.toHaveBeenCalled()
             })
 
@@ -654,10 +632,8 @@ describe('statusPageManager', () => {
                             ],
                         },
                     ],
-                } as any)
-                expect(
-                    (notify as jest.MockedFunction<typeof notify>).mock.calls
-                ).toMatchSnapshot()
+                })
+                expect(notify.mock.calls).toMatchSnapshot()
             })
 
             it('should notify if matches the second cluster', () => {
@@ -693,10 +669,8 @@ describe('statusPageManager', () => {
                             ],
                         },
                     ],
-                } as any)
-                expect(
-                    (notify as jest.MockedFunction<typeof notify>).mock.calls
-                ).toMatchSnapshot()
+                })
+                expect(notify.mock.calls).toMatchSnapshot()
             })
         })
     })

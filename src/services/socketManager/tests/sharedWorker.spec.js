@@ -1,5 +1,6 @@
 import io from 'socket.io-client'
 
+import {BROADCAST_CHANNEL_EVENTS, MESSAGE_PORT_EVENTS} from '../constants'
 import {
     DISCONNECTED_NOTIFICATION_DELAY,
     HEALTH_CHECK_INTERVAL,
@@ -8,7 +9,6 @@ import {
     SOCKET_EVENTS,
     WebsocketSharedWorker,
 } from '../sharedWorker'
-import {BroadcastChannelEvent, MessagePortEvent} from '../types'
 
 jest.mock('socket.io-client', () => {
     return () => {
@@ -28,7 +28,7 @@ class MockMessagePort {
 }
 
 describe('WebsocketSharedWorker', () => {
-    let worker: WebsocketSharedWorker
+    let worker
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -55,10 +55,7 @@ describe('WebsocketSharedWorker', () => {
                 const tab1 = new MockMessagePort()
                 const tab2 = new MockMessagePort()
 
-                worker.connectedTabs = {
-                    clientId1: tab1,
-                    clientId2: tab2,
-                } as any
+                worker.connectedTabs = {clientId1: tab1, clientId2: tab2}
                 expect(worker.pendingTabs).toEqual({})
 
                 worker.sendHealthCheck()
@@ -69,10 +66,10 @@ describe('WebsocketSharedWorker', () => {
                     HEALTH_CHECK_TIMEOUT * 1000
                 )
                 expect(tab1.postMessage).toHaveBeenCalledWith({
-                    type: MessagePortEvent.HealthCheck,
+                    type: MESSAGE_PORT_EVENTS.HEALTH_CHECK,
                 })
                 expect(tab2.postMessage).toHaveBeenCalledWith({
-                    type: MessagePortEvent.HealthCheck,
+                    type: MESSAGE_PORT_EVENTS.HEALTH_CHECK,
                 })
             }
         )
@@ -83,7 +80,7 @@ describe('WebsocketSharedWorker', () => {
             const tab1 = new MockMessagePort()
             const tab2 = new MockMessagePort()
 
-            worker.pendingTabs = {clientId1: tab1, clientId2: tab2} as any
+            worker.pendingTabs = {clientId1: tab1, clientId2: tab2}
 
             worker.onHealthCheck('clientId1')
 
@@ -100,12 +97,12 @@ describe('WebsocketSharedWorker', () => {
                 const tab2 = new MockMessagePort()
                 const tab3 = new MockMessagePort()
 
-                worker.pendingTabs = {clientId1: tab1, clientId2: tab2} as any
+                worker.pendingTabs = {clientId1: tab1, clientId2: tab2}
                 worker.connectedTabs = {
                     clientId1: tab1,
                     clientId2: tab2,
                     clientId3: tab3,
-                } as any
+                }
                 worker.socket = io()
 
                 worker.disconnectTabs()
@@ -179,7 +176,7 @@ describe('WebsocketSharedWorker', () => {
             worker._onSocketJson(message)
 
             expect(worker.broadcastChannel.postMessage).toHaveBeenCalledWith({
-                type: BroadcastChannelEvent.ServerMessage,
+                type: BROADCAST_CHANNEL_EVENTS.SERVER_MESSAGE,
                 json: message,
             })
         })
@@ -190,11 +187,8 @@ describe('WebsocketSharedWorker', () => {
             'should post a `WS_CONNECTED` message to the tab, reset the `incrementalReconnectBackoff` and clear all ' +
                 'tasks',
             () => {
-                worker.incrementalReconnectTask = window.setTimeout(
-                    jest.fn(),
-                    1000
-                )
-                worker.sendDisconnectedNotificationTask = window.setTimeout(
+                worker.incrementalReconnectTask = setTimeout(jest.fn(), 1000)
+                worker.sendDisconnectedNotificationTask = setTimeout(
                     jest.fn(),
                     1000
                 )
@@ -236,7 +230,7 @@ describe('WebsocketSharedWorker', () => {
 
     describe('onClientConnected()', () => {
         it('should setup a socket for the worker because it has no socket', () => {
-            const messagePort = (new MockMessagePort() as unknown) as BroadcastChannel
+            const messagePort = new MockMessagePort()
             const message = {clientId: 'my_client_id', wsUrl: 'my_ws_url'}
 
             expect(worker.wsUrl).toEqual(null)
@@ -248,16 +242,16 @@ describe('WebsocketSharedWorker', () => {
             expect(worker.wsUrl).toEqual(message.wsUrl)
             expect(worker.socket).not.toEqual(null)
 
-            expect(worker.socket!.on).toHaveBeenCalledTimes(3)
-            expect(worker.socket!.on).toHaveBeenCalledWith(
+            expect(worker.socket.on).toHaveBeenCalledTimes(3)
+            expect(worker.socket.on).toHaveBeenCalledWith(
                 'json',
                 worker._onSocketJson
             )
-            expect(worker.socket!.on).toHaveBeenCalledWith(
+            expect(worker.socket.on).toHaveBeenCalledWith(
                 'connect',
                 worker._onSocketConnect
             )
-            expect(worker.socket!.on).toHaveBeenCalledWith(
+            expect(worker.socket.on).toHaveBeenCalledWith(
                 'disconnect',
                 worker._onSocketDisconnect
             )
@@ -265,14 +259,14 @@ describe('WebsocketSharedWorker', () => {
             expect(worker.connectedTabs).toEqual({
                 [message.clientId]: messagePort,
             })
-            expect(worker.socket!.send).toHaveBeenCalledWith({
+            expect(worker.socket.send).toHaveBeenCalledWith({
                 event: SOCKET_EVENTS.CLIENT_CONNECTED,
                 clientId: message.clientId,
             })
         })
 
         it('should send a `WS_CONNECTED` event on the message port because the worker has a socket', () => {
-            const messagePort = (new MockMessagePort() as unknown) as BroadcastChannel
+            const messagePort = new MockMessagePort()
             const message = {clientId: 'my_client_id', wsUrl: 'my_ws_url'}
 
             worker.socket = io()
@@ -282,7 +276,7 @@ describe('WebsocketSharedWorker', () => {
             worker.onClientConnected(message, messagePort)
 
             expect(messagePort.postMessage).toHaveBeenCalledWith({
-                type: BroadcastChannelEvent.WsConnected,
+                type: BROADCAST_CHANNEL_EVENTS.WS_CONNECTED,
             })
             expect(worker.connectedTabs).toEqual({
                 [message.clientId]: messagePort,
@@ -295,13 +289,13 @@ describe('WebsocketSharedWorker', () => {
     })
 
     describe('onPortMessage()', () => {
-        const messagePort = (new MockMessagePort() as unknown) as BroadcastChannel
+        const messagePort = new MockMessagePort()
 
         it('should call `onClientConnected` because the type of the message passed is `CLIENT_CONNECTED`', () => {
             const handler = worker.onPortMessage(messagePort)
             const onClientConnectedSpy = jest.spyOn(worker, 'onClientConnected')
 
-            const message = {data: {type: MessagePortEvent.ClientConnected}}
+            const message = {data: {type: MESSAGE_PORT_EVENTS.CLIENT_CONNECTED}}
 
             handler(message)
 
@@ -317,7 +311,7 @@ describe('WebsocketSharedWorker', () => {
 
             const message = {
                 data: {
-                    type: MessagePortEvent.HealthCheck,
+                    type: MESSAGE_PORT_EVENTS.HEALTH_CHECK,
                     data: {foo: 'bar'},
                 },
             }
@@ -337,7 +331,7 @@ describe('WebsocketSharedWorker', () => {
                     data: {type: 'another type', data: {foo: 'bar'}},
                 }
 
-                handler(message as any)
+                handler(message)
 
                 expect(worker.socket.send).toHaveBeenCalledWith(message.data)
             }
@@ -346,7 +340,7 @@ describe('WebsocketSharedWorker', () => {
 
     describe('onPortConnect()', () => {
         it('should set the `onmessage` handler on the port passed in the passed event', () => {
-            const messagePort = (new MockMessagePort() as unknown) as BroadcastChannel
+            const messagePort = new MockMessagePort()
             expect(messagePort.onmessage).toEqual(null)
 
             worker.onPortConnect({ports: [messagePort]})

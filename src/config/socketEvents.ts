@@ -27,11 +27,9 @@ import {SocketManager} from '../services/socketManager/socketManager'
 import {
     AccountUpdatedEvent,
     ActionExecutedEvent,
-    BroadcastChannelEvent,
     CustomerUpdatedEvent,
     EmailIntegrationVerifiedEvent,
     FacebookIntegrationsReconnected,
-    MessagePortEvent,
     OutboundPhoneCallInitiated,
     ServerMessage,
     SocketEventType,
@@ -81,9 +79,6 @@ export type SendData = {
     event?: SocketEventType
     dataType?: string
     data?: any
-    type?: MessagePortEvent | BroadcastChannelEvent
-    wsUrl?: string
-    json?: Record<string, unknown>
 }
 
 type SendEvent = {

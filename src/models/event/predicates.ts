@@ -1,14 +1,14 @@
 import {List, Map} from 'immutable'
 
-import {RuleType} from '../rule/types'
+import {RULE_EXECUTED} from '../../constants/event'
 
-import {AuditLogEventType} from './types'
+import {SYSTEM_RULE_TYPE} from './constants'
 
 export const isSystemRuleEvent = (event: Map<any, any>): boolean =>
-    event.getIn(['data', 'type']) === RuleType.System
+    event.getIn(['data', 'type']) === SYSTEM_RULE_TYPE
 
 export const isRuleExecutedType = (event: Map<any, any>): boolean =>
-    event.get('type') === AuditLogEventType.RuleExecuted
+    event.get('type') === RULE_EXECUTED
 
 export const isViaRuleEvent = (
     event: Map<any, any>,

@@ -1,6 +1,6 @@
 import {fromJS, Map} from 'immutable'
 
-import {RuleType} from '../../rule/types'
+import {SYSTEM_RULE_TYPE} from '../constants'
 import {
     isRuleExecutedType,
     isSystemRuleEvent,
@@ -14,7 +14,7 @@ describe('Event predicates', () => {
         it('should return true', () => {
             const event = fromJS({
                 data: {
-                    type: RuleType.System,
+                    type: SYSTEM_RULE_TYPE,
                 },
             })
 
