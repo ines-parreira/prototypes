@@ -211,7 +211,7 @@ export const ConnectToShopSection = ({
                             color="primary"
                             disabled={selectedShop === NO_SELECTED_SHOP}
                         >
-                            Connect &amp; Install
+                            Connect
                         </Button>
                     </div>
                 }

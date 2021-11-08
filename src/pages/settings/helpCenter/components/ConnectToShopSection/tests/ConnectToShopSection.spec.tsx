@@ -83,7 +83,11 @@ describe('<ConnectToShopSection />', () => {
     it('renders in disabled state while fetching data', async () => {
         const onUpdate = jest.fn()
 
-        const {container, getByText} = render(
+        const {
+            container,
+            getAllByText,
+            getByText,
+        } = render(
             <ConnectToShopSection
                 helpCenter={getHelpCentersResponseFixture.data[0]}
                 onUpdate={onUpdate}
@@ -94,7 +98,7 @@ describe('<ConnectToShopSection />', () => {
         expect(container).toMatchSnapshot()
 
         act(() => {
-            fireEvent.click(getByText('Connect'))
+            fireEvent.click(getAllByText('Connect')[0])
         })
 
         await waitFor(() => getByText('Select store'))
@@ -112,7 +116,7 @@ describe('<ConnectToShopSection />', () => {
         })
 
         act(() => {
-            fireEvent.click(getByText('Connect & Install'))
+            fireEvent.click(getAllByText('Connect')[1])
         })
 
         expect(onUpdate).toBeCalledWith({shop_name: 'meow-shop'})
