@@ -25,16 +25,18 @@ module.exports = () => {
         optimization,
         devtool: 'source-map',
         entry: {
-            sharedWorker: `${srcDir}/js/services/socketManager/sharedWorker.js`,
+            sharedWorker: `${srcDir}/js/services/socketManager/sharedWorker.ts`,
         },
         output: {
             path: buildDir,
-            filename: __PRODUCTION__ ? `helpdesk.shared-worker.${HASH}.js` : 'helpdesk.shared-worker.js',
+            filename: __PRODUCTION__
+                ? `helpdesk.shared-worker.${HASH}.js`
+                : 'helpdesk.shared-worker.js',
         },
         module: {
             rules: [
                 {
-                    test: /\.js$/i,
+                    test: /\.(js|tsx?)$/i,
                     loader: 'babel-loader?cacheDirectory',
                 },
             ],
@@ -47,5 +49,8 @@ module.exports = () => {
                 Tether: 'tether',
             }),
         ],
+        resolve: {
+            extensions: ['.ts', '.tsx', '.js'],
+        },
     }
 }

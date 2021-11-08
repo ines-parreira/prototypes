@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import * as widgetsFixtures from '../../../../../../../../../fixtures/widgets'
+import * as widgetsFixtures from '../../../../../../../../../fixtures/widgets.ts'
 import * as ticketFixtures from '../../../../../../../../../fixtures/ticket.ts'
 
 import ListInfobarWidget from '../ListInfobarWidget'

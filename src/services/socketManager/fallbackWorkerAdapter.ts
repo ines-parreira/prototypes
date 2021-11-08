@@ -6,29 +6,32 @@
  * Though, some browsers (like Safari) do not support `SharedWorkers` and/or `BroadcastChannels`, so we've had to
  * create this adapter that behaves like the `SharedWorker` would, except it runs in the tab directly.
  */
-import io from 'socket.io-client'
+import io, {Socket} from 'socket.io-client'
+import _noop from 'lodash/noop'
 
-import {BROADCAST_CHANNEL_EVENTS} from './constants'
+import {SendData} from '../../config/socketEvents'
+
+import {BroadcastChannelEvent} from './types'
 
 export const MAX_INCREMENTAL_RECONNECT_BACKOFF = 30
 export const DISCONNECTED_NOTIFICATION_DELAY = 10
 
 export class FallbackWorker {
-    socket = null
+    socket: Socket | null = null
 
     incrementalReconnectBackoff = 1
-    incrementalReconnectTask = null
+    incrementalReconnectTask: number | null = null
 
-    sendDisconnectedNotificationTask = null
+    sendDisconnectedNotificationTask: number | null = null
 
     incrementalReconnect = () => {
         // eslint-disable-next-line no-console
         console.log(`Reconnecting in ${this.incrementalReconnectBackoff}`)
 
-        this.incrementalReconnectTask = setTimeout(() => {
+        this.incrementalReconnectTask = window.setTimeout(() => {
             // eslint-disable-next-line no-console
             console.log('Reconnecting...')
-            this.socket.connect()
+            this.socket!.connect()
 
             this.incrementalReconnectBackoff = Math.min(
                 this.incrementalReconnectBackoff * 2,
@@ -39,9 +42,9 @@ export class FallbackWorker {
         }, this.incrementalReconnectBackoff * 1000)
     }
 
-    _onSocketJson = (wsMessage) => {
+    _onSocketJson = (wsMessage: Record<string, unknown>) => {
         fallbackWorkerAdapter.postMessage({
-            type: BROADCAST_CHANNEL_EVENTS.SERVER_MESSAGE,
+            type: BroadcastChannelEvent.ServerMessage,
             json: wsMessage,
         })
     }
@@ -50,16 +53,16 @@ export class FallbackWorker {
         // eslint-disable-next-line no-console
         console.log('WS connected!')
         fallbackBroadcastChannelAdapter.postMessage({
-            type: BROADCAST_CHANNEL_EVENTS.WS_CONNECTED,
+            type: BroadcastChannelEvent.WsConnected,
         })
 
         if (this.incrementalReconnectTask) {
             this.incrementalReconnectBackoff = 1
-            clearTimeout(this.incrementalReconnectTask)
+            window.clearTimeout(this.incrementalReconnectTask)
         }
 
         if (this.sendDisconnectedNotificationTask) {
-            clearTimeout(this.sendDisconnectedNotificationTask)
+            window.clearTimeout(this.sendDisconnectedNotificationTask)
         }
     }
 
@@ -67,10 +70,10 @@ export class FallbackWorker {
         // eslint-disable-next-line no-console
         console.log('WS disconnected!')
 
-        this.sendDisconnectedNotificationTask = setTimeout(
+        this.sendDisconnectedNotificationTask = window.setTimeout(
             () =>
                 fallbackBroadcastChannelAdapter.postMessage({
-                    type: BROADCAST_CHANNEL_EVENTS.WS_DISCONNECTED,
+                    type: BroadcastChannelEvent.WsDisconnected,
                 }),
             DISCONNECTED_NOTIFICATION_DELAY * 1000
         )
@@ -89,12 +92,12 @@ export class FallbackWorker {
             this.socket.on('disconnect', this._onSocketDisconnect)
         } else {
             fallbackWorkerAdapter.postMessage({
-                type: BROADCAST_CHANNEL_EVENTS.WS_CONNECTED,
+                type: BroadcastChannelEvent.WsConnected,
             })
         }
     }
 
-    onMessage = (message) => {
+    onMessage = (message: SendData) => {
         if (this.socket) {
             this.socket.send(message)
         }
@@ -106,18 +109,18 @@ const fallbackWorker = new FallbackWorker()
 export const fallbackWorkerAdapter = {
     port: {
         start: () => fallbackWorker.onConnect(),
-        postMessage: (message) => fallbackWorker.onMessage(message),
-        onmessage: () => {},
+        postMessage: (message: SendData) => fallbackWorker.onMessage(message),
+        onmessage: _noop,
     },
-    postMessage: (message) =>
+    postMessage: (message: SendData) =>
         fallbackWorkerAdapter.port.onmessage({data: message}),
 }
 
 export const fallbackBroadcastChannelAdapter = {
-    addEventListener: (_, handler) => {
+    addEventListener: (_: any, handler: () => void) => {
         fallbackBroadcastChannelAdapter.onmessage = handler
     },
-    onmessage: () => {},
-    postMessage: (message) =>
+    onmessage: _noop,
+    postMessage: (message: SendData) =>
         fallbackBroadcastChannelAdapter.onmessage({data: message}),
 }

@@ -2,10 +2,8 @@ import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {
-    SYSTEM_RULE_TYPE,
-    TAGS_ADDED_KEY,
-} from '../../../../../models/event/constants'
+import {RuleType} from '../../../../../models/rule/types'
+import {TAGS_ADDED_KEY} from '../../../../../models/event/constants'
 import {
     AuditLogEventType,
     AuditLogEventObjectType,
@@ -284,7 +282,7 @@ describe('<AuditLogEvent/>', () => {
 
             it('when the executed rule is a system rule', () => {
                 const event = getEvent(AuditLogEventType.RuleExecuted, {
-                    type: SYSTEM_RULE_TYPE,
+                    type: RuleType.System,
                 })
 
                 const component = shallow(

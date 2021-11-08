@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 
 import userActivityManager from '../userActivityManager'
-import socketManager from '../socketManager'
+import socketManager from '../socketManager/socketManager.ts'
 import * as socketConstants from '../../config/socketConstants.ts'
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

@@ -3,7 +3,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS, List, Map} from 'immutable'
 
-import * as widgetsFixtures from '../../../../../../../../../fixtures/widgets.js'
+import * as widgetsFixtures from '../../../../../../../../../fixtures/widgets'
 import WidgetCustomRedirectionLinks from '../WidgetCustomRedirectionLinks'
 
 describe('<WidgetCustomRedirectionLinks/>', () => {

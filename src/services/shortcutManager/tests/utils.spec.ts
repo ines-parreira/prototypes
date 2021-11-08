@@ -1,8 +1,8 @@
-import * as utils from '../utils.ts'
+import * as utils from '../utils'
 
 describe('shortcutManager utils', () => {
     describe('closest', () => {
-        let fragment
+        let fragment: HTMLDivElement
 
         beforeEach(() => {
             fragment = document.createElement('div')
@@ -12,13 +12,13 @@ describe('shortcutManager utils', () => {
 
         it('match parent', () => {
             expect(
-                utils.closest(fragment.querySelector('.pepperoni'), '.pizza')
+                utils.closest(fragment.querySelector('.pepperoni')!, '.pizza')
             ).toBe(fragment.querySelector('.pizza'))
         })
 
         it('not match anything', () => {
             expect(
-                utils.closest(fragment.querySelector('.pepperoni'), '.test')
+                utils.closest(fragment.querySelector('.pepperoni')!, '.test')
             ).toBe(null)
         })
     })
@@ -34,7 +34,7 @@ describe('shortcutManager utils', () => {
     describe('is button', () => {
         const input = document.createElement('input')
         const button = document.createElement('button')
-        let submit = document.createElement('input')
+        const submit = document.createElement('input')
         submit.type = 'submit'
 
         it('input', () => {

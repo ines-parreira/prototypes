@@ -1,24 +1,32 @@
-export const shopifyWidget = {
+import {IntegrationType} from '../models/integration/types'
+import {
+    Widget,
+    WidgetContextType,
+    WidgetTemplateType,
+    WidgetTemplateWidgetType,
+} from '../state/widgets/types'
+
+export const shopifyWidget: Widget = {
     deleted_datetime: null,
     integration_id: null,
     deactivated_datetime: null,
     uri: '/api/widgets/2/',
     order: 0,
-    context: 'ticket',
+    context: WidgetContextType.Ticket,
     created_datetime: '2017-08-17T22:46:50.922473+00:00',
     template: {
-        type: 'wrapper',
+        type: WidgetTemplateType.Wrapper,
         widgets: [
             {
                 path: 'customer',
                 widgets: [
                     {
                         path: 'created_at',
-                        type: 'date',
+                        type: WidgetTemplateWidgetType.Date,
                         title: 'Created at',
                     },
                 ],
-                type: 'card',
+                type: WidgetTemplateWidgetType.Card,
                 title: '{first_name} {last_name}',
             },
             {
@@ -27,18 +35,18 @@ export const shopifyWidget = {
                     limit: '2',
                     orderBy: '',
                 },
-                type: 'list',
+                type: WidgetTemplateWidgetType.List,
                 widgets: [
                     {
                         widgets: [
                             {
                                 path: 'id',
-                                type: 'text',
+                                type: WidgetTemplateWidgetType.Text,
                                 title: 'Id',
                             },
                             {
                                 path: 'created_at',
-                                type: 'date',
+                                type: WidgetTemplateWidgetType.Date,
                                 title: 'Created at',
                             },
                             {
@@ -47,25 +55,27 @@ export const shopifyWidget = {
                                     limit: '',
                                     orderBy: '',
                                 },
-                                type: 'list',
+                                type: WidgetTemplateWidgetType.List,
                                 widgets: [
                                     {
                                         widgets: [
                                             {
                                                 path: 'tracking_url',
-                                                type: 'url',
+                                                type:
+                                                    WidgetTemplateWidgetType.Url,
                                                 title: 'Tracking url',
                                             },
                                             {
                                                 path: 'tracking_number',
-                                                type: 'text',
+                                                type:
+                                                    WidgetTemplateWidgetType.Text,
                                                 title: 'Tracking number',
                                             },
                                         ],
                                         meta: {
                                             link: '{tracking_url}',
                                         },
-                                        type: 'card',
+                                        type: WidgetTemplateWidgetType.Card,
                                         title: ':shipment_status: Shipment',
                                     },
                                 ],
@@ -76,13 +86,14 @@ export const shopifyWidget = {
                                     limit: '',
                                     orderBy: '',
                                 },
-                                type: 'list',
+                                type: WidgetTemplateWidgetType.List,
                                 widgets: [
                                     {
                                         widgets: [
                                             {
                                                 path: 'processed_at',
-                                                type: 'date',
+                                                type:
+                                                    WidgetTemplateWidgetType.Date,
                                                 title: 'Processed at',
                                             },
                                             {
@@ -91,14 +102,16 @@ export const shopifyWidget = {
                                                     limit: '',
                                                     orderBy: '',
                                                 },
-                                                type: 'list',
+                                                type:
+                                                    WidgetTemplateWidgetType.List,
                                                 widgets: [
                                                     {
                                                         widgets: [
                                                             {
                                                                 path:
                                                                     'subtotal',
-                                                                type: 'text',
+                                                                type:
+                                                                    WidgetTemplateWidgetType.Text,
                                                                 title:
                                                                     'Subtotal',
                                                             },
@@ -106,7 +119,8 @@ export const shopifyWidget = {
                                                         meta: {
                                                             link: '',
                                                         },
-                                                        type: 'card',
+                                                        type:
+                                                            WidgetTemplateWidgetType.Card,
                                                         title:
                                                             '{quantity} × {line_item.name}',
                                                     },
@@ -116,7 +130,7 @@ export const shopifyWidget = {
                                         meta: {
                                             link: '',
                                         },
-                                        type: 'card',
+                                        type: WidgetTemplateWidgetType.Card,
                                         title: ':refund: Refund',
                                     },
                                 ],
@@ -126,39 +140,39 @@ export const shopifyWidget = {
                                 widgets: [
                                     {
                                         path: 'address1',
-                                        type: 'text',
+                                        type: WidgetTemplateWidgetType.Text,
                                         title: 'Address1',
                                     },
                                     {
                                         path: 'address2',
-                                        type: 'text',
+                                        type: WidgetTemplateWidgetType.Text,
                                         title: 'Address2',
                                     },
                                     {
                                         path: 'city',
-                                        type: 'text',
+                                        type: WidgetTemplateWidgetType.Text,
                                         title: 'City',
                                     },
                                     {
                                         path: 'country',
-                                        type: 'text',
+                                        type: WidgetTemplateWidgetType.Text,
                                         title: 'Country',
                                     },
                                     {
                                         path: 'province_code',
-                                        type: 'text',
+                                        type: WidgetTemplateWidgetType.Text,
                                         title: 'Province code',
                                     },
                                     {
                                         path: 'zip',
-                                        type: 'text',
+                                        type: WidgetTemplateWidgetType.Text,
                                         title: 'Zip',
                                     },
                                 ],
                                 meta: {
                                     link: '',
                                 },
-                                type: 'card',
+                                type: WidgetTemplateWidgetType.Card,
                                 title: ':shipping_address: Shipping address',
                             },
                             {
@@ -167,25 +181,27 @@ export const shopifyWidget = {
                                     limit: '',
                                     orderBy: '',
                                 },
-                                type: 'list',
+                                type: WidgetTemplateWidgetType.List,
                                 widgets: [
                                     {
                                         widgets: [
                                             {
                                                 path: 'price',
-                                                type: 'text',
+                                                type:
+                                                    WidgetTemplateWidgetType.Text,
                                                 title: 'Price',
                                             },
                                             {
                                                 path: 'sku',
-                                                type: 'text',
+                                                type:
+                                                    WidgetTemplateWidgetType.Text,
                                                 title: 'Sku',
                                             },
                                         ],
                                         meta: {
                                             link: '',
                                         },
-                                        type: 'card',
+                                        type: WidgetTemplateWidgetType.Card,
                                         title: ':product: {quantity} × {name}',
                                     },
                                 ],
@@ -195,14 +211,14 @@ export const shopifyWidget = {
                             displayCard: true,
                             link: '',
                         },
-                        type: 'card',
+                        type: WidgetTemplateWidgetType.Card,
                         title: 'Order {name}',
                     },
                 ],
             },
         ],
     },
-    type: 'shopify',
+    type: IntegrationType.Shopify,
     id: 2,
     updated_datetime: '2017-08-17T23:33:46.991886+00:00',
 }

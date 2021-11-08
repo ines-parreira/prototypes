@@ -23,13 +23,12 @@
  * Inspired by https://ayushgp.github.io/scaling-websockets-using-sharedworkers/
  */
 
-import io from 'socket.io-client'
+import io, {Socket} from 'socket.io-client'
 
-import {
-    BROADCAST_CHANNEL_EVENTS,
-    BROADCAST_CHANNEL_NAME,
-    MESSAGE_PORT_EVENTS,
-} from './constants'
+import {SendData} from '../../config/socketEvents'
+
+import {BROADCAST_CHANNEL_NAME} from './constants'
+import {BroadcastChannelEvent, MessagePortEvent} from './types'
 
 export const SOCKET_EVENTS = Object.freeze({
     CLIENT_CONNECTED: 'client-connected',
@@ -41,18 +40,18 @@ export const HEALTH_CHECK_TIMEOUT = 0.5
 export const HEALTH_CHECK_INTERVAL = 1
 
 export class WebsocketSharedWorker {
-    wsUrl = null
-    socket = null
+    wsUrl: string | null = null
+    socket: Socket | null = null
 
     broadcastChannel = new self.BroadcastChannel(BROADCAST_CHANNEL_NAME)
 
     incrementalReconnectBackoff = 1
-    incrementalReconnectTask = null
+    incrementalReconnectTask: number | null = null
 
-    sendDisconnectedNotificationTask = null
+    sendDisconnectedNotificationTask: number | null = null
 
-    connectedTabs = {}
-    pendingTabs = {}
+    connectedTabs: Record<string, BroadcastChannel> = {}
+    pendingTabs: Record<string, BroadcastChannel> = {}
 
     startHealthCheck() {
         setInterval(this.sendHealthCheck, HEALTH_CHECK_INTERVAL * 1000)
@@ -63,20 +62,20 @@ export class WebsocketSharedWorker {
 
         Object.keys(this.connectedTabs).forEach((clientId) => {
             this.connectedTabs[clientId].postMessage({
-                type: MESSAGE_PORT_EVENTS.HEALTH_CHECK,
+                type: MessagePortEvent.HealthCheck,
             })
         })
 
-        setTimeout(this.disconnectTabs, HEALTH_CHECK_TIMEOUT * 1000)
+        window.setTimeout(this.disconnectTabs, HEALTH_CHECK_TIMEOUT * 1000)
     }
 
-    onHealthCheck = (clientId) => {
+    onHealthCheck = (clientId: string) => {
         delete this.pendingTabs[clientId]
     }
 
     disconnectTabs = () => {
         Object.keys(this.pendingTabs).forEach((clientId) => {
-            this.socket.send({
+            this.socket!.send({
                 event: SOCKET_EVENTS.CLIENT_DISCONNECTED,
                 clientId,
             })
@@ -90,10 +89,10 @@ export class WebsocketSharedWorker {
         // eslint-disable-next-line no-console
         console.log(`Reconnecting in ${this.incrementalReconnectBackoff}`)
 
-        this.incrementalReconnectTask = setTimeout(() => {
+        this.incrementalReconnectTask = window.setTimeout(() => {
             // eslint-disable-next-line no-console
             console.log('Reconnecting...')
-            this.socket.connect()
+            this.socket!.connect()
 
             this.incrementalReconnectBackoff = Math.min(
                 this.incrementalReconnectBackoff * 2,
@@ -104,9 +103,9 @@ export class WebsocketSharedWorker {
         }, this.incrementalReconnectBackoff * 1000)
     }
 
-    _onSocketJson = (wsMessage) => {
+    _onSocketJson = (wsMessage: Record<string, unknown>) => {
         this.broadcastChannel.postMessage({
-            type: BROADCAST_CHANNEL_EVENTS.SERVER_MESSAGE,
+            type: BroadcastChannelEvent.ServerMessage,
             json: wsMessage,
         })
     }
@@ -115,16 +114,16 @@ export class WebsocketSharedWorker {
         // eslint-disable-next-line no-console
         console.log('WS connected!')
         this.broadcastChannel.postMessage({
-            type: BROADCAST_CHANNEL_EVENTS.WS_CONNECTED,
+            type: BroadcastChannelEvent.WsConnected,
         })
 
         if (this.incrementalReconnectTask) {
             this.incrementalReconnectBackoff = 1
-            clearTimeout(this.incrementalReconnectTask)
+            window.clearTimeout(this.incrementalReconnectTask)
         }
 
         if (this.sendDisconnectedNotificationTask) {
-            clearTimeout(this.sendDisconnectedNotificationTask)
+            window.clearTimeout(this.sendDisconnectedNotificationTask)
         }
     }
 
@@ -132,10 +131,10 @@ export class WebsocketSharedWorker {
         // eslint-disable-next-line no-console
         console.log('WS disconnected!')
 
-        this.sendDisconnectedNotificationTask = setTimeout(
+        this.sendDisconnectedNotificationTask = window.setTimeout(
             () =>
                 this.broadcastChannel.postMessage({
-                    type: BROADCAST_CHANNEL_EVENTS.WS_DISCONNECTED,
+                    type: BroadcastChannelEvent.WsDisconnected,
                 }),
             DISCONNECTED_NOTIFICATION_DELAY * 1000
         )
@@ -152,14 +151,10 @@ export class WebsocketSharedWorker {
      * - if there is already an active connection with the SocketIO server, we send a `WS_CONNECTED` event to the
      * newly connected tab, so that it knows that it's now correctly connected to the server, and so that it doesn't
      * display the "You're not connected" bar notification at the top of the window.
-     *
-     *
-     * @param message: the message sent by the newly connected tab
-     * @param messagePort: the `MessagePort` associated with the newly connected tab
      */
-    onClientConnected = (message, messagePort) => {
+    onClientConnected = (message: SendData, messagePort: BroadcastChannel) => {
         if (!this.socket) {
-            this.wsUrl = message.wsUrl
+            this.wsUrl = message.wsUrl!
             this.socket = io(this.wsUrl, {transports: ['websocket']})
 
             this.socket.on('json', this._onSocketJson)
@@ -167,11 +162,11 @@ export class WebsocketSharedWorker {
             this.socket.on('disconnect', this._onSocketDisconnect)
         } else {
             messagePort.postMessage({
-                type: BROADCAST_CHANNEL_EVENTS.WS_CONNECTED,
+                type: BroadcastChannelEvent.WsConnected,
             })
         }
 
-        this.connectedTabs[message.clientId] = messagePort
+        this.connectedTabs[message.clientId!] = messagePort
 
         this.socket.send({
             event: SOCKET_EVENTS.CLIENT_CONNECTED,
@@ -181,23 +176,22 @@ export class WebsocketSharedWorker {
 
     /**
      * Generate a handler method to call when getting a new message on a specific `MessagePort`.
-     *
-     * @param messagePort: the `MessagePort` for which we want to generate a message handler
-     * @returns {Function}: the message handler generated
      */
-    onPortMessage = (messagePort) => (messageEvent) => {
+    onPortMessage = (messagePort: BroadcastChannel) => (messageEvent: {
+        data: SendData
+    }) => {
         const message = messageEvent.data
 
-        if (message.type === MESSAGE_PORT_EVENTS.CLIENT_CONNECTED) {
+        if (message.type === MessagePortEvent.ClientConnected) {
             this.onClientConnected(message, messagePort)
-        } else if (message.type === MESSAGE_PORT_EVENTS.HEALTH_CHECK) {
+        } else if (message.type === MessagePortEvent.HealthCheck) {
             this.onHealthCheck(message.data)
         } else if (this.socket) {
             this.socket.send(message)
         }
     }
 
-    onPortConnect = (event) => {
+    onPortConnect = (event: {ports: [BroadcastChannel]}) => {
         event.ports[0].onmessage = this.onPortMessage(event.ports[0])
     }
 }

@@ -11,11 +11,11 @@ import {devLog} from '../../utils'
 import {NotificationStatus} from '../../state/notifications/types'
 import {StoreDispatch} from '../../state/types'
 
-import {BROADCAST_CHANNEL_NAME} from './constants.js'
+import {BROADCAST_CHANNEL_NAME} from './constants'
 import {
     fallbackBroadcastChannelAdapter,
     fallbackWorkerAdapter,
-} from './fallbackWorkerAdapter.js'
+} from './fallbackWorkerAdapter'
 import {
     BroadcastChannelEvent,
     ServerMessage,

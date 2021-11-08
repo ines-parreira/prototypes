@@ -1,7 +1,7 @@
 import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
 
-import {shopifyWidget} from '../../../../fixtures/widgets.js'
+import {shopifyWidget} from '../../../../fixtures/widgets'
 import {renderWithRouter} from '../../../../utils/testing'
 import {CustomerSourceContainer} from '../CustomerSourceContainer'
 import SourceWrapper from '../../../common/components/sourceWidgets/SourceWrapper'

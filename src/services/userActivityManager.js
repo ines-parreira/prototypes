@@ -4,7 +4,7 @@ import {store as reduxStore} from '../init.ts'
 import {toggleActiveStatus} from '../state/currentUser/actions.ts'
 import * as socketConstants from '../config/socketConstants.ts'
 
-import socketManager from './socketManager'
+import socketManager from './socketManager/socketManager.ts'
 
 class UserActivityManager {
     unavailabilityTimeout = 600000 // 10 minutes

@@ -1,7 +1,7 @@
-import * as utils from '../utils.ts'
+import * as utils from '../utils'
 
 describe('Services common utils', () => {
-    function DOMExceptionMock(code, name, message) {
+    function DOMExceptionMock(code?: number, name?: string, message?: string) {
         const codeToNames = {
             1: 'INDEX_SIZE_ERR',
             3: 'HIERARCHY_REQUEST_ERR',
@@ -31,19 +31,18 @@ describe('Services common utils', () => {
         } catch (e) {
             newException = Object.create(Object.getPrototypeOf(e))
         }
-        let nameFromCode = codeToNames[code]
 
         Object.defineProperty(newException, 'name', {
-            value: name || nameFromCode,
+            value: name || codeToNames[code as keyof typeof codeToNames],
         })
         Object.defineProperty(newException, 'code', {value: code})
         Object.defineProperty(newException, 'message', {value: message})
 
-        return newException
+        return newException as DOMException
     }
 
     describe('is editable', () => {
-        let input
+        let input: HTMLInputElement
         beforeEach(() => {
             input = document.createElement('input')
         })
@@ -104,6 +103,7 @@ describe('Services common utils', () => {
                     window.localStorage,
                     'setItem'
                 ).mockImplementationOnce(() => {
+                    // @ts-ignore ts(7009)
                     throw new DOMExceptionMock(code, name)
                 })
 
@@ -137,6 +137,7 @@ describe('Services common utils', () => {
             'should not throw the quota exceeded exception with code %i and name %s',
             (code, name) => {
                 const fn = () => {
+                    // @ts-ignore ts(7009)
                     throw new DOMExceptionMock(code, name)
                 }
 
