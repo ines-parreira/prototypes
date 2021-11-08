@@ -27,6 +27,8 @@ Object {
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,
@@ -71,6 +73,8 @@ Object {
       "data": undefined,
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,
@@ -178,6 +182,8 @@ Object {
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,

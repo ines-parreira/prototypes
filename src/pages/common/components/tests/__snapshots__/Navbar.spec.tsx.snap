@@ -245,7 +245,7 @@ exports[`<Navbar /> should render the navbar 1`] = `
       </button>
       <a
         class="dropdown-item"
-        href="/logout?csrf-token=undefined"
+        href="/logout?csrf-token=abcd"
         role="menuitem"
         tabindex="0"
       >
@@ -506,7 +506,7 @@ exports[`<Navbar /> should render the opened panel 1`] = `
       </button>
       <a
         class="dropdown-item"
-        href="/logout?csrf-token=undefined"
+        href="/logout?csrf-token=abcd"
         role="menuitem"
         tabindex="0"
       >
@@ -766,7 +766,7 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
       </button>
       <a
         class="dropdown-item"
-        href="/logout?csrf-token=undefined"
+        href="/logout?csrf-token=abcd"
         role="menuitem"
         tabindex="0"
       >

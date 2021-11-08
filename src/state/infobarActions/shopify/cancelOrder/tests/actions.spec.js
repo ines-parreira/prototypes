@@ -2,7 +2,6 @@ import configureMockStore from 'redux-mock-store'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
-import axios from 'axios'
 
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../constants/integration.ts'
 import {
@@ -13,6 +12,7 @@ import {
 import {initialState} from '../reducers.ts'
 import * as actions from '../../cancelOrder/actions.ts'
 import {initRefundOrderLineItems} from '../../../../../business/shopify/order.ts'
+import client from '../../../../../models/api/resources.ts'
 
 jest.mock('lodash/debounce', () => (fn) => {
     fn.cancel = jest.fn()
@@ -28,7 +28,7 @@ describe('infobarActions.shopify.cancelOrder actions', () => {
     const order = fromJS(shopifyOrderFixture())
     const payload = fromJS(shopifyCancelOrderPayloadFixture())
     const orderId = order.get('id')
-    const mockServer = new MockAdapter(axios)
+    const mockServer = new MockAdapter(client)
     const refundWithoutShipping = fromJS(shopifySuggestedRefundFixture()).setIn(
         ['shipping', 'maximum_refundable'],
         '10.00'

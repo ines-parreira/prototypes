@@ -1,8 +1,8 @@
 import {List} from 'immutable'
-import axios from 'axios'
 import {updateNotification} from 'reapop'
 import {AnyAction} from 'redux'
 
+import client from '../../models/api/resources'
 import {notify} from '../notifications/actions'
 import {StoreDispatch} from '../types'
 import {buildJobMessage} from '../../utils/notificationUtils'
@@ -51,7 +51,7 @@ export function createJob(
             message: string
         }
 
-        return axios
+        return client
             .post('/api/jobs/', requestPayload)
             .then(() => {
                 notification.status = NotificationStatus.Success

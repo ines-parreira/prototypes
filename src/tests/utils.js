@@ -7,6 +7,7 @@ export const mockImageOnload = () => {
         srcSet = Object.getOwnPropertyDescriptor(global.Image.prototype, 'src')
         Object.defineProperty(global.Image.prototype, 'src', {
             set(value) {
+                // eslint-disable-next-line no-restricted-properties
                 axios
                     .get(value)
                     .then(() => this.onload())

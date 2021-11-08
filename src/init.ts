@@ -20,6 +20,7 @@ import {transformSystemMessagesToNotifications} from './utils'
 import {NotificationStatus} from './state/notifications/types'
 import {GorgiasInitialState, InitialRootState} from './types'
 import {initDatadogLogger} from './utils/datadog'
+import {initializeNewReleaseHandler} from './models/api/resources'
 import {Tag} from './models/tag/types'
 import {View} from './models/view/types'
 import {SMOOCH_INSIDE_INTEGRATION_TYPE} from './constants/integration'
@@ -106,6 +107,8 @@ if (eventsToTrack) {
 export const store = ((configureStore as unknown) as (
     initialState: Record<string, unknown>
 ) => Store)(toInitialStoreState(initialState))
+
+initializeNewReleaseHandler(store)
 
 // todo(@martin): delete this in 2021 if we redirect to .com automatically
 export const notifyDeprecatedTld = (url: string, reduxStore: Store) => {

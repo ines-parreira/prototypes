@@ -1,8 +1,8 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
+import client from '../../../../../../../models/api/resources.ts'
 import * as actions from '../actions.ts'
 
 describe('FacebookIntegrationInstagramAds actions', () => {
@@ -14,7 +14,7 @@ describe('FacebookIntegrationInstagramAds actions', () => {
 
     beforeEach(() => {
         store = mockStore()
-        mockServer = new MockAdapter(axios)
+        mockServer = new MockAdapter(client)
     })
 
     describe('fetchAds()', () => {

@@ -125,6 +125,11 @@ jest.mock('push.js', () => {
     return new mockPushJS()
 })
 
+// Mock axios implementation
+jest.mock('../models/api/resources.ts')
+window.CSRF_TOKEN = 'abcd'
+window.GORGIAS_RELEASE = '1'
+
 jest.mock('../utils/date.ts', () => ({
     ...jest.requireActual('../utils/date.ts'),
     getMoment: jest.fn(() => mockMoment('2018-10-01T00:00:00Z')),
@@ -219,5 +224,6 @@ if (!supportsOffsetParent()) {
 const windowLocation = JSON.stringify(window.location)
 delete window.location
 window.location = JSON.parse(windowLocation)
+window.location.reload = jest.fn()
 
 window.EMAIL_FORWARDING_DOMAIN = 'emails.gorgias.com'

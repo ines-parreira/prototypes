@@ -1,4 +1,3 @@
-import axios from 'axios'
 import _throttle from 'lodash/throttle'
 
 import browserNotification from '../../services/browserNotification'
@@ -6,13 +5,14 @@ import browserNotification from '../../services/browserNotification'
 import {RecentChatTicket} from '../../business/types/recentChats'
 import {Ticket} from '../../models/ticket/types'
 import {StoreDispatch} from '../types'
+import client from '../../models/api/resources'
 
 import * as constants from './constants.js'
 
 export const fetchChats = () => (
     dispatch: StoreDispatch
 ): Promise<ReturnType<StoreDispatch>> => {
-    return axios
+    return client
         .get<{tickets: Ticket[]}>('/api/activity/chats/', {timeout: 10000})
         .then((json) => json?.data)
         .then(

@@ -72,6 +72,39 @@ module.exports = {
                 '@typescript-eslint/no-explicit-any': ['off'],
                 '@typescript-eslint/explicit-module-boundary-types': ['off'],
                 '@typescript-eslint/no-non-null-assertion': ['off'],
+                'no-restricted-properties': [
+                    'error',
+                    {
+                        object: 'axios',
+                        property: 'get',
+                        message:
+                            'Please use client from models/api/resources instead',
+                    },
+                    {
+                        object: 'axios',
+                        property: 'post',
+                        message:
+                            'Please use client from models/api/resources instead',
+                    },
+                    {
+                        object: 'axios',
+                        property: 'put',
+                        message:
+                            'Please use client from models/api/resources instead',
+                    },
+                    {
+                        object: 'axios',
+                        property: 'delete',
+                        message:
+                            'Please use client from models/api/resources instead',
+                    },
+                    {
+                        object: 'axios',
+                        property: 'create',
+                        message:
+                            'Please use client from models/api/resources instead',
+                    },
+                ],
             },
             extends: [
                 ...commonConfigs,

@@ -1,5 +1,6 @@
-import axios, {AxiosError} from 'axios'
+import {AxiosError} from 'axios'
 
+import client from '../../models/api/resources'
 import {ApiListResponsePagination} from '../../models/api/types'
 import {StoreDispatch} from '../types'
 
@@ -11,7 +12,7 @@ import {HTTPIntegrationEvent} from './types'
  */
 export function fetchHTTPIntegrationEvents(integrationId: number) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return axios
+        return client
             .get<ApiListResponsePagination<HTTPIntegrationEvent[]>>(
                 `/api/integrations/${integrationId}/events/`
             )
@@ -42,7 +43,7 @@ export function fetchHTTPIntegrationEvent(
     eventId: number
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return axios
+        return client
             .get<HTTPIntegrationEvent>(
                 `/api/integrations/${integrationId}/events/${eventId}`
             )

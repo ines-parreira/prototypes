@@ -4,6 +4,7 @@ import axios, {CancelTokenSource} from 'axios'
 import {Map} from 'immutable'
 
 import {Plugin, PluginMethods} from '../types'
+import {createClient} from '../../../../../models/api/resources'
 
 import {
     createPrediction,
@@ -15,6 +16,8 @@ import {
     usePrediction,
 } from './utils'
 import decorators from './decorators'
+
+const client = createClient()
 
 let predictionKey: string | null = null
 let cachedSelection: SelectionState | null = null
@@ -72,7 +75,7 @@ const requestPrediction = (
     context: Map<any, any>,
     plugin: PluginMethods
 ) => {
-    return axios
+    return client
         .post<{prediction: string}>(
             window.PHRASE_PREDICTION_URL,
             {
@@ -138,7 +141,7 @@ const sendFeedback = async (
 
     currentPrediction.numberAcceptedCharacters += acceptedPredictionChars
 
-    await axios.post(window.PHRASE_FEEDBACK_URL, {
+    await client.post(window.PHRASE_FEEDBACK_URL, {
         query_text: currentPrediction.inputText,
         query_context: context.toJS(),
         result_prediction_text: currentPrediction.predictionText,

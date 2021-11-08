@@ -1,5 +1,4 @@
-import axios from 'axios'
-
+import client from '../../models/api/resources'
 import {ApiListResponsePagination} from '../../models/api/types'
 import {StoreDispatch} from '../types'
 
@@ -9,7 +8,7 @@ import {AuthItem} from './types'
 export const fetchCurrentAuths = () => (
     dispatch: StoreDispatch
 ): Promise<ReturnType<StoreDispatch>> => {
-    return axios
+    return client
         .get<ApiListResponsePagination<AuthItem[]>>('/api/users/0/auths/')
         .then((json) => json?.data?.data)
         .then(
@@ -32,7 +31,7 @@ export const fetchCurrentAuths = () => (
 export const resetApiKey = () => (
     dispatch: StoreDispatch
 ): Promise<ReturnType<StoreDispatch>> => {
-    return axios
+    return client
         .post<AuthItem>('/api/users/0/reset-key/')
         .then((json) => json?.data)
         .then(

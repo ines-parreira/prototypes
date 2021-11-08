@@ -22,13 +22,14 @@ import {
     shopifyInvoicePayloadFixture,
 } from '../../fixtures/shopify'
 import {ViewVisibility} from '../../constants/view'
+import client from '../../models/api/resources'
 
 describe('services', () => {
     describe('GorgiasApi', () => {
         let apiMock: MockAdapter
 
         beforeEach(() => {
-            apiMock = new MockAdapter(axios)
+            apiMock = new MockAdapter(client)
         })
 
         afterAll(() => {
@@ -49,7 +50,7 @@ describe('services', () => {
             })
 
             it('should cancel pending requests', async () => {
-                apiMock = new MockAdapter(axios, {delayResponse: 2000})
+                apiMock = new MockAdapter(client, {delayResponse: 2000})
                 apiMock.onAny().reply(200, {})
 
                 const gorgiasApi = new GorgiasApi({requestsCancellation: true})
@@ -70,7 +71,7 @@ describe('services', () => {
             it('should cancel pending requests and refresh token', async () => {
                 const expectedData = {foo: 'bar'}
 
-                apiMock = new MockAdapter(axios, {delayResponse: 500})
+                apiMock = new MockAdapter(client, {delayResponse: 500})
                 apiMock.onPut().reply(200, {}).onPut().reply(200, expectedData)
 
                 const gorgiasApi = new GorgiasApi({requestsCancellation: true})

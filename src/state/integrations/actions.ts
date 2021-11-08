@@ -1,9 +1,10 @@
-import axios, {AxiosError} from 'axios'
+import {AxiosError} from 'axios'
 import moment from 'moment'
 import {fromJS, Map} from 'immutable'
 import _capitalize from 'lodash/capitalize'
 import _sortBy from 'lodash/sortBy'
 
+import client from '../../models/api/resources'
 import {ApiListResponsePagination} from '../../models/api/types'
 import {Integration, IntegrationType} from '../../models/integration/types'
 import {notify} from '../notifications/actions'
@@ -20,7 +21,7 @@ export function fetchIntegrations() {
             type: constants.FETCH_INTEGRATIONS_START,
         })
 
-        return axios
+        return client
             .get<ApiListResponsePagination<Integration[]>>('/api/integrations/')
             .then((json) => json?.data)
             .then(
@@ -65,7 +66,7 @@ function fetchOnboardingIntegrations(
 
         const params = filter ? {page, filter} : {page}
 
-        return axios
+        return client
             .get<ApiListResponsePagination<Integration[]>>(
                 `/integrations/${integrationType}/onboarding-integrations/`,
                 {
@@ -133,7 +134,7 @@ export function activateOnboardingIntegrations(
             type: constants.ACTIVATE_ONBOARDING_INTEGRATIONS_START,
         })
 
-        return axios
+        return client
             .put<ApiListResponsePagination<Integration[]>>(
                 `/integrations/${integrationType}/onboarding-integrations/`,
                 data
@@ -254,7 +255,7 @@ export function fetchIntegration(
             })
         }
 
-        return axios
+        return client
             .get<Integration>(`/api/integrations/${integrationId}`)
             .then((json) => json?.data)
             .then(
@@ -308,7 +309,7 @@ export function deleteIntegration(integration: Map<any, any>) {
             id: integration.get('id'),
         })
 
-        return axios
+        return client
             .delete(`/api/integrations/${integration.get('id') as number}/`)
             .then(
                 () => {
@@ -371,13 +372,13 @@ function updateOrCreateIntegrationRequest(
         }
 
         if (isUpdate) {
-            promise = axios.put<Integration>(
+            promise = client.put<Integration>(
                 `/api/integrations/${integration.get('id') as number}/`,
                 integration.toJS(),
                 {params}
             )
         } else {
-            promise = axios.post<Integration>(
+            promise = client.post<Integration>(
                 '/api/integrations/',
                 integration.toJS()
             )
@@ -423,7 +424,7 @@ export function createImportIntegration(integration: Map<any, any>) {
             integration,
         })
 
-        return axios
+        return client
             .post<Integration>('/api/integrations/', integration.toJS())
             .then((json) => json?.data)
             .then(
@@ -551,7 +552,7 @@ export function importEmails(integration: Map<any, any>) {
             id: integration.get('id'),
         })
 
-        return axios
+        return client
             .put<Integration>(
                 `/api/integrations/${integration.get('id') as number}/`,
                 integration.toJS()
@@ -615,7 +616,7 @@ export function verifyEmailIntegration(token: string) {
         const state = getState()
         const integration = integrationSelectors.getCurrentIntegration(state)
 
-        return axios
+        return client
             .post<void>(
                 `/api/integrations/${integration.get('id') as number}/verify/`,
                 {token}
@@ -647,7 +648,7 @@ export function klaviyoSyncHistoricalEvent() {
         const state = getState()
         const integration = integrationSelectors.getCurrentIntegration(state)
 
-        return axios
+        return client
             .post(
                 `/api/integrations/klaviyo/${
                     integration.get('id') as number
@@ -685,7 +686,7 @@ export function sendVerificationEmail() {
         const state = getState()
         const integration = integrationSelectors.getCurrentIntegration(state)
 
-        return axios
+        return client
             .post(
                 `/api/integrations/${
                     integration.get('id') as number
@@ -725,7 +726,7 @@ export function verifyEmailIntegrationManually(token: string) {
             .getCurrentIntegration(state)
             .get('id') as number
 
-        return axios
+        return client
             .post<void>(
                 `/api/integrations/${integrationId}/verify-email-integration/`,
                 {verification_code: token}
@@ -755,7 +756,7 @@ export function fetchEmailDomain(integrationId: string) {
             type: constants.FETCH_EMAIL_DOMAIN_START,
         })
 
-        return axios
+        return client
             .get<void>(`/api/integrations/${integrationId}/domain`)
             .then(
                 (response) => {
@@ -787,7 +788,7 @@ export function createEmailDomain(integrationId: string) {
             type: constants.CREATE_EMAIL_DOMAIN_START,
         })
 
-        return axios
+        return client
             .put<void>(`/api/integrations/${integrationId}/domain`)
             .then(
                 (response) => {

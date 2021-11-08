@@ -1,13 +1,14 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
-import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import _isEqual from 'lodash/isEqual'
+import axios from 'axios'
 
 import * as actions from '../actions.ts'
 import * as types from '../constants'
 import {initialState} from '../reducers.ts'
+import client from '../../../models/api/resources.ts'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -24,7 +25,7 @@ describe('tags actions', () => {
 
     beforeEach(() => {
         store = mockStore({tags: initialState})
-        mockServer = new MockAdapter(axios)
+        mockServer = new MockAdapter(client)
     })
 
     it('addTags', () => {

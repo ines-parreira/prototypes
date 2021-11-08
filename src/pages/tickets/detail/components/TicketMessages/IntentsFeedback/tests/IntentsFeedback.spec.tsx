@@ -13,7 +13,6 @@ import {logEvent} from '../../../../../../../store/middlewares/segmentTracker.js
 import client from '../../../../../../../models/api/resources'
 
 jest.mock('../../../../../../../state/ticket/actions')
-jest.mock('../../../../../../../models/api/resources')
 
 jest.mock('../../../../../../../store/middlewares/segmentTracker.js')
 
@@ -22,7 +21,7 @@ const logEventMock = logEvent as jest.Mock
 const sendIntentFeedbackSuccessMock = sendIntentFeedbackSuccess as jest.Mocked<
     typeof sendIntentFeedbackSuccess
 >
-const clientMock = client as jest.Mocked<typeof client>
+const postMock = jest.spyOn(client, 'post')
 
 window.GORGIAS_CONSTANTS = {
     INTENTS: {
@@ -71,7 +70,7 @@ describe('<IntentsFeedback />', () => {
 
         beforeEach(() => {
             jest.resetAllMocks()
-            clientMock.post.mockResolvedValue({data: {intents: messageIntents}})
+            postMock.mockResolvedValue({data: {intents: messageIntents}})
             message.intents = messageIntents
         })
 
@@ -94,8 +93,8 @@ describe('<IntentsFeedback />', () => {
             )
             fireEvent.click(getAllByText('done')[0])
             fireEvent.mouseLeave(getByRole('menu', {hidden: true}))
-            expect(clientMock.post.mock.calls.length).toBe(1)
-            expect(clientMock.post.mock.calls).toMatchSnapshot()
+            expect(postMock.mock.calls.length).toBe(1)
+            expect(postMock.mock.calls).toMatchSnapshot()
         })
         it('should confirm all intents except the one that has been rejected if one intent is rejected', () => {
             const {getAllByText, getByRole} = render(
@@ -103,8 +102,8 @@ describe('<IntentsFeedback />', () => {
             )
             fireEvent.click(getAllByText('close')[0])
             fireEvent.mouseLeave(getByRole('menu', {hidden: true}))
-            expect(clientMock.post.mock.calls.length).toBe(1)
-            expect(clientMock.post.mock.calls).toMatchSnapshot()
+            expect(postMock.mock.calls.length).toBe(1)
+            expect(postMock.mock.calls).toMatchSnapshot()
         })
         it('should confirm all active intents otherwise', () => {
             const {getAllByText, getByRole} = render(
@@ -113,8 +112,8 @@ describe('<IntentsFeedback />', () => {
             fireEvent.click(getAllByText('close')[0])
             fireEvent.click(getAllByText('add')[0])
             fireEvent.mouseLeave(getByRole('menu', {hidden: true}))
-            expect(clientMock.post.mock.calls.length).toBe(1)
-            expect(clientMock.post.mock.calls).toMatchSnapshot()
+            expect(postMock.mock.calls.length).toBe(1)
+            expect(postMock.mock.calls).toMatchSnapshot()
         })
         it('should not be able to add intent when three are active', () => {
             const {getAllByText, getByRole} = render(
@@ -122,14 +121,14 @@ describe('<IntentsFeedback />', () => {
             )
             fireEvent.click(getAllByText('add')[0])
             fireEvent.mouseLeave(getByRole('menu', {hidden: true}))
-            expect(clientMock.post).not.toHaveBeenCalled()
+            expect(postMock).not.toHaveBeenCalled()
         })
     })
 
     describe('Further curation', () => {
         beforeEach(() => {
             jest.resetAllMocks()
-            clientMock.post.mockResolvedValue({data: {intents: messageIntents}})
+            postMock.mockResolvedValue({data: {intents: messageIntents}})
             message.intents = messageIntents
         })
 
@@ -159,8 +158,8 @@ describe('<IntentsFeedback />', () => {
             )
             fireEvent.click(getAllByText('add')[0])
             fireEvent.mouseLeave(getByRole('menu', {hidden: true}))
-            expect(clientMock.post.mock.calls.length).toBe(1)
-            expect(clientMock.post.mock.calls).toMatchSnapshot()
+            expect(postMock.mock.calls.length).toBe(1)
+            expect(postMock.mock.calls).toMatchSnapshot()
         })
         it('should not call the API if no change was made to active intents', () => {
             const {getAllByText, getByRole} = render(
@@ -169,7 +168,7 @@ describe('<IntentsFeedback />', () => {
             fireEvent.click(getAllByText('add')[0]) // add bar/intent
             fireEvent.click(getAllByText('close')[0]) // remove bar/intent
             fireEvent.mouseLeave(getByRole('menu', {hidden: true}))
-            expect(clientMock.post).not.toHaveBeenCalled()
+            expect(postMock).not.toHaveBeenCalled()
         })
     })
 
@@ -193,7 +192,7 @@ describe('<IntentsFeedback />', () => {
         ]
         beforeEach(() => {
             jest.resetAllMocks()
-            clientMock.post.mockResolvedValue({data: {intents: messageIntents}})
+            postMock.mockResolvedValue({data: {intents: messageIntents}})
             message.intents = messageIntents
         })
         it('should send event on menu toggle', async () => {

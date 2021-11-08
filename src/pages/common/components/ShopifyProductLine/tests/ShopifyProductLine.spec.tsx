@@ -4,12 +4,12 @@ import {fromJS} from 'immutable'
 
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import {Provider} from 'react-redux'
 
 import ShopifyProductLine from '../ShopifyProductLine'
 import {shopifyProductResult} from '../../../../../fixtures/shopify'
+import client from '../../../../../models/api/resources'
 
 const minProps = {
     shopifyIntegration: fromJS({
@@ -29,7 +29,7 @@ describe('<ShopifyProductLine/>', () => {
     let store = mockStore({})
     beforeEach(() => {
         jest.clearAllMocks()
-        mockServer = new MockAdapter(axios)
+        mockServer = new MockAdapter(client)
         store = mockStore({})
     })
 

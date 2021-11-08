@@ -2,7 +2,6 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
-import axios from 'axios'
 
 import {
     shopifyCalculatedDraftOrderFixture,
@@ -22,6 +21,7 @@ import {
 import {executeAction} from '../../../../infobar/actions.ts'
 import {initialState} from '../reducers.ts'
 import * as actions from '../actions.ts'
+import client from '../../../../../models/api/resources.ts'
 
 jest.mock('lodash/debounce', () => (fn) => {
     fn.cancel = jest.fn()
@@ -40,7 +40,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
     const currencyCode = 'USD'
     const order = fromJS(shopifyOrderFixture())
     const customer = fromJS(shopifyCustomerFixture())
-    const mockServer = new MockAdapter(axios)
+    const mockServer = new MockAdapter(client)
     let store
 
     const getActions = () =>

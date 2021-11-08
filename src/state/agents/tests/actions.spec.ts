@@ -2,13 +2,13 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import {fromJS, Map} from 'immutable'
 import thunk from 'redux-thunk'
-import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import * as actions from '../actions'
 import {initialState} from '../reducers'
 import {StoreDispatch} from '../../types'
 import {UserRole} from '../../../config/types/user'
+import client from '../../../models/api/resources'
 
 type MockedRootState = {
     agents: Map<any, any>
@@ -33,7 +33,7 @@ describe('agents actions', () => {
 
     beforeEach(() => {
         store = mockStore({agents: initialState})
-        mockServer = new MockAdapter(axios)
+        mockServer = new MockAdapter(client)
     })
 
     it('create agent', () => {

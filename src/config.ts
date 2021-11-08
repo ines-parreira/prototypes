@@ -1,4 +1,3 @@
-import axios from 'axios'
 import _find from 'lodash/find'
 import _get from 'lodash/get'
 
@@ -17,14 +16,6 @@ import {ActionTemplateExecution} from './types'
 import {AccountFeature} from './state/currentAccount/types'
 
 // TODO @LouisBarranqueiro switch all configuration to modular version
-
-/**
- * Set default axios headers
- */
-const commonHeaders = (axios.defaults.headers as Record<string, unknown>)
-    .common as Record<string, unknown>
-commonHeaders['X-CSRF-Token'] = window.CSRF_TOKEN
-commonHeaders['X-Gorgias-User-Client'] = 'web'
 
 export const DATADOG_CLIENT_TOKEN = 'pubc9857173f4901f3b10fc39dfcde707c6'
 /**

@@ -1,11 +1,11 @@
 import React, {FunctionComponent} from 'react'
 import {shallow} from 'enzyme'
-import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import {DropdownItem, Input} from 'reactstrap'
 
 import SearchInput from '../SearchInput'
 import {SearchInputResultProps, SearchInputSubResultProps} from '../types'
+import client from '../../../../../models/api/resources'
 
 type SubResultType = {
     id: number
@@ -36,7 +36,7 @@ describe('<SearchInput/>', () => {
         let mockServer: MockAdapter
 
         beforeEach(() => {
-            mockServer = new MockAdapter(axios)
+            mockServer = new MockAdapter(client)
         })
 
         afterEach(() => {

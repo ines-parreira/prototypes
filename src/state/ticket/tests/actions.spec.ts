@@ -2,7 +2,6 @@ import querystring from 'querystring'
 import url from 'url'
 
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
-import axios from 'axios'
 import moment from 'moment'
 import MockAdapter from 'axios-mock-adapter'
 import thunk from 'redux-thunk'
@@ -27,6 +26,7 @@ import {
     SocketEventType,
 } from '../../../services/socketManager/types'
 import history from '../../../pages/history'
+import client from '../../../models/api/resources'
 
 type MockedRootState = {
     ticket: Map<any, any>
@@ -100,7 +100,7 @@ describe('ticket actions', () => {
             ticket: initialState,
             newMessage: newMessageState,
         })
-        mockServer = new MockAdapter(axios)
+        mockServer = new MockAdapter(client)
         jest.clearAllMocks()
     })
 
@@ -1002,6 +1002,7 @@ describe('ticket actions', () => {
     })
 
     describe('loadAuditLogEvents()', () => {
+        let mockServerGorgiasApi: MockAdapter
         const getEvent = (id: number): AuditLogEvent => ({
             id,
             account_id: 1,
@@ -1012,6 +1013,10 @@ describe('ticket actions', () => {
             context: 'foo',
             type: AuditLogEventType.TicketReopened,
             created_datetime: '2019-11-15 19:00:00.000000',
+        })
+
+        beforeEach(() => {
+            mockServerGorgiasApi = new MockAdapter(client)
         })
 
         it('should dispatch audit logs events, page per page', async () => {
@@ -1031,7 +1036,7 @@ describe('ticket actions', () => {
                 {data: [getEvent(7), getEvent(8), getEvent(9)], meta: {}},
             ]
 
-            mockServer.onGet(matcher).reply((config) => {
+            mockServerGorgiasApi.onGet(matcher).reply((config) => {
                 const parsedUrl = url.parse(config.url || '')
                 const parsedQuery = querystring.parse(parsedUrl.query || '')
                 const page =
@@ -1050,7 +1055,7 @@ describe('ticket actions', () => {
             const ticketId = 123
             const path = `/api/tickets/${ticketId}/events/`
 
-            mockServer.onGet(path).reply(200, {data: [], meta: {}})
+            mockServerGorgiasApi.onGet(path).reply(200, {data: [], meta: {}})
 
             await store.dispatch(actions.displayAuditLogEvents(ticketId))
 

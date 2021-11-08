@@ -15,7 +15,7 @@ import type {
 } from '../constants/integrations/types/shopify'
 
 import {EditOrderAction} from '../constants/integrations/types/shopify'
-
+import {createClient} from '../models/api/resources'
 import {AuditLogEvent} from '../models/event/types'
 
 type GorgiasApiOptions = {
@@ -47,7 +47,7 @@ export default class GorgiasApi {
     }
 
     constructor({requestsCancellation = true}: GorgiasApiOptions = {}) {
-        this._api = axios.create()
+        this._api = createClient()
 
         if (requestsCancellation) {
             this._refreshCancellationToken()
