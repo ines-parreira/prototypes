@@ -241,7 +241,6 @@ export default class MultiSelectOptionsField extends Component<Props, State> {
         return (
             <div
                 className={classNames('MultiSelectField', className, {
-                    [css.focused]: isFocused,
                     [css.disabled]: isDisabled,
                 })}
                 style={style}
@@ -249,6 +248,7 @@ export default class MultiSelectOptionsField extends Component<Props, State> {
                 <div
                     className={classNames(css.container, {
                         [css.compact]: isCompact,
+                        [css.focused]: isFocused,
                     })}
                     onClick={this._focus}
                 >

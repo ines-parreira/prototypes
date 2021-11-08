@@ -3,6 +3,8 @@ import produce from 'immer'
 import _uniqueId from 'lodash/uniqueId'
 import _omit from 'lodash/omit'
 
+import {useHistory} from 'react-router-dom'
+
 import TableWrapper from '../../../../../common/components/table/TableWrapper'
 import TableBody from '../../../../../common/components/table/TableBody'
 import HeaderCell from '../../../../../common/components/table/cells/HeaderCell'
@@ -22,8 +24,15 @@ type ReportIssueCaseWithIdType = ReportIssueCaseType & {id: string}
 
 const ReportIssueCasesList = (): ReactElement | null => {
     const dispatch = useAppDispatch()
+
+    // TODO[COR-1569]: Setting the state here manually is dangerous and error prone
+    // A better approach would be to define all the possible state in a single
+    // location using a discriminated union and then check based on it
+    const history = useHistory<{newlyCreatedCaseIndex?: number} | undefined>()
     const [cases, setCases] = useState<ReportIssueCaseWithIdType[]>([])
     const {isLoadingConfig, configuration} = useConfigurationData()
+
+    const newlyCreatedCaseIndex = history.location.state?.newlyCreatedCaseIndex
 
     useEffect(() => {
         if (configuration) {
@@ -112,6 +121,7 @@ const ReportIssueCasesList = (): ReactElement | null => {
                             reportIssueCase={reportIssueCase}
                             onMoveEntity={handleMoveEntity}
                             onDropEntity={handleDropEntity}
+                            isHighlighted={index === newlyCreatedCaseIndex}
                             isFallbackCase={index === cases.length - 1}
                         />
                     )

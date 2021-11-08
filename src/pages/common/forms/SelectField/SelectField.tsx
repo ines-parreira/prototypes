@@ -6,6 +6,8 @@ import React, {
     MouseEvent,
     KeyboardEvent,
     Fragment,
+    createRef,
+    RefObject,
 } from 'react'
 import {
     DropdownItem,
@@ -69,11 +71,12 @@ export default class SelectField extends Component<Props, State> {
         fullWidth: false,
         required: false,
     }
-    inputRef?: HTMLInputElement | null
+    inputRef: RefObject<HTMLInputElement>
 
     constructor(props: Props) {
         super(props)
         this.state = this._initialState(props)
+        this.inputRef = createRef<HTMLInputElement>()
     }
 
     _initialState = (props: Props): State => {
@@ -299,14 +302,14 @@ export default class SelectField extends Component<Props, State> {
     }
 
     _focusInput = () => {
-        if (this.inputRef) {
-            this.inputRef.focus()
+        if (this.inputRef.current) {
+            this.inputRef.current.focus()
         }
     }
 
     _blurInput = () => {
-        if (this.inputRef) {
-            this.inputRef.blur()
+        if (this.inputRef.current) {
+            this.inputRef.current.blur()
             this.setState(this._initialState(this.props))
         }
     }
@@ -424,7 +427,7 @@ export default class SelectField extends Component<Props, State> {
                                 }}
                                 id={id!}
                                 className={css.input}
-                                ref={(ref) => (this.inputRef = ref)}
+                                ref={this.inputRef}
                                 value={input}
                                 required={required && !value}
                                 onChange={this._onSearchChange}
@@ -436,6 +439,7 @@ export default class SelectField extends Component<Props, State> {
                             />
                         </div>
                     </DropdownToggle>
+
                     <DropdownMenu
                         className={classnames(
                             css.options,

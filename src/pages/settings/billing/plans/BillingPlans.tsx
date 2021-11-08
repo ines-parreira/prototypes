@@ -16,6 +16,7 @@ type Props = ConnectedProps<typeof connector> &
     RouteComponentProps<
         any,
         any,
+        // TODO[COR-1569]: There should be a single source of truth for the state
         {isAutomationAddOnChecked?: boolean; openedPlanModal?: string}
     >
 

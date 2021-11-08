@@ -1,8 +1,5 @@
-import React, {ReactElement, useState, useMemo, useRef, useEffect} from 'react'
-import classNames from 'classnames'
+import React, {ReactElement, useMemo, useRef} from 'react'
 import produce from 'immer'
-
-import {Button} from 'reactstrap'
 
 import SelectField from '../../../../../common/forms/SelectField/SelectField'
 import {SelectableOption} from '../../../../../common/forms/SelectField/types'
@@ -23,20 +20,7 @@ interface ReasonsProps {
 }
 
 const Reasons = ({reasonsOptions, onChange}: ReasonsProps): ReactElement => {
-    const [shouldDisplaySelect, setShouldDisplaySelect] = useState(false)
     const selectRef = useRef<SelectField | null>(null)
-
-    useEffect(() => {
-        if (shouldDisplaySelect) {
-            selectRef.current?._toggleDropdown()
-        }
-    }, [shouldDisplaySelect])
-
-    const handleDropdownToggle = (isOpen: boolean) => {
-        if (!isOpen) {
-            setShouldDisplaySelect(false)
-        }
-    }
 
     const handleDropdownChange = (selectedValue: string | number) => {
         const selectedOption = SELECTABLE_REASONS_DROPDOWN_OPTIONS.find(
@@ -116,34 +100,18 @@ const Reasons = ({reasonsOptions, onChange}: ReasonsProps): ReactElement => {
                 ))}
             </ul>
 
-            <Button
-                color="secondary"
-                className="mr-2 mb-2"
-                onClick={() => {
-                    setShouldDisplaySelect(true)
-                }}
-            >
-                <span className={classNames(css.plusIcon, 'material-icons')}>
-                    add
-                </span>
-                Add new reason
-            </Button>
-
-            {shouldDisplaySelect && (
-                <div className={css.reasonsDropdownWrapper}>
-                    <SelectField
-                        className={css.dropdownToggle}
-                        dropdownMenuClassName={css.reasonsDropdownMenu}
-                        ref={selectRef}
-                        fullWidth
-                        options={dropdownOptions}
-                        onChange={handleDropdownChange}
-                        onDropdownToggle={handleDropdownToggle}
-                        placeholder="Search reasons"
-                        value={undefined}
-                    />
-                </div>
-            )}
+            <div className={css.reasonsDropdownWrapper}>
+                <SelectField
+                    className={css.dropdownToggle}
+                    dropdownMenuClassName={css.reasonsDropdownMenu}
+                    ref={selectRef}
+                    fullWidth
+                    options={dropdownOptions}
+                    onChange={handleDropdownChange}
+                    placeholder="Search reasons"
+                    value={undefined}
+                />
+            </div>
         </div>
     )
 }

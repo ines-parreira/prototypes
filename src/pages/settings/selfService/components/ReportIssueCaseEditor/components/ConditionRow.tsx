@@ -1,11 +1,7 @@
 import React, {ReactElement, useMemo} from 'react'
 
-import {
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-} from 'reactstrap'
+import {Input} from 'reactstrap'
+import classNames from 'classnames'
 
 import MultiSelectOptionsField from '../../../../../common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import {Option} from '../../../../../common/forms/MultiSelectOptionsField/types'
@@ -13,15 +9,15 @@ import shopify from '../../../../../../../img/integrations/shopify.png'
 
 import {
     JsonLogicOperator,
-    ReportIssueVariable,
     JsonLogicRuleOverVariable,
+    ReportIssueVariable,
 } from '../../../../../../models/selfServiceConfiguration/types'
 
 import {
     FINANCIAL_STATUSES_OPTIONS,
     FULFILLEMENT_STATUSES_OPTIONS,
-    SHIPMENT_STATUSES_OPTIONS,
     ORDER_STATUSES_OPTIONS,
+    SHIPMENT_STATUSES_OPTIONS,
 } from '../constants'
 
 import {parseJsonLogicRule} from './utils'
@@ -54,6 +50,7 @@ const OptionsByVariableMap: Record<ReportIssueVariable, Option[]> = {
     [ReportIssueVariable.SHIPMENT_STATUS]: SHIPMENT_STATUSES_OPTIONS,
     [ReportIssueVariable.ORDER_STATUS]: ORDER_STATUSES_OPTIONS,
 } as const
+
 const NameByVariableMap: Record<ReportIssueVariable, string> = {
     [ReportIssueVariable.FINANCIAL_STATUS]: 'Financial status',
     [ReportIssueVariable.FULFILLMENT_STATUS]: 'Fulfillment status',
@@ -132,25 +129,37 @@ const ConditionRow = ({
             </div>
 
             {variable !== ReportIssueVariable.FINANCIAL_STATUS ? (
-                <UncontrolledDropdown className={css.operatorDropdown}>
-                    <DropdownToggle caret>
-                        {getOperatorHumanReadableName(operator, value)}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <DropdownItem onClick={handleIsOneOfClick}>
-                            {getOperatorHumanReadableName(
-                                JsonLogicOperator.IS_ONE_OF,
-                                []
-                            )}
-                        </DropdownItem>
-                        <DropdownItem onClick={handleIsEmptyClick}>
-                            {getOperatorHumanReadableName(
-                                JsonLogicOperator.EQUALS,
-                                null
-                            )}
-                        </DropdownItem>
-                    </DropdownMenu>
-                </UncontrolledDropdown>
+                <Input
+                    className={classNames(css.operatorDropdown)}
+                    style={{width: 'auto'}}
+                    type="select"
+                    value={operator}
+                    bsSize="sm"
+                    onChange={(e) => {
+                        const operator = e.target.value
+
+                        if (operator === JsonLogicOperator.EQUALS) {
+                            handleIsEmptyClick()
+                        }
+                        if (operator === JsonLogicOperator.IS_ONE_OF) {
+                            handleIsOneOfClick()
+                        }
+                    }}
+                >
+                    <option value={JsonLogicOperator.IS_ONE_OF}>
+                        {getOperatorHumanReadableName(
+                            JsonLogicOperator.IS_ONE_OF,
+                            []
+                        )}
+                    </option>
+
+                    <option value={JsonLogicOperator.EQUALS}>
+                        {getOperatorHumanReadableName(
+                            JsonLogicOperator.EQUALS,
+                            null
+                        )}
+                    </option>
+                </Input>
             ) : (
                 <span className={css.operatorText}>is one of</span>
             )}

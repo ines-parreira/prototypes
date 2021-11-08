@@ -23,6 +23,7 @@ interface ReportIssueCaseProps {
     onMoveEntity: Callbacks['onHover']
     onDropEntity: Callbacks['onDrop']
     isFallbackCase: boolean
+    isHighlighted: boolean
 }
 
 const ReportIssueCase = ({
@@ -31,6 +32,7 @@ const ReportIssueCase = ({
     onMoveEntity,
     onDropEntity,
     isFallbackCase,
+    isHighlighted,
 }: ReportIssueCaseProps): ReactElement => {
     const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
         {
@@ -56,7 +58,12 @@ const ReportIssueCase = ({
                     : undefined
             }
             data-handler-id={handlerId}
-            style={{opacity: isDragging ? 0 : 1}}
+            style={{
+                opacity: isDragging ? 0 : 1,
+                backgroundColor: isHighlighted
+                    ? 'rgb(247, 249, 254)'
+                    : 'default',
+            }}
         >
             <BodyCell
                 innerClassName={

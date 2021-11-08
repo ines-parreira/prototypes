@@ -70,6 +70,7 @@ const UpgradeButton = ({
                         size={size}
                     />
                 ) : (
+                    // TODO[COR-1569]: There should be a single source of truth for the state
                     <Link to={{pathname: '/app/settings/billing/plans', state}}>
                         <Button
                             className={classnames({

@@ -73,6 +73,8 @@ const ReportIssueCaseEditor: ComponentType = () => {
         ReportIssueRulesLogic
     >({and: []})
 
+    const linkToIssueList = `/app/settings/self-service/${integrationType}/${shopName}/preferences/report-issue/`
+
     const [errors, setErrors] = useState<ErrorFormState>({})
     const [isDirty, setIsDirty] = useState(false)
 
@@ -154,6 +156,10 @@ const ReportIssueCaseEditor: ComponentType = () => {
             return
         }
 
+        // This is used to highlight the newly created case in the list when
+        // returning to it
+        let newlyCreatedCaseIndex: number | null = null
+
         const newConfiguration = produce(
             configuration,
             (draftConfiguration) => {
@@ -165,6 +171,9 @@ const ReportIssueCaseEditor: ComponentType = () => {
                 }
 
                 if (caseIndex === 'new') {
+                    newlyCreatedCaseIndex =
+                        draftConfiguration.report_issue_policy.cases.length - 1
+
                     draftConfiguration.report_issue_policy.cases.splice(
                         configuration.report_issue_policy.cases.length - 1,
                         0,
@@ -197,12 +206,18 @@ const ReportIssueCaseEditor: ComponentType = () => {
         }
 
         if (caseIndex === 'new') {
-            history.goBack()
+            if (newlyCreatedCaseIndex === null) {
+                history.push(linkToIssueList)
+            } else {
+                history.push(linkToIssueList, {
+                    newlyCreatedCaseIndex,
+                })
+            }
         }
     }
 
     const handleCancelClick = () => {
-        history.goBack()
+        history.push(linkToIssueList)
     }
 
     const handleDeleteClick = async () => {
@@ -238,7 +253,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
             ))
         }
 
-        history.goBack()
+        history.push(linkToIssueList)
     }
 
     return (
