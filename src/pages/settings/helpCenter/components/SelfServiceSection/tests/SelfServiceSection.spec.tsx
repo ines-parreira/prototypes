@@ -1,0 +1,170 @@
+import React from 'react'
+import {fireEvent, waitFor} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import thunk from 'redux-thunk'
+import configureMockStore from 'redux-mock-store'
+import {fromJS, Map} from 'immutable'
+
+import {IntegrationType} from '../../../../../../models/integration/constants'
+import {RootState, StoreDispatch} from '../../../../../../state/types'
+import {initialState as articlesState} from '../../../../../../state/helpCenter/articles/reducer'
+import {initialState as uiState} from '../../../../../../state/helpCenter/ui/reducer'
+import {initialState as categoriesState} from '../../../../../../state/helpCenter/categories/reducer'
+import {renderWithRouter} from '../../../../../../utils/testing'
+import {HelpCenter} from '../../../../../../models/helpCenter/types'
+import {getHelpCentersResponseFixture} from '../../../fixtures/getHelpCentersResponse.fixture'
+import {SelfServiceConfiguration} from '../../../../../../models/selfServiceConfiguration/types'
+import SelfServiceSection from '../SelfServiceSection'
+
+const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
+    thunk,
+])
+
+const helpCenter: HelpCenter = {
+    ...getHelpCentersResponseFixture.data[0],
+    self_service_enabled: false,
+    shop_name: 'my-shop',
+}
+
+const defaultState: Partial<RootState> = {
+    entities: {
+        helpCenters: {
+            '1': helpCenter,
+        },
+    } as any,
+    helpCenter: {
+        ui: {...uiState, currentId: 1},
+        articles: articlesState,
+        categories: categoriesState,
+    },
+}
+
+const mockedUpdateHelpCenter = jest.fn().mockResolvedValue({
+    data: helpCenter,
+})
+
+jest.mock(
+    '../../../../../../models/selfServiceConfiguration/resources',
+    () => ({
+        fetchSelfServiceConfiguration: (id: any): SelfServiceConfiguration => ({
+            id,
+            type: 'shopify',
+            shop_name: 'my-shop',
+            created_datetime: '2019-11-15 19:00:00.000000',
+            updated_datetime: '2019-11-15 19:00:00.000000',
+            deactivated_datetime: null,
+            report_issue_policy: {
+                enabled: true,
+                cases: [],
+            },
+            track_order_policy: {
+                enabled: true,
+            },
+            cancel_order_policy: {
+                enabled: true,
+            },
+            return_order_policy: {
+                enabled: true,
+            },
+        }),
+    })
+)
+
+const route = {
+    path: '/app/settings/help-center/:helpcenterId/appearance',
+    route: '/app/settings/help-center/1/appearance',
+}
+
+describe('<SelfServiceSection/>', () => {
+    const shopifyIntegration = fromJS({
+        id: 1,
+        name: 'my-integration',
+        type: IntegrationType.Shopify,
+        meta: {
+            shop_name: 'my-shop',
+        },
+    }) as Map<any, any>
+
+    beforeEach(() => {
+        jest.resetAllMocks()
+    })
+
+    it('should render the component', () => {
+        const {container} = renderWithRouter(
+            <Provider store={mockedStore(defaultState)}>
+                <SelfServiceSection
+                    helpCenter={helpCenter}
+                    updateHelpCenter={mockedUpdateHelpCenter}
+                    updating={false}
+                    shopifyIntegration={shopifyIntegration}
+                />
+            </Provider>,
+            route
+        )
+
+        expect(container).toMatchSnapshot()
+    })
+
+    it("updates help center's self_serve_enabled field", async () => {
+        const {getByRole, getByText} = renderWithRouter(
+            <Provider store={mockedStore(defaultState)}>
+                <SelfServiceSection
+                    helpCenter={helpCenter}
+                    updateHelpCenter={mockedUpdateHelpCenter}
+                    updating={false}
+                    shopifyIntegration={shopifyIntegration}
+                />
+            </Provider>,
+            route
+        )
+
+        await waitFor(() => {
+            fireEvent.click(
+                getByText('Enable self-service for this Help Center')
+            )
+        })
+
+        await waitFor(() => {
+            fireEvent.click(
+                getByRole('button', {
+                    name: 'Save Changes',
+                })
+            )
+        })
+
+        expect(mockedUpdateHelpCenter).toHaveBeenLastCalledWith({
+            self_service_enabled: true,
+        })
+
+        fireEvent.click(getByText('Enable self-service for this Help Center'))
+    })
+
+    it('disables controls if help center has no connected shop', async () => {
+        const {getByRole, getByText} = renderWithRouter(
+            <Provider store={mockedStore(defaultState)}>
+                <SelfServiceSection
+                    helpCenter={{
+                        ...helpCenter,
+                        shop_name: null,
+                    }}
+                    updateHelpCenter={mockedUpdateHelpCenter}
+                    updating={false}
+                    shopifyIntegration={shopifyIntegration}
+                />
+            </Provider>,
+            route
+        )
+
+        await waitFor(() => {
+            fireEvent.click(
+                getByText('Enable self-service for this Help Center')
+            )
+        })
+
+        const button = getByRole('button', {
+            name: 'Save Changes',
+        }) as HTMLButtonElement
+
+        expect(button.disabled).toBeTruthy()
+    })
+})

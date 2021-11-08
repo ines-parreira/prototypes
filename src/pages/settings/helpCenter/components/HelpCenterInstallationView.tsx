@@ -4,6 +4,8 @@ import _debounce from 'lodash/debounce'
 import {useHistory, useLocation} from 'react-router-dom'
 import {Button, Container} from 'reactstrap'
 
+import {isProduction} from '../../../../utils/environment'
+
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {
     helpCenterDeleted,
@@ -24,6 +26,8 @@ import {
     isValidSubdomain,
 } from '../utils/validations'
 
+import {Paths} from '../../../../../../../rest_api/help_center_api/client.generated'
+
 import {CustomDomain} from './CustomDomain'
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
@@ -32,6 +36,7 @@ import {SubdomainSection} from './SubdomainSection'
 import {PageContainer} from './PageContainer'
 
 import css from './HelpCenterInstallationView.less'
+import {ConnectToShopSection} from './ConnectToShopSection'
 
 export const HelpCenterInstallationView = (): JSX.Element | null => {
     const dispatch = useAppDispatch()
@@ -94,16 +99,16 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
         }
     }
 
-    const handleOnUpdateHelpCenter = () => {
-        if (client && subdomainValue) {
+    const handleOnUpdateHelpCenter = (
+        delta: Partial<Paths.UpdateHelpCenter.RequestBody>
+    ) => {
+        if (client) {
             void client
                 .updateHelpCenter(
                     {
                         help_center_id: helpCenterId,
                     },
-                    {
-                        subdomain: subdomainValue,
-                    }
+                    delta
                 )
                 .then((response) => {
                     dispatch(helpCenterUpdated(response.data))
@@ -182,13 +187,28 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
                     <Button
                         color="primary"
                         disabled={!isNewSubdomainValid}
-                        onClick={handleOnUpdateHelpCenter}
+                        onClick={() =>
+                            handleOnUpdateHelpCenter({
+                                subdomain: subdomainValue,
+                            })
+                        }
                     >
                         Save Changes
                     </Button>
                 </SubdomainSection>
                 <CustomDomain />
                 <ImportSection />
+
+                {
+                    // TODO: Remove this to release SSP in Help Center
+                    !isProduction() && (
+                        <ConnectToShopSection
+                            onUpdate={handleOnUpdateHelpCenter}
+                            helpCenter={helpCenter}
+                        />
+                    )
+                }
+
                 <section>
                     <ConfirmModalAction
                         actions={(onClose) => (

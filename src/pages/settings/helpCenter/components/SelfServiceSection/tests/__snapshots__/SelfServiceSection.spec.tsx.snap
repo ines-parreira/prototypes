@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SelfServiceSection/> should render the component 1`] = `
+<div>
+  <section>
+    <h3>
+      Enable Self-service
+    </h3>
+    <p>
+      Enabling
+       
+      <a
+        to="/app/settings/self-service"
+      >
+        self-service
+      </a>
+       will let your customers track their orders, request a return or cancellation and report issues they might have with an order. It will then create an email ticket for your team.
+    </p>
+    <div
+      class="d-flex mt-4"
+    >
+      <label
+        class="switch toggle-switch"
+      >
+        <input
+          readonly=""
+          type="checkbox"
+        />
+        <div
+          class="slider"
+        />
+      </label>
+      <label
+        class="control-label ml-2"
+      >
+        <p
+          class="enable-self-service-label"
+        >
+          Enable self-service for this Help Center
+        </p>
+      </label>
+    </div>
+    <button
+      class="mt-4 btn btn-success disabled"
+      disabled=""
+      type="button"
+    >
+      Save Changes
+    </button>
+  </section>
+</div>
+`;

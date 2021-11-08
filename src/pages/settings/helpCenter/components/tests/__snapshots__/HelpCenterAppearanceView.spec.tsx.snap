@@ -72,6 +72,13 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
       <a
         activeclassname="active"
         class="link"
+        to="/app/settings/help-center/1/ssp"
+      >
+        Self-service
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
         to="/app/settings/help-center/1/installation"
       >
         Installation

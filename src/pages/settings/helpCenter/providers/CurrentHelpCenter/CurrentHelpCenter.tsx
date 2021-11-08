@@ -16,6 +16,8 @@ import {
     getViewLanguage,
 } from '../../../../../state/helpCenter/ui'
 
+import {isProduction} from '../../../../../utils/environment'
+
 import Loader from '../../../../common/components/Loader/Loader'
 
 import {useCurrentHelpCenter} from '../../hooks/useCurrentHelpCenter'
@@ -31,6 +33,7 @@ import HelpCenterInstallationView from '../../components/HelpCenterInstallationV
 import HelpCenterImportCsvColumnMatchingView from '../../components/HelpCenterImportCsvColumnMatchingView'
 
 import './CurrentHelpCenter.less'
+import HelpCenterSelfServiceView from '../../components/HelpCenterSelfServiceView'
 
 export const CurrentHelpCenter = (): JSX.Element => {
     const dispatch = useAppDispatch()
@@ -103,6 +106,16 @@ export const CurrentHelpCenter = (): JSX.Element => {
                     path={`${path}/import/csv/column-matching`}
                     component={HelpCenterImportCsvColumnMatchingView}
                 />
+                {
+                    // TODO: Remove this to release SSP in Help Center
+                    !isProduction() && (
+                        <Route
+                            path={`${path}/ssp`}
+                            exact
+                            component={HelpCenterSelfServiceView}
+                        />
+                    )
+                }
             </Switch>
         </>
     )

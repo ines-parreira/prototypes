@@ -1,0 +1,48 @@
+@import (reference) '~css/new/colors.less';
+
+:local {
+    .modal-centered {
+        top: 50%;
+        transform: translateY(-50%) !important;
+    }
+
+    .select-option {
+        display: flex;
+        align-items: center;
+    }
+
+    .shopify-icon {
+        width: 20px;
+        margin-right: 10px;
+    }
+
+    .select-default {
+        color: @neutral6;
+    }
+
+    .select-connected-chats {
+        margin-left: auto;
+        color: @neutral6;
+    }
+
+    .connected-store {
+        background: @darkWhite;
+        padding: 8px;
+        display: flex;
+        align-items: center;
+    }
+
+    .disconnect-button {
+        color: @neutral6;
+        cursor: pointer;
+
+        &:hover {
+            color: @red;
+        }
+    }
+
+    .store-name {
+        color: @neutral10;
+        font-weight: bold;
+    }
+}
