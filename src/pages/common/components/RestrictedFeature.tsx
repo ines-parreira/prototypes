@@ -3,7 +3,7 @@ import React, {ReactNode, Component} from 'react'
 import {Alert} from 'reactstrap'
 import Lightbox from 'react-images'
 
-import Carousel from './../../integrations/common/Carousel.js'
+import Carousel from './../../integrations/common/Carousel'
 
 type Props = {
     imagesURL: string[]

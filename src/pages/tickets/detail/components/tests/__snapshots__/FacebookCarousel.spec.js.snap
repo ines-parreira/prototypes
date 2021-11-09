@@ -80,22 +80,26 @@ exports[`FacebookCarousel component render generic template 1`] = `
         beforeChange={null}
         centerMode={false}
         centerPadding="50px"
-        className=" unslicked"
+        className=""
         cssEase="ease"
         customPaging={[Function]}
         dots={false}
         dotsClass="slick-dots"
         draggable={true}
         easing="linear"
-        edgeEvent={null}
         edgeFriction={0.35}
         fade={false}
         focusOnSelect={false}
         infinite={false}
-        init={null}
         initialSlide={0}
-        lazyLoad={false}
+        lazyLoad={null}
         nextArrow={null}
+        onEdge={null}
+        onInit={null}
+        onLazyLoadError={null}
+        onReInit={null}
+        pauseOnDotsHover={false}
+        pauseOnFocus={false}
         pauseOnHover={true}
         prevArrow={null}
         responsive={
@@ -114,10 +118,12 @@ exports[`FacebookCarousel component render generic template 1`] = `
             },
           ]
         }
+        rows={1}
         rtl={false}
         slide="div"
+        slidesPerRow={1}
         slidesToScroll={1}
-        slidesToShow={1}
+        slidesToShow={3}
         speed={500}
         swipe={true}
         swipeEvent={null}
@@ -126,12 +132,13 @@ exports[`FacebookCarousel component render generic template 1`] = `
         touchThreshold={5}
         unslick={true}
         useCSS={true}
+        useTransform={true}
         variableWidth={false}
         vertical={false}
         waitForAnimate={true}
       >
         <div
-          className="slick-initialized slick-slider  unslicked"
+          className="slick-slider slick-initialized"
         >
           <div
             className="slick-list"
@@ -144,16 +151,26 @@ exports[`FacebookCarousel component render generic template 1`] = `
               fade={false}
               focusOnSelect={null}
               infinite={false}
-              lazyLoad={false}
-              lazyLoadedList={Array []}
+              lazyLoad={null}
+              lazyLoadedList={
+                Array [
+                  0,
+                  1,
+                  2,
+                ]
+              }
               listHeight={0}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+              onMouseOver={[Function]}
               rtl={false}
               slideCount={1}
               slideHeight={0}
               slideWidth={0}
               slidesToScroll={1}
-              slidesToShow={1}
+              slidesToShow={3}
               speed={500}
+              targetSlide={0}
               trackStyle={
                 Object {
                   "WebkitTransform": "translate3d(0px, 0px, 0px)",
@@ -165,11 +182,15 @@ exports[`FacebookCarousel component render generic template 1`] = `
                 }
               }
               unslick={true}
+              useCSS={true}
               variableWidth={false}
               vertical={false}
             >
               <div
                 className="slick-track"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+                onMouseOver={[Function]}
                 style={
                   Object {
                     "WebkitTransform": "translate3d(0px, 0px, 0px)",
@@ -182,9 +203,10 @@ exports[`FacebookCarousel component render generic template 1`] = `
                 }
               >
                 <div
-                  className="slick-slide slick-active slick-current carouselCardContainer"
+                  aria-hidden={false}
+                  className="slick-slide slick-active slick-current"
                   data-index={0}
-                  key="original.$0"
+                  key="original0"
                   onClick={[Function]}
                   style={
                     Object {
@@ -194,115 +216,131 @@ exports[`FacebookCarousel component render generic template 1`] = `
                   }
                   tabIndex="-1"
                 >
-                  <Card
-                    className="carouselCard"
-                    tag="div"
+                  <div
+                    key="0"
                   >
                     <div
-                      className="carouselCard card"
+                      className="carouselCardContainer"
+                      key="0"
+                      style={
+                        Object {
+                          "display": "inline-block",
+                          "width": "100%",
+                        }
+                      }
+                      tabIndex={-1}
                     >
-                      <CardImg
-                        className="carouselImage"
-                        src="https://cdn.shopify.com/s/files/1/1632/0429/"
-                        tag="img"
-                        top={true}
-                        width="100%"
-                      >
-                        <img
-                          className="carouselImage card-img-top"
-                          src="https://cdn.shopify.com/s/files/1/1632/0429/"
-                          width="100%"
-                        />
-                      </CardImg>
-                      <CardBody
+                      <Card
+                        className="carouselCard"
                         tag="div"
                       >
                         <div
-                          className="card-body"
+                          className="carouselCard card"
                         >
-                          <CardTitle
+                          <CardImg
+                            className="carouselImage"
+                            src="https://cdn.shopify.com/s/files/1/1632/0429/"
+                            tag="img"
+                            top={true}
+                            width="100%"
+                          >
+                            <img
+                              className="carouselImage card-img-top"
+                              src="https://cdn.shopify.com/s/files/1/1632/0429/"
+                              width="100%"
+                            />
+                          </CardImg>
+                          <CardBody
                             tag="div"
                           >
                             <div
-                              className="card-title"
+                              className="card-body"
                             >
-                              Leather saddle
+                              <CardTitle
+                                tag="div"
+                              >
+                                <div
+                                  className="card-title"
+                                >
+                                  Leather saddle
+                                </div>
+                              </CardTitle>
+                              <CardSubtitle
+                                tag="div"
+                              >
+                                <div
+                                  className="card-subtitle"
+                                >
+                                  $75.00
+                                </div>
+                              </CardSubtitle>
                             </div>
-                          </CardTitle>
-                          <CardSubtitle
+                          </CardBody>
+                          <ButtonGroup
+                            className="buttons"
+                            role="group"
                             tag="div"
+                            vertical={true}
                           >
                             <div
-                              className="card-subtitle"
+                              className="buttons btn-group-vertical"
+                              role="group"
                             >
-                              $75.00
+                              <Button
+                                color="secondary"
+                                href="https://sfbicycles.myshopify.com/"
+                                key="0"
+                                tag="a"
+                                target="_blank"
+                              >
+                                <a
+                                  aria-label={null}
+                                  className="btn btn-secondary"
+                                  href="https://sfbicycles.myshopify.com/"
+                                  onClick={[Function]}
+                                  target="_blank"
+                                >
+                                  View details
+                                </a>
+                              </Button>
+                              <Button
+                                color="secondary"
+                                disabled={true}
+                                key="1"
+                                tag="button"
+                              >
+                                <button
+                                  aria-label={null}
+                                  className="btn btn-secondary disabled"
+                                  disabled={true}
+                                  onClick={[Function]}
+                                >
+                                  Share
+                                </button>
+                              </Button>
+                              <Button
+                                color="secondary"
+                                href="https://messenger-commerce.shopifyapps.com/"
+                                key="2"
+                                tag="a"
+                                target="_blank"
+                              >
+                                <a
+                                  aria-label={null}
+                                  className="btn btn-secondary"
+                                  href="https://messenger-commerce.shopifyapps.com/"
+                                  onClick={[Function]}
+                                  target="_blank"
+                                >
+                                  Buy now
+                                </a>
+                              </Button>
                             </div>
-                          </CardSubtitle>
+                          </ButtonGroup>
                         </div>
-                      </CardBody>
-                      <ButtonGroup
-                        className="buttons"
-                        role="group"
-                        tag="div"
-                        vertical={true}
-                      >
-                        <div
-                          className="buttons btn-group-vertical"
-                          role="group"
-                        >
-                          <Button
-                            color="secondary"
-                            href="https://sfbicycles.myshopify.com/"
-                            key="0"
-                            tag="a"
-                            target="_blank"
-                          >
-                            <a
-                              aria-label={null}
-                              className="btn btn-secondary"
-                              href="https://sfbicycles.myshopify.com/"
-                              onClick={[Function]}
-                              target="_blank"
-                            >
-                              View details
-                            </a>
-                          </Button>
-                          <Button
-                            color="secondary"
-                            disabled={true}
-                            key="1"
-                            tag="button"
-                          >
-                            <button
-                              aria-label={null}
-                              className="btn btn-secondary disabled"
-                              disabled={true}
-                              onClick={[Function]}
-                            >
-                              Share
-                            </button>
-                          </Button>
-                          <Button
-                            color="secondary"
-                            href="https://messenger-commerce.shopifyapps.com/"
-                            key="2"
-                            tag="a"
-                            target="_blank"
-                          >
-                            <a
-                              aria-label={null}
-                              className="btn btn-secondary"
-                              href="https://messenger-commerce.shopifyapps.com/"
-                              onClick={[Function]}
-                              target="_blank"
-                            >
-                              Buy now
-                            </a>
-                          </Button>
-                        </div>
-                      </ButtonGroup>
+                      </Card>
                     </div>
-                  </Card>
+                  </div>
                 </div>
               </div>
             </Track>

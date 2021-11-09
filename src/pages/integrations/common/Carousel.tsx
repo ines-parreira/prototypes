@@ -1,19 +1,18 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {Component, MouseEvent} from 'react'
 import Slider from 'react-slick'
 
 import css from './Carousel.less'
 
-export default class Carousel extends React.Component {
-    static propTypes = {
-        imagesUrl: PropTypes.array.isRequired,
-        slidesToShow: PropTypes.number.isRequired,
-        arrows: PropTypes.bool.isRequired,
-        autoplay: PropTypes.bool.isRequired,
-        onImageClick: PropTypes.func,
-    }
+type Props = {
+    imagesUrl: string[]
+    slidesToShow: number
+    arrows: boolean
+    autoplay: boolean
+    onImageClick: (img: {url: string; index: number; e: MouseEvent}) => void
+}
 
-    static defaultProps = {
+export default class Carousel extends Component<Props> {
+    static defaultProps: Pick<Props, 'slidesToShow' | 'arrows' | 'autoplay'> = {
         slidesToShow: 2,
         arrows: false,
         autoplay: true,

@@ -10,11 +10,9 @@ import {IntegrationType} from '../../../../../models/integration/types'
 import {RootState} from '../../../../../state/types'
 
 import history from '../../../../history'
-
+import Carousel from '../../../common/Carousel'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
-
-import Carousel from './../../../common/Carousel.js'
 
 type Props = {
     integrations: List<Map<any, any>>

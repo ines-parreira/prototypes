@@ -10,7 +10,7 @@ import IntegrationList from '../IntegrationList.tsx'
 import ForwardIcon from '../ForwardIcon.tsx'
 import history from '../../../../history.ts'
 
-import Carousel from './../../../common/Carousel'
+import Carousel from './../../../common/Carousel.tsx'
 
 export default class ShopifyIntegrationList extends React.Component {
     static propTypes = {

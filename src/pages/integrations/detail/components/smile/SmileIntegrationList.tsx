@@ -5,8 +5,7 @@ import {Button} from 'reactstrap'
 import Lightbox from 'react-images'
 
 import {IntegrationType} from '../../../../../models/integration/types'
-import Carousel from '../../../common/Carousel.js'
-
+import Carousel from '../../../common/Carousel'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
 
