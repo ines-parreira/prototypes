@@ -14,29 +14,30 @@ import RecordsTable from './components/RecordsTable'
 
 type OwnProps = {
     integration: Map<string, any>
-    integrationId: string
     loading: Map<string, any>
     emailDomain: Map<string, any>
     actions: {
-        fetchEmailDomain: (integrationId: string) => unknown
-        createEmailDomain: (integrationId: string) => unknown
+        fetchEmailDomain: (domainName: string) => unknown
+        createEmailDomain: (domainName: string) => unknown
     }
 }
 
 type Props = OwnProps & RouteComponentProps
 
 export const EmailDomainVerificationContainer = (props: Props) => {
-    const {integration, emailDomain, loading, actions, integrationId} = props
+    const {integration, emailDomain, loading, actions} = props
+
+    const address = integration.getIn(['meta', 'address'], '') as string
+    const domain = address.substr(address.lastIndexOf('@') + 1)
 
     useEffect(() => {
-        void actions.fetchEmailDomain(integrationId)
+        void actions.fetchEmailDomain(domain)
     }, [])
 
     if (loading.get('emailDomain')) {
         return <Loader />
     }
 
-    const address = integration.getIn(['meta', 'address'], '') as string
     const isBaseEmailIntegration = address.endsWith(
         window.EMAIL_FORWARDING_DOMAIN
     )
@@ -115,9 +116,7 @@ export const EmailDomainVerificationContainer = (props: Props) => {
                                 color="success"
                                 className="mt-3"
                                 onClick={() => {
-                                    void actions.createEmailDomain(
-                                        integrationId
-                                    )
+                                    void actions.createEmailDomain(domain)
                                 }}
                             >
                                 Add Domain

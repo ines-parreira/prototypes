@@ -750,65 +750,61 @@ export function verifyEmailIntegrationManually(token: string) {
     }
 }
 
-export function fetchEmailDomain(integrationId: string) {
+export function fetchEmailDomain(domainName: string) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
             type: constants.FETCH_EMAIL_DOMAIN_START,
         })
 
-        return client
-            .get<void>(`/api/integrations/${integrationId}/domain`)
-            .then(
-                (response) => {
+        return client.get<void>(`/api/integrations/domains/${domainName}`).then(
+            (response) => {
+                dispatch({
+                    type: constants.FETCH_EMAIL_DOMAIN_SUCCESS,
+                    emailDomain: response.data,
+                })
+            },
+            (error: AxiosError) => {
+                if (error.response && error.response.status === 404) {
                     dispatch({
                         type: constants.FETCH_EMAIL_DOMAIN_SUCCESS,
-                        emailDomain: response.data,
+                        emailDomain: null,
                     })
-                },
-                (error: AxiosError) => {
-                    if (error.response && error.response.status === 404) {
-                        dispatch({
-                            type: constants.FETCH_EMAIL_DOMAIN_SUCCESS,
-                            emailDomain: null,
-                        })
-                    } else {
-                        dispatch({
-                            type: constants.FETCH_EMAIL_DOMAIN_ERROR,
-                            error,
-                        })
-                    }
+                } else {
+                    dispatch({
+                        type: constants.FETCH_EMAIL_DOMAIN_ERROR,
+                        error,
+                    })
                 }
-            )
+            }
+        )
     }
 }
 
-export function createEmailDomain(integrationId: string) {
+export function createEmailDomain(domainName: string) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
             type: constants.CREATE_EMAIL_DOMAIN_START,
         })
 
-        return client
-            .put<void>(`/api/integrations/${integrationId}/domain`)
-            .then(
-                (response) => {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: 'DKIM configuration created',
-                        })
-                    )
-                    dispatch({
-                        type: constants.CREATE_EMAIL_DOMAIN_SUCCESS,
-                        emailDomain: response.data,
+        return client.put<void>(`/api/integrations/domains/${domainName}`).then(
+            (response) => {
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Success,
+                        message: 'DKIM configuration created',
                     })
-                },
-                (error: AxiosError) => {
-                    dispatch({
-                        type: constants.CREATE_EMAIL_DOMAIN_ERROR,
-                        error,
-                    })
-                }
-            )
+                )
+                dispatch({
+                    type: constants.CREATE_EMAIL_DOMAIN_SUCCESS,
+                    emailDomain: response.data,
+                })
+            },
+            (error: AxiosError) => {
+                dispatch({
+                    type: constants.CREATE_EMAIL_DOMAIN_ERROR,
+                    error,
+                })
+            }
+        )
     }
 }

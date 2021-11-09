@@ -223,7 +223,6 @@ export const IntegrationDetailContainer = ({
                                 <EmailDomainVerification
                                     actions={actions}
                                     integration={integration}
-                                    integrationId={integrationId}
                                     loading={loading}
                                 />
                             </EmailIntegrationLayout>
