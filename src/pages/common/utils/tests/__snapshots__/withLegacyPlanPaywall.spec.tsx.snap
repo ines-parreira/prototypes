@@ -10,7 +10,17 @@ exports[`withLegacyPlanPaywall should not render the passed component when the c
 </div>
 `;
 
-exports[`withLegacyPlanPaywall should render the passed component when thus subscription is public 1`] = `
+exports[`withLegacyPlanPaywall should render the passed component when the subscription is internal 1`] = `
+<div>
+  <div
+    data-testid="paywalled-component"
+  >
+    Just a component...
+  </div>
+</div>
+`;
+
+exports[`withLegacyPlanPaywall should render the passed component when the subscription is public 1`] = `
 <div>
   <div
     data-testid="paywalled-component"

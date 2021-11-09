@@ -33,6 +33,9 @@ const getCommonPlanCardFeatures = ({
     isCustom = false,
 }: GetCommonPlanCardFeaturesArgs): PlanCardFeature[] => {
     const hasPhone = enabledFeatures.includes(AccountFeature.PhoneIntegration)
+    const hasHelpCenter =
+        enableHardCodedFeatures ||
+        ['free', 'free-gorgias-internal'].includes(planId)
 
     return [
         {
@@ -73,9 +76,9 @@ const getCommonPlanCardFeatures = ({
             ),
         },
         {
-            label: <HelpCenterLabel disabled={!enableHardCodedFeatures} />,
+            label: <HelpCenterLabel disabled={!hasHelpCenter} />,
             icon: <PlanFeatureMaterialIcon icon="web_asset" />,
-            isDisabled: !enableHardCodedFeatures,
+            isDisabled: !hasHelpCenter,
         },
         planId === 'enterprise' || planName === 'Advanced'
             ? {

@@ -12,6 +12,7 @@ import {
     proLegacyPlan,
     proPlan,
 } from '../../../../fixtures/subscriptionPlan'
+import {billingState} from '../../../../fixtures/billing'
 
 import withLegacyPlanPaywall from '../withLegacyPlanPaywall'
 
@@ -26,7 +27,7 @@ const CustomPaywallComponent = () => (
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('withLegacyPlanPaywall', () => {
-    it('should render the passed component when thus subscription is public', () => {
+    it('should render the passed component when the subscription is public', () => {
         const stateWithPublicPlan: Partial<RootState> = {
             currentAccount: fromJS({
                 current_subscription: fromJS({
@@ -38,6 +39,34 @@ describe('withLegacyPlanPaywall', () => {
                     [basicPlan.id]: basicPlan,
                     [proPlan.id]: proPlan,
                     [advancedPlan.id]: advancedPlan,
+                }),
+            }),
+        }
+        const PaywalledComponent = withLegacyPlanPaywall(
+            CustomPaywallComponent
+        )(AnyComponent)
+        const {container} = render(
+            <Provider store={mockStore(stateWithPublicPlan)}>
+                <PaywalledComponent />
+            </Provider>
+        )
+
+        expect(container).toMatchSnapshot()
+    })
+
+    it('should render the passed component when the subscription is internal', () => {
+        const stateWithPublicPlan: Partial<RootState> = {
+            currentAccount: fromJS({
+                current_subscription: fromJS({
+                    plan: 'free',
+                }),
+            }),
+            billing: fromJS({
+                plans: fromJS({
+                    [basicPlan.id]: basicPlan,
+                    [proPlan.id]: proPlan,
+                    [advancedPlan.id]: advancedPlan,
+                    free: billingState.plans.free,
                 }),
             }),
         }
