@@ -110,7 +110,7 @@ export const CurrentHelpCenter = (): JSX.Element => {
                     // TODO: Remove this to release SSP in Help Center
                     !isProduction() && (
                         <Route
-                            path={`${path}/ssp`}
+                            path={`${path}/self-service`}
                             exact
                             component={HelpCenterSelfServiceView}
                         />

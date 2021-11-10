@@ -185,7 +185,7 @@ export default class SettingsNavbar extends Component<Props> {
                             }
 
                             const isActive =
-                                pathname.split('/').includes(to) ||
+                                pathname.startsWith(`/app/settings/${to}`) ||
                                 (/settings\/?$/.test(pathname) &&
                                     to === 'profile')
 

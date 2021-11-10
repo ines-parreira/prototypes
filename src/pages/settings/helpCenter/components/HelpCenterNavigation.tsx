@@ -49,7 +49,7 @@ export const HelpCenterNavigation: React.FC<Props> = ({
             <NavLink to={`${baseURL}/customization`} exact>
                 Customization
             </NavLink>
-            <NavLink to={`${baseURL}/ssp`} exact>
+            <NavLink to={`${baseURL}/self-service`} exact>
                 Self-service
             </NavLink>
             <NavLink to={`${baseURL}/installation`} exact>
