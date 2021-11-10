@@ -1464,8 +1464,32 @@ export const TIMES_BEFORE_SPLIT = [
  */
 export const DELAY_SURVEY_FOR = [
     {
+        value: 0,
+        label: 'Immediately',
+    },
+    {
+        value: 0.5,
+        label: '30 minutes',
+    },
+    {
+        value: 1,
+        label: '1 hour',
+    },
+    {
         value: 2,
         label: '2 hours',
+    },
+    {
+        value: 4,
+        label: '4 hours',
+    },
+    {
+        value: 6,
+        label: '6 hours',
+    },
+    {
+        value: 8,
+        label: '8 hours',
     },
     {
         value: daysToHours(1),

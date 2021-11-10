@@ -104,24 +104,60 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                 >
                                   <option
                                     key="0"
+                                    value={0}
+                                  >
+                                    Immediately
+                                  </option>
+                                  <option
+                                    key="1"
+                                    value={0.5}
+                                  >
+                                    30 minutes
+                                  </option>
+                                  <option
+                                    key="2"
+                                    value={1}
+                                  >
+                                    1 hour
+                                  </option>
+                                  <option
+                                    key="3"
                                     value={2}
                                   >
                                     2 hours
                                   </option>
                                   <option
-                                    key="1"
+                                    key="4"
+                                    value={4}
+                                  >
+                                    4 hours
+                                  </option>
+                                  <option
+                                    key="5"
+                                    value={6}
+                                  >
+                                    6 hours
+                                  </option>
+                                  <option
+                                    key="6"
+                                    value={8}
+                                  >
+                                    8 hours
+                                  </option>
+                                  <option
+                                    key="7"
                                     value={24}
                                   >
                                     1 day
                                   </option>
                                   <option
-                                    key="2"
+                                    key="8"
                                     value={48}
                                   >
                                     2 days
                                   </option>
                                   <option
-                                    key="3"
+                                    key="9"
                                     value={168}
                                   >
                                     7 days
