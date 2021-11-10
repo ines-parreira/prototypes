@@ -15,8 +15,8 @@ export enum PhoneCountry {
 }
 
 export enum PhoneFunction {
-    STANDARD = 'standard',
-    IVR = 'ivr',
+    Standard = 'standard',
+    Ivr = 'ivr',
 }
 
 export enum TwilioErrorCode {

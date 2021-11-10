@@ -62,7 +62,7 @@ export default function PhoneIntegrationPreferences({
         voicemailOutsideBusinessHours,
         setVoicemailOutsideBusinessHours,
     ] = useState(true)
-    const isIvr = integration.getIn(['meta', 'function']) === PhoneFunction.IVR
+    const isIvr = integration.getIn(['meta', 'function']) === PhoneFunction.Ivr
 
     const onSubmit = useCallback(
         async (event: React.FormEvent) => {

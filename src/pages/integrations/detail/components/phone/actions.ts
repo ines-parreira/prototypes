@@ -6,7 +6,10 @@ import {notify} from '../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {fetchIntegration} from '../../../../../state/integrations/actions'
 import * as constants from '../../../../../state/integrations/constants.js'
-import {IntegrationType} from '../../../../../models/integration/types'
+import {
+    IntegrationType,
+    PhoneIntegrationIvrSettings,
+} from '../../../../../models/integration/types'
 import client from '../../../../../models/api/resources'
 
 import {VoiceMailType} from './PhoneIntegrationVoicemail'
@@ -88,6 +91,42 @@ const updatePhoneVoiceMessageConfiguration = (
                         status: NotificationStatus.Success,
                         message:
                             'Voicemail configuration successfully updated.',
+                    })
+                )
+            },
+            (error: AxiosError) => {
+                return dispatch({
+                    type: constants.UPDATE_INTEGRATION_ERROR,
+                    error,
+                    verbose: true,
+                })
+            }
+        )
+}
+
+export const updatePhoneIvrConfiguration = (
+    payload: Partial<PhoneIntegrationIvrSettings>
+) => (
+    dispatch: StoreDispatch,
+    getState: () => RootState
+): Promise<ReturnType<StoreDispatch>> => {
+    const state = getState()
+    const integrationId = integrationSelectors
+        .getCurrentIntegration(state)
+        .get('id') as number
+
+    return client
+        .put(`/integrations/phone/${integrationId}/ivr/`, payload)
+        .then(
+            () => {
+                void fetchIntegration(
+                    integrationId.toString(),
+                    IntegrationType.Phone
+                )(dispatch)
+                return dispatch(
+                    notify({
+                        status: NotificationStatus.Success,
+                        message: 'IVR configuration successfully updated.',
                     })
                 )
             },

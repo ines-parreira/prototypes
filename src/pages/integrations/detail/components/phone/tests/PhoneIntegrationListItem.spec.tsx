@@ -35,7 +35,7 @@ describe('<PhoneIntegrationListItem/>', () => {
         it('should render with IVR badge', () => {
             integration = integration.setIn(
                 ['meta', 'function'],
-                PhoneFunction.IVR
+                PhoneFunction.Ivr
             )
 
             const {container} = render(

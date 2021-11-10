@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<VoiceMessageField /> should render 1`] = `
+<div
+  class="mb-3 form-check"
+>
+  <label
+    class="form-check-label"
+  >
+    <input
+      class="form-check-input"
+      type="radio"
+    />
+    <strong
+      class="ml-1"
+    >
+      Insert Voice Recording
+    </strong>
+  </label>
+</div>
+`;

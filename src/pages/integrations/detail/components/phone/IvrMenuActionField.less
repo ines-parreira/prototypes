@@ -1,0 +1,47 @@
+@import '~css/new/colorTokens.less';
+
+:local {
+    .digit {
+        display: block;
+        background-color: @modern-neutral-neutral-2;
+        border: 1px solid @modern-neutral-neutral-3;
+        border-radius: 4px;
+        width: 32px;
+        height: 32px;
+        line-height: 32px;
+        font-size: 14px;
+        text-align: center;
+        font-weight: 500;
+    }
+
+    .row {
+        margin-top: 16px;
+        margin-bottom: 16px;
+        > div {
+            padding-right: 0px;
+        }
+    }
+
+    .smallColumn {
+        width: 52px;
+        max-width: 50px !important;
+    }
+
+    .deleteButton {
+        i {
+            font-size: 20px;
+            color: @modern-feedback-error-3;
+        }
+    }
+
+    .drawerContent {
+        background-color: white;
+    }
+
+    .closeDrawerButton {
+        i {
+            color: @modern-neutral-neutral-6;
+            font-size: 18px;
+        }
+    }
+}

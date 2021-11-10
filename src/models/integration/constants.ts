@@ -19,6 +19,18 @@ export enum IntegrationType {
     Twitter = 'twitter',
 }
 
+export enum VoiceMessageType {
+    VoiceRecording = 'voice_recording',
+    TextToSpeech = 'text_to_speech',
+    None = 'none',
+}
+
+export enum IvrMenuActionType {
+    ForwardToExternalNumber = 'forward_to_external_number',
+    ForwardToGorgiasNumber = 'forward_to_gorgias_number',
+    PlayMessage = 'play_message',
+}
+
 export const MESSAGING_INTEGRATION_TYPES = Object.freeze([
     IntegrationType.Email,
     IntegrationType.Outlook,
@@ -31,3 +43,9 @@ export const MESSAGING_INTEGRATION_TYPES = Object.freeze([
     IntegrationType.Phone,
     IntegrationType.Twitter,
 ])
+
+export const DEFAULT_VOICE_MESSAGE = {
+    voice_message_type: VoiceMessageType.TextToSpeech,
+    text_to_speech_content:
+        "Hello, unfortunately we aren't able to take your call right now. Please call us back later. Thank you!",
+}

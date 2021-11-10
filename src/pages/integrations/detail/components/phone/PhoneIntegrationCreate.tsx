@@ -17,7 +17,10 @@ import {
 
 import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
 import PageHeader from '../../../../common/components/PageHeader'
-import {IntegrationType} from '../../../../../models/integration/types'
+import {
+    IntegrationType,
+    VoiceMessageType,
+} from '../../../../../models/integration/types'
 import EmojiTextInput from '../../../../common/forms/EmojiTextInput/EmojiTextInput'
 import SelectField from '../../../../common/forms/SelectField/SelectField'
 import type {Option} from '../../../../common/forms/SelectField/types'
@@ -35,7 +38,6 @@ import rawCaAreaCodeOptions from './options/area-codes/ca.json'
 import rawUsAreaCodeOptions from './options/area-codes/us.json'
 import rawTollFreeAreaCodeOptions from './options/area-codes/toll-free.json'
 
-import {VoiceMailType} from './PhoneIntegrationVoicemail'
 import {GreetingMessageType} from './PhoneIntegrationGreetingMessage'
 
 interface StateOptions {
@@ -69,7 +71,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
     const [error, setError] = useState<Error | null>(null)
     const [title, setTitle] = useState('')
     const [emoji, setEmoji] = useState<string | null>(null)
-    const [phoneFunction, setPhoneFunction] = useState(PhoneFunction.STANDARD)
+    const [phoneFunction, setPhoneFunction] = useState(PhoneFunction.Standard)
     const [country, setCountry] = useState('')
     const [phoneType, setPhoneType] = useState('')
     const [state, setState] = useState('')
@@ -134,7 +136,8 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                                 record_outbound_calls: false,
                             },
                             voicemail: {
-                                voice_message_type: VoiceMailType.TextToSpeech,
+                                voice_message_type:
+                                    VoiceMessageType.TextToSpeech,
                                 voice_recording_file_path: null,
                                 text_to_speech_content: DEFAULT_TEXT_TO_SPEECH_CONTENT,
                                 allow_to_leave_voicemail: true,
@@ -248,7 +251,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                                     onEmojiChange={setEmoji}
                                 />
                             </FormGroup>
-                            <FormGroup className="d-none">
+                            <FormGroup>
                                 <Label
                                     htmlFor="phoneFunction"
                                     className="control-label"

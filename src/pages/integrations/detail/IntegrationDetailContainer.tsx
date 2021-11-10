@@ -87,6 +87,7 @@ import PhoneIntegrationCreate from './components/phone/PhoneIntegrationCreate'
 import PhoneIntegrationPreferences from './components/phone/PhoneIntegrationPreferences'
 import PhoneIntegrationVoicemail from './components/phone/PhoneIntegrationVoicemail'
 import PhoneIntegrationGreetingMessage from './components/phone/PhoneIntegrationGreetingMessage'
+import PhoneIntegrationIvr from './components/phone/PhoneIntegrationIvr'
 
 import TwitterIntegrationDetail from './components/twitter/TwitterIntegrationDetail'
 import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
@@ -106,6 +107,7 @@ export enum Tab {
     Campaigns = 'campaigns',
     PhoneVoicemail = 'voicemail',
     PhoneGreetingMessage = 'greeting-message',
+    PhoneIvr = 'ivr',
     SmoochInsideMigration = 'migration',
 }
 
@@ -450,6 +452,12 @@ export const IntegrationDetailContainer = ({
                         <PhoneIntegrationGreetingMessage
                             integration={integration}
                         />
+                    )
+                }
+
+                if (extra === Tab.PhoneIvr) {
+                    return (
+                        <PhoneIntegrationIvr integration={integration.toJS()} />
                     )
                 }
             }

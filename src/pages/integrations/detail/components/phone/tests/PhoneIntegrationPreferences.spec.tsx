@@ -19,7 +19,7 @@ describe('<PhoneIntegrationPreferences/>', () => {
             name: 'Fake phone integration',
             meta: {
                 emoji: '🍏',
-                function: PhoneFunction.STANDARD,
+                function: PhoneFunction.Standard,
                 twilio: {
                     incoming_phone_number: {
                         friendly_name: '(415) 111-2222',
@@ -59,7 +59,7 @@ describe('<PhoneIntegrationPreferences/>', () => {
         it('should render with IVR integration', () => {
             integration = integration.setIn(
                 ['meta', 'function'],
-                PhoneFunction.IVR
+                PhoneFunction.Ivr
             )
 
             const {container} = render(

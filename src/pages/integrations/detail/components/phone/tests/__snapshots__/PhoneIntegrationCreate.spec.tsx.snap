@@ -106,7 +106,7 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
             </div>
           </div>
           <div
-            class="d-none form-group"
+            class="form-group"
           >
             <label
               class="control-label"
@@ -478,7 +478,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when IVR function is s
             </div>
           </div>
           <div
-            class="d-none form-group"
+            class="form-group"
           >
             <label
               class="control-label"
@@ -851,7 +851,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
             </div>
           </div>
           <div
-            class="d-none form-group"
+            class="form-group"
           >
             <label
               class="control-label"
@@ -1756,7 +1756,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when type "Toll-free" 
             </div>
           </div>
           <div
-            class="d-none form-group"
+            class="form-group"
           >
             <label
               class="control-label"

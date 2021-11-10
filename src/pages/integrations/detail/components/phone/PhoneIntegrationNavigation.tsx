@@ -4,6 +4,7 @@ import {Map} from 'immutable'
 
 import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar'
 import {IntegrationType} from '../../../../../models/integration/types'
+import {PhoneFunction} from '../../../../../business/twilio'
 
 type Props = {
     integration: Map<string, any>
@@ -15,6 +16,8 @@ export default function PhoneIntegrationNavigation({
     const integrationId: number = integration.get('id')
     const baseURL = `/app/settings/integrations/${IntegrationType.Phone}/${integrationId}`
 
+    const isIvr = integration.getIn(['meta', 'function']) === PhoneFunction.Ivr
+
     return (
         <SecondaryNavbar>
             <NavLink to={`${baseURL}/preferences`} exact>
@@ -23,9 +26,16 @@ export default function PhoneIntegrationNavigation({
             <NavLink to={`${baseURL}/voicemail`} exact>
                 Voicemail
             </NavLink>
-            <NavLink to={`${baseURL}/greeting-message`} exact>
-                Greeting Message
-            </NavLink>
+            {!isIvr && (
+                <NavLink to={`${baseURL}/greeting-message`} exact>
+                    Greeting Message
+                </NavLink>
+            )}
+            {isIvr && (
+                <NavLink to={`${baseURL}/ivr`} exact>
+                    IVR
+                </NavLink>
+            )}
         </SecondaryNavbar>
     )
 }

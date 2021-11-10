@@ -19,7 +19,11 @@ import type {TwitterIntegration} from './twitter'
 
 export type {IntegrationDecoration} from './base'
 
-export {IntegrationType} from '../constants'
+export {
+    IntegrationType,
+    VoiceMessageType,
+    IvrMenuActionType,
+} from '../constants'
 
 export * from './misc'
 export * from './email'

@@ -1,0 +1,120 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<IvrMenuActionsFieldArray /> should render 1`] = `
+<div>
+  <h5>
+    Menu options
+  </h5>
+  <div>
+    <div
+      class="row row"
+    >
+      <div
+        class="smallColumn pr-0 col"
+      >
+        <span
+          class="digit"
+        >
+          1
+        </span>
+      </div>
+      <div
+        class="pr-0 pl-2 col"
+      >
+        <div>
+          <div
+            class="dropdown"
+          >
+            <div
+              aria-expanded="false"
+              aria-haspopup="true"
+              class=""
+              data-toggle="dropdown"
+            >
+              <div
+                class="select dropdown-toggle selectFullWidth"
+              >
+                <span
+                  class="label"
+                  style="min-width: 10px; opacity: 1;"
+                >
+                  Forward call to external number
+                </span>
+                <input
+                  autocomplete="chrome-off"
+                  class="input"
+                  style="min-width: 10px;"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              aria-hidden="true"
+              class="options optionsFullWidth dropdown-menu"
+              role="menu"
+              tabindex="-1"
+            >
+              
+              <button
+                class="option option--focused dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  Forward call to Gorgias number
+                </span>
+              </button>
+              <button
+                class="option dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  Play message
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="pl-2 col"
+      >
+        <input
+          class="form-control"
+          type="text"
+          value="+123456789"
+        />
+      </div>
+      <div
+        class="smallColumn pl-0 col"
+      >
+        <button
+          class="deleteButton btn btn-link"
+          type="button"
+        >
+          <i
+            class="material-icons mr-2"
+          >
+            close
+          </i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <button
+    class="btn btn-secondary"
+    type="button"
+  >
+    <i
+      class="material-icons mr-2"
+    >
+      add
+    </i>
+    Add option
+  </button>
+</div>
+`;

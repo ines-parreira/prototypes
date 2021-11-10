@@ -340,9 +340,9 @@ exports[`<PhoneIntegrationPreferences/> render() should render with IVR integrat
     <a
       activeclassname="active"
       class="link"
-      to="/app/settings/integrations/phone/1/greeting-message"
+      to="/app/settings/integrations/phone/1/ivr"
     >
-      Greeting Message
+      IVR
     </a>
   </nav>
   <div
