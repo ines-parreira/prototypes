@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useLayoutEffect} from 'react'
 import {RouteComponentProps, withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {Map} from 'immutable'
@@ -30,11 +30,13 @@ export const EmailDomainVerificationContainer = (props: Props) => {
     const address = integration.getIn(['meta', 'address'], '') as string
     const domain = address.substr(address.lastIndexOf('@') + 1)
 
-    useEffect(() => {
-        void actions.fetchEmailDomain(domain)
-    }, [])
+    useLayoutEffect(() => {
+        if (domain) {
+            void actions.fetchEmailDomain(domain)
+        }
+    }, [domain])
 
-    if (loading.get('emailDomain')) {
+    if (loading.get('integration') || loading.get('emailDomain')) {
         return <Loader />
     }
 

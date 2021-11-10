@@ -8,7 +8,12 @@ import {EmailDomainVerificationContainer} from '../EmailDomainVerification.tsx'
 
 describe('<EmailDomainVerificationContainer/>', () => {
     const commonProps = {
-        integration: fromJS({id: 1}),
+        integration: fromJS({
+            id: 1,
+            meta: {
+                address: 'test@gorgias.com',
+            },
+        }),
         integrationId: 1,
 
         loading: fromJS({}),
@@ -73,5 +78,13 @@ describe('<EmailDomainVerificationContainer/>', () => {
                 expect(container).toMatchSnapshot()
             }
         )
+
+        it('should load the domain when none is provided', () => {
+            render(<EmailDomainVerificationContainer {...commonProps} />)
+
+            expect(commonProps.actions.fetchEmailDomain).toHaveBeenCalledWith(
+                'gorgias.com'
+            )
+        })
     })
 })
