@@ -1,5 +1,5 @@
 import React from 'react'
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, render, waitFor} from '@testing-library/react'
 
 import InfiniteScroll from '../InfiniteScroll.tsx'
 
@@ -110,5 +110,15 @@ describe('InfiniteScroll component', () => {
 
         fireEvent.scroll(container.firstChild, {target: {scrollTop: 50}})
         expect(load).not.toBeCalled()
+    })
+
+    it('should call onLoad when is able to load more', async () => {
+        const props = {onLoad: jest.fn(), shouldLoadMore: true, threshold: 100}
+        const {rerender} = render(<InfiniteScroll {...props} />)
+
+        await waitFor(() => expect(props.onLoad).toHaveBeenCalledTimes(1))
+        rerender(<InfiniteScroll {...props} shouldLoadMore={false} />)
+        rerender(<InfiniteScroll {...props} />)
+        await waitFor(() => expect(props.onLoad).toHaveBeenCalledTimes(2))
     })
 })

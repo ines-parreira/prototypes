@@ -370,22 +370,9 @@ exports[`<StatsFilters /> should display the page 1`] = `
             class="content"
           >
             <div
-              class="component infiniteScroll"
-            >
-              <div
-                class="container loader"
-              >
-                <div
-                  class="inner"
-                  style="min-height: 0;"
-                >
-                  <i
-                    class="icon-custom icon-circle-o-notch md-spin"
-                    style="font-size: 40px;"
-                  />
-                </div>
-              </div>
-            </div>
+              class="infiniteScroll"
+              data-testid="infinite-container"
+            />
           </div>
         </div>
       </div>

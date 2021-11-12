@@ -50,7 +50,7 @@ const InfiniteScroll = ({
 
     useEffect(() => {
         void handleLoad()
-    }, [handleLoad])
+    }, [shouldLoadMore])
 
     return (
         <div

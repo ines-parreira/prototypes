@@ -262,7 +262,7 @@ export const StatsFiltersContainer = ({
                     >
                         <InfiniteScroll
                             className={css.infiniteScroll}
-                            onLoad={handleFetchTags}
+                            onLoad={() => handleFetchTags(tagSearch)}
                             shouldLoadMore={
                                 pagination.page < pagination.nbPages
                             }

@@ -11,9 +11,24 @@ import {StatsFiltersContainer} from '../DEPRECATED_StatsFilters'
 import {fetchTags} from '../../../models/tag/resources'
 import {TagSortableProperties} from '../../../models/tag/types'
 import {OrderDirection} from '../../../models/api/types'
+import InfiniteScroll from '../../common/components/InfiniteScroll/InfiniteScroll'
 
 jest.mock('../common/PeriodPicker', () => () => 'PeriodPicker')
 jest.mock('../../../models/tag/resources')
+jest.mock('../../common/components/InfiniteScroll/InfiniteScroll')
+;(InfiniteScroll as jest.MockedFunction<
+    typeof InfiniteScroll
+>).mockImplementation(
+    ({onLoad, ...others}: ComponentProps<typeof InfiniteScroll>) => {
+        return (
+            <div
+                {...others}
+                onClick={onLoad}
+                data-testid="infinite-container"
+            />
+        )
+    }
+)
 
 const fetchTagsMock = fetchTags as jest.MockedFunction<typeof fetchTags>
 
@@ -109,6 +124,32 @@ describe('<StatsFilters />', () => {
                     search: 'bar',
                 },
                 expect.anything()
+            )
+        })
+
+        it('should fetch tags on scroll', async () => {
+            const {getByPlaceholderText, getByTestId} = render(
+                <StatsFiltersContainer {...minProps} />
+            )
+
+            fireEvent.change(getByPlaceholderText('Search tags...'), {
+                target: {value: 'foo'},
+            })
+            act(() => {
+                jest.runAllTimers()
+            })
+            fireEvent.click(getByTestId('infinite-container'))
+
+            await waitFor(() =>
+                expect(fetchTags).toHaveBeenLastCalledWith(
+                    {
+                        orderBy: TagSortableProperties.Name,
+                        orderDir: OrderDirection.Asc,
+                        page: 1,
+                        search: 'foo',
+                    },
+                    expect.any(Object)
+                )
             )
         })
     })
