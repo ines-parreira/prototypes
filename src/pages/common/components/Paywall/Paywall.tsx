@@ -173,6 +173,7 @@ const Paywall = ({feature, paywallConfigs = defaultPaywallConfigs}: Props) => {
                                                 <div
                                                     className={classnames(
                                                         'd-flex',
+                                                        'align-items-center',
                                                         css.author
                                                     )}
                                                 >

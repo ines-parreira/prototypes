@@ -67,7 +67,7 @@ exports[`<Paywall /> should ask to upgrade custom plan when missing feature 1`] 
                 Testimonial text
               </p>
               <div
-                class="d-flex author"
+                class="d-flex align-items-center author"
               >
                 <img
                   alt="avatar"
@@ -202,7 +202,7 @@ exports[`<Paywall /> should ask to upgrade legacy plan into new plan 1`] = `
                 Testimonial text
               </p>
               <div
-                class="d-flex author"
+                class="d-flex align-items-center author"
               >
                 <img
                   alt="avatar"
@@ -331,7 +331,7 @@ exports[`<Paywall /> should render a page header for the feature with a page hea
                 Testimonial text
               </p>
               <div
-                class="d-flex author"
+                class="d-flex align-items-center author"
               >
                 <img
                   alt="avatar"
@@ -459,7 +459,7 @@ exports[`<Paywall /> should render lightbox for the feature with a preview 1`] =
                 Testimonial text
               </p>
               <div
-                class="d-flex author"
+                class="d-flex align-items-center author"
               >
                 <img
                   alt="avatar"
@@ -595,7 +595,7 @@ exports[`<Paywall /> should render paywall screen for the feature 1`] = `
                 Testimonial text
               </p>
               <div
-                class="d-flex author"
+                class="d-flex align-items-center author"
               >
                 <img
                   alt="avatar"

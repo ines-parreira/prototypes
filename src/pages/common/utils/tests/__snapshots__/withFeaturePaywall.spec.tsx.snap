@@ -70,7 +70,7 @@ exports[`withFeaturePaywall should not render the passed component when the feat
                   At Shinesty, our agents convert visitors into customers by using pre-sell questions sent via chat campaigns. I see the concrete results of our actions thanks to Revenue Statistics.
                 </p>
                 <div
-                  class="d-flex author"
+                  class="d-flex align-items-center author"
                 >
                   <img
                     alt="avatar"
@@ -219,7 +219,7 @@ exports[`withFeaturePaywall should pass custom paywall configuration props 1`] =
                   At Shinesty, our agents convert visitors into customers by using pre-sell questions sent via chat campaigns. I see the concrete results of our actions thanks to Revenue Statistics.
                 </p>
                 <div
-                  class="d-flex author"
+                  class="d-flex align-items-center author"
                 >
                   <img
                     alt="avatar"
