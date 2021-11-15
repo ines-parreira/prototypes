@@ -1,0 +1,165 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Alert /> should render an alert with a close icon when onClose prop is passed  1`] = `
+<div
+  class="alert info closable"
+>
+  <div
+    class="content"
+  >
+    <span
+      class="label"
+    >
+      This is an alert!
+    </span>
+  </div>
+  <div
+    class="close"
+    data-testid="close-trigger"
+  />
+</div>
+`;
+
+exports[`<Alert /> should render an alert with a message with a default info type without icon 1`] = `
+<div
+  class="alert info"
+>
+  <div
+    class="content"
+  >
+    <span
+      class="label"
+    >
+      This is an alert!
+    </span>
+  </div>
+</div>
+`;
+
+exports[`<Alert /> should render an alert with an icon when showIcon prop is passed 1`] = `
+<div
+  class="alert info"
+>
+  <img
+    alt="icon"
+    class="icon"
+    src="test-file-stub"
+  />
+  <div
+    class="content"
+  >
+    <span
+      class="label"
+    >
+      This is an alert!
+    </span>
+  </div>
+</div>
+`;
+
+exports[`<Alert /> should render an alert with custom actions 1`] = `
+<div
+  class="alert info"
+>
+  <div
+    class="content"
+  >
+    <span
+      class="label"
+    >
+      This is an alert!
+    </span>
+    <div
+      class="customActions"
+    >
+      <button>
+        Click this !
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Alert /> should render icon for error alert type 1`] = `
+<div
+  class="alert error"
+>
+  <img
+    alt="icon"
+    class="icon"
+    src="test-file-stub"
+  />
+  <div
+    class="content"
+  >
+    <span
+      class="label"
+    >
+      This is an alert!
+    </span>
+  </div>
+</div>
+`;
+
+exports[`<Alert /> should render icon for info alert type 1`] = `
+<div
+  class="alert info"
+>
+  <img
+    alt="icon"
+    class="icon"
+    src="test-file-stub"
+  />
+  <div
+    class="content"
+  >
+    <span
+      class="label"
+    >
+      This is an alert!
+    </span>
+  </div>
+</div>
+`;
+
+exports[`<Alert /> should render icon for success alert type 1`] = `
+<div
+  class="alert success"
+>
+  <img
+    alt="icon"
+    class="icon"
+    src="test-file-stub"
+  />
+  <div
+    class="content"
+  >
+    <span
+      class="label"
+    >
+      This is an alert!
+    </span>
+  </div>
+</div>
+`;
+
+exports[`<Alert /> should render icon for warning alert type 1`] = `
+<div
+  class="alert warning"
+>
+  <img
+    alt="icon"
+    class="icon"
+    src="test-file-stub"
+  />
+  <div
+    class="content"
+  >
+    <span
+      class="label"
+    >
+      This is an alert!
+    </span>
+  </div>
+</div>
+`;

@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LinkAlert /> should render an alert with with an action label 1`] = `
+<div
+  class="alert info"
+>
+  <div
+    class="content"
+  >
+    <span
+      class="label"
+    >
+      This is an alert!
+    </span>
+    <div
+      class="customActions"
+    >
+      <a
+        class="actionLink"
+        to="#"
+      >
+        Click here !
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<LinkAlert /> should render an alert with with an external link 1`] = `
+<div
+  class="alert info"
+>
+  <div
+    class="content"
+  >
+    <span
+      class="label"
+    >
+      This is an alert!
+    </span>
+    <div
+      class="customActions"
+    >
+      <a
+        class="actionLink"
+        href="https://www.gorgias.com"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Click here !
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<LinkAlert /> should render an alert with with an internal route 1`] = `
+<div
+  class="alert info"
+>
+  <div
+    class="content"
+  >
+    <span
+      class="label"
+    >
+      This is an alert!
+    </span>
+    <div
+      class="customActions"
+    >
+      <a
+        class="actionLink"
+        to="/app/settings/profile"
+      >
+        Click here !
+      </a>
+    </div>
+  </div>
+</div>
+`;
