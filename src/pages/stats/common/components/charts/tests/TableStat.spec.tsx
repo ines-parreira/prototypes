@@ -48,6 +48,23 @@ const tableStatData = fromJS({
                 },
                 {name: 'Online time', type: StatValueType.OnlineTime},
                 {name: 'Ticket details', type: StatValueType.TicketDetails},
+                {name: 'Customer link', type: StatValueType.CustomerLink},
+                {
+                    name: 'Customer link - null',
+                    type: StatValueType.CustomerLink,
+                },
+                {
+                    name: 'Satisfaction survey link',
+                    type: StatValueType.SatisfactionSurveyLink,
+                },
+                {
+                    name: 'Satisfaction survey link - null',
+                    type: StatValueType.SatisfactionSurveyLink,
+                },
+                {
+                    name: 'Satisfaction survey link - empty space comment',
+                    type: StatValueType.SatisfactionSurveyLink,
+                },
             ],
         },
         lines: [
@@ -116,6 +133,31 @@ const tableStatData = fromJS({
                         twitter: 10,
                         'yotpo-review': 10,
                     },
+                },
+                {
+                    type: StatValueType.CustomerLink,
+                    customer_id: 1,
+                    customer_name: 'John Doe',
+                },
+                {
+                    type: StatValueType.CustomerLink,
+                    customer_id: 1,
+                    customer_name: null,
+                },
+                {
+                    comment: 'Foo',
+                    ticket_id: 1,
+                    type: StatValueType.SatisfactionSurveyLink,
+                },
+                {
+                    comment: null,
+                    ticket_id: 1,
+                    type: StatValueType.SatisfactionSurveyLink,
+                },
+                {
+                    comment: '     ',
+                    ticket_id: 1,
+                    type: StatValueType.SatisfactionSurveyLink,
                 },
             ],
         ],

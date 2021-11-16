@@ -2,6 +2,7 @@ import {Map, List} from 'immutable'
 import React, {Component, ReactText} from 'react'
 import moment from 'moment-timezone'
 import _isFunction from 'lodash/isFunction'
+import _trim from 'lodash/trim'
 import _truncate from 'lodash/truncate'
 import {Table} from 'reactstrap'
 import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
@@ -244,7 +245,7 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
                             metric.get('customer_id') as string
                         }`}
                     >
-                        {metric.get('customer_name')}
+                        {metric.get('customer_name') || 'Go to customer'}
                     </Link>
                 )
             }
@@ -255,9 +256,12 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
                             metric.get('ticket_id') as string
                         }#satisfactionSurvey`}
                     >
-                        {_truncate(metric.get('comment') || 'Go to ticket', {
-                            length: SATISFACTION_SURVEY_MAX_COMMENT_LENGTH,
-                        })}
+                        {_truncate(
+                            _trim(metric.get('comment')) || 'Go to ticket',
+                            {
+                                length: SATISFACTION_SURVEY_MAX_COMMENT_LENGTH,
+                            }
+                        )}
                     </Link>
                 )
             }

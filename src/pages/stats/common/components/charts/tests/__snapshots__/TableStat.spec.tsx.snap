@@ -109,6 +109,56 @@ exports[`TableStat should render a table chart 1`] = `
           TICKET DETAILS
         </span>
       </th>
+      <th
+        className="customer-link"
+        key="10"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          CUSTOMER LINK
+        </span>
+      </th>
+      <th
+        className="customer-link"
+        key="11"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          CUSTOMER LINK - NULL
+        </span>
+      </th>
+      <th
+        className="satisfaction-survey-link"
+        key="12"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          SATISFACTION SURVEY LINK
+        </span>
+      </th>
+      <th
+        className="satisfaction-survey-link"
+        key="13"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          SATISFACTION SURVEY LINK - NULL
+        </span>
+      </th>
+      <th
+        className="satisfaction-survey-link"
+        key="14"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          SATISFACTION SURVEY LINK - EMPTY SPACE COMMENT
+        </span>
+      </th>
     </tr>
   </thead>
   <tbody>
@@ -289,6 +339,76 @@ exports[`TableStat should render a table chart 1`] = `
             }
             openTickets={51}
           />
+        </span>
+      </td>
+      <td
+        className="lineCell customer-link"
+        key="10"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          <Link
+            to="/app/customer/1"
+          >
+            John Doe
+          </Link>
+        </span>
+      </td>
+      <td
+        className="lineCell customer-link"
+        key="11"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          <Link
+            to="/app/customer/1"
+          >
+            Go to customer
+          </Link>
+        </span>
+      </td>
+      <td
+        className="lineCell satisfaction-survey-link"
+        key="12"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          <Link
+            to="/app/ticket/1#satisfactionSurvey"
+          >
+            Foo
+          </Link>
+        </span>
+      </td>
+      <td
+        className="lineCell satisfaction-survey-link"
+        key="13"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          <Link
+            to="/app/ticket/1#satisfactionSurvey"
+          >
+            Go to ticket
+          </Link>
+        </span>
+      </td>
+      <td
+        className="lineCell satisfaction-survey-link"
+        key="14"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          <Link
+            to="/app/ticket/1#satisfactionSurvey"
+          >
+            Go to ticket
+          </Link>
         </span>
       </td>
     </tr>
