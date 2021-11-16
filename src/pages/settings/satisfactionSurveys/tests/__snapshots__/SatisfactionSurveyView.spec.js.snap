@@ -106,7 +106,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                     key="0"
                                     value={0}
                                   >
-                                    Immediately
+                                    5 minutes
                                   </option>
                                   <option
                                     key="1"

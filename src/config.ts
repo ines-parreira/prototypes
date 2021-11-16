@@ -1465,7 +1465,7 @@ export const TIMES_BEFORE_SPLIT = [
 export const DELAY_SURVEY_FOR = [
     {
         value: 0,
-        label: 'Immediately',
+        label: '5 minutes',
     },
     {
         value: 0.5,
