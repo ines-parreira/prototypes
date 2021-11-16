@@ -13,6 +13,8 @@ import {
     Row,
 } from 'reactstrap'
 
+import {connect, ConnectedProps} from 'react-redux'
+
 import {
     deleteIntegration,
     updateOrCreateIntegration,
@@ -23,6 +25,9 @@ import BooleanField from '../../../../common/forms/BooleanField.js'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 
 import {IntegrationType} from '../../../../../models/integration/types'
+import {RootState} from '../../../../../state/types'
+
+import {getCurrentAccountState} from '../../../../../state/currentAccount/selectors'
 
 type Props = {
     integration: Map<string, any>
@@ -33,11 +38,12 @@ type Props = {
     redirectUri: string
 }
 
-export default function TwitterIntegrationDetail({
+export function TwitterIntegrationDetail({
     integration,
     actions,
     redirectUri,
-}: Props): JSX.Element {
+    currentAccount,
+}: Props & ConnectedProps<typeof connector>): JSX.Element {
     const [isInitialized, setIsInitialized] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [integrationName, setIntegrationName] = useState('')
@@ -46,7 +52,13 @@ export default function TwitterIntegrationDetail({
     const [integrationAbout, setIntegrationAbout] = useState('')
     const [tweetsRepliesEnabled, setTweetsRepliesEnabled] = useState(true)
     const [mentionsEnabled, setMentionsEnabled] = useState(true)
-    // const [directMessagesEnabled, setDirectMessagesEnabled] = useState(true)
+    const [directMessagesEnabled, setDirectMessagesEnabled] = useState(true)
+
+    const isShowingDirectMessageEnabled = [
+        'acme',
+        'test-martin',
+        'mehdi17091993',
+    ].includes(currentAccount.get('domain'))
 
     const onSubmit = useCallback(
         async (event: React.FormEvent) => {
@@ -61,7 +73,7 @@ export default function TwitterIntegrationDetail({
                             settings: {
                                 tweets_replies_enabled: tweetsRepliesEnabled,
                                 mentions_enabled: mentionsEnabled,
-                                // direct_messages_enabled: directMessagesEnabled,
+                                direct_messages_enabled: directMessagesEnabled,
                             },
                         },
                     })
@@ -78,7 +90,7 @@ export default function TwitterIntegrationDetail({
             setIsSubmitting,
             tweetsRepliesEnabled,
             mentionsEnabled,
-            // directMessagesEnabled,
+            directMessagesEnabled,
         ]
     )
 
@@ -112,10 +124,10 @@ export default function TwitterIntegrationDetail({
             ['meta', 'settings', 'mentions_enabled'],
             false
         )
-        // const directMessagesEnabled = integration.getIn(
-        //     ['meta', 'settings', 'direct_messages_enabled'],
-        //     false
-        // )
+        const directMessagesEnabled = integration.getIn(
+            ['meta', 'settings', 'direct_messages_enabled'],
+            false
+        )
 
         setIntegrationName(integrationName)
         setIntegrationDescription(integrationDescription)
@@ -123,7 +135,7 @@ export default function TwitterIntegrationDetail({
         setIntegrationAbout(integrationAbout)
         setTweetsRepliesEnabled(tweetsRepliesEnabled)
         setMentionsEnabled(mentionsEnabled)
-        // setDirectMessagesEnabled(directMessagesEnabled)
+        setDirectMessagesEnabled(directMessagesEnabled)
 
         setIsInitialized(true)
     }, [
@@ -136,7 +148,7 @@ export default function TwitterIntegrationDetail({
         setIntegrationAbout,
         setTweetsRepliesEnabled,
         setMentionsEnabled,
-        // setDirectMessagesEnabled,
+        setDirectMessagesEnabled,
     ])
 
     return (
@@ -209,14 +221,15 @@ export default function TwitterIntegrationDetail({
                                         value={mentionsEnabled}
                                         onChange={setMentionsEnabled}
                                     />
-                                    {/*TODO(@ionut): uncomment these when we release the features*/}
-                                    {/*<BooleanField*/}
-                                    {/*    name="direct_messages_enabled"*/}
-                                    {/*    type="checkbox"*/}
-                                    {/*    label="Enable Twitter direct messages"*/}
-                                    {/*    value={directMessagesEnabled}*/}
-                                    {/*    onChange={setDirectMessagesEnabled}*/}
-                                    {/*/>*/}
+                                    {isShowingDirectMessageEnabled && (
+                                        <BooleanField
+                                            name="direct_messages_enabled"
+                                            type="checkbox"
+                                            label="Enable Twitter direct messages"
+                                            value={directMessagesEnabled}
+                                            onChange={setDirectMessagesEnabled}
+                                        />
+                                    )}
                                 </FormGroup>
                                 <div>
                                     <Button
@@ -266,3 +279,9 @@ export default function TwitterIntegrationDetail({
         </div>
     )
 }
+// TODO: remove this before twitter dm goes live
+const connector = connect((state: RootState) => ({
+    currentAccount: getCurrentAccountState(state),
+}))
+
+export default connector(TwitterIntegrationDetail)

@@ -2,10 +2,18 @@ import React from 'react'
 import {render} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 
-import TwitterIntegrationDetail from '../TwitterIntegrationDetail'
+import {Provider} from 'react-redux'
+import {BrowserRouter} from 'react-router-dom'
+import thunk from 'redux-thunk'
+import configureMockStore from 'redux-mock-store'
+
 import {IntegrationType} from '../../../../../../models/integration/types'
+import TwitterIntegrationDetail from '../TwitterIntegrationDetail'
 
 describe('<TwitterIntegrationDetail/>', () => {
+    const middlewares = [thunk]
+    const mockStore = configureMockStore(middlewares)
+
     let updateOrCreateIntegration: jest.MockedFunction<any>
     let deleteIntegration: jest.MockedFunction<any>
     let integration: Map<string, any>
@@ -40,16 +48,30 @@ describe('<TwitterIntegrationDetail/>', () => {
     })
 
     describe('render()', () => {
-        it('should render', () => {
-            const {container} = render(
-                <TwitterIntegrationDetail
-                    integration={integration}
-                    actions={{updateOrCreateIntegration, deleteIntegration}}
-                    redirectUri="https://this-is-an-url.com"
-                />
-            )
+        it.each(['acme', 'test-martin', 'mehdi17091993', 'foo'])(
+            'should render',
+            (domainName) => {
+                const store = mockStore({
+                    currentAccount: fromJS({domain: domainName}),
+                })
 
-            expect(container.firstChild).toMatchSnapshot()
-        })
+                const {container} = render(
+                    <TwitterIntegrationDetail
+                        integration={integration}
+                        actions={{updateOrCreateIntegration, deleteIntegration}}
+                        redirectUri="https://this-is-an-url.com"
+                    />,
+                    {
+                        wrapper: (props) => (
+                            <Provider store={store}>
+                                <BrowserRouter>{props?.children}</BrowserRouter>
+                            </Provider>
+                        ),
+                    }
+                )
+
+                expect(container.firstChild).toMatchSnapshot()
+            }
+        )
     })
 })

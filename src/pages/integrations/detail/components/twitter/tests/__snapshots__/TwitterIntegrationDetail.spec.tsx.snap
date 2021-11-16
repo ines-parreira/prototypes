@@ -142,6 +142,615 @@ exports[`<TwitterIntegrationDetail/> render() should render 1`] = `
                   </span>
                 </label>
               </div>
+              <div
+                class="form-check"
+                color=""
+              >
+                <label
+                  class="control-label form-check-label"
+                  for="id-direct_messages_enabled"
+                >
+                  <input
+                    checked=""
+                    class="form-check-input form-check-input"
+                    id="id-direct_messages_enabled"
+                    type="checkbox"
+                  />
+                  <span
+                    style="vertical-align: middle;"
+                  >
+                    Enable Twitter direct messages
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div>
+              <button
+                class="mr-2 btn btn-success"
+                type="submit"
+              >
+                Save Changes
+              </button>
+              <button
+                class="btn btn-secondary"
+                type="button"
+              >
+                Reconnect
+              </button>
+              <div
+                class="component d-inline-block float-right"
+                id=""
+              >
+                <button
+                  class="btn btn-secondary"
+                  id="confirm-button-1615240000000"
+                  type="button"
+                >
+                  <i
+                    class="material-icons mr-1 text-danger"
+                  >
+                    delete
+                  </i>
+                  Remove Twitter Account
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<TwitterIntegrationDetail/> render() should render 2`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/twitter"
+          >
+            Twitter
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Fake twitter integration
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="page-container container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-md-7"
+      >
+        <div
+          class="row"
+        >
+          <div
+            class="col-md-1"
+          >
+            <div
+              class="d-flex align-items-center mb-3"
+            >
+              <img
+                alt="twitter logo"
+                class="image rounded mr-3"
+                src="https://some-random-url.com/picture.jpeg"
+                width="48"
+              />
+            </div>
+          </div>
+          <div
+            class="col-md-11"
+          >
+            <div
+              class="text-faded"
+            >
+              <h2
+                class="d-inline mr-3 text-info"
+              >
+                Fake twitter integration
+              </h2>
+              <span
+                class="mr-3"
+              >
+                @faketwitterintegration
+              </span>
+              <p
+                class="mt-2"
+              >
+                Foo bar
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col-md-12"
+          >
+            <div
+              class="form-group"
+            >
+              <div
+                class="form-check"
+                color=""
+              >
+                <label
+                  class="control-label form-check-label"
+                  for="id-tweets_replies_enabled"
+                >
+                  <input
+                    checked=""
+                    class="form-check-input form-check-input"
+                    id="id-tweets_replies_enabled"
+                    type="checkbox"
+                  />
+                  <span
+                    style="vertical-align: middle;"
+                  >
+                    Enable replies to Tweets
+                  </span>
+                </label>
+              </div>
+              <div
+                class="form-check"
+                color=""
+              >
+                <label
+                  class="control-label form-check-label"
+                  for="id-mentions_enabled"
+                >
+                  <input
+                    checked=""
+                    class="form-check-input form-check-input"
+                    id="id-mentions_enabled"
+                    type="checkbox"
+                  />
+                  <span
+                    style="vertical-align: middle;"
+                  >
+                    Enable Twitter mentions
+                  </span>
+                </label>
+              </div>
+              <div
+                class="form-check"
+                color=""
+              >
+                <label
+                  class="control-label form-check-label"
+                  for="id-direct_messages_enabled"
+                >
+                  <input
+                    checked=""
+                    class="form-check-input form-check-input"
+                    id="id-direct_messages_enabled"
+                    type="checkbox"
+                  />
+                  <span
+                    style="vertical-align: middle;"
+                  >
+                    Enable Twitter direct messages
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div>
+              <button
+                class="mr-2 btn btn-success"
+                type="submit"
+              >
+                Save Changes
+              </button>
+              <button
+                class="btn btn-secondary"
+                type="button"
+              >
+                Reconnect
+              </button>
+              <div
+                class="component d-inline-block float-right"
+                id=""
+              >
+                <button
+                  class="btn btn-secondary"
+                  id="confirm-button-1615240000000"
+                  type="button"
+                >
+                  <i
+                    class="material-icons mr-1 text-danger"
+                  >
+                    delete
+                  </i>
+                  Remove Twitter Account
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<TwitterIntegrationDetail/> render() should render 3`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/twitter"
+          >
+            Twitter
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Fake twitter integration
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="page-container container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-md-7"
+      >
+        <div
+          class="row"
+        >
+          <div
+            class="col-md-1"
+          >
+            <div
+              class="d-flex align-items-center mb-3"
+            >
+              <img
+                alt="twitter logo"
+                class="image rounded mr-3"
+                src="https://some-random-url.com/picture.jpeg"
+                width="48"
+              />
+            </div>
+          </div>
+          <div
+            class="col-md-11"
+          >
+            <div
+              class="text-faded"
+            >
+              <h2
+                class="d-inline mr-3 text-info"
+              >
+                Fake twitter integration
+              </h2>
+              <span
+                class="mr-3"
+              >
+                @faketwitterintegration
+              </span>
+              <p
+                class="mt-2"
+              >
+                Foo bar
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col-md-12"
+          >
+            <div
+              class="form-group"
+            >
+              <div
+                class="form-check"
+                color=""
+              >
+                <label
+                  class="control-label form-check-label"
+                  for="id-tweets_replies_enabled"
+                >
+                  <input
+                    checked=""
+                    class="form-check-input form-check-input"
+                    id="id-tweets_replies_enabled"
+                    type="checkbox"
+                  />
+                  <span
+                    style="vertical-align: middle;"
+                  >
+                    Enable replies to Tweets
+                  </span>
+                </label>
+              </div>
+              <div
+                class="form-check"
+                color=""
+              >
+                <label
+                  class="control-label form-check-label"
+                  for="id-mentions_enabled"
+                >
+                  <input
+                    checked=""
+                    class="form-check-input form-check-input"
+                    id="id-mentions_enabled"
+                    type="checkbox"
+                  />
+                  <span
+                    style="vertical-align: middle;"
+                  >
+                    Enable Twitter mentions
+                  </span>
+                </label>
+              </div>
+              <div
+                class="form-check"
+                color=""
+              >
+                <label
+                  class="control-label form-check-label"
+                  for="id-direct_messages_enabled"
+                >
+                  <input
+                    checked=""
+                    class="form-check-input form-check-input"
+                    id="id-direct_messages_enabled"
+                    type="checkbox"
+                  />
+                  <span
+                    style="vertical-align: middle;"
+                  >
+                    Enable Twitter direct messages
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div>
+              <button
+                class="mr-2 btn btn-success"
+                type="submit"
+              >
+                Save Changes
+              </button>
+              <button
+                class="btn btn-secondary"
+                type="button"
+              >
+                Reconnect
+              </button>
+              <div
+                class="component d-inline-block float-right"
+                id=""
+              >
+                <button
+                  class="btn btn-secondary"
+                  id="confirm-button-1615240000000"
+                  type="button"
+                >
+                  <i
+                    class="material-icons mr-1 text-danger"
+                  >
+                    delete
+                  </i>
+                  Remove Twitter Account
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<TwitterIntegrationDetail/> render() should render 4`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/twitter"
+          >
+            Twitter
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Fake twitter integration
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="page-container container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-md-7"
+      >
+        <div
+          class="row"
+        >
+          <div
+            class="col-md-1"
+          >
+            <div
+              class="d-flex align-items-center mb-3"
+            >
+              <img
+                alt="twitter logo"
+                class="image rounded mr-3"
+                src="https://some-random-url.com/picture.jpeg"
+                width="48"
+              />
+            </div>
+          </div>
+          <div
+            class="col-md-11"
+          >
+            <div
+              class="text-faded"
+            >
+              <h2
+                class="d-inline mr-3 text-info"
+              >
+                Fake twitter integration
+              </h2>
+              <span
+                class="mr-3"
+              >
+                @faketwitterintegration
+              </span>
+              <p
+                class="mt-2"
+              >
+                Foo bar
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col-md-12"
+          >
+            <div
+              class="form-group"
+            >
+              <div
+                class="form-check"
+                color=""
+              >
+                <label
+                  class="control-label form-check-label"
+                  for="id-tweets_replies_enabled"
+                >
+                  <input
+                    checked=""
+                    class="form-check-input form-check-input"
+                    id="id-tweets_replies_enabled"
+                    type="checkbox"
+                  />
+                  <span
+                    style="vertical-align: middle;"
+                  >
+                    Enable replies to Tweets
+                  </span>
+                </label>
+              </div>
+              <div
+                class="form-check"
+                color=""
+              >
+                <label
+                  class="control-label form-check-label"
+                  for="id-mentions_enabled"
+                >
+                  <input
+                    checked=""
+                    class="form-check-input form-check-input"
+                    id="id-mentions_enabled"
+                    type="checkbox"
+                  />
+                  <span
+                    style="vertical-align: middle;"
+                  >
+                    Enable Twitter mentions
+                  </span>
+                </label>
+              </div>
             </div>
             <div>
               <button
