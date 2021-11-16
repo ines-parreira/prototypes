@@ -20,6 +20,7 @@ import {HelpCenterNavigation} from '../HelpCenterNavigation'
 import {PageContainer} from '../PageContainer'
 
 import {AvailableLanguagesTags} from './components/AvailableLanguagesTags'
+import {ChatApplication} from './components/ChatApplication'
 import {DefaultLanguageSelect} from './components/DefaultLanguageSelect'
 import {DisplayName} from './components/DisplayName'
 import {FooterActions} from './components/FooterActions'
@@ -80,6 +81,12 @@ export const HelpCenterPreferencesView: React.FC = () => {
                         <AvailableLanguagesTags availableLocales={locales} />
                     </section>
                     <SEO
+                        helpCenter={helpCenter}
+                        availableLocales={locales}
+                        viewLanguage={viewLanguage}
+                        onChangeLocale={handleOnChangeLocale}
+                    />
+                    <ChatApplication
                         helpCenter={helpCenter}
                         availableLocales={locales}
                         viewLanguage={viewLanguage}

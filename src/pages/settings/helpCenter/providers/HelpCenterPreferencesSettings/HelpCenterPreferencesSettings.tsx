@@ -120,11 +120,17 @@ export const HelpCenterPreferencesSettings = ({
 
         if (!translation) return false
 
-        return helpCenterSeoMetaFields.some(
+        const seoChanged = helpCenterSeoMetaFields.some(
             (key) =>
                 translation.seo_meta[key] !==
                 preferences.translation.seo_meta[key]
         )
+
+        const chatChanged =
+            translation.chat_application_id !==
+            preferences.translation.chat_application_id
+
+        return seoChanged || chatChanged
     }, [helpCenter, preferences])
 
     const areChangesValid = useMemo(() => !!preferences.name, [preferences])
@@ -133,7 +139,7 @@ export const HelpCenterPreferencesSettings = ({
         if (!client || !helpCenter) return
 
         try {
-            const {seo_meta} = preferences.translation
+            const {chat_application_id, seo_meta} = preferences.translation
 
             await client.updateHelpCenterTranslation(
                 {
@@ -145,6 +151,7 @@ export const HelpCenterPreferencesSettings = ({
                         title: seo_meta.title || null,
                         description: seo_meta.description || null,
                     },
+                    chat_application_id,
                 }
             )
 

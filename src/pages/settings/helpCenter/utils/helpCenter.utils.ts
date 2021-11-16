@@ -36,6 +36,7 @@ export const getNewHelpCenterTranslation = (
         title: null,
         description: null,
     },
+    chat_application_id: null,
 })
 
 export function slugify(value: string): string {
