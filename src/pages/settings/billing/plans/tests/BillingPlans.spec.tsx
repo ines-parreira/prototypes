@@ -165,7 +165,7 @@ describe('<BillingPlans/>', () => {
                 )
                 fireEvent.click(getByTestId('subscription-changed'))
                 expect(history.push).toHaveBeenLastCalledWith(
-                    '/app/settings/billing/add-credit-card'
+                    '/app/settings/billing/add-payment-method'
                 )
             })
         }

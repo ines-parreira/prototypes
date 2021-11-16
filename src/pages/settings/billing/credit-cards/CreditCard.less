@@ -1,6 +1,36 @@
+@import '~css/new/mixins';
+
 :local {
+    .container {
+        padding: 0 24px;
+    }
+
+    .paymentInformationColumn {
+        padding-right: 12px;
+    }
+
+    .planCardColumn {
+        padding-left: 12px;
+    }
+
     .planCardBody {
-        max-height: 550px;
+        max-height: 700px;
         overflow: auto;
+    }
+
+    .formColumn :global .control-label {
+        white-space: nowrap;
+    }
+
+    .formFooter {
+        margin-bottom: 24px;
+    }
+
+    .formRow {
+        margin: 0 -8px;
+    }
+
+    .formColumn {
+        padding: 0 8px;
     }
 }

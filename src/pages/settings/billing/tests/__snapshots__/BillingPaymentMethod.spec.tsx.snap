@@ -3,15 +3,106 @@
 exports[`BillingPaymentMethod Shopify should render a button 1`] = `
 <BillingPaymentMethodContainer
   creditCard={Immutable.Map {}}
+  currentAccountDomain="foo"
   currentPlan={
     Immutable.Map {
       "amount": 12,
       "currencySign": "$",
     }
   }
-  fetchCreditCard={[Function]}
-  fetchPaymentMethod={[Function]}
-  paymentIsActive={false}
+  currentUserId="1"
+  fetchCreditCard={
+    [MockFunction] {
+      "calls": Array [
+        Array [],
+        Array [],
+        Array [],
+        Array [],
+        Array [],
+        Array [],
+        Array [],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+      ],
+    }
+  }
+  fetchPaymentMethod={
+    [MockFunction] {
+      "calls": Array [
+        Array [],
+        Array [],
+        Array [],
+        Array [],
+        Array [],
+        Array [],
+        Array [],
+        Array [],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+      ],
+    }
+  }
+  isTrialing={false}
   paymentMethod="shopify"
   shopifyBillingStatus="inactive"
   subscription={
@@ -96,9 +187,11 @@ exports[`BillingPaymentMethod Shopify should render a button to reactivate billi
     <CardBody
       tag="div"
     >
-      <div>
+      <div
+        className="content"
+      >
         <i
-          className="material-icons text-warning md-2"
+          className="statusIcon material-icons text-warning md-2"
         >
           warning
         </i>
@@ -171,10 +264,71 @@ exports[`BillingPaymentMethod Shopify should render a disabled button 1`] = `
 exports[`BillingPaymentMethod Shopify should render an active status 1`] = `
 <BillingPaymentMethodContainer
   creditCard={Immutable.Map {}}
+  currentAccountDomain="foo"
   currentPlan={Immutable.Map {}}
-  fetchCreditCard={[Function]}
-  fetchPaymentMethod={[Function]}
-  paymentIsActive={true}
+  currentUserId="1"
+  fetchCreditCard={
+    [MockFunction] {
+      "calls": Array [
+        Array [],
+        Array [],
+        Array [],
+        Array [],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+      ],
+    }
+  }
+  fetchPaymentMethod={
+    [MockFunction] {
+      "calls": Array [
+        Array [],
+        Array [],
+        Array [],
+        Array [],
+        Array [],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+      ],
+    }
+  }
+  isTrialing={false}
   paymentMethod="shopify"
   shopifyBillingStatus="active"
   subscription={
@@ -206,17 +360,17 @@ exports[`BillingPaymentMethod Shopify should render an active status 1`] = `
           <div
             className="card-body"
           >
-            <p
-              className="mt-2 mb-2"
+            <div
+              className="content"
             >
               <i
-                className="material-icons text-success md-2"
+                className="statusIcon material-icons text-success md-2"
               >
                 check_circle
               </i>
                
               Payment with Shopify is active. You're all set.
-            </p>
+            </div>
           </div>
         </CardBody>
       </div>
@@ -228,11 +382,43 @@ exports[`BillingPaymentMethod Shopify should render an active status 1`] = `
 exports[`BillingPaymentMethod Stripe should render a button 1`] = `
 <BillingPaymentMethodContainer
   creditCard={Immutable.Map {}}
+  currentAccountDomain="foo"
   currentPlan={Immutable.Map {}}
-  fetchCreditCard={[Function]}
-  fetchPaymentMethod={[Function]}
-  paymentIsActive={true}
+  currentUserId="1"
+  fetchCreditCard={
+    [MockFunction] {
+      "calls": Array [
+        Array [],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+      ],
+    }
+  }
+  fetchPaymentMethod={
+    [MockFunction] {
+      "calls": Array [
+        Array [],
+        Array [],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+      ],
+    }
+  }
+  isTrialing={false}
   paymentMethod="stripe"
+  shopifyBillingStatus="inactive"
   subscription={
     Immutable.Map {
       "plan": "basic-usd-1",
@@ -278,6 +464,7 @@ exports[`BillingPaymentMethod Stripe should render a button 1`] = `
                 className="row"
               >
                 <Col
+                  className="content"
                   sm={4}
                   tag="div"
                   widths={
@@ -291,17 +478,9 @@ exports[`BillingPaymentMethod Stripe should render a button 1`] = `
                   }
                 >
                   <div
-                    className="col-sm-4"
+                    className="content col-sm-4"
                   >
-                    <div
-                      style={
-                        Object {
-                          "paddingTop": 8,
-                        }
-                      }
-                    >
-                      No credit card registered
-                    </div>
+                    No credit card registered
                   </div>
                 </Col>
                 <Col
@@ -327,7 +506,7 @@ exports[`BillingPaymentMethod Stripe should render a button 1`] = `
                     className="text-right col-sm-4 offset-sm-4"
                   >
                     <div
-                      id="add-credit-card-button"
+                      id="add-payment-method-button"
                       style={
                         Object {
                           "display": "inline-block",
@@ -338,23 +517,23 @@ exports[`BillingPaymentMethod Stripe should render a button 1`] = `
                         color="success"
                         disabled={false}
                         tag={[Function]}
-                        to="/app/settings/billing/add-credit-card"
+                        to="/app/settings/billing/add-payment-method"
                       >
                         <Link
                           aria-label={null}
                           className="btn btn-success"
                           disabled={false}
                           onClick={[Function]}
-                          to="/app/settings/billing/add-credit-card"
+                          to="/app/settings/billing/add-payment-method"
                         >
                           <a
                             aria-label={null}
                             className="btn btn-success"
                             disabled={false}
                             onClick={[Function]}
-                            to="/app/settings/billing/add-credit-card"
+                            to="/app/settings/billing/add-payment-method"
                           >
-                            Add credit card
+                            Add Payment Method
                           </a>
                         </Link>
                       </Button>
@@ -381,11 +560,63 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
       "exp_year": 2017,
     }
   }
+  currentAccountDomain="foo"
   currentPlan={Immutable.Map {}}
-  fetchCreditCard={[Function]}
-  fetchPaymentMethod={[Function]}
-  paymentIsActive={true}
+  currentUserId="1"
+  fetchCreditCard={
+    [MockFunction] {
+      "calls": Array [
+        Array [],
+        Array [],
+        Array [],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+      ],
+    }
+  }
+  fetchPaymentMethod={
+    [MockFunction] {
+      "calls": Array [
+        Array [],
+        Array [],
+        Array [],
+        Array [],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+      ],
+    }
+  }
+  isTrialing={false}
   paymentMethod="stripe"
+  shopifyBillingStatus="inactive"
   subscription={
     Immutable.Map {
       "plan": "basic-usd-1",
@@ -431,6 +662,7 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
                 className="row"
               >
                 <Col
+                  className="content"
                   sm={4}
                   tag="div"
                   widths={
@@ -444,34 +676,26 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
                   }
                 >
                   <div
-                    className="col-sm-4"
+                    className="content col-sm-4"
                   >
-                    <div
-                      style={
-                        Object {
-                          "paddingTop": 8,
-                        }
-                      }
-                    >
-                      <span>
-                        Visa
-                         ending in
+                    <span>
+                      Visa
+                       ending in
+                       
+                      <strong>
+                        4242
                          
-                        <strong>
-                          4242
-                           
-                        </strong>
-                      </span>
-                      <span>
-                        will expire on
-                         
-                        <em>
-                          9
-                          /
-                          2017
-                        </em>
-                      </span>
-                    </div>
+                      </strong>
+                    </span>
+                    <span>
+                      will expire on
+                       
+                      <em>
+                        9
+                        /
+                        2017
+                      </em>
+                    </span>
                   </div>
                 </Col>
                 <Col
@@ -499,21 +723,21 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
                     <Button
                       color="secondary"
                       tag={[Function]}
-                      to="/app/settings/billing/update-credit-card"
+                      to="/app/settings/billing/change-credit-card"
                     >
                       <Link
                         aria-label={null}
                         className="btn btn-secondary"
                         onClick={[Function]}
-                        to="/app/settings/billing/update-credit-card"
+                        to="/app/settings/billing/change-credit-card"
                       >
                         <a
                           aria-label={null}
                           className="btn btn-secondary"
                           onClick={[Function]}
-                          to="/app/settings/billing/update-credit-card"
+                          to="/app/settings/billing/change-credit-card"
                         >
-                          Update credit card
+                          Change Card
                         </a>
                       </Link>
                     </Button>
@@ -560,6 +784,7 @@ exports[`BillingPaymentMethod Stripe should render a disabled button 1`] = `
         }
       >
         <Col
+          className="content"
           sm={4}
           tag="div"
           widths={
@@ -572,15 +797,7 @@ exports[`BillingPaymentMethod Stripe should render a disabled button 1`] = `
             ]
           }
         >
-          <div
-            style={
-              Object {
-                "paddingTop": 8,
-              }
-            }
-          >
-            No credit card registered
-          </div>
+          No credit card registered
         </Col>
         <Col
           className="text-right"
@@ -602,7 +819,7 @@ exports[`BillingPaymentMethod Stripe should render a disabled button 1`] = `
           }
         >
           <div
-            id="add-credit-card-button"
+            id="add-payment-method-button"
             style={
               Object {
                 "display": "inline-block",
@@ -613,13 +830,13 @@ exports[`BillingPaymentMethod Stripe should render a disabled button 1`] = `
               color="success"
               disabled={true}
               tag={[Function]}
-              to="/app/settings/billing/add-credit-card"
+              to="/app/settings/billing/add-payment-method"
             >
-              Add credit card
+              Add Payment Method
             </Button>
             <UncontrolledTooltip
               placement="top"
-              target="add-credit-card-button"
+              target="add-payment-method-button"
             >
               Select a plan before adding a credit card
             </UncontrolledTooltip>
@@ -634,11 +851,27 @@ exports[`BillingPaymentMethod Stripe should render a disabled button 1`] = `
 exports[`BillingPaymentMethod Stripe should render a loader 1`] = `
 <BillingPaymentMethodContainer
   creditCard={Immutable.Map {}}
+  currentAccountDomain="foo"
   currentPlan={Immutable.Map {}}
-  fetchCreditCard={[Function]}
-  fetchPaymentMethod={[Function]}
-  paymentIsActive={true}
+  currentUserId="1"
+  fetchCreditCard={[MockFunction]}
+  fetchPaymentMethod={
+    [MockFunction] {
+      "calls": Array [
+        Array [],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": Promise {},
+        },
+      ],
+    }
+  }
+  isTrialing={false}
   paymentMethod="stripe"
+  shopifyBillingStatus="inactive"
+  subscription={Immutable.Map {}}
 >
   <Loader
     inline={false}

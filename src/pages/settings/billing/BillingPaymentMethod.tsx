@@ -1,62 +1,60 @@
-import React, {Component} from 'react'
-import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
+import React, {Component, ReactNode} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {Button, Card, CardBody, Col, Row, UncontrolledTooltip} from 'reactstrap'
-import classNames from 'classnames'
+import classnames from 'classnames'
 
-import * as billingSelectors from '../../../state/billing/selectors.ts'
-import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
+import {creditCard, getCurrentPlan} from '../../../state/billing/selectors'
+import {
+    getCurrentSubscription,
+    paymentMethod,
+    getShopifyBillingStatus,
+} from '../../../state/currentAccount/selectors'
+import {ShopifyBillingStatus} from '../../../state/currentAccount/types'
 import {
     fetchPaymentMethod,
     fetchCreditCard,
-} from '../../../state/billing/actions.ts'
-import Loader from '../../common/components/Loader/Loader.tsx'
-import * as segmentTracker from '../../../store/middlewares/segmentTracker'
+} from '../../../state/billing/actions'
+import Loader from '../../common/components/Loader/Loader'
+import * as segmentTracker from '../../../store/middlewares/segmentTracker.js'
+import {RootState} from '../../../state/types'
+import {PaymentMethodType} from '../../../state/billing/types'
 
-export class BillingPaymentMethodContainer extends Component {
-    static propTypes = {
-        currentPlan: PropTypes.object.isRequired,
-        fetchPaymentMethod: PropTypes.func.isRequired,
-        fetchCreditCard: PropTypes.func.isRequired,
-        creditCard: PropTypes.object.isRequired,
-        paymentMethod: PropTypes.string.isRequired,
-        paymentIsActive: PropTypes.bool.isRequired,
-        isTrialing: PropTypes.bool.isRequired,
-        currentUserId: PropTypes.number.isRequired,
-        currentAccountDomain: PropTypes.string.isRequired,
-        shopifyBillingStatus: PropTypes.string,
-        shouldPayWithShopify: PropTypes.bool,
-        subscription: PropTypes.object.isRequired,
-    }
+import css from './BillingPaymentMethod.less'
 
+type State = {
+    isLoading: boolean
+    isActivatingShopifyBilling: boolean
+}
+
+export class BillingPaymentMethodContainer extends Component<
+    ConnectedProps<typeof connector>,
+    State
+> {
     state = {
         isLoading: false,
         isActivatingShopifyBilling: false,
     }
 
     componentWillMount() {
+        const {fetchPaymentMethod, fetchCreditCard} = this.props
+
         this.setState({isLoading: true})
-        this.props.fetchPaymentMethod().then(() => {
-            this.props.fetchCreditCard().then(() => {
+        void fetchPaymentMethod().then(() => {
+            void fetchCreditCard().then(() => {
                 this.setState({isLoading: false})
             })
         })
     }
 
-    _renderStripe() {
+    renderStripe() {
         const {creditCard, subscription} = this.props
         const hasNoSubscription = subscription.isEmpty()
-        const labelPadding = 8
-        let creditCardLabel = (
-            <div style={{paddingTop: labelPadding}}>
-                No credit card registered
-            </div>
-        )
+        let creditCardLabel: ReactNode = 'No credit card registered'
 
         if (!creditCard.isEmpty()) {
             creditCardLabel = (
-                <div style={{paddingTop: labelPadding}}>
+                <>
                     <span>
                         {creditCard.get('brand')} ending in{' '}
                         <strong>{creditCard.get('last4')} </strong>
@@ -68,7 +66,7 @@ export class BillingPaymentMethodContainer extends Component {
                             {creditCard.get('exp_year')}
                         </em>
                     </span>
-                </div>
+                </>
             )
         }
 
@@ -76,11 +74,13 @@ export class BillingPaymentMethodContainer extends Component {
             <Card>
                 <CardBody>
                     <Row>
-                        <Col sm={4}>{creditCardLabel}</Col>
+                        <Col className={css.content} sm={4}>
+                            {creditCardLabel}
+                        </Col>
                         <Col sm={{size: 4, offset: 4}} className="text-right">
                             {creditCard.isEmpty() ? (
                                 <div
-                                    id="add-credit-card-button"
+                                    id="add-payment-method-button"
                                     style={{
                                         display: 'inline-block',
                                     }}
@@ -88,15 +88,15 @@ export class BillingPaymentMethodContainer extends Component {
                                     <Button
                                         tag={Link}
                                         color="success"
-                                        to="/app/settings/billing/add-credit-card"
+                                        to="/app/settings/billing/add-payment-method"
                                         disabled={hasNoSubscription}
                                     >
-                                        Add credit card
+                                        Add Payment Method
                                     </Button>
                                     {hasNoSubscription ? (
                                         <UncontrolledTooltip
                                             placement="top"
-                                            target="add-credit-card-button"
+                                            target="add-payment-method-button"
                                         >
                                             Select a plan before adding a credit
                                             card
@@ -106,9 +106,9 @@ export class BillingPaymentMethodContainer extends Component {
                             ) : (
                                 <Button
                                     tag={Link}
-                                    to="/app/settings/billing/update-credit-card"
+                                    to="/app/settings/billing/change-credit-card"
                                 >
-                                    Update credit card
+                                    Change Card
                                 </Button>
                             )}
                         </Col>
@@ -118,7 +118,7 @@ export class BillingPaymentMethodContainer extends Component {
         )
     }
 
-    _onActivateShopifyBilling = () => {
+    onActivateShopifyBilling = () => {
         const {currentUserId, currentAccountDomain} = this.props
 
         segmentTracker.logEvent(
@@ -132,27 +132,37 @@ export class BillingPaymentMethodContainer extends Component {
         this.setState({isActivatingShopifyBilling: true})
     }
 
-    _renderShopify() {
+    renderShopify() {
         const {currentPlan, shopifyBillingStatus, subscription} = this.props
         const {isActivatingShopifyBilling} = this.state
         const hasNoSubscription = subscription.isEmpty()
         let content = null
 
         switch (shopifyBillingStatus) {
-            case 'active':
+            case ShopifyBillingStatus.Active:
                 content = (
-                    <p className="mt-2 mb-2">
-                        <i className="material-icons text-success md-2">
+                    <div className={css.content}>
+                        <i
+                            className={classnames(
+                                css.statusIcon,
+                                'material-icons text-success md-2'
+                            )}
+                        >
                             check_circle
                         </i>{' '}
                         Payment with Shopify is active. You're all set.
-                    </p>
+                    </div>
                 )
                 break
-            case 'canceled':
+            case ShopifyBillingStatus.Canceled:
                 content = (
-                    <div>
-                        <i className="material-icons text-warning md-2">
+                    <div className={css.content}>
+                        <i
+                            className={classnames(
+                                css.statusIcon,
+                                'material-icons text-warning md-2'
+                            )}
+                        >
                             warning
                         </i>{' '}
                         Billing with Shopify is inactive. Please reactivate to
@@ -166,7 +176,7 @@ export class BillingPaymentMethodContainer extends Component {
                                     isActivatingShopifyBilling: true,
                                 })
                             }}
-                            className={classNames('float-right', {
+                            className={classnames('float-right', {
                                 'btn-loading': isActivatingShopifyBilling,
                             })}
                         >
@@ -176,14 +186,14 @@ export class BillingPaymentMethodContainer extends Component {
                 )
                 break
 
-            case 'inactive': {
+            case ShopifyBillingStatus.Inactive: {
                 const amount = currentPlan.get('amount')
                 let buttonLabel = 'Activate billing with Shopify'
 
                 if (amount && amount !== 0) {
-                    buttonLabel += ` and pay ${currentPlan.get(
-                        'currencySign'
-                    )}${amount}`
+                    buttonLabel += ` and pay ${
+                        currentPlan.get('currencySign') as string
+                    }${amount as string}`
                 }
 
                 content = (
@@ -197,8 +207,8 @@ export class BillingPaymentMethodContainer extends Component {
                             tag="a"
                             color="success"
                             href="/integrations/shopify/billing/activate/"
-                            onClick={this._onActivateShopifyBilling}
-                            className={classNames({
+                            onClick={this.onActivateShopifyBilling}
+                            className={classnames({
                                 'btn-loading': isActivatingShopifyBilling,
                             })}
                             disabled={hasNoSubscription}
@@ -228,8 +238,9 @@ export class BillingPaymentMethodContainer extends Component {
 
     render() {
         const {paymentMethod} = this.props
+        const {isLoading} = this.state
 
-        if (this.state.isLoading) {
+        if (isLoading) {
             return <Loader />
         }
 
@@ -238,32 +249,27 @@ export class BillingPaymentMethodContainer extends Component {
                 <h4>
                     <i className="material-icons">credit_card</i> Payment method
                 </h4>
-                {paymentMethod === 'stripe'
-                    ? this._renderStripe()
-                    : this._renderShopify()}
+                {paymentMethod === PaymentMethodType.Stripe
+                    ? this.renderStripe()
+                    : this.renderShopify()}
             </div>
         )
     }
 }
 
-export default connect(
-    (state) => {
+const connector = connect(
+    (state: RootState) => {
         return {
             currentUserId: state.currentUser.get('id'),
             currentAccountDomain: state.currentAccount.get('domain'),
-            creditCard: billingSelectors.creditCard(state),
-            subscription: currentAccountSelectors.getCurrentSubscription(state),
-            currentPlan: billingSelectors.getCurrentPlan(state),
-            paymentMethod: currentAccountSelectors.paymentMethod(state),
-            shopifyBillingStatus: currentAccountSelectors.getShopifyBillingStatus(
-                state
-            ),
-            shouldPayWithShopify: currentAccountSelectors.shouldPayWithShopify(
-                state
-            ),
-            paymentIsActive: currentAccountSelectors.paymentIsActive(state),
-            isTrialing: currentAccountSelectors.isTrialing(state),
+            creditCard: creditCard(state),
+            subscription: getCurrentSubscription(state),
+            currentPlan: getCurrentPlan(state),
+            paymentMethod: paymentMethod(state),
+            shopifyBillingStatus: getShopifyBillingStatus(state),
         }
     },
     {fetchPaymentMethod, fetchCreditCard}
-)(BillingPaymentMethodContainer)
+)
+
+export default connector(BillingPaymentMethodContainer)

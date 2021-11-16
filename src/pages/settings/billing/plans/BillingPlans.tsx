@@ -32,7 +32,7 @@ class BillingPlans extends React.Component<Props> {
             if (shouldPayWithShopify) {
                 history.push('/app/settings/billing')
             } else {
-                history.push('/app/settings/billing/add-credit-card')
+                history.push('/app/settings/billing/add-payment-method')
             }
         }
     }

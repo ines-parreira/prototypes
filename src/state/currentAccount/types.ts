@@ -118,3 +118,9 @@ export type Account = {
     user_id: number
     features: AccountFeatures
 }
+
+export enum ShopifyBillingStatus {
+    Active = 'active',
+    Canceled = 'canceled',
+    Inactive = 'inactive',
+}

@@ -1,9 +1,10 @@
 import React, {Component, SyntheticEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
-import classNames from 'classnames'
+import classnames from 'classnames'
 import _pick from 'lodash/pick'
 import {
+    Alert,
     Breadcrumb,
     BreadcrumbItem,
     Button,
@@ -304,11 +305,12 @@ export class CreditCardContainer extends Component<Props, State> {
         } = this.props
         const {isStripeLoaded, errors} = this.state
 
-        const invalid = Object.keys(errors).length > 0
-        const isUpdating = /update-credit-card/.test(
-            location ? location.pathname : ''
-        )
-        const action = isUpdating ? 'Update' : 'Add'
+        const invalid =
+            Object.keys(errors).length > 0 ||
+            Object.values(
+                _pick(this.state, ['name', 'number', 'expDate', 'cvc'])
+            ).some((value) => !value)
+        const isUpdating = /change-credit-card/.test(location.pathname)
         const payment =
             isUpdating ||
             currentPlan.isEmpty() ||
@@ -336,23 +338,137 @@ export class CreditCardContainer extends Component<Props, State> {
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>
-                                {action} credit card
+                                {isUpdating
+                                    ? 'Change credit card'
+                                    : 'Add payment method'}
                             </BreadcrumbItem>
                         </Breadcrumb>
                     }
                 />
 
-                <Container fluid className="page-container">
-                    {accountHasLegacyPlan && (
-                        <LegacyPlanBanner
-                            isCustomPlan={currentPlan.get('custom')}
-                        />
-                    )}
+                <Container
+                    fluid
+                    className={classnames('page-container', css.container)}
+                >
                     <Row>
+                        <Col className={css.paymentInformationColumn} sm={7}>
+                            {accountHasLegacyPlan && (
+                                <LegacyPlanBanner
+                                    isCustomPlan={currentPlan.get('custom')}
+                                />
+                            )}
+                            {!isUpdating && (
+                                <Alert color="info">
+                                    You will be charged for the current period
+                                    of your plan once you add your Credit Card
+                                </Alert>
+                            )}
+                            <h3>Payment information</h3>
+                            <Form onSubmit={this._submit}>
+                                <InputField
+                                    type="text"
+                                    name="name"
+                                    label="Name on the card"
+                                    placeholder="Marie Curie"
+                                    required
+                                    value={this.state.name}
+                                    onChange={(name) =>
+                                        this._updateField({name})
+                                    }
+                                    error={errors.name}
+                                />
+                                <Row className={css.formRow}>
+                                    <Col className={css.formColumn} sm={7}>
+                                        <InputField
+                                            type="text"
+                                            name="number"
+                                            label="Card number"
+                                            placeholder="4657 7894 1234 7895"
+                                            required
+                                            value={this.state.number}
+                                            onChange={(number) =>
+                                                this._updateField({
+                                                    number: creditCardNormalizer(
+                                                        number,
+                                                        this.state.number
+                                                    ),
+                                                })
+                                            }
+                                            error={errors.number}
+                                        />
+                                    </Col>
+                                    <Col className={css.formColumn}>
+                                        <InputField
+                                            type="text"
+                                            name="expDate"
+                                            label="Expiry date"
+                                            placeholder="05 / 21"
+                                            required
+                                            value={this.state.expDate}
+                                            onChange={(expDate) =>
+                                                this._updateField({
+                                                    expDate: creditCardExpDateNormalizer(
+                                                        expDate,
+                                                        this.state.expDate
+                                                    ),
+                                                })
+                                            }
+                                            error={errors.expDate}
+                                        />
+                                    </Col>
+                                    <Col className={css.formColumn}>
+                                        <InputField
+                                            type="text"
+                                            name="cvc"
+                                            label="CVC"
+                                            placeholder="693"
+                                            required
+                                            value={this.state.cvc}
+                                            onChange={(cvc) =>
+                                                this._updateField({
+                                                    cvc: creditCardCVCNormalizer(
+                                                        cvc,
+                                                        this.state.cvc
+                                                    ),
+                                                })
+                                            }
+                                            error={errors.cvc}
+                                        />
+                                    </Col>
+                                </Row>
+                                <div className={css.formFooter}>
+                                    <FormGroup color="danger">
+                                        <Errors>
+                                            {this.state.errors.global}
+                                        </Errors>
+                                    </FormGroup>
+
+                                    <Button
+                                        color={
+                                            isUpdating ? 'primary' : 'success'
+                                        }
+                                        className={classnames({
+                                            'btn-loading': this.state
+                                                .isSubmitting,
+                                        })}
+                                        disabled={
+                                            this.state.isSubmitting ||
+                                            invalid ||
+                                            !this.state.dirty
+                                        }
+                                    >
+                                        {isUpdating
+                                            ? 'Update card'
+                                            : 'Add payment method'}{' '}
+                                        {payment}
+                                    </Button>
+                                </div>
+                            </Form>
+                        </Col>
                         {currentSubscription.get('status') !== 'active' &&
                             !currentPlan.isEmpty() &&
                             regularCurrentPlan && (
-                                <Col sm={3}>
+                                <Col className={css.planCardColumn} sm={4}>
                                     <BillingPlanCard
                                         plan={regularCurrentPlan.toJS()}
                                         isCurrentPlan
@@ -375,109 +491,6 @@ export class CreditCardContainer extends Component<Props, State> {
                                     />
                                 </Col>
                             )}
-                        <Col sm={4}>
-                            <p>
-                                Enter the information of the card you'd like to
-                                use.
-                            </p>
-                            <Form onSubmit={this._submit}>
-                                <InputField
-                                    type="text"
-                                    name="number"
-                                    label="Card number"
-                                    placeholder="4657 7894 1234 7895"
-                                    required
-                                    help={
-                                        !isUpdating &&
-                                        'You will be charged for the current period of your plan once you add your Credit Card'
-                                    }
-                                    value={this.state.number}
-                                    onChange={(number) =>
-                                        this._updateField({
-                                            number: creditCardNormalizer(
-                                                number,
-                                                this.state.number
-                                            ),
-                                        })
-                                    }
-                                    error={errors.number}
-                                />
-                                <InputField
-                                    type="text"
-                                    name="name"
-                                    label="Name on the card"
-                                    placeholder="Marie Curie"
-                                    required
-                                    value={this.state.name}
-                                    onChange={(name) =>
-                                        this._updateField({name})
-                                    }
-                                    error={errors.name}
-                                />
-                                <Row>
-                                    <Col>
-                                        <InputField
-                                            type="text"
-                                            name="expDate"
-                                            label="Expiration date"
-                                            placeholder="05 / 21"
-                                            required
-                                            value={this.state.expDate}
-                                            onChange={(expDate) =>
-                                                this._updateField({
-                                                    expDate: creditCardExpDateNormalizer(
-                                                        expDate,
-                                                        this.state.expDate
-                                                    ),
-                                                })
-                                            }
-                                            error={errors.expDate}
-                                        />
-                                    </Col>
-                                    <Col>
-                                        <InputField
-                                            type="text"
-                                            name="cvc"
-                                            label="CVC"
-                                            placeholder="693"
-                                            required
-                                            value={this.state.cvc}
-                                            onChange={(cvc) =>
-                                                this._updateField({
-                                                    cvc: creditCardCVCNormalizer(
-                                                        cvc,
-                                                        this.state.cvc
-                                                    ),
-                                                })
-                                            }
-                                            error={errors.cvc}
-                                        />
-                                    </Col>
-                                </Row>
-                                <div>
-                                    <FormGroup color="danger">
-                                        <Errors>
-                                            {this.state.errors.global}
-                                        </Errors>
-                                    </FormGroup>
-
-                                    <Button
-                                        color="success"
-                                        className={classNames({
-                                            'btn-loading': this.state
-                                                .isSubmitting,
-                                        })}
-                                        disabled={
-                                            this.state.isSubmitting ||
-                                            invalid ||
-                                            !this.state.dirty
-                                        }
-                                    >
-                                        {action} credit card {payment}
-                                    </Button>
-                                </div>
-                            </Form>
-                        </Col>
                     </Row>
                 </Container>
             </div>

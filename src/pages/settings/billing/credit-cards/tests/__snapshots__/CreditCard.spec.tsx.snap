@@ -24,14 +24,13 @@ exports[`CreditCard component should display credit card form 1`] = `
         <BreadcrumbItem
           tag="li"
         >
-          Add
-           credit card
+          Add payment method
         </BreadcrumbItem>
       </Breadcrumb>
     }
   />
   <Container
-    className="page-container"
+    className="page-container container"
     fluid={true}
     tag="div"
   >
@@ -48,7 +47,8 @@ exports[`CreditCard component should display credit card form 1`] = `
       }
     >
       <Col
-        sm={4}
+        className="paymentInformationColumn"
+        sm={7}
         tag="div"
         widths={
           Array [
@@ -60,23 +60,42 @@ exports[`CreditCard component should display credit card form 1`] = `
           ]
         }
       >
-        <p>
-          Enter the information of the card you'd like to use.
-        </p>
+        <Alert
+          closeAriaLabel="Close"
+          color="info"
+          fade={true}
+          isOpen={true}
+          tag="div"
+          transition={
+            Object {
+              "appear": true,
+              "baseClass": "fade",
+              "baseClassActive": "show",
+              "enter": true,
+              "exit": true,
+              "in": true,
+              "mountOnEnter": false,
+              "onEnter": [Function],
+              "onEntered": [Function],
+              "onEntering": [Function],
+              "onExit": [Function],
+              "onExited": [Function],
+              "onExiting": [Function],
+              "tag": "div",
+              "timeout": 150,
+              "unmountOnExit": true,
+            }
+          }
+        >
+          You will be charged for the current period of your plan once you add your Credit Card
+        </Alert>
+        <h3>
+          Payment information
+        </h3>
         <Form
           onSubmit={[Function]}
           tag="form"
         >
-          <InputField
-            help="You will be charged for the current period of your plan once you add your Credit Card"
-            label="Card number"
-            name="number"
-            onChange={[Function]}
-            placeholder="4657 7894 1234 7895"
-            required={true}
-            type="text"
-            value=""
-          />
           <InputField
             label="Name on the card"
             name="name"
@@ -87,6 +106,7 @@ exports[`CreditCard component should display credit card form 1`] = `
             value=""
           />
           <Row
+            className="formRow"
             tag="div"
             widths={
               Array [
@@ -99,6 +119,8 @@ exports[`CreditCard component should display credit card form 1`] = `
             }
           >
             <Col
+              className="formColumn"
+              sm={7}
               tag="div"
               widths={
                 Array [
@@ -111,7 +133,30 @@ exports[`CreditCard component should display credit card form 1`] = `
               }
             >
               <InputField
-                label="Expiration date"
+                label="Card number"
+                name="number"
+                onChange={[Function]}
+                placeholder="4657 7894 1234 7895"
+                required={true}
+                type="text"
+                value=""
+              />
+            </Col>
+            <Col
+              className="formColumn"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <InputField
+                label="Expiry date"
                 name="expDate"
                 onChange={[Function]}
                 placeholder="05 / 21"
@@ -121,6 +166,7 @@ exports[`CreditCard component should display credit card form 1`] = `
               />
             </Col>
             <Col
+              className="formColumn"
               tag="div"
               widths={
                 Array [
@@ -143,7 +189,9 @@ exports[`CreditCard component should display credit card form 1`] = `
               />
             </Col>
           </Row>
-          <div>
+          <div
+            className="formFooter"
+          >
             <FormGroup
               color="danger"
               tag="div"
@@ -158,8 +206,8 @@ exports[`CreditCard component should display credit card form 1`] = `
               disabled={true}
               tag="button"
             >
-              Add
-               credit card 
+              Add payment method
+               
                and pay $1000
             </Button>
           </div>
@@ -202,14 +250,13 @@ exports[`CreditCard component should render billing plan card when current plan 
         <BreadcrumbItem
           tag="li"
         >
-          Add
-           credit card
+          Add payment method
         </BreadcrumbItem>
       </Breadcrumb>
     }
   />
   <Container
-    className="page-container"
+    className="page-container container"
     fluid={true}
     tag="div"
   >
@@ -226,7 +273,175 @@ exports[`CreditCard component should render billing plan card when current plan 
       }
     >
       <Col
-        sm={3}
+        className="paymentInformationColumn"
+        sm={7}
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Alert
+          closeAriaLabel="Close"
+          color="info"
+          fade={true}
+          isOpen={true}
+          tag="div"
+          transition={
+            Object {
+              "appear": true,
+              "baseClass": "fade",
+              "baseClassActive": "show",
+              "enter": true,
+              "exit": true,
+              "in": true,
+              "mountOnEnter": false,
+              "onEnter": [Function],
+              "onEntered": [Function],
+              "onEntering": [Function],
+              "onExit": [Function],
+              "onExited": [Function],
+              "onExiting": [Function],
+              "tag": "div",
+              "timeout": 150,
+              "unmountOnExit": true,
+            }
+          }
+        >
+          You will be charged for the current period of your plan once you add your Credit Card
+        </Alert>
+        <h3>
+          Payment information
+        </h3>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <InputField
+            label="Name on the card"
+            name="name"
+            onChange={[Function]}
+            placeholder="Marie Curie"
+            required={true}
+            type="text"
+            value=""
+          />
+          <Row
+            className="formRow"
+            tag="div"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            <Col
+              className="formColumn"
+              sm={7}
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <InputField
+                label="Card number"
+                name="number"
+                onChange={[Function]}
+                placeholder="4657 7894 1234 7895"
+                required={true}
+                type="text"
+                value=""
+              />
+            </Col>
+            <Col
+              className="formColumn"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <InputField
+                label="Expiry date"
+                name="expDate"
+                onChange={[Function]}
+                placeholder="05 / 21"
+                required={true}
+                type="text"
+                value=""
+              />
+            </Col>
+            <Col
+              className="formColumn"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <InputField
+                label="CVC"
+                name="cvc"
+                onChange={[Function]}
+                placeholder="693"
+                required={true}
+                type="text"
+                value=""
+              />
+            </Col>
+          </Row>
+          <div
+            className="formFooter"
+          >
+            <FormGroup
+              color="danger"
+              tag="div"
+            >
+              <Errors
+                tag={[Function]}
+              />
+            </FormGroup>
+            <Button
+              className=""
+              color="success"
+              disabled={true}
+              tag="button"
+            >
+              Add payment method
+               
+               and pay $1000
+            </Button>
+          </div>
+        </Form>
+      </Col>
+      <Col
+        className="planCardColumn"
+        sm={4}
         tag="div"
         widths={
           Array [
@@ -250,124 +465,6 @@ exports[`CreditCard component should render billing plan card when current plan 
           }
           renderBody={[Function]}
         />
-      </Col>
-      <Col
-        sm={4}
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <p>
-          Enter the information of the card you'd like to use.
-        </p>
-        <Form
-          onSubmit={[Function]}
-          tag="form"
-        >
-          <InputField
-            help="You will be charged for the current period of your plan once you add your Credit Card"
-            label="Card number"
-            name="number"
-            onChange={[Function]}
-            placeholder="4657 7894 1234 7895"
-            required={true}
-            type="text"
-            value=""
-          />
-          <InputField
-            label="Name on the card"
-            name="name"
-            onChange={[Function]}
-            placeholder="Marie Curie"
-            required={true}
-            type="text"
-            value=""
-          />
-          <Row
-            tag="div"
-            widths={
-              Array [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <Col
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <InputField
-                label="Expiration date"
-                name="expDate"
-                onChange={[Function]}
-                placeholder="05 / 21"
-                required={true}
-                type="text"
-                value=""
-              />
-            </Col>
-            <Col
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <InputField
-                label="CVC"
-                name="cvc"
-                onChange={[Function]}
-                placeholder="693"
-                required={true}
-                type="text"
-                value=""
-              />
-            </Col>
-          </Row>
-          <div>
-            <FormGroup
-              color="danger"
-              tag="div"
-            >
-              <Errors
-                tag={[Function]}
-              />
-            </FormGroup>
-            <Button
-              className=""
-              color="success"
-              disabled={true}
-              tag="button"
-            >
-              Add
-               credit card 
-               and pay $1000
-            </Button>
-          </div>
-        </Form>
       </Col>
     </Row>
   </Container>
@@ -398,14 +495,13 @@ exports[`CreditCard component should render billing plan card with automation fo
         <BreadcrumbItem
           tag="li"
         >
-          Add
-           credit card
+          Add payment method
         </BreadcrumbItem>
       </Breadcrumb>
     }
   />
   <Container
-    className="page-container"
+    className="page-container container"
     fluid={true}
     tag="div"
   >
@@ -422,7 +518,175 @@ exports[`CreditCard component should render billing plan card with automation fo
       }
     >
       <Col
-        sm={3}
+        className="paymentInformationColumn"
+        sm={7}
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Alert
+          closeAriaLabel="Close"
+          color="info"
+          fade={true}
+          isOpen={true}
+          tag="div"
+          transition={
+            Object {
+              "appear": true,
+              "baseClass": "fade",
+              "baseClassActive": "show",
+              "enter": true,
+              "exit": true,
+              "in": true,
+              "mountOnEnter": false,
+              "onEnter": [Function],
+              "onEntered": [Function],
+              "onEntering": [Function],
+              "onExit": [Function],
+              "onExited": [Function],
+              "onExiting": [Function],
+              "tag": "div",
+              "timeout": 150,
+              "unmountOnExit": true,
+            }
+          }
+        >
+          You will be charged for the current period of your plan once you add your Credit Card
+        </Alert>
+        <h3>
+          Payment information
+        </h3>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <InputField
+            label="Name on the card"
+            name="name"
+            onChange={[Function]}
+            placeholder="Marie Curie"
+            required={true}
+            type="text"
+            value=""
+          />
+          <Row
+            className="formRow"
+            tag="div"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            <Col
+              className="formColumn"
+              sm={7}
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <InputField
+                label="Card number"
+                name="number"
+                onChange={[Function]}
+                placeholder="4657 7894 1234 7895"
+                required={true}
+                type="text"
+                value=""
+              />
+            </Col>
+            <Col
+              className="formColumn"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <InputField
+                label="Expiry date"
+                name="expDate"
+                onChange={[Function]}
+                placeholder="05 / 21"
+                required={true}
+                type="text"
+                value=""
+              />
+            </Col>
+            <Col
+              className="formColumn"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <InputField
+                label="CVC"
+                name="cvc"
+                onChange={[Function]}
+                placeholder="693"
+                required={true}
+                type="text"
+                value=""
+              />
+            </Col>
+          </Row>
+          <div
+            className="formFooter"
+          >
+            <FormGroup
+              color="danger"
+              tag="div"
+            >
+              <Errors
+                tag={[Function]}
+              />
+            </FormGroup>
+            <Button
+              className=""
+              color="success"
+              disabled={true}
+              tag="button"
+            >
+              Add payment method
+               
+               and pay $1000
+            </Button>
+          </div>
+        </Form>
+      </Col>
+      <Col
+        className="planCardColumn"
+        sm={4}
         tag="div"
         widths={
           Array [
@@ -461,124 +725,6 @@ exports[`CreditCard component should render billing plan card with automation fo
           renderBody={[Function]}
         />
       </Col>
-      <Col
-        sm={4}
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <p>
-          Enter the information of the card you'd like to use.
-        </p>
-        <Form
-          onSubmit={[Function]}
-          tag="form"
-        >
-          <InputField
-            help="You will be charged for the current period of your plan once you add your Credit Card"
-            label="Card number"
-            name="number"
-            onChange={[Function]}
-            placeholder="4657 7894 1234 7895"
-            required={true}
-            type="text"
-            value=""
-          />
-          <InputField
-            label="Name on the card"
-            name="name"
-            onChange={[Function]}
-            placeholder="Marie Curie"
-            required={true}
-            type="text"
-            value=""
-          />
-          <Row
-            tag="div"
-            widths={
-              Array [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <Col
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <InputField
-                label="Expiration date"
-                name="expDate"
-                onChange={[Function]}
-                placeholder="05 / 21"
-                required={true}
-                type="text"
-                value=""
-              />
-            </Col>
-            <Col
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <InputField
-                label="CVC"
-                name="cvc"
-                onChange={[Function]}
-                placeholder="693"
-                required={true}
-                type="text"
-                value=""
-              />
-            </Col>
-          </Row>
-          <div>
-            <FormGroup
-              color="danger"
-              tag="div"
-            >
-              <Errors
-                tag={[Function]}
-              />
-            </FormGroup>
-            <Button
-              className=""
-              color="success"
-              disabled={true}
-              tag="button"
-            >
-              Add
-               credit card 
-               and pay $1000
-            </Button>
-          </div>
-        </Form>
-      </Col>
     </Row>
   </Container>
 </div>
@@ -608,14 +754,13 @@ exports[`CreditCard component should render nothing if loaded, but no current su
         <BreadcrumbItem
           tag="li"
         >
-          Add
-           credit card
+          Add payment method
         </BreadcrumbItem>
       </Breadcrumb>
     }
   />
   <Container
-    className="page-container"
+    className="page-container container"
     fluid={true}
     tag="div"
   >
@@ -632,7 +777,8 @@ exports[`CreditCard component should render nothing if loaded, but no current su
       }
     >
       <Col
-        sm={4}
+        className="paymentInformationColumn"
+        sm={7}
         tag="div"
         widths={
           Array [
@@ -644,23 +790,42 @@ exports[`CreditCard component should render nothing if loaded, but no current su
           ]
         }
       >
-        <p>
-          Enter the information of the card you'd like to use.
-        </p>
+        <Alert
+          closeAriaLabel="Close"
+          color="info"
+          fade={true}
+          isOpen={true}
+          tag="div"
+          transition={
+            Object {
+              "appear": true,
+              "baseClass": "fade",
+              "baseClassActive": "show",
+              "enter": true,
+              "exit": true,
+              "in": true,
+              "mountOnEnter": false,
+              "onEnter": [Function],
+              "onEntered": [Function],
+              "onEntering": [Function],
+              "onExit": [Function],
+              "onExited": [Function],
+              "onExiting": [Function],
+              "tag": "div",
+              "timeout": 150,
+              "unmountOnExit": true,
+            }
+          }
+        >
+          You will be charged for the current period of your plan once you add your Credit Card
+        </Alert>
+        <h3>
+          Payment information
+        </h3>
         <Form
           onSubmit={[Function]}
           tag="form"
         >
-          <InputField
-            help="You will be charged for the current period of your plan once you add your Credit Card"
-            label="Card number"
-            name="number"
-            onChange={[Function]}
-            placeholder="4657 7894 1234 7895"
-            required={true}
-            type="text"
-            value=""
-          />
           <InputField
             label="Name on the card"
             name="name"
@@ -671,6 +836,7 @@ exports[`CreditCard component should render nothing if loaded, but no current su
             value=""
           />
           <Row
+            className="formRow"
             tag="div"
             widths={
               Array [
@@ -683,6 +849,8 @@ exports[`CreditCard component should render nothing if loaded, but no current su
             }
           >
             <Col
+              className="formColumn"
+              sm={7}
               tag="div"
               widths={
                 Array [
@@ -695,7 +863,30 @@ exports[`CreditCard component should render nothing if loaded, but no current su
               }
             >
               <InputField
-                label="Expiration date"
+                label="Card number"
+                name="number"
+                onChange={[Function]}
+                placeholder="4657 7894 1234 7895"
+                required={true}
+                type="text"
+                value=""
+              />
+            </Col>
+            <Col
+              className="formColumn"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <InputField
+                label="Expiry date"
                 name="expDate"
                 onChange={[Function]}
                 placeholder="05 / 21"
@@ -705,6 +896,7 @@ exports[`CreditCard component should render nothing if loaded, but no current su
               />
             </Col>
             <Col
+              className="formColumn"
               tag="div"
               widths={
                 Array [
@@ -727,7 +919,9 @@ exports[`CreditCard component should render nothing if loaded, but no current su
               />
             </Col>
           </Row>
-          <div>
+          <div
+            className="formFooter"
+          >
             <FormGroup
               color="danger"
               tag="div"
@@ -742,8 +936,8 @@ exports[`CreditCard component should render nothing if loaded, but no current su
               disabled={true}
               tag="button"
             >
-              Add
-               credit card 
+              Add payment method
+               
             </Button>
           </div>
         </Form>

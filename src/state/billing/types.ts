@@ -43,7 +43,8 @@ export type Invoice = {
     }
 }
 
-enum PaymentMethodType {
+export enum PaymentMethodType {
+    Shopify = 'shopify',
     Stripe = 'stripe',
 }
 

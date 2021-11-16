@@ -12,6 +12,7 @@ import {
     AccountSettingBusinessHours,
     AccountSettingType,
     CurrentAccountState,
+    ShopifyBillingStatus,
     ViewsOrderingAccountSetting,
 } from './types'
 
@@ -100,18 +101,18 @@ export const shouldPayWithShopify = createSelector<
 
 export const getShopifyBillingStatus = createSelector<
     RootState,
-    string,
+    ShopifyBillingStatus,
     Map<any, any>
 >(getCurrentAccountMeta, (state) => {
     const billingMeta =
         (state.get('shopify_billing') as Map<any, any>) || fromJS({})
     if (billingMeta.get('active')) {
-        return 'active'
+        return ShopifyBillingStatus.Active
     } else if (billingMeta.get('charge_id')) {
-        return 'canceled'
+        return ShopifyBillingStatus.Canceled
     }
 
-    return 'inactive'
+    return ShopifyBillingStatus.Inactive
 })
 
 export const paymentMethod = (state: RootState) =>

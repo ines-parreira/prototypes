@@ -11,7 +11,7 @@ import * as currentAccountSelectors from '../../../state/currentAccount/selector
 import history from '../../history.ts'
 
 import BillingUsage from './BillingUsage.tsx'
-import BillingPaymentMethod from './BillingPaymentMethod'
+import BillingPaymentMethod from './BillingPaymentMethod.tsx'
 import BillingDetails from './details/BillingDetails.tsx'
 import BillingInvoices from './BillingInvoices.tsx'
 

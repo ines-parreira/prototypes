@@ -804,7 +804,7 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                 })}
             />
             <Route
-                path={`${path}/add-credit-card`}
+                path={`${path}/add-payment-method`}
                 exact
                 render={appRender({
                     content: withUserRoleRequired(
@@ -815,7 +815,7 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                 })}
             />
             <Route
-                path={`${path}/update-credit-card`}
+                path={`${path}/change-credit-card`}
                 exact
                 render={appRender({
                     content: withUserRoleRequired(
