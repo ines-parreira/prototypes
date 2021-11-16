@@ -20,9 +20,10 @@ exports[`<SelfServiceSection/> should render the component 1`] = `
       class="d-flex mt-4"
     >
       <label
-        class="switch toggle-switch"
+        class="switch toggle-switch disabled"
       >
         <input
+          disabled=""
           readonly=""
           type="checkbox"
         />
@@ -40,13 +41,6 @@ exports[`<SelfServiceSection/> should render the component 1`] = `
         </p>
       </label>
     </div>
-    <button
-      class="mt-4 btn btn-success disabled"
-      disabled=""
-      type="button"
-    >
-      Save Changes
-    </button>
   </section>
 </div>
 `;

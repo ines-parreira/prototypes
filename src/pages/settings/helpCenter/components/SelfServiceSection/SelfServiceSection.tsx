@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react'
-import {Button, Label} from 'reactstrap'
+import React, {useEffect, useState, useMemo} from 'react'
+import {Label} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import classNames from 'classnames'
 import {Map} from 'immutable'
@@ -60,13 +60,18 @@ export const SelfServiceSection = ({
         }
     }, [])
 
-    useEffect(() => void fetchGlobalSsp(), [])
+    useEffect(() => void fetchGlobalSsp(), [fetchGlobalSsp])
 
-    const switchEnabled = () => {
+    const handleOnChangeSwitch = () => {
         if (helpCenter.shop_name && !sspForceDisabled) {
             setSelfServiceEnabled(!selfServiceEnabled)
+            void updateHelpCenter({self_service_enabled: !selfServiceEnabled})
         }
     }
+
+    const isSwitchDisabled = useMemo(() => {
+        return updating || loading || sspForceDisabled
+    }, [updating, loading, sspForceDisabled])
 
     return (
         <section>
@@ -83,10 +88,13 @@ export const SelfServiceSection = ({
             <div className="d-flex mt-4">
                 <ToggleButton
                     value={selfServiceEnabled}
-                    disabled={sspForceDisabled}
-                    onChange={switchEnabled}
+                    disabled={isSwitchDisabled}
+                    onChange={handleOnChangeSwitch}
                 />
-                <Label className="control-label ml-2" onClick={switchEnabled}>
+                <Label
+                    className="control-label ml-2"
+                    onClick={handleOnChangeSwitch}
+                >
                     <p
                         className={classNames(
                             css['enable-self-service-label'],
@@ -114,22 +122,6 @@ export const SelfServiceSection = ({
                     )}
                 </Label>
             </div>
-
-            <Button
-                className="mt-4"
-                color={sspForceDisabled ? 'secondary' : 'success'}
-                disabled={
-                    selfServiceEnabled === helpCenter.self_service_enabled ||
-                    updating ||
-                    loading ||
-                    sspForceDisabled
-                }
-                onClick={() =>
-                    updateHelpCenter({self_service_enabled: selfServiceEnabled})
-                }
-            >
-                {updating ? 'Saving...' : 'Save Changes'}
-            </Button>
         </section>
     )
 }

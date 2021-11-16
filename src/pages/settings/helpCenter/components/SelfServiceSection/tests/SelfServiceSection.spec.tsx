@@ -106,7 +106,7 @@ describe('<SelfServiceSection/>', () => {
     })
 
     it("updates help center's self_serve_enabled field", async () => {
-        const {getByRole, getByText} = renderWithRouter(
+        const {getByText} = renderWithRouter(
             <Provider store={mockedStore(defaultState)}>
                 <SelfServiceSection
                     helpCenter={helpCenter}
@@ -124,23 +124,13 @@ describe('<SelfServiceSection/>', () => {
             )
         })
 
-        await waitFor(() => {
-            fireEvent.click(
-                getByRole('button', {
-                    name: 'Save Changes',
-                })
-            )
-        })
-
         expect(mockedUpdateHelpCenter).toHaveBeenLastCalledWith({
             self_service_enabled: true,
         })
-
-        fireEvent.click(getByText('Enable self-service for this Help Center'))
     })
 
-    it('disables controls if help center has no connected shop', async () => {
-        const {getByRole, getByText} = renderWithRouter(
+    it('disables controls if help center has no connected shop', () => {
+        const {getByRole} = renderWithRouter(
             <Provider store={mockedStore(defaultState)}>
                 <SelfServiceSection
                     helpCenter={{
@@ -154,16 +144,7 @@ describe('<SelfServiceSection/>', () => {
             </Provider>,
             route
         )
-
-        await waitFor(() => {
-            fireEvent.click(
-                getByText('Enable self-service for this Help Center')
-            )
-        })
-
-        const button = getByRole('button', {
-            name: 'Save Changes',
-        }) as HTMLButtonElement
+        const button = getByRole('checkbox') as HTMLInputElement
 
         expect(button.disabled).toBeTruthy()
     })
