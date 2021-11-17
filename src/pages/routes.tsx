@@ -72,7 +72,6 @@ import {CurrentHelpCenter} from './settings/helpCenter/providers/CurrentHelpCent
 import {HelpCenterApiClientProvider} from './settings/helpCenter/hooks/useHelpCenterApi'
 import DefaultStatsFilters from './stats/DefaultStatsFilters'
 import HelpCenterPaywall from './settings/helpCenter/components/Paywalls/HelpCenterPaywall'
-import withLegacyPlanPaywall from './common/utils/withLegacyPlanPaywall'
 
 const assetsURL = window.GORGIAS_ASSETS_URL || ''
 
@@ -537,7 +536,10 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                     path={`${path}/`}
                     exact
                     render={appRender({
-                        content: withLegacyPlanPaywall(HelpCenterPaywall)(
+                        content: withFeaturePaywall(
+                            AccountFeature.HelpCenter,
+                            HelpCenterPaywall
+                        )(
                             withUserRoleRequired(
                                 HelpCenterStartView,
                                 ADMIN_ROLE
@@ -550,18 +552,20 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                     path={`${path}/new`}
                     exact
                     render={appRender({
-                        content: withLegacyPlanPaywall(HelpCenterPaywall)(
-                            withUserRoleRequired(HelpCenterNewView, ADMIN_ROLE)
-                        ),
+                        content: withFeaturePaywall(
+                            AccountFeature.HelpCenter,
+                            HelpCenterPaywall
+                        )(withUserRoleRequired(HelpCenterNewView, ADMIN_ROLE)),
                         navbar: SettingsNavbarContainer,
                     })}
                 />
                 <Route
                     path={`${path}/:helpCenterId`}
                     render={appRender({
-                        content: withLegacyPlanPaywall(HelpCenterPaywall)(
-                            withUserRoleRequired(CurrentHelpCenter, ADMIN_ROLE)
-                        ),
+                        content: withFeaturePaywall(
+                            AccountFeature.HelpCenter,
+                            HelpCenterPaywall
+                        )(withUserRoleRequired(CurrentHelpCenter, ADMIN_ROLE)),
                         navbar: SettingsNavbarContainer,
                     })}
                 />

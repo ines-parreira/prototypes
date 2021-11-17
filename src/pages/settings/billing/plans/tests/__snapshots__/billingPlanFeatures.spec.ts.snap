@@ -136,6 +136,9 @@ Array [
             "facebook_comment": Object {
               "enabled": true,
             },
+            "help_center": Object {
+              "enabled": true,
+            },
             "instagram_comment": Object {
               "enabled": true,
             },
@@ -206,6 +209,9 @@ Array [
             },
             "facebook_comment": Object {
               "enabled": true,
+            },
+            "help_center": Object {
+              "enabled": false,
             },
             "instagram_comment": Object {
               "enabled": true,
@@ -398,6 +404,9 @@ Array [
             "facebook_comment": Object {
               "enabled": true,
             },
+            "help_center": Object {
+              "enabled": true,
+            },
             "instagram_comment": Object {
               "enabled": true,
             },
@@ -468,6 +477,9 @@ Array [
             },
             "facebook_comment": Object {
               "enabled": true,
+            },
+            "help_center": Object {
+              "enabled": false,
             },
             "instagram_comment": Object {
               "enabled": true,
@@ -660,6 +672,9 @@ Array [
             "facebook_comment": Object {
               "enabled": true,
             },
+            "help_center": Object {
+              "enabled": true,
+            },
             "instagram_comment": Object {
               "enabled": true,
             },
@@ -730,6 +745,9 @@ Array [
             },
             "facebook_comment": Object {
               "enabled": true,
+            },
+            "help_center": Object {
+              "enabled": false,
             },
             "instagram_comment": Object {
               "enabled": true,
@@ -1018,6 +1036,9 @@ Array [
             "facebook_comment": Object {
               "enabled": true,
             },
+            "help_center": Object {
+              "enabled": true,
+            },
             "instagram_comment": Object {
               "enabled": true,
             },
@@ -1088,6 +1109,9 @@ Array [
             },
             "facebook_comment": Object {
               "enabled": true,
+            },
+            "help_center": Object {
+              "enabled": false,
             },
             "instagram_comment": Object {
               "enabled": true,
@@ -1280,6 +1304,9 @@ Array [
             "facebook_comment": Object {
               "enabled": true,
             },
+            "help_center": Object {
+              "enabled": true,
+            },
             "instagram_comment": Object {
               "enabled": true,
             },
@@ -1350,6 +1377,9 @@ Array [
             },
             "facebook_comment": Object {
               "enabled": true,
+            },
+            "help_center": Object {
+              "enabled": false,
             },
             "instagram_comment": Object {
               "enabled": true,
@@ -1454,9 +1484,9 @@ Array [
     "icon": <PlanFeatureMaterialIcon
       icon="web_asset"
     />,
-    "isDisabled": true,
+    "isDisabled": false,
     "label": <HelpCenterLabel
-      disabled={true}
+      disabled={false}
     />,
   },
   Object {
@@ -1541,6 +1571,9 @@ Array [
             "facebook_comment": Object {
               "enabled": true,
             },
+            "help_center": Object {
+              "enabled": true,
+            },
             "instagram_comment": Object {
               "enabled": true,
             },
@@ -1611,6 +1644,9 @@ Array [
             },
             "facebook_comment": Object {
               "enabled": true,
+            },
+            "help_center": Object {
+              "enabled": false,
             },
             "instagram_comment": Object {
               "enabled": true,
@@ -1715,9 +1751,9 @@ Array [
     "icon": <PlanFeatureMaterialIcon
       icon="web_asset"
     />,
-    "isDisabled": true,
+    "isDisabled": false,
     "label": <HelpCenterLabel
-      disabled={true}
+      disabled={false}
     />,
   },
   Object {

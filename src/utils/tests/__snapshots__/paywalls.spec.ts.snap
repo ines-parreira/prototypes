@@ -34,6 +34,8 @@ exports[`getCheapestPlanNameForFeature() should return the cheaper plan to acces
 
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature facebook_comment 1`] = `"Basic"`;
 
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature help_center 1`] = `"Basic"`;
+
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature instagram_comment 1`] = `"Basic"`;
 
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature instagram_dm 1`] = `"Basic"`;

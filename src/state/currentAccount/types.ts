@@ -33,6 +33,7 @@ export enum AccountFeature {
     Teams = 'teams',
     UserRoles = 'user_roles',
     ViewSharing = 'view_sharing',
+    HelpCenter = 'help_center',
     AutomationTrackOrderFlow = 'automation_track_order_flow',
     AutomationReportIssueFlow = 'automation_report_issue_flow',
     AutomationCancellationsFlow = 'automation_cancellations_flow',

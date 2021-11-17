@@ -43,6 +43,7 @@ const planFixture: Plan = {
         [AccountFeature.Teams]: {enabled: true},
         [AccountFeature.UserRoles]: {enabled: true},
         [AccountFeature.ViewSharing]: {enabled: false},
+        [AccountFeature.HelpCenter]: {enabled: true},
         [AccountFeature.AutomationTrackOrderFlow]: {enabled: false},
         [AccountFeature.AutomationReportIssueFlow]: {enabled: false},
         [AccountFeature.AutomationCancellationsFlow]: {enabled: false},

@@ -1182,7 +1182,7 @@ exports[`<BillingPlanCard /> should render plan card for the Legacy plan 1`] = `
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem"
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -1194,16 +1194,9 @@ exports[`<BillingPlanCard /> should render plan card for the Legacy plan 1`] = `
           </i>
         </span>
         <span>
-          <div>
-            Unlimited
-             
-            <span
-              class="underline"
-              id="help-center-label-42"
-            >
-              Help centers
-            </span>
-          </div>
+          <span>
+            No Help center
+          </span>
         </span>
       </li>
       <li
