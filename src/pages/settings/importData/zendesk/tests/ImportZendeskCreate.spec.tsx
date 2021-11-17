@@ -60,6 +60,7 @@ describe('<ImportZendeskCreate/>', () => {
             const mockDate = new Date().toISOString()
             jest.spyOn(global, 'Date').mockImplementation(() => mockDate)
             Date.prototype.toISOString = () => mockDate
+            Date.now = () => new Date(mockDate).valueOf()
 
             fireEvent.change(getByLabelText('Zendesk subdomain'), {
                 target: {value: 'gorgias'},

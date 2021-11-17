@@ -3,9 +3,7 @@ import React from 'react'
 
 import CustomerInitialMessages from '../CustomerInitialMessages'
 
-jest.spyOn(global.Date, 'now').mockImplementationOnce(() =>
-    new Date('2019-01-26T12:34:56.000Z').getTime()
-)
+Date.now = jest.fn(() => new Date('2019-01-26T12:34:56.000Z').valueOf())
 
 describe('<CustomerInitialMessages/>', () => {
     it('should render timestamps and messages', () => {

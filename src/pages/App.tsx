@@ -137,7 +137,7 @@ class App extends React.Component<Props> {
 
                         {modalNotifications.map((notification) => (
                             <ModalNotification
-                                key={notification.id!}
+                                key={notification.id}
                                 {...notification}
                             />
                         ))}
