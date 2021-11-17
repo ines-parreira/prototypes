@@ -3,7 +3,15 @@ import classNames from 'classnames'
 import React, {ChangeEvent, useRef, useState, useEffect} from 'react'
 import {useSelector} from 'react-redux'
 import {Link, useHistory} from 'react-router-dom'
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
+import {
+    Button,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader,
+    Spinner,
+} from 'reactstrap'
+import {useAsyncFn} from 'react-use'
 
 import {fromJS, Map} from 'immutable'
 import {AxiosError} from 'axios'
@@ -76,9 +84,33 @@ export const ImportSection = ({
         document.head.appendChild(script)
     }, [])
 
+    const [
+        {
+            value: hotswapImportProgressState,
+            loading: isHotswapImportProgressRequestLoading,
+        },
+        updateHotswapImportProgressState,
+    ] = useAsyncFn(async () => {
+        if (!helpCenter?.hotswap_session_token || !client) {
+            return
+        }
+
+        const response = await client.getHotswapStatus(helpCenter.id)
+        return response.data.progress
+    }, [client, helpCenter?.hotswap_session_token])
+
+    useEffect(() => {
+        if (helpCenter?.hotswap_session_token) {
+            void updateHotswapImportProgressState()
+        }
+    }, [helpCenter?.hotswap_session_token])
+
     if (helpCenter === null || !isReady || client === undefined) {
         return null
     }
+
+    const isHotswapImportInProgress =
+        hotswapImportProgressState === 'IN_PROGRESS'
 
     const handleImport = () => {
         if (modalState?.state === 'FILE_SELECTED') {
@@ -183,7 +215,29 @@ export const ImportSection = ({
             )
         }
 
-        window.Hotswap({token}).open()
+        window
+            .Hotswap({
+                token,
+                onClose: () => {
+                    void updateHotswapImportProgressState()
+                },
+            })
+            .open()
+    }
+
+    const handleMoreDetailsClick = () => {
+        if (!window.Hotswap || !helpCenter.hotswap_session_token) {
+            return
+        }
+
+        window
+            .Hotswap({
+                token: helpCenter.hotswap_session_token,
+                onClose: () => {
+                    void updateHotswapImportProgressState()
+                },
+            })
+            .open()
     }
 
     return (
@@ -195,10 +249,35 @@ export const ImportSection = ({
                 solution we support or by uploading a CSV.
             </p>
 
-            <Button onClick={() => setModalState({state: 'NO_FILE_SELECTED'})}>
-                <i className="material-icons mr-2">cloud_upload</i>Import
-                Articles
-            </Button>
+            {isHotswapImportInProgress && (
+                <div className={css.importInProgressContainer}>
+                    <div>
+                        <Spinner
+                            size="sm"
+                            color="primary"
+                            className={css.spinner}
+                        />
+                        Import in progress
+                    </div>
+
+                    <span
+                        onClick={handleMoreDetailsClick}
+                        className={css.moreDetails}
+                    >
+                        More Details
+                    </span>
+                </div>
+            )}
+
+            {!isHotswapImportInProgress && (
+                <Button
+                    disabled={isHotswapImportProgressRequestLoading}
+                    onClick={() => setModalState({state: 'NO_FILE_SELECTED'})}
+                >
+                    <i className="material-icons mr-2">cloud_upload</i>Import
+                    Articles
+                </Button>
+            )}
 
             <Modal
                 size="lg"
