@@ -44,7 +44,7 @@ export const HelpCenterStartView: FunctionComponent = () => {
             try {
                 const {
                     data: {data: helpCenters},
-                } = await client.listHelpCenters()
+                } = await client.listHelpCenters({per_page: 50}) // temporary fix before implementing the infinite scroll on this page
 
                 dispatch(helpCentersFetched(helpCenters))
             } catch (err) {
