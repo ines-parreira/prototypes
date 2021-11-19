@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<IconButton /> should render a button containing an icon 1`] = `
+<button
+  class="wrapper wrapper medium primary medium"
+>
+  <i
+    class="material-icons icon"
+  >
+    check
+  </i>
+</button>
+`;

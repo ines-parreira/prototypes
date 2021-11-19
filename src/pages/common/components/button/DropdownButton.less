@@ -1,0 +1,36 @@
+:local {
+    .wrapper {
+        display: flex;
+    }
+
+    .mainAction,
+    .toggle {
+        position: relative;
+        vertical-align: middle;
+        z-index: 1;
+
+        &:hover {
+            z-index: 2;
+        }
+    }
+
+    .mainAction {
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+    .wrapper .toggle {
+        border-bottom-left-radius: 0;
+        border-top-left-radius: 0;
+        transform: translateX(-1px);
+
+        &.small {
+            font-size: 16px;
+            padding: 0 3px;
+        }
+
+        &.small i {
+            line-height: 8px;
+        }
+    }
+}

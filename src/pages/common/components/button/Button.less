@@ -1,0 +1,145 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .wrapper {
+        align-items: center;
+        border-radius: 4px;
+        border-style: solid;
+        border-width: 1px;
+        box-sizing: border-box;
+        color: @classic-neutral-grey-0;
+        display: flex;
+        font-size: 14px;
+        font-weight: 500;
+        height: 32px;
+        line-height: 20px;
+        padding: 0 12px;
+        text-transform: capitalize;
+        user-select: none;
+        white-space: nowrap;
+
+        &:focus {
+            outline: none;
+        }
+
+        &:hover:not(.isDisabled) {
+            box-shadow: 0px 1px 2px rgba(22, 22, 22, 0.16);
+        }
+
+        &:hover:active {
+            box-shadow: inset 0px 1px 2px rgba(22, 22, 22, 0.16);
+        }
+
+        &.small {
+            font-size: 12px;
+            height: 24px;
+            padding: 0 8px;
+        }
+    }
+
+    .wrapper.primary {
+        background-color: @classic-main-primary;
+        border-color: @classic-main-primary-3;
+
+        &:hover {
+            background-color: @classic-main-primary-2;
+            border-color: @classic-main-primary;
+        }
+
+        &:active {
+            background-color: @classic-main-primary-3;
+            border-color: @classic-main-primary-4;
+        }
+    }
+
+    .wrapper.secondary {
+        background-color: @classic-neutral-grey-2;
+        border-color: @classic-neutral-grey-3;
+        color: @classic-neutral-grey-6;
+
+        &:hover {
+            border-color: @classic-neutral-grey-3;
+        }
+
+        &:active {
+            border-color: @classic-neutral-grey-4;
+        }
+    }
+
+    .wrapper.text {
+        background-color: transparent;
+        border-color: transparent;
+        color: @classic-main-primary;
+
+        &:hover {
+            box-shadow: none;
+            color: @classic-main-primary-1;
+        }
+
+        &:active {
+            box-shadow: none;
+            color: @classic-main-primary-3;
+        }
+
+        &.isDisabled {
+            background: none;
+            border-color: transparent;
+        }
+    }
+
+    .wrapper.creation {
+        background-color: @classic-feedback-success;
+        border-color: @classic-feedback-success-3;
+
+        &:hover {
+            background-color: @classic-feedback-success-2;
+            border-color: @classic-feedback-success;
+        }
+
+        &:active {
+            background-color: @classic-feedback-success-3;
+            border-color: @classic-feedback-success-4;
+        }
+    }
+
+    .wrapper.destructive {
+        background-color: @classic-feedback-error;
+        border-color: @classic-feedback-error-3;
+
+        &:hover {
+            background-color: @classic-feedback-error-2;
+            border-color: @classic-feedback-error;
+        }
+
+        &:active {
+            background-color: @classic-feedback-error-3;
+            border-color: @classic-feedback-error-4;
+        }
+    }
+
+    .wrapper.isDisabled,
+    .wrapper.isDisabled:hover {
+        background-color: @classic-neutral-grey-1;
+        border-color: @classic-neutral-grey-3;
+        color: @classic-neutral-grey-3;
+        pointer-events: none;
+
+        &.text {
+            background-color: transparent;
+            border-color: transparent;
+        }
+    }
+
+    .spinner {
+        border: 2px solid rgba(210, 215, 222, 0.32);
+        border-top-color: @classic-neutral-grey-0;
+        height: 16px;
+        margin: 0 6px 0 2px;
+        width: 16px;
+    }
+
+    .wrapper.small .spinner {
+        height: 12px;
+        width: 12px;
+    }
+}

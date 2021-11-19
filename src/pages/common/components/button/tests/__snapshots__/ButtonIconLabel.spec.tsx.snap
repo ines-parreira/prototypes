@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ButtonIconLabel /> should render a right positioned icon when passing the right position 1`] = `
+<span
+  class="wrapper"
+>
+  Click me!
+  <i
+    class="material-icons icon isRight medium"
+  >
+    calendar_today
+  </i>
+</span>
+`;
+
+exports[`<ButtonIconLabel /> should render an icon label 1`] = `
+<span
+  class="wrapper"
+>
+  <i
+    class="material-icons icon isLeft medium"
+  >
+    calendar_today
+  </i>
+  Click me!
+</span>
+`;

@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Button /> should render a button 1`] = `
+<button
+  class="wrapper primary medium"
+/>
+`;
+
+exports[`<Button /> should render a spinner when loading 1`] = `
+<button
+  class="wrapper primary medium isDisabled"
+  disabled=""
+>
+  <div
+    class="spinner spinner-border"
+    role="status"
+  >
+    <span
+      class="sr-only"
+    >
+      Loading...
+    </span>
+  </div>
+</button>
+`;
