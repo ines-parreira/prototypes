@@ -49,3 +49,5 @@ export const DEFAULT_VOICE_MESSAGE = {
     text_to_speech_content:
         "Hello, unfortunately we aren't able to take your call right now. Please call us back later. Thank you!",
 }
+
+export const DEFAULT_EMAIL_DKIM_KEY_SIZE = 1024

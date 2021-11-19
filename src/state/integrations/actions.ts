@@ -780,31 +780,35 @@ export function fetchEmailDomain(domainName: string) {
     }
 }
 
-export function createEmailDomain(domainName: string) {
+export function createEmailDomain(domainName: string, dkimKeySize: number) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
             type: constants.CREATE_EMAIL_DOMAIN_START,
         })
 
-        return client.put<void>(`/api/integrations/domains/${domainName}`).then(
-            (response) => {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'DKIM configuration created',
+        return client
+            .put<void>(`/api/integrations/domains/${domainName}`, {
+                dkim_key_size: dkimKeySize,
+            })
+            .then(
+                (response) => {
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Success,
+                            message: 'DKIM configuration created',
+                        })
+                    )
+                    dispatch({
+                        type: constants.CREATE_EMAIL_DOMAIN_SUCCESS,
+                        emailDomain: response.data,
                     })
-                )
-                dispatch({
-                    type: constants.CREATE_EMAIL_DOMAIN_SUCCESS,
-                    emailDomain: response.data,
-                })
-            },
-            (error: AxiosError) => {
-                dispatch({
-                    type: constants.CREATE_EMAIL_DOMAIN_ERROR,
-                    error,
-                })
-            }
-        )
+                },
+                (error: AxiosError) => {
+                    dispatch({
+                        type: constants.CREATE_EMAIL_DOMAIN_ERROR,
+                        error,
+                    })
+                }
+            )
     }
 }

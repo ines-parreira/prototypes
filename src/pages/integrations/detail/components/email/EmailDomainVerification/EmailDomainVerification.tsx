@@ -1,15 +1,19 @@
-import React, {useLayoutEffect} from 'react'
+import React, {useLayoutEffect, useState} from 'react'
 import {RouteComponentProps, withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {Map} from 'immutable'
-import {Alert, Button, Container} from 'reactstrap'
+import {Alert, Button, Container, FormGroup, Label} from 'reactstrap'
 
 import Loader from '../../../../../common/components/Loader/Loader'
+import SelectField from '../../../../../common/forms/SelectField/SelectField'
 
 import {RootState} from '../../../../../../state/types'
-import {IntegrationType} from '../../../../../../models/integration/constants'
+import {
+    IntegrationType,
+    DEFAULT_EMAIL_DKIM_KEY_SIZE,
+} from '../../../../../../models/integration/constants'
 
-import './EmailDomainVerification.less'
+import css from './EmailDomainVerification.less'
 import RecordsTable from './components/RecordsTable'
 
 type OwnProps = {
@@ -18,7 +22,7 @@ type OwnProps = {
     emailDomain: Map<string, any>
     actions: {
         fetchEmailDomain: (domainName: string) => unknown
-        createEmailDomain: (domainName: string) => unknown
+        createEmailDomain: (domainName: string, dkimKeySize: number) => unknown
     }
 }
 
@@ -26,6 +30,8 @@ type Props = OwnProps & RouteComponentProps
 
 export const EmailDomainVerificationContainer = (props: Props) => {
     const {integration, emailDomain, loading, actions} = props
+
+    const [dkimKeySize, setDkimKeySize] = useState(DEFAULT_EMAIL_DKIM_KEY_SIZE)
 
     const address = integration.getIn(['meta', 'address'], '') as string
     const domain = address.substr(address.lastIndexOf('@') + 1)
@@ -109,16 +115,38 @@ export const EmailDomainVerificationContainer = (props: Props) => {
                                     backup.
                                 </Alert>
                             )}
-                            <div>
+                            <p>
                                 No domain and DKIM configuration has been
                                 created yet.
-                            </div>
+                            </p>
+                            <FormGroup className={css['form-group']}>
+                                <Label className="control-label">
+                                    DKIM key size
+                                </Label>
+                                <SelectField
+                                    value={dkimKeySize}
+                                    onChange={setDkimKeySize as any}
+                                    options={[
+                                        {
+                                            value: 1024,
+                                            label: '1024 (Default)',
+                                        },
+                                        {
+                                            value: 2048,
+                                            label: '2048',
+                                        },
+                                    ]}
+                                    fullWidth
+                                />
+                            </FormGroup>
                             <Button
                                 type="submit"
                                 color="success"
-                                className="mt-3"
                                 onClick={() => {
-                                    void actions.createEmailDomain(domain)
+                                    void actions.createEmailDomain(
+                                        domain,
+                                        dkimKeySize
+                                    )
                                 }}
                             >
                                 Add Domain
