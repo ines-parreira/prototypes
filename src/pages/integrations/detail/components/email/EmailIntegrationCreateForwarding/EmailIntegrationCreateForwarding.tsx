@@ -33,32 +33,27 @@ const servicesWithTutorials = [
     {
         img: groups,
         title: 'Google Groups',
-        link:
-            'https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#g_suite_groups',
+        link: 'https://gorgias.page/googlegroups',
     },
     {
         img: outlook,
         title: 'Outlook',
-        link:
-            'https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#outlook_com',
+        link: 'https://gorgias.page/outlook',
     },
     {
         img: office,
         title: 'Office 365',
-        link:
-            'https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#outlook_com',
+        link: 'https://gorgias.page/ms365',
     },
     {
         img: exchange,
         title: 'Microsoft Exchange',
-        link:
-            'https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#microsoft_exchange',
+        link: 'https://gorgias.page/msexchange',
     },
     {
         img: zoho,
         title: 'Zoho Mail',
-        link:
-            'https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#zoho_mail',
+        link: 'https://gorgias.page/zohomail',
     },
 ]
 

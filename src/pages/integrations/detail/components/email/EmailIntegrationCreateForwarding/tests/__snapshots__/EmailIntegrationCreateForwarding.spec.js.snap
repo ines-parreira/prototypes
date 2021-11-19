@@ -104,7 +104,7 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
           <Button
             className="forwardingCard"
             color="secondary"
-            href="https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#g_suite_groups"
+            href="https://gorgias.page/googlegroups"
             key="0"
             size="lg"
             tag="a"
@@ -121,7 +121,7 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
           <Button
             className="forwardingCard"
             color="secondary"
-            href="https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#outlook_com"
+            href="https://gorgias.page/outlook"
             key="1"
             size="lg"
             tag="a"
@@ -138,7 +138,7 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
           <Button
             className="forwardingCard"
             color="secondary"
-            href="https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#outlook_com"
+            href="https://gorgias.page/ms365"
             key="2"
             size="lg"
             tag="a"
@@ -155,7 +155,7 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
           <Button
             className="forwardingCard"
             color="secondary"
-            href="https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#microsoft_exchange"
+            href="https://gorgias.page/msexchange"
             key="3"
             size="lg"
             tag="a"
@@ -172,7 +172,7 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
           <Button
             className="forwardingCard"
             color="secondary"
-            href="https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#zoho_mail"
+            href="https://gorgias.page/zohomail"
             key="4"
             size="lg"
             tag="a"
@@ -315,7 +315,7 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
           <Button
             className="forwardingCard"
             color="secondary"
-            href="https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#g_suite_groups"
+            href="https://gorgias.page/googlegroups"
             key="0"
             size="lg"
             tag="a"
@@ -332,7 +332,7 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
           <Button
             className="forwardingCard"
             color="secondary"
-            href="https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#outlook_com"
+            href="https://gorgias.page/outlook"
             key="1"
             size="lg"
             tag="a"
@@ -349,7 +349,7 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
           <Button
             className="forwardingCard"
             color="secondary"
-            href="https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#outlook_com"
+            href="https://gorgias.page/ms365"
             key="2"
             size="lg"
             tag="a"
@@ -366,7 +366,7 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
           <Button
             className="forwardingCard"
             color="secondary"
-            href="https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#microsoft_exchange"
+            href="https://gorgias.page/msexchange"
             key="3"
             size="lg"
             tag="a"
@@ -383,7 +383,7 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
           <Button
             className="forwardingCard"
             color="secondary"
-            href="https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#zoho_mail"
+            href="https://gorgias.page/zohomail"
             key="4"
             size="lg"
             tag="a"
