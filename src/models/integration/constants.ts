@@ -31,6 +31,11 @@ export enum IvrMenuActionType {
     PlayMessage = 'play_message',
 }
 
+export enum AddressType {
+    Company = 'company',
+    Personal = 'personal',
+}
+
 export const MESSAGING_INTEGRATION_TYPES = Object.freeze([
     IntegrationType.Email,
     IntegrationType.Outlook,

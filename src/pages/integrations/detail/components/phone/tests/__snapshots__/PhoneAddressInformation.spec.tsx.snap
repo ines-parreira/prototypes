@@ -1,0 +1,931 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PhoneAddressInformation /> should allow to use company information for validation 1`] = `
+<div
+  class="container"
+>
+  <h4
+    class="mb-3"
+  >
+    Address verification
+  </h4>
+  <div
+    class="mb-3 row"
+  >
+    <div
+      class="pr-0 col"
+    >
+      <label
+        class="boxLabel form-check-label"
+      >
+        <input
+          checked=""
+          class="form-check-input"
+          type="radio"
+        />
+        <strong
+          class="ml-1"
+        >
+          Business information
+        </strong>
+      </label>
+    </div>
+    <div
+      class="col"
+    >
+      <label
+        class="boxLabel form-check-label"
+      >
+        <input
+          class="form-check-input"
+          type="radio"
+        />
+        <strong
+          class="ml-1"
+        >
+          Personal information
+        </strong>
+      </label>
+    </div>
+  </div>
+  <div
+    class="InputField required form-group"
+    color=""
+  >
+    <label
+      class="control-label"
+      for="id-input-8"
+    >
+      Business name
+    </label>
+    <div
+      class=""
+    >
+      <input
+        class="form-control"
+        id="id-input-8"
+        required=""
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+  <div
+    class="InputField required form-group"
+    color=""
+  >
+    <label
+      class="control-label"
+      for="id-input-9"
+    >
+      Address 1
+    </label>
+    <div
+      class=""
+    >
+      <input
+        class="form-control"
+        id="id-input-9"
+        required=""
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+  <div
+    class="row"
+  >
+    <div
+      class="pr-0 col"
+    >
+      <div
+        class="InputField form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-input-10"
+        >
+          Address 2
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-input-10"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="col"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-input-11"
+        >
+          City
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-input-11"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="row"
+  >
+    <div
+      class="pr-0 col"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-input-12"
+        >
+          State/Province/Region
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-input-12"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="pr-0 col"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-input-13"
+        >
+          Postal Code
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-input-13"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="col"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-input-14"
+        >
+          Country
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            disabled=""
+            id="id-input-14"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneAddressInformation /> should allow to use personal information for validation 1`] = `
+<div
+  class="container"
+>
+  <h4
+    class="mb-3"
+  >
+    Address verification
+  </h4>
+  <div
+    class="mb-3 row"
+  >
+    <div
+      class="pr-0 col"
+    >
+      <label
+        class="boxLabel form-check-label"
+      >
+        <input
+          class="form-check-input"
+          type="radio"
+        />
+        <strong
+          class="ml-1"
+        >
+          Business information
+        </strong>
+      </label>
+    </div>
+    <div
+      class="col"
+    >
+      <label
+        class="boxLabel form-check-label"
+      >
+        <input
+          checked=""
+          class="form-check-input"
+          type="radio"
+        />
+        <strong
+          class="ml-1"
+        >
+          Personal information
+        </strong>
+      </label>
+    </div>
+  </div>
+  <div
+    class="InputField required form-group"
+    color=""
+  >
+    <label
+      class="control-label"
+      for="id-input-15"
+    >
+      Name
+    </label>
+    <div
+      class=""
+    >
+      <input
+        class="form-control"
+        id="id-input-15"
+        required=""
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+  <div
+    class="InputField required form-group"
+    color=""
+  >
+    <label
+      class="control-label"
+      for="id-input-16"
+    >
+      Address 1
+    </label>
+    <div
+      class=""
+    >
+      <input
+        class="form-control"
+        id="id-input-16"
+        required=""
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+  <div
+    class="row"
+  >
+    <div
+      class="pr-0 col"
+    >
+      <div
+        class="InputField form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-input-17"
+        >
+          Address 2
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-input-17"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="col"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-input-18"
+        >
+          City
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-input-18"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="row"
+  >
+    <div
+      class="pr-0 col"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-input-19"
+        >
+          State/Province/Region
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-input-19"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="pr-0 col"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-input-20"
+        >
+          Postal Code
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-input-20"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="col"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-input-21"
+        >
+          Country
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            disabled=""
+            id="id-input-21"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneAddressInformation /> should display the country name in a disabled field 1`] = `
+<div
+  class="container"
+>
+  <h4
+    class="mb-3"
+  >
+    Address verification
+  </h4>
+  <div
+    class="mb-3 row"
+  >
+    <div
+      class="pr-0 col"
+    >
+      <label
+        class="boxLabel form-check-label"
+      >
+        <input
+          class="form-check-input"
+          type="radio"
+        />
+        <strong
+          class="ml-1"
+        >
+          Business information
+        </strong>
+      </label>
+    </div>
+    <div
+      class="col"
+    >
+      <label
+        class="boxLabel form-check-label"
+      >
+        <input
+          class="form-check-input"
+          type="radio"
+        />
+        <strong
+          class="ml-1"
+        >
+          Personal information
+        </strong>
+      </label>
+    </div>
+  </div>
+  <div
+    class="InputField required form-group"
+    color=""
+  >
+    <label
+      class="control-label"
+      for="id-input-22"
+    >
+      Business name
+    </label>
+    <div
+      class=""
+    >
+      <input
+        class="form-control"
+        id="id-input-22"
+        required=""
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+  <div
+    class="InputField required form-group"
+    color=""
+  >
+    <label
+      class="control-label"
+      for="id-input-23"
+    >
+      Address 1
+    </label>
+    <div
+      class=""
+    >
+      <input
+        class="form-control"
+        id="id-input-23"
+        required=""
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+  <div
+    class="row"
+  >
+    <div
+      class="pr-0 col"
+    >
+      <div
+        class="InputField form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-input-24"
+        >
+          Address 2
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-input-24"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="col"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-input-25"
+        >
+          City
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-input-25"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="row"
+  >
+    <div
+      class="pr-0 col"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-input-26"
+        >
+          State/Province/Region
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-input-26"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="pr-0 col"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-input-27"
+        >
+          Postal Code
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-input-27"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="col"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-input-28"
+        >
+          Country
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            disabled=""
+            id="id-input-28"
+            required=""
+            type="text"
+            value="Australia"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneAddressInformation /> should render 1`] = `
+<div
+  class="container"
+>
+  <h4
+    class="mb-3"
+  >
+    Address verification
+  </h4>
+  <div
+    class="mb-3 row"
+  >
+    <div
+      class="pr-0 col"
+    >
+      <label
+        class="boxLabel form-check-label"
+      >
+        <input
+          class="form-check-input"
+          type="radio"
+        />
+        <strong
+          class="ml-1"
+        >
+          Business information
+        </strong>
+      </label>
+    </div>
+    <div
+      class="col"
+    >
+      <label
+        class="boxLabel form-check-label"
+      >
+        <input
+          class="form-check-input"
+          type="radio"
+        />
+        <strong
+          class="ml-1"
+        >
+          Personal information
+        </strong>
+      </label>
+    </div>
+  </div>
+  <div
+    class="InputField required form-group"
+    color=""
+  >
+    <label
+      class="control-label"
+      for="id-input-1"
+    >
+      Business name
+    </label>
+    <div
+      class=""
+    >
+      <input
+        class="form-control"
+        id="id-input-1"
+        required=""
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+  <div
+    class="InputField required form-group"
+    color=""
+  >
+    <label
+      class="control-label"
+      for="id-input-2"
+    >
+      Address 1
+    </label>
+    <div
+      class=""
+    >
+      <input
+        class="form-control"
+        id="id-input-2"
+        required=""
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+  <div
+    class="row"
+  >
+    <div
+      class="pr-0 col"
+    >
+      <div
+        class="InputField form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-input-3"
+        >
+          Address 2
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-input-3"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="col"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-input-4"
+        >
+          City
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-input-4"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="row"
+  >
+    <div
+      class="pr-0 col"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-input-5"
+        >
+          State/Province/Region
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-input-5"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="pr-0 col"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-input-6"
+        >
+          Postal Code
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-input-6"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="col"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-input-7"
+        >
+          Country
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            disabled=""
+            id="id-input-7"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -12,6 +12,7 @@ import {
     getEligibleShopifyIntegrationsFor,
     makeGetRedirectUri,
 } from '../../../state/integrations/selectors'
+import {getCurrentAccountState} from '../../../state/currentAccount/selectors'
 import {compare} from '../../../utils'
 
 import AircallIntegrationList from './components/aircall/AircallIntegrationList.js'
@@ -84,6 +85,7 @@ import HTTPIntegrationLayout from './components/http/HTTPIntegrationLayout/HTTPI
 
 import PhoneIntegrationList from './components/phone/PhoneIntegrationList'
 import PhoneIntegrationCreate from './components/phone/PhoneIntegrationCreate'
+import PhoneIntegrationCreateWithAddressValidation from './components/phone/PhoneIntegrationCreateWithAddressValidation'
 import PhoneIntegrationPreferences from './components/phone/PhoneIntegrationPreferences'
 import PhoneIntegrationVoicemail from './components/phone/PhoneIntegrationVoicemail'
 import PhoneIntegrationGreetingMessage from './components/phone/PhoneIntegrationGreetingMessage'
@@ -114,6 +116,7 @@ export enum Tab {
 export const IntegrationDetailContainer = ({
     actions,
     currentUser,
+    currentAccount,
     getEligibleShopifyIntegrationsFor,
     getRedirectUri,
     integrations,
@@ -429,7 +432,21 @@ export const IntegrationDetailContainer = ({
         case IntegrationType.Phone:
             if (!!integrationId) {
                 if (!isUpdate) {
-                    return <PhoneIntegrationCreate actions={actions} />
+                    const showAddressValidation = [
+                        'acme',
+                        'test-martin',
+                        'zachbanov',
+                        'artemisathletix',
+                        'sfbicycles',
+                    ].includes(currentAccount.get('domain'))
+
+                    return showAddressValidation ? (
+                        <PhoneIntegrationCreateWithAddressValidation
+                            actions={actions}
+                        />
+                    ) : (
+                        <PhoneIntegrationCreate actions={actions} />
+                    )
                 }
 
                 if (extra === Tab.Preferences) {
@@ -705,6 +722,7 @@ const connector = connect(
             state
         ),
         getRedirectUri: makeGetRedirectUri(state),
+        currentAccount: getCurrentAccountState(state),
         currentUser: state.currentUser,
     }),
     (dispatch) => ({

@@ -257,6 +257,7 @@ describe('<IntegrationDetailContainer />', () => {
         getEligibleShopifyIntegrationsFor: jest.fn(),
         getRedirectUri: jest.fn(),
         currentUser: fromJS({}),
+        currentAccount: fromJS({}),
     }
 
     it.each([

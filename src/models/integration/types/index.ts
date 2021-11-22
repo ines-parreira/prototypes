@@ -23,6 +23,7 @@ export {
     IntegrationType,
     VoiceMessageType,
     IvrMenuActionType,
+    AddressType,
 } from '../constants'
 
 export * from './misc'

@@ -7,11 +7,15 @@ export enum PhoneCallDirection {
 export enum PhoneType {
     Local = 'Local',
     TollFree = 'TollFree',
+    Mobile = 'Mobile',
+    National = 'National',
 }
 
 export enum PhoneCountry {
     CA = 'CA',
     US = 'US',
+    GB = 'GB',
+    AU = 'AU',
 }
 
 export enum PhoneFunction {
