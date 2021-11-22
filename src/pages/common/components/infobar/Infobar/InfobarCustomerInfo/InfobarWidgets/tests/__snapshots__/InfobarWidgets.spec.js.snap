@@ -1122,6 +1122,91 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                             trigger="legacy"
                                           />
                                         </Popover>
+                                        <Memo(CustomActions)
+                                          isEditing={false}
+                                          source={
+                                            Immutable.Map {
+                                              "foo": "1",
+                                            }
+                                          }
+                                          template={
+                                            Immutable.Map {
+                                              "path": "",
+                                              "type": "card",
+                                              "title": "Foo container",
+                                              "widgets": Immutable.List [
+                                                Immutable.Map {
+                                                  "path": "foo",
+                                                  "type": "text",
+                                                  "title": "Foo",
+                                                  "order": 1,
+                                                },
+                                              ],
+                                              "templatePath": "1.template.widgets.0",
+                                              "absolutePath": Array [
+                                                "ticket",
+                                                "customer",
+                                                "integrations",
+                                                "1",
+                                              ],
+                                            }
+                                          }
+                                        >
+                                          <div
+                                            className="container"
+                                          >
+                                            <Connect(Component)
+                                              immutableLinks={Immutable.List []}
+                                              isEditing={false}
+                                              source={
+                                                Immutable.Map {
+                                                  "foo": "1",
+                                                }
+                                              }
+                                              templateAbsolutePath={
+                                                Array [
+                                                  "ticket",
+                                                  "customer",
+                                                  "integrations",
+                                                  "1",
+                                                ]
+                                              }
+                                              templatePath="1.template.widgets.0"
+                                            >
+                                              <Memo(Links)
+                                                immutableLinks={Immutable.List []}
+                                                isEditing={false}
+                                                removeEditedWidget={[Function]}
+                                                source={
+                                                  Immutable.Map {
+                                                    "foo": "1",
+                                                  }
+                                                }
+                                                startWidgetEdition={[Function]}
+                                                templateAbsolutePath={
+                                                  Array [
+                                                    "ticket",
+                                                    "customer",
+                                                    "integrations",
+                                                    "1",
+                                                  ]
+                                                }
+                                                templatePath="1.template.widgets.0"
+                                                updateEditedWidget={[Function]}
+                                              >
+                                                <ListGroup
+                                                  flush={true}
+                                                  horizontal={false}
+                                                  tag="ul"
+                                                >
+                                                  <ul
+                                                    className="list-group list-group-flush"
+                                                  />
+                                                </ListGroup>
+                                              </Memo(Links)>
+                                            </Connect(Component)>
+                                          </div>
+                                        </Memo(CustomActions)>
                                       </div>
                                     </CardBody>
                                     <CardBody
@@ -1898,6 +1983,91 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                             trigger="legacy"
                                           />
                                         </Popover>
+                                        <Memo(CustomActions)
+                                          isEditing={false}
+                                          source={
+                                            Immutable.Map {
+                                              "bar": "2",
+                                            }
+                                          }
+                                          template={
+                                            Immutable.Map {
+                                              "path": "",
+                                              "type": "card",
+                                              "title": "Bar container",
+                                              "widgets": Immutable.List [
+                                                Immutable.Map {
+                                                  "path": "bar",
+                                                  "type": "text",
+                                                  "title": "Bar",
+                                                  "order": 1,
+                                                },
+                                              ],
+                                              "templatePath": "2.template.widgets.0",
+                                              "absolutePath": Array [
+                                                "ticket",
+                                                "customer",
+                                                "integrations",
+                                                "2",
+                                              ],
+                                            }
+                                          }
+                                        >
+                                          <div
+                                            className="container"
+                                          >
+                                            <Connect(Component)
+                                              immutableLinks={Immutable.List []}
+                                              isEditing={false}
+                                              source={
+                                                Immutable.Map {
+                                                  "bar": "2",
+                                                }
+                                              }
+                                              templateAbsolutePath={
+                                                Array [
+                                                  "ticket",
+                                                  "customer",
+                                                  "integrations",
+                                                  "2",
+                                                ]
+                                              }
+                                              templatePath="2.template.widgets.0"
+                                            >
+                                              <Memo(Links)
+                                                immutableLinks={Immutable.List []}
+                                                isEditing={false}
+                                                removeEditedWidget={[Function]}
+                                                source={
+                                                  Immutable.Map {
+                                                    "bar": "2",
+                                                  }
+                                                }
+                                                startWidgetEdition={[Function]}
+                                                templateAbsolutePath={
+                                                  Array [
+                                                    "ticket",
+                                                    "customer",
+                                                    "integrations",
+                                                    "2",
+                                                  ]
+                                                }
+                                                templatePath="2.template.widgets.0"
+                                                updateEditedWidget={[Function]}
+                                              >
+                                                <ListGroup
+                                                  flush={true}
+                                                  horizontal={false}
+                                                  tag="ul"
+                                                >
+                                                  <ul
+                                                    className="list-group list-group-flush"
+                                                  />
+                                                </ListGroup>
+                                              </Memo(Links)>
+                                            </Connect(Component)>
+                                          </div>
+                                        </Memo(CustomActions)>
                                       </div>
                                     </CardBody>
                                     <CardBody
@@ -3148,6 +3318,195 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                     trigger="legacy"
                                                   />
                                                 </Popover>
+                                                <Memo(CustomActions)
+                                                  isEditing={true}
+                                                  source={
+                                                    Immutable.Map {
+                                                      "foo": "1",
+                                                    }
+                                                  }
+                                                  template={
+                                                    Immutable.Map {
+                                                      "path": "",
+                                                      "type": "card",
+                                                      "title": "Foo container",
+                                                      "widgets": Immutable.List [
+                                                        Immutable.Map {
+                                                          "path": "foo",
+                                                          "type": "text",
+                                                          "title": "Foo",
+                                                          "order": 1,
+                                                        },
+                                                      ],
+                                                      "templatePath": "1.template.widgets.0",
+                                                      "absolutePath": Array [
+                                                        "ticket",
+                                                        "customer",
+                                                        "integrations",
+                                                        "1",
+                                                      ],
+                                                    }
+                                                  }
+                                                >
+                                                  <div
+                                                    className="container"
+                                                  >
+                                                    <Connect(Component)
+                                                      immutableLinks={Immutable.List []}
+                                                      isEditing={true}
+                                                      source={
+                                                        Immutable.Map {
+                                                          "foo": "1",
+                                                        }
+                                                      }
+                                                      templateAbsolutePath={
+                                                        Array [
+                                                          "ticket",
+                                                          "customer",
+                                                          "integrations",
+                                                          "1",
+                                                        ]
+                                                      }
+                                                      templatePath="1.template.widgets.0"
+                                                    >
+                                                      <Memo(Links)
+                                                        immutableLinks={Immutable.List []}
+                                                        isEditing={true}
+                                                        removeEditedWidget={[Function]}
+                                                        source={
+                                                          Immutable.Map {
+                                                            "foo": "1",
+                                                          }
+                                                        }
+                                                        startWidgetEdition={[Function]}
+                                                        templateAbsolutePath={
+                                                          Array [
+                                                            "ticket",
+                                                            "customer",
+                                                            "integrations",
+                                                            "1",
+                                                          ]
+                                                        }
+                                                        templatePath="1.template.widgets.0"
+                                                        updateEditedWidget={[Function]}
+                                                      >
+                                                        <ListGroup
+                                                          flush={true}
+                                                          horizontal={false}
+                                                          tag="ul"
+                                                        >
+                                                          <ul
+                                                            className="list-group list-group-flush"
+                                                          />
+                                                        </ListGroup>
+                                                        <Button
+                                                          color="secondary"
+                                                          id="custom-action-link-1templatewidgets0"
+                                                          tag="button"
+                                                          type="button"
+                                                        >
+                                                          <button
+                                                            aria-label={null}
+                                                            className="btn btn-secondary"
+                                                            id="custom-action-link-1templatewidgets0"
+                                                            onClick={[Function]}
+                                                            type="button"
+                                                          >
+                                                            <i
+                                                              className="material-icons mr-2"
+                                                            >
+                                                              add
+                                                            </i>
+                                                            Add Redirection Link
+                                                          </button>
+                                                        </Button>
+                                                        <Editor
+                                                          onSubmit={[Function]}
+                                                          target="custom-action-link-1templatewidgets0"
+                                                        >
+                                                          <Popover
+                                                            isOpen={false}
+                                                            placement="bottom"
+                                                            placementPrefix="bs-popover"
+                                                            target="custom-action-link-1templatewidgets0"
+                                                            toggle={[Function]}
+                                                            trigger="click"
+                                                          >
+                                                            <TooltipPopoverWrapper
+                                                              autohide={false}
+                                                              delay={
+                                                                Object {
+                                                                  "hide": 50,
+                                                                  "show": 0,
+                                                                }
+                                                              }
+                                                              fade={true}
+                                                              hideArrow={false}
+                                                              innerClassName="popover-inner"
+                                                              isOpen={false}
+                                                              placement="bottom"
+                                                              placementPrefix="bs-popover"
+                                                              popperClassName="popover show"
+                                                              target="custom-action-link-1templatewidgets0"
+                                                              toggle={[Function]}
+                                                              trigger="click"
+                                                            >
+                                                              <PopperContent
+                                                                boundariesElement="scrollParent"
+                                                                container="body"
+                                                                fade={true}
+                                                                fallbackPlacement="flip"
+                                                                flip={true}
+                                                                hideArrow={false}
+                                                                isOpen={false}
+                                                                modifiers={Object {}}
+                                                                offset={0}
+                                                                onClosed={[Function]}
+                                                                placement="bottom"
+                                                                placementPrefix="bs-popover"
+                                                                popperClassName="popover show"
+                                                                target={
+                                                                  <button
+                                                                    class="btn btn-secondary"
+                                                                    id="custom-action-link-1templatewidgets0"
+                                                                    type="button"
+                                                                  >
+                                                                    <i
+                                                                      class="material-icons mr-2"
+                                                                    >
+                                                                      add
+                                                                    </i>
+                                                                    Add Redirection Link
+                                                                  </button>
+                                                                }
+                                                                transition={
+                                                                  Object {
+                                                                    "appear": true,
+                                                                    "baseClass": "fade",
+                                                                    "baseClassActive": "show",
+                                                                    "enter": true,
+                                                                    "exit": true,
+                                                                    "in": true,
+                                                                    "mountOnEnter": false,
+                                                                    "onEnter": [Function],
+                                                                    "onEntered": [Function],
+                                                                    "onEntering": [Function],
+                                                                    "onExit": [Function],
+                                                                    "onExited": [Function],
+                                                                    "onExiting": [Function],
+                                                                    "tag": "div",
+                                                                    "timeout": 150,
+                                                                    "unmountOnExit": false,
+                                                                  }
+                                                                }
+                                                              />
+                                                            </TooltipPopoverWrapper>
+                                                          </Popover>
+                                                        </Editor>
+                                                      </Memo(Links)>
+                                                    </Connect(Component)>
+                                                  </div>
+                                                </Memo(CustomActions)>
                                               </div>
                                             </CardBody>
                                             <CardBody
@@ -4009,6 +4368,195 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                     trigger="legacy"
                                                   />
                                                 </Popover>
+                                                <Memo(CustomActions)
+                                                  isEditing={true}
+                                                  source={
+                                                    Immutable.Map {
+                                                      "bar": "2",
+                                                    }
+                                                  }
+                                                  template={
+                                                    Immutable.Map {
+                                                      "path": "",
+                                                      "type": "card",
+                                                      "title": "Bar container",
+                                                      "widgets": Immutable.List [
+                                                        Immutable.Map {
+                                                          "path": "bar",
+                                                          "type": "text",
+                                                          "title": "Bar",
+                                                          "order": 1,
+                                                        },
+                                                      ],
+                                                      "templatePath": "2.template.widgets.0",
+                                                      "absolutePath": Array [
+                                                        "ticket",
+                                                        "customer",
+                                                        "integrations",
+                                                        "2",
+                                                      ],
+                                                    }
+                                                  }
+                                                >
+                                                  <div
+                                                    className="container"
+                                                  >
+                                                    <Connect(Component)
+                                                      immutableLinks={Immutable.List []}
+                                                      isEditing={true}
+                                                      source={
+                                                        Immutable.Map {
+                                                          "bar": "2",
+                                                        }
+                                                      }
+                                                      templateAbsolutePath={
+                                                        Array [
+                                                          "ticket",
+                                                          "customer",
+                                                          "integrations",
+                                                          "2",
+                                                        ]
+                                                      }
+                                                      templatePath="2.template.widgets.0"
+                                                    >
+                                                      <Memo(Links)
+                                                        immutableLinks={Immutable.List []}
+                                                        isEditing={true}
+                                                        removeEditedWidget={[Function]}
+                                                        source={
+                                                          Immutable.Map {
+                                                            "bar": "2",
+                                                          }
+                                                        }
+                                                        startWidgetEdition={[Function]}
+                                                        templateAbsolutePath={
+                                                          Array [
+                                                            "ticket",
+                                                            "customer",
+                                                            "integrations",
+                                                            "2",
+                                                          ]
+                                                        }
+                                                        templatePath="2.template.widgets.0"
+                                                        updateEditedWidget={[Function]}
+                                                      >
+                                                        <ListGroup
+                                                          flush={true}
+                                                          horizontal={false}
+                                                          tag="ul"
+                                                        >
+                                                          <ul
+                                                            className="list-group list-group-flush"
+                                                          />
+                                                        </ListGroup>
+                                                        <Button
+                                                          color="secondary"
+                                                          id="custom-action-link-2templatewidgets0"
+                                                          tag="button"
+                                                          type="button"
+                                                        >
+                                                          <button
+                                                            aria-label={null}
+                                                            className="btn btn-secondary"
+                                                            id="custom-action-link-2templatewidgets0"
+                                                            onClick={[Function]}
+                                                            type="button"
+                                                          >
+                                                            <i
+                                                              className="material-icons mr-2"
+                                                            >
+                                                              add
+                                                            </i>
+                                                            Add Redirection Link
+                                                          </button>
+                                                        </Button>
+                                                        <Editor
+                                                          onSubmit={[Function]}
+                                                          target="custom-action-link-2templatewidgets0"
+                                                        >
+                                                          <Popover
+                                                            isOpen={false}
+                                                            placement="bottom"
+                                                            placementPrefix="bs-popover"
+                                                            target="custom-action-link-2templatewidgets0"
+                                                            toggle={[Function]}
+                                                            trigger="click"
+                                                          >
+                                                            <TooltipPopoverWrapper
+                                                              autohide={false}
+                                                              delay={
+                                                                Object {
+                                                                  "hide": 50,
+                                                                  "show": 0,
+                                                                }
+                                                              }
+                                                              fade={true}
+                                                              hideArrow={false}
+                                                              innerClassName="popover-inner"
+                                                              isOpen={false}
+                                                              placement="bottom"
+                                                              placementPrefix="bs-popover"
+                                                              popperClassName="popover show"
+                                                              target="custom-action-link-2templatewidgets0"
+                                                              toggle={[Function]}
+                                                              trigger="click"
+                                                            >
+                                                              <PopperContent
+                                                                boundariesElement="scrollParent"
+                                                                container="body"
+                                                                fade={true}
+                                                                fallbackPlacement="flip"
+                                                                flip={true}
+                                                                hideArrow={false}
+                                                                isOpen={false}
+                                                                modifiers={Object {}}
+                                                                offset={0}
+                                                                onClosed={[Function]}
+                                                                placement="bottom"
+                                                                placementPrefix="bs-popover"
+                                                                popperClassName="popover show"
+                                                                target={
+                                                                  <button
+                                                                    class="btn btn-secondary"
+                                                                    id="custom-action-link-2templatewidgets0"
+                                                                    type="button"
+                                                                  >
+                                                                    <i
+                                                                      class="material-icons mr-2"
+                                                                    >
+                                                                      add
+                                                                    </i>
+                                                                    Add Redirection Link
+                                                                  </button>
+                                                                }
+                                                                transition={
+                                                                  Object {
+                                                                    "appear": true,
+                                                                    "baseClass": "fade",
+                                                                    "baseClassActive": "show",
+                                                                    "enter": true,
+                                                                    "exit": true,
+                                                                    "in": true,
+                                                                    "mountOnEnter": false,
+                                                                    "onEnter": [Function],
+                                                                    "onEntered": [Function],
+                                                                    "onEntering": [Function],
+                                                                    "onExit": [Function],
+                                                                    "onExited": [Function],
+                                                                    "onExiting": [Function],
+                                                                    "tag": "div",
+                                                                    "timeout": 150,
+                                                                    "unmountOnExit": false,
+                                                                  }
+                                                                }
+                                                              />
+                                                            </TooltipPopoverWrapper>
+                                                          </Popover>
+                                                        </Editor>
+                                                      </Memo(Links)>
+                                                    </Connect(Component)>
+                                                  </div>
+                                                </Memo(CustomActions)>
                                               </div>
                                             </CardBody>
                                             <CardBody

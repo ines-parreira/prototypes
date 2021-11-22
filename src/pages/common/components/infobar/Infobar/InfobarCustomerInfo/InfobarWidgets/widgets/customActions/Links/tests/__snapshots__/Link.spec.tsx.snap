@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Link/> should render with template replaced with its according value 1`] = `
+<li
+  class="groupItem list-group-item"
+>
+  <a
+    class="link"
+    href="httpbin.org/get?first_name=Doe&last_name=John"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    Query Doe
+    <i
+      class="linkIcon material-icons"
+    >
+      open_in_new
+    </i>
+  </a>
+</li>
+`;
+
+exports[`<Link/> should render with the editor 1`] = `
+<li
+  class="groupItem list-group-item"
+>
+  <a
+    class="link"
+    href="httpbin.org/get?first_name=Doe&last_name=John"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    Query Doe
+    <i
+      class="linkIcon material-icons"
+    >
+      open_in_new
+    </i>
+  </a>
+  <span
+    class="editIcons"
+  >
+    <i
+      class="material-icons text-faded clickable"
+      id="somepath-2"
+    >
+      settings
+    </i>
+    <i
+      class="material-icons text-danger clickable"
+    >
+      close
+    </i>
+  </span>
+</li>
+`;

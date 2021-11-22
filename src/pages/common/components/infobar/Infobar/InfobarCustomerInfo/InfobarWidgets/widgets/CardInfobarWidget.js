@@ -13,6 +13,7 @@ import InfobarWidget from '../InfobarWidget'
 
 import PopoverWidgetEditCard from './forms/PopoverWidgetEditCard'
 import css from './CardInfobarWidget.less'
+import CustomActions from './customActions/index.ts'
 
 export default class CardInfobarWidget extends React.Component {
     static propTypes = {
@@ -69,13 +70,13 @@ export default class CardInfobarWidget extends React.Component {
         }
     }
 
-    _toggleCardExpand = () => {
+    toggleCardExpand = () => {
         this.setState({
             open: !this.state.open,
         })
     }
 
-    _deleteCard = (e) => {
+    deleteCard = (e) => {
         const {template, editing} = this.props
 
         const ap = template.get('absolutePath')
@@ -87,7 +88,7 @@ export default class CardInfobarWidget extends React.Component {
         }
     }
 
-    _deleteList = (e) => {
+    deleteList = (e) => {
         const {parent, template, editing} = this.props
 
         e.stopPropagation()
@@ -98,7 +99,7 @@ export default class CardInfobarWidget extends React.Component {
         }
     }
 
-    _startWidgetEdition = (e) => {
+    startWidgetEdition = (e) => {
         const {parent, isParentList, template, editing} = this.props
 
         const tp = isParentList
@@ -111,7 +112,7 @@ export default class CardInfobarWidget extends React.Component {
         }
     }
 
-    _togglePopup = () => {
+    togglePopup = () => {
         return this.props.editing.actions.stopWidgetEdition()
     }
 
@@ -120,7 +121,7 @@ export default class CardInfobarWidget extends React.Component {
      * @returns {JSX}
      * @private
      */
-    _renderPopover = () => {
+    renderPopover = () => {
         const {editing} = this.props
 
         if (!editing) {
@@ -132,7 +133,7 @@ export default class CardInfobarWidget extends React.Component {
                 placement="left"
                 isOpen={this.state.displayPopup}
                 target={this.uniqueId}
-                toggle={this._togglePopup}
+                toggle={this.togglePopup}
                 trigger="legacy"
             >
                 <PopoverBody>
@@ -145,7 +146,7 @@ export default class CardInfobarWidget extends React.Component {
         )
     }
 
-    _renderTitle = (template, source) => {
+    renderTitle = (template, source, isEditing) => {
         const title = template.get('title', '')
         const link = template.getIn(['meta', 'link'])
         const {TitleWrapper} = this.props
@@ -166,7 +167,7 @@ export default class CardInfobarWidget extends React.Component {
             } else {
                 content = <span>{renderInfobarTemplate(title, source)}</span>
             }
-        } else {
+        } else if (isEditing) {
             content = <span className="placeholder">Title</span>
         }
 
@@ -177,10 +178,25 @@ export default class CardInfobarWidget extends React.Component {
         return content
     }
 
-    _isRootWidget(templatePath) {
+    isRootWidget(templatePath) {
         return (
-            templatePath.endsWith('.template.widgets.0') ||
+            templatePath.match(/.template.widgets.(\d+)$/) ||
             templatePath.match(/.template.widgets.(\d+).widgets.0$/)
+        )
+    }
+
+    shouldDisplayCardWidgetHeader(template, isEditing) {
+        const templateTitle = template.get('title')
+        const isTransparent = !template.getIn(['meta', 'displayCard'], true)
+        const templateCustomLinks = template.getIn(
+            ['meta', 'custom', 'links'],
+            fromJS({})
+        )
+
+        return (
+            ((templateTitle || templateCustomLinks.size > 0) &&
+                !isTransparent) ||
+            isEditing
         )
     }
 
@@ -222,7 +238,7 @@ export default class CardInfobarWidget extends React.Component {
 
         let content = (
             <Card className={className} data-key={template.get('path')}>
-                {((template.get('title') && !isTransparent) || isEditing) && (
+                {this.shouldDisplayCardWidgetHeader(template, isEditing) && (
                     <CardBody
                         id={this.uniqueId}
                         className={classnames('header clearfix', {
@@ -232,13 +248,17 @@ export default class CardInfobarWidget extends React.Component {
                         {isExpandable && (
                             <span
                                 className="dropdown-icon clickable text-faded"
-                                onClick={this._toggleCardExpand}
+                                onClick={this.toggleCardExpand}
                             >
                                 <img src={expandUp} alt="Expand" />
                             </span>
                         )}
                         {!isTransparent &&
-                            this._renderTitle(template, source.toJS())}
+                            this.renderTitle(
+                                template,
+                                source.toJS(),
+                                isEditing
+                            )}
                         {isEditing && isParentList && (
                             <span className="meta"> (list)</span>
                         )}
@@ -247,7 +267,7 @@ export default class CardInfobarWidget extends React.Component {
                                 <span>
                                     <i
                                         className="material-icons text-faded clickable"
-                                        onClick={this._startWidgetEdition}
+                                        onClick={this.startWidgetEdition}
                                     >
                                         settings
                                     </i>
@@ -255,8 +275,8 @@ export default class CardInfobarWidget extends React.Component {
                                         className="material-icons text-danger clickable"
                                         onClick={
                                             isParentList
-                                                ? this._deleteList
-                                                : this._deleteCard
+                                                ? this.deleteList
+                                                : this.deleteCard
                                         }
                                     >
                                         close
@@ -264,16 +284,14 @@ export default class CardInfobarWidget extends React.Component {
                                 </span>
                             )}
                         </span>
-                        {this._renderPopover()}
-                        {/*TODO(@Mehdi): uncomment this when INT-712 is done */}
-                        {/*{this._isRootWidget(template.get('templatePath')) && (*/}
-                        {/*    <WidgetCustomActions*/}
-                        {/*        source={source}*/}
-                        {/*        isEditing={isEditing}*/}
-                        {/*        widget={widget}*/}
-                        {/*        template={template}*/}
-                        {/*    />*/}
-                        {/*)}*/}
+                        {this.renderPopover()}
+                        {this.isRootWidget(template.get('templatePath')) && (
+                            <CustomActions
+                                template={template}
+                                source={source}
+                                isEditing={isEditing}
+                            />
+                        )}
                         {!!AfterTitle && <AfterTitle {...this.props} />}
                     </CardBody>
                 )}

@@ -14,6 +14,8 @@ import {NotificationStatus} from '../notifications/types'
 import {StoreDispatch, RootState} from '../types'
 import client from '../../models/api/resources'
 
+import {LinksWidget} from '../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+
 import * as types from './constants.js'
 import {
     Widget,
@@ -182,7 +184,7 @@ export function drop(
     }
 }
 
-export function updateEditedWidget(data: WidgetTemplateWidget) {
+export function updateEditedWidget(data: WidgetTemplateWidget | LinksWidget) {
     return {
         type: types.UPDATE_EDITED_WIDGET,
         item: data,

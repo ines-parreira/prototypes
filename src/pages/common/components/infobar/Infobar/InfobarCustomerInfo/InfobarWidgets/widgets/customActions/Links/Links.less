@@ -1,0 +1,37 @@
+:local {
+    .groupItem {
+        display: flex !important;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 6px !important;
+        padding: 0 !important;
+        border: none !important;
+        &:hover .editIcons {
+            opacity: 1;
+        }
+    }
+    .link {
+        display: flex;
+        flex: 0 1 auto;
+        align-items: center;
+        padding: 4px;
+        font-size: 13px;
+        font-weight: 500;
+    }
+    .linkIcon {
+        margin-left: 6px;
+        font-size: 14px;
+    }
+    .editIcons {
+        flex: 0 0 auto;
+        min-width: 52px;
+        opacity: 0;
+        i {
+            padding: 4px 6px;
+        }
+    }
+    .collapseIcon {
+        margin-right: 9px;
+        margin-bottom: 1px;
+    }
+}
