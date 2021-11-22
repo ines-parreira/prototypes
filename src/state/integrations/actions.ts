@@ -153,8 +153,7 @@ export function activateOnboardingIntegrations(
                         })
                     )
                     return dispatch({
-                        type:
-                            constants.ACTIVATE_ONBOARDING_INTEGRATIONS_SUCCESS,
+                        type: constants.ACTIVATE_ONBOARDING_INTEGRATIONS_SUCCESS,
                         resp,
                     })
                 },
@@ -629,10 +628,9 @@ export function verifyEmailIntegration(token: string) {
                     return dispatch(
                         notify({
                             status: NotificationStatus.Error,
-                            message: (fromJS(error.response) as Map<
-                                any,
-                                any
-                            >).getIn(['data', 'error', 'msg']),
+                            message: (
+                                fromJS(error.response) as Map<any, any>
+                            ).getIn(['data', 'error', 'msg']),
                         })
                     )
                 }
@@ -667,10 +665,9 @@ export function klaviyoSyncHistoricalEvent() {
                     void dispatch(
                         notify({
                             status: NotificationStatus.Error,
-                            message: (fromJS(error.response) as Map<
-                                any,
-                                any
-                            >).getIn(['data', 'error', 'msg']),
+                            message: (
+                                fromJS(error.response) as Map<any, any>
+                            ).getIn(['data', 'error', 'msg']),
                         })
                     )
                 }
@@ -705,10 +702,9 @@ export function sendVerificationEmail() {
                     void dispatch(
                         notify({
                             status: NotificationStatus.Error,
-                            message: (fromJS(error.response) as Map<
-                                any,
-                                any
-                            >).getIn(['data', 'error', 'msg']),
+                            message: (
+                                fromJS(error.response) as Map<any, any>
+                            ).getIn(['data', 'error', 'msg']),
                         })
                     )
                 }
@@ -739,10 +735,9 @@ export function verifyEmailIntegrationManually(token: string) {
                     return dispatch(
                         notify({
                             status: NotificationStatus.Error,
-                            message: (fromJS(error.response) as Map<
-                                any,
-                                any
-                            >).getIn(['data', 'error', 'msg']),
+                            message: (
+                                fromJS(error.response) as Map<any, any>
+                            ).getIn(['data', 'error', 'msg']),
                         })
                     )
                 }

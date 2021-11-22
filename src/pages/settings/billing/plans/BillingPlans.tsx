@@ -140,9 +140,8 @@ class BillingPlans extends React.Component<Props> {
 const connector = connect((state: RootState) => {
     return {
         isTrialing: currentAccountSelectors.isTrialing(state),
-        shouldPayWithShopify: currentAccountSelectors.shouldPayWithShopify(
-            state
-        ),
+        shouldPayWithShopify:
+            currentAccountSelectors.shouldPayWithShopify(state),
         subscription: currentAccountSelectors.getCurrentSubscription(state),
     }
 }, {})

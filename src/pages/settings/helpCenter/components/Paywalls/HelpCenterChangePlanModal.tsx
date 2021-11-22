@@ -37,9 +37,8 @@ const HelpCenterChangePlanModal = ({
 }: Props): JSX.Element => {
     const dispatch = useAppDispatch()
     const hasAutomationAddOn = !!currentPlan.get('automation_addon_included')
-    const [isModalAutomationChecked, setModalIsAutomationChecked] = useState(
-        hasAutomationAddOn
-    )
+    const [isModalAutomationChecked, setModalIsAutomationChecked] =
+        useState(hasAutomationAddOn)
 
     const suitablePlanWithAutomationAddOn = useSelector(
         getPlan(
@@ -53,29 +52,27 @@ const HelpCenterChangePlanModal = ({
           )
         : '?'
 
-    const [
-        {loading: isSubscriptionUpdating},
-        handleSubscriptionUpdate,
-    ] = useAsyncFn(async (planId: SubscriptionPlan) => {
-        if (!isAllowedToChangePlan(planId)) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        'You cannot change your current plan because you have too many active integrations. ' +
-                        'Delete or deactivate a few integrations and try again.',
+    const [{loading: isSubscriptionUpdating}, handleSubscriptionUpdate] =
+        useAsyncFn(async (planId: SubscriptionPlan) => {
+            if (!isAllowedToChangePlan(planId)) {
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Error,
+                        message:
+                            'You cannot change your current plan because you have too many active integrations. ' +
+                            'Delete or deactivate a few integrations and try again.',
+                    })
+                )
+                return
+            }
+
+            dispatch(setFutureSubscriptionPlan(planId))
+            await dispatch(
+                updateSubscription({
+                    plan: planId,
                 })
             )
-            return
-        }
-
-        dispatch(setFutureSubscriptionPlan(planId))
-        await dispatch(
-            updateSubscription({
-                plan: planId,
-            })
-        )
-    })
+        })
 
     return (
         <ChangePlanModal

@@ -29,14 +29,13 @@ export default class TicketReplyAction extends Component<Props> {
         value: number | string | boolean,
         category: string
     ) {
-        const index = (this.props.action.getIn(['arguments', category]) as List<
-            any
-        >).indexOf(arg)
+        const index = (
+            this.props.action.getIn(['arguments', category]) as List<any>
+        ).indexOf(arg)
 
-        const newValue = (this.props.action.get('arguments', fromJS({})) as Map<
-            any,
-            any
-        >).setIn([category, index, 'value'], value)
+        const newValue = (
+            this.props.action.get('arguments', fromJS({})) as Map<any, any>
+        ).setIn([category, index, 'value'], value)
 
         if (~index) {
             this.props.update(this.props.index, newValue, this.props.ticketId)
@@ -44,10 +43,9 @@ export default class TicketReplyAction extends Component<Props> {
     }
 
     setValue(key: string, value: number | string | boolean) {
-        const newValue = (this.props.action.get('arguments', fromJS({})) as Map<
-            any,
-            any
-        >).set(key, value)
+        const newValue = (
+            this.props.action.get('arguments', fromJS({})) as Map<any, any>
+        ).set(key, value)
 
         this.props.update(this.props.index, newValue, this.props.ticketId)
     }
@@ -149,18 +147,16 @@ export default class TicketReplyAction extends Component<Props> {
         let argsComponent = null
 
         if (type === 'http') {
-            const headersArgs = (action.getIn(
-                ['arguments', 'headers'],
-                fromJS([])
-            ) as List<any>).filter(
+            const headersArgs = (
+                action.getIn(['arguments', 'headers'], fromJS([])) as List<any>
+            ).filter(
                 (curAction: Map<any, any>) =>
                     curAction.get('editable') as boolean
             ) as List<any>
 
-            const paramsArgs = (action.getIn(
-                ['arguments', 'params'],
-                fromJS([])
-            ) as List<any>).filter(
+            const paramsArgs = (
+                action.getIn(['arguments', 'params'], fromJS([])) as List<any>
+            ).filter(
                 (curAction: Map<any, any>) =>
                     curAction.get('editable') as boolean
             ) as List<any>
@@ -168,9 +164,12 @@ export default class TicketReplyAction extends Component<Props> {
             const formData =
                 action.getIn(['arguments', 'content_type']) ===
                 FORM_CONTENT_TYPE
-                    ? ((action.getIn(['arguments', 'form'], fromJS([])) as List<
-                          any
-                      >).filter(
+                    ? ((
+                          action.getIn(
+                              ['arguments', 'form'],
+                              fromJS([])
+                          ) as List<any>
+                      ).filter(
                           (curAction: Map<any, any>) =>
                               curAction.get('editable') as boolean
                       ) as List<any>)

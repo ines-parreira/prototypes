@@ -36,9 +36,7 @@ class _BlockStatementItem extends React.Component<BlockStatementItemProps> {
 
 const BlockStatementItem = Hoverable(_BlockStatementItem)
 
-export default class BlockStatement extends React.Component<
-    BlockStatementProps
-> {
+export default class BlockStatement extends React.Component<BlockStatementProps> {
     _renderStatements = () => {
         const {body, rule, actions, parent, schemas, depth} = this.props
 

@@ -18,12 +18,14 @@ import {
 import {SelfServiceConfigurationsState} from '../../../../../state/entities/selfServiceConfigurations/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-const fetchSelfServiceConfigurationsMock = fetchSelfServiceConfigurations as jest.MockedFunction<
-    typeof fetchSelfServiceConfigurations
->
-const updateSelfServiceConfigurationMock = updateSelfServiceConfiguration as jest.MockedFunction<
-    typeof updateSelfServiceConfiguration
->
+const fetchSelfServiceConfigurationsMock =
+    fetchSelfServiceConfigurations as jest.MockedFunction<
+        typeof fetchSelfServiceConfigurations
+    >
+const updateSelfServiceConfigurationMock =
+    updateSelfServiceConfiguration as jest.MockedFunction<
+        typeof updateSelfServiceConfiguration
+    >
 
 jest.mock('../../../../common/components/ToggleButton', () => {
     return ({
@@ -136,9 +138,8 @@ describe('<SelfServiceView/>', () => {
 
         it('should render a row for each shopify integration, 2 active and 1 inactive ssp services', () => {
             const shopifyIntegrations = createShopifyIntegrationFixtures(3)
-            const selfServiceConfigurations = createSelfServiceConfigurationFixtures(
-                3
-            )
+            const selfServiceConfigurations =
+                createSelfServiceConfigurationFixtures(3)
 
             fetchSelfServiceConfigurationsMock.mockImplementationOnce(() => {
                 return Promise.resolve({
@@ -156,16 +157,17 @@ describe('<SelfServiceView/>', () => {
                             }),
                             entities: {
                                 ...defaultState.entities,
-                                selfServiceConfigurations: selfServiceConfigurations.reduce(
-                                    (
-                                        configurations: SelfServiceConfigurationsState,
-                                        configuration: SelfServiceConfiguration
-                                    ) => ({
-                                        ...configurations,
-                                        [configuration.id]: configuration,
-                                    }),
-                                    {} as Partial<SelfServiceConfiguration>
-                                ),
+                                selfServiceConfigurations:
+                                    selfServiceConfigurations.reduce(
+                                        (
+                                            configurations: SelfServiceConfigurationsState,
+                                            configuration: SelfServiceConfiguration
+                                        ) => ({
+                                            ...configurations,
+                                            [configuration.id]: configuration,
+                                        }),
+                                        {} as Partial<SelfServiceConfiguration>
+                                    ),
                             },
                         })}
                     >
@@ -181,9 +183,8 @@ describe('<SelfServiceView/>', () => {
     describe('ToggleButton.onChange()', () => {
         it('should send an updateSelfServiceConfigurations action and the ssp for the store with id 1 will get deactivated', () => {
             const shopifyIntegrations = createShopifyIntegrationFixtures(4)
-            const selfServiceConfigurations = createSelfServiceConfigurationFixtures(
-                4
-            )
+            const selfServiceConfigurations =
+                createSelfServiceConfigurationFixtures(4)
 
             act(() => {
                 const {container, getAllByTestId} = render(
@@ -195,16 +196,17 @@ describe('<SelfServiceView/>', () => {
                             }),
                             entities: {
                                 ...defaultState.entities,
-                                selfServiceConfigurations: selfServiceConfigurations.reduce(
-                                    (
-                                        configurations: SelfServiceConfigurationsState,
-                                        configuration: SelfServiceConfiguration
-                                    ) => ({
-                                        ...configurations,
-                                        [configuration.id]: configuration,
-                                    }),
-                                    {} as Partial<SelfServiceConfiguration>
-                                ),
+                                selfServiceConfigurations:
+                                    selfServiceConfigurations.reduce(
+                                        (
+                                            configurations: SelfServiceConfigurationsState,
+                                            configuration: SelfServiceConfiguration
+                                        ) => ({
+                                            ...configurations,
+                                            [configuration.id]: configuration,
+                                        }),
+                                        {} as Partial<SelfServiceConfiguration>
+                                    ),
                             },
                         })}
                     >
@@ -246,9 +248,8 @@ describe('<SelfServiceView/>', () => {
 
         it('should send an updateSelfServiceConfigurations action and the ssp for the store with id 2 will get activated', () => {
             const shopifyIntegrations = createShopifyIntegrationFixtures(4)
-            const selfServiceConfigurations = createSelfServiceConfigurationFixtures(
-                4
-            )
+            const selfServiceConfigurations =
+                createSelfServiceConfigurationFixtures(4)
 
             act(() => {
                 const {container, getAllByTestId} = render(
@@ -260,16 +261,17 @@ describe('<SelfServiceView/>', () => {
                             }),
                             entities: {
                                 ...defaultState.entities,
-                                selfServiceConfigurations: selfServiceConfigurations.reduce(
-                                    (
-                                        configurations: SelfServiceConfigurationsState,
-                                        configuration: SelfServiceConfiguration
-                                    ) => ({
-                                        ...configurations,
-                                        [configuration.id]: configuration,
-                                    }),
-                                    {} as Partial<SelfServiceConfiguration>
-                                ),
+                                selfServiceConfigurations:
+                                    selfServiceConfigurations.reduce(
+                                        (
+                                            configurations: SelfServiceConfigurationsState,
+                                            configuration: SelfServiceConfiguration
+                                        ) => ({
+                                            ...configurations,
+                                            [configuration.id]: configuration,
+                                        }),
+                                        {} as Partial<SelfServiceConfiguration>
+                                    ),
                             },
                         })}
                     >

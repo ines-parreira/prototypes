@@ -118,9 +118,10 @@ export default function reducer(
         }
 
         case constants.SET_FIELD_VISIBILITY: {
-            const visibleFields = activeView.get('fields', fromJS([])) as List<
-                any
-            >
+            const visibleFields = activeView.get(
+                'fields',
+                fromJS([])
+            ) as List<any>
 
             const fields = action.state
                 ? visibleFields.push(action.name)

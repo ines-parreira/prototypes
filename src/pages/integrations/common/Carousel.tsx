@@ -19,13 +19,8 @@ export default class Carousel extends Component<Props> {
     }
 
     render() {
-        const {
-            imagesUrl,
-            slidesToShow,
-            arrows,
-            autoplay,
-            onImageClick,
-        } = this.props
+        const {imagesUrl, slidesToShow, arrows, autoplay, onImageClick} =
+            this.props
 
         return (
             <div className={css.carouselContainer}>

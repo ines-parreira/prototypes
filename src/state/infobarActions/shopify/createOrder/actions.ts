@@ -111,88 +111,88 @@ export const getDuplicateOrderPayload = (
         .set('shipping_line', shippingLine)
 }
 
-export const onInit = (
-    integrationId: number,
-    order: Maybe<Map<any, any>>,
-    customer: Map<any, any>,
-    currencyCode: string,
-    onError: () => void
-) => async (dispatch: StoreDispatch) => {
-    // Duplicate existing order:
-    if (order) {
-        dispatch(setLoading(true, 'Fetching products...'))
+export const onInit =
+    (
+        integrationId: number,
+        order: Maybe<Map<any, any>>,
+        customer: Map<any, any>,
+        currencyCode: string,
+        onError: () => void
+    ) =>
+    async (dispatch: StoreDispatch) => {
+        // Duplicate existing order:
+        if (order) {
+            dispatch(setLoading(true, 'Fetching products...'))
 
-        const products = await loadProducts(integrationId, order)
-        const draftOrderPayload = initDraftOrderPayload(
-            customer,
-            order,
-            products as any,
-            false
-        )
-        const payload = getDuplicateOrderPayload(draftOrderPayload)
-        return Promise.all([
-            dispatch(setPayload(payload)),
-            dispatch(calculateDraftOrder(integrationId, payload, onError)),
-            dispatch(setProducts(products)),
-        ])
-    }
-
-    // Create order from scratch:
-    let payload = initDraftOrderPayload(customer)
-
-    if (!payload.get('currency')) {
-        payload = payload.set('currency', currencyCode)
-    }
-
-    return dispatch(setPayload(payload))
-}
-
-export const calculateDraftOrder = (
-    integrationId: number,
-    payload: Map<any, any>,
-    onError?: () => void
-) => async (dispatch: StoreDispatch) => {
-    try {
-        const api = getCalculateApi()
-        api.cancelPendingRequests(true)
-
-        dispatch(setLoading(true, 'Calculating draft order...'))
-        dispatch(setCalculatedDraftOrder(fromJS({})))
-
-        const calculatePayload = getCalculateDraftOrderPayload(payload)
-        const calculatedDraftOrder = await api.calculateDraftOrder(
-            integrationId,
-            calculatePayload
-        )
-
-        dispatch(setCalculatedDraftOrder(calculatedDraftOrder))
-    } catch (error) {
-        if (axios.isCancel(error)) {
-            return
+            const products = await loadProducts(integrationId, order)
+            const draftOrderPayload = initDraftOrderPayload(
+                customer,
+                order,
+                products as any,
+                false
+            )
+            const payload = getDuplicateOrderPayload(draftOrderPayload)
+            return Promise.all([
+                dispatch(setPayload(payload)),
+                dispatch(calculateDraftOrder(integrationId, payload, onError)),
+                dispatch(setProducts(products)),
+            ])
         }
 
-        console.error(error)
-        onError && onError()
-        dispatch(
-            onApiError(
-                error,
-                'Error while calculating draft order',
-                setLoading(false)
-            )
-        )
-    } finally {
-        dispatch(setLoading(false))
+        // Create order from scratch:
+        let payload = initDraftOrderPayload(customer)
+
+        if (!payload.get('currency')) {
+            payload = payload.set('currency', currencyCode)
+        }
+
+        return dispatch(setPayload(payload))
     }
-}
+
+export const calculateDraftOrder =
+    (integrationId: number, payload: Map<any, any>, onError?: () => void) =>
+    async (dispatch: StoreDispatch) => {
+        try {
+            const api = getCalculateApi()
+            api.cancelPendingRequests(true)
+
+            dispatch(setLoading(true, 'Calculating draft order...'))
+            dispatch(setCalculatedDraftOrder(fromJS({})))
+
+            const calculatePayload = getCalculateDraftOrderPayload(payload)
+            const calculatedDraftOrder = await api.calculateDraftOrder(
+                integrationId,
+                calculatePayload
+            )
+
+            dispatch(setCalculatedDraftOrder(calculatedDraftOrder))
+        } catch (error) {
+            if (axios.isCancel(error)) {
+                return
+            }
+
+            console.error(error)
+            onError && onError()
+            dispatch(
+                onApiError(
+                    error,
+                    'Error while calculating draft order',
+                    setLoading(false)
+                )
+            )
+        } finally {
+            dispatch(setLoading(false))
+        }
+    }
 
 export const loadProducts = async (
     integrationId: number,
     oldOrder: Map<any, any>
 ): Promise<globalThis.Map<any, any>> => {
     const products = new window.Map()
-    const productIds = ((oldOrder.get('line_items', []) as List<any>).map(
+    const productIds = (oldOrder.get('line_items', []) as List<any>).map(
         (lineItem: Map<any, any>) => lineItem.get('product_id') as number
-    ) as unknown) as number[]
+    ) as unknown as number[]
     const api = new GorgiasApi()
     const generator = api.getIntegrationDataItems(
         integrationId,
@@ -209,143 +209,151 @@ export const loadProducts = async (
     return products
 }
 
-export const onPayloadChange = (
-    integrationId: number,
-    payload: Map<any, any>,
-    shouldCalculate: Maybe<boolean> = true
-) => (dispatch: StoreDispatch) => {
-    const newPayload = refreshAppliedDiscounts(payload)
-    dispatch(setPayload(newPayload))
+export const onPayloadChange =
+    (
+        integrationId: number,
+        payload: Map<any, any>,
+        shouldCalculate: Maybe<boolean> = true
+    ) =>
+    (dispatch: StoreDispatch) => {
+        const newPayload = refreshAppliedDiscounts(payload)
+        dispatch(setPayload(newPayload))
 
-    return shouldCalculate
-        ? dispatch(calculateDraftOrder(integrationId, newPayload))
-        : null
-}
-
-export const addRow = (
-    actionName: string,
-    integrationId: number,
-    product: Product,
-    variant: Variant
-) => (dispatch: StoreDispatch, getState: () => RootState) => {
-    const state = getState()
-    const payload = getCreateOrderState(state).get('payload') as Map<any, any>
-    const products = getCreateOrderState(state).get(
-        'products'
-    ) as globalThis.Map<any, any>
-    const newPayload = addVariant(payload, product, variant)
-    const newProducts = new window.Map(products)
-
-    if (!newProducts.has(product.id)) {
-        newProducts.set(product.id, fromJS(product))
+        return shouldCalculate
+            ? dispatch(calculateDraftOrder(integrationId, newPayload))
+            : null
     }
 
-    const eventName =
-        actionName === ShopifyActionType.CreateOrder
-            ? SegmentEvent.ShopifyCreateOrderLineItemAdded
-            : SegmentEvent.ShopifyDuplicateOrderLineItemAdded
-
-    segmentTracker.logEvent(eventName, {
-        productId: product.id,
-        variantId: variant.id,
-    })
-
-    return Promise.all([
-        dispatch(onPayloadChange(integrationId, newPayload)),
-        dispatch(setProducts(newProducts)),
-    ])
-}
-
-export const onLineItemChange = (
-    integrationId: number,
-    {
-        newLineItem,
-        index,
-        remove = false,
-    }: {newLineItem?: Map<any, any>; index: number; remove?: boolean}
-) => (dispatch: StoreDispatch, getState: () => RootState) => {
-    const state = getState()
-    const oldPayload = getCreateOrderState(state).get('payload') as Map<
-        any,
-        any
-    >
-    const oldLineItems = oldPayload.get('line_items') as List<Map<any, any>>
-    let newLineItems: List<Map<any, any>> = List([])
-    if (remove) {
-        newLineItems = oldLineItems.remove(index)
-    } else {
-        if (newLineItem) {
-            newLineItems = oldLineItems.set(index, newLineItem)
-        }
-    }
-    return dispatch(
-        onPayloadChange(
-            integrationId,
-            oldPayload.set('line_items', newLineItems)
-        )
-    )
-}
-
-export const addCustomRow = (
-    integrationId: number,
-    lineItem: Map<any, any>
-) => (dispatch: StoreDispatch, getState: () => RootState) => {
-    const state = getState()
-    const payload = getCreateOrderState(state).get('payload') as Map<any, any>
-    const newPayload = addCustomLineItem(payload, lineItem)
-
-    return dispatch(onPayloadChange(integrationId, newPayload))
-}
-
-export const onCreateDraftOrder = (
-    integrationId: number,
-    orderId?: Maybe<number>
-) => async (
-    dispatch: StoreDispatch,
-    getState: () => RootState
-): Promise<Maybe<Map<any, any>>> => {
-    try {
-        dispatch(setLoading(true, 'Creating draft order...'))
-
+export const addRow =
+    (
+        actionName: string,
+        integrationId: number,
+        product: Product,
+        variant: Variant
+    ) =>
+    (dispatch: StoreDispatch, getState: () => RootState) => {
         const state = getState()
-        const payload: Map<any, any> = getCreateOrderState(state).get('payload')
-        const api = new GorgiasApi()
-        const [draftOrder] = await api.createDraftOrder(
-            integrationId,
-            payload,
-            orderId
-        )
+        const payload = getCreateOrderState(state).get('payload') as Map<
+            any,
+            any
+        >
+        const products = getCreateOrderState(state).get(
+            'products'
+        ) as globalThis.Map<any, any>
+        const newPayload = addVariant(payload, product, variant)
+        const newProducts = new window.Map(products)
 
-        return draftOrder
-    } catch (error) {
-        console.error(error)
-        dispatch(
-            onApiError(
-                error,
-                'Error while creating draft order',
-                setLoading(false)
+        if (!newProducts.has(product.id)) {
+            newProducts.set(product.id, fromJS(product))
+        }
+
+        const eventName =
+            actionName === ShopifyActionType.CreateOrder
+                ? SegmentEvent.ShopifyCreateOrderLineItemAdded
+                : SegmentEvent.ShopifyDuplicateOrderLineItemAdded
+
+        segmentTracker.logEvent(eventName, {
+            productId: product.id,
+            variantId: variant.id,
+        })
+
+        return Promise.all([
+            dispatch(onPayloadChange(integrationId, newPayload)),
+            dispatch(setProducts(newProducts)),
+        ])
+    }
+
+export const onLineItemChange =
+    (
+        integrationId: number,
+        {
+            newLineItem,
+            index,
+            remove = false,
+        }: {newLineItem?: Map<any, any>; index: number; remove?: boolean}
+    ) =>
+    (dispatch: StoreDispatch, getState: () => RootState) => {
+        const state = getState()
+        const oldPayload = getCreateOrderState(state).get('payload') as Map<
+            any,
+            any
+        >
+        const oldLineItems = oldPayload.get('line_items') as List<Map<any, any>>
+        let newLineItems: List<Map<any, any>> = List([])
+        if (remove) {
+            newLineItems = oldLineItems.remove(index)
+        } else {
+            if (newLineItem) {
+                newLineItems = oldLineItems.set(index, newLineItem)
+            }
+        }
+        return dispatch(
+            onPayloadChange(
+                integrationId,
+                oldPayload.set('line_items', newLineItems)
             )
         )
-    } finally {
-        dispatch(setLoading(false))
     }
-}
 
-export const onCancel = (
-    actionName: string,
-    integrationId: number,
-    via: string
-) => () => {
-    getCalculateApi().cancelPendingRequests()
-    _apiInstances = {}
+export const addCustomRow =
+    (integrationId: number, lineItem: Map<any, any>) =>
+    (dispatch: StoreDispatch, getState: () => RootState) => {
+        const state = getState()
+        const payload = getCreateOrderState(state).get('payload') as Map<
+            any,
+            any
+        >
+        const newPayload = addCustomLineItem(payload, lineItem)
 
-    const eventName =
-        actionName === ShopifyActionType.CreateOrder
-            ? SegmentEvent.ShopifyCreateOrderCancel
-            : SegmentEvent.ShopifyDuplicateOrderCancel
+        return dispatch(onPayloadChange(integrationId, newPayload))
+    }
 
-    segmentTracker.logEvent(eventName, {via})
-}
+export const onCreateDraftOrder =
+    (integrationId: number, orderId?: Maybe<number>) =>
+    async (
+        dispatch: StoreDispatch,
+        getState: () => RootState
+    ): Promise<Maybe<Map<any, any>>> => {
+        try {
+            dispatch(setLoading(true, 'Creating draft order...'))
+
+            const state = getState()
+            const payload: Map<any, any> =
+                getCreateOrderState(state).get('payload')
+            const api = new GorgiasApi()
+            const [draftOrder] = await api.createDraftOrder(
+                integrationId,
+                payload,
+                orderId
+            )
+
+            return draftOrder
+        } catch (error) {
+            console.error(error)
+            dispatch(
+                onApiError(
+                    error,
+                    'Error while creating draft order',
+                    setLoading(false)
+                )
+            )
+        } finally {
+            dispatch(setLoading(false))
+        }
+    }
+
+export const onCancel =
+    (actionName: string, integrationId: number, via: string) => () => {
+        getCalculateApi().cancelPendingRequests()
+        _apiInstances = {}
+
+        const eventName =
+            actionName === ShopifyActionType.CreateOrder
+                ? SegmentEvent.ShopifyCreateOrderCancel
+                : SegmentEvent.ShopifyDuplicateOrderCancel
+
+        segmentTracker.logEvent(eventName, {via})
+    }
 
 export const onReset = () => (dispatch: StoreDispatch) => resetState(dispatch)
 
@@ -354,79 +362,83 @@ export const resetState = _debounce(
     250
 )
 
-export const sendInvoice = (
-    integrationId: number,
-    customerId: number,
-    orderId: Maybe<number>,
-    draftOrder: Map<any, any>,
-    invoicePayload: Map<any, any>,
-    onSuccess: () => void
-) => (dispatch: StoreDispatch) => {
-    return new Promise((resolve) => {
-        dispatch(setLoading(true, 'Sending invoice...'))
+export const sendInvoice =
+    (
+        integrationId: number,
+        customerId: number,
+        orderId: Maybe<number>,
+        draftOrder: Map<any, any>,
+        invoicePayload: Map<any, any>,
+        onSuccess: () => void
+    ) =>
+    (dispatch: StoreDispatch) => {
+        return new Promise((resolve) => {
+            dispatch(setLoading(true, 'Sending invoice...'))
 
-        const draftOrderId = draftOrder.get('id') as number
-        const draftOrderName = draftOrder.get('name') as string
+            const draftOrderId = draftOrder.get('id') as number
+            const draftOrderName = draftOrder.get('name') as string
 
-        const payload = {
-            order_id: orderId,
-            draft_order_id: draftOrderId,
-            draft_order_name: draftOrderName,
-            draft_order_invoice: invoicePayload.toJS(),
-        }
+            const payload = {
+                order_id: orderId,
+                draft_order_id: draftOrderId,
+                draft_order_name: draftOrderName,
+                draft_order_invoice: invoicePayload.toJS(),
+            }
 
-        const callback = (response: AxiosResponse) => {
-            setTimeout(() => {
-                if (((response.status as unknown) as string) !== 'error') {
-                    onSuccess()
+            const callback = (response: AxiosResponse) => {
+                setTimeout(() => {
+                    if ((response.status as unknown as string) !== 'error') {
+                        onSuccess()
 
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: `Draft order ${draftOrderName} created, invoice successfully sent`,
-                        })
-                    )
-                }
+                        void dispatch(
+                            notify({
+                                status: NotificationStatus.Success,
+                                message: `Draft order ${draftOrderName} created, invoice successfully sent`,
+                            })
+                        )
+                    }
 
-                resolve(dispatch(setLoading(false)) as any)
-            }, 0)
-        }
+                    resolve(dispatch(setLoading(false)) as any)
+                }, 0)
+            }
 
-        void dispatch(
-            executeAction(
-                ShopifyActionType.SendDraftOrderInvoice,
-                integrationId.toString(),
-                customerId.toString(),
-                payload,
-                callback as any
+            void dispatch(
+                executeAction(
+                    ShopifyActionType.SendDraftOrderInvoice,
+                    integrationId.toString(),
+                    customerId.toString(),
+                    payload,
+                    callback as any
+                )
             )
-        )
-    })
-}
-
-export const onEmailInvoice = (
-    integrationId: number,
-    customerId: number,
-    orderId: Maybe<number>,
-    invoicePayload: Map<any, any>,
-    onSuccess: () => void
-) => async (dispatch: StoreDispatch): Promise<any> => {
-    const draftOrder = await dispatch(
-        onCreateDraftOrder(integrationId, orderId)
-    )
-
-    if (!draftOrder) {
-        return
+        })
     }
 
-    return dispatch(
-        sendInvoice(
-            integrationId,
-            customerId,
-            orderId,
-            draftOrder,
-            invoicePayload,
-            onSuccess
+export const onEmailInvoice =
+    (
+        integrationId: number,
+        customerId: number,
+        orderId: Maybe<number>,
+        invoicePayload: Map<any, any>,
+        onSuccess: () => void
+    ) =>
+    async (dispatch: StoreDispatch): Promise<any> => {
+        const draftOrder = await dispatch(
+            onCreateDraftOrder(integrationId, orderId)
         )
-    )
-}
+
+        if (!draftOrder) {
+            return
+        }
+
+        return dispatch(
+            sendInvoice(
+                integrationId,
+                customerId,
+                orderId,
+                draftOrder,
+                invoicePayload,
+                onSuccess
+            )
+        )
+    }

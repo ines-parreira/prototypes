@@ -216,11 +216,13 @@ export default class KeyMetricStat extends Component<Props> {
                                                 'tooltip'
                                             ) === 'string'
                                                 ? metricConfig.get('tooltip')
-                                                : (metricConfig.get(
-                                                      'tooltip'
-                                                  ) as (
-                                                      data: Map<any, any>
-                                                  ) => ReactNode)(metric)}
+                                                : (
+                                                      metricConfig.get(
+                                                          'tooltip'
+                                                      ) as (
+                                                          data: Map<any, any>
+                                                      ) => ReactNode
+                                                  )(metric)}
                                         </Tooltip>
                                     </span>
                                 </div>

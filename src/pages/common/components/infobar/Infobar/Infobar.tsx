@@ -108,9 +108,8 @@ export const Infobar = ({
     const [isSearching, setIsSearching] = useState(false)
     const [isFetchingCustomer, setIsFetchingCustomer] = useState(false)
     const [displaySearchResults, setDisplaySearchResults] = useState(false)
-    const [displaySelectedCustomer, setDisplaySelectedCustomer] = useState(
-        false
-    )
+    const [displaySelectedCustomer, setDisplaySelectedCustomer] =
+        useState(false)
     const [showMergeCustomerModal, setShowMergeCustomerModal] = useState(false)
     const [searchResults, setSearchResults] = useState(fromJS([]))
     const [selectedCustomer, setSelectedCustomer] = useState(fromJS({}))
@@ -123,9 +122,10 @@ export const Infobar = ({
         () => widgets.getIn(['_internal', 'isEditing']) as boolean,
         [widgets]
     )
-    const isEditing = useMemo(() => isWidgetEditing && isRouteEditingWidgets, [
-        isWidgetEditing,
-    ])
+    const isEditing = useMemo(
+        () => isWidgetEditing && isRouteEditingWidgets,
+        [isWidgetEditing]
+    )
     const mode = useMemo(() => {
         // the following succession of conditions is in a particular order
         // which is important for the good display of each of those
@@ -178,10 +178,9 @@ export const Infobar = ({
         }
     }, [customer, prevCustomer])
 
-    const [
-        cancellableSearch,
-    ] = useCancellableRequest((cancelToken: CancelToken) => async (query) =>
-        await searchCustomers(query, cancelToken)
+    const [cancellableSearch] = useCancellableRequest(
+        (cancelToken: CancelToken) => async (query) =>
+            await searchCustomers(query, cancelToken)
     )
 
     const updateSimilarCustomer = async () => {
@@ -415,10 +414,12 @@ export const Infobar = ({
                                 />
                                 <MergeCustomersContainer
                                     isTicketContext={
-                                        !(sources.get(
-                                            'ticket',
-                                            fromJS({})
-                                        ) as Map<any, any>).isEmpty()
+                                        !(
+                                            sources.get(
+                                                'ticket',
+                                                fromJS({})
+                                            ) as Map<any, any>
+                                        ).isEmpty()
                                     }
                                     display={showMergeCustomerModal}
                                     destinationCustomer={customer}
@@ -524,7 +525,8 @@ export const Infobar = ({
                                         </div>
                                         <ActionButtonContext.Provider
                                             value={{
-                                                actionError: MERGE_ERROR_MESSAGE,
+                                                actionError:
+                                                    MERGE_ERROR_MESSAGE,
                                             }}
                                         >
                                             <InfobarCustomerInfo
@@ -559,13 +561,12 @@ export const Infobar = ({
                                             />
                                             <MergeCustomersContainer
                                                 isTicketContext={
-                                                    !(sources.get(
-                                                        'ticket',
-                                                        fromJS({})
-                                                    ) as Map<
-                                                        any,
-                                                        any
-                                                    >).isEmpty()
+                                                    !(
+                                                        sources.get(
+                                                            'ticket',
+                                                            fromJS({})
+                                                        ) as Map<any, any>
+                                                    ).isEmpty()
                                                 }
                                                 display={showMergeCustomerModal}
                                                 destinationCustomer={customer}

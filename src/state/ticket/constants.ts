@@ -76,24 +76,22 @@ export const DISPLAY_HISTORY_ON_NEXT_PAGE = 'DISPLAY_HISTORY_ON_NEXT_PAGE'
 export const MERGE_TICKET = 'MERGE_TICKET'
 export const MERGE_CUSTOMER = 'MERGE_CUSTOMER'
 
-export const TICKET_CHANNEL_NAMES: Record<
-    TicketChannel,
-    string
-> = Object.freeze({
-    [TicketChannel.Aircall]: 'Aircall',
-    [TicketChannel.Api]: 'Api',
-    [TicketChannel.Chat]: 'Chat',
-    [TicketChannel.Email]: 'Email',
-    [TicketChannel.Facebook]: 'Facebook',
-    [TicketChannel.FacebookMention]: 'Facebook Mention',
-    [TicketChannel.FacebookMessenger]: 'Facebook Messenger',
-    [TicketChannel.FacebookRecommendations]: 'Facebook Recommendations',
-    [TicketChannel.InstagramAdComment]: 'Instagram Ad Comment',
-    [TicketChannel.InstagramComment]: 'Instagram Comment',
-    [TicketChannel.InstagramMention]: 'Instagram Mention',
-    [TicketChannel.InstagramDirectMessage]: 'Instagram Direct Message',
-    [TicketChannel.Phone]: 'Phone',
-    [TicketChannel.Sms]: 'Sms',
-    [TicketChannel.Twitter]: 'Twitter',
-    [TicketChannel.YotpoReview]: 'Yotpo Review',
-})
+export const TICKET_CHANNEL_NAMES: Record<TicketChannel, string> =
+    Object.freeze({
+        [TicketChannel.Aircall]: 'Aircall',
+        [TicketChannel.Api]: 'Api',
+        [TicketChannel.Chat]: 'Chat',
+        [TicketChannel.Email]: 'Email',
+        [TicketChannel.Facebook]: 'Facebook',
+        [TicketChannel.FacebookMention]: 'Facebook Mention',
+        [TicketChannel.FacebookMessenger]: 'Facebook Messenger',
+        [TicketChannel.FacebookRecommendations]: 'Facebook Recommendations',
+        [TicketChannel.InstagramAdComment]: 'Instagram Ad Comment',
+        [TicketChannel.InstagramComment]: 'Instagram Comment',
+        [TicketChannel.InstagramMention]: 'Instagram Mention',
+        [TicketChannel.InstagramDirectMessage]: 'Instagram Direct Message',
+        [TicketChannel.Phone]: 'Phone',
+        [TicketChannel.Sms]: 'Sms',
+        [TicketChannel.Twitter]: 'Twitter',
+        [TicketChannel.YotpoReview]: 'Yotpo Review',
+    })

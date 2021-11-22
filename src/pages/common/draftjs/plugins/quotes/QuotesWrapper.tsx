@@ -21,9 +21,11 @@ const QuotesWrapper = ({innerWrapper, children}: Props) => {
     const firstChild = React.Children.toArray(children)[0]
     const quoteDepth = useMemo(() => {
         if (firstChild && React.isValidElement(firstChild)) {
-            const match = (firstChild as React.ReactElement<{
-                className?: string
-            }>).props.className?.match(WRAPPED_ELEMENT_CLASS_NAME_REGEXP)
+            const match = (
+                firstChild as React.ReactElement<{
+                    className?: string
+                }>
+            ).props.className?.match(WRAPPED_ELEMENT_CLASS_NAME_REGEXP)
             if (match) {
                 return parseInt(match[1]) || 0
             }

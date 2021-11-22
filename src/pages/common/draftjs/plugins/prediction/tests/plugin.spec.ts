@@ -99,9 +99,11 @@ describe('prediction plugin', () => {
             text.length + 1,
         ])
         expect(
-            ((DraftTestUtils.getLastCreatedEntity(
-                contentState
-            ) as unknown) as Map<any, any>).toJS()
+            (
+                DraftTestUtils.getLastCreatedEntity(
+                    contentState
+                ) as unknown as Map<any, any>
+            ).toJS()
         ).toMatchObject(createPredictionEntity(prediction))
     }
 
@@ -125,19 +127,15 @@ describe('prediction plugin', () => {
 
     describe('onChange()', () => {
         it('should not request prediction if text is 1 character long', async () => {
-            const {
-                predictionPlugin,
-                pluginMethods,
-            } = createEmptyStatePredictionPlugin()
+            const {predictionPlugin, pluginMethods} =
+                createEmptyStatePredictionPlugin()
             await typeAndPredict('H', '', predictionPlugin, pluginMethods)
             expect(getPredictionCalls()).toHaveLength(0)
         })
 
         it('should request prediction', async () => {
-            const {
-                predictionPlugin,
-                pluginMethods,
-            } = createEmptyStatePredictionPlugin()
+            const {predictionPlugin, pluginMethods} =
+                createEmptyStatePredictionPlugin()
             const text = 'Hi'
             await typeAndPredict(
                 text,
@@ -155,10 +153,8 @@ describe('prediction plugin', () => {
         })
 
         it('should display the prediction', async () => {
-            const {
-                predictionPlugin,
-                pluginMethods,
-            } = createEmptyStatePredictionPlugin()
+            const {predictionPlugin, pluginMethods} =
+                createEmptyStatePredictionPlugin()
             const text = 'Hi'
             const predictedText = ' Marie,'
             const state = await typeAndPredict(
@@ -175,10 +171,8 @@ describe('prediction plugin', () => {
         })
 
         it('should update the prediction when typing along with the prediction', async () => {
-            const {
-                predictionPlugin,
-                pluginMethods,
-            } = createEmptyStatePredictionPlugin()
+            const {predictionPlugin, pluginMethods} =
+                createEmptyStatePredictionPlugin()
 
             await typeAndPredict(
                 'Hi',
@@ -198,10 +192,8 @@ describe('prediction plugin', () => {
         })
 
         it('should hide the prediction and request a new one when new text does not match the previous prediction', async () => {
-            const {
-                predictionPlugin,
-                pluginMethods,
-            } = createEmptyStatePredictionPlugin()
+            const {predictionPlugin, pluginMethods} =
+                createEmptyStatePredictionPlugin()
 
             await typeAndPredict(
                 'Hi ',
@@ -225,10 +217,8 @@ describe('prediction plugin', () => {
         })
 
         it('should remove the prediction if it was completed', async () => {
-            const {
-                predictionPlugin,
-                pluginMethods,
-            } = createEmptyStatePredictionPlugin()
+            const {predictionPlugin, pluginMethods} =
+                createEmptyStatePredictionPlugin()
 
             await typeAndPredict(
                 'Hi Mari',
@@ -251,10 +241,8 @@ describe('prediction plugin', () => {
         })
 
         it('should remove the prediction on cursor move', async () => {
-            const {
-                predictionPlugin,
-                pluginMethods,
-            } = createEmptyStatePredictionPlugin()
+            const {predictionPlugin, pluginMethods} =
+                createEmptyStatePredictionPlugin()
 
             await typeAndPredict('Hi', ' Bob', predictionPlugin, pluginMethods)
 
@@ -276,10 +264,8 @@ describe('prediction plugin', () => {
         })
 
         it('should remove the prediction on content remove', async () => {
-            const {
-                predictionPlugin,
-                pluginMethods,
-            } = createEmptyStatePredictionPlugin()
+            const {predictionPlugin, pluginMethods} =
+                createEmptyStatePredictionPlugin()
 
             await typeAndPredict('Hi', ' Bob', predictionPlugin, pluginMethods)
 
@@ -298,10 +284,8 @@ describe('prediction plugin', () => {
 
         // Regression test for https://github.com/gorgias/gorgias/issues/4553
         it('should hide the prediction on partial input mismatch', async () => {
-            const {
-                predictionPlugin,
-                pluginMethods,
-            } = createEmptyStatePredictionPlugin()
+            const {predictionPlugin, pluginMethods} =
+                createEmptyStatePredictionPlugin()
 
             await typeAndPredict(
                 "I'm so",
@@ -319,10 +303,8 @@ describe('prediction plugin', () => {
 
         describe('text paste', () => {
             it('should support pasting multi-char text that matches the prediction', async () => {
-                const {
-                    predictionPlugin,
-                    pluginMethods,
-                } = createEmptyStatePredictionPlugin()
+                const {predictionPlugin, pluginMethods} =
+                    createEmptyStatePredictionPlugin()
 
                 await typeAndPredict(
                     'Hi ',
@@ -341,10 +323,8 @@ describe('prediction plugin', () => {
             })
 
             it('should remove prediction and send not accepted feedback on pasting text matching prediction partially', async () => {
-                const {
-                    predictionPlugin,
-                    pluginMethods,
-                } = createEmptyStatePredictionPlugin()
+                const {predictionPlugin, pluginMethods} =
+                    createEmptyStatePredictionPlugin()
 
                 await typeAndPredict(
                     'Hi ',
@@ -372,10 +352,8 @@ describe('prediction plugin', () => {
             })
 
             it('should remove prediction and send accepted feedback on pasting text that completes the prediction', async () => {
-                const {
-                    predictionPlugin,
-                    pluginMethods,
-                } = createEmptyStatePredictionPlugin()
+                const {predictionPlugin, pluginMethods} =
+                    createEmptyStatePredictionPlugin()
 
                 await typeAndPredict(
                     'Hi ',
@@ -403,10 +381,8 @@ describe('prediction plugin', () => {
             })
 
             it('should remove prediction and send successful feedback on pasting text matching prediction with extra chars at the end', async () => {
-                const {
-                    predictionPlugin,
-                    pluginMethods,
-                } = createEmptyStatePredictionPlugin()
+                const {predictionPlugin, pluginMethods} =
+                    createEmptyStatePredictionPlugin()
 
                 await typeAndPredict(
                     'Hi ',
@@ -437,10 +413,8 @@ describe('prediction plugin', () => {
 
     describe('onTab()', () => {
         it('should complete the prediction', async () => {
-            const {
-                predictionPlugin,
-                pluginMethods,
-            } = createEmptyStatePredictionPlugin()
+            const {predictionPlugin, pluginMethods} =
+                createEmptyStatePredictionPlugin()
             const text = 'Hi'
             const predictedText = ' Marie,'
             await typeAndPredict(
@@ -471,10 +445,8 @@ describe('prediction plugin', () => {
 
     describe('onRightArrow()', () => {
         it('should complete the prediction', async () => {
-            const {
-                predictionPlugin,
-                pluginMethods,
-            } = createEmptyStatePredictionPlugin()
+            const {predictionPlugin, pluginMethods} =
+                createEmptyStatePredictionPlugin()
 
             await typeAndPredict(
                 'Hi',

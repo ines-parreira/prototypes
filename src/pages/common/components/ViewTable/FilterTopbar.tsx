@@ -388,10 +388,9 @@ export const FilterTopbar = ({
                                     dispatch(viewDeleted(activeView.get('id')))
                                     dispatch(
                                         activeViewIdSet(
-                                            (destinationView as Map<
-                                                any,
-                                                any
-                                            >).get('id')
+                                            (
+                                                destinationView as Map<any, any>
+                                            ).get('id')
                                         )
                                     )
                                 }}

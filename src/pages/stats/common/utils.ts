@@ -1,6 +1,5 @@
-import moment from 'moment'
+import moment, {Moment} from 'moment'
 import _isNumber from 'lodash/isNumber'
-import {Moment} from 'moment/moment'
 import {List, Map} from 'immutable'
 
 import {ViewFilter} from '../../../state/views/types'

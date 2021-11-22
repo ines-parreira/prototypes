@@ -83,11 +83,7 @@ describe('<ConnectToShopSection />', () => {
     it('renders in disabled state while fetching data', async () => {
         const onUpdate = jest.fn()
 
-        const {
-            container,
-            getAllByText,
-            getByText,
-        } = render(
+        const {container, getAllByText, getByText} = render(
             <ConnectToShopSection
                 helpCenter={getHelpCentersResponseFixture.data[0]}
                 onUpdate={onUpdate}

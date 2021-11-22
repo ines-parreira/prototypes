@@ -77,9 +77,9 @@ export const HelpCenterCustomizationView = () => {
 
     const socialLinks = useMemo(
         () =>
-            Object.entries(SOCIAL_NAVIGATION_LINKS).map<
-                LocalSocialNavigationLink
-            >(([socialKey, socialLink]) => {
+            Object.entries(
+                SOCIAL_NAVIGATION_LINKS
+            ).map<LocalSocialNavigationLink>(([socialKey, socialLink]) => {
                 const currentRemoteLink = links.find((link) =>
                     link.meta?.network
                         ? socialKey === link.meta.network.toLowerCase()

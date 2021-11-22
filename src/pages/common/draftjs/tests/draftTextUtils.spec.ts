@@ -178,7 +178,7 @@ describe('draftTestUtils', () => {
                     fooEntity.data
                 )
             let lastEntity = getLastCreatedEntity(state.getCurrentContent())
-            expect(((lastEntity as unknown) as Map<any, any>).toJS()).toEqual(
+            expect((lastEntity as unknown as Map<any, any>).toJS()).toEqual(
                 fooEntity
             )
 
@@ -197,7 +197,7 @@ describe('draftTestUtils', () => {
                     barEntity.data
                 )
             lastEntity = getLastCreatedEntity(state.getCurrentContent())
-            expect(((lastEntity as unknown) as Map<any, any>).toJS()).toEqual(
+            expect((lastEntity as unknown as Map<any, any>).toJS()).toEqual(
                 barEntity
             )
         })

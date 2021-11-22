@@ -22,7 +22,7 @@ describe('facebookAds reducer', () => {
 
     it('should set internals', () => {
         const internals = {
-            '1': {
+            1: {
                 ads: {
                     postid1: {
                         name: 'ad 1',
@@ -68,7 +68,7 @@ describe('facebookAds reducer', () => {
     it('should update active ad', () => {
         const previousState = initialState.mergeDeep({
             internals: {
-                '1': {
+                1: {
                     ads: {
                         postid1: {
                             name: 'ad 1',

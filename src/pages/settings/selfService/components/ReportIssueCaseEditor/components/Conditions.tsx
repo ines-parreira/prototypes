@@ -71,24 +71,24 @@ const getShouldShowConditionButton = (
 }
 
 const Conditions = ({logicExpression, onChange}: ConditionsProps) => {
-    const handleOrGroupConditionChange = (
-        index: number
-    ): React.ComponentProps<typeof ConditionRow>['onChange'] => (
-        jsonLogicRule
-    ) => {
-        const newLogicExpression = produce(
-            logicExpression,
-            (draftLogicExpression: any) => {
-                const conditions = findOrBlock(draftLogicExpression)?.or
+    const handleOrGroupConditionChange =
+        (
+            index: number
+        ): React.ComponentProps<typeof ConditionRow>['onChange'] =>
+        (jsonLogicRule) => {
+            const newLogicExpression = produce(
+                logicExpression,
+                (draftLogicExpression: any) => {
+                    const conditions = findOrBlock(draftLogicExpression)?.or
 
-                if (conditions) {
-                    conditions[index] = jsonLogicRule
+                    if (conditions) {
+                        conditions[index] = jsonLogicRule
+                    }
                 }
-            }
-        )
+            )
 
-        onChange(newLogicExpression)
-    }
+            onChange(newLogicExpression)
+        }
 
     const handleOrGroupConditionDelete = (index: number) => () => {
         const newLogicExpression = produce(
@@ -100,9 +100,8 @@ const Conditions = ({logicExpression, onChange}: ConditionsProps) => {
                     conditions.splice(index, 1)
 
                     if (!conditions.length) {
-                        const orBlockIndex = findOrBlockIndex(
-                            draftLogicExpression
-                        )
+                        const orBlockIndex =
+                            findOrBlockIndex(draftLogicExpression)
                         draftLogicExpression.and.splice(orBlockIndex, 1)
                     }
                 }
@@ -118,16 +117,12 @@ const Conditions = ({logicExpression, onChange}: ConditionsProps) => {
         const newLogicExpression = produce(
             logicExpression,
             (draftLogicExpression) => {
-                const financialStatusRuleIndex = findFinancialStatusRuleIndex(
-                    draftLogicExpression
-                )
+                const financialStatusRuleIndex =
+                    findFinancialStatusRuleIndex(draftLogicExpression)
 
                 if (financialStatusRuleIndex !== -1) {
-                    draftLogicExpression.and[
-                        financialStatusRuleIndex
-                    ] = jsonLogicRule as JsonLogicRuleOverVariable<
-                        ReportIssueVariable.FINANCIAL_STATUS
-                    >
+                    draftLogicExpression.and[financialStatusRuleIndex] =
+                        jsonLogicRule as JsonLogicRuleOverVariable<ReportIssueVariable.FINANCIAL_STATUS>
                 }
             }
         )
@@ -139,9 +134,8 @@ const Conditions = ({logicExpression, onChange}: ConditionsProps) => {
         const newLogicExpression = produce(
             logicExpression,
             (draftLogicExpression) => {
-                const financialStatusRuleIndex = findFinancialStatusRuleIndex(
-                    draftLogicExpression
-                )
+                const financialStatusRuleIndex =
+                    findFinancialStatusRuleIndex(draftLogicExpression)
 
                 if (financialStatusRuleIndex !== -1) {
                     draftLogicExpression.and.splice(financialStatusRuleIndex, 1)

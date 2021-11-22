@@ -20,11 +20,14 @@ export default class Left extends React.Component<Props> {
         const suffixPath = objectPath.split('.').slice(1).join('.')
 
         // now find our field and return it's title
-        const field = (viewsConfig
-            .getConfigByType(view.get('type'))
-            .get('fields', fromJS([])) as List<any>).find(
-            (f: Map<any, any>) => f.get('path') === suffixPath
-        ) as Map<any, any>
+        const field = (
+            viewsConfig
+                .getConfigByType(view.get('type'))
+                .get('fields', fromJS([])) as List<any>
+        ).find((f: Map<any, any>) => f.get('path') === suffixPath) as Map<
+            any,
+            any
+        >
 
         return (
             <Button className="btn-frozen" tag="div" size="sm" color="primary">

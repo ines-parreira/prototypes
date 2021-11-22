@@ -13,12 +13,13 @@ import {TicketNavbarElementType} from '../TicketNavbar'
 
 jest.mock(
     '../TicketNavbarView',
-    () => ({view}: ComponentProps<typeof TicketNavbarView>) => {
-        return <div data-testid="TicketNavbarView">{view.name}</div>
-    }
+    () =>
+        ({view}: ComponentProps<typeof TicketNavbarView>) => {
+            return <div data-testid="TicketNavbarView">{view.name}</div>
+        }
 )
 
-const minProps = ({
+const minProps = {
     currentUser: fromJS(user),
     notify: jest.fn(),
     onSectionDeleteClick: jest.fn(),
@@ -32,7 +33,7 @@ const minProps = ({
     views: {
         [view.id]: view,
     },
-} as unknown) as ComponentProps<typeof TicketNavbarSectionContainer>
+} as unknown as ComponentProps<typeof TicketNavbarSectionContainer>
 
 describe('<TicketNavbarSection/>', () => {
     it.each([

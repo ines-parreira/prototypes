@@ -47,6 +47,7 @@ module.exports = {
                 'import/no-named-as-default-member': ['off'],
                 'import/no-named-as-default': ['error'],
                 '@typescript-eslint/no-unsafe-assignment': ['off'],
+                '@typescript-eslint/no-unsafe-argument': ['off'],
                 '@typescript-eslint/no-floating-promises': [
                     2,
                     {
@@ -110,13 +111,18 @@ module.exports = {
                 ...commonConfigs,
                 'plugin:@typescript-eslint/recommended',
                 'plugin:@typescript-eslint/recommended-requiring-type-checking',
+                'prettier',
                 'plugin:import/typescript',
-                'prettier/@typescript-eslint',
             ],
             plugins: ['prettier', '@typescript-eslint'],
             settings: {
                 'import/parsers': {
                     '@typescript-eslint/parser': ['.ts', '.tsx'],
+                },
+                'import/resolver': {
+                    typescript: {
+                        alwaysTryTypes: true, // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+                    },
                 },
                 'import/ignore': [/\*.js$/],
             },

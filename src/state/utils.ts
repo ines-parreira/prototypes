@@ -10,19 +10,21 @@ export const createErrorNotification = (error: AxiosError, reason: string) => ({
     reason,
 })
 
-export const onApiError = (
-    error: AxiosError<{error?: {msg?: string}}>,
-    defaultMessage: string,
-    action?: any
-) => (dispatch: StoreDispatch) => {
-    const message = error?.response?.data?.error?.msg
+export const onApiError =
+    (
+        error: AxiosError<{error?: {msg?: string}}>,
+        defaultMessage: string,
+        action?: any
+    ) =>
+    (dispatch: StoreDispatch) => {
+        const message = error?.response?.data?.error?.msg
 
-    action && dispatch(action)
-    void dispatch(
-        notify({
-            status: NotificationStatus.Error,
-            message: message || defaultMessage,
-            allowHTML: true,
-        })
-    )
-}
+        action && dispatch(action)
+        void dispatch(
+            notify({
+                status: NotificationStatus.Error,
+                message: message || defaultMessage,
+                allowHTML: true,
+            })
+        )
+    }

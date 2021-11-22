@@ -220,20 +220,18 @@ export function isWidgetEmpty(
     switch (widget.get('type')) {
         case 'wrapper': {
             const subPath = widget.get('path')
-            return (widget.get('widgets', []) as List<
-                any
-            >).every((subWidget: Map<any, any>) =>
-                isWidgetEmpty(subWidget, source, subPath)
+            return (widget.get('widgets', []) as List<any>).every(
+                (subWidget: Map<any, any>) =>
+                    isWidgetEmpty(subWidget, source, subPath)
             )
         }
         case 'card': {
             const subPath = widget.get('path')
                 ? [...path, widget.get('path')]
                 : path
-            return (widget.get('widgets', []) as List<
-                any
-            >).every((subWidget: Map<any, any>) =>
-                isWidgetEmpty(subWidget, source, subPath)
+            return (widget.get('widgets', []) as List<any>).every(
+                (subWidget: Map<any, any>) =>
+                    isWidgetEmpty(subWidget, source, subPath)
             )
         }
         case 'list': {
@@ -243,10 +241,9 @@ export function isWidgetEmpty(
             const data = source.getIn(subPath, []) as List<any>
 
             return data.every((value, index) =>
-                (widget.get('widgets', []) as List<
-                    any
-                >).every((subWidget: Map<any, any>) =>
-                    isWidgetEmpty(subWidget, source, [...subPath, index])
+                (widget.get('widgets', []) as List<any>).every(
+                    (subWidget: Map<any, any>) =>
+                        isWidgetEmpty(subWidget, source, [...subPath, index])
                 )
             )
         }
@@ -287,9 +284,9 @@ export function makeWrapper({
     // we don't want to display a card around data in wrapper (unnecessary nesting)
     // if there is only a card in the wrapper and no simple widget in this card (ie. only cards or lists) we move those
     // children into the wrapper directly instead of letting them in the card
-    const firstWidget = (wrapperWidget.get('widgets', fromJS([])) as List<
-        any
-    >).first() as Map<any, any>
+    const firstWidget = (
+        wrapperWidget.get('widgets', fromJS([])) as List<any>
+    ).first() as Map<any, any>
     if (hasNoSimpleWidget(firstWidget)) {
         wrapperWidget = wrapperWidget.set(
             'widgets',

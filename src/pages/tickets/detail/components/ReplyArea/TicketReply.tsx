@@ -74,9 +74,9 @@ export class TicketReplyContainer extends Component<Props> {
                 {backendActions.map((action: Map<any, any>, key) => (
                     <TicketReplyAction
                         key={key}
-                        index={(appliedMacro.get('actions') as List<
-                            any
-                        >).indexOf(action)}
+                        index={(
+                            appliedMacro.get('actions') as List<any>
+                        ).indexOf(action)}
                         action={action}
                         update={updateActionArgsOnApplied}
                         remove={deleteActionOnApplied}
@@ -135,9 +135,8 @@ const connector = connect(
     (state: RootState) => {
         return {
             isNewMessagePublic: newMessageSelectors.isNewMessagePublic(state),
-            newMessageAttachments: newMessageSelectors.getNewMessageAttachments(
-                state
-            ),
+            newMessageAttachments:
+                newMessageSelectors.getNewMessageAttachments(state),
             newMessageType: newMessageSelectors.getNewMessageType(state),
         }
     },

@@ -175,11 +175,10 @@ export const useCategoriesActions = () => {
             try {
                 setIsLoading(true)
 
-                const {
-                    data: previousPositions,
-                } = await client.getCategoriesPositions({
-                    help_center_id: helpCenterId,
-                })
+                const {data: previousPositions} =
+                    await client.getCategoriesPositions({
+                        help_center_id: helpCenterId,
+                    })
 
                 const sortedCategories = _chain(categories)
                     .sortBy(['position'])

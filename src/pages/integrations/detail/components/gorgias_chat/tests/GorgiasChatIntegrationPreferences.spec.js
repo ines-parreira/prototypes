@@ -47,7 +47,8 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             enabled: true,
                             reply: CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
                         },
-                        email_capture_enforcement: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
+                        email_capture_enforcement:
+                            GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
                     },
                     language: SPANISH_LANGUAGE,
                 },
@@ -78,7 +79,8 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                                 enabled: true,
                                 reply: CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
                             },
-                            email_capture_enforcement: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
+                            email_capture_enforcement:
+                                GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
                         },
                         language: SPANISH_LANGUAGE,
                     },
@@ -107,7 +109,8 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             enabled: true,
                             reply: CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
                         },
-                        email_capture_enforcement: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
+                        email_capture_enforcement:
+                            GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
                     },
                     language: SPANISH_LANGUAGE,
                 },
@@ -155,7 +158,8 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             enabled: true,
                             reply: CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
                         },
-                        email_capture_enforcement: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
+                        email_capture_enforcement:
+                            GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
                     },
                     language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
                 },
@@ -209,7 +213,8 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                                 enabled: autoResponderEnabled,
                                 reply: CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
                             },
-                            email_capture_enforcement: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
+                            email_capture_enforcement:
+                                GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
                         },
                         language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
                     },
@@ -255,7 +260,8 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                                 enabled: autoResponderEnabled,
                                 reply: CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
                             },
-                            email_capture_enforcement: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
+                            email_capture_enforcement:
+                                GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
                         },
                         language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
                     },
@@ -301,7 +307,8 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             enabled: true,
                             reply: CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
                         },
-                        email_capture_enforcement: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
+                        email_capture_enforcement:
+                            GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
                     },
                     language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
                 },
@@ -404,7 +411,8 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             enabled: true,
                             reply: CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
                         },
-                        email_capture_enforcement: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
+                        email_capture_enforcement:
+                            GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
                     },
                     language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
                 },

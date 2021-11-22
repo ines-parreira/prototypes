@@ -140,21 +140,20 @@ export const getNewMessageSourceProperty = (property: string) =>
 // in component usage
 // ex: newMessageSourceProperty: makeGetNewMessageSourceProperty(state)
 // then : const newMessageTo = newMessageSourceProperty('to')
-export const makeGetNewMessageSourceProperty = (state: RootState) => (
-    property: string
-) => getNewMessageSourceProperty(property)(state)
+export const makeGetNewMessageSourceProperty =
+    (state: RootState) => (property: string) =>
+        getNewMessageSourceProperty(property)(state)
 
 export const getMandatoryContactProperties = () => () => {
     return [ReceiverProperty.To]
 }
 
-export const getOptionalContactProperties = (
-    sourceType: TicketMessageSourceType
-) => () => {
-    return sourceType === TicketMessageSourceType.Email
-        ? [ReceiverProperty.Cc, ReceiverProperty.Bcc]
-        : []
-}
+export const getOptionalContactProperties =
+    (sourceType: TicketMessageSourceType) => () => {
+        return sourceType === TicketMessageSourceType.Email
+            ? [ReceiverProperty.Cc, ReceiverProperty.Bcc]
+            : []
+    }
 
 // return all contact properties (mandatory + optional) for a source type
 export const getContactProperties = (sourceType: TicketMessageSourceType) =>
@@ -272,7 +271,7 @@ export const getNewMessageSignature = (state: RootState): Map<any, any> => {
     const sourceType = getNewMessageType(state)
     const sourceFrom = getNewMessageSourceProperty('from')(state)
     return getChannelSignature(
-        (sourceType as unknown) as IntegrationType,
+        sourceType as unknown as IntegrationType,
         sourceFrom.get('address')
     )(state)
 }

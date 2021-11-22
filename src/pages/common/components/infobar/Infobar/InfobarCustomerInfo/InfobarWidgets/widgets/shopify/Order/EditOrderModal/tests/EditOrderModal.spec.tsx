@@ -28,24 +28,25 @@ jest.mock('../../../../../../../../../../utils/labels', () => ({
 
 jest.mock(
     '../../../../../../../../../Modal',
-    () => ({
-        isOpen,
-        children,
-        onClose,
-    }: {
-        isOpen: boolean
-        children: ReactNode
-        onClose: () => void
-    }) => {
-        if (isOpen) {
-            return (
-                <div data-testid="Modal" onClick={onClose}>
-                    {children}
-                </div>
-            )
+    () =>
+        ({
+            isOpen,
+            children,
+            onClose,
+        }: {
+            isOpen: boolean
+            children: ReactNode
+            onClose: () => void
+        }) => {
+            if (isOpen) {
+                return (
+                    <div data-testid="Modal" onClick={onClose}>
+                        {children}
+                    </div>
+                )
+            }
+            return null
         }
-        return null
-    }
 )
 
 const mockFromJS = fromJS
@@ -54,41 +55,45 @@ const mockShopifyCustomLineItemFixture = shopifyCustomLineItemFixture
 
 jest.mock(
     '../../../../../../../../../../forms/ProductSearchInput/ProductSearchInput',
-    () => ({onVariantClicked}: ComponentProps<typeof ProductSearchInput>) => {
-        const item = mockIntegrationDataItemProductFixture()
-        const variant = item.data.variants[0]
+    () =>
+        ({onVariantClicked}: ComponentProps<typeof ProductSearchInput>) => {
+            const item = mockIntegrationDataItemProductFixture()
+            const variant = item.data.variants[0]
 
-        return (
-            <div data-testid="ProductSearchInput">
-                <div
-                    data-testid="ProductSearchInput_result"
-                    onClick={() => {
-                        onVariantClicked(item, variant)
-                    }}
-                >
-                    Result
+            return (
+                <div data-testid="ProductSearchInput">
+                    <div
+                        data-testid="ProductSearchInput_result"
+                        onClick={() => {
+                            onVariantClicked(item, variant)
+                        }}
+                    >
+                        Result
+                    </div>
                 </div>
-            </div>
-        )
-    }
+            )
+        }
 )
 
 jest.mock(
     '../../../shared/DraftOrderModal/AddCustomItemPopover/AddCustomItemPopover',
-    () => ({onSubmit}: ComponentProps<typeof AddCustomItemPopover>) => {
-        return (
-            <div data-testid="AddCustomItemPopover">
-                <div
-                    data-testid="AddCustomItemPopover_submit"
-                    onClick={() =>
-                        onSubmit(mockFromJS(mockShopifyCustomLineItemFixture()))
-                    }
-                >
-                    Submit
+    () =>
+        ({onSubmit}: ComponentProps<typeof AddCustomItemPopover>) => {
+            return (
+                <div data-testid="AddCustomItemPopover">
+                    <div
+                        data-testid="AddCustomItemPopover_submit"
+                        onClick={() =>
+                            onSubmit(
+                                mockFromJS(mockShopifyCustomLineItemFixture())
+                            )
+                        }
+                    >
+                        Submit
+                    </div>
                 </div>
-            </div>
-        )
-    }
+            )
+        }
 )
 
 function getProducts(order: Map<any, any>) {
@@ -173,9 +178,9 @@ const minProps = {
         order: fromJS(shopifyOrderFixture()),
         customer: fromJS(shopifyCustomerFixture()),
     },
-    integrations: (integrationsStateWithShopify.get('integrations') as List<
-        any
-    >).setIn([0, 'meta', 'currency'], 'EUR'),
+    integrations: (
+        integrationsStateWithShopify.get('integrations') as List<any>
+    ).setIn([0, 'meta', 'currency'], 'EUR'),
     loading: false,
     loadingMessage: undefined,
     payload: null,
@@ -420,12 +425,11 @@ describe('<EditOrderModal/>', () => {
                 <MockLegacyContextWrapper>
                     <EditOrderModalContainer
                         {...minProps}
-                        integrations={(integrationsStateWithShopify.get(
-                            'integrations'
-                        ) as List<any>).setIn(
-                            [0, 'meta', 'oauth', 'scope'],
-                            'foo'
-                        )}
+                        integrations={(
+                            integrationsStateWithShopify.get(
+                                'integrations'
+                            ) as List<any>
+                        ).setIn([0, 'meta', 'oauth', 'scope'], 'foo')}
                         products={products}
                         payload={payload}
                     />

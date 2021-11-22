@@ -18,11 +18,12 @@ export const SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS = fromJS([
     {value: Language.Czech, label: 'Czech'},
 ]) as List<any>
 
-//eslint-disable-next-line @typescript-eslint/no-var-requires
-export const SMOOCH_INSIDE_WIDGET_TEXTS = require('../../../../../integrations/common/texts/widget_texts.json') as Record<
-    string,
-    Record<string, string>
->
+export const SMOOCH_INSIDE_WIDGET_TEXTS =
+    //eslint-disable-next-line @typescript-eslint/no-var-requires
+    require('../../../../../integrations/common/texts/widget_texts.json') as Record<
+        string,
+        Record<string, string>
+    >
 export const SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS =
     SMOOCH_INSIDE_WIDGET_TEXTS[SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT]
 export const SMOOCH_INSIDE_DEFAULT_COLOR = '#0d87dd'
@@ -32,7 +33,8 @@ export const SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS 
     'required-outside-business-hours'
 export const SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED =
     'always-required'
-export const SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT = SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_OPTIONAL
+export const SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT =
+    SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_OPTIONAL
 
 // Campaigns
 export const CAMPAIGNS_TRIGGER_KEYS = fromJS([
@@ -93,4 +95,5 @@ export const SMOOCH_INSIDE_AUTO_RESPONDER_ENABLED_DEFAULT = true
 // Company picture types
 export const SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_MEMBERS = 'team-members'
 export const SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE = 'team-picture'
-export const SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_DEFAULT = SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_MEMBERS
+export const SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_DEFAULT =
+    SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_MEMBERS

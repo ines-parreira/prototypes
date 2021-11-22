@@ -46,10 +46,9 @@ export const TicketInfobarContainer = ({
             actions={actions as any}
             sources={sources}
             isRouteEditingWidgets={!!isEditingWidgets}
-            identifier={(ticket.get(
-                'id',
-                params.ticketId || ''
-            ) as number).toString()}
+            identifier={(
+                ticket.get('id', params.ticketId || '') as number
+            ).toString()}
             customer={customer}
             widgets={widgets}
             context={WidgetContextType.Ticket}

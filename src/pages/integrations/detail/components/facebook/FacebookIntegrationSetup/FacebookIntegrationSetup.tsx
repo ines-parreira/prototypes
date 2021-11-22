@@ -234,12 +234,8 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
     }
 
     _renderIntegrations = () => {
-        const {
-            integrations,
-            pagination,
-            currentAccount,
-            currentPlan,
-        } = this.props
+        const {integrations, pagination, currentAccount, currentPlan} =
+            this.props
         const {selectedIntegrations, isLoading} = this.state
 
         if (integrations.isEmpty()) {
@@ -260,25 +256,20 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                         integrations.map((integration: Map<any, any>) => {
                             const id: number = integration.get('id')
 
-                            let userRoles:
-                                | string
-                                | undefined
-                                | FacebookRole[] = integration.getIn([
-                                'meta',
-                                'roles',
-                            ]) as string | undefined
+                            let userRoles: string | undefined | FacebookRole[] =
+                                integration.getIn(['meta', 'roles']) as
+                                    | string
+                                    | undefined
                             userRoles = userRoles
                                 ? (userRoles.split(',') as FacebookRole[])
                                 : []
 
-                            let userPermissions:
-                                | string
-                                | undefined
-                                | string[] = integration.getIn([
-                                'meta',
-                                'oauth',
-                                'scope',
-                            ]) as string | undefined
+                            let userPermissions: string | undefined | string[] =
+                                integration.getIn([
+                                    'meta',
+                                    'oauth',
+                                    'scope',
+                                ]) as string | undefined
                             userPermissions = userPermissions
                                 ? userPermissions.split(',')
                                 : []
@@ -309,53 +300,58 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                 'mentions_enabled'
                             )
 
-                            const canEnableRecommendations = canEnableMetaSetting(
-                                userPermissions,
-                                'recommendations_enabled'
-                            )
+                            const canEnableRecommendations =
+                                canEnableMetaSetting(
+                                    userPermissions,
+                                    'recommendations_enabled'
+                                )
 
-                            const canEnableInstagramComments = canEnableMetaSetting(
-                                userPermissions,
-                                'instagram_comments_enabled'
-                            )
+                            const canEnableInstagramComments =
+                                canEnableMetaSetting(
+                                    userPermissions,
+                                    'instagram_comments_enabled'
+                                )
 
-                            const canEnableInstagramMentions = canEnableMetaSetting(
-                                userPermissions,
-                                'instagram_mentions_enabled'
-                            )
+                            const canEnableInstagramMentions =
+                                canEnableMetaSetting(
+                                    userPermissions,
+                                    'instagram_mentions_enabled'
+                                )
 
                             const canEnableInstagramAds = canEnableMetaSetting(
                                 userPermissions,
                                 'instagram_ads_enabled'
                             )
 
-                            const canEnableInstagramDirectMessage = canEnableMetaSetting(
-                                userPermissions,
-                                'instagram_direct_message_enabled'
-                            )
+                            const canEnableInstagramDirectMessage =
+                                canEnableMetaSetting(
+                                    userPermissions,
+                                    'instagram_direct_message_enabled'
+                                )
 
                             // Todo(@Mehdi): change this when the feature will be available to all accounts
-                            const instagramDMSettingStatus = getInstagramDMSettingStatus(
-                                canEnableInstagramDirectMessage,
-                                integration
-                            )
-                            const currentPlanHasInstagramDMFeature = currentPlan.getIn(
-                                [
+                            const instagramDMSettingStatus =
+                                getInstagramDMSettingStatus(
+                                    canEnableInstagramDirectMessage,
+                                    integration
+                                )
+                            const currentPlanHasInstagramDMFeature =
+                                currentPlan.getIn([
                                     'features',
                                     AccountFeature.InstagramDirectMessage,
                                     'enabled',
-                                ]
-                            )
+                                ])
                             const isAllowedToInstagramDM =
                                 instagramDMSettingStatus ===
                                     InstagramDMSettingStatus.ALLOWED &&
                                 currentPlanHasInstagramDMFeature
 
-                            const instagramDMSettingsInlineComponent = getInstagramDMSettingsInlineComponent(
-                                instagramDMSettingStatus,
-                                currentAccount,
-                                currentPlan
-                            )
+                            const instagramDMSettingsInlineComponent =
+                                getInstagramDMSettingsInlineComponent(
+                                    instagramDMSettingStatus,
+                                    currentAccount,
+                                    currentPlan
+                                )
 
                             const displayPermissionAlert =
                                 !canEnableMessenger ||
@@ -801,9 +797,8 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                 color="success"
                                 disabled={selectedIntegrations.isEmpty()}
                                 className={classnames({
-                                    'btn-loading': loading.get(
-                                        'updateIntegration'
-                                    ),
+                                    'btn-loading':
+                                        loading.get('updateIntegration'),
                                 })}
                             >
                                 Save changes

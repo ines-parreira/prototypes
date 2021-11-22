@@ -29,9 +29,8 @@ export const AutomationAddOnStatsButton = () => {
     )
     const currentPlan = useSelector(getCurrentPlan)
 
-    const [isAutomationModalOpened, setIsAutomationModalOpened] = useState(
-        false
-    )
+    const [isAutomationModalOpened, setIsAutomationModalOpened] =
+        useState(false)
 
     const segmentEventToSend = {
         name: SegmentEvent.PaywallUpgradeButtonSelected,
@@ -43,11 +42,10 @@ export const AutomationAddOnStatsButton = () => {
     }
 
     if (hasAutomationAddOn) {
-        const activeSelfServiceConfigurations = selfServiceConfigurations.filter(
-            (selfServiceConfiguration) => {
+        const activeSelfServiceConfigurations =
+            selfServiceConfigurations.filter((selfServiceConfiguration) => {
                 return !selfServiceConfiguration.deactivated_datetime
-            }
-        )
+            })
 
         if (!activeSelfServiceConfigurations.length) {
             return (

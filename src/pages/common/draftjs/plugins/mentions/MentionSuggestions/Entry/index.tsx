@@ -64,8 +64,8 @@ export default class Entry extends Component<Props> {
         return (
             <EntryComponent
                 className={classnames(theme.mentionSuggestionsEntry, {
-                    [theme.mentionSuggestionsEntryFocused as string]: this.props
-                        .isFocused,
+                    [theme.mentionSuggestionsEntryFocused as string]:
+                        this.props.isFocused,
                 })}
                 onMouseDown={this.onMouseDown}
                 onMouseUp={this.onMouseUp}

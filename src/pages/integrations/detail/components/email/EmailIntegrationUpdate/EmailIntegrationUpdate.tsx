@@ -166,9 +166,9 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         e.preventDefault()
         const {updateOrCreateIntegration} = this.props
 
-        return (updateOrCreateIntegration(this._getFormValues()) as Promise<
-            void
-        >).then(() => {
+        return (
+            updateOrCreateIntegration(this._getFormValues()) as Promise<void>
+        ).then(() => {
             this.setState({dirty: false})
         })
     }
@@ -344,10 +344,8 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                             segmentTracker.logEvent(
                                 segmentTracker.EVENTS.EXTERNAL_LINK_CLICKED,
                                 {
-                                    name:
-                                        'Step by step instructions in add email integration',
-                                    url:
-                                        'https://docs.gorgias.com/email-integrations/spf-dkim-support',
+                                    name: 'Step by step instructions in add email integration',
+                                    url: 'https://docs.gorgias.com/email-integrations/spf-dkim-support',
                                 }
                             )
                         }}
@@ -436,12 +434,8 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         const isDeleting = loading.get('delete') === integration.get('id')
         const isGmail = integration.get('type') === IntegrationType.Gmail
 
-        const {
-            errors,
-            name,
-            use_gmail_categories,
-            enable_gmail_sending,
-        } = this.state
+        const {errors, name, use_gmail_categories, enable_gmail_sending} =
+            this.state
 
         const hasErrors = Object.values(errors).some((val) => val != null)
 

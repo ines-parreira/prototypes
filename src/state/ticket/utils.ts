@@ -283,10 +283,9 @@ export function guessReceiversFromTicket(
                 newMessageSourceType,
                 messages
             )
-            const customerChannel = (ticket.getIn(
-                ['customer', 'channels'],
-                fromJS([])
-            ) as List<any>)
+            const customerChannel = (
+                ticket.getIn(['customer', 'channels'], fromJS([])) as List<any>
+            )
                 .filter(
                     (channel: Map<any, any>) =>
                         channel.get('type') === newMessageChannel
@@ -496,9 +495,9 @@ export function getNewMessageSender(
 
     const preferredChannel =
         getPreferredChannel(newMessageSourceType, channels) || fromJS({})
-    const lastMessage: Map<any, any> | undefined = (ticket.get(
-        'messages'
-    ) as List<any>).findLast((message: Map<any, any>) => {
+    const lastMessage: Map<any, any> | undefined = (
+        ticket.get('messages') as List<any>
+    ).findLast((message: Map<any, any>) => {
         const type = message.getIn(['source', 'type'], '')
 
         // a message can be a facebook post
@@ -646,11 +645,11 @@ export function getNewMessageSender(
 
     // last message sent by an agent
     // search in recipients of `to` and `cc` fields to match with an email of account channels
-    const receivers = (lastMessage.getIn(['source', 'to'], fromJS([])) as List<
-        any
-    >).concat(lastMessage.getIn(['source', 'cc'], fromJS([]))) as List<any>
-    for (const receiver of (receivers as unknown) as any[]) {
-        for (const channel of (channels as unknown) as any[]) {
+    const receivers = (
+        lastMessage.getIn(['source', 'to'], fromJS([])) as List<any>
+    ).concat(lastMessage.getIn(['source', 'cc'], fromJS([]))) as List<any>
+    for (const receiver of receivers as unknown as any[]) {
+        for (const channel of channels as unknown as any[]) {
             if (
                 (receiver as Map<any, any>).get('address') ===
                 (channel as Map<any, any>).get('address')
@@ -730,10 +729,9 @@ export const replaceIntegrationVariables = (
     newArgument: string,
     notify?: typeof notifyAction
 ) => {
-    let integrations = (ticketState.getIn(
-        ['customer', 'integrations'],
-        fromJS([])
-    ) as List<any>).filter((integration: Map<any, any>) => {
+    let integrations = (
+        ticketState.getIn(['customer', 'integrations'], fromJS([])) as List<any>
+    ).filter((integration: Map<any, any>) => {
         return integration.get('__integration_type__') === integrationType
     })
 

@@ -110,9 +110,7 @@ type SubscriptionAfterTitleProps = {
     source: Map<any, any>
 }
 
-export class SubscriptionAfterTitle extends React.Component<
-    SubscriptionAfterTitleProps
-> {
+export class SubscriptionAfterTitle extends React.Component<SubscriptionAfterTitleProps> {
     static contextTypes = {
         integrationId: PropTypes.number,
         chargeStatus: PropTypes.string.isRequired,

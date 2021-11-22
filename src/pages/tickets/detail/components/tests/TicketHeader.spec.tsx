@@ -15,16 +15,16 @@ jest.mock('../../../../../services/shortcutManager')
 const shortcutManagerMock = shortcutManager as jest.Mocked<
     typeof shortcutManager
 >
-const shortcutEventMock = ({
+const shortcutEventMock = {
     preventDefault: jest.fn(),
-} as unknown) as jest.Mocked<Event>
+} as unknown as jest.Mocked<Event>
 
 // mock Date object
 const DATE_TO_USE = new Date('2017')
 jest.spyOn(Date, 'now').mockImplementation(() => DATE_TO_USE.getTime())
 
 describe('<TicketHeader />', () => {
-    const minProps = ({
+    const minProps = {
         addTags: jest.fn(),
         className: '',
         currentUser: fromJS(user),
@@ -43,7 +43,7 @@ describe('<TicketHeader />', () => {
         snoozeTicket: jest.fn(),
         ticketPartialUpdate: jest.fn().mockResolvedValue(undefined),
         timezone: 'America/Los_Angeles',
-    } as unknown) as ComponentProps<typeof TicketHeaderContainer>
+    } as unknown as ComponentProps<typeof TicketHeaderContainer>
 
     const commonTicketProps = {
         subject: 'foo',

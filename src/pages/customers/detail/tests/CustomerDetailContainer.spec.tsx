@@ -29,13 +29,13 @@ jest.mock(
 )
 
 describe('<CustomerDetailContainer />', () => {
-    const minProps = ({
+    const minProps = {
         activeCustomer: fromJS({}),
         customerHistory: fromJS({}),
         customersIsLoading: jest.fn(),
         fetchCustomer: jest.fn().mockResolvedValue({resp: {id: 1}}),
         fetchCustomerHistory: jest.fn(),
-    } as unknown) as ComponentProps<typeof CustomerDetailContainer>
+    } as unknown as ComponentProps<typeof CustomerDetailContainer>
 
     beforeEach(() => {
         jest.clearAllMocks()

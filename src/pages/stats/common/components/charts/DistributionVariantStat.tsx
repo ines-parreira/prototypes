@@ -15,7 +15,7 @@ type Props = {
 }
 
 export default class DistributionVariantStat extends Component<Props> {
-    render = () => {
+    render() {
         const {minValue, maxValue, variant, currentValue} = this.props
 
         const VARIANTS: Map<any, any> = fromJS({
@@ -72,12 +72,16 @@ export default class DistributionVariantStat extends Component<Props> {
             <span className={classNames(css.distribution)}>
                 {_rangeRight(minValue, maxValue + 1).map((index) =>
                     index <= maxValue - currentValue
-                        ? (variantComponent.get('empty') as (
-                              key: number
-                          ) => ReactNode)(index)
-                        : (variantComponent.get('fill') as (
-                              key: number
-                          ) => ReactNode)(index)
+                        ? (
+                              variantComponent.get('empty') as (
+                                  key: number
+                              ) => ReactNode
+                          )(index)
+                        : (
+                              variantComponent.get('fill') as (
+                                  key: number
+                              ) => ReactNode
+                          )(index)
                 )}
             </span>
         )

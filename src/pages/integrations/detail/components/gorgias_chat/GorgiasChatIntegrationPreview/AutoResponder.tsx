@@ -16,12 +16,8 @@ type Props = {
 
 export default class OptionalEmailCapture extends Component<Props> {
     render() {
-        const {
-            conversationColor,
-            name,
-            language,
-            autoResponderReply,
-        } = this.props
+        const {conversationColor, name, language, autoResponderReply} =
+            this.props
 
         const translatedTexts =
             CHAT_AUTO_RESPONDER_TEXTS[

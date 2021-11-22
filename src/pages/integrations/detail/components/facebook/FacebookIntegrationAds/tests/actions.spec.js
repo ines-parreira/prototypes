@@ -20,7 +20,7 @@ describe('FacebookIntegrationInstagramAds actions', () => {
     describe('fetchAds()', () => {
         it('should fetch ads', async () => {
             const data = {
-                '1': {
+                1: {
                     ads: {
                         postid1: {
                             name: 'ad 1',

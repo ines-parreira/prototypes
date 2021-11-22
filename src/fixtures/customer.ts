@@ -8,7 +8,7 @@ import {
     CustomerState,
 } from '../constants/integrations/types/shopify'
 
-export const customer: Customer = ({
+export const customer: Customer = {
     lastname: 'Bon',
     meta: null,
     active: true,
@@ -207,7 +207,7 @@ export const customer: Customer = ({
                     total_price_usd: '10.33',
                     fulfillments: [],
                     line_items: [
-                        ({
+                        {
                             variant_inventory_management: null,
                             taxable: true,
                             vendor: 'storegorgias3',
@@ -236,7 +236,7 @@ export const customer: Customer = ({
                             variant_title: null,
                             gift_card: false,
                             requires_shipping: true,
-                        } as unknown) as OrderLineItem,
+                        } as unknown as OrderLineItem,
                     ],
                     referring_site: null,
                     total_discounts: '0.00',
@@ -352,7 +352,7 @@ export const customer: Customer = ({
                     total_price_usd: '0.11',
                     fulfillments: [],
                     line_items: [
-                        ({
+                        {
                             variant_inventory_management: null,
                             taxable: true,
                             vendor: 'storegorgias3',
@@ -375,7 +375,7 @@ export const customer: Customer = ({
                             variant_title: null,
                             gift_card: false,
                             requires_shipping: true,
-                        } as unknown) as OrderLineItem,
+                        } as unknown as OrderLineItem,
                     ],
                     referring_site: null,
                     total_discounts: '0.00',
@@ -437,4 +437,4 @@ export const customer: Customer = ({
         },
     },
     updated_datetime: '2017-07-31T23:17:01.313273+00:00',
-} as unknown) as Customer
+} as unknown as Customer

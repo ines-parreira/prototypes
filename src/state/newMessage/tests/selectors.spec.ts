@@ -129,8 +129,7 @@ describe('new message selectors', () => {
                         address: emailAddress,
                         signature: {
                             text: 'Cheers, {{current_user.first_name}}',
-                            html:
-                                'Cheers, <strong>{{current_user.first_name}}</strong>',
+                            html: 'Cheers, <strong>{{current_user.first_name}}</strong>',
                         },
                     },
                 },

@@ -5,12 +5,14 @@ import {
     ScriptableContext,
     ChartOptions,
 } from 'chart.js'
-import ChartComponent from 'react-chartjs-2'
+
 import {Map} from 'immutable'
 import _isEqual from 'lodash/isEqual'
 import _merge from 'lodash/merge'
 
 import {chartMaxHeight} from '../../../../../config/stats'
+
+import ChartComponent from 'react-chartjs-2'
 
 type Props = {
     data: Map<any, any>
@@ -80,10 +82,12 @@ export function SankeyStat({data, config, legend}: Props) {
                                         const idx = tooltipItems[0].dataIndex
                                         const {from, to} = data[idx]
                                         const labels = legend
-                                            ? ((legend.get('labels') as Map<
-                                                  any,
-                                                  any
-                                              >).toJS() as {
+                                            ? ((
+                                                  legend.get('labels') as Map<
+                                                      any,
+                                                      any
+                                                  >
+                                              ).toJS() as {
                                                   [key: string]: string
                                               })
                                             : null
@@ -94,9 +98,8 @@ export function SankeyStat({data, config, legend}: Props) {
                                     label: (tooltipItem: TooltipItem<any>) => {
                                         const data = tooltipItem.dataset
                                             .data as SankeyDataPoint[]
-                                        const {from, flow} = data[
-                                            tooltipItem.dataIndex
-                                        ]
+                                        const {from, flow} =
+                                            data[tooltipItem.dataIndex]
                                         const totalFrom = data
                                             .filter((val) => val.from === from)
                                             .map((val) => val.flow)

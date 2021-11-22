@@ -15,7 +15,7 @@ import {RuleEvent} from '../../../../../state/rules/types'
 import {AuditLogEventContainer} from '../AuditLogEvent'
 
 describe('<AuditLogEvent/>', () => {
-    const minProps = ({
+    const minProps = {
         users: fromJS([
             {id: 1, name: 'User 1'},
             {id: 2, name: 'User 2'},
@@ -33,7 +33,7 @@ describe('<AuditLogEvent/>', () => {
         },
         events: fromJS([]),
         setHighlightedElements: jest.fn(),
-    } as unknown) as ComponentProps<typeof AuditLogEventContainer>
+    } as unknown as ComponentProps<typeof AuditLogEventContainer>
 
     const getEvent = (
         eventType: AuditLogEventType,

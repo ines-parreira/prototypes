@@ -19,9 +19,9 @@ export default function ExpandAllButton() {
             : container.querySelectorAll('.card:not(.transparent).closed')
 
         cards.forEach((card: Element) => {
-            ;(card.querySelector(
-                '.dropdown-icon'
-            ) as HTMLButtonElement)?.click()
+            ;(
+                card.querySelector('.dropdown-icon') as HTMLButtonElement
+            )?.click()
         })
 
         setShouldClose(!shouldClose)

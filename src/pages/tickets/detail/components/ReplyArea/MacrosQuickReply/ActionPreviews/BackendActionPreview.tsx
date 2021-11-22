@@ -19,10 +19,9 @@ type Props = {
 }
 
 export const BackendActionPreview = ({actions}: Props) => {
-    const sortedActions: Record<
-        string,
-        MacroAction[]
-    > = (getSortedIntegrationActions(fromJS(actions)) as List<any>).toJS()
+    const sortedActions: Record<string, MacroAction[]> = (
+        getSortedIntegrationActions(fromJS(actions)) as List<any>
+    ).toJS()
 
     return (
         <>

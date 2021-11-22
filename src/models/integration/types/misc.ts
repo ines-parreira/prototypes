@@ -15,33 +15,31 @@ export type AutoResponder = {
     reply: string
 }
 
-export type IntegrationAuthentication<
-    T extends IntegrationType
-> = T extends IntegrationType.Aircall
-    ? {
-          webhook_url: string
-      }
-    : T extends IntegrationType.Email
-    ? {
-          forwarding_email_address: string
-      }
-    : {
-          redirect_url: string
-      }
+export type IntegrationAuthentication<T extends IntegrationType> =
+    T extends IntegrationType.Aircall
+        ? {
+              webhook_url: string
+          }
+        : T extends IntegrationType.Email
+        ? {
+              forwarding_email_address: string
+          }
+        : {
+              redirect_url: string
+          }
 
-export type IntegrationExtra<
-    T extends IntegrationType
-> = T extends IntegrationType.Facebook
-    ? {
-          max_account_ads: number
-      }
-    : T extends IntegrationType.GorgiasChat
-    ? {
-          bundleUrl: string
-          chatUrl: string
-          wsUrl: string
-      }
-    : never
+export type IntegrationExtra<T extends IntegrationType> =
+    T extends IntegrationType.Facebook
+        ? {
+              max_account_ads: number
+          }
+        : T extends IntegrationType.GorgiasChat
+        ? {
+              bundleUrl: string
+              chatUrl: string
+              wsUrl: string
+          }
+        : never
 
 export enum IntegrationDataItemType {
     IntegrationDataItemTypeProduct = 'product',

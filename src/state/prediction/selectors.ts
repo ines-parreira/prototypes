@@ -25,10 +25,14 @@ export const getContext = createSelector<
     (user, ticket, account, customerMessages) => {
         let lastMessageIdFromCustomer = null
         if (customerMessages && !customerMessages.isEmpty()) {
-            lastMessageIdFromCustomer = ((customerMessages.sortBy(
-                (message: Map<any, any>) =>
-                    message.get('created_datetime') as string
-            ) as List<any>).last() as Map<any, any>).get('id') as number
+            lastMessageIdFromCustomer = (
+                (
+                    customerMessages.sortBy(
+                        (message: Map<any, any>) =>
+                            message.get('created_datetime') as string
+                    ) as List<any>
+                ).last() as Map<any, any>
+            ).get('id') as number
         }
 
         let context = fromJS({
@@ -59,9 +63,10 @@ export const getContext = createSelector<
         }
 
         // if the customer has a shopify integration get it's last order name
-        const integrations = ticket.getIn(['customer', 'integrations']) as List<
-            any
-        >
+        const integrations = ticket.getIn([
+            'customer',
+            'integrations',
+        ]) as List<any>
         if (integrations) {
             integrations.forEach((integration: Map<any, any>) => {
                 if (
@@ -82,12 +87,16 @@ export const getContext = createSelector<
                                                 0,
                                                 'tracking_number',
                                             ]) || null,
-                                        product_names: ((lastOrder.get(
-                                            'line_items'
-                                        ) as List<any>).map(
-                                            (item: Map<any, any>) =>
-                                                item.get('name') as string
-                                        ) as List<any>).toJS(),
+                                        product_names: (
+                                            (
+                                                lastOrder.get(
+                                                    'line_items'
+                                                ) as List<any>
+                                            ).map(
+                                                (item: Map<any, any>) =>
+                                                    item.get('name') as string
+                                            ) as List<any>
+                                        ).toJS(),
                                     },
                                 },
                             },

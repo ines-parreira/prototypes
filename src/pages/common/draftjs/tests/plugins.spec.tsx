@@ -81,7 +81,7 @@ describe('DraftJS Plugins', () => {
         const component = renderer.create(
             <TestEditor
                 html={html}
-                editorState={(undefined as unknown) as EditorState}
+                editorState={undefined as unknown as EditorState}
                 plugins={[] as Plugin[]}
             />
         )
@@ -94,7 +94,7 @@ describe('DraftJS Plugins', () => {
         const component = renderer.create(
             <TestEditor
                 html={html}
-                editorState={(undefined as unknown) as EditorState}
+                editorState={undefined as unknown as EditorState}
                 plugins={[] as Plugin[]}
             />
         )

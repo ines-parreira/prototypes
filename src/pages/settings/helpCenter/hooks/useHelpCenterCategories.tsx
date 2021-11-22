@@ -37,9 +37,10 @@ export const useHelpCenterCategories = (
         page: 0,
         nbPages: 1,
     })
-    const hasMore = useMemo(() => pagination.page < pagination.nbPages, [
-        pagination,
-    ])
+    const hasMore = useMemo(
+        () => pagination.page < pagination.nbPages,
+        [pagination]
+    )
 
     const fetchCategories = async (page: number) => {
         if (client) {

@@ -86,7 +86,7 @@ export const facebookMessageNoMeta: TicketMessage = {
     attachments: [],
 }
 
-export const facebookMessageWithCustomerReaction = ({
+export const facebookMessageWithCustomerReaction = {
     id: 1,
     sender: {
         id: 1,
@@ -130,9 +130,9 @@ export const facebookMessageWithCustomerReaction = ({
             },
         },
     },
-} as unknown) as TicketMessage
+} as unknown as TicketMessage
 
-export const facebookMessageWithPageReaction = ({
+export const facebookMessageWithPageReaction = {
     id: 1,
     sender: {
         id: 1,
@@ -175,9 +175,9 @@ export const facebookMessageWithPageReaction = ({
             },
         },
     },
-} as unknown) as TicketMessage
+} as unknown as TicketMessage
 
-export const facebookMessageWithPageAndCustomerReactions = ({
+export const facebookMessageWithPageAndCustomerReactions = {
     id: 1,
     sender: {
         id: 1,
@@ -225,9 +225,9 @@ export const facebookMessageWithPageAndCustomerReactions = ({
         from: {name: 'Page', address: '657788504429455-657788504429455'},
         type: TicketMessageSourceType.FacebookComment,
     },
-} as unknown) as TicketMessage
+} as unknown as TicketMessage
 
-export const hiddenFacebookMessage = ({
+export const hiddenFacebookMessage = {
     id: 1,
     sender: {
         id: 1,
@@ -276,9 +276,9 @@ export const hiddenFacebookMessage = ({
         from: {name: 'Page', address: '657788504429455-657788504429455'},
         type: TicketMessageSourceType.FacebookComment,
     },
-} as unknown) as TicketMessage
+} as unknown as TicketMessage
 
-export const duplicatedHiddenFacebookMessage = ({
+export const duplicatedHiddenFacebookMessage = {
     id: 1,
     sender: {
         id: 1,
@@ -314,7 +314,7 @@ export const duplicatedHiddenFacebookMessage = ({
         from: {name: 'Page', address: '657788504429455-657788504429455'},
         type: TicketMessageSourceType.FacebookComment,
     },
-} as unknown) as TicketMessage
+} as unknown as TicketMessage
 
 export const action: Action = {
     status: ActionStatus.Success,

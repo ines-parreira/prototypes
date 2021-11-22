@@ -36,9 +36,9 @@ const BinaryExpression = ({
     let leftsiblings3: List<any> | undefined
 
     if (leftsiblings) {
-        leftsiblings2 = leftsiblings.concat(getSyntaxTreeLeaves(left)) as List<
-            any
-        >
+        leftsiblings2 = leftsiblings.concat(
+            getSyntaxTreeLeaves(left)
+        ) as List<any>
         leftsiblings3 = leftsiblings2.push('operators')
     }
 

@@ -51,9 +51,11 @@ describe('ViewTable::Table::Row', () => {
     })
 
     it('display agents viewing', () => {
-        ;(minProps.getAgentsViewing as jest.MockedFunction<
-            typeof minProps.getAgentsViewing
-        >).mockReturnValueOnce(fromJS(agentsFixtures.agents))
+        ;(
+            minProps.getAgentsViewing as jest.MockedFunction<
+                typeof minProps.getAgentsViewing
+            >
+        ).mockReturnValueOnce(fromJS(agentsFixtures.agents))
         const component = shallow(
             <RowContainer
                 {...minProps}

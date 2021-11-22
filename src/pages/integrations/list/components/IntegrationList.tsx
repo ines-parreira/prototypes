@@ -130,7 +130,8 @@ export default class IntegrationList extends React.Component<Props> {
 
     render() {
         const {currentPlan, integrationsConfig, plans} = this.props
-        const hasActiveSmoochInsideIntegrations = this._hasActiveSmoochInsideIntegrations()
+        const hasActiveSmoochInsideIntegrations =
+            this._hasActiveSmoochInsideIntegrations()
         const hasTwitterIntegrations = this._hasTwitterIntegrations()
         const displayList = integrationsConfig
             .filter((integration) => {

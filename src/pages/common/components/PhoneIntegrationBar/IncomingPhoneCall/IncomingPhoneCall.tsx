@@ -19,11 +19,8 @@ export default function IncomingPhoneCall({call}: Props): JSX.Element {
     const {onAccept} = useAccept(call)
     const {onDecline} = useDecline(call)
     const {onOpenTicket} = useOpenTicket(call)
-    const {
-        integrationId,
-        customerName,
-        customerPhoneNumber,
-    } = useConnectionParameters(call)
+    const {integrationId, customerName, customerPhoneNumber} =
+        useConnectionParameters(call)
 
     return (
         <div

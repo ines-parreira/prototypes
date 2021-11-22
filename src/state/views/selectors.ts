@@ -296,10 +296,9 @@ export const getViewIdToDisplay = (type: ViewType, urlViewId: Maybe<string>) =>
         }
     )
 
-export const makeGetViewIdToDisplay = (state: RootState) => (
-    type: ViewType,
-    urlViewId: Maybe<string>
-) => getViewIdToDisplay(type, urlViewId)(state)
+export const makeGetViewIdToDisplay =
+    (state: RootState) => (type: ViewType, urlViewId: Maybe<string>) =>
+        getViewIdToDisplay(type, urlViewId)(state)
 
 /**
  * Return view of asked id, if id is 'new' it generates a new view according to config
@@ -318,9 +317,11 @@ export const getView = (id: string, configName: Maybe<string> = '') =>
                     return fromJS({}) as Map<any, any>
                 }
 
-                return (viewsConfig
-                    .getConfigByName(configName)
-                    .get('newView') as () => Map<any, any>)()
+                return (
+                    viewsConfig
+                        .getConfigByName(configName)
+                        .get('newView') as () => Map<any, any>
+                )()
             }
 
             return views.find(
@@ -331,10 +332,9 @@ export const getView = (id: string, configName: Maybe<string> = '') =>
         }
     )
 
-export const makeGetView = (state: RootState) => (
-    id: string,
-    configName?: Maybe<string>
-) => getView(id, configName)(state)
+export const makeGetView =
+    (state: RootState) => (id: string, configName?: Maybe<string>) =>
+        getView(id, configName)(state)
 
 /**
  * Return the count for a given view. Default to 0
@@ -373,9 +373,9 @@ export const getViewIdsOrderedByCollapsedSections = () =>
                         +hiddenSectionIds.includes(view1.get('section_id')) -
                         +hiddenSectionIds.includes(view2.get('section_id'))
                 )
-                .map((view: Map<any, any>) => view.get('id') as number) as List<
-                any
-            >
+                .map(
+                    (view: Map<any, any>) => view.get('id') as number
+                ) as List<any>
         }
     )
 /**
@@ -388,10 +388,9 @@ export const getExpiredViewsCounts = () =>
         Map<string, Map<string, unknown>>,
         (viewId: string) => number
     >(getRecentViews, makeGetViewCount, (recentViews, getViewCount) => {
-        return (recentViews.entrySeq().toArray() as [
-            string,
-            Map<string, unknown>
-        ][])
+        return (
+            recentViews.entrySeq().toArray() as [string, Map<string, unknown>][]
+        )
             .filter(([viewId, recentView]) => {
                 const count = getViewCount(viewId)
                 const countUpdatedAt = recentView.get('updated_datetime')

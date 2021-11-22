@@ -5,10 +5,10 @@ import {fromJS} from 'immutable'
 import {ViewCountContainer} from '../ViewCount'
 import {MAX_TICKET_COUNT_PER_VIEW} from '../../../../../config/views'
 
-const minProps = ({
+const minProps = {
     view: fromJS({id: 1, deactivated_datetime: null}),
     getViewCount: jest.fn(),
-} as unknown) as ComponentProps<typeof ViewCountContainer>
+} as unknown as ComponentProps<typeof ViewCountContainer>
 
 describe('<ViewCount/>', () => {
     it('should render an error icon because view is deactivated', () => {
@@ -25,9 +25,11 @@ describe('<ViewCount/>', () => {
     })
 
     it('should not render anything because view has no count', () => {
-        ;(minProps.getViewCount as jest.MockedFunction<
-            typeof minProps.getViewCount
-        >).mockReturnValueOnce((null as unknown) as number)
+        ;(
+            minProps.getViewCount as jest.MockedFunction<
+                typeof minProps.getViewCount
+            >
+        ).mockReturnValueOnce(null as unknown as number)
 
         const component = shallow(<ViewCountContainer {...minProps} />)
 
@@ -35,9 +37,11 @@ describe('<ViewCount/>', () => {
     })
 
     it('should render uncompacted count', () => {
-        ;(minProps.getViewCount as jest.MockedFunction<
-            typeof minProps.getViewCount
-        >).mockReturnValueOnce(111)
+        ;(
+            minProps.getViewCount as jest.MockedFunction<
+                typeof minProps.getViewCount
+            >
+        ).mockReturnValueOnce(111)
 
         const component = shallow(<ViewCountContainer {...minProps} />)
 
@@ -45,9 +49,11 @@ describe('<ViewCount/>', () => {
     })
 
     it('should render compacted count', () => {
-        ;(minProps.getViewCount as jest.MockedFunction<
-            typeof minProps.getViewCount
-        >).mockReturnValueOnce(1111)
+        ;(
+            minProps.getViewCount as jest.MockedFunction<
+                typeof minProps.getViewCount
+            >
+        ).mockReturnValueOnce(1111)
 
         const component = shallow(<ViewCountContainer {...minProps} />)
 
@@ -55,9 +61,11 @@ describe('<ViewCount/>', () => {
     })
 
     it('should render max count', () => {
-        ;(minProps.getViewCount as jest.MockedFunction<
-            typeof minProps.getViewCount
-        >).mockReturnValueOnce(MAX_TICKET_COUNT_PER_VIEW + 111)
+        ;(
+            minProps.getViewCount as jest.MockedFunction<
+                typeof minProps.getViewCount
+            >
+        ).mockReturnValueOnce(MAX_TICKET_COUNT_PER_VIEW + 111)
 
         const component = shallow(<ViewCountContainer {...minProps} />)
 

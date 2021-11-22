@@ -13,12 +13,8 @@ type Props = {
 
 export default class BuildFinalTicket extends React.Component<Props> {
     render() {
-        const {
-            sourceTicket,
-            targetTicket,
-            finalTicket,
-            updateFinalTicket,
-        } = this.props
+        const {sourceTicket, targetTicket, finalTicket, updateFinalTicket} =
+            this.props
 
         const subjectsAreDifferent =
             sourceTicket.get('subject') !== targetTicket.get('subject')

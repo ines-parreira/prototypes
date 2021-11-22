@@ -137,9 +137,8 @@ export const getPendingMessages = createImmutableSelector<
 >(
     getTicketState,
     (state) =>
-        (state.getIn(['_internal', 'pendingMessages']) || fromJS([])) as List<
-            any
-        >
+        (state.getIn(['_internal', 'pendingMessages']) ||
+            fromJS([])) as List<any>
 )
 
 export const getLastMessage = createImmutableSelector<

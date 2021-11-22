@@ -73,17 +73,15 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
     _syncHistorical = async () => {
         const {actions} = this.props
         this.setState({isSyncing: KLAVIYO_INITIAL_SYNC_SYNCING})
-        await ((actions.klaviyoSyncHistoricalEvent() as unknown) as Promise<
-            any
-        >)
+        await (actions.klaviyoSyncHistoricalEvent() as unknown as Promise<any>)
     }
 
     _deleteIntegration = async () => {
         const {actions, integration} = this.props
         this.setState({isDeleting: true})
-        await ((actions.deleteIntegration(integration) as unknown) as Promise<
-            any
-        >)
+        await (actions.deleteIntegration(
+            integration
+        ) as unknown as Promise<any>)
         this.setState({isDeleting: false})
     }
 
@@ -129,9 +127,9 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
         e.preventDefault()
         const {updateOrCreateIntegration} = this.props.actions
         this.setState({isSubmitting: true})
-        await ((updateOrCreateIntegration(
+        await (updateOrCreateIntegration(
             this._getFormValues()
-        ) as unknown) as Promise<any>)
+        ) as unknown as Promise<any>)
         this.setState({isSubmitting: false})
     }
 
@@ -454,7 +452,8 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                                                 value={customerDefaultList}
                                                 onChange={(list: unknown[]) => {
                                                     this.setState({
-                                                        customerDefaultList: list,
+                                                        customerDefaultList:
+                                                            list,
                                                     })
                                                 }}
                                                 required

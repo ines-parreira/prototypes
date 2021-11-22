@@ -95,8 +95,8 @@ class MergeTicketsContainer extends React.Component<Props, State> {
         this.props
             .mergeTickets(
                 sourceTicket.get('id'),
-                ((targetTicket as unknown) as Map<any, any>).get('id'),
-                ((finalTicket as unknown) as Map<any, any>).toJS()
+                (targetTicket as unknown as Map<any, any>).get('id'),
+                (finalTicket as unknown as Map<any, any>).toJS()
             )
             .then((data) =>
                 history.push(`/app/ticket/${(data as {id: string}).id}`)
@@ -111,8 +111,8 @@ class MergeTicketsContainer extends React.Component<Props, State> {
         let content = (
             <BuildFinalTicket
                 sourceTicket={sourceTicket}
-                targetTicket={(targetTicket as unknown) as Map<any, any>}
-                finalTicket={(finalTicket as unknown) as Map<any, any>}
+                targetTicket={targetTicket as unknown as Map<any, any>}
+                finalTicket={finalTicket as unknown as Map<any, any>}
                 updateFinalTicket={(finalTicket) =>
                     this.setState({finalTicket})
                 }

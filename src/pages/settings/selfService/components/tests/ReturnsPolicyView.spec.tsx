@@ -109,16 +109,17 @@ describe('<ReturnsPolicyView />', () => {
                         }),
                         entities: {
                             ...defaultState.entities,
-                            selfServiceConfigurations: selfServiceConfigurations.reduce(
-                                (
-                                    configurations: SelfServiceConfigurationsState,
-                                    configuration: SelfServiceConfiguration
-                                ) => ({
-                                    ...configurations,
-                                    [configuration.id]: configuration,
-                                }),
-                                {} as Partial<SelfServiceConfiguration>
-                            ),
+                            selfServiceConfigurations:
+                                selfServiceConfigurations.reduce(
+                                    (
+                                        configurations: SelfServiceConfigurationsState,
+                                        configuration: SelfServiceConfiguration
+                                    ) => ({
+                                        ...configurations,
+                                        [configuration.id]: configuration,
+                                    }),
+                                    {} as Partial<SelfServiceConfiguration>
+                                ),
                         },
                     })}
                 >

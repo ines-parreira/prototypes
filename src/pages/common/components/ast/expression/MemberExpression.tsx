@@ -50,10 +50,8 @@ export function MemberExpressionContainer({
     ],
     actions,
 }: OwnProps & ConnectedProps<typeof connector>) {
-    const [
-        selectedCategory,
-        setSelectedCategory,
-    ] = useState<IdentifierCategoryKey | null>(null)
+    const [selectedCategory, setSelectedCategory] =
+        useState<IdentifierCategoryKey | null>(null)
     const displayedValue = useMemo(() => {
         const valuePath = getAstPath(property, object)
         const jointValuePath = valuePath.join('.')

@@ -18,9 +18,8 @@ import {
 
 import {ArticlesAction} from '../types'
 
-const articlesResponse = getArticlesResponseFixture.data.map(
-    createArticleFromDto
-)
+const articlesResponse =
+    getArticlesResponseFixture.data.map(createArticleFromDto)
 const singleArticle = articlesResponse[0]
 
 describe('Help Center/Articles reducer', () => {

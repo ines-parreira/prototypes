@@ -101,16 +101,14 @@ describe('<PhoneEventDetails/>', () => {
                 data: {
                     recording: {
                         file: {
-                            url:
-                                'https://uploads.gorgi.us/development/some-file.mp3',
+                            url: 'https://uploads.gorgi.us/development/some-file.mp3',
                             name: 'phone-123ABC.mp3',
                             size: 17763,
                             content_type: 'audio/mpeg',
                         },
                         original: {
                             sid: '123ABC',
-                            url:
-                                'https://api.twilio.com/2010-04-01/Accounts/123/Recordings/ABC',
+                            url: 'https://api.twilio.com/2010-04-01/Accounts/123/Recordings/ABC',
                             track: 'both',
                             status: 'completed',
                             call_sid: 'CAb8068b6d8cdc2112e42957f61d90f737',
@@ -138,16 +136,14 @@ describe('<PhoneEventDetails/>', () => {
                 data: {
                     recording: {
                         file: {
-                            url:
-                                'https://uploads.gorgi.us/development/some-file.mp3',
+                            url: 'https://uploads.gorgi.us/development/some-file.mp3',
                             name: 'phone-123ABC.mp3',
                             size: 17763,
                             content_type: 'audio/mpeg',
                         },
                         original: {
                             sid: '123ABC',
-                            url:
-                                'https://api.twilio.com/2010-04-01/Accounts/123/Recordings/ABC',
+                            url: 'https://api.twilio.com/2010-04-01/Accounts/123/Recordings/ABC',
                             track: 'both',
                             status: 'completed',
                             call_sid: 'CAb8068b6d8cdc2112e42957f61d90f737',

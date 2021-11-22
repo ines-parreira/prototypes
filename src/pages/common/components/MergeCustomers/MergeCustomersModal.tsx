@@ -97,7 +97,7 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
         const {error} = (await this.props.mergeCustomers(
             this.props.destinationCustomer.get('id') as number,
             this.props.sourceCustomer.get('id') as number,
-            (data.customer as any) as Customer
+            data.customer as any as Customer
         )) as {error: unknown}
 
         this._toggle()
@@ -108,9 +108,11 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
     }
 
     _generateChannelOptions = (customer: Map<any, any>) => {
-        const channels = (customer.get('channels', fromJS([])) as List<
-            Map<any, any> | undefined
-        >).filter((channel: unknown) => !!channel) as List<Map<any, any>>
+        const channels = (
+            customer.get('channels', fromJS([])) as List<
+                Map<any, any> | undefined
+            >
+        ).filter((channel: unknown) => !!channel) as List<Map<any, any>>
         return channels
             .map((channel, idx) => ({
                 label: (
@@ -166,12 +168,14 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
             ? mergeCustomerData.toJS()
             : {}
 
-        const allChannels = ((destinationCustomer.get('channels') as List<
-            any
-        >).toJS() as CustomerChannel[]).concat(
-            (sourceCustomer.get('channels') as List<
-                any
-            >).toJS() as CustomerChannel[]
+        const allChannels = (
+            (
+                destinationCustomer.get('channels') as List<any>
+            ).toJS() as CustomerChannel[]
+        ).concat(
+            (
+                sourceCustomer.get('channels') as List<any>
+            ).toJS() as CustomerChannel[]
         )
 
         const allRequiredAddresses = requiredAddresses.toJS() as string[]

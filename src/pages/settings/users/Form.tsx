@@ -124,9 +124,11 @@ export class FormContainer extends Component<Props, State> {
         e.preventDefault()
         const form: UserDraft = {email, name, roles: [{name: role}]}
         this.setState({isSubmitting: true})
-        const promise = (this._isUpdate()
-            ? this.props.updateAgent(this.props.agentId, form)
-            : this.props.createAgent(form)) as Promise<{
+        const promise = (
+            this._isUpdate()
+                ? this.props.updateAgent(this.props.agentId, form)
+                : this.props.createAgent(form)
+        ) as Promise<{
             error?: {data?: Record<string, unknown>}
         }>
         return promise.then(({error}) => {
@@ -285,8 +287,8 @@ export class FormContainer extends Component<Props, State> {
                                         color="secondary"
                                         onClick={this._invite}
                                         className={classnames({
-                                            'btn-loading': this.state
-                                                .isInviting,
+                                            'btn-loading':
+                                                this.state.isInviting,
                                         })}
                                         disabled={this.state.isInviting}
                                     >

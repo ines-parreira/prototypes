@@ -263,9 +263,9 @@ export function PerHourPerWeekTableStatContainer(props: Props) {
                                         }
                                     >
                                         <span>
-                                            {(axe.get(
-                                                'name'
-                                            ) as string).toUpperCase()}
+                                            {(
+                                                axe.get('name') as string
+                                            ).toUpperCase()}
                                         </span>
                                     </th>
                                 )

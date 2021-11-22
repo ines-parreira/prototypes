@@ -77,14 +77,13 @@ export const HelpCenterPreferencesSettings = ({
     const {helpCenter, fetchHelpCenterTranslations} = useCurrentHelpCenter()
     const viewLanguage =
         useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
-    const [preferences, updatePreferences] = useState<
-        HelpCenterPreferencesState
-    >(defaultPreferences)
+    const [preferences, updatePreferences] =
+        useState<HelpCenterPreferencesState>(defaultPreferences)
 
-    const nameChanged = useMemo(() => helpCenter?.name !== preferences.name, [
-        helpCenter,
-        preferences,
-    ])
+    const nameChanged = useMemo(
+        () => helpCenter?.name !== preferences.name,
+        [helpCenter, preferences]
+    )
 
     const defaultLanguageChanged = useMemo(
         () => helpCenter?.default_locale !== preferences.defaultLanguage,
@@ -294,6 +293,7 @@ export const HelpCenterPreferencesSettings = ({
     )
 }
 
-export const useHelpCenterPreferencesSettings = (): HelpCenterPreferencesContext => {
-    return useContext(PreferencesContext)
-}
+export const useHelpCenterPreferencesSettings =
+    (): HelpCenterPreferencesContext => {
+        return useContext(PreferencesContext)
+    }

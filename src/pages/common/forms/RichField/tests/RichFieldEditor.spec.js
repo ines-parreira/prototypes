@@ -78,9 +78,8 @@ describe('RichFieldEditor', () => {
         // simulate pasted text
         component.instance()._handlePastedText(text, html, editorState)
 
-        const [newContentState] = onChange.mock.calls[
-            onChange.mock.calls.length - 1
-        ]
+        const [newContentState] =
+            onChange.mock.calls[onChange.mock.calls.length - 1]
         const convertedHTML = convertToHTML(newContentState.getCurrentContent())
         // we can't simulate the paste event, so we test for unmodified content
         expect(convertedHTML).toBe('<p>html</p>')

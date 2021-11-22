@@ -107,9 +107,8 @@ const createTicketNavbarElementsSelector = (visibility: ViewVisibility) => {
     )
 }
 
-export const getPrivateTicketNavbarElements = createTicketNavbarElementsSelector(
-    ViewVisibility.Private
-)
+export const getPrivateTicketNavbarElements =
+    createTicketNavbarElementsSelector(ViewVisibility.Private)
 
 export const getPublicTicketNavbarElements = createTicketNavbarElementsSelector(
     ViewVisibility.Public

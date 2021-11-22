@@ -156,14 +156,12 @@ export default class TicketAttachments extends Component<Props, State> {
                     <div className={css.productPrice}>
                         <MoneyAmount
                             renderIfZero
-                            amount={(attachment.get('extra') as Map<
-                                any,
-                                any
-                            >).get('price')}
-                            currencyCode={(attachment.get('extra') as Map<
-                                any,
-                                any
-                            >).get('currency')}
+                            amount={(
+                                attachment.get('extra') as Map<any, any>
+                            ).get('price')}
+                            currencyCode={(
+                                attachment.get('extra') as Map<any, any>
+                            ).get('currency')}
                         />
                     </div>
                 </div>

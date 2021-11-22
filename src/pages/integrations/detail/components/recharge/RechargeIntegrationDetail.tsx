@@ -68,12 +68,8 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
     }
 
     render() {
-        const {
-            deleteIntegration,
-            integration,
-            shopifyIntegrations,
-            loading,
-        } = this.props
+        const {deleteIntegration, integration, shopifyIntegrations, loading} =
+            this.props
         const isUpdate = this.props.match.params.integrationId !== 'new'
         const isSubmitting = loading.get('updateIntegration')
         const isActive = !integration.get('deactivated_datetime')

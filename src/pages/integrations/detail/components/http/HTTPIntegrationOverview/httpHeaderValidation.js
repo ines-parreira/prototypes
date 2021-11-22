@@ -15,23 +15,7 @@ export function validateHeaderName(headerName) {
     // list created using javascript's Header class, by appending each printable ASCII code as a header name
     // and filtering the ones that threw an error (58 is the colon char code)
     let invalidCharCodes = [
-        34,
-        40,
-        41,
-        44,
-        47,
-        58,
-        59,
-        60,
-        61,
-        62,
-        63,
-        64,
-        91,
-        92,
-        93,
-        123,
-        125,
+        34, 40, 41, 44, 47, 58, 59, 60, 61, 62, 63, 64, 91, 92, 93, 123, 125,
     ]
 
     return headerName

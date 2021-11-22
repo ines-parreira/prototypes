@@ -417,9 +417,9 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                             className="float-right"
                                             color="secondary"
                                             confirm={() =>
-                                                (deleteIntegration(
+                                                deleteIntegration(
                                                     integration
-                                                ) as unknown) as Promise<void>
+                                                ) as unknown as Promise<void>
                                             }
                                             content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                                         >
@@ -442,9 +442,8 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
 const connector = connect(
     (state: RootState) => {
         return {
-            getExistingShopifyIntegration: makeGetShopifyIntegrationByShopName(
-                state
-            ),
+            getExistingShopifyIntegration:
+                makeGetShopifyIntegrationByShopName(state),
         }
     },
     {

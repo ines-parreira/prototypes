@@ -10,7 +10,8 @@ describe('stats selectors', () => {
     const state: RootState = {
         entities: {
             stats: {
-                'first-response-time/first-response-time': firstResponseTimeStat,
+                'first-response-time/first-response-time':
+                    firstResponseTimeStat,
                 'overview/total-messages-sent': totalMessagesSent,
             },
         },

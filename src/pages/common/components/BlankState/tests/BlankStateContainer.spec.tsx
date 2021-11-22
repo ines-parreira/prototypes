@@ -46,10 +46,10 @@ describe('<BlankStateContainer />', () => {
     it('should cancel fetch on unmount', () => {
         jest.spyOn(axios.CancelToken, 'source').mockImplementation(
             () =>
-                (({
+                ({
                     token: undefined,
                     cancel: mockedCancelRequest,
-                } as unknown) as CancelTokenSource)
+                } as unknown as CancelTokenSource)
         )
         const {unmount} = render(
             <BlankStateContainer currentUser={fromJS(user)} />

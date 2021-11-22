@@ -24,9 +24,8 @@ export const HelpCenterEditModalFooter = ({
     requiredFields,
     onDelete,
 }: Props): JSX.Element => {
-    const [pendingDeleteArticle, setPendingDeleteArticle] = React.useState(
-        false
-    )
+    const [pendingDeleteArticle, setPendingDeleteArticle] =
+        React.useState(false)
 
     const handleOnSave = (event: FormEvent) => {
         event.preventDefault()

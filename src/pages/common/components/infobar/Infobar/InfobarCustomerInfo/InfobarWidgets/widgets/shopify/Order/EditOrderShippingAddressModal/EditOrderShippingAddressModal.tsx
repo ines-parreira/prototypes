@@ -196,11 +196,9 @@ export function EditOrderShippingAddressModal(
     )
     const hasScope = useMemo(
         () =>
-            (currentIntegration?.getIn([
-                'meta',
-                'oauth',
-                'scope',
-            ]) as string).includes('write_order_edits'),
+            (
+                currentIntegration?.getIn(['meta', 'oauth', 'scope']) as string
+            ).includes('write_order_edits'),
         [currentIntegration]
     )
 

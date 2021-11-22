@@ -16,9 +16,9 @@ import InfiniteScroll from '../../common/components/InfiniteScroll/InfiniteScrol
 jest.mock('../common/PeriodPicker', () => () => 'PeriodPicker')
 jest.mock('../../../models/tag/resources')
 jest.mock('../../common/components/InfiniteScroll/InfiniteScroll')
-;(InfiniteScroll as jest.MockedFunction<
-    typeof InfiniteScroll
->).mockImplementation(
+;(
+    InfiniteScroll as jest.MockedFunction<typeof InfiniteScroll>
+).mockImplementation(
     ({onLoad, ...others}: ComponentProps<typeof InfiniteScroll>) => {
         return (
             <div
@@ -33,7 +33,7 @@ jest.mock('../../common/components/InfiniteScroll/InfiniteScroll')
 const fetchTagsMock = fetchTags as jest.MockedFunction<typeof fetchTags>
 
 describe('<StatsFilters />', () => {
-    const minProps = ({
+    const minProps = {
         agents: agentsFixtures.map(({id, name}) => ({id, label: name})),
         channels: [],
         config: views.get('support-performance-overview'),
@@ -53,7 +53,7 @@ describe('<StatsFilters />', () => {
         mergeStatsFilters: jest.fn(),
         tagsFetched: jest.fn(),
         notify: jest.fn(),
-    } as unknown) as ComponentProps<typeof StatsFiltersContainer>
+    } as unknown as ComponentProps<typeof StatsFiltersContainer>
 
     beforeEach(() => {
         jest.clearAllMocks()

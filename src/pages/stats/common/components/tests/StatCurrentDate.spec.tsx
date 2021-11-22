@@ -12,9 +12,8 @@ jest.mock('moment-timezone', () => {
     const moment: ((
         date?: string,
         format?: string
-    ) => Record<string, unknown>) & {utc: () => unknown} = jest.requireActual(
-        'moment-timezone'
-    )
+    ) => Record<string, unknown>) & {utc: () => unknown} =
+        jest.requireActual('moment-timezone')
     const fn = (...args: any[]) =>
         args.length > 0 ? moment(...args) : moment('2019-09-03')
     fn.utc = moment.utc

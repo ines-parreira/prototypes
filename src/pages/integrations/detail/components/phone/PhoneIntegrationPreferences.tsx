@@ -58,10 +58,8 @@ export default function PhoneIntegrationPreferences({
     const [greetingMessageContent, setGreetingMessageContent] = useState<
         string | null
     >(null)
-    const [
-        voicemailOutsideBusinessHours,
-        setVoicemailOutsideBusinessHours,
-    ] = useState(true)
+    const [voicemailOutsideBusinessHours, setVoicemailOutsideBusinessHours] =
+        useState(true)
     const isIvr = integration.getIn(['meta', 'function']) === PhoneFunction.Ivr
 
     const onSubmit = useCallback(
@@ -71,7 +69,7 @@ export default function PhoneIntegrationPreferences({
             try {
                 setIsLoading(true)
                 setError(null)
-                await ((actions.updateOrCreateIntegration(
+                await (actions.updateOrCreateIntegration(
                     fromJS({
                         id: integration.get('id'),
                         name: title,
@@ -79,14 +77,17 @@ export default function PhoneIntegrationPreferences({
                             emoji,
                             preferences: {
                                 record_inbound_calls: recordInboundCalls,
-                                voicemail_outside_business_hours: voicemailOutsideBusinessHours,
+                                voicemail_outside_business_hours:
+                                    voicemailOutsideBusinessHours,
                                 record_outbound_calls: recordOutboundCalls,
-                                greeting_message_enabled: greetingMessageEnabled,
-                                greeting_message_content: greetingMessageContent,
+                                greeting_message_enabled:
+                                    greetingMessageEnabled,
+                                greeting_message_content:
+                                    greetingMessageContent,
                             },
                         },
                     })
-                ) as unknown) as Promise<any>)
+                ) as unknown as Promise<any>)
             } catch (error) {
                 console.error(error)
                 setError(error)
@@ -113,9 +114,9 @@ export default function PhoneIntegrationPreferences({
         try {
             setIsLoading(true)
             setError(null)
-            await ((actions.deleteIntegration(
+            await (actions.deleteIntegration(
                 integration
-            ) as unknown) as Promise<any>)
+            ) as unknown as Promise<any>)
         } catch (error) {
             setError(error)
         } finally {

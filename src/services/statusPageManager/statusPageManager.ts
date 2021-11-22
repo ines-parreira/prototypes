@@ -149,7 +149,8 @@ export class StatusPageManager {
     }
 
     static hideNotification(id: string) {
-        const notificationIds: string[] = StatusPageManager.getSavedNotificationIds()
+        const notificationIds: string[] =
+            StatusPageManager.getSavedNotificationIds()
         notificationIds.push(id)
         StatusPageManager.saveNotificationIds(notificationIds)
     }
@@ -173,12 +174,13 @@ export class StatusPageManager {
 
     processIncidents = (data: StatusPageIncidentsResponseData) => {
         const activeIntegrations = getActiveIntegrations(this.store.getState())
-        const activeIntegrationsTypes: ImmutableSet<IntegrationType> = activeIntegrations
-            .map(
-                (integration: ImmutableMap<any, any>) =>
-                    integration.get('type') as IntegrationType
-            )
-            .toSet()
+        const activeIntegrationsTypes: ImmutableSet<IntegrationType> =
+            activeIntegrations
+                .map(
+                    (integration: ImmutableMap<any, any>) =>
+                        integration.get('type') as IntegrationType
+                )
+                .toSet()
 
         const relevantIncidents = data.incidents
             .filter((incident) =>
@@ -204,7 +206,8 @@ export class StatusPageManager {
 
         const relevantIncidentsIds = relevantIncidents.map(({id}) => id)
         // notifications dismissed by user are retrieved in localStorage
-        const closedNotificationIds: string[] = StatusPageManager.getSavedNotificationIds()
+        const closedNotificationIds: string[] =
+            StatusPageManager.getSavedNotificationIds()
         const cleanedNotificationIds = closedNotificationIds.filter(
             (id: string) => relevantIncidentsIds.includes(id)
         )

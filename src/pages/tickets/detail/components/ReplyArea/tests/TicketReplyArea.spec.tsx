@@ -7,17 +7,19 @@ import {TicketReplyArea} from '../TicketReplyArea'
 import TicketMacros from '../TicketMacros'
 import {TicketMessageSourceType} from '../../../../../../business/types/ticket'
 
+type Props = {
+    richAreaRef: (value: any) => void
+}
+
 jest.mock('../TicketReply', () => {
     const {Component} = jest.requireActual('react')
     const focusEditor = jest.fn()
 
-    class TicketReplyMock extends Component {
+    class TicketReplyMock extends Component<Props> {
         focusEditor = focusEditor
 
         render() {
-            const {richAreaRef} = this.props as {
-                richAreaRef: (value: any) => void
-            }
+            const {richAreaRef}: Props = this.props
             richAreaRef(this)
 
             return <div>hello</div>
@@ -43,7 +45,7 @@ jest.mock('../TicketMacros', () => ({onClearMacro}: TicketMacrosMockProps) => (
     </div>
 ))
 
-const minProps = ({
+const minProps = {
     ticket: fromJS({}),
     currentUser: fromJS({}),
     customers: {},
@@ -59,7 +61,7 @@ const minProps = ({
     applyMacro: jest.fn(),
     currentTicket: fromJS({}),
     cacheAdded: false,
-} as unknown) as ComponentProps<typeof TicketReplyArea>
+} as unknown as ComponentProps<typeof TicketReplyArea>
 
 function focusMacroInput(component: ReactWrapper<any>) {
     component.find('input').simulate('focus')
@@ -95,9 +97,11 @@ describe('<TicketReplyArea/>', () => {
             newMessageType: TicketMessageSourceType.InternalNote,
         })
         expect(
-            ((TicketReply as unknown) as {
-                mocks: {focusEditor: jest.MockedFunction<any>}
-            }).mocks.focusEditor
+            (
+                TicketReply as unknown as {
+                    mocks: {focusEditor: jest.MockedFunction<any>}
+                }
+            ).mocks.focusEditor
         ).not.toHaveBeenCalled()
     })
 
@@ -118,9 +122,11 @@ describe('<TicketReplyArea/>', () => {
             focusMacroInput(component)
             component.find('.clear-macro').simulate('click')
             expect(
-                ((TicketReply as unknown) as {
-                    mocks: {focusEditor: jest.MockedFunction<any>}
-                }).mocks.focusEditor
+                (
+                    TicketReply as unknown as {
+                        mocks: {focusEditor: jest.MockedFunction<any>}
+                    }
+                ).mocks.focusEditor
             ).toHaveBeenNthCalledWith(1)
             expect(component).toMatchSnapshot()
         })

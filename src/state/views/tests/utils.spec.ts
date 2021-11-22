@@ -19,7 +19,8 @@ describe('utils', () => {
 
             it('should not crash if there is no storage', () => {
                 const _storage = utils.recentViewsStorage.storage
-                utils.recentViewsStorage.storage = ({} as unknown) as typeof _storage
+                utils.recentViewsStorage.storage =
+                    {} as unknown as typeof _storage
                 utils.recentViewsStorage.get()
                 utils.recentViewsStorage.storage = _storage
             })
@@ -56,7 +57,8 @@ describe('utils', () => {
         describe('set()', () => {
             it('should not crash if there is no storage', () => {
                 const _storage = utils.recentViewsStorage.storage
-                utils.recentViewsStorage.storage = ({} as unknown) as typeof _storage
+                utils.recentViewsStorage.storage =
+                    {} as unknown as typeof _storage
                 utils.recentViewsStorage.set([1, 2])
                 utils.recentViewsStorage.storage = _storage
             })

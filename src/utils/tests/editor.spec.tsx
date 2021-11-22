@@ -103,7 +103,7 @@ describe('editor utils', () => {
                     .getBlocksAsArray()
                     .find(
                         (b) =>
-                            ((b as unknown) as Record<string, unknown>).type ===
+                            (b as unknown as Record<string, unknown>).type ===
                             'atomic'
                     )
             ).toBeTruthy()
@@ -639,9 +639,8 @@ describe('editor utils', () => {
         })
 
         it('should return the selection state of the found fragment', () => {
-            const parentContentState = ContentState.createFromText(
-                'Foo\n\n\nBar\nBaz'
-            )
+            const parentContentState =
+                ContentState.createFromText('Foo\n\n\nBar\nBaz')
             const contentState = ContentState.createFromText('\n\nBar')
             const selectionState = findContentState(
                 parentContentState,
@@ -659,9 +658,8 @@ describe('editor utils', () => {
         })
 
         it('should return null when fragment matches partially', () => {
-            const parentContentState = ContentState.createFromText(
-                'Foo\n\n\nBarBaz'
-            )
+            const parentContentState =
+                ContentState.createFromText('Foo\n\n\nBarBaz')
             const contentState = ContentState.createFromText('\n\nBar')
             expect(findContentState(parentContentState, contentState)).toBe(
                 null

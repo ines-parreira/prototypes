@@ -49,19 +49,18 @@ export const SEO = ({
         onChangeLocale(validLocaleCode(value))
     }
 
-    const onEditSeoMeta = (editKey: keyof HelpCenterTranslationSeoMeta) => (
-        value: string
-    ) => {
-        updatePreferences({
-            translation: {
-                ...preferences.translation,
-                seo_meta: {
-                    ...preferences.translation.seo_meta,
-                    [editKey]: value || null,
+    const onEditSeoMeta =
+        (editKey: keyof HelpCenterTranslationSeoMeta) => (value: string) => {
+            updatePreferences({
+                translation: {
+                    ...preferences.translation,
+                    seo_meta: {
+                        ...preferences.translation.seo_meta,
+                        [editKey]: value || null,
+                    },
                 },
-            },
-        })
-    }
+            })
+        }
 
     useEffect(() => {
         const translation = helpCenter.translations?.find(

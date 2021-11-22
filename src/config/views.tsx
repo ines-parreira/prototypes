@@ -315,12 +315,12 @@ export const views = fromJS([
                             {(item.get('tags', fromJS([])) as List<any>)
                                 .sort(
                                     ((a: Map<any, any>, b: Map<any, any>) =>
-                                        (a.get(
-                                            'name'
-                                        ) as string).toLowerCase() >
-                                        (b.get(
-                                            'name'
-                                        ) as string).toLowerCase()) as any
+                                        (
+                                            a.get('name') as string
+                                        ).toLowerCase() >
+                                        (
+                                            b.get('name') as string
+                                        ).toLowerCase()) as any
                                 )
                                 .map((tag: Map<any, any>) => {
                                     const {

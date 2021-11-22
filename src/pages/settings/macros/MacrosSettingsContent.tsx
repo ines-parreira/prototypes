@@ -44,9 +44,7 @@ export function MacrosSettingsContentContainer({
         page: 1,
         nbPages: 1,
     })
-    const [
-        cancellableFetchMacros,
-    ] = useCancellableRequest(
+    const [cancellableFetchMacros] = useCancellableRequest(
         (cancelToken: CancelToken) => async (options: FetchMacrosOptions) =>
             await fetchMacros(options, cancelToken)
     )

@@ -19,39 +19,39 @@ import client from '../../models/api/resources'
 import * as constants from './constants.js'
 import * as currentUserSelectors from './selectors'
 
-export const changePassword = (oldPassword: string, newPassword: string) => (
-    dispatch: StoreDispatch
-): Promise<ReturnType<StoreDispatch>> => {
-    dispatch({type: constants.CHANGE_PASSWORD_START})
+export const changePassword =
+    (oldPassword: string, newPassword: string) =>
+    (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
+        dispatch({type: constants.CHANGE_PASSWORD_START})
 
-    return client
-        .put<User>('/api/users/0/', {
-            old_password: oldPassword,
-            new_password: newPassword,
-        })
-        .then((json) => json?.data)
-        .then(
-            (resp) => {
-                dispatch({
-                    type: constants.CHANGE_PASSWORD_SUCCESS,
-                    resp,
-                })
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'Password successfully changed!',
+        return client
+            .put<User>('/api/users/0/', {
+                old_password: oldPassword,
+                new_password: newPassword,
+            })
+            .then((json) => json?.data)
+            .then(
+                (resp) => {
+                    dispatch({
+                        type: constants.CHANGE_PASSWORD_SUCCESS,
+                        resp,
                     })
-                )
-            },
-            (error: AxiosError) => {
-                return dispatch({
-                    type: constants.CHANGE_PASSWORD_ERROR,
-                    error,
-                    reason: 'Failed to modify your password',
-                })
-            }
-        )
-}
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Success,
+                            message: 'Password successfully changed!',
+                        })
+                    )
+                },
+                (error: AxiosError) => {
+                    return dispatch({
+                        type: constants.CHANGE_PASSWORD_ERROR,
+                        error,
+                        reason: 'Failed to modify your password',
+                    })
+                }
+            )
+    }
 
 export function updateCurrentUser(data: Partial<EditableUserProfile>) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
@@ -105,9 +105,8 @@ export function submitSetting(data: UserSetting, notification: boolean) {
         dispatch: StoreDispatch,
         getState: () => RootState
     ): Promise<ReturnType<StoreDispatch>> => {
-        const prevIsAvailableForChat: boolean = currentUserSelectors.isAvailable(
-            getState()
-        )
+        const prevIsAvailableForChat: boolean =
+            currentUserSelectors.isAvailable(getState())
         let promise
 
         dispatch({
@@ -169,17 +168,16 @@ export function submitSetting(data: UserSetting, notification: boolean) {
     }
 }
 
-export const toggleActiveStatus = (status: Maybe<boolean>) => (
-    dispatch: StoreDispatch,
-    getState: () => RootState
-) => {
-    const {currentUser} = getState()
-    const currentStatus = currentUser.get('is_active')
+export const toggleActiveStatus =
+    (status: Maybe<boolean>) =>
+    (dispatch: StoreDispatch, getState: () => RootState) => {
+        const {currentUser} = getState()
+        const currentStatus = currentUser.get('is_active')
 
-    if (_isUndefined(status) || status !== currentStatus) {
-        dispatch({
-            type: constants.TOGGLE_ACTIVE_STATUS,
-            status,
-        })
+        if (_isUndefined(status) || status !== currentStatus) {
+            dispatch({
+                type: constants.TOGGLE_ACTIVE_STATUS,
+                status,
+            })
+        }
     }
-}

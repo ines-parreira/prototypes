@@ -123,10 +123,10 @@ describe('Action', () => {
         it.each(['facebookHideComment', 'facebookLikeComment'])(
             'should render a warning about potential page deactivation in Facebook',
             (actionValue) => {
-                const props = ({
+                const props = {
                     ...minProps,
                     value: actionValue,
-                } as unknown) as ComponentProps<typeof Action>
+                } as unknown as ComponentProps<typeof Action>
                 const component = shallow(<Action {...props} />)
 
                 expect(component).toMatchSnapshot()
@@ -134,9 +134,9 @@ describe('Action', () => {
         )
 
         it('should render an error saying an action cannot be empty', () => {
-            const props = (Object.assign({}, minProps, {
+            const props = Object.assign({}, minProps, {
                 value: '',
-            }) as unknown) as ComponentProps<typeof Action>
+            }) as unknown as ComponentProps<typeof Action>
 
             const component = shallow(<Action {...props} />)
 

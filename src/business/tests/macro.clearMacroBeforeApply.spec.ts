@@ -61,10 +61,11 @@ describe('Business', () => {
                     1
                 )
                 expect(
-                    ((result.macro.get('actions') as List<any>).get(0) as Map<
-                        any,
-                        any
-                    >).get('name')
+                    (
+                        (result.macro.get('actions') as List<any>).get(
+                            0
+                        ) as Map<any, any>
+                    ).get('name')
                 ).toEqual('setResponseText')
             })
 

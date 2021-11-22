@@ -315,16 +315,14 @@ export const ticket: Ticket = {
                                     },
                                 ],
                                 product_id: 9211387275,
-                                name:
-                                    'Baskets peu cheres  10.00% Off Auto renew',
+                                name: 'Baskets peu cheres  10.00% Off Auto renew',
                                 product_exists: true,
                                 fulfillable_quantity: 1,
                                 properties: [],
                                 fulfillment_status: null,
                                 fulfillment_service: 'manual',
                                 variant_id: 32994232907,
-                                title:
-                                    'Baskets peu cheres  10.00% Off Auto renew',
+                                title: 'Baskets peu cheres  10.00% Off Auto renew',
                                 id: 8276448779,
                                 grams: 200,
                                 total_discount: '0.00',

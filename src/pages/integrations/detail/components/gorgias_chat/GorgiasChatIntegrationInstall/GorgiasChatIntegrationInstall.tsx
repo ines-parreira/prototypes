@@ -30,12 +30,12 @@ type OwnProps = {
 const mapStateToProps = (state: RootState) => {
     return {
         domain: state.currentAccount.get('domain'),
-        getIntegrationsByTypes: integrationSelectors.makeGetIntegrationsByTypes(
-            state
-        ),
-        gorgiasChatExtraState: integrationSelectors.getIntegrationTypeExtraState(
-            GORGIAS_CHAT_INTEGRATION_TYPE as IntegrationType
-        )(state),
+        getIntegrationsByTypes:
+            integrationSelectors.makeGetIntegrationsByTypes(state),
+        gorgiasChatExtraState:
+            integrationSelectors.getIntegrationTypeExtraState(
+                GORGIAS_CHAT_INTEGRATION_TYPE as IntegrationType
+            )(state),
     }
 }
 

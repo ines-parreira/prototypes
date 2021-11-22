@@ -62,13 +62,8 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
     }, 250)
 
     render() {
-        const {
-            editable,
-            hasShippingLine,
-            loading,
-            refund,
-            currencyCode,
-        } = this.props
+        const {editable, hasShippingLine, loading, refund, currencyCode} =
+            this.props
         const {shipping} = this.state
         const shippingMaximumRefundable = refund.getIn([
             'shipping',

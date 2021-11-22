@@ -20,9 +20,9 @@ describe('useSearch hook', () => {
 
     it('should provide the updated parsed query when url changed', () => {
         const {result, rerender} = renderHook(() => useSearch())
-        ;(useLocation as jest.MockedFunction<
-            typeof useLocation
-        >).mockReturnValueOnce({
+        ;(
+            useLocation as jest.MockedFunction<typeof useLocation>
+        ).mockReturnValueOnce({
             pathname: '',
             search: '?baz=2',
             state: '',

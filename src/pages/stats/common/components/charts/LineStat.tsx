@@ -1,6 +1,6 @@
 import React, {Component, ComponentProps} from 'react'
 import {ChartOptions} from 'chart.js'
-import {Line} from 'react-chartjs-2'
+
 import moment from 'moment'
 import {Map, List} from 'immutable'
 import _flatten from 'lodash/flatten'
@@ -19,6 +19,8 @@ import {getBusinessHoursRangesByUserTimezone} from '../../../../../state/current
 
 import {highlightTimeRanges} from './plugins'
 
+import {Line} from 'react-chartjs-2'
+
 type Props = {
     data: Map<any, any>
     legend: Map<any, any>
@@ -29,23 +31,25 @@ type Props = {
 export class LineStatContainer extends Component<Props> {
     _getOptions = (legend: Map<any, any>) => {
         const {config, businessRanges} = this.props
-        const defaultOptions = (config.get('options') as (
-            legend: Map<any, any>
-        ) => ChartOptions)(legend)
+        const defaultOptions = (
+            config.get('options') as (legend: Map<any, any>) => ChartOptions
+        )(legend)
         const formattedBusinessRanges = businessRanges?.map((range) => [
             range[0].add(30, 'minutes').startOf('hour'),
             range[1].add(30, 'minutes').startOf('hour'),
         ])
-        return (config.get('hasBusinessHoursHighlight') && businessRanges
-            ? {
-                  ...defaultOptions,
-                  plugins: {
-                      highlight_time_ranges: {
-                          timeRanges: formattedBusinessRanges,
+        return (
+            config.get('hasBusinessHoursHighlight') && businessRanges
+                ? {
+                      ...defaultOptions,
+                      plugins: {
+                          highlight_time_ranges: {
+                              timeRanges: formattedBusinessRanges,
+                          },
                       },
-                  },
-              }
-            : defaultOptions) as StatConfig
+                  }
+                : defaultOptions
+        ) as StatConfig
     }
 
     render() {
@@ -57,10 +61,9 @@ export class LineStatContainer extends Component<Props> {
         const datasets = (data.get('lines') as List<any>)
             .map((line: Map<any, any>, index) => {
                 const lineName = line.get('name')
-                const {backgroundColor, label, ...lineConfig} = (config.getIn([
-                    'lines',
-                    lineName,
-                ]) as Map<any, any>).toJS() as Record<string, unknown>
+                const {backgroundColor, label, ...lineConfig} = (
+                    config.getIn(['lines', lineName]) as Map<any, any>
+                ).toJS() as Record<string, unknown>
 
                 const data: Record<string, unknown> = {
                     label: label || lineName,
@@ -104,9 +107,9 @@ export class LineStatContainer extends Component<Props> {
                         type="line"
                         height={chartMaxHeight}
                         data={{
-                            labels: (data.getIn(['axes', 'x']) as List<
-                                any
-                            >).toJS(),
+                            labels: (
+                                data.getIn(['axes', 'x']) as List<any>
+                            ).toJS(),
                             datasets: datasets,
                         }}
                         options={this._getOptions(legend)}

@@ -39,11 +39,8 @@ export function OngoingPhoneCall({
 }: Props): JSX.Element {
     const {isMuted, onToggleMute} = useMute(call)
     const {onDisconnect} = useDisconnect(call)
-    const {
-        integrationId,
-        customerName,
-        customerPhoneNumber,
-    } = useConnectionParameters(call)
+    const {integrationId, customerName, customerPhoneNumber} =
+        useConnectionParameters(call)
 
     const {startRecording, isRequestPending} = useRecording(
         call,
@@ -194,9 +191,8 @@ const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
         ownProps.call.customParameters.get('integration_id') as string
     )
 
-    const integration = integrationsSelectors.getIntegrationById(integrationId)(
-        state
-    )
+    const integration =
+        integrationsSelectors.getIntegrationById(integrationId)(state)
 
     return {
         isRecording: state.twilio.isRecording,

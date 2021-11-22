@@ -65,7 +65,8 @@ describe('FallbackWorker', () => {
         it('should not increase the reconnect backoff time above the max', () => {
             fallbackWorker.onConnect()
 
-            fallbackWorker.incrementalReconnectBackoff = MAX_INCREMENTAL_RECONNECT_BACKOFF
+            fallbackWorker.incrementalReconnectBackoff =
+                MAX_INCREMENTAL_RECONNECT_BACKOFF
 
             fallbackWorker.incrementalReconnect()
 
@@ -109,7 +110,8 @@ describe('FallbackWorker', () => {
                     jest.fn(),
                     1000
                 )
-                fallbackWorker.incrementalReconnectBackoff = MAX_INCREMENTAL_RECONNECT_BACKOFF
+                fallbackWorker.incrementalReconnectBackoff =
+                    MAX_INCREMENTAL_RECONNECT_BACKOFF
 
                 fallbackWorker._onSocketConnect()
 

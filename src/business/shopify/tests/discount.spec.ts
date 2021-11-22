@@ -70,10 +70,9 @@ describe('refreshAppliedDiscounts()', () => {
 
     it('should work without rounding errors', () => {
         // Payload has a 100% discount applied
-        const payload = (fromJS(shopifyDraftOrderPayloadFixture()) as Map<
-            any,
-            any
-        >).set(
+        const payload = (
+            fromJS(shopifyDraftOrderPayloadFixture()) as Map<any, any>
+        ).set(
             'line_items',
             fromJS([
                 shopifyLineItemFixture({price: '98.99'}),
@@ -115,10 +114,9 @@ describe('refreshAppliedDiscounts()', () => {
                     appliedDiscount,
                 })
             )
-            const payload = (fromJS(shopifyDraftOrderPayloadFixture()) as Map<
-                any,
-                any
-            >)
+            const payload = (
+                fromJS(shopifyDraftOrderPayloadFixture()) as Map<any, any>
+            )
                 .set('applied_discount', null)
                 .set('line_items', fromJS([lineItem]))
 
@@ -162,10 +160,9 @@ describe('refreshAppliedDiscounts()', () => {
                     appliedDiscount,
                 })
             )
-            const payload = (fromJS(shopifyDraftOrderPayloadFixture()) as Map<
-                any,
-                any
-            >)
+            const payload = (
+                fromJS(shopifyDraftOrderPayloadFixture()) as Map<any, any>
+            )
                 .set('applied_discount', null)
                 .set('line_items', fromJS([lineItem]))
                 .set('currency', 'JPY')

@@ -155,8 +155,8 @@ export class EmailIntegrationCreateVerification extends Component<
                                 color="success"
                                 disabled={this.state.isDisabled}
                                 className={classNames({
-                                    'btn-loading': this.state
-                                        .isVerificationLoading,
+                                    'btn-loading':
+                                        this.state.isVerificationLoading,
                                 })}
                             >
                                 Verify your integration

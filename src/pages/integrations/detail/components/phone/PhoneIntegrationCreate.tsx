@@ -119,7 +119,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                         ? parseInt(areaCode.split('-').pop() as string)
                         : parseInt(areaCode)
 
-                await ((actions.updateOrCreateIntegration(
+                await (actions.updateOrCreateIntegration(
                     fromJS({
                         type: IntegrationType.Phone,
                         name: title,
@@ -139,7 +139,8 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                                 voice_message_type:
                                     VoiceMessageType.TextToSpeech,
                                 voice_recording_file_path: null,
-                                text_to_speech_content: DEFAULT_TEXT_TO_SPEECH_CONTENT,
+                                text_to_speech_content:
+                                    DEFAULT_TEXT_TO_SPEECH_CONTENT,
                                 allow_to_leave_voicemail: true,
                             },
                             greeting_message: {
@@ -149,7 +150,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                             },
                         },
                     })
-                ) as unknown) as Promise<any>)
+                ) as unknown as Promise<any>)
             } catch (error) {
                 setError(error)
             } finally {

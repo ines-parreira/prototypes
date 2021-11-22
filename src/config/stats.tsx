@@ -3,7 +3,7 @@ import {fromJS, Map, List} from 'immutable'
 import moment from 'moment'
 import _merge from 'lodash/merge'
 import _isString from 'lodash/isString'
-import {defaults} from 'react-chartjs-2'
+
 import {ChartType, Scale, TooltipItem} from 'chart.js'
 
 import {TicketChannel} from '../business/types/ticket'
@@ -20,6 +20,8 @@ import TicketsCreatedPerChannelViewLink from '../pages/stats/common/TicketsCreat
 import {AutomationAddOnStatsButton} from '../pages/stats/AutomationAddOnStatsButton'
 
 import css from './stats.less'
+
+import {defaults} from 'react-chartjs-2'
 
 // Available Stats. These names should match names in `g/stats/config`
 export const OVERVIEW = 'overview'
@@ -668,34 +670,32 @@ export const stats = toImmutable<
             if (!data) {
                 return data
             }
-            const openTicketsIndex = (data.getIn(['axes', 'x']) as List<
-                any
-            >).findIndex((x: Map<any, any>) => x.get('name') === 'Open tickets')
-            const ticketsDetailsIndex = (data.getIn(['axes', 'x']) as List<
-                any
-            >).findIndex(
+            const openTicketsIndex = (
+                data.getIn(['axes', 'x']) as List<any>
+            ).findIndex((x: Map<any, any>) => x.get('name') === 'Open tickets')
+            const ticketsDetailsIndex = (
+                data.getIn(['axes', 'x']) as List<any>
+            ).findIndex(
                 (x: Map<any, any>) =>
                     x.get('name') === 'Open tickets per channel'
             )
-            const onlineTimeIndex = (data.getIn(['axes', 'x']) as List<
-                any
-            >).findIndex((x: Map<any, any>) => x.get('name') === 'Online time')
-            const agentTimezoneIndex = (data.getIn(['axes', 'x']) as List<
-                any
-            >).findIndex(
+            const onlineTimeIndex = (
+                data.getIn(['axes', 'x']) as List<any>
+            ).findIndex((x: Map<any, any>) => x.get('name') === 'Online time')
+            const agentTimezoneIndex = (
+                data.getIn(['axes', 'x']) as List<any>
+            ).findIndex(
                 (x: Map<any, any>) => x.get('name') === 'Agent timezone'
             )
-            const onlineIndex = (data.getIn(['axes', 'x']) as List<
-                any
-            >).findIndex((x: Map<any, any>) => x.get('name') === 'Online')
-            const firstSessionIndex = (data.getIn(['axes', 'x']) as List<
-                any
-            >).findIndex(
-                (x: Map<any, any>) => x.get('name') === 'First Session'
-            )
-            const lastSessionIndex = (data.getIn(['axes', 'x']) as List<
-                any
-            >).findIndex((x: Map<any, any>) => x.get('name') === 'Last Session')
+            const onlineIndex = (
+                data.getIn(['axes', 'x']) as List<any>
+            ).findIndex((x: Map<any, any>) => x.get('name') === 'Online')
+            const firstSessionIndex = (
+                data.getIn(['axes', 'x']) as List<any>
+            ).findIndex((x: Map<any, any>) => x.get('name') === 'First Session')
+            const lastSessionIndex = (
+                data.getIn(['axes', 'x']) as List<any>
+            ).findIndex((x: Map<any, any>) => x.get('name') === 'Last Session')
 
             return data
                 .setIn(

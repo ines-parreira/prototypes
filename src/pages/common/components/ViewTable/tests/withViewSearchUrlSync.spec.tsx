@@ -51,13 +51,13 @@ const createLocation = ({
     } as Location<any>
 }
 
-const defaultProps = ({
+const defaultProps = {
     config: viewsConfig.getConfigByName('ticket'),
     isSearch: true,
     activeView: searchView(''),
     updateView: jest.fn(),
     areFiltersValid: true,
-} as unknown) as Omit<ViewSearchUrlSyncInjectedProps, 'urlSearchView'> & {
+} as unknown as Omit<ViewSearchUrlSyncInjectedProps, 'urlSearchView'> & {
     isSearch: boolean
 }
 
@@ -68,9 +68,9 @@ jest.mock('../../../../history')
 beforeEach(() => {
     jest.clearAllMocks()
     mockedUseLocation.mockReturnValue(createLocation())
-    ;(history.push as jest.MockedFunction<
-        typeof history.push
-    >).mockImplementation(_noop)
+    ;(
+        history.push as jest.MockedFunction<typeof history.push>
+    ).mockImplementation(_noop)
 })
 
 describe('withViewSearchUrlSync', () => {

@@ -146,9 +146,9 @@ export class Shipments extends Component<{
         ]) as string
 
         return shipments.map((shipment: Map<any, any>) => {
-            const lastTrack = (shipment.get('tracks', fromJS([])) as List<
-                any
-            >).maxBy(
+            const lastTrack = (
+                shipment.get('tracks', fromJS([])) as List<any>
+            ).maxBy(
                 (track: Map<any, any>) => track.get('updated_at') as string
             ) as Map<any, any>
 

@@ -85,9 +85,11 @@ class Error extends Component<Props, State> {
         }
 
         const status = message.getIn(['_internal', 'status']) as string
-        return ((actions.newMessage.retrySubmitTicketMessage(
-            message
-        ) as unknown) as Promise<any>).then(() => {
+        return (
+            actions.newMessage.retrySubmitTicketMessage(
+                message
+            ) as unknown as Promise<any>
+        ).then(() => {
             if (status && setStatus) {
                 return setStatus(status)
             }

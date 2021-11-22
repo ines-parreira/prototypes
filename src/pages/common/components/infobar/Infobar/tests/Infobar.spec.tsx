@@ -16,29 +16,34 @@ import {WidgetContextType} from '../../../../../../state/widgets/types'
 
 jest.mock(
     '../../../Search.tsx',
-    () => ({onChange, ...other}: ComponentProps<typeof Search>) => (
-        <input
-            data-testid="Search"
-            {...other}
-            onChange={(e) => onChange(e.target.value)}
-        />
-    )
+    () =>
+        ({onChange, ...other}: ComponentProps<typeof Search>) =>
+            (
+                <input
+                    data-testid="Search"
+                    {...other}
+                    onChange={(e) => onChange(e.target.value)}
+                />
+            )
 )
 
 jest.mock(
     '../InfobarCustomerInfo/InfobarCustomerInfo.tsx',
-    () => ({customer}: ComponentProps<typeof InfobarCustomerInfo>) => (
-        <div data-testid="InfobarCustomerInfo">
-            InfobarCustomerInfo<div>customer: {JSON.stringify(customer)}</div>
-        </div>
-    )
+    () =>
+        ({customer}: ComponentProps<typeof InfobarCustomerInfo>) =>
+            (
+                <div data-testid="InfobarCustomerInfo">
+                    InfobarCustomerInfo
+                    <div>customer: {JSON.stringify(customer)}</div>
+                </div>
+            )
 )
 
 jest.mock(
     '../../InfobarLayout',
-    () => ({children}: ComponentProps<typeof InfobarLayout>) => (
-        <div data-testid="InfobarLayout">{children}</div>
-    )
+    () =>
+        ({children}: ComponentProps<typeof InfobarLayout>) =>
+            <div data-testid="InfobarLayout">{children}</div>
 )
 
 jest.mock('../../../MergeCustomers/MergeCustomersContainer', () => () => (
@@ -49,26 +54,28 @@ const mockCustomer = fromJS({id: 7})
 
 jest.mock(
     '../InfobarSearchResultsList',
-    () => ({
-        errorMessage,
-        defaultCustomerId,
-        onCustomerClick,
-        searchResults,
-    }: ComponentProps<typeof InfobarSearchResultsList>) => (
-        <div
-            data-testid="InfobarSearchResultsList"
-            onClick={() => {
-                void onCustomerClick(mockCustomer)
-            }}
-        >
-            <div>errorMessage: {errorMessage}</div>
-            <div>defaultCustomerId: {defaultCustomerId}</div>
-            <div>searchResults: {JSON.stringify(searchResults)}</div>
-        </div>
-    )
+    () =>
+        ({
+            errorMessage,
+            defaultCustomerId,
+            onCustomerClick,
+            searchResults,
+        }: ComponentProps<typeof InfobarSearchResultsList>) =>
+            (
+                <div
+                    data-testid="InfobarSearchResultsList"
+                    onClick={() => {
+                        void onCustomerClick(mockCustomer)
+                    }}
+                >
+                    <div>errorMessage: {errorMessage}</div>
+                    <div>defaultCustomerId: {defaultCustomerId}</div>
+                    <div>searchResults: {JSON.stringify(searchResults)}</div>
+                </div>
+            )
 )
 
-const commonProps = ({
+const commonProps = {
     actions: {
         fetchPreviewCustomer: jest.fn(() => Promise.resolve({resp: {}})),
         widgets: {
@@ -121,7 +128,7 @@ const commonProps = ({
             hasFetchedWidgets: true,
         },
     }),
-} as unknown) as ComponentProps<typeof Infobar>
+} as unknown as ComponentProps<typeof Infobar>
 
 describe('<Infobar/>', () => {
     beforeEach(() => {

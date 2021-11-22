@@ -322,7 +322,8 @@ export default class YourProfileView extends Component<Props, State> {
                                         onChange={(picture_url: string) =>
                                             this.setState(
                                                 {
-                                                    profilePictureUrl: picture_url,
+                                                    profilePictureUrl:
+                                                        picture_url,
                                                 },
                                                 () => {
                                                     void this._saveProfilePicture()
@@ -342,7 +343,8 @@ export default class YourProfileView extends Component<Props, State> {
                                                 e.preventDefault()
                                                 this.setState(
                                                     {
-                                                        profilePictureUrl: undefined,
+                                                        profilePictureUrl:
+                                                            undefined,
                                                     },
                                                     () => {
                                                         void this._saveProfilePicture()
@@ -387,10 +389,11 @@ export default class YourProfileView extends Component<Props, State> {
                                         )}
                                         onChange={(value: boolean) =>
                                             this.setState({
-                                                preferences: this.state.preferences.set(
-                                                    'show_macros',
-                                                    value
-                                                ),
+                                                preferences:
+                                                    this.state.preferences.set(
+                                                        'show_macros',
+                                                        value
+                                                    ),
                                             })
                                         }
                                     />
@@ -406,10 +409,11 @@ export default class YourProfileView extends Component<Props, State> {
                                         )}
                                         onChange={(value: boolean) =>
                                             this.setState({
-                                                preferences: this.state.preferences.set(
-                                                    'show_macros_suggestions',
-                                                    value
-                                                ),
+                                                preferences:
+                                                    this.state.preferences.set(
+                                                        'show_macros_suggestions',
+                                                        value
+                                                    ),
                                             })
                                         }
                                     />
@@ -435,10 +439,11 @@ export default class YourProfileView extends Component<Props, State> {
                                         }
                                         onChange={(value: boolean) => {
                                             this.setState({
-                                                preferences: this.state.preferences.set(
-                                                    'forward_calls',
-                                                    value
-                                                ),
+                                                preferences:
+                                                    this.state.preferences.set(
+                                                        'forward_calls',
+                                                        value
+                                                    ),
                                             })
                                         }}
                                     />
@@ -458,12 +463,14 @@ export default class YourProfileView extends Component<Props, State> {
                                                             value: string
                                                         ) => {
                                                             this.setState({
-                                                                preferences: this.state.preferences.set(
-                                                                    'forwarding_phone_number',
-                                                                    value === ''
-                                                                        ? null
-                                                                        : value
-                                                                ),
+                                                                preferences:
+                                                                    this.state.preferences.set(
+                                                                        'forwarding_phone_number',
+                                                                        value ===
+                                                                            ''
+                                                                            ? null
+                                                                            : value
+                                                                    ),
                                                             })
                                                         }}
                                                         allowedCountries={Object.values(
@@ -481,8 +488,8 @@ export default class YourProfileView extends Component<Props, State> {
                                         type="submit"
                                         color="success"
                                         className={classnames({
-                                            'btn-loading': this.state
-                                                .loadingPreferences,
+                                            'btn-loading':
+                                                this.state.loadingPreferences,
                                         })}
                                         disabled={this.state.loadingPreferences}
                                     >

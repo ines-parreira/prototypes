@@ -46,11 +46,10 @@ export class ViewFilters extends React.Component<Props> {
             return <p className="text-muted mt-2">No filters selected</p>
         }
 
-        const exp: LogicalExpression = (((view.get('filters_ast') as Map<
-            any,
-            any
-        >).toJS() as Program).body[0] as ExpressionStatement)
-            .expression as LogicalExpression
+        const exp: LogicalExpression = (
+            ((view.get('filters_ast') as Map<any, any>).toJS() as Program)
+                .body[0] as ExpressionStatement
+        ).expression as LogicalExpression
         // counting call expressions so we can delete them later
         let callExprCounter = 0
         const walk = (node: Expression, parentNode?: LogicalExpression) => {

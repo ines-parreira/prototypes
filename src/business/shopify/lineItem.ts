@@ -23,9 +23,9 @@ export function initLineItemAppliedDiscount(
     )
 
     let discountApplicationIndex: Maybe<number> = -1
-    const discountApplication = (order.get('discount_applications', []) as List<
-        any
-    >).find((discountApplication: Map<any, any>, index) => {
+    const discountApplication = (
+        order.get('discount_applications', []) as List<any>
+    ).find((discountApplication: Map<any, any>, index) => {
         const found =
             indexes.includes(index as number) &&
             discountApplication.get('target_selection') === 'explicit' &&
@@ -42,10 +42,9 @@ export function initLineItemAppliedDiscount(
         return null
     }
 
-    const discountAllocation = (lineItem.get(
-        'discount_allocations',
-        []
-    ) as List<any>).find(
+    const discountAllocation = (
+        lineItem.get('discount_allocations', []) as List<any>
+    ).find(
         (discountAllocation: Map<any, any>) =>
             discountAllocation.get('discount_application_index') ===
             discountApplicationIndex

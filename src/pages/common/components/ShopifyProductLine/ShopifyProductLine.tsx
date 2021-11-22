@@ -75,10 +75,8 @@ export default function ShopifyProductLine({
         Array<IntegrationDataItem<Product>> | Array<Variant>
     >([])
 
-    const [
-        clickedResult,
-        setClickedResult,
-    ] = useState<null | IntegrationDataItem<Product>>(null)
+    const [clickedResult, setClickedResult] =
+        useState<null | IntegrationDataItem<Product>>(null)
 
     const fetchResults = useCallback(async () => {
         try {
@@ -148,9 +146,9 @@ export default function ShopifyProductLine({
             if (result.title && fullProductTitle)
                 fullProductTitle = fullProductTitle.concat('-', result.title)
             else fullProductTitle = result.title
-            const pickedOptions = (['option1', 'option2', 'option3'] as Array<
-                keyof Variant
-            >).map((key) => {
+            const pickedOptions = (
+                ['option1', 'option2', 'option3'] as Array<keyof Variant>
+            ).map((key) => {
                 if (result[key]) return result[key]
             })
 

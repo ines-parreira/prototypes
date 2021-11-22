@@ -75,17 +75,19 @@ import HelpCenterPaywall from './settings/helpCenter/components/Paywalls/HelpCen
 
 const assetsURL = window.GORGIAS_ASSETS_URL || ''
 
-const appRender = (props: {
-    navbar: ComponentType<any>
-    content: ComponentType<any>
-    infobar?: ComponentType<any>
-    containerPadding?: boolean
-    infobarOnMobile?: boolean
-    noContainerWidthLimit?: boolean
-    isEditingWidgets?: boolean
-}) => (routeProps: RouteComponentProps) => {
-    return <App {...routeProps} {...props} />
-}
+const appRender =
+    (props: {
+        navbar: ComponentType<any>
+        content: ComponentType<any>
+        infobar?: ComponentType<any>
+        containerPadding?: boolean
+        infobarOnMobile?: boolean
+        noContainerWidthLimit?: boolean
+        isEditingWidgets?: boolean
+    }) =>
+    (routeProps: RouteComponentProps) => {
+        return <App {...routeProps} {...props} />
+    }
 
 export default function Routes() {
     return (

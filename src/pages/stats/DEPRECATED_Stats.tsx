@@ -62,12 +62,8 @@ export class StatsContainer extends React.Component<Props> {
     handleFetchStatsDebounced = _debounce(this.handleFetchStats, 1000)
 
     _fetchStat = (statName: string, filters: Map<any, any>) => {
-        const {
-            notify,
-            statFetched,
-            fetchStatEnded,
-            fetchStatStarted,
-        } = this.props
+        const {notify, statFetched, fetchStatEnded, fetchStatStarted} =
+            this.props
         const statConfig = statsConfig.get(statName)
         let resourceNames = fromJS([statName]) as List<any>
         if (statConfig.get('style') === 'key-metrics') {

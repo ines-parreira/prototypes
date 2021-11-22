@@ -29,9 +29,11 @@ describe('<ImportZendeskCreate/>', () => {
         it('without any errors and disabled creation button', () => {
             const {getByText} = renderComponent(defaultProps)
             expect(
-                (getByText('Start import').closest(
-                    'button'
-                ) as HTMLButtonElement).disabled
+                (
+                    getByText('Start import').closest(
+                        'button'
+                    ) as HTMLButtonElement
+                ).disabled
             ).toEqual(true)
         })
 
@@ -43,16 +45,17 @@ describe('<ImportZendeskCreate/>', () => {
 
             expect(getByText('This domain was already imported.')).toBeDefined()
             expect(
-                (getByText('Start import').closest(
-                    'button'
-                ) as HTMLButtonElement).disabled
+                (
+                    getByText('Start import').closest(
+                        'button'
+                    ) as HTMLButtonElement
+                ).disabled
             ).toEqual(true)
         })
 
         it('submit the form to create integration', () => {
-            const {getByLabelText, getByText, container} = renderComponent(
-                defaultProps
-            )
+            const {getByLabelText, getByText, container} =
+                renderComponent(defaultProps)
             const domain = 'gorgias'
             const apiKey = '123456'
             const email = 'gorgias+test@gorgias.com'
@@ -74,9 +77,11 @@ describe('<ImportZendeskCreate/>', () => {
             })
 
             expect(
-                (getByText('Start import').closest(
-                    'button'
-                ) as HTMLButtonElement).disabled
+                (
+                    getByText('Start import').closest(
+                        'button'
+                    ) as HTMLButtonElement
+                ).disabled
             ).toEqual(false)
 
             fireEvent.click(getByText('Start import'))

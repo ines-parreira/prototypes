@@ -45,21 +45,19 @@ const BillingUsage = () => {
     const currentPlan = useSelector(getPlan(currentSubscription.get('plan')))
     const currentUsage = useSelector(getCurrentUsage)
 
-    const [
-        {loading: isLoading},
-        handleCurrentUsageFetch,
-    ] = useAsyncFn(async () => {
-        try {
-            await dispatch(fetchCurrentUsage())
-        } catch (error) {
-            void dispatch(
-                notify({
-                    message: 'Failed to fetch current usage',
-                    status: NotificationStatus.Error,
-                })
-            )
-        }
-    }, [])
+    const [{loading: isLoading}, handleCurrentUsageFetch] =
+        useAsyncFn(async () => {
+            try {
+                await dispatch(fetchCurrentUsage())
+            } catch (error) {
+                void dispatch(
+                    notify({
+                        message: 'Failed to fetch current usage',
+                        status: NotificationStatus.Error,
+                    })
+                )
+            }
+        }, [])
 
     useEffect(() => {
         void handleCurrentUsageFetch()

@@ -127,9 +127,9 @@ export default class Search extends Component<Props> {
             onKeyDown(e)
         }
         if (e.key === 'Escape' && this.searchInputRef) {
-            ;(ReactDOM.findDOMNode(
-                this.searchInputRef
-            ) as HTMLInputElement).blur()
+            ;(
+                ReactDOM.findDOMNode(this.searchInputRef) as HTMLInputElement
+            ).blur()
         }
     }
 

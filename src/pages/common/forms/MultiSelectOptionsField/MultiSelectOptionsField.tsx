@@ -179,12 +179,8 @@ export default class MultiSelectOptionsField extends Component<Props, State> {
     }
 
     _onDropdownSelect = (option: Option) => {
-        const {
-            allowCustomOptions,
-            options,
-            caseInsensitive,
-            selectedOptions,
-        } = this.props
+        const {allowCustomOptions, options, caseInsensitive, selectedOptions} =
+            this.props
 
         if (option.isDeprecated) {
             return

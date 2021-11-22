@@ -71,9 +71,9 @@ describe('Config: views', () => {
             })
 
             it('view fields structure', () => {
-                const fields = (viewConfig.get('fields') as List<
-                    any
-                >).toJS() as Record<string, unknown>[]
+                const fields = (
+                    viewConfig.get('fields') as List<any>
+                ).toJS() as Record<string, unknown>[]
 
                 fields.forEach((field) => {
                     expect(_isObject(field)).toBe(true)
@@ -126,10 +126,9 @@ describe('Config: views', () => {
             })
 
             it('newView', () => {
-                const newView = (viewConfig.get('newView') as () => Map<
-                    any,
-                    any
-                >)().toJS() as View
+                const newView = (
+                    viewConfig.get('newView') as () => Map<any, any>
+                )().toJS() as View
 
                 expect(newView).toHaveProperty('id', 0)
                 expect(newView).toHaveProperty('name')
@@ -150,10 +149,12 @@ describe('Config: views', () => {
             it('searchView', () => {
                 const term = 'term'
                 const filters = 'eq("ticket.channel", "chat")'
-                const searchView = (viewConfig.get('searchView') as (
-                    term: string,
-                    filters?: string
-                ) => Map<any, any>)(term, filters).toJS()
+                const searchView = (
+                    viewConfig.get('searchView') as (
+                        term: string,
+                        filters?: string
+                    ) => Map<any, any>
+                )(term, filters).toJS()
 
                 expect(searchView).toHaveProperty('id', 0)
                 expect(searchView).toHaveProperty('name')

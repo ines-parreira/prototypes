@@ -125,12 +125,9 @@ export class FileFieldContainer extends InputField<Props, State> {
             },
             (error) => {
                 this.setState({isUploading: false})
-                const errorMessage = (fromJS(
-                    (error as AxiosError).response
-                ) as Map<any, any>).getIn(
-                    ['data', 'error', 'msg'],
-                    DEFAULT_ERROR
-                )
+                const errorMessage = (
+                    fromJS((error as AxiosError).response) as Map<any, any>
+                ).getIn(['data', 'error', 'msg'], DEFAULT_ERROR)
 
                 if ((error as AxiosError).response?.status === 413) {
                     return this.props.notify({

@@ -85,9 +85,11 @@ describe('ViewTable::Header', () => {
 
         it('should update search of the active view and not fetch view items on search input change', () => {
             const searchTerm = 'term1'
-            const searchOnChange = (component.find(Search).props() as {
-                onChange: (search: string) => void
-            }).onChange
+            const searchOnChange = (
+                component.find(Search).props() as {
+                    onChange: (search: string) => void
+                }
+            ).onChange
             searchOnChange(searchTerm)
             expect(minProps.updateView).toHaveBeenLastCalledWith(
                 (fromJS(fixtureView) as Map<any, any>).set(
@@ -134,17 +136,17 @@ describe('ViewTable::Header', () => {
         })
 
         it('update view name', () => {
-            ;(component.instance() as InstanceType<
-                typeof HeaderContainer
-            >)._updateViewName('new name')
+            ;(
+                component.instance() as InstanceType<typeof HeaderContainer>
+            )._updateViewName('new name')
             expect(minProps.updateView).toBeCalled()
         })
 
         it('toggle delete confirmation', () => {
             expect(component.state('askDeleteConfirmation')).toBe(false)
-            ;(component.instance() as InstanceType<
-                typeof HeaderContainer
-            >)._toggleDeleteConfirmation()
+            ;(
+                component.instance() as InstanceType<typeof HeaderContainer>
+            )._toggleDeleteConfirmation()
             expect(component.state('askDeleteConfirmation')).toBe(true)
         })
     })
@@ -215,9 +217,11 @@ describe('ViewTable::Header', () => {
                         activeView={activeView}
                     />
                 )
-                ;(component.find(EmojiSelect).props() as {
-                    onEmojiSelect: (emoji: string) => void
-                }).onEmojiSelect(emoji)
+                ;(
+                    component.find(EmojiSelect).props() as {
+                        onEmojiSelect: (emoji: string) => void
+                    }
+                ).onEmojiSelect(emoji)
                 const expectedActiveView = activeView.merge({
                     decoration: {emoji},
                 })
@@ -236,9 +240,11 @@ describe('ViewTable::Header', () => {
                         activeView={activeView}
                     />
                 )
-                ;(component.find(EmojiSelect).props() as {
-                    onEmojiSelect: (emoji: string) => void
-                }).onEmojiSelect(emoji)
+                ;(
+                    component.find(EmojiSelect).props() as {
+                        onEmojiSelect: (emoji: string) => void
+                    }
+                ).onEmojiSelect(emoji)
                 const expectedActiveView = activeView.merge({
                     decoration: {
                         ...decoration,
@@ -264,9 +270,11 @@ describe('ViewTable::Header', () => {
                     />
                 )
 
-                ;(component.find(EmojiSelect).props() as {
-                    onEmojiClear: () => void
-                }).onEmojiClear()
+                ;(
+                    component.find(EmojiSelect).props() as {
+                        onEmojiClear: () => void
+                    }
+                ).onEmojiClear()
                 const expectedActiveView = activeView.merge({
                     decoration: {},
                 })
@@ -287,9 +295,11 @@ describe('ViewTable::Header', () => {
                     />
                 )
 
-                ;(component.find(EmojiSelect).props() as {
-                    onEmojiClear: () => void
-                }).onEmojiClear()
+                ;(
+                    component.find(EmojiSelect).props() as {
+                        onEmojiClear: () => void
+                    }
+                ).onEmojiClear()
                 expect(minProps.updateView).not.toHaveBeenCalled()
             })
         })

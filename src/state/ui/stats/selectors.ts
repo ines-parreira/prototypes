@@ -23,9 +23,10 @@ export const getFetchingStatusByName = (statName: string) =>
              */
             if (config.style === 'key-metrics' && !config.api_resource_name) {
                 return config.metrics!.reduce((acc, metric) => {
-                    acc[metric.api_resource_name!] = !!stats.fetchingMap[
-                        `${statName}/${metric.api_resource_name!}`
-                    ]
+                    acc[metric.api_resource_name!] =
+                        !!stats.fetchingMap[
+                            `${statName}/${metric.api_resource_name!}`
+                        ]
 
                     return acc
                 }, {} as {[resourceName: string]: boolean})

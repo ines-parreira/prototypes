@@ -6,7 +6,7 @@ import {rule} from '../../../../../../fixtures/rule'
 import {MemberExpressionContainer} from '../MemberExpression'
 
 describe('<MemberExpression/>', () => {
-    const minProps = ({
+    const minProps = {
         object: {
             loc: {
                 start: {
@@ -98,7 +98,7 @@ describe('<MemberExpression/>', () => {
         },
         parent: fromJS(['body', 0, 'test', 'arguments', 0]),
         hasIntegrationType: () => jest.fn().mockReturnValue(true),
-    } as unknown) as ComponentProps<typeof MemberExpressionContainer>
+    } as unknown as ComponentProps<typeof MemberExpressionContainer>
 
     it('should render', () => {
         const {container} = render(<MemberExpressionContainer {...minProps} />)
@@ -121,9 +121,11 @@ describe('<MemberExpression/>', () => {
         fireEvent.click(getByText('Shopify Last Order'))
         fireEvent.click(getByText('Fulfillment status'))
         expect(
-            (minProps.actions.modifyCodeAST as jest.MockedFunction<
-                typeof minProps.actions.modifyCodeAST
-            >).mock.calls
+            (
+                minProps.actions.modifyCodeAST as jest.MockedFunction<
+                    typeof minProps.actions.modifyCodeAST
+                >
+            ).mock.calls
         ).toMatchSnapshot()
     })
 })

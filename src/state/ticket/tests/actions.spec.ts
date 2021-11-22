@@ -47,8 +47,8 @@ jest.mock('reapop', () => {
 
     return {
         ...reapop,
-        removeNotification: jest.fn(() => (args: Record<string, unknown>) =>
-            args
+        removeNotification: jest.fn(
+            () => (args: Record<string, unknown>) => args
         ),
     } as {
         removeNotification: jest.MockedFunction<
@@ -104,7 +104,7 @@ describe('ticket actions', () => {
         jest.clearAllMocks()
     })
 
-    const ticket = ({
+    const ticket = {
         id: 1,
         subject: 'title',
         messages: [
@@ -119,7 +119,7 @@ describe('ticket actions', () => {
             id: 1,
             data: {hello: 'world!'},
         },
-    } as unknown) as Ticket
+    } as unknown as Ticket
 
     describe('mergeTicket()', () => {
         it('fails because not current ticket', () => {
@@ -219,8 +219,8 @@ describe('ticket actions', () => {
             mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
 
             return store.dispatch(actions.setSpam(true)).then(() => {
-                const button = ((notify as jest.MockedFunction<typeof notify>)
-                    .mock.calls[0][0].buttons?.[0] as unknown) as {
+                const button = (notify as jest.MockedFunction<typeof notify>)
+                    .mock.calls[0][0].buttons?.[0] as unknown as {
                     onClick: () => Promise<void>
                 }
 
@@ -282,8 +282,8 @@ describe('ticket actions', () => {
             mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
 
             return store.dispatch(actions.setTrashed(date)).then(() => {
-                const button = ((notify as jest.MockedFunction<typeof notify>)
-                    .mock.calls[0][0].buttons?.[0] as unknown) as {
+                const button = (notify as jest.MockedFunction<typeof notify>)
+                    .mock.calls[0][0].buttons?.[0] as unknown as {
                     onClick: () => Promise<void>
                 }
 
@@ -545,7 +545,7 @@ describe('ticket actions', () => {
             mockServer
                 .onGet('/api/tickets/1/')
                 .reply(200, {id: 1, messages: []})
-            const json = ({
+            const json = {
                 ticket_id: '1',
                 event: {
                     data: {
@@ -554,7 +554,7 @@ describe('ticket actions', () => {
                         },
                     },
                 },
-            } as unknown) as TicketMessageFailedEvent
+            } as unknown as TicketMessageFailedEvent
             return store
                 .dispatch(actions.handleMessageError(json))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
@@ -565,7 +565,7 @@ describe('ticket actions', () => {
                 .onGet('/api/tickets/2/')
                 .reply(200, {id: 2, messages: []})
 
-            const json = ({
+            const json = {
                 ticket_id: 2,
                 event: {
                     data: {
@@ -574,7 +574,7 @@ describe('ticket actions', () => {
                         },
                     },
                 },
-            } as unknown) as TicketMessageFailedEvent
+            } as unknown as TicketMessageFailedEvent
 
             return store
                 .dispatch(actions.handleMessageError(json))

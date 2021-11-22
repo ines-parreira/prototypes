@@ -353,7 +353,7 @@ describe('ticket utils', () => {
     describe('receiversStateFromValue()', () => {
         expect(
             receiversStateFromValue(
-                (receiversValueExample as unknown) as ReceiversValue,
+                receiversValueExample as unknown as ReceiversValue,
                 TicketMessageSourceType.Email
             )
         ).toEqual(receiversStateExample)
@@ -585,9 +585,9 @@ describe('ticket utils', () => {
                     },
                 ],
             })
-            const emailIntegrationValue = ((ticket.get('messages') as List<
-                any
-            >).last() as Map<any, any>).getIn(['source', 'from', 'address'])
+            const emailIntegrationValue = (
+                (ticket.get('messages') as List<any>).last() as Map<any, any>
+            ).getIn(['source', 'from', 'address'])
 
             const expected = fromJS(
                 channels.find(

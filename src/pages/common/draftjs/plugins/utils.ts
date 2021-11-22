@@ -27,10 +27,9 @@ const uploadPicture = (file: File) => {
     return uploadFiles([file])
         .then((files) => files[0])
         .catch((error) => {
-            let errorMessage = (fromJS((error as AxiosError).response) as Map<
-                any,
-                any
-            >).getIn(['data', 'error', 'msg'])
+            let errorMessage = (
+                fromJS((error as AxiosError).response) as Map<any, any>
+            ).getIn(['data', 'error', 'msg'])
 
             if (!errorMessage) {
                 errorMessage =
@@ -99,9 +98,9 @@ export const insertInlineImages = (
 ) => {
     // don't exceed maximum attachment file size
     const editorState = getEditorState()
-    const attachments = (_get(getProps(), 'attachments', fromJS([])) as List<
-        any
-    >).toJS()
+    const attachments = (
+        _get(getProps(), 'attachments', fromJS([])) as List<any>
+    ).toJS()
     const maxSize = getMaxAttachmentSize(editorState, attachments)
     const currentSize = files.reduce((sum, file) => sum + (file.size || 0), 0)
 

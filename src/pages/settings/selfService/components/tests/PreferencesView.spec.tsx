@@ -20,9 +20,10 @@ import {basicPlan} from '../../../../../fixtures/subscriptionPlan'
 import {getEquivalentAutomationPlanId} from '../../../../../models/billing/utils'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-const updateSelfServiceConfigurationMock = updateSelfServiceConfiguration as jest.MockedFunction<
-    typeof updateSelfServiceConfiguration
->
+const updateSelfServiceConfigurationMock =
+    updateSelfServiceConfiguration as jest.MockedFunction<
+        typeof updateSelfServiceConfiguration
+    >
 const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
 
 jest.mock('../../../../common/components/ToggleButton', () => {
@@ -144,16 +145,17 @@ describe('<SelfServicePreferencesView/>', () => {
                         }),
                         entities: {
                             ...defaultState.entities,
-                            selfServiceConfigurations: selfServiceConfigurations.reduce(
-                                (
-                                    configurations: SelfServiceConfigurationsState,
-                                    configuration: SelfServiceConfiguration
-                                ) => ({
-                                    ...configurations,
-                                    [configuration.id]: configuration,
-                                }),
-                                {} as Partial<SelfServiceConfiguration>
-                            ),
+                            selfServiceConfigurations:
+                                selfServiceConfigurations.reduce(
+                                    (
+                                        configurations: SelfServiceConfigurationsState,
+                                        configuration: SelfServiceConfiguration
+                                    ) => ({
+                                        ...configurations,
+                                        [configuration.id]: configuration,
+                                    }),
+                                    {} as Partial<SelfServiceConfiguration>
+                                ),
                         },
                     })}
                 >
@@ -185,16 +187,17 @@ describe('<SelfServicePreferencesView/>', () => {
                         }),
                         entities: {
                             ...defaultState.entities,
-                            selfServiceConfigurations: selfServiceConfigurations.reduce(
-                                (
-                                    configurations: SelfServiceConfigurationsState,
-                                    configuration: SelfServiceConfiguration
-                                ) => ({
-                                    ...configurations,
-                                    [configuration.id]: configuration,
-                                }),
-                                {} as Partial<SelfServiceConfiguration>
-                            ),
+                            selfServiceConfigurations:
+                                selfServiceConfigurations.reduce(
+                                    (
+                                        configurations: SelfServiceConfigurationsState,
+                                        configuration: SelfServiceConfiguration
+                                    ) => ({
+                                        ...configurations,
+                                        [configuration.id]: configuration,
+                                    }),
+                                    {} as Partial<SelfServiceConfiguration>
+                                ),
                         },
                     })}
                 >

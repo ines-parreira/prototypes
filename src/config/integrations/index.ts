@@ -22,7 +22,8 @@ export const CHAT_AUTO_RESPONDER_REPLY_SHORTLY = 'reply-shortly'
 export const CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES = 'reply-in-minutes'
 export const CHAT_AUTO_RESPONDER_REPLY_IN_HOURS = 'reply-in-hours'
 export const CHAT_AUTO_RESPONDER_REPLY_IN_DAY = 'reply-in-day'
-export const CHAT_AUTO_RESPONDER_REPLY_DEFAULT = CHAT_AUTO_RESPONDER_REPLY_SHORTLY
+export const CHAT_AUTO_RESPONDER_REPLY_DEFAULT =
+    CHAT_AUTO_RESPONDER_REPLY_SHORTLY
 export const CHAT_AUTO_RESPONDER_ENABLED_DEFAULT = false
 export const CHAT_AUTO_RESPONDER_REPLY_OPTIONS = [
     CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
@@ -83,7 +84,8 @@ const getIntegrationTypesWithVariables = () => {
     return integrationTypesWithVariables
 }
 
-export const INTEGRATION_TYPE_WITH_VARIABLES = getIntegrationTypesWithVariables()
+export const INTEGRATION_TYPE_WITH_VARIABLES =
+    getIntegrationTypesWithVariables()
 
 export const getAutoResponderReplyOptions = (language: string | null) => {
     if (!language) {

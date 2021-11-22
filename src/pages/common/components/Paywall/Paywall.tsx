@@ -248,7 +248,8 @@ const Paywall = ({feature, paywallConfigs = defaultPaywallConfigs}: Props) => {
                                                     : `Upgrade to ${requiredPlanName}`
                                             }
                                             state={{
-                                                openedPlanModal: requiredPlanName,
+                                                openedPlanModal:
+                                                    requiredPlanName,
                                             }}
                                         />
                                     </div>

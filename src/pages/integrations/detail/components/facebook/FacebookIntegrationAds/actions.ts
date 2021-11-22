@@ -27,29 +27,27 @@ export const fetchAds = () => async (dispatch: StoreDispatch) => {
     }
 }
 
-export const updateAd = (
-    integrationId: number,
-    adId: string,
-    isActive: boolean
-) => async (dispatch: StoreDispatch) => {
-    try {
-        dispatch(addFacebookAdsLoadingAd(adId))
+export const updateAd =
+    (integrationId: number, adId: string, isActive: boolean) =>
+    async (dispatch: StoreDispatch) => {
+        try {
+            dispatch(addFacebookAdsLoadingAd(adId))
 
-        await client.put('/integrations/facebook/fads/fad/activate/', {
-            integration_id: integrationId,
-            ad_id: adId,
-            is_active: isActive,
-        })
-
-        dispatch(updateFacebookAdsActiveAd(integrationId, adId, isActive))
-    } catch (e) {
-        void dispatch(
-            notify({
-                status: NotificationStatus.Error,
-                title: (e as {message: string}).message,
+            await client.put('/integrations/facebook/fads/fad/activate/', {
+                integration_id: integrationId,
+                ad_id: adId,
+                is_active: isActive,
             })
-        )
-    } finally {
-        dispatch(removeFacebookAdsLoadingAd(adId))
+
+            dispatch(updateFacebookAdsActiveAd(integrationId, adId, isActive))
+        } catch (e) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    title: (e as {message: string}).message,
+                })
+            )
+        } finally {
+            dispatch(removeFacebookAdsLoadingAd(adId))
+        }
     }
-}

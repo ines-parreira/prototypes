@@ -8,13 +8,14 @@ const errorSpy = jest.spyOn(global.console, 'error')
 
 jest.mock(
     '../../../../../common/forms/DatePicker',
-    () => (props: React.ComponentProps<typeof DatePicker>) => (
-        <div className="DatePicker">
-            {Object.entries(props).map(
-                ([key, value]) => `${key}: ${JSON.stringify(value)}`
-            )}
-        </div>
-    )
+    () => (props: React.ComponentProps<typeof DatePicker>) =>
+        (
+            <div className="DatePicker">
+                {Object.entries(props).map(
+                    ([key, value]) => `${key}: ${JSON.stringify(value)}`
+                )}
+            </div>
+        )
 )
 
 describe('<TicketSnoozePicker/>', () => {
@@ -31,7 +32,7 @@ describe('<TicketSnoozePicker/>', () => {
 
     afterEach(() => {
         jest.clearAllMocks()
-        ;((global.Date.now as unknown) as jest.SpyInstance).mockRestore()
+        ;(global.Date.now as unknown as jest.SpyInstance).mockRestore()
     })
 
     describe('rendering', () => {

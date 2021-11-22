@@ -190,18 +190,18 @@ class SourceWrapper extends Component<Props, State> {
             const typesAlreadyDisplayed: string[] = []
 
             // Make sure we only have one `sourceWidget` per type, except for HTTP
-            widgetsTemplate = (widgetsTemplate.map(
-                (widgetTemplate: Map<any, any>) => {
+            widgetsTemplate = (
+                widgetsTemplate.map((widgetTemplate: Map<any, any>) => {
                     let ret = widgetTemplate
 
                     if (
-                        (widgetTemplate.get('sourcePath') as List<
-                            any
-                        >).includes('integrations')
+                        (
+                            widgetTemplate.get('sourcePath') as List<any>
+                        ).includes('integrations')
                     ) {
-                        const integrationId = (widgetTemplate.get(
-                            'sourcePath'
-                        ) as List<any>).last()
+                        const integrationId = (
+                            widgetTemplate.get('sourcePath') as List<any>
+                        ).last()
 
                         // If the integrationId is not a valid int, something is wrong so we discard the widget
                         if (isNaN(parseInt(integrationId))) {
@@ -232,8 +232,8 @@ class SourceWrapper extends Component<Props, State> {
                     }
 
                     return ret
-                }
-            ) as List<any>).filter((w: Map<any, any>) => !!w) as List<any> // filter out null values
+                }) as List<any>
+            ).filter((w: Map<any, any>) => !!w) as List<any> // filter out null values
 
             return {
                 widgetsTemplate,
@@ -302,8 +302,8 @@ class SourceWrapper extends Component<Props, State> {
                                             )}
                                             editing={{
                                                 isDragging,
-                                                actions: this.props.actions
-                                                    .widgets,
+                                                actions:
+                                                    this.props.actions.widgets,
                                             }}
                                         />
                                     </CardBody>

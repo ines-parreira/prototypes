@@ -47,9 +47,10 @@ export const IntentsFeedbackContainer = ({
     sendIntentFeedbackSuccess,
     allIntents = window.GORGIAS_CONSTANTS.INTENTS,
 }: OwnProps & ConnectedProps<typeof connector>) => {
-    const allIntentsNames: string[] = useMemo(() => Object.keys(allIntents), [
-        allIntents,
-    ])
+    const allIntentsNames: string[] = useMemo(
+        () => Object.keys(allIntents),
+        [allIntents]
+    )
     const {ticket_id: ticketId = 0, id: messageId = 0} = message
     const intents = message.intents!
     const isFirstCuration = useMemo(
@@ -65,13 +66,13 @@ export const IntentsFeedbackContainer = ({
                 .map((intent) => intent.name)
                 .includes(name)
         )
-    const messageIntentNames = useMemo(() => getIntentsFromMessage(intents), [
-        intents,
-    ])
-
-    const [activeIntentsNames, setActiveIntentsNames] = useState<string[]>(
-        messageIntentNames
+    const messageIntentNames = useMemo(
+        () => getIntentsFromMessage(intents),
+        [intents]
     )
+
+    const [activeIntentsNames, setActiveIntentsNames] =
+        useState<string[]>(messageIntentNames)
 
     const [confirmableIntentsNames, setConfirmableIntentsNames] = useState<
         string[]

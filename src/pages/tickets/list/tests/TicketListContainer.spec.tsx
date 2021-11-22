@@ -8,38 +8,40 @@ import {TicketListContainer} from '../TicketListContainer'
 
 jest.mock(
     '../../../common/components/ViewTable/ViewTable',
-    () => ({
-        items,
-        isUpdate,
-        isSearch,
-        urlViewId,
-        ActionsComponent,
-    }: ComponentProps<typeof ViewTable>) => (
-        <div>
-            ViewTable:
-            <div>items: {JSON.stringify(items)}</div>
-            <div>isUpdate: {JSON.stringify(isUpdate)}</div>
-            <div>isSearch: {JSON.stringify(isSearch)}</div>
-            <div>urlViewId: {JSON.stringify(urlViewId)}</div>
-            <div>
-                ActionsComponent:
-                {
-                    //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-                    ActionsComponent.toString()
-                }
-            </div>
-        </div>
-    )
+    () =>
+        ({
+            items,
+            isUpdate,
+            isSearch,
+            urlViewId,
+            ActionsComponent,
+        }: ComponentProps<typeof ViewTable>) =>
+            (
+                <div>
+                    ViewTable:
+                    <div>items: {JSON.stringify(items)}</div>
+                    <div>isUpdate: {JSON.stringify(isUpdate)}</div>
+                    <div>isSearch: {JSON.stringify(isSearch)}</div>
+                    <div>urlViewId: {JSON.stringify(urlViewId)}</div>
+                    <div>
+                        ActionsComponent:
+                        {
+                            //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+                            ActionsComponent.toString()
+                        }
+                    </div>
+                </div>
+            )
 )
 
 describe('<TicketListContainer />', () => {
-    const minProps = ({
+    const minProps = {
         activeView: fromJS(fixtureView),
         fetchTags: jest.fn(),
         hasActiveView: true,
         selectedItemsIds: fromJS([]),
         tickets: fromJS([]),
-    } as unknown) as ComponentProps<typeof TicketListContainer>
+    } as unknown as ComponentProps<typeof TicketListContainer>
 
     it('should display with default props', () => {
         const {container} = renderWithRouter(

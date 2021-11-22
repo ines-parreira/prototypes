@@ -136,19 +136,17 @@ export const TicketDetailContainer = ({
         }
     }, [])
 
-    const [
-        {loading: isGoToPrevOrNextTicketPending},
-        goToPrevOrNextTicket,
-    ] = useAsyncFn(
-        async (direction: 'prev' | 'next') => {
-            const ticketNumber = parseInt(ticketIdParam)
-            clearTicket()
-            return direction === 'prev'
-                ? goToPrevTicket(ticketNumber)
-                : goToNextTicket(ticketNumber)
-        },
-        [ticketIdParam]
-    )
+    const [{loading: isGoToPrevOrNextTicketPending}, goToPrevOrNextTicket] =
+        useAsyncFn(
+            async (direction: 'prev' | 'next') => {
+                const ticketNumber = parseInt(ticketIdParam)
+                clearTicket()
+                return direction === 'prev'
+                    ? goToPrevTicket(ticketNumber)
+                    : goToNextTicket(ticketNumber)
+            },
+            [ticketIdParam]
+        )
 
     const submitNewMessage = async ({
         status,
@@ -156,15 +154,12 @@ export const TicketDetailContainer = ({
         resetMessage = true,
     }: SubmitArgs) => {
         try {
-            const {
-                messageId,
-                messageToSend,
-                replyAreaState,
-            } = await prepareTicketMessage(
-                status,
-                ticket.getIn(['state', 'appliedMacro', 'actions']),
-                resetMessage
-            )
+            const {messageId, messageToSend, replyAreaState} =
+                await prepareTicketMessage(
+                    status,
+                    ticket.getIn(['state', 'appliedMacro', 'actions']),
+                    resetMessage
+                )
 
             if (messageToSend.source.type === 'email') {
                 pendingMessageManager.sendMessage({
@@ -367,9 +362,9 @@ export const TicketDetailContainer = ({
             // to be sure we are not re-setting the same customer as customer of the current ticket, we need to check every channel of the
             // current customer.
             if (customer && !customer.isEmpty()) {
-                ;((customer.get('channels') || fromJS([])) as List<
-                    any
-                >).forEach((channel: Map<any, any>) => {
+                ;(
+                    (customer.get('channels') || fromJS([])) as List<any>
+                ).forEach((channel: Map<any, any>) => {
                     if (
                         channel.get('type') === 'email' &&
                         channel.get('address') === recipient.get('address')

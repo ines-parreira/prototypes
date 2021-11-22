@@ -78,9 +78,7 @@ export const StatsFiltersContainer = ({
         nbPages: 1,
     })
 
-    const [
-        cancellableFetchTags,
-    ] = useCancellableRequest(
+    const [cancellableFetchTags] = useCancellableRequest(
         (cancelToken: CancelToken) => async (options: FetchTagsOptions) =>
             await fetchTags(options, cancelToken)
     )
@@ -206,9 +204,9 @@ export const StatsFiltersContainer = ({
                         plural="scores"
                         singular="score"
                         onChange={handleFilterChange('score')}
-                        value={(filters!.get('score', fromJS([])) as List<
-                            any
-                        >).toJS()}
+                        value={(
+                            filters!.get('score', fromJS([])) as List<any>
+                        ).toJS()}
                     >
                         {scores.map((score) => (
                             <SelectFilter.Item
@@ -233,9 +231,9 @@ export const StatsFiltersContainer = ({
                         plural="channels"
                         singular="channel"
                         onChange={handleFilterChange('channels')}
-                        value={(filters!.get('channels', fromJS([])) as List<
-                            any
-                        >).toJS()}
+                        value={(
+                            filters!.get('channels', fromJS([])) as List<any>
+                        ).toJS()}
                     >
                         {data.map((channel) => (
                             <SelectFilter.Item
@@ -254,9 +252,9 @@ export const StatsFiltersContainer = ({
                         plural="tags"
                         singular="tag"
                         onChange={handleFilterChange('tags')}
-                        value={(filters!.get('tags', fromJS([])) as List<
-                            any
-                        >).toJS()}
+                        value={(
+                            filters!.get('tags', fromJS([])) as List<any>
+                        ).toJS()}
                         onSearch={handleTagsSearch}
                         dropdownMenu={TagDropdownMenuWrapper}
                     >
@@ -290,9 +288,9 @@ export const StatsFiltersContainer = ({
                         plural="agents"
                         singular="agent"
                         onChange={handleFilterChange('agents')}
-                        value={(filters!.get('agents', fromJS([])) as List<
-                            any
-                        >).toJS()}
+                        value={(
+                            filters!.get('agents', fromJS([])) as List<any>
+                        ).toJS()}
                     >
                         <DropdownItem header className={css.dropdownHeader}>
                             Teams
@@ -344,10 +342,12 @@ export const StatsFiltersContainer = ({
                         isMultiple={options.get('isMultiple', true)}
                         isRequired={options.get('isRequired', false)}
                         onChange={handleFilterChange('integrations')}
-                        value={(filters!.get(
-                            'integrations',
-                            fromJS([])
-                        ) as List<any>).toJS()}
+                        value={(
+                            filters!.get(
+                                'integrations',
+                                fromJS([])
+                            ) as List<any>
+                        ).toJS()}
                     >
                         {data.map((integration) => {
                             const icon = [
@@ -445,9 +445,9 @@ export const StatsFiltersContainer = ({
     return (
         <PageHeader title={pageTitle} className="mb-0">
             <div className="d-flex flex-wrap float-right">
-                {(config.get('filters') as List<
-                    any
-                >).map((filter: Map<any, any>) => renderFilterInput(filter))}
+                {(config.get('filters') as List<any>).map(
+                    (filter: Map<any, any>) => renderFilterInput(filter)
+                )}
             </div>
         </PageHeader>
     )
@@ -462,12 +462,12 @@ function getChannels() {
 
 const makeMapStateToProps = () => {
     const getIntegrationsToJS = makeGetPlainJS<Integration[]>(getIntegrations)
-    const getAgentsToJS = makeGetPlainJS<{id: number; label: string}[]>(
-        getLabelledAgents
-    )
-    const getTeamsToJS = makeGetPlainJS<
-        {id: number; label: string; members: string[]}[]
-    >(getLabelledTeams)
+    const getAgentsToJS =
+        makeGetPlainJS<{id: number; label: string}[]>(getLabelledAgents)
+    const getTeamsToJS =
+        makeGetPlainJS<{id: number; label: string; members: string[]}[]>(
+            getLabelledTeams
+        )
 
     return (state: RootState, props: OwnProps) => {
         const view = props.match.params.view

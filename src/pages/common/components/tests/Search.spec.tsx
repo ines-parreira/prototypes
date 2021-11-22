@@ -5,9 +5,10 @@ import ReactDOM from 'react-dom'
 import {Input} from 'reactstrap'
 
 import Search from '../Search'
-const spy = jest.spyOn(ReactDOM, 'findDOMNode') as jest.SpyInstance<
-    HTMLInputElement
->
+const spy = jest.spyOn(
+    ReactDOM,
+    'findDOMNode'
+) as jest.SpyInstance<HTMLInputElement>
 
 describe('Search component', () => {
     beforeEach(() => {
@@ -34,9 +35,9 @@ describe('Search component', () => {
     it('should blur when pressing escape', () => {
         const component = shallow<Search>(<Search onChange={_noop} />)
         const mockBlur = jest.fn()
-        spy.mockReturnValue(({
+        spy.mockReturnValue({
             blur: mockBlur,
-        } as unknown) as HTMLInputElement)
+        } as unknown as HTMLInputElement)
 
         component.instance().searchInputRef = {} as Input
         component.find(Input).simulate('keydown', {key: 'a'})

@@ -279,8 +279,7 @@ describe('<IntegrationDetailContainer />', () => {
         const {container} = renderWithRouter(
             <IntegrationDetailContainer {...minProps} />,
             {
-                path:
-                    '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                 route: `/integrations/${integrationType}`,
             }
         )
@@ -296,8 +295,7 @@ describe('<IntegrationDetailContainer />', () => {
         const {container} = renderWithRouter(
             <IntegrationDetailContainer {...minProps} />,
             {
-                path:
-                    '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                 route: `/integrations/${integrationType}/new`,
             }
         )
@@ -310,8 +308,7 @@ describe('<IntegrationDetailContainer />', () => {
             const {container} = renderWithRouter(
                 <IntegrationDetailContainer {...minProps} />,
                 {
-                    path:
-                        '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${integrationType}/setup`,
                 }
             )
@@ -341,8 +338,7 @@ describe('<IntegrationDetailContainer />', () => {
                     integrations={fromJS({integration: {id: 1}})}
                 />,
                 {
-                    path:
-                        '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${integrationType}/1`,
                 }
             )
@@ -356,8 +352,7 @@ describe('<IntegrationDetailContainer />', () => {
             const {container} = renderWithRouter(
                 <IntegrationDetailContainer {...minProps} />,
                 {
-                    path:
-                        '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${integrationType}/1/${Tab.Installation}`,
                 }
             )
@@ -376,8 +371,7 @@ describe('<IntegrationDetailContainer />', () => {
             const {container} = renderWithRouter(
                 <IntegrationDetailContainer {...minProps} />,
                 {
-                    path:
-                        '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${integrationType}/1/${Tab.Preferences}`,
                 }
             )
@@ -391,8 +385,7 @@ describe('<IntegrationDetailContainer />', () => {
             const {container} = renderWithRouter(
                 <IntegrationDetailContainer {...minProps} />,
                 {
-                    path:
-                        '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${integrationType}/1/${Tab.Campaigns}`,
                 }
             )
@@ -406,8 +399,7 @@ describe('<IntegrationDetailContainer />', () => {
             const {container} = renderWithRouter(
                 <IntegrationDetailContainer {...minProps} />,
                 {
-                    path:
-                        '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${integrationType}/1/${Tab.Campaigns}/1`,
                 }
             )
@@ -421,8 +413,7 @@ describe('<IntegrationDetailContainer />', () => {
             const {container} = renderWithRouter(
                 <IntegrationDetailContainer {...minProps} />,
                 {
-                    path:
-                        '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${integrationType}/1/${Tab.QuickReplies}`,
                 }
             )
@@ -435,8 +426,7 @@ describe('<IntegrationDetailContainer />', () => {
             const {container} = renderWithRouter(
                 <IntegrationDetailContainer {...minProps} />,
                 {
-                    path:
-                        '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.Email}/new/${Tab.EmailCustom}`,
                 }
             )
@@ -447,8 +437,7 @@ describe('<IntegrationDetailContainer />', () => {
             const {container} = renderWithRouter(
                 <IntegrationDetailContainer {...minProps} />,
                 {
-                    path:
-                        '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.Email}/1/${Tab.EmailForwarding}`,
                 }
             )
@@ -459,8 +448,7 @@ describe('<IntegrationDetailContainer />', () => {
             const {container} = renderWithRouter(
                 <IntegrationDetailContainer {...minProps} />,
                 {
-                    path:
-                        '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.Email}/1/${Tab.EmailVerification}`,
                 }
             )
@@ -473,8 +461,7 @@ describe('<IntegrationDetailContainer />', () => {
             const {container} = renderWithRouter(
                 <IntegrationDetailContainer {...minProps} />,
                 {
-                    path:
-                        '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.Facebook}/1/${Tab.FacebookCustomerChat}`,
                 }
             )
@@ -485,8 +472,7 @@ describe('<IntegrationDetailContainer />', () => {
             const {container} = renderWithRouter(
                 <IntegrationDetailContainer {...minProps} />,
                 {
-                    path:
-                        '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.Facebook}/1/${Tab.FacebookAds}`,
                 }
             )
@@ -502,8 +488,7 @@ describe('<IntegrationDetailContainer />', () => {
                     integrations={fromJS({integration: {id: 1}})}
                 />,
                 {
-                    path:
-                        '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.Http}/1/${Tab.HttpEvents}`,
                 }
             )
@@ -517,8 +502,7 @@ describe('<IntegrationDetailContainer />', () => {
                     integrations={fromJS({integration: {id: 1}})}
                 />,
                 {
-                    path:
-                        '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.Http}/1/${Tab.HttpEvents}/1`,
                 }
             )
@@ -531,8 +515,7 @@ describe('<IntegrationDetailContainer />', () => {
             const {container} = renderWithRouter(
                 <IntegrationDetailContainer {...minProps} />,
                 {
-                    path:
-                        '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.GorgiasChat}/1/${Tab.ChatSelfService}`,
                 }
             )
@@ -545,8 +528,7 @@ describe('<IntegrationDetailContainer />', () => {
             const {container} = renderWithRouter(
                 <IntegrationDetailContainer {...minProps} />,
                 {
-                    path:
-                        '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.Phone}/1/${Tab.PhoneVoicemail}`,
                 }
             )
@@ -559,8 +541,7 @@ describe('<IntegrationDetailContainer />', () => {
             const {container} = renderWithRouter(
                 <IntegrationDetailContainer {...minProps} />,
                 {
-                    path:
-                        '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.SmoochInside}/1/${Tab.SmoochInsideMigration}`,
                 }
             )

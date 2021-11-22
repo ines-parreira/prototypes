@@ -50,10 +50,8 @@ export const ReturnsPolicyView = () => {
     const hasSelfServiceV1Features = useSelector(hasAutomationLegacyFeatures)
     const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
 
-    const [
-        eligibilityWindowCondition,
-        setEligibilityWindowCondition,
-    ] = useState('')
+    const [eligibilityWindowCondition, setEligibilityWindowCondition] =
+        useState('')
 
     const [
         eligibilityWindowConditionValue,
@@ -67,15 +65,14 @@ export const ReturnsPolicyView = () => {
     const [showDeleteButton, setShowDeleteButton] = useState(true)
     const [showLessThan, setShowLessThan] = useState(false)
     useEffect(() => {
-        const eligibilityFilter:
-            | SelfServiceConfigurationFilter
-            | undefined = configuration?.return_order_policy?.eligibilities?.find(
-            (_eligibilityFilter: SelfServiceConfigurationFilter) =>
-                [
-                    FilterKeyEnum.ORDER_CREATED_AT,
-                    FilterKeyEnum.ORDER_DELIVERED_AT,
-                ].includes(_eligibilityFilter.key as FilterKeyEnum)
-        )
+        const eligibilityFilter: SelfServiceConfigurationFilter | undefined =
+            configuration?.return_order_policy?.eligibilities?.find(
+                (_eligibilityFilter: SelfServiceConfigurationFilter) =>
+                    [
+                        FilterKeyEnum.ORDER_CREATED_AT,
+                        FilterKeyEnum.ORDER_DELIVERED_AT,
+                    ].includes(_eligibilityFilter.key as FilterKeyEnum)
+            )
 
         setEligibilityWindowCondition(eligibilityFilter?.key || '')
         setEligibilityWindowConditionValue(
@@ -274,9 +271,7 @@ export const ReturnsPolicyView = () => {
                                                             eligibilityWindowConditionValue
                                                         }
                                                         onChange={(
-                                                            event: ChangeEvent<
-                                                                HTMLInputElement
-                                                            >
+                                                            event: ChangeEvent<HTMLInputElement>
                                                         ) => {
                                                             setEligibilityWindowConditionValue(
                                                                 event.target

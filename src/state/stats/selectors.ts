@@ -31,21 +31,22 @@ export const DEPRECATED_makeStatsFiltersSelector = (viewName: string) =>
         getTimezone,
         (globalFilters, integrations, timezone) => {
             const viewConfig = statViewsConfig.get(viewName) as Map<any, any>
-            const viewFilterTypes = (viewConfig.get('filters') as Map<
-                any,
-                any
-            >).map((filter: Map<any, any>) => filter.get('type') as string)
+            const viewFilterTypes = (
+                viewConfig.get('filters') as Map<any, any>
+            ).map((filter: Map<any, any>) => filter.get('type') as string)
 
             if (!globalFilters) {
                 return null
             }
             const viewFilters = globalFilters.toJS() as {integrations: number[]}
-            const integrationFilter = (viewFilterTypes.includes('integrations')
-                ? (viewConfig.get('filters') as List<any>).find(
-                      (filter: Map<any, any>) =>
-                          filter.get('type') === 'integrations'
-                  )
-                : null) as Maybe<Map<any, any>>
+            const integrationFilter = (
+                viewFilterTypes.includes('integrations')
+                    ? (viewConfig.get('filters') as List<any>).find(
+                          (filter: Map<any, any>) =>
+                              filter.get('type') === 'integrations'
+                      )
+                    : null
+            ) as Maybe<Map<any, any>>
 
             if (integrationFilter) {
                 const allowedTypes = integrationFilter.getIn([
@@ -78,12 +79,12 @@ export const DEPRECATED_makeStatsFiltersSelector = (viewName: string) =>
                     ]
                 }
             }
-            return ((fromJS(viewFilters) as Map<
-                string,
-                any
-            >).filter((_, filterType) =>
-                viewFilterTypes.includes(filterType as string)
-            ) as Map<any, any>).update('period', (value?: Map<any, any>) => {
+            return (
+                (fromJS(viewFilters) as Map<string, any>).filter(
+                    (_, filterType) =>
+                        viewFilterTypes.includes(filterType as string)
+                ) as Map<any, any>
+            ).update('period', (value?: Map<any, any>) => {
                 const currentTime = timezone ? moment().tz(timezone) : moment()
                 return (
                     value ||
@@ -99,16 +100,13 @@ export const DEPRECATED_makeStatsFiltersSelector = (viewName: string) =>
         }
     )
 
-export const getSupportPerformanceAgentsStatsFilters = DEPRECATED_makeStatsFiltersSelector(
-    'support-performance-agents'
-)
+export const getSupportPerformanceAgentsStatsFilters =
+    DEPRECATED_makeStatsFiltersSelector('support-performance-agents')
 
 export const getTagsStatsFilters = DEPRECATED_makeStatsFiltersSelector('tags')
 
-export const getChannelsStatsFilters = DEPRECATED_makeStatsFiltersSelector(
-    'channels'
-)
+export const getChannelsStatsFilters =
+    DEPRECATED_makeStatsFiltersSelector('channels')
 
-export const getLiveAgentsStatsFilters = DEPRECATED_makeStatsFiltersSelector(
-    'live-agents'
-)
+export const getLiveAgentsStatsFilters =
+    DEPRECATED_makeStatsFiltersSelector('live-agents')

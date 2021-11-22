@@ -24,28 +24,34 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock(
     '../BillingPlanCard',
-    () => ({
-        theme,
-        renderBody,
-        className,
-    }: ComponentProps<typeof BillingPlanCard>) => (
-        <div>
-            BillingPlanCard mock,
-            <div>theme: {theme}</div>
-            <div>renderBody: {renderBody?.(<span>features mock</span>)}</div>
-            <div>className: {className}</div>
-        </div>
-    )
+    () =>
+        ({
+            theme,
+            renderBody,
+            className,
+        }: ComponentProps<typeof BillingPlanCard>) =>
+            (
+                <div>
+                    BillingPlanCard mock,
+                    <div>theme: {theme}</div>
+                    <div>
+                        renderBody: {renderBody?.(<span>features mock</span>)}
+                    </div>
+                    <div>className: {className}</div>
+                </div>
+            )
 )
 
 jest.mock(
     '../../../../common/components/SynchronizedScrollTop/SynchronizedScrollTopContainer',
-    () => ({height}: ComponentProps<typeof SynchronizedScrollTopContainer>) => (
-        <div>
-            SynchronizedScrollTopContainer mock,
-            <div>height: {height}</div>
-        </div>
-    )
+    () =>
+        ({height}: ComponentProps<typeof SynchronizedScrollTopContainer>) =>
+            (
+                <div>
+                    SynchronizedScrollTopContainer mock,
+                    <div>height: {height}</div>
+                </div>
+            )
 )
 
 describe('<ChangePlanModal />', () => {

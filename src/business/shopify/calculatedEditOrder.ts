@@ -46,9 +46,8 @@ export function calculateEditDiff(
                     editToPerform.quantity = newListArray[i].get('quantity')
                     editToPerform.taxable = newListArray[i].get('taxable')
 
-                    editToPerform.requires_shipping = newListArray[i].get(
-                        'requires_shipping'
-                    )
+                    editToPerform.requires_shipping =
+                        newListArray[i].get('requires_shipping')
                     editToPerform.price = fromJS({
                         amount: newListArray[i].get('price'),
                         currency_code: newPayload.get('currency'),

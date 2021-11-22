@@ -87,15 +87,8 @@ export default class InfobarWidget extends React.Component {
     }
 
     render() {
-        const {
-            parent,
-            source,
-            widget,
-            template,
-            editing,
-            isEditing,
-            open,
-        } = this.props
+        const {parent, source, widget, template, editing, isEditing, open} =
+            this.props
 
         if (!infobarWidgetShouldRender(source)) {
             return null

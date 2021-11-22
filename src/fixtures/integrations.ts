@@ -30,13 +30,11 @@ export const integrationsState = {
                             text: '{{ticket.first_message.body_text}}',
                         },
                     ],
-                    text:
-                        'New ticket <https://{{ticket.account.domain}}.gorgias.io/app/ticket/{{ticket.id}}|*{{ticket.subject}}*> from *{{ticket.customer.name}}*',
+                    text: 'New ticket <https://{{ticket.account.domain}}.gorgias.io/app/ticket/{{ticket.id}}|*{{ticket.subject}}*> from *{{ticket.customer.name}}*',
                 },
                 headers: {},
                 execution_order: 99,
-                url:
-                    'https://hooks.slack.com/services/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',
+                url: 'https://hooks.slack.com/services/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',
                 request_content_type: 'application/json',
                 id: 3,
                 triggers: {
@@ -70,8 +68,7 @@ export const integrationsState = {
                 },
                 signature: {
                     text: 'cheers, {{current_user.first_name}}',
-                    html:
-                        'cheers, <strong>{{current_user.first_name}}</strong>',
+                    html: 'cheers, <strong>{{current_user.first_name}}</strong>',
                 },
                 verified: true,
             },
@@ -109,8 +106,7 @@ export const integrationsState = {
                 form: null,
                 headers: {},
                 execution_order: 1,
-                url:
-                    'http://httpbin.org/get?bayaname={{ticket.customer.customer.name}}',
+                url: 'http://httpbin.org/get?bayaname={{ticket.customer.customer.name}}',
                 request_content_type: 'application/json',
                 id: 2,
                 triggers: {
@@ -185,8 +181,7 @@ export const integrationsState = {
                 preferred: true,
                 signature: {
                     text: 'cheers, {{current_user.first_name}}',
-                    html:
-                        'cheers, <strong>{{current_user.first_name}}</strong>',
+                    html: 'cheers, <strong>{{current_user.first_name}}</strong>',
                 },
                 verified: true,
             },

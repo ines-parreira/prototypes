@@ -450,25 +450,31 @@ export class CampaignForm extends React.Component {
                                                 idx={idx}
                                                 onOperatorChange={(value) => {
                                                     this.setState({
-                                                        triggers: triggers.setIn(
-                                                            [idx, 'operator'],
-                                                            value
-                                                        ),
+                                                        triggers:
+                                                            triggers.setIn(
+                                                                [
+                                                                    idx,
+                                                                    'operator',
+                                                                ],
+                                                                value
+                                                            ),
                                                     })
                                                 }}
                                                 onValueChange={(value) => {
                                                     this.setState({
-                                                        triggers: this.state.triggers.setIn(
-                                                            [idx, 'value'],
-                                                            value
-                                                        ),
+                                                        triggers:
+                                                            this.state.triggers.setIn(
+                                                                [idx, 'value'],
+                                                                value
+                                                            ),
                                                     })
                                                 }}
                                                 onDelete={() => {
                                                     this.setState({
-                                                        triggers: triggers.delete(
-                                                            idx
-                                                        ),
+                                                        triggers:
+                                                            triggers.delete(
+                                                                idx
+                                                            ),
                                                     })
                                                 }}
                                             />
@@ -539,7 +545,8 @@ export class CampaignForm extends React.Component {
                                         rows="8"
                                         value={{html: message.get('html')}}
                                         onChange={(value) => {
-                                            const content = value.getCurrentContent()
+                                            const content =
+                                                value.getCurrentContent()
 
                                             this.setState({
                                                 message: message

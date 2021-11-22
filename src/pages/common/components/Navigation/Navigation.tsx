@@ -10,12 +10,8 @@ type Props = {
 
 export default class Navigation extends Component<Props> {
     render() {
-        const {
-            hasNextItems,
-            fetchNextItems,
-            hasPrevItems,
-            fetchPrevItems,
-        } = this.props
+        const {hasNextItems, fetchNextItems, hasPrevItems, fetchPrevItems} =
+            this.props
 
         if (!hasPrevItems && !hasNextItems) {
             return null

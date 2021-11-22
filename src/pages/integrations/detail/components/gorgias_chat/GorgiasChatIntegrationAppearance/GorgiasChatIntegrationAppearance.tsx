@@ -229,7 +229,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                     ? storeIntegrationId
                     : null,
                 preferences: {
-                    email_capture_enforcement: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
+                    email_capture_enforcement:
+                        GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
                     auto_responder: {
                         enabled: GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
                         reply: CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
@@ -244,9 +245,11 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             form.meta = integrationMeta.set('language', state.language).toJS()
         }
 
-        return ((actions.updateOrCreateIntegration(
-            fromJS(form)
-        ) as unknown) as Promise<any>).then(({error} = {}) => {
+        return (
+            actions.updateOrCreateIntegration(
+                fromJS(form)
+            ) as unknown as Promise<any>
+        ).then(({error} = {}) => {
             if (error) {
                 return
             }
@@ -557,9 +560,10 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                         }
                                                         uploadType="avatar_team_picture"
                                                         params={{
-                                                            ['integration_id']: integration.get(
-                                                                'id'
-                                                            ),
+                                                            ['integration_id']:
+                                                                integration.get(
+                                                                    'id'
+                                                                ),
                                                         }}
                                                         maxSize={500 * 1000}
                                                         required={
@@ -600,12 +604,10 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                     >
                                         {GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.map(
                                             (option) => {
-                                                const value = option?.get(
-                                                    'value'
-                                                )
-                                                const label = option?.get(
-                                                    'label'
-                                                )
+                                                const value =
+                                                    option?.get('value')
+                                                const label =
+                                                    option?.get('label')
                                                 return (
                                                     <option
                                                         key={value}
@@ -638,9 +640,9 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                     className="float-right"
                                     color="secondary"
                                     confirm={() =>
-                                        (actions.deleteIntegration(
+                                        actions.deleteIntegration(
                                             integration
-                                        ) as unknown) as Promise<any>
+                                        ) as unknown as Promise<any>
                                     }
                                     content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                                 >

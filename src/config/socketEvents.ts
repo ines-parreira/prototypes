@@ -186,7 +186,7 @@ export const joinEvents: SendEvent[] = [
             }
         },
         onLeave: function (id) {
-            return ((this as unknown) as SocketManager).send(
+            return (this as unknown as SocketManager).send(
                 SocketEventType.AgentTypingStopped,
                 id
             )
@@ -280,10 +280,10 @@ export const receivedEvents: ReceivedEvent[] = [
                     (json as TicketMessageCreatedEvent).ticket.id
                 )
             ) {
-                ;((this as unknown) as SocketManager).send(
+                ;(this as unknown as SocketManager).send(
                     SocketEventType.TicketViewed,
-                    ((json as TicketMessageCreatedEvent).ticket
-                        .id as unknown) as string
+                    (json as TicketMessageCreatedEvent).ticket
+                        .id as unknown as string
                 )
             }
 
@@ -299,8 +299,8 @@ export const receivedEvents: ReceivedEvent[] = [
         onReceive: function (json) {
             typeSafeReduxStore.dispatch(
                 ticketActions.handleMessageActionError(
-                    ((json as TicketMessageActionFailedEvent)
-                        .ticket_id as unknown) as string
+                    (json as TicketMessageActionFailedEvent)
+                        .ticket_id as unknown as string
                 ) as any
             )
         },
@@ -438,9 +438,8 @@ export const receivedEvents: ReceivedEvent[] = [
                 }) as any
             )
 
-            const oldTicketAssignmentSetting = currentAccountSelectors.getTicketAssignmentSettings(
-                state
-            )
+            const oldTicketAssignmentSetting =
+                currentAccountSelectors.getTicketAssignmentSettings(state)
 
             const account = (json as AccountUpdatedEvent).account
             const newTicketAssignmentSetting = fromJS(
@@ -478,9 +477,8 @@ export const receivedEvents: ReceivedEvent[] = [
                     ['data', 'assignment_channels'],
                     fromJS([])
                 ) as List<any>
-                const ticketAssignmentChannelsHaveChanged = !oldAssignmentChannels.equals(
-                    newAssignmentChannels
-                )
+                const ticketAssignmentChannelsHaveChanged =
+                    !oldAssignmentChannels.equals(newAssignmentChannels)
 
                 if (
                     autoAssignToTeamSettingHasChanged ||
@@ -507,9 +505,7 @@ export const receivedEvents: ReceivedEvent[] = [
     {
         name: SocketEventType.SidUpdated,
         onReceive: function () {
-            ;((this as unknown) as SocketManager).send(
-                SocketEventType.SidUpdated
-            )
+            ;(this as unknown as SocketManager).send(SocketEventType.SidUpdated)
         },
     },
     {
@@ -547,24 +543,23 @@ export const receivedEvents: ReceivedEvent[] = [
             // send browser notifications only for new customer messages
             const shouldNotify = !ticket.last_message_from_agent
 
-            const playSoundNotification = (json as TicketMessageChatCreatedEvent)
-                .event.play_sound_notification
+            const playSoundNotification = (
+                json as TicketMessageChatCreatedEvent
+            ).event.play_sound_notification
 
             const state = typeSafeReduxStore.getState()
             const {currentUser} = state
 
-            const ticketAssignmentSetting = currentAccountSelectors.getTicketAssignmentSettings(
-                state
-            )
-            const currentUserIsAvailable = currentUserSelectors.isAvailable(
-                state
-            )
+            const ticketAssignmentSetting =
+                currentAccountSelectors.getTicketAssignmentSettings(state)
+            const currentUserIsAvailable =
+                currentUserSelectors.isAvailable(state)
 
             // mark the chat as read because the agent is viewing the ticket
             if (isCurrentlyOnTicket(ticket.id)) {
-                ;((this as unknown) as SocketManager).send(
+                ;(this as unknown as SocketManager).send(
                     SocketEventType.TicketViewed,
-                    (ticket.id as unknown) as string
+                    ticket.id as unknown as string
                 )
                 ticket.is_unread = false
             }
@@ -603,12 +598,10 @@ export const receivedEvents: ReceivedEvent[] = [
             const state = typeSafeReduxStore.getState() as RootState
             const {currentUser} = state
 
-            const ticketAssignmentSetting = currentAccountSelectors.getTicketAssignmentSettings(
-                state
-            )
-            const currentUserIsAvailable = currentUserSelectors.isAvailable(
-                state
-            )
+            const ticketAssignmentSetting =
+                currentAccountSelectors.getTicketAssignmentSettings(state)
+            const currentUserIsAvailable =
+                currentUserSelectors.isAvailable(state)
 
             if (
                 shouldTicketBeDisplayedInRecentChats(
@@ -676,7 +669,7 @@ export const receivedEvents: ReceivedEvent[] = [
     {
         name: SocketEventType.ViewsDeactivated,
         onReceive: function (json) {
-            const {event} = (json as unknown) as ViewsDeactivated
+            const {event} = json as unknown as ViewsDeactivated
             const namesList = `<ul>${event.names
                 .map((name) => `<li>${name}</li>`)
                 .join('')}</ul>`
@@ -697,7 +690,7 @@ export const receivedEvents: ReceivedEvent[] = [
     {
         name: SocketEventType.OutboundPhoneCallInitiated,
         onReceive: function (json) {
-            const {event} = (json as unknown) as OutboundPhoneCallInitiated
+            const {event} = json as unknown as OutboundPhoneCallInitiated
             const {
                 phone_ticket_id: phoneTicketId,
                 original_path: originalPath,

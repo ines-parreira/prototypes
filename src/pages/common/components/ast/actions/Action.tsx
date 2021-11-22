@@ -318,11 +318,13 @@ export default class Action extends React.Component<Props> {
         let errors: string[] | string = []
 
         // build an object with the keys and values of the action
-        ;(children as {
-            props: {
-                properties: {key: {name: string}; value: {value: unknown}}[]
+        ;(
+            children as {
+                props: {
+                    properties: {key: {name: string}; value: {value: unknown}}[]
+                }
             }
-        }).props.properties.forEach((property) => {
+        ).props.properties.forEach((property) => {
             values[property.key.name] = property.value.value
         })
 

@@ -141,9 +141,10 @@ export const useArticlesActions = () => {
                     ),
                 }
 
-                const localeIsAvailable = updatedArticle.available_locales.includes(
-                    article.translation.locale
-                )
+                const localeIsAvailable =
+                    updatedArticle.available_locales.includes(
+                        article.translation.locale
+                    )
 
                 updatedArticle.translation = localeIsAvailable
                     ? await this.updateArticleTranslation(updatedArticle)

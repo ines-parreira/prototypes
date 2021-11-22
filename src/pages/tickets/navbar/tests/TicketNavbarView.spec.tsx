@@ -11,27 +11,29 @@ import {TicketNavbarViewContainer} from '../TicketNavbarView'
 
 jest.mock(
     '../../../common/components/ViewName/ViewName',
-    () => ({view}: ComponentProps<typeof ViewName>) => {
-        return <div data-testid="ViewName">{view.get('name')}</div>
-    }
+    () =>
+        ({view}: ComponentProps<typeof ViewName>) => {
+            return <div data-testid="ViewName">{view.get('name')}</div>
+        }
 )
 
 jest.mock(
     '../../../common/components/ViewCount/ViewCount',
-    () => ({view}: ComponentProps<typeof ViewCount>) => {
-        return <div data-testid="ViewCount">{view.get('name')}</div>
-    }
+    () =>
+        ({view}: ComponentProps<typeof ViewCount>) => {
+            return <div data-testid="ViewCount">{view.get('name')}</div>
+        }
 )
 
 describe('<TicketNavbarView/>', () => {
-    const minProps = ({
+    const minProps = {
         view,
         activeViewId: 4,
         viewsCount: {
             4: 100,
             7: MAX_TICKET_COUNT_PER_VIEW,
         },
-    } as unknown) as ComponentProps<typeof TicketNavbarViewContainer>
+    } as unknown as ComponentProps<typeof TicketNavbarViewContainer>
 
     it('should render', () => {
         const {container} = render(

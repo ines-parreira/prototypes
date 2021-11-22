@@ -119,8 +119,7 @@ export default function TicketDetailsStat({
                         segmentTracker.logEvent(
                             SegmentEvent.StatViewLinkClicked,
                             {
-                                stat:
-                                    StatViewLinkClickedStat.TicketsOpenPerAgentLive,
+                                stat: StatViewLinkClickedStat.TicketsOpenPerAgentLive,
                             }
                         )
                     }}
@@ -130,10 +129,12 @@ export default function TicketDetailsStat({
             </div>
             <div className={css.separator} />
             <div className={css.channelsBreakdown}>
-                {(Object.entries(channelsBreakdown) as [
-                    TicketChannel,
-                    number
-                ][]).map(([channel, ticketsNumber]) => {
+                {(
+                    Object.entries(channelsBreakdown) as [
+                        TicketChannel,
+                        number
+                    ][]
+                ).map(([channel, ticketsNumber]) => {
                     return ticketsNumber ? (
                         <div key={channel} className={css.channel}>
                             <SourceIcon
@@ -147,8 +148,7 @@ export default function TicketDetailsStat({
                                     segmentTracker.logEvent(
                                         SegmentEvent.StatViewLinkClicked,
                                         {
-                                            stat:
-                                                StatViewLinkClickedStat.TicketsOpenPerAgentPerChannelLive,
+                                            stat: StatViewLinkClickedStat.TicketsOpenPerAgentPerChannelLive,
                                         }
                                     )
                                 }}

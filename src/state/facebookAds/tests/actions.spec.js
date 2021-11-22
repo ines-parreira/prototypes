@@ -11,7 +11,7 @@ describe('facebookAds actions', () => {
     describe('setFacebookAdsInternals', () => {
         it('should return SET_FACEBOOK_ADS_INTERNALS action', async () => {
             const internals = {
-                '1': {
+                1: {
                     ads: {
                         postid1: {
                             name: 'ad 1',

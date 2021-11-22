@@ -40,20 +40,20 @@ import {
     ViewNavDirection,
 } from './types'
 
-export const setViewActive = (view: ViewImmutable) => (
-    dispatch: StoreDispatch
-): ReturnType<StoreDispatch> => {
-    if (view) {
-        socketManager.join(JoinEventType.View, view.get('id'))
+export const setViewActive =
+    (view: ViewImmutable) =>
+    (dispatch: StoreDispatch): ReturnType<StoreDispatch> => {
+        if (view) {
+            socketManager.join(JoinEventType.View, view.get('id'))
+        }
+
+        dispatch(addRecentView(view.get('id') as number) as any)
+
+        return dispatch({
+            type: types.SET_VIEW_ACTIVE,
+            view,
+        })
     }
-
-    dispatch(addRecentView(view.get('id') as number) as any)
-
-    return dispatch({
-        type: types.SET_VIEW_ACTIVE,
-        view,
-    })
-}
 
 export const updateView = (view?: Maybe<ViewImmutable>, edit = true) => ({
     type: types.UPDATE_VIEW,
@@ -70,30 +70,28 @@ export const toggleViewSelection = () => ({
     type: types.TOGGLE_VIEW_SELECTION,
 })
 
-export const setOrderDirection = (
-    fieldPath: string,
-    direction: OrderDirection = OrderDirection.Asc
-) => (dispatch: StoreDispatch) => {
-    dispatch({
-        type: types.SET_ORDER_DIRECTION,
-        fieldPath,
-        direction,
-    })
+export const setOrderDirection =
+    (fieldPath: string, direction: OrderDirection = OrderDirection.Asc) =>
+    (dispatch: StoreDispatch) => {
+        dispatch({
+            type: types.SET_ORDER_DIRECTION,
+            fieldPath,
+            direction,
+        })
 
-    dispatch(updateView())
-}
+        dispatch(updateView())
+    }
 
-export const setFieldVisibility = (name: string, state: boolean) => (
-    dispatch: StoreDispatch
-) => {
-    dispatch({
-        type: types.SET_FIELD_VISIBILITY,
-        name,
-        state,
-    })
+export const setFieldVisibility =
+    (name: string, state: boolean) => (dispatch: StoreDispatch) => {
+        dispatch({
+            type: types.SET_FIELD_VISIBILITY,
+            name,
+            state,
+        })
 
-    dispatch(updateView())
-}
+        dispatch(updateView())
+    }
 
 // add filter for 1 field
 export const addFieldFilter = (field: string, filter: ViewFilter) => ({
@@ -296,10 +294,9 @@ export function deleteView(view: ViewImmutable) {
         getState: () => RootState
     ): Promise<ReturnType<StoreDispatch>> => {
         const vType = view.get('type', 'ticket-list') as ViewType
-        const otherViewsOfType = (getState().views.get(
-            'items',
-            fromJS([])
-        ) as List<any>).filter(
+        const otherViewsOfType = (
+            getState().views.get('items', fromJS([])) as List<any>
+        ).filter(
             (v: Map<any, any>) =>
                 v.get('type', 'ticket-list') === vType &&
                 v.get('id') !== view.get('id')
@@ -345,35 +342,34 @@ export function deleteView(view: ViewImmutable) {
     }
 }
 
-export const deleteViewSuccess = (viewId: number) => (
-    dispatch: StoreDispatch,
-    getState: () => RootState
-): void => {
-    dispatch({
-        type: types.DELETE_VIEW_SUCCESS,
-        viewId,
-    })
+export const deleteViewSuccess =
+    (viewId: number) =>
+    (dispatch: StoreDispatch, getState: () => RootState): void => {
+        dispatch({
+            type: types.DELETE_VIEW_SUCCESS,
+            viewId,
+        })
 
-    // redirect to first view of the same type if it's the currently active view
-    const state = getState().views
-    if (state.getIn(['active', 'id']) === viewId) {
-        const viewConfig = viewsConfig.getConfigByType(
-            state.getIn(['active', 'type'])
-        )
-        const destinationView = (state.get('items') as List<any>).find(
-            (v: Map<any, any>) => {
-                return v.get('type') === state.getIn(['active', 'type'])
-            }
-        ) as Map<any, any>
-        const destinationRoute = `/app/${
-            viewConfig.get('routeList') as string
-        }/${destinationView.get('id') as number}/${
-            destinationView.get('slug') as string
-        }`
-        dispatch(setViewActive(destinationView))
-        history.push(destinationRoute)
+        // redirect to first view of the same type if it's the currently active view
+        const state = getState().views
+        if (state.getIn(['active', 'id']) === viewId) {
+            const viewConfig = viewsConfig.getConfigByType(
+                state.getIn(['active', 'type'])
+            )
+            const destinationView = (state.get('items') as List<any>).find(
+                (v: Map<any, any>) => {
+                    return v.get('type') === state.getIn(['active', 'type'])
+                }
+            ) as Map<any, any>
+            const destinationRoute = `/app/${
+                viewConfig.get('routeList') as string
+            }/${destinationView.get('id') as number}/${
+                destinationView.get('slug') as string
+            }`
+            dispatch(setViewActive(destinationView))
+            history.push(destinationRoute)
+        }
     }
-}
 
 // Fetch a page of items of a view (tickets or customers) based on the provided cursor and direction.
 export function fetchViewItems(
@@ -486,13 +482,13 @@ export function fetchViewItems(
                     if (axios.isCancel(error)) {
                         return Promise.resolve()
                     }
-                    return (dispatch({
+                    return dispatch({
                         type: types.FETCH_LIST_VIEW_ERROR,
                         error,
                         reason: `Failed to fetch list of ${
                             viewConfig.get('plural') as string
                         }`,
-                    }) as unknown) as Promise<ReturnType<StoreDispatch>>
+                    }) as unknown as Promise<ReturnType<StoreDispatch>>
                 }
             )
     }
@@ -554,7 +550,7 @@ export function createJob(
             }
         }
 
-        const notification = (dispatch(
+        const notification = dispatch(
             notify({
                 status: NotificationStatus.Loading,
                 dismissAfter: 10000,
@@ -567,7 +563,7 @@ export function createJob(
                 ),
                 buttons: [],
             })
-        ) as unknown) as Notification
+        ) as unknown as Notification
 
         return client
             .post<Job>('/api/jobs/', requestPayload)
@@ -656,68 +652,66 @@ export const addRecentView = (viewId: number): ReturnType<StoreDispatch> => ({
     viewId,
 })
 
-export const fetchActiveViewTickets = () => (
-    dispatch: StoreDispatch,
-    getState: () => RootState
-): Maybe<Promise<ReturnType<StoreDispatch>>> => {
-    const state = getState()
-    const viewsState = viewsSelectors.getViewsState(state)
-    const activeView = viewsSelectors.getActiveView(state)
-    const isFetchingView =
-        viewsSelectors.isLoading('fetchList')(state) ||
-        viewsSelectors.isLoading('fetchListDiscreet')(state)
-    const isEditing = activeView.get('editMode') || false
+export const fetchActiveViewTickets =
+    () =>
+    (
+        dispatch: StoreDispatch,
+        getState: () => RootState
+    ): Maybe<Promise<ReturnType<StoreDispatch>>> => {
+        const state = getState()
+        const viewsState = viewsSelectors.getViewsState(state)
+        const activeView = viewsSelectors.getActiveView(state)
+        const isFetchingView =
+            viewsSelectors.isLoading('fetchList')(state) ||
+            viewsSelectors.isLoading('fetchListDiscreet')(state)
+        const isEditing = activeView.get('editMode') || false
 
-    const shouldUpdateView =
-        activeView.get('id') !== BASE_VIEW_ID &&
-        isCurrentlyOnView(activeView.get('id'), viewsState) &&
-        viewsSelectors.isOnFirstPage(state)
+        const shouldUpdateView =
+            activeView.get('id') !== BASE_VIEW_ID &&
+            isCurrentlyOnView(activeView.get('id'), viewsState) &&
+            viewsSelectors.isOnFirstPage(state)
 
-    if (!shouldUpdateView || isFetchingView || isEditing) {
-        return
+        if (!shouldUpdateView || isFetchingView || isEditing) {
+            return
+        }
+
+        return dispatch(fetchViewItems(null, null, true))
     }
 
-    return dispatch(fetchViewItems(null, null, true))
-}
+export const fetchVisibleViewsCounts =
+    () => (dispatch: StoreDispatch, getState: () => RootState) => {
+        const state = getState()
+        const viewIdsChunks = _chunk(
+            viewsSelectors
+                .getViewIdsOrderedByCollapsedSections()(state)
+                .toJS() as number[],
+            10
+        )
+        function sendNextChunk(chunks: number[][]) {
+            socketManager.send(SocketEventType.ViewsCountExpired, {
+                viewIds: chunks.shift(),
+                all: true,
+            })
+            if (chunks.length) {
+                setTimeout(() => sendNextChunk(chunks), 500)
+            }
+        }
+        sendNextChunk(viewIdsChunks)
+    }
 
-export const fetchVisibleViewsCounts = () => (
-    dispatch: StoreDispatch,
-    getState: () => RootState
-) => {
-    const state = getState()
-    const viewIdsChunks = _chunk(
-        viewsSelectors
-            .getViewIdsOrderedByCollapsedSections()(state)
-            .toJS() as number[],
-        10
-    )
-    function sendNextChunk(chunks: number[][]) {
-        socketManager.send(SocketEventType.ViewsCountExpired, {
-            viewIds: chunks.shift(),
-            all: true,
-        })
-        if (chunks.length) {
-            setTimeout(() => sendNextChunk(chunks), 500)
+export const fetchRecentViewsCounts =
+    () => (dispatch: StoreDispatch, getState: () => RootState) => {
+        // do not fetch views counts when the current user is not doing support
+        if (!isCurrentlyOnTicket() && !isCurrentlyOnView()) {
+            return
+        }
+
+        const viewIds = viewsSelectors.getExpiredViewsCounts()(getState())
+        if (viewIds.length) {
+            dispatch(updateRecentViews(viewIds))
+            socketManager.send(SocketEventType.ViewsCountExpired, {viewIds})
         }
     }
-    sendNextChunk(viewIdsChunks)
-}
-
-export const fetchRecentViewsCounts = () => (
-    dispatch: StoreDispatch,
-    getState: () => RootState
-) => {
-    // do not fetch views counts when the current user is not doing support
-    if (!isCurrentlyOnTicket() && !isCurrentlyOnView()) {
-        return
-    }
-
-    const viewIds = viewsSelectors.getExpiredViewsCounts()(getState())
-    if (viewIds.length) {
-        dispatch(updateRecentViews(viewIds))
-        socketManager.send(SocketEventType.ViewsCountExpired, {viewIds})
-    }
-}
 
 /**
  * Update updated datetime of recent views
@@ -730,17 +724,15 @@ export const updateRecentViews = (viewIds: number[]) => ({
 /**
  * Go to the parent view
  */
-export const gotoActiveView = () => (
-    dispatch: StoreDispatch,
-    getState: () => RootState
-) => {
-    const state = getState()
-    const activeView = viewsSelectors.getActiveView(state)
-    const navigation = viewsSelectors.getNavigation(state)
-    const currentLocation = history.location
-    const newUrl = activeViewUrl(activeView, currentLocation, navigation)
+export const gotoActiveView =
+    () => (dispatch: StoreDispatch, getState: () => RootState) => {
+        const state = getState()
+        const activeView = viewsSelectors.getActiveView(state)
+        const navigation = viewsSelectors.getNavigation(state)
+        const currentLocation = history.location
+        const newUrl = activeViewUrl(activeView, currentLocation, navigation)
 
-    history.push(newUrl)
+        history.push(newUrl)
 
-    dispatch({type: types.GOTO_ACTIVE_VIEW})
-}
+        dispatch({type: types.GOTO_ACTIVE_VIEW})
+    }

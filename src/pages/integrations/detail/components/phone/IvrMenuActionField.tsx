@@ -38,9 +38,8 @@ const IvrMenuActionField = ({
     onRemove,
 }: Props): JSX.Element => {
     const [isDrawerOpen, setDrawerOpen] = useState<boolean>(false)
-    const [editingVoiceMessage, setEditingVoiceMessage] = useState<
-        VoiceMessage
-    >(DEFAULT_VOICE_MESSAGE)
+    const [editingVoiceMessage, setEditingVoiceMessage] =
+        useState<VoiceMessage>(DEFAULT_VOICE_MESSAGE)
 
     const handleActionTypeChange = useCallback(
         (action) => {

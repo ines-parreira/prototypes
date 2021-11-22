@@ -56,9 +56,11 @@ class RecentChatsItem extends Component<ItemProps> {
                             ticket: recentTicket.toJS(),
                         }
                     )
-                    ;(this.context as {
-                        closePanel: () => void
-                    }).closePanel()
+                    ;(
+                        this.context as {
+                            closePanel: () => void
+                        }
+                    ).closePanel()
                 }}
                 to={`/app/ticket/${recentTicket.get('id') as number}`}
                 className={linkClasses}

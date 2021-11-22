@@ -26,24 +26,25 @@ jest.mock('../../../../../../../../../../utils/labels', () => ({
 
 jest.mock(
     '../../../../../../../../../Modal',
-    () => ({
-        isOpen,
-        children,
-        onClose,
-    }: {
-        isOpen: boolean
-        children: ReactNode
-        onClose: () => void
-    }) => {
-        if (isOpen) {
-            return (
-                <div data-testid="Modal" onClick={onClose}>
-                    {children}
-                </div>
-            )
+    () =>
+        ({
+            isOpen,
+            children,
+            onClose,
+        }: {
+            isOpen: boolean
+            children: ReactNode
+            onClose: () => void
+        }) => {
+            if (isOpen) {
+                return (
+                    <div data-testid="Modal" onClick={onClose}>
+                        {children}
+                    </div>
+                )
+            }
+            return null
         }
-        return null
-    }
 )
 
 class MockLegacyContextWrapper extends Component<{
@@ -82,9 +83,9 @@ describe('<RefundOrderModal />', () => {
             order,
         },
         header: 'Refund order',
-        integrations: integrationsStateWithShopify.get('integrations') as List<
-            any
-        >,
+        integrations: integrationsStateWithShopify.get(
+            'integrations'
+        ) as List<any>,
         isOpen: true,
         lineItems: fromJS([]),
         loading: false,

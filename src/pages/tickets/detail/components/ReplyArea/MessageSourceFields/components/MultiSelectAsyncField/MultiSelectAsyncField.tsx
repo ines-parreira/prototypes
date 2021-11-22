@@ -43,14 +43,12 @@ type State = {
     focusedItemIndex: number | null
 }
 class MultiSelectAsyncField extends React.Component<Props, State> {
-    static defaultProps: Pick<
-        Props,
-        'allowCreate' | 'disabled' | 'required'
-    > = {
-        allowCreate: false,
-        disabled: false,
-        required: false,
-    }
+    static defaultProps: Pick<Props, 'allowCreate' | 'disabled' | 'required'> =
+        {
+            allowCreate: false,
+            disabled: false,
+            required: false,
+        }
 
     inputRef?: HTMLInputElement | null
 

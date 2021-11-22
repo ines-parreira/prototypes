@@ -157,10 +157,12 @@ export const InfobarCustomerInfoContainer = ({
             !isDragging &&
             (!renderedContextWidgets ||
                 (renderedContextWidgets.size <= 1 &&
-                    (renderedContextWidgets.getIn(
-                        [0, 'template'],
-                        fromJS({})
-                    ) as Map<any, any>).isEmpty()))
+                    (
+                        renderedContextWidgets.getIn(
+                            [0, 'template'],
+                            fromJS({})
+                        ) as Map<any, any>
+                    ).isEmpty()))
 
         if (shouldSuggestTemplateGeneration) {
             return (

@@ -72,9 +72,11 @@ export const getPredictionText = (
     entityKey: string,
     editorState: EditorState
 ) => {
-    return (editorState.getCurrentContent().getEntity(entityKey).getData() as {
-        text: string
-    }).text
+    return (
+        editorState.getCurrentContent().getEntity(entityKey).getData() as {
+            text: string
+        }
+    ).text
 }
 
 export const usePrediction = (entityKey: string, editorState: EditorState) => {

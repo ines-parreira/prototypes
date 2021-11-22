@@ -57,9 +57,8 @@ export function refreshAppliedDiscounts(
         appliedDiscount &&
         appliedDiscount.get('value_type') === DiscountType.Percentage
     ) {
-        const totalLineItemsPrice = getDraftOrderTotalLineItemsPrice(
-            newDraftOrder
-        )
+        const totalLineItemsPrice =
+            getDraftOrderTotalLineItemsPrice(newDraftOrder)
         const type = appliedDiscount.get('value_type')
         const value = appliedDiscount.get('value')
         const currency = draftOrder.get('currency')

@@ -14,9 +14,8 @@ import {
     getUncategorizedArticles,
 } from '../selectors'
 
-const articlesResponse = getArticlesResponseFixture.data.map(
-    createArticleFromDto
-)
+const articlesResponse =
+    getArticlesResponseFixture.data.map(createArticleFromDto)
 
 const store: Partial<StoreState> = {
     helpCenter: {

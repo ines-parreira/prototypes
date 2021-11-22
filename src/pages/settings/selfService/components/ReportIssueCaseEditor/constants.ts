@@ -164,6 +164,7 @@ export const ORDER_STATUSES_OPTIONS: MultiSelectOptionsFieldOption[] = [
     {value: OrderStatuses.ARCHIVED, label: 'Archived'},
     {value: OrderStatuses.CANCELLED, label: 'Cancelled'},
 ]
-export const SELECTABLE_REASONS_DROPDOWN_OPTIONS = REASONS_DROPDOWN_OPTIONS.filter(
-    (option) => 'value' in option
-) as SelectableOption[]
+export const SELECTABLE_REASONS_DROPDOWN_OPTIONS =
+    REASONS_DROPDOWN_OPTIONS.filter(
+        (option) => 'value' in option
+    ) as SelectableOption[]

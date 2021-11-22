@@ -42,10 +42,10 @@ export const saveFileAsDownloaded = (
 const getFormattedSize = (size: number) => {
     let formattedSize = ''
     if (size < 1000 * 1000) {
-        formattedSize = `${parseInt(((size / 1000) as unknown) as string)}kB.`
+        formattedSize = `${parseInt((size / 1000) as unknown as string)}kB.`
     } else {
         formattedSize = `${parseInt(
-            ((size / (1000 * 1000)) as unknown) as string
+            (size / (1000 * 1000)) as unknown as string
         )}MB.`
     }
     return formattedSize
@@ -74,7 +74,7 @@ const getInlineImagesSize = (editorState: EditorState): number => {
             if (!key) {
                 return false
             }
-            const entity = (contentState.getEntity(key) as unknown) as Map<
+            const entity = contentState.getEntity(key) as unknown as Map<
                 any,
                 any
             >

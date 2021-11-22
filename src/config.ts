@@ -475,8 +475,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
         title: 'Stonly',
         description: 'Interactive step-by-step guides & troubleshooting',
-        url:
-            'https://stonly.com/kb/guide/en/how-to-launch-gorgias-chat-from-the-stonly-widget-aV3pDkR0KE/Steps/335165,335168',
+        url: 'https://stonly.com/kb/guide/en/how-to-launch-gorgias-chat-from-the-stonly-widget-aV3pDkR0KE/Steps/335165,335168',
         image: 'integrations/stonly.png',
     },
     {
@@ -488,36 +487,31 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
         title: 'AfterShip',
         description: 'The #1 Shipment Tracking Platform',
-        url:
-            'https://support.aftership.com/en/article/integrate-gorgias-with-aftership-1rfy7rq/?bust=1623045781127',
+        url: 'https://support.aftership.com/en/article/integrate-gorgias-with-aftership-1rfy7rq/?bust=1623045781127',
         image: 'integrations/aftership.png',
     },
     {
         title: 'Opinew',
         description: 'Import product reviews to your Shopify Store',
-        url:
-            'https://www.opinew.com/help-center/knowledge-base/how-to-integrate-with-gorgias/',
+        url: 'https://www.opinew.com/help-center/knowledge-base/how-to-integrate-with-gorgias/',
         image: 'integrations/opinew.png',
     },
     {
         title: 'EasyCall',
         description: 'A web call center for modern businesses',
-        url:
-            'https://easycall.crisp.help/en/article/gorgias-easycall-integration-connect-your-call-center-to-your-ecommerce-crm-cjwrqb/',
+        url: 'https://easycall.crisp.help/en/article/gorgias-easycall-integration-connect-your-call-center-to-your-ecommerce-crm-cjwrqb/',
         image: 'integrations/easycall.png',
     },
     {
         title: 'AnswerBase',
         description: "Answers for your customers' biggest questions",
-        url:
-            'https://help.answerbase.com/Article/3590718/How-to-Integrate-Gorgias-with-Answerbase-on-Your-Ecommerce-Site',
+        url: 'https://help.answerbase.com/Article/3590718/How-to-Integrate-Gorgias-with-Answerbase-on-Your-Ecommerce-Site',
         image: 'integrations/answerbase.png',
     },
     {
         title: 'Shopney',
         description: 'Easily turn your Shopify store into an App',
-        url:
-            'https://support.shopney.co/en/articles/5096693-how-to-integrate-gorgias-with-your-shopney-mobile-app',
+        url: 'https://support.shopney.co/en/articles/5096693-how-to-integrate-gorgias-with-your-shopney-mobile-app',
         image: 'integrations/shopney.png',
     },
     {
@@ -535,8 +529,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
         title: 'Gatsby',
         description: 'Turn customers into influencers',
-        url:
-            'http://help.gatsby.ai/en/articles/5389708-connecting-gatsby-with-gorgias',
+        url: 'http://help.gatsby.ai/en/articles/5389708-connecting-gatsby-with-gorgias',
         image: 'integrations/gatsby.png',
     },
     {
@@ -554,8 +547,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
         title: 'Tone',
         description: 'Grow revenue with the fastest 2-way SMS experience',
-        url:
-            'http://help.tonemessaging.com/knowledge/tone-x-gorgias-integration-setup',
+        url: 'http://help.tonemessaging.com/knowledge/tone-x-gorgias-integration-setup',
         image: 'integrations/tone.jpeg',
     },
 ]
@@ -799,8 +791,7 @@ export const ACTION_TEMPLATES = [
                         ]) !== 'fulfilled'
                     )
                 },
-                error:
-                    "The last order has already been fulfilled, it's not cancellable.",
+                error: "The last order has already been fulfilled, it's not cancellable.",
             },
             {
                 validate: (customer: Customer) => {
@@ -816,8 +807,7 @@ export const ACTION_TEMPLATES = [
                         ]) !== 'partial'
                     )
                 },
-                error:
-                    "The last order has already been partially fulfilled, it's not cancellable.",
+                error: "The last order has already been partially fulfilled, it's not cancellable.",
             },
         ],
     },
@@ -993,8 +983,7 @@ export const ACTION_TEMPLATES = [
                         ]) !== 'fulfilled'
                     )
                 },
-                error:
-                    "The last order has already been fulfilled, you can't edit it's shipping address.",
+                error: "The last order has already been fulfilled, you can't edit it's shipping address.",
             },
         ],
     },
@@ -1042,8 +1031,7 @@ export const ACTION_TEMPLATES = [
                         ])
                     )
                 },
-                error:
-                    "The last order has already been refunded or hasn't been paid for yet.",
+                error: "The last order has already been refunded or hasn't been paid for yet.",
             },
         ],
     },
@@ -1102,8 +1090,7 @@ export const ACTION_TEMPLATES = [
                         ])
                     )
                 },
-                error:
-                    "The last order has already been refunded or hasn't been paid for yet.",
+                error: "The last order has already been refunded or hasn't been paid for yet.",
             },
         ],
     },
@@ -1163,8 +1150,7 @@ export const ACTION_TEMPLATES = [
                         ])
                     )
                 },
-                error:
-                    "The last order has already been refunded or hasn't been paid for yet.",
+                error: "The last order has already been refunded or hasn't been paid for yet.",
             },
         ],
     },

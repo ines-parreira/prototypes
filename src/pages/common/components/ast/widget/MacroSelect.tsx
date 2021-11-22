@@ -64,15 +64,19 @@ const MacroSelect = ({
             return fromJS([]) as List<any>
         }
         // Filter out macros with external actions
-        return (macroOptions.filter((macro: Map<any, any>) =>
-            (macro.get('actions') as List<any>)
-                .filter((action: Map<any, any>) => {
-                    const actionTemplate = getActionTemplate(action.get('name'))
-                    return (actionTemplate &&
-                        actionTemplate.execution === 'back') as boolean
-                })
-                .isEmpty()
-        ) as List<any>)
+        return (
+            macroOptions.filter((macro: Map<any, any>) =>
+                (macro.get('actions') as List<any>)
+                    .filter((action: Map<any, any>) => {
+                        const actionTemplate = getActionTemplate(
+                            action.get('name')
+                        )
+                        return (actionTemplate &&
+                            actionTemplate.execution === 'back') as boolean
+                    })
+                    .isEmpty()
+            ) as List<any>
+        )
             .map(
                 (macro: Map<any, any>) =>
                     fromJS({
@@ -82,8 +86,9 @@ const MacroSelect = ({
             )
             .toList()
             .sortBy((macro: Maybe<Map<any, any>>) =>
-                (((macro as Map<any, any>).get('label') ||
-                    '') as string).toLowerCase()
+                (
+                    ((macro as Map<any, any>).get('label') || '') as string
+                ).toLowerCase()
             )
     }, [macroOptions, isLoading])
 

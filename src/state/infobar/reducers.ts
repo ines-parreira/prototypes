@@ -50,9 +50,9 @@ export default function reducer(
                 action.data as utils.ActionData
             )
 
-            const actionIndex = (state.get('pendingActionsCallbacks') as List<
-                any
-            >).findIndex(
+            const actionIndex = (
+                state.get('pendingActionsCallbacks') as List<any>
+            ).findIndex(
                 (pendingAction: Map<any, any>) =>
                     pendingAction.get('id') === actionId
             )

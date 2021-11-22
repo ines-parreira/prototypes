@@ -24,10 +24,9 @@ describe('<SearchInput/>', () => {
         const Result: FunctionComponent<SearchInputResultProps<ResultType>> = ({
             result,
         }: SearchInputResultProps<ResultType>) => <div>{result.id}</div>
-        const SubResult: FunctionComponent<SearchInputSubResultProps<
-            ResultType,
-            SubResultType
-        >> = ({
+        const SubResult: FunctionComponent<
+            SearchInputSubResultProps<ResultType, SubResultType>
+        > = ({
             result,
             subResult,
         }: SearchInputSubResultProps<ResultType, SubResultType>) => (

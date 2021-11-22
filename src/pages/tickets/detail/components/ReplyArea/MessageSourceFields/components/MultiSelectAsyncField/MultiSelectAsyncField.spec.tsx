@@ -134,8 +134,7 @@ describe('MultiSelectAsyncField component', () => {
                 preventDefault: jest.fn(),
                 stopPropagation: jest.fn(),
                 target: {
-                    value:
-                        'alex@gorgias.io, Romain <romain@gorgias.io>, wrongaddress',
+                    value: 'alex@gorgias.io, Romain <romain@gorgias.io>, wrongaddress',
                 },
             })
         expect(onChange).toBeCalledWith([

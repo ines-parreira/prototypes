@@ -194,9 +194,12 @@ class ViewNavbarView extends Component<Props, State> {
                             displayedViews.map((view: Map<any, any>) => {
                                 const isCurrentView =
                                     activeView.get('id') === view.get('id')
-                                const isFocused = window.location.pathname.startsWith(
-                                    `/app/tickets/${view.get('id') as number}/`
-                                )
+                                const isFocused =
+                                    window.location.pathname.startsWith(
+                                        `/app/tickets/${
+                                            view.get('id') as number
+                                        }/`
+                                    )
 
                                 const key = `${view.get('slug') as string}-${
                                     view.get('id') as number
@@ -233,9 +236,11 @@ class ViewNavbarView extends Component<Props, State> {
                                             view.get('name') as string
                                         } ${count}`}
                                         onClick={() => {
-                                            ;(this.context as {
-                                                closePanel: () => void
-                                            }).closePanel()
+                                            ;(
+                                                this.context as {
+                                                    closePanel: () => void
+                                                }
+                                            ).closePanel()
                                         }}
                                     >
                                         <span className="item-name">

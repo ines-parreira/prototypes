@@ -28,15 +28,15 @@ jest.mock('../../../../../state/views/actions', () => {
 })
 
 jest.mock('../../../../../state/ui/views/actions')
-;(activeViewIdSet as jest.MockedFunction<
-    typeof activeViewIdSet
->).mockImplementation((() => _identity) as any)
+;(
+    activeViewIdSet as jest.MockedFunction<typeof activeViewIdSet>
+).mockImplementation((() => _identity) as any)
 
 jest.mock('../Header', () => () => <div>Header mock</div>)
 jest.mock('../Table', () => () => <div>Table mock</div>)
 jest.mock('../FilterTopbar', () => () => <div>FilterTopbar mock</div>)
 
-const minProps = ({
+const minProps = {
     type: 'ticket',
     items: fromJS([ticketFixtures.ticket]),
     isUpdate: true,
@@ -63,24 +63,26 @@ const minProps = ({
     ActionsComponent: null,
     viewButtons: null,
     activeViewIdSet,
-} as unknown) as ComponentProps<typeof ViewTableContainer>
+} as unknown as ComponentProps<typeof ViewTableContainer>
 
 beforeEach(() => {
     jest.clearAllMocks()
     history.push = jest.fn()
-    ;(minProps.getViewIdToDisplay as jest.MockedFunction<
-        typeof minProps.getViewIdToDisplay
-    >).mockReturnValue(minProps.activeView.get('id'))
-    ;(minProps.getView as jest.MockedFunction<
-        typeof minProps.getView
-    >).mockReturnValue(minProps.activeView)
-    ;(minProps.isLoading as jest.MockedFunction<
-        typeof minProps.isLoading
-    >).mockReturnValue(false)
+    ;(
+        minProps.getViewIdToDisplay as jest.MockedFunction<
+            typeof minProps.getViewIdToDisplay
+        >
+    ).mockReturnValue(minProps.activeView.get('id'))
+    ;(
+        minProps.getView as jest.MockedFunction<typeof minProps.getView>
+    ).mockReturnValue(minProps.activeView)
+    ;(
+        minProps.isLoading as jest.MockedFunction<typeof minProps.isLoading>
+    ).mockReturnValue(false)
 })
 
 afterEach(() => {
-    ;((history.push as unknown) as jest.SpyInstance).mockRestore()
+    ;(history.push as unknown as jest.SpyInstance).mockRestore()
 })
 
 describe('<ViewTable />', () => {
@@ -94,9 +96,10 @@ describe('<ViewTable />', () => {
                     isSearch={true}
                     urlSearchView={searchView}
                     location={
-                        {search: stringify({cursor}), pathname: ''} as Location<
-                            any
-                        >
+                        {
+                            search: stringify({cursor}),
+                            pathname: '',
+                        } as Location<any>
                     }
                 />
             )
@@ -307,9 +310,10 @@ describe('<ViewTable />', () => {
                 <ViewTableContainer
                     {...minProps}
                     location={
-                        {search: stringify({cursor}), pathname: ''} as Location<
-                            any
-                        >
+                        {
+                            search: stringify({cursor}),
+                            pathname: '',
+                        } as Location<any>
                     }
                 />
             )
@@ -390,9 +394,11 @@ describe('<ViewTable />', () => {
                 '"search" mode',
             () => {
                 const someView = fromJS({}) as Map<any, any>
-                ;(minProps.getView as jest.MockedFunction<
-                    typeof minProps.getView
-                >).mockReturnValue(someView)
+                ;(
+                    minProps.getView as jest.MockedFunction<
+                        typeof minProps.getView
+                    >
+                ).mockReturnValue(someView)
 
                 const {rerender} = render(
                     <ViewTableContainer {...minProps} isSearch />
@@ -414,9 +420,11 @@ describe('<ViewTable />', () => {
                 '"add new" mode',
             () => {
                 const someView = fromJS({}) as Map<any, any>
-                ;(minProps.getView as jest.MockedFunction<
-                    typeof minProps.getView
-                >).mockReturnValue(someView)
+                ;(
+                    minProps.getView as jest.MockedFunction<
+                        typeof minProps.getView
+                    >
+                ).mockReturnValue(someView)
 
                 const {rerender} = render(
                     <ViewTableContainer {...minProps} isUpdate={false} />
@@ -440,9 +448,11 @@ describe('<ViewTable />', () => {
                 const {rerender} = render(<ViewTableContainer {...minProps} />)
 
                 jest.clearAllMocks()
-                ;(minProps.getViewIdToDisplay as jest.MockedFunction<
-                    typeof minProps.getViewIdToDisplay
-                >)
+                ;(
+                    minProps.getViewIdToDisplay as jest.MockedFunction<
+                        typeof minProps.getViewIdToDisplay
+                    >
+                )
                     .mockReturnValueOnce('1' as any)
                     .mockReturnValueOnce('2' as any)
                 rerender(<ViewTableContainer {...minProps} />)

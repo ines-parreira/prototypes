@@ -36,11 +36,8 @@ export class ChatIntegrationInstallContainer extends Component<Props, State> {
     }
 
     render() {
-        const {
-            integration,
-            getIntegrationsByTypes,
-            updateOrCreateIntegration,
-        } = this.props
+        const {integration, getIntegrationsByTypes, updateOrCreateIntegration} =
+            this.props
 
         return (
             <div className="full-width">

@@ -30,8 +30,7 @@ describe('generateConfiguration()', () => {
                                         {
                                             in: [
                                                 {
-                                                    var:
-                                                        ReportIssueVariable.SHIPMENT_STATUS,
+                                                    var: ReportIssueVariable.SHIPMENT_STATUS,
                                                 },
                                                 [ShipmentStatuses.DELIVERED],
                                             ],
@@ -57,8 +56,7 @@ describe('generateConfiguration()', () => {
                                         {
                                             in: [
                                                 {
-                                                    var:
-                                                        ReportIssueVariable.SHIPMENT_STATUS,
+                                                    var: ReportIssueVariable.SHIPMENT_STATUS,
                                                 },
                                                 [
                                                     ShipmentStatuses.IN_TRANSIT,

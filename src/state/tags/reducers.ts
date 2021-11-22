@@ -51,10 +51,9 @@ export default function reducer(
 
         case constants.SELECT_TAG_ALL: {
             const selected = !state.getIn(['_internal', 'selectAll'])
-            const _internal = (state.get('_internal', fromJS({})) as Map<
-                any,
-                any
-            >).set('selectAll', selected)
+            const _internal = (
+                state.get('_internal', fromJS({})) as Map<any, any>
+            ).set('selectAll', selected)
 
             let selectAllState = state.set('_internal', _internal)
             ;(state.get('items') as List<any>).forEach((tag: Map<any, any>) => {
@@ -68,11 +67,13 @@ export default function reducer(
         }
 
         case constants.EDIT_TAG: {
-            const meta = ((state.get('meta', fromJS({})) as Map<any, any>).map(
-                (tag: Map<any, any>) => {
-                    return tag.set('edit', false)
-                }
-            ) as Map<any, any>).setIn([action.tag?.id, 'edit'], true)
+            const meta = (
+                (state.get('meta', fromJS({})) as Map<any, any>).map(
+                    (tag: Map<any, any>) => {
+                        return tag.set('edit', false)
+                    }
+                ) as Map<any, any>
+            ).setIn([action.tag?.id, 'edit'], true)
 
             return state.set('meta', meta)
         }
@@ -109,9 +110,9 @@ export default function reducer(
             return state.setIn(['_internal', 'creating'], false)
 
         case constants.REMOVE_TAG: {
-            const itemIndex = (state.get('items', fromJS([])) as List<
-                any
-            >).findIndex((item: Map<any, any>) => item.get('id') === action.id)
+            const itemIndex = (
+                state.get('items', fromJS([])) as List<any>
+            ).findIndex((item: Map<any, any>) => item.get('id') === action.id)
             return state.removeIn(['items', itemIndex])
         }
 

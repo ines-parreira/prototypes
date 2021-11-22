@@ -30,11 +30,11 @@ describe('<IncomingPhoneCall/>', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         mockedServer.reset()
-        history = ({
+        history = {
             location: {},
             push: jest.fn(),
             listen: jest.fn(),
-        } as unknown) as History
+        } as unknown as History
 
         store = mockStore({
             integrations: fromJS({
@@ -48,9 +48,9 @@ describe('<IncomingPhoneCall/>', () => {
             }),
         })
 
-        wrapper = (props) => (
+        wrapper = (props: {children?: React.ReactNode}) => (
             <Router history={history}>
-                <Provider store={store}>{props?.children}</Provider>
+                <Provider store={store}>{props.children}</Provider>
             </Router>
         )
     })

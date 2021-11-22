@@ -44,11 +44,8 @@ export class InstallOnIntegrationsCardContainer extends React.Component<
     }
 
     async _installOnStore(targetIntegration: Map<any, any>) {
-        const {
-            integration,
-            integrationType,
-            updateOrCreateIntegration,
-        } = this.props
+        const {integration, integrationType, updateOrCreateIntegration} =
+            this.props
 
         if (integration.get('type') === IntegrationType.SmoochInside) {
             void notify({
@@ -84,9 +81,8 @@ export class InstallOnIntegrationsCardContainer extends React.Component<
         ) as List<any>
 
         if (!targetIntegrationIdsList.contains(targetIntegrationId)) {
-            targetIntegrationIdsList = targetIntegrationIdsList.push(
-                targetIntegrationId
-            )
+            targetIntegrationIdsList =
+                targetIntegrationIdsList.push(targetIntegrationId)
         }
 
         const form = {
@@ -104,18 +100,17 @@ export class InstallOnIntegrationsCardContainer extends React.Component<
     }
 
     async _removeFromStore(targetIntegrationId: number) {
-        const {
-            integration,
-            integrationType,
-            updateOrCreateIntegration,
-        } = this.props
+        const {integration, integrationType, updateOrCreateIntegration} =
+            this.props
 
         this.setState({integrationLoading: targetIntegrationId})
 
-        const indexToDelete = (integration.getIn(
-            ['meta', getMetaField(integrationType)],
-            fromJS([])
-        ) as List<any>).findIndex((value) => value === targetIntegrationId)
+        const indexToDelete = (
+            integration.getIn(
+                ['meta', getMetaField(integrationType)],
+                fromJS([])
+            ) as List<any>
+        ).findIndex((value) => value === targetIntegrationId)
 
         const form = {
             id: integration.get('id'),
@@ -169,15 +164,17 @@ export class InstallOnIntegrationsCardContainer extends React.Component<
                         <div>
                             {sortedTargetIntegrations.map(
                                 (targetIntegration) => {
-                                    const targetIntegrationId = targetIntegration!.get(
-                                        'id'
-                                    )
-                                    const chatIsInstalled = (integration.getIn(
-                                        ['meta', getMetaField(integrationType)],
-                                        fromJS([])
-                                    ) as List<any>).includes(
-                                        targetIntegrationId
-                                    )
+                                    const targetIntegrationId =
+                                        targetIntegration!.get('id')
+                                    const chatIsInstalled = (
+                                        integration.getIn(
+                                            [
+                                                'meta',
+                                                getMetaField(integrationType),
+                                            ],
+                                            fromJS([])
+                                        ) as List<any>
+                                    ).includes(targetIntegrationId)
 
                                     return (
                                         <div

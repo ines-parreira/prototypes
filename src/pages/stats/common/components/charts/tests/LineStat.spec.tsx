@@ -10,7 +10,7 @@ import {
 
 jest.mock('react-chartjs-2', () => ({Line: () => <canvas />}))
 
-const minProps = ({
+const minProps = {
     name: 'stat_name',
     label: 'Stat label',
     legend: fromJS({
@@ -41,7 +41,7 @@ const minProps = ({
     }),
     config: statsConfig.find((config, key) => key === RESOLUTION_TIME),
     businessRanges: undefined,
-} as unknown) as ComponentProps<typeof LineStatContainer>
+} as unknown as ComponentProps<typeof LineStatContainer>
 
 describe('LineStat', () => {
     it('should render a line chart', () => {

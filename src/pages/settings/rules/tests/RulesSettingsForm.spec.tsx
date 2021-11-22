@@ -40,7 +40,7 @@ describe('<RuleSettingsForm />', () => {
 
     const notifyMock = jest.fn()
 
-    const minProps = ({
+    const minProps = {
         rules: {1: {...emptyRule, ...getEmptyRule()}},
         ruleCreated: ruleCreatedMock,
         ruleDeleted: ruleDeletedMock,
@@ -49,7 +49,7 @@ describe('<RuleSettingsForm />', () => {
         schemas: fromJS({}),
         notify: notifyMock,
         match: {params: {}},
-    } as any) as ComponentProps<typeof RulesSettingsFormContainer>
+    } as any as ComponentProps<typeof RulesSettingsFormContainer>
 
     const matchProp = {
         params: {
@@ -84,9 +84,9 @@ describe('<RuleSettingsForm />', () => {
             expect(container.firstChild).toMatchSnapshot()
         })
         it('should render a filled form when rule id after fetched', async () => {
-            fetchRulesMock.mockResolvedValue(({
+            fetchRulesMock.mockResolvedValue({
                 data: [emptyRule],
-            } as unknown) as ApiListResponsePagination<Rule[]>)
+            } as unknown as ApiListResponsePagination<Rule[]>)
             const {container} = render(
                 <RulesSettingsFormContainer {...minProps} match={matchProp} />
             )

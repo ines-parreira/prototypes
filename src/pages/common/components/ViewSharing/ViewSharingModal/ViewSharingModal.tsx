@@ -216,10 +216,9 @@ function useViewSharing(view: Map<any, any>, currentUser: Map<any, any>) {
                         return setError(error)
                     }
 
-                    const errorMessage = (fromJS(error.response) as Map<
-                        any,
-                        any
-                    >).getIn(['data', 'error', 'msg'])
+                    const errorMessage = (
+                        fromJS(error.response) as Map<any, any>
+                    ).getIn(['data', 'error', 'msg'])
 
                     if (!errorMessage) {
                         return setError(error)

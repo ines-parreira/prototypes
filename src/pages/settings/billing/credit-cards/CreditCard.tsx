@@ -407,10 +407,11 @@ export class CreditCardContainer extends Component<Props, State> {
                                             value={this.state.expDate}
                                             onChange={(expDate) =>
                                                 this._updateField({
-                                                    expDate: creditCardExpDateNormalizer(
-                                                        expDate,
-                                                        this.state.expDate
-                                                    ),
+                                                    expDate:
+                                                        creditCardExpDateNormalizer(
+                                                            expDate,
+                                                            this.state.expDate
+                                                        ),
                                                 })
                                             }
                                             error={errors.expDate}
@@ -448,8 +449,8 @@ export class CreditCardContainer extends Component<Props, State> {
                                             isUpdating ? 'primary' : 'success'
                                         }
                                         className={classnames({
-                                            'btn-loading': this.state
-                                                .isSubmitting,
+                                            'btn-loading':
+                                                this.state.isSubmitting,
                                         })}
                                         disabled={
                                             this.state.isSubmitting ||
@@ -505,9 +506,8 @@ const connector = connect(
         regularCurrentPlan: getEquivalentRegularCurrentPlan(state),
         automationAddOnAmount: getAddOnAutomationAmountCurrentPlan(state),
         currentUser: state.currentUser,
-        currentSubscription: currentAccountSelectors.getCurrentSubscription(
-            state
-        ),
+        currentSubscription:
+            currentAccountSelectors.getCurrentSubscription(state),
         currentAccount: state.currentAccount,
         hasCreditCard: !!state.billing.get('creditCard'),
         accountHasLegacyPlan: hasLegacyPlanSelector(state),

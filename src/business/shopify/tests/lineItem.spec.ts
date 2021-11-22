@@ -88,10 +88,9 @@ describe('getDraftOrderLineItemDiscountedPrice()', () => {
         const appliedDiscount = fromJS(
             shopifyAppliedDiscountFixture({value: '50.0', amount: '0.50'})
         )
-        const lineItem = (fromJS(shopifyLineItemFixture()) as Map<
-            any,
-            any
-        >).set('applied_discount', appliedDiscount)
+        const lineItem = (
+            fromJS(shopifyLineItemFixture()) as Map<any, any>
+        ).set('applied_discount', appliedDiscount)
         const currencyCode = 'USD'
         const price = getDraftOrderLineItemDiscountedPrice(
             lineItem,
@@ -194,10 +193,9 @@ describe('getDraftOrderTotalLineItemsPrice()', () => {
     })
 
     it('should return the correct value without rounding errors', () => {
-        const payload = (fromJS(shopifyDraftOrderPayloadFixture()) as Map<
-            any,
-            any
-        >).set(
+        const payload = (
+            fromJS(shopifyDraftOrderPayloadFixture()) as Map<any, any>
+        ).set(
             'line_items',
             fromJS([
                 shopifyLineItemFixture({price: '27.99'}),
@@ -236,9 +234,11 @@ describe('getOrderLineItemDiscountedPrice()', () => {
         const totalDiscountSet = fromJS(
             shopifyPriceSetFixture({amount: '0.00'})
         )
-        const lineItem = (fromJS(
-            shopifyLineItemFixture({quantity, currencyCode: 'USD'})
-        ) as Map<any, any>).set('total_discount_set', totalDiscountSet)
+        const lineItem = (
+            fromJS(
+                shopifyLineItemFixture({quantity, currencyCode: 'USD'})
+            ) as Map<any, any>
+        ).set('total_discount_set', totalDiscountSet)
         const price = getOrderLineItemDiscountedPrice(
             lineItem,
             currencyCode,
@@ -254,9 +254,11 @@ describe('getOrderLineItemDiscountedPrice()', () => {
         const totalDiscountSet = fromJS(
             shopifyPriceSetFixture({amount: '0.50'})
         )
-        const lineItem = (fromJS(
-            shopifyLineItemFixture({quantity, currencyCode: 'USD'})
-        ) as Map<any, any>).set('total_discount_set', totalDiscountSet)
+        const lineItem = (
+            fromJS(
+                shopifyLineItemFixture({quantity, currencyCode: 'USD'})
+            ) as Map<any, any>
+        ).set('total_discount_set', totalDiscountSet)
         const price = getOrderLineItemDiscountedPrice(
             lineItem,
             currencyCode,

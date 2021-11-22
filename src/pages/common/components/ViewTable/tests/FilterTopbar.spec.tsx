@@ -60,9 +60,8 @@ const submitViewMock: jest.SpyInstance = submitView as jest.MockedFunction<
 const deleteViewMock: jest.SpyInstance = deleteView as jest.MockedFunction<
     typeof deleteView
 >
-const fetchViewItemsMock: jest.SpyInstance = fetchViewItems as jest.MockedFunction<
-    typeof fetchViewItems
->
+const fetchViewItemsMock: jest.SpyInstance =
+    fetchViewItems as jest.MockedFunction<typeof fetchViewItems>
 
 jest.mock('../Filters/ViewFilters', () => {
     return () => <div>ViewFilters</div>
@@ -72,9 +71,9 @@ jest.mock('../../ViewSharing/ViewSharingButton', () => () => null)
 
 jest.mock(
     '../../ConfirmButton',
-    () => ({confirm}: ComponentProps<typeof ConfirmButton>) => (
-        <div onClick={confirm} />
-    )
+    () =>
+        ({confirm}: ComponentProps<typeof ConfirmButton>) =>
+            <div onClick={confirm} />
 )
 
 beforeEach(() => {
@@ -82,25 +81,25 @@ beforeEach(() => {
     jest.spyOn(utils, 'getDefaultOperator').mockImplementation(() => 'foo')
     jest.spyOn(global.Date, 'now').mockImplementation(() => 0) // ConfirmButton generates ids based on the date
     submitViewMock.mockImplementation(() => () => Promise.resolve(viewFixture))
-    deleteViewMock.mockImplementation(() => () =>
-        fromJS({...viewFixture, id: 8}) as Map<any, any>
+    deleteViewMock.mockImplementation(
+        () => () => fromJS({...viewFixture, id: 8}) as Map<any, any>
     )
     fetchViewItemsMock.mockImplementation(() => () => ({}))
 })
 
 afterEach(() => {
-    ;((utils.getDefaultOperator as unknown) as jest.SpyInstance).mockRestore()
-    ;((global.Date.now as unknown) as jest.SpyInstance).mockRestore()
+    ;(utils.getDefaultOperator as unknown as jest.SpyInstance).mockRestore()
+    ;(global.Date.now as unknown as jest.SpyInstance).mockRestore()
     fetchViewItemsMock.mockRestore()
 })
 
-const minProps = ({
+const minProps = {
     cancelFetchViewItemsCancellable: jest.fn(),
     fetchViewItemsCancellable: jest.fn(),
     isSearch: false,
     isUpdate: true,
     type: 'ticket',
-} as unknown) as ComponentProps<typeof FilterTopbar>
+} as unknown as ComponentProps<typeof FilterTopbar>
 
 describe('<FilterTopbar />', () => {
     describe('render', () => {
@@ -134,9 +133,11 @@ describe('<FilterTopbar />', () => {
 
     describe('updating filters', () => {
         beforeEach(() => {
-            ;((addFieldFilter as jest.MockedFunction<
-                typeof addFieldFilter
-            >) as jest.SpyInstance).mockImplementation(() => () => ({}))
+            ;(
+                addFieldFilter as jest.MockedFunction<
+                    typeof addFieldFilter
+                > as jest.SpyInstance
+            ).mockImplementation(() => () => ({}))
         })
 
         it('should update active view on add field', () => {
@@ -274,15 +275,16 @@ describe('<FilterTopbar />', () => {
         >
         activeViewIdSetMock.mockImplementation(jest.fn())
 
-        submitViewMock.mockImplementation(() => () =>
-            Promise.resolve({
-                type: SUBMIT_UPDATE_VIEW_ERROR,
-                error: {
-                    message: 'Request failed with status code 403',
-                    name: 'Error',
-                },
-                reason: 'Failed to submit view. Please try again',
-            })
+        submitViewMock.mockImplementation(
+            () => () =>
+                Promise.resolve({
+                    type: SUBMIT_UPDATE_VIEW_ERROR,
+                    error: {
+                        message: 'Request failed with status code 403',
+                        name: 'Error',
+                    },
+                    reason: 'Failed to submit view. Please try again',
+                })
         )
 
         const {getByText} = render(
@@ -315,15 +317,16 @@ describe('<FilterTopbar />', () => {
         >
         activeViewIdSetMock.mockImplementation(jest.fn())
 
-        submitViewMock.mockImplementation(() => () =>
-            Promise.resolve({
-                type: SUBMIT_NEW_VIEW_ERROR,
-                error: {
-                    message: 'Request failed with status code 403',
-                    name: 'Error',
-                },
-                reason: 'Failed to submit view. Please try again',
-            })
+        submitViewMock.mockImplementation(
+            () => () =>
+                Promise.resolve({
+                    type: SUBMIT_NEW_VIEW_ERROR,
+                    error: {
+                        message: 'Request failed with status code 403',
+                        name: 'Error',
+                    },
+                    reason: 'Failed to submit view. Please try again',
+                })
         )
         const {getByText} = render(
             <Provider
@@ -394,9 +397,8 @@ describe('<FilterTopbar />', () => {
     })
 
     it('should close popover on cancel', async () => {
-        const resetViewMock: jest.SpyInstance = resetView as jest.MockedFunction<
-            typeof resetView
-        >
+        const resetViewMock: jest.SpyInstance =
+            resetView as jest.MockedFunction<typeof resetView>
         resetViewMock.mockImplementationOnce(() => () => ({}))
 
         const {getByText, queryByText} = render(

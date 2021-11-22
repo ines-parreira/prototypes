@@ -22,9 +22,8 @@ import {getVariables} from '../../../../../../config/ticket.ts'
 
 @connect((state) => {
     return {
-        hasIntegrationOfTypes: integrationsSelectors.makeHasIntegrationOfTypes(
-            state
-        ),
+        hasIntegrationOfTypes:
+            integrationsSelectors.makeHasIntegrationOfTypes(state),
     }
 })
 export default class SetResponseTextAction extends React.Component {

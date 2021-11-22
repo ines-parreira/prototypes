@@ -151,7 +151,8 @@ describe('WebsocketSharedWorker', () => {
         it('should not increase the reconnect backoff time above the max', () => {
             worker.socket = io()
 
-            worker.incrementalReconnectBackoff = MAX_INCREMENTAL_RECONNECT_BACKOFF
+            worker.incrementalReconnectBackoff =
+                MAX_INCREMENTAL_RECONNECT_BACKOFF
 
             worker.incrementalReconnect()
 
@@ -192,7 +193,8 @@ describe('WebsocketSharedWorker', () => {
                     jest.fn(),
                     1000
                 )
-                worker.incrementalReconnectBackoff = MAX_INCREMENTAL_RECONNECT_BACKOFF
+                worker.incrementalReconnectBackoff =
+                    MAX_INCREMENTAL_RECONNECT_BACKOFF
 
                 worker._onSocketConnect()
 

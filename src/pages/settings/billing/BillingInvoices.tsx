@@ -100,11 +100,8 @@ export class BillingInvoicesContainer extends Component<Props, State> {
 
     render() {
         const {invoices} = this.props
-        const {
-            isFetchingInvoices,
-            confirmingInvoicePayment,
-            payingInvoice,
-        } = this.state
+        const {isFetchingInvoices, confirmingInvoicePayment, payingInvoice} =
+            this.state
 
         if (isFetchingInvoices) {
             return <Loader />

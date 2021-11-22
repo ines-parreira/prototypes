@@ -6,7 +6,7 @@ import {
     MacroActionName,
 } from '../models/macroAction/types'
 
-export const macros = ([
+export const macros = [
     {
         id: 1,
         name: 'Waive Fee',
@@ -120,7 +120,7 @@ export const macros = ([
         updated_datetime: '2017-08-01T17:56:51.220744+00:00',
         usage: 0,
     },
-] as unknown) as Macro[]
+] as unknown as Macro[]
 
 export const setTextAction: MacroAction = {
     arguments: {

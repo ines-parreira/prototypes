@@ -71,7 +71,8 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                                 options: RECHARGE_CANCELLATION_REASONS.map(
                                     (option) => ({value: option, label: option})
                                 ),
-                                defaultValue: RECHARGE_DEFAULT_CANCELLATION_REASON,
+                                defaultValue:
+                                    RECHARGE_DEFAULT_CANCELLATION_REASON,
                                 allowCustomValue: true,
                                 required: true,
                             },

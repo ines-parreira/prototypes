@@ -188,9 +188,8 @@ export default class SearchInput<
             return
         }
 
-        const dropdownMenu = dropdown.querySelector<HTMLDivElement>(
-            '.dropdown-menu'
-        )
+        const dropdownMenu =
+            dropdown.querySelector<HTMLDivElement>('.dropdown-menu')
         if (!dropdownMenu) {
             return
         }

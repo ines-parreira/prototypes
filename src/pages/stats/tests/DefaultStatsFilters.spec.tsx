@@ -10,9 +10,8 @@ import {RootState, StoreDispatch} from '../../../state/types'
 import {user} from '../../../fixtures/users'
 
 jest.mock('moment-timezone', () => () => {
-    const moment: (
-        date: string
-    ) => Record<string, unknown> = jest.requireActual('moment-timezone')
+    const moment: (date: string) => Record<string, unknown> =
+        jest.requireActual('moment-timezone')
 
     return moment('2019-09-03')
 })

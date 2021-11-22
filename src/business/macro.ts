@@ -60,9 +60,12 @@ function getAttachmentsCount(macro: Map<any, any>): number {
         .reduce(
             (total = 0, action: Map<any, any>) =>
                 total +
-                (action.getIn(['arguments', 'attachments'], fromJS([])) as List<
-                    any
-                >).size,
+                (
+                    action.getIn(
+                        ['arguments', 'attachments'],
+                        fromJS([])
+                    ) as List<any>
+                ).size,
             0
         )
 }

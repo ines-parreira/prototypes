@@ -203,9 +203,8 @@ const predictionPlugin = (config: {context: Map<any, any>}): Plugin => {
                     predictionKey,
                     editorState
                 )
-                const currentText = getPlainTextFromStateWithPrediction(
-                    editorState
-                )
+                const currentText =
+                    getPlainTextFromStateWithPrediction(editorState)
                 const prevText = getPlainTextFromStateWithPrediction(
                     EditorState.undo(editorState)
                 )

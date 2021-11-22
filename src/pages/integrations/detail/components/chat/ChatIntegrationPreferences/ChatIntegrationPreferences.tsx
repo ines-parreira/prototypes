@@ -187,8 +187,8 @@ export class ChatIntegrationPreferences extends Component<Props, State> {
                         enabled: this.state.autoResponderEnabled,
                         reply: this.state.autoResponderReply,
                     },
-                    email_capture_enforcement: this.state
-                        .emailCaptureEnforcement,
+                    email_capture_enforcement:
+                        this.state.emailCaptureEnforcement,
                     linked_email_integration: this.state.linkedEmailIntegration,
                 },
             }),
@@ -343,7 +343,8 @@ export class ChatIntegrationPreferences extends Component<Props, State> {
                                     <div className="mb-3">
                                         <p
                                             className={classnames({
-                                                'text-faded': !autoResponderEnabled,
+                                                'text-faded':
+                                                    !autoResponderEnabled,
                                             })}
                                         >
                                             <b>
@@ -368,7 +369,8 @@ export class ChatIntegrationPreferences extends Component<Props, State> {
                                         />
                                         <p
                                             className={classnames({
-                                                'text-faded': !autoResponderEnabled,
+                                                'text-faded':
+                                                    !autoResponderEnabled,
                                             })}
                                         >
                                             This message will be sent in new
@@ -377,7 +379,8 @@ export class ChatIntegrationPreferences extends Component<Props, State> {
                                         </p>
                                         <p
                                             className={classnames({
-                                                'text-faded': !autoResponderEnabled,
+                                                'text-faded':
+                                                    !autoResponderEnabled,
                                             })}
                                         >
                                             <b>

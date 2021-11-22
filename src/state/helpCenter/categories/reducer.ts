@@ -55,13 +55,12 @@ export default createReducer<HelpCenterCategoriesState>(
 
             .addCase(pushCategorySupportedLocales, (state, {payload}) => {
                 if (state.categoriesById[payload.categoryId]) {
-                    state.categoriesById[
-                        payload.categoryId
-                    ].available_locales = _uniq([
-                        ...state.categoriesById[payload.categoryId]
-                            .available_locales,
-                        ...payload.supportedLocales,
-                    ])
+                    state.categoriesById[payload.categoryId].available_locales =
+                        _uniq([
+                            ...state.categoriesById[payload.categoryId]
+                                .available_locales,
+                            ...payload.supportedLocales,
+                        ])
                 }
             })
 

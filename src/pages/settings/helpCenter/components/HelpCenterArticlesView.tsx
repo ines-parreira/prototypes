@@ -87,17 +87,13 @@ export const HelpCenterArticlesView = (): JSX.Element => {
     const [selectedArticle, setSelectedArticle] = useState<
         CreateArticleDto | Article | null
     >(null)
-    const [
-        savedTranslation,
-        setSavedTranslation,
-    ] = useState<ArticleTranslation | null>(null)
+    const [savedTranslation, setSavedTranslation] =
+        useState<ArticleTranslation | null>(null)
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
         null
     )
-    const [
-        selectedArticleTranslations,
-        setSelectedArticleTranslations,
-    ] = useState<ArticleTranslation[] | null>(null)
+    const [selectedArticleTranslations, setSelectedArticleTranslations] =
+        useState<ArticleTranslation[] | null>(null)
     const [articleLanguage, setArticleLanguage] = useState(viewLanguage)
     const [pendingDeleteLocale, setPendingDeleteLocale] = useState<OptionItem>()
     const [pendingCloseArticle, setPendingCloseArticle] = useState(false)

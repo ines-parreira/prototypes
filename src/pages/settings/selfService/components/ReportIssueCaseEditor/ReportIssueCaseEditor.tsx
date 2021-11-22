@@ -69,9 +69,8 @@ const ReportIssueCaseEditor: ComponentType = () => {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [reasonOptions, setReasonOptions] = useState<SelectableOption[]>([])
-    const [conditionsLogicExpession, setConditionsLogicExpression] = useState<
-        ReportIssueRulesLogic
-    >({and: []})
+    const [conditionsLogicExpession, setConditionsLogicExpression] =
+        useState<ReportIssueRulesLogic>({and: []})
 
     const linkToIssueList = `/app/settings/self-service/${integrationType}/${shopName}/preferences/report-issue/`
 

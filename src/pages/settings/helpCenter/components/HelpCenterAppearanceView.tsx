@@ -41,9 +41,8 @@ export const HelpCenterAppearanceView: React.FC = () => {
             : HELP_CENTER_DEFAULT_THEME
     const helpCenterColor =
         helpCenter?.primary_color || HELP_CENTER_DEFAULT_COLOR
-    const [selectedTheme, setSelectedTheme] = useState<HelpCenterTheme>(
-        helpCenterTheme
-    )
+    const [selectedTheme, setSelectedTheme] =
+        useState<HelpCenterTheme>(helpCenterTheme)
     const [currentColor, setCurrentColor] = useState(helpCenterColor)
     const primaryLogo = useFileUpload()
     const lightLogo = useFileUpload()

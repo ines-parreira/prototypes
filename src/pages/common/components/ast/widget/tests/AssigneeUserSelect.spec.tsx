@@ -8,7 +8,7 @@ describe('ast', () => {
     describe('widgets', () => {
         describe('<AssigneeUserSelect/>', () => {
             describe('render()', () => {
-                const commonProps = ({
+                const commonProps = {
                     agents: fromJS([
                         {id: 1, name: 'Agent 1'},
                         {id: 2, name: 'Agent 2'},
@@ -18,7 +18,7 @@ describe('ast', () => {
                         fetchUsers: jest.fn(),
                         onChange: jest.fn(),
                     },
-                } as unknown) as ComponentProps<
+                } as unknown as ComponentProps<
                     typeof AssigneeUserSelectContainer
                 >
 

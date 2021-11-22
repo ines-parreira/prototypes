@@ -279,8 +279,8 @@ describe('<BillingPlansComparison />', () => {
     })
 
     it('should set plan cards to updating while plan is being updated', () => {
-        updateSubscriptionMock.mockImplementation(() => () =>
-            new Promise(_noop)
+        updateSubscriptionMock.mockImplementation(
+            () => () => new Promise(_noop)
         )
         const {getByRole, container} = render(
             <Provider store={mockStore(defaultState)}>

@@ -53,28 +53,24 @@ function PrivateReplyModal({
     goToNextTicket,
     setClosedStatus,
 }: Props) {
-    const {
-        isSending,
-        sendPrivateReply,
-        inputOnChange,
-        canSend,
-    } = usePrivateReply(
-        integrationId,
-        messageId,
-        ticketId,
-        ticketMessageId,
-        senderId,
-        executePrivateReplyAction,
-        commentMessage,
-        toggle,
-        isFacebookComment,
-        source,
-        sender,
-        messageCreatedDatetime,
-        setClosedStatus,
-        goToNextTicket,
-        meta
-    )
+    const {isSending, sendPrivateReply, inputOnChange, canSend} =
+        usePrivateReply(
+            integrationId,
+            messageId,
+            ticketId,
+            ticketMessageId,
+            senderId,
+            executePrivateReplyAction,
+            commentMessage,
+            toggle,
+            isFacebookComment,
+            source,
+            sender,
+            messageCreatedDatetime,
+            setClosedStatus,
+            goToNextTicket,
+            meta
+        )
 
     const placeholder = isFacebookComment
         ? 'Reply via Facebook Messenger'

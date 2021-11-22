@@ -80,11 +80,13 @@ export class ViewTableContainer extends Component<Props> {
             updateView(urlSearchView, false)
         } else if (isCreationUrl(location.pathname, 'tickets')) {
             updateView(
-                (config.get('newView') as (
-                    params?: ViewVisibility,
-                    viewName?: string,
-                    filters?: string
-                ) => Map<any, any>)(
+                (
+                    config.get('newView') as (
+                        params?: ViewVisibility,
+                        viewName?: string,
+                        filters?: string
+                    ) => Map<any, any>
+                )(
                     params.visibility,
                     location.state?.viewName,
                     location.state?.filters
@@ -106,7 +108,7 @@ export class ViewTableContainer extends Component<Props> {
                 history.push('/app')
             }
 
-            setViewActive(getView((suggestedViewId as unknown) as string))
+            setViewActive(getView(suggestedViewId as unknown as string))
             activeViewIdSet(suggestedViewId)
         }
 
@@ -158,9 +160,11 @@ export class ViewTableContainer extends Component<Props> {
         ) {
             // entering "add new" mode
             updateView(
-                (config.get('newView') as (
-                    params?: ViewVisibility
-                ) => Map<any, any>)(params.visibility)
+                (
+                    config.get('newView') as (
+                        params?: ViewVisibility
+                    ) => Map<any, any>
+                )(params.visibility)
             )
             shouldFetchViewItems = true
         } else if (
@@ -174,9 +178,7 @@ export class ViewTableContainer extends Component<Props> {
             prevSuggestedViewId !== currentSuggestedViewId ||
             !hasActiveView
         ) {
-            setViewActive(
-                getView((currentSuggestedViewId as unknown) as string)
-            )
+            setViewActive(getView(currentSuggestedViewId as unknown as string))
             activeViewIdSet(currentSuggestedViewId)
             shouldFetchViewItems = true
         } else if (
@@ -222,7 +224,7 @@ export class ViewTableContainer extends Component<Props> {
         }
 
         return `/app/${config.get('routeItem') as string}/${
-            (item.get('id') as unknown) as number
+            item.get('id') as unknown as number
         }`
     }
 
@@ -240,9 +242,9 @@ export class ViewTableContainer extends Component<Props> {
             navigation,
         } = this.props
 
-        const displayedFields = (config.get('fields', fromJS([])) as List<
-            any
-        >).filter((field: Map<any, any>) => {
+        const displayedFields = (
+            config.get('fields', fromJS([])) as List<any>
+        ).filter((field: Map<any, any>) => {
             // display field if mandatory from config
             if (config.get('mainField') === field.get('name')) {
                 return true

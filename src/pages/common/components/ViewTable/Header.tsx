@@ -158,7 +158,8 @@ export class HeaderContainer extends React.Component<Props, State> {
                                                 className={classnames(
                                                     css.title,
                                                     {
-                                                        [css.withEmojiPicker]: showEmojiPicker,
+                                                        [css.withEmojiPicker]:
+                                                            showEmojiPicker,
                                                     }
                                                 )}
                                                 title={activeView.get(
@@ -217,7 +218,7 @@ export class HeaderContainer extends React.Component<Props, State> {
                             }...`}
                             searchDebounceTime={1000}
                             location={`${
-                                (activeView.get('id') as unknown) as string
+                                activeView.get('id') as unknown as string
                             }${isSearch ? '(s)' : ''}`}
                             forcedQuery={activeView.get('search') || ''}
                             className={classnames(css.headerSearch, 'mr-2', {

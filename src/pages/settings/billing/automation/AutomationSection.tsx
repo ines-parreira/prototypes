@@ -24,9 +24,8 @@ const AutomationSection = () => {
     const currentPlan = useSelector(getCurrentPlan)
     const addOnAmount = useSelector(getAddOnAutomationAmountCurrentPlan)
 
-    const [isAutomationModalOpened, setIsAutomationModalOpened] = useState(
-        false
-    )
+    const [isAutomationModalOpened, setIsAutomationModalOpened] =
+        useState(false)
     const isOnTrial = useSelector(isTrialing)
     const isSelfServeLegacy = useSelector(hasAutomationLegacyFeatures)
     const hasAutomationAddOn = useSelector(getHasAutomationAddOn)

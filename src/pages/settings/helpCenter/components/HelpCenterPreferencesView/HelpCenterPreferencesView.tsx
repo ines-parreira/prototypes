@@ -30,11 +30,8 @@ export const HelpCenterPreferencesView: React.FC = () => {
     const dispatch = useAppDispatch()
     const locales = useLocales()
     const helpCenterId = useHelpCenterIdParam()
-    const {
-        helpCenter,
-        getHelpCenterCustomDomain,
-        fetchHelpCenterTranslations,
-    } = useCurrentHelpCenter()
+    const {helpCenter, getHelpCenterCustomDomain, fetchHelpCenterTranslations} =
+        useCurrentHelpCenter()
     const viewLanguage =
         useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
 

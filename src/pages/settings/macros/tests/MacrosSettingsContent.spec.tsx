@@ -16,49 +16,55 @@ jest.mock('../../../../models/macro/resources')
 jest.mock(
     '../../../common/components/Pagination',
     //$TsFixMe Replace Props type to ComponentProps<typeof Pagination> on Pagination migration
-    () => ({onChange}: {onChange: (value: number) => void}) => (
-        <div onClick={() => onChange(2)} />
-    )
+    () =>
+        ({onChange}: {onChange: (value: number) => void}) =>
+            <div onClick={() => onChange(2)} />
 )
 jest.mock(
     '../../../common/components/Search',
     //$TsFixMe Replace Props type to ComponentProps<typeof Search> on Search migration
-    () => ({onChange}: {onChange: (value: string) => void}) => (
-        <div onChange={(e) => onChange((e.target as HTMLInputElement).value)} />
-    )
+    () =>
+        ({onChange}: {onChange: (value: string) => void}) =>
+            (
+                <div
+                    onChange={(e) =>
+                        onChange((e.target as HTMLInputElement).value)
+                    }
+                />
+            )
 )
 jest.mock('../../../history')
 jest.mock(
     '../MacrosSettingsTable',
-    () => ({
-        onSortOptionsChange,
-    }: ComponentProps<typeof MacroSettingsTable>) => {
-        //eslint-disable-next-line  @typescript-eslint/no-var-requires
-        const {OrderDirection} = require('../../../../models/api/types')
-        const {
-            MacroSortableProperties,
+    () =>
+        ({onSortOptionsChange}: ComponentProps<typeof MacroSettingsTable>) => {
             //eslint-disable-next-line  @typescript-eslint/no-var-requires
-        } = require('../../../../models/macro/types')
-        return (
-            <div
-                onClick={() =>
-                    onSortOptionsChange(
-                        //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                        MacroSortableProperties.Name,
-                        //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                        OrderDirection.Asc
-                    )
-                }
-            />
-        )
-    }
+            const {OrderDirection} = require('../../../../models/api/types')
+            const {
+                MacroSortableProperties,
+                //eslint-disable-next-line  @typescript-eslint/no-var-requires
+            } = require('../../../../models/macro/types')
+            return (
+                <div
+                    onClick={() =>
+                        onSortOptionsChange(
+                            //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                            MacroSortableProperties.Name,
+                            //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                            OrderDirection.Asc
+                        )
+                    }
+                />
+            )
+        }
 )
 
 const mockToken = axios.CancelToken.source().token
 
 describe('<MacrosSettingsContent/>', () => {
     const mappedMacrosFixtures = macrosFixtures
-    const mockFetchMacros: jest.MockedFunction<typeof fetchMacros> = fetchMacros as any
+    const mockFetchMacros: jest.MockedFunction<typeof fetchMacros> =
+        fetchMacros as any
     const mockMacrosFetched = jest.fn()
     const mockNotify = jest.fn()
     const macrosState = {
@@ -66,11 +72,11 @@ describe('<MacrosSettingsContent/>', () => {
         '2': mappedMacrosFixtures[0],
         '3': mappedMacrosFixtures[0],
     }
-    const minProps = ({
+    const minProps = {
         macros: {},
         macrosFetched: mockMacrosFetched,
         notify: mockNotify,
-    } as any) as ComponentProps<typeof MacrosSettingsContentContainer>
+    } as any as ComponentProps<typeof MacrosSettingsContentContainer>
 
     mockFetchMacros.mockResolvedValue({
         data: mappedMacrosFixtures,

@@ -32,9 +32,10 @@ export const TicketListContainer = ({
     const {pathname} = useLocation()
     const params = useParams<{viewId?: string}>()
     const isSearch = useMemo(() => isSearchUrl(pathname, 'tickets'), [pathname])
-    const isUpdate = useMemo(() => !isCreationUrl(pathname, 'tickets'), [
-        pathname,
-    ])
+    const isUpdate = useMemo(
+        () => !isCreationUrl(pathname, 'tickets'),
+        [pathname]
+    )
 
     useEffect(() => {
         void fetchTags()

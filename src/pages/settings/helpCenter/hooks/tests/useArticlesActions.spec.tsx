@@ -32,42 +32,38 @@ jest.mock('../useHelpCenterApi', () => {
         useHelpCenterApi: jest.fn().mockReturnValue({
             isReady: true,
             client: {
-                createArticle: jest
-                    .fn()
-                    .mockImplementation(
-                        (
-                            {help_center_id}: {help_center_id: number},
-                            {
+                createArticle: jest.fn().mockImplementation(
+                    (
+                        {help_center_id}: {help_center_id: number},
+                        {
+                            category_id,
+                            translation,
+                        }: {
+                            category_id: number | null
+                            translation: CreateArticleTranslationDto
+                        }
+                    ) =>
+                        Promise.resolve({
+                            data: {
+                                id: 1,
                                 category_id,
-                                translation,
-                            }: {
-                                category_id: number | null
-                                translation: CreateArticleTranslationDto
-                            }
-                        ) =>
-                            Promise.resolve({
-                                data: {
-                                    id: 1,
-                                    category_id,
-                                    help_center_id,
-                                    available_locales: [translation.locale],
+                                help_center_id,
+                                available_locales: [translation.locale],
+                                created_datetime: '2021-06-01T09:46:30.044Z',
+                                updated_datetime: '2021-06-01T09:46:30.044Z',
+                                deleted_datetime: null,
+                                translation: {
+                                    article_id: 1,
+                                    ...translation,
                                     created_datetime:
                                         '2021-06-01T09:46:30.044Z',
                                     updated_datetime:
                                         '2021-06-01T09:46:30.044Z',
                                     deleted_datetime: null,
-                                    translation: {
-                                        article_id: 1,
-                                        ...translation,
-                                        created_datetime:
-                                            '2021-06-01T09:46:30.044Z',
-                                        updated_datetime:
-                                            '2021-06-01T09:46:30.044Z',
-                                        deleted_datetime: null,
-                                    },
                                 },
-                            })
-                    ),
+                            },
+                        })
+                ),
                 updateArticle: jest
                     .fn()
                     .mockImplementation(

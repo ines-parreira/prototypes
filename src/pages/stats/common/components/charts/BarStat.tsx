@@ -1,6 +1,6 @@
 import {Map, List} from 'immutable'
 import React, {Component} from 'react'
-import {Bar} from 'react-chartjs-2'
+
 import _isEqual from 'lodash/isEqual'
 
 import {
@@ -8,6 +8,8 @@ import {
     chartMaxHeight,
 } from '../../../../../config/stats'
 import Legend from '../Legend/Legend'
+
+import {Bar} from 'react-chartjs-2'
 
 type Props = {
     data: Map<any, any>
@@ -53,14 +55,16 @@ export class BarStat extends Component<Props> {
                         type="bar"
                         height={chartMaxHeight}
                         data={{
-                            labels: (data.getIn(['axes', 'x']) as List<
-                                any
-                            >).toJS(),
+                            labels: (
+                                data.getIn(['axes', 'x']) as List<any>
+                            ).toJS(),
                             datasets: datasets,
                         }}
-                        options={(config.get('options') as (
-                            legend: Map<any, any>
-                        ) => Record<string, unknown>)(legend!)}
+                        options={(
+                            config.get('options') as (
+                                legend: Map<any, any>
+                            ) => Record<string, unknown>
+                        )(legend!)}
                     />
                 </div>
             </div>

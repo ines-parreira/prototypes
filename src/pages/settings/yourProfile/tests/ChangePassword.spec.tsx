@@ -212,9 +212,8 @@ describe('<ChangePassword />', () => {
                 const afterUpdate = {
                     current: findOldPasswordInput(component).find('input'),
                     new: findNewPasswordInput(component).find('input'),
-                    confirm: findConfirmNewPasswordInput(component).find(
-                        'input'
-                    ),
+                    confirm:
+                        findConfirmNewPasswordInput(component).find('input'),
                 }
 
                 expect(afterUpdate.current.props().value).toBe('')

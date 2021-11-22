@@ -25,9 +25,8 @@ import css from './WrapperInfobarWidget.less'
     const integrationId = parseInt(_last(absolutePath))
 
     if (!isNaN(integrationId)) {
-        const integration = integrationsSelectors.getIntegrationById(
-            integrationId
-        )(state)
+        const integration =
+            integrationsSelectors.getIntegrationById(integrationId)(state)
         integrations = integration ? fromJS([integration]) : fromJS([])
     }
 

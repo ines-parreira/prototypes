@@ -196,7 +196,8 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
         form.meta = {
             language: this.state.language,
             preferences: {
-                email_capture_enforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
+                email_capture_enforcement:
+                    SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
                 auto_responder: {
                     enabled: SMOOCH_INSIDE_AUTO_RESPONDER_ENABLED_DEFAULT,
                     reply: CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
@@ -211,9 +212,11 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                 .toJS()
         }
 
-        return (this.props.updateOrCreateIntegration(fromJS(form)) as Promise<{
-            error?: AxiosError
-        }>).then(({error} = {}) => {
+        return (
+            this.props.updateOrCreateIntegration(fromJS(form)) as Promise<{
+                error?: AxiosError
+            }>
+        ).then(({error} = {}) => {
             if (error) {
                 return
             }
@@ -244,13 +247,8 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
     }
 
     render() {
-        const {
-            deleteIntegration,
-            integration,
-            isUpdate,
-            loading,
-            currentUser,
-        } = this.props
+        const {deleteIntegration, integration, isUpdate, loading, currentUser} =
+            this.props
         const {
             name,
             introductionText,
@@ -341,7 +339,8 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                                             }}
                                             onChange={(value) => {
                                                 this.setState({
-                                                    offlineIntroductionText: value,
+                                                    offlineIntroductionText:
+                                                        value,
                                                 })
                                             }}
                                             label="Introduction text outside business hours"
@@ -385,9 +384,7 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                                                             returnFiles={false}
                                                             noPreview={true}
                                                             onChange={(
-                                                                avatarTeamPictureUrl: Maybe<
-                                                                    string
-                                                                >
+                                                                avatarTeamPictureUrl: Maybe<string>
                                                             ) =>
                                                                 this.setState({
                                                                     avatarTeamPictureUrl,
@@ -395,9 +392,10 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                                                             }
                                                             uploadType="avatar_team_picture"
                                                             params={{
-                                                                ['integration_id']: integration.get(
-                                                                    'id'
-                                                                ),
+                                                                ['integration_id']:
+                                                                    integration.get(
+                                                                        'id'
+                                                                    ),
                                                             }}
                                                             maxSize={500 * 1000}
                                                             required={

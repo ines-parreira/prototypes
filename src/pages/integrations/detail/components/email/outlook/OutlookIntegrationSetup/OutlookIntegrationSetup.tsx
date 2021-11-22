@@ -72,10 +72,9 @@ export class OutlookIntegrationSetupContainer extends Component<Props, State> {
             .toList()
             .toJS()
 
-        void activateOnboardingIntegrations(
-            data,
-            IntegrationType.Outlook
-        ).then(() => fetchIntegrations())
+        void activateOnboardingIntegrations(data, IntegrationType.Outlook).then(
+            () => fetchIntegrations()
+        )
         history.push('/app/settings/integrations/email')
     }
 
@@ -201,12 +200,13 @@ export class OutlookIntegrationSetupContainer extends Component<Props, State> {
                                         integrations.map(
                                             (integration: Map<any, any>) => {
                                                 const id = integration.get('id')
-                                                const integrationEnabled = selectedIntegrations.has(
-                                                    id
-                                                )
-                                                const address = integration.getIn(
-                                                    ['meta', 'address']
-                                                )
+                                                const integrationEnabled =
+                                                    selectedIntegrations.has(id)
+                                                const address =
+                                                    integration.getIn([
+                                                        'meta',
+                                                        'address',
+                                                    ])
 
                                                 return (
                                                     <div key={id}>
@@ -257,9 +257,8 @@ export class OutlookIntegrationSetupContainer extends Component<Props, State> {
                                 color="success"
                                 disabled={selectedIntegrations.isEmpty()}
                                 className={classnames({
-                                    'btn-loading': loading.get(
-                                        'updateIntegration'
-                                    ),
+                                    'btn-loading':
+                                        loading.get('updateIntegration'),
                                 })}
                             >
                                 Save Changes

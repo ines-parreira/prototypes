@@ -46,8 +46,7 @@ export const paywallConfigs: Partial<Record<AccountFeature, PaywallConfig>> = {
                     href: 'https://www.shinesty.com/',
                 },
             },
-            text:
-                'At Shinesty, our agents convert visitors into customers by using pre-sell questions sent via chat campaigns. I see the concrete results of our actions thanks to Revenue Statistics.',
+            text: 'At Shinesty, our agents convert visitors into customers by using pre-sell questions sent via chat campaigns. I see the concrete results of our actions thanks to Revenue Statistics.',
         },
         preview: `${assetsURL}/static/private/img/paywalls/screens/revenue-statistics.png`,
     },

@@ -92,7 +92,7 @@ const resolveArgSchema = (
     if (!(Array.isArray(left) && left.length)) {
         throw Error(
             `leftPath is expected to be {Array}, instead got ${
-                (leftPath as unknown) as string
+                leftPath as unknown as string
             }`
         )
     }
@@ -266,10 +266,9 @@ export function resolveCallee(
 
     if (firstArgSchema && firstArgSchema.getIn(['meta', 'operators'])) {
         const operators = Object.keys(
-            (firstArgSchema.getIn(['meta', 'operators']) as Map<
-                any,
-                any
-            >).toJS()
+            (
+                firstArgSchema.getIn(['meta', 'operators']) as Map<any, any>
+            ).toJS()
         )
 
         callee = operators.find((operator) => operator === oldCallee)
@@ -373,10 +372,9 @@ export function resolveSecondArg(
         switch (firstArgSchema.get('type')) {
             case 'string':
                 if (firstArgSchema.getIn(['meta', 'enum'])) {
-                    const possibleLiterals = (firstArgSchema.getIn([
-                        'meta',
-                        'enum',
-                    ]) as List<any>).toJS() as unknown[]
+                    const possibleLiterals = (
+                        firstArgSchema.getIn(['meta', 'enum']) as List<any>
+                    ).toJS() as unknown[]
                     const firstLit = possibleLiterals[0]
 
                     if (!reset) {
@@ -477,9 +475,9 @@ export function updateCallExpression(
     } else if (~calleeIndex) {
         // callee has changed
         callExpressionPath = path.setSize(calleeIndex)
-        stopPath = path.takeLast(path.size - callExpressionPath.size) as List<
-            any
-        >
+        stopPath = path.takeLast(
+            path.size - callExpressionPath.size
+        ) as List<any>
     }
 
     const callExpression = (state.getIn(callExpressionPath.toJS()) ||

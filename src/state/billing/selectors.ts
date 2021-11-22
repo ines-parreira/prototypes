@@ -34,9 +34,12 @@ export const currentPlanId = createSelector<
 export const getPlans = createSelector<RootState, Map<any, any>, BillingState>(
     getBillingState,
     (state) => {
-        return ((state.get('plans', fromJS({})) as Map<any, any>).sortBy(
-            (plan: Map<any, any>) => (plan.get('order') as number) || Infinity
-        ) as Map<any, any>).map((plan: Map<any, any>) => {
+        return (
+            (state.get('plans', fromJS({})) as Map<any, any>).sortBy(
+                (plan: Map<any, any>) =>
+                    (plan.get('order') as number) || Infinity
+            ) as Map<any, any>
+        ).map((plan: Map<any, any>) => {
             const amount = (plan.get('amount') as number) || 0
             return plan
                 .set('amount', amount / 100) // stripe amount are in cents
@@ -181,9 +184,9 @@ export const isAllowedToChangePlan = (planId: string) =>
         }
     )
 
-export const makeIsAllowedToChangePlan = (state: RootState) => (
-    planId: string
-) => isAllowedToChangePlan(planId)(state)
+export const makeIsAllowedToChangePlan =
+    (state: RootState) => (planId: string) =>
+        isAllowedToChangePlan(planId)(state)
 
 export const hasLegacyPlan = createSelector<RootState, boolean, Map<any, any>>(
     getCurrentPlan,

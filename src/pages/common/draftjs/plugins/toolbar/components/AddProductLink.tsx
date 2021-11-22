@@ -55,9 +55,8 @@ export function AddProductLink({
     currentAccount,
 }: ConnectedProps<typeof connector> & OwnProps) {
     const [isOpen, setOpen] = useState(false)
-    const [pickedShopifyIntegration, setPickedShopifyIntegration] = useState(
-        null
-    )
+    const [pickedShopifyIntegration, setPickedShopifyIntegration] =
+        useState(null)
 
     const handleResetStoreChoice = () => {
         setPickedShopifyIntegration(null)

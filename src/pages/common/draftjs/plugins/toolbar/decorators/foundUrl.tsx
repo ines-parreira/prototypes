@@ -21,9 +21,9 @@ const foundUrl = (): Decorator => ({
         // https://github.com/markdown-it/linkify-it/issues/52
         // we just need the text start/end indexes,
         // so we can replace them with anything of the same length.
-        const encodedText = ((contentBlock as Map<any, any>).get(
-            'text'
-        ) as string).replace(/{{(.*?)}}/g, (m, group: string) => `**${group}**`)
+        const encodedText = (
+            (contentBlock as Map<any, any>).get('text') as string
+        ).replace(/{{(.*?)}}/g, (m, group: string) => `**${group}**`)
 
         const links = linkify.match(encodedText)
 

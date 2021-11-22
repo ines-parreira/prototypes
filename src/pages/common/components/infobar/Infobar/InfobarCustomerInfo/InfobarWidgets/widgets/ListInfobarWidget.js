@@ -17,14 +17,8 @@ class ListInfobarWidget extends React.Component {
     }
 
     render() {
-        const {
-            isEditing,
-            isParentList,
-            source,
-            widget,
-            template,
-            editing,
-        } = this.props
+        const {isEditing, isParentList, source, widget, template, editing} =
+            this.props
 
         const updatedTemplate = template.set(
             'absolutePath',

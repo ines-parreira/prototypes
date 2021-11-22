@@ -48,11 +48,11 @@ export function fetchCustomer(customerId: string) {
                             })
                         )
                     }
-                    return (dispatch({
+                    return dispatch({
                         type: types.FETCH_CUSTOMER_ERROR,
                         error,
                         reason,
-                    }) as unknown) as Promise<void>
+                    }) as unknown as Promise<void>
                 }
             )
     }
@@ -230,17 +230,17 @@ export function fetchCustomerHistory(
                         "Couldn't fetch customer's tickets. Please try again in a few minutes."
                     // TODO(customers-migration): remove this condition when the migration is done
                     if (error.response?.status === 404) {
-                        return (dispatch(
+                        return dispatch(
                             onApiError(error, reason, {
                                 type: types.FETCH_CUSTOMER_HISTORY_ERROR,
                             })
-                        ) as unknown) as Promise<void>
+                        ) as unknown as Promise<void>
                     }
-                    return (dispatch({
+                    return dispatch({
                         type: types.FETCH_CUSTOMER_HISTORY_ERROR,
                         error,
                         reason,
-                    }) as unknown) as Promise<void>
+                    }) as unknown as Promise<void>
                 }
             )
     }
@@ -285,8 +285,7 @@ export function mergeCustomers(
                         type: types.MERGE_CUSTOMERS_ERROR,
                         error,
                         verbose: true,
-                        reason:
-                            "Couldn't merge customers. Please try again in a few minutes.",
+                        reason: "Couldn't merge customers. Please try again in a few minutes.",
                     })
                 }
             )

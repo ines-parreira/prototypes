@@ -39,7 +39,7 @@ export class RowContainer extends Component<Props> {
         // only if it just got the cursor.
         // to prevent focusing on the cursor item when a different one updates.
         if (this.props.hasCursor && !prevProps.hasCursor) {
-            scrollToReactNode((this as unknown) as HTMLElement)
+            scrollToReactNode(this as unknown as HTMLElement)
         }
     }
 

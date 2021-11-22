@@ -104,13 +104,8 @@ export class StatContainer extends Component<Props, State> {
     }
 
     render() {
-        const {
-            name,
-            tagColors,
-            defaultLoaderHeight,
-            stat,
-            isFetching,
-        } = this.props
+        const {name, tagColors, defaultLoaderHeight, stat, isFetching} =
+            this.props
         const {isDownloading} = this.state
 
         if (

@@ -61,9 +61,8 @@ export const HelpCenterNewView = ({
     const location = useLocation()
     const locales = useLocales()
     const {client} = useHelpCenterApi()
-    const [newHelpCenter, setNewHelpCenter] = useState<CreateHelpCenterPayload>(
-        initialFormState
-    )
+    const [newHelpCenter, setNewHelpCenter] =
+        useState<CreateHelpCenterPayload>(initialFormState)
     const [isLoading, setIsLoading] = useState(false)
     const [isPristineSubdomain, setPristineSubdomain] = useState(true)
     const [isSubdomainAvailable, setIsSubdomainAvailable] = useState(true)
@@ -181,10 +180,10 @@ export const HelpCenterNewView = ({
         }
     }
 
-    const canSubmit = useMemo(() => newHelpCenter.name && !subdomainError, [
-        newHelpCenter,
-        subdomainError,
-    ])
+    const canSubmit = useMemo(
+        () => newHelpCenter.name && !subdomainError,
+        [newHelpCenter, subdomainError]
+    )
 
     useEffect(() => {
         setIsSubdomainAvailable(true)

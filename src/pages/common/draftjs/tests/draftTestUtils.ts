@@ -118,10 +118,12 @@ export const pressBackspace = (editorState: EditorState) => {
 export const createEditorStateFromHtml = (html: string) => {
     const editorState = EditorState.createEmpty()
     const contentState = convertFromHTML(html)
-    return (EditorState.push as (
-        editorState: EditorState,
-        contentState: ContentState
-    ) => EditorState)(editorState, contentState)
+    return (
+        EditorState.push as (
+            editorState: EditorState,
+            contentState: ContentState
+        ) => EditorState
+    )(editorState, contentState)
 }
 
 export const createCompositeDecorator = (decorators: any | any[] = []) => {
@@ -148,7 +150,7 @@ export const getLastCreatedEntityRange = (
         return null
     }
     let range
-    ;((contentState as unknown) as {blockMap: ContentBlock[]}).blockMap.forEach(
+    ;(contentState as unknown as {blockMap: ContentBlock[]}).blockMap.forEach(
         (contentBlock) => {
             contentBlock.findEntityRanges(
                 (character) => {
@@ -201,12 +203,8 @@ export const splitFirstBlock = (editorState: EditorState, offset: number) => {
 // Returns human-readable selection textual representation, eg. "[startKey] startPosition - endPosition [endKey]".
 // Useful if you want to have a quick check if the code under test plays nicely with the selections.
 export const debugSelection = (selection: SelectionState): string => {
-    const {
-        anchorKey,
-        anchorOffset,
-        focusKey,
-        focusOffset,
-    } = selection.toJS() as Record<string, string>
+    const {anchorKey, anchorOffset, focusKey, focusOffset} =
+        selection.toJS() as Record<string, string>
     let result = `[${anchorKey}] ${anchorOffset}`
     const theSameBlock = focusKey === anchorKey
     const theSameOffset = focusOffset === anchorOffset
@@ -249,7 +247,7 @@ export const debugLastAppliedEntity = (contentState: ContentState) => {
     }
 
     return {
-        ...((lastEntity as unknown) as Map<any, any>).toJS(),
+        ...(lastEntity as unknown as Map<any, any>).toJS(),
         range,
     } as LastEntityDebug
 }
@@ -270,7 +268,7 @@ export const debugEditorState = (
     return {
         text: content.getPlainText(),
         blocks: debugBlockMap(
-            ((content as unknown) as {blockMap: Map<any, any>}).blockMap
+            (content as unknown as {blockMap: Map<any, any>}).blockMap
         ),
         selection: debugSelection(editorState.getSelection()),
         lastAppliedEntity: debugLastAppliedEntity(content),

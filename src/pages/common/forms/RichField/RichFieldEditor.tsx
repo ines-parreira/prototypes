@@ -279,10 +279,12 @@ export class RichFieldEditor extends InputField<Props, State> {
             contentStateFromTextOrHTML(text, html).getBlockMap()
         )
 
-        const newEditorState = (EditorState.push as (
-            editorState: EditorState,
-            contentState: ContentState
-        ) => EditorState)(editorState, contentState)
+        const newEditorState = (
+            EditorState.push as (
+                editorState: EditorState,
+                contentState: ContentState
+            ) => EditorState
+        )(editorState, contentState)
         this._onChange(newEditorState)
 
         // draft-js-plugins-editor requires `handled`, instead of `true` like the native draft-js instance,
@@ -329,13 +331,8 @@ export class RichFieldEditor extends InputField<Props, State> {
     }
 
     _getField = () => {
-        const {
-            required,
-            displayOnly,
-            onFocus,
-            emailExtraEnabled,
-            ticket,
-        } = this.props
+        const {required, displayOnly, onFocus, emailExtraEnabled, ticket} =
+            this.props
         // $TsFixMe remove casting after migrating createMentionPlugin
         const {MentionSuggestions} = this.mentionPlugin as {
             MentionSuggestions: ComponentType<{
@@ -416,7 +413,7 @@ export class RichFieldEditor extends InputField<Props, State> {
                     )}
                 </div>
                 <Toolbar
-                    {...((this.props as unknown) as ComponentProps<
+                    {...(this.props as unknown as ComponentProps<
                         typeof Toolbar
                     >)}
                     canDropFiles={this._getCanDropFiles()}

@@ -56,12 +56,14 @@ export function createJob(
             .then(() => {
                 notification.status = NotificationStatus.Success
                 return dispatch(
-                    (updateNotification as (
-                        notification: Promise<Notification> & {
-                            status: NotificationStatus
-                            message: string
-                        }
-                    ) => AnyAction)(notification)
+                    (
+                        updateNotification as (
+                            notification: Promise<Notification> & {
+                                status: NotificationStatus
+                                message: string
+                            }
+                        ) => AnyAction
+                    )(notification)
                 )
             })
             .catch((error) => {
@@ -69,12 +71,14 @@ export function createJob(
                 notification.message =
                     'Failed to apply action on tickets. Please try again.'
                 dispatch(
-                    (updateNotification as (
-                        notification: Promise<Notification> & {
-                            status: NotificationStatus
-                            message: string
-                        }
-                    ) => AnyAction)(notification)
+                    (
+                        updateNotification as (
+                            notification: Promise<Notification> & {
+                                status: NotificationStatus
+                                message: string
+                            }
+                        ) => AnyAction
+                    )(notification)
                 )
                 throw error
             })

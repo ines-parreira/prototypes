@@ -25,6 +25,6 @@ export const getPendingActionCallbacks = (id: string) =>
             ) as Map<any, any>
     )
 
-export const makeGetPendingActionCallbacks = (state: RootState) => (
-    id: string
-) => getPendingActionCallbacks(id)(state)
+export const makeGetPendingActionCallbacks =
+    (state: RootState) => (id: string) =>
+        getPendingActionCallbacks(id)(state)

@@ -84,9 +84,9 @@ export default function reducer(
             return state.setIn(['state', 'loading', 'integrations'], false)
 
         case constants.FETCH_INTEGRATIONS_SUCCESS: {
-            const integrations = (fromJS(
-                (action.resp as {data: unknown[]}).data
-            ) as List<any>)
+            const integrations = (
+                fromJS((action.resp as {data: unknown[]}).data) as List<any>
+            )
                 .sortBy(
                     (integration: Map<any, any>) =>
                         integration.get('name') as string
@@ -114,9 +114,9 @@ export default function reducer(
         case constants.UPDATE_INTEGRATION_SUCCESS: {
             const newIntegration = fromJS(action.resp) as Map<any, any>
 
-            const integrationIndex = (state.get('integrations') as List<
-                any
-            >).findIndex(
+            const integrationIndex = (
+                state.get('integrations') as List<any>
+            ).findIndex(
                 (integration: Map<any, any>) =>
                     newIntegration.get('id') === integration.get('id')
             )

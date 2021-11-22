@@ -40,9 +40,9 @@ export default function reducer(
                 return state
             }
 
-            const newItems = (state.get('items', fromJS([])) as List<
-                any
-            >).filter(
+            const newItems = (
+                state.get('items', fromJS([])) as List<any>
+            ).filter(
                 (item: Map<any, any>) => !action.ids?.includes(item.get('id'))
             )
 
@@ -52,9 +52,9 @@ export default function reducer(
         case ticketTypes.FETCH_TICKET_SUCCESS: {
             // if a ticket is fetched, mark it as "read" in the list of tickets, so that it does not appear as having
             // "something new"
-            const ticketIndex = (state.get('items', fromJS([])) as List<
-                any
-            >).findIndex(
+            const ticketIndex = (
+                state.get('items', fromJS([])) as List<any>
+            ).findIndex(
                 (item: Map<any, any>) => item.get('id') === action.ticketId
             )
 

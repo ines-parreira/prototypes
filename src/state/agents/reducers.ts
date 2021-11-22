@@ -47,9 +47,9 @@ export default function reducer(
         case agentsConstants.UPDATE_AGENT_SUCCESS: {
             const agent = action.resp as Map<any, any>
 
-            const existingAgentIndex = (state.get('all') as List<
-                any
-            >).findIndex(
+            const existingAgentIndex = (
+                state.get('all') as List<any>
+            ).findIndex(
                 (user: Map<any, any>) => user.get('id') === agent.get('id')
             )
 
@@ -83,9 +83,9 @@ export default function reducer(
                 any
             >
 
-            const existingAgentIndex = (state.get('all') as List<
-                any
-            >).findIndex(
+            const existingAgentIndex = (
+                state.get('all') as List<any>
+            ).findIndex(
                 (user: Map<any, any>) => user.get('id') === agent.get('id')
             )
 

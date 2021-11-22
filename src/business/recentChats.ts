@@ -32,10 +32,12 @@ export function shouldTicketBeDisplayedInRecentChats(
         'data',
         'auto_assign_to_teams',
     ]) as boolean
-    const channelSetForTicketAssignmentSettings = (ticketAssignmentSetting.getIn(
-        ['data', 'assignment_channels'],
-        fromJS([])
-    ) as List<any>).includes(ticket.channel)
+    const channelSetForTicketAssignmentSettings = (
+        ticketAssignmentSetting.getIn(
+            ['data', 'assignment_channels'],
+            fromJS([])
+        ) as List<any>
+    ).includes(ticket.channel)
     const autoAssignIsEnabledForTicketChannel =
         autoAssignEnabled && channelSetForTicketAssignmentSettings
 

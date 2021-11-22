@@ -54,7 +54,7 @@ type Props = {
 }
 
 const MessageSourceFields = forwardRef<MultiSelectAsyncField, Props>(
-    function MessageSourceFields({canOpen, isOpenDefault}, ref) {
+    function MessageSourceFields({canOpen, isOpenDefault}: Props, ref) {
         const dispatch = useAppDispatch()
         const sourceType = useSelector(getNewMessageType)
 
@@ -153,9 +153,8 @@ const MessageSourceFields = forwardRef<MultiSelectAsyncField, Props>(
                         {
                             // display fields
                             finalDisplayedFields.map((prop) => {
-                                const newMessageSourceProperty = getNewMessageSourceProperty(
-                                    prop
-                                )
+                                const newMessageSourceProperty =
+                                    getNewMessageSourceProperty(prop)
                                 const value = newMessageSourceProperty.isEmpty()
                                     ? []
                                     : newMessageSourceProperty.toJS()

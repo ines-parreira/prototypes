@@ -102,14 +102,14 @@ export class Widget extends Component<Props, State> {
         const textFieldPropIndex = properties.findIndex((property) => {
             return property.key.name === config.textField
         })
-        return ({
+        return {
             textFieldPropIndex: textFieldPropIndex,
             textFieldParent: textFieldParent.concat([
                 textFieldPropIndex,
                 'value',
                 'value',
             ]),
-        } as unknown) as State
+        } as unknown as State
     }
 
     componentWillReceiveProps(nextProps: Props) {
@@ -324,15 +324,8 @@ export class Widget extends Component<Props, State> {
     }
 
     render() {
-        const {
-            leftsiblings,
-            schemas,
-            value,
-            rule,
-            parent,
-            className,
-            config,
-        } = this.props
+        const {leftsiblings, schemas, value, rule, parent, className, config} =
+            this.props
 
         // todo should depend on triggers (should be described in schemas)
         const rootObjects = ['ticket', 'message']
@@ -366,10 +359,9 @@ export class Widget extends Component<Props, State> {
         } else if (left.last() === 'properties') {
             // properties are special because they are defining the props
             // that available on the top level objects: ticket, event, etc..
-            const props = (schemas.getIn(left) as Map<
-                any,
-                any
-            >).toJS() as Record<string, unknown>
+            const props = (
+                schemas.getIn(left) as Map<any, any>
+            ).toJS() as Record<string, unknown>
             for (const key of Object.keys(props)) {
                 const prop = props[key] as Record<string, any>
 
@@ -428,9 +420,9 @@ export class Widget extends Component<Props, State> {
             // all other properties
             const right = schemas.getIn(left) as Map<any, any>
             const calleeName = rule.getIn(
-                (parent.slice(0, -3).concat(['callee', 'name']) as List<
-                    any
-                >).insert(0, 'code_ast')
+                (
+                    parent.slice(0, -3).concat(['callee', 'name']) as List<any>
+                ).insert(0, 'code_ast')
             )
             widget.type = right
                 ? (right.getIn(['meta', 'rules', 'widget']) as string)
@@ -462,29 +454,32 @@ export class Widget extends Component<Props, State> {
             }
 
             if (right) {
-                widget.options = (right.getIn(
-                    ['meta', 'enum'],
-                    List([])
-                ) as List<string>).toJS()
+                widget.options = (
+                    right.getIn(['meta', 'enum'], List([])) as List<string>
+                ).toJS()
 
-                widget.hiddenOptions = (right.getIn(
-                    ['meta', 'rules', 'hidden_options'],
-                    List([])
-                ) as List<string>).toJS()
+                widget.hiddenOptions = (
+                    right.getIn(
+                        ['meta', 'rules', 'hidden_options'],
+                        List([])
+                    ) as List<string>
+                ).toJS()
 
-                widget.deprecatedOptions = (right.getIn(
-                    ['meta', 'rules', 'deprecated_options'],
-                    List([])
-                ) as List<string>).toJS()
+                widget.deprecatedOptions = (
+                    right.getIn(
+                        ['meta', 'rules', 'deprecated_options'],
+                        List([])
+                    ) as List<string>
+                ).toJS()
 
                 widget.description = right.get('description')
             }
         }
 
         const operatorName = rule.getIn(
-            (parent.slice(0, -3).concat(['callee', 'name']) as List<
-                any
-            >).insert(0, 'code_ast')
+            (
+                parent.slice(0, -3).concat(['callee', 'name']) as List<any>
+            ).insert(0, 'code_ast')
         )
         const isOperatorRelative = timedeltaOperators.includes(operatorName)
 
@@ -534,7 +529,7 @@ export class Widget extends Component<Props, State> {
             case 'select':
                 return (
                     <Select
-                        {...((widget as unknown) as ComponentProps<
+                        {...(widget as unknown as ComponentProps<
                             typeof Select
                         >)}
                         className={className}

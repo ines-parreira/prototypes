@@ -224,14 +224,8 @@ class InfobarWidgets extends React.Component {
     }
 
     render() {
-        const {
-            context,
-            source,
-            widgets,
-            editing,
-            integrations,
-            displayTabs,
-        } = this.props
+        const {context, source, widgets, editing, integrations, displayTabs} =
+            this.props
 
         if (!widgets) {
             return null

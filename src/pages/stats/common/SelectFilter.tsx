@@ -226,9 +226,10 @@ const SelectFilter = ({
         return items
     }, [])
 
-    const items = useMemo(() => (children ? getItems(children) : []), [
-        children,
-    ])
+    const items = useMemo(
+        () => (children ? getItems(children) : []),
+        [children]
+    )
 
     const toggleLabel = useMemo(() => {
         if (isMultiple) {
@@ -245,11 +246,13 @@ const SelectFilter = ({
     const groups = useMemo(
         () =>
             children
-                ? (React.Children.toArray(children).filter(
-                      (child) =>
-                          (child as GroupElement).type.displayName ===
-                          SelectFilter.Group.displayName
-                  ) as GroupElement[]).map(({props: {value, items}}) => ({
+                ? (
+                      React.Children.toArray(children).filter(
+                          (child) =>
+                              (child as GroupElement).type.displayName ===
+                              SelectFilter.Group.displayName
+                      ) as GroupElement[]
+                  ).map(({props: {value, items}}) => ({
                       value,
                       items,
                   }))

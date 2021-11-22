@@ -35,9 +35,9 @@ describe('Help Center/Categories reducer', () => {
                 undefined,
                 saveCategories(categoriesResponse)
             )
-            const categoriesId = Object.keys(
-                nextState.categoriesById
-            ).map((id) => parseInt(id, 10))
+            const categoriesId = Object.keys(nextState.categoriesById).map(
+                (id) => parseInt(id, 10)
+            )
 
             // We have the same number of entities
             expect(categoriesId.length).toEqual(categoriesResponse.length)

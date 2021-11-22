@@ -23,13 +23,11 @@ describe('infobar selectors', () => {
                     pendingActionsCallbacks: [
                         {
                             callback: jest.fn(),
-                            id:
-                                'shopifyRefundShippingCostOfOrder-34-5-4194477515',
+                            id: 'shopifyRefundShippingCostOfOrder-34-5-4194477515',
                         },
                         {
                             callback: jest.fn(),
-                            id:
-                                'shopifyRefundShippingCostOfOrder-35-5-4194477515',
+                            id: 'shopifyRefundShippingCostOfOrder-35-5-4194477515',
                         },
                     ],
                 })

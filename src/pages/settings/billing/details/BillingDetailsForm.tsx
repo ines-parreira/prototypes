@@ -220,10 +220,12 @@ export class BillingDetailsFormContainer extends Component<Props, State> {
                                             ])}
                                         >
                                             <option value={''}>-</option>
-                                            {(countries as {
-                                                value: string
-                                                label: string
-                                            }[]).map((country) => (
+                                            {(
+                                                countries as {
+                                                    value: string
+                                                    label: string
+                                                }[]
+                                            ).map((country) => (
                                                 <option
                                                     value={country.value}
                                                     key={country.value}
@@ -236,8 +238,8 @@ export class BillingDetailsFormContainer extends Component<Props, State> {
                                             <Button
                                                 color="success"
                                                 className={classNames({
-                                                    'btn-loading': this.state
-                                                        .isSubmitting,
+                                                    'btn-loading':
+                                                        this.state.isSubmitting,
                                                 })}
                                                 disabled={
                                                     this.state.isSubmitting

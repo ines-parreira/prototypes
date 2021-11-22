@@ -74,22 +74,18 @@ class PrivateReplyEventManager {
     constructor(event: Map<string, any>) {
         this.event = event
         this.isError = event.getIn(['data', 'status']) === 'error'
-        this.privateReplyType = PrivateReplyEventManager.eventToPrivateReplyType(
-            event
-        )
-        this.privateReplyEventType = PrivateReplyEventManager.eventToPrivateReplyEventType(
-            event
-        )
+        this.privateReplyType =
+            PrivateReplyEventManager.eventToPrivateReplyType(event)
+        this.privateReplyEventType =
+            PrivateReplyEventManager.eventToPrivateReplyEventType(event)
     }
 
     public getComment() {
-        return (this.privateReplyType === PrivateReplyType.FacebookPrivateReply
-            ? this.event.getIn(['data', 'payload', 'facebook_comment'])
-            : this.event.getIn([
-                  'data',
-                  'payload',
-                  'instagram_comment',
-              ])) as string
+        return (
+            this.privateReplyType === PrivateReplyType.FacebookPrivateReply
+                ? this.event.getIn(['data', 'payload', 'facebook_comment'])
+                : this.event.getIn(['data', 'payload', 'instagram_comment'])
+        ) as string
     }
 
     public shouldDisplayCommentCard() {

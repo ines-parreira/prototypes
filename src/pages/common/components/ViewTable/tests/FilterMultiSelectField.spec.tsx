@@ -22,9 +22,11 @@ describe('FilterMultiSelectField', () => {
     }
 
     it('should search for the values on mount', () => {
-        const fieldEnumSearchSpy = (jest.fn() as jest.MockedFunction<
-            InferThunkActionCreatorType<typeof fieldEnumSearch>
-        >).mockResolvedValue(null)
+        const fieldEnumSearchSpy = (
+            jest.fn() as jest.MockedFunction<
+                InferThunkActionCreatorType<typeof fieldEnumSearch>
+            >
+        ).mockResolvedValue(null)
         mount(
             <FilterMultiSelectField
                 {...defaultProps}
@@ -37,9 +39,11 @@ describe('FilterMultiSelectField', () => {
     // https://github.com/facebook/jest/issues/3465
     it.skip('should debounce search on input change', () => {
         type OnInputChange = (name: string) => void
-        const fieldEnumSearchSpy = (jest.fn() as jest.MockedFunction<
-            InferThunkActionCreatorType<typeof fieldEnumSearch>
-        >).mockResolvedValue(null)
+        const fieldEnumSearchSpy = (
+            jest.fn() as jest.MockedFunction<
+                InferThunkActionCreatorType<typeof fieldEnumSearch>
+            >
+        ).mockResolvedValue(null)
         const wrapper = mount(
             <FilterMultiSelectField
                 {...defaultProps}
@@ -61,9 +65,11 @@ describe('FilterMultiSelectField', () => {
     })
 
     it('should reset search on change', () => {
-        const fieldEnumSearchSpy = (jest.fn() as jest.MockedFunction<
-            InferThunkActionCreatorType<typeof fieldEnumSearch>
-        >).mockResolvedValue(null)
+        const fieldEnumSearchSpy = (
+            jest.fn() as jest.MockedFunction<
+                InferThunkActionCreatorType<typeof fieldEnumSearch>
+            >
+        ).mockResolvedValue(null)
         const wrapper = mount(
             <FilterMultiSelectField
                 {...defaultProps}

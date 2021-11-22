@@ -26,14 +26,16 @@ jest.useFakeTimers()
 jest.mock('../../../../services/shortcutManager/shortcutManager')
 jest.mock(
     '../components/TicketView',
-    () => ({submit}: ComponentProps<typeof TicketView>) => (
-        <div
-            data-testid="TicketView-close"
-            onClick={() => {
-                submit({status: 'closed'})
-            }}
-        />
-    )
+    () =>
+        ({submit}: ComponentProps<typeof TicketView>) =>
+            (
+                <div
+                    data-testid="TicketView-close"
+                    onClick={() => {
+                        submit({status: 'closed'})
+                    }}
+                />
+            )
 )
 
 jest.mock(
@@ -50,7 +52,7 @@ const shortcutManagerMock = shortcutManager as jest.Mocked<
 
 describe('TicketDetailContainer component', () => {
     const prepareTicketMessageMock = jest.fn()
-    const minProps = ({
+    const minProps = {
         activeCustomer: fromJS({}),
         activeView: fromJS({}),
         canSendMessage: false,
@@ -81,7 +83,7 @@ describe('TicketDetailContainer component', () => {
             messages: [],
         }),
         updateCursor: jest.fn(),
-    } as unknown) as ComponentProps<typeof TicketDetailContainer>
+    } as unknown as ComponentProps<typeof TicketDetailContainer>
     const preparedData = {
         messageId: 1,
         messageToSend: {
@@ -188,9 +190,11 @@ describe('TicketDetailContainer component', () => {
     })
 
     it('should not go to next ticket when setting status=closed and history is open', () => {
-        ;((minProps.setStatus as unknown) as jest.MockedFunction<
-            (value: any, cb: () => void) => void
-        >).mockImplementationOnce((v, cb) => {
+        ;(
+            minProps.setStatus as unknown as jest.MockedFunction<
+                (value: any, cb: () => void) => void
+            >
+        ).mockImplementationOnce((v, cb) => {
             act(cb)
         })
 
@@ -225,9 +229,11 @@ describe('TicketDetailContainer component', () => {
     })
 
     it('should go to next ticket when setting status=closed and history is closed', async () => {
-        ;((minProps.setStatus as unknown) as jest.MockedFunction<
-            (status: string, cb: () => void) => void
-        >).mockImplementationOnce((v, cb) => {
+        ;(
+            minProps.setStatus as unknown as jest.MockedFunction<
+                (status: string, cb: () => void) => void
+            >
+        ).mockImplementationOnce((v, cb) => {
             act(cb)
         })
 
@@ -732,9 +738,11 @@ describe('TicketDetailContainer component', () => {
     })
 
     it('should defer sending new message when new message is of type email', async () => {
-        ;((minProps.prepareTicketMessage as unknown) as jest.MockedFunction<
-            () => typeof preparedData
-        >).mockReturnValueOnce(preparedData)
+        ;(
+            minProps.prepareTicketMessage as unknown as jest.MockedFunction<
+                () => typeof preparedData
+            >
+        ).mockReturnValueOnce(preparedData)
         const {getByTestId} = renderWithRouter(
             <TicketDetailContainer
                 {...minProps}
@@ -791,9 +799,11 @@ describe('TicketDetailContainer component', () => {
             },
             type: 'foo',
         }
-        ;((minProps.prepareTicketMessage as unknown) as jest.MockedFunction<
-            () => typeof preparedFacebookData
-        >).mockReturnValueOnce(preparedFacebookData)
+        ;(
+            minProps.prepareTicketMessage as unknown as jest.MockedFunction<
+                () => typeof preparedFacebookData
+            >
+        ).mockReturnValueOnce(preparedFacebookData)
         const {getByTestId} = renderWithRouter(
             <TicketDetailContainer
                 {...minProps}
@@ -823,9 +833,11 @@ describe('TicketDetailContainer component', () => {
     })
 
     it('should send a deferred message when sending a new deferred message', async () => {
-        ;((minProps.prepareTicketMessage as unknown) as jest.MockedFunction<
-            () => typeof preparedData
-        >).mockReturnValue(preparedData)
+        ;(
+            minProps.prepareTicketMessage as unknown as jest.MockedFunction<
+                () => typeof preparedData
+            >
+        ).mockReturnValue(preparedData)
         const {getByTestId} = renderWithRouter(
             <TicketDetailContainer
                 {...minProps}
@@ -956,9 +968,8 @@ describe('TicketDetailContainer component', () => {
     ])(
         'should debounce %s ticket calls while call is already pending',
         (testName, actionName, testSetup) => {
-            const execKeyboardAction = makeExecuteKeyboardAction(
-                shortcutManagerMock
-            )
+            const execKeyboardAction =
+                makeExecuteKeyboardAction(shortcutManagerMock)
             const callMock = testSetup()
             renderWithRouter(<TicketDetailContainer {...minProps} />, {
                 path: '/foo/:ticketId',

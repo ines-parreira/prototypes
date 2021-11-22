@@ -97,9 +97,9 @@ export function addVariant(
     product: Product,
     variant: Variant
 ): Map<any, any> {
-    const lineItemIndex = (draftOrder.get('line_items', []) as List<
-        any
-    >).findIndex(
+    const lineItemIndex = (
+        draftOrder.get('line_items', []) as List<any>
+    ).findIndex(
         (lineItem: Map<any, any>) =>
             lineItem.get('product_id') === product.id &&
             lineItem.get('variant_id') === variant.id

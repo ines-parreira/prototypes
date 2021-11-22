@@ -32,9 +32,9 @@ export default function reducer(
             const newTicket = fromJS(action.ticket) as Map<any, any>
             let newState = state
 
-            const index = (newState.get('tickets', fromJS([])) as List<
-                any
-            >).findIndex(
+            const index = (
+                newState.get('tickets', fromJS([])) as List<any>
+            ).findIndex(
                 (ticket: Map<any, any>) =>
                     ticket.get('id') === newTicket.get('id')
             )
@@ -65,10 +65,7 @@ export default function reducer(
 
         case constants.MARK_CHAT_AS_UNREAD:
         case constants.MARK_CHAT_AS_READ: {
-            const ticketId = parseInt(
-                (action.ticketId as unknown) as string,
-                10
-            )
+            const ticketId = parseInt(action.ticketId as unknown as string, 10)
 
             return state.update('tickets', (tickets: List<any>) => {
                 return tickets.map((ticket: Map<any, any>) => {

@@ -20,12 +20,13 @@ jest.mock('../../../history')
 jest.mock('../../../../models/macro/resources')
 jest.mock(
     '../../../common/components/ConfirmButton',
-    () => ({children, confirm}: ComponentProps<typeof ConfirmButton>) => (
-        <div onClick={confirm}>{children}</div>
-    )
+    () =>
+        ({children, confirm}: ComponentProps<typeof ConfirmButton>) =>
+            <div onClick={confirm}>{children}</div>
 )
-jest.mock('../../../tickets/common/macros/components/MacroEdit', () => () =>
-    'MacroEdit'
+jest.mock(
+    '../../../tickets/common/macros/components/MacroEdit',
+    () => () => 'MacroEdit'
 )
 
 describe('<MacrosSettingsForm/>', () => {
@@ -45,16 +46,20 @@ describe('<MacrosSettingsForm/>', () => {
         name: `${macrosFixtures[0].name} (copy)`,
         id: 5,
     }
-    const mockCreateMacro: jest.MockedFunction<typeof createMacro> = createMacro as any
-    const mockDeleteMacro: jest.MockedFunction<typeof deleteMacro> = deleteMacro as any
-    const mockFetchMacro: jest.MockedFunction<typeof fetchMacro> = fetchMacro as any
-    const mockUpdateMacro: jest.MockedFunction<typeof updateMacro> = updateMacro as any
+    const mockCreateMacro: jest.MockedFunction<typeof createMacro> =
+        createMacro as any
+    const mockDeleteMacro: jest.MockedFunction<typeof deleteMacro> =
+        deleteMacro as any
+    const mockFetchMacro: jest.MockedFunction<typeof fetchMacro> =
+        fetchMacro as any
+    const mockUpdateMacro: jest.MockedFunction<typeof updateMacro> =
+        updateMacro as any
     const mockMacroCreated = jest.fn()
     const mockMacroDeleted = jest.fn()
     const mockMacroFetched = jest.fn()
     const mockMacroUpdated = jest.fn()
     const mockNotify = jest.fn()
-    const minProps = ({
+    const minProps = {
         agents: fromJS({}),
         macros: {},
         macroCreated: mockMacroCreated,
@@ -63,7 +68,7 @@ describe('<MacrosSettingsForm/>', () => {
         macroUpdated: mockMacroUpdated,
         notify: mockNotify,
         match: {params: {}},
-    } as any) as ComponentProps<typeof MacrosSettingsFormContainer>
+    } as any as ComponentProps<typeof MacrosSettingsFormContainer>
     const matchProp = {
         params: {
             macroId: '1',
@@ -298,8 +303,7 @@ describe('<MacrosSettingsForm/>', () => {
             response: {
                 data: {
                     error: {
-                        msg:
-                            'Cannot delete macro because it is used in the following places:',
+                        msg: 'Cannot delete macro because it is used in the following places:',
                         data: {
                             Rules: ['Rule1', 'Rule2'],
                         },

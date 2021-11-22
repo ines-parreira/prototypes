@@ -39,12 +39,11 @@ export const ArticleLanguageSelect = ({
     )
 
     const renderActions = (option: OptionItem) => {
-        const handleOnClickAction = (action: ActionType) => (
-            event: React.MouseEvent
-        ) => {
-            event.stopPropagation()
-            onClickAction(action, option)
-        }
+        const handleOnClickAction =
+            (action: ActionType) => (event: React.MouseEvent) => {
+                event.stopPropagation()
+                onClickAction(action, option)
+            }
 
         if (option.isComplete) {
             return (

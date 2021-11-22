@@ -50,22 +50,17 @@ export function PhoneIntegrationGreetingMessage({
     updatePhoneGreetingMessageConfiguration,
     notify,
 }: Props & ConnectedProps<typeof connector>): JSX.Element {
-    const voiceRecordingFileInput = React.useRef() as RefObject<
-        HTMLInputElement
-    >
+    const voiceRecordingFileInput =
+        React.useRef() as RefObject<HTMLInputElement>
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<Error | null>(null)
-    const [
-        voiceMessageType,
-        setVoiceMessageType,
-    ] = useState<GreetingMessageType | null>(null)
+    const [voiceMessageType, setVoiceMessageType] =
+        useState<GreetingMessageType | null>(null)
     const [voiceRecordingFilePath, setVoiceRecordingFilePath] = useState<
         string | null
     >(null)
-    const [
-        newVoiceRecordingFile,
-        setNewVoiceRecordingFile,
-    ] = useState<File | null>(null)
+    const [newVoiceRecordingFile, setNewVoiceRecordingFile] =
+        useState<File | null>(null)
     const [textToSpeechContent, setTextToSpeechContent] = useState<
         string | null
     >(null)

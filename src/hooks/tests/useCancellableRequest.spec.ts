@@ -7,8 +7,8 @@ import client from '../../models/api/resources'
 
 describe('useCancellableRequest', () => {
     const mockApi = new MockAdapter(client)
-    const mockCall = jest.fn((cancelToken: CancelToken) => () =>
-        client.get('/foo', {cancelToken})
+    const mockCall = jest.fn(
+        (cancelToken: CancelToken) => () => client.get('/foo', {cancelToken})
     )
 
     beforeEach(() => {

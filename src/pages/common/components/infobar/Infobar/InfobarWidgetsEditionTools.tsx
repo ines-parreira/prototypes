@@ -23,10 +23,9 @@ type Props = {
 export default class InfobarWidgetsEditionTools extends React.Component<Props> {
     _saveWidgets = () => {
         const {actions, widgets} = this.props
-        const editedItems = (widgets.getIn(
-            ['_internal', 'editedItems'],
-            fromJS([])
-        ) as List<any>).toJS()
+        const editedItems = (
+            widgets.getIn(['_internal', 'editedItems'], fromJS([])) as List<any>
+        ).toJS()
         void actions.submitWidgets(editedItems)
     }
 

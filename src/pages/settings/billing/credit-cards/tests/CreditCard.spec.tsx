@@ -17,7 +17,7 @@ jest.mock('../../../../../utils', () => {
 })
 
 describe('CreditCard component', () => {
-    const minProps = ({
+    const minProps = {
         currentAccount: fromJS({}),
         currentUser: fromJS({}),
         hasCreditCard: false,
@@ -29,7 +29,7 @@ describe('CreditCard component', () => {
         updateCreditCard: jest.fn(),
         hasAutomationAddOn: false,
         automationAddOnAmount: 0,
-    } as unknown) as ComponentProps<typeof CreditCardContainer>
+    } as unknown as ComponentProps<typeof CreditCardContainer>
 
     it('should display loader while fetching stripe SDK', () => {
         const component = shallow(<CreditCardContainer {...minProps} />)

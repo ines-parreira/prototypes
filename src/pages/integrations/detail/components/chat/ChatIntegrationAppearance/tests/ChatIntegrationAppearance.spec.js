@@ -107,7 +107,8 @@ describe('<ChatIntegrationAppearance/>', () => {
                             name: 'hellosmoochintegration',
                             type: SMOOCH_INSIDE_INTEGRATION_TYPE,
                             decoration: {
-                                avatar_type: SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
+                                avatar_type:
+                                    SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
                                 avatar_team_picture_url: null,
                             },
                             meta: {
@@ -136,7 +137,8 @@ describe('<ChatIntegrationAppearance/>', () => {
                             name: 'hellosmoochintegration',
                             type: SMOOCH_INSIDE_INTEGRATION_TYPE,
                             decoration: {
-                                avatar_type: SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
+                                avatar_type:
+                                    SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
                                 avatar_team_picture_url:
                                     'https://gorgias.io/teampicture.png',
                             },
@@ -166,7 +168,8 @@ describe('<ChatIntegrationAppearance/>', () => {
                             name: 'hellosmoochintegration',
                             type: SMOOCH_INSIDE_INTEGRATION_TYPE,
                             decoration: {
-                                avatar_type: SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
+                                avatar_type:
+                                    SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
                                 avatar_team_picture_url: null,
                             },
                             meta: {

@@ -37,15 +37,13 @@ export const SelfServiceSection = ({
     const [{loading}, fetchGlobalSsp] = useAsyncFn(async () => {
         if (shopifyIntegration !== undefined && helpCenter.shop_name) {
             try {
-                const shopifyIntegrationId: number = shopifyIntegration.get(
-                    'id'
-                )
+                const shopifyIntegrationId: number =
+                    shopifyIntegration.get('id')
 
-                const {
-                    deactivated_datetime,
-                } = await fetchSelfServiceConfiguration(
-                    `${shopifyIntegrationId}`
-                )
+                const {deactivated_datetime} =
+                    await fetchSelfServiceConfiguration(
+                        `${shopifyIntegrationId}`
+                    )
 
                 const sspGloballyDeactivated =
                     deactivated_datetime !== null &&

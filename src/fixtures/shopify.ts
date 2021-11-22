@@ -194,7 +194,7 @@ export const shopifyOrderFixture = ({
         browser_ip: null,
         cart_token: null,
         created_at: '2019-12-13T13:54:05-08:00',
-        line_items: ([
+        line_items: [
             {
                 id: 4193100136471,
                 sku: '0987654321-1',
@@ -271,7 +271,7 @@ export const shopifyOrderFixture = ({
                 fulfillable_quantity: 4,
                 variant_inventory_management: 'shopify',
             },
-        ] as unknown) as OrderLineItem[],
+        ] as unknown as OrderLineItem[],
         source_url: null,
         updated_at: '2019-12-13T13:56:10-08:00',
         checkout_id: null,
@@ -353,7 +353,7 @@ export const shopifyOrderFixture = ({
     } as Order)
 
 export const shopifyMultiCurrencyOrderFixture = (): Order =>
-    (({
+    ({
         id: 2177984102539,
         name: '#1012',
         note: null,
@@ -725,7 +725,7 @@ export const shopifyMultiCurrencyOrderFixture = (): Order =>
                 currency_code: 'USD',
             },
         },
-    } as unknown) as Order)
+    } as unknown as Order)
 
 export const shopifyAddressFixture = () =>
     ({
@@ -749,7 +749,7 @@ export const shopifyAddressFixture = () =>
     } as Address)
 
 export const shopifyDraftOrderPayloadFixture = () =>
-    (({
+    ({
         shipping_address: {
             zip: null,
             city: null,
@@ -808,7 +808,7 @@ export const shopifyDraftOrderPayloadFixture = () =>
             admin_graphql_api_id: 'gid://shopify/Customer/2721145061399',
         },
         currency: 'USD',
-    } as unknown) as DraftOrder)
+    } as unknown as DraftOrder)
 
 export const shopifyLineItemFixture = ({
     quantity = 1,
@@ -862,11 +862,11 @@ export const shopifyLineItemFixture = ({
         ;(lineItem as Record<string, unknown>).total_discount_set = setPrice
     }
 
-    return (lineItem as unknown) as LineItem
+    return lineItem as unknown as LineItem
 }
 
 export const shopifyDraftOrderFixture = () =>
-    (({
+    ({
         taxes_included: false,
         shipping_address: {
             zip: null,
@@ -1027,20 +1027,20 @@ export const shopifyDraftOrderFixture = () =>
             tax_exemptions: [],
             multipass_identifier: null,
         },
-    } as unknown) as DraftOrder)
+    } as unknown as DraftOrder)
 
 export const shopifyAppliedDiscountFixture = ({
     value = '100.0',
     valueType = 'percentage',
     amount = '5.00',
 } = {}) =>
-    (({
+    ({
         description: null,
         value,
         title: '',
         amount,
         value_type: valueType,
-    } as unknown) as AppliedDiscount)
+    } as unknown as AppliedDiscount)
 
 export const shopifyShippingLineFixture = ({price = '12.00'} = {}) => ({
     custom: false,
@@ -1055,8 +1055,7 @@ export const shopifyCalculateEditOrderFixture = () => ({
         stagedChanges: {
             edges: [
                 {
-                    cursor:
-                        'eyJsYXN0X2lkIjoyMDU0MTAxNDIyNSwibGFzdF92YWx1ZSI6IjIwNTQxMDE0MjI1In0=',
+                    cursor: 'eyJsYXN0X2lkIjoyMDU0MTAxNDIyNSwibGFzdF92YWx1ZSI6IjIwNTQxMDE0MjI1In0=',
                 },
             ],
         },
@@ -1132,10 +1131,10 @@ export const shopifyRefundFixture = ({
     refundLineItems = [],
     orderAdjustments = [],
 } = {}) =>
-    (({
+    ({
         refund_line_items: refundLineItems,
         order_adjustments: orderAdjustments,
-    } as unknown) as Refund)
+    } as unknown as Refund)
 
 export const shopifyRefundLineItemFixture = (): RefundLineItem => ({
     id: 139749457943,
@@ -1154,7 +1153,7 @@ export const shopifyCancelOrderPayloadFixture = (): CancelOrderPayload => ({
 })
 
 export const shopifyRefundOrderPayloadFixture = ({notify = true} = {}) =>
-    (({
+    ({
         currency: 'USD',
         restock: true,
         notify,
@@ -1170,12 +1169,12 @@ export const shopifyRefundOrderPayloadFixture = ({notify = true} = {}) =>
             amount: '0.00',
         },
         transactions: [{amount: '1.00'}],
-    } as unknown) as RefundOrderPayload)
+    } as unknown as RefundOrderPayload)
 
 export const shopifySuggestedRefundFixture = ({
     locationId = 123,
 }: {locationId?: Maybe<number>} = {}) =>
-    (({
+    ({
         shipping: {
             amount: '0.00',
             tax: '0.00',
@@ -1207,7 +1206,7 @@ export const shopifySuggestedRefundFixture = ({
             },
         ],
         currency: 'USD',
-    } as unknown) as Refund)
+    } as unknown as Refund)
 
 export const shopifyCalculatedDraftOrderFixture = () => ({
     appliedDiscount: {
@@ -1254,10 +1253,9 @@ export const shopifyProductResult = () => [
             id: 1,
             tags: '',
             image: {
-                id: 28585364880636113,
+                id: 28585880636113,
                 alt: null,
-                src:
-                    'https://cdn.shopify.com/s/files/1/0586/5295/0737/products/black-shirt.jpg?v=1626170834',
+                src: 'https://cdn.shopify.com/s/files/1/0586/5295/0737/products/black-shirt.jpg?v=1626170834',
                 product_id: 1,
             },
             title: 'Black shirt',
@@ -1266,8 +1264,7 @@ export const shopifyProductResult = () => [
                 {
                     id: 28584880636113,
                     alt: null,
-                    src:
-                        'https://cdn.shopify.com/s/files/1/0586/5295/0737/products/black-shirt.jpg?v=1626170834',
+                    src: 'https://cdn.shopify.com/s/files/1/0586/5295/0737/products/black-shirt.jpg?v=1626170834',
                     product_id: 1,
                 },
             ],
@@ -1483,8 +1480,7 @@ export const shopifyProductResult = () => [
             image: {
                 id: 28585978757329,
                 alt: null,
-                src:
-                    'https://cdn.shopify.com/s/files/1/0586/5295/0737/products/3310.jpg?v=1626190829',
+                src: 'https://cdn.shopify.com/s/files/1/0586/5295/0737/products/3310.jpg?v=1626190829',
                 width: 550,
                 height: 550,
                 position: 1,
@@ -1501,8 +1497,7 @@ export const shopifyProductResult = () => [
                 {
                     id: 28585978757329,
                     alt: null,
-                    src:
-                        'https://cdn.shopify.com/s/files/1/0586/5295/0737/products/3310.jpg?v=1626190829',
+                    src: 'https://cdn.shopify.com/s/files/1/0586/5295/0737/products/3310.jpg?v=1626190829',
                     width: 550,
                     height: 550,
                     position: 1,

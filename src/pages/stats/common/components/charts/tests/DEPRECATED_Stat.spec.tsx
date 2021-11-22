@@ -141,10 +141,10 @@ describe('Stat', () => {
     it('should cancel downloading a file when unmounting', () => {
         jest.spyOn(axios.CancelToken, 'source').mockImplementation(
             () =>
-                (({
+                ({
                     token: undefined,
                     cancel: mockedCancelRequest,
-                } as unknown) as CancelTokenSource)
+                } as unknown as CancelTokenSource)
         )
         const {getByText, unmount} = render(
             <StatContainer

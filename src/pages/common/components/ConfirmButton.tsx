@@ -56,9 +56,8 @@ const ConfirmButton = ({
 }: Props) => {
     const ref = useRef<HTMLDivElement>(null)
     const [isLoadingInternal, setIsLoadingInternal] = useState(false)
-    const [isConfirmationDisplayed, setIsConfirmationDisplayed] = useState(
-        false
-    )
+    const [isConfirmationDisplayed, setIsConfirmationDisplayed] =
+        useState(false)
     const isMounted = useMountedState()
     const dateId = useMemo(() => Date.now().toString(), [])
     const uid = useMemo(() => `confirm-button-${id || dateId}`, [id, dateId])

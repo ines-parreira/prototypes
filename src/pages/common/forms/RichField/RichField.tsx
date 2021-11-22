@@ -98,10 +98,12 @@ export default class RichField extends InputField<Props, State> {
         const contentState = contentStateFromTextOrHTML(value.text, value.html)
 
         // set content state in editor state
-        editorState = (EditorState.push as (
-            editorState: EditorState,
-            contentState: ContentState
-        ) => EditorState)(editorState, contentState)
+        editorState = (
+            EditorState.push as (
+                editorState: EditorState,
+                contentState: ContentState
+            ) => EditorState
+        )(editorState, contentState)
 
         // immutable variables on first load
         editorState = attachEntitiesToVariables(editorState, true)

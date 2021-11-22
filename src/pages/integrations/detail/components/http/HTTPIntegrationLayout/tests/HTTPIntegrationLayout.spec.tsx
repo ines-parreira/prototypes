@@ -12,9 +12,8 @@ const HTTPintegration = fromJS({
 
 jest.mock('reactstrap', () => {
     const reactstrap = jest.requireActual('reactstrap')
-    const isUndefined: typeof _isUndefined = jest.requireActual(
-        'lodash/isUndefined'
-    )
+    const isUndefined: typeof _isUndefined =
+        jest.requireActual('lodash/isUndefined')
 
     return {
         ...reactstrap,

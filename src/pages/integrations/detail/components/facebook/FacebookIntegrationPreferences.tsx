@@ -109,11 +109,8 @@ export class FacebookIntegrationPreferences extends Component<Props, State> {
     }
 
     render() {
-        const {
-            autoResponderEnabled,
-            autoResponderReply,
-            isUpdating,
-        } = this.state
+        const {autoResponderEnabled, autoResponderReply, isUpdating} =
+            this.state
         const {integration} = this.props
 
         return (

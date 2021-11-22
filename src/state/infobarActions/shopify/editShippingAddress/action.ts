@@ -35,39 +35,37 @@ const setInitialState = () => ({
     type: SET_INITIAL_STATE,
 })
 
-export const onInit = (
-    integrationId: number,
-    customerId: string,
-    onError: () => void
-) => async (dispatch: StoreDispatch) => {
-    try {
-        const api = getCalculateApi()
+export const onInit =
+    (integrationId: number, customerId: string, onError: () => void) =>
+    async (dispatch: StoreDispatch) => {
+        try {
+            const api = getCalculateApi()
 
-        api.cancelPendingRequests(true)
+            api.cancelPendingRequests(true)
 
-        dispatch(setLoading(true, 'Fetching Shipping addresses ...'))
+            dispatch(setLoading(true, 'Fetching Shipping addresses ...'))
 
-        const addresses = await api.getShippingAddressList(
-            integrationId,
-            customerId
-        )
-        dispatch(setAddresses(addresses))
-    } catch (error) {
-        if (axios.isCancel(error)) {
-            return
-        }
-        onError && onError()
-        dispatch(
-            onApiError(
-                error,
-                'Error while feching edit addresses',
-                setLoading(false)
+            const addresses = await api.getShippingAddressList(
+                integrationId,
+                customerId
             )
-        )
-    } finally {
-        dispatch(setLoading(false))
+            dispatch(setAddresses(addresses))
+        } catch (error) {
+            if (axios.isCancel(error)) {
+                return
+            }
+            onError && onError()
+            dispatch(
+                onApiError(
+                    error,
+                    'Error while feching edit addresses',
+                    setLoading(false)
+                )
+            )
+        } finally {
+            dispatch(setLoading(false))
+        }
     }
-}
 
 /**
  * Reset the modal state between two modal openings after a small debounce

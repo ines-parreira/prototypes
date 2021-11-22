@@ -90,10 +90,12 @@ class ViewNavbarViewEditor extends Component<Props, State> {
                 Object.keys((this.state as Record<string, any>)[local]).forEach(
                     (id: string) => {
                         newSettings[id] = newSettings[id] || {}
-                        newSettings[id][remote] = (this.state as Record<
-                            string,
-                            Record<string, boolean | number>
-                        >)[local][id]
+                        newSettings[id][remote] = (
+                            this.state as Record<
+                                string,
+                                Record<string, boolean | number>
+                            >
+                        )[local][id]
                     }
                 )
             }
@@ -133,9 +135,8 @@ class ViewNavbarViewEditor extends Component<Props, State> {
     }
 
     _getDisplayOrder = (view: Map<any, any>) => {
-        const displayOrder = this.state.displayOrder[
-            (view.get('id') as number).toString()
-        ]
+        const displayOrder =
+            this.state.displayOrder[(view.get('id') as number).toString()]
 
         if (_isUndefined(displayOrder)) {
             return view.get('display_order') as number
@@ -157,7 +158,7 @@ class ViewNavbarViewEditor extends Component<Props, State> {
                     )
                 })
                 .sort(
-                    (sortViews as unknown) as (
+                    sortViews as unknown as (
                         view1: Map<any, any>,
                         view2: Map<any, any>
                     ) => number

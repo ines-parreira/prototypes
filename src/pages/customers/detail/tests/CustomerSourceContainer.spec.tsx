@@ -8,17 +8,19 @@ import SourceWrapper from '../../../common/components/sourceWidgets/SourceWrappe
 
 jest.mock(
     '../../../common/components/sourceWidgets/SourceWrapper',
-    () => ({context, identifier}: ComponentProps<typeof SourceWrapper>) => (
-        <div>
-            SourceWrapper
-            <div>context: {context}</div>
-            <div>identifier: {identifier}</div>
-        </div>
-    )
+    () =>
+        ({context, identifier}: ComponentProps<typeof SourceWrapper>) =>
+            (
+                <div>
+                    SourceWrapper
+                    <div>context: {context}</div>
+                    <div>identifier: {identifier}</div>
+                </div>
+            )
 )
 
 describe('<CustomerSourceContainer />', () => {
-    const minProps = ({
+    const minProps = {
         actions: {
             customers: {
                 bulkDeleteCustomer: jest.fn(),
@@ -53,7 +55,7 @@ describe('<CustomerSourceContainer />', () => {
             customer: fromJS({}),
         }),
         widgets: fromJS([shopifyWidget]),
-    } as unknown) as ComponentProps<typeof CustomerSourceContainer>
+    } as unknown as ComponentProps<typeof CustomerSourceContainer>
 
     it('should display content when a customer id is provided', () => {
         const {container} = renderWithRouter(

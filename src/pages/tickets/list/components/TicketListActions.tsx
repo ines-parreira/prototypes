@@ -95,9 +95,8 @@ export const TicketListActionsContainer = ({
     const [tagsSearchQuery, setTagsSearchQuery] = useState('')
     const [tags, setTags] = useState(fromJS([]) as List<Map<any, any>>)
     const [isLoadingTags, setIsLoadingTags] = useState(false)
-    const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(
-        false
-    )
+    const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
+        useState(false)
     const [isLaunchingJob, setIsLaunchingJob] = useState(false)
 
     const hasSelectedItems = !selectedItemsIds.isEmpty()
@@ -768,9 +767,8 @@ const connector = connect(
             teams: getTeams(state),
             agents: getAgents(state) as List<Map<any, any>>,
             isActiveViewTrashView: viewsSelectors.isActiveViewTrashView(state),
-            allViewItemsSelected: viewsSelectors.areAllActiveViewItemsSelected(
-                state
-            ),
+            allViewItemsSelected:
+                viewsSelectors.areAllActiveViewItemsSelected(state),
             areFiltersValid: viewsSelectors.areFiltersValid(state),
             activeView: viewsSelectors.getActiveView(state),
             getViewCount: viewsSelectors.makeGetViewCount(state),

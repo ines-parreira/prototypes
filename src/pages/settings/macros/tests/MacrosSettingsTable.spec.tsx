@@ -23,13 +23,15 @@ describe('<MacrosSettingsTable/>', () => {
         }),
         {}
     )
-    const mockCreateMacro: jest.MockedFunction<typeof createMacro> = createMacro as any
-    const mockDeleteMacro: jest.MockedFunction<typeof deleteMacro> = deleteMacro as any
+    const mockCreateMacro: jest.MockedFunction<typeof createMacro> =
+        createMacro as any
+    const mockDeleteMacro: jest.MockedFunction<typeof deleteMacro> =
+        deleteMacro as any
     const mockMacroCreated = jest.fn()
     const mockMacroDeleted = jest.fn()
     const mockNotify = jest.fn()
     const mockOnSortOptionsChange = jest.fn()
-    const minProps = ({
+    const minProps = {
         isLoading: false,
         macroIds: [],
         macros: {},
@@ -41,7 +43,7 @@ describe('<MacrosSettingsTable/>', () => {
             orderBy: 'createdDatetime',
             orderDir: 'asc',
         },
-    } as any) as ComponentProps<typeof MacrosSettingsTableContainer>
+    } as any as ComponentProps<typeof MacrosSettingsTableContainer>
     const mockClickEvent = {
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
@@ -169,8 +171,7 @@ describe('<MacrosSettingsTable/>', () => {
             response: {
                 data: {
                     error: {
-                        msg:
-                            'Cannot delete macro because it is used in the following places:',
+                        msg: 'Cannot delete macro because it is used in the following places:',
                         data: {
                             Rules: ['Rule1', 'Rule2'],
                         },

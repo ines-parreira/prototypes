@@ -54,9 +54,8 @@ export const PolicyRow = ({
 
     const hasSelfServeAddOn = useSelector(getHasAutomationAddOn)
 
-    const [isAutomationModalOpened, setIsAutomationModalOpened] = useState(
-        false
-    )
+    const [isAutomationModalOpened, setIsAutomationModalOpened] =
+        useState(false)
 
     const integrationType: ShopType = integration.get('type')
     const shopName: string = integration.getIn(['meta', 'shop_name'])

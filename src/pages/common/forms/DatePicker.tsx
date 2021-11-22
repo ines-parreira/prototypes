@@ -155,12 +155,10 @@ export const DatePicker = ({
                 onEvent={handleEvent}
                 onApply={(event, picker) => {
                     if (timezone) {
-                        const strippedTimeStartDate = picker.startDate.format(
-                            'YYYY-MM-DDTHH:mm'
-                        )
-                        const strippedTimeEndDate = picker.endDate.format(
-                            'YYYY-MM-DDTHH:mm'
-                        )
+                        const strippedTimeStartDate =
+                            picker.startDate.format('YYYY-MM-DDTHH:mm')
+                        const strippedTimeEndDate =
+                            picker.endDate.format('YYYY-MM-DDTHH:mm')
                         const startDate = moment(strippedTimeStartDate).tz(
                             timezone,
                             true
@@ -189,9 +187,10 @@ export const DatePicker = ({
                     dateRangerPickerElement.current = target.container?.get(0)
                     dateRangerPickerElement.current.classList.add('displayed')
 
-                    const cancelBtn = dateRangerPickerElement.current?.querySelector(
-                        '.cancelBtn'
-                    )
+                    const cancelBtn =
+                        dateRangerPickerElement.current?.querySelector(
+                            '.cancelBtn'
+                        )
                     if (cancelBtn) {
                         ;(cancelBtn as HTMLElement).innerText = 'Clear'
                     }
@@ -209,9 +208,10 @@ export const DatePicker = ({
                         subtree: true,
                     })
 
-                    const ranges = dateRangerPickerElement.current?.querySelector(
-                        '.ranges ul'
-                    )
+                    const ranges =
+                        dateRangerPickerElement.current?.querySelector(
+                            '.ranges ul'
+                        )
                     if (ranges && rangesLabel) {
                         ranges.classList.add('with-label')
                         ranges.setAttribute('label', rangesLabel)

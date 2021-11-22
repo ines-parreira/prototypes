@@ -77,33 +77,31 @@ export default function BillingPlansComparison({
         )
     }
 
-    const [
-        {loading: isSubscriptionUpdating},
-        handleSubscriptionUpdate,
-    ] = useAsyncFn(
-        async (planId: string) => {
-            if (!isAllowedToChangePlan(planId)) {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message:
-                            'You cannot change your current plan because you have too many active integrations. ' +
-                            'Delete or deactivate a few integrations and try again.',
-                    })
-                )
-                return
-            }
+    const [{loading: isSubscriptionUpdating}, handleSubscriptionUpdate] =
+        useAsyncFn(
+            async (planId: string) => {
+                if (!isAllowedToChangePlan(planId)) {
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Error,
+                            message:
+                                'You cannot change your current plan because you have too many active integrations. ' +
+                                'Delete or deactivate a few integrations and try again.',
+                        })
+                    )
+                    return
+                }
 
-            dispatch(setFutureSubscriptionPlan(planId))
-            await dispatch(
-                updateSubscription({
-                    plan: planId,
-                } as Subscription)
-            )
-            onSubscriptionChanged(currentSubscription)
-        },
-        [onSubscriptionChanged]
-    )
+                dispatch(setFutureSubscriptionPlan(planId))
+                await dispatch(
+                    updateSubscription({
+                        plan: planId,
+                    } as Subscription)
+                )
+                onSubscriptionChanged(currentSubscription)
+            },
+            [onSubscriptionChanged]
+        )
 
     const onPlanChange = (planId: string, isAutomationChecked: boolean) => {
         const id = isAutomationChecked

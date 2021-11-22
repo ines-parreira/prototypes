@@ -13,9 +13,8 @@ import {initialState as uiState} from '../../ui/reducer'
 
 import {getCategories, getCategoriesWithArticles} from '../selectors'
 
-const articlesResponse = getArticlesResponseFixture.data.map(
-    createArticleFromDto
-)
+const articlesResponse =
+    getArticlesResponseFixture.data.map(createArticleFromDto)
 
 const categoriesResponse: Category[] = getCategoriesResponseEnglish.data.map(
     (category) => createCategoryFromDto(category, 1)

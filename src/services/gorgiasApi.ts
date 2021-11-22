@@ -87,9 +87,8 @@ export default class GorgiasApi {
         let path: Maybe<string> = url
 
         while (path) {
-            const response: AxiosResponse<ApiListResponsePagination<
-                T[]
-            >> = await this._api.get(path, config)
+            const response: AxiosResponse<ApiListResponsePagination<T[]>> =
+                await this._api.get(path, config)
             const {
                 data: {data, meta},
             } = response

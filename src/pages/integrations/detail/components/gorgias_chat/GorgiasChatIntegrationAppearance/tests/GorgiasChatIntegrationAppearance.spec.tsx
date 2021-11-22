@@ -33,7 +33,7 @@ jest.mock('../../../../../../common/forms/FileField', () => {
 type Props = ComponentProps<typeof GorgiasChatIntegrationAppearanceComponent>
 
 describe('<GorgiasChatIntegrationAppearance/>', () => {
-    const minProps = ({
+    const minProps = {
         gorgiasChatIntegrations: fromJS([]),
         shopifyIntegrations: fromJS([
             {
@@ -49,7 +49,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
             updateOrCreateIntegration: jest.fn(() => Promise.resolve()),
             deleteIntegration: jest.fn(() => Promise.resolve()),
         },
-    } as any) as Props
+    } as any as Props
 
     beforeEach(() => {
         jest.resetAllMocks()
@@ -128,7 +128,8 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                             name: 'hellochatintegration',
                             type: GORGIAS_CHAT_INTEGRATION_TYPE,
                             decoration: {
-                                avatar_type: GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
+                                avatar_type:
+                                    GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
                                 avatar_team_picture_url: null,
                             },
                             meta: {
@@ -157,7 +158,8 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                             name: 'hellochatintegration',
                             type: GORGIAS_CHAT_INTEGRATION_TYPE,
                             decoration: {
-                                avatar_type: GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
+                                avatar_type:
+                                    GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
                                 avatar_team_picture_url:
                                     'https://gorgias.io/teampicture.png',
                             },
@@ -187,7 +189,8 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                             name: 'hellochatintegration',
                             type: GORGIAS_CHAT_INTEGRATION_TYPE,
                             decoration: {
-                                avatar_type: GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
+                                avatar_type:
+                                    GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
                                 avatar_team_picture_url: null,
                             },
                             meta: {
@@ -212,10 +215,11 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                 <GorgiasChatIntegrationAppearanceComponent
                     {...minProps}
                     actions={
-                        ({
-                            updateOrCreateIntegration: mockUpdateOrCreateIntegration,
+                        {
+                            updateOrCreateIntegration:
+                                mockUpdateOrCreateIntegration,
                             deleteIntegration: jest.fn(() => Promise.resolve()),
-                        } as unknown) as typeof IntegrationsActions
+                        } as unknown as typeof IntegrationsActions
                     }
                     gorgiasChatIntegrations={fromJS([
                         {

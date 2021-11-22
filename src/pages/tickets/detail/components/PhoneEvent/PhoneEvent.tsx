@@ -69,9 +69,8 @@ export default function PhoneEvent({event, isLast}: Props): JSX.Element {
     const callRecording = eventData.get('recording') as Map<string, any>
     const icon = icons.get(eventType) || null
 
-    const [displayAdditionalInfo, setDisplayAdditionalInfo] = useState<boolean>(
-        false
-    )
+    const [displayAdditionalInfo, setDisplayAdditionalInfo] =
+        useState<boolean>(false)
 
     useEffect(() => {
         if (

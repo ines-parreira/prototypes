@@ -16,8 +16,7 @@ export const helpCenterFetched = createAction<HelpCenter>(HELPCENTER_FETCHED)
 
 export const helpCenterUpdated = createAction<HelpCenter>(HELPCENTER_UPDATED)
 
-export const helpCentersFetched = createAction<HelpCenter[]>(
-    HELPCENTERS_FETCHED
-)
+export const helpCentersFetched =
+    createAction<HelpCenter[]>(HELPCENTERS_FETCHED)
 
 export const helpCenterDeleted = createAction<number>(HELPCENTER_DELETED)

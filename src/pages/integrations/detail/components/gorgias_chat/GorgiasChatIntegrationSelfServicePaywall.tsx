@@ -22,9 +22,8 @@ const sspAutomationAddonMock = getIconFromUrl(
 )
 
 export const GorgiasChatIntegrationSelfServicePaywall = () => {
-    const [isAutomationModalOpened, setIsAutomationModalOpened] = useState(
-        false
-    )
+    const [isAutomationModalOpened, setIsAutomationModalOpened] =
+        useState(false)
     const account = useSelector<RootState, CurrentAccountState>(
         getCurrentAccountState
     )

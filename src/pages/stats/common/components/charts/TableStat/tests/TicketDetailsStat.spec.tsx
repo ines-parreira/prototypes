@@ -18,18 +18,22 @@ const logEventMock = logEvent as jest.Mock
 jest.mock('../../../../../../../store/middlewares/segmentTracker')
 jest.mock(
     '../../../../ViewLink',
-    () => ({
-        filters,
-        viewName,
-        children,
-        ...linkProps
-    }: ComponentProps<typeof ViewLink>) => (
-        <a data-testid="view-link" {...linkProps}>
-            <span aria-label="view name">{viewName}</span>
-            <span aria-label="filters">{JSON.stringify(filters, null, 2)}</span>
-            <span aria-label="children">{children}</span>
-        </a>
-    )
+    () =>
+        ({
+            filters,
+            viewName,
+            children,
+            ...linkProps
+        }: ComponentProps<typeof ViewLink>) =>
+            (
+                <a data-testid="view-link" {...linkProps}>
+                    <span aria-label="view name">{viewName}</span>
+                    <span aria-label="filters">
+                        {JSON.stringify(filters, null, 2)}
+                    </span>
+                    <span aria-label="children">{children}</span>
+                </a>
+            )
 )
 
 describe('TicketDetailsStat', () => {

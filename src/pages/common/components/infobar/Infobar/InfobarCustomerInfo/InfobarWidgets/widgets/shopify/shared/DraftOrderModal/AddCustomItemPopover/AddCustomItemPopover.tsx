@@ -183,14 +183,8 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
 
     render() {
         const {id, placement, className, currencyCode} = this.props
-        const {
-            isOpen,
-            title,
-            price,
-            quantity,
-            taxable,
-            requiresShipping,
-        } = this.state
+        const {isOpen, title, price, quantity, taxable, requiresShipping} =
+            this.state
 
         return (
             <div>

@@ -9,9 +9,9 @@ import {
 import {PhoneCountry} from '../../../../../../business/twilio'
 
 describe('<PhoneAddressInformation />', () => {
-    const onChange: jest.MockedFunction<(
-        value: Partial<AddressInformation>
-    ) => void> = jest.fn()
+    const onChange: jest.MockedFunction<
+        (value: Partial<AddressInformation>) => void
+    > = jest.fn()
 
     it('should render', () => {
         const {container} = render(

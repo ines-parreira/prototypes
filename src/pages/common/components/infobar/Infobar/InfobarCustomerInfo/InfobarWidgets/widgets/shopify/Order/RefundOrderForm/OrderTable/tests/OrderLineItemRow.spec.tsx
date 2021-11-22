@@ -50,13 +50,15 @@ describe('<LineItemRow/>', () => {
             })
         )
 
-        const lineItem = (fromJS(
-            shopifyLineItemFixture({
-                currencyCode: 'USD',
-                presentmentCurrencyCode: 'JPY',
-                presentmentPrice: '100',
-            })
-        ) as Map<any, any>).set('total_discount_set', totalDiscountSet)
+        const lineItem = (
+            fromJS(
+                shopifyLineItemFixture({
+                    currencyCode: 'USD',
+                    presentmentCurrencyCode: 'JPY',
+                    presentmentPrice: '100',
+                })
+            ) as Map<any, any>
+        ).set('total_discount_set', totalDiscountSet)
 
         const {container} = render(
             <OrderLineItemRow
@@ -77,9 +79,12 @@ describe('<LineItemRow/>', () => {
         const totalDiscountSet = fromJS(
             shopifyPriceSetFixture({amount: '0.50'})
         )
-        const lineItem = (fromJS(
-            shopifyLineItemFixture({currencyCode: 'USD'})
-        ) as Map<any, any>).set('total_discount_set', totalDiscountSet)
+        const lineItem = (
+            fromJS(shopifyLineItemFixture({currencyCode: 'USD'})) as Map<
+                any,
+                any
+            >
+        ).set('total_discount_set', totalDiscountSet)
 
         const {container} = render(
             <OrderLineItemRow
@@ -120,9 +125,12 @@ describe('<LineItemRow/>', () => {
         const totalDiscountSet = fromJS(
             shopifyPriceSetFixture({amount: '0.00'})
         )
-        const lineItem = (fromJS(
-            shopifyLineItemFixture({currencyCode: 'USD'})
-        ) as Map<any, any>).set('total_discount_set', totalDiscountSet)
+        const lineItem = (
+            fromJS(shopifyLineItemFixture({currencyCode: 'USD'})) as Map<
+                any,
+                any
+            >
+        ).set('total_discount_set', totalDiscountSet)
 
         render(
             <OrderLineItemRow

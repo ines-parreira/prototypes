@@ -55,7 +55,7 @@ export type ContextConsumerMock<ContextValue> = ComponentType & {
     getLastContextValue: () => ContextValue | undefined
 }
 
-export const createContextConsumer = <ContextValue extends unknown>(
+export const createContextConsumer = <ContextValue,>(
     context: Context<ContextValue>
 ): ContextConsumerMock<ContextValue> => {
     const renderContext = jest
@@ -101,9 +101,9 @@ export const makeExecuteKeyboardAction = (
 ) => {
     const eventMock =
         shortcutEventMock ||
-        (({
+        ({
             preventDefault: jest.fn(),
-        } as unknown) as jest.Mocked<Event>)
+        } as unknown as jest.Mocked<Event>)
 
     return (shortcutName: string) => {
         const lastCall = _last(shortcutManagerMock.bind.mock.calls)

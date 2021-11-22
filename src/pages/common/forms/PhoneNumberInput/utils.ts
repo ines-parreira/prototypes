@@ -21,10 +21,10 @@ export function getCountryFromPhoneNumber(
     const callingCode = parsedNumber?.countryCallingCode ?? parseInt(number)
 
     if (callingCode) {
-        return (get(callingCodes, [
+        return get(callingCodes, [
             toString(callingCode),
             0,
-        ]) as unknown) as CountryCode
+        ]) as unknown as CountryCode
     }
 
     return undefined

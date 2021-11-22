@@ -40,20 +40,15 @@ class TicketListInfobarContainer extends Component<Props> {
     }
 
     render() {
-        const {
-            agents,
-            currentUser,
-            emailIntegrations,
-            hasIntegrationsOfTypes,
-        } = this.props
+        const {agents, currentUser, emailIntegrations, hasIntegrationsOfTypes} =
+            this.props
 
         const hasVerifiedEmailIntegration = emailIntegrations
             .filter(
                 (integration: Map<any, any>) =>
-                    !(integration.getIn([
-                        'meta',
-                        'address',
-                    ]) as string).endsWith(window.EMAIL_FORWARDING_DOMAIN)
+                    !(
+                        integration.getIn(['meta', 'address']) as string
+                    ).endsWith(window.EMAIL_FORWARDING_DOMAIN)
             ) // remove generated gorgias addresses
             .some((integration: Map<any, any>) => {
                 // gmail or outlook is connected or forwarding is on
@@ -215,9 +210,8 @@ const connector = connect((state: RootState) => {
         agents: agentSelectors.getAgents(state),
         currentUser: currentUserSelectors.getCurrentUser(state),
         emailIntegrations: integrationsSelectors.getEmailIntegrations(state),
-        hasIntegrationsOfTypes: integrationsSelectors.makeHasIntegrationOfTypes(
-            state
-        ),
+        hasIntegrationsOfTypes:
+            integrationsSelectors.makeHasIntegrationOfTypes(state),
     }
 })
 

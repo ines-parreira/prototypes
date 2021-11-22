@@ -253,11 +253,12 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
             instagramDMSettingStatus === InstagramDMSettingStatus.ALLOWED &&
             currentPlanHasInstagramDMFeature
 
-        const instagramDMSettingsInlineComponent = getInstagramDMSettingsInlineComponent(
-            instagramDMSettingStatus,
-            currentAccount,
-            currentPlan
-        )
+        const instagramDMSettingsInlineComponent =
+            getInstagramDMSettingsInlineComponent(
+                instagramDMSettingStatus,
+                currentAccount,
+                currentPlan
+            )
 
         const isSubmitting = !!loading.get('updateIntegration')
 

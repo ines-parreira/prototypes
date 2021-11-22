@@ -30,7 +30,8 @@ type WSMessage = {
 }
 
 //$TsFixMe remove on ./fallbackWorkerAdapter.js
-const typeSafeFallbackBroadcastChannelAdapter = (fallbackBroadcastChannelAdapter as unknown) as BroadcastChannel
+const typeSafeFallbackBroadcastChannelAdapter =
+    fallbackBroadcastChannelAdapter as unknown as BroadcastChannel
 //$TsFixMe remove once init.js is migrated
 const typeSafeReduxStore = store as EnhancedStore
 

@@ -144,10 +144,9 @@ export const ImportSection = ({
                             })
                         )
                     } else {
-                        const errorMessage = (fromJS(error.response) as Map<
-                            unknown,
-                            unknown
-                        >).getIn(
+                        const errorMessage = (
+                            fromJS(error.response) as Map<unknown, unknown>
+                        ).getIn(
                             ['data', 'error', 'msg'],
                             'Failed to upload file. Please try again later.'
                         )
@@ -407,11 +406,10 @@ export const ImportSection = ({
                                     onClick={async (e) => {
                                         e.preventDefault()
 
-                                        const response = await client.generateCsvTemplate(
-                                            {
+                                        const response =
+                                            await client.generateCsvTemplate({
                                                 help_center_id: helpCenter.id,
-                                            }
-                                        )
+                                            })
 
                                         saveFileAsDownloaded(
                                             'template.csv',

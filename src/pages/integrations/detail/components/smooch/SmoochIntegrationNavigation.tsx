@@ -8,9 +8,7 @@ type Props = {
     integration: Map<any, any>
 }
 
-export default class SmoochIntegrationNavigation extends React.Component<
-    Props
-> {
+export default class SmoochIntegrationNavigation extends React.Component<Props> {
     render() {
         const {integration} = this.props
         const integrationId = integration.get('id') as number

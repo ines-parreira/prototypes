@@ -93,9 +93,9 @@ describe('<SynchronizedScrollTopProvider />', () => {
             )
         })
         act(() => {
-            const load = (windowAddEventListenerSpy.mock.calls as [
-                [string, () => void]
-            ]).find((call) => call[0] === 'load')![1]
+            const load = (
+                windowAddEventListenerSpy.mock.calls as [[string, () => void]]
+            ).find((call) => call[0] === 'load')![1]
             load()
         })
 

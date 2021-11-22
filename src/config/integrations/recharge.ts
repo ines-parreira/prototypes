@@ -22,33 +22,27 @@ export const MACRO_VARIABLES = {
         },
         {
             name: 'Quantity of last subscription',
-            value:
-                '{{ticket.customer.integrations.recharge.subscriptions[0].quantity}}',
+            value: '{{ticket.customer.integrations.recharge.subscriptions[0].quantity}}',
         },
         {
             name: 'Product title of last subscription',
-            value:
-                '{{ticket.customer.integrations.recharge.subscriptions[0].product_title}}',
+            value: '{{ticket.customer.integrations.recharge.subscriptions[0].product_title}}',
         },
         {
             name: 'Order interval frequency of last subscription',
-            value:
-                '{{ticket.customer.integrations.recharge.subscriptions[0].order_interval_frequency}}',
+            value: '{{ticket.customer.integrations.recharge.subscriptions[0].order_interval_frequency}}',
         },
         {
             name: 'Order interval unit of last subscription',
-            value:
-                '{{ticket.customer.integrations.recharge.subscriptions[0].order_interval_unit}}',
+            value: '{{ticket.customer.integrations.recharge.subscriptions[0].order_interval_unit}}',
         },
         {
             name: 'Price of last subscription',
-            value:
-                '{{ticket.customer.integrations.recharge.subscriptions[0].price}}',
+            value: '{{ticket.customer.integrations.recharge.subscriptions[0].price}}',
         },
         {
             name: 'Scheduled date of next charge of last subscription',
-            value:
-                '{{ticket.customer.integrations.recharge.subscriptions[0].next_charge_scheduled_at|datetime_format("MM/d/YYYY")}}',
+            value: '{{ticket.customer.integrations.recharge.subscriptions[0].next_charge_scheduled_at|datetime_format("MM/d/YYYY")}}',
         },
     ],
 }
@@ -64,8 +58,7 @@ export const MACRO_PREVIOUS_VARIABLES = {
         },
         {
             name: 'Scheduled date of next charge of last subscription',
-            value:
-                '{{ticket.customer.integrations.recharge.subscriptions[0].next_charge_scheduled_at|datetime_format("L")}}',
+            value: '{{ticket.customer.integrations.recharge.subscriptions[0].next_charge_scheduled_at|datetime_format("L")}}',
         },
     ],
 }

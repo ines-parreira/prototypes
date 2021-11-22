@@ -58,7 +58,7 @@ export class APIViewContainer extends Component<Props, State> {
                     // eslint-disable-next-line no-param-reassign
                     ((n = o.createElement('script')),
                     (n.id = s + t),
-                    (((n as unknown) as {async: number}).async = 1),
+                    ((n as unknown as {async: number}).async = 1),
                     (n.src = m),
                     n)
                 )
@@ -77,9 +77,11 @@ export class APIViewContainer extends Component<Props, State> {
         const clipboard = new Clipboard('.copyBtn')
 
         clipboard.on('success', (e) => {
-            const targetId = (e.trigger as Element & {
-                dataset: {clipboardTarget: string}
-            }).dataset.clipboardTarget
+            const targetId = (
+                e.trigger as Element & {
+                    dataset: {clipboardTarget: string}
+                }
+            ).dataset.clipboardTarget
             const target = `isCopied${targetId.replace('#', '')}` as keyof State
             const newState: Partial<State> = {}
             newState[target] = true

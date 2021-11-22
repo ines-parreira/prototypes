@@ -202,10 +202,9 @@ export const TicketViewContainer = ({
         // TODO(customers-migration): ask confirmation to update this event
         segmentTracker.logEvent(segmentTracker.EVENTS.USER_HISTORY_TOGGLED, {
             open: shouldOpenHistory,
-            nbOfTicketsInTimeline: (customers.getIn([
-                'customerHistory',
-                'tickets',
-            ]) as List<any>).size,
+            nbOfTicketsInTimeline: (
+                customers.getIn(['customerHistory', 'tickets']) as List<any>
+            ).size,
             channel: ticket.get('channel'),
             nbOfMessagesInTicket: (ticket.get('messages') as List<any>).size,
         })
@@ -244,10 +243,9 @@ export const TicketViewContainer = ({
                                 <AgentLabel
                                     key={index}
                                     name={(agent as Map<any, any>).get('name')}
-                                    profilePictureUrl={(agent as Map<
-                                        any,
-                                        any
-                                    >).getIn(['meta', 'profile_picture_url'])}
+                                    profilePictureUrl={(
+                                        agent as Map<any, any>
+                                    ).getIn(['meta', 'profile_picture_url'])}
                                     className={css.collisionAgent}
                                     shouldDisplayAvatar
                                 />
@@ -274,10 +272,9 @@ export const TicketViewContainer = ({
                                 <AgentLabel
                                     key={index}
                                     name={(agent as Map<any, any>).get('name')}
-                                    profilePictureUrl={(agent as Map<
-                                        any,
-                                        any
-                                    >).getIn(['meta', 'profile_picture_url'])}
+                                    profilePictureUrl={(
+                                        agent as Map<any, any>
+                                    ).getIn(['meta', 'profile_picture_url'])}
                                     className={css.collisionAgent}
                                     shouldDisplayAvatar
                                 />

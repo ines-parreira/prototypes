@@ -6,7 +6,7 @@ import _noop from 'lodash/noop'
 import {AddLinkContainer} from '../AddLink'
 
 describe('<AddLink />', () => {
-    const defaultProps = ({
+    const defaultProps = {
         isOpen: true,
         getEditorState: () => EditorState.createEmpty(),
         setEditorState: _noop,
@@ -18,7 +18,7 @@ describe('<AddLink />', () => {
         url: '',
         linkEditionStarted: jest.fn(),
         linkEditionEnded: jest.fn(),
-    } as unknown) as ComponentProps<typeof AddLinkContainer>
+    } as unknown as ComponentProps<typeof AddLinkContainer>
 
     it('should allow to submit a valid url', () => {
         const component = shallow(

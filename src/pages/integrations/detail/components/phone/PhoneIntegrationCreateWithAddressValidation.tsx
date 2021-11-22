@@ -68,7 +68,8 @@ const LOCAL_AREA_CODES: LocalAreaCodes = {
     [PhoneCountry.GB]: rawGbAreaCodeOptions,
 }
 
-const TOLL_FREE_AREA_CODE_OPTIONS: SelectableOption[] = rawTollFreeAreaCodeOptions
+const TOLL_FREE_AREA_CODE_OPTIONS: SelectableOption[] =
+    rawTollFreeAreaCodeOptions
 
 const COUNTRY_PHONE_TYPES = {
     [PhoneCountry.US]: [PhoneType.Local, PhoneType.TollFree],
@@ -105,12 +106,11 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
     const [phoneType, setPhoneType] = useState<PhoneType | undefined>()
     const [state, setState] = useState('')
     const [areaCode, setAreaCode] = useState('')
-    const [addressInformation, setAddressInformation] = useState<Partial<
-        AddressInformation
-    > | null>({
-        country,
-        type: AddressType.Company,
-    })
+    const [addressInformation, setAddressInformation] =
+        useState<Partial<AddressInformation> | null>({
+            country,
+            type: AddressType.Company,
+        })
     const shouldValidateAddress = useCallback(
         (country) => country === PhoneCountry.GB || country === PhoneCountry.AU,
         []
@@ -185,7 +185,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                         ? parseInt(areaCode.split('-').pop() as string)
                         : parseInt(areaCode)
 
-                await ((actions.updateOrCreateIntegration(
+                await (actions.updateOrCreateIntegration(
                     fromJS({
                         type: IntegrationType.Phone,
                         name: title,
@@ -213,7 +213,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                             address_information: addressInformation,
                         },
                     })
-                ) as unknown) as Promise<any>)
+                ) as unknown as Promise<any>)
             } catch (error) {
                 setError(error)
             } finally {

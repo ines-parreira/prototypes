@@ -91,10 +91,9 @@ const getCache = (context: MessageContext): MessageContext => {
             const cachedSelectionState = cachedContent.get('selectionState')
             if (cachedSelectionState) {
                 // create a new selection and just copy the props from the cached state
-                //@ts-ignore
-                context.selectionState = SelectionState.createEmpty().merge(
-                    cachedSelectionState
-                )
+                context.selectionState =
+                    //@ts-ignore
+                    SelectionState.createEmpty().merge(cachedSelectionState)
             }
 
             if (hasEmailExtraContent(context.contentState)) {

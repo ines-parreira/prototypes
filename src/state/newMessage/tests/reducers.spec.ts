@@ -53,10 +53,12 @@ describe('new message reducer', () => {
         const expected = initialState
             .mergeDeep({
                 newMessage: {
-                    attachments: (initialState.getIn([
-                        'newMessage',
-                        'attachments',
-                    ]) as List<any>).concat(['resp']),
+                    attachments: (
+                        initialState.getIn([
+                            'newMessage',
+                            'attachments',
+                        ]) as List<any>
+                    ).concat(['resp']),
                 },
                 state: {
                     dirty: true,
@@ -75,19 +77,24 @@ describe('new message reducer', () => {
     it('should return state with dirty state and delete corect index attachments', () => {
         const fakeAttachments = initialState.mergeDeep({
             newMessage: {
-                attachments: (initialState.getIn([
-                    'newMessage',
-                    'attachments',
-                ]) as List<any>).concat(['test1', 'test2']),
+                attachments: (
+                    initialState.getIn([
+                        'newMessage',
+                        'attachments',
+                    ]) as List<any>
+                ).concat(['test1', 'test2']),
             },
         })
 
         const expected = fakeAttachments
             .setIn(
                 ['newMessage', 'attachments'],
-                (fakeAttachments.getIn(['newMessage', 'attachments']) as List<
-                    any
-                >).delete(0)
+                (
+                    fakeAttachments.getIn([
+                        'newMessage',
+                        'attachments',
+                    ]) as List<any>
+                ).delete(0)
             )
             .setIn(['state', 'dirty'], true)
 
@@ -266,7 +273,7 @@ describe('new message reducer', () => {
             }
             const newState = reducer(
                 initialState,
-                (action as unknown) as GorgiasAction
+                action as unknown as GorgiasAction
             )
             expect(newState.getIn(['newMessage', 'source', 'type'])).toEqual(
                 TicketMessageSourceType.FacebookMessenger
@@ -402,19 +409,18 @@ describe('new message reducer', () => {
             }
 
             expect(
-                (reducer(
-                    initialState.mergeDeep({
-                        newMessage: {
-                            source: {
-                                type: 'email',
+                (
+                    reducer(
+                        initialState.mergeDeep({
+                            newMessage: {
+                                source: {
+                                    type: 'email',
+                                },
                             },
-                        },
-                    }),
-                    action
-                ).getIn([
-                    'state',
-                    'contentState',
-                ]) as ContentState).getPlainText()
+                        }),
+                        action
+                    ).getIn(['state', 'contentState']) as ContentState
+                ).getPlainText()
             ).toEqual('Hello')
         })
 
@@ -427,9 +433,9 @@ describe('new message reducer', () => {
             }
             reducer(initialState, action)
             expect(addCacheSpy).toHaveBeenCalledTimes(1)
-            const context = (addCacheSpy.mock.calls[0] as [
-                responseUtils.MessageContext
-            ])[0]
+            const context = (
+                addCacheSpy.mock.calls[0] as [responseUtils.MessageContext]
+            )[0]
             expect(getMessageContextSnapshot(context)).toMatchSnapshot()
         })
 
@@ -472,9 +478,8 @@ describe('new message reducer', () => {
         })
 
         it('should update content state when email extra data was updated', () => {
-            const contentStateWithoutEmailExtra = ContentState.createFromText(
-                ''
-            )
+            const contentStateWithoutEmailExtra =
+                ContentState.createFromText('')
             const contentState = addEmailExtraContent(
                 contentStateWithoutEmailExtra,
                 {
@@ -515,9 +520,8 @@ describe('new message reducer', () => {
             const action = {
                 type: types.SET_RESPONSE_TEXT,
                 args: fromJS({
-                    contentState: emailExtraUtils.deleteEmailExtraContent(
-                        contentState
-                    ),
+                    contentState:
+                        emailExtraUtils.deleteEmailExtraContent(contentState),
                 }),
             }
             expect(
@@ -592,8 +596,7 @@ describe('new message reducer', () => {
                     content_type: 'image/jpeg',
                     name: 'batman.jpg',
                     size: '2563',
-                    url:
-                        'https://uploads.gorgias.io/Zr1WE86rb6J4Mvgl/batman-b40a130a-5546-417a-b8bc-44a0aa59d7ba.jpg',
+                    url: 'https://uploads.gorgias.io/Zr1WE86rb6J4Mvgl/batman-b40a130a-5546-417a-b8bc-44a0aa59d7ba.jpg',
                 },
             ])
             const action = {
@@ -761,11 +764,13 @@ describe('new message reducer', () => {
                 },
             }
             expect(
-                (reducer(initialState, action).getIn([
-                    'newMessage',
-                    'source',
-                    'extra',
-                ]) as Map<any, any>).toJS()
+                (
+                    reducer(initialState, action).getIn([
+                        'newMessage',
+                        'source',
+                        'extra',
+                    ]) as Map<any, any>
+                ).toJS()
             ).toMatchSnapshot()
         })
     })

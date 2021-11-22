@@ -29,20 +29,21 @@ export function buildJobMessage(
                 const objectPropertyName = Object.keys(
                     changes.updates as Record<string, string>
                 )[0]
-                const objectPropertyValue = (changes.updates as Record<
-                    string,
-                    unknown
-                >)[objectPropertyName]
+                const objectPropertyValue = (
+                    changes.updates as Record<string, unknown>
+                )[objectPropertyName]
                 switch (objectPropertyName) {
                     case 'assignee_user':
                         message += (changes.updates as Record<string, string>)[
                             objectPropertyName
                         ]
                             ? `assigned to ${
-                                  (objectPropertyValue as Record<
-                                      string,
-                                      string
-                                  >).name
+                                  (
+                                      objectPropertyValue as Record<
+                                          string,
+                                          string
+                                      >
+                                  ).name
                               }`
                             : 'unassigned'
                         break

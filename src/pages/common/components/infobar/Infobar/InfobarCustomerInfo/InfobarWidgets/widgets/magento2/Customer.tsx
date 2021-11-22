@@ -55,12 +55,16 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
     render() {
         const {children, source} = this.props
 
-        const storeUrl: string = (this.context as {
-            integration: Map<any, any>
-        }).integration.getIn(['meta', 'store_url']) as string
-        const adminUrlSuffix: string = (this.context as {
-            integration: Map<any, any>
-        }).integration.getIn(['meta', 'admin_url_suffix']) as string
+        const storeUrl: string = (
+            this.context as {
+                integration: Map<any, any>
+            }
+        ).integration.getIn(['meta', 'store_url']) as string
+        const adminUrlSuffix: string = (
+            this.context as {
+                integration: Map<any, any>
+            }
+        ).integration.getIn(['meta', 'admin_url_suffix']) as string
         const customerId = ((source.get('id') as string) || '').toString()
 
         const link = `https://${storeUrl}/${adminUrlSuffix}/customer/index/edit/id/${customerId}/`

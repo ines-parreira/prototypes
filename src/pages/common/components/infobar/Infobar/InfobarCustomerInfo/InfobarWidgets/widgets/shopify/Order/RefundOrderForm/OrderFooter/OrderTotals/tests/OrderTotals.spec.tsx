@@ -100,9 +100,9 @@ describe('<OrderTotals/>', () => {
                 />
             )
 
-            ;(component.instance() as InstanceType<
-                typeof OrderTotals
-            >)._onShippingChange('9.00')
+            ;(
+                component.instance() as InstanceType<typeof OrderTotals>
+            )._onShippingChange('9.00')
 
             const newPayload = payload.setIn(['shipping', 'amount'], '9.00')
             expect(onPayloadChange).toHaveBeenCalledWith(newPayload)
@@ -126,9 +126,9 @@ describe('<OrderTotals/>', () => {
                 />
             )
 
-            ;(component.instance() as InstanceType<
-                typeof OrderTotals
-            >)._onShippingChange('9')
+            ;(
+                component.instance() as InstanceType<typeof OrderTotals>
+            )._onShippingChange('9')
 
             expect(onPayloadChange).not.toHaveBeenCalled()
         })

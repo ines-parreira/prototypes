@@ -57,15 +57,8 @@ export default class BooleanField extends InputField {
     }
 
     render() {
-        const {
-            className,
-            error,
-            required,
-            inline,
-            label,
-            help,
-            disabled,
-        } = this.props
+        const {className, error, required, inline, label, help, disabled} =
+            this.props
         const color = error ? 'danger' : ''
 
         return (

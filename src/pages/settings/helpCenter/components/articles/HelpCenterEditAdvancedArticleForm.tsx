@@ -41,35 +41,34 @@ export const HelpCenterEditAdvancedArticleForm = ({
     const slugPrefix = getAbsoluteUrl({domain, locale: translation.locale})
     const slugSuffix = articleId ? `-${articleId.toString()}` : ''
 
-    const onEditArticle = (editKey: keyof CreateArticleTranslationDto) => (
-        value: string
-    ) => {
-        if (editKey === 'title') {
+    const onEditArticle =
+        (editKey: keyof CreateArticleTranslationDto) => (value: string) => {
+            if (editKey === 'title') {
+                onChange({
+                    ...translation,
+                    [editKey]: value,
+                    slug: slugify(value),
+                })
+                return
+            }
+
             onChange({
                 ...translation,
-                [editKey]: value,
-                slug: slugify(value),
+                [editKey]: editKey === 'slug' ? slugify(value) : value,
             })
-            return
         }
 
-        onChange({
-            ...translation,
-            [editKey]: editKey === 'slug' ? slugify(value) : value,
-        })
-    }
-
-    const onEditSeoMeta = (editKey: keyof ArticleTranslationSeoMeta) => (
-        value: string | null
-    ) => {
-        onChange({
-            ...translation,
-            seo_meta: {
-                ...translation.seo_meta,
-                [editKey]: value,
-            },
-        })
-    }
+    const onEditSeoMeta =
+        (editKey: keyof ArticleTranslationSeoMeta) =>
+        (value: string | null) => {
+            onChange({
+                ...translation,
+                seo_meta: {
+                    ...translation.seo_meta,
+                    [editKey]: value,
+                },
+            })
+        }
 
     const copyURL = () => {
         const {locale, slug} = translation

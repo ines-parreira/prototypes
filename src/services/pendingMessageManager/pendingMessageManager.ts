@@ -51,13 +51,8 @@ export class PendingMessageManager {
     }
 
     sendMessage = (sendMessageArgs: SendMessageArgs) => {
-        const {
-            messageId,
-            messageToSend,
-            action,
-            resetMessage,
-            ticketId,
-        } = sendMessageArgs
+        const {messageId, messageToSend, action, resetMessage, ticketId} =
+            sendMessageArgs
 
         this.skipExistingTimer()
         typeSafeReduxStore.dispatch(
@@ -101,12 +96,8 @@ export class PendingMessageManager {
 
     undoMessage = () => {
         if (this.timeoutId && this.pendingSendMessagesArgs) {
-            const {
-                messageId,
-                messageToSend,
-                ticketId,
-                replyAreaState,
-            } = this.pendingSendMessagesArgs
+            const {messageId, messageToSend, ticketId, replyAreaState} =
+                this.pendingSendMessagesArgs
 
             logEvent(EVENTS.UNDO_SENT_MESSAGE, {
                 bodyText: messageToSend.body_text,
@@ -117,9 +108,8 @@ export class PendingMessageManager {
             history.push(`/app/ticket/${ticketId || ''}`)
             setTimeout(() => {
                 const macros = messageToSend.macros || []
-                const {
-                    macros: macrosState,
-                } = typeSafeReduxStore.getState() as RootState
+                const {macros: macrosState} =
+                    typeSafeReduxStore.getState() as RootState
 
                 typeSafeReduxStore.dispatch(
                     newMessageResetFromMessage({
@@ -146,13 +136,8 @@ export class PendingMessageManager {
 
     skipExistingTimer = () => {
         if (this.timeoutId && this.pendingSendMessagesArgs) {
-            const {
-                messageId,
-                messageToSend,
-                action,
-                resetMessage,
-                ticketId,
-            } = this.pendingSendMessagesArgs
+            const {messageId, messageToSend, action, resetMessage, ticketId} =
+                this.pendingSendMessagesArgs
 
             //eslint-disable-next-line @typescript-eslint/no-unsafe-call
             typeSafeReduxStore.dispatch(removeNotification(messageId))

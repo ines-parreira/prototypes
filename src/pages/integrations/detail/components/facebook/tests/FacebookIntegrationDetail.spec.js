@@ -182,8 +182,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                 name: 'My facebook page',
                 meta: {
                     oauth: {
-                        scope:
-                            'business_management,manage_pages,instagram_basic,instagram_manage_comments',
+                        scope: 'business_management,manage_pages,instagram_basic,instagram_manage_comments',
                     },
                     instagram: {
                         id: '178941234975',
@@ -225,8 +224,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                 name: 'My facebook page',
                 meta: {
                     oauth: {
-                        scope:
-                            'business_management,manage_pages,instagram_basic,instagram_manage_comments',
+                        scope: 'business_management,manage_pages,instagram_basic,instagram_manage_comments',
                     },
                     instagram: {
                         id: '178941234975',
@@ -304,8 +302,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                 name: 'My facebook page',
                 meta: {
                     oauth: {
-                        scope:
-                            'business_management,manage_pages,instagram_basic,instagram_manage_comments',
+                        scope: 'business_management,manage_pages,instagram_basic,instagram_manage_comments',
                     },
                     instagram: {
                         id: '178941234975',
@@ -367,8 +364,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                 name: 'My facebook page',
                 meta: {
                     oauth: {
-                        scope:
-                            'business_management,manage_pages,instagram_basic,instagram_manage_comments',
+                        scope: 'business_management,manage_pages,instagram_basic,instagram_manage_comments',
                     },
                     instagram: {
                         id: '178941234975',
@@ -1012,7 +1008,8 @@ describe('<FacebookIntegrationDetail/>', () => {
                         },
                         instagram: {
                             id: '178941234975',
-                            instagram_direct_message_allowed: isIGAccountEligible,
+                            instagram_direct_message_allowed:
+                                isIGAccountEligible,
                         },
                         name: 'My facebook page',
                     },

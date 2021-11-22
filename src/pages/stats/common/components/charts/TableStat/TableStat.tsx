@@ -74,10 +74,9 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
 
         switch (type) {
             case StatValueType.TicketDetails: {
-                const details = (metric.get('details') as Map<
-                    any,
-                    any
-                >)?.toJS() as Record<TicketChannel, number>
+                const details = (
+                    metric.get('details') as Map<any, any>
+                )?.toJS() as Record<TicketChannel, number>
                 return (
                     <TicketDetailsStat
                         agentId={line.getIn(['0', 'value', 'id'])}
@@ -198,9 +197,9 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
                     <span>
                         <span id={id}>
                             <StatPercentageDiff
-                                label={(callback as StatConfigCallbacks<
-                                    ReactText
-                                >['cell'])(callbackData, callbackContext)}
+                                label={(
+                                    callback as StatConfigCallbacks<ReactText>['cell']
+                                )(callbackData, callbackContext)}
                                 percentage={metric.get('value')}
                             />
                         </span>
@@ -295,9 +294,9 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
                     <tr>
                         {(data.getIn(['axes', 'x']) as List<Map<any, any>>).map(
                             (axe, index) => {
-                                const axisId = `${(axe!.get(
-                                    'name'
-                                ) as string).replace(' ', '-')}-tooltip`
+                                const axisId = `${(
+                                    axe!.get('name') as string
+                                ).replace(' ', '-')}-tooltip`
                                 return (
                                     <th
                                         key={index}
@@ -306,9 +305,9 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
                                         }
                                     >
                                         <span className={css['cell-wrapper']}>
-                                            {(axe!.get(
-                                                'name'
-                                            ) as string).toUpperCase()}
+                                            {(
+                                                axe!.get('name') as string
+                                            ).toUpperCase()}
 
                                             {config.getIn([
                                                 'axisHelpers',

@@ -15,14 +15,16 @@ type Props = {
 } & ConnectedProps<typeof connector>
 
 function StatusSelect({onChange, schemas, value, className}: Props) {
-    const options = (schemas.getIn([
-        'definitions',
-        'Ticket',
-        'properties',
-        'status',
-        'meta',
-        'enum',
-    ]) as List<any>)
+    const options = (
+        schemas.getIn([
+            'definitions',
+            'Ticket',
+            'properties',
+            'status',
+            'meta',
+            'enum',
+        ]) as List<any>
+    )
         .toList()
         .toJS()
 

@@ -34,13 +34,8 @@ export function withViewSearchUrlSyncContainer<P extends Props>(
     return (
         props: P & Omit<ViewSearchUrlSyncInjectedProps, keyof InjectedProps>
     ) => {
-        const {
-            config,
-            updateView,
-            activeView,
-            isSearch,
-            areFiltersValid,
-        } = props
+        const {config, updateView, activeView, isSearch, areFiltersValid} =
+            props
         const location = useLocation()
         const {q: urlQuery = '', filters = ''} = useSearch<{
             q?: string
@@ -53,10 +48,12 @@ export function withViewSearchUrlSyncContainer<P extends Props>(
         const viewFilters = activeView.get('filters') || ''
 
         const urlSearchView = useMemo(() => {
-            return (config.get('searchView') as (
-                query: string,
-                filters: string
-            ) => Map<any, any>)(urlQuery, urlFilters)
+            return (
+                config.get('searchView') as (
+                    query: string,
+                    filters: string
+                ) => Map<any, any>
+            )(urlQuery, urlFilters)
         }, [urlQuery, urlFilters])
 
         useUpdateEffect(() => {

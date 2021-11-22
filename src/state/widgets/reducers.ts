@@ -202,9 +202,8 @@ export default function reducer(
             // if is a dragging source, wrap it in a wrapper
             if (isDraggingARootSource) {
                 const context = state.get('currentContext', '')
-                const strippedSourceFlattenAbsolutePath = stripLastListsFromPath(
-                    sourceFlattenAbsolutePath
-                )
+                const strippedSourceFlattenAbsolutePath =
+                    stripLastListsFromPath(sourceFlattenAbsolutePath)
                 widget = makeWrapper({
                     order: widgetsItems.length,
                     context,
@@ -219,9 +218,9 @@ export default function reducer(
             }
 
             // get first child widget, may be useful later
-            const childWidget = (widget.get('widgets', fromJS([])) as List<
-                any
-            >).first()
+            const childWidget = (
+                widget.get('widgets', fromJS([])) as List<any>
+            ).first()
 
             // current list at the path to put generated widgets
             const currentList = newState.getIn(
@@ -237,10 +236,9 @@ export default function reducer(
                 let shouldAddWidget = true
 
                 if (isDraggingARootSource) {
-                    ;(newState.getIn(widgetsItems, []) as Map<
-                        any,
-                        any
-                    >[]).forEach((widget: Map<any, any>) => {
+                    ;(
+                        newState.getIn(widgetsItems, []) as Map<any, any>[]
+                    ).forEach((widget: Map<any, any>) => {
                         const type = element.get('type')
                         const integrationId = element.get('integration_id')
                         const typeIsAlreadyPresent =
@@ -324,12 +322,14 @@ export default function reducer(
                 .setIn(
                     widgetsPath,
                     reorderWidgets(
-                        ((state.getIn(widgetsPath, fromJS({})) as Map<
-                            any,
-                            any
-                        >).removeIn(
+                        (
+                            state.getIn(widgetsPath, fromJS({})) as Map<
+                                any,
+                                any
+                            >
+                        ).removeIn(
                             newTemplatePath.split('.')
-                        ) as unknown) as List<any>
+                        ) as unknown as List<any>
                     )
                 )
                 .setIn(['_internal', 'isDirty'], true)
@@ -349,10 +349,9 @@ export default function reducer(
             return state
                 .setIn(
                     widgetPath,
-                    (state.getIn(widgetPath, fromJS({})) as Map<
-                        any,
-                        any
-                    >).mergeDeep(item as Map<any, any>)
+                    (
+                        state.getIn(widgetPath, fromJS({})) as Map<any, any>
+                    ).mergeDeep(item as Map<any, any>)
                 )
                 .setIn(['_internal', 'isDirty'], true)
         }

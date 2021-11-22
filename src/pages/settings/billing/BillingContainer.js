@@ -63,9 +63,8 @@ export class BillingContainer extends Component {
 
 export default connect(
     (state) => {
-        const currentSubscription = currentAccountSelectors.getCurrentSubscription(
-            state
-        )
+        const currentSubscription =
+            currentAccountSelectors.getCurrentSubscription(state)
         return {
             currentSubscription,
         }

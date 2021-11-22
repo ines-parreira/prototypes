@@ -250,7 +250,8 @@ const TableContainer = ({
                                     checked={areAllSelected}
                                     ref={(el) =>
                                         el &&
-                                        (el.indeterminate = indeterminateCheckbox)
+                                        (el.indeterminate =
+                                            indeterminateCheckbox)
                                     }
                                     readOnly
                                 />

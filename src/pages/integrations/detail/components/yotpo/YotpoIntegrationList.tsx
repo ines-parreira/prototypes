@@ -15,9 +15,7 @@ type IReceivedProps = {
     redirectUri: string
 }
 
-export default class YotpoIntegrationList extends React.Component<
-    IReceivedProps
-> {
+export default class YotpoIntegrationList extends React.Component<IReceivedProps> {
     render(): JSX.Element {
         const {integrations, loading} = this.props
         const isSubmitting = loading.get('updateIntegration')
@@ -69,7 +67,8 @@ export default class YotpoIntegrationList extends React.Component<
                                 type="button"
                                 color="success"
                                 onClick={() =>
-                                    (window.location.href = this.props.redirectUri)
+                                    (window.location.href =
+                                        this.props.redirectUri)
                                 }
                                 disabled={!!isSubmitting}
                             >

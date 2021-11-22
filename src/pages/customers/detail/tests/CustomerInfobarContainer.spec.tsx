@@ -7,30 +7,32 @@ import {Infobar} from '../../../common/components/infobar/Infobar/Infobar'
 
 jest.mock(
     '../../../common/components/infobar/Infobar/Infobar',
-    () => ({
-        actions,
-        sources,
-        isRouteEditingWidgets,
-        identifier,
-        customer,
-        widgets,
-        context,
-    }: ComponentProps<typeof Infobar>) => (
-        <div>
-            <div>Infobar</div>
-            <div>actions: {JSON.stringify(actions)}</div>
-            <div>sources: {JSON.stringify(sources)}</div>
-            <div>isRouteEditingWidgets: {isRouteEditingWidgets}</div>
-            <div>identifier: {identifier}</div>
-            <div>customer: {customer}</div>
-            <div>widgets: {JSON.stringify(widgets)}</div>
-            <div>context: {context}</div>
-        </div>
-    )
+    () =>
+        ({
+            actions,
+            sources,
+            isRouteEditingWidgets,
+            identifier,
+            customer,
+            widgets,
+            context,
+        }: ComponentProps<typeof Infobar>) =>
+            (
+                <div>
+                    <div>Infobar</div>
+                    <div>actions: {JSON.stringify(actions)}</div>
+                    <div>sources: {JSON.stringify(sources)}</div>
+                    <div>isRouteEditingWidgets: {isRouteEditingWidgets}</div>
+                    <div>identifier: {identifier}</div>
+                    <div>customer: {customer}</div>
+                    <div>widgets: {JSON.stringify(widgets)}</div>
+                    <div>context: {context}</div>
+                </div>
+            )
 )
 
 describe('<CustomerInfobarContainer />', () => {
-    const minProps = ({
+    const minProps = {
         actions: {
             fetchPreviewCustomer: jest.fn(),
             widgets: {
@@ -62,7 +64,7 @@ describe('<CustomerInfobarContainer />', () => {
             customer: fromJS({}),
         }),
         widgets: fromJS({}),
-    } as unknown) as ComponentProps<typeof CustomerInfobarContainer>
+    } as unknown as ComponentProps<typeof CustomerInfobarContainer>
 
     it('should render infobar for active customer', () => {
         const {container} = render(<CustomerInfobarContainer {...minProps} />)

@@ -28,8 +28,12 @@ export default class InfobarCustomerActions extends React.Component<Props> {
         const ticketId = sources.getIn(['ticket', 'id'])
         const customerName: string =
             sources.getIn(['ticket', 'customer', 'name']) || ''
-        const hasCustomer = !((sources.getIn(['ticket', 'customer']) ||
-            fromJS({})) as Map<any, any>).isEmpty()
+        const hasCustomer = !(
+            (sources.getIn(['ticket', 'customer']) || fromJS({})) as Map<
+                any,
+                any
+            >
+        ).isEmpty()
         const newCustomer: string = selectedCustomer.get('name') || ''
         const hasDestinationCustomer = !customer.isEmpty()
 

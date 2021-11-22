@@ -51,10 +51,9 @@ export function getTotalQuantities(
             }
 
             // Restockable items have an associated `location_id` in the suggested refund
-            const suggestedRefundLineItem = (suggestedRefund.get(
-                'refund_line_items',
-                []
-            ) as List<any>).find(
+            const suggestedRefundLineItem = (
+                suggestedRefund.get('refund_line_items', []) as List<any>
+            ).find(
                 (suggestedRefundLineItem: Map<any, any>) =>
                     suggestedRefundLineItem.get('line_item_id') ===
                     refundLineItem.get('line_item_id')

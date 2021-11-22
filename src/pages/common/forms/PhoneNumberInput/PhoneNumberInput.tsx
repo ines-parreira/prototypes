@@ -72,9 +72,8 @@ const PhoneNumberInput = ({
         }
     }, [value])
 
-    const [isCountrySelectVisible, setCountrySelectVisible] = useState<boolean>(
-        false
-    )
+    const [isCountrySelectVisible, setCountrySelectVisible] =
+        useState<boolean>(false)
 
     const containerRef = useRef<HTMLDivElement>(null)
 

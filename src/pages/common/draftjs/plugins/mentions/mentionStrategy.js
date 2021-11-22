@@ -13,12 +13,12 @@ const findMention = (trigger, contentState) => (character) => {
     )
 }
 
-const findMentionEntities = (trigger) => (
-    contentBlock,
-    callback,
-    contentState
-) => {
-    contentBlock.findEntityRanges(findMention(trigger, contentState), callback)
-}
+const findMentionEntities =
+    (trigger) => (contentBlock, callback, contentState) => {
+        contentBlock.findEntityRanges(
+            findMention(trigger, contentState),
+            callback
+        )
+    }
 
 export default findMentionEntities

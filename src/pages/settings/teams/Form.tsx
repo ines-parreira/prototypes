@@ -285,8 +285,8 @@ export class FormContainer extends Component<Props, State> {
                                         type="submit"
                                         color="success"
                                         className={classnames('mr-2', {
-                                            'btn-loading': this.state
-                                                .isSubmitting,
+                                            'btn-loading':
+                                                this.state.isSubmitting,
                                         })}
                                         disabled={this.state.isSubmitting}
                                     >

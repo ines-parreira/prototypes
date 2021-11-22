@@ -25,21 +25,24 @@ let mockPreviousSubscription: Map<any, any>
 jest.mock('../../../../history')
 jest.mock(
     '../BillingPlansComparison',
-    () => ({
-        openedPlanModal,
-        onSubscriptionChanged,
-    }: ComponentProps<typeof BillingPlansComparison>) => (
-        <div>
-            BillingPlansComparison mock, openedPlanModal: {openedPlanModal}
-            <button
-                value="Subscription changed"
-                data-testid="subscription-changed"
-                onClick={() => {
-                    onSubscriptionChanged(mockPreviousSubscription)
-                }}
-            />
-        </div>
-    )
+    () =>
+        ({
+            openedPlanModal,
+            onSubscriptionChanged,
+        }: ComponentProps<typeof BillingPlansComparison>) =>
+            (
+                <div>
+                    BillingPlansComparison mock, openedPlanModal:{' '}
+                    {openedPlanModal}
+                    <button
+                        value="Subscription changed"
+                        data-testid="subscription-changed"
+                        onClick={() => {
+                            onSubscriptionChanged(mockPreviousSubscription)
+                        }}
+                    />
+                </div>
+            )
 )
 
 describe('<BillingPlans/>', () => {

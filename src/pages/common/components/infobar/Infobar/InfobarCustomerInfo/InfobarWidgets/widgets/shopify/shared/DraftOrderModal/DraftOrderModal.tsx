@@ -93,11 +93,9 @@ export function DraftOrderModalContainer(
     )
     const hasScope = useMemo(
         () =>
-            !!(currentIntegration?.getIn([
-                'meta',
-                'oauth',
-                'scope',
-            ]) as string).includes('write_draft_orders'),
+            !!(
+                currentIntegration?.getIn(['meta', 'oauth', 'scope']) as string
+            ).includes('write_draft_orders'),
         [currentIntegration]
     )
     const currencyCode = useMemo(
@@ -152,22 +150,26 @@ export function DraftOrderModalContainer(
         ]
     )
     const handlePaymentSubmit = useCallback(
-        (isPending = false) => async () => {
-            const result = await onCreateDraftOrder(
-                integrationId,
-                data.order ? data.order.get('id') : null
-            )
-            onBulkChange(
-                [
-                    {name: 'draft_order_id', value: result?.get('id') || ''},
-                    {name: 'payment_pending', value: isPending},
-                ],
-                () => {
-                    onSubmit()
-                    handleReset()
-                }
-            )
-        },
+        (isPending = false) =>
+            async () => {
+                const result = await onCreateDraftOrder(
+                    integrationId,
+                    data.order ? data.order.get('id') : null
+                )
+                onBulkChange(
+                    [
+                        {
+                            name: 'draft_order_id',
+                            value: result?.get('id') || '',
+                        },
+                        {name: 'payment_pending', value: isPending},
+                    ],
+                    () => {
+                        onSubmit()
+                        handleReset()
+                    }
+                )
+            },
         [
             onCreateDraftOrder,
             integrationId,

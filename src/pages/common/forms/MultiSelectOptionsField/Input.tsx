@@ -47,15 +47,8 @@ export default class Input extends Component<Props> {
     }
 
     handleKeyDown = (event: KeyboardEvent) => {
-        const {
-            onBlur,
-            onChange,
-            onDelete,
-            onSubmit,
-            onUp,
-            onDown,
-            value,
-        } = this.props
+        const {onBlur, onChange, onDelete, onSubmit, onUp, onDown, value} =
+            this.props
         const key = event.key
         const killedEventsKeys = ['ArrowUp', 'ArrowDown', 'Enter']
 

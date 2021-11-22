@@ -165,12 +165,10 @@ export class MacroEdit extends Component<
             (template) => template.execution === 'back'
         )
         // external actions with externalType grouped by externalType
-        const integrationMenus: Map<
-            any,
-            any
-        > = getSortedIntegrationActionsNames(
-            externalActions.filter((v) => !!v.integrationType)
-        )
+        const integrationMenus: Map<any, any> =
+            getSortedIntegrationActionsNames(
+                externalActions.filter((v) => !!v.integrationType)
+            )
 
         return (
             <form>
@@ -454,9 +452,8 @@ export class MacroEdit extends Component<
 }
 
 const connector = connect((state: RootState) => ({
-    hasIntegrationOfTypes: integrationsSelectors.makeHasIntegrationOfTypes(
-        state
-    ),
+    hasIntegrationOfTypes:
+        integrationsSelectors.makeHasIntegrationOfTypes(state),
 }))
 
 export default connector(MacroEdit)

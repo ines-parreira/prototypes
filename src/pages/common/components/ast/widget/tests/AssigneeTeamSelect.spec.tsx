@@ -13,9 +13,9 @@ describe('ast', () => {
                     2: {id: 2, name: 'Team 2'},
                     3: {id: 3, name: 'Team 3'},
                 }
-                const commonProps = ({
+                const commonProps = {
                     teams: fromJS(teams),
-                } as unknown) as ComponentProps<
+                } as unknown as ComponentProps<
                     typeof AssigneeTeamSelectContainer
                 >
 

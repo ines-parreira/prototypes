@@ -46,16 +46,16 @@ const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
                 ? SearchCustomerType.UserChannelPhone
                 : SearchCustomerType.UserChannelEmail
 
-        const [
-            cancellableUpdatePotentialCustomers,
-        ] = useCancellableRequest(
-            (cancelToken: CancelToken) => async (
-                queryText: string,
-                searchType: SearchCustomerType
-            ) =>
-                await dispatch(
-                    updatePotentialCustomers(queryText, searchType, cancelToken)
-                )
+        const [cancellableUpdatePotentialCustomers] = useCancellableRequest(
+            (cancelToken: CancelToken) =>
+                async (queryText: string, searchType: SearchCustomerType) =>
+                    await dispatch(
+                        updatePotentialCustomers(
+                            queryText,
+                            searchType,
+                            cancelToken
+                        )
+                    )
         )
 
         const valueFromState = (options: Receiver[]) =>

@@ -21,9 +21,8 @@ describe('<VariantResult/>', () => {
             const product: Product = shopifyProductFixture({
                 variants: [variant],
             })
-            const item: IntegrationDataItem<Product> = integrationDataItemProductFixture(
-                {data: product}
-            )
+            const item: IntegrationDataItem<Product> =
+                integrationDataItemProductFixture({data: product})
 
             const component = shallow(
                 <VariantResult result={item} subResult={variant} />
@@ -46,9 +45,8 @@ describe('<VariantResult/>', () => {
             const product: Product = shopifyProductFixture({
                 variants: [variant1, variant2],
             })
-            const item: IntegrationDataItem<Product> = integrationDataItemProductFixture(
-                {data: product}
-            )
+            const item: IntegrationDataItem<Product> =
+                integrationDataItemProductFixture({data: product})
 
             const component = shallow(
                 <VariantResult result={item} subResult={variant2} />
@@ -62,9 +60,8 @@ describe('<VariantResult/>', () => {
             const product: Product = shopifyProductFixture({
                 variants: [variant],
             })
-            const item: IntegrationDataItem<Product> = integrationDataItemProductFixture(
-                {data: product}
-            )
+            const item: IntegrationDataItem<Product> =
+                integrationDataItemProductFixture({data: product})
 
             const component = shallow(
                 <VariantResult result={item} subResult={variant} />
@@ -81,9 +78,8 @@ describe('<VariantResult/>', () => {
             const product: Product = shopifyProductFixture({
                 variants: [variant],
             })
-            const item: IntegrationDataItem<Product> = integrationDataItemProductFixture(
-                {data: product}
-            )
+            const item: IntegrationDataItem<Product> =
+                integrationDataItemProductFixture({data: product})
 
             const component = shallow(
                 <VariantResult result={item} subResult={variant} />
@@ -100,9 +96,8 @@ describe('<VariantResult/>', () => {
             const product: Product = shopifyProductFixture({
                 variants: [variant],
             })
-            const item: IntegrationDataItem<Product> = integrationDataItemProductFixture(
-                {data: product}
-            )
+            const item: IntegrationDataItem<Product> =
+                integrationDataItemProductFixture({data: product})
 
             const component = shallow(
                 <VariantResult result={item} subResult={variant} />

@@ -99,12 +99,8 @@ class CustomerListActions extends Component<Props, State> {
     }
 
     _renderBulkActions = () => {
-        const {
-            allViewItemsSelected,
-            getViewCount,
-            view,
-            selectedItemsIds,
-        } = this.props
+        const {allViewItemsSelected, getViewCount, view, selectedItemsIds} =
+            this.props
 
         const areItemsSelected = this._hasChecked()
 

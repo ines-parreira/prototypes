@@ -13,14 +13,8 @@ import SourceWidget from '../SourceWidget'
 
 class WrapperSourceWidget extends React.Component {
     render() {
-        const {
-            widget,
-            template,
-            source,
-            editing,
-            parent,
-            getIntegrationById,
-        } = this.props
+        const {widget, template, source, editing, parent, getIntegrationById} =
+            this.props
 
         const ap = template.get('absolutePath')
         const tp = template.get('templatePath')

@@ -142,7 +142,8 @@ describe('<Paywall />', () => {
                     {...minProps}
                     feature={AccountFeature.OverviewLiveStatistics}
                     paywallConfigs={{
-                        [AccountFeature.OverviewLiveStatistics]: defaultPaywallConfig,
+                        [AccountFeature.OverviewLiveStatistics]:
+                            defaultPaywallConfig,
                     }}
                 />
             </Provider>
@@ -172,7 +173,8 @@ describe('<Paywall />', () => {
                     {...minProps}
                     feature={AccountFeature.OverviewLiveStatistics}
                     paywallConfigs={{
-                        [AccountFeature.OverviewLiveStatistics]: defaultPaywallConfig,
+                        [AccountFeature.OverviewLiveStatistics]:
+                            defaultPaywallConfig,
                     }}
                 />
             </Provider>

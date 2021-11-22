@@ -96,19 +96,16 @@ export const shopifyWidget = {
                                                     {
                                                         widgets: [
                                                             {
-                                                                path:
-                                                                    'subtotal',
+                                                                path: 'subtotal',
                                                                 type: 'text',
-                                                                title:
-                                                                    'Subtotal',
+                                                                title: 'Subtotal',
                                                             },
                                                         ],
                                                         meta: {
                                                             link: '',
                                                         },
                                                         type: 'card',
-                                                        title:
-                                                            '{quantity} × {line_item.name}',
+                                                        title: '{quantity} × {line_item.name}',
                                                     },
                                                 ],
                                             },

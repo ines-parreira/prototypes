@@ -23,7 +23,11 @@ jest.addMatchers(immutableMatchers)
 
 jest.mock('../../notifications/actions.ts', () => {
     return {
-        notify: jest.fn(() => <T>(args: T): T => args),
+        notify: jest.fn(
+            () =>
+                <T>(args: T): T =>
+                    args
+        ),
     }
 })
 
@@ -62,8 +66,7 @@ describe('agents actions', () => {
         it('display error', () => {
             mockServer.onDelete('/api/users/1/').reply(400, {
                 error: {
-                    msg:
-                        'Cannot delete user because it is used in the following places:',
+                    msg: 'Cannot delete user because it is used in the following places:',
                     data: {Rules: ['[Generic] Auto Reply: Auto-responder']},
                 },
             })

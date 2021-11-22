@@ -9,9 +9,8 @@ import {
 import IvrMenuActionsFieldArray from '../IvrMenuActionsFieldArray'
 
 describe('<IvrMenuActionsFieldArray />', () => {
-    const onChange: jest.MockedFunction<(
-        value: IvrMenuAction[]
-    ) => void> = jest.fn()
+    const onChange: jest.MockedFunction<(value: IvrMenuAction[]) => void> =
+        jest.fn()
 
     const options: IvrMenuAction[] = [
         {

@@ -37,13 +37,13 @@ export function GorgiasChatIntegrationOneClickInstallationCard({
         () =>
             shopifyIntegrations
                 .filter((shopifyIntegration: Map<any, any> | undefined) => {
-                    const shopifyIntegrationId: number = shopifyIntegration?.get(
-                        'id'
-                    )
-                    const installedShopifyIntegrationIds: List<number> = integration.getIn(
-                        ['meta', 'shopify_integration_ids'],
-                        fromJS([])
-                    )
+                    const shopifyIntegrationId: number =
+                        shopifyIntegration?.get('id')
+                    const installedShopifyIntegrationIds: List<number> =
+                        integration.getIn(
+                            ['meta', 'shopify_integration_ids'],
+                            fromJS([])
+                        )
 
                     if (
                         installedShopifyIntegrationIds.contains(
@@ -60,9 +60,8 @@ export function GorgiasChatIntegrationOneClickInstallationCard({
                     return false
                 })
                 .sortBy((shopifyIntegration: Map<any, any> | undefined) => {
-                    const shopifyIntegrationId: number = shopifyIntegration?.get(
-                        'id'
-                    )
+                    const shopifyIntegrationId: number =
+                        shopifyIntegration?.get('id')
                     if (shopifyIntegrationId === associatedShopifyStoreId) {
                         return -Infinity
                     }
@@ -84,9 +83,8 @@ export function GorgiasChatIntegrationOneClickInstallationCard({
         )
 
         if (!targetIntegrationIdsList?.contains(targetIntegrationId)) {
-            targetIntegrationIdsList = targetIntegrationIdsList?.push(
-                targetIntegrationId
-            )
+            targetIntegrationIdsList =
+                targetIntegrationIdsList?.push(targetIntegrationId)
         }
 
         const meta: Map<any, any> = integration.get('meta')
@@ -187,16 +185,13 @@ export function GorgiasChatIntegrationOneClickInstallationCard({
                     />
                 ) : null}
                 {filteredShopifyIntegrations.map((targetIntegration) => {
-                    const targetIntegrationId: number = targetIntegration?.get(
-                        'id'
-                    )
-                    const targetIntegrationName: string = targetIntegration?.get(
-                        'name'
-                    )
+                    const targetIntegrationId: number =
+                        targetIntegration?.get('id')
+                    const targetIntegrationName: string =
+                        targetIntegration?.get('name')
 
-                    const isChatInstalled: boolean = shopifyIntegrationIds.includes(
-                        targetIntegrationId
-                    )
+                    const isChatInstalled: boolean =
+                        shopifyIntegrationIds.includes(targetIntegrationId)
 
                     const isLegacyInstallation: boolean =
                         targetIntegrationId !== associatedShopifyStoreId

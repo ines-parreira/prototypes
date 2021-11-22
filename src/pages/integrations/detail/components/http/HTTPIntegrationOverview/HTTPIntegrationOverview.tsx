@@ -239,10 +239,8 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
         // if update, set ids for server
         if (this.props.isUpdate) {
             integration.id = this.props.integration.get('id')
-            ;(integration.http as Record<
-                string,
-                unknown
-            >).id = this.props.integration.getIn(['http', 'id'])
+            ;(integration.http as Record<string, unknown>).id =
+                this.props.integration.getIn(['http', 'id'])
         }
 
         return this.props.updateOrCreateIntegration(fromJS(integration))

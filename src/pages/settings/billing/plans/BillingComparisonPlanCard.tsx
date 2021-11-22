@@ -61,22 +61,24 @@ export default function BillingComparisonPlanCard({
         ? Math.abs(equivalentAutomationPlan.get('amount') - plan.amount)
         : '?'
 
-    const [isModalAutomationChecked, setModalIsAutomationChecked] = useState(
-        isAutomationChecked
-    )
+    const [isModalAutomationChecked, setModalIsAutomationChecked] =
+        useState(isAutomationChecked)
 
-    useEffect(() => setModalIsAutomationChecked(isAutomationChecked), [
-        isAutomationChecked,
-    ])
+    useEffect(
+        () => setModalIsAutomationChecked(isAutomationChecked),
+        [isAutomationChecked]
+    )
 
     const hasLessFeatures =
         regularCurrentPlan &&
         countFeatures(plan.features) <
             countFeatures(
-                (regularCurrentPlan.get('features', fromJS({})) as Map<
-                    any,
-                    any
-                >).toJS()
+                (
+                    regularCurrentPlan.get('features', fromJS({})) as Map<
+                        any,
+                        any
+                    >
+                ).toJS()
             )
     const isDowngrade =
         !isCurrentPlan &&

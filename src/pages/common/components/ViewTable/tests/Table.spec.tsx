@@ -20,23 +20,27 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>(
 
 jest.mock(
     '../Table/Row',
-    () => ({isSelected, selectable}: ComponentProps<typeof Row>) => (
-        <div>
-            Row:
-            <div>selectable: {selectable?.toString()}</div>
-            <div>isSelected: {isSelected?.toString()}</div>
-        </div>
-    )
+    () =>
+        ({isSelected, selectable}: ComponentProps<typeof Row>) =>
+            (
+                <div>
+                    Row:
+                    <div>selectable: {selectable?.toString()}</div>
+                    <div>isSelected: {isSelected?.toString()}</div>
+                </div>
+            )
 )
 jest.mock('../Table/HeaderCell', () => () => <div>HeaderCell</div>)
 jest.mock(
     '../../BlankState/index.js',
-    () => ({message}: ComponentProps<typeof BlankState>) => (
-        <div>
-            BlankState
-            <div>{message}</div>
-        </div>
-    )
+    () =>
+        ({message}: ComponentProps<typeof BlankState>) =>
+            (
+                <div>
+                    BlankState
+                    <div>{message}</div>
+                </div>
+            )
 )
 jest.mock('../../../../../services/shortcutManager/shortcutManager')
 
@@ -158,9 +162,11 @@ describe('<Table />', () => {
             </Provider>
         )
 
-        const boundShortcuts = (shortcutManager.bind as jest.MockedFunction<
-            typeof shortcutManager.bind
-        >).mock.calls[0][1]
+        const boundShortcuts = (
+            shortcutManager.bind as jest.MockedFunction<
+                typeof shortcutManager.bind
+            >
+        ).mock.calls[0][1]
         boundShortcuts!['OPEN_ITEM'].action!(createEvent.keyDown(container))
 
         expect(minProps.getItemUrl).not.toBeCalled()

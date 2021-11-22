@@ -91,11 +91,13 @@ export function EditOrderModalContainer(
     const hasScope = useMemo(
         () =>
             ['write_order_edits', 'read_order_edits'].every(function (scope) {
-                return (currentIntegration?.getIn([
-                    'meta',
-                    'oauth',
-                    'scope',
-                ]) as string).includes(scope)
+                return (
+                    currentIntegration?.getIn([
+                        'meta',
+                        'oauth',
+                        'scope',
+                    ]) as string
+                ).includes(scope)
             }),
         [currentIntegration]
     )

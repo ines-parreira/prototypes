@@ -113,9 +113,10 @@ export function deduplicateAuditLogEvents(events: List<any>) {
             }
 
             case TicketAuditLogEvent.TicketTagsAdded: {
-                const tagsAdded = event.getIn(['data', TAGS_ADDED_KEY]) as List<
-                    any
-                >
+                const tagsAdded = event.getIn([
+                    'data',
+                    TAGS_ADDED_KEY,
+                ]) as List<any>
                 const deduplicatedTagsAdded: Map<any, any>[] = []
 
                 tagsAdded.forEach((tagAdded) => {

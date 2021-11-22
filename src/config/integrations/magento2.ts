@@ -12,18 +12,15 @@ export const MACRO_VARIABLES = {
     children: [
         {
             name: 'Number of last order',
-            value:
-                '{{ticket.customer.integrations.magento2.orders[0].increment_id}}',
+            value: '{{ticket.customer.integrations.magento2.orders[0].increment_id}}',
         },
         {
             name: 'Date of last order',
-            value:
-                '{{ticket.customer.integrations.magento2.orders[0].created_at|datetime_format("MMMM d YYYY")}}',
+            value: '{{ticket.customer.integrations.magento2.orders[0].created_at|datetime_format("MMMM d YYYY")}}',
         },
         {
             name: 'Tracking url of last order',
-            value:
-                '{{ticket.customer.integrations.magento2.orders[0].last_shipment.last_track.tracking_url}}',
+            value: '{{ticket.customer.integrations.magento2.orders[0].last_shipment.last_track.tracking_url}}',
             replace: (context: Map<any, any>, integrationId: number) => {
                 const lastOrder = context.getIn([
                     'ticket',
@@ -71,8 +68,7 @@ export const MACRO_VARIABLES = {
         },
         {
             name: 'Tracking number of last order',
-            value:
-                '{{ticket.customer.integrations.magento2.orders[0].last_shipment.last_track.track_number}}',
+            value: '{{ticket.customer.integrations.magento2.orders[0].last_shipment.last_track.track_number}}',
             replace: (context: Map<any, any>, integrationId: number) => {
                 const lastOrder = context.getIn([
                     'ticket',
@@ -118,8 +114,7 @@ export const MACRO_VARIABLES = {
         },
         {
             name: 'Shipping date of last order',
-            value:
-                '{{ticket.customer.integrations.magento2.orders[0].last_shipment.last_track.created_at}}',
+            value: '{{ticket.customer.integrations.magento2.orders[0].last_shipment.last_track.created_at}}',
             replace: (context: Map<any, any>, integrationId: number) => {
                 const lastOrder = context.getIn([
                     'ticket',
@@ -169,13 +164,11 @@ export const MACRO_VARIABLES = {
         },
         {
             name: 'Destination country of last order',
-            value:
-                '{{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.country_id}}',
+            value: '{{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.country_id}}',
         },
         {
             name: 'Shipping address of last order',
-            value:
-                '{{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.street[0]}}, {{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.postcode}} {{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.city}} {{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.region_code}}',
+            value: '{{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.street[0]}}, {{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.postcode}} {{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.city}} {{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.region_code}}',
         },
     ],
 }
@@ -187,23 +180,19 @@ export const MACRO_HIDDEN_VARIABLES = {
     children: [
         {
             name: 'Street',
-            value:
-                '{{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.street[0]}}',
+            value: '{{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.street[0]}}',
         },
         {
             name: 'City',
-            value:
-                '{{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.city}}',
+            value: '{{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.city}}',
         },
         {
             name: 'Postcode',
-            value:
-                '{{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.postcode}}',
+            value: '{{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.postcode}}',
         },
         {
             name: 'Region code',
-            value:
-                '{{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.region_code}}',
+            value: '{{ticket.customer.integrations.magento2.orders[0].extension_attributes.shipping_assignments[0].shipping.address.region_code}}',
         },
     ],
 }

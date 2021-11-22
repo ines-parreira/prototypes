@@ -55,10 +55,12 @@ class MergeCustomersContainer extends Component<Props> {
                         null
                     )
                 )
-                ;((message as Map<any, any>).getIn(
-                    ['source', 'to'],
-                    fromJS([])
-                ) as List<Map<any, any>>).forEach((sourceField) => {
+                ;(
+                    (message as Map<any, any>).getIn(
+                        ['source', 'to'],
+                        fromJS([])
+                    ) as List<Map<any, any>>
+                ).forEach((sourceField) => {
                     requiredAddresses.push(
                         (sourceField as Map<any, any>).get('address', null) as
                             | string

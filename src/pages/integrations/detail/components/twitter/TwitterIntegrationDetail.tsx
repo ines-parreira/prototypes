@@ -66,7 +66,7 @@ export function TwitterIntegrationDetail({
 
             try {
                 setIsSubmitting(true)
-                await ((actions.updateOrCreateIntegration(
+                await (actions.updateOrCreateIntegration(
                     fromJS({
                         id: integration.get('id'),
                         meta: {
@@ -77,7 +77,7 @@ export function TwitterIntegrationDetail({
                             },
                         },
                     })
-                ) as unknown) as Promise<any>)
+                ) as unknown as Promise<any>)
             } catch (error) {
                 console.error(error)
             } finally {
@@ -97,9 +97,9 @@ export function TwitterIntegrationDetail({
     const onDelete = useCallback(async () => {
         try {
             setIsSubmitting(true)
-            await ((actions.deleteIntegration(
+            await (actions.deleteIntegration(
                 integration
-            ) as unknown) as Promise<any>)
+            ) as unknown as Promise<any>)
         } catch (error) {
             console.error(error)
         } finally {

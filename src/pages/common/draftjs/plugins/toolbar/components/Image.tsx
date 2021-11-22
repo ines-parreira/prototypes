@@ -34,14 +34,8 @@ class Image extends React.Component<Props> {
     }
 
     render() {
-        const {
-            alt,
-            block,
-            className,
-            theme,
-            contentState,
-            ...otherProps
-        } = this.props
+        const {alt, block, className, theme, contentState, ...otherProps} =
+            this.props
 
         const elementProps = _omit(otherProps, [
             'blockProps',

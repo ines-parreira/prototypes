@@ -198,9 +198,11 @@ export default class SettingsNavbar extends Component<Props> {
                                     })}
                                     onClick={() => {
                                         // eslint-disable-next-line  @typescript-eslint/no-unsafe-member-access
-                                        ;(this.context as {
-                                            closePanel: () => void
-                                        }).closePanel()
+                                        ;(
+                                            this.context as {
+                                                closePanel: () => void
+                                            }
+                                        ).closePanel()
                                     }}
                                 >
                                     {text}

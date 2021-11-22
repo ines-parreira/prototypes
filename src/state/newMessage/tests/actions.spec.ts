@@ -351,9 +351,11 @@ describe('actions', () => {
                         ['messages', 0, 'source', 'to', 0],
                         fromJS({
                             name: unverifiedChannel?.name,
-                            address: ((unverifiedChannel as unknown) as {
-                                address: unknown
-                            }).address,
+                            address: (
+                                unverifiedChannel as unknown as {
+                                    address: unknown
+                                }
+                            ).address,
                         })
                     )
 
@@ -384,8 +386,7 @@ describe('actions', () => {
 
                 expect(senderChannel?.meta.verified).toBe(true)
                 expect(senderChannel?.meta.address).not.toEqual(
-                    ((unverifiedChannel as unknown) as {address: unknown})
-                        .address
+                    (unverifiedChannel as unknown as {address: unknown}).address
                 )
             })
 
@@ -670,9 +671,9 @@ describe('actions', () => {
             })
 
             describe('internal note', () => {
-                let deleteEmailExtraContentSpy: jest.SpyInstance<ReturnType<
-                    typeof emailExtraUtils.deleteEmailExtraContent
-                >>
+                let deleteEmailExtraContentSpy: jest.SpyInstance<
+                    ReturnType<typeof emailExtraUtils.deleteEmailExtraContent>
+                >
 
                 beforeEach(() => {
                     deleteEmailExtraContentSpy = jest.spyOn(
@@ -686,12 +687,10 @@ describe('actions', () => {
                 })
 
                 it('should remove email extra from the response', () => {
-                    const contentStateWithEmailExtra = ContentState.createFromText(
-                        'Foo\nBar\nBaz'
-                    )
-                    const userInputContentState = ContentState.createFromText(
-                        'Foo'
-                    )
+                    const contentStateWithEmailExtra =
+                        ContentState.createFromText('Foo\nBar\nBaz')
+                    const userInputContentState =
+                        ContentState.createFromText('Foo')
                     const signature = fromJS({
                         text: 'Bar\nBaz',
                     })
@@ -721,10 +720,9 @@ describe('actions', () => {
                                 ['newMessage', 'source', 'extra', 'forward'],
                                 true
                             ),
-                        integrations: (fromJS(integrationsState) as Map<
-                            any,
-                            any
-                        >).setIn(
+                        integrations: (
+                            fromJS(integrationsState) as Map<any, any>
+                        ).setIn(
                             ['integrations', '1', 'meta', 'signature'],
                             signature
                         ),
@@ -755,9 +753,8 @@ describe('actions', () => {
                 })
 
                 it('should not set emailExtraAdded property when email extra content was not removed', () => {
-                    const contentState = ContentState.createFromText(
-                        'Foo\nBar\nBaz'
-                    )
+                    const contentState =
+                        ContentState.createFromText('Foo\nBar\nBaz')
                     deleteEmailExtraContentSpy.mockImplementation(
                         () => contentState
                     )
@@ -879,9 +876,8 @@ describe('actions', () => {
                 store.dispatch(
                     actions.setResponseText(
                         fromJS({
-                            contentState: ContentState.createFromText(
-                                '\n\nsignature'
-                            ),
+                            contentState:
+                                ContentState.createFromText('\n\nsignature'),
                         })
                     )
                 )
@@ -964,9 +960,9 @@ describe('actions', () => {
 
         describe('prepareTicketDataToSend()', () => {
             let data: ReturnType<typeof actions.prepareTicketDataToSend>
-            let addEmailExtraContentSpy: jest.SpyInstance<ReturnType<
-                typeof emailExtraUtils.addEmailExtraContent
-            >>
+            let addEmailExtraContentSpy: jest.SpyInstance<
+                ReturnType<typeof emailExtraUtils.addEmailExtraContent>
+            >
             const currentUser = fromJS({
                 id: 1,
                 name: 'Steve',
@@ -1031,10 +1027,12 @@ describe('actions', () => {
                 const {dispatch, getState} = mockStore({
                     ...storeState,
                     newMessage: storeState.newMessage?.mergeIn(['newMessage'], {
-                        ...(storeState.newMessage?.get('newMessage') as Map<
-                            string,
-                            unknown
-                        >).toJS(),
+                        ...(
+                            storeState.newMessage?.get('newMessage') as Map<
+                                string,
+                                unknown
+                            >
+                        ).toJS(),
                         body_text: 'original text',
                         body_html: 'original html',
                         source: {
@@ -1226,9 +1224,9 @@ describe('actions', () => {
 
         describe('addAttachments()', () => {
             const createFile = (name: string, type: string): File => {
-                const blob = (new Blob(['foo'], {
+                const blob = new Blob(['foo'], {
                     type: 'any',
-                }) as unknown) as Record<string, unknown> & {
+                }) as unknown as Record<string, unknown> & {
                     slice: (i: number, j: number, type: string) => File
                 }
                 blob.name = name
@@ -1236,9 +1234,9 @@ describe('actions', () => {
             }
             const fileFoo = createFile('foo', 'image/png')
             const fileBar = createFile('bar', 'video/mp4')
-            const fileList = ({
+            const fileList = {
                 0: fileFoo,
-            } as unknown) as FileList
+            } as unknown as FileList
             it('should dispatch NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS when successfully adding attachments', (done) => {
                 mockedUploadFiles.mockReturnValue(Promise.resolve([]))
                 store = mockStore({
@@ -1342,9 +1340,9 @@ describe('actions', () => {
                 store.dispatch(
                     actions.addAttachments(
                         typeSafeTicketInitialState.set('id', 1),
-                        ({
+                        {
                             0: fileBaz,
-                        } as unknown) as FileList
+                        } as unknown as FileList
                     )
                 )
 
@@ -1367,10 +1365,10 @@ describe('actions', () => {
                 store.dispatch(
                     actions.addAttachments(
                         typeSafeTicketInitialState.set('id', 1),
-                        ({
+                        {
                             0: fileFoo,
                             1: fileBar,
-                        } as unknown) as FileList
+                        } as unknown as FileList
                     )
                 )
 
@@ -1389,8 +1387,7 @@ describe('actions', () => {
             fullProductTitle: 'foo',
             imageUrl:
                 'https://cdn.shopify.com/s/files/1/1781/7573/products/candy.jpg?v=1575311784',
-            link:
-                'https://storegorgias3.myshopify.com/products/bonbon-acidule?variant=31128766349335',
+            link: 'https://storegorgias3.myshopify.com/products/bonbon-acidule?variant=31128766349335',
             price: '1.00',
             productTitle: 'bar',
             variantTitle: 'baz',

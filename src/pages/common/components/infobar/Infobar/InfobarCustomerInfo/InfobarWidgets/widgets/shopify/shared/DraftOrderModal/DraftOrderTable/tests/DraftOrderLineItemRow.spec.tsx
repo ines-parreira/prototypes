@@ -33,7 +33,7 @@ describe('<DraftOrderLineItemRow/>', () => {
         onChange = jest.fn()
         onDelete = jest.fn()
 
-        props = ({
+        props = {
             id: 'line-item',
             actionName: ShopifyActionType.DuplicateOrder,
             shopName: 'storegorgias3',
@@ -42,7 +42,7 @@ describe('<DraftOrderLineItemRow/>', () => {
             onChange,
             onDelete,
             index: 0,
-        } as unknown) as ComponentProps<typeof DraftOrderLineItemRow>
+        } as unknown as ComponentProps<typeof DraftOrderLineItemRow>
     })
     afterEach(() => {
         jest.useRealTimers()
@@ -93,10 +93,9 @@ describe('<DraftOrderLineItemRow/>', () => {
             const appliedDiscount = fromJS(
                 shopifyAppliedDiscountFixture({value: '50.0', amount: '0.50'})
             )
-            const lineItem = (payload.getIn(['line_items', 0]) as Map<
-                any,
-                any
-            >).set('applied_discount', appliedDiscount)
+            const lineItem = (
+                payload.getIn(['line_items', 0]) as Map<any, any>
+            ).set('applied_discount', appliedDiscount)
 
             const {container} = render(
                 <DraftOrderLineItemRow
@@ -114,10 +113,9 @@ describe('<DraftOrderLineItemRow/>', () => {
                 any,
                 any
             >
-            const lineItem = (payload.getIn(['line_items', 0]) as Map<
-                any,
-                any
-            >).set('quantity', 0)
+            const lineItem = (
+                payload.getIn(['line_items', 0]) as Map<any, any>
+            ).set('quantity', 0)
 
             const {container} = render(
                 <DraftOrderLineItemRow
@@ -136,10 +134,9 @@ describe('<DraftOrderLineItemRow/>', () => {
                 any,
                 any
             >
-            const lineItem = (payload.getIn(['line_items', 0]) as Map<
-                any,
-                any
-            >).set('quantity', 0)
+            const lineItem = (
+                payload.getIn(['line_items', 0]) as Map<any, any>
+            ).set('quantity', 0)
             const variantId = payload.getIn(['line_items', 0, 'variant_id'])
             const variant = fromJS(
                 shopifyVariantFixture({
@@ -167,10 +164,9 @@ describe('<DraftOrderLineItemRow/>', () => {
                 any,
                 any
             >
-            const lineItem = (payload.getIn(['line_items', 0]) as Map<
-                any,
-                any
-            >).set('quantity', 0)
+            const lineItem = (
+                payload.getIn(['line_items', 0]) as Map<any, any>
+            ).set('quantity', 0)
             const variantId = payload.getIn(['line_items', 0, 'variant_id'])
             const variant = fromJS(
                 shopifyVariantFixture({

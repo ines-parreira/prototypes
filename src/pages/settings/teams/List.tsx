@@ -117,9 +117,11 @@ export class TeamListContainer extends Component<Props, State> {
                                     <div className="d-flex flex-row align-items-center">
                                         {memberCount > 0 && (
                                             <ul className="list-unstyled d-flex flex-row mb-0 mr-2">
-                                                {(team.get('members') as List<
-                                                    any
-                                                >)
+                                                {(
+                                                    team.get(
+                                                        'members'
+                                                    ) as List<any>
+                                                )
                                                     .slice(0, maxMembersPreview)
                                                     .map(
                                                         (
@@ -128,12 +130,11 @@ export class TeamListContainer extends Component<Props, State> {
                                                                 any
                                                             >
                                                         ) => {
-                                                            const memberProfilePictureUrl = member.getIn(
-                                                                [
+                                                            const memberProfilePictureUrl =
+                                                                member.getIn([
                                                                     'meta',
                                                                     'profile_picture_url',
-                                                                ]
-                                                            )
+                                                                ])
                                                             return (
                                                                 <li
                                                                     key={member.get(

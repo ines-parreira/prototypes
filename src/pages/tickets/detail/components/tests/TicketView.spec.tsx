@@ -23,19 +23,21 @@ jest.mock('../ReplyArea/PhoneTicketSubmitButtons', () => () => (
 ))
 jest.mock(
     '../ReplyArea/TicketSubmitButtons',
-    () => ({submit}: {submit: (props: SubmitArgs) => void}) => (
-        <button
-            type="submit"
-            data-testid="TicketSubmitButtons"
-            onClick={() => submit({status: 'closed', next: true})}
-        >
-            TicketSubmitButtons
-        </button>
-    )
+    () =>
+        ({submit}: {submit: (props: SubmitArgs) => void}) =>
+            (
+                <button
+                    type="submit"
+                    data-testid="TicketSubmitButtons"
+                    onClick={() => submit({status: 'closed', next: true})}
+                >
+                    TicketSubmitButtons
+                </button>
+            )
 )
 
 describe('<TicketView />', () => {
-    const minProps = ({
+    const minProps = {
         agentsTyping: fromJS([]),
         agentsViewing: fromJS([]),
         currentUser: fromJS({}),
@@ -51,7 +53,7 @@ describe('<TicketView />', () => {
         ticket: fromJS({}),
         ticketBody: fromJS([]),
         toggleHistory: jest.fn(),
-    } as unknown) as ComponentProps<typeof TicketViewContainer>
+    } as unknown as ComponentProps<typeof TicketViewContainer>
 
     it('should not have the hidden classes', () => {
         const {container} = render(<TicketViewContainer {...minProps} />)

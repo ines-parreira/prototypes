@@ -79,10 +79,11 @@ export function TicketNavbarContentContainer({
             monitor: DropTargetMonitor,
             direction: TicketNavbarDropDirection | null
         ) => {
-            const dropResult = (monitor.getDropResult() as TicketNavbarDropResult) || {
-                sectionId: null,
-                direction,
-            }
+            const dropResult =
+                (monitor.getDropResult() as TicketNavbarDropResult) || {
+                    sectionId: null,
+                    direction,
+                }
 
             const currentElement: TicketNavbarElement =
                 item.type === TicketNavbarElementType.View

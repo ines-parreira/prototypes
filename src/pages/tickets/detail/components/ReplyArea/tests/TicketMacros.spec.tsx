@@ -7,11 +7,13 @@ import {user} from '../../../../../../fixtures/users'
 import {TicketMessageSourceType} from '../../../../../../business/types/ticket'
 import {UserRole} from '../../../../../../config/types/user'
 
-jest.mock('../../../../common/macros/components/MacroNoResults', () => () =>
-    'No macros found'
+jest.mock(
+    '../../../../common/macros/components/MacroNoResults',
+    () => () => 'No macros found'
 )
-jest.mock('../../../../common/macros/components/MacroList', () => () =>
-    'Macro list'
+jest.mock(
+    '../../../../common/macros/components/MacroList',
+    () => () => 'Macro list'
 )
 
 describe('<TicketMacros />', () => {

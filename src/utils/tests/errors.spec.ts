@@ -8,9 +8,9 @@ import {
 } from '../testing'
 
 const captureExceptionMock = jest.fn()
-window.Raven = ({
+window.Raven = {
     captureException: captureExceptionMock,
-} as unknown) as RavenStatic
+} as unknown as RavenStatic
 
 const consoleErrorMock = jest.fn()
 global.console.error = consoleErrorMock

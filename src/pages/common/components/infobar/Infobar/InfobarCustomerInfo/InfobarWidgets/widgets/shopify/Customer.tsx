@@ -77,9 +77,11 @@ class AfterTitleContainer extends Component<
             },
         ]
 
-        const shopName: string = (this.context as {
-            integration: Map<any, any>
-        }).integration.getIn(['meta', 'shop_name'])
+        const shopName: string = (
+            this.context as {
+                integration: Map<any, any>
+            }
+        ).integration.getIn(['meta', 'shop_name'])
         const payload = {
             customer_id: source.get('id'),
         }
@@ -128,9 +130,11 @@ class TitleWrapper extends Component<TitleWrapperProps> {
 
     render() {
         const {children, source} = this.props
-        const shopName: string = (this.context as {
-            integration: Map<any, any>
-        }).integration.getIn(['meta', 'shop_name'])
+        const shopName: string = (
+            this.context as {
+                integration: Map<any, any>
+            }
+        ).integration.getIn(['meta', 'shop_name'])
         const href = `https://${shopName}.myshopify.com/admin/customers/${(
             (source.get('id') as string) || ''
         ).toString()}`

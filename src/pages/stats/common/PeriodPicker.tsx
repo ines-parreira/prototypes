@@ -195,9 +195,8 @@ export const PeriodPickerContainer = ({
                             }),
                         }}
                         onShow={(event, target) => {
-                            dateRangerPickerElement.current = target.container?.get(
-                                0
-                            )
+                            dateRangerPickerElement.current =
+                                target.container?.get(0)
                             dateRangerPickerElement.current.classList.add(
                                 'displayed'
                             )
@@ -221,9 +220,10 @@ export const PeriodPickerContainer = ({
                                 subtree: true,
                             })
 
-                            const ranges = dateRangerPickerElement.current?.querySelector(
-                                '.ranges ul'
-                            )
+                            const ranges =
+                                dateRangerPickerElement.current?.querySelector(
+                                    '.ranges ul'
+                                )
                             if (ranges) {
                                 ranges.setAttribute('label', 'Shortcuts')
                                 ranges.classList.add('with-label')

@@ -165,10 +165,9 @@ class FacebookIntegrationInstagramAds extends Component<Props> {
             return null
         }
 
-        return ((internal.get(key) as Map<
-            any,
-            any
-        >).entrySeq() as unknown) as List<any>
+        return (
+            internal.get(key) as Map<any, any>
+        ).entrySeq() as unknown as List<any>
     }
 }
 
@@ -210,12 +209,8 @@ type AdsOverviewCardProps = {
 
 class AdsOverviewCard extends Component<AdsOverviewCardProps> {
     render() {
-        const {
-            integrations,
-            maxAccountAds,
-            internals,
-            accountTotalAds,
-        } = this.props
+        const {integrations, maxAccountAds, internals, accountTotalAds} =
+            this.props
 
         return (
             <Card body>
@@ -234,7 +229,7 @@ class AdsOverviewCard extends Component<AdsOverviewCardProps> {
                     </UncontrolledTooltip>
                 </div>
                 <Progress multi>
-                    {((internals.entrySeq() as unknown) as List<any>).map(
+                    {(internals.entrySeq() as unknown as List<any>).map(
                         (
                             [integrationId, internal]: [string, Map<any, any>],
                             index
@@ -260,7 +255,7 @@ class AdsOverviewCard extends Component<AdsOverviewCardProps> {
                     )}
                 </Progress>
                 <div className={css.legendContainer}>
-                    {((internals.entrySeq() as unknown) as List<any>).map(
+                    {(internals.entrySeq() as unknown as List<any>).map(
                         (
                             [integrationId, internal]: [string, Map<any, any>],
                             index

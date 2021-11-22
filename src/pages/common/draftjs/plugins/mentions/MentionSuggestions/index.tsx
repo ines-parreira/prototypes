@@ -120,7 +120,7 @@ export default class MentionSuggestions extends Component<Props, State> {
                 popover: this.popover,
             })
             Object.keys(newStyles).forEach((key: string) => {
-                this.popover!.style[(key as unknown) as number] = newStyles[
+                this.popover!.style[key as unknown as number] = newStyles[
                     key
                 ] as string
             })

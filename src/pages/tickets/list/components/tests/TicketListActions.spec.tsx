@@ -31,9 +31,9 @@ const shortcutManagerMock = shortcutManager as jest.Mocked<
 >
 const viewsActionsMock = viewsActions as jest.Mocked<typeof viewsActions>
 const ticketsActionsMock = ticketsActions as jest.Mocked<typeof ticketsActions>
-const shortcutEventMock = ({
+const shortcutEventMock = {
     preventDefault: jest.fn(),
-} as unknown) as jest.Mocked<Event>
+} as unknown as jest.Mocked<Event>
 const historyMock = history as jest.Mocked<typeof history>
 const fieldEnumSearchCancellableMock = jest.fn()
 

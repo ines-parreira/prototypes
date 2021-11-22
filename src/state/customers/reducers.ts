@@ -136,10 +136,12 @@ export default function reducer(
 
         case newMessageConstants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_SUCCESS: {
             const updated = action.resp as TicketElement
-            const ticketIndex = (state.getIn(
-                ['customerHistory', 'tickets'],
-                fromJS([])
-            ) as List<any>).findIndex(
+            const ticketIndex = (
+                state.getIn(
+                    ['customerHistory', 'tickets'],
+                    fromJS([])
+                ) as List<any>
+            ).findIndex(
                 (ticket: Map<any, any>) =>
                     ticket.get('id') === updated.ticket_id
             )
@@ -160,10 +162,12 @@ export default function reducer(
 
         case ticketConstants.TICKET_PARTIAL_UPDATE_SUCCESS: {
             const updated = action.resp as Ticket
-            const ticketIndex = (state.getIn(
-                ['customerHistory', 'tickets'],
-                fromJS([])
-            ) as List<any>).findIndex(
+            const ticketIndex = (
+                state.getIn(
+                    ['customerHistory', 'tickets'],
+                    fromJS([])
+                ) as List<any>
+            ).findIndex(
                 (ticket: Map<any, any>) => ticket.get('id') === updated.id
             )
             if (~ticketIndex) {
@@ -199,9 +203,9 @@ export default function reducer(
                 return state
             }
 
-            const newItems = (state.get('items', fromJS([])) as List<
-                any
-            >).filter(
+            const newItems = (
+                state.get('items', fromJS([])) as List<any>
+            ).filter(
                 (item: Map<any, any>) =>
                     !!action.ids && !action.ids.includes(item.get('id'))
             )

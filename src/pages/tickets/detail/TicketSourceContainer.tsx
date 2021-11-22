@@ -38,10 +38,9 @@ export const TicketSourceContainer = ({
     return (
         <SourceWrapper
             context="ticket"
-            identifier={(ticket.get(
-                'id',
-                params.ticketId || ''
-            ) as string).toString()}
+            identifier={(
+                ticket.get('id', params.ticketId || '') as string
+            ).toString()}
             sources={sources}
             widgets={widgets}
             actions={actions}

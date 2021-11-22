@@ -19,7 +19,7 @@ describe('<Stats/>', () => {
     const statFetchedMock = jest.fn()
     const fetchStatEndedMock = jest.fn()
     const fetchStatStartedMock = jest.fn()
-    const defaultProps = ({
+    const defaultProps = {
         notify: notifyMock,
         filters: fromJS({
             period: {
@@ -30,7 +30,7 @@ describe('<Stats/>', () => {
         statFetched: statFetchedMock,
         fetchStatEnded: fetchStatEndedMock,
         fetchStatStarted: fetchStatStartedMock,
-    } as unknown) as ComponentProps<typeof StatsContainer>
+    } as unknown as ComponentProps<typeof StatsContainer>
 
     let apiMock: MockAdapter
 
@@ -149,10 +149,10 @@ describe('<Stats/>', () => {
             apiMock.onAny().reply(200, firstResponseTimeStat)
             jest.spyOn(axios.CancelToken, 'source').mockImplementation(
                 () =>
-                    (({
+                    ({
                         token: undefined,
                         cancel: mockedCancelRequest,
-                    } as unknown) as CancelTokenSource)
+                    } as unknown as CancelTokenSource)
             )
             const componentWrapper = shallow(
                 <StatsContainer
@@ -179,10 +179,10 @@ describe('<Stats/>', () => {
         it('should cancel all pending API requests', () => {
             jest.spyOn(axios.CancelToken, 'source').mockImplementation(
                 () =>
-                    (({
+                    ({
                         token: undefined,
                         cancel: mockedCancelRequest,
-                    } as unknown) as CancelTokenSource)
+                    } as unknown as CancelTokenSource)
             )
             const componentWrapper = shallow(
                 <StatsContainer

@@ -63,8 +63,7 @@ describe('actions', () => {
         it('should calculate dismiss time depending on content', () => {
             store.dispatch(
                 notify({
-                    title:
-                        'Pizza is a yeasted flatbread typically topped with tomato sauce and cheese and baked in an oven.',
+                    title: 'Pizza is a yeasted flatbread typically topped with tomato sauce and cheese and baked in an oven.',
                     message:
                         'It is commonly topped with a selection of meats, vegetables and condiments.',
                 })

@@ -131,19 +131,17 @@ export function getFinalRefundOrderPayload(
                         getRestockType(refundLineItem, restock)
                     )
 
-                    const suggestedRefundLineItem = (refund.get(
-                        'refund_line_items',
-                        []
-                    ) as List<any>).find(
+                    const suggestedRefundLineItem = (
+                        refund.get('refund_line_items', []) as List<any>
+                    ).find(
                         (suggestedLineItem: Map<any, any>) =>
                             suggestedLineItem.get('line_item_id') ===
                             refundLineItem.get('line_item_id')
                     ) as Maybe<Map<any, any>>
 
                     if (suggestedRefundLineItem) {
-                        const locationId = suggestedRefundLineItem.get(
-                            'location_id'
-                        )
+                        const locationId =
+                            suggestedRefundLineItem.get('location_id')
                         newLineItem = newLineItem.set('location_id', locationId)
 
                         if (!locationId) {
@@ -162,10 +160,9 @@ export function getFinalRefundOrderPayload(
     finalPayload = finalPayload
         .set(
             'transactions',
-            (refund.get('transactions', []) as List<
-                any
-            >).map((transaction: Map<any, any>) =>
-                transaction.set('kind', 'refund')
+            (refund.get('transactions', []) as List<any>).map(
+                (transaction: Map<any, any>) =>
+                    transaction.set('kind', 'refund')
             )
         )
         .setIn(['transactions', 0, 'amount'], amount)

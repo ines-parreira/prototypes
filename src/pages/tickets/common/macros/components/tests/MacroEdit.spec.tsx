@@ -6,7 +6,7 @@ import _noop from 'lodash/noop'
 import {MacroEdit} from '../MacroEdit'
 
 describe('MacroEdit component', () => {
-    const defaultProps = ({
+    const defaultProps = {
         actions: fromJS([]),
         agents: fromJS({}),
         currentMacro: fromJS({id: 1}),
@@ -14,7 +14,7 @@ describe('MacroEdit component', () => {
         name: 'Pizza Pepperoni',
         setActions: _noop,
         setName: _noop,
-    } as any) as ComponentProps<typeof MacroEdit>
+    } as any as ComponentProps<typeof MacroEdit>
 
     it('should render the macro edit form', () => {
         const component = mount(<MacroEdit {...defaultProps} />)

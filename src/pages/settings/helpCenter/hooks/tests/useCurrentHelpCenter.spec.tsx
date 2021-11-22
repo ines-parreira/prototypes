@@ -33,11 +33,10 @@ jest.mock('../useHelpCenterApi', () => {
 
 const dependencyWrapper: (
     state: Partial<RootState>
-) => React.ComponentType<any> = (state) => ({
-    children,
-}: {
-    children: Element
-}) => <Provider store={mockStore(state as RootState)}>{children}</Provider>
+) => React.ComponentType<any> =
+    (state) =>
+    ({children}: {children: Element}) =>
+        <Provider store={mockStore(state as RootState)}>{children}</Provider>
 
 describe('useCurrentHelpCenter()', () => {
     it('returns the data from store if it is available', () => {

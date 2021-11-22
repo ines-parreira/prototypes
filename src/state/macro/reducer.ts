@@ -20,7 +20,7 @@ export default function reducer(
             }, state)
 
         case DELETE_MACRO:
-            return state.delete((payload as unknown) as number)
+            return state.delete(payload as unknown as number)
     }
     return state
 }

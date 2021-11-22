@@ -23,7 +23,7 @@ const addEmailExtraMock = jest.fn()
 const defaultProps: ComponentProps<typeof EmailExtraButtonContainer> = {
     editorState: EditorState.createEmpty(),
     signature: fromJS(defaultSignature),
-    addEmailExtra: (addEmailExtraMock as unknown) as typeof addEmailExtra,
+    addEmailExtra: addEmailExtraMock as unknown as typeof addEmailExtra,
     ticketMessages: fromJS([]),
     isNewMessageEmailExtraAdded: false,
     newMessageChannel: TicketChannel.Email,

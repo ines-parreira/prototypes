@@ -129,9 +129,8 @@ describe('responseUtils', () => {
 
     describe('addCache', () => {
         let ticketReplyCacheGetSpy: jest.SpyInstance
-        const defaultCachedContentState = ContentState.createFromText(
-            'Foo bar baz'
-        )
+        const defaultCachedContentState =
+            ContentState.createFromText('Foo bar baz')
         const defaultCachedTicket: RawCachedTicket = {
             contentState: convertToRaw(defaultCachedContentState),
             selectionState: SelectionState.createEmpty(
@@ -381,15 +380,17 @@ describe('responseUtils', () => {
             const selectionState = SelectionState.createEmpty(
                 contentState.getFirstBlock().getKey()
             )
-            const replyAreaState = (fromJS({
-                emailExtraAdded: false,
-                appliedMacro: null,
-                cacheAdded: true,
-                dirty: false,
-                firstNewMessage: true,
-                forceFocus: true,
-                forceUpdate: true,
-            }) as Map<any, any>)
+            const replyAreaState = (
+                fromJS({
+                    emailExtraAdded: false,
+                    appliedMacro: null,
+                    cacheAdded: true,
+                    dirty: false,
+                    firstNewMessage: true,
+                    forceFocus: true,
+                    forceUpdate: true,
+                }) as Map<any, any>
+            )
                 .set('contentState', contentState)
                 .set('selectionState', selectionState)
             const replyAreaStateJS = toReplyAreaState(replyAreaState)
@@ -448,10 +449,9 @@ describe('responseUtils', () => {
         })
 
         it('should not mutate the arguments', () => {
-            const prevNewMessage = (initialState.get('newMessage') as Map<
-                any,
-                any
-            >).toJS()
+            const prevNewMessage = (
+                initialState.get('newMessage') as Map<any, any>
+            ).toJS()
 
             updateNewMessageWithContentState(
                 prevNewMessage,

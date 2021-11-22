@@ -55,14 +55,14 @@ describe('macro utils', () => {
                             msg: 'Failed to update macros.',
                             data: {
                                 actions: {
-                                    '0': {
+                                    0: {
                                         arguments: [
                                             {
                                                 tags: ['Tags cannot be empty.'],
                                             },
                                         ],
                                     },
-                                    '2': {
+                                    2: {
                                         arguments: [
                                             {
                                                 url: ['Invalid URL protocol'],

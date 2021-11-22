@@ -154,8 +154,8 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
 
     _toggleAuditLogEvents = () => {
         const {displayAuditLogEvents, hideAuditLogEvents, ticket} = this.props
-        const shouldDisplayAuditLogEvents = !this.props
-            .shouldDisplayAuditLogEvents
+        const shouldDisplayAuditLogEvents =
+            !this.props.shouldDisplayAuditLogEvents
 
         if (shouldDisplayAuditLogEvents) {
             void displayAuditLogEvents(ticket.get('id'))
@@ -320,8 +320,7 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                                                 is_unread: true,
                                             })
                                             void notify({
-                                                status:
-                                                    NotificationStatus.Success,
+                                                status: NotificationStatus.Success,
                                                 message:
                                                     'Ticket has been marked as unread',
                                             })

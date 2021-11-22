@@ -122,24 +122,20 @@ describe('statusPageManager', () => {
                                 {
                                     name: 'REST API',
                                     status: ComponentStatus.MajorOutage,
-                                    group_id: Object.keys(
-                                        HELPDESK_GROUP_IDS
-                                    )[0],
+                                    group_id:
+                                        Object.keys(HELPDESK_GROUP_IDS)[0],
                                 },
                                 {
                                     name: 'GraphQL API',
                                     status: ComponentStatus.PartialOutage,
-                                    group_id: Object.keys(
-                                        HELPDESK_GROUP_IDS
-                                    )[0],
+                                    group_id:
+                                        Object.keys(HELPDESK_GROUP_IDS)[0],
                                 },
                                 {
-                                    name:
-                                        'Operational components should be ignore',
+                                    name: 'Operational components should be ignore',
                                     status: ComponentStatus.Operational,
-                                    group_id: Object.keys(
-                                        HELPDESK_GROUP_IDS
-                                    )[0],
+                                    group_id:
+                                        Object.keys(HELPDESK_GROUP_IDS)[0],
                                 },
                                 {
                                     name: 'ignored component',
@@ -277,9 +273,8 @@ describe('statusPageManager', () => {
                                 {
                                     name: 'REST API',
                                     status: ComponentStatus.MajorOutage,
-                                    group_id: Object.keys(
-                                        HELPDESK_GROUP_IDS
-                                    )[0],
+                                    group_id:
+                                        Object.keys(HELPDESK_GROUP_IDS)[0],
                                 },
                                 {
                                     name: clusterName,
@@ -309,9 +304,8 @@ describe('statusPageManager', () => {
                                 {
                                     name: 'REST API',
                                     status: ComponentStatus.MajorOutage,
-                                    group_id: Object.keys(
-                                        HELPDESK_GROUP_IDS
-                                    )[0],
+                                    group_id:
+                                        Object.keys(HELPDESK_GROUP_IDS)[0],
                                 },
                                 {
                                     name: clusterName,
@@ -341,9 +335,8 @@ describe('statusPageManager', () => {
                                 {
                                     name: 'REST API',
                                     status: ComponentStatus.MajorOutage,
-                                    group_id: Object.keys(
-                                        HELPDESK_GROUP_IDS
-                                    )[0],
+                                    group_id:
+                                        Object.keys(HELPDESK_GROUP_IDS)[0],
                                 },
                                 {
                                     name: 'us-random-cluster',
@@ -389,9 +382,8 @@ describe('statusPageManager', () => {
                                     id: '72gh1dxg7hnv',
                                     name: 'Facebook Integration',
                                     status: ComponentStatus.MajorOutage,
-                                    group_id: Object.keys(
-                                        HELPDESK_GROUP_IDS
-                                    )[0],
+                                    group_id:
+                                        Object.keys(HELPDESK_GROUP_IDS)[0],
                                 },
                             ],
                         },
@@ -425,9 +417,8 @@ describe('statusPageManager', () => {
                                     id: '72gh1dxg7hnv',
                                     name: 'Facebook Integration',
                                     status: ComponentStatus.MajorOutage,
-                                    group_id: Object.keys(
-                                        HELPDESK_GROUP_IDS
-                                    )[0],
+                                    group_id:
+                                        Object.keys(HELPDESK_GROUP_IDS)[0],
                                 },
                             ],
                         },
@@ -461,9 +452,8 @@ describe('statusPageManager', () => {
                                     id: '72gh1dxg7hnv',
                                     name: 'Facebook Integration',
                                     status: ComponentStatus.MajorOutage,
-                                    group_id: Object.keys(
-                                        HELPDESK_GROUP_IDS
-                                    )[0],
+                                    group_id:
+                                        Object.keys(HELPDESK_GROUP_IDS)[0],
                                 },
                             ],
                         },
@@ -502,17 +492,15 @@ describe('statusPageManager', () => {
                                     id: '72gh1dxg7hnv',
                                     name: 'Facebook Integration',
                                     status: ComponentStatus.MajorOutage,
-                                    group_id: Object.keys(
-                                        HELPDESK_GROUP_IDS
-                                    )[0],
+                                    group_id:
+                                        Object.keys(HELPDESK_GROUP_IDS)[0],
                                 },
                                 {
                                     id: 'wfkm6njpgc6p',
                                     name: 'Gmail Integration',
                                     status: ComponentStatus.MajorOutage,
-                                    group_id: Object.keys(
-                                        HELPDESK_GROUP_IDS
-                                    )[0],
+                                    group_id:
+                                        Object.keys(HELPDESK_GROUP_IDS)[0],
                                 },
                             ],
                         },
@@ -548,16 +536,14 @@ describe('statusPageManager', () => {
                                 {
                                     name: 'REST API',
                                     status: status,
-                                    group_id: Object.keys(
-                                        HELPDESK_GROUP_IDS
-                                    )[0],
+                                    group_id:
+                                        Object.keys(HELPDESK_GROUP_IDS)[0],
                                 },
                                 {
                                     name: 'GraphQL API',
                                     status: status,
-                                    group_id: Object.keys(
-                                        HELPDESK_GROUP_IDS
-                                    )[0],
+                                    group_id:
+                                        Object.keys(HELPDESK_GROUP_IDS)[0],
                                 },
                             ],
                         },
@@ -588,9 +574,8 @@ describe('statusPageManager', () => {
                                 {
                                     name: 'REST API',
                                     status: ComponentStatus.Operational,
-                                    group_id: Object.keys(
-                                        HELPDESK_GROUP_IDS
-                                    )[0],
+                                    group_id:
+                                        Object.keys(HELPDESK_GROUP_IDS)[0],
                                 },
                                 {
                                     name: clusterName,
@@ -620,9 +605,8 @@ describe('statusPageManager', () => {
                                 {
                                     name: 'REST API',
                                     status: ComponentStatus.Operational,
-                                    group_id: Object.keys(
-                                        HELPDESK_GROUP_IDS
-                                    )[0],
+                                    group_id:
+                                        Object.keys(HELPDESK_GROUP_IDS)[0],
                                 },
                                 {
                                     name: clusterName,
@@ -652,9 +636,8 @@ describe('statusPageManager', () => {
                                 {
                                     name: 'REST API',
                                     status: ComponentStatus.Operational,
-                                    group_id: Object.keys(
-                                        HELPDESK_GROUP_IDS
-                                    )[0],
+                                    group_id:
+                                        Object.keys(HELPDESK_GROUP_IDS)[0],
                                 },
                                 {
                                     name: 'us-random-cluster',

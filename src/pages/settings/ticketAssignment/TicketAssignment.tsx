@@ -74,11 +74,8 @@ export class TicketAssignmentContainer extends Component<Props, State> {
         this.setState({isLoading: true})
 
         const {ticketAssignmentSettings, submitSetting, fetchChats} = this.props
-        const {
-            unassignOnReply,
-            autoAssignToTeams,
-            assignmentChannels,
-        } = this.state
+        const {unassignOnReply, autoAssignToTeams, assignmentChannels} =
+            this.state
 
         let shouldFetchChats = true
 
@@ -89,10 +86,12 @@ export class TicketAssignmentContainer extends Component<Props, State> {
 
             const assignmentChannelsHaveChanged = !_isEqual(
                 assignmentChannels,
-                (ticketAssignmentSettings.getIn([
-                    'data',
-                    'assignment_channels',
-                ]) as List<any>).toJS()
+                (
+                    ticketAssignmentSettings.getIn([
+                        'data',
+                        'assignment_channels',
+                    ]) as List<any>
+                ).toJS()
             )
 
             shouldFetchChats =

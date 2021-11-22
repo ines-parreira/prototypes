@@ -93,10 +93,12 @@ export const getPreferences = createSelector<
     Map<any, any>,
     List<any>
 >(getSettings, (state) => {
-    return (fromJS({
-        type: 'preferences',
-        data: DEFAULT_PREFERENCES,
-    }) as Map<any, any>).mergeDeep(
+    return (
+        fromJS({
+            type: 'preferences',
+            data: DEFAULT_PREFERENCES,
+        }) as Map<any, any>
+    ).mergeDeep(
         (state.find(
             (setting: Map<any, any>) => setting.get('type') === 'preferences'
         ) as Maybe<Map<any, any>>) || fromJS({})

@@ -583,7 +583,7 @@ describe('actions', () => {
                 .dispatch(
                     actions.createJob(
                         view,
-                        (jobType as unknown) as JobType,
+                        jobType as unknown as JobType,
                         jobPartialParams
                     )
                 )
@@ -611,7 +611,7 @@ describe('actions', () => {
                 .dispatch(
                     actions.createJob(
                         view,
-                        (jobType as unknown) as JobType,
+                        jobType as unknown as JobType,
                         jobPartialParams
                     )
                 )

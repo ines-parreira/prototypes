@@ -1,6 +1,6 @@
 import {Tag} from '../models/tag/types'
 
-export const tags = ([
+export const tags = [
     {
         id: 2,
         created_datetime: '2021-01-21T13:10:46.444928+00:00',
@@ -41,4 +41,4 @@ export const tags = ([
         usage: 0,
         uri: '/api/tags/3/',
     },
-] as unknown) as Tag[]
+] as unknown as Tag[]

@@ -35,9 +35,10 @@ export const HelpCenterStartView: FunctionComponent = () => {
     const {client} = useHelpCenterApi()
     const localeOptions = useLocales()
     const helpCenterList = useSelector(getHelpCenterSortedList)
-    const localesByCode = useMemo(() => _keyBy<Locale>(localeOptions, 'code'), [
-        localeOptions,
-    ])
+    const localesByCode = useMemo(
+        () => _keyBy<Locale>(localeOptions, 'code'),
+        [localeOptions]
+    )
 
     const [{loading}, getHelpCentersList] = useAsyncFn(async () => {
         if (client) {

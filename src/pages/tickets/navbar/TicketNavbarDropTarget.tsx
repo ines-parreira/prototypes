@@ -61,10 +61,8 @@ const TicketNavbarDropTarget = ({
     ...other
 }: Props) => {
     const wrapperRef = useRef<HTMLDivElement>(null)
-    const [
-        indicatorPosition,
-        setIndicatorPosition,
-    ] = useState<TicketNavbarDropDirection | null>(null)
+    const [indicatorPosition, setIndicatorPosition] =
+        useState<TicketNavbarDropDirection | null>(null)
 
     const [{isOver}, drop] = useDrop<
         TicketNavbarDragObject,

@@ -7,13 +7,15 @@ import {TicketSourceContainer} from '../TicketSourceContainer'
 
 jest.mock(
     '../../../common/components/sourceWidgets/SourceWrapper',
-    () => ({context, identifier}: ComponentProps<typeof SourceWrapper>) => (
-        <div>
-            SourceWrapper
-            <div>context: {JSON.stringify(context)}</div>
-            <div>identifier: {JSON.stringify(identifier)}</div>
-        </div>
-    )
+    () =>
+        ({context, identifier}: ComponentProps<typeof SourceWrapper>) =>
+            (
+                <div>
+                    SourceWrapper
+                    <div>context: {JSON.stringify(context)}</div>
+                    <div>identifier: {JSON.stringify(identifier)}</div>
+                </div>
+            )
 )
 
 describe('<TicketSourceContainer />', () => {

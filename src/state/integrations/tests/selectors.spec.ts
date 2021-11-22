@@ -82,9 +82,8 @@ describe('integrations selectors', () => {
 
     describe('getEmailIntegrations()', () => {
         it('should get email integrations', () => {
-            const emailIntegrations: EmailIntegration[] = getEmailIntegrations(
-                state
-            ).toJS()
+            const emailIntegrations: EmailIntegration[] =
+                getEmailIntegrations(state).toJS()
             const allIntegrations: Integration[] = getIntegrations(state).toJS()
             const expected = allIntegrations.filter(
                 (integration: Integration) =>
@@ -99,13 +98,11 @@ describe('integrations selectors', () => {
 
     describe('getPhoneIntegrations()', () => {
         it('should get phone integrations', () => {
-            const phoneIntegrations: PhoneIntegration[] = getPhoneIntegrations(
-                state
-            ).toJS()
+            const phoneIntegrations: PhoneIntegration[] =
+                getPhoneIntegrations(state).toJS()
             const allIntegrations: Integration[] = getIntegrations(state).toJS()
-            const expected: PhoneIntegration[] = allIntegrations.filter(
-                isPhoneIntegration
-            )
+            const expected: PhoneIntegration[] =
+                allIntegrations.filter(isPhoneIntegration)
 
             expect(phoneIntegrations).toEqual(expected)
         })
@@ -198,9 +195,8 @@ describe('integrations selectors', () => {
                 }),
             } as RootState
 
-            const shopifyIntegrations: ShopifyIntegration[] = getShopifyIntegrationsWithoutChat(
-                state
-            ).toJS()
+            const shopifyIntegrations: ShopifyIntegration[] =
+                getShopifyIntegrationsWithoutChat(state).toJS()
             expect(size(shopifyIntegrations)).toEqual(1)
 
             const integration: ShopifyIntegration = shopifyIntegrations[0]
@@ -259,9 +255,8 @@ describe('integrations selectors', () => {
                 }),
             } as RootState
 
-            const shopiFyIntegrations: ShopifyIntegration[] = getShopifyIntegrationsWithoutFacebook(
-                state
-            ).toJS()
+            const shopiFyIntegrations: ShopifyIntegration[] =
+                getShopifyIntegrationsWithoutFacebook(state).toJS()
             expect(size(shopiFyIntegrations)).toEqual(1)
 
             const integration = shopiFyIntegrations[0]
@@ -571,9 +566,8 @@ describe('integrations selectors', () => {
                 }),
             } as RootState
 
-            const res = getMagento2IntegrationByStoreUrl('magento.gorgi.us')(
-                state
-            )
+            const res =
+                getMagento2IntegrationByStoreUrl('magento.gorgi.us')(state)
             expect(res.get('id')).toEqual(2)
         })
     })

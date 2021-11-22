@@ -34,13 +34,12 @@ export function HelpCentersTable({
     onToggle,
     onClick,
 }: HelpCentersTableProps): JSX.Element {
-    const handleToggle = (helpCenterId: number) => (
-        isToggled: boolean,
-        event?: MouseEvent
-    ): void => {
-        event?.stopPropagation()
-        onToggle(helpCenterId, isToggled)
-    }
+    const handleToggle =
+        (helpCenterId: number) =>
+        (isToggled: boolean, event?: MouseEvent): void => {
+            event?.stopPropagation()
+            onToggle(helpCenterId, isToggled)
+        }
 
     if (isLoading) {
         return <Loader />

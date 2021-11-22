@@ -6,8 +6,7 @@ import Editor from '../Editor'
 
 describe('<Editor/>', () => {
     const link = {
-        url:
-            'httpbin.org/get?first_name={{first_name}}&last_name={{last_name}}',
+        url: 'httpbin.org/get?first_name={{first_name}}&last_name={{last_name}}',
         label: 'Query {{first_name}}',
     }
     const props = {

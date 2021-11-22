@@ -152,37 +152,35 @@ export function RulesSettingsFormContainer({
         }
     }, [ruleDraft, eventTypes])
 
-    const [
-        {loading: isDuplicatePending},
-        handleRuleDuplicate,
-    ] = useAsyncFn(async () => {
-        if (!ruleId || !canDuplicate) {
-            return
-        }
-        const newName =
-            ruleDraft.name === rules[ruleId].name
-                ? `${ruleDraft.name} - copy`
-                : ruleDraft.name
+    const [{loading: isDuplicatePending}, handleRuleDuplicate] =
+        useAsyncFn(async () => {
+            if (!ruleId || !canDuplicate) {
+                return
+            }
+            const newName =
+                ruleDraft.name === rules[ruleId].name
+                    ? `${ruleDraft.name} - copy`
+                    : ruleDraft.name
 
-        try {
-            const newRule = await createRule({
-                ...ruleDraft,
-                name: newName,
-                deactivated_datetime: null,
-            })
-            ruleCreated(newRule)
-            void notify({
-                message: `Successfully duplicated rule.`,
-                status: NotificationStatus.Success,
-            })
-            history.push(`/app/settings/rules/${newRule.id}`)
-        } catch (error) {
-            void notify({
-                message: `Failed to duplicate rule.`,
-                status: NotificationStatus.Error,
-            })
-        }
-    }, [ruleId, ruleDraft, eventTypes])
+            try {
+                const newRule = await createRule({
+                    ...ruleDraft,
+                    name: newName,
+                    deactivated_datetime: null,
+                })
+                ruleCreated(newRule)
+                void notify({
+                    message: `Successfully duplicated rule.`,
+                    status: NotificationStatus.Success,
+                })
+                history.push(`/app/settings/rules/${newRule.id}`)
+            } catch (error) {
+                void notify({
+                    message: `Failed to duplicate rule.`,
+                    status: NotificationStatus.Error,
+                })
+            }
+        }, [ruleId, ruleDraft, eventTypes])
 
     const [{loading: isDeleting}, handleDelete] = useAsyncFn(async () => {
         if (!ruleId) {

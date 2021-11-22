@@ -113,11 +113,8 @@ export class SmoochIntegrationPreferences extends React.Component<
     }
 
     render() {
-        const {
-            autoResponderEnabled,
-            autoResponderReply,
-            isUpdating,
-        } = this.state
+        const {autoResponderEnabled, autoResponderReply, isUpdating} =
+            this.state
         const {integration} = this.props
 
         return (

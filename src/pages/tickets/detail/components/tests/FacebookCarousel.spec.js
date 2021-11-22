@@ -52,8 +52,7 @@ describe('FacebookCarousel component', () => {
                                     type: 'element_share',
                                 },
                                 {
-                                    url:
-                                        'https://messenger-commerce.shopifyapps.com/',
+                                    url: 'https://messenger-commerce.shopifyapps.com/',
                                     type: 'web_url',
                                     title: 'Buy now',
                                     webview_height_ratio: 'tall',

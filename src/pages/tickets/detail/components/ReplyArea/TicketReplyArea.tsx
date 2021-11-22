@@ -145,9 +145,9 @@ export class TicketReplyArea extends Component<Props, State> {
         let showMacros = this.props.preferences.get('show_macros')
 
         // show/hide macros depending on the profile setting
-        const preferences = (this.props.currentUser.get('settings') as List<
-            any
-        >).find((s: Map<any, any>) => s.get('type') === 'preferences') as Map<
+        const preferences = (
+            this.props.currentUser.get('settings') as List<any>
+        ).find((s: Map<any, any>) => s.get('type') === 'preferences') as Map<
             any,
             any
         >
@@ -352,7 +352,7 @@ export class TicketReplyArea extends Component<Props, State> {
         this.hideMacrosAndFocusEditor()
     }
 
-    render = () => {
+    render() {
         const {
             totalPages,
             macros,

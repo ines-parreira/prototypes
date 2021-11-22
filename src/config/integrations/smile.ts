@@ -7,13 +7,11 @@ export const MACRO_VARIABLES = {
     children: [
         {
             name: 'Points balance',
-            value:
-                '{{ticket.customer.integrations.smile.customer.points_balance}}',
+            value: '{{ticket.customer.integrations.smile.customer.points_balance}}',
         },
         {
             name: 'Referral URL',
-            value:
-                '{{ticket.customer.integrations.smile.customer.referral_url}}',
+            value: '{{ticket.customer.integrations.smile.customer.referral_url}}',
         },
         {
             name: 'Customer state',
@@ -21,8 +19,7 @@ export const MACRO_VARIABLES = {
         },
         {
             name: 'Vip tier',
-            value:
-                '{{ticket.customer.integrations.smile.customer.vip_tier.name}}',
+            value: '{{ticket.customer.integrations.smile.customer.vip_tier.name}}',
         },
     ],
 }

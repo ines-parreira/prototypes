@@ -265,9 +265,11 @@ class TitleWrapper extends Component<TitleWrapperProps> {
 
     render() {
         const {children, source} = this.props
-        const shopName: string = (this.context as {
-            integration: Map<any, any>
-        }).integration.getIn(['meta', 'shop_name']) as string
+        const shopName: string = (
+            this.context as {
+                integration: Map<any, any>
+            }
+        ).integration.getIn(['meta', 'shop_name']) as string
 
         return (
             <a

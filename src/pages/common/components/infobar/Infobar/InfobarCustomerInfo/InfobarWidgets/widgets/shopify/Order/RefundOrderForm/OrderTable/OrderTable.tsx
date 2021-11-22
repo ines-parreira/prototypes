@@ -28,9 +28,9 @@ function OrderTable({
         (lineItem: Map<string, any>) => {
             if (!refund) return true
 
-            const refundLineItem = (refund.get('refund_line_items', []) as List<
-                Map<string, any>
-            >).find(
+            const refundLineItem = (
+                refund.get('refund_line_items', []) as List<Map<string, any>>
+            ).find(
                 (refundLineItem) =>
                     refundLineItem?.get('line_item_id') === lineItem.get('id')
             )

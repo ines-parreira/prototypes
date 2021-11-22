@@ -105,9 +105,10 @@ export const useNavigationLinks = (
         setLinks(decorateLocaleLinks(group, response))
     }, [response, group])
 
-    const innerOptions = useMemo(() => _defaults(options, DEFAULT_OPTIONS), [
-        options,
-    ])
+    const innerOptions = useMemo(
+        () => _defaults(options, DEFAULT_OPTIONS),
+        [options]
+    )
 
     const add = (locale: LocaleCode) => {
         setLinks(
@@ -168,9 +169,10 @@ export const useSocialNavigationLinks = (
         }
     }, [response])
 
-    const innerOptions = useMemo(() => _defaults(options, DEFAULT_OPTIONS), [
-        options,
-    ])
+    const innerOptions = useMemo(
+        () => _defaults(options, DEFAULT_OPTIONS),
+        [options]
+    )
 
     const remove = (id: number) => {
         setLinks(draftRemoveLink<LocalSocialNavigationLink>(links, id))

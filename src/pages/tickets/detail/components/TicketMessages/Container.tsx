@@ -41,12 +41,8 @@ export default class Container extends Component<Props> {
     }
 
     render() {
-        const {
-            children,
-            message,
-            isMessageHidden,
-            isMessageDeleted,
-        } = this.props
+        const {children, message, isMessageHidden, isMessageDeleted} =
+            this.props
         const sender = fromJS(message.sender || {}) as Map<any, any>
         let avatar
 

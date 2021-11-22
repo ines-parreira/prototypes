@@ -12,36 +12,36 @@ import client from '../../models/api/resources'
 import * as constants from './constants.js'
 import {Account, AccountSetting} from './types'
 
-export const updateAccount = (values: Account) => (
-    dispatch: StoreDispatch
-): Promise<ReturnType<StoreDispatch>> => {
-    dispatch({type: constants.UPDATE_ACCOUNT_START})
+export const updateAccount =
+    (values: Account) =>
+    (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
+        dispatch({type: constants.UPDATE_ACCOUNT_START})
 
-    return client
-        .put<Account>('/api/account/', values)
-        .then((json) => json?.data)
-        .then(
-            (resp) => {
-                dispatch({
-                    type: constants.UPDATE_ACCOUNT_SUCCESS,
-                    resp,
-                })
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'Account settings successfully updated!',
+        return client
+            .put<Account>('/api/account/', values)
+            .then((json) => json?.data)
+            .then(
+                (resp) => {
+                    dispatch({
+                        type: constants.UPDATE_ACCOUNT_SUCCESS,
+                        resp,
                     })
-                )
-            },
-            (error) => {
-                return dispatch({
-                    type: constants.UPDATE_ACCOUNT_ERROR,
-                    error,
-                    reason: 'Failed to update account settings',
-                })
-            }
-        )
-}
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Success,
+                            message: 'Account settings successfully updated!',
+                        })
+                    )
+                },
+                (error) => {
+                    return dispatch({
+                        type: constants.UPDATE_ACCOUNT_ERROR,
+                        error,
+                        reason: 'Failed to update account settings',
+                    })
+                }
+            )
+    }
 
 export function submitSettingSuccess(
     setting: AccountSetting,
@@ -132,53 +132,52 @@ export const setCurrentSubscription = (subscription: Map<any, any>) => {
 /**
  * Transfer the current account ownership to a user
  */
-export const updateAccountOwner = (userId: number) => (
-    dispatch: StoreDispatch
-): Promise<ReturnType<StoreDispatch>> => {
-    return client.put('/api/account/owner/', {id: userId}).then(
-        () => {
+export const updateAccountOwner =
+    (userId: number) =>
+    (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
+        return client.put('/api/account/owner/', {id: userId}).then(
+            () => {
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Success,
+                        message: 'The account owner was successfully​ changed.',
+                    })
+                )
+                return dispatch({
+                    type: constants.UPDATE_ACCOUNT_OWNER_SUCCESS,
+                    userId,
+                })
+            },
+            (error) => {
+                return dispatch({
+                    type: constants.UPDATE_ACCOUNT_OWNER_ERROR,
+                    error,
+                    reason: 'Failed to change the account owner. Please try again in a few seconds.',
+                })
+            }
+        )
+    }
+
+export const resendVerificationEmail =
+    () =>
+    async (dispatch: StoreDispatch): Promise<void> => {
+        const gorgiasApi = new GorgiasApi()
+
+        try {
+            await gorgiasApi.resendAccountVerificationEmail()
             void dispatch(
                 notify({
                     status: NotificationStatus.Success,
-                    message: 'The account owner was successfully​ changed.',
+                    message: 'The verification email has been resent!',
                 })
             )
-            return dispatch({
-                type: constants.UPDATE_ACCOUNT_OWNER_SUCCESS,
-                userId,
-            })
-        },
-        (error) => {
-            return dispatch({
-                type: constants.UPDATE_ACCOUNT_OWNER_ERROR,
-                error,
-                reason:
-                    'Failed to change the account owner. Please try again in a few seconds.',
-            })
+        } catch (exc) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: (exc as AxiosError<{error: {msg: string}}>)
+                        .response?.data.error.msg,
+                })
+            )
         }
-    )
-}
-
-export const resendVerificationEmail = () => async (
-    dispatch: StoreDispatch
-): Promise<void> => {
-    const gorgiasApi = new GorgiasApi()
-
-    try {
-        await gorgiasApi.resendAccountVerificationEmail()
-        void dispatch(
-            notify({
-                status: NotificationStatus.Success,
-                message: 'The verification email has been resent!',
-            })
-        )
-    } catch (exc) {
-        void dispatch(
-            notify({
-                status: NotificationStatus.Error,
-                message: (exc as AxiosError<{error: {msg: string}}>).response
-                    ?.data.error.msg,
-            })
-        )
     }
-}

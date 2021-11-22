@@ -64,9 +64,9 @@ export class WrappedCallExpression extends React.Component<Props> {
             const firstArg = funcArgs[0]
             const secondArg = funcArgs[1]
 
-            let left = root.concat(getSyntaxTreeLeaves(funcArgs[0])) as List<
-                any
-            >
+            let left = root.concat(
+                getSyntaxTreeLeaves(funcArgs[0])
+            ) as List<any>
 
             // we find the first object after the definitions, Ex: ticket => Ticket
             // this is needed to match the swagger spec structure
@@ -100,7 +100,7 @@ export class WrappedCallExpression extends React.Component<Props> {
                         className="IdentifierDropdown"
                     />
                     <Expression
-                        {...((callee as unknown) as ComponentProps<
+                        {...(callee as unknown as ComponentProps<
                             typeof Expression
                         >)}
                         parent={parentCallee}

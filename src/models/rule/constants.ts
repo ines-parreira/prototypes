@@ -256,14 +256,12 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
         {
             label: 'Financial status',
             text: 'last order financial status',
-            value:
-                'ticket.customer.integrations.shopify.last_order.financial_status',
+            value: 'ticket.customer.integrations.shopify.last_order.financial_status',
         },
         {
             label: 'Fulfillment status',
             text: 'last order fulfillment status',
-            value:
-                'ticket.customer.integrations.shopify.last_order.fulfillment_status',
+            value: 'ticket.customer.integrations.shopify.last_order.fulfillment_status',
         },
         {
             label: 'Tags',
@@ -273,8 +271,7 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
         {
             label: 'Total price',
             text: 'total price of last order',
-            value:
-                'ticket.customer.integrations.shopify.last_order.total_price',
+            value: 'ticket.customer.integrations.shopify.last_order.total_price',
         },
         {
             label: IdentifierSubCategoryValue.LastFulfillment,
@@ -282,26 +279,22 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
                 {
                     label: 'Created date',
                     text: 'shipping date of last order',
-                    value:
-                        'ticket.customer.integrations.shopify.last_order.last_fulfillment.created_at',
+                    value: 'ticket.customer.integrations.shopify.last_order.last_fulfillment.created_at',
                 },
                 {
                     label: 'Shipment status',
                     text: 'last order shipment status',
-                    value:
-                        'ticket.customer.integrations.shopify.last_order.last_fulfillment.shipment_status',
+                    value: 'ticket.customer.integrations.shopify.last_order.last_fulfillment.shipment_status',
                 },
                 {
                     label: 'Status',
                     text: 'last fulfillment status',
-                    value:
-                        'ticket.customer.integrations.shopify.last_order.last_fulfillment.status',
+                    value: 'ticket.customer.integrations.shopify.last_order.last_fulfillment.status',
                 },
                 {
                     label: 'Tracking number',
                     text: 'last order tracking number',
-                    value:
-                        'ticket.customer.integrations.shopify.last_order.last_fulfillment.tracking_number',
+                    value: 'ticket.customer.integrations.shopify.last_order.last_fulfillment.tracking_number',
                 },
             ],
         },
@@ -311,14 +304,12 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
                 {
                     label: 'Country',
                     text: 'destination country of last order',
-                    value:
-                        'ticket.customer.integrations.shopify.last_order.shipping_address.country',
+                    value: 'ticket.customer.integrations.shopify.last_order.shipping_address.country',
                 },
                 {
                     label: 'Province',
                     text: 'destination province of last order',
-                    value:
-                        'ticket.customer.integrations.shopify.last_order.shipping_address.province',
+                    value: 'ticket.customer.integrations.shopify.last_order.shipping_address.province',
                 },
             ],
         },
@@ -349,20 +340,17 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
         {
             label: 'Date of last order',
             text: 'date of last order',
-            value:
-                'ticket.customer.integrations.magento2.last_order.created_at',
+            value: 'ticket.customer.integrations.magento2.last_order.created_at',
         },
         {
             label: 'Grand total',
             text: 'last order grand total',
-            value:
-                'ticket.customer.integrations.magento2.last_order.grand_total',
+            value: 'ticket.customer.integrations.magento2.last_order.grand_total',
         },
         {
             label: 'Created date',
             text: 'shipping date of last order',
-            value:
-                'ticket.customer.integrations.magento2.last_order.last_shipment.created_at',
+            value: 'ticket.customer.integrations.magento2.last_order.last_shipment.created_at',
         },
         {
             label: 'State',
@@ -381,20 +369,17 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
         {
             label: 'Created date',
             text: 'created date of last subscription',
-            value:
-                'ticket.customer.integrations.recharge.last_subscription.created_at',
+            value: 'ticket.customer.integrations.recharge.last_subscription.created_at',
         },
         {
             label: 'Date of next scheduled charge',
             text: 'next scheduled charge date of last subscription',
-            value:
-                'ticket.customer.integrations.recharge.last_subscription.next_charge_scheduled_at',
+            value: 'ticket.customer.integrations.recharge.last_subscription.next_charge_scheduled_at',
         },
         {
             label: 'Product title',
             text: 'last subscription product title',
-            value:
-                'ticket.customer.integrations.recharge.last_subscription.product_title',
+            value: 'ticket.customer.integrations.recharge.last_subscription.product_title',
         },
     ],
     [IdentifierCategoryKey.RechargeCustomer]: [

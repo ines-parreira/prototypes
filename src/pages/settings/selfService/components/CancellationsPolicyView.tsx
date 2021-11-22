@@ -63,10 +63,8 @@ export const CancellationsPolicyView = () => {
         setConfigCancelOrderStatusEligibility,
     ] = useState('')
 
-    const [
-        eligibilityWindowOptionValue,
-        setEligibilityWindowOptionValue,
-    ] = useState('')
+    const [eligibilityWindowOptionValue, setEligibilityWindowOptionValue] =
+        useState('')
     useEffect(() => {
         const currentOrderStatusEligibilityFilter:
             | SelfServiceConfigurationFilter
@@ -112,10 +110,9 @@ export const CancellationsPolicyView = () => {
 
         const updatedOrderStatusEligibility = {
             key: FilterKeyEnum.GORGIAS_ORDER_STATUS,
-            value:
-                CancellationsOptionToEligibilityStatuses[
-                    eligibilityWindowOptionValue
-                ],
+            value: CancellationsOptionToEligibilityStatuses[
+                eligibilityWindowOptionValue
+            ],
             operator: FilterOperatorEnum.ONE_OF,
         } as SelfServiceConfigurationFilter
 

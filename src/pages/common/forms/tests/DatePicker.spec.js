@@ -52,9 +52,8 @@ describe('DatePicker', () => {
             </DatePicker>
         )
 
-        const [dateRangePickerElement] = document.getElementsByClassName(
-            'daterangepicker'
-        )
+        const [dateRangePickerElement] =
+            document.getElementsByClassName('daterangepicker')
 
         expect(dateRangePickerElement.classList).toContain('displayed')
         expect(getByText('May 2021')).toBeTruthy()

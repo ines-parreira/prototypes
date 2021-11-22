@@ -34,8 +34,7 @@ const integration = fromJS({
             callback_url:
                 'https://incoming-philippe.ngrok.io/api/incoming/smooch/',
             id: '5fcfccc98a8661000c72e7c9',
-            secret:
-                'UEwegLe6sg5DbI5wDoLyvBXmxl3WsnZ9-rkq_xHsyZ2sysUqhN-rGk4UNNTJacvumVvCIcB3gMvpwTUPWmIakA',
+            secret: 'UEwegLe6sg5DbI5wDoLyvBXmxl3WsnZ9-rkq_xHsyZ2sysUqhN-rGk4UNNTJacvumVvCIcB3gMvpwTUPWmIakA',
         },
         app_id: '5fcfccc8707066000cdc86df',
         script_url:
@@ -50,7 +49,8 @@ const integration = fromJS({
                 enabled: true,
                 reply: CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
             },
-            email_capture_enforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
+            email_capture_enforcement:
+                SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
         },
         language: SPANISH_LANGUAGE,
         campaigns: [
@@ -58,8 +58,7 @@ const integration = fromJS({
                 id: '9a035393-4a2f-44f9-b202-f6e06a08100f',
                 deactivated_datetime: '2020-12-08T18:58:17.674204',
                 message: {
-                    html:
-                        '<div>Hi there, this is an old integration campaign</div>',
+                    html: '<div>Hi there, this is an old integration campaign</div>',
                     text: 'Hi there, this is an old integration campaign',
                 },
                 triggers: [

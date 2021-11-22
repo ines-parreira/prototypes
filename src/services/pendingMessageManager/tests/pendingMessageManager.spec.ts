@@ -48,13 +48,8 @@ describe('services', () => {
         const getSendTicketMessageCallArgs = (
             sendMessageArgs: SendMessageArgs
         ): Parameters<typeof sendTicketMessage> => {
-            const {
-                messageId,
-                messageToSend,
-                action,
-                resetMessage,
-                ticketId,
-            } = sendMessageArgs
+            const {messageId, messageToSend, action, resetMessage, ticketId} =
+                sendMessageArgs
             return [messageId, messageToSend, action, resetMessage, ticketId]
         }
 
@@ -142,9 +137,11 @@ describe('services', () => {
 
         it('should prevent redirection when a message is pending', () => {
             const newPendingMessageManager = new PendingMessageManager('foo')
-            const beforeUnloadHandler = (window.addEventListener as jest.MockedFunction<
-                typeof window.addEventListener
-            >).mock.calls[0][1] as (event: BeforeUnloadEvent) => void
+            const beforeUnloadHandler = (
+                window.addEventListener as jest.MockedFunction<
+                    typeof window.addEventListener
+                >
+            ).mock.calls[0][1] as (event: BeforeUnloadEvent) => void
             const event = new Event('beforeUnload')
 
             expect(beforeUnloadHandler(event)).toBe(undefined)

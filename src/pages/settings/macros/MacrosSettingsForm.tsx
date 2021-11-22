@@ -60,24 +60,22 @@ export function MacrosSettingsFormContainer({
     const [macroForm, setMacroForm] = useState<MacroDraft>(
         getDefaultMacro().toJS()
     )
-    const [
-        {loading: isFetchPending},
-        handleMacroFetch,
-    ] = useAsyncFn(async () => {
-        if (!macroId) {
-            return
-        }
-        try {
-            const res = await fetchMacro(parseInt(macroId))
-            macroFetched(res)
-        } catch (error) {
-            void notify({
-                message: 'Failed to fetch macro',
-                status: NotificationStatus.Error,
-            })
-            history.push('/app/settings/macros')
-        }
-    }, [macroId])
+    const [{loading: isFetchPending}, handleMacroFetch] =
+        useAsyncFn(async () => {
+            if (!macroId) {
+                return
+            }
+            try {
+                const res = await fetchMacro(parseInt(macroId))
+                macroFetched(res)
+            } catch (error) {
+                void notify({
+                    message: 'Failed to fetch macro',
+                    status: NotificationStatus.Error,
+                })
+                history.push('/app/settings/macros')
+            }
+        }, [macroId])
     const handleActionsChange = (actions: List<any>) => {
         const filteredActions = actions.filter((action: Map<any, any>) =>
             DEFAULT_ACTIONS.includes(action.get('name'))
@@ -94,65 +92,61 @@ export function MacrosSettingsFormContainer({
             }),
         })
     }
-    const [
-        {loading: isSubmitPending},
-        handleFormSubmit,
-    ] = useAsyncFn(async () => {
-        let res
-        try {
-            if (macroId) {
-                res = await updateMacro({
-                    ...macros[macroId],
-                    ...macroForm,
+    const [{loading: isSubmitPending}, handleFormSubmit] =
+        useAsyncFn(async () => {
+            let res
+            try {
+                if (macroId) {
+                    res = await updateMacro({
+                        ...macros[macroId],
+                        ...macroForm,
+                    })
+                    macroUpdated(res)
+                } else {
+                    res = await createMacro(macroForm)
+                    macroCreated(res)
+                }
+                void notify({
+                    message: `Successfully ${
+                        macroId ? 'updated' : 'created'
+                    } macro.`,
+                    status: NotificationStatus.Success,
                 })
-                macroUpdated(res)
-            } else {
-                res = await createMacro(macroForm)
-                macroCreated(res)
+                history.push('/app/settings/macros')
+            } catch (error) {
+                const gorgiasError = error as GorgiasError
+                const message = gorgiasError.response.data.error.msg
+                const reason = getErrorReason(gorgiasError)
+                void notify({
+                    message: `${message} ${reason}`,
+                    status: NotificationStatus.Error,
+                })
             }
-            void notify({
-                message: `Successfully ${
-                    macroId ? 'updated' : 'created'
-                } macro.`,
-                status: NotificationStatus.Success,
-            })
-            history.push('/app/settings/macros')
-        } catch (error) {
-            const gorgiasError = error as GorgiasError
-            const message = gorgiasError.response.data.error.msg
-            const reason = getErrorReason(gorgiasError)
-            void notify({
-                message: `${message} ${reason}`,
-                status: NotificationStatus.Error,
-            })
-        }
-    }, [macroId, macroForm])
-    const [
-        {loading: isDuplicatePending},
-        handleMacroDuplicate,
-    ] = useAsyncFn(async () => {
-        if (!macroId) {
-            return
-        }
-        const {actions, name} = macros[macroId]
-        try {
-            const res = await createMacro({
-                actions,
-                name: `${name} (copy)`,
-            })
-            macroCreated(res)
-            void notify({
-                message: `Successfully duplicated macro.`,
-                status: NotificationStatus.Success,
-            })
-            history.push(`/app/settings/macros/${res.id}`)
-        } catch (error) {
-            void notify({
-                message: 'Failed to duplicate macro.',
-                status: NotificationStatus.Error,
-            })
-        }
-    }, [macros, macroId])
+        }, [macroId, macroForm])
+    const [{loading: isDuplicatePending}, handleMacroDuplicate] =
+        useAsyncFn(async () => {
+            if (!macroId) {
+                return
+            }
+            const {actions, name} = macros[macroId]
+            try {
+                const res = await createMacro({
+                    actions,
+                    name: `${name} (copy)`,
+                })
+                macroCreated(res)
+                void notify({
+                    message: `Successfully duplicated macro.`,
+                    status: NotificationStatus.Success,
+                })
+                history.push(`/app/settings/macros/${res.id}`)
+            } catch (error) {
+                void notify({
+                    message: 'Failed to duplicate macro.',
+                    status: NotificationStatus.Error,
+                })
+            }
+        }, [macros, macroId])
 
     const [{loading: isDeletePending}, handleDelete] = useAsyncFn(async () => {
         if (!macroId) {

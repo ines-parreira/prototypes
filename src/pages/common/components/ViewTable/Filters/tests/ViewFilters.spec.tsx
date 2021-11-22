@@ -54,15 +54,21 @@ const defaultState: Partial<RootState> = {
     }),
 }
 
-;((removeFieldFilter as jest.MockedFunction<
-    typeof removeFieldFilter
->) as jest.SpyInstance).mockImplementation(() => () => ({}))
-;((updateFieldFilter as jest.MockedFunction<
-    typeof updateFieldFilter
->) as jest.SpyInstance).mockImplementation(() => () => ({}))
-;((updateFieldFilterOperator as jest.MockedFunction<
-    typeof updateFieldFilterOperator
->) as jest.SpyInstance).mockImplementation(() => () => ({}))
+;(
+    removeFieldFilter as jest.MockedFunction<
+        typeof removeFieldFilter
+    > as jest.SpyInstance
+).mockImplementation(() => () => ({}))
+;(
+    updateFieldFilter as jest.MockedFunction<
+        typeof updateFieldFilter
+    > as jest.SpyInstance
+).mockImplementation(() => () => ({}))
+;(
+    updateFieldFilterOperator as jest.MockedFunction<
+        typeof updateFieldFilterOperator
+    > as jest.SpyInstance
+).mockImplementation(() => () => ({}))
 
 describe('<ViewFilters />', () => {
     beforeEach(() => {

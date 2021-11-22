@@ -66,13 +66,13 @@ export const useConfigurationData = () => {
             )
         }
     )
-    const configuration:
-        | SelfServiceConfiguration
-        | undefined = selfServiceConfigurations.find((configuration) => {
-        return (
-            configuration.shop_name === integration.getIn(['meta', 'shop_name'])
-        )
-    })
+    const configuration: SelfServiceConfiguration | undefined =
+        selfServiceConfigurations.find((configuration) => {
+            return (
+                configuration.shop_name ===
+                integration.getIn(['meta', 'shop_name'])
+            )
+        })
 
     return {
         isLoadingConfig,

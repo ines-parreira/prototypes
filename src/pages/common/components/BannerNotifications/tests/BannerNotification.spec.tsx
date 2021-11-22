@@ -5,13 +5,13 @@ import BannerNotification from '../BannerNotification'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 
 describe('<BannerNotification/>', () => {
-    const minProps = ({
+    const minProps = {
         id: 1,
         status: NotificationStatus.Success,
         message: 'foobar',
         hide: jest.fn(),
         allowHTML: false,
-    } as unknown) as ComponentProps<typeof BannerNotification>
+    } as unknown as ComponentProps<typeof BannerNotification>
 
     describe('rendering', () => {
         it('should render with default props', () => {

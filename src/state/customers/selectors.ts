@@ -38,8 +38,10 @@ export const isLoading = (name: string) =>
 
 // in component usage
 // ex: isLoading: makeIsLoading(state)   then : const isMerging = isLoading('merge')
-export const makeIsLoading = (state: RootState) => (name: string): boolean =>
-    isLoading(name)(state)
+export const makeIsLoading =
+    (state: RootState) =>
+    (name: string): boolean =>
+        isLoading(name)(state)
 
 export const getCustomers = createSelector<
     RootState,
@@ -85,7 +87,7 @@ export const getActiveCustomerIntegrationDataByIntegrationId = (
     createSelector<RootState, Map<any, any>, List<any>>(
         getActiveCustomerIntegrationData,
         (data: List<any>) =>
-            (data.get((String(integrationId) as unknown) as number) as Map<
+            (data.get(String(integrationId) as unknown as number) as Map<
                 any,
                 any
             >) || fromJS({})

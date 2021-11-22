@@ -112,8 +112,7 @@ describe('CampaignDetail component', () => {
                 avatar_url:
                     'https://gravatar.docker/as74d6as4d86as4dasd/avatar.jpg',
             },
-            html:
-                '<div><img onerror="alert(1)" src="#"/>My little message</div>',
+            html: '<div><img onerror="alert(1)" src="#"/>My little message</div>',
             text: 'My little message',
         }
 

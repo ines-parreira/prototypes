@@ -70,27 +70,25 @@ const AutomationSubscriptionModal = ({
     const automationPlan = useSelector(getEquivalentAutomationCurrentPlan)
     const isSelfServeLegacy = useSelector(hasAutomationLegacyFeatures)
 
-    const [
-        {loading: isSubscriptionUpdating},
-        handleSubscriptionUpdate,
-    ] = useAsyncFn(async (planId) => {
-        dispatch(setFutureSubscriptionPlan(planId))
-        try {
-            await dispatch(
-                updateSubscription({
-                    plan: planId,
-                })
-            )
-            onClose()
-        } catch (error) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: error,
-                })
-            )
-        }
-    }, [])
+    const [{loading: isSubscriptionUpdating}, handleSubscriptionUpdate] =
+        useAsyncFn(async (planId) => {
+            dispatch(setFutureSubscriptionPlan(planId))
+            try {
+                await dispatch(
+                    updateSubscription({
+                        plan: planId,
+                    })
+                )
+                onClose()
+            } catch (error) {
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Error,
+                        message: error,
+                    })
+                )
+            }
+        }, [])
 
     const header = headerDescription
         ? headerDescription

@@ -69,24 +69,28 @@ export default function reducer(
                 ticketReplyCache.delete(state.get('id'))
             }
 
-            const message = (fromJS({
-                // temporary props
-                _internal: {
-                    id: action.messageId,
-                    status: action.status,
-                },
-                // for sorting
-                created_datetime: new Date().toISOString(),
-                // for retry
-                originalMessage: action.message,
-            }) as Map<any, any>).mergeDeep(action.message as any)
+            const message = (
+                fromJS({
+                    // temporary props
+                    _internal: {
+                        id: action.messageId,
+                        status: action.status,
+                    },
+                    // for sorting
+                    created_datetime: new Date().toISOString(),
+                    // for retry
+                    originalMessage: action.message,
+                }) as Map<any, any>
+            ).mergeDeep(action.message as any)
 
             const newState = state
 
-            const messageIndex = (newState.getIn(
-                ['_internal', 'pendingMessages'],
-                fromJS([])
-            ) as List<any>).findIndex(
+            const messageIndex = (
+                newState.getIn(
+                    ['_internal', 'pendingMessages'],
+                    fromJS([])
+                ) as List<any>
+            ).findIndex(
                 (message: Map<any, any>) =>
                     message.getIn(['_internal', 'id']) === action.messageId
             )
@@ -108,10 +112,12 @@ export default function reducer(
         }
 
         case newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR: {
-            const messageIndex = (state.getIn(
-                ['_internal', 'pendingMessages'],
-                fromJS([])
-            ) as List<any>).findIndex(
+            const messageIndex = (
+                state.getIn(
+                    ['_internal', 'pendingMessages'],
+                    fromJS([])
+                ) as List<any>
+            ).findIndex(
                 (message: Map<any, any>) =>
                     message.getIn(['_internal', 'id']) === action.messageId
             )
@@ -425,9 +431,9 @@ export default function reducer(
             // so we need to remove pending messages here to avoid `jumping` messages
             if (messagesDifference) {
                 // search for matching pending message from last messages to first ones
-                const currentMessages = (newState.get('messages') as List<
-                    any
-                >).reverse()
+                const currentMessages = (
+                    newState.get('messages') as List<any>
+                ).reverse()
                 currentMessages.forEach((message: Map<any, any>) => {
                     const pendingMessages = (newState.getIn([
                         '_internal',
@@ -474,10 +480,9 @@ export default function reducer(
                         (message: Map<any, any>) => {
                             return (
                                 message.getIn(['_internal', 'id']) ===
-                                ((action.message as unknown) as Map<
-                                    any,
-                                    any
-                                >).getIn(['_internal', 'id'])
+                                (
+                                    action.message as unknown as Map<any, any>
+                                ).getIn(['_internal', 'id'])
                             )
                         }
                     )

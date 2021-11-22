@@ -150,9 +150,10 @@ export function drop(
             const currentIntegrationId = parseInt(_last(splitKey) || '')
 
             if (!isNaN(currentIntegrationId)) {
-                const integration = integrationsSelectors.getIntegrationById(
-                    currentIntegrationId
-                )(state)
+                const integration =
+                    integrationsSelectors.getIntegrationById(
+                        currentIntegrationId
+                    )(state)
 
                 if (integration) {
                     type = integration.get('type')

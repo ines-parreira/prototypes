@@ -10,22 +10,20 @@ import {fromJS, Map} from 'immutable'
 export function getCalculateDraftOrderPayload(
     draftOrderPayload: Map<any, any>
 ): Map<any, any> {
-    const appliedDiscount: Map<any, any> = draftOrderPayload.get(
-        'applied_discount'
-    )
+    const appliedDiscount: Map<any, any> =
+        draftOrderPayload.get('applied_discount')
     const lineItems: Map<any, any> = draftOrderPayload.get('line_items')
     const shippingLine: Map<any, any> = draftOrderPayload.get('shipping_line')
-    const shippingAddress: Map<any, any> = draftOrderPayload.get(
-        'shipping_address'
-    )
+    const shippingAddress: Map<any, any> =
+        draftOrderPayload.get('shipping_address')
 
     return fromJS({
         appliedDiscount: !!appliedDiscount
             ? {
                   value: parseFloat(appliedDiscount.get('value')),
-                  valueType: (appliedDiscount.get(
-                      'value_type'
-                  ) as string).toUpperCase(),
+                  valueType: (
+                      appliedDiscount.get('value_type') as string
+                  ).toUpperCase(),
               }
             : null,
         customerId: draftOrderPayload.getIn([
@@ -33,9 +31,8 @@ export function getCalculateDraftOrderPayload(
             'admin_graphql_api_id',
         ]),
         lineItems: lineItems.map((lineItem: Map<any, any>) => {
-            const lineItemAppliedDiscount: Map<any, any> = lineItem.get(
-                'applied_discount'
-            )
+            const lineItemAppliedDiscount: Map<any, any> =
+                lineItem.get('applied_discount')
 
             return {
                 appliedDiscount: !!lineItemAppliedDiscount
@@ -43,9 +40,11 @@ export function getCalculateDraftOrderPayload(
                           value: parseFloat(
                               lineItemAppliedDiscount.get('value')
                           ),
-                          valueType: (lineItemAppliedDiscount.get(
-                              'value_type'
-                          ) as string).toUpperCase(),
+                          valueType: (
+                              lineItemAppliedDiscount.get(
+                                  'value_type'
+                              ) as string
+                          ).toUpperCase(),
                       }
                     : null,
                 originalUnitPrice: lineItem.get('price'),

@@ -12,18 +12,19 @@ const POPOVER_SELECTOR = '.popover'
 
 jest.mock(
     '../../../EmojiPicker/EmojiPicker.tsx',
-    () => ({onClick}: ComponentProps<typeof EmojiPicker>) => {
-        return (
-            <div data-testid="EmojiPicker">
-                <div
-                    data-testid="EmojiPicker-new-emoji"
-                    onClick={() => {
-                        onClick!({native: '1'} as EmojiData)
-                    }}
-                />
-            </div>
-        )
-    }
+    () =>
+        ({onClick}: ComponentProps<typeof EmojiPicker>) => {
+            return (
+                <div data-testid="EmojiPicker">
+                    <div
+                        data-testid="EmojiPicker-new-emoji"
+                        onClick={() => {
+                            onClick!({native: '1'} as EmojiData)
+                        }}
+                    />
+                </div>
+            )
+        }
 )
 
 const defaultProps = {

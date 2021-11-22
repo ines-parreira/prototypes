@@ -11,14 +11,12 @@ import {Agent, Agents, AgentsState} from './types'
 export const getState = (state: RootState): AgentsState =>
     state.agents || fromJS({})
 
-export const getPaginatedAgents: Selector<
-    RootState,
-    Agents
-> = createImmutableSelector<RootState, List<any>, AgentsState>(
-    getState,
-    (state: AgentsState) =>
-        (state.getIn(['pagination', 'data']) as List<any>) || fromJS([])
-)
+export const getPaginatedAgents: Selector<RootState, Agents> =
+    createImmutableSelector<RootState, List<any>, AgentsState>(
+        getState,
+        (state: AgentsState) =>
+            (state.getIn(['pagination', 'data']) as List<any>) || fromJS([])
+    )
 
 export const getPagination: Selector<
     RootState,
@@ -77,8 +75,10 @@ export const getAgent = (id?: number) =>
         )
     })
 
-export const makeGetAgent = (state: RootState) => (id: number): Map<any, any> =>
-    getAgent(id)(state)
+export const makeGetAgent =
+    (state: RootState) =>
+    (id: number): Map<any, any> =>
+        getAgent(id)(state)
 
 // Location of agents in the app (ticket, view, etc.) by their ids
 export const getAgentsIdsLocation = createSelector<
@@ -156,9 +156,9 @@ export const getOtherAgentsOnTicket = (ticketId?: string) =>
         }
     )
 
-export const makeGetOtherAgentsOnTicket = (state: RootState) => (
-    ticketId: string
-) => getOtherAgentsOnTicket(ticketId)(state)
+export const makeGetOtherAgentsOnTicket =
+    (state: RootState) => (ticketId: string) =>
+        getOtherAgentsOnTicket(ticketId)(state)
 
 // Location of typing agents in the app by their ids
 export const getAgentsIdsTypingStatus = createSelector<

@@ -16,8 +16,8 @@ describe('ticket selectors', () => {
                 customer: {
                     data: {id: 1},
                     integrations: {
-                        '1': {name: 'integration 1'},
-                        '2': {name: 'integration 2'},
+                        1: {name: 'integration 1'},
+                        2: {name: 'integration 2'},
                     },
                 },
                 messages: [

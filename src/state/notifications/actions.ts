@@ -64,98 +64,106 @@ const isDuplicate = (
  * set dismissAfter = 0 to make the notification not leave until the user clicks on it
  * set closeOnNext = true to make the notification close on next notification addition
  */
-export const notify = (message: Notification) => (
-    dispatch: StoreDispatch,
-    getState: () => RootState
-): Promise<ReturnType<StoreDispatch>> => {
-    // don't add empty notifications
-    if (!message) {
-        return Promise.resolve()
-    }
-
-    const status =
-        message.status && AUTHORIZED_NOTIFICATION_TYPES.includes(message.status)
-            ? message.status
-            : NotificationStatus.Info
-
-    const finalMessage: Notification = {
-        ...INITIAL_MESSAGE,
-        ...message,
-        ...{status},
-    }
-
-    // TODO(@ghinda): use message everywhere, and remove this conditional
-    // if no content, set title as the content
-    if (finalMessage.title && !finalMessage.message) {
-        finalMessage.message = finalMessage.title
-        delete finalMessage.title
-    }
-
-    if (!!finalMessage.noAutoDismiss) {
-        finalMessage.dismissAfter = 0
-    } else if (finalMessage.dismissible && finalMessage.dismissAfter === 0) {
-        // calculate auto dismiss time if dismissAfter is not set
-
-        const wordsPerMinute = 230
-        const readText = `${finalMessage.title || ''} ${
-            finalMessage.message || ''
-        }`
-        let readingTime = (_words(readText).length * 60) / wordsPerMinute
-        readingTime = _max([3, Math.ceil(readingTime)]) as number
-        finalMessage.dismissAfter = readingTime * 1000
-    }
-
-    const notificationsState = (getState() || {}).notifications || []
-    let duplicate = false
-
-    notificationsState.forEach((notification: Notification) => {
-        // close previous notifications that were closeOnNext = true
-        if (notification.closeOnNext) {
-            //eslint-disable-next-line @typescript-eslint/no-unsafe-call
-            dispatch(removeNotification(notification.id))
+export const notify =
+    (message: Notification) =>
+    (
+        dispatch: StoreDispatch,
+        getState: () => RootState
+    ): Promise<ReturnType<StoreDispatch>> => {
+        // don't add empty notifications
+        if (!message) {
+            return Promise.resolve()
         }
 
-        // detect duplicate notification
-        if (!duplicate) {
-            duplicate = isDuplicate(finalMessage, notification)
+        const status =
+            message.status &&
+            AUTHORIZED_NOTIFICATION_TYPES.includes(message.status)
+                ? message.status
+                : NotificationStatus.Info
+
+        const finalMessage: Notification = {
+            ...INITIAL_MESSAGE,
+            ...message,
+            ...{status},
         }
-    })
 
-    // don't add duplicate notifications
-    // FIXME: Return the original notification (to be able to update it for example)
-    if (duplicate) {
-        return Promise.resolve()
-    }
-    //eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    return dispatch(addNotification(finalMessage)) as Promise<
-        ReturnType<StoreDispatch>
-    >
-}
+        // TODO(@ghinda): use message everywhere, and remove this conditional
+        // if no content, set title as the content
+        if (finalMessage.title && !finalMessage.message) {
+            finalMessage.message = finalMessage.title
+            delete finalMessage.title
+        }
 
-export const handleUsageBanner = ({
-    newAccountStatus,
-    notification,
-    currentAccountStatus,
-}: HandleUsageBanner) => (dispatch: StoreDispatch) => {
-    const USAGE_NOTIFICATION_BANNER = 99
+        if (!!finalMessage.noAutoDismiss) {
+            finalMessage.dismissAfter = 0
+        } else if (
+            finalMessage.dismissible &&
+            finalMessage.dismissAfter === 0
+        ) {
+            // calculate auto dismiss time if dismissAfter is not set
 
-    if (currentAccountStatus !== newAccountStatus) {
+            const wordsPerMinute = 230
+            const readText = `${finalMessage.title || ''} ${
+                finalMessage.message || ''
+            }`
+            let readingTime = (_words(readText).length * 60) / wordsPerMinute
+            readingTime = _max([3, Math.ceil(readingTime)]) as number
+            finalMessage.dismissAfter = readingTime * 1000
+        }
+
+        const notificationsState = (getState() || {}).notifications || []
+        let duplicate = false
+
+        notificationsState.forEach((notification: Notification) => {
+            // close previous notifications that were closeOnNext = true
+            if (notification.closeOnNext) {
+                //eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                dispatch(removeNotification(notification.id))
+            }
+
+            // detect duplicate notification
+            if (!duplicate) {
+                duplicate = isDuplicate(finalMessage, notification)
+            }
+        })
+
+        // don't add duplicate notifications
+        // FIXME: Return the original notification (to be able to update it for example)
+        if (duplicate) {
+            return Promise.resolve()
+        }
         //eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        dispatch(hide(USAGE_NOTIFICATION_BANNER))
+        return dispatch(addNotification(finalMessage)) as Promise<
+            ReturnType<StoreDispatch>
+        >
     }
 
-    if (notification) {
-        void dispatch(
-            notify({
-                id: USAGE_NOTIFICATION_BANNER.toString(),
-                style: 'banner',
-                status: notification.type || NotificationStatus.Warning,
-                dismissible: false,
-                message: notification.message,
-                onClick: () => {
-                    history.push('/app/settings/billing')
-                },
-            })
-        )
+export const handleUsageBanner =
+    ({
+        newAccountStatus,
+        notification,
+        currentAccountStatus,
+    }: HandleUsageBanner) =>
+    (dispatch: StoreDispatch) => {
+        const USAGE_NOTIFICATION_BANNER = 99
+
+        if (currentAccountStatus !== newAccountStatus) {
+            //eslint-disable-next-line @typescript-eslint/no-unsafe-call
+            dispatch(hide(USAGE_NOTIFICATION_BANNER))
+        }
+
+        if (notification) {
+            void dispatch(
+                notify({
+                    id: USAGE_NOTIFICATION_BANNER.toString(),
+                    style: 'banner',
+                    status: notification.type || NotificationStatus.Warning,
+                    dismissible: false,
+                    message: notification.message,
+                    onClick: () => {
+                        history.push('/app/settings/billing')
+                    },
+                })
+            )
+        }
     }
-}

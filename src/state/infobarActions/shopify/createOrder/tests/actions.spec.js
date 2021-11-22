@@ -60,7 +60,8 @@ describe('infobarActions.shopify.createOrder actions', () => {
             .reply(200, {
                 data: {
                     draftOrderCalculate: {
-                        calculatedDraftOrder: shopifyCalculatedDraftOrderFixture(),
+                        calculatedDraftOrder:
+                            shopifyCalculatedDraftOrderFixture(),
                     },
                 },
             })
@@ -172,8 +173,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
                     )
                     .reply(500, {
                         error: {
-                            msg:
-                                "Error while calculating draft order. Details: <ul><li>Field 'foo' doesn't exist on type 'CalculatedDraftOrder'</li></ul>",
+                            msg: "Error while calculating draft order. Details: <ul><li>Field 'foo' doesn't exist on type 'CalculatedDraftOrder'</li></ul>",
                         },
                     })
 

@@ -96,7 +96,7 @@ export function itemsWithUpdatedWidgets(
 }
 
 export function reorderWidgets(items: List<any> = fromJS([])): List<any> {
-    return items.map((item: Map<any, any>, i) => item.set('order', i)) as List<
-        any
-    >
+    return items.map((item: Map<any, any>, i) =>
+        item.set('order', i)
+    ) as List<any>
 }

@@ -92,7 +92,7 @@ if (isStaging() || isProduction()) {
 const initialState = window.GORGIAS_STATE || {}
 
 if (initialState.currentUser) {
-    initMoment((initialState.currentUser as unknown) as EditableUserProfile)
+    initMoment(initialState.currentUser as unknown as EditableUserProfile)
 }
 
 const eventsToTrack = window.SEGMENT_EVENTS_TO_TRACK
@@ -104,9 +104,11 @@ if (eventsToTrack) {
 }
 
 //$TsFixMe: remove on configureStore migration
-export const store = ((configureStore as unknown) as (
-    initialState: Record<string, unknown>
-) => Store)(toInitialStoreState(initialState))
+export const store = (
+    configureStore as unknown as (
+        initialState: Record<string, unknown>
+    ) => Store
+)(toInitialStoreState(initialState))
 
 initializeNewReleaseHandler(store)
 

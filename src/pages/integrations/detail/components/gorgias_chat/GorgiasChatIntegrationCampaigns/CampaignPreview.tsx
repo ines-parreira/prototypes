@@ -14,13 +14,8 @@ type Props = {
 
 export default class CampaignPreview extends Component<Props> {
     render() {
-        const {
-            html,
-            authorName,
-            authorAvatarUrl,
-            mainColor,
-            translatedTexts,
-        } = this.props
+        const {html, authorName, authorAvatarUrl, mainColor, translatedTexts} =
+            this.props
 
         const _bgColor = (color?: string) => ({backgroundColor: color})
 

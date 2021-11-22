@@ -80,9 +80,8 @@ export const updateCodeAst = (schemas, ast, path, value, operation) => {
 
             // We check if this update, edit the first argument of a CallExpression
             if (~argumentsIndex && ~index2 && index2 - argumentsIndex === 1) {
-                const pathParentCallExpression = immutablePath.setSize(
-                    argumentsIndex
-                )
+                const pathParentCallExpression =
+                    immutablePath.setSize(argumentsIndex)
                 const calleeName = newAst.getIn(
                     pathParentCallExpression.push('callee', 'name')
                 )

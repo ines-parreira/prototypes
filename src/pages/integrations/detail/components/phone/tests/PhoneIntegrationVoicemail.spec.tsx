@@ -9,9 +9,9 @@ import {
 import {UpdateVoicemailPayload} from '../actions'
 
 describe('<PhoneIntegrationVoicemail/>', () => {
-    let updatePhoneVoicemailConfiguration: jest.MockedFunction<(
-        payload: UpdateVoicemailPayload
-    ) => Promise<unknown>>
+    let updatePhoneVoicemailConfiguration: jest.MockedFunction<
+        (payload: UpdateVoicemailPayload) => Promise<unknown>
+    >
     let integration: Map<string, any>
     const notify = jest.fn()
 

@@ -38,13 +38,13 @@ export const AvailableLanguagesTags: React.FC<Props> = ({
 }: Props) => {
     const {preferences, updatePreferences} = useHelpCenterPreferencesSettings()
     const [pendingLocale, setPendingLocale] = useState<BadgeItemProps | null>()
-    const supportedLocales = useMemo(() => _keyBy(availableLocales, 'code'), [
-        availableLocales,
-    ])
-
-    const availableList = Object.values(supportedLocales).map(
-        localeToSelectOption
+    const supportedLocales = useMemo(
+        () => _keyBy(availableLocales, 'code'),
+        [availableLocales]
     )
+
+    const availableList =
+        Object.values(supportedLocales).map(localeToSelectOption)
 
     const selectedLocales = ensureDefaultLanguageIsFirst(
         preferences.availableLanguages,

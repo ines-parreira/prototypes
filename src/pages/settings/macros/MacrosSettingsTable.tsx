@@ -54,9 +54,8 @@ export function MacrosSettingsTableContainer({
     onSortOptionsChange,
     sortOptions,
 }: OwnProps & ConnectedProps<typeof connector>) {
-    const [visiblePopoverId, setVisiblePopoverId] = useState<Maybe<string>>(
-        null
-    )
+    const [visiblePopoverId, setVisiblePopoverId] =
+        useState<Maybe<string>>(null)
     const toggleVisiblePopover = (nextId: string) => {
         setVisiblePopoverId(nextId === visiblePopoverId ? null : nextId)
     }

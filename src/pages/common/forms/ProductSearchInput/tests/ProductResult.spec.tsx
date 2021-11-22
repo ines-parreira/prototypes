@@ -17,7 +17,8 @@ import ProductResult from '../ProductResult'
 describe('<ProductResult/>', () => {
     describe('render()', () => {
         it('should render with SKU as subtitle', () => {
-            const item: IntegrationDataItem<Product> = integrationDataItemProductFixture()
+            const item: IntegrationDataItem<Product> =
+                integrationDataItemProductFixture()
             const component = shallow(<ProductResult result={item} />)
 
             expect(component).toMatchSnapshot()
@@ -29,9 +30,8 @@ describe('<ProductResult/>', () => {
             const product: Product = shopifyProductFixture({
                 variants: [variant1, variant2],
             })
-            const item: IntegrationDataItem<Product> = integrationDataItemProductFixture(
-                {data: product}
-            )
+            const item: IntegrationDataItem<Product> =
+                integrationDataItemProductFixture({data: product})
             const component = shallow(<ProductResult result={item} />)
 
             expect(component).toMatchSnapshot()
@@ -42,9 +42,8 @@ describe('<ProductResult/>', () => {
             const product: Product = shopifyProductFixture({
                 variants: [variant],
             })
-            const item: IntegrationDataItem<Product> = integrationDataItemProductFixture(
-                {data: product}
-            )
+            const item: IntegrationDataItem<Product> =
+                integrationDataItemProductFixture({data: product})
             const component = shallow(<ProductResult result={item} />)
 
             expect(component).toMatchSnapshot()
@@ -58,9 +57,8 @@ describe('<ProductResult/>', () => {
             const product: Product = shopifyProductFixture({
                 variants: [variant],
             })
-            const item: IntegrationDataItem<Product> = integrationDataItemProductFixture(
-                {data: product}
-            )
+            const item: IntegrationDataItem<Product> =
+                integrationDataItemProductFixture({data: product})
             const component = shallow(<ProductResult result={item} />)
 
             expect(component).toMatchSnapshot()
@@ -80,9 +78,8 @@ describe('<ProductResult/>', () => {
             const product: Product = shopifyProductFixture({
                 variants: [variant1, variant2],
             })
-            const item: IntegrationDataItem<Product> = integrationDataItemProductFixture(
-                {data: product}
-            )
+            const item: IntegrationDataItem<Product> =
+                integrationDataItemProductFixture({data: product})
             const component = shallow(<ProductResult result={item} />)
 
             expect(component).toMatchSnapshot()
@@ -102,9 +99,8 @@ describe('<ProductResult/>', () => {
             const product: Product = shopifyProductFixture({
                 variants: [variant1, variant2],
             })
-            const item: IntegrationDataItem<Product> = integrationDataItemProductFixture(
-                {data: product}
-            )
+            const item: IntegrationDataItem<Product> =
+                integrationDataItemProductFixture({data: product})
             const component = shallow(<ProductResult result={item} />)
 
             expect(component).toMatchSnapshot()

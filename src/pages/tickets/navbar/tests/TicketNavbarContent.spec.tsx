@@ -19,9 +19,10 @@ import TicketNavbarSection from '../TicketNavbarSection'
 
 jest.mock(
     '../TicketNavbarView',
-    () => ({view}: ComponentProps<typeof TicketNavbarView>) => {
-        return <div data-testid="TicketNavbarView">{view.name}</div>
-    }
+    () =>
+        ({view}: ComponentProps<typeof TicketNavbarView>) => {
+            return <div data-testid="TicketNavbarView">{view.name}</div>
+        }
 )
 
 jest.mock(
@@ -41,7 +42,7 @@ jest.mock(
 )
 
 describe('<TicketNavbarContent/>', () => {
-    const minProps = ({
+    const minProps = {
         elements: [
             {
                 data: section,
@@ -62,7 +63,7 @@ describe('<TicketNavbarContent/>', () => {
         notify: jest.fn(),
         viewUpdated: jest.fn(),
         isPrivate: true,
-    } as unknown) as ComponentProps<typeof TicketNavbarContentContainer>
+    } as unknown as ComponentProps<typeof TicketNavbarContentContainer>
 
     beforeEach(() => {
         global.localStorage.setItem(

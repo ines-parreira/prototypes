@@ -124,13 +124,13 @@ describe('predicates', () => {
         })
 
         it('should return false if message is an email and isPending', () => {
-            const message = ({
+            const message = {
                 ...defaultMessage,
                 isPending: true,
                 source: {
                     type: TicketMessageSourceType.Email,
                 },
-            } as unknown) as TicketMessage
+            } as unknown as TicketMessage
             expect(isPending(message)).toBe(false)
         })
     })

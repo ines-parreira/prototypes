@@ -18,22 +18,20 @@ import {
 export const GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH = 50
 
 export const GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT = ENGLISH_US_LANGUAGE
-export const GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS: List<Map<
-    string,
-    string
->> = fromJS([
-    {value: ENGLISH_US_LANGUAGE, label: 'English (US)'},
-    {value: FRENCH_FR_LANGUAGE, label: 'French (France)'},
-    {value: FRENCH_CA_LANGUAGE, label: 'French (Canada)'},
-    {value: SPANISH_LANGUAGE, label: 'Spanish'},
-    {value: DANISH_LANGUAGE, label: 'Danish'},
-    {value: SWEDISH_LANGUAGE, label: 'Swedish'},
-    {value: ITALIAN_LANGUAGE, label: 'Italian'},
-    {value: DUTCH_LANGUAGE, label: 'Dutch'},
-    {value: GERMAN_LANGUAGE, label: 'German'},
-    {value: NORWEGIAN_LANGUAGE, label: 'Norwegian'},
-    {value: CZECH_LANGUAGE, label: 'Czech'},
-])
+export const GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS: List<Map<string, string>> =
+    fromJS([
+        {value: ENGLISH_US_LANGUAGE, label: 'English (US)'},
+        {value: FRENCH_FR_LANGUAGE, label: 'French (France)'},
+        {value: FRENCH_CA_LANGUAGE, label: 'French (Canada)'},
+        {value: SPANISH_LANGUAGE, label: 'Spanish'},
+        {value: DANISH_LANGUAGE, label: 'Danish'},
+        {value: SWEDISH_LANGUAGE, label: 'Swedish'},
+        {value: ITALIAN_LANGUAGE, label: 'Italian'},
+        {value: DUTCH_LANGUAGE, label: 'Dutch'},
+        {value: GERMAN_LANGUAGE, label: 'German'},
+        {value: NORWEGIAN_LANGUAGE, label: 'Norwegian'},
+        {value: CZECH_LANGUAGE, label: 'Czech'},
+    ])
 
 export const GORGIAS_CHAT_WIDGET_TEXTS: {
     [locale: string]: {[key: string]: string}
@@ -47,7 +45,8 @@ export const GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS =
     'required-outside-business-hours'
 export const GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED =
     'always-required'
-export const GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT = GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL
+export const GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT =
+    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL
 
 // Auto responder
 export const GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT = true
@@ -55,7 +54,8 @@ export const GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT = true
 // Company picture types
 export const GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS = 'team-members'
 export const GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE = 'team-picture'
-export const GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT = GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS
+export const GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT =
+    GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS
 
 // Quick replies
 export const QUICK_REPLIES_DEFAULTS = fromJS([

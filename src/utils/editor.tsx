@@ -128,9 +128,10 @@ const QUOTE_HTML_ELEMENT = (
 )
 
 // note that 2 letters tlds are automatically interpreted
-const tlds = 'com edu gov ru org net de jp uk br it pl in fr au ir nl info cn es cz kr ca ua eu co gr za ro biz ch se io'.split(
-    ' '
-)
+const tlds =
+    'com edu gov ru org net de jp uk br it pl in fr au ir nl info cn es cz kr ca ua eu co gr za ro biz ch se io'.split(
+        ' '
+    )
 export const linkify = linkifyIt().tlds(tlds)
 
 /**
@@ -175,9 +176,8 @@ export function convertToHTML(contentState: ContentState): string {
                             })
                     )
                     const quoteDataAttr = {
-                        [`data-${_kebabeCase(
-                            QUOTE_DEPTH_DATASET_KEY
-                        )}`]: quoteDepth,
+                        [`data-${_kebabeCase(QUOTE_DEPTH_DATASET_KEY)}`]:
+                            quoteDepth,
                     }
                     return {
                         element: nest ? (
@@ -561,18 +561,16 @@ export function getPlainText(
 
                 // Links like <a href="http://x.io">x</a> will output as x: http://x.io plain text.
                 if (
-                    ((entity as unknown) as Map<any, any>).get('type') ===
-                    'link'
+                    (entity as unknown as Map<any, any>).get('type') === 'link'
                 ) {
                     const entityOffset = rawEntity.offset + totalOffset
                     const linkContent = blockText.slice(
                         entityOffset,
                         entityOffset + rawEntity.length
                     )
-                    const linkURL = (entity.getData() as Record<
-                        string,
-                        unknown
-                    >).url as string
+                    const linkURL = (
+                        entity.getData() as Record<string, unknown>
+                    ).url as string
 
                     // only append the URL if it's different from the content of the link.
                     // Ex: <a href="https://gorgias.io/">https://gorgias.io</a> -> https://gorgias.io
@@ -609,9 +607,9 @@ export const createCollapsedSelectionState = (
     key: string,
     offset: number
 ): SelectionState => {
-    return (SelectionState.createEmpty(key)
+    return SelectionState.createEmpty(key)
         .set('anchorOffset', offset)
-        .set('focusOffset', offset) as unknown) as SelectionState
+        .set('focusOffset', offset) as unknown as SelectionState
 }
 
 export const insertNewBlockAtTheEnd = (

@@ -16,11 +16,8 @@ type Props = {
 
 export default function OutgoingPhoneCall({call}: Props): JSX.Element {
     const {onDisconnect} = useDisconnect(call)
-    const {
-        integrationId,
-        customerName,
-        customerPhoneNumber,
-    } = useConnectionParameters(call)
+    const {integrationId, customerName, customerPhoneNumber} =
+        useConnectionParameters(call)
     const status = useCallStatus(call)
 
     return (

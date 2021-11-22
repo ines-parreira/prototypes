@@ -96,23 +96,21 @@ export function TicketNavbarContainer({
     const history = useHistory()
     const params = useParams<{viewId?: string}>()
     const {viewId} = useSearch<{viewId?: string}>()
-    const [isSectionFormModalOpened, setSectionFormModalOpened] = useState(
-        false
-    )
-    const [isDeleteSectionModalOpened, setDeleteSectionModalOpened] = useState(
-        false
-    )
+    const [isSectionFormModalOpened, setSectionFormModalOpened] =
+        useState(false)
+    const [isDeleteSectionModalOpened, setDeleteSectionModalOpened] =
+        useState(false)
     const [isMovingItem, setMovingItem] = useState(false)
-    const [sectionForm, setSectionForm] = useState<
-        Maybe<SectionDraft & Partial<Section>>
-    >(null)
+    const [sectionForm, setSectionForm] =
+        useState<Maybe<SectionDraft & Partial<Section>>>(null)
     const isNewSection = useMemo(
         () => !!sectionForm && sectionForm?.id == null,
         [sectionForm]
     )
-    const isAgent = useMemo(() => hasRole(currentUser, UserRole.Agent), [
-        currentUser,
-    ])
+    const isAgent = useMemo(
+        () => hasRole(currentUser, UserRole.Agent),
+        [currentUser]
+    )
 
     useEffect(() => {
         void (async () => {
@@ -252,52 +250,48 @@ export function TicketNavbarContainer({
         },
         [sectionForm]
     )
-    const [
-        {loading: isSubmitting},
-        handleSectionDraftSubmit,
-    ] = useAsyncFn(async () => {
-        if (!sectionForm) {
-            return
-        }
-
-        try {
-            const res = isNewSection
-                ? await createSection(sectionForm)
-                : await updateSection(sectionForm as Section)
-            if (isNewSection) {
-                sectionCreated(res)
-            } else {
-                sectionUpdated(res)
+    const [{loading: isSubmitting}, handleSectionDraftSubmit] =
+        useAsyncFn(async () => {
+            if (!sectionForm) {
+                return
             }
-            handleSectionModalClose()
-        } catch (error) {
-            void notify({
-                message: `Failed to ${
-                    isNewSection ? 'create' : 'update'
-                } section`,
-                status: NotificationStatus.Error,
-            })
-        }
-    }, [sectionForm, isNewSection])
-    const [
-        {loading: isDeleting},
-        handleSectionDelete,
-    ] = useAsyncFn(async () => {
-        if (!sectionForm || sectionForm.id == null) {
-            return
-        }
 
-        try {
-            await deleteSection(sectionForm.id)
-            sectionDeleted(sectionForm.id)
-            handleDeleteSectionModalClose()
-        } catch (error) {
-            void notify({
-                message: 'Failed to delete the section',
-                status: NotificationStatus.Error,
-            })
-        }
-    }, [sectionForm])
+            try {
+                const res = isNewSection
+                    ? await createSection(sectionForm)
+                    : await updateSection(sectionForm as Section)
+                if (isNewSection) {
+                    sectionCreated(res)
+                } else {
+                    sectionUpdated(res)
+                }
+                handleSectionModalClose()
+            } catch (error) {
+                void notify({
+                    message: `Failed to ${
+                        isNewSection ? 'create' : 'update'
+                    } section`,
+                    status: NotificationStatus.Error,
+                })
+            }
+        }, [sectionForm, isNewSection])
+    const [{loading: isDeleting}, handleSectionDelete] =
+        useAsyncFn(async () => {
+            if (!sectionForm || sectionForm.id == null) {
+                return
+            }
+
+            try {
+                await deleteSection(sectionForm.id)
+                sectionDeleted(sectionForm.id)
+                handleDeleteSectionModalClose()
+            } catch (error) {
+                void notify({
+                    message: 'Failed to delete the section',
+                    status: NotificationStatus.Error,
+                })
+            }
+        }, [sectionForm])
 
     const handleSubmitMoveItem = useCallback(
         async (
@@ -398,8 +392,10 @@ export function TicketNavbarContainer({
                     <TicketNavbarContent
                         {...(isAgent
                             ? {
-                                  onSectionDeleteClick: handleSectionDeleteClick,
-                                  onSectionRenameClick: handleSectionRenameClick,
+                                  onSectionDeleteClick:
+                                      handleSectionDeleteClick,
+                                  onSectionRenameClick:
+                                      handleSectionRenameClick,
                               }
                             : {})}
                         elements={sharedElements}

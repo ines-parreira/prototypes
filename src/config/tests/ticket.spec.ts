@@ -383,7 +383,7 @@ describe('Config: ticket', () => {
     describe('sourceTypeToChannel()', () => {
         it('should return the default channel if there is no source type', () => {
             const channel = ticketConfig.sourceTypeToChannel(
-                (null as unknown) as TicketMessageSourceType,
+                null as unknown as TicketMessageSourceType,
                 []
             )
             expect(channel).toBe(ticketConfig.DEFAULT_CHANNEL)

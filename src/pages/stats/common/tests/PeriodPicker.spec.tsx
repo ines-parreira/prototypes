@@ -9,16 +9,18 @@ import {PeriodPickerContainer} from '../PeriodPicker'
 
 jest.mock(
     'react-bootstrap-daterangepicker',
-    () => ({onApply}: MockDateRangePickerProps) => (
-        <div
-            onChange={(e) => {
-                onApply!(
-                    e as any,
-                    ((e.target as unknown) as Record<string, any>).value
-                )
-            }}
-        />
-    )
+    () =>
+        ({onApply}: MockDateRangePickerProps) =>
+            (
+                <div
+                    onChange={(e) => {
+                        onApply!(
+                            e as any,
+                            (e.target as unknown as Record<string, any>).value
+                        )
+                    }}
+                />
+            )
 )
 
 describe('PeriodPicker', () => {

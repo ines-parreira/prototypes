@@ -421,6 +421,7 @@ export default class SelectField extends Component<Props, State> {
                                         ? focusedPlaceholder
                                         : placeholder)}
                             </span>
+                            {/* eslint-disable-next-line jsx-a11y/autocomplete-valid */}
                             <input
                                 style={{
                                     minWidth: selectMinWidth,
@@ -513,7 +514,8 @@ export default class SelectField extends Component<Props, State> {
                                               onMouseEnter: () => {
                                                   if (item.isDisabled) {
                                                       this.setState({
-                                                          selectedOptionIndex: index,
+                                                          selectedOptionIndex:
+                                                              index,
                                                       })
                                                   }
                                               },
@@ -542,7 +544,8 @@ export default class SelectField extends Component<Props, State> {
                                                 )}
                                                 onMouseEnter={() => {
                                                     this.setState({
-                                                        selectedOptionIndex: index,
+                                                        selectedOptionIndex:
+                                                            index,
                                                     })
                                                 }}
                                                 onClick={(event) => {

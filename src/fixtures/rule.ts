@@ -22,8 +22,7 @@ export const rule = {
     deactivated_datetime: '2021-01-15T15:26:02.575404+00:00',
     name: 'Set tags',
     uri: '/api/rules/7/',
-    code:
-        "if (eq(message.source.from.address, 'alex@gorgias.io')) {\n    Action('setTags', { tags: 'set' })\n}",
+    code: "if (eq(message.source.from.address, 'alex@gorgias.io')) {\n    Action('setTags', { tags: 'set' })\n}",
     code_ast: {
         loc: {
             start: {
@@ -337,7 +336,7 @@ export const rule = {
     updated_datetime: '2021-02-11T13:15:46.420156+00:00',
 } as Rule
 
-export const ruleWithBusinessHourIdentifier = ({
+export const ruleWithBusinessHourIdentifier = {
     priority: 22,
     deactivated_datetime: '2021-04-16T09:03:03+00:00',
     name: 'fixture',
@@ -410,9 +409,9 @@ export const ruleWithBusinessHourIdentifier = ({
     id: 23,
     description: '',
     updated_datetime: '2021-04-16T09:03:03.759945+00:00',
-} as unknown) as Rule
+} as unknown as Rule
 
-export const ruleWithContainsAllIdentifier = ({
+export const ruleWithContainsAllIdentifier = {
     priority: 12,
     deactivated_datetime: '2021-05-31T14:06:57.067000+00:00',
     name: 'AUT-210',
@@ -509,7 +508,7 @@ export const ruleWithContainsAllIdentifier = ({
     id: 48,
     description: '',
     updated_datetime: '2021-05-31T14:06:57.119351+00:00',
-} as unknown) as Rule
+} as unknown as Rule
 
 export const rules = [
     rule,

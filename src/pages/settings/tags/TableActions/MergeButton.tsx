@@ -20,12 +20,15 @@ const MergeButton = ({selectedNum, tags, meta, onMerge, disabled}: Props) => {
             .keySeq()
             .toList()
             .last() as number
-        const destName = (tags
-            .filter(
-                (meta: Map<any, any>) =>
-                    (meta.get('id') as number).toString() === destID.toString()
-            )
-            .first() as Map<any, any>).get('name', '')
+        const destName = (
+            tags
+                .filter(
+                    (meta: Map<any, any>) =>
+                        (meta.get('id') as number).toString() ===
+                        destID.toString()
+                )
+                .first() as Map<any, any>
+        ).get('name', '')
         setAskMergeConfirmation(!askMergeConfirmation)
         setMergeTagDestination(destName)
     }, [tags, meta, askMergeConfirmation])

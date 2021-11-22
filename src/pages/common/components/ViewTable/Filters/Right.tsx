@@ -102,15 +102,8 @@ class Right extends Component<Props, State> {
     }
 
     render() {
-        const {
-            operator,
-            node,
-            config,
-            field,
-            updateFieldFilter,
-            index,
-            empty,
-        } = this.props
+        const {operator, node, config, field, updateFieldFilter, index, empty} =
+            this.props
 
         if (empty) {
             return <span />
@@ -269,12 +262,14 @@ class Right extends Component<Props, State> {
                 const selectedOptions = node.elements.map(
                     (opt) => (opt as Literal).value
                 )
-                const options = (((field.getIn(['filter', 'enum']) as List<
-                    any
-                >).map((val: string) => ({
-                    label: val,
-                    value: val,
-                })) as unknown) as List<Map<any, any>>).toJS()
+                const options = (
+                    (field.getIn(['filter', 'enum']) as List<any>).map(
+                        (val: string) => ({
+                            label: val,
+                            value: val,
+                        })
+                    ) as unknown as List<Map<any, any>>
+                ).toJS()
 
                 return (
                     <MultiSelectField

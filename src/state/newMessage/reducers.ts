@@ -115,10 +115,12 @@ export default function reducer(
         case types.NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS: {
             return state.mergeDeep({
                 newMessage: {
-                    attachments: (state.getIn(
-                        ['newMessage', 'attachments'],
-                        fromJS([])
-                    ) as List<any>).concat(fromJS(action.resp)),
+                    attachments: (
+                        state.getIn(
+                            ['newMessage', 'attachments'],
+                            fromJS([])
+                        ) as List<any>
+                    ).concat(fromJS(action.resp)),
                 },
                 state: {
                     dirty: true,
@@ -149,10 +151,12 @@ export default function reducer(
             return state
                 .setIn(
                     ['newMessage', 'attachments'],
-                    (state.getIn(
-                        ['newMessage', 'attachments'],
-                        fromJS([])
-                    ) as List<any>).delete(action.index as number)
+                    (
+                        state.getIn(
+                            ['newMessage', 'attachments'],
+                            fromJS([])
+                        ) as List<any>
+                    ).delete(action.index as number)
                 )
                 .setIn(['state', 'dirty'], true)
         }
@@ -191,9 +195,7 @@ export default function reducer(
             const messages = fromJS(action.messages) as List<any>
             const via = action.ticketVia
             // clear the reply cache
-            responseUtils.deleteReplyCache(
-                (action.ticketId as unknown) as string
-            )
+            responseUtils.deleteReplyCache(action.ticketId as unknown as string)
 
             const newState = resetContentState(state).mergeDeep({
                 state: {
@@ -424,9 +426,9 @@ export default function reducer(
         }
 
         case types.NEW_MESSAGE_ADD_EMAIL_EXTRA: {
-            const {contentState, emailExtraArgs} = (action as ReturnType<
-                typeof addEmailExtra
-            >).payload
+            const {contentState, emailExtraArgs} = (
+                action as ReturnType<typeof addEmailExtra>
+            ).payload
             if (state.getIn(['state', 'emailExtraAdded'], false)) {
                 return state
             }
@@ -464,10 +466,12 @@ export default function reducer(
             const receivers = _pick(action.receivers, getReceiversProperties())
             const replaceAll = action.replaceAll
 
-            const currentSource = (state.getIn(
-                ['newMessage', 'source'],
-                fromJS({})
-            ) as Map<any, any>).toJS()
+            const currentSource = (
+                state.getIn(['newMessage', 'source'], fromJS({})) as Map<
+                    any,
+                    any
+                >
+            ).toJS()
 
             let newReceivers = {}
 

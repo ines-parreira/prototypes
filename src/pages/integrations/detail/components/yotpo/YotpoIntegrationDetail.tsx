@@ -99,10 +99,9 @@ export class YotpoIntegrationDetailComponent extends React.Component<Props> {
             fromJS({
                 id: this.props.integration.get('id'),
                 name: this.state.integrationName,
-                meta: (this.props.integration.get('meta') as Map<
-                    any,
-                    any
-                >).setIn(
+                meta: (
+                    this.props.integration.get('meta') as Map<any, any>
+                ).setIn(
                     ['enable_yotpo_tickets'],
                     this.state.enable_yotpo_tickets
                 ),
@@ -194,7 +193,8 @@ export class YotpoIntegrationDetailComponent extends React.Component<Props> {
                                         'btn-loading': isSubmitting,
                                     })}
                                     onClick={() =>
-                                        (window.location.href = this.props.redirectUri)
+                                        (window.location.href =
+                                            this.props.redirectUri)
                                     }
                                     disabled={!!isSubmitting}
                                 >

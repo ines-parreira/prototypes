@@ -16,9 +16,8 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 describe('<VoiceMessageField />', () => {
     window.URL.createObjectURL = jest.fn()
 
-    const onChange: jest.MockedFunction<(
-        value: VoiceMessage
-    ) => void> = jest.fn()
+    const onChange: jest.MockedFunction<(value: VoiceMessage) => void> =
+        jest.fn()
 
     const defaultMessage = {
         voice_message_type: VoiceMessageType.TextToSpeech,

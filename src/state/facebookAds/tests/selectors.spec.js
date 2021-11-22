@@ -14,7 +14,7 @@ describe('facebookAds selectors', () => {
             facebookAds: initialState.mergeDeep({
                 loading: true,
                 internals: {
-                    '1': {
+                    1: {
                         ads: {
                             postid1: {
                                 name: 'ad 1',

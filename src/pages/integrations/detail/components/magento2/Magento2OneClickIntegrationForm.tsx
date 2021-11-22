@@ -143,9 +143,8 @@ export const Magento2OneClickIntegrationForm = ({
 const connector = connect(
     (state: RootState) => {
         return {
-            getExistingMagento2Integration: makeGetMagento2IntegrationByStoreUrl(
-                state
-            ),
+            getExistingMagento2Integration:
+                makeGetMagento2IntegrationByStoreUrl(state),
         }
     },
     {updateOrCreateIntegration}

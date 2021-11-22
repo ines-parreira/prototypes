@@ -13,14 +13,15 @@ import {GorgiasAction} from '../../types'
 // mock Date object
 const DATE_TO_USE = new Date('2017')
 global.Date = jest.fn(() => DATE_TO_USE) as any
-;(global.Date as typeof global.Date & {
-    toISOString: () => string
-}).toISOString = ((Date as unknown) as {toISOString: () => string}).toISOString
+;(
+    global.Date as typeof global.Date & {
+        toISOString: () => string
+    }
+).toISOString = (Date as unknown as {toISOString: () => string}).toISOString
 
 jest.mock('../../newMessage/ticketReplyCache', () => {
-    const Immutable: {fromJS: typeof fromJS} = require.requireActual(
-        'immutable'
-    )
+    const Immutable: {fromJS: typeof fromJS} =
+        require.requireActual('immutable')
 
     return {
         _keys: jest.fn(),
@@ -54,7 +55,7 @@ jest.addMatchers(immutableMatchers)
 describe('ticket reducers', () => {
     it('initial state', () => {
         expect(
-            reducer(undefined, ({} as unknown) as GorgiasAction)
+            reducer(undefined, {} as unknown as GorgiasAction)
         ).toEqualImmutable(initialState)
     })
 
@@ -84,13 +85,13 @@ describe('ticket reducers', () => {
 
         // start
         expect(
-            reducer(initialState, ({
+            reducer(initialState, {
                 type: newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
                 message: newMessage,
                 messageId: '123', // fake message id attributed in submit action,
                 retry: false,
                 status: 'open',
-            } as unknown) as GorgiasAction).toJS()
+            } as unknown as GorgiasAction).toJS()
         ).toMatchSnapshot()
 
         const retryMessage = {
@@ -111,12 +112,11 @@ describe('ticket reducers', () => {
                         pendingMessages: [retryMessage],
                     },
                 }),
-                ({
-                    type:
-                        newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
+                {
+                    type: newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
                     message: newMessage,
                     messageId: 1,
-                } as unknown) as GorgiasAction
+                } as unknown as GorgiasAction
             ).toJS()
         ).toMatchSnapshot()
 
@@ -133,14 +133,13 @@ describe('ticket reducers', () => {
                         ],
                     },
                 }),
-                ({
-                    type:
-                        newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
+                {
+                    type: newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
                     message: retryMessage.originalMessage,
                     messageId: 1,
                     retry: true,
                     status: 'open',
-                } as unknown) as GorgiasAction
+                } as unknown as GorgiasAction
             ).toJS()
         ).toMatchSnapshot()
     })
@@ -374,11 +373,11 @@ describe('ticket reducers', () => {
     })
 
     it('should handle SNOOZE_TICKET', () => {
-        const action = ({
+        const action = {
             type: types.SNOOZE_TICKET,
             snooze_datetime: '2017-01-21 18:20:02',
             status: 'closed',
-        } as unknown) as GorgiasAction
+        } as unknown as GorgiasAction
         expect(reducer(initialState, action)).toEqualImmutable(
             initialState
                 .set('snooze_datetime', action.snooze_datetime)
@@ -387,12 +386,12 @@ describe('ticket reducers', () => {
     })
 
     it('should handle SNOOZE_TICKET on timedelta', () => {
-        const action = ({
+        const action = {
             type: types.SNOOZE_TICKET,
             args: fromJS({
                 snooze_timedelta: '1d',
             }),
-        } as unknown) as GorgiasAction
+        } as unknown as GorgiasAction
         expect(reducer(initialState, action)).toEqualImmutable(
             initialState
                 .set('snooze_datetime', '2017-01-01T17:00:00-07:00')
@@ -520,14 +519,14 @@ describe('ticket reducers', () => {
                         appliedMacro: {id: 1},
                     },
                 }),
-                ({
+                {
                     type: types.UPDATE_ACTION_ARGS_ON_APPLIED,
                     actionIndex: 0,
                     value: {
                         hello: 'world',
                     },
                     ticketId: 1,
-                } as unknown) as GorgiasAction
+                } as unknown as GorgiasAction
             ).toJS()
         ).toMatchSnapshot()
     })
@@ -611,10 +610,10 @@ describe('ticket reducers', () => {
 
     it('should handle TOGGLE_HISTORY', () => {
         expect(
-            reducer(initialState, ({
+            reducer(initialState, {
                 type: types.TOGGLE_HISTORY,
                 state: true,
-            } as unknown) as GorgiasAction).toJS()
+            } as unknown as GorgiasAction).toJS()
         ).toMatchSnapshot()
 
         // set false
@@ -625,10 +624,10 @@ describe('ticket reducers', () => {
                         displayHistory: true,
                     },
                 }),
-                ({
+                {
                     type: types.TOGGLE_HISTORY,
                     state: false,
-                } as unknown) as GorgiasAction
+                } as unknown as GorgiasAction
             ).toJS()
         ).toMatchSnapshot()
 
@@ -649,10 +648,10 @@ describe('ticket reducers', () => {
 
     it('should handle DISPLAY_HISTORY_ON_NEXT_PAGE', () => {
         expect(
-            reducer(initialState, ({
+            reducer(initialState, {
                 type: types.DISPLAY_HISTORY_ON_NEXT_PAGE,
                 state: true,
-            } as unknown) as GorgiasAction).toJS()
+            } as unknown as GorgiasAction).toJS()
         ).toMatchSnapshot()
 
         // set false
@@ -663,10 +662,10 @@ describe('ticket reducers', () => {
                         shouldDisplayHistoryOnNextPage: true,
                     },
                 }),
-                ({
+                {
                     type: types.DISPLAY_HISTORY_ON_NEXT_PAGE,
                     state: false,
-                } as unknown) as GorgiasAction
+                } as unknown as GorgiasAction
             ).toJS()
         ).toMatchSnapshot()
     })
@@ -753,11 +752,11 @@ describe('ticket reducers', () => {
                         ],
                     },
                 }),
-                ({
+                {
                     type: types.MERGE_TICKET,
                     ticket,
                     messagesDifference: 1,
-                } as unknown) as GorgiasAction
+                } as unknown as GorgiasAction
             ).toJS()
         ).toMatchSnapshot()
 
@@ -792,13 +791,13 @@ describe('ticket reducers', () => {
     it('should handle MERGE_CUSTOMER', () => {
         // should do nothing since there is no customer in state for now
         expect(
-            reducer(initialState, ({
+            reducer(initialState, {
                 type: types.MERGE_CUSTOMER,
                 customer: {
                     id: 1,
                     name: 'Alex',
                 },
-            } as unknown) as GorgiasAction).toJS()
+            } as unknown as GorgiasAction).toJS()
         ).toMatchSnapshot()
 
         // should replace customer
@@ -810,13 +809,13 @@ describe('ticket reducers', () => {
                         name: 'Romain',
                     },
                 }),
-                ({
+                {
                     type: types.MERGE_CUSTOMER,
                     customer: {
                         id: 1,
                         name: 'Alex',
                     },
-                } as unknown) as GorgiasAction
+                } as unknown as GorgiasAction
             ).toJS()
         ).toMatchSnapshot()
     })

@@ -128,21 +128,22 @@ export const IntegrationDetailContainer = ({
         subId: string
     }>()
 
-    const isUpdate = useMemo(() => !!integrationId && integrationId !== 'new', [
-        integrationId,
-    ])
+    const isUpdate = useMemo(
+        () => !!integrationId && integrationId !== 'new',
+        [integrationId]
+    )
 
-    const redirectUri = useMemo(() => getRedirectUri(integrationType), [
-        integrationType,
-    ])
+    const redirectUri = useMemo(
+        () => getRedirectUri(integrationType),
+        [integrationType]
+    )
 
     const integration = useMemo(() => {
         // clear cached integration
         if (
-            (integrations.getIn(
-                ['integration', 'id'],
-                ''
-            ) as string).toString() !== integrationId
+            (
+                integrations.getIn(['integration', 'id'], '') as string
+            ).toString() !== integrationId
         ) {
             return fromJS({}) as Map<any, any>
         }
@@ -151,9 +152,11 @@ export const IntegrationDetailContainer = ({
 
     const integrationsProp = useMemo(
         () =>
-            (integrations.get('integrations', fromJS([])) as List<
-                Map<any, any>
-            >).sort((a: Map<any, any>, b: Map<any, any>) =>
+            (
+                integrations.get('integrations', fromJS([])) as List<
+                    Map<any, any>
+                >
+            ).sort((a: Map<any, any>, b: Map<any, any>) =>
                 compare(
                     ((a.get('name') || '') as string).toLowerCase(),
                     ((b.get('name') || '') as string).toLowerCase()
@@ -718,9 +721,8 @@ export const IntegrationDetailContainer = ({
 const connector = connect(
     (state: RootState) => ({
         integrations: state.integrations,
-        getEligibleShopifyIntegrationsFor: getEligibleShopifyIntegrationsFor(
-            state
-        ),
+        getEligibleShopifyIntegrationsFor:
+            getEligibleShopifyIntegrationsFor(state),
         getRedirectUri: makeGetRedirectUri(state),
         currentAccount: getCurrentAccountState(state),
         currentUser: state.currentUser,

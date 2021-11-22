@@ -187,8 +187,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                         enabled: this.state.autoResponderEnabled,
                         reply: this.state.autoResponderReply,
                     },
-                    email_capture_enforcement: this.state
-                        .emailCaptureEnforcement,
+                    email_capture_enforcement:
+                        this.state.emailCaptureEnforcement,
                     linked_email_integration: this.state.linkedEmailIntegration,
                 },
             }),
@@ -350,7 +350,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                     <div className="mb-3">
                                         <p
                                             className={classnames({
-                                                'text-faded': !autoResponderEnabled,
+                                                'text-faded':
+                                                    !autoResponderEnabled,
                                             })}
                                         >
                                             <b>
@@ -375,7 +376,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         />
                                         <p
                                             className={classnames({
-                                                'text-faded': !autoResponderEnabled,
+                                                'text-faded':
+                                                    !autoResponderEnabled,
                                             })}
                                         >
                                             This message will be sent in new
@@ -384,7 +386,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         </p>
                                         <p
                                             className={classnames({
-                                                'text-faded': !autoResponderEnabled,
+                                                'text-faded':
+                                                    !autoResponderEnabled,
                                             })}
                                         >
                                             <b>

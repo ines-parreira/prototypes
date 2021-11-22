@@ -69,11 +69,13 @@ export class MembersListContainer extends Component<Props, State> {
 
     _fetchTeamMembers = (page = 1): Promise<void> => {
         const {team, search} = this.state
-        return (this.props.fetchTeamMembersPagination(
-            team.get('id'),
-            page,
-            search
-        ) as Promise<Map<any, any>>).then((resp) => {
+        return (
+            this.props.fetchTeamMembersPagination(
+                team.get('id'),
+                page,
+                search
+            ) as Promise<Map<any, any>>
+        ).then((resp) => {
             const members = resp.get('data') as List<any>
             const memberIds = Set(
                 members.map((member: Map<any, any>) => {

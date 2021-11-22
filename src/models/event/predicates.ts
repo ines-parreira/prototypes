@@ -14,7 +14,7 @@ export const isViaRuleEvent = (
     event: Map<any, any>,
     events: List<any>
 ): boolean =>
-    (((event.get('context') as Map<any, any>) &&
+    ((event.get('context') as Map<any, any>) &&
         (events.find(
             (otherEvent: Map<any, any>) =>
                 isRuleExecutedType(otherEvent) &&
@@ -22,4 +22,4 @@ export const isViaRuleEvent = (
                 otherEvent.get('context') === event.get('context') &&
                 otherEvent.get('created_datetime') <
                     event.get('created_datetime')
-        ) as Maybe<Map<any, any>>)) as unknown) as boolean
+        ) as Maybe<Map<any, any>>)) as unknown as boolean

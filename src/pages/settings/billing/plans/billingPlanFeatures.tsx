@@ -180,12 +180,14 @@ export const getPlanCardFeaturesForPlan = ({
     const enabledFeaturesNames = Object.keys(
         enabledFeatures
     ) as AccountFeature[]
-    return ([
-        {
-            icon: <PlanFeatureMaterialIcon icon="playlist_add_check" />,
-            label: <BillableTicketsLabel plan={plan} />,
-        },
-    ] as PlanCardFeature[]).concat(
+    return (
+        [
+            {
+                icon: <PlanFeatureMaterialIcon icon="playlist_add_check" />,
+                label: <BillableTicketsLabel plan={plan} />,
+            },
+        ] as PlanCardFeature[]
+    ).concat(
         getCommonPlanCardFeatures({
             planId: plan.id,
             planName: plan.name,
