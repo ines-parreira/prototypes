@@ -265,8 +265,9 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/swell.png',
     },
     {
-        title: 'Amazon & eBay by ChannelReply',
-        description: 'Respond to eBay and Amazon inquiries',
+        title: 'ChannelReply',
+        description:
+            'Respond to Amazon, eBay, Back Market and Walmart inquiries. View order data and use it in macros.',
         url: 'https://docs.gorgias.com/ecommerce-integrations/channel-reply',
         image: 'integrations/channelreply.png',
     },
