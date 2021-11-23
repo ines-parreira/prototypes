@@ -29,6 +29,8 @@ import {RootState} from '../../../../../state/types'
 
 import {getCurrentAccountState} from '../../../../../state/currentAccount/selectors'
 
+import {hasAccessToTwitterDMs} from './utils'
+
 type Props = {
     integration: Map<string, any>
     actions: {
@@ -53,12 +55,6 @@ export function TwitterIntegrationDetail({
     const [tweetsRepliesEnabled, setTweetsRepliesEnabled] = useState(true)
     const [mentionsEnabled, setMentionsEnabled] = useState(true)
     const [directMessagesEnabled, setDirectMessagesEnabled] = useState(true)
-
-    const isShowingDirectMessageEnabled = [
-        'acme',
-        'test-martin',
-        'mehdi17091993',
-    ].includes(currentAccount.get('domain'))
 
     const onSubmit = useCallback(
         async (event: React.FormEvent) => {
@@ -221,7 +217,9 @@ export function TwitterIntegrationDetail({
                                         value={mentionsEnabled}
                                         onChange={setMentionsEnabled}
                                     />
-                                    {isShowingDirectMessageEnabled && (
+                                    {hasAccessToTwitterDMs(
+                                        currentAccount.get('domain')
+                                    ) && (
                                         <BooleanField
                                             name="direct_messages_enabled"
                                             type="checkbox"

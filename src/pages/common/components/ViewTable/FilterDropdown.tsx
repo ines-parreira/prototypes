@@ -19,6 +19,10 @@ import withCancellableRequest, {
 import Search from '../Search'
 import {RootState} from '../../../../state/types'
 
+import {getCurrentAccountState} from '../../../../state/currentAccount/selectors'
+import {TicketChannel} from '../../../../business/types/ticket'
+import {hasAccessToTwitterDMs} from '../../../integrations/detail/components/twitter/utils'
+
 import css from './FilterDropdown.less'
 
 type OwnProps = {
@@ -152,41 +156,51 @@ class FilterDropdown extends Component<Props, State> {
             )
         }
 
-        let options = this.state.enum.map((value, key) => {
-            let renderValue = value
+        let options = this.state.enum
+            // TODO: remove this before twitter dm goes live
+            .filter((channel) => {
+                if (channel === TicketChannel.TwitterDirectMessage) {
+                    return hasAccessToTwitterDMs(
+                        this.props.currentAccount.get('domain')
+                    )
+                }
+                return true
+            })
+            .map((value, key) => {
+                let renderValue = value
 
-            // special displays for some columns in the dropdown
-            if (field.get('name') === 'tags') {
-                // display tags as tags
-                renderValue = (value as Map<any, any>).get('name')
-            } else if (field.get('name') === 'customer') {
-                renderValue = customersHelpers.getDisplayName(
-                    value as Map<any, any>
+                // special displays for some columns in the dropdown
+                if (field.get('name') === 'tags') {
+                    // display tags as tags
+                    renderValue = (value as Map<any, any>).get('name')
+                } else if (field.get('name') === 'customer') {
+                    renderValue = customersHelpers.getDisplayName(
+                        value as Map<any, any>
+                    )
+                } else if (field.get('name') === 'language') {
+                    renderValue = getLanguageDisplayName(value as string)
+                } else if (
+                    typeof value === 'object' ||
+                    field.get('name') === 'roles'
+                ) {
+                    renderValue = <RenderLabel field={field} value={value} />
+                }
+
+                const passedValue = isImmutable(value)
+                    ? (value as Map<any, any>).toJS()
+                    : value
+
+                return (
+                    <DropdownItem
+                        key={key}
+                        type="button"
+                        onClick={() => this.onClick(passedValue)}
+                        className={css.dropdownItem}
+                    >
+                        {renderValue}
+                    </DropdownItem>
                 )
-            } else if (field.get('name') === 'language') {
-                renderValue = getLanguageDisplayName(value as string)
-            } else if (
-                typeof value === 'object' ||
-                field.get('name') === 'roles'
-            ) {
-                renderValue = <RenderLabel field={field} value={value} />
-            }
-
-            const passedValue = isImmutable(value)
-                ? (value as Map<any, any>).toJS()
-                : value
-
-            return (
-                <DropdownItem
-                    key={key}
-                    type="button"
-                    onClick={() => this.onClick(passedValue)}
-                    className={css.dropdownItem}
-                >
-                    {renderValue}
-                </DropdownItem>
-            )
-        }) as List<any>
+            }) as List<any>
 
         // special option added for some columns in the dropdown
         if (field.get('name') === 'assignee') {
@@ -233,6 +247,7 @@ class FilterDropdown extends Component<Props, State> {
 
 const connector = connect((state: RootState) => ({
     schemas: schemasSelectors.getSchemas(state),
+    currentAccount: getCurrentAccountState(state),
 }))
 
 export default withCancellableRequest<

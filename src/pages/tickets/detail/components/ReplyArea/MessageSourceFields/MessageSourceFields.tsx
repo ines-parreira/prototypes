@@ -46,6 +46,7 @@ const disabledSources = [
     TicketMessageSourceType.InstagramComment,
     TicketMessageSourceType.InstagramMedia,
     TicketMessageSourceType.InstagramDirectMessage, // TODO(check if we need this)
+    TicketMessageSourceType.TwitterDirectMessage, // TODO(check if we need this)
 ]
 
 type Props = {

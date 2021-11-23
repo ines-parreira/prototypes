@@ -597,6 +597,10 @@ export const stats = toImmutable<
                 label: 'Twitter',
                 color: '#00aced',
             },
+            'twitter-direct-message': {
+                label: 'Twitter direct message',
+                color: '#0089b3',
+            },
             chat: {
                 label: 'Chat',
                 color: '#ffb584',

@@ -131,6 +131,7 @@ const tableStatData = fromJS({
                         phone: 10,
                         sms: 10,
                         twitter: 10,
+                        'twitter-direct-message': 5,
                         'yotpo-review': 10,
                     },
                 },

@@ -139,6 +139,22 @@ describe('Business', () => {
                 expect(result).toBeNull()
             })
 
+            it('should allow to add when twitter-direct-message with less than 2 attachments', () => {
+                // Given
+                messageType = TicketMessageSourceType.TwitterDirectMessage
+                attachmentCount = 1
+
+                // When
+                const result = canAddAttachments(
+                    messageType,
+                    newMessage,
+                    attachmentCount
+                )
+
+                // Then
+                expect(result).toBeNull()
+            })
+
             describe('only X attachments allowed', () => {
                 it('should not allow to add when twitter-tweet with more than 4 attachments', () => {
                     // Given
@@ -155,6 +171,24 @@ describe('Business', () => {
                     // Then
                     expect(result?.message).toEqual(
                         `When using Twitter tweet, you can add a maximum of 4 attachments.`
+                    )
+                })
+
+                it('should not allow to add when twitter-direct-message with more than 1 attachments', () => {
+                    // Given
+                    messageType = TicketMessageSourceType.TwitterDirectMessage
+                    attachmentCount = 2
+
+                    // When
+                    const result = canAddAttachments(
+                        messageType,
+                        newMessage,
+                        attachmentCount
+                    )
+
+                    // Then
+                    expect(result?.message).toEqual(
+                        `When using Twitter direct message, you can only send attachments one by one.`
                     )
                 })
             })

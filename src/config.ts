@@ -14,6 +14,7 @@ import {Customer} from './state/customers/types'
 import {daysToHours, hoursToSeconds} from './utils'
 import {ActionTemplateExecution} from './types'
 import {AccountFeature} from './state/currentAccount/types'
+import {TicketMessageSourceType} from './business/types/ticket'
 
 // TODO @LouisBarranqueiro switch all configuration to modular version
 
@@ -86,33 +87,35 @@ export const TIMEDELTA_OPERATOR_DEFAULT_VALUE = `${TIMEDELTA_OPERATOR_DEFAULT_QU
  * Ticket-related
  */
 export const SOURCE_VALUE_PROP = {
-    email: 'address',
-    phone: 'address',
-    'ottspott-call': 'address',
-    chat: 'address',
-    aircall: 'address',
-    api: null,
-    'facebook-message': 'address',
-    'facebook-comment': 'address',
-    'facebook-review-comment': 'address',
-    'facebook-messenger': 'address',
-    'facebook-post': 'address',
-    'facebook-mention-post': 'address',
-    'facebook-mention-comment': 'address',
-    'facebook-review': 'address',
+    [TicketMessageSourceType.Email]: 'address',
+    [TicketMessageSourceType.Phone]: 'address',
+    [TicketMessageSourceType.OttspottCall]: 'address',
+    [TicketMessageSourceType.Chat]: 'address',
+    [TicketMessageSourceType.Aircall]: 'address',
+    [TicketMessageSourceType.Api]: null,
+    [TicketMessageSourceType.FacebookMessage]: 'address',
+    [TicketMessageSourceType.FacebookComment]: 'address',
+    [TicketMessageSourceType.FacebookReviewComment]: 'address',
+    [TicketMessageSourceType.FacebookMessenger]: 'address',
+    [TicketMessageSourceType.FacebookPost]: 'address',
+    [TicketMessageSourceType.FacebookMentionPost]: 'address',
+    [TicketMessageSourceType.FacebookMentionComment]: 'address',
+    [TicketMessageSourceType.FacebookReview]: 'address',
     'facebook-ad-post': 'address',
     'facebook-ad-comment': 'address',
-    'instagram-media': 'address',
-    'instagram-comment': 'address',
-    'instagram-ad-media': 'address',
-    'instagram-ad-comment': 'address',
-    'instagram-direct-message': 'address',
-    'instagram-mention-media': 'address',
-    'instagram-mention-comment': 'address',
-    'twitter-tweet': 'address',
-    'twitter-quoted-tweet': 'address',
-    'yotpo-review-public-comment': 'address',
-    'yotpo-review-private-comment': 'address',
+    [TicketMessageSourceType.InstagramMedia]: 'address',
+    [TicketMessageSourceType.InstagramComment]: 'address',
+    [TicketMessageSourceType.InstagramAdMedia]: 'address',
+    [TicketMessageSourceType.InstagramAdComment]: 'address',
+    [TicketMessageSourceType.InstagramDirectMessage]: 'address',
+    [TicketMessageSourceType.InstagramMentionMedia]: 'address',
+    [TicketMessageSourceType.InstagramMentionComment]: 'address',
+    [TicketMessageSourceType.TwitterTweet]: 'address',
+    [TicketMessageSourceType.TwitterQuotedTweet]: 'address',
+    [TicketMessageSourceType.TwitterMentionTweet]: 'address',
+    [TicketMessageSourceType.TwitterDirectMessage]: 'address',
+    [TicketMessageSourceType.YotpoReviewPublicComment]: 'address',
+    [TicketMessageSourceType.YotpoReviewPrivateComment]: 'address',
 }
 
 //$TsFixMe fallback for js files, replace with TicketStatus enum

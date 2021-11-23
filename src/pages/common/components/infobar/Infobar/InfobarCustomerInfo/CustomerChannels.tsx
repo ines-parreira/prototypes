@@ -54,6 +54,7 @@ export class CustomerChannels extends Component<Props> {
                     TicketMessageSourceType.Facebook,
                     TicketMessageSourceType.Instagram,
                     TicketMessageSourceType.InstagramDirectMessage,
+                    TicketChannel.Twitter,
                 ].includes(channel.get('type'))
             })
             .sortBy((channel: Map<any, any>) =>

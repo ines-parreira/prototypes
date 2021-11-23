@@ -179,6 +179,9 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                     TicketMessageSourceType.TwitterQuotedTweet
                 ) ||
                 !!replyOptions.get(TicketMessageSourceType.TwitterMentionTweet))
+        const suggestTwitterDM =
+            isTicketExisting &&
+            !!replyOptions.get(TicketMessageSourceType.TwitterDirectMessage)
         const suggestPhone =
             hasPhoneIntegration &&
             (!isTicketExisting ||
@@ -442,6 +445,23 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                                         }
                                     />
                                     Reply via Twitter tweet
+                                </DropdownItem>
+                            )}
+                            {suggestTwitterDM && (
+                                <DropdownItem
+                                    type="button"
+                                    onClick={() => {
+                                        prepareNewMessage(
+                                            TicketMessageSourceType.TwitterDirectMessage
+                                        )
+                                    }}
+                                >
+                                    <SourceIcon
+                                        type={
+                                            TicketMessageSourceType.TwitterDirectMessage
+                                        }
+                                    />
+                                    Reply via Twitter direct message
                                 </DropdownItem>
                             )}
                             {suggestInternalNote && (

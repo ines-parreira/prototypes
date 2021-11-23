@@ -33,6 +33,7 @@ export enum TicketMessageSourceType {
     TwitterTweet = 'twitter-tweet',
     TwitterQuotedTweet = 'twitter-quoted-tweet',
     TwitterMentionTweet = 'twitter-mention-tweet',
+    TwitterDirectMessage = 'twitter-direct-message',
 }
 
 export enum TicketStatus {
@@ -56,6 +57,7 @@ export enum TicketChannel {
     Phone = 'phone',
     Sms = 'sms',
     Twitter = 'twitter',
+    TwitterDirectMessage = 'twitter-direct-message',
     YotpoReview = 'yotpo-review',
 }
 

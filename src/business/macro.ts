@@ -13,14 +13,21 @@ export function clearMacroBeforeApply(
     const isChatAndMoreThanOneAttachment =
         messageType === TicketMessageSourceType.Chat &&
         getAttachmentsCount(macro) > 1
+
     const isInstagramDMAndTextPlusAttachment =
         messageType === TicketMessageSourceType.InstagramDirectMessage &&
         hasText(macro) &&
         getAttachmentsCount(macro) > 0
 
+    const isTwitterDMAndMoreThanOneAttachment =
+        messageType === TicketMessageSourceType.TwitterDirectMessage &&
+        getAttachmentsCount(macro) > 1
+
     //TODO(@Mehdi) Remove `isInstagramDMAndTextPlusAttachment` when we do https://github.com/gorgias/gorgias/issues/7516
     const isInvalid =
-        isChatAndMoreThanOneAttachment || isInstagramDMAndTextPlusAttachment
+        isChatAndMoreThanOneAttachment ||
+        isInstagramDMAndTextPlusAttachment ||
+        isTwitterDMAndMoreThanOneAttachment
 
     if (isInvalid) {
         let notificationMessage =
@@ -36,6 +43,12 @@ export function clearMacroBeforeApply(
             notificationMessage =
                 notificationMessage +
                 ', because you can either send a text message, or an image attachment as an Instagram direct message.'
+        }
+
+        if (isTwitterDMAndMoreThanOneAttachment) {
+            notificationMessage =
+                notificationMessage +
+                ', because you cannot send multiple attachments at the same time on Twitter direct message.'
         }
 
         return {

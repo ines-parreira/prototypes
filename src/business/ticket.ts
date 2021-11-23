@@ -69,6 +69,7 @@ export function canAddAttachments(
         [TicketMessageSourceType.InstagramComment, 0],
         [TicketMessageSourceType.InstagramMentionComment, 0],
         [TicketMessageSourceType.TwitterTweet, 4],
+        [TicketMessageSourceType.TwitterDirectMessage, 1],
         [TicketMessageSourceType.YotpoReviewPublicComment, 0],
         [TicketMessageSourceType.YotpoReviewPrivateComment, 0],
     ]).get(messageType)

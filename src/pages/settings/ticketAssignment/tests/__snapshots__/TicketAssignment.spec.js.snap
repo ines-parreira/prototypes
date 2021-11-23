@@ -296,6 +296,10 @@ exports[`<TicketAssignment/> render() should render selected channels 1`] = `
                     "value": "twitter",
                   },
                   Object {
+                    "label": "twitter-direct-message",
+                    "value": "twitter-direct-message",
+                  },
+                  Object {
                     "label": "yotpo-review",
                     "value": "yotpo-review",
                   },
@@ -534,6 +538,10 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox c
                   Object {
                     "label": "twitter",
                     "value": "twitter",
+                  },
+                  Object {
+                    "label": "twitter-direct-message",
+                    "value": "twitter-direct-message",
                   },
                   Object {
                     "label": "yotpo-review",
@@ -776,6 +784,10 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox u
                     "value": "twitter",
                   },
                   Object {
+                    "label": "twitter-direct-message",
+                    "value": "twitter-direct-message",
+                  },
+                  Object {
                     "label": "yotpo-review",
                     "value": "yotpo-review",
                   },
@@ -1014,6 +1026,10 @@ exports[`<TicketAssignment/> render() should render the "Save changes" button lo
                   Object {
                     "label": "twitter",
                     "value": "twitter",
+                  },
+                  Object {
+                    "label": "twitter-direct-message",
+                    "value": "twitter-direct-message",
                   },
                   Object {
                     "label": "yotpo-review",
@@ -1256,6 +1272,10 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
                     "value": "twitter",
                   },
                   Object {
+                    "label": "twitter-direct-message",
+                    "value": "twitter-direct-message",
+                  },
+                  Object {
                     "label": "yotpo-review",
                     "value": "yotpo-review",
                   },
@@ -1496,6 +1516,10 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
                     "value": "twitter",
                   },
                   Object {
+                    "label": "twitter-direct-message",
+                    "value": "twitter-direct-message",
+                  },
+                  Object {
                     "label": "yotpo-review",
                     "value": "yotpo-review",
                   },
@@ -1734,6 +1758,10 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
                   Object {
                     "label": "twitter",
                     "value": "twitter",
+                  },
+                  Object {
+                    "label": "twitter-direct-message",
+                    "value": "twitter-direct-message",
                   },
                   Object {
                     "label": "yotpo-review",

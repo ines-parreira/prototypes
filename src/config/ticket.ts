@@ -23,6 +23,7 @@ export const CHAT_CHANNEL = TicketChannel.Chat
 export const EMAIL_CHANNEL = TicketChannel.Email
 export const FACEBOOK_MESSENGER_CHANNEL = TicketChannel.FacebookMessenger
 export const INSTAGRAM_DM_CHANNEL = TicketChannel.InstagramDirectMessage
+export const TWITTER_DM_CHANNEL = TicketChannel.TwitterDirectMessage
 export const CHANNELS = Object.values(TicketChannel)
 
 export const DEFAULT_CHANNEL = TicketChannel.Email
@@ -104,6 +105,7 @@ export const USABLE_SOURCE_TYPES = [
     TWITTER_TWEET_SOURCE,
     TWITTER_QUOTED_TWEET_SOURCE,
     TWITTER_MENTION_TWEET_SOURCE,
+    TicketMessageSourceType.TwitterDirectMessage,
 ]
 
 export const DEFAULT_SOURCE_TYPE = TicketMessageSourceType.Email
@@ -115,6 +117,7 @@ type Variable = {
     value?: string
     explicit?: boolean
     fullName?: string
+
     integration?: string
     replace?: (object: Map<any, any>, value: any) => string
 }

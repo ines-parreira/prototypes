@@ -79,6 +79,10 @@ const sourceTypeToIcon = (
             icon.custom = true
             icon.name = 'twitter'
             break
+        case TicketMessageSourceType.TwitterDirectMessage:
+            icon.custom = true
+            icon.name = 'twitter-dm'
+            break
         case TicketMessageSourceType.Instagram:
         case TicketMessageSourceType.InstagramAdComment:
         case TicketMessageSourceType.InstagramAdMedia:
