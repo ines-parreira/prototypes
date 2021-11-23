@@ -47,7 +47,7 @@ exports[`<CustomInstallationShopifyTab/> should display the custom installation 
       </b>
       , click on 
       <b>
-        View theme
+        Edit Code
       </b>
     </div>
   </div>
@@ -179,7 +179,7 @@ exports[`<CustomInstallationShopifyTab/> should display the custom installation 
       </b>
       , click on 
       <b>
-        View theme
+        Edit Code
       </b>
     </div>
   </div>

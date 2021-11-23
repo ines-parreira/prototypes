@@ -1014,7 +1014,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                                   </b>
                                                   , click on 
                                                   <b>
-                                                    View theme
+                                                    Edit Code
                                                   </b>
                                                 </div>
                                               </div>
@@ -3145,7 +3145,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                                   </b>
                                                   , click on 
                                                   <b>
-                                                    View theme
+                                                    Edit Code
                                                   </b>
                                                 </div>
                                               </div>

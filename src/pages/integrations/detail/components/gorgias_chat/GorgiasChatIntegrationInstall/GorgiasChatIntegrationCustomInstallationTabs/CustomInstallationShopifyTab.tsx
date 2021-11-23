@@ -28,7 +28,7 @@ export function CustomInstallationShopifyTab({code}: Props) {
                     <span className={css['instruction-number']}>2</span>
                 </div>
                 <div className={css['instruction-text']}>
-                    Then under <b>Theme actions</b>, click on <b>View theme</b>
+                    Then under <b>Theme actions</b>, click on <b>Edit Code</b>
                 </div>
             </div>
             <div className={css['instruction']}>
