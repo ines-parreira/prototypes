@@ -31,9 +31,9 @@ export const SubdomainSection = ({
                 </a>
             </div>
             <p>
-                We generated a unique subdomain based on this name where the
-                Help Center website will be accessible. You can change it to
-                better match your needs.
+                We generated a unique subdomain where your Help Center will be
+                accessible. You can edit it below to customize according to your
+                preferences.
             </p>
             <SubdomainInput {...inputProps} />
             {children}

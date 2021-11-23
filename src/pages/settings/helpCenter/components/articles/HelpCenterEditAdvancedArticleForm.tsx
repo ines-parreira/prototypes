@@ -104,7 +104,7 @@ export const HelpCenterEditAdvancedArticleForm = ({
                     rightAddon={slugSuffix}
                     value={translation.slug}
                     onChange={onEditArticle('slug')}
-                    help="This is your article's link."
+                    help="This is the URL link for your article."
                 />
                 {articleId && (
                     <button
@@ -124,7 +124,7 @@ export const HelpCenterEditAdvancedArticleForm = ({
                 label="Excerpt"
                 value={translation.excerpt}
                 onChange={onEditArticle('excerpt')}
-                help="Displayed under the title of this article inside your Help Center."
+                help="A short summary displayed below the title of your article."
                 maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
             />
             <AutoPopulateInput

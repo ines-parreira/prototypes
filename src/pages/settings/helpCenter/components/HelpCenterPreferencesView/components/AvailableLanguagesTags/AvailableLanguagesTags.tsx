@@ -102,8 +102,8 @@ export const AvailableLanguagesTags: React.FC<Props> = ({
         <div>
             <h4>Available languages</h4>
             <p>
-                You will be able to edit and customize your Help Center in
-                regards to the languages added here.
+                Select the languages in which you will be able to edit and
+                customize your Help Center.
             </p>
             <DynamicBadgeList
                 availableList={availableList}

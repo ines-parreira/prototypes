@@ -238,9 +238,9 @@ export const HelpCenterNewView = ({
                     <h3>Languages</h3>
                     <h4>Default language</h4>
                     <p>
-                        Choose the default language that will be used every time
-                        it’s not detected or as a second option if the selected
-                        language isn’t available.
+                        Choose a default language. This will be the default
+                        setting when the selected language isn't available or
+                        cannot be detected.
                     </p>
                     <div id="language-select">
                         <SelectField

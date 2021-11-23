@@ -73,7 +73,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
         <small
           class="form-text text-muted"
         >
-          This is your article's link.
+          This is the URL link for your article.
         </small>
       </div>
       <button
@@ -113,7 +113,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       <small
         class="form-text text-muted"
       >
-        Displayed under the title of this article inside your Help Center.
+        A short summary displayed below the title of your article.
       </small>
     </div>
     <div

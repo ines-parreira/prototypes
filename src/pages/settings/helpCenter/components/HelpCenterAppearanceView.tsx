@@ -210,7 +210,10 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 <section>
                     <div className={css.heading}>
                         <h3>Appearance</h3>
-                        <p>Set up your Help Center’s logo, color and theme.</p>
+                        <p>
+                            Upload your logo to complete the branding of your
+                            Help Center. Select theme and colors to customize.
+                        </p>
                     </div>
                 </section>
                 <section className={css.logos}>
@@ -306,8 +309,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                             helpCenter.search_deactivated_datetime === null
                         }
                         label="Enable search bar"
-                        description="This makes the search bar visible or not in your Help Center
-                        home page."
+                        description="Use this toggle to display or hide the search bar in your Help Center."
                         fieldName="search_deactivated"
                     />
                     <UpdateToggle
@@ -315,7 +317,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                             helpCenter.powered_by_deactivated_datetime === null
                         }
                         label="Powered by Gorgias"
-                        description="Turns on/off the ‘Powered by Gorgias’ label in your Help Center footer."
+                        description="Use this toggle to display or hide the Gorgias branding on the footer in Help Center."
                         fieldName="powered_by_deactivated"
                     />
                 </section>

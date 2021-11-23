@@ -75,17 +75,17 @@ export const ARTICLE_ROW_ACTIONS = [
     {
         name: 'articleSettings',
         icon: 'settings',
-        tooltip: 'Article settings.',
+        tooltip: 'Article settings',
     },
     {
         name: 'duplicateArticle',
         icon: 'content_copy',
-        tooltip: 'Duplicate article.',
+        tooltip: 'Duplicate article',
     },
     {
         name: 'copyToClipboard',
         icon: 'insert_link',
-        tooltip: 'Copy link to clipboard.',
+        tooltip: 'Copy link to clipboard',
     },
 ]
 
