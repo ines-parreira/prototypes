@@ -1,21 +1,22 @@
 import React from 'react'
 import {useAsyncFn} from 'react-use'
-import {FormGroup, Label} from 'reactstrap'
 
-import ToggleButton from '../../../../common/components/ToggleButton'
-import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
-import {NotificationStatus} from '../../../../../state/notifications/types'
+import {UpdateHelpCenterDto} from '../../../../../models/helpCenter/types'
 import {helpCenterUpdated} from '../../../../../state/entities/helpCenters/actions'
 import {notify} from '../../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../../state/notifications/types'
+import ToggleField from '../../../../common/forms/ToggleField'
+import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../../hooks/useHelpCenterIdParam'
-import {Components} from '../../../../../../../../rest_api/help_center_api/client.generated'
+
+import css from './UpdateToggle.less'
 
 type Props = {
     activated: boolean
     label: string
     description: string
-    fieldName: keyof Components.Schemas.UpdateHelpCenterDto
+    fieldName: keyof UpdateHelpCenterDto
 }
 
 export const UpdateToggle = ({
@@ -59,18 +60,17 @@ export const UpdateToggle = ({
     )
 
     return (
-        <FormGroup>
-            <div className="d-flex">
-                <ToggleButton
-                    value={activated}
-                    onChange={toggle}
-                    loading={loading}
-                    disabled={loading}
-                />
-                <Label className="control-label ml-2">{label}</Label>
-            </div>
+        <>
+            <ToggleField
+                label={label}
+                value={activated}
+                onChange={toggle}
+                loading={loading}
+                disabled={loading}
+                className={css.toggle}
+            />
             <p>{description}</p>
-        </FormGroup>
+        </>
     )
 }
 

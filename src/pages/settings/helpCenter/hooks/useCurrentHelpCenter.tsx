@@ -4,7 +4,11 @@ import {useSelector} from 'react-redux'
 import {useAsyncFn} from 'react-use'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
-import {HelpCenter} from '../../../../models/helpCenter/types'
+import {
+    HelpCenter,
+    LocaleCode,
+    UpdateHelpCenterTranslationDto,
+} from '../../../../models/helpCenter/types'
 import {
     helpCentersFetched,
     helpCenterUpdated,
@@ -22,6 +26,10 @@ type CurrentHelpCenterApi = {
     error: Error | undefined
     getHelpCenterCustomDomain: () => Promise<void>
     fetchHelpCenterTranslations: () => Promise<void>
+    updateHelpCenterTranslation: (
+        locale: LocaleCode,
+        payload: UpdateHelpCenterTranslationDto
+    ) => Promise<void>
 }
 
 // We make us of this to not trigger more than 1 request
@@ -118,6 +126,46 @@ export const useCurrentHelpCenter = (): CurrentHelpCenterApi => {
         }
     }, [client, helpCenter, dispatch])
 
+    const updateHelpCenterTranslation = useCallback(
+        async (locale: LocaleCode, payload: UpdateHelpCenterTranslationDto) => {
+            if (client && helpCenter) {
+                try {
+                    await client.updateHelpCenterTranslation(
+                        {
+                            help_center_id: helpCenter.id,
+                            locale,
+                        },
+                        payload
+                    )
+
+                    await fetchHelpCenterTranslations()
+
+                    void dispatch(
+                        notify({
+                            message: 'Help Center successfully updated',
+                            status: NotificationStatus.Success,
+                        })
+                    )
+                } catch (err) {
+                    const errorMessage =
+                        axios.isAxiosError(err) && err.response?.status === 400
+                            ? ': some fields are empty or invalid.'
+                            : ', please try again later.'
+
+                    void dispatch(
+                        notify({
+                            message: `Failed to update Help Center${errorMessage}`,
+                            status: NotificationStatus.Error,
+                        })
+                    )
+
+                    reportError(err as Error)
+                }
+            }
+        },
+        [client, helpCenter, dispatch, fetchHelpCenterTranslations]
+    )
+
     useEffect(() => {
         if (!helpCenter && !fetchInProgress) {
             void fetchHelpCenter()
@@ -129,5 +177,6 @@ export const useCurrentHelpCenter = (): CurrentHelpCenterApi => {
         error,
         getHelpCenterCustomDomain,
         fetchHelpCenterTranslations,
+        updateHelpCenterTranslation,
     }
 }

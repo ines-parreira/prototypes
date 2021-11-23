@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ChatApplication /> allows to enable chat widget and selects the first chat by default 1`] = `
+<div>
+  <div
+    class="toggle form-group"
+  >
+    <div
+      class="container"
+    >
+      <label
+        class="switch toggle-switch"
+      >
+        <input
+          readonly=""
+          type="checkbox"
+        />
+        <div
+          class="slider"
+        />
+      </label>
+      <label
+        class="control-label mb-0 ml-2 clickable"
+      >
+        Enable chat widget
+      </label>
+    </div>
+  </div>
+  <p>
+    This makes a chat widget visible for all help center pages.
+  </p>
+</div>
+`;
+
+exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] = `
+<div>
+  <div
+    class="toggle form-group"
+  >
+    <div
+      class="container"
+    >
+      <label
+        class="switch toggle-switch disabled"
+      >
+        <input
+          disabled=""
+          readonly=""
+          type="checkbox"
+        />
+        <div
+          class="slider"
+        />
+      </label>
+      <label
+        class="control-label mb-0 ml-2 clickable"
+      >
+        Enable chat widget
+      </label>
+    </div>
+  </div>
+  <p>
+    This makes a chat widget visible for all help center pages.
+  </p>
+  <div
+    class="warning-no-chat"
+  >
+    <span
+      class="float-right"
+    >
+      <a
+        to="/app/settings/integrations/gorgias_chat"
+      >
+        Create Chat
+      </a>
+    </span>
+    <span
+      class="warning-icon mr-2"
+    >
+      <i
+        class="material-icons"
+      >
+        report_problem
+      </i>
+    </span>
+    You don't have any existing chat integration. Please create one to enable.
+  </div>
+</div>
+`;

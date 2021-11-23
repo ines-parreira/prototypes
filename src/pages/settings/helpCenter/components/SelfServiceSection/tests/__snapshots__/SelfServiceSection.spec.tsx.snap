@@ -3,19 +3,24 @@
 exports[`<SelfServiceSection/> should render the component 1`] = `
 <div>
   <section>
-    <h3>
-      Enable Self-service
-    </h3>
-    <p>
-      Enabling
-       
-      <a
-        to="/app/settings/self-service"
-      >
-        self-service
-      </a>
-       will let your customers track their orders, request a return or cancellation and report issues they might have with an order. It will then create an email ticket for your team.
-    </p>
+    <div
+      class="heading"
+    >
+      <h3>
+        Enable Self-service
+      </h3>
+      <p>
+        Enabling
+         
+        <a
+          to="/app/settings/self-service"
+        >
+          self-service
+        </a>
+         
+        will let your customers track their orders, request a return or cancellation and report issues they might have with an order. It will then create an email ticket for your team.
+      </p>
+    </div>
     <div
       class="d-flex mt-4"
     >
@@ -32,7 +37,7 @@ exports[`<SelfServiceSection/> should render the component 1`] = `
         />
       </label>
       <label
-        class="control-label ml-2"
+        class="control-label ml-2 clickable"
       >
         <p
           class="enable-self-service-label"

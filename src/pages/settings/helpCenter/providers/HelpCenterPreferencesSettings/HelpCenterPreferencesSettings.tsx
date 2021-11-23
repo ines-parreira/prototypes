@@ -12,8 +12,8 @@ import {useSelector} from 'react-redux'
 
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
 import {
-    CreateHelpCenterTranslationDto,
-    HelpCenterTranslation,
+    HelpCenter,
+    HelpCenterTranslationSeoMeta,
     LocaleCode,
 } from '../../../../../models/helpCenter/types'
 import {helpCenterUpdated} from '../../../../../state/entities/helpCenters/actions'
@@ -22,23 +22,23 @@ import {changeViewLanguage} from '../../../../../state/helpCenter/ui/actions'
 import {notify} from '../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
-import {useCurrentHelpCenter} from '../../hooks/useCurrentHelpCenter'
 import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 import {
     getNewHelpCenterTranslation,
     helpCenterSeoMetaFields,
 } from '../../utils/helpCenter.utils'
+import {useCurrentHelpCenter} from '../../hooks/useCurrentHelpCenter'
 
 export type HelpCenterPreferencesState = {
     name: string
     defaultLanguage: LocaleCode
     availableLanguages: LocaleCode[]
-    translation: CreateHelpCenterTranslationDto | HelpCenterTranslation
+    seoMeta: HelpCenterTranslationSeoMeta
 }
 
 type Props = {
     children: React.ReactNode
-    helpCenterId: number
+    helpCenter: HelpCenter
 }
 
 type HelpCenterPreferencesContext = {
@@ -46,15 +46,17 @@ type HelpCenterPreferencesContext = {
     updatePreferences: (payload: Partial<HelpCenterPreferencesState>) => void
     savePreferences: () => Promise<void>
     resetPreferences: () => void
-    havePreferencesChanged: boolean
-    areChangesValid: boolean
+    canSavePreferences: boolean
 }
 
 const defaultPreferences: HelpCenterPreferencesState = {
     name: '',
     defaultLanguage: HELP_CENTER_DEFAULT_LOCALE,
     availableLanguages: [],
-    translation: getNewHelpCenterTranslation(HELP_CENTER_DEFAULT_LOCALE),
+    seoMeta: {
+        title: null,
+        description: null,
+    },
 }
 
 const PreferencesContext = createContext<HelpCenterPreferencesContext>({
@@ -62,36 +64,35 @@ const PreferencesContext = createContext<HelpCenterPreferencesContext>({
     updatePreferences: () => null,
     savePreferences: () => Promise.resolve(),
     resetPreferences: () => null,
-    havePreferencesChanged: false,
-    areChangesValid: false,
+    canSavePreferences: false,
 })
 
-// This provider holds all the preference
-// settings that are found in the Help Center / Preferences
+// This provider holds all the preferences
+// settings that are found in Help Center > Preferences tab
 export const HelpCenterPreferencesSettings = ({
     children,
-    helpCenterId,
+    helpCenter,
 }: Props): JSX.Element => {
     const dispatch = useAppDispatch()
     const {client} = useHelpCenterApi()
-    const {helpCenter, fetchHelpCenterTranslations} = useCurrentHelpCenter()
+    const {fetchHelpCenterTranslations} = useCurrentHelpCenter()
     const viewLanguage =
         useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const [preferences, updatePreferences] =
         useState<HelpCenterPreferencesState>(defaultPreferences)
 
     const nameChanged = useMemo(
-        () => helpCenter?.name !== preferences.name,
+        () => helpCenter.name !== preferences.name,
         [helpCenter, preferences]
     )
 
     const defaultLanguageChanged = useMemo(
-        () => helpCenter?.default_locale !== preferences.defaultLanguage,
+        () => helpCenter.default_locale !== preferences.defaultLanguage,
         [helpCenter, preferences]
     )
 
     const supportedLanguagesChanged = useMemo(() => {
-        if (!helpCenter || preferences.availableLanguages.length === 0) {
+        if (preferences.availableLanguages.length === 0) {
             return false
         }
 
@@ -110,69 +111,71 @@ export const HelpCenterPreferencesSettings = ({
             )
     }, [helpCenter, preferences])
 
-    const translationChanged = useMemo(() => {
-        if (!helpCenter) return false
-
+    const seoChanged = useMemo(() => {
         const translation = helpCenter.translations?.find(
-            (t) => t.locale === preferences.translation.locale
+            (t) => t.locale === viewLanguage
         )
 
         if (!translation) return false
 
-        const seoChanged = helpCenterSeoMetaFields.some(
-            (key) =>
-                translation.seo_meta[key] !==
-                preferences.translation.seo_meta[key]
+        return helpCenterSeoMetaFields.some(
+            (key) => translation.seo_meta[key] !== preferences.seoMeta[key]
         )
-
-        const chatChanged =
-            translation.chat_application_id !==
-            preferences.translation.chat_application_id
-
-        return seoChanged || chatChanged
-    }, [helpCenter, preferences])
+    }, [helpCenter.translations, preferences, viewLanguage])
 
     const areChangesValid = useMemo(() => !!preferences.name, [preferences])
 
+    const canSavePreferences = useMemo(
+        () =>
+            (nameChanged || defaultLanguageChanged || seoChanged) &&
+            areChangesValid,
+        [nameChanged, defaultLanguageChanged, seoChanged, areChangesValid]
+    )
+
     const savePreferences = async () => {
-        if (!client || !helpCenter) return
+        if (!client) return
 
         try {
-            const {chat_application_id, seo_meta} = preferences.translation
+            if (seoChanged) {
+                const {seoMeta} = preferences
 
-            await client.updateHelpCenterTranslation(
-                {
-                    help_center_id: helpCenterId,
-                    locale: preferences.translation.locale,
-                },
-                {
-                    seo_meta: {
-                        title: seo_meta.title || null,
-                        description: seo_meta.description || null,
+                await client.updateHelpCenterTranslation(
+                    {
+                        help_center_id: helpCenter.id,
+                        locale: viewLanguage,
                     },
-                    chat_application_id,
+                    {
+                        seo_meta: {
+                            title: seoMeta.title || null,
+                            description: seoMeta.description || null,
+                        },
+                    }
+                )
+
+                await fetchHelpCenterTranslations()
+            }
+
+            if (nameChanged || defaultLanguageChanged) {
+                const {data: updatedHelpCenter} = await client.updateHelpCenter(
+                    {help_center_id: helpCenter.id},
+                    {
+                        name: preferences.name,
+                        default_locale: preferences.defaultLanguage,
+                    }
+                )
+
+                dispatch(helpCenterUpdated(updatedHelpCenter))
+
+                if (defaultLanguageChanged) {
+                    dispatch(
+                        changeViewLanguage(updatedHelpCenter.default_locale)
+                    )
                 }
-            )
-
-            await fetchHelpCenterTranslations()
-
-            const {data: updatedHelpCenter} = await client.updateHelpCenter(
-                {help_center_id: helpCenterId},
-                {
-                    name: preferences.name,
-                    default_locale: preferences.defaultLanguage,
-                }
-            )
-
-            dispatch(helpCenterUpdated(updatedHelpCenter))
-
-            if (defaultLanguageChanged) {
-                dispatch(changeViewLanguage(updatedHelpCenter.default_locale))
             }
 
             void dispatch(
                 notify({
-                    message: 'Successfully saved the preferences',
+                    message: 'Help Center successfully updated',
                     status: NotificationStatus.Success,
                 })
             )
@@ -184,7 +187,7 @@ export const HelpCenterPreferencesSettings = ({
 
             void dispatch(
                 notify({
-                    message: `Something went wrong saving the preference${errorMessage}`,
+                    message: `Couldn't update the Help Center${errorMessage}`,
                     status: NotificationStatus.Error,
                 })
             )
@@ -194,14 +197,14 @@ export const HelpCenterPreferencesSettings = ({
     }
 
     const handleSupportedLocalesChange = useCallback(async () => {
-        if (!client || !helpCenter) return
+        if (!client) return
 
         // Remove unsupported locales
         await Promise.all(
             helpCenter.supported_locales.map((locale) => {
                 if (!preferences.availableLanguages.includes(locale)) {
                     return client.deleteHelpCenterTranslation({
-                        help_center_id: helpCenterId,
+                        help_center_id: helpCenter.id,
                         locale: locale,
                     })
                 }
@@ -214,7 +217,7 @@ export const HelpCenterPreferencesSettings = ({
                 if (!helpCenter.supported_locales.includes(locale)) {
                     return client.createHelpCenterTranslation(
                         {
-                            help_center_id: helpCenterId,
+                            help_center_id: helpCenter.id,
                         },
                         getNewHelpCenterTranslation(locale)
                     )
@@ -246,20 +249,16 @@ export const HelpCenterPreferencesSettings = ({
 
     const updatePreferencesFromData = useCallback(() => {
         const updateFn = (draftSettings: Draft<HelpCenterPreferencesState>) => {
-            if (helpCenter?.name) {
-                draftSettings.name = helpCenter.name
-            }
-            if (helpCenter?.default_locale) {
-                draftSettings.defaultLanguage = helpCenter.default_locale
-            }
-            if (helpCenter?.supported_locales) {
-                draftSettings.availableLanguages = helpCenter.supported_locales
-            }
-            if (helpCenter?.translations) {
-                draftSettings.translation =
-                    helpCenter.translations?.find(
-                        (t) => t.locale === viewLanguage
-                    ) || getNewHelpCenterTranslation(viewLanguage)
+            draftSettings.name = helpCenter.name
+            draftSettings.defaultLanguage = helpCenter.default_locale
+            draftSettings.availableLanguages = helpCenter.supported_locales
+
+            const translation = helpCenter.translations?.find(
+                (t) => t.locale === viewLanguage
+            )
+
+            if (translation) {
+                draftSettings.seoMeta = translation.seo_meta
             }
         }
 
@@ -271,10 +270,16 @@ export const HelpCenterPreferencesSettings = ({
     }, [helpCenter])
 
     useEffect(() => {
+        if (!helpCenter.translations) {
+            void fetchHelpCenterTranslations()
+        }
+    }, [])
+
+    useEffect(() => {
         if (supportedLanguagesChanged) {
             void handleSupportedLocalesChange()
         }
-    }, [handleSupportedLocalesChange, supportedLanguagesChanged])
+    }, [supportedLanguagesChanged])
 
     return (
         <PreferencesContext.Provider
@@ -283,9 +288,7 @@ export const HelpCenterPreferencesSettings = ({
                 updatePreferences: handleOnUpdate,
                 savePreferences,
                 resetPreferences: updatePreferencesFromData,
-                havePreferencesChanged:
-                    nameChanged || defaultLanguageChanged || translationChanged,
-                areChangesValid,
+                canSavePreferences,
             }}
         >
             {children}

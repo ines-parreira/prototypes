@@ -1,39 +1,34 @@
 import React, {useEffect} from 'react'
+import {useSelector} from 'react-redux'
 import {
+    Route,
+    Switch,
     useHistory,
     useLocation,
-    Switch,
-    Route,
     useRouteMatch,
 } from 'react-router-dom'
-import {useSelector} from 'react-redux'
-
 import {Container} from 'reactstrap'
 
+import useAppDispatch from '../../../../../hooks/useAppDispatch'
 import {
     changeHelpCenterId,
     changeViewLanguage,
     getViewLanguage,
 } from '../../../../../state/helpCenter/ui'
-
 import {isProduction} from '../../../../../utils/environment'
-
 import Loader from '../../../../common/components/Loader/Loader'
-
+import HelpCenterAppearanceView from '../../components/HelpCenterAppearanceView'
+import HelpCenterArticlesView from '../../components/HelpCenterArticlesView'
+import HelpCenterContactView from '../../components/HelpCenterContactView'
+import HelpCenterCustomizationView from '../../components/HelpCenterCustomizationView'
+import HelpCenterImportCsvColumnMatchingView from '../../components/HelpCenterImportCsvColumnMatchingView'
+import HelpCenterInstallationView from '../../components/HelpCenterInstallationView'
+import HelpCenterPreferencesView from '../../components/HelpCenterPreferencesView'
+import HelpCenterSelfServiceView from '../../components/HelpCenterSelfServiceView'
 import {useCurrentHelpCenter} from '../../hooks/useCurrentHelpCenter'
 import {useHelpCenterIdParam} from '../../hooks/useHelpCenterIdParam'
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
-
-import HelpCenterArticlesView from '../../components/HelpCenterArticlesView'
-import HelpCenterContactUsView from '../../components/HelpCenterContactUsView'
-import HelpCenterAppearanceView from '../../components/HelpCenterAppearanceView'
-import HelpCenterPreferencesView from '../../components/HelpCenterPreferencesView'
-import HelpCenterCustomizationView from '../../components/HelpCenterCustomizationView'
-import HelpCenterInstallationView from '../../components/HelpCenterInstallationView'
-import HelpCenterImportCsvColumnMatchingView from '../../components/HelpCenterImportCsvColumnMatchingView'
 
 import './CurrentHelpCenter.less'
-import HelpCenterSelfServiceView from '../../components/HelpCenterSelfServiceView'
 
 export const CurrentHelpCenter = (): JSX.Element => {
     const dispatch = useAppDispatch()
@@ -83,9 +78,9 @@ export const CurrentHelpCenter = (): JSX.Element => {
                     component={HelpCenterAppearanceView}
                 />
                 <Route
-                    path={`${path}/contact-us`}
+                    path={`${path}/contact`}
                     exact
-                    component={HelpCenterContactUsView}
+                    component={HelpCenterContactView}
                 />
                 <Route
                     path={`${path}/customization`}

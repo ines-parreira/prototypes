@@ -4,18 +4,14 @@ import {Button} from 'reactstrap'
 import {useHelpCenterPreferencesSettings} from '../../../../providers/HelpCenterPreferencesSettings'
 
 export const FooterActions: React.FC = () => {
-    const {
-        savePreferences,
-        resetPreferences,
-        havePreferencesChanged,
-        areChangesValid,
-    } = useHelpCenterPreferencesSettings()
+    const {savePreferences, resetPreferences, canSavePreferences} =
+        useHelpCenterPreferencesSettings()
 
     return (
         <footer>
             <Button
                 color="success"
-                disabled={!(havePreferencesChanged && areChangesValid)}
+                disabled={!canSavePreferences}
                 onClick={savePreferences}
             >
                 Save Changes

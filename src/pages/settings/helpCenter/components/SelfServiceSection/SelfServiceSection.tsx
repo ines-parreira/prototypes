@@ -73,15 +73,16 @@ export const SelfServiceSection = ({
 
     return (
         <section>
-            <h3>Enable Self-service</h3>
-
-            <p>
-                Enabling{' '}
-                <Link to="/app/settings/self-service">self-service</Link> will
-                let your customers track their orders, request a return or
-                cancellation and report issues they might have with an order. It
-                will then create an email ticket for your team.
-            </p>
+            <div className={css.heading}>
+                <h3>Enable Self-service</h3>
+                <p>
+                    Enabling{' '}
+                    <Link to="/app/settings/self-service">self-service</Link>{' '}
+                    will let your customers track their orders, request a return
+                    or cancellation and report issues they might have with an
+                    order. It will then create an email ticket for your team.
+                </p>
+            </div>
 
             <div className="d-flex mt-4">
                 <ToggleButton
@@ -90,7 +91,7 @@ export const SelfServiceSection = ({
                     onChange={handleOnChangeSwitch}
                 />
                 <Label
-                    className="control-label ml-2"
+                    className="control-label ml-2 clickable"
                     onClick={handleOnChangeSwitch}
                 >
                     <p

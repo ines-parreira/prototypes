@@ -8,6 +8,7 @@ export type LocaleCode = Components.Schemas.LocaleEntity['code']
 // HELP CENTER
 
 export type CreateHelpCenterDto = Components.Schemas.CreateHelpCenterDto
+export type UpdateHelpCenterDto = Components.Schemas.UpdateHelpCenterDto
 export type CreateHelpCenterTranslationDto =
     Components.Schemas.CreateHelpCenterTranslationDto
 export type UpdateHelpCenterTranslationDto =
@@ -23,6 +24,18 @@ export type HelpCenter = Components.Schemas.HelpCenterEntity & {
     customDomain?: CustomDomain
     translations?: HelpCenterTranslation[]
 }
+
+// CONTACT INFO
+
+export type ContactInfo = Components.Schemas.ContactInfo
+export type EmailContactInfo = Components.Schemas.EmailContactInfo
+export type PhoneContactInfo = Components.Schemas.PhoneContactInfo
+
+export type ContactInfoDto = Components.Schemas.ContactInfoDto
+export type ChatContactInfoDto = Components.Schemas.ChatContactInfoDto
+export type EmailContactInfoDto = Components.Schemas.EmailContactInfoDto
+export type PhoneContactInfoDto = Components.Schemas.PhoneContactInfoDto
+export type ContactPhoneNumber = Components.Schemas.ContactPhoneNumber
 
 // CATEGORIES
 

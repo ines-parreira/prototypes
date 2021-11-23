@@ -14,7 +14,7 @@ exports[`<PhoneNumberInput/> should render 1`] = `
       class="input-group"
     >
       <div
-        class="countryFlagButton dropdown input-group-prepend"
+        class="dropdown countryFlagButton input-group-prepend"
       >
         <span
           class="input-group-text"

@@ -75,8 +75,10 @@ export const HelpCenterApiClientProvider = ({
         isReady: false,
         client: undefined,
     })
+
     const initClient = async () => {
         const newClient = await getHelpCenterClient()
+
         newClient.interceptors.request.use(async (config) => {
             // Prevent recursion while doing auth calls
             if (config.url === '/api/help-center/auth') {
@@ -95,6 +97,7 @@ export const HelpCenterApiClientProvider = ({
                 },
             }
         })
+
         setState({
             client: newClient,
             isReady: true,

@@ -34,6 +34,8 @@ type Props = {
     onChange: (value: string) => void
     allowedCountries?: CountryCode[]
     defaultCountry?: CountryCode
+    disabled?: boolean
+    className?: string
 }
 
 const PhoneNumberInput = ({
@@ -43,6 +45,8 @@ const PhoneNumberInput = ({
     onChange,
     allowedCountries,
     defaultCountry = 'US',
+    disabled = false,
+    className,
 }: Props): JSX.Element => {
     const [currentCountry, setCurrentCountry] = useState<CountryCode>(
         getCountryFromPhoneNumber(value) ?? defaultCountry
@@ -103,20 +107,24 @@ const PhoneNumberInput = ({
     })
 
     return (
-        <div ref={containerRef}>
+        <div ref={containerRef} className={className}>
             <FormGroup>
                 {label && <Label className="control-label">{label}</Label>}
                 <InputGroup>
                     <InputGroupAddon
                         addonType="prepend"
                         className={classnames(
+                            'dropdown',
                             css.countryFlagButton,
-                            'dropdown'
+                            {[css.disabled]: disabled}
                         )}
                     >
                         <InputGroupText
                             onClick={() => {
-                                setCountrySelectVisible(!isCountrySelectVisible)
+                                !disabled &&
+                                    setCountrySelectVisible(
+                                        !isCountrySelectVisible
+                                    )
                             }}
                         >
                             <CountryFlag
@@ -157,6 +165,7 @@ const PhoneNumberInput = ({
                             onChange={(event) => {
                                 handleChange(event.target.value, currentCountry)
                             }}
+                            disabled={disabled}
                         />
                     )}
                     {error && <Errors>{error}</Errors>}

@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react'
+import React, {useMemo} from 'react'
 
 import {
     HelpCenter,
@@ -26,13 +26,16 @@ type Props = {
     onChangeLocale: (value: LocaleCode) => void
 }
 
-export const SEO = ({
+export const SEO: React.FC<Props> = ({
     helpCenter,
     availableLocales,
     viewLanguage,
     onChangeLocale,
-}: Props): JSX.Element => {
-    const {preferences, updatePreferences} = useHelpCenterPreferencesSettings()
+}: Props) => {
+    const {
+        preferences: {seoMeta},
+        updatePreferences,
+    } = useHelpCenterPreferencesSettings()
 
     const domain = useMemo(() => getHelpCenterDomain(helpCenter), [helpCenter])
 
@@ -52,25 +55,12 @@ export const SEO = ({
     const onEditSeoMeta =
         (editKey: keyof HelpCenterTranslationSeoMeta) => (value: string) => {
             updatePreferences({
-                translation: {
-                    ...preferences.translation,
-                    seo_meta: {
-                        ...preferences.translation.seo_meta,
-                        [editKey]: value || null,
-                    },
+                seoMeta: {
+                    ...seoMeta,
+                    [editKey]: value || null,
                 },
             })
         }
-
-    useEffect(() => {
-        const translation = helpCenter.translations?.find(
-            (t) => t.locale === viewLanguage
-        )
-
-        if (translation) {
-            updatePreferences({translation})
-        }
-    }, [helpCenter, viewLanguage])
 
     return (
         <section>
@@ -86,7 +76,7 @@ export const SEO = ({
                     value={viewLanguage}
                     onChange={handleOnChangeLocale}
                     options={supportedLocales}
-                    style={{display: 'inline-block'}}
+                    className={css.select}
                 />
             </div>
 
@@ -94,7 +84,7 @@ export const SEO = ({
                 type="text"
                 name="seoTitle"
                 label="Meta Title"
-                value={preferences.translation.seo_meta.title ?? ''}
+                value={seoMeta.title ?? ''}
                 onChange={onEditSeoMeta('title')}
                 help="Help center title is displayed in search engines to help people find it."
             />
@@ -103,18 +93,15 @@ export const SEO = ({
                 rows="2"
                 name="seoDescription"
                 label="Meta Description"
-                value={preferences.translation.seo_meta.description ?? ''}
+                value={seoMeta.description ?? ''}
                 onChange={onEditSeoMeta('description')}
                 help="Help center description is displayed in search engines to help people find it."
             />
             <SearchEnginePreview
                 baseUrl={getAbsoluteUrl({domain}, false)}
-                title={
-                    preferences.translation.seo_meta.title ||
-                    `${helpCenter.name} Help Center`
-                }
+                title={seoMeta.title || `${helpCenter.name} Help Center`}
                 description={
-                    preferences.translation.seo_meta.description ||
+                    seoMeta.description ||
                     `Home page of the ${helpCenter.name} Help Center`
                 }
                 help="This is a preview of how your help center is going to look like in search engines (e.g. Google, Duckduckgo, Bing...)"

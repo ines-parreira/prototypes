@@ -1,0 +1,52 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .container {
+        position: relative;
+    }
+
+    .toggle {
+        margin-bottom: 16px;
+    }
+
+    .phoneNumbers {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 16px;
+        row-gap: 16px;
+    }
+
+    .phoneNumberInput {
+        width: 100%;
+    }
+
+    .deleteIcon {
+        height: 32px;
+        padding: 8px;
+        font-size: 16px;
+        color: @classic-feedback-error;
+        cursor: pointer;
+        transition: color 0.2s;
+
+        &.disabled {
+            color: @classic-neutral-grey-3;
+            cursor: default;
+        }
+    }
+
+    .card {
+        position: absolute;
+        top: 0;
+        left: 680px;
+        margin-left: 68px;
+
+        & .content {
+            display: grid;
+            grid-gap: 4px;
+
+            .cardPhoneNumber {
+                font-weight: 600;
+            }
+        }
+    }
+}

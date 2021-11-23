@@ -12,7 +12,6 @@ import Loader from '../../../../common/components/Loader/Loader'
 import PageHeader from '../../../../common/components/PageHeader'
 import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
 import {useCurrentHelpCenter} from '../../hooks/useCurrentHelpCenter'
-import {useHelpCenterIdParam} from '../../hooks/useHelpCenterIdParam'
 import {useLocales} from '../../hooks/useLocales'
 import {HelpCenterPreferencesSettings} from '../../providers/HelpCenterPreferencesSettings'
 import {HelpCenterDetailsBreadcrumb} from '../HelpCenterDetailsBreadcrumb'
@@ -20,7 +19,6 @@ import {HelpCenterNavigation} from '../HelpCenterNavigation'
 import {PageContainer} from '../PageContainer'
 
 import {AvailableLanguagesTags} from './components/AvailableLanguagesTags'
-import {ChatApplication} from './components/ChatApplication'
 import {DefaultLanguageSelect} from './components/DefaultLanguageSelect'
 import {DisplayName} from './components/DisplayName'
 import {FooterActions} from './components/FooterActions'
@@ -29,9 +27,7 @@ import {SEO} from './components/SEO'
 export const HelpCenterPreferencesView: React.FC = () => {
     const dispatch = useAppDispatch()
     const locales = useLocales()
-    const helpCenterId = useHelpCenterIdParam()
-    const {helpCenter, getHelpCenterCustomDomain, fetchHelpCenterTranslations} =
-        useCurrentHelpCenter()
+    const {helpCenter, getHelpCenterCustomDomain} = useCurrentHelpCenter()
     const viewLanguage =
         useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
 
@@ -41,14 +37,7 @@ export const HelpCenterPreferencesView: React.FC = () => {
 
     useEffect(() => {
         void getHelpCenterCustomDomain()
-        void fetchHelpCenterTranslations()
     }, [helpCenter !== null])
-
-    useEffect(() => {
-        if (helpCenter?.supported_locales) {
-            void fetchHelpCenterTranslations()
-        }
-    }, [helpCenter?.supported_locales])
 
     if (!helpCenter) {
         return (
@@ -68,8 +57,8 @@ export const HelpCenterPreferencesView: React.FC = () => {
                     />
                 }
             />
-            <HelpCenterNavigation helpCenterId={helpCenterId} />
-            <HelpCenterPreferencesSettings helpCenterId={helpCenterId}>
+            <HelpCenterNavigation helpCenterId={helpCenter.id} />
+            <HelpCenterPreferencesSettings helpCenter={helpCenter}>
                 <PageContainer>
                     <DisplayName />
                     <section>
@@ -78,12 +67,6 @@ export const HelpCenterPreferencesView: React.FC = () => {
                         <AvailableLanguagesTags availableLocales={locales} />
                     </section>
                     <SEO
-                        helpCenter={helpCenter}
-                        availableLocales={locales}
-                        viewLanguage={viewLanguage}
-                        onChangeLocale={handleOnChangeLocale}
-                    />
-                    <ChatApplication
                         helpCenter={helpCenter}
                         availableLocales={locales}
                         viewLanguage={viewLanguage}

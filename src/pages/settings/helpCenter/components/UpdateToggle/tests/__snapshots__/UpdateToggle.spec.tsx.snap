@@ -3,10 +3,10 @@
 exports[`<UpdateToggle /> should display the update toggle 1`] = `
 <div>
   <div
-    class="form-group"
+    class="toggle form-group"
   >
     <div
-      class="d-flex"
+      class="container"
     >
       <label
         class="switch toggle-switch"
@@ -21,14 +21,14 @@ exports[`<UpdateToggle /> should display the update toggle 1`] = `
         />
       </label>
       <label
-        class="control-label ml-2"
+        class="control-label mb-0 ml-2 clickable"
       >
         label
       </label>
     </div>
-    <p>
-      description
-    </p>
   </div>
+  <p>
+    description
+  </p>
 </div>
 `;

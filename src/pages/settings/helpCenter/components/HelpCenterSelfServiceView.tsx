@@ -1,32 +1,31 @@
 import React, {useEffect, useState} from 'react'
-import classnames from 'classnames'
-import {Container} from 'reactstrap'
-import {useAsyncFn} from 'react-use'
-import {useSelector} from 'react-redux'
 import {Map} from 'immutable'
+import {useSelector} from 'react-redux'
+import {useAsyncFn} from 'react-use'
+import {Container} from 'reactstrap'
 
-import {fetchIntegrations} from '../../../../state/integrations/actions'
-
-import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
-import PageHeader from '../../../common/components/PageHeader'
-import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {HelpCenter} from '../../../../models/helpCenter/types'
-import {notify} from '../../../../state/notifications/actions'
-import {helpCenterUpdated} from '../../../../state/entities/helpCenters/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
-import {getIntegrations} from '../../../../state/integrations/selectors'
 import {IntegrationType} from '../../../../models/integration/constants'
+import {helpCenterUpdated} from '../../../../state/entities/helpCenters/actions'
+import {fetchIntegrations} from '../../../../state/integrations/actions'
+import {getIntegrations} from '../../../../state/integrations/selectors'
+import {notify} from '../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../state/notifications/types'
+import Loader from '../../../common/components/Loader/Loader'
+import PageHeader from '../../../common/components/PageHeader'
+import {useCurrentHelpCenter} from '../hooks/useCurrentHelpCenter'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
+import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
-import css from './HelpCenterSelfServiceView.less'
+import {PageContainer} from './PageContainer'
 import {SelfServiceSection} from './SelfServiceSection'
 
 export const HelpCenterSelfServiceView = (): JSX.Element | null => {
     const helpCenterId = useHelpCenterIdParam()
-    const helpCenter = useSelector(getCurrentHelpCenter)
+    const {helpCenter} = useCurrentHelpCenter()
     const integrations = useSelector(getIntegrations)
     const {client} = useHelpCenterApi()
     const dispatch = useAppDispatch()
@@ -79,7 +78,11 @@ export const HelpCenterSelfServiceView = (): JSX.Element | null => {
     )
 
     if (helpCenter === null || isLoadingIntegrations) {
-        return null
+        return (
+            <Container fluid className="page-container">
+                <Loader />
+            </Container>
+        )
     }
 
     const shopifyIntegration: Map<any, any> | undefined = integrations.find(
@@ -103,17 +106,14 @@ export const HelpCenterSelfServiceView = (): JSX.Element | null => {
                 }
             />
             <HelpCenterNavigation helpCenterId={helpCenterId} />
-            <Container
-                fluid
-                className={classnames('page-container', css.container)}
-            >
+            <PageContainer>
                 <SelfServiceSection
                     shopifyIntegration={shopifyIntegration}
                     helpCenter={helpCenter}
                     updateHelpCenter={updateHelpCenter}
                     updating={updatingHelpCenter}
                 />
-            </Container>
+            </PageContainer>
         </div>
     )
 }

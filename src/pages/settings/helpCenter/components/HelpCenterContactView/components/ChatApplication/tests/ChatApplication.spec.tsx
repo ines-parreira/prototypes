@@ -1,43 +1,21 @@
 import React from 'react'
+import {fireEvent, waitFor} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
-import {fireEvent, waitFor} from '@testing-library/react'
 
-import {getHelpCentersResponseFixture} from '../../../../../fixtures/getHelpCentersResponse.fixture'
-
-import {ChatApplication} from '../ChatApplication'
-import {HelpCenter} from '../../../../../../../../models/helpCenter/types'
-import {getLocalesResponseFixture as LOCALE_LIST} from '../../../../../fixtures/getLocalesResponse.fixtures'
-import {renderWithRouter} from '../../../../../../../../utils/testing'
 import {RootState, StoreDispatch} from '../../../../../../../../state/types'
-import {initialState as uiState} from '../../../../../../../../state/helpCenter/ui/reducer'
-import {initialState as categoriesState} from '../../../../../../../../state/helpCenter/categories/reducer'
-import {initialState as articlesState} from '../../../../../../../../state/helpCenter/articles/reducer'
+import {renderWithRouter} from '../../../../../../../../utils/testing'
+import ChatApplication from '../ChatApplication'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
 ])
 
-const mockedUpdatePreferences = jest.fn()
-const mockedOnChangeLocale = jest.fn()
-
-const helpCenter: HelpCenter = {
-    ...getHelpCentersResponseFixture.data[0],
-}
+const mockedUpdateTranslation = jest.fn()
 
 const defaultState: Partial<RootState> = {
-    entities: {
-        helpCenters: {
-            '1': helpCenter,
-        },
-    } as any,
-    helpCenter: {
-        ui: {...uiState, currentId: 1},
-        articles: articlesState,
-        categories: categoriesState,
-    },
     integrations: fromJS({
         integrations: [
             {
@@ -112,32 +90,34 @@ const defaultState: Partial<RootState> = {
     }),
 }
 
-jest.mock('../../../../../providers/HelpCenterPreferencesSettings', () => ({
-    useHelpCenterPreferencesSettings: () => ({
-        preferences: {
+jest.mock('../../../../../providers/HelpCenterTranslation', () => ({
+    useHelpCenterTranslation: () => ({
+        translation: {
             chat_application_id: null,
-            name: 'my-help-center',
-            defaultLanguage: 'en-US',
-            availableLanguages: ['en-US', 'fr-FR'],
-            translation: {
-                created_datetime: '2021-05-17T18:21:42.022Z',
-                updated_datetime: '2021-05-17T18:21:42.022Z',
-                help_center_id: 1,
-                locale: 'en-US',
-                seo_meta: {
-                    title: null,
-                    description: null,
+            contact_info: {
+                email: {
+                    description: '',
+                    enabled: false,
+                    email: '',
                 },
-                chat_application_id: null,
+                phone: {
+                    description: '',
+                    enabled: false,
+                    phone_numbers: '',
+                },
+                chat: {
+                    description: '',
+                    enabled: false,
+                },
             },
         },
-        updatePreferences: mockedUpdatePreferences,
+        updateTranslation: mockedUpdateTranslation,
     }),
 }))
 
 const route = {
-    path: '/app/settings/help-center/:helpcenterId/preferences',
-    route: '/app/settings/help-center/1/preferences',
+    path: '/app/settings/help-center/:helpcenterId/contact',
+    route: '/app/settings/help-center/1/contact',
 }
 
 describe('<ChatApplication />', () => {
@@ -148,12 +128,7 @@ describe('<ChatApplication />', () => {
     it('allows to enable chat widget and selects the first chat by default', async () => {
         const {container, getByText} = renderWithRouter(
             <Provider store={mockedStore(defaultState)}>
-                <ChatApplication
-                    helpCenter={helpCenter}
-                    availableLocales={LOCALE_LIST}
-                    viewLanguage="en-US"
-                    onChangeLocale={mockedOnChangeLocale}
-                />
+                <ChatApplication />
             </Provider>,
             route
         )
@@ -164,18 +139,8 @@ describe('<ChatApplication />', () => {
             fireEvent.click(getByText('Enable chat widget'))
         })
 
-        expect(mockedUpdatePreferences).toHaveBeenLastCalledWith({
-            translation: {
-                created_datetime: '2021-05-17T18:21:42.022Z',
-                updated_datetime: '2021-05-17T18:21:42.022Z',
-                help_center_id: 1,
-                locale: 'en-US',
-                seo_meta: {
-                    title: null,
-                    description: null,
-                },
-                chat_application_id: 1,
-            },
+        expect(mockedUpdateTranslation).toHaveBeenLastCalledWith({
+            chatApplicationId: 1,
         })
     })
 
@@ -189,12 +154,7 @@ describe('<ChatApplication />', () => {
                     }),
                 })}
             >
-                <ChatApplication
-                    helpCenter={helpCenter}
-                    availableLocales={LOCALE_LIST}
-                    viewLanguage="en-US"
-                    onChangeLocale={mockedOnChangeLocale}
-                />
+                <ChatApplication />
             </Provider>,
             route
         )

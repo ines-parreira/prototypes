@@ -51,6 +51,13 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
       <a
         activeclassname="active"
         class="link"
+        to="/app/settings/help-center/1/contact"
+      >
+        Contact
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
         to="/app/settings/help-center/1/appearance"
       >
         Appearance
@@ -505,10 +512,10 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
           Other settings
         </h3>
         <div
-          class="form-group"
+          class="toggle form-group"
         >
           <div
-            class="d-flex"
+            class="container"
           >
             <label
               class="switch toggle-switch"
@@ -522,20 +529,20 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
               />
             </label>
             <label
-              class="control-label ml-2"
+              class="control-label mb-0 ml-2 clickable"
             >
               Enable search bar
             </label>
           </div>
-          <p>
-            Use this toggle to display or hide the search bar in your Help Center.
-          </p>
         </div>
+        <p>
+          Use this toggle to display or hide the search bar in your Help Center.
+        </p>
         <div
-          class="form-group"
+          class="toggle form-group"
         >
           <div
-            class="d-flex"
+            class="container"
           >
             <label
               class="switch toggle-switch"
@@ -550,15 +557,15 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
               />
             </label>
             <label
-              class="control-label ml-2"
+              class="control-label mb-0 ml-2 clickable"
             >
               Powered by Gorgias
             </label>
           </div>
-          <p>
-            Use this toggle to display or hide the Gorgias branding on the footer in Help Center.
-          </p>
         </div>
+        <p>
+          Use this toggle to display or hide the Gorgias branding on the footer in Help Center.
+        </p>
       </section>
       <footer>
         <div

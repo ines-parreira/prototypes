@@ -41,7 +41,7 @@ export const HelpCenterNavigation: React.FC<Props> = ({
             <NavLink to={`${baseURL}/articles`} exact>
                 Articles
             </NavLink>
-            {/* <NavLink to={`${baseURL}/contact-us`}>Contact Us</NavLink> */}
+            <NavLink to={`${baseURL}/contact`}>Contact</NavLink>
             <NavLink to={`${baseURL}/appearance`}>Appearance</NavLink>
             <NavLink to={`${baseURL}/preferences`} exact>
                 Preferences
