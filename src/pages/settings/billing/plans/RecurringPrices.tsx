@@ -57,21 +57,23 @@ const RecurringPrices = ({
                     >
                         <span id={`automation-text-${id}`}>Automation</span>
                     </div>
-                    {typeof addOnAmount === 'number' &&
-                    plan.currency &&
-                    plan.interval ? (
-                        <SubscriptionAmount
-                            amount={addOnAmount}
-                            className={classnames(css.amount, {
-                                [css.amountDisabled]: !isAutomationChecked,
-                            })}
-                            currency={plan.currency}
-                            interval={plan.interval}
-                            renderAmount={(amount) => <b>{amount}</b>}
-                        />
-                    ) : (
-                        <i>{addOnAmount}</i>
-                    )}
+                    <div className={css.amountContainer}>
+                        {typeof addOnAmount === 'number' &&
+                        plan.currency &&
+                        plan.interval ? (
+                            <SubscriptionAmount
+                                amount={addOnAmount}
+                                className={classnames(css.amount, {
+                                    [css.amountDisabled]: !isAutomationChecked,
+                                })}
+                                currency={plan.currency}
+                                interval={plan.interval}
+                                renderAmount={(amount) => <b>{amount}</b>}
+                            />
+                        ) : (
+                            <i>{addOnAmount}</i>
+                        )}
+                    </div>
                     <Tooltip
                         target={`automation-text-${id}`}
                         placement="top-start"
@@ -92,19 +94,21 @@ const RecurringPrices = ({
                     <div className={classnames('align-middle', css.addOnName)}>
                         Automation
                     </div>
-                    {typeof addOnAmount === 'number' &&
-                    plan.currency &&
-                    plan.interval ? (
-                        <SubscriptionAmount
-                            amount={addOnAmount}
-                            className={classnames(css.amount)}
-                            currency={plan.currency}
-                            interval={plan.interval}
-                            renderAmount={(amount) => <b>{amount}</b>}
-                        />
-                    ) : (
-                        <i>{addOnAmount}</i>
-                    )}
+                    <div className={css.amountContainer}>
+                        {typeof addOnAmount === 'number' &&
+                        plan.currency &&
+                        plan.interval ? (
+                            <SubscriptionAmount
+                                amount={addOnAmount}
+                                className={classnames(css.amount)}
+                                currency={plan.currency}
+                                interval={plan.interval}
+                                renderAmount={(amount) => <b>{amount}</b>}
+                            />
+                        ) : (
+                            <i>{addOnAmount}</i>
+                        )}
+                    </div>
                 </div>
             )}
 
@@ -115,17 +119,19 @@ const RecurringPrices = ({
                 plan.interval ? (
                     <>
                         <div>Total</div>
-                        <SubscriptionAmount
-                            amount={
-                                (isAutomationChecked || !editable
-                                    ? addOnAmount
-                                    : 0) + plan.amount
-                            }
-                            className={css.amount}
-                            currency={plan.currency}
-                            interval={plan.interval}
-                            renderAmount={(amount) => <b>{amount}</b>}
-                        />
+                        <div className={css.amountContainer}>
+                            <SubscriptionAmount
+                                amount={
+                                    (isAutomationChecked || !editable
+                                        ? addOnAmount
+                                        : 0) + plan.amount
+                                }
+                                className={css.amount}
+                                currency={plan.currency}
+                                interval={plan.interval}
+                                renderAmount={(amount) => <b>{amount}</b>}
+                            />
+                        </div>
                     </>
                 ) : (
                     <div

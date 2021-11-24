@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React, {ReactNode, useMemo} from 'react'
 import classNames from 'classnames'
 import {Card, CardBody, CardFooter, CardHeader} from 'reactstrap'
 
@@ -39,6 +39,10 @@ export default function PlanCard({
     className,
     renderBody = (featureList) => featureList,
 }: Props) {
+    const displayedPlanName = useMemo(() => {
+        return planName.replace(/[\s]+[pP]lan$/, '')
+    }, [planName])
+
     return (
         <Card
             className={classNames(
@@ -57,7 +61,9 @@ export default function PlanCard({
             <CardHeader className={css.planHeader}>
                 {headerBadge && <div>{headerBadge}</div>}
                 <div className={css.headerText}>
-                    <div className={css.planName}>{planName}</div>
+                    <div className={css.planName} title={planName}>
+                        {displayedPlanName}
+                    </div>
                     {price && <span className={css.headerPrice}>{price}</span>}
                 </div>
             </CardHeader>
@@ -67,7 +73,7 @@ export default function PlanCard({
                         {features.map((feature, i) => {
                             return (
                                 <li
-                                    key={`${planName}-feature-${i}`}
+                                    key={`${displayedPlanName}-feature-${i}`}
                                     className={classNames(
                                         'd-flex align-items-center',
                                         css.featureListItem,

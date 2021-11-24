@@ -12,6 +12,7 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced plan 1`] =
     >
       <div
         class="planName"
+        title="Advanced"
       >
         Advanced
       </div>
@@ -275,6 +276,7 @@ exports[`<BillingPlanCard /> should render plan card for the Basic plan 1`] = `
     >
       <div
         class="planName"
+        title="Basic"
       >
         Basic
       </div>
@@ -537,6 +539,7 @@ exports[`<BillingPlanCard /> should render plan card for the Custom plan 1`] = `
     >
       <div
         class="planName"
+        title="Custom"
       >
         Custom
       </div>
@@ -800,6 +803,7 @@ exports[`<BillingPlanCard /> should render plan card for the Enterprise plan 1`]
     >
       <div
         class="planName"
+        title="Enterprise"
       >
         Enterprise
       </div>
@@ -1053,6 +1057,7 @@ exports[`<BillingPlanCard /> should render plan card for the Legacy plan 1`] = `
     >
       <div
         class="planName"
+        title="Standard"
       >
         Standard
       </div>
@@ -1305,6 +1310,7 @@ exports[`<BillingPlanCard /> should render plan card for the Pro plan 1`] = `
     >
       <div
         class="planName"
+        title="Pro"
       >
         Pro
       </div>
@@ -1588,6 +1594,7 @@ exports[`<BillingPlanCard /> should render the legacy badge for legacy plan when
     >
       <div
         class="planName"
+        title="Standard"
       >
         Standard
       </div>

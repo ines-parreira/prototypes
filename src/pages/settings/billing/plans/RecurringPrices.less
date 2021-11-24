@@ -1,12 +1,16 @@
 @import '~css/new/colors';
 
 :local {
-    .amount {
-        color: @neutral8;
-        font-size: 14px;
+    .amountContainer {
+        margin-left: 8px;
 
-        b {
-            color: @neutral10;
+        .amount {
+            color: @neutral8;
+            font-size: 14px;
+
+            b {
+                color: @neutral10;
+            }
         }
     }
 
@@ -84,6 +88,7 @@
         font-weight: 600;
         height: 52px;
         padding: 16px;
+        justify-content: space-between;
 
         &:not(:first-child) {
             border-top: 1px solid @neutral4;

@@ -12,8 +12,9 @@ exports[`<PlanCard /> should render custom body 1`] = `
     >
       <div
         class="planName"
+        title="Foo"
       >
-        Foo plan
+        Foo
       </div>
     </div>
   </div>
@@ -39,8 +40,9 @@ exports[`<PlanCard /> should render the footer 1`] = `
     >
       <div
         class="planName"
+        title="Foo"
       >
-        Foo plan
+        Foo
       </div>
     </div>
   </div>
@@ -103,8 +105,9 @@ exports[`<PlanCard /> should render the header badge 1`] = `
     >
       <div
         class="planName"
+        title="Foo"
       >
-        Foo plan
+        Foo
       </div>
     </div>
   </div>
@@ -155,8 +158,9 @@ exports[`<PlanCard /> should render the plan card for Blue theme 1`] = `
     >
       <div
         class="planName"
+        title="Foo"
       >
-        Foo plan
+        Foo
       </div>
     </div>
   </div>
@@ -207,8 +211,9 @@ exports[`<PlanCard /> should render the plan card for Gold theme 1`] = `
     >
       <div
         class="planName"
+        title="Foo"
       >
-        Foo plan
+        Foo
       </div>
     </div>
   </div>
@@ -259,8 +264,9 @@ exports[`<PlanCard /> should render the plan card for Green theme 1`] = `
     >
       <div
         class="planName"
+        title="Foo"
       >
-        Foo plan
+        Foo
       </div>
     </div>
   </div>
@@ -311,8 +317,9 @@ exports[`<PlanCard /> should render the plan card for Grey theme 1`] = `
     >
       <div
         class="planName"
+        title="Foo"
       >
-        Foo plan
+        Foo
       </div>
     </div>
   </div>
@@ -363,8 +370,62 @@ exports[`<PlanCard /> should render the plan card for Navy theme 1`] = `
     >
       <div
         class="planName"
+        title="Foo"
       >
-        Foo plan
+        Foo
+      </div>
+    </div>
+  </div>
+  <div
+    class="cardBody card-body"
+  >
+    <ul
+      class="featureList"
+    >
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          Foo icon
+        </span>
+        <span>
+          Foo feature
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          Bar icon
+        </span>
+        <span>
+          Bar feature
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`<PlanCard /> should render the plan name without the "Plan" addendum  1`] = `
+<div
+  class="plan greyTheme customClassName card"
+>
+  <div
+    class="planHeader card-header"
+  >
+    <div
+      class="headerText"
+    >
+      <div
+        class="planName"
+        title="Custom Plan"
+      >
+        Custom
       </div>
     </div>
   </div>
@@ -415,8 +476,9 @@ exports[`<PlanCard /> should render the price 1`] = `
     >
       <div
         class="planName"
+        title="Foo"
       >
-        Foo plan
+        Foo
       </div>
       <span
         class="headerPrice"

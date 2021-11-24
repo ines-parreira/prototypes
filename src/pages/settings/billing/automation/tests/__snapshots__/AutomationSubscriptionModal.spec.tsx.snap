@@ -114,7 +114,7 @@ exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
                     </a>
                   </div>
                   <div
-                    class="amount"
+                    class="amount amount"
                   >
                     <b>
                       $20

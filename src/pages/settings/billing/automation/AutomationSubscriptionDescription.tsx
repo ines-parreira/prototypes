@@ -68,6 +68,7 @@ const AutomationSubscriptionDescription = () => {
                         interval={currentPlan.get('interval')}
                         amount={addOnAmount}
                         renderAmount={(amount) => <b>{amount}</b>}
+                        className={css.amount}
                     />
                 )}
             </div>

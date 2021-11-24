@@ -6,7 +6,7 @@ import PlanCard, {PlanCardTheme} from '../PlanCard'
 describe('<PlanCard />', () => {
     const minProps: ComponentProps<typeof PlanCard> = {
         className: 'customClassName',
-        planName: 'Foo plan',
+        planName: 'Foo',
         features: [
             {
                 label: 'Foo feature',
@@ -27,6 +27,13 @@ describe('<PlanCard />', () => {
             expect(container.firstChild).toMatchSnapshot()
         }
     )
+
+    it('should render the plan name without the "Plan" addendum ', () => {
+        const {container} = render(
+            <PlanCard {...minProps} planName="Custom Plan" />
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
 
     it('should render the price', () => {
         const {container} = render(<PlanCard {...minProps} price="$1000" />)

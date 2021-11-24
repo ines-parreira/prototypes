@@ -48,6 +48,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
         >
           <div
             class="planName"
+            title="Basic"
           >
             Basic
           </div>
@@ -320,14 +321,18 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
             </span>
           </div>
           <div
-            class="amount amount amountDisabled"
+            class="amountContainer"
           >
-            <b>
-              $20
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount amountDisabled"
+            >
+              <b>
+                $20
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </label>
         <div
@@ -337,14 +342,18 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
             Total
           </div>
           <div
-            class="amount amount"
+            class="amountContainer"
           >
-            <b>
-              $60
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount"
+            >
+              <b>
+                $60
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </div>
         <button
@@ -368,6 +377,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
         >
           <div
             class="planName"
+            title="Pro"
           >
             Pro
           </div>
@@ -641,14 +651,18 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
             </span>
           </div>
           <div
-            class="amount amount amountDisabled"
+            class="amountContainer"
           >
-            <b>
-              $100
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount amountDisabled"
+            >
+              <b>
+                $100
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </label>
         <div
@@ -658,14 +672,18 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
             Total
           </div>
           <div
-            class="amount amount"
+            class="amountContainer"
           >
-            <b>
-              $300
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount"
+            >
+              <b>
+                $300
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </div>
         <button
@@ -688,6 +706,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
         >
           <div
             class="planName"
+            title="Advanced"
           >
             Advanced
           </div>
@@ -961,14 +980,18 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
             </span>
           </div>
           <div
-            class="amount amount amountDisabled"
+            class="amountContainer"
           >
-            <b>
-              $300
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount amountDisabled"
+            >
+              <b>
+                $300
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </label>
         <div
@@ -978,14 +1001,18 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
             Total
           </div>
           <div
-            class="amount amount"
+            class="amountContainer"
           >
-            <b>
-              $700
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount"
+            >
+              <b>
+                $700
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </div>
         <button
@@ -1008,6 +1035,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
         >
           <div
             class="planName"
+            title="Enterprise"
           >
             Enterprise
           </div>
@@ -1257,9 +1285,13 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
               Automation
             </span>
           </div>
-          <i>
-            Custom price
-          </i>
+          <div
+            class="amountContainer"
+          >
+            <i>
+              Custom price
+            </i>
+          </div>
         </label>
         <div
           class="row"
@@ -1366,6 +1398,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
         >
           <div
             class="planName"
+            title="Standard"
           >
             Standard
           </div>
@@ -1621,9 +1654,13 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
               Automation
             </span>
           </div>
-          <i>
-            ?
-          </i>
+          <div
+            class="amountContainer"
+          >
+            <i>
+              ?
+            </i>
+          </div>
         </label>
         <div
           class="row"
@@ -1655,6 +1692,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
         >
           <div
             class="planName"
+            title="Basic"
           >
             Basic
           </div>
@@ -1926,14 +1964,18 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
             </span>
           </div>
           <div
-            class="amount amount amountDisabled"
+            class="amountContainer"
           >
-            <b>
-              $20
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount amountDisabled"
+            >
+              <b>
+                $20
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </label>
         <div
@@ -1943,14 +1985,18 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
             Total
           </div>
           <div
-            class="amount amount"
+            class="amountContainer"
           >
-            <b>
-              $60
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount"
+            >
+              <b>
+                $60
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </div>
         <button
@@ -1973,6 +2019,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
         >
           <div
             class="planName"
+            title="Pro"
           >
             Pro
           </div>
@@ -2245,14 +2292,18 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
             </span>
           </div>
           <div
-            class="amount amount amountDisabled"
+            class="amountContainer"
           >
-            <b>
-              $100
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount amountDisabled"
+            >
+              <b>
+                $100
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </label>
         <div
@@ -2262,14 +2313,18 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
             Total
           </div>
           <div
-            class="amount amount"
+            class="amountContainer"
           >
-            <b>
-              $300
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount"
+            >
+              <b>
+                $300
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </div>
         <button
@@ -2292,6 +2347,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
         >
           <div
             class="planName"
+            title="Advanced"
           >
             Advanced
           </div>
@@ -2564,14 +2620,18 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
             </span>
           </div>
           <div
-            class="amount amount amountDisabled"
+            class="amountContainer"
           >
-            <b>
-              $300
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount amountDisabled"
+            >
+              <b>
+                $300
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </label>
         <div
@@ -2581,14 +2641,18 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
             Total
           </div>
           <div
-            class="amount amount"
+            class="amountContainer"
           >
-            <b>
-              $700
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount"
+            >
+              <b>
+                $700
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </div>
         <button
@@ -2611,6 +2675,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
         >
           <div
             class="planName"
+            title="Enterprise"
           >
             Enterprise
           </div>
@@ -2860,9 +2925,13 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
               Automation
             </span>
           </div>
-          <i>
-            Custom price
-          </i>
+          <div
+            class="amountContainer"
+          >
+            <i>
+              Custom price
+            </i>
+          </div>
         </label>
         <div
           class="row"
@@ -2927,6 +2996,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
         >
           <div
             class="planName"
+            title="Basic"
           >
             Basic
           </div>
@@ -3198,14 +3268,18 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
             </span>
           </div>
           <div
-            class="amount amount amountDisabled"
+            class="amountContainer"
           >
-            <b>
-              $20
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount amountDisabled"
+            >
+              <b>
+                $20
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </label>
         <div
@@ -3215,14 +3289,18 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
             Total
           </div>
           <div
-            class="amount amount"
+            class="amountContainer"
           >
-            <b>
-              $60
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount"
+            >
+              <b>
+                $60
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </div>
         <button
@@ -3245,6 +3323,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
         >
           <div
             class="planName"
+            title="Pro"
           >
             Pro
           </div>
@@ -3517,14 +3596,18 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
             </span>
           </div>
           <div
-            class="amount amount amountDisabled"
+            class="amountContainer"
           >
-            <b>
-              $100
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount amountDisabled"
+            >
+              <b>
+                $100
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </label>
         <div
@@ -3534,14 +3617,18 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
             Total
           </div>
           <div
-            class="amount amount"
+            class="amountContainer"
           >
-            <b>
-              $300
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount"
+            >
+              <b>
+                $300
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </div>
         <button
@@ -3564,6 +3651,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
         >
           <div
             class="planName"
+            title="Advanced"
           >
             Advanced
           </div>
@@ -3836,14 +3924,18 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
             </span>
           </div>
           <div
-            class="amount amount amountDisabled"
+            class="amountContainer"
           >
-            <b>
-              $300
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount amountDisabled"
+            >
+              <b>
+                $300
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </label>
         <div
@@ -3853,14 +3945,18 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
             Total
           </div>
           <div
-            class="amount amount"
+            class="amountContainer"
           >
-            <b>
-              $700
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount"
+            >
+              <b>
+                $700
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </div>
         <button
@@ -3883,6 +3979,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
         >
           <div
             class="planName"
+            title="Enterprise"
           >
             Enterprise
           </div>
@@ -4132,9 +4229,13 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
               Automation
             </span>
           </div>
-          <i>
-            Custom price
-          </i>
+          <div
+            class="amountContainer"
+          >
+            <i>
+              Custom price
+            </i>
+          </div>
         </label>
         <div
           class="row"
@@ -4206,6 +4307,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
         >
           <div
             class="planName"
+            title="Basic"
           >
             Basic
           </div>
@@ -4477,14 +4579,18 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
             </span>
           </div>
           <div
-            class="amount amount amountDisabled"
+            class="amountContainer"
           >
-            <b>
-              $20
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount amountDisabled"
+            >
+              <b>
+                $20
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </label>
         <div
@@ -4494,14 +4600,18 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
             Total
           </div>
           <div
-            class="amount amount"
+            class="amountContainer"
           >
-            <b>
-              $60
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount"
+            >
+              <b>
+                $60
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </div>
         <button
@@ -4525,6 +4635,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
         >
           <div
             class="planName"
+            title="Pro"
           >
             Pro
           </div>
@@ -4797,14 +4908,18 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
             </span>
           </div>
           <div
-            class="amount amount amountDisabled"
+            class="amountContainer"
           >
-            <b>
-              $100
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount amountDisabled"
+            >
+              <b>
+                $100
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </label>
         <div
@@ -4814,14 +4929,18 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
             Total
           </div>
           <div
-            class="amount amount"
+            class="amountContainer"
           >
-            <b>
-              $300
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount"
+            >
+              <b>
+                $300
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </div>
         <button
@@ -4845,6 +4964,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
         >
           <div
             class="planName"
+            title="Advanced"
           >
             Advanced
           </div>
@@ -5117,14 +5237,18 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
             </span>
           </div>
           <div
-            class="amount amount amountDisabled"
+            class="amountContainer"
           >
-            <b>
-              $300
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount amountDisabled"
+            >
+              <b>
+                $300
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </label>
         <div
@@ -5134,14 +5258,18 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
             Total
           </div>
           <div
-            class="amount amount"
+            class="amountContainer"
           >
-            <b>
-              $700
-            </b>
-             
-            / 
-            month
+            <div
+              class="amount amount"
+            >
+              <b>
+                $700
+              </b>
+               
+              / 
+              month
+            </div>
           </div>
         </div>
         <button
@@ -5165,6 +5293,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
         >
           <div
             class="planName"
+            title="Enterprise"
           >
             Enterprise
           </div>
@@ -5414,9 +5543,13 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
               Automation
             </span>
           </div>
-          <i>
-            Custom price
-          </i>
+          <div
+            class="amountContainer"
+          >
+            <i>
+              Custom price
+            </i>
+          </div>
         </label>
         <div
           class="row"

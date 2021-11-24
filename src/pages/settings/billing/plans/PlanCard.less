@@ -1,4 +1,5 @@
-@import '../../../../../css/new/colors';
+@import '~css/new/colors';
+@import '~css/new/mixins';
 @import '../colors';
 
 :local {
@@ -34,6 +35,9 @@
         align-self: end;
         font-size: 24px;
         font-weight: 600;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .headerText {
@@ -45,6 +49,8 @@
     .headerPrice {
         align-self: center;
         font-size: 16px;
+        flex-shrink: 0;
+        margin-left: 8px;
     }
 
     .cardBody {

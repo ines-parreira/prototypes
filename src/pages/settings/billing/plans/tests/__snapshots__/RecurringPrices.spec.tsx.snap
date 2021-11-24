@@ -15,9 +15,13 @@ exports[`<RecurringPrices /> should render a string as amount 1`] = `
         Automation
       </span>
     </div>
-    <i>
-      Amount
-    </i>
+    <div
+      class="amountContainer"
+    >
+      <i>
+        Amount
+      </i>
+    </div>
   </label>
   <div
     class="row"
@@ -52,14 +56,18 @@ exports[`<RecurringPrices /> should render formatted numbers as amount 1`] = `
       </span>
     </div>
     <div
-      class="amount amount amountDisabled"
+      class="amountContainer"
     >
-      <b>
-        $45,612
-      </b>
-       
-      / 
-      month
+      <div
+        class="amount amount amountDisabled"
+      >
+        <b>
+          $45,612
+        </b>
+         
+        / 
+        month
+      </div>
     </div>
   </label>
   <div
@@ -69,14 +77,18 @@ exports[`<RecurringPrices /> should render formatted numbers as amount 1`] = `
       Total
     </div>
     <div
-      class="amount amount"
+      class="amountContainer"
     >
-      <b>
-        $40,000
-      </b>
-       
-      / 
-      month
+      <div
+        class="amount amount"
+      >
+        <b>
+          $40,000
+        </b>
+         
+        / 
+        month
+      </div>
     </div>
   </div>
 </div>
@@ -93,14 +105,18 @@ exports[`<RecurringPrices /> should render not editable variant 1`] = `
       Automation
     </div>
     <div
-      class="amount amount"
+      class="amountContainer"
     >
-      <b>
-        $2,000
-      </b>
-       
-      / 
-      month
+      <div
+        class="amount amount"
+      >
+        <b>
+          $2,000
+        </b>
+         
+        / 
+        month
+      </div>
     </div>
   </div>
   <div
@@ -110,14 +126,18 @@ exports[`<RecurringPrices /> should render not editable variant 1`] = `
       Total
     </div>
     <div
-      class="amount amount"
+      class="amountContainer"
     >
-      <b>
-        $42,000
-      </b>
-       
-      / 
-      month
+      <div
+        class="amount amount"
+      >
+        <b>
+          $42,000
+        </b>
+         
+        / 
+        month
+      </div>
     </div>
   </div>
 </div>
