@@ -10,6 +10,7 @@ import {getIntegrationsByTypes} from '../../../../../../../state/integrations/se
 import SelectField from '../../../../../../common/forms/SelectField/SelectField'
 import ToggleField from '../../../../../../common/forms/ToggleField'
 import {useHelpCenterTranslation} from '../../../../providers/HelpCenterTranslation'
+import {SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS} from '../../../../../../../config/integrations/smooch_inside'
 
 import css from './ChatApplication.less'
 
@@ -31,13 +32,35 @@ const ChatApplication: React.FC = () => {
 
                     return !deactivatedDatetime
                 })
-                .map((chat: Map<any, any>) => ({
-                    label: chat.get('name') as string,
-                    value: parseInt(
+                .map((chat: Map<any, any>) => {
+                    const chatName: string = chat.get('name')
+                    const chatAppId: number = parseInt(
                         chat.getIn(['meta', 'app_id']) as string,
                         10
-                    ),
-                })),
+                    )
+                    const chatLanguageCode: string = chat.getIn([
+                        'meta',
+                        'language',
+                    ])
+                    const chatLanguage: Map<any, any> | undefined =
+                        SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS.find(
+                            (value: Map<any, any>) =>
+                                value.get('value') === chatLanguageCode
+                        )
+                    const chatLanguageName =
+                        chatLanguage !== undefined
+                            ? `(${chatLanguage.get('label') as string})`
+                            : ''
+
+                    return {
+                        label: (
+                            <span>
+                                {chatName} {chatLanguageName}
+                            </span>
+                        ),
+                        value: chatAppId,
+                    }
+                }),
         [chatIntegrations]
     )
 
