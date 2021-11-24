@@ -4,6 +4,8 @@ import {Container, Collapse, Badge, Row, Col} from 'reactstrap'
 import ReactStars from 'react-rating-stars-component'
 
 import {ProductDetails} from '../../../../models/ticket/types'
+import {getIconFromUrl} from '../../../../state/integrations/helpers'
+
 import GenericCard from '../GenericCard/GenericCard'
 
 import {starRatingProps} from '../infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/yotpo/Reviews'
@@ -29,7 +31,13 @@ export default function ProductEmbeddedCard(props: Props) {
                         <img
                             alt="product"
                             className={css.productImage}
-                            src={product.images[0].square}
+                            src={
+                                product.images?.length
+                                    ? product.images[0].square
+                                    : getIconFromUrl(
+                                          'integrations/shopify-placeholder.png'
+                                      )
+                            }
                         />
                     </Col>
                     <Col>

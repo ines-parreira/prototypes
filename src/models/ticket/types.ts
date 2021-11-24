@@ -243,7 +243,7 @@ export type ProductDetails = {
     average_score: number
     category: {name: string}
     description: string
-    images: Array<{
+    images?: Array<{
         original: string
         square: string
     }>
