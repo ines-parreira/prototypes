@@ -18,6 +18,13 @@ const getTimezoneAbbreviation = (timezone: string) => {
 }
 
 const convertDaysToName = (days: string) => {
+    if (days === '1,2,3,4,5,6,7') {
+        const monday = moment().day(1)
+        const sunday = moment().day(7)
+
+        return `${monday.format('dddd')} - ${sunday.format('dddd')}`
+    }
+
     if (days === '1,2,3,4,5') {
         const monday = moment().day(1)
         const friday = moment().day(5)
