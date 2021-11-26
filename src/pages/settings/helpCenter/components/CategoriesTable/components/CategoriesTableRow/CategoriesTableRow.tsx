@@ -1,5 +1,5 @@
-import classNames from 'classnames'
 import React, {MouseEvent, ReactElement, useMemo, useState} from 'react'
+import classNames from 'classnames'
 import {Badge, Spinner} from 'reactstrap'
 
 import {useModalManager} from '../../../../../../../hooks/useModalManager'
@@ -26,11 +26,11 @@ export type CategoriesTableRowProps =
           RowEventListeners)
 
 type BaseCategoriesTableRowProps = {
-    categoryId: number
+    categoryId: number | null
     title?: string
     tooltip?: string
     renderArticleList?: (
-        categoryId: number,
+        categoryId: number | null,
         articles: Article[]
     ) => ReactElement
     shouldRenderRowWithoutArticles?: boolean
@@ -155,13 +155,25 @@ export const CategoriesTableRow = ({
     ...props
 }: CategoriesTableRowProps): JSX.Element | null => {
     const [isOpen, setOpen] = useState(false)
-    const {articles, isLoading} = useArticles(categoryId)
-    const count = useMemo(() => articles.length, [articles])
+    const {
+        articles,
+        isLoading,
+        hasMore,
+        itemCount: count,
+        fetchMore,
+    } = useArticles(categoryId)
+
+    const onLoadMore = (e: React.MouseEvent) => {
+        e.preventDefault()
+
+        void fetchMore()
+    }
 
     const bodyInnerClass = classNames({
         [css['no-click']]: articles.length === 0,
     })
 
+    const id = `category-title-${categoryId ?? 'uncategorized'}`
     const caret =
         count > 0 && renderArticleList ? (
             <span className={classNames(css.caret, 'material-icons')}>
@@ -170,13 +182,14 @@ export const CategoriesTableRow = ({
         ) : (
             <span className={css['caret-placeholder']} />
         )
-    const countElement = isLoading ? (
-        <Spinner size="sm" color="secondary" style={{marginLeft: 8}} />
-    ) : (
-        <Badge pill color="light" className={css.count}>
-            {count > 0 ? count : 'No Published Articles'}
-        </Badge>
-    )
+    const countElement =
+        isLoading && count === 0 ? (
+            <Spinner size="sm" color="secondary" style={{marginLeft: 8}} />
+        ) : (
+            <Badge pill color="light" className={css.count}>
+                {count > 0 ? count : 'No Published Articles'}
+            </Badge>
+        )
     const headerCell = (
         <BodyCell
             className={css['cell']}
@@ -186,7 +199,7 @@ export const CategoriesTableRow = ({
             {caret}
             {title && (
                 <span
-                    id={`category-title-${categoryId}`}
+                    id={id}
                     className={classNames({
                         [css['tooltip-underline']]: tooltip,
                     })}
@@ -196,7 +209,7 @@ export const CategoriesTableRow = ({
             )}
             {title && tooltip && (
                 <Tooltip
-                    target={`category-title-${categoryId}`}
+                    target={id}
                     placement="bottom-start"
                     style={{
                         textAlign: 'left',
@@ -232,11 +245,33 @@ export const CategoriesTableRow = ({
                 />
             )}
             {shouldCollapseRow && renderArticleList && (
-                <TableBodyRow>
-                    <BodyCell colSpan={4} className={css['parent-cell']}>
-                        {renderArticleList(categoryId, articles)}
-                    </BodyCell>
-                </TableBodyRow>
+                <>
+                    <TableBodyRow>
+                        <BodyCell colSpan={4} className={css['parent-cell']}>
+                            {renderArticleList(categoryId, articles)}
+                        </BodyCell>
+                    </TableBodyRow>
+                    {hasMore && (
+                        <TableBodyRow>
+                            <BodyCell
+                                colSpan={4}
+                                className={css['parent-cell']}
+                                innerClassName={classNames(
+                                    css['no-click'],
+                                    css['load-more']
+                                )}
+                            >
+                                {isLoading ? (
+                                    <Spinner size="sm" color="secondary" />
+                                ) : (
+                                    <a href="" onClick={onLoadMore}>
+                                        Load more
+                                    </a>
+                                )}
+                            </BodyCell>
+                        </TableBodyRow>
+                    )}
+                </>
             )}
         </>
     )

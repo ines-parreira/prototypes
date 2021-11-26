@@ -91,6 +91,8 @@ export const ARTICLE_ROW_ACTIONS = [
 
 export const HELP_CENTER_TITLE_MAX_LENGTH = 250
 
+export const ARTICLES_PER_PAGE = 20
+
 export const CATEGORIES_PER_PAGE = 30
 
 export const CATEGORY_ROW_ACTIONS = [

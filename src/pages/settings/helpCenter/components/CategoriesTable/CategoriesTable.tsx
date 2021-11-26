@@ -70,7 +70,7 @@ export const CategoriesTable = ({
             </TableHead>
             <TableBody className={css['main-table']}>
                 <CategoriesTableRow
-                    categoryId={-1}
+                    categoryId={null}
                     shouldRenderRowWithoutArticles={
                         shouldRenderEmptyUncategorizedRow
                     }

@@ -30,7 +30,7 @@ export type RowEventListeners = {
 type Props = RowEventListeners & {
     isNested?: boolean
     article: Article
-    categoryId: number
+    categoryId: number | null
     position: number
 }
 
@@ -50,9 +50,9 @@ export const ArticleRow = ({
         {
             position,
             id: article.id,
-            type: `ARTICLE-${categoryId}`,
+            type: `ARTICLE-${categoryId ?? 'UNCATEGORIZED'}`,
         },
-        [`ARTICLE-${categoryId}`],
+        [`ARTICLE-${categoryId ?? 'UNCATEGORIZED'}`],
         {onHover: onMoveEntity, onDrop: onDropEntity}
     )
 

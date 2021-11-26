@@ -567,7 +567,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
             return
         }
 
-        // Create or update Article
+        // Create or update article
         try {
             if (isExistingArticle(selectedArticle)) {
                 await articlesActions.updateArticle(
@@ -637,10 +637,13 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         }
     }
 
-    const handleOnReorder = (categoryId: number, articles: Article[]): void => {
+    const handleOnReorder = (
+        categoryId: number | null,
+        articles: Article[]
+    ): void => {
         void articlesActions.updateArticlesPositions(
             articles,
-            categoryId >= 0 ? categoryId : undefined
+            categoryId !== null ? categoryId : undefined
         )
     }
 
@@ -707,7 +710,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                         <ArticlesTable
                             isNested
                             categoryId={categoryId}
-                            list={articles}
+                            articles={articles}
                             onClick={selectArticle}
                             onReorderFinish={handleOnReorder}
                             onClickSettings={editArticleSettings}
