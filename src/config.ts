@@ -1512,4 +1512,15 @@ export const SENTIMENT_TYPE_LOWER_BOUND = -0.4
 export const FROALA_KEY =
     'aLF3c1A7B5E5E3E2G2D2xROKLJKYHROLDXDRH1e1YYGRe1Bg1G3I3A2A5D6A3F2E4D2F2=='
 
+export const FROALA_CUSTOM_VIDEO_PROVIDERS = [
+    {
+        test_regex: /^.*(loom.com)\/[^_&]+/,
+        url_regex:
+            /(?:https?:\/\/)?(?:www\.)?(?:loom\.com)\/(?:share)?\/?(.+)/g,
+        url_text: 'https://www.loom.com/embed/$1',
+        html: '<iframe width="640" height="360" src="{url}" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>',
+        provider: 'loom',
+    },
+]
+
 export const HOTSWAP_SDK_URL = 'https://widget.hotswap.app/js/hotswap.js'

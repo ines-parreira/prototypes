@@ -4,14 +4,11 @@
  * TODO: Froala types are not complete, we will refine the types ourselves
  */
 import React, {useEffect, useRef} from 'react'
-
-import FroalaEditor from 'react-froala-wysiwyg'
-
-import {LocaleCode} from '../../../../../../models/helpCenter/types'
-import {FROALA_KEY} from '../../../../../../config'
+import _capitalize from 'lodash/capitalize'
+import FroalaEditorComponent from 'react-froala-wysiwyg'
 
 // Froala Editor basic JS
-import 'froala-editor/js/froala_editor.min.js'
+import FroalaEditor from 'froala-editor/js/froala_editor.min.js'
 
 // Froala Editor plugins
 import 'froala-editor/js/plugins/align.min.js'
@@ -40,12 +37,16 @@ import 'froala-editor/js/plugins/url.min.js'
 import 'froala-editor/js/plugins/video.min.js'
 import 'froala-editor/js/plugins/word_paste.min.js'
 
-import {MAX_IMAGE_SIZE, EDITOR_MODAL_CONTAINER_ID} from '../../../constants'
-
-import {uploadFiles} from '../../../../../../utils'
+import {
+    FROALA_CUSTOM_VIDEO_PROVIDERS,
+    FROALA_KEY,
+} from '../../../../../../config'
+import useAppDispatch from '../../../../../../hooks/useAppDispatch'
+import {LocaleCode} from '../../../../../../models/helpCenter/types'
 import {notify} from '../../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../../state/notifications/types'
-import useAppDispatch from '../../../../../../hooks/useAppDispatch'
+import {uploadFiles} from '../../../../../../utils'
+import {EDITOR_MODAL_CONTAINER_ID, MAX_IMAGE_SIZE} from '../../../constants'
 
 import css from './HelpCenterEditor.less'
 
@@ -57,13 +58,20 @@ type Props = {
     onEditorCodeViewToggle: (value: boolean) => void
 }
 
-type FroalaEditorInstance = FroalaEditor & {
+type FroalaEditorInstance = FroalaEditorComponent & {
     editorInitialized: boolean
     /**
      * Editor has these available methods https://froala.com/wysiwyg-editor/docs/methods/
      */
     editor: any
 }
+
+// Override `VIDEO_PROVIDERS` to add custom video providers
+// Original config: `/node_modules/froala-editor/js/plugins/video.min.js`
+FroalaEditor.VIDEO_PROVIDERS = [
+    ...FroalaEditor.VIDEO_PROVIDERS,
+    ...FROALA_CUSTOM_VIDEO_PROVIDERS,
+]
 
 const HelpCenterEditor = ({
     locale,
@@ -89,7 +97,7 @@ const HelpCenterEditor = ({
     }
 
     return (
-        <FroalaEditor
+        <FroalaEditorComponent
             model={value}
             ref={editorRef}
             onModelChange={onModelChange}
@@ -165,6 +173,27 @@ const HelpCenterEditor = ({
                         onEditorCodeViewToggle(
                             (this as any).codeView.isActive()
                         )
+                    },
+                    'video.linkError': function () {
+                        const editor = editorRef.current?.getEditor()
+
+                        // Customize video link error message
+                        if (editor) {
+                            const videoProviders: string[] =
+                                FroalaEditor.VIDEO_PROVIDERS.map(
+                                    ({provider}: {provider: string}) => provider
+                                )
+                            const $popup = editor.popups
+                                .get('video.insert')
+                                .find('.fr-video-progress-bar-layer')
+                                .find('h3')
+
+                            $popup.html(
+                                `Unsupported video link.</br>Supported video platforms: ${videoProviders
+                                    .map(_capitalize)
+                                    .join(', ')}.`
+                            )
+                        }
                     },
                 },
                 toolbarButtons: {
