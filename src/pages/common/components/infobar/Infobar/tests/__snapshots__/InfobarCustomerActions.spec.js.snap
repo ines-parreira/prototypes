@@ -30,21 +30,6 @@ exports[`InfobarCustomerActions component should not render "set as customer" bu
 </div>
 `;
 
-exports[`InfobarCustomerActions component should not render "set as customer" in case of chat ticket 1`] = `
-<div
-  className="float-right d-none d-md-block"
->
-  <Button
-    color="secondary"
-    onClick={[Function]}
-    tag="button"
-    type="submit"
-  >
-    Merge
-  </Button>
-</div>
-`;
-
 exports[`InfobarCustomerActions component should not render "set as customer" nor "merge" buttons because the customers are the same 1`] = `
 <div
   className="float-right d-none d-md-block"

@@ -42,7 +42,6 @@ export default class InfobarCustomerActions extends React.Component<Props> {
             selectedCustomer.get('id') !== customer.get('id')
         const canSetAsCustomer =
             isCurrentlyOnTicket(ticketId) &&
-            sources.getIn(['ticket', 'channel']) !== 'chat' &&
             (isDifferentCustomer || !hasDestinationCustomer)
 
         const message = hasCustomer
