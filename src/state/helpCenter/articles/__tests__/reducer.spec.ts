@@ -3,7 +3,10 @@ import produce from 'immer'
 
 import {createArticleFromDto} from '../../../../models/helpCenter/utils'
 
-import {getArticlesResponseFixture} from '../../../../pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
+import {
+    getArticlesResponseFixture,
+    getSingleArticleEnglish as singleArticle,
+} from '../../../../pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 
 import reducer, {initialState} from '../reducer'
 
@@ -20,7 +23,6 @@ import {ArticlesAction} from '../types'
 
 const articlesResponse =
     getArticlesResponseFixture.data.map(createArticleFromDto)
-const singleArticle = articlesResponse[0]
 
 describe('Help Center/Articles reducer', () => {
     it('has the correct initial state', () => {

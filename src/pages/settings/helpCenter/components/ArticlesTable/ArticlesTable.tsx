@@ -88,7 +88,7 @@ export const ArticlesTable = ({
                 <HeaderCell style={{width: 160}} />
             </TableHead>
             <TableBody>
-                {articles.map((article, index) => (
+                {records.map((article, index) => (
                     <ArticleRow
                         key={article.id}
                         isNested={isNested}

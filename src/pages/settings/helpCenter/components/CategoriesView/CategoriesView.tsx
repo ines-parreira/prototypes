@@ -92,10 +92,10 @@ export const CategoriesViews = ({
                 loaderSize={20}
             >
                 <CategoriesTable
-                    shouldRenderEmptyUncategorizedRow={!showCreateFirst}
                     categories={categories}
                     renderArticleList={renderArticleList}
                     onReorderFinish={handleOnReorder}
+                    shouldRenderEmptyUncategorizedRow={!showCreateFirst}
                 />
             </InfiniteScroll>
         </>

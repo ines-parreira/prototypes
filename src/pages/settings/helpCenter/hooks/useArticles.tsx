@@ -115,8 +115,38 @@ export const useArticles = (
                 }
             }
         },
-        [client]
+        [client, categoryId, helpCenterId, dispatch]
     )
+
+    const getArticleCount = useCallback(async () => {
+        if (client) {
+            setLoading(true)
+
+            try {
+                const {
+                    data: {meta},
+                } = await (categoryId !== null
+                    ? client.listCategoryArticles({
+                          help_center_id: helpCenterId,
+                          category_id: categoryId,
+                          per_page: 1,
+                          page: 1,
+                      })
+                    : client.listArticles({
+                          help_center_id: helpCenterId,
+                          has_category: false,
+                          per_page: 1,
+                          page: 1,
+                      }))
+
+                setItemCount(meta.item_count)
+            } catch (err) {
+                console.error(err)
+            } finally {
+                setLoading(false)
+            }
+        }
+    }, [client, helpCenterId, categoryId])
 
     const fetchMore = useCallback(async () => {
         if (hasMore && !isLoading) {
@@ -125,12 +155,10 @@ export const useArticles = (
 
             await fetchArticles({page, per_page})
         }
-    }, [articles.length, hasMore, isLoading, params, fetchArticles])
+    }, [articles.length, hasMore, isLoading, params])
 
     useEffect(() => {
-        const {per_page} = params
-
-        void fetchArticles({page: 1, per_page})
+        void getArticleCount()
     }, [])
 
     useEffect(() => {

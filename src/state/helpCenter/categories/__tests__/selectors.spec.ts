@@ -1,6 +1,5 @@
 import _keyBy from 'lodash/keyBy'
 
-import {Category} from '../../../../models/helpCenter/types'
 import {
     createArticleFromDto,
     createCategoryFromDto,
@@ -16,8 +15,8 @@ import {getCategories, getCategoriesWithArticles} from '../selectors'
 const articlesResponse =
     getArticlesResponseFixture.data.map(createArticleFromDto)
 
-const categoriesResponse: Category[] = getCategoriesResponseEnglish.data.map(
-    (category) => createCategoryFromDto(category, 1)
+const categoriesResponse = getCategoriesResponseEnglish.data.map((category) =>
+    createCategoryFromDto(category, 1)
 )
 
 const store: Partial<StoreState> = {

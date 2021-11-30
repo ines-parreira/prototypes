@@ -1,4 +1,10 @@
-import React, {MouseEvent, ReactElement, useMemo, useState} from 'react'
+import React, {
+    MouseEvent,
+    ReactElement,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react'
 import classNames from 'classnames'
 import {Badge, Spinner} from 'reactstrap'
 
@@ -27,12 +33,12 @@ export type CategoriesTableRowProps =
 
 type BaseCategoriesTableRowProps = {
     categoryId: number | null
-    title?: string
-    tooltip?: string
-    renderArticleList?: (
+    title: string
+    renderArticleList: (
         categoryId: number | null,
         articles: Article[]
     ) => ReactElement
+    tooltip?: string
     shouldRenderRowWithoutArticles?: boolean
 }
 
@@ -44,18 +50,16 @@ type FixedCategoriesTableRowProps = {
 const FixedCategoriesTableRow = ({
     headerCell,
     bodyInnerClass,
-}: FixedCategoriesTableRowProps) => {
-    return (
-        <TableBodyRow className={css.row}>
-            <BodyCell>{''}</BodyCell>
-            {headerCell}
-            <BodyCell innerClassName={bodyInnerClass}>{''}</BodyCell>
-            <BodyCell width={120} innerClassName={bodyInnerClass}>
-                {''}
-            </BodyCell>
-        </TableBodyRow>
-    )
-}
+}: FixedCategoriesTableRowProps) => (
+    <TableBodyRow className={css.row}>
+        <BodyCell>{''}</BodyCell>
+        {headerCell}
+        <BodyCell innerClassName={bodyInnerClass}>{''}</BodyCell>
+        <BodyCell width={120} innerClassName={bodyInnerClass}>
+            {''}
+        </BodyCell>
+    </TableBodyRow>
+)
 
 type DroppableCategoriesTableRowProps = {
     category: Category
@@ -155,13 +159,9 @@ export const CategoriesTableRow = ({
     ...props
 }: CategoriesTableRowProps): JSX.Element | null => {
     const [isOpen, setOpen] = useState(false)
-    const {
-        articles,
-        isLoading,
-        hasMore,
-        itemCount: count,
-        fetchMore,
-    } = useArticles(categoryId)
+    const {articles, isLoading, hasMore, itemCount, fetchMore} =
+        useArticles(categoryId)
+    const hasArticles = useMemo(() => itemCount > 0, [itemCount])
 
     const onLoadMore = (e: React.MouseEvent) => {
         e.preventDefault()
@@ -169,45 +169,83 @@ export const CategoriesTableRow = ({
         void fetchMore()
     }
 
-    const bodyInnerClass = classNames({
-        [css['no-click']]: articles.length === 0,
-    })
+    const renderContent = () => {
+        if (!isOpen) {
+            return null
+        }
+
+        return (
+            <>
+                {articles.length > 0 && (
+                    <TableBodyRow>
+                        <BodyCell colSpan={4} className={css['parent-cell']}>
+                            {renderArticleList(categoryId, articles)}
+                        </BodyCell>
+                    </TableBodyRow>
+                )}
+                {hasMore && (
+                    <TableBodyRow>
+                        <BodyCell
+                            colSpan={4}
+                            className={css['parent-cell']}
+                            innerClassName={classNames(
+                                css['no-click'],
+                                css['load-more']
+                            )}
+                        >
+                            {isLoading ? (
+                                <Spinner size="sm" color="secondary" />
+                            ) : (
+                                <a href="" onClick={onLoadMore}>
+                                    Load more
+                                </a>
+                            )}
+                        </BodyCell>
+                    </TableBodyRow>
+                )}
+            </>
+        )
+    }
+
+    useEffect(() => {
+        if (isOpen && hasArticles && articles.length === 0) {
+            void fetchMore()
+        }
+    }, [isOpen])
 
     const id = `category-title-${categoryId ?? 'uncategorized'}`
-    const caret =
-        count > 0 && renderArticleList ? (
-            <span className={classNames(css.caret, 'material-icons')}>
-                {isOpen ? 'arrow_drop_down' : 'arrow_right'}
-            </span>
-        ) : (
-            <span className={css['caret-placeholder']} />
-        )
-    const countElement =
-        isLoading && count === 0 ? (
+    const caret = hasArticles ? (
+        <span className={classNames(css.caret, 'material-icons')}>
+            {isOpen ? 'arrow_drop_down' : 'arrow_right'}
+        </span>
+    ) : (
+        <span className={css['caret-placeholder']} />
+    )
+    const countBadge =
+        isLoading && !hasArticles ? (
             <Spinner size="sm" color="secondary" style={{marginLeft: 8}} />
         ) : (
             <Badge pill color="light" className={css.count}>
-                {count > 0 ? count : 'No Published Articles'}
+                {hasArticles ? itemCount : 'No Published Articles'}
             </Badge>
         )
+    const bodyInnerClass = classNames({[css['no-click']]: !hasArticles})
     const headerCell = (
         <BodyCell
             className={css['cell']}
             innerClassName={bodyInnerClass}
-            onClick={() => setOpen(!isOpen)}
+            onClick={() => hasArticles && setOpen(!isOpen)}
         >
             {caret}
-            {title && (
-                <span
-                    id={id}
-                    className={classNames({
-                        [css['tooltip-underline']]: tooltip,
-                    })}
-                >
-                    {title}
-                </span>
-            )}
-            {title && tooltip && (
+            <span
+                id={id}
+                className={classNames({
+                    [css['tooltip-underline']]: tooltip,
+                })}
+            >
+                {title}
+            </span>
+            {tooltip && (
                 <Tooltip
                     target={id}
                     placement="bottom-start"
@@ -219,11 +257,9 @@ export const CategoriesTableRow = ({
                     {tooltip}
                 </Tooltip>
             )}
-            {countElement}
+            {countBadge}
         </BodyCell>
     )
-
-    const shouldCollapseRow = isOpen && articles.length > 0
 
     if (!shouldRenderRowWithoutArticles && articles.length === 0) {
         return null
@@ -244,35 +280,7 @@ export const CategoriesTableRow = ({
                     bodyInnerClass={bodyInnerClass}
                 />
             )}
-            {shouldCollapseRow && renderArticleList && (
-                <>
-                    <TableBodyRow>
-                        <BodyCell colSpan={4} className={css['parent-cell']}>
-                            {renderArticleList(categoryId, articles)}
-                        </BodyCell>
-                    </TableBodyRow>
-                    {hasMore && (
-                        <TableBodyRow>
-                            <BodyCell
-                                colSpan={4}
-                                className={css['parent-cell']}
-                                innerClassName={classNames(
-                                    css['no-click'],
-                                    css['load-more']
-                                )}
-                            >
-                                {isLoading ? (
-                                    <Spinner size="sm" color="secondary" />
-                                ) : (
-                                    <a href="" onClick={onLoadMore}>
-                                        Load more
-                                    </a>
-                                )}
-                            </BodyCell>
-                        </TableBodyRow>
-                    )}
-                </>
-            )}
+            {renderContent()}
         </>
     )
 }

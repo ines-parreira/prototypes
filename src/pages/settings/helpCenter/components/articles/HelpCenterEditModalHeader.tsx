@@ -93,17 +93,20 @@ export const HelpCenterEditModalHeader = ({
     return (
         <header className={css.header}>
             <div className={css.headerTopContainer}>
-                <input
-                    type="text"
-                    value={title}
-                    placeholder="Title"
-                    onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        onEditTitle?.(event.target.value)
-                    }
-                    disabled={Boolean(!onEditTitle)}
-                    className={css.titleInput}
-                    maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
-                />
+                {onEditTitle ? (
+                    <input
+                        type="text"
+                        value={title}
+                        placeholder="Title"
+                        onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                            onEditTitle(event.target.value)
+                        }
+                        className={css.titleInput}
+                        maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
+                    />
+                ) : (
+                    <span className={css.titleInput}>{title}</span>
+                )}
                 <div className={css.headerControls}>
                     <ArticleLanguageSelect
                         selected={language}

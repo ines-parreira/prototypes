@@ -17,13 +17,13 @@ export type CategoriesTableProps = Pick<
     CategoriesTableRowProps,
     'renderArticleList'
 > & {
-    categories?: Category[]
-    onReorderFinish?: (categories: Category[]) => void
+    categories: Category[]
+    onReorderFinish: (categories: Category[]) => void
     shouldRenderEmptyUncategorizedRow: boolean
 }
 
 export const CategoriesTable = ({
-    categories = [],
+    categories,
     onReorderFinish,
     renderArticleList,
     shouldRenderEmptyUncategorizedRow,
@@ -57,7 +57,7 @@ export const CategoriesTable = ({
     }
 
     const handleOnReorderFinish = () => {
-        onReorderFinish?.(records)
+        onReorderFinish(records)
     }
 
     return (

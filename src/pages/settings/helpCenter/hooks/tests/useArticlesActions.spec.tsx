@@ -263,28 +263,31 @@ describe('useArticlesActions', () => {
                 wrapper: dependencyWrapper,
             })
 
-            await result.current.updateArticle({
-                id: 1,
-                help_center_id: 1,
-                position: 1,
-                created_datetime: '',
-                updated_datetime: '',
-                available_locales: ['en-US'],
-                translation: {
-                    article_id: 1,
-                    locale: 'fr-FR',
-                    title: '',
-                    excerpt: '',
-                    content: '',
-                    slug: '',
-                    seo_meta: {
-                        title: null,
-                        description: null,
-                    },
+            await result.current.updateArticle(
+                {
+                    id: 1,
+                    help_center_id: 1,
+                    position: 1,
                     created_datetime: '',
                     updated_datetime: '',
+                    available_locales: ['en-US'],
+                    translation: {
+                        article_id: 1,
+                        locale: 'fr-FR',
+                        title: '',
+                        excerpt: '',
+                        content: '',
+                        slug: '',
+                        seo_meta: {
+                            title: null,
+                            description: null,
+                        },
+                        created_datetime: '',
+                        updated_datetime: '',
+                    },
                 },
-            })
+                null
+            )
 
             expect(updateArticle).toHaveBeenCalled()
             expect(pushArticleSupportedLocales).toHaveBeenCalledWith({

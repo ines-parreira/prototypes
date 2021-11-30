@@ -1,11 +1,5 @@
-import {
-    getCategoriesResponseEnglish,
-    getSingleCategoryEnglish,
-} from '../../../pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
-import {
-    getArticlesResponseFixture,
-    getSingleArticleEnglish,
-} from '../../../pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
+import {getSingleCategoryEnglish} from '../../../pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
+import {getSingleArticleEnglish} from '../../../pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 
 import {
     createArticleFromDto,
@@ -22,9 +16,9 @@ describe('Help Center model utils', () => {
                 articles: [],
             }
 
-            expect(
-                createCategoryFromDto(getCategoriesResponseEnglish.data[0], 0)
-            ).toEqual(expected)
+            expect(createCategoryFromDto(getSingleCategoryEnglish, 0)).toEqual(
+                expected
+            )
         })
     })
 
@@ -35,9 +29,9 @@ describe('Help Center model utils', () => {
                 position: 0,
             }
 
-            expect(
-                createArticleFromDto(getArticlesResponseFixture.data[0], 0)
-            ).toEqual(expected)
+            expect(createArticleFromDto(getSingleArticleEnglish, 0)).toEqual(
+                expected
+            )
         })
     })
 

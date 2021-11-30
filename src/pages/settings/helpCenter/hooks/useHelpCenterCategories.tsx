@@ -90,10 +90,5 @@ export const useHelpCenterCategories = (
         void fetchCategories(0)
     }, [params.locale])
 
-    return {
-        categories,
-        isLoading,
-        hasMore,
-        fetchMore,
-    }
+    return {categories, isLoading, hasMore, fetchMore}
 }

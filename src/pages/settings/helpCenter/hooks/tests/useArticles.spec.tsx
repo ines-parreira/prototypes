@@ -14,6 +14,7 @@ import {initialState as articlesState} from '../../../../../state/helpCenter/art
 import {initialState as categoriesState} from '../../../../../state/helpCenter/categories/reducer'
 import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
 import {RootState, StoreDispatch} from '../../../../../state/types'
+import {getArticlesResponseFixture} from '../../fixtures/getArticlesResponse.fixture'
 import {useArticles} from '../useArticles'
 
 jest.mock('react-router')
@@ -21,153 +22,23 @@ jest.mock('react-router')
     helpCenterId: '1',
 })
 
+const mockedListCategoryArticles = jest.fn()
+const mockedListArticles = jest.fn()
+const mockGetCategoryArticlesPositions = jest.fn().mockResolvedValue({data: []})
+const mockGetUncategorizedArticlesPositions = jest
+    .fn()
+    .mockResolvedValue({data: []})
+
 jest.mock('../useHelpCenterApi', () => {
     return {
-        useHelpCenterApi: jest.fn().mockReturnValue({
+        useHelpCenterApi: () => ({
             isReady: true,
             client: {
-                listCategoryArticles: ({
-                    per_page,
-                    help_center_id,
-                    category_id,
-                    page,
-                }: {
-                    per_page: number
-                    help_center_id: number
-                    category_id: number
-                    page: number
-                }) =>
-                    Promise.resolve({
-                        data: {
-                            data: [
-                                {
-                                    id: 2,
-                                    category_id,
-                                    help_center_id,
-                                    created_datetime:
-                                        '2021-05-17T18:21:42.022Z',
-                                    updated_datetime:
-                                        '2021-05-17T18:21:42.022Z',
-                                    deleted_datetime: null,
-                                    available_locales: ['en-US'],
-                                    translation: {
-                                        title: 'English only post',
-                                        excerpt:
-                                            'This article only exists in english',
-                                        slug: 'in-eng-only',
-                                        article_id: 2,
-                                        created_datetime:
-                                            '2021-05-17T18:21:42.022Z',
-                                        updated_datetime:
-                                            '2021-05-17T18:21:42.022Z',
-                                        deleted_datetime: null,
-                                        locale: 'en-US',
-                                        content: 'Article content',
-                                        seo_meta: {
-                                            title: null,
-                                            description: null,
-                                        },
-                                    },
-                                },
-                                {
-                                    id: 3,
-                                    category_id,
-                                    help_center_id,
-                                    created_datetime:
-                                        '2021-05-17T18:21:42.022Z',
-                                    updated_datetime:
-                                        '2021-05-17T18:21:42.022Z',
-                                    deleted_datetime: null,
-                                    available_locales: ['en-US'],
-                                    translation: {
-                                        title: 'English only post',
-                                        excerpt:
-                                            'This article only exists in english',
-                                        slug: 'in-eng-only',
-                                        article_id: 3,
-                                        created_datetime:
-                                            '2021-05-17T18:21:42.022Z',
-                                        updated_datetime:
-                                            '2021-05-17T18:21:42.022Z',
-                                        deleted_datetime: null,
-                                        locale: 'en-US',
-                                        content: 'Article content',
-                                        seo_meta: {
-                                            title: null,
-                                            description: null,
-                                        },
-                                    },
-                                },
-                            ],
-                            object: 'list',
-                            meta: {
-                                page,
-                                per_page,
-                                current_page: `/help-centers/1/articles?per_page=${per_page}&page=${page}`,
-                                item_count: 2,
-                                nb_pages: 2,
-                            },
-                        },
-                    }),
-                listArticles: ({
-                    per_page,
-                    help_center_id,
-                    has_category,
-                    page,
-                }: {
-                    per_page: number
-                    help_center_id: number
-                    has_category: boolean
-                    page: number
-                }) =>
-                    Promise.resolve({
-                        data: {
-                            data: [
-                                {
-                                    id: 1,
-                                    category_id: null,
-                                    help_center_id,
-                                    created_datetime:
-                                        '2021-05-17T18:21:42.022Z',
-                                    updated_datetime:
-                                        '2021-05-17T18:21:42.022Z',
-                                    deleted_datetime: undefined,
-                                    available_locales: ['en-US'],
-                                    translation: {
-                                        title: 'Free article (EN)',
-                                        excerpt:
-                                            'Paragraph lorem ipsum, Yiddish xylophone wonder.',
-                                        slug: 'free-article',
-                                        article_id: 1,
-                                        created_datetime:
-                                            '2021-05-17T18:21:42.022Z',
-                                        updated_datetime:
-                                            '2021-05-17T18:21:42.022Z',
-                                        deleted_datetime: undefined,
-                                        locale: 'en-US',
-                                        content: 'Article content',
-                                        seo_meta: {
-                                            title: null,
-                                            description: null,
-                                        },
-                                    },
-                                },
-                            ],
-                            object: 'list',
-                            meta: {
-                                page,
-                                per_page,
-                                current_page: `/help-centers/1/articles?per_page=${per_page}&page=${page}&has_category=${
-                                    has_category ? 'true' : 'false'
-                                }`,
-                                item_count: 1,
-                                nb_pages: 1,
-                            },
-                        },
-                    }),
-                getCategoryArticlesPositions: () => Promise.resolve({data: []}),
-                getUncategorizedArticlesPositions: () =>
-                    Promise.resolve({data: []}),
+                listCategoryArticles: mockedListCategoryArticles,
+                listArticles: mockedListArticles,
+                getCategoryArticlesPositions: mockGetCategoryArticlesPositions,
+                getUncategorizedArticlesPositions:
+                    mockGetUncategorizedArticlesPositions,
             },
         }),
     }
@@ -175,7 +46,7 @@ jest.mock('../useHelpCenterApi', () => {
 
 jest.mock('../../../../../state/helpCenter/articles', () => ({
     getUncategorizedArticles: jest.fn().mockReturnValue([]),
-    getArticlesInCategory: jest.fn().mockReturnValue([]),
+    getArticlesInCategory: jest.fn().mockReturnValue(() => []),
     saveArticles: jest.fn().mockReturnValue({
         type: 'HELPCENTER/ARTICLES/SAVE_ARTICLES',
         payload: {},
@@ -200,46 +71,199 @@ const dependencyWrapper: React.ComponentType<any> = ({
 }) => <Provider store={store}>{children}</Provider>
 
 describe('useArticles()', () => {
-    afterEach(() => {
+    beforeEach(() => {
         jest.clearAllMocks()
     })
 
-    it('finishes loading once the requests are done', async () => {
+    it('allows to fetch uncategorized articles', async () => {
+        mockedListArticles.mockResolvedValue({
+            data: {
+                data: [],
+                object: 'list',
+                meta: {
+                    page: 1,
+                    per_page: 20,
+                    current_page:
+                        '/help-centers/1/articles?has_category=false&page=1&per_page=20',
+                    item_count: 0,
+                    nb_pages: 0,
+                },
+            },
+        })
+
         const {result, waitForNextUpdate} = renderHook(
-            () => useArticles(null, {per_page: 20}),
+            () => useArticles(null),
             {
                 wrapper: dependencyWrapper,
             }
         )
+
+        expect(result.current.articles.length).toEqual(0)
         expect(result.current.isLoading).toBeTruthy()
-        await waitForNextUpdate()
-        expect(result.current.articles.length).toEqual(1)
-        expect(result.current.itemCount).toEqual(1)
         expect(result.current.hasMore).toBeFalsy()
-        expect(result.current.isLoading).toBeFalsy()
-    })
+        expect(result.current.itemCount).toEqual(0)
 
-    it('saves the articles once they are fetched', async () => {
-        const {waitForNextUpdate} = renderHook(() => useArticles(null), {
-            wrapper: dependencyWrapper,
-        })
-        await waitForNextUpdate()
-        expect(saveArticles).toHaveBeenCalled()
-    })
-
-    it('uses the getUncategorizedArticles selector if no category is passed', () => {
-        renderHook(() => useArticles(null), {
-            wrapper: dependencyWrapper,
-        })
-        expect(getUncategorizedArticles).toHaveBeenCalled()
         expect(getArticlesInCategory).not.toHaveBeenCalled()
+        expect(getUncategorizedArticles).toHaveBeenCalled()
+
+        await waitForNextUpdate()
+
+        expect(mockedListArticles).toHaveBeenCalledWith({
+            help_center_id: 1,
+            has_category: false,
+            per_page: 1,
+            page: 1,
+        })
+
+        mockedListArticles.mockClear()
+
+        expect(result.current.articles.length).toEqual(0)
+        expect(result.current.isLoading).toBeFalsy()
+        expect(result.current.hasMore).toBeFalsy()
+        expect(result.current.itemCount).toEqual(0)
+
+        void result.current.fetchMore()
+
+        expect(mockedListArticles).not.toHaveBeenCalled()
     })
 
-    it('uses the getArticlesInCategory selector if category is passed', () => {
-        renderHook(() => useArticles(1), {
-            wrapper: dependencyWrapper,
+    it('allows to fetch categorized articles', async () => {
+        mockedListCategoryArticles.mockResolvedValue({
+            data: {
+                data: [
+                    {
+                        ...getArticlesResponseFixture.data[1],
+                        category_id: 1,
+                    },
+                ],
+                object: 'list',
+                meta: {
+                    page: 1,
+                    per_page: 1,
+                    current_page: `/help-centers/1/categories/1/articles?page=1&per_page=1`,
+                    item_count: 3,
+                    nb_pages: 3,
+                },
+            },
         })
-        expect(getUncategorizedArticles).not.toHaveBeenCalled()
+
+        const {result, waitForNextUpdate} = renderHook(
+            () => useArticles(1, {per_page: 2}),
+            {
+                wrapper: dependencyWrapper,
+            }
+        )
+
         expect(getArticlesInCategory).toHaveBeenCalled()
+        expect(getUncategorizedArticles).not.toHaveBeenCalled()
+
+        expect(result.current.articles.length).toEqual(0)
+        expect(result.current.isLoading).toBeTruthy()
+        expect(result.current.hasMore).toBeFalsy()
+        expect(result.current.itemCount).toEqual(0)
+
+        await waitForNextUpdate()
+
+        expect(mockedListCategoryArticles).toHaveBeenCalledWith({
+            help_center_id: 1,
+            category_id: 1,
+            per_page: 1,
+            page: 1,
+        })
+
+        expect(result.current.articles.length).toEqual(0)
+        expect(result.current.isLoading).toBeFalsy()
+        expect(result.current.hasMore).toBeTruthy()
+        expect(result.current.itemCount).toEqual(3)
+
+        mockedListCategoryArticles.mockResolvedValue({
+            data: {
+                data: [
+                    {
+                        ...getArticlesResponseFixture.data[1],
+                        category_id: 1,
+                    },
+                    {
+                        ...getArticlesResponseFixture.data[2],
+                        category_id: 1,
+                    },
+                ],
+                object: 'list',
+                meta: {
+                    page: 1,
+                    per_page: 2,
+                    current_page:
+                        '/help-centers/1/categories/1/articles?page=1&per_page=2',
+                    item_count: 3,
+                    nb_pages: 2,
+                },
+            },
+        })
+
+        void result.current.fetchMore()
+
+        expect(result.current.isLoading).toBeTruthy()
+
+        await waitForNextUpdate()
+
+        expect(mockedListCategoryArticles).toHaveBeenLastCalledWith({
+            page: 1,
+            per_page: 2,
+            help_center_id: 1,
+            category_id: 1,
+            order_by: 'position',
+        })
+        expect(mockGetCategoryArticlesPositions).toHaveBeenCalledWith({
+            help_center_id: 1,
+            category_id: 1,
+        })
+
+        expect(saveArticles).toHaveBeenCalled()
+
+        expect(result.current.articles.length).toEqual(2)
+        expect(result.current.isLoading).toBeFalsy()
+        expect(result.current.hasMore).toBeTruthy()
+        expect(result.current.itemCount).toEqual(3)
+
+        mockedListCategoryArticles.mockResolvedValue({
+            data: {
+                data: [
+                    {
+                        ...getArticlesResponseFixture.data[3],
+                        category_id: 1,
+                    },
+                ],
+                object: 'list',
+                meta: {
+                    page: 2,
+                    per_page: 2,
+                    current_page:
+                        '/help-centers/1/categories/1/articles?page=2&per_page=2',
+                    item_count: 3,
+                    nb_pages: 2,
+                },
+            },
+        })
+
+        void result.current.fetchMore()
+
+        expect(result.current.isLoading).toBeTruthy()
+
+        await waitForNextUpdate()
+
+        expect(mockedListCategoryArticles).toHaveBeenLastCalledWith({
+            page: 2,
+            per_page: 2,
+            help_center_id: 1,
+            category_id: 1,
+            order_by: 'position',
+        })
+
+        expect(saveArticles).toHaveBeenCalled()
+
+        expect(result.current.articles.length).toEqual(3)
+        expect(result.current.isLoading).toBeFalsy()
+        expect(result.current.hasMore).toBeFalsy()
+        expect(result.current.itemCount).toEqual(3)
     })
 })

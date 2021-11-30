@@ -28,6 +28,10 @@ jest.mock('../../../hooks/useHelpCenterIdParam', () => {
 jest.mock('../../../hooks/useHelpCenterApi')
 const useHelpCenterApiMock = useHelpCenterApi as jest.Mock
 
+const mockedListArticles = jest.fn().mockResolvedValue({
+    data: {data: [], meta: {}},
+})
+
 useHelpCenterApiMock.mockImplementation(() => ({
     isReady: true,
     client: {
@@ -37,9 +41,7 @@ useHelpCenterApiMock.mockImplementation(() => ({
         listArticles: jest.fn().mockResolvedValue({
             data: {data: [], meta: {}},
         }),
-        listCategoryArticles: jest.fn().mockResolvedValue({
-            data: {data: [], meta: {}},
-        }),
+        listCategoryArticles: mockedListArticles,
         getUncategorizedArticlesPositions: jest.fn().mockResolvedValue({
             data: [],
         }),
@@ -86,6 +88,7 @@ describe('<CategoriesViews />', () => {
         )
 
         await screen.findByText('Start your Help Center here')
+
         expect(screen.queryByText('Uncategorized articles')).toBe(null)
     })
 
@@ -98,12 +101,12 @@ describe('<CategoriesViews />', () => {
             } as any,
             helpCenter: {
                 articles: {
-                    articlesById: {
-                        1: articleMock,
-                    },
+                    articlesById: {},
                 },
                 categories: {
-                    categoriesById: {},
+                    categoriesById: {
+                        1: categoryMock,
+                    },
                 },
                 ui: {
                     currentId: 1,
@@ -112,14 +115,31 @@ describe('<CategoriesViews />', () => {
             },
         }
 
+        mockedListArticles.mockResolvedValue({
+            data: {
+                data: [articleMock],
+                object: 'list',
+                meta: {
+                    page: 1,
+                    per_page: 20,
+                    current_page:
+                        '/help-centers/1/articles?has_category=false&page=1&per_page=20',
+                    item_count: 1,
+                    nb_pages: 1,
+                },
+            },
+        })
+
         renderWithRouter(
             <Provider store={mockedStore(initialState)}>
-                <CategoriesViews
-                    helpCenter={helpCenterMock}
-                    renderArticleList={() => <div />}
-                    createArticle={jest.fn()}
-                    createCategory={jest.fn()}
-                />
+                <DndProvider backend={HTML5Backend}>
+                    <CategoriesViews
+                        helpCenter={helpCenterMock}
+                        renderArticleList={() => <div />}
+                        createArticle={jest.fn()}
+                        createCategory={jest.fn()}
+                    />
+                </DndProvider>
             </Provider>
         )
 

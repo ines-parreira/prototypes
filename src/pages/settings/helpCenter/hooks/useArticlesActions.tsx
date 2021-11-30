@@ -110,19 +110,21 @@ export const useArticlesActions = () => {
             }
         },
 
-        async updateArticle(article: Article, categoryId?: number | null) {
+        async updateArticle(article: Article, categoryId: number | null) {
             if (!client) throw new Error('HTTP client not initialized!')
 
             setIsLoading(true)
 
             try {
-                const {data} = await client.updateArticle(
-                    {
-                        id: article.id,
-                        help_center_id: helpCenterId,
-                    },
-                    {category_id: categoryId}
-                )
+                if (article.category_id !== categoryId) {
+                    await client.updateArticle(
+                        {
+                            id: article.id,
+                            help_center_id: helpCenterId,
+                        },
+                        {category_id: categoryId}
+                    )
+                }
 
                 const {data: positions} = categoryId
                     ? await client.getCategoryArticlesPositions({
@@ -134,7 +136,8 @@ export const useArticlesActions = () => {
                       })
 
                 const updatedArticle: Article = {
-                    ...data,
+                    ...article,
+                    category_id: categoryId,
                     translation: article.translation,
                     position: positions.findIndex(
                         (index) => index === article.id
