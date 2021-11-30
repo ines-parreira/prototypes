@@ -4,7 +4,6 @@
  * TODO: Froala types are not complete, we will refine the types ourselves
  */
 import React, {useEffect, useRef} from 'react'
-import _capitalize from 'lodash/capitalize'
 import FroalaEditorComponent from 'react-froala-wysiwyg'
 
 // Froala Editor basic JS
@@ -37,10 +36,7 @@ import 'froala-editor/js/plugins/url.min.js'
 import 'froala-editor/js/plugins/video.min.js'
 import 'froala-editor/js/plugins/word_paste.min.js'
 
-import {
-    FROALA_CUSTOM_VIDEO_PROVIDERS,
-    FROALA_KEY,
-} from '../../../../../../config'
+import {FROALA_KEY, FROALA_VIDEO_PROVIDERS} from '../../../../../../config'
 import useAppDispatch from '../../../../../../hooks/useAppDispatch'
 import {LocaleCode} from '../../../../../../models/helpCenter/types'
 import {notify} from '../../../../../../state/notifications/actions'
@@ -67,11 +63,7 @@ type FroalaEditorInstance = FroalaEditorComponent & {
 }
 
 // Override `VIDEO_PROVIDERS` to add custom video providers
-// Original config: `/node_modules/froala-editor/js/plugins/video.min.js`
-FroalaEditor.VIDEO_PROVIDERS = [
-    ...FroalaEditor.VIDEO_PROVIDERS,
-    ...FROALA_CUSTOM_VIDEO_PROVIDERS,
-]
+FroalaEditor.VIDEO_PROVIDERS = FROALA_VIDEO_PROVIDERS
 
 const HelpCenterEditor = ({
     locale,
@@ -189,9 +181,9 @@ const HelpCenterEditor = ({
                                 .find('h3')
 
                             $popup.html(
-                                `Unsupported video link.</br>Supported video platforms: ${videoProviders
-                                    .map(_capitalize)
-                                    .join(', ')}.`
+                                `Unsupported video link.</br>Supported video platforms: ${videoProviders.join(
+                                    ', '
+                                )}.`
                             )
                         }
                     },
