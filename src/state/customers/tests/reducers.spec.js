@@ -4,7 +4,7 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import {OPEN_STATUS, CLOSED_STATUS} from '../../../config/ticket.ts'
 import reducer, {initialState} from '../reducers.ts'
 import * as newMessageTypes from '../../newMessage/constants.ts'
-import * as viewTypes from '../../views/constants'
+import * as viewTypes from '../../views/constants.ts'
 import * as ticketTypes from '../../ticket/constants.ts'
 import * as types from '../constants'
 

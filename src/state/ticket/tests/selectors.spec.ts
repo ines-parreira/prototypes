@@ -1,14 +1,15 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, Map, List} from 'immutable'
 
-import * as selectors from '../selectors.ts'
-import {initialState} from '../reducers.ts'
-import {TicketVia} from '../../../business/types/ticket.ts'
+import * as selectors from '../selectors'
+import {initialState} from '../reducers'
+import {TicketVia} from '../../../business/types/ticket'
+import {RootState} from '../../types'
 
 jest.addMatchers(immutableMatchers)
 
 describe('ticket selectors', () => {
-    let state
+    let state: RootState
 
     beforeEach(() => {
         state = {
@@ -74,19 +75,23 @@ describe('ticket selectors', () => {
                 },
                 via: TicketVia.Email,
             }),
-        }
+        } as RootState
     })
 
     it('getTicketState', () => {
         expect(selectors.getTicketState(state)).toEqualImmutable(state.ticket)
-        expect(selectors.getTicketState({})).toEqualImmutable(fromJS({}))
+        expect(selectors.getTicketState({} as RootState)).toEqualImmutable(
+            fromJS({})
+        )
     })
 
     it('getLoading', () => {
         expect(selectors.getLoading(state)).toEqualImmutable(
             state.ticket.getIn(['_internal', 'loading'])
         )
-        expect(selectors.getLoading({})).toEqualImmutable(fromJS({}))
+        expect(selectors.getLoading({} as RootState)).toEqualImmutable(
+            fromJS({})
+        )
     })
 
     it('isLoading', () => {
@@ -108,14 +113,18 @@ describe('ticket selectors', () => {
     it('getTicket', () => {
         const expected = state.ticket.delete('_internal').delete('state')
         expect(selectors.getTicket(state)).toEqualImmutable(expected)
-        expect(selectors.getTicket({})).toEqualImmutable(fromJS({}))
+        expect(selectors.getTicket({} as RootState)).toEqualImmutable(
+            fromJS({})
+        )
     })
 
     it('getIntegrationsData', () => {
         expect(selectors.getIntegrationsData(state)).toEqualImmutable(
             state.ticket.getIn(['customer', 'integrations'])
         )
-        expect(selectors.getIntegrationsData({})).toEqualImmutable(fromJS({}))
+        expect(selectors.getIntegrationsData({} as RootState)).toEqualImmutable(
+            fromJS({})
+        )
     })
 
     it('getIntegrationDataByIntegrationId', () => {
@@ -124,22 +133,11 @@ describe('ticket selectors', () => {
         ).toEqualImmutable(
             state.ticket.getIn(['customer', 'integrations', '1'])
         )
-        expect(
-            selectors.getIntegrationDataByIntegrationId('1')(state)
-        ).toEqualImmutable(
-            state.ticket.getIn(['customer', 'integrations', '1'])
-        )
-        expect(
-            selectors.getIntegrationDataByIntegrationId('unknown')(state)
-        ).toEqualImmutable(fromJS({}))
-        expect(
-            selectors.getIntegrationDataByIntegrationId('unknown')({})
-        ).toEqualImmutable(fromJS({}))
     })
 
     it('isDirty', () => {
         expect(selectors.isDirty(state)).toBe(false)
-        expect(selectors.isDirty({})).toBe(false)
+        expect(selectors.isDirty({} as RootState)).toBe(false)
 
         const dirtyState = {
             ...state,
@@ -153,7 +151,9 @@ describe('ticket selectors', () => {
         expect(selectors.getMessages(state)).toEqualImmutable(
             state.ticket.get('messages')
         )
-        expect(selectors.getMessages({})).toEqualImmutable(fromJS([]))
+        expect(selectors.getMessages({} as RootState)).toEqualImmutable(
+            fromJS([])
+        )
 
         // Should not return hidden message
         state.ticket = state.ticket.set(
@@ -181,11 +181,15 @@ describe('ticket selectors', () => {
         expect(selectors.getPendingMessages(state)).toEqualImmutable(
             state.ticket.getIn(['_internal', 'pendingMessages'])
         )
-        expect(selectors.getPendingMessages({})).toEqualImmutable(fromJS([]))
+        expect(selectors.getPendingMessages({} as RootState)).toEqualImmutable(
+            fromJS([])
+        )
     })
 
     it('getLastMessage', () => {
-        expect(selectors.getLastMessage({})).toEqualImmutable(fromJS({}))
+        expect(selectors.getLastMessage({} as RootState)).toEqualImmutable(
+            fromJS({})
+        )
 
         const lastMessage = selectors.getLastMessage(state)
         expect(lastMessage).toBeInstanceOf(Map)
@@ -194,40 +198,46 @@ describe('ticket selectors', () => {
     })
 
     it('getReadMessages', () => {
-        const expected = state.ticket.get('messages').delete(1)
+        const expected = (state.ticket.get('messages') as List<any>).delete(1)
         expect(selectors.getReadMessages(state)).toEqualImmutable(expected)
-        expect(selectors.getReadMessages({})).toEqualImmutable(fromJS([]))
+        expect(selectors.getReadMessages({} as RootState)).toEqualImmutable(
+            fromJS([])
+        )
     })
 
     it('getLastReadMessage', () => {
-        const expected = state.ticket.get('messages').first()
+        const expected = (state.ticket.get('messages') as List<any>).first()
         expect(selectors.getLastReadMessage(state)).toEqualImmutable(expected)
-        expect(selectors.getLastReadMessage({})).toEqualImmutable(fromJS({}))
+        expect(selectors.getLastReadMessage({} as RootState)).toEqualImmutable(
+            fromJS({})
+        )
     })
 
     it('getEvents', () => {
         const expected = state.ticket.get('events')
         expect(selectors.getEvents(state)).toEqualImmutable(expected)
-        expect(selectors.getEvents({})).toEqualImmutable(fromJS([]))
+        expect(selectors.getEvents({} as RootState)).toEqualImmutable(
+            fromJS([])
+        )
     })
 
     it('getBody', () => {
-        expect(selectors.getBody({})).toEqualImmutable(fromJS([]))
+        expect(selectors.getBody({} as RootState)).toEqualImmutable(fromJS([]))
 
         const body = selectors.getBody(state)
         expect(body).toBeInstanceOf(List)
         expect(body.size).toBe(7)
 
-        body.take(2).forEach((element) => {
+        body.take(2).forEach((element: Map<any, any>) => {
             expect(element.get('isEvent')).toBe(true)
         })
 
-        body.slice(2).forEach((element) => {
+        body.slice(2).forEach((element: Map<any, any>) => {
             expect(element.get('isMessage')).toBe(true)
         })
 
-        expect(body.get(5).get('isPending')).toBe(false)
-        expect(body.get(6).get('isPending')).toBe(true)
+        expect((body.get(5) as Map<any, any>).get('isPending')).toBe(false)
+        expect((body.get(6) as Map<any, any>).get('isPending')).toBe(true)
         expect(body).toMatchSnapshot()
     })
 })

@@ -1,5 +1,5 @@
 import {SHOPIFY_WIDGET_TYPE, SMOOCH_INSIDE_WIDGET_TYPE} from '../constants'
-import {getWidgetLabel} from '../predicates.ts'
+import {getWidgetLabel} from '../predicates'
 
 describe('getWidgetLabel()', () => {
     it('should render custom label', () => {

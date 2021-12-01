@@ -16,7 +16,7 @@ import client from '../../models/api/resources'
 
 import {LinksWidget} from '../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
-import * as types from './constants.js'
+import * as types from './constants'
 import {
     Widget,
     WidgetContextType,

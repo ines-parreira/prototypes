@@ -1038,7 +1038,7 @@ Immutable.Map {
         "customer",
         "created",
       ],
-      "type": "system",
+      "type": "ticket-list",
       "id": 7,
       "filters": "neq(ticket.status, \\"closed\\")",
       "order_dir": "desc",

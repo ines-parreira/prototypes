@@ -11,7 +11,7 @@ import {
     SMOOCH_INSIDE_WIDGET_TYPE,
     YOTPO_WIDGET_TYPE,
     KLAVIYO_WIDGET_TYPE,
-} from '../../../../../../../state/widgets/constants'
+} from '../../../../../../../state/widgets/constants.ts'
 import {
     guessFieldValueFromRawData,
     prepareWidgetToDisplay,

@@ -1,14 +1,15 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
-import * as selectors from '../selectors.ts'
-import {initialState as currentUserInitialState} from '../../currentUser/reducers.ts'
-import * as userFixtures from '../../../fixtures/users.ts'
+import * as userFixtures from '../../../fixtures/users'
+import {initialState as currentUserInitialState} from '../../currentUser/reducers'
+import {RootState} from '../../types'
+import * as selectors from '../selectors'
 
 jest.addMatchers(immutableMatchers)
 
 describe('users audit selectors', () => {
-    let state
+    let state: RootState
 
     beforeEach(() => {
         window.GORGIAS_CONSTANTS = {
@@ -21,7 +22,7 @@ describe('users audit selectors', () => {
         }
         state = {
             currentUser: currentUserInitialState.mergeDeep(
-                fromJS(userFixtures.user).set('id', 2)
+                (fromJS(userFixtures.user) as Map<any, any>).set('id', 2)
             ),
             usersAudit: fromJS({
                 events: [
@@ -48,29 +49,31 @@ describe('users audit selectors', () => {
             agents: fromJS({
                 all: [{id: 1}, {id: 2}],
             }),
-        }
+        } as RootState
     })
 
     it('getUserAuditEvents', () => {
-        expect(selectors.getUserAuditEvents({})).toEqualImmutable(fromJS([]))
+        expect(selectors.getUserAuditEvents({} as RootState)).toEqualImmutable(
+            fromJS([])
+        )
         expect(selectors.getUserAuditEvents(state)).toEqualImmutable(
             state.usersAudit.get('events')
         )
     })
 
     it('getUserAuditPagination', () => {
-        expect(selectors.getUserAuditPagination({})).toEqualImmutable(
-            fromJS({})
-        )
+        expect(
+            selectors.getUserAuditPagination({} as RootState)
+        ).toEqualImmutable(fromJS({}))
         expect(selectors.getUserAuditPagination(state)).toEqualImmutable(
             state.usersAudit.get('meta')
         )
     })
 
     it('getUserAuditUserIdOptions', () => {
-        expect(selectors.getUserAuditUserIdOptions({})).toEqualImmutable(
-            fromJS([])
-        )
+        expect(
+            selectors.getUserAuditUserIdOptions({} as RootState)
+        ).toEqualImmutable(fromJS([]))
         expect(
             fromJS(selectors.getUserAuditUserIdOptions(state).toJS())
         ).toEqualImmutable(
@@ -82,14 +85,18 @@ describe('users audit selectors', () => {
     })
 
     it('getUserAuditObjectsEvents', () => {
-        expect(selectors.getUserAuditObjectsEvents()).toEqualImmutable(
+        expect(
+            selectors.getUserAuditObjectsEvents({} as RootState)
+        ).toEqualImmutable(
             fromJS(window.GORGIAS_CONSTANTS.USER_AUDIT_OBJECTS_EVENTS)
         )
     })
 
     it('getUserAuditObjectTypeOptions', () => {
         expect(
-            fromJS(selectors.getUserAuditObjectTypeOptions().toJS())
+            fromJS(
+                selectors.getUserAuditObjectTypeOptions({} as RootState).toJS()
+            )
         ).toEqualImmutable(
             fromJS([
                 {label: 'Integration', value: 'Integration'},
@@ -100,7 +107,9 @@ describe('users audit selectors', () => {
 
     it('getUserAuditEventTypeOptions', () => {
         expect(
-            fromJS(selectors.getUserAuditEventTypeOptions().toJS())
+            fromJS(
+                selectors.getUserAuditEventTypeOptions({} as RootState).toJS()
+            )
         ).toEqualImmutable(
             fromJS([
                 {label: 'Integration created', value: 'integration-created'},

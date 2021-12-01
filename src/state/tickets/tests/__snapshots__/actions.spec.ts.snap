@@ -10,7 +10,7 @@ Object {
   "patch": Array [],
   "post": Array [
     Object {
-      "data": "{\\"type\\":\\"jobTypeExample\\",\\"params\\":{\\"ticket_ids\\":[1,2,3,4],\\"exampleKey\\":\\"exampleValue\\"}}",
+      "data": "{\\"type\\":\\"applyMacro\\",\\"params\\":{\\"ticket_ids\\":[1,2,3,4],\\"exampleKey\\":\\"exampleValue\\"}}",
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",

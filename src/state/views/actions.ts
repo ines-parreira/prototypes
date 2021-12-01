@@ -32,7 +32,7 @@ import client from '../../models/api/resources'
 
 import {activeViewUrl} from './utils'
 import * as viewsSelectors from './selectors'
-import * as types from './constants.js'
+import * as types from './constants'
 import {
     FieldSearchResult,
     ViewFilter,

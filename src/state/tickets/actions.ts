@@ -9,7 +9,7 @@ import {buildJobMessage} from '../../utils/notificationUtils'
 import {NotificationStatus} from '../notifications/types'
 import {JobType} from '../../models/job/types'
 
-import * as types from './constants.js'
+import * as types from './constants'
 
 export const updateCursor = (cursor: string) => (dispatch: StoreDispatch) => {
     return dispatch({

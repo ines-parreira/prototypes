@@ -9,7 +9,7 @@ import {
     MAGENTO2_WIDGET_TYPE,
     SHOPIFY_WIDGET_TYPE,
     SMOOCH_INSIDE_WIDGET_TYPE,
-} from '../../../../../../../../state/widgets/constants'
+} from '../../../../../../../../state/widgets/constants.ts'
 
 describe('<InfobarTabs/>', () => {
     describe('render()', () => {

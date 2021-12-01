@@ -1,35 +1,37 @@
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
 
-import * as actions from '../actions.ts'
-import {initialState} from '../reducers.ts'
-import client from '../../../models/api/resources.ts'
+import client from '../../../models/api/resources'
+import {JobType} from '../../../models/job/types'
+import {RootState, StoreDispatch} from '../../types'
+import * as actions from '../actions'
+import {initialState} from '../reducers'
 
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('../../notifications/actions.ts', () => {
+jest.mock('../../notifications/actions', () => {
     return {
-        notify: jest.fn(() => (args) => args),
+        notify: jest.fn(() => (args: Record<string, unknown>) => args),
     }
 })
 jest.mock('reapop', () => {
-    const reapop = require.requireActual('reapop')
-
+    const reapop: Record<string, unknown> = jest.requireActual('reapop')
     return {
         ...reapop,
-        updateNotification: jest.fn(() => (args) => args),
+        updateNotification: jest.fn(
+            () => (args: Record<string, unknown>) => args
+        ),
     }
 })
 
 describe('tickets actions', () => {
-    let store
-    let mockServer
+    let store: MockStoreEnhanced<Partial<RootState>, StoreDispatch>
+    const mockServer = new MockAdapter(client)
 
     beforeEach(() => {
-        mockServer = new MockAdapter(client)
+        mockServer.reset()
     })
 
     beforeEach(() => {
@@ -48,11 +50,10 @@ describe('tickets actions', () => {
             mockServer.onAny().reply(200)
 
             const idsList = fromJS([1, 2, 3, 4])
-            const jobType = 'jobTypeExample'
             const jobPartialParams = {exampleKey: 'exampleValue'}
 
             await store.dispatch(
-                actions.createJob(idsList, jobType, jobPartialParams)
+                actions.createJob(idsList, JobType.ApplyMacro, jobPartialParams)
             )
             expect(mockServer.history).toMatchSnapshot()
         })

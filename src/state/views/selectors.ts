@@ -271,7 +271,7 @@ const getViewsByType = (type: ViewType) =>
             _getViewsByType(views, currentUserSettings, accountSettings, type)
     )
 
-export const getViewIdToDisplay = (type: ViewType, urlViewId: Maybe<string>) =>
+export const getViewIdToDisplay = (type: ViewType, urlViewId?: Maybe<string>) =>
     createSelector<RootState, Maybe<number>, List<any>>(
         getViewsByType(type),
         (views) => {

@@ -12,7 +12,7 @@ import * as notificationsActions from '../state/notifications/actions'
 import * as ticketActions from '../state/ticket/actions'
 import * as viewsActions from '../state/views/actions'
 
-import * as viewsConstants from '../state/views/constants.js'
+import * as viewsConstants from '../state/views/constants'
 import * as currentAccountConstants from '../state/currentAccount/constants.js'
 
 import * as currentAccountSelectors from '../state/currentAccount/selectors'

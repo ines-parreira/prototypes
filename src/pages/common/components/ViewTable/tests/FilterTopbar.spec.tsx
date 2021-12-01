@@ -16,7 +16,7 @@ import {activeViewIdSet} from '../../../../../state/ui/views/actions'
 import {
     SUBMIT_NEW_VIEW_ERROR,
     SUBMIT_UPDATE_VIEW_ERROR,
-} from '../../../../../state/views/constants.js'
+} from '../../../../../state/views/constants'
 import {
     addFieldFilter,
     deleteView,

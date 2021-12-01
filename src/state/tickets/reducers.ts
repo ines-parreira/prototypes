@@ -1,10 +1,10 @@
 import {fromJS, Map, List} from 'immutable'
 
 import * as ticketTypes from '../ticket/constants'
-import * as viewsTypes from '../views/constants.js'
+import * as viewsTypes from '../views/constants'
 import {GorgiasAction} from '../types'
 
-import * as types from './constants.js'
+import * as types from './constants'
 import {TicketsState} from './types'
 
 export const initialState: TicketsState = fromJS({

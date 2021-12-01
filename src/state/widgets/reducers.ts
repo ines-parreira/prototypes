@@ -17,7 +17,7 @@ import {
     reorderWidgets,
 } from './utils'
 
-import * as types from './constants.js'
+import * as types from './constants'
 import {WidgetsState, WidgetContextType} from './types'
 
 export const initialState: WidgetsState = fromJS({

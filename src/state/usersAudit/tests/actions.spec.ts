@@ -1,21 +1,21 @@
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
 
-import client from '../../../models/api/resources.ts'
-import * as actions from '../actions.ts'
-import {initialState} from '../reducers.ts'
+import client from '../../../models/api/resources'
+import {RootState, StoreDispatch} from '../../types'
+import * as actions from '../actions'
+import {initialState} from '../reducers'
 
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('users audit actions', () => {
-    let store
-    let mockServer
+    let store: MockStoreEnhanced<Partial<RootState>, StoreDispatch>
+    const mockServer = new MockAdapter(client)
 
     beforeEach(() => {
-        store = mockStore({users: initialState})
-        mockServer = new MockAdapter(client)
+        store = mockStore({usersAudit: initialState})
+        mockServer.reset()
     })
 
     it('fetch user audit', () => {

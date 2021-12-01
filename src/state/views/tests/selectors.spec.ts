@@ -2,18 +2,18 @@ import moment from 'moment'
 import {fromJS} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 
-import {account} from '../../../fixtures/account.ts'
-import {user} from '../../../fixtures/users.ts'
-
-import {ViewType} from '../../../models/view/constants.ts'
-import {AccountSettingType} from '../../currentAccount/types.ts'
-import {initialState as currentAccountInitialState} from '../../currentAccount/reducers.ts'
-import {initialState as currentUserInitialState} from '../../currentUser/reducers.ts'
-import {SYSTEM_VIEW_CATEGORY, ViewVisibility} from '../../../constants/view.ts'
-import {getExpirationTimeForCount} from '../../../config/views.tsx'
-import {initialState} from '../reducers.ts'
-import * as selectors from '../selectors.ts'
-import {UserSettingType} from '../../../config/types/user.ts'
+import {SYSTEM_VIEW_CATEGORY, ViewVisibility} from '../../../constants/view'
+import {UserSettingType} from '../../../config/types/user'
+import {getExpirationTimeForCount} from '../../../config/views'
+import {user} from '../../../fixtures/users'
+import {account} from '../../../fixtures/account'
+import {ViewType} from '../../../models/view/types'
+import {AccountSettingType} from '../../currentAccount/types'
+import {initialState as currentAccountInitialState} from '../../currentAccount/reducers'
+import {initialState as currentUserInitialState} from '../../currentUser/reducers'
+import {RootState} from '../../types'
+import {initialState} from '../reducers'
+import * as selectors from '../selectors'
 
 jest.addMatchers(immutableMatchers)
 
@@ -32,7 +32,7 @@ describe('selectors', () => {
                         name: 'Trash',
                     })
                 ),
-            }
+            } as RootState
             expect(selectors.isActiveViewTrashView(state)).toBe(true)
         })
 
@@ -45,7 +45,7 @@ describe('selectors', () => {
                         name: 'Trash',
                     })
                 ),
-            }
+            } as RootState
             expect(selectors.isActiveViewTrashView(state)).toBe(false)
         })
 
@@ -58,7 +58,7 @@ describe('selectors', () => {
                         name: 'Spam',
                     })
                 ),
-            }
+            } as RootState
             expect(selectors.isActiveViewTrashView(state)).toBe(false)
         })
     })
@@ -72,13 +72,13 @@ describe('selectors', () => {
                         allItemsSelected: false,
                     })
                 ),
-            }
+            } as RootState
             expect(selectors.areAllActiveViewItemsSelected(state)).toBe(false)
         })
         it('Should return false because in the state the all items selection variable is not set', () => {
             const state = {
                 views: initialState.set('active', fromJS({})),
-            }
+            } as RootState
             expect(selectors.areAllActiveViewItemsSelected(state)).toBe(false)
         })
         it('Should return true because in the state the all items selection variable is true', () => {
@@ -89,7 +89,7 @@ describe('selectors', () => {
                         allItemsSelected: true,
                     })
                 ),
-            }
+            } as RootState
             expect(selectors.areAllActiveViewItemsSelected(state)).toBe(true)
         })
     })
@@ -97,12 +97,16 @@ describe('selectors', () => {
     describe('getRecentViews()', () => {
         it('should return value', () => {
             const recent = 12
-            const state = {views: initialState.set('recent', recent)}
+            const state = {
+                views: initialState.set('recent', recent),
+            } as RootState
             expect(selectors.getRecentViews(state)).toBe(recent)
         })
 
         it('should return fallback', () => {
-            const state = {views: initialState.set('recent', undefined)}
+            const state = {
+                views: initialState.set('recent', undefined),
+            } as RootState
             expect(selectors.getRecentViews(state).toJS()).toEqual({})
         })
     })
@@ -119,7 +123,9 @@ describe('selectors', () => {
                 2: {updated_datetime: now},
             }
 
-            const state = {views: initialState.merge(fromJS({recent, counts}))}
+            const state = {
+                views: initialState.merge(fromJS({recent, counts})),
+            } as RootState
             expect(selectors.getExpiredViewsCounts()(state)).toEqual([])
         })
 
@@ -144,43 +150,49 @@ describe('selectors', () => {
                 3: {updated_datetime: now},
             }
 
-            const state = {views: initialState.merge(fromJS({recent, counts}))}
+            const state = {
+                views: initialState.merge(fromJS({recent, counts})),
+            } as RootState
             expect(selectors.getExpiredViewsCounts()(state)).toEqual([1, 2])
         })
     })
 
     describe('getViewIdToDisplay()', () => {
         it('should return null because there is no views', () => {
-            const viewType = 'ticket-list'
-            const state = {views: initialState.set('items', fromJS([]))}
-            expect(selectors.getViewIdToDisplay(viewType)(state)).toEqual(null)
+            const state = {
+                views: initialState.set('items', fromJS([])),
+            } as RootState
+            expect(
+                selectors.getViewIdToDisplay(ViewType.TicketList)(state)
+            ).toEqual(null)
         })
 
         it('should return the id of the first view of matching type because no urlViewId was passed', () => {
             const viewId = 7
-            const viewType = 'ticket-list'
             const state = {
                 views: initialState.set(
                     'items',
-                    fromJS([{id: viewId, type: viewType}])
+                    fromJS([{id: viewId, type: ViewType.TicketList}])
                 ),
-            }
-            expect(selectors.getViewIdToDisplay(viewType)(state)).toEqual(
-                viewId
-            )
+            } as RootState
+            expect(
+                selectors.getViewIdToDisplay(ViewType.TicketList)(state)
+            ).toEqual(viewId)
         })
 
         it('should return the passed urlViewId because there is a matching view of the same type', () => {
             const viewId = 7
-            const viewType = 'ticket-list'
             const state = {
                 views: initialState.set(
                     'items',
-                    fromJS([{id: viewId, type: viewType}])
+                    fromJS([{id: viewId, type: ViewType.TicketList}])
                 ),
-            }
+            } as RootState
             expect(
-                selectors.getViewIdToDisplay(viewType, viewId.toString())(state)
+                selectors.getViewIdToDisplay(
+                    ViewType.TicketList,
+                    viewId.toString()
+                )(state)
             ).toEqual(viewId)
         })
 
@@ -189,21 +201,19 @@ describe('selectors', () => {
                 '(should instead return the if of the first view of matching type)',
             () => {
                 const viewId = 7
-                const viewType = 'customer-list'
                 const ticketViewId = 9
-                const ticketViewType = 'ticket-list'
                 const state = {
                     views: initialState.set(
                         'items',
                         fromJS([
-                            {id: viewId, type: viewType},
-                            {id: ticketViewId, type: ticketViewType},
+                            {id: viewId, type: ViewType.CustomerList},
+                            {id: ticketViewId, type: ViewType.TicketList},
                         ])
                     ),
-                }
+                } as RootState
                 expect(
                     selectors.getViewIdToDisplay(
-                        ticketViewType,
+                        ViewType.TicketList,
                         viewId.toString()
                     )(state)
                 ).toEqual(ticketViewId)
@@ -214,12 +224,12 @@ describe('selectors', () => {
     describe('getNavigation()', () => {
         it('should return an empty Map because there is no navigation in the state', () => {
             expect(
-                selectors.getNavigation({views: fromJS({})})
+                selectors.getNavigation({views: fromJS({})} as RootState)
             ).toEqualImmutable(fromJS({}))
             expect(
                 selectors.getNavigation({
                     views: fromJS({_internal: {navigation: {}}}),
-                })
+                } as RootState)
             ).toEqualImmutable(fromJS({}))
         })
 
@@ -230,7 +240,7 @@ describe('selectors', () => {
                     ['_internal', 'navigation'],
                     navigation
                 ),
-            }
+            } as RootState
             expect(selectors.getNavigation(state)).toEqualImmutable(navigation)
         })
     })
@@ -297,7 +307,7 @@ describe('selectors', () => {
                             },
                         ])
                     ),
-            }
+            } as RootState
             const selector = selectors.makeGetViewsByType()
             expect(selector(state, 'ticket-list')).toEqualImmutable(
                 fromJS([
@@ -395,7 +405,7 @@ describe('selectors', () => {
                             },
                         ])
                     ),
-            }
+            } as RootState
             const selector = selectors.makeGetViewsByType()
             expect(selector(state, 'ticket-list')).toEqualImmutable(
                 fromJS([
@@ -440,7 +450,7 @@ describe('selectors', () => {
                         {id: 3, section_id: 2, type: ViewType.TicketList},
                     ],
                 }),
-            })
+            } as RootState)
         ).toEqualImmutable(fromJS([1, 3, 2]))
     })
 })

@@ -7,7 +7,7 @@ import {GorgiasAction, RootState} from '../types'
 import {MAX_RECENT_VIEWS} from '../../config/views'
 import {View} from '../../models/view/types'
 
-import * as constants from './constants.js'
+import * as constants from './constants'
 import {
     addFilterAST,
     addViewIfMissing,

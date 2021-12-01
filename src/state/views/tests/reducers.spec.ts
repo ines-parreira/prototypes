@@ -1,12 +1,13 @@
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import moment from 'moment'
 
-import {SYSTEM_VIEW_CATEGORY} from '../../../constants/view.ts'
-import reducers, {initialState} from '../reducers.ts'
-import * as fixtures from '../../../fixtures/views.ts'
+import {ViewType} from '../../../models/view/types'
+import {RootState} from '../../types'
+import reducers, {initialState} from '../reducers'
+import * as fixtures from '../../../fixtures/views'
 import * as types from '../constants'
-import * as utils from '../utils.ts'
-import * as selectors from '../selectors.ts'
+import * as utils from '../utils'
+import * as selectors from '../selectors'
 
 describe('reducers', () => {
     describe('views', () => {
@@ -197,7 +198,7 @@ describe('reducers', () => {
                 resp: fixtures.view,
             })
 
-            fixtures.view.type = SYSTEM_VIEW_CATEGORY
+            fixtures.view.type = ViewType.TicketList
 
             expect(
                 reducers(state, {
@@ -296,22 +297,34 @@ describe('reducers', () => {
                 viewId: 1,
             })
 
-            const recentViews = selectors.getRecentViews({views: state}).toJS()
+            const recentViews = selectors
+                .getRecentViews({views: state} as RootState)
+                .toJS() as Record<
+                string,
+                {
+                    inserted_datetime: string
+                    updated_datetime: string
+                }
+            >
             const viewIds = Object.keys(recentViews)
             const now = moment.utc().add(1, 's')
 
             // should store new view id in the Redux state
             expect(viewIds).toEqual(['1'])
-            for (let view in recentViews) {
+
+            for (const view in recentViews) {
                 expect(
-                    moment(view.insert_datetime).isBetween(beforeActionDt, now)
+                    moment(recentViews[view].inserted_datetime).isBetween(
+                        beforeActionDt,
+                        now
+                    )
                 ).toBe(true)
-                expect(view.updated_datetime).toBe(undefined)
+                expect(recentViews[view].updated_datetime).toBe(undefined)
             }
 
             // should store recent views in the localStorage
             const views = utils.recentViewsStorage.get()
-            expect(Object.keys(views)).toEqual(['1'])
+            expect(Object.keys(views!)).toEqual(['1'])
         })
 
         it('should handle UPDATE_COUNTS', () => {
@@ -336,16 +349,29 @@ describe('reducers', () => {
             })
 
             // should update view counts
-            expect(state.get('counts').toJS()).toEqual(counts)
+            expect((state.get('counts') as Map<any, any>).toJS()).toEqual(
+                counts
+            )
 
             const now = moment.utc().add(10, 's')
-            const recentViews = selectors.getRecentViews({views: state}).toJS()
+            const recentViews = selectors
+                .getRecentViews({views: state} as RootState)
+                .toJS() as Record<
+                string,
+                {
+                    inserted_datetime: string
+                    updated_datetime: string
+                }
+            >
             // should update when these view counts were updated for each recent views
             expect(recentViews).not.toEqual({})
 
-            for (let view in recentViews) {
+            for (const view in recentViews) {
                 expect(
-                    moment(view.updated_datetime).isBetween(beforeActionDt, now)
+                    moment(recentViews[view].updated_datetime).isBetween(
+                        beforeActionDt,
+                        now
+                    )
                 ).toBe(true)
             }
         })
@@ -366,13 +392,24 @@ describe('reducers', () => {
             })
 
             const now = moment.utc().add(10, 's')
-            const recentViews = selectors.getRecentViews({views: state}).toJS()
+            const recentViews = selectors
+                .getRecentViews({views: state} as RootState)
+                .toJS() as Record<
+                string,
+                {
+                    inserted_datetime: string
+                    updated_datetime: string
+                }
+            >
             // should update when these view counts were updated for each recent views
             expect(recentViews).not.toEqual({})
 
-            for (let view in recentViews) {
+            for (const view in recentViews) {
                 expect(
-                    moment(view.updated_datetime).isBetween(beforeActionDt, now)
+                    moment(recentViews[view].updated_datetime).isBetween(
+                        beforeActionDt,
+                        now
+                    )
                 ).toBe(true)
             }
         })

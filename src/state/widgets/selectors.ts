@@ -13,7 +13,7 @@ export const getWidgetsState = (state: RootState): WidgetsState =>
 
 export const getContext = createSelector<RootState, string, WidgetsState>(
     getWidgetsState,
-    (state) => (state.get('currentContext') as string) || ''
+    (state) => (state.get('currentContext') as WidgetContextType) || ''
 )
 
 export const getWidgets = createSelector<RootState, List<any>, WidgetsState>(
@@ -26,16 +26,19 @@ export const hasWidgets = createSelector<RootState, boolean, List<any>>(
     (widgets) => !widgets.isEmpty()
 )
 
-export const getWidgetsWithContext = (context: WidgetContextType) =>
+export const getWidgetsWithContext = (context?: WidgetContextType) =>
     createSelector<RootState, List<any>, List<any>, string>(
         getWidgets,
         getContext,
         // take current context by default
         (widgets, currentContext) =>
-            itemsWithContext(widgets, context || currentContext)
+            itemsWithContext(
+                widgets,
+                context || (currentContext as WidgetContextType)
+            )
     )
 
-export const hasWidgetsWithContext = (context: WidgetContextType) =>
+export const hasWidgetsWithContext = (context?: WidgetContextType) =>
     createSelector<RootState, boolean, List<any>>(
         getWidgetsWithContext(context),
         (widgets) => !widgets.isEmpty()

@@ -1,13 +1,16 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 
-import reducer, {initialState} from '../reducers.ts'
-import * as types from '../constants.ts'
+import {GorgiasAction} from '../../types'
+import reducer, {initialState} from '../reducers'
+import * as types from '../constants'
 
 jest.addMatchers(immutableMatchers)
 
 describe('users audit reducers', () => {
     it('initial state', () => {
-        expect(reducer(undefined, {})).toEqualImmutable(initialState)
+        expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(
+            initialState
+        )
     })
     it('fetch user audit', () => {
         expect(
