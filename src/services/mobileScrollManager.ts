@@ -6,20 +6,21 @@
 import {
     isTouchDevice,
     isMediumOrSmallScreen,
-} from '../pages/common/utils/mobile.ts'
+} from '../pages/common/utils/mobile'
 
-import {isEditable} from './common/utils.ts'
+import {isEditable} from './common/utils'
 
 window.addEventListener('focusin', () => {
     // if focused element is editable,
     // and we're on medium screen touch device.
     if (
+        !!document.activeElement &&
         isEditable(document.activeElement) &&
         isTouchDevice() &&
         isMediumOrSmallScreen()
     ) {
         setTimeout(() => {
-            document.activeElement.scrollIntoView()
+            document.activeElement!.scrollIntoView()
         })
     }
 })

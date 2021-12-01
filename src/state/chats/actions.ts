@@ -7,7 +7,7 @@ import {Ticket} from '../../models/ticket/types'
 import {StoreDispatch} from '../types'
 import client from '../../models/api/resources'
 
-import * as constants from './constants.js'
+import * as constants from './constants'
 
 export const fetchChats =
     () =>

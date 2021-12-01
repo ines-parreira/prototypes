@@ -1,8 +1,9 @@
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 
+import {StoreAction} from '../../types'
 import * as types from '../constants'
-import reducer, {initialState} from '../reducers.ts'
+import reducer, {initialState} from '../reducers'
 
 jest.addMatchers(immutableMatchers)
 
@@ -31,7 +32,9 @@ const billingContact = {
 
 describe('billing reducers', () => {
     it('initial state', () => {
-        expect(reducer(undefined, {})).toEqualImmutable(initialState)
+        expect(reducer(undefined, {} as StoreAction)).toEqualImmutable(
+            initialState
+        )
     })
 
     it('fetch invoices', () => {
@@ -132,7 +135,7 @@ describe('billing reducers', () => {
             exp_month: '4',
             exp_year: '23',
             name: 'Steve',
-        })
+        }) as Map<any, any>
         it('should set the credit card (initial state).', () => {
             const action = {
                 type: types.SET_CREDIT_CARD,

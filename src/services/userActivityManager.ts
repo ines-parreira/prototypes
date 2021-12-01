@@ -1,16 +1,19 @@
 import _throttle from 'lodash/throttle'
+import {AnyAction} from 'redux'
 
-import {store as reduxStore} from '../init.ts'
-import {toggleActiveStatus} from '../state/currentUser/actions.ts'
-import * as socketConstants from '../config/socketConstants.ts'
+import {store as reduxStore} from '../init'
+import {toggleActiveStatus} from '../state/currentUser/actions'
+import {RootState} from '../state/types'
 
-import socketManager from './socketManager'
+import {SocketEventType} from './socketManager/types'
+import socketManager from './socketManager/socketManager'
 
 class UserActivityManager {
     unavailabilityTimeout = 600000 // 10 minutes
     inactivityTimeout = 60000 // 1 min
     watchThrottling = 15000 // 15 secs
-    userActivityFn = null
+    userActivityFn: ReturnType<typeof setTimeout> | null = null
+    userAvailabilityFn: ReturnType<typeof setTimeout> | null = null
     store = reduxStore
 
     /**
@@ -18,22 +21,26 @@ class UserActivityManager {
      * set him as inactive after a period of inactivity
      */
     setCurrentUserActive = _throttle(() => {
-        socketManager.send(socketConstants.AGENT_ACTIVE)
+        socketManager.send(SocketEventType.AgentActive)
 
-        clearTimeout(this.userActivityFn)
-        clearTimeout(this.userAvailabilityFn)
-        const currentUser = this.store.getState().currentUser
+        this.userActivityFn && clearTimeout(this.userActivityFn)
+        this.userAvailabilityFn && clearTimeout(this.userAvailabilityFn)
+        const currentUser = (this.store.getState() as RootState).currentUser
 
         this.userActivityFn = setTimeout(() => {
-            this.store.dispatch(toggleActiveStatus(false))
+            this.store.dispatch(
+                toggleActiveStatus(false) as unknown as AnyAction
+            )
         }, this.inactivityTimeout)
 
         this.userAvailabilityFn = setTimeout(() => {
-            socketManager.send(socketConstants.AGENT_INACTIVE)
+            socketManager.send(SocketEventType.AgentInactive)
         }, this.unavailabilityTimeout)
 
         if (!currentUser.get('is_active')) {
-            this.store.dispatch(toggleActiveStatus(true))
+            this.store.dispatch(
+                toggleActiveStatus(true) as unknown as AnyAction
+            )
         }
     }, this.watchThrottling)
 

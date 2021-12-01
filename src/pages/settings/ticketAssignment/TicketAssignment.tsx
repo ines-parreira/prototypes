@@ -6,7 +6,7 @@ import {Button, Col, Container, Form, Label, Row} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
 
 import {TicketChannel} from '../../../business/types/ticket'
-import UserActivityManager from '../../../services/userActivityManager.js'
+import UserActivityManager from '../../../services/userActivityManager'
 import {fetchChats} from '../../../state/chats/actions'
 import {submitSetting} from '../../../state/currentAccount/actions'
 import {getTicketAssignmentSettings} from '../../../state/currentAccount/selectors'

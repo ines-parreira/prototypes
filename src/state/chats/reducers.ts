@@ -3,7 +3,7 @@ import moment from 'moment'
 
 import {GorgiasAction} from '../types'
 
-import * as constants from './constants.js'
+import * as constants from './constants'
 import {ChatsState} from './types'
 
 export const initialState: ChatsState = fromJS({

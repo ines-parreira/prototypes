@@ -1,15 +1,14 @@
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
-
 import {fromJS} from 'immutable'
 
-import * as actions from '../actions.ts'
-import {initialState} from '../reducers.ts'
-import client from '../../../models/api/resources.ts'
+import client from '../../../models/api/resources'
+import {RootState, StoreDispatch} from '../../types'
+import * as actions from '../actions'
+import {initialState} from '../reducers'
 
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const contactInformation = {
     email: 'hello@acme.gorgias.io',
@@ -29,13 +28,17 @@ const contactInformation = {
 
 jest.mock('../../notifications/actions.ts', () => {
     return {
-        notify: jest.fn(() => (args) => args),
+        notify: jest.fn(
+            () =>
+                <T>(args: T): T =>
+                    args
+        ),
     }
 })
 
 describe('billing actions', () => {
-    let store
-    let mockServer
+    let store: MockStoreEnhanced<Partial<RootState>, StoreDispatch>
+    const mockServer = new MockAdapter(client)
 
     beforeEach(() => {
         store = mockStore({
@@ -43,7 +46,7 @@ describe('billing actions', () => {
             currentUser: fromJS({id: 1}),
             currentAccount: fromJS({id: 1}),
         })
-        mockServer = new MockAdapter(client)
+        mockServer.reset()
     })
 
     it('fetch current usage', () => {

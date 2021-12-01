@@ -6,7 +6,7 @@ import {notify} from '../notifications/actions'
 import {NotificationStatus} from '../notifications/types'
 import {StoreDispatch} from '../types'
 
-import * as constants from './constants.js'
+import * as constants from './constants'
 import {
     BillingContact,
     CurrentUsage,

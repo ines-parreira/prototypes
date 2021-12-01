@@ -1,24 +1,23 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
-import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
 
-import client from '../../../models/api/resources.ts'
-import * as actions from '../actions.ts'
+import client from '../../../models/api/resources'
+import {initialState} from '../reducers'
+import {RootState, StoreDispatch} from '../../types'
+import * as actions from '../actions'
 
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
-
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.addMatchers(immutableMatchers)
 
 describe('auths actions', () => {
-    let store
-    let mockServer
+    let store: MockStoreEnhanced<Partial<RootState>, StoreDispatch>
+    const mockServer = new MockAdapter(client)
 
     beforeEach(() => {
-        store = mockStore({auths: fromJS({})})
-        mockServer = new MockAdapter(client)
+        store = mockStore({auths: initialState})
+        mockServer.reset()
     })
 
     it("should successfully fetch user's auths and store the result", () => {

@@ -2,7 +2,7 @@ import {Map, fromJS, List} from 'immutable'
 
 import {GorgiasAction} from '../types'
 
-import * as constants from './constants.js'
+import * as constants from './constants'
 import {BillingState} from './types'
 
 export const initialState: BillingState = fromJS({})

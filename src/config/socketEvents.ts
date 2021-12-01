@@ -1,6 +1,5 @@
 import {fromJS, List, Map} from 'immutable'
 import _find from 'lodash/find'
-import {EnhancedStore} from '@reduxjs/toolkit'
 
 import {shouldTicketBeDisplayedInRecentChats} from '../business/recentChats'
 
@@ -91,9 +90,6 @@ export type ReceivedEvent = {
     name: string
     onReceive: (event: ServerMessage) => void
 }
-
-//$TsFixMe remove once init.js is migrated
-const typeSafeReduxStore = reduxStore as EnhancedStore
 
 /**
  * Events that can be sent to server via socket
@@ -231,7 +227,7 @@ export const receivedEvents: ReceivedEvent[] = [
     {
         name: 'customer-updated',
         onReceive: function (json) {
-            typeSafeReduxStore.dispatch(
+            reduxStore.dispatch(
                 ticketActions.mergeCustomer(
                     (json as CustomerUpdatedEvent).customer
                 )
@@ -241,7 +237,7 @@ export const receivedEvents: ReceivedEvent[] = [
     {
         name: 'user-location-updated',
         onReceive: function (json) {
-            typeSafeReduxStore.dispatch(
+            reduxStore.dispatch(
                 agentsActions.setAgentsLocations(
                     (json as UserLocationUpdatedEvent).locations
                 )
@@ -251,7 +247,7 @@ export const receivedEvents: ReceivedEvent[] = [
     {
         name: 'user-typing-status-updated',
         onReceive: function (json) {
-            typeSafeReduxStore.dispatch(
+            reduxStore.dispatch(
                 agentsActions.setAgentsTypingStatuses(
                     (json as UserTypingStatusUpdatedEvent).locations
                 )
@@ -263,13 +259,9 @@ export const receivedEvents: ReceivedEvent[] = [
         onReceive: function (json) {
             const {ticket} = json as TicketUpdatedEvent
             if (ticket.is_unread) {
-                typeSafeReduxStore.dispatch(
-                    chatsActions.markChatAsUnread(ticket.id)
-                )
+                reduxStore.dispatch(chatsActions.markChatAsUnread(ticket.id))
             }
-            typeSafeReduxStore.dispatch(
-                ticketActions.mergeTicket(ticket) as any
-            )
+            reduxStore.dispatch(ticketActions.mergeTicket(ticket) as any)
         },
     },
     {
@@ -287,7 +279,7 @@ export const receivedEvents: ReceivedEvent[] = [
                 )
             }
 
-            typeSafeReduxStore.dispatch(
+            reduxStore.dispatch(
                 ticketActions.mergeTicket(
                     (json as TicketMessageCreatedEvent).ticket
                 ) as any
@@ -297,7 +289,7 @@ export const receivedEvents: ReceivedEvent[] = [
     {
         name: 'ticket-message-action-failed',
         onReceive: function (json) {
-            typeSafeReduxStore.dispatch(
+            reduxStore.dispatch(
                 ticketActions.handleMessageActionError(
                     (json as TicketMessageActionFailedEvent)
                         .ticket_id as unknown as string
@@ -308,7 +300,7 @@ export const receivedEvents: ReceivedEvent[] = [
     {
         name: 'ticket-message-failed',
         onReceive: function (json) {
-            typeSafeReduxStore.dispatch(
+            reduxStore.dispatch(
                 ticketActions.handleMessageError(
                     json as TicketMessageFailedEvent
                 ) as any
@@ -318,7 +310,7 @@ export const receivedEvents: ReceivedEvent[] = [
     {
         name: 'action-executed',
         onReceive: function (json) {
-            typeSafeReduxStore.dispatch(
+            reduxStore.dispatch(
                 infobarActions.handleExecutedAction(
                     json as ActionExecutedEvent
                 ) as any
@@ -328,7 +320,7 @@ export const receivedEvents: ReceivedEvent[] = [
     {
         name: 'view-created',
         onReceive: function (json) {
-            typeSafeReduxStore.dispatch({
+            reduxStore.dispatch({
                 type: viewsConstants.CREATE_VIEW_SUCCESS,
                 resp: (json as ViewCreatedEvent).view,
             })
@@ -337,50 +329,46 @@ export const receivedEvents: ReceivedEvent[] = [
                 data: json,
                 level: 'log',
             })
-            typeSafeReduxStore.dispatch(
-                viewCreated((json as ViewCreatedEvent).view)
-            )
+            reduxStore.dispatch(viewCreated((json as ViewCreatedEvent).view))
         },
     },
     {
         name: 'view-updated',
         onReceive: function (json) {
-            const state = typeSafeReduxStore.getState()
+            const state = reduxStore.getState()
             const currentUser = currentUserSelectors.getCurrentUser(state)
             const teams = getTeams(state)
             const {view} = json as ViewUpdatedEvent
 
             if (isViewSharedWithUser(view as any, currentUser, teams)) {
-                typeSafeReduxStore.dispatch({
+                reduxStore.dispatch({
                     type: viewsConstants.UPDATE_VIEW_SUCCESS,
                     resp: view,
                 })
-                typeSafeReduxStore.dispatch(viewUpdated(view))
+                reduxStore.dispatch(viewUpdated(view))
             } else {
-                typeSafeReduxStore.dispatch(
+                reduxStore.dispatch(
                     viewsActions.deleteViewSuccess(view.id) as any
                 )
-                typeSafeReduxStore.dispatch(viewDeleted(view.id))
+                reduxStore.dispatch(viewDeleted(view.id))
             }
         },
     },
     {
         name: 'view-deleted',
         onReceive: function (json) {
-            typeSafeReduxStore.dispatch(
+            reduxStore.dispatch(
                 viewsActions.deleteViewSuccess(
                     (json as ViewDeletedEvent).view.id
                 ) as any
             )
-            typeSafeReduxStore.dispatch(
-                viewDeleted((json as ViewDeletedEvent).view.id)
-            )
+            reduxStore.dispatch(viewDeleted((json as ViewDeletedEvent).view.id))
         },
     },
     {
         name: VIEW_SECTION_CREATED,
         onReceive: function (json) {
-            typeSafeReduxStore.dispatch(
+            reduxStore.dispatch(
                 sectionCreated((json as ViewSectionCreatedEvent).view_section)
             )
         },
@@ -388,7 +376,7 @@ export const receivedEvents: ReceivedEvent[] = [
     {
         name: VIEW_SECTION_UPDATED,
         onReceive: function (json) {
-            typeSafeReduxStore.dispatch(
+            reduxStore.dispatch(
                 sectionUpdated((json as ViewSectionUpdatedEvent).view_section)
             )
         },
@@ -396,7 +384,7 @@ export const receivedEvents: ReceivedEvent[] = [
     {
         name: VIEW_SECTION_DELETED,
         onReceive: function (json) {
-            typeSafeReduxStore.dispatch(
+            reduxStore.dispatch(
                 sectionDeleted(
                     (json as ViewSectionDeletedEvent).view_section.id
                 )
@@ -406,10 +394,10 @@ export const receivedEvents: ReceivedEvent[] = [
     {
         name: 'views-count-updated',
         onReceive: function (json) {
-            typeSafeReduxStore.dispatch(
+            reduxStore.dispatch(
                 viewsCountFetched((json as ViewCountUpdatedEvent).counts)
             )
-            typeSafeReduxStore.dispatch(
+            reduxStore.dispatch(
                 viewsActions.handleViewsCount(
                     (json as ViewCountUpdatedEvent).counts
                 ) as any
@@ -419,7 +407,7 @@ export const receivedEvents: ReceivedEvent[] = [
     {
         name: SocketEventType.AccountUpdated,
         onReceive: function (json) {
-            const state = typeSafeReduxStore.getState() as RootState
+            const state = reduxStore.getState() as RootState
             const newAccountStatus =
                 (json as AccountUpdatedEvent)?.account?.status?.status ||
                 'active'
@@ -430,7 +418,7 @@ export const receivedEvents: ReceivedEvent[] = [
                 (state.currentAccount as {status?: {status?: string}})?.status
                     ?.status || 'active'
 
-            typeSafeReduxStore.dispatch(
+            reduxStore.dispatch(
                 notificationsActions.handleUsageBanner({
                     newAccountStatus,
                     currentAccountStatus,
@@ -493,10 +481,10 @@ export const receivedEvents: ReceivedEvent[] = [
             }
 
             if (shouldFetchChats) {
-                chatsActions.fetchChatsThrottled(typeSafeReduxStore.dispatch)
+                chatsActions.fetchChatsThrottled(reduxStore.dispatch)
             }
 
-            typeSafeReduxStore.dispatch({
+            reduxStore.dispatch({
                 type: currentAccountConstants.UPDATE_ACCOUNT_SUCCESS,
                 resp: account,
             })
@@ -511,20 +499,18 @@ export const receivedEvents: ReceivedEvent[] = [
     {
         name: SocketEventType.SelfServiceConfigurationsUpdateStarted,
         onReceive: function () {
-            typeSafeReduxStore.dispatch(setLoading(true))
+            reduxStore.dispatch(setLoading(true))
         },
     },
     {
         name: SocketEventType.SelfServiceConfigurationsUpdated,
         onReceive: async function () {
-            typeSafeReduxStore.dispatch(setLoading(true))
+            reduxStore.dispatch(setLoading(true))
             try {
                 const res = await fetchSelfServiceConfigurations()
-                typeSafeReduxStore.dispatch(
-                    selfServiceConfigurationsFetched(res.data)
-                )
+                reduxStore.dispatch(selfServiceConfigurationsFetched(res.data))
             } catch (error) {
-                typeSafeReduxStore.dispatch(
+                reduxStore.dispatch(
                     notificationsActions.notify({
                         status: NotificationStatus.Error,
                         message:
@@ -532,7 +518,7 @@ export const receivedEvents: ReceivedEvent[] = [
                     }) as any
                 )
             } finally {
-                typeSafeReduxStore.dispatch(setLoading(false))
+                reduxStore.dispatch(setLoading(false))
             }
         },
     },
@@ -547,7 +533,7 @@ export const receivedEvents: ReceivedEvent[] = [
                 json as TicketMessageChatCreatedEvent
             ).event.play_sound_notification
 
-            const state = typeSafeReduxStore.getState()
+            const state = reduxStore.getState()
             const {currentUser} = state
 
             const ticketAssignmentSetting =
@@ -572,7 +558,7 @@ export const receivedEvents: ReceivedEvent[] = [
                     currentUserIsAvailable
                 )
             ) {
-                typeSafeReduxStore.dispatch(
+                reduxStore.dispatch(
                     chatsActions.addChat(
                         ticket,
                         shouldNotify,
@@ -582,12 +568,12 @@ export const receivedEvents: ReceivedEvent[] = [
                 return
             }
 
-            typeSafeReduxStore.dispatch(chatsActions.removeChat(ticket.id))
+            reduxStore.dispatch(chatsActions.removeChat(ticket.id))
 
-            const {chats} = typeSafeReduxStore.getState() as RootState
+            const {chats} = reduxStore.getState() as RootState
 
             if ((chats.get('tickets') as List<any>).size < MAX_RECENT_CHATS) {
-                chatsActions.fetchChatsThrottled(typeSafeReduxStore.dispatch)
+                chatsActions.fetchChatsThrottled(reduxStore.dispatch)
             }
         },
     },
@@ -595,7 +581,7 @@ export const receivedEvents: ReceivedEvent[] = [
         name: SocketEventType.TicketChatUpdated,
         onReceive: function (json) {
             const ticket = (json as TicketChatUpdatedEvent).data
-            const state = typeSafeReduxStore.getState() as RootState
+            const state = reduxStore.getState() as RootState
             const {currentUser} = state
 
             const ticketAssignmentSetting =
@@ -611,18 +597,16 @@ export const receivedEvents: ReceivedEvent[] = [
                     currentUserIsAvailable
                 )
             ) {
-                typeSafeReduxStore.dispatch(
-                    chatsActions.addChat(ticket, false) as any
-                )
+                reduxStore.dispatch(chatsActions.addChat(ticket, false) as any)
                 return
             }
 
-            typeSafeReduxStore.dispatch(chatsActions.removeChat(ticket.id))
+            reduxStore.dispatch(chatsActions.removeChat(ticket.id))
 
-            const {chats} = typeSafeReduxStore.getState() as RootState
+            const {chats} = reduxStore.getState() as RootState
 
             if ((chats.get('tickets') as List<any>).size < MAX_RECENT_CHATS) {
-                chatsActions.fetchChatsThrottled(typeSafeReduxStore.dispatch)
+                chatsActions.fetchChatsThrottled(reduxStore.dispatch)
             }
         },
     },
@@ -630,7 +614,7 @@ export const receivedEvents: ReceivedEvent[] = [
         name: SocketEventType.EmailIntegrationVerified,
         onReceive: function (json) {
             integrationsActions.onVerify(
-                typeSafeReduxStore.dispatch,
+                reduxStore.dispatch,
                 (json as EmailIntegrationVerifiedEvent).integration_id
             )
         },
@@ -639,7 +623,7 @@ export const receivedEvents: ReceivedEvent[] = [
         name: SocketEventType.EmailForwardingActivated,
         onReceive: function (json) {
             integrationsActions.onEmailForwardingActivated(
-                typeSafeReduxStore.dispatch,
+                reduxStore.dispatch,
                 (json as EmailIntegrationVerifiedEvent).integration_id
             )
         },
@@ -647,11 +631,9 @@ export const receivedEvents: ReceivedEvent[] = [
     {
         name: SocketEventType.FacebookIntegrationsReconnected,
         onReceive: function (json) {
-            typeSafeReduxStore.dispatch(
-                integrationsActions.fetchIntegrations() as any
-            )
+            reduxStore.dispatch(integrationsActions.fetchIntegrations() as any)
 
-            typeSafeReduxStore.dispatch(
+            reduxStore.dispatch(
                 notificationsActions.notify({
                     status: NotificationStatus.Success,
                     message:
@@ -678,7 +660,7 @@ export const receivedEvents: ReceivedEvent[] = [
                     ? `View "${event.names[0]}" has been deactivated.`
                     : `${event.names.length} views have been deactivated: ${namesList}`
 
-            typeSafeReduxStore.dispatch(
+            reduxStore.dispatch(
                 notificationsActions.notify({
                     status: NotificationStatus.Warning,
                     allowHTML: true,

@@ -2,7 +2,7 @@ import client from '../../models/api/resources'
 import {ApiListResponsePagination} from '../../models/api/types'
 import {StoreDispatch} from '../types'
 
-import * as constants from './constants.js'
+import * as constants from './constants'
 import {AuthItem} from './types'
 
 export const fetchCurrentAuths =

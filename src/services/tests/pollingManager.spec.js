@@ -2,7 +2,7 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 
-import pollingManager from '../pollingManager'
+import pollingManager from '../pollingManager.ts'
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 

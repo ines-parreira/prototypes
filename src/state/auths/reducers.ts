@@ -2,7 +2,7 @@ import {fromJS} from 'immutable'
 
 import {GorgiasAction} from '../types'
 
-import * as constants from './constants.js'
+import * as constants from './constants'
 import {AuthsState, AuthItem} from './types'
 
 export const initialState: AuthsState = fromJS([])
