@@ -1,10 +1,14 @@
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {INITIAL_MESSAGE, notify, handleUsageBanner} from '../actions.ts'
+import {StoreDispatch} from '../../types'
+import {INITIAL_MESSAGE, notify, handleUsageBanner} from '../actions'
+import {Notification, NotificationStatus} from '../types'
 
 const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
+    middlewares
+)
 const types = {
     addNotification: 'ADD_NOTIFICATION',
     removeNotification: 'REMOVE_NOTIFICATION',
@@ -13,25 +17,32 @@ const initialState = {
     notifications: [],
 }
 
+type MockedRootState = {
+    notifications: Array<Notification>
+}
+
 describe('actions', () => {
-    let store
+    let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
 
     beforeEach(() => {
         store = mockStore(initialState)
     })
 
     describe('notifications', () => {
-        it('should not add empty notifications', () => {
-            store.dispatch(notify())
+        it('should not add empty notifications', async () => {
+            await store.dispatch(notify())
             const expectedActions = store.getActions()
 
             expect(expectedActions).toEqual([])
         })
 
-        it('should add a default notification', () => {
-            store.dispatch(notify({}))
+        it('should add a default notification', async () => {
+            await store.dispatch(notify({}))
             const expectedActions = store.getActions()
-            const defaultMessage = Object.assign({}, INITIAL_MESSAGE)
+            const defaultMessage = Object.assign(
+                {},
+                INITIAL_MESSAGE as Notification
+            )
             // auto-calculated by default
             delete defaultMessage.dismissAfter
 
@@ -43,8 +54,8 @@ describe('actions', () => {
             ])
         })
 
-        it('should calculate dismiss time when zero', () => {
-            store.dispatch(
+        it('should calculate dismiss time when zero', async () => {
+            await store.dispatch(
                 notify({
                     dismissAfter: 0,
                 })
@@ -60,8 +71,8 @@ describe('actions', () => {
             ])
         })
 
-        it('should calculate dismiss time depending on content', () => {
-            store.dispatch(
+        it('should calculate dismiss time depending on content', async () => {
+            await store.dispatch(
                 notify({
                     title: 'Pizza is a yeasted flatbread typically topped with tomato sauce and cheese and baked in an oven.',
                     message:
@@ -79,8 +90,8 @@ describe('actions', () => {
             ])
         })
 
-        it('should not calculate dismiss time when not dismissible', () => {
-            store.dispatch(
+        it('should not calculate dismiss time when not dismissible', async () => {
+            await store.dispatch(
                 notify({
                     dismissAfter: 0,
                     dismissible: false,
@@ -97,8 +108,8 @@ describe('actions', () => {
             ])
         })
 
-        it('should set `dismissAfter` to 0 when `noAutoDismiss` is true', () => {
-            store.dispatch(
+        it('should set `dismissAfter` to 0 when `noAutoDismiss` is true', async () => {
+            await store.dispatch(
                 notify({
                     dismissAfter: 5000,
                     noAutoDismiss: true,
@@ -115,10 +126,10 @@ describe('actions', () => {
             ])
         })
 
-        it('should set title as content, if content not defined', () => {
+        it('should set title as content, if content not defined', async () => {
             const title =
                 'Pizza is a yeasted flatbread typically topped with tomato sauce and cheese and baked in an oven.'
-            store.dispatch(notify({title}))
+            await store.dispatch(notify({title}))
             const expectedActions = store.getActions()
 
             expect(expectedActions).toMatchObject([
@@ -130,39 +141,39 @@ describe('actions', () => {
             ])
         })
 
-        it('should not add duplicate notifications', () => {
+        it('should not add duplicate notifications', async () => {
             const notification = store.dispatch(
                 notify({
-                    id: 12345,
+                    id: '12345',
                     message: 'Prosciutto e Funghi',
                     dismissAfter: 1,
                 })
-            )
+            ) as Notification
 
             store = mockStore({
                 notifications: [notification],
             })
 
-            store.dispatch(notify(notification))
+            await store.dispatch(notify(notification))
             const expectedActions = store.getActions()
 
             expect(expectedActions).toEqual([])
         })
 
-        it('should close previous notifications with closeOnNext', () => {
+        it('should close previous notifications with closeOnNext', async () => {
             const notification = store.dispatch(
                 notify({
                     message: 'Prosciutto e Funghi',
                     dismissAfter: 1,
                     closeOnNext: true,
                 })
-            )
+            ) as Notification
 
             store = mockStore({
                 notifications: [notification],
             })
 
-            store.dispatch(notify(notification))
+            await store.dispatch(notify(notification))
             const expectedActions = store.getActions()
 
             expect(expectedActions).toMatchObject([
@@ -179,7 +190,7 @@ describe('actions', () => {
                 handleUsageBanner({
                     newAccountStatus: 'active',
                     currentAccountStatus: 'deactivated',
-                    dispatch: store.dispatch,
+                    notification: undefined,
                 })
             )
             const expectedActions = store.getActions()
@@ -191,7 +202,7 @@ describe('actions', () => {
                 handleUsageBanner({
                     newAccountStatus: 'active',
                     currentAccountStatus: 'active',
-                    dispatch: store.dispatch,
+                    notification: undefined,
                 })
             )
             const expectedActions = store.getActions()
@@ -200,14 +211,12 @@ describe('actions', () => {
 
         it('should dispatch notify if there is a notification', () => {
             const messageNotification = 'new notification test'
-            const statusNotification = 'success'
             store.dispatch(
                 handleUsageBanner({
                     newAccountStatus: 'active',
                     currentAccountStatus: 'active',
-                    dispatch: store.dispatch,
                     notification: {
-                        status: statusNotification,
+                        status: NotificationStatus.Success,
                         message: messageNotification,
                     },
                 })
@@ -218,14 +227,12 @@ describe('actions', () => {
 
         it('should hide and dispatch notify if there is a notification and status change', () => {
             const messageNotification = 'new notification test'
-            const statusNotification = 'success'
             store.dispatch(
                 handleUsageBanner({
                     newAccountStatus: 'active',
                     currentAccountStatus: 'deactivated',
-                    dispatch: store.dispatch,
                     notification: {
-                        status: statusNotification,
+                        status: NotificationStatus.Success,
                         message: messageNotification,
                     },
                 })

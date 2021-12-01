@@ -1,13 +1,14 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
-import * as selectors from '../selectors.ts'
-import {initialState} from '../reducers.ts'
+import {RootState} from '../../types'
+import * as selectors from '../selectors'
+import {initialState} from '../reducers'
 
 jest.addMatchers(immutableMatchers)
 
 describe('tags selectors', () => {
-    let state
+    let state: RootState
     const selectedTagId = 123
 
     beforeEach(() => {
@@ -43,56 +44,60 @@ describe('tags selectors', () => {
                     },
                 }) // We need to do that separately, else JS transforms the `int` key into a string
                 .setIn(['meta', selectedTagId], fromJS({selected: true})),
-        }
+        } as RootState
     })
 
     it('getTagsState', () => {
         expect(selectors.getTagsState(state)).toEqualImmutable(state.tags)
-        expect(selectors.getTagsState({})).toEqualImmutable(fromJS({}))
+        expect(selectors.getTagsState({} as RootState)).toEqualImmutable(
+            fromJS({})
+        )
     })
 
     it('getTags', () => {
         expect(selectors.getTags(state)).toEqualImmutable(
             state.tags.get('items')
         )
-        expect(selectors.getTags({})).toEqualImmutable(fromJS([]))
+        expect(selectors.getTags({} as RootState)).toEqualImmutable(fromJS([]))
     })
 
     it('getInternal', () => {
         expect(selectors.getInternal(state)).toBe(state.tags.get('_internal'))
-        expect(selectors.getInternal({})).toBe(fromJS({}))
+        expect(selectors.getInternal({} as RootState)).toBe(fromJS({}))
     })
 
     it('getNumberPages', () => {
         expect(selectors.getNumberPages(state)).toBe(
             state.tags.getIn(['_internal', 'pagination', 'nb_pages'])
         )
-        expect(selectors.getNumberPages({})).toBe(1)
+        expect(selectors.getNumberPages({} as RootState)).toBe(1)
     })
 
     it('getCurrentPage', () => {
         expect(selectors.getCurrentPage(state)).toBe(
             state.tags.getIn(['_internal', 'pagination', 'page'])
         )
-        expect(selectors.getCurrentPage({})).toBe(1)
+        expect(selectors.getCurrentPage({} as RootState)).toBe(1)
     })
 
     it('getSelectAll', () => {
         expect(selectors.getSelectAll(state)).toBe(
             state.tags.getIn(['_internal', 'selectAll'])
         )
-        expect(selectors.getSelectAll({})).toBe(false)
+        expect(selectors.getSelectAll({} as RootState)).toBe(false)
     })
 
     it('getMeta', () => {
         expect(selectors.getMeta(state)).toBe(state.tags.get('meta'))
-        expect(selectors.getMeta({})).toBe(fromJS({}))
+        expect(selectors.getMeta({} as RootState)).toBe(fromJS({}))
     })
 
     it('getSelectedTagMeta', () => {
         expect(selectors.getSelectedTagMeta(selectedTagId)(state)).toBe(
             state.tags.getIn(['meta', selectedTagId])
         )
-        expect(selectors.getSelectedTagMeta(selectedTagId)({})).toBe(fromJS({}))
+        expect(
+            selectors.getSelectedTagMeta(selectedTagId)({} as RootState)
+        ).toBe(fromJS({}))
     })
 })

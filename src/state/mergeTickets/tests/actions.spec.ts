@@ -1,27 +1,36 @@
 import MockAdapter from 'axios-mock-adapter'
 import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import {fromJS} from 'immutable'
 
 import {
     BASE_VIEW_ID,
     NEXT_VIEW_NAV_DIRECTION,
     PREV_VIEW_NAV_DIRECTION,
-} from '../../../constants/view.ts'
-import client from '../../../models/api/resources.ts'
-import {mergeTickets, searchTickets} from '../actions.ts'
+} from '../../../constants/view'
+import client from '../../../models/api/resources'
+import {Ticket} from '../../../models/ticket/types'
+import {StoreDispatch} from '../../types'
+import {mergeTickets, searchTickets} from '../actions'
 
+type MockedRootState = Record<string, unknown>
 const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
+    middlewares
+)
 
 // mock Date object
 const DATE_TO_USE = new Date('2017')
-global.Date = jest.fn(() => DATE_TO_USE)
-global.Date.toISOString = Date.toISOString
+global.Date = jest.fn(() => DATE_TO_USE) as unknown as DateConstructor
+;(
+    global.Date as typeof global.Date & {
+        toISOString: () => string
+    }
+).toISOString = (Date as unknown as {toISOString: () => string}).toISOString
 
 describe('mergeTickets actions', () => {
-    let store
-    let mockServer
+    let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
+    let mockServer: MockAdapter
 
     beforeEach(() => {
         store = mockStore({})
@@ -67,7 +76,7 @@ describe('mergeTickets actions', () => {
             return store
                 .dispatch(searchTickets('foo', 1, null, null, fromJS({})))
                 .then(
-                    () => {},
+                    () => null,
                     () => {
                         expect(store.getActions()).toMatchSnapshot()
                     }
@@ -139,7 +148,9 @@ describe('mergeTickets actions', () => {
 
                 return store
                     .dispatch(
-                        mergeTickets(sourceTicketId, targetTicketId, {subject})
+                        mergeTickets(sourceTicketId, targetTicketId, {
+                            subject,
+                        } as Ticket)
                     )
                     .then((data) => {
                         expect(store.getActions()).toMatchSnapshot()
@@ -166,10 +177,12 @@ describe('mergeTickets actions', () => {
 
                 return store
                     .dispatch(
-                        mergeTickets(sourceTicketId, targetTicketId, {subject})
+                        mergeTickets(sourceTicketId, targetTicketId, {
+                            subject,
+                        } as Ticket)
                     )
                     .then(
-                        () => {},
+                        () => null,
                         (data) => {
                             expect(store.getActions()).toMatchSnapshot()
                             expect(data).toMatchSnapshot()

@@ -1,26 +1,30 @@
 import MockAdapter from 'axios-mock-adapter'
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import * as immutableMatchers from 'jest-immutable-matchers'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
-import * as actions from '../../teams/actions.ts'
-import client from '../../../models/api/resources.ts'
+import client from '../../../models/api/resources'
+import {StoreDispatch} from '../../types'
+import * as actions from '../../teams/actions'
 
+type MockedRootState = Record<string, unknown>
 const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
+    middlewares
+)
 
 jest.addMatchers(immutableMatchers)
 
-jest.mock('../../notifications/actions.ts', () => {
+jest.mock('../../notifications/actions', () => {
     return {
-        notify: jest.fn(() => (args) => args),
+        notify: jest.fn(() => (args: Record<string, unknown>) => args),
     }
 })
 
 describe('team actions', () => {
-    let store
-    let mockServer
+    let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
+    let mockServer: MockAdapter
 
     beforeEach(() => {
         store = mockStore()
@@ -172,7 +176,7 @@ describe('team actions', () => {
         const team = fromJS({
             id: teamId,
             name: 'My Team',
-        })
+        }) as Map<any, any>
 
         it('works', () => {
             mockServer.onPut(`/api/teams/${teamId}/`).reply(202, team.toJS())
@@ -195,7 +199,7 @@ describe('team actions', () => {
     describe('createTeam()', () => {
         const team = fromJS({
             name: 'My Team',
-        })
+        }) as Map<any, any>
         const respTeam = team.set('id', 1)
 
         it('works', () => {

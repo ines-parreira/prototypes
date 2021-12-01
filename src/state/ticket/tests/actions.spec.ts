@@ -220,7 +220,7 @@ describe('ticket actions', () => {
 
             return store.dispatch(actions.setSpam(true)).then(() => {
                 const button = (notify as jest.MockedFunction<typeof notify>)
-                    .mock.calls[0][0].buttons?.[0] as unknown as {
+                    .mock.calls[0][0]!.buttons?.[0] as unknown as {
                     onClick: () => Promise<void>
                 }
 
@@ -283,7 +283,7 @@ describe('ticket actions', () => {
 
             return store.dispatch(actions.setTrashed(date)).then(() => {
                 const button = (notify as jest.MockedFunction<typeof notify>)
-                    .mock.calls[0][0].buttons?.[0] as unknown as {
+                    .mock.calls[0][0]!.buttons?.[0] as unknown as {
                     onClick: () => Promise<void>
                 }
 

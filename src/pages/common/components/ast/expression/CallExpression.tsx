@@ -10,7 +10,7 @@ import Hoverable from '../../Hoverable'
 import DeleteBinaryExpression from '../operations/DeleteBinaryExpression'
 
 import {getSyntaxTreeLeaves} from '../utils.js'
-import {OBJECT_DEFINITIONS} from '../../../../../state/rules/constants.js'
+import {OBJECT_DEFINITIONS} from '../../../../../state/rules/constants'
 
 import ObjectExpression from './ObjectExpression'
 import Expression from './Expression'

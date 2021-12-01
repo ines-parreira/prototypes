@@ -65,7 +65,7 @@ const isDuplicate = (
  * set closeOnNext = true to make the notification close on next notification addition
  */
 export const notify =
-    (message: Notification) =>
+    (message?: Notification) =>
     (
         dispatch: StoreDispatch,
         getState: () => RootState

@@ -8,15 +8,13 @@ import {createErrorNotification} from '../utils'
 import type {RootState, StoreDispatch} from '../types'
 import client from '../../models/api/resources'
 
-import * as constants from './constants.js'
+import * as constants from './constants'
 import {TagSortableProperty, Tag, TagDraft} from './types'
 
 /**types
  * Add tags to ticket.
  */
-export function addTags(
-    tags: Array<string> | string
-): ReturnType<StoreDispatch> {
+export function addTags(tags: Array<string> | string) {
     return {
         type: constants.ADD_TAGS,
         tags,
@@ -263,7 +261,7 @@ export const merge = (ids: List<any>) => {
 /**
  * Set a page in pagination
  */
-export function setPage(page: number): ReturnType<StoreDispatch> {
+export function setPage(page: number) {
     return {
         type: constants.SET_TAG_LIST_PAGE,
         page,

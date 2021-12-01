@@ -1,16 +1,15 @@
 import {fromJS} from 'immutable'
 
-import statsReducer, {initialState} from '../reducers.ts'
+import {GorgiasAction} from '../../types'
+import statsReducer, {initialState} from '../reducers'
 import * as constants from '../constants'
-
-jest.mock('moment', () => {
-    return () => require.requireActual('moment')('2019-09-03')
-})
 
 describe('reducers', () => {
     describe('stat', () => {
         it('should return initial state', () => {
-            expect(statsReducer(initialState, {})).toMatchSnapshot()
+            expect(
+                statsReducer(initialState, {} as GorgiasAction)
+            ).toMatchSnapshot()
         })
 
         describe('RESET_STATS_FILTERS', () => {

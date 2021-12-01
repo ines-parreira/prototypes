@@ -1,8 +1,8 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
-
 import {fromJS} from 'immutable'
 
-import reducer, {initialState} from '../reducers.ts'
+import {GorgiasAction} from '../../types'
+import reducer, {initialState} from '../reducers'
 import * as constants from '../constants'
 
 jest.addMatchers(immutableMatchers)
@@ -11,7 +11,9 @@ describe('teams reducers', () => {
     const team = {id: 1, name: 'Team 1'}
 
     it('initial state', () => {
-        expect(reducer(undefined, {})).toEqualImmutable(initialState)
+        expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(
+            initialState
+        )
     })
 
     it('should add the created team when action type is CREATE_TEAM_SUCCESS', () => {

@@ -1,6 +1,6 @@
 import {fromJS, List} from 'immutable'
 
-import {ACTION_DEFAULT_STATE} from '../../../../state/rules/constants'
+import {ACTION_DEFAULT_STATE} from '../../../../state/rules/constants.ts'
 import {
     updateCallExpression,
     getObjectExpression,

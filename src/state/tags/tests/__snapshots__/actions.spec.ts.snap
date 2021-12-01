@@ -89,15 +89,6 @@ Object {
 }
 `;
 
-exports[`tags actions fetchTags params change sort 1`] = `
-Object {
-  "order_by": "custom_sort",
-  "order_dir": "desc",
-  "page": 1,
-  "search": "",
-}
-`;
-
 exports[`tags actions fetchTags params search 1`] = `
 Object {
   "order_by": "name",

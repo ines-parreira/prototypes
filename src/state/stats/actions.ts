@@ -2,7 +2,7 @@ import {Map} from 'immutable'
 
 import {StoreDispatch} from '../types'
 
-import * as constants from './constants.js'
+import * as constants from './constants'
 
 export const setStatsFilters = (filters: Map<any, any>) => {
     return {

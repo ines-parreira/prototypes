@@ -1,27 +1,29 @@
 import {fromJS} from 'immutable'
 
-import {initialState} from '../reducers.ts'
-import * as selectors from '../selectors.ts'
-import {EMAIL_CHANNEL} from '../../../config/ticket.ts'
+import {EMAIL_CHANNEL} from '../../../config/ticket'
 import {
     GMAIL_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
-} from '../../../constants/integration.ts'
+} from '../../../constants/integration'
+import {RootState} from '../../types'
+import {initialState} from '../reducers'
+import * as selectors from '../selectors'
 
 jest.mock('moment-timezone', () => () => {
-    const moment = jest.requireActual('moment-timezone')
+    const moment: (date: string) => Record<string, unknown> =
+        jest.requireActual('moment-timezone')
 
     return moment('2019-09-03')
 })
 
 describe('selectors', () => {
     describe('stats', () => {
-        let state = null
+        let state: RootState
 
         beforeEach(() => {
             state = {
                 stats: initialState,
-            }
+            } as RootState
         })
 
         describe('getStatsState()', () => {

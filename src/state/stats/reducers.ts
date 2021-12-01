@@ -2,7 +2,7 @@ import {fromJS} from 'immutable'
 
 import {GorgiasAction} from '../types'
 
-import * as constants from './constants.js'
+import * as constants from './constants'
 import {StatsState} from './types'
 
 export const initialState: StatsState = fromJS({

@@ -11,7 +11,7 @@ import {Schemas} from '../../types'
 import {UNARY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
 import {isTimedelta} from '../../utils/ast'
 
-import {OBJECT_DEFINITIONS} from './constants.js'
+import {OBJECT_DEFINITIONS} from './constants'
 import {
     CollectionOperator,
     DatetimeOperator,
@@ -303,9 +303,9 @@ export function resolveCallee(
  */
 export function resolveSecondArg(
     callExpression: Map<any, any>,
-    firstArgSchema: Schemas,
     callee: string,
-    reset: boolean
+    reset: boolean,
+    firstArgSchema?: Schemas
 ): Maybe<string> {
     // empty operators have only one argument
     if (Object.keys(UNARY_OPERATORS).includes(callee)) {
@@ -493,9 +493,9 @@ export function updateCallExpression(
     )
     const secondArg = resolveSecondArg(
         callExpression,
-        firstArgSchema as Map<any, any>,
         callee,
-        hasPropertyChanged
+        hasPropertyChanged,
+        firstArgSchema as Map<any, any>
     )
     // generate the new CallExpression and replace the old one
     let rawCallExpression = `${callee}(${firstArg.join('.')}`

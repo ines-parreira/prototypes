@@ -1,10 +1,6 @@
 import {fromJS} from 'immutable'
 
-import {
-    mergeStatsFilters,
-    resetStatsFilters,
-    setStatsFilters,
-} from '../actions.ts'
+import {mergeStatsFilters, resetStatsFilters, setStatsFilters} from '../actions'
 
 describe('actions', () => {
     describe('stats', () => {

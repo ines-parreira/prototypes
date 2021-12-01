@@ -1,13 +1,14 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
-import {fromJS} from 'immutable'
+import {fromJS, List} from 'immutable'
 
-import * as selectors from '../selectors.ts'
-import {initialState} from '../reducers.ts'
+import {RootState} from '../../types'
+import * as selectors from '../selectors'
+import {initialState} from '../reducers'
 
 jest.addMatchers(immutableMatchers)
 
 describe('teams selectors', () => {
-    let state
+    let state: RootState
 
     beforeEach(() => {
         state = {
@@ -17,23 +18,25 @@ describe('teams selectors', () => {
                     2: {id: 2, name: 'Team 2'},
                 },
             }),
-        }
+        } as RootState
     })
 
     it('getState()', () => {
         expect(selectors.getState(state)).toEqualImmutable(state.teams)
-        expect(selectors.getState({})).toEqualImmutable(fromJS({}))
+        expect(selectors.getState({} as RootState)).toEqualImmutable(fromJS({}))
     })
 
     it('getTeams()', () => {
         expect(selectors.getTeams(state)).toEqualImmutable(
-            state.teams.get('all').valueSeq()
+            (state.teams.get('all') as List<any>).valueSeq()
         )
-        expect(selectors.getTeams({})).toEqualImmutable(fromJS([]))
+        expect(selectors.getTeams({} as RootState)).toEqualImmutable(fromJS([]))
     })
 
     it('getLabelledTeams()', () => {
         expect(selectors.getLabelledTeams(state)).toMatchSnapshot()
-        expect(selectors.getLabelledTeams({})).toEqualImmutable(fromJS([]))
+        expect(selectors.getLabelledTeams({} as RootState)).toEqualImmutable(
+            fromJS([])
+        )
     })
 })

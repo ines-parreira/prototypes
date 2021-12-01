@@ -5,11 +5,11 @@ import client from '../../models/api/resources'
 import {ApiListResponsePagination} from '../../models/api/types'
 import {toImmutable, toJS} from '../../utils'
 import {NotificationStatus} from '../notifications/types'
-import * as constants from '../teams/constants.js'
 import {notify} from '../notifications/actions'
 import {StoreDispatch} from '../types'
 
 import {Team, TeamUser, MemberAddedTeam} from './types'
+import * as constants from './constants'
 
 /**
  * Get paginated teams

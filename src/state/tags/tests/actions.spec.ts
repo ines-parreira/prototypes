@@ -1,27 +1,35 @@
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
 import _isEqual from 'lodash/isEqual'
 import axios from 'axios'
 
-import * as actions from '../actions.ts'
+import client from '../../../models/api/resources'
+import {StoreDispatch} from '../../types'
+import * as actions from '../actions'
 import * as types from '../constants'
-import {initialState} from '../reducers.ts'
-import client from '../../../models/api/resources.ts'
+import {initialState} from '../reducers'
+import {Tag, TagSortableProperty} from '../types'
 
 const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
+    middlewares
+)
 
-jest.mock('../../notifications/actions.ts', () => {
+jest.mock('../../notifications/actions', () => {
     return {
-        notify: jest.fn(() => (args) => args),
+        notify: jest.fn(() => (args: Record<string, unknown>) => args),
     }
 })
 
+type MockedRootState = {
+    tags: Map<any, any>
+}
+
 describe('tags actions', () => {
-    let store
-    let mockServer
+    let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
+    let mockServer: MockAdapter
 
     beforeEach(() => {
         store = mockStore({tags: initialState})
@@ -49,20 +57,14 @@ describe('tags actions', () => {
             return store.dispatch(actions.fetchTags(2))
         })
 
-        it('params change sort', () => {
-            mockServer.onGet('/api/tags/').reply(({params}) => {
-                expect(params).toMatchSnapshot()
-                return [200]
-            })
-            return store.dispatch(actions.fetchTags(1, 'custom_sort'))
-        })
-
         it('params change reverse', () => {
             mockServer.onGet('/api/tags/').reply(({params}) => {
                 expect(params).toMatchSnapshot()
                 return [200]
             })
-            return store.dispatch(actions.fetchTags(1, 'usage', false))
+            return store.dispatch(
+                actions.fetchTags(1, TagSortableProperty.Usage, false)
+            )
         })
 
         it('params search', () => {
@@ -71,22 +73,35 @@ describe('tags actions', () => {
                 return [200]
             })
             return store.dispatch(
-                actions.fetchTags(1, 'name', false, 'something')
+                actions.fetchTags(
+                    1,
+                    TagSortableProperty.Name,
+                    false,
+                    'something'
+                )
             )
         })
 
         it('fetch list also sorts', () => {
-            mockServer.onGet('/api/tags/').reply((config) => {
-                if (
-                    config.params.order_by === 'name' &&
-                    config.params.order_dir === 'desc' &&
-                    config.params.page === 1
-                ) {
-                    return [200, {data: ['rejected', 'refund']}]
-                }
+            mockServer.onGet('/api/tags/').reply(
+                (config: {
+                    params?: {
+                        order_by: string
+                        order_dir: string
+                        page: number
+                    }
+                }) => {
+                    if (
+                        config.params?.order_by === 'name' &&
+                        config.params?.order_dir === 'desc' &&
+                        config.params?.page === 1
+                    ) {
+                        return [200, {data: ['rejected', 'refund']}]
+                    }
 
-                return [400]
-            })
+                    return [400]
+                }
+            )
 
             const expectedActions = [
                 {
@@ -101,7 +116,7 @@ describe('tags actions', () => {
             ]
 
             return store
-                .dispatch(actions.fetchTags(1, 'name', true))
+                .dispatch(actions.fetchTags(1, TagSortableProperty.Name, true))
                 .then(() => {
                     expect(store.getActions()).toEqual(expectedActions)
                 })
@@ -127,7 +142,7 @@ describe('tags actions', () => {
     })
 
     it('select', () => {
-        store.dispatch(actions.select({id: 1}))
+        store.dispatch(actions.select({id: 1} as Tag))
         return expect(store.getActions()).toMatchSnapshot()
     })
 
@@ -137,40 +152,40 @@ describe('tags actions', () => {
     })
 
     it('edit', () => {
-        store.dispatch(actions.edit({id: 1}))
+        store.dispatch(actions.edit({id: 1} as Tag))
         return expect(store.getActions()).toMatchSnapshot()
     })
 
     it('cancel', () => {
-        store.dispatch(actions.cancel({id: 1}))
+        store.dispatch(actions.cancel({id: 1} as Tag))
         return expect(store.getActions()).toMatchSnapshot()
     })
 
     it('save', () => {
         mockServer.onPut('/api/tags/1/').reply(200, {id: 1})
         return store
-            .dispatch(actions.save({id: 1}))
+            .dispatch(actions.save({id: 1} as Tag))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('create', () => {
         mockServer.onPost('/api/tags/').reply(200, {id: 1})
         return store
-            .dispatch(actions.create({id: 1}))
+            .dispatch(actions.create({id: 1} as Tag))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('remove', () => {
         mockServer.onDelete('/api/tags/1/').reply(200)
         return store
-            .dispatch(actions.remove(1))
+            .dispatch(actions.remove('1'))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('remove error', () => {
         mockServer.onDelete('/api/tags/1/').reply(400)
         return store
-            .dispatch(actions.remove(1))
+            .dispatch(actions.remove('1'))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
@@ -184,7 +199,7 @@ describe('tags actions', () => {
         })
 
         return store
-            .dispatch(actions.bulkDelete([1, 2]))
+            .dispatch(actions.bulkDelete(['1', '2']))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
@@ -198,7 +213,7 @@ describe('tags actions', () => {
         })
 
         return store
-            .dispatch(actions.bulkDelete([5]))
+            .dispatch(actions.bulkDelete(['5']))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
