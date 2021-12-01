@@ -247,6 +247,7 @@ describe('<IntegrationDetailContainer />', () => {
             onVerify: jest.fn(),
             fetchEmailDomain: jest.fn(),
             createEmailDomain: jest.fn(),
+            deleteEmailDomain: jest.fn(),
             onEmailForwardingActivated: jest.fn(),
             verifyEmailIntegration: jest.fn(),
             sendVerificationEmail: jest.fn(),

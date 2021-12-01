@@ -807,3 +807,34 @@ export function createEmailDomain(domainName: string, dkimKeySize: number) {
             )
     }
 }
+
+export function deleteEmailDomain(domainName: string) {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
+        dispatch({
+            type: constants.DELETE_EMAIL_DOMAIN_START,
+        })
+
+        return client
+            .delete<void>(`/api/integrations/domains/${domainName}`)
+            .then(
+                (response) => {
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Success,
+                            message: 'DKIM configuration deleted',
+                        })
+                    )
+                    dispatch({
+                        type: constants.DELETE_EMAIL_DOMAIN_SUCCESS,
+                        emailDomain: response.data,
+                    })
+                },
+                (error: AxiosError) => {
+                    dispatch({
+                        type: constants.DELETE_EMAIL_DOMAIN_ERROR,
+                        error,
+                    })
+                }
+            )
+    }
+}

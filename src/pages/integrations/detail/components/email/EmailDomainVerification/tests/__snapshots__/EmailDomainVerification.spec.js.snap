@@ -1,5 +1,74 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<EmailDomainVerificationContainer/> render() should render a delete button to account admins 1`] = `
+<div>
+  <div
+    class="page-container container-fluid"
+  >
+    <span>
+      Your domain has been verified.
+    </span>
+    <table
+      class="table records-table"
+    >
+      <thead
+        class=""
+      >
+        <tr
+          class="headerRow"
+        >
+          <td
+            class="wrapper"
+          >
+            Status
+          </td>
+          <td
+            class="wrapper"
+          >
+            Record Type
+          </td>
+          <td
+            class="wrapper"
+          >
+            Host
+          </td>
+          <td
+            class="wrapper"
+          >
+            Value
+          </td>
+          <td
+            class="wrapper"
+          >
+            Current Values
+          </td>
+        </tr>
+      </thead>
+      <tbody
+        class="tableBody"
+      />
+    </table>
+    <div
+      class="component d-inline-block"
+      id="delete-email-domain"
+    >
+      <button
+        class="btn btn-secondary"
+        id="confirm-button-delete-email-domain"
+        type="button"
+      >
+        <i
+          class="material-icons mr-1 text-danger"
+        >
+          delete
+        </i>
+        Delete
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<EmailDomainVerificationContainer/> render() should render the page when domain is not verified 1`] = `
 <div>
   <div

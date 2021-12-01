@@ -65,16 +65,23 @@ export default function reducer(
 
         case constants.FETCH_EMAIL_DOMAIN_START:
         case constants.CREATE_EMAIL_DOMAIN_START:
+        case constants.DELETE_EMAIL_DOMAIN_START:
             return state.setIn(['state', 'loading', 'emailDomain'], true)
 
         case constants.FETCH_EMAIL_DOMAIN_ERROR:
         case constants.CREATE_EMAIL_DOMAIN_ERROR:
+        case constants.DELETE_EMAIL_DOMAIN_ERROR:
             return state.setIn(['state', 'loading', 'emailDomain'], false)
 
         case constants.FETCH_EMAIL_DOMAIN_SUCCESS:
         case constants.CREATE_EMAIL_DOMAIN_SUCCESS:
             return state
                 .set('emailDomain', fromJS(action.emailDomain))
+                .setIn(['state', 'loading', 'emailDomain'], false)
+
+        case constants.DELETE_EMAIL_DOMAIN_SUCCESS:
+            return state
+                .set('emailDomain', null)
                 .setIn(['state', 'loading', 'emailDomain'], false)
 
         case constants.FETCH_INTEGRATIONS_START:

@@ -4,14 +4,18 @@ import {connect} from 'react-redux'
 import {Map} from 'immutable'
 import {Alert, Button, Container, FormGroup, Label} from 'reactstrap'
 
+import ConfirmButton from '../../../../../common/components/ConfirmButton'
 import Loader from '../../../../../common/components/Loader/Loader'
 import SelectField from '../../../../../common/forms/SelectField/SelectField'
 
 import {RootState} from '../../../../../../state/types'
+import * as currentUserSelectors from '../../../../../../state/currentUser/selectors'
 import {
     IntegrationType,
     DEFAULT_EMAIL_DKIM_KEY_SIZE,
 } from '../../../../../../models/integration/constants'
+import {hasRole} from '../../../../../../utils'
+import {UserRole} from '../../../../../../config/types/user'
 
 import css from './EmailDomainVerification.less'
 import RecordsTable from './components/RecordsTable'
@@ -20,16 +24,18 @@ type OwnProps = {
     integration: Map<string, any>
     loading: Map<string, any>
     emailDomain: Map<string, any>
+    currentUser: Map<any, any>
     actions: {
         fetchEmailDomain: (domainName: string) => unknown
         createEmailDomain: (domainName: string, dkimKeySize: number) => unknown
+        deleteEmailDomain: (domainName: string) => void
     }
 }
 
 type Props = OwnProps & RouteComponentProps
 
 export const EmailDomainVerificationContainer = (props: Props) => {
-    const {integration, emailDomain, loading, actions} = props
+    const {integration, emailDomain, loading, actions, currentUser} = props
 
     const [dkimKeySize, setDkimKeySize] = useState(DEFAULT_EMAIL_DKIM_KEY_SIZE)
 
@@ -83,6 +89,20 @@ export const EmailDomainVerificationContainer = (props: Props) => {
                             emailDomain.toJS().data.sending_dns_records
                         }
                     />
+
+                    {hasRole(currentUser, UserRole.Admin) && (
+                        <ConfirmButton
+                            id="delete-email-domain"
+                            color="secondary"
+                            confirm={() => actions.deleteEmailDomain(domain)}
+                            content="Are you sure you want to delete this domain? Domain verification can take up to 72 hours. Non-verified domains may lead to increased deliverability issues."
+                        >
+                            <i className="material-icons mr-1 text-danger">
+                                delete
+                            </i>
+                            Delete
+                        </ConfirmButton>
+                    )}
                 </>
             )}
             {!emailDomain && (
@@ -162,6 +182,7 @@ export const EmailDomainVerificationContainer = (props: Props) => {
 const mapStateToProps = (state: RootState) => {
     return {
         emailDomain: state.integrations.get('emailDomain'),
+        currentUser: currentUserSelectors.getCurrentUser(state),
     }
 }
 
