@@ -64,7 +64,7 @@ export default function reducer(
                     )
                     .sortBy(
                         (view: Map<any, any>) =>
-                            view.get('insert_datetime') as string
+                            view.get('inserted_datetime') as string
                     )
                     .slice(-MAX_RECENT_VIEWS)
             })

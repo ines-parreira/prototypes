@@ -291,7 +291,7 @@ describe('reducers', () => {
         })
 
         it('should handle ADD_RECENT_VIEW', () => {
-            const beforeActionDt = moment.utc()
+            const beforeActionDt = moment.utc().subtract(1, 's')
             const state = reducers(initialState, {
                 type: types.ADD_RECENT_VIEW,
                 viewId: 1,
@@ -314,10 +314,9 @@ describe('reducers', () => {
 
             for (const view in recentViews) {
                 expect(
-                    moment(recentViews[view].inserted_datetime).isBetween(
-                        beforeActionDt,
-                        now
-                    )
+                    moment(recentViews[view].inserted_datetime)
+                        .utc()
+                        .isBetween(beforeActionDt, now)
                 ).toBe(true)
                 expect(recentViews[view].updated_datetime).toBe(undefined)
             }
