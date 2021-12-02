@@ -100,6 +100,13 @@ export default class SettingsNavbar extends Component<Props> {
                         text: 'Import data',
                         className: 'd-none d-md-block',
                     },
+                    // TODO(Nicolas): to enable once the self sign-up page is implemented (DR-175)
+                    /*{
+                        requiredRole: ADMIN_ROLE,
+                        to: 'access',
+                        text: 'Access management',
+                        className: 'd-none d-md-block',
+                    },*/
                 ],
             },
             {

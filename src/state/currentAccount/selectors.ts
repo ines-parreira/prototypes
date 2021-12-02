@@ -225,3 +225,6 @@ export const getViewsOrderingSetting = createSelector<
     (setting) =>
         setting.toJS() as ViewsOrderingAccountSetting | Record<string, unknown>
 )
+export const getAccessSettings = createSettingByTypeSelector(
+    AccountSettingType.Access
+)

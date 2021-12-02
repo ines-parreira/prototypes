@@ -1,0 +1,319 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Access/> should render properly 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <h1
+        class="d-flex align-items-center"
+      >
+        Access management
+      </h1>
+    </div>
+    <div
+      class="page-container container-fluid"
+    >
+      <form
+        class=""
+      >
+        <div
+          class="mb-2 row"
+        >
+          <div
+            class="col-md-6"
+          >
+            <h4
+              class="mb-2"
+            >
+              <i
+                class="material-icons mr-1"
+              >
+                mail
+              </i>
+              Joining the helpdesk
+            </h4>
+            <p>
+              If you allow people to join automatically, anyone with an approved email address can use this link to confirm their email and sign up:
+               
+              <a
+                href="https://acme.gorgias.com/signup"
+              >
+                https://acme.gorgias.com/signup
+              </a>
+            </p>
+            <fieldset
+              class="form-group"
+            >
+              <div
+                class="mb-2 form-check"
+              >
+                <input
+                  checked=""
+                  class="form-check-input"
+                  type="radio"
+                />
+                <label
+                  class="control-label ml-2 form-check-label"
+                >
+                  Invite people manually
+                </label>
+              </div>
+              <div
+                class="mb-2 form-check"
+              >
+                <input
+                  class="form-check-input"
+                  type="radio"
+                />
+                <label
+                  class="control-label ml-2 form-check-label"
+                >
+                  Let people sign up automatically, and only accept email addresses from specific domains
+                </label>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <button
+          class="btn btn-primary"
+          type="submit"
+        >
+          Save changes
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Access/> should render with the previously saved settings 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <h1
+        class="d-flex align-items-center"
+      >
+        Access management
+      </h1>
+    </div>
+    <div
+      class="page-container container-fluid"
+    >
+      <form
+        class=""
+      >
+        <div
+          class="mb-2 row"
+        >
+          <div
+            class="col-md-6"
+          >
+            <h4
+              class="mb-2"
+            >
+              <i
+                class="material-icons mr-1"
+              >
+                mail
+              </i>
+              Joining the helpdesk
+            </h4>
+            <p>
+              If you allow people to join automatically, anyone with an approved email address can use this link to confirm their email and sign up:
+               
+              <a
+                href="https://acme.gorgias.com/signup"
+              >
+                https://acme.gorgias.com/signup
+              </a>
+            </p>
+            <fieldset
+              class="form-group"
+            >
+              <div
+                class="mb-2 form-check"
+              >
+                <input
+                  class="form-check-input"
+                  type="radio"
+                />
+                <label
+                  class="control-label ml-2 form-check-label"
+                >
+                  Invite people manually
+                </label>
+              </div>
+              <div
+                class="mb-2 form-check"
+              >
+                <input
+                  checked=""
+                  class="form-check-input"
+                  type="radio"
+                />
+                <label
+                  class="control-label ml-2 form-check-label"
+                >
+                  Let people sign up automatically, and only accept email addresses from specific domains
+                </label>
+              </div>
+            </fieldset>
+            <div
+              class="InputField form-group"
+              color=""
+            >
+              <div
+                class=""
+              >
+                <textarea
+                  class="form-control"
+                  id="id-input-1"
+                >
+                  gorgias.com
+gorgias.io
+                </textarea>
+                
+              </div>
+              <small
+                class="form-text text-muted"
+              >
+                Ex: domain.com, *.domain.com. Wildcards allowed. Use separate lines for multiple entries.
+              </small>
+            </div>
+          </div>
+        </div>
+        <button
+          class="btn btn-primary"
+          type="submit"
+        >
+          Save changes
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Access/> should show an error and block submit when using a generic domain 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <h1
+        class="d-flex align-items-center"
+      >
+        Access management
+      </h1>
+    </div>
+    <div
+      class="page-container container-fluid"
+    >
+      <form
+        class=""
+      >
+        <div
+          class="mb-2 row"
+        >
+          <div
+            class="col-md-6"
+          >
+            <h4
+              class="mb-2"
+            >
+              <i
+                class="material-icons mr-1"
+              >
+                mail
+              </i>
+              Joining the helpdesk
+            </h4>
+            <p>
+              If you allow people to join automatically, anyone with an approved email address can use this link to confirm their email and sign up:
+               
+              <a
+                href="https://acme.gorgias.com/signup"
+              >
+                https://acme.gorgias.com/signup
+              </a>
+            </p>
+            <fieldset
+              class="form-group"
+            >
+              <div
+                class="mb-2 form-check"
+              >
+                <input
+                  class="form-check-input"
+                  type="radio"
+                />
+                <label
+                  class="control-label ml-2 form-check-label"
+                >
+                  Invite people manually
+                </label>
+              </div>
+              <div
+                class="mb-2 form-check"
+              >
+                <input
+                  checked=""
+                  class="form-check-input"
+                  type="radio"
+                />
+                <label
+                  class="control-label ml-2 form-check-label"
+                >
+                  Let people sign up automatically, and only accept email addresses from specific domains
+                </label>
+              </div>
+            </fieldset>
+            <div
+              class="InputField form-group"
+              color="danger"
+            >
+              <div
+                class=""
+              >
+                <textarea
+                  class="form-control-danger is-invalid form-control"
+                  id="id-input-2"
+                >
+                  gmail.com
+                </textarea>
+                <div
+                  class="invalid-feedback"
+                >
+                  Generic domain: gmail.com
+                </div>
+              </div>
+              <small
+                class="form-text text-muted"
+              >
+                Ex: domain.com, *.domain.com. Wildcards allowed. Use separate lines for multiple entries.
+              </small>
+            </div>
+          </div>
+        </div>
+        <button
+          class="btn btn-primary disabled"
+          disabled=""
+          type="submit"
+        >
+          Save changes
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+`;
