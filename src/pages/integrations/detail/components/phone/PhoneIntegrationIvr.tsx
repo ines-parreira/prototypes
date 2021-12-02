@@ -1,22 +1,12 @@
 import React, {useCallback, useState, useEffect} from 'react'
-import {Link} from 'react-router-dom'
 import {fromJS} from 'immutable'
 
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Button,
-    Col,
-    Container,
-    Form,
-    Row,
-} from 'reactstrap'
+import {Button, Col, Container, Form, Row} from 'reactstrap'
 import classnames from 'classnames'
 
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
 import PageHeader from '../../../../common/components/PageHeader'
 import {
-    IntegrationType,
     PhoneIntegration,
     PhoneIntegrationIvrSettings,
     isPhoneIntegration,
@@ -24,6 +14,7 @@ import {
 import {DEFAULT_VOICE_MESSAGE} from '../../../../../models/integration/constants'
 
 import {updatePhoneIvrConfiguration} from './actions'
+import PhoneIntegrationBreadcrumbs from './PhoneIntegrationBreadcrumbs'
 import PhoneIntegrationNavigation from './PhoneIntegrationNavigation'
 import IvrMenuActionsFieldArray from './IvrMenuActionsFieldArray'
 import VoiceMessageField from './VoiceMessageField'
@@ -73,36 +64,13 @@ const PhoneIntegrationIvr = (props: Props): JSX.Element | null => {
         <div className="full-width">
             <PageHeader
                 title={
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">
-                                Integrations
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <Link
-                                to={`/app/settings/integrations/${IntegrationType.Phone}`}
-                            >
-                                Phone
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            {integration.meta.emoji} {integration.name}
-                            <small className="text-muted ml-2">
-                                {
-                                    integration.meta.twilio
-                                        ?.incoming_phone_number.friendly_name
-                                }
-                            </small>
-                        </BreadcrumbItem>
-                    </Breadcrumb>
+                    <PhoneIntegrationBreadcrumbs integration={integration} />
                 }
             />
 
             <PhoneIntegrationNavigation integration={fromJS(integration)} />
             <Container fluid className="page-container">
-                <h4 className="mb-4">IVR Setup</h4>
-                <h5 className="mb-3">Greeting message</h5>
+                <h4 className="mb-3">Greeting message</h4>
                 <Row>
                     <Col lg={6} xl={7}>
                         <Form onSubmit={onSubmit}>

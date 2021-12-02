@@ -38,8 +38,6 @@ import rawCaAreaCodeOptions from './options/area-codes/ca.json'
 import rawUsAreaCodeOptions from './options/area-codes/us.json'
 import rawTollFreeAreaCodeOptions from './options/area-codes/toll-free.json'
 
-import {GreetingMessageType} from './PhoneIntegrationGreetingMessage'
-
 interface StateOptions {
     [key: string]: Option[]
 }
@@ -144,8 +142,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                                 allow_to_leave_voicemail: true,
                             },
                             greeting_message: {
-                                voice_message_type: GreetingMessageType.None,
-                                voice_recording_file_path: null,
+                                voice_message_type: VoiceMessageType.None,
                                 text_to_speech_content: null,
                             },
                         },

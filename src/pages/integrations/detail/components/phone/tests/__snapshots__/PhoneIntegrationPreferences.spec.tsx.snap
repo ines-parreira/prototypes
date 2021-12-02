@@ -435,7 +435,7 @@ exports[`<PhoneIntegrationPreferences/> render() should render with IVR integrat
               Inbound calls
             </label>
             <div
-              class="text-muted form-check"
+              class="form-check"
               color=""
             >
               <label
@@ -445,29 +445,7 @@ exports[`<PhoneIntegrationPreferences/> render() should render with IVR integrat
                 <input
                   checked=""
                   class="form-check-input form-check-input"
-                  disabled=""
                   id="id-input-4"
-                  type="checkbox"
-                />
-                <span
-                  style="vertical-align: middle;"
-                >
-                  Start recording automatically
-                </span>
-              </label>
-            </div>
-            <div
-              class="form-check"
-              color=""
-            >
-              <label
-                class="control-label form-check-label"
-                for="id-input-5"
-              >
-                <input
-                  checked=""
-                  class="form-check-input form-check-input"
-                  id="id-input-5"
                   type="checkbox"
                 />
                 <span
@@ -482,37 +460,6 @@ exports[`<PhoneIntegrationPreferences/> render() should render with IVR integrat
             >
               If a customer calls outside of business hours, they will be immediately forwarded to voicemail.
             </small>
-          </div>
-          <div
-            class="form-group"
-          >
-            <label
-              class="control-label"
-            >
-              Outbound calls
-            </label>
-            <div
-              class="text-muted form-check"
-              color=""
-            >
-              <label
-                class="control-label form-check-label"
-                for="id-input-6"
-              >
-                <input
-                  checked=""
-                  class="form-check-input form-check-input"
-                  disabled=""
-                  id="id-input-6"
-                  type="checkbox"
-                />
-                <span
-                  style="vertical-align: middle;"
-                >
-                  Start recording automatically
-                </span>
-              </label>
-            </div>
           </div>
           <div
             class="mt-5"

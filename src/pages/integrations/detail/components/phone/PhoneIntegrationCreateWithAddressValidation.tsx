@@ -23,6 +23,7 @@ import {
     IntegrationType,
     AddressInformation,
     AddressType,
+    VoiceMessageType,
 } from '../../../../../models/integration/types'
 import EmojiTextInput from '../../../../common/forms/EmojiTextInput/EmojiTextInput'
 import SelectField from '../../../../common/forms/SelectField/SelectField'
@@ -43,7 +44,6 @@ import rawGbAreaCodeOptions from './options/area-codes/gb.json'
 import rawAuAreaCodeOptions from './options/area-codes/au.json'
 import rawTollFreeAreaCodeOptions from './options/area-codes/toll-free.json'
 
-import {GreetingMessageType} from './PhoneIntegrationGreetingMessage'
 import PhoneAddressInformation from './PhoneAddressInformation'
 
 type StateOptions = {
@@ -206,9 +206,8 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                                 allow_to_leave_voicemail: true,
                             },
                             greeting_message: {
-                                voice_message_type: GreetingMessageType.None,
-                                voice_recording_file_path: null,
-                                text_to_speech_content: null,
+                                ...DEFAULT_VOICE_MESSAGE,
+                                voice_message_type: VoiceMessageType.None,
                             },
                             address_information: addressInformation,
                         },

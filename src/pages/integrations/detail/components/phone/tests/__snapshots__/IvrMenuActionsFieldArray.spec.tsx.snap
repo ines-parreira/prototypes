@@ -2,9 +2,11 @@
 
 exports[`<IvrMenuActionsFieldArray /> should render 1`] = `
 <div>
-  <h5>
+  <h4
+    class="mb-3"
+  >
     Menu options
-  </h5>
+  </h4>
   <div>
     <div
       class="row row"

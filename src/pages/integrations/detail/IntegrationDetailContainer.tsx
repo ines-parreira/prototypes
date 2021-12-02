@@ -463,14 +463,16 @@ export const IntegrationDetailContainer = ({
 
                 if (extra === Tab.PhoneVoicemail) {
                     return (
-                        <PhoneIntegrationVoicemail integration={integration} />
+                        <PhoneIntegrationVoicemail
+                            integration={integration.toJS()}
+                        />
                     )
                 }
 
                 if (extra === Tab.PhoneGreetingMessage) {
                     return (
                         <PhoneIntegrationGreetingMessage
-                            integration={integration}
+                            integration={integration.toJS()}
                         />
                     )
                 }

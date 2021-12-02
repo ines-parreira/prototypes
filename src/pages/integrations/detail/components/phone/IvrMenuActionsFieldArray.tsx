@@ -52,7 +52,7 @@ const IvrMenuActionsFieldArray = (props: Props): JSX.Element => {
 
     return (
         <div>
-            <h5>Menu options</h5>
+            <h4 className="mb-3">Menu options</h4>
             {value.map((action: IvrMenuAction, index: number) => {
                 return (
                     <div key={index}>

@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PhoneIntegrationBreadcrumbs/> render() should render 1`] = `
+<nav
+  aria-label="breadcrumb"
+  class=""
+>
+  <ol
+    class="breadcrumb"
+  >
+    <li
+      class="breadcrumb-item"
+    >
+      <a
+        to="/app/settings/integrations"
+      >
+        Integrations
+      </a>
+    </li>
+    <li
+      class="breadcrumb-item"
+    >
+      <a
+        to="/app/settings/integrations/phone"
+      >
+        Phone
+      </a>
+    </li>
+    <li
+      class="breadcrumb-item"
+    >
+      ☎️
+       
+      My Phone Integration
+      <small
+        class="text-muted ml-2"
+      >
+        +123123123
+      </small>
+    </li>
+  </ol>
+</nav>
+`;

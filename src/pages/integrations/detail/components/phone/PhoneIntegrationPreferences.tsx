@@ -281,13 +281,14 @@ export default function PhoneIntegrationPreferences({
                                 <Label className="control-label">
                                     Inbound calls
                                 </Label>
-                                <BooleanField
-                                    type="checkbox"
-                                    label="Start recording automatically"
-                                    value={recordInboundCalls}
-                                    disabled={isIvr}
-                                    onChange={setRecordInboundCalls}
-                                />
+                                {!isIvr && (
+                                    <BooleanField
+                                        type="checkbox"
+                                        label="Start recording automatically"
+                                        value={recordInboundCalls}
+                                        onChange={setRecordInboundCalls}
+                                    />
+                                )}
                                 <BooleanField
                                     type="checkbox"
                                     label="Send calls to voicemail outside business hours"
@@ -300,18 +301,19 @@ export default function PhoneIntegrationPreferences({
                                     voicemail.
                                 </FormText>
                             </FormGroup>
-                            <FormGroup>
-                                <Label className="control-label">
-                                    Outbound calls
-                                </Label>
-                                <BooleanField
-                                    type="checkbox"
-                                    label="Start recording automatically"
-                                    value={recordOutboundCalls}
-                                    disabled={isIvr}
-                                    onChange={setRecordOutboundCalls}
-                                />
-                            </FormGroup>
+                            {!isIvr && (
+                                <FormGroup>
+                                    <Label className="control-label">
+                                        Outbound calls
+                                    </Label>
+                                    <BooleanField
+                                        type="checkbox"
+                                        label="Start recording automatically"
+                                        value={recordOutboundCalls}
+                                        onChange={setRecordOutboundCalls}
+                                    />
+                                </FormGroup>
+                            )}
                             <div className="mt-5">
                                 <Button
                                     type="submit"

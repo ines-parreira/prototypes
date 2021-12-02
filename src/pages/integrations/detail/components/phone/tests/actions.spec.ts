@@ -1,10 +1,7 @@
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 
-import {
-    updatePhoneVoicemailConfiguration,
-    UpdateVoicemailPayload,
-} from '../actions'
+import {updatePhoneVoicemailConfiguration} from '../actions'
 import client from '../../../../../../models/api/resources'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
 import {IntegrationType} from '../../../../../../models/integration/types'
@@ -23,7 +20,7 @@ describe('updatePhoneVoicemailConfiguration', () => {
                 },
             }),
         } as RootState)
-    const payload = {} as UpdateVoicemailPayload
+    const payload = {}
 
     beforeEach(() => {
         dispatch = jest.fn()

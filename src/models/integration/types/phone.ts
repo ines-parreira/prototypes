@@ -30,7 +30,7 @@ export type PhoneIntegrationMeta = {
             sid: string
             friendly_name: string
             phone_number: string
-            deleted_datetime: string
+            deleted_datetime: Maybe<string>
         }
     }>
     preferences: {
@@ -38,10 +38,13 @@ export type PhoneIntegrationMeta = {
         record_outbound_calls: boolean
         voicemail_outside_business_hours: boolean
     }
-    voicemail: VoiceMessage & {
-        allow_to_leave_voicemail: boolean
-    }
+    greeting_message: VoiceMessage
+    voicemail: PhoneIntegrationVoicemailSettings
     ivr?: PhoneIntegrationIvrSettings
+}
+
+export type PhoneIntegrationVoicemailSettings = VoiceMessage & {
+    allow_to_leave_voicemail: boolean
 }
 
 export type PhoneIntegrationIvrSettings = {
