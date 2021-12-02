@@ -16,14 +16,21 @@ import {
 } from 'reactstrap'
 import {fromJS, Map} from 'immutable'
 import {AxiosError} from 'axios'
+import {AnyAction} from 'redux'
 
-import {setCreditCard} from '../../../../state/billing/actions'
+import {
+    fetchContact,
+    setCreditCard,
+    updateContact,
+} from '../../../../state/billing/actions'
 import {
     getAddOnAutomationAmountCurrentPlan,
+    getContact,
     getCurrentPlan as currentPlanSelector,
     getEquivalentRegularCurrentPlan,
     getHasAutomationAddOn,
     hasLegacyPlan as hasLegacyPlanSelector,
+    isMissingContactInformation,
 } from '../../../../state/billing/selectors'
 import Loader from '../../../common/components/Loader/Loader'
 import {loadScript} from '../../../../utils'
@@ -41,8 +48,10 @@ import LegacyPlanBanner from '../../../common/components/LegacyPlanBanner'
 import BillingPlanCard from '../plans/BillingPlanCard'
 import {RootState} from '../../../../state/types'
 import {NotificationStatus} from '../../../../state/notifications/types'
-import {CreditCard} from '../../../../state/billing/types'
+import {BillingContact, CreditCard} from '../../../../state/billing/types'
 import RecurringPrices from '../plans/RecurringPrices'
+import BillingAddressInputs from '../common/BillingAddressInputs'
+import {UPDATE_BILLING_CONTACT_ERROR} from '../../../../state/billing/constants'
 
 import {
     creditCardCVCNormalizer,
@@ -69,10 +78,13 @@ type State = {
     number: string
     expDate: string
     cvc: string
+    contactForm: BillingContact
 }
 
 export class CreditCardContainer extends Component<Props, State> {
     gorgiasApi = new GorgiasApi()
+
+    shouldDisplayBillingAddressForm = false
 
     static defaultProps = {
         currentSubscription: fromJS({}),
@@ -92,9 +104,28 @@ export class CreditCardContainer extends Component<Props, State> {
         number: '',
         expDate: '',
         cvc: '',
+        contactForm: {
+            email: '',
+            shipping: {
+                name: '',
+                phone: '',
+                address: {
+                    line1: '',
+                    line2: '',
+                    country: '',
+                    postal_code: '',
+                    city: '',
+                    state: '',
+                },
+            },
+        },
     }
 
     componentWillMount() {
+        const {hasCreditCard, isMissingContactInformation} = this.props
+        this.shouldDisplayBillingAddressForm =
+            !hasCreditCard || isMissingContactInformation
+
         // load Stripe.js cause we need it to create token for credit card
         if (typeof Stripe === 'undefined') {
             loadScript('https://js.stripe.com/v2/', () => {
@@ -106,8 +137,18 @@ export class CreditCardContainer extends Component<Props, State> {
         }
     }
 
+    componentDidMount() {
+        const {contact, fetchContact} = this.props
+
+        if (contact == null) {
+            void fetchContact()
+        } else {
+            this.setState({contactForm: contact.toJS()})
+        }
+    }
+
     componentDidUpdate(prevProps: Props, prevState: State) {
-        const {currentPlan, currentSubscription} = this.props
+        const {currentPlan, currentSubscription, contact} = this.props
         const {isStripeLoaded} = this.state
         const noSubscriptionNorPlan =
             currentSubscription.isEmpty() || currentPlan.isEmpty()
@@ -119,13 +160,19 @@ export class CreditCardContainer extends Component<Props, State> {
         ) {
             history.push('/app/settings/billing/')
         }
+
+        if (prevProps.contact !== contact && contact) {
+            this.setState({
+                contactForm: contact.toJS(),
+            })
+        }
     }
 
     /**
      * Update the credit card of the account,
      * and start the subscription if this one is trialing or incomplete.
      */
-    _submit = (event: SyntheticEvent) => {
+    _submit = async (event: SyntheticEvent) => {
         event.preventDefault()
         const {
             currentAccount,
@@ -133,7 +180,19 @@ export class CreditCardContainer extends Component<Props, State> {
             hasCreditCard,
             currentSubscription,
             notify,
+            updateContact,
         } = this.props
+        const {contactForm} = this.state
+
+        if (this.shouldDisplayBillingAddressForm) {
+            const response = (await updateContact(
+                fromJS(contactForm)
+            )) as AnyAction
+
+            if (response.type === UPDATE_BILLING_CONTACT_ERROR) {
+                return
+            }
+        }
         const hasSubscription = !!currentSubscription.get('status')
         const cardToEncode: stripe.StripeCardTokenData = _pick(this.state, [
             'name',
@@ -299,11 +358,10 @@ export class CreditCardContainer extends Component<Props, State> {
             hasAutomationAddOn,
             regularCurrentPlan,
             automationAddOnAmount,
-            currentSubscription,
             location,
             accountHasLegacyPlan,
         } = this.props
-        const {isStripeLoaded, errors} = this.state
+        const {isStripeLoaded, errors, contactForm} = this.state
 
         const invalid =
             Object.keys(errors).length > 0 ||
@@ -437,6 +495,21 @@ export class CreditCardContainer extends Component<Props, State> {
                                         />
                                     </Col>
                                 </Row>
+                                {this.shouldDisplayBillingAddressForm && (
+                                    <>
+                                        <h3
+                                            className={css.billingAddressHeader}
+                                        >
+                                            Billing address
+                                        </h3>
+                                        <BillingAddressInputs
+                                            onChange={(contactForm) =>
+                                                this.setState({contactForm})
+                                            }
+                                            value={contactForm}
+                                        />
+                                    </>
+                                )}
                                 <div className={css.formFooter}>
                                     <FormGroup color="danger">
                                         <Errors>
@@ -466,32 +539,30 @@ export class CreditCardContainer extends Component<Props, State> {
                                 </div>
                             </Form>
                         </Col>
-                        {currentSubscription.get('status') !== 'active' &&
-                            !currentPlan.isEmpty() &&
-                            regularCurrentPlan && (
-                                <Col className={css.planCardColumn} sm={4}>
-                                    <BillingPlanCard
-                                        plan={regularCurrentPlan.toJS()}
-                                        isCurrentPlan
-                                        renderBody={(features) => (
-                                            <div className={css.planCardBody}>
-                                                {features}
-                                            </div>
-                                        )}
-                                        footer={
-                                            hasAutomationAddOn && (
-                                                <RecurringPrices
-                                                    addOnAmount={
-                                                        automationAddOnAmount
-                                                    }
-                                                    plan={regularCurrentPlan.toJS()}
-                                                    editable={false}
-                                                />
-                                            )
-                                        }
-                                    />
-                                </Col>
-                            )}
+                        {!currentPlan.isEmpty() && regularCurrentPlan && (
+                            <Col className={css.planCardColumn} sm={4}>
+                                <BillingPlanCard
+                                    plan={regularCurrentPlan.toJS()}
+                                    isCurrentPlan
+                                    renderBody={(features) => (
+                                        <div className={css.planCardBody}>
+                                            {features}
+                                        </div>
+                                    )}
+                                    footer={
+                                        hasAutomationAddOn && (
+                                            <RecurringPrices
+                                                addOnAmount={
+                                                    automationAddOnAmount
+                                                }
+                                                plan={regularCurrentPlan.toJS()}
+                                                editable={false}
+                                            />
+                                        )
+                                    }
+                                />
+                            </Col>
+                        )}
                     </Row>
                 </Container>
             </div>
@@ -510,12 +581,16 @@ const connector = connect(
             currentAccountSelectors.getCurrentSubscription(state),
         currentAccount: state.currentAccount,
         hasCreditCard: !!state.billing.get('creditCard'),
+        isMissingContactInformation: isMissingContactInformation(state),
         accountHasLegacyPlan: hasLegacyPlanSelector(state),
+        contact: getContact(state),
     }),
     {
         setCurrentSubscription,
         notify,
         setCreditCard,
+        updateContact,
+        fetchContact,
     }
 )
 

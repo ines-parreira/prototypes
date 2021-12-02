@@ -133,6 +133,21 @@ export const getContact = createSelector<
     (billing) => (billing.get('contact') as Map<any, any>) || null
 )
 
+export const isMissingContactInformation = createSelector<
+    RootState,
+    boolean,
+    Maybe<Map<any, any>>
+>(
+    getContact,
+    (contact) =>
+        !contact ||
+        !contact.get('email') ||
+        !contact.getIn(['shipping', 'address', 'country']) ||
+        !contact.getIn(['shipping', 'address', 'postal_code']) ||
+        (contact.getIn(['shipping', 'address', 'country']) === 'US' &&
+            !contact.getIn(['shipping', 'address', 'state']))
+)
+
 export const creditCard = createSelector<
     RootState,
     Map<any, any>,

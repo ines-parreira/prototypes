@@ -332,4 +332,92 @@ describe('billing selectors', () => {
             expect(selectors.getHasAutomationAddOn(state)).toBeFalsy()
         })
     })
+
+    describe('isMissingContactInformation', () => {
+        it.each([
+            null,
+            {
+                email: '',
+                shipping: {
+                    address: {
+                        country: 'FR',
+                        postal_code: '75000',
+                    },
+                },
+            },
+            {
+                email: 'foo',
+                shipping: {
+                    address: {
+                        country: '',
+                        postal_code: '75000',
+                    },
+                },
+            },
+            {
+                email: 'foo',
+                shipping: {
+                    address: {
+                        country: 'FR',
+                        postal_code: '',
+                    },
+                },
+            },
+            {
+                email: 'foo',
+                shipping: {
+                    address: {
+                        country: 'US',
+                        postal_code: '75000',
+                    },
+                },
+            },
+        ])(
+            'should return true when contact is missing required information',
+            (contact) => {
+                expect(
+                    selectors.isMissingContactInformation({
+                        ...state,
+                        billing: fromJS({
+                            contact,
+                        }),
+                    })
+                ).toBeTruthy()
+            }
+        )
+
+        it.each([
+            {
+                email: 'foo',
+                shipping: {
+                    address: {
+                        country: 'FR',
+                        postal_code: '75000',
+                    },
+                },
+            },
+            {
+                email: 'foo',
+                shipping: {
+                    address: {
+                        country: 'US',
+                        postal_code: '75000',
+                        state: 'CA',
+                    },
+                },
+            },
+        ])(
+            'should return false when contact is not missing required information',
+            (contact) => {
+                expect(
+                    selectors.isMissingContactInformation({
+                        ...state,
+                        billing: fromJS({
+                            contact,
+                        }),
+                    })
+                ).toBeFalsy()
+            }
+        )
+    })
 })

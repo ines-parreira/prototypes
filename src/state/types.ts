@@ -10,7 +10,7 @@ import {
 } from '../models/integration/types'
 import {PaginationMeta, OrderDirection} from '../models/api/types'
 
-import {BillingContactResponse, Subscription} from './billing/types'
+import {BillingContact, Subscription} from './billing/types'
 import {AccountSetting} from './currentAccount/types'
 import {MacrosAction} from './entities/macros/types'
 import {EntitiesState} from './entities/reducers'
@@ -69,7 +69,7 @@ export type GorgiasAction = {
     planId?: string
     invoice?: Map<any, any>
     creditCard?: Map<any, any>
-    billingContact?: BillingContactResponse
+    billingContact?: BillingContact
     tickets?: List<any>
     ticket?: Map<any, any>
     ticketId?: number | string

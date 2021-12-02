@@ -1,4 +1,4 @@
-import React, {ComponentProps} from 'react'
+import React, {ComponentProps, SyntheticEvent} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
@@ -15,12 +15,16 @@ jest.mock('../../../../../utils', () => {
         loadScript: jest.fn(),
     }
 })
+jest.mock('../../../../../utils/stripe', () => ({
+    createStripeCardToken: jest.fn().mockResolvedValue({id: '123'}),
+}))
 
 describe('CreditCard component', () => {
     const minProps = {
         currentAccount: fromJS({}),
         currentUser: fromJS({}),
         hasCreditCard: false,
+        isMissingContactInformation: false,
         accountHasLegacyPlan: false,
         location: {},
         notify: jest.fn(),
@@ -29,6 +33,10 @@ describe('CreditCard component', () => {
         updateCreditCard: jest.fn(),
         hasAutomationAddOn: false,
         automationAddOnAmount: 0,
+        updateContact: jest.fn(),
+        contact: fromJS({}),
+        fetchContact: jest.fn(),
+        regularCurrentPlan: fromJS({}),
     } as unknown as ComponentProps<typeof CreditCardContainer>
 
     it('should display loader while fetching stripe SDK', () => {
@@ -64,29 +72,6 @@ describe('CreditCard component', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should render billing plan card when current plan is not active', () => {
-        const component = shallow(
-            <CreditCardContainer
-                {...minProps}
-                currentPlan={fromJS({
-                    name: 'basic',
-                    currencySign: '$',
-                    amount: 1000,
-                })}
-                regularCurrentPlan={fromJS({
-                    name: 'basic',
-                    currencySign: '$',
-                    amount: 1000,
-                })}
-                currentSubscription={fromJS({
-                    status: 'past_due',
-                })}
-            />
-        )
-        component.setState({isStripeLoaded: true})
-        expect(component).toMatchSnapshot()
-    })
-
     it('should render billing plan card with automation footer when current plan is not active and has automation add-on', () => {
         const component = shallow(
             <CreditCardContainer
@@ -112,5 +97,63 @@ describe('CreditCard component', () => {
         )
         component.setState({isStripeLoaded: true})
         expect(component).toMatchSnapshot()
+    })
+
+    it('should render the billing address form when account is missing contact information', () => {
+        const component = shallow(
+            <CreditCardContainer
+                {...minProps}
+                hasCreditCard
+                isMissingContactInformation
+            />
+        )
+        component.setState({isStripeLoaded: true})
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should not render the billing address form when a credit card has been added and the contact information is valid', () => {
+        const component = shallow(
+            <CreditCardContainer {...minProps} hasCreditCard />
+        )
+        component.setState({isStripeLoaded: true})
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should update contact information when submitting the form', (done) => {
+        ;(
+            minProps.updateContact as jest.MockedFunction<
+                typeof minProps.updateContact
+            >
+        ).mockResolvedValue({})
+        const component = shallow<CreditCardContainer>(
+            <CreditCardContainer {...minProps} />
+        )
+        component.setState({
+            contactForm: {
+                email: 'foo',
+                shipping: {
+                    address: {
+                        city: '',
+                        country: 'FR',
+                        line1: '',
+                        line2: '',
+                        postal_code: '75000',
+                        state: '',
+                    },
+                    name: '',
+                    phone: '',
+                },
+            },
+            isStripeLoaded: true,
+            expDate: '12/12',
+        })
+
+        void component
+            .instance()
+            ._submit(new Event('foo') as unknown as SyntheticEvent)
+        setImmediate(() => {
+            expect(minProps.updateContact).toHaveBeenCalled()
+            done()
+        })
     })
 })

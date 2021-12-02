@@ -2,7 +2,7 @@ import {Map} from 'immutable'
 
 import {Plan} from '../../models/billing/types'
 
-export type BillingContact = Map<any, any>
+export type BillingContactImmutable = Map<any, any>
 
 export type CreditCard = {
     expDate: string
@@ -53,8 +53,7 @@ export type PaymentMethod = {
     method: PaymentMethodType
 }
 
-//$TsFixMe should replace existing BillingContact on removing immutable
-export type BillingContactResponse = {
+export type BillingContact = {
     email: string
     shipping: {
         address: {
@@ -63,7 +62,7 @@ export type BillingContactResponse = {
             line1: string
             line2: string
             postal_code: string
-            state: string
+            state?: string
         }
         name: string
         phone: string

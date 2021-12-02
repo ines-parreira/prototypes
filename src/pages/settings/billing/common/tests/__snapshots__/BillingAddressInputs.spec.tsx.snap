@@ -1,0 +1,237 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<BillingAddressInputs /> should render the billing address inputs 1`] = `
+<div>
+  <div
+    class="InputField required form-group"
+    color=""
+  >
+    <label
+      class="control-label"
+      for="id-email"
+    >
+      Email
+    </label>
+    <div
+      class=""
+    >
+      <input
+        class="form-control"
+        id="id-email"
+        placeholder="your@email.com"
+        required=""
+        type="email"
+        value=""
+      />
+    </div>
+    <small
+      class="form-text text-muted"
+    >
+      Invoices are sent to this email address.
+    </small>
+  </div>
+  <div
+    class="formRow row"
+  >
+    <div
+      class="formColumn col-lg-6"
+    >
+      <div
+        class="InputField form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-name"
+        >
+          Company name
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-name"
+            placeholder="e.g. Gorgias"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="formColumn col-lg-6"
+    >
+      <div
+        class="InputField form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-phone"
+        >
+          Phone number
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-phone"
+            placeholder="415 859 3010"
+            type="tel"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="InputField required form-group"
+    color=""
+  >
+    <label
+      class="control-label"
+      for="id-line1"
+    >
+      Street address
+    </label>
+    <div
+      class=""
+    >
+      <input
+        class="form-control"
+        id="id-line1"
+        placeholder="Gorgias Street"
+        required=""
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+  <div
+    class="InputField form-group"
+    color=""
+  >
+    <label
+      class="control-label"
+      for="id-line2"
+    >
+      Suite/Unit
+    </label>
+    <div
+      class=""
+    >
+      <input
+        class="form-control"
+        id="id-line2"
+        placeholder="e.g. Unit #2, Floor 5"
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+  <div
+    class="formRow row"
+  >
+    <div
+      class="formColumn col-lg-6"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-country"
+        >
+          Country
+        </label>
+        <div
+          class=""
+        >
+          <select
+            class="form-control"
+            id="id-country"
+            required=""
+          >
+            <option
+              value=""
+            >
+              -
+            </option>
+            <option
+              value="FR"
+            >
+              France
+            </option>
+            <option
+              value="US"
+            >
+              United States
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div
+      class="formColumn col-lg-6"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-postalCode"
+        >
+          Zip code
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-postalCode"
+            placeholder="94103"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="formRow row"
+  >
+    <div
+      class="formColumn col"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-city"
+        >
+          City
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-city"
+            placeholder="New York"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

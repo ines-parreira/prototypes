@@ -9,6 +9,7 @@ import {notify} from '../../../state/notifications/actions.ts'
 import PageHeader from '../../common/components/PageHeader.tsx'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
 import history from '../../history.ts'
+import {paymentMethod} from '../../../state/billing/selectors.ts'
 
 import BillingUsage from './BillingUsage.tsx'
 import BillingPaymentMethod from './BillingPaymentMethod.tsx'
@@ -24,6 +25,8 @@ export class BillingContainer extends Component {
 
         notify: PropTypes.func.isRequired,
         currentSubscription: PropTypes.object.isRequired,
+        hasCreditCard: PropTypes.bool.isRequired,
+        paymentMethod: PropTypes.string.isRequired,
     }
 
     componentDidMount() {
@@ -47,13 +50,17 @@ export class BillingContainer extends Component {
     }
 
     render() {
+        const {paymentMethod, hasCreditCard} = this.props
+
         return (
             <div className="full-width">
                 <PageHeader title="Billing & Usage" />
                 <Container fluid className="page-container">
                     <BillingUsage />
                     <BillingPaymentMethod />
-                    <BillingDetails />
+                    {(paymentMethod === 'shopify' || hasCreditCard) && (
+                        <BillingDetails />
+                    )}
                     <BillingInvoices />
                 </Container>
             </div>
@@ -67,6 +74,8 @@ export default connect(
             currentAccountSelectors.getCurrentSubscription(state)
         return {
             currentSubscription,
+            paymentMethod: paymentMethod(state),
+            hasCreditCard: currentAccountSelectors.hasCreditCard(state),
         }
     },
     {notify}

@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<BillingContainer /> should render the billing page 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <h1
+      class="d-flex align-items-center"
+    >
+      Billing & Usage
+    </h1>
+  </div>
+  <div
+    class="page-container container-fluid"
+  >
+    <div>
+      Billing usage
+    </div>
+    <div>
+      Billing payment method
+    </div>
+    <div
+      data-testid="BillingDetails"
+    >
+      Billing details
+    </div>
+    <div>
+      Billing invoices
+    </div>
+  </div>
+</div>
+`;

@@ -8,11 +8,11 @@ import {StoreDispatch} from '../types'
 
 import * as constants from './constants'
 import {
-    BillingContact,
+    BillingContactImmutable,
     CurrentUsage,
     Invoice,
     PaymentMethod,
-    BillingContactResponse,
+    BillingContact,
 } from './types'
 
 /***
@@ -151,7 +151,7 @@ export const setCreditCard = (
 export function fetchContact() {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return client
-            .get<BillingContactResponse>('/api/billing/contact/')
+            .get<BillingContact>('/api/billing/contact/')
             .then((json) => json?.data)
             .then(
                 (billingContact) => {
@@ -176,13 +176,10 @@ export function fetchContact() {
  * @param {billingContactType} billingContact - The billing contact object
  * @returns {Promise} the async action promise
  */
-export function updateContact(billingContact: BillingContact) {
+export function updateContact(billingContact: BillingContactImmutable) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return client
-            .put<BillingContactResponse>(
-                '/api/billing/contact/',
-                billingContact.toJS()
-            )
+            .put<BillingContact>('/api/billing/contact/', billingContact.toJS())
             .then((json) => json?.data)
             .then(
                 (billingContact) => {
