@@ -1,6 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 import {Button, FormGroup, Label} from 'reactstrap'
+import {produce} from 'immer'
 
 import {ContactPhoneNumber} from '../../../../../../../../models/helpCenter/types'
 import InputField from '../../../../../../../common/forms/InputField'
@@ -30,9 +31,9 @@ const PhoneNumbersForm: React.FC<Props> = ({
 
     const changePhoneNumber =
         (key: keyof ContactPhoneNumber, index: number) => (value: string) => {
-            const numbers = [...phoneNumbers]
-
-            numbers[index][key] = value
+            const numbers = produce(phoneNumbers, (draftPhoneNumbers) => {
+                draftPhoneNumbers[index][key] = value
+            })
 
             onChange(numbers)
         }

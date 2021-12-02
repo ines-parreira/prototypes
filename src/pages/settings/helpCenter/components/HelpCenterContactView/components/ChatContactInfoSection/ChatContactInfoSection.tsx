@@ -17,29 +17,19 @@ const getTimezoneAbbreviation = (timezone: string) => {
     return moment().tz(timezone).format('z')
 }
 
-const convertDaysToName = (days: string) => {
-    if (days === '1,2,3,4,5,6,7') {
-        const monday = moment().day(1)
-        const sunday = moment().day(7)
+const convertDaysToName = (daysString: string) => {
+    const days = daysString.split(',')
 
-        return `${monday.format('dddd')} - ${sunday.format('dddd')}`
+    if (days.length === 1) {
+        return moment().day(Number(days[0])).format('dddd')
     }
 
-    if (days === '1,2,3,4,5') {
-        const monday = moment().day(1)
-        const friday = moment().day(5)
+    const from = moment().day(Number(days[0])).format('dddd')
+    const to = moment()
+        .day(Number(days[days.length - 1]))
+        .format('dddd')
 
-        return `${monday.format('dddd')} - ${friday.format('dddd')}`
-    }
-
-    if (days === '6,7') {
-        const saturday = moment().day(6)
-        const sunday = moment().day(7)
-
-        return `${saturday.format('dddd')} - ${sunday.format('dddd')}`
-    }
-
-    return moment().day(Number(days)).format('dddd')
+    return `${from} - ${to}`
 }
 
 const ChatContactInfoSection: React.FC = () => {
