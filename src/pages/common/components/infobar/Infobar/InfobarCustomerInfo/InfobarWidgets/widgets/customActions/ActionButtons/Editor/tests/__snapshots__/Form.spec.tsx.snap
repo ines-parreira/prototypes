@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Form/> should render with preloaded data 1`] = `
+<form
+  class=""
+>
+  <div
+    class="InputField form-group"
+    color=""
+  >
+    <label
+      class="control-label"
+      for="id-actionButton.label"
+    >
+      Title
+    </label>
+    <div
+      class=""
+    >
+      <input
+        class="form-control"
+        id="id-actionButton.label"
+        type="text"
+        value="label"
+      />
+    </div>
+  </div>
+  <div>
+    <button
+      class="mr-2 btn btn-primary"
+      type="submit"
+    >
+      Save
+    </button>
+    <button
+      class="btn btn-secondary"
+      type="button"
+    >
+      Cancel
+    </button>
+  </div>
+</form>
+`;
+
+exports[`<Form/> should render without any data 1`] = `
+<form
+  class=""
+>
+  <div
+    class="InputField form-group"
+    color=""
+  >
+    <label
+      class="control-label"
+      for="id-actionButton.label"
+    >
+      Title
+    </label>
+    <div
+      class=""
+    >
+      <input
+        class="form-control"
+        id="id-actionButton.label"
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+  <div>
+    <button
+      class="mr-2 btn btn-primary disabled"
+      disabled=""
+      type="submit"
+    >
+      Save
+    </button>
+    <button
+      class="btn btn-secondary"
+      type="button"
+    >
+      Cancel
+    </button>
+  </div>
+</form>
+`;

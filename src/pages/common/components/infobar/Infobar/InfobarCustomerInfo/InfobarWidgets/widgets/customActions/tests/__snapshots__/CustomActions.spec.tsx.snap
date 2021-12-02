@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ActionButtons/> should render links and buttons  1`] = `
+<div
+  class="container"
+>
+  <ul
+    class="list-group list-group-flush"
+  >
+    <li
+      class="groupItem list-group-item"
+    >
+      <a
+        class="link"
+        href="heaven"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        link - I am in snapshots
+        <i
+          class="linkIcon material-icons"
+        >
+          open_in_new
+        </i>
+      </a>
+    </li>
+    <li
+      class="groupItem list-group-item"
+    >
+      <a
+        class="link"
+        href="over the rainbow"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        the object above is a link to heaven
+        <i
+          class="linkIcon material-icons"
+        >
+          open_in_new
+        </i>
+      </a>
+    </li>
+  </ul>
+</div>
+`;
+
+exports[`<ActionButtons/> should render links and buttons in edition mode 1`] = `
+<div
+  class="container"
+>
+  <ul
+    class="list-group list-group-flush"
+  >
+    <li
+      class="groupItem list-group-item"
+    >
+      <a
+        class="link"
+        href="heaven"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        link - I am in snapshots
+        <i
+          class="linkIcon material-icons"
+        >
+          open_in_new
+        </i>
+      </a>
+      <span
+        class="editIcons"
+      >
+        <i
+          class="material-icons text-faded clickable"
+          id="custom-action-link-templatePath-0"
+        >
+          settings
+        </i>
+        <i
+          class="material-icons text-danger clickable"
+        >
+          close
+        </i>
+      </span>
+    </li>
+    <li
+      class="groupItem list-group-item"
+    >
+      <a
+        class="link"
+        href="over the rainbow"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        the object above is a link to heaven
+        <i
+          class="linkIcon material-icons"
+        >
+          open_in_new
+        </i>
+      </a>
+      <span
+        class="editIcons"
+      >
+        <i
+          class="material-icons text-faded clickable"
+          id="custom-action-link-templatePath-1"
+        >
+          settings
+        </i>
+        <i
+          class="material-icons text-danger clickable"
+        >
+          close
+        </i>
+      </span>
+    </li>
+  </ul>
+  <button
+    class="addButton btn btn-secondary"
+    id="custom-action-link-templatePath"
+    type="button"
+  >
+    <i
+      class="material-icons mr-2"
+    >
+      add
+    </i>
+    Add Redirection Link
+  </button>
+</div>
+`;

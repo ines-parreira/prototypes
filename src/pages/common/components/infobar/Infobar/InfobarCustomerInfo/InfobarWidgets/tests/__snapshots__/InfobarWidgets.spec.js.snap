@@ -1151,62 +1151,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                               ],
                                             }
                                           }
-                                        >
-                                          <div
-                                            className="container"
-                                          >
-                                            <Connect(Component)
-                                              immutableLinks={Immutable.List []}
-                                              isEditing={false}
-                                              source={
-                                                Immutable.Map {
-                                                  "foo": "1",
-                                                }
-                                              }
-                                              templateAbsolutePath={
-                                                Array [
-                                                  "ticket",
-                                                  "customer",
-                                                  "integrations",
-                                                  "1",
-                                                ]
-                                              }
-                                              templatePath="1.template.widgets.0"
-                                            >
-                                              <Memo(Links)
-                                                immutableLinks={Immutable.List []}
-                                                isEditing={false}
-                                                removeEditedWidget={[Function]}
-                                                source={
-                                                  Immutable.Map {
-                                                    "foo": "1",
-                                                  }
-                                                }
-                                                startWidgetEdition={[Function]}
-                                                templateAbsolutePath={
-                                                  Array [
-                                                    "ticket",
-                                                    "customer",
-                                                    "integrations",
-                                                    "1",
-                                                  ]
-                                                }
-                                                templatePath="1.template.widgets.0"
-                                                updateEditedWidget={[Function]}
-                                              >
-                                                <ListGroup
-                                                  flush={true}
-                                                  horizontal={false}
-                                                  tag="ul"
-                                                >
-                                                  <ul
-                                                    className="list-group list-group-flush"
-                                                  />
-                                                </ListGroup>
-                                              </Memo(Links)>
-                                            </Connect(Component)>
-                                          </div>
-                                        </Memo(CustomActions)>
+                                        />
                                       </div>
                                     </CardBody>
                                     <CardBody
@@ -2012,62 +1957,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                               ],
                                             }
                                           }
-                                        >
-                                          <div
-                                            className="container"
-                                          >
-                                            <Connect(Component)
-                                              immutableLinks={Immutable.List []}
-                                              isEditing={false}
-                                              source={
-                                                Immutable.Map {
-                                                  "bar": "2",
-                                                }
-                                              }
-                                              templateAbsolutePath={
-                                                Array [
-                                                  "ticket",
-                                                  "customer",
-                                                  "integrations",
-                                                  "2",
-                                                ]
-                                              }
-                                              templatePath="2.template.widgets.0"
-                                            >
-                                              <Memo(Links)
-                                                immutableLinks={Immutable.List []}
-                                                isEditing={false}
-                                                removeEditedWidget={[Function]}
-                                                source={
-                                                  Immutable.Map {
-                                                    "bar": "2",
-                                                  }
-                                                }
-                                                startWidgetEdition={[Function]}
-                                                templateAbsolutePath={
-                                                  Array [
-                                                    "ticket",
-                                                    "customer",
-                                                    "integrations",
-                                                    "2",
-                                                  ]
-                                                }
-                                                templatePath="2.template.widgets.0"
-                                                updateEditedWidget={[Function]}
-                                              >
-                                                <ListGroup
-                                                  flush={true}
-                                                  horizontal={false}
-                                                  tag="ul"
-                                                >
-                                                  <ul
-                                                    className="list-group list-group-flush"
-                                                  />
-                                                </ListGroup>
-                                              </Memo(Links)>
-                                            </Connect(Component)>
-                                          </div>
-                                        </Memo(CustomActions)>
+                                        />
                                       </div>
                                     </CardBody>
                                     <CardBody
@@ -3390,16 +3280,8 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                         templatePath="1.template.widgets.0"
                                                         updateEditedWidget={[Function]}
                                                       >
-                                                        <ListGroup
-                                                          flush={true}
-                                                          horizontal={false}
-                                                          tag="ul"
-                                                        >
-                                                          <ul
-                                                            className="list-group list-group-flush"
-                                                          />
-                                                        </ListGroup>
                                                         <Button
+                                                          className="addButton"
                                                           color="secondary"
                                                           id="custom-action-link-1templatewidgets0"
                                                           tag="button"
@@ -3407,7 +3289,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                         >
                                                           <button
                                                             aria-label={null}
-                                                            className="btn btn-secondary"
+                                                            className="addButton btn btn-secondary"
                                                             id="custom-action-link-1templatewidgets0"
                                                             onClick={[Function]}
                                                             type="button"
@@ -3430,7 +3312,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                             placementPrefix="bs-popover"
                                                             target="custom-action-link-1templatewidgets0"
                                                             toggle={[Function]}
-                                                            trigger="click"
+                                                            trigger="legacy"
                                                           >
                                                             <TooltipPopoverWrapper
                                                               autohide={false}
@@ -3449,7 +3331,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                               popperClassName="popover show"
                                                               target="custom-action-link-1templatewidgets0"
                                                               toggle={[Function]}
-                                                              trigger="click"
+                                                              trigger="legacy"
                                                             >
                                                               <PopperContent
                                                                 boundariesElement="scrollParent"
@@ -3467,7 +3349,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                                 popperClassName="popover show"
                                                                 target={
                                                                   <button
-                                                                    class="btn btn-secondary"
+                                                                    class="addButton btn btn-secondary"
                                                                     id="custom-action-link-1templatewidgets0"
                                                                     type="button"
                                                                   >
@@ -4440,16 +4322,8 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                         templatePath="2.template.widgets.0"
                                                         updateEditedWidget={[Function]}
                                                       >
-                                                        <ListGroup
-                                                          flush={true}
-                                                          horizontal={false}
-                                                          tag="ul"
-                                                        >
-                                                          <ul
-                                                            className="list-group list-group-flush"
-                                                          />
-                                                        </ListGroup>
                                                         <Button
+                                                          className="addButton"
                                                           color="secondary"
                                                           id="custom-action-link-2templatewidgets0"
                                                           tag="button"
@@ -4457,7 +4331,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                         >
                                                           <button
                                                             aria-label={null}
-                                                            className="btn btn-secondary"
+                                                            className="addButton btn btn-secondary"
                                                             id="custom-action-link-2templatewidgets0"
                                                             onClick={[Function]}
                                                             type="button"
@@ -4480,7 +4354,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                             placementPrefix="bs-popover"
                                                             target="custom-action-link-2templatewidgets0"
                                                             toggle={[Function]}
-                                                            trigger="click"
+                                                            trigger="legacy"
                                                           >
                                                             <TooltipPopoverWrapper
                                                               autohide={false}
@@ -4499,7 +4373,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                               popperClassName="popover show"
                                                               target="custom-action-link-2templatewidgets0"
                                                               toggle={[Function]}
-                                                              trigger="click"
+                                                              trigger="legacy"
                                                             >
                                                               <PopperContent
                                                                 boundariesElement="scrollParent"
@@ -4517,7 +4391,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                                 popperClassName="popover show"
                                                                 target={
                                                                   <button
-                                                                    class="btn btn-secondary"
+                                                                    class="addButton btn btn-secondary"
                                                                     id="custom-action-link-2templatewidgets0"
                                                                     type="button"
                                                                   >

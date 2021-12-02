@@ -1,0 +1,140 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Editor/> should call the correct callbacks when removing a button 1`] = `
+Array [
+  Array [
+    "removeEditedWidget",
+    "some.template.meta.custom.buttons",
+    "some.absolute.template",
+  ],
+  Array [
+    "startWidgetEdition",
+    "some.template.meta.custom",
+  ],
+  Array [
+    "updateEditedWidget",
+    Object {
+      "buttons": Array [
+        Object {
+          "label": "I am in snapshots",
+        },
+      ],
+    },
+  ],
+]
+`;
+
+exports[`<Editor/> should call the correct callbacks when submitting a edited button 1`] = `
+Array [
+  Array [
+    "startWidgetEdition",
+    "some.template.meta.custom",
+  ],
+  Array [
+    "updateEditedWidget",
+    Object {
+      "buttons": Array [
+        Object {
+          "label": "I am in snapshots",
+        },
+        Object {
+          "label": "I am in snapshots too",
+        },
+      ],
+    },
+  ],
+]
+`;
+
+exports[`<Editor/> should call the correct callbacks when submitting a new button 1`] = `
+Array [
+  Array [
+    "startWidgetEdition",
+    "some.template.meta.custom",
+  ],
+  Array [
+    "updateEditedWidget",
+    Object {
+      "buttons": Array [
+        Object {
+          "label": "I am in snapshots",
+        },
+        Object {
+          "label": "I am in snapshots too",
+        },
+        Object {
+          "label": "ok",
+        },
+      ],
+    },
+  ],
+]
+`;
+
+exports[`<Editor/> should with buttons and "add button" button 1`] = `
+<div>
+  <ul
+    class="list-group list-group-flush"
+  >
+    <li
+      class="editRow list-group-item"
+    >
+      <button
+        class="btn btn-secondary"
+        type="button"
+      >
+        I am in snapshots
+      </button>
+      <span
+        class="editIcons"
+      >
+        <i
+          class="material-icons text-faded clickable"
+        >
+          settings
+        </i>
+        <i
+          class="material-icons text-danger clickable"
+        >
+          close
+        </i>
+      </span>
+    </li>
+    <li
+      class="editRow list-group-item"
+    >
+      <button
+        class="btn btn-secondary"
+        type="button"
+      >
+        I am in snapshots too
+      </button>
+      <span
+        class="editIcons"
+      >
+        <i
+          class="material-icons text-faded clickable"
+        >
+          settings
+        </i>
+        <i
+          class="material-icons text-danger clickable"
+        >
+          close
+        </i>
+      </span>
+    </li>
+  </ul>
+  <button
+    class="addButton btn btn-secondary"
+    type="button"
+  >
+    <i
+      class="material-icons mr-2"
+    >
+      add
+    </i>
+    Add Button
+  </button>
+</div>
+`;

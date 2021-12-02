@@ -14,14 +14,17 @@ import {NotificationStatus} from '../notifications/types'
 import {StoreDispatch, RootState} from '../types'
 import client from '../../models/api/resources'
 
-import {LinksWidget} from '../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import {
+    ButtonsWidget,
+    LinksWidget,
+} from '../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
 import * as types from './constants'
 import {
     Widget,
     WidgetContextType,
-    WidgetTemplateWidget,
     WidgetDraft,
+    WidgetTemplateWidget,
 } from './types'
 
 export function fetchWidgets() {
@@ -185,7 +188,9 @@ export function drop(
     }
 }
 
-export function updateEditedWidget(data: WidgetTemplateWidget | LinksWidget) {
+export function updateEditedWidget(
+    data: WidgetTemplateWidget | LinksWidget | ButtonsWidget
+) {
     return {
         type: types.UPDATE_EDITED_WIDGET,
         item: data,

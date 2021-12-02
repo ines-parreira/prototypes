@@ -119,49 +119,60 @@ export function Links(props: Props) {
 
     return (
         <>
-            <ListGroup flush>
-                {isEditing || !isCollapsible ? (
-                    allLinks
-                ) : (
-                    <>
-                        {allLinks.slice(0, MAX_VISIBLE_LINKS)}
-                        <Collapse isOpen={collapseOpen}>
-                            {allLinks.slice(MAX_VISIBLE_LINKS, allLinks.length)}
-                        </Collapse>
-                    </>
-                )}
-            </ListGroup>
-            {isCollapsible && (
-                <Button
-                    type="button"
-                    color="link"
-                    className={css.collapseButton}
-                    onClick={handleToggle}
-                >
-                    {collapseOpen ? (
-                        <>
-                            <img
-                                src={expandUp}
-                                alt="Contract"
-                                className={css.collapseIcon}
-                            />
-                            SHOW LESS
-                        </>
-                    ) : (
-                        <>
-                            <img
-                                src={expandDown}
-                                alt="Expand"
-                                className={css.collapseIcon}
-                            />
-                            SHOW MORE
-                        </>
+            {allLinks.length > 0 && (
+                <>
+                    <ListGroup flush>
+                        {isEditing || !isCollapsible ? (
+                            allLinks
+                        ) : (
+                            <>
+                                {allLinks.slice(0, MAX_VISIBLE_LINKS)}
+                                <Collapse isOpen={collapseOpen}>
+                                    {allLinks.slice(
+                                        MAX_VISIBLE_LINKS,
+                                        allLinks.length
+                                    )}
+                                </Collapse>
+                            </>
+                        )}
+                    </ListGroup>
+                    {isCollapsible && (
+                        <Button
+                            type="button"
+                            color="link"
+                            className={css.collapseButton}
+                            onClick={handleToggle}
+                        >
+                            {collapseOpen ? (
+                                <>
+                                    <img
+                                        src={expandUp}
+                                        alt="Contract"
+                                        className={css.collapseIcon}
+                                    />
+                                    SHOW LESS
+                                </>
+                            ) : (
+                                <>
+                                    <img
+                                        src={expandDown}
+                                        alt="Expand"
+                                        className={css.collapseIcon}
+                                    />
+                                    SHOW MORE
+                                </>
+                            )}
+                        </Button>
                     )}
-                </Button>
+                </>
             )}
             {isEditing && (
                 <>
-                    <Button type="button" id={targetId}>
+                    <Button
+                        type="button"
+                        className={css.addButton}
+                        id={targetId}
+                    >
                         <i className="material-icons mr-2">add</i>
                         Add Redirection Link
                     </Button>
