@@ -6,7 +6,7 @@ import {renderWithRouter} from '../../../../../../utils/testing'
 import {
     FETCH_PREVIEW_CUSTOMER_ERROR,
     FETCH_PREVIEW_CUSTOMER_SUCCESS,
-} from '../../../../../../state/infobar/constants.js'
+} from '../../../../../../state/infobar/constants'
 import Search from '../../../Search'
 import InfobarLayout from '../../InfobarLayout'
 import InfobarCustomerInfo from '../InfobarCustomerInfo/InfobarCustomerInfo'

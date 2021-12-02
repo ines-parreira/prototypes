@@ -1,14 +1,15 @@
-import {actionButtonHashForData} from '../utils.ts'
+import {actionButtonHashForData} from '../utils'
 
 describe('actionButtonHashForData', () => {
     it('should hash payload', () => {
         const data = {
             action_name: 'foo',
-            user_id: 4,
-            integration_id: 8,
+            user_id: '4',
+            integration_id: '8',
             payload: {
-                a: 1.12,
-                b: 2.78,
+                order_id: 1,
+                customer_id: 2,
+                comment_id: 3,
             },
         }
         expect(actionButtonHashForData(data)).toMatchSnapshot()
@@ -17,11 +18,12 @@ describe('actionButtonHashForData', () => {
     it('should replace dots with underscores', () => {
         const data = {
             action_name: 'foo.bar',
-            user_id: 4,
-            integration_id: 8,
+            user_id: '4',
+            integration_id: '8',
             payload: {
-                a: 1.12,
-                b: 2.78,
+                order_id: 1,
+                customer_id: 2,
+                comment_id: 3,
             },
         }
         expect(actionButtonHashForData(data)).toMatchSnapshot()

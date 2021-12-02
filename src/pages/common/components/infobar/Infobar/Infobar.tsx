@@ -9,7 +9,7 @@ import {usePrevious, useUpdateEffect} from 'react-use'
 
 import useCancellableRequest from '../../../../../hooks/useCancellableRequest'
 import * as infobarActions from '../../../../../state/infobar/actions'
-import * as infobarConstants from '../../../../../state/infobar/constants.js'
+import * as infobarConstants from '../../../../../state/infobar/constants'
 import * as customersActions from '../../../../../state/customers/actions'
 import {setCustomer} from '../../../../../state/ticket/actions'
 import * as WidgetsActions from '../../../../../state/widgets/actions'

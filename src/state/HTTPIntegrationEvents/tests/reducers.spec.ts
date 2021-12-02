@@ -1,15 +1,19 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
-import reducer, {initialState} from '../reducers.ts'
+import reducer, {initialState} from '../reducers'
 import * as constants from '../constants'
+import {HTTPIntegrationEvent} from '../types'
 
 jest.addMatchers(immutableMatchers)
 
 describe('HTTPIntegrationEvents', () => {
     describe('reducers', () => {
         it('should set `events` value', () => {
-            const events = [{id: 1}, {id: 2}]
+            const events = [
+                {id: 1},
+                {id: 2},
+            ] as unknown as HTTPIntegrationEvent[]
             const action = {
                 type: constants.FETCH_HTTP_INTEGRATION_EVENTS_SUCCESS,
                 events,
@@ -22,7 +26,7 @@ describe('HTTPIntegrationEvents', () => {
         })
 
         it('should set `event` value', () => {
-            const event = {id: 1}
+            const event = {id: 1} as unknown as HTTPIntegrationEvent
             const action = {
                 type: constants.FETCH_HTTP_INTEGRATION_EVENT_SUCCESS,
                 event,

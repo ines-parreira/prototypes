@@ -1,4 +1,4 @@
-import * as actions from '../actions.ts'
+import * as actions from '../actions'
 
 describe('facebookAds actions', () => {
     describe('setFacebookAdsLoading', () => {
@@ -9,13 +9,14 @@ describe('facebookAds actions', () => {
     })
 
     describe('setFacebookAdsInternals', () => {
-        it('should return SET_FACEBOOK_ADS_INTERNALS action', async () => {
+        it('should return SET_FACEBOOK_ADS_INTERNALS action', () => {
             const internals = {
                 1: {
                     ads: {
                         postid1: {
                             name: 'ad 1',
                             is_active: true,
+                            comment_count: 0,
                         },
                     },
                 },

@@ -1,24 +1,36 @@
-import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import {fromJS, Map} from 'immutable'
 import thunk from 'redux-thunk'
-import {CancelToken} from 'axios'
+import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-import * as actions from '../actions.ts'
-import {initialState} from '../reducers.ts'
-import client from '../../../models/api/resources.ts'
+import {StoreDispatch} from '../../types'
+import * as actions from '../actions'
+import {initialState} from '../reducers'
+import client from '../../../models/api/resources'
+
+type MockedRootState = {
+    infobar: Map<any, any>
+    ticket: Map<any, any>
+}
 
 const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
+    middlewares
+)
 
 jest.mock('../../notifications/actions.ts', () => {
     return {
-        notify: jest.fn((args) => ({...args, type: 'NOTIFY-MOCK'})),
+        notify: jest.fn((args: Record<string, unknown>) => ({
+            ...args,
+            type: 'NOTIFY-MOCK',
+        })),
     }
 })
 
 jest.mock('../../../utils', () => {
-    const utils = require.requireActual('../../../utils')
+    const utils: Record<string, unknown> =
+        require.requireActual('../../../utils')
 
     return {
         ...utils,
@@ -27,8 +39,8 @@ jest.mock('../../../utils', () => {
 })
 
 describe('infobar actions', () => {
-    let store
-    let mockServer
+    let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
+    let mockServer: MockAdapter
 
     beforeEach(() => {
         store = mockStore({
@@ -53,7 +65,7 @@ describe('infobar actions', () => {
             mockServer
                 .onPost('/api/search/')
                 .reply(200, {data: [{id: 1, name: 'alex'}]})
-            const source = CancelToken.source()
+            const source = axios.CancelToken.source()
             source.cancel()
 
             return store
@@ -69,7 +81,7 @@ describe('infobar actions', () => {
                 .reply(200, {id: 1, name: 'alex'})
 
             return store
-                .dispatch(actions.similarCustomer(1))
+                .dispatch(actions.similarCustomer('1'))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
@@ -77,7 +89,7 @@ describe('infobar actions', () => {
             mockServer.onGet('/api/customers/2/similar/').reply(404)
 
             return store
-                .dispatch(actions.similarCustomer(2))
+                .dispatch(actions.similarCustomer('2'))
                 .then((res) => expect(res).toBe(undefined))
         })
 
@@ -85,7 +97,7 @@ describe('infobar actions', () => {
             mockServer.onGet('/api/customers/2/similar/').reply(505)
 
             return store
-                .dispatch(actions.similarCustomer(2))
+                .dispatch(actions.similarCustomer('2'))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })
@@ -93,7 +105,7 @@ describe('infobar actions', () => {
     describe('execute action', () => {
         const actionName = 'shopifyRefundShippingCostOfOrder'
         const integrationId = 5
-        const customerId = 34
+        const customerId = '34'
         const payload = {order_id: 4194477515}
         const callback = jest.fn()
 
@@ -131,10 +143,14 @@ describe('infobar actions', () => {
     })
 
     describe('handle executed action', () => {
+        type HandleExecutedActionArgumentType = Parameters<
+            typeof actions.handleExecutedAction
+        >[0]
+
         it('success', () => {
             const response = {
                 status: 'success',
-            }
+            } as unknown as HandleExecutedActionArgumentType
 
             store.dispatch(actions.handleExecutedAction(response))
             expect(store.getActions()).toMatchSnapshot()
@@ -144,7 +160,7 @@ describe('infobar actions', () => {
             const response = {
                 status: 'error',
                 msg: '[SHOPIFY] [full-refund] No way',
-            }
+            } as HandleExecutedActionArgumentType
 
             store.dispatch(actions.handleExecutedAction(response))
             expect(store.getActions()).toMatchSnapshot()
@@ -155,7 +171,7 @@ describe('infobar actions', () => {
                 status: 'error',
                 ticket_id: 1,
                 msg: '[SHOPIFY] [full-refund] No way',
-            }
+            } as unknown as HandleExecutedActionArgumentType
 
             store.dispatch(actions.handleExecutedAction(response))
             expect(store.getActions()).toMatchSnapshot()
@@ -166,7 +182,7 @@ describe('infobar actions', () => {
                 status: 'error',
                 ticket_id: 2,
                 msg: '[SHOPIFY] [full-refund] No way',
-            }
+            } as unknown as HandleExecutedActionArgumentType
 
             store.dispatch(actions.handleExecutedAction(response))
             expect(store.getActions()).toMatchSnapshot()

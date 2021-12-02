@@ -1,48 +1,54 @@
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import thunk from 'redux-thunk'
 
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../constants/integration.ts'
+import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../constants/integration'
 import {
     shopifyCancelOrderPayloadFixture,
     shopifyOrderFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../fixtures/shopify.ts'
-import {initialState} from '../reducers.ts'
-import * as actions from '../../cancelOrder/actions.ts'
-import {initRefundOrderLineItems} from '../../../../../business/shopify/order.ts'
-import client from '../../../../../models/api/resources.ts'
+} from '../../../../../fixtures/shopify'
+import {initialState} from '../reducers'
+import * as actions from '../../cancelOrder/actions'
+import {initRefundOrderLineItems} from '../../../../../business/shopify/order'
+import client from '../../../../../models/api/resources'
+import {GorgiasAction, StoreDispatch} from '../../../../types'
 
-jest.mock('lodash/debounce', () => (fn) => {
+jest.mock('lodash/debounce', () => (fn: Record<string, unknown>) => {
     fn.cancel = jest.fn()
     return fn
 })
 
 jest.useFakeTimers()
 
+type MockedRootState = {
+    infobarActions: Record<string, any>
+}
+
 describe('infobarActions.shopify.cancelOrder actions', () => {
     const middlewares = [thunk]
-    const mockStore = configureMockStore(middlewares)
-    const integrationId = 1
-    const order = fromJS(shopifyOrderFixture())
-    const payload = fromJS(shopifyCancelOrderPayloadFixture())
-    const orderId = order.get('id')
-    const mockServer = new MockAdapter(client)
-    const refundWithoutShipping = fromJS(shopifySuggestedRefundFixture()).setIn(
-        ['shipping', 'maximum_refundable'],
-        '10.00'
+    const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
+        middlewares
     )
+    const integrationId = 1
+    const order = fromJS(shopifyOrderFixture()) as Map<any, any>
+    const payload = fromJS(shopifyCancelOrderPayloadFixture()) as Map<any, any>
+    const orderId = order.get('id') as string
+    const mockServer = new MockAdapter(client)
+    const refundWithoutShipping = (
+        fromJS(shopifySuggestedRefundFixture()) as Map<any, any>
+    ).setIn(['shipping', 'maximum_refundable'], '10.00')
     const refund = refundWithoutShipping
         .setIn(['shipping', 'amount'], '10.00')
         .setIn(['shipping', 'tax'], '00.90')
 
-    let store
+    let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
 
     const getActions = () =>
-        store.getActions().map((action) => {
+        store.getActions().map((action: GorgiasAction) => {
             if (action.type === 'ADD_NOTIFICATION') {
-                action.payload.id = 1
+                ;(action.payload as Record<string, unknown>).id = 1
             }
 
             return action
@@ -69,15 +75,13 @@ describe('infobarActions.shopify.cancelOrder actions', () => {
     describe('on success', () => {
         describe('onInit()', () => {
             beforeEach(() => {
-                mockServer
-                    // First call that fetches maximum refundable value
+                mockServer // First call that fetches maximum refundable value
                     .onPost(
                         `/integrations/shopify/order/${orderId}/refunds/calculate/`
                     )
                     .replyOnce(200, {
                         refund: refundWithoutShipping.toJS(),
-                    })
-                    // First call that fetches correct tax value for maximum refundable value
+                    }) // First call that fetches correct tax value for maximum refundable value
                     .onPost(
                         `/integrations/shopify/order/${orderId}/refunds/calculate/`
                     )
@@ -181,15 +185,13 @@ describe('infobarActions.shopify.cancelOrder actions', () => {
 
     describe('on error', () => {
         beforeEach(() => {
-            mockServer
-                // First call that fetches maximum refundable value
+            mockServer // First call that fetches maximum refundable value
                 .onPost(
                     `/integrations/shopify/order/${orderId}/refunds/calculate/`
                 )
                 .replyOnce(200, {
                     refund: refundWithoutShipping.toJS(),
-                })
-                // First call that should fetch correct tax value for maximum refundable value
+                }) // First call that should fetch correct tax value for maximum refundable value
                 .onPost(
                     `/integrations/shopify/order/${orderId}/refunds/calculate/`
                 )
@@ -209,15 +211,15 @@ describe('infobarActions.shopify.cancelOrder actions', () => {
     })
 
     describe('onCancel()', () => {
-        it('should cancel debounced call to calculateRefund()', async () => {
-            await store.dispatch(actions.onCancel())
+        it('should cancel debounced call to calculateRefund()', () => {
+            store.dispatch(actions.onCancel('foo'))
             expect(actions.calculateRefund.cancel).toHaveBeenCalled()
         })
     })
 
     describe('onReset()', () => {
-        it('should reset state', async () => {
-            await store.dispatch(actions.onReset())
+        it('should reset state', () => {
+            store.dispatch(actions.onReset())
             expect(getActions()).toMatchSnapshot()
         })
     })

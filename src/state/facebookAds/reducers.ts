@@ -14,7 +14,7 @@ export const initialState = fromJS({
     loading: true,
     internals: {},
     loadingAds: [],
-})
+}) as Map<any, any>
 
 const getActivePath = (
     key: string,

@@ -12,7 +12,7 @@ import {NotificationStatus} from '../notifications/types'
 import {StoreDispatch, RootState} from '../types'
 import {onApiError} from '../utils'
 
-import * as constants from './constants.js'
+import * as constants from './constants'
 
 export const search =
     (query: string, cancelToken?: CancelToken) =>

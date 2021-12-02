@@ -6,10 +6,10 @@ import {
     shopifyDraftOrderPayloadFixture,
     shopifyOrderFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../fixtures/shopify.ts'
-import {initRefundOrderLineItems} from '../../../../../business/shopify/order.ts'
-import reducer, {initialState} from '../reducers.ts'
-import * as constants from '../constants.ts'
+} from '../../../../../fixtures/shopify'
+import {initRefundOrderLineItems} from '../../../../../business/shopify/order'
+import reducer, {initialState} from '../reducers'
+import * as constants from '../constants'
 
 jest.addMatchers(immutableMatchers)
 
@@ -19,7 +19,7 @@ describe('infobarActions.shopify.cancelOrder reducer', () => {
             const action = {
                 type: constants.SET_LOADING,
                 loading: true,
-                message: null,
+                message: undefined,
             }
             const nextState = reducer(initialState, action)
             expect(nextState.get('loading')).toBe(true)
@@ -76,7 +76,7 @@ describe('infobarActions.shopify.cancelOrder reducer', () => {
 
     describe('SET_REFUND_AMOUNT', () => {
         it('should set products', () => {
-            const amount = '9.99'
+            const amount = 9.99
             const payload = fromJS(shopifyCancelOrderPayloadFixture())
             const state = initialState.set('payload', payload)
             const action = {type: constants.SET_REFUND_AMOUNT, amount}
@@ -93,7 +93,7 @@ describe('infobarActions.shopify.cancelOrder reducer', () => {
         })
 
         it('should keep current state if the payload is not set', () => {
-            const amount = '9.99'
+            const amount = 9.99
             const action = {type: constants.SET_REFUND_AMOUNT, amount}
             const nextState = reducer(initialState, action)
             expect(nextState).toEqualImmutable(initialState)

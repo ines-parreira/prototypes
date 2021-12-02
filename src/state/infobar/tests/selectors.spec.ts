@@ -1,13 +1,14 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
-import {fromJS} from 'immutable'
+import {fromJS, List} from 'immutable'
 
-import * as selectors from '../selectors.ts'
-import {initialState} from '../reducers.ts'
+import {RootState} from '../../types'
+import * as selectors from '../selectors'
+import {initialState} from '../reducers'
 
 jest.addMatchers(immutableMatchers)
 
 describe('infobar selectors', () => {
-    let state
+    let state: RootState
 
     beforeEach(() => {
         state = {
@@ -32,21 +33,23 @@ describe('infobar selectors', () => {
                     ],
                 })
             ),
-        }
+        } as RootState
     })
 
     it('getInfobarState', () => {
         expect(selectors.getInfobarState(state)).toEqualImmutable(state.infobar)
-        expect(selectors.getInfobarState({})).toEqualImmutable(fromJS({}))
+        expect(selectors.getInfobarState({} as RootState)).toEqualImmutable(
+            fromJS({})
+        )
     })
 
     it('getPendingActionsCallbacks', () => {
         expect(selectors.getPendingActionsCallbacks(state)).toEqualImmutable(
             state.infobar.get('pendingActionsCallbacks')
         )
-        expect(selectors.getPendingActionsCallbacks({})).toEqualImmutable(
-            fromJS([])
-        )
+        expect(
+            selectors.getPendingActionsCallbacks({} as RootState)
+        ).toEqualImmutable(fromJS([]))
     })
 
     it('getPendingActionCallbacks', () => {
@@ -54,12 +57,14 @@ describe('infobar selectors', () => {
             selectors.getPendingActionCallbacks(
                 'shopifyRefundShippingCostOfOrder-34-5-4194477515'
             )(state)
-        ).toEqualImmutable(state.infobar.get('pendingActionsCallbacks').first())
+        ).toEqualImmutable(
+            (state.infobar.get('pendingActionsCallbacks') as List<any>).first()
+        )
         expect(selectors.getPendingActionCallbacks('unknown')(state)).toBe(
             undefined
         )
-        expect(selectors.getPendingActionCallbacks('unknown')({})).toBe(
-            undefined
-        )
+        expect(
+            selectors.getPendingActionCallbacks('unknown')({} as RootState)
+        ).toBe(undefined)
     })
 })

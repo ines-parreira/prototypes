@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`actionButtonHashForData should hash payload 1`] = `"foo-4-8-de5fce76268b88cb0619ad49dcf1fdca41686cbc"`;
-
-exports[`actionButtonHashForData should replace dots with underscores 1`] = `"foo_bar-4-8-de5fce76268b88cb0619ad49dcf1fdca41686cbc"`;

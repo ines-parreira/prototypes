@@ -1,47 +1,24 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
-import reducer, {initialState} from '../reducers.ts'
+import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
-import * as utils from '../utils.ts'
+import * as utils from '../utils'
 
 jest.addMatchers(immutableMatchers)
 
 describe('infobar reducers', () => {
     it('initial state', () => {
-        expect(reducer(undefined, {})).toEqualImmutable(initialState)
-    })
-
-    it('fetch person avatar (user or customer)', () => {
-        // start
-        expect(
-            reducer(initialState, {
-                type: types.FETCH_AVATAR_START,
-            }).toJS()
-        ).toMatchSnapshot()
-
-        // success
-        expect(
-            reducer(initialState, {
-                type: types.FETCH_AVATAR_SUCCESS,
-                url: 'http://good.url',
-                email: 'alex@gorgias.io',
-            }).toJS()
-        ).toMatchSnapshot()
-
-        // fail
-        expect(
-            reducer(initialState, {
-                type: types.FETCH_AVATAR_ERROR,
-            }).toJS()
-        ).toMatchSnapshot()
+        expect(reducer(undefined, {type: 'FOO_TYPE'})).toEqualImmutable(
+            initialState
+        )
     })
 
     it('execute action', () => {
         const data = {
             action_name: 'shopifyRefundShippingCostOfOrder',
-            integration_id: 5,
-            user_id: 34,
+            integration_id: '5',
+            user_id: '34',
             ticket_id: 1,
             payload: {order_id: 4194477515},
             callback: jest.fn(),

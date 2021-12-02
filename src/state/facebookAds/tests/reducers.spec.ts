@@ -1,13 +1,15 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 
-import reducer, {initialState} from '../reducers.ts'
-import * as types from '../constants.ts'
+import reducer, {initialState} from '../reducers'
+import * as types from '../constants'
 
 jest.addMatchers(immutableMatchers)
 
 describe('facebookAds reducer', () => {
     it('should return initial state', () => {
-        expect(reducer(undefined, {})).toEqualImmutable(initialState)
+        expect(reducer(undefined, {type: 'FOO_ACTION'})).toEqualImmutable(
+            initialState
+        )
     })
 
     it('should set loading state', () => {
