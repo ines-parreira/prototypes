@@ -249,5 +249,8 @@
         "@types/react": "16.14.0",
         "@formatjs/ecma402-abstract": "1.2.2",
         "jquery": "3.5.1"
+    },
+    "engines": {
+        "node": ">=14.17.0"
     }
 }
