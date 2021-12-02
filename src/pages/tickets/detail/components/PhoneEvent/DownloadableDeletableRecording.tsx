@@ -91,10 +91,10 @@ function useDownloadRecording(url: string) {
                     headers: Record<string, unknown>
                 ) => {
                     // We need this in order to prevent CORS policy error.
-                    // @ts-ignore
-                    delete headers.common['X-CSRF-Token']
-                    // @ts-ignore
-                    delete headers.common['X-Gorgias-User-Client']
+                    delete headers['X-CSRF-Token'] // @ts-ignore
+                    delete headers['X-Gorgias-User-Client'] // @ts-ignore
+                    delete headers.common['X-CSRF-Token'] // @ts-ignore
+                    delete headers.common['X-Gorgias-User-Client'] // @ts-ignore
                     return data
                 },
             })
