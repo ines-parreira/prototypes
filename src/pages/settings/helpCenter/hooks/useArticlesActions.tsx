@@ -1,18 +1,16 @@
-import _isNumber from 'lodash/isNumber'
-import {chain as _chain} from 'lodash'
 import {useState} from 'react'
+import {chain as _chain} from 'lodash'
+import _isNumber from 'lodash/isNumber'
 import {useSelector} from 'react-redux'
 
-import useAppDispatch from '../../../../hooks/useAppDispatch'
-
 import {HelpCenterClient} from '../../../../../../../rest_api/help_center_api/index'
+import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {
     Article,
     CreateArticleTranslationDto,
     LocaleCode,
 } from '../../../../models/helpCenter/types'
 import {createArticleFromDto} from '../../../../models/helpCenter/utils'
-
 import {
     deleteArticle,
     pushArticleSupportedLocales,
@@ -29,14 +27,14 @@ import {useHelpCenterIdParam} from './useHelpCenterIdParam'
 function updatePositionRequest(
     client: HelpCenterClient,
     articles: Article[],
-    params: {helpCenterId: number; categoryId?: number}
+    params: {helpCenterId: number; categoryId: number | null}
 ) {
     const sortedArticlesIds = _chain(articles)
         .sortBy(['position'])
         .map((article) => article.id)
         .value()
 
-    if (params.categoryId && params.categoryId >= 0) {
+    if (typeof params.categoryId === 'number') {
         return client
             .setArticlesPositionsInCategory(
                 {
@@ -65,12 +63,96 @@ export const useArticlesActions = () => {
     const viewLanguage = useSelector(getViewLanguage)
     const [isLoading, setIsLoading] = useState(false)
 
+    const fetchArticles = async (
+        categoryId: number | null,
+        params?: {page: number; per_page: number}
+    ) => {
+        if (!client) throw new Error('HTTP client not initialized!')
+
+        setIsLoading(true)
+
+        try {
+            const {
+                data: {data: articles, meta},
+            } = await (categoryId !== null
+                ? client.listCategoryArticles({
+                      help_center_id: helpCenterId,
+                      category_id: categoryId,
+                      order_by: 'position',
+                      ...params,
+                  })
+                : client.listArticles({
+                      help_center_id: helpCenterId,
+                      has_category: false,
+                      order_by: 'position',
+                      ...params,
+                  }))
+
+            const {data: positions} =
+                categoryId !== null
+                    ? await client.getCategoryArticlesPositions({
+                          help_center_id: helpCenterId,
+                          category_id: categoryId,
+                      })
+                    : await client.getUncategorizedArticlesPositions({
+                          help_center_id: helpCenterId,
+                      })
+
+            const payload = articles.map((article) =>
+                createArticleFromDto(
+                    article,
+                    positions.findIndex((articleId) => articleId === article.id)
+                )
+            )
+
+            dispatch(saveArticles(payload))
+
+            setIsLoading(false)
+
+            return meta.item_count
+        } catch (err) {
+            setIsLoading(false)
+
+            throw err
+        }
+    }
+
+    const getArticleCount = async (categoryId: number | null) => {
+        if (!client) throw new Error('HTTP client not initialized!')
+
+        try {
+            const {
+                data: {meta},
+            } = await (categoryId !== null
+                ? client.listCategoryArticles({
+                      help_center_id: helpCenterId,
+                      category_id: categoryId,
+                      page: 1,
+                      per_page: 1,
+                  })
+                : client.listArticles({
+                      help_center_id: helpCenterId,
+                      has_category: false,
+                      page: 1,
+                      per_page: 1,
+                  }))
+
+            return meta.item_count
+        } catch (err) {
+            setIsLoading(false)
+
+            throw err
+        }
+    }
+
     return {
         isLoading,
+        fetchArticles,
+        getArticleCount,
 
         async createArticle(
             translation: CreateArticleTranslationDto,
-            categoryId?: number | null
+            categoryId: number | null
         ) {
             if (!client) throw new Error('HTTP client not initialized!')
 
@@ -95,7 +177,7 @@ export const useArticlesActions = () => {
 
                 const createdArticle = createArticleFromDto(
                     data,
-                    positions.findIndex((index) => index === data.id)
+                    positions.findIndex((articleId) => articleId === data.id)
                 )
 
                 dispatch(saveArticles([createdArticle]))
@@ -103,10 +185,10 @@ export const useArticlesActions = () => {
                 setIsLoading(false)
 
                 return createdArticle
-            } catch (error) {
+            } catch (err) {
                 setIsLoading(false)
 
-                throw error
+                throw err
             }
         },
 
@@ -140,7 +222,7 @@ export const useArticlesActions = () => {
                     category_id: categoryId,
                     translation: article.translation,
                     position: positions.findIndex(
-                        (index) => index === article.id
+                        (articleId) => articleId === article.id
                     ),
                 }
 
@@ -249,7 +331,7 @@ export const useArticlesActions = () => {
 
         async updateArticlesPositions(
             articles: Article[],
-            categoryId?: number
+            categoryId: number | null
         ) {
             if (!client) throw new Error('HTTP client not initialized!')
 
@@ -320,7 +402,7 @@ export const useArticlesActions = () => {
 
                 const clonedArticle = _isNumber(article.category_id)
                     ? await this.createArticle(translation, article.category_id)
-                    : await this.createArticle(translation)
+                    : await this.createArticle(translation, null)
 
                 await Promise.all(
                     translations

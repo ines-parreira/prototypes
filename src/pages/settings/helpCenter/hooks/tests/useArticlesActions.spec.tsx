@@ -18,143 +18,165 @@ import {initialState as articlesState} from '../../../../../state/helpCenter/art
 import {initialState as categoriesState} from '../../../../../state/helpCenter/categories/reducer'
 import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
 import {RootState, StoreDispatch} from '../../../../../state/types'
-import {getSingleArticleEnglish} from '../../fixtures/getArticlesResponse.fixture'
+import {
+    getArticlesResponseFixture,
+    getSingleArticleEnglish,
+} from '../../fixtures/getArticlesResponse.fixture'
 import {useArticlesActions} from '../useArticlesActions'
-import {useHelpCenterApi} from '../useHelpCenterApi'
 
 jest.mock('react-router')
 ;(useParams as jest.MockedFunction<typeof useParams>).mockReturnValue({
     helpCenterId: '1',
 })
 
+const mockCreateArticle = jest.fn().mockImplementation(
+    (
+        {help_center_id}: {help_center_id: number},
+        {
+            category_id,
+            translation,
+        }: {
+            category_id: number | null
+            translation: CreateArticleTranslationDto
+        }
+    ) =>
+        Promise.resolve({
+            data: {
+                id: 1,
+                category_id,
+                help_center_id,
+                available_locales: [translation.locale],
+                created_datetime: '2021-06-01T09:46:30.044Z',
+                updated_datetime: '2021-06-01T09:46:30.044Z',
+                deleted_datetime: null,
+                translation: {
+                    article_id: 1,
+                    ...translation,
+                    created_datetime: '2021-06-01T09:46:30.044Z',
+                    updated_datetime: '2021-06-01T09:46:30.044Z',
+                    deleted_datetime: null,
+                },
+            },
+        })
+)
+const mockUpdateArticle = jest
+    .fn()
+    .mockImplementation(
+        (
+            {id, help_center_id}: {id: number; help_center_id: number},
+            {category_id}: {category_id: number | null}
+        ) =>
+            Promise.resolve({
+                data: {
+                    id,
+                    category_id,
+                    help_center_id,
+                    available_locales: ['fr-FR'],
+                    created_datetime: '2021-06-01T09:46:30.044Z',
+                    updated_datetime: '2021-06-01T09:46:30.044Z',
+                    deleted_datetime: null,
+                    translation: {
+                        article_id: id,
+                        locale: 'fr-FR',
+                        title: '',
+                        excerpt: '',
+                        content: '',
+                        slug: '',
+                        seo_meta: {
+                            title: null,
+                            description: null,
+                        },
+                        created_datetime: '2021-06-01T09:46:30.044Z',
+                        updated_datetime: '2021-06-01T09:46:30.044Z',
+                        deleted_datetime: null,
+                    },
+                },
+            })
+    )
+const mockCreateArticleTranslation = jest.fn().mockResolvedValue({
+    data: {},
+})
+const mockUpdateArticleTranslation = jest
+    .fn()
+    .mockResolvedValueOnce({
+        data: {
+            locale: 'fr-FR',
+            title: '',
+            excerpt: '',
+            description: '',
+            slug: '',
+        },
+    })
+    .mockResolvedValue({
+        data: {
+            locale: 'en-US',
+            title: '',
+            excerpt: '',
+            description: '',
+            slug: '',
+        },
+    })
+const mockedListArticles = jest.fn().mockResolvedValue({
+    data: {
+        data: [getArticlesResponseFixture.data[0]],
+        object: 'list',
+        meta: {
+            page: 1,
+            per_page: 20,
+            current_page:
+                '/help-centers/1/articles?has_category=false&page=1&per_page=20',
+            item_count: 1,
+            nb_pages: 1,
+        },
+    },
+})
+const mockedListCategoryArticles = jest.fn()
+const mockGetCategoryArticlesPositions = jest
+    .fn()
+    .mockResolvedValue({data: [1]})
+const mockGetUncategorizedArticlesPositions = jest
+    .fn()
+    .mockResolvedValue({data: [1]})
+const mockListArticleTranslations = jest.fn().mockResolvedValue({
+    data: {
+        data: [
+            {
+                locale: 'en-US',
+                title: '',
+                excerpt: '',
+                content: '',
+                slug: '',
+            },
+            {
+                locale: 'fr-FR',
+                title: '',
+                excerpt: '',
+                content: '',
+                slug: '',
+            },
+        ],
+    },
+})
+
 jest.mock('../useHelpCenterApi', () => {
     return {
-        useHelpCenterApi: jest.fn().mockReturnValue({
+        useHelpCenterApi: () => ({
             isReady: true,
             client: {
-                createArticle: jest.fn().mockImplementation(
-                    (
-                        {help_center_id}: {help_center_id: number},
-                        {
-                            category_id,
-                            translation,
-                        }: {
-                            category_id: number | null
-                            translation: CreateArticleTranslationDto
-                        }
-                    ) =>
-                        Promise.resolve({
-                            data: {
-                                id: 1,
-                                category_id,
-                                help_center_id,
-                                available_locales: [translation.locale],
-                                created_datetime: '2021-06-01T09:46:30.044Z',
-                                updated_datetime: '2021-06-01T09:46:30.044Z',
-                                deleted_datetime: null,
-                                translation: {
-                                    article_id: 1,
-                                    ...translation,
-                                    created_datetime:
-                                        '2021-06-01T09:46:30.044Z',
-                                    updated_datetime:
-                                        '2021-06-01T09:46:30.044Z',
-                                    deleted_datetime: null,
-                                },
-                            },
-                        })
-                ),
-                updateArticle: jest
-                    .fn()
-                    .mockImplementation(
-                        (
-                            {
-                                id,
-                                help_center_id,
-                            }: {id: number; help_center_id: number},
-                            {category_id}: {category_id: number | null}
-                        ) =>
-                            Promise.resolve({
-                                data: {
-                                    id,
-                                    category_id,
-                                    help_center_id,
-                                    available_locales: ['fr-FR'],
-                                    created_datetime:
-                                        '2021-06-01T09:46:30.044Z',
-                                    updated_datetime:
-                                        '2021-06-01T09:46:30.044Z',
-                                    deleted_datetime: null,
-                                    translation: {
-                                        article_id: id,
-                                        locale: 'fr-FR',
-                                        title: '',
-                                        excerpt: '',
-                                        content: '',
-                                        slug: '',
-                                        seo_meta: {
-                                            title: null,
-                                            description: null,
-                                        },
-                                        created_datetime:
-                                            '2021-06-01T09:46:30.044Z',
-                                        updated_datetime:
-                                            '2021-06-01T09:46:30.044Z',
-                                        deleted_datetime: null,
-                                    },
-                                },
-                            })
-                    ),
-                updateArticleTranslation: jest
-                    .fn()
-                    .mockResolvedValueOnce({
-                        data: {
-                            locale: 'fr-FR',
-                            title: '',
-                            excerpt: '',
-                            description: '',
-                            slug: '',
-                        },
-                    })
-                    .mockResolvedValue({
-                        data: {
-                            locale: 'en-US',
-                            title: '',
-                            excerpt: '',
-                            description: '',
-                            slug: '',
-                        },
-                    }),
-                createArticleTranslation: jest.fn().mockResolvedValue({
-                    data: {},
-                }),
+                listArticles: mockedListArticles,
+                listCategoryArticles: mockedListCategoryArticles,
+                createArticle: mockCreateArticle,
+                updateArticle: mockUpdateArticle,
+                updateArticleTranslation: mockUpdateArticleTranslation,
+                createArticleTranslation: mockCreateArticleTranslation,
                 deleteArticle: () => Promise.resolve(),
                 deleteArticleTranslation: () => Promise.resolve(),
-                listArticleTranslations: jest.fn().mockResolvedValue({
-                    data: {
-                        data: [
-                            {
-                                locale: 'en-US',
-                                title: '',
-                                excerpt: '',
-                                content: '',
-                                slug: '',
-                            },
-                            {
-                                locale: 'fr-FR',
-                                title: '',
-                                excerpt: '',
-                                content: '',
-                                slug: '',
-                            },
-                        ],
-                    },
-                }),
+                listArticleTranslations: mockListArticleTranslations,
                 setArticlesPositionsInCategory: () => Promise.resolve([]),
                 setUncategorizedArticlesPositions: () => Promise.resolve([]),
-                getCategoryArticlesPositions: () => Promise.resolve({data: []}),
-                getUncategorizedArticlesPositions: () =>
-                    Promise.resolve({data: []}),
+                getCategoryArticlesPositions: mockGetCategoryArticlesPositions,
+                getUncategorizedArticlesPositions:
+                    mockGetUncategorizedArticlesPositions,
             },
         }),
     }
@@ -207,9 +229,38 @@ const dependencyWrapper: React.ComponentType<any> = ({
     children: Element
 }) => <Provider store={mockStore(defaultState)}>{children}</Provider>
 
-describe('useArticlesActions', () => {
+describe('useArticlesActions()', () => {
     afterEach(() => {
         jest.clearAllMocks()
+    })
+
+    describe('fetchArticles()', () => {
+        it('dispatches saveArticles action for uncategorized articles', async () => {
+            const {result} = renderHook(useArticlesActions, {
+                wrapper: dependencyWrapper,
+            })
+
+            await result.current.fetchArticles(null, {page: 1, per_page: 20})
+
+            expect(saveArticles).toHaveBeenCalledWith([
+                {
+                    ...getSingleArticleEnglish,
+                    position: 0,
+                },
+            ])
+        })
+    })
+
+    describe('getArticleCount()', () => {
+        it('returns the article count for uncategorized articles', async () => {
+            const {result} = renderHook(useArticlesActions, {
+                wrapper: dependencyWrapper,
+            })
+
+            const itemCount = await result.current.getArticleCount(null)
+
+            expect(itemCount).toEqual(1)
+        })
     })
 
     describe('createArticle()', () => {
@@ -218,17 +269,20 @@ describe('useArticlesActions', () => {
                 wrapper: dependencyWrapper,
             })
 
-            await result.current.createArticle({
-                locale: 'en-US',
-                title: '',
-                excerpt: '',
-                content: '',
-                slug: '',
-                seo_meta: {
-                    title: null,
-                    description: null,
+            await result.current.createArticle(
+                {
+                    locale: 'en-US',
+                    title: '',
+                    excerpt: '',
+                    content: '',
+                    slug: '',
+                    seo_meta: {
+                        title: null,
+                        description: null,
+                    },
                 },
-            })
+                null
+            )
 
             expect(saveArticles).toHaveBeenCalled()
         })
@@ -328,9 +382,10 @@ describe('useArticlesActions', () => {
                 wrapper: dependencyWrapper,
             })
 
-            await result.current.updateArticlesPositions([
-                getSingleArticleEnglish,
-            ])
+            await result.current.updateArticlesPositions(
+                [getSingleArticleEnglish],
+                null
+            )
 
             expect(updateArticlesOrder).toHaveBeenCalled()
         })
@@ -356,9 +411,7 @@ describe('useArticlesActions', () => {
 
             await result.current.cloneArticle(getSingleArticleEnglish)
 
-            expect(
-                useHelpCenterApi().client?.listArticleTranslations
-            ).toHaveBeenCalled()
+            expect(mockListArticleTranslations).toHaveBeenCalled()
         })
 
         it('calls createArticle to create the article', async () => {
@@ -368,7 +421,7 @@ describe('useArticlesActions', () => {
 
             await result.current.cloneArticle(getSingleArticleEnglish)
 
-            expect(useHelpCenterApi().client?.createArticle).toHaveBeenCalled()
+            expect(mockCreateArticle).toHaveBeenCalled()
         })
 
         it('calls createArticleTranslation to append all the translations', async () => {
@@ -378,9 +431,7 @@ describe('useArticlesActions', () => {
 
             await result.current.cloneArticle(getSingleArticleEnglish)
 
-            expect(
-                useHelpCenterApi().client?.createArticleTranslation
-            ).toHaveBeenCalledTimes(1)
+            expect(mockCreateArticleTranslation).toHaveBeenCalledTimes(1)
         })
     })
 })

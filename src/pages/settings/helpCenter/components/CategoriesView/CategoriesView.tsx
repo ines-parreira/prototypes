@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {useSelector} from 'react-redux'
 import {Button, Container} from 'reactstrap'
 
@@ -12,6 +12,7 @@ import {
 } from '../../components/CategoriesTable'
 import {ImportSection} from '../../components/Imports/components/ImportSection'
 import {CATEGORIES_PER_PAGE} from '../../constants'
+import {useArticlesActions} from '../../hooks/useArticlesActions'
 import {useCategoriesActions} from '../../hooks/useCategoriesActions'
 import {useHelpCenterCategories} from '../../hooks/useHelpCenterCategories'
 
@@ -30,14 +31,17 @@ export const CategoriesViews = ({
     createCategory,
 }: Props): JSX.Element | null => {
     const actions = useCategoriesActions()
+    const {getArticleCount} = useArticlesActions()
     const uncategorizedArticles = useSelector(getUncategorizedArticles)
-
     const {categories, hasMore, isLoading, fetchMore} = useHelpCenterCategories(
         helpCenter.id,
         {
             per_page: CATEGORIES_PER_PAGE,
         }
     )
+    const [uncategorizedArticleCount, setUncategorizedArticleCount] =
+        useState(0)
+
     const handleOnReorder = (categories: Category[]) => {
         void actions.updateCategoriesPositions(categories)
     }
@@ -45,7 +49,18 @@ export const CategoriesViews = ({
     const showCreateFirst =
         !isLoading &&
         categories.length === 0 &&
-        uncategorizedArticles.length === 0
+        uncategorizedArticles.length === 0 &&
+        uncategorizedArticleCount === 0
+
+    useEffect(() => {
+        async function init() {
+            const count = await getArticleCount(null)
+
+            setUncategorizedArticleCount(count)
+        }
+
+        void init()
+    }, [])
 
     if (isLoading && categories.length === 0) {
         return (

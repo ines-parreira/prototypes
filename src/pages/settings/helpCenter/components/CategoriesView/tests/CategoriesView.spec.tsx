@@ -29,19 +29,20 @@ jest.mock('../../../hooks/useHelpCenterApi')
 const useHelpCenterApiMock = useHelpCenterApi as jest.Mock
 
 const mockedListArticles = jest.fn().mockResolvedValue({
-    data: {data: [], meta: {}},
+    data: {data: [], meta: {item_count: 0}},
+})
+const mockedListCategoryArticles = jest.fn().mockResolvedValue({
+    data: {data: [], meta: {item_count: 0}},
 })
 
 useHelpCenterApiMock.mockImplementation(() => ({
     isReady: true,
     client: {
         listCategories: jest.fn().mockResolvedValue({
-            data: {data: [], meta: {}},
+            data: {data: [], meta: {item_count: 0}},
         }),
-        listArticles: jest.fn().mockResolvedValue({
-            data: {data: [], meta: {}},
-        }),
-        listCategoryArticles: mockedListArticles,
+        listArticles: mockedListArticles,
+        listCategoryArticles: mockedListCategoryArticles,
         getUncategorizedArticlesPositions: jest.fn().mockResolvedValue({
             data: [],
         }),

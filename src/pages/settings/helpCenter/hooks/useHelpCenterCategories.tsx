@@ -65,7 +65,9 @@ export const useHelpCenterCategories = (
                 const fetchedCategories = data.map((category) =>
                     createCategoryFromDto(
                         category,
-                        positions.findIndex((index) => index === category.id)
+                        positions.findIndex(
+                            (categoryId) => categoryId === category.id
+                        )
                     )
                 )
 

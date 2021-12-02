@@ -1,21 +1,32 @@
 import React, {
     MouseEvent,
     ReactElement,
+    useCallback,
     useEffect,
     useMemo,
     useState,
 } from 'react'
 import classNames from 'classnames'
+import {useSelector} from 'react-redux'
+import {usePrevious} from 'react-use'
 import {Badge, Spinner} from 'reactstrap'
 
 import {useModalManager} from '../../../../../../../hooks/useModalManager'
 import {Article, Category} from '../../../../../../../models/helpCenter/types'
+import {
+    getArticlesInCategory,
+    getUncategorizedArticles,
+} from '../../../../../../../state/helpCenter/articles'
 import {LanguageList} from '../../../../../../common/components/LanguageBulletList'
 import BodyCell from '../../../../../../common/components/table/cells/BodyCell'
 import TableBodyRow from '../../../../../../common/components/table/TableBodyRow'
 import Tooltip from '../../../../../../common/components/Tooltip'
-import {CATEGORY_ROW_ACTIONS, MODALS} from '../../../../constants'
-import {useArticles} from '../../../../hooks/useArticles'
+import {
+    ARTICLES_PER_PAGE,
+    CATEGORY_ROW_ACTIONS,
+    MODALS,
+} from '../../../../constants'
+import {useArticlesActions} from '../../../../hooks/useArticlesActions'
 import {useSupportedLocales} from '../../../../providers/SupportedLocales'
 import {
     DroppableTableBodyRow,
@@ -159,9 +170,30 @@ export const CategoriesTableRow = ({
     ...props
 }: CategoriesTableRowProps): JSX.Element | null => {
     const [isOpen, setOpen] = useState(false)
-    const {articles, isLoading, hasMore, itemCount, fetchMore} =
-        useArticles(categoryId)
+    const [itemCount, setItemCount] = useState(0)
+    const {isLoading, fetchArticles, getArticleCount} = useArticlesActions()
+    const articles = useSelector(
+        categoryId !== null
+            ? getArticlesInCategory(categoryId)
+            : getUncategorizedArticles
+    )
     const hasArticles = useMemo(() => itemCount > 0, [itemCount])
+    const hasMore = useMemo(
+        () => articles.length < itemCount,
+        [articles, itemCount]
+    )
+    const prevArticles = usePrevious(articles)
+
+    const fetchMore = useCallback(async () => {
+        if (hasMore && !isLoading) {
+            const count = await fetchArticles(categoryId, {
+                page: Math.floor(articles.length / ARTICLES_PER_PAGE) + 1,
+                per_page: ARTICLES_PER_PAGE,
+            })
+
+            setItemCount(count)
+        }
+    }, [articles, categoryId, hasMore, isLoading, fetchArticles])
 
     const onLoadMore = (e: React.MouseEvent) => {
         e.preventDefault()
@@ -208,10 +240,48 @@ export const CategoriesTableRow = ({
     }
 
     useEffect(() => {
+        async function init() {
+            const count = await getArticleCount(categoryId)
+
+            setItemCount(count)
+        }
+
+        void init()
+    }, [])
+
+    useEffect(() => {
+        async function refetch() {
+            if (typeof prevArticles === 'undefined' || isLoading) return
+
+            // If articles length changed, refresh the list
+            if (prevArticles.length !== articles.length) {
+                // If an article was added, fetch all articles to make sure to
+                // display it; else, refetch as many articles as previously
+                const perPage =
+                    articles.length > prevArticles.length
+                        ? itemCount + 1
+                        : articles.length
+                const params = {
+                    page: 1,
+                    per_page: perPage,
+                }
+
+                const count = await fetchArticles(categoryId, params)
+
+                setItemCount(count)
+            }
+        }
+
+        void refetch()
+    }, [prevArticles, articles, categoryId, itemCount])
+
+    useEffect(() => {
+        // On category open, fetch articles if category has some and no articles
+        // are currently displayed
         if (isOpen && hasArticles && articles.length === 0) {
             void fetchMore()
         }
-    }, [isOpen])
+    }, [isOpen, hasArticles, articles])
 
     const id = `category-title-${categoryId ?? 'uncategorized'}`
     const caret = hasArticles ? (
@@ -261,7 +331,7 @@ export const CategoriesTableRow = ({
         </BodyCell>
     )
 
-    if (!shouldRenderRowWithoutArticles && articles.length === 0) {
+    if (!shouldRenderRowWithoutArticles && !hasArticles) {
         return null
     }
 

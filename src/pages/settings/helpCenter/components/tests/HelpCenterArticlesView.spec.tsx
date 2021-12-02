@@ -18,8 +18,11 @@ jest.mock('../../hooks/useHelpCenterApi', () => {
         useHelpCenterApi: () => ({
             isReady: true,
             client: {
+                listArticles: jest.fn().mockResolvedValue({
+                    data: {data: [], meta: {item_count: 0}},
+                }),
                 listArticleTranslations: jest.fn().mockResolvedValue({
-                    data: [],
+                    data: {data: [], meta: {item_count: 0}},
                 }),
                 listLocales: jest.fn().mockResolvedValue({
                     data: [

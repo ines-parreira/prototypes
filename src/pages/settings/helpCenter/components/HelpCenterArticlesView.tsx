@@ -641,10 +641,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         categoryId: number | null,
         articles: Article[]
     ): void => {
-        void articlesActions.updateArticlesPositions(
-            articles,
-            categoryId !== null ? categoryId : undefined
-        )
+        void articlesActions.updateArticlesPositions(articles, categoryId)
     }
 
     const handleOnDiscard = () => {
