@@ -22,7 +22,7 @@ describe('<PhoneIntegrationPreferences/>', () => {
                 function: PhoneFunction.Standard,
                 twilio: {
                     incoming_phone_number: {
-                        friendly_name: '(415) 111-2222',
+                        friendly_name: '+1 415-111-2222',
                     },
                 },
                 preferences: {

@@ -41,7 +41,7 @@ exports[`<PhoneIntegrationPreferences/> render() should render 1`] = `
           <small
             class="text-muted ml-2"
           >
-            (415) 111-2222
+            +1 415-111-2222
           </small>
         </li>
       </ol>
@@ -133,7 +133,7 @@ exports[`<PhoneIntegrationPreferences/> render() should render 1`] = `
                 id="phone-number"
                 readonly=""
                 type="text"
-                value="(415) 111-2222"
+                value="+1 415-111-2222"
               />
               <div
                 class="input-group-append"
@@ -314,7 +314,7 @@ exports[`<PhoneIntegrationPreferences/> render() should render with IVR integrat
           <small
             class="text-muted ml-2"
           >
-            (415) 111-2222
+            +1 415-111-2222
           </small>
         </li>
       </ol>
@@ -406,7 +406,7 @@ exports[`<PhoneIntegrationPreferences/> render() should render with IVR integrat
                 id="phone-number"
                 readonly=""
                 type="text"
-                value="(415) 111-2222"
+                value="+1 415-111-2222"
               />
               <div
                 class="input-group-append"

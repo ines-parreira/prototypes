@@ -72,7 +72,7 @@ exports[`<PhoneIntegrationList/> render() should render 1`] = `
               <span
                 class="text-faded ml-3"
               >
-                (415) 111-2222
+                +1 415-111-2222
               </span>
             </div>
           </a>
@@ -195,7 +195,7 @@ exports[`<PhoneIntegrationList/> render() should render with a warning message 1
               <span
                 class="text-faded ml-3"
               >
-                (415) 111-2222
+                +1 415-111-2222
               </span>
             </div>
           </a>
@@ -310,7 +310,7 @@ exports[`<PhoneIntegrationList/> render() should render with an error message an
               <span
                 class="text-faded ml-3"
               >
-                (415) 111-2222
+                +1 415-111-2222
               </span>
             </div>
           </a>

@@ -20,7 +20,7 @@ exports[`<PhoneIntegrationListItem/> render() should render 1`] = `
         <span
           class="text-faded ml-3"
         >
-          (415) 111-2222
+          +1 415-111-2222
         </span>
       </div>
     </a>
@@ -66,7 +66,7 @@ exports[`<PhoneIntegrationListItem/> render() should render with IVR badge 1`] =
         <span
           class="text-faded ml-3"
         >
-          (415) 111-2222
+          +1 415-111-2222
         </span>
       </div>
     </a>
