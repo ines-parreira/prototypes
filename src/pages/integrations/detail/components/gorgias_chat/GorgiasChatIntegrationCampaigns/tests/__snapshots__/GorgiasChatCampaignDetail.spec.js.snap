@@ -94,13 +94,6 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
       >
         Campaigns
       </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/1/self_service"
-      >
-        Self-service
-      </a>
     </nav>
     <div
       class="page-container container-fluid"
@@ -783,13 +776,6 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
         to="/app/settings/integrations/gorgias_chat/1/campaigns"
       >
         Campaigns
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/1/self_service"
-      >
-        Self-service
       </a>
     </nav>
     <div
@@ -1577,13 +1563,6 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
         to="/app/settings/integrations/gorgias_chat/1/campaigns"
       >
         Campaigns
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/1/self_service"
-      >
-        Self-service
       </a>
     </nav>
     <div

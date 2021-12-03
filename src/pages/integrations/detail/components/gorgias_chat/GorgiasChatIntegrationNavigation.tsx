@@ -15,6 +15,11 @@ export default class GorgiasChatIntegrationNavigation extends Component<Props> {
         const integrationId: number = integration.get('id')
         const baseURL = `/app/settings/integrations/${IntegrationType.GorgiasChat}/${integrationId}`
 
+        const shopName: string | undefined | null = integration.getIn([
+            'meta',
+            'shop_name',
+        ])
+
         return (
             <SecondaryNavbar>
                 <NavLink to={`${baseURL}/appearance`} exact>
@@ -32,9 +37,11 @@ export default class GorgiasChatIntegrationNavigation extends Component<Props> {
                 <NavLink to={`${baseURL}/campaigns`} exact>
                     Campaigns
                 </NavLink>
-                <NavLink to={`${baseURL}/self_service`} exact>
-                    Self-service
-                </NavLink>
+                {shopName ? (
+                    <NavLink to={`${baseURL}/self_service`} exact>
+                        Self-service
+                    </NavLink>
+                ) : null}
             </SecondaryNavbar>
         )
     }

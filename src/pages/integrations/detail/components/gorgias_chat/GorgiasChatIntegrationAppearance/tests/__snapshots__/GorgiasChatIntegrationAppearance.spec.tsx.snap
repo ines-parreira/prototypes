@@ -679,13 +679,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
       >
         Campaigns
       </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/2/self_service"
-      >
-        Self-service
-      </a>
     </nav>
     <div
       class="page-container container-fluid"
@@ -1254,13 +1247,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
       >
         Campaigns
       </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/2/self_service"
-      >
-        Self-service
-      </a>
     </nav>
     <div
       class="page-container container-fluid"
@@ -1827,13 +1813,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
         to="/app/settings/integrations/gorgias_chat/2/campaigns"
       >
         Campaigns
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/2/self_service"
-      >
-        Self-service
       </a>
     </nav>
     <div
@@ -2410,13 +2389,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
       >
         Campaigns
       </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/2/self_service"
-      >
-        Self-service
-      </a>
     </nav>
     <div
       class="page-container container-fluid"
@@ -2983,13 +2955,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
         to="/app/settings/integrations/gorgias_chat/2/campaigns"
       >
         Campaigns
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/2/self_service"
-      >
-        Self-service
       </a>
     </nav>
     <div

@@ -87,13 +87,6 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
       >
         Campaigns
       </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/118/self_service"
-      >
-        Self-service
-      </a>
     </nav>
     <div
       class="page-container container-fluid"
@@ -195,13 +188,6 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
         to="/app/settings/integrations/gorgias_chat/118/campaigns"
       >
         Campaigns
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/118/self_service"
-      >
-        Self-service
       </a>
     </nav>
     <div

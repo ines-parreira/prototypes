@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<GorgiasChatIntegrationSelfService/> render() should render the product update message 1`] = `
+exports[`<GorgiasChatIntegrationSelfService/> render() should render the self service tab 1`] = `
 <div
   class="full-width"
 >
@@ -89,47 +89,50 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the product
   <div
     class="page-container container-fluid"
   >
-    <div
-      class="alert alert-warning fade"
-      role="alert"
-    >
-      <span
-        aria-label="warning"
-        role="img"
-      >
-        ⚠️
-      </span>
-       
-      Product Update: the Self-service features have moved to
+    <h4>
+      Enable Self-service
+    </h4>
+    <p>
+      Enabling
        
       <a
         to="/app/settings/self-service"
       >
-        a new settings page
+        self-service
       </a>
+       
+      will let your customers track their orders, request a return or cancellation and report issues they might have with an order. It will then create a chat ticket for your team.
+    </p>
+    <div
+      class="d-flex my-4"
+    >
+      <span
+        id="toggle-button"
+      >
+        <label
+          class="switch toggle-switch disabled"
+        >
+          <input
+            checked=""
+            disabled=""
+            readonly=""
+            type="checkbox"
+          />
+          <div
+            class="slider"
+          />
+        </label>
+      </span>
+      <label
+        class="control-label ml-2"
+      >
+        <p
+          class="enable-self-service-label"
+        >
+          Enable self-service for this Help Center
+        </p>
+      </label>
     </div>
-    We're moving the Self-service settings outside of the chat integrations' settings page for better visibility and clarity. Access the Self-service settings by clicking the "Self-service" menu item in the settings sidebar. Self-service features will be specific to each connected Shopify store and available in different channels.
-    <br />
-    <br />
-    Read more about it
-     
-    <a
-      href="https://docs.gorgias.com/self-service/installing-and-using-the-self-service-chat-portal"
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      here
-    </a>
-     
-    and don't hesitate to reach-out for questions.
-    <br />
-    <br />
-    <button
-      class="btn btn-success"
-      type="button"
-    >
-      Go to the new Self-service page
-    </button>
   </div>
 </div>
 `;

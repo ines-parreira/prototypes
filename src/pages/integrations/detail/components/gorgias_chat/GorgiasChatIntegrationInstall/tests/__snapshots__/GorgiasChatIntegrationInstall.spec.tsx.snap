@@ -275,22 +275,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                   Campaigns
                 </a>
               </NavLink>
-              <NavLink
-                activeClassName="active"
-                className="link"
-                exact={true}
-                key=".5"
-                to="/app/settings/integrations/gorgias_chat/2/self_service"
-              >
-                <a
-                  activeClassName="active"
-                  className="link"
-                  exact={true}
-                  to="/app/settings/integrations/gorgias_chat/2/self_service"
-                >
-                  Self-service
-                </a>
-              </NavLink>
             </nav>
           </Navbar>
         </SecondaryNavbar>
@@ -1854,22 +1838,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                   to="/app/settings/integrations/gorgias_chat/2/campaigns"
                 >
                   Campaigns
-                </a>
-              </NavLink>
-              <NavLink
-                activeClassName="active"
-                className="link"
-                exact={true}
-                key=".5"
-                to="/app/settings/integrations/gorgias_chat/2/self_service"
-              >
-                <a
-                  activeClassName="active"
-                  className="link"
-                  exact={true}
-                  to="/app/settings/integrations/gorgias_chat/2/self_service"
-                >
-                  Self-service
                 </a>
               </NavLink>
             </nav>
