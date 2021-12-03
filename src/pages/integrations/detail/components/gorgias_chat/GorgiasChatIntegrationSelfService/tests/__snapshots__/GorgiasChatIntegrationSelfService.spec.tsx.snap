@@ -129,7 +129,7 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the self se
         <p
           class="enable-self-service-label"
         >
-          Enable self-service for this Help Center
+          Enable self-service for this chat
         </p>
       </label>
     </div>

@@ -106,9 +106,7 @@ describe('<GorgiasChatIntegrationSelfService/>', () => {
             )
             expect(container.firstChild).toMatchSnapshot()
 
-            fireEvent.click(
-                getByText('Enable self-service for this Help Center')
-            )
+            fireEvent.click(getByText('Enable self-service for this chat'))
 
             expect(updateOrCreateIntegration).toHaveBeenCalledWith(
                 fromJS({

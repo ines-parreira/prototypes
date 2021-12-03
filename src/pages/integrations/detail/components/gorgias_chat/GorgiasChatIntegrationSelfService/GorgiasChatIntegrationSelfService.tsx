@@ -184,7 +184,7 @@ export function GorgiasChatIntegrationSelfServiceComponent({
                                     : undefined
                             )}
                         >
-                            Enable self-service for this Help Center
+                            Enable self-service for this chat
                         </p>
                     </Label>
                 </div>
