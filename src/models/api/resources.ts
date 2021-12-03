@@ -2,6 +2,7 @@ import axios, {AxiosResponse} from 'axios'
 import rateLimit from 'axios-rate-limit'
 import {Store} from 'redux'
 
+import refreshIcon from '../../../img/icons/refresh.svg'
 import {notify} from '../../state/notifications/actions'
 import {NotificationStatus} from '../../state/notifications/types'
 import {StoreDispatch} from '../../state/types'
@@ -49,8 +50,11 @@ export function handleNewRelease(store: Store) {
                             window.location.reload()
                         },
                         allowHTML: true,
-                        message: `An update is available for Gorgias. Click <a>here</a> to reload the page and get the
-        latest improvements.`,
+                        message: `An update is available for Gorgias. Click here to reload the page and get the latest improvements.`,
+                        actionHTML: `<span class="d-inline-flex align-items-baseline">
+                                      <img src=${refreshIcon} class="align-self-center" style="margin-right: 8px"/>
+                                      <span class="text-primary">Reload page</span>
+                                     </span>`,
                     })
                 )
 

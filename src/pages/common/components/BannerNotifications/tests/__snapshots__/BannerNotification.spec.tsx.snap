@@ -2,51 +2,115 @@
 
 exports[`<BannerNotification/> rendering should render close icon when the notification is closable 1`] = `
 <div
-  class="banner-notification banner-notification--active banner-notification--success banner-notification--clickable"
+  class="bannerNotification success clickable"
 >
-  <span
-    class="banner-notification-message"
+  <div
+    class="messageContainer"
   >
-    foobar
-  </span>
-  <span
-    class="banner-notification-message__close"
-  >
-    <span>
-      <i
-        class="material-icons"
-      >
-        close
-      </i>
+    <span
+      class="messageText"
+    >
+      <span>
+        foobar
+      </span>
     </span>
+  </div>
+  <span
+    class="closeIconContainer"
+  >
+    <img
+      alt="close-icon"
+      class="closeIcon"
+      src="test-file-stub"
+    />
   </span>
+</div>
+`;
+
+exports[`<BannerNotification/> rendering should render custom HTML actions 1`] = `
+<div
+  class="bannerNotification success clickable"
+>
+  <div
+    class="messageContainer"
+  >
+    <span
+      class="messageText"
+    >
+      <span>
+        foobar
+      </span>
+      <span
+        class="messageAction"
+      >
+        <button>
+          Click me !
+        </button>
+      </span>
+    </span>
+  </div>
 </div>
 `;
 
 exports[`<BannerNotification/> rendering should render html message 1`] = `
 <div
-  class="banner-notification banner-notification--active banner-notification--success banner-notification--clickable"
+  class="bannerNotification success clickable"
 >
-  <span
-    class="banner-notification-message"
+  <div
+    class="messageContainer"
   >
-    <div
-      class="potatoes"
+    <span
+      class="messageText"
     >
-      patatas bravas
-    </div>
-  </span>
+      <span>
+        <div
+          class="potatoes"
+        >
+          patatas bravas
+        </div>
+      </span>
+    </span>
+  </div>
 </div>
 `;
 
 exports[`<BannerNotification/> rendering should render with default props 1`] = `
 <div
-  class="banner-notification banner-notification--active banner-notification--success banner-notification--clickable"
+  class="bannerNotification success clickable"
 >
-  <span
-    class="banner-notification-message"
+  <div
+    class="messageContainer"
   >
-    foobar
-  </span>
+    <span
+      class="messageText"
+    >
+      <span>
+        foobar
+      </span>
+    </span>
+  </div>
+</div>
+`;
+
+exports[`<BannerNotification/> rendering should render with icon 1`] = `
+<div
+  class="bannerNotification success clickable"
+>
+  <div
+    class="messageContainer"
+  >
+    <img
+      alt="icon"
+      class="icon"
+      src="test-file-stub"
+    />
+    <span
+      class="messageText"
+    >
+      <span>
+        foobar
+      </span>
+    </span>
+  </div>
 </div>
 `;

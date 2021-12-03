@@ -15,12 +15,15 @@ export type Notification = {
     closeOnNext?: boolean
     buttons?: NotificationButton[]
     allowHTML?: boolean
+    actionHTML?: string
     dismissible?: boolean
     style?: string
     type?: NotificationStatus
     onClick?: () => void
     noAutoDismiss?: boolean
     isTicketMessageFailedEvent?: boolean
+    showIcon?: boolean
+    closable?: boolean
 }
 
 export type NotificationButton = {

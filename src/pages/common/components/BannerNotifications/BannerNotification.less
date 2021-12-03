@@ -1,0 +1,119 @@
+@import '~css/new/colors';
+@import '~css/new/colorTokens';
+@import '~css/new/icons';
+
+@status: 'info', 'success', 'warning', 'error';
+
+:local {
+    .bannerNotification {
+        position: relative;
+        top: 0;
+        width: 100%;
+        transition: all 0.5s;
+        overflow: hidden;
+        z-index: 90;
+        min-height: 44px;
+
+        &.clickable {
+            cursor: pointer;
+        }
+    }
+
+    .messageContainer {
+        display: flex;
+        justify-content: center;
+        padding: 12px 20px;
+
+        &:not(:last-child) {
+            padding-right: 52px;
+        }
+    }
+
+    .icon {
+        vertical-align: text-bottom;
+        margin-right: 16px;
+    }
+
+    .messageText {
+        color: @classic-neutral-grey-6;
+        font-size: 14px;
+        line-height: 20px;
+        text-align: center;
+        letter-spacing: -0.01em;
+        margin-left: -27px;
+
+        > * {
+            margin-left: 27px;
+        }
+
+        > span {
+            display: inline-block;
+        }
+    }
+
+    .messageAction {
+        transition: opacity 0.3s;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+
+    .closeIconContainer {
+        position: absolute;
+        top: 0;
+        right: 20px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: opacity 0.3s;
+
+        &:hover {
+            opacity: 0.6;
+        }
+    }
+
+    .closeIcon {
+        width: 11px;
+        height: 11px;
+    }
+
+    /* Success */
+    @successBackgroundColor: @classic-feedback-success-0;
+    @successBorderColor: @classic-feedback-success-1;
+
+    /* Error */
+    @errorBackgroundColor: @classic-feedback-error-0;
+    @errorBorderColor: @classic-feedback-error-1;
+
+    /* Info */
+    @infoBackgroundColor: @classic-main-primary-0;
+    @infoBorderColor: @classic-main-primary-1;
+
+    /* Warning */
+    @warningBackgroundColor: @classic-feedback-warning-0;
+    @warningBorderColor: @classic-feedback-warning-1;
+
+    .color-variant(@i:1) when (@i <= length(@status)) {
+        @statusValue: extract(@status, @i);
+        @backgroundColor: '@{statusValue}BackgroundColor';
+        @borderColor: '@{statusValue}BorderColor';
+        @class: ~'@{statusValue}';
+
+        .@{class} {
+            background: @@backgroundColor;
+            border-bottom: 1px solid @@borderColor;
+
+            &:focus,
+            &:hover {
+                background: @@backgroundColor;
+                background: lighten(@@backgroundColor, 0.3%);
+            }
+        }
+
+        .color-variant(@i + 1);
+    }
+
+    .color-variant();
+}

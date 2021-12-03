@@ -1,19 +1,37 @@
-import React, {ReactNode} from 'react'
+import React from 'react'
 import classNames from 'classnames'
 
-import {NotificationStatus} from '../../../../state/notifications/types'
+import {
+    NotificationStatus,
+    Notification,
+} from '../../../../state/notifications/types'
+
+import infoIcon from '../../../../../img/icons/info.svg'
+import successIcon from '../../../../../img/icons/success.svg'
+import warningIcon from '../../../../../img/icons/warning2.svg'
+import errorIcon from '../../../../../img/icons/error.svg'
+import closeIcon from '../../../../../img/icons/close.svg'
+
+import css from './BannerNotification.less'
+
+const bannerIcon = {
+    [NotificationStatus.Info]: infoIcon,
+    [NotificationStatus.Success]: successIcon,
+    [NotificationStatus.Warning]: warningIcon,
+    [NotificationStatus.Error]: errorIcon,
+}
 
 type Props = {
-    allowHTML: boolean
-    closable: boolean
-    dismissible: boolean
-    hide: (value: string | number) => void
+    hide?: (value: string | number) => void
     id: string | number
-    message: string | ReactNode
-    onClick?: () => void
+    actionHTML?: string
     onClose?: () => void
-    status: NotificationStatus
-}
+    message: string
+    status?: Exclude<NotificationStatus, NotificationStatus.Loading>
+} & Pick<
+    Notification,
+    'allowHTML' | 'closable' | 'dismissible' | 'onClick' | 'showIcon'
+>
 
 const BannerNotification = ({
     allowHTML = true,
@@ -22,55 +40,69 @@ const BannerNotification = ({
     hide,
     id,
     message,
+    actionHTML,
     onClick,
     onClose,
-    status,
+    status = NotificationStatus.Info,
+    showIcon = false,
 }: Props) => {
     const handleClick = () => {
         onClick?.()
 
         if (dismissible) {
-            hide(id)
+            hide?.(id)
         }
     }
 
     const handleClose = () => {
-        hide(id)
+        hide?.(id)
         onClose?.()
     }
 
     return (
         <div
-            className={classNames(
-                'banner-notification',
-                'banner-notification--active',
-                `banner-notification--${status}`,
-                {
-                    'banner-notification--clickable': onClick || dismissible,
-                }
-            )}
+            className={classNames(css.bannerNotification, css[status], {
+                [css.clickable]: onClick || dismissible,
+            })}
         >
-            {allowHTML ? (
-                <span
-                    onClick={handleClick}
-                    className="banner-notification-message"
-                    dangerouslySetInnerHTML={{__html: message as string}}
-                ></span>
-            ) : (
-                <span
-                    onClick={handleClick}
-                    className="banner-notification-message"
-                >
-                    {message}
+            <div className={css.messageContainer} onClick={handleClick}>
+                {showIcon && (
+                    <img
+                        src={bannerIcon[status]}
+                        alt="icon"
+                        className={css.icon}
+                    />
+                )}
+                <span className={css.messageText}>
+                    {allowHTML ? (
+                        <span
+                            dangerouslySetInnerHTML={{
+                                __html: message,
+                            }}
+                        />
+                    ) : (
+                        <span>{message}</span>
+                    )}
+                    {actionHTML && (
+                        <>
+                            <span
+                                dangerouslySetInnerHTML={{
+                                    __html: actionHTML,
+                                }}
+                                className={css.messageAction}
+                            />
+                        </>
+                    )}
                 </span>
-            )}
+            </div>
             {closable && (
-                <span className="banner-notification-message__close">
-                    <span>
-                        <i className="material-icons" onClick={handleClose}>
-                            close
-                        </i>
-                    </span>
+                <span className={css.closeIconContainer}>
+                    <img
+                        src={closeIcon}
+                        alt="close-icon"
+                        onClick={handleClose}
+                        className={css.closeIcon}
+                    />
                 </span>
             )}
         </div>

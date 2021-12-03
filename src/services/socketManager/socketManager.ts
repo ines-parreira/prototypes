@@ -10,6 +10,7 @@ import {store} from '../../init'
 import {devLog} from '../../utils'
 import {NotificationStatus} from '../../state/notifications/types'
 import {StoreDispatch} from '../../state/types'
+import refreshIcon from '../../../img/icons/refresh.svg'
 
 import {BROADCAST_CHANNEL_NAME} from './constants.js'
 import {
@@ -136,8 +137,12 @@ export class SocketManager {
                 style: 'banner',
                 status: NotificationStatus.Error,
                 dismissible: false,
-                message:
-                    'You are not connected to live ticket updates. <u>Please reload the page</u>',
+                message: 'You are not connected to live ticket updates.',
+                actionHTML: `<span class="d-inline-flex align-items-baseline">
+                              <img src=${refreshIcon} class="align-self-center" style="margin-right: 8px"/>
+                              <span class="text-primary">Reload page</span>
+                             </span>`,
+                showIcon: true,
                 onClick: () => window.location.reload(false),
                 allowHTML: true,
             })

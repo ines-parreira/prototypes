@@ -128,8 +128,9 @@ export const notifyDeprecatedTld = (url: string, reduxStore: Store) => {
                 style: 'banner',
                 status: NotificationStatus.Warning,
                 dismissible: false,
+                allowHTML: true,
                 message:
-                    `We\'re now a dot-com 🎉 please update your helpdesk links and bookmarks to ${updatedUrl}. ` +
+                    `We\'re now a dot-com 🎉 please update your helpdesk links and bookmarks to <span class="text-primary">${updatedUrl}</span>. ` +
                     'This message will be hidden after you login there.',
                 onClick: () => {
                     window.location.href = updatedUrl
@@ -153,7 +154,7 @@ export const notifyAccountNotVerified = (reduxStore: Store) => {
                 status: NotificationStatus.Warning,
                 dismissible: false,
                 message:
-                    'Your email address is not verified. <u>Click here to resend the verification email</u>',
+                    'Your email address is not verified. <span class="text-primary">Click here to resend the verification email.</span>',
                 onClick: () => resendVerificationEmail()(reduxStore.dispatch),
             }) as any
         )

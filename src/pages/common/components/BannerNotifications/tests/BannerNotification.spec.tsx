@@ -20,11 +20,30 @@ describe('<BannerNotification/>', () => {
             expect(container.firstChild).toMatchSnapshot()
         })
 
+        it('should render with icon', () => {
+            const {container} = render(
+                <BannerNotification {...minProps} showIcon />
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
         it('should render html message', () => {
             const text = 'patatas bravas'
             const message = `<div class="potatoes">${text}</div>`
             const {container} = render(
                 <BannerNotification {...minProps} allowHTML message={message} />
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render custom HTML actions', () => {
+            const {container} = render(
+                <BannerNotification
+                    {...minProps}
+                    actionHTML={`<button>Click me !</button>`}
+                />
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -43,11 +62,11 @@ describe('<BannerNotification/>', () => {
         it('should close the notification', () => {
             const onClose = jest.fn()
 
-            const {getByText} = render(
+            const {getByAltText} = render(
                 <BannerNotification {...minProps} onClose={onClose} closable />
             )
 
-            fireEvent.click(getByText('close'))
+            fireEvent.click(getByAltText('close-icon'))
             expect(onClose).toHaveBeenCalledWith()
         })
 

@@ -247,9 +247,9 @@ export class StatusPageManager {
                 } in our ${Array.from(notification.groupNames).join(
                     ' & '
                 )} affecting ${components}.
-                Find out more on our <u><a href="${
+                Find out more on our <a href="${
                     data.page.url
-                }" target="_blank" rel="noreferrer noopener">status page</a></u>.`
+                }" target="_blank" rel="noreferrer noopener">status page</a>.`
 
                 this.store.dispatch(
                     notify({
@@ -339,9 +339,9 @@ ${Array.from(notification.componentNames).join(
     ', '
 )} ${startText} <em>${scheduledFor.fromNow()}</em>.
 
-Find out more on our <u><a href="${
+Find out more on our <a href="${
                 data.page.url
-            }" target="_blank" rel="noreferrer noopener">status page</a></u>.`
+            }" target="_blank" rel="noreferrer noopener">status page</a>.`
 
             this.store.dispatch(
                 notify({
@@ -354,6 +354,7 @@ Find out more on our <u><a href="${
                     message: message,
                     allowHTML: true,
                     dismissible: false,
+                    showIcon: true,
                 }) as any
             )
 
