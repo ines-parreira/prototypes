@@ -7,7 +7,7 @@ exports[`<RuleSettingsForm /> rendering should render a filled form when rule id
   class="full-width"
 >
   <div
-    class="page-header pageHeader breadcrumb"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -19,9 +19,11 @@ exports[`<RuleSettingsForm /> rendering should render a filled form when rule id
         <li
           class="breadcrumb-item"
         >
-          <span>
+          <a
+            to="/app/settings/rules"
+          >
             Rules
-          </span>
+          </a>
         </li>
         <li
           aria-current="page"
@@ -57,7 +59,7 @@ exports[`<RuleSettingsForm /> rendering should render a loader when rule id befo
   class="full-width"
 >
   <div
-    class="page-header pageHeader breadcrumb"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -69,9 +71,11 @@ exports[`<RuleSettingsForm /> rendering should render a loader when rule id befo
         <li
           class="breadcrumb-item"
         >
-          <span>
+          <a
+            to="/app/settings/rules"
+          >
             Rules
-          </span>
+          </a>
         </li>
         <li
           aria-current="page"
@@ -107,7 +111,7 @@ exports[`<RuleSettingsForm /> rendering should render an empty form when no rule
   class="full-width"
 >
   <div
-    class="page-header pageHeader breadcrumb"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -119,9 +123,11 @@ exports[`<RuleSettingsForm /> rendering should render an empty form when no rule
         <li
           class="breadcrumb-item"
         >
-          <span>
+          <a
+            to="/app/settings/rules"
+          >
             Rules
-          </span>
+          </a>
         </li>
         <li
           aria-current="page"

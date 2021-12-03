@@ -1,6 +1,6 @@
 import React, {useMemo, useState, useEffect, useCallback} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {RouteComponentProps, withRouter} from 'react-router-dom'
+import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import {useAsyncFn} from 'react-use'
 import {
     Breadcrumb,
@@ -348,17 +348,10 @@ export function RulesSettingsFormContainer({
     return (
         <div className="full-width">
             <PageHeader
-                className={css.breadcrumb}
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <span
-                                onClick={() =>
-                                    history.push('/app/settings/rules')
-                                }
-                            >
-                                Rules
-                            </span>
+                            <Link to="/app/settings/rules">Rules</Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem active>
                             {ruleId ? title : 'Add rule'}
