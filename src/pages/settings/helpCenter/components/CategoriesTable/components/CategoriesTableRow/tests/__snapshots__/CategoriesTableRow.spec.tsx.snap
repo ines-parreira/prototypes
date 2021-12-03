@@ -1,0 +1,194 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CategoriesTableRow /> should render "Uncategorized articles" row when shouldRenderRowWithoutArticles is false but there are some uncategorized articles 1`] = `
+<div>
+  <tr
+    class="row row"
+  >
+    <td>
+      <div
+        class="cellContent"
+      />
+    </td>
+    <td
+      class="cell"
+    >
+      <div
+        class="cellContent"
+      >
+        <span
+          class="caret material-icons"
+        >
+          arrow_right
+        </span>
+        <span
+          class=""
+          id="category-title-uncategorized"
+        >
+          Uncategorized articles
+        </span>
+        <span
+          class="count badge badge-light badge-pill"
+        >
+          1
+        </span>
+      </div>
+    </td>
+    <td>
+      <div
+        class="cellContent"
+      />
+    </td>
+    <td>
+      <div
+        class="cellContent"
+        style="width: 120px;"
+      />
+    </td>
+  </tr>
+</div>
+`;
+
+exports[`<CategoriesTableRow /> should render category row loading then idle: Idle state 1`] = `
+<div>
+  <tr
+    class="row droppable-row"
+    data-handler-id="T0"
+    style="opacity: 1;"
+  >
+    <td>
+      <div
+        class="cellContent"
+      >
+        <div
+          class="drag-handler material-icons"
+          draggable="true"
+        >
+          drag_indicator
+        </div>
+      </div>
+    </td>
+    <td
+      class="cell"
+    >
+      <div
+        class="cellContent no-click"
+      >
+        <span
+          class="caret-placeholder"
+        />
+        <span
+          class=""
+          id="category-title-1"
+        >
+          Orders
+        </span>
+        <span
+          class="count badge badge-light badge-pill"
+        >
+          No Published Articles
+        </span>
+      </div>
+    </td>
+    <td>
+      <div
+        class="cellContent no-click"
+      />
+    </td>
+    <td>
+      <div
+        class="cellContent actions no-click"
+        style="width: 120px;"
+      >
+        <div
+          class="action-list"
+        >
+          <button
+            class="action material-icons"
+            data-testid="categorySettings"
+            id="categorySettings-1"
+          >
+            settings
+          </button>
+        </div>
+      </div>
+    </td>
+  </tr>
+</div>
+`;
+
+exports[`<CategoriesTableRow /> should render category row loading then idle: Loading state 1`] = `
+<div>
+  <tr
+    class="row droppable-row"
+    data-handler-id="T0"
+    style="opacity: 1;"
+  >
+    <td>
+      <div
+        class="cellContent"
+      >
+        <div
+          class="drag-handler material-icons"
+          draggable="true"
+        >
+          drag_indicator
+        </div>
+      </div>
+    </td>
+    <td
+      class="cell"
+    >
+      <div
+        class="cellContent no-click"
+      >
+        <span
+          class="caret-placeholder"
+        />
+        <span
+          class=""
+          id="category-title-1"
+        >
+          Orders
+        </span>
+        <div
+          class="spinner-border-sm spinner-border text-secondary"
+          role="status"
+          style="margin-left: 8px;"
+        >
+          <span
+            class="sr-only"
+          >
+            Loading...
+          </span>
+        </div>
+      </div>
+    </td>
+    <td>
+      <div
+        class="cellContent no-click"
+      />
+    </td>
+    <td>
+      <div
+        class="cellContent actions no-click"
+        style="width: 120px;"
+      >
+        <div
+          class="action-list"
+        >
+          <button
+            class="action material-icons"
+            data-testid="categorySettings"
+            id="categorySettings-1"
+          >
+            settings
+          </button>
+        </div>
+      </div>
+    </td>
+  </tr>
+</div>
+`;
+
+exports[`<CategoriesTableRow /> should render null if shouldRenderRowWithoutArticles is false and there are no articles 1`] = `<div />`;

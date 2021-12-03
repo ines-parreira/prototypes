@@ -186,12 +186,12 @@ export const CategoriesTableRow = ({
 
     const fetchMore = useCallback(async () => {
         if (hasMore && !isLoading) {
-            const count = await fetchArticles(categoryId, {
+            const {meta} = await fetchArticles(categoryId, {
                 page: Math.floor(articles.length / ARTICLES_PER_PAGE) + 1,
                 per_page: ARTICLES_PER_PAGE,
             })
 
-            setItemCount(count)
+            setItemCount(meta.item_count)
         }
     }, [articles, categoryId, hasMore, isLoading, fetchArticles])
 
@@ -266,9 +266,9 @@ export const CategoriesTableRow = ({
                     per_page: perPage,
                 }
 
-                const count = await fetchArticles(categoryId, params)
+                const {meta} = await fetchArticles(categoryId, params)
 
-                setItemCount(count)
+                setItemCount(meta.item_count)
             }
         }
 

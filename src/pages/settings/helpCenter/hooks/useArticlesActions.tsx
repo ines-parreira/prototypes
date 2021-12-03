@@ -63,92 +63,96 @@ export const useArticlesActions = () => {
     const viewLanguage = useSelector(getViewLanguage)
     const [isLoading, setIsLoading] = useState(false)
 
-    const fetchArticles = async (
-        categoryId: number | null,
-        params?: {page: number; per_page: number}
-    ) => {
-        if (!client) throw new Error('HTTP client not initialized!')
-
-        setIsLoading(true)
-
-        try {
-            const {
-                data: {data: articles, meta},
-            } = await (categoryId !== null
-                ? client.listCategoryArticles({
-                      help_center_id: helpCenterId,
-                      category_id: categoryId,
-                      order_by: 'position',
-                      ...params,
-                  })
-                : client.listArticles({
-                      help_center_id: helpCenterId,
-                      has_category: false,
-                      order_by: 'position',
-                      ...params,
-                  }))
-
-            const {data: positions} =
-                categoryId !== null
-                    ? await client.getCategoryArticlesPositions({
-                          help_center_id: helpCenterId,
-                          category_id: categoryId,
-                      })
-                    : await client.getUncategorizedArticlesPositions({
-                          help_center_id: helpCenterId,
-                      })
-
-            const payload = articles.map((article) =>
-                createArticleFromDto(
-                    article,
-                    positions.findIndex((articleId) => articleId === article.id)
-                )
-            )
-
-            dispatch(saveArticles(payload))
-
-            setIsLoading(false)
-
-            return meta.item_count
-        } catch (err) {
-            setIsLoading(false)
-
-            throw err
-        }
-    }
-
-    const getArticleCount = async (categoryId: number | null) => {
-        if (!client) throw new Error('HTTP client not initialized!')
-
-        try {
-            const {
-                data: {meta},
-            } = await (categoryId !== null
-                ? client.listCategoryArticles({
-                      help_center_id: helpCenterId,
-                      category_id: categoryId,
-                      page: 1,
-                      per_page: 1,
-                  })
-                : client.listArticles({
-                      help_center_id: helpCenterId,
-                      has_category: false,
-                      page: 1,
-                      per_page: 1,
-                  }))
-
-            return meta.item_count
-        } catch (err) {
-            setIsLoading(false)
-
-            throw err
-        }
-    }
-
     return {
         isLoading,
-        fetchArticles,
-        getArticleCount,
+
+        fetchArticles: async (
+            categoryId: number | null,
+            params?: {page: number; per_page: number}
+        ) => {
+            if (!client) throw new Error('HTTP client not initialized!')
+
+            setIsLoading(true)
+
+            try {
+                const {
+                    data: {data: articles, meta},
+                } = await (categoryId !== null
+                    ? client.listCategoryArticles({
+                          help_center_id: helpCenterId,
+                          category_id: categoryId,
+                          order_by: 'position',
+                          ...params,
+                      })
+                    : client.listArticles({
+                          help_center_id: helpCenterId,
+                          has_category: false,
+                          order_by: 'position',
+                          ...params,
+                      }))
+
+                const {data: positions} =
+                    categoryId !== null
+                        ? await client.getCategoryArticlesPositions({
+                              help_center_id: helpCenterId,
+                              category_id: categoryId,
+                          })
+                        : await client.getUncategorizedArticlesPositions({
+                              help_center_id: helpCenterId,
+                          })
+
+                const payload = articles.map((article) =>
+                    createArticleFromDto(
+                        article,
+                        positions.findIndex(
+                            (articleId) => articleId === article.id
+                        )
+                    )
+                )
+
+                dispatch(saveArticles(payload))
+
+                setIsLoading(false)
+
+                return {articles, meta, positions}
+            } catch (err) {
+                setIsLoading(false)
+
+                throw err
+            }
+        },
+
+        getArticleCount: async (categoryId: number | null) => {
+            if (!client) throw new Error('HTTP client not initialized!')
+
+            setIsLoading(true)
+
+            try {
+                const {
+                    data: {meta},
+                } = await (categoryId !== null
+                    ? client.listCategoryArticles({
+                          help_center_id: helpCenterId,
+                          category_id: categoryId,
+                          page: 1,
+                          per_page: 1,
+                      })
+                    : client.listArticles({
+                          help_center_id: helpCenterId,
+                          has_category: false,
+                          page: 1,
+                          per_page: 1,
+                      }))
+
+                setIsLoading(false)
+
+                return meta.item_count
+            } catch (err) {
+                setIsLoading(false)
+
+                throw err
+            }
+        },
 
         async createArticle(
             translation: CreateArticleTranslationDto,

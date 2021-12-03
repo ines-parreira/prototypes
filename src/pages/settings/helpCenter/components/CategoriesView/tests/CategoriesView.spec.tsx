@@ -9,9 +9,9 @@ import thunk from 'redux-thunk'
 
 import {renderWithRouter} from '../../../../../../utils/testing'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
-import {getSingleHelpCenterResponseFixture as helpCenterMock} from '../../../fixtures/getHelpCentersResponse.fixture'
-import {getSingleArticleEnglish as articleMock} from '../../../fixtures/getArticlesResponse.fixture'
-import {getSingleCategoryEnglish as categoryMock} from '../../../fixtures/getCategoriesResponse.fixtures'
+import {getSingleHelpCenterResponseFixture} from '../../../fixtures/getHelpCentersResponse.fixture'
+import {getSingleArticleEnglish} from '../../../fixtures/getArticlesResponse.fixture'
+import {getSingleCategoryEnglish} from '../../../fixtures/getCategoriesResponse.fixtures'
 import {useHelpCenterApi} from '../../../hooks/useHelpCenterApi'
 
 import {CategoriesViews} from '../CategoriesView'
@@ -60,7 +60,7 @@ describe('<CategoriesViews />', () => {
         const initialState: Partial<RootState> = {
             entities: {
                 helpCenters: {
-                    '1': helpCenterMock,
+                    '1': getSingleHelpCenterResponseFixture,
                 },
             } as any,
             helpCenter: {
@@ -80,7 +80,7 @@ describe('<CategoriesViews />', () => {
         renderWithRouter(
             <Provider store={mockedStore(initialState)}>
                 <CategoriesViews
-                    helpCenter={helpCenterMock}
+                    helpCenter={getSingleHelpCenterResponseFixture}
                     renderArticleList={() => <div />}
                     createArticle={jest.fn()}
                     createCategory={jest.fn()}
@@ -97,7 +97,7 @@ describe('<CategoriesViews />', () => {
         const initialState: Partial<RootState> = {
             entities: {
                 helpCenters: {
-                    '1': helpCenterMock,
+                    '1': getSingleHelpCenterResponseFixture,
                 },
             } as any,
             helpCenter: {
@@ -106,7 +106,7 @@ describe('<CategoriesViews />', () => {
                 },
                 categories: {
                     categoriesById: {
-                        1: categoryMock,
+                        1: getSingleCategoryEnglish,
                     },
                 },
                 ui: {
@@ -118,7 +118,7 @@ describe('<CategoriesViews />', () => {
 
         mockedListArticles.mockResolvedValue({
             data: {
-                data: [articleMock],
+                data: [getSingleArticleEnglish],
                 object: 'list',
                 meta: {
                     page: 1,
@@ -135,7 +135,7 @@ describe('<CategoriesViews />', () => {
             <Provider store={mockedStore(initialState)}>
                 <DndProvider backend={HTML5Backend}>
                     <CategoriesViews
-                        helpCenter={helpCenterMock}
+                        helpCenter={getSingleHelpCenterResponseFixture}
                         renderArticleList={() => <div />}
                         createArticle={jest.fn()}
                         createCategory={jest.fn()}
@@ -151,7 +151,7 @@ describe('<CategoriesViews />', () => {
         const initialState: Partial<RootState> = {
             entities: {
                 helpCenters: {
-                    '1': helpCenterMock,
+                    '1': getSingleHelpCenterResponseFixture,
                 },
             } as any,
             helpCenter: {
@@ -160,7 +160,7 @@ describe('<CategoriesViews />', () => {
                 },
                 categories: {
                     categoriesById: {
-                        1: categoryMock,
+                        1: getSingleCategoryEnglish,
                     },
                 },
                 ui: {
@@ -174,7 +174,7 @@ describe('<CategoriesViews />', () => {
             <Provider store={mockedStore(initialState)}>
                 <DndProvider backend={HTML5Backend}>
                     <CategoriesViews
-                        helpCenter={helpCenterMock}
+                        helpCenter={getSingleHelpCenterResponseFixture}
                         renderArticleList={() => <div />}
                         createArticle={jest.fn()}
                         createCategory={jest.fn()}

@@ -105,27 +105,27 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
 }
 
 export const getSingleCategoryEnglish: Category = {
-    created_datetime: '2021-06-01T09:46:30.044Z',
-    updated_datetime: '2021-06-01T09:46:30.044Z',
-    deleted_datetime: null,
     id: 1,
-    position: 0,
     help_center_id: 1,
     available_locales: ['en-US'],
     articles: [],
+    position: 0,
+    created_datetime: '2021-06-01T09:46:30.044Z',
+    updated_datetime: '2021-06-01T09:46:30.044Z',
+    deleted_datetime: null,
     translation: {
-        created_datetime: '2021-06-01T09:46:30.044Z',
-        updated_datetime: '2021-06-01T09:46:30.044Z',
-        deleted_datetime: null,
+        category_id: 1,
+        locale: 'en-US',
         title: 'Orders',
         description:
             'the arrangement or disposition of people or things in relation to each other according to a particular sequence, pattern, or method.',
         slug: 'orders',
-        category_id: 1,
-        locale: 'en-US',
         seo_meta: {
             title: null,
             description: null,
         },
+        created_datetime: '2021-06-01T09:46:30.044Z',
+        updated_datetime: '2021-06-01T09:46:30.044Z',
+        deleted_datetime: null,
     },
 }

@@ -21,8 +21,8 @@ export type RowEventListeners = {
 type DroppableTableBodyRowProps = RowEventListeners & {
     dragItem: DragItem
     children: React.ReactNode
+    onDragStart: () => void
     className?: string
-    onDragStart?: () => void
 }
 
 type DragItem = DragItemRequired & {
@@ -32,11 +32,11 @@ type DragItem = DragItemRequired & {
 export const DroppableTableBodyRow = ({
     dragItem,
     children,
-    className,
+    onDragStart,
     onRowClick,
     onMoveEntity,
     onDropEntity,
-    onDragStart,
+    className,
 }: DroppableTableBodyRowProps): JSX.Element => {
     const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
         dragItem,
@@ -46,7 +46,7 @@ export const DroppableTableBodyRow = ({
 
     useEffect(() => {
         if (isDragging) {
-            onDragStart?.()
+            onDragStart()
         }
     }, [isDragging])
 
