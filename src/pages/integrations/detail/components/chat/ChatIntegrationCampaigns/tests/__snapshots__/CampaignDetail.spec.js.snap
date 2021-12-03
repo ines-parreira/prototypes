@@ -6,7 +6,7 @@ exports[`CampaignDetail component should display default value when it's a new c
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -678,7 +678,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -1454,7 +1454,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"

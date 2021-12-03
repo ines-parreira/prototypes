@@ -95,7 +95,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header"
+          className="page-header pageHeader"
         >
           <Breadcrumb
             aria-label="breadcrumb"
@@ -282,12 +282,12 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
         </SecondaryNavbar>
       </ChatIntegrationNavigation>
       <Container
-        className="page-container"
+        className="pageContainer"
         fluid={true}
         tag="div"
       >
         <div
-          className="page-container container-fluid"
+          className="pageContainer container-fluid"
         >
           <Row
             tag="div"

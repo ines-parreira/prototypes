@@ -39,7 +39,7 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for a deac
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -139,7 +139,7 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -292,7 +292,7 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -432,7 +432,7 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to create 
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -585,7 +585,7 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to update 
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >

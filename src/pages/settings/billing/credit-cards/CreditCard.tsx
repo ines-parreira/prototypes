@@ -52,6 +52,7 @@ import {BillingContact, CreditCard} from '../../../../state/billing/types'
 import RecurringPrices from '../plans/RecurringPrices'
 import BillingAddressInputs from '../common/BillingAddressInputs'
 import {UPDATE_BILLING_CONTACT_ERROR} from '../../../../state/billing/constants'
+import settingsCss from '../../settings.less'
 
 import {
     creditCardCVCNormalizer,
@@ -404,10 +405,7 @@ export class CreditCardContainer extends Component<Props, State> {
                     }
                 />
 
-                <Container
-                    fluid
-                    className={classnames('page-container', css.container)}
-                >
+                <Container fluid className={settingsCss.pageContainer}>
                     <Row>
                         <Col className={css.paymentInformationColumn} sm={7}>
                             {accountHasLegacyPlan && (

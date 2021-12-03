@@ -22,7 +22,6 @@ import produce from 'immer'
 import PageHeader from '../../../../common/components/PageHeader'
 import InputField from '../../../../common/forms/InputField'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
-
 import {
     ReportIssueRulesLogic,
     SelfServiceReportIssueCase,
@@ -30,16 +29,13 @@ import {
 import {useConfigurationData} from '../hooks'
 import {SelectableOption} from '../../../../common/forms/SelectField/types'
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
-
 import {updateSelfServiceConfiguration} from '../../../../../models/selfServiceConfiguration/resources'
-
 import {selfServiceConfigurationUpdated} from '../../../../../state/entities/selfServiceConfigurations/actions'
 import {notify} from '../../../../../state/notifications/actions'
-
 import {NotificationStatus} from '../../../../../state/notifications/types'
+import settingsCss from '../../../settings.less'
 
 import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from './constants'
-
 import Reasons from './components/Reasons'
 import Conditions from './components/Conditions'
 import Preview from './components/Preview'
@@ -286,7 +282,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
                 }
             />
 
-            <Container fluid className="page-container">
+            <Container fluid className={settingsCss.pageContainer}>
                 <Row>
                     <Col>
                         <Form onSubmit={handleSubmit} className={css.form}>

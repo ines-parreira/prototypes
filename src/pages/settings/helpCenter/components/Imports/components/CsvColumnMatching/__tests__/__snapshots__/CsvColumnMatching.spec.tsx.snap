@@ -2,7 +2,7 @@
 
 exports[`<CsvColumnMatching /> renders initial mappings with default help center locale 1`] = `
 <div
-  class="page-container container-fluid"
+  class="pageContainer container-fluid"
 >
   <h3>
     Column matching

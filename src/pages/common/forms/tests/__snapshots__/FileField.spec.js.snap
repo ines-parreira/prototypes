@@ -66,7 +66,7 @@ exports[`<FileField/> render() should not render preview 1`] = `
         tag="label"
       >
         <span>
-          Select a file...
+          Select a File...
         </span>
         <Input
           className="input"
@@ -109,7 +109,7 @@ exports[`<FileField/> render() should render a basic file input 1`] = `
         tag="label"
       >
         <span>
-          Select a file...
+          Select a File...
         </span>
         <Input
           className="input"
@@ -151,7 +151,7 @@ exports[`<FileField/> render() should render preview 1`] = `
         tag="label"
       >
         <span>
-          Select a file...
+          Select a File...
         </span>
         <Input
           className="input"

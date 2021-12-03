@@ -25,11 +25,11 @@ import PageHeader from '../../../common/components/PageHeader'
 import InputField from '../../../common/forms/InputField.js'
 import Loader from '../../../common/components/Loader/Loader'
 import Tooltip from '../../../common/components/Tooltip'
+import css from '../../settings.less'
 
 import {ImportStatus} from './types'
 import {getImportCompletionDate} from './utils'
 import './ImportZendeskDetail.less'
-
 import ImportStatusAlert from './ImportStatusAlert'
 
 export const ImportZendeskDetail = (
@@ -111,7 +111,7 @@ export const ImportZendeskDetail = (
                     </Breadcrumb>
                 }
             />
-            <Container fluid className="page-container">
+            <Container fluid className={css.pageContainer}>
                 <div className="row mb-5">
                     <div className="col-sm-12 col-md-7 col-lg-4">
                         <ImportStatusAlert integrationMeta={integrationMeta} />

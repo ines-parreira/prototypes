@@ -5,7 +5,6 @@ import {Link} from 'react-router-dom'
 import {fromJS, Map} from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 import _omitBy from 'lodash/omitBy'
-
 import {Breadcrumb, BreadcrumbItem, Button, Container, Form} from 'reactstrap'
 
 import {
@@ -13,11 +12,11 @@ import {
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     getAutoResponderReplyOptions,
 } from '../../../../../config/integrations/index'
-
 import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
 import PageHeader from '../../../../common/components/PageHeader'
 import ToggleButton from '../../../../common/components/ToggleButton'
 import RadioField from '../../../../common/forms/RadioField'
+import css from '../../../../settings/settings.less'
 
 import SmoochIntegrationNavigation from './SmoochIntegrationNavigation'
 
@@ -141,7 +140,7 @@ export class SmoochIntegrationPreferences extends React.Component<
 
                 <SmoochIntegrationNavigation integration={integration} />
 
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <Form onSubmit={this._submitPreferences}>
                         <div className="mb-4">
                             <h4>Auto-responder</h4>

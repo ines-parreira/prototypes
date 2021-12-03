@@ -5,6 +5,7 @@ import classnames from 'classnames'
 
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
 import PageHeader from '../../../../common/components/PageHeader'
+import settingsCss from '../../../../settings/settings.less'
 import {
     PhoneIntegration,
     VoiceMessage,
@@ -66,7 +67,7 @@ export function PhoneIntegrationGreetingMessage({
             />
 
             <PhoneIntegrationNavigation integration={fromJS(integration)} />
-            <Container fluid className="page-container">
+            <Container fluid className={settingsCss.pageContainer}>
                 <h4 className="mb-3">Set greeting message</h4>
                 <Row>
                     <Col className="mb-4">

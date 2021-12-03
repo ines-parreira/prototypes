@@ -10,6 +10,7 @@ import PageHeader from '../../common/components/PageHeader.tsx'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
 import history from '../../history.ts'
 import {paymentMethod} from '../../../state/billing/selectors.ts'
+import css from '../settings.less'
 
 import BillingUsage from './BillingUsage.tsx'
 import BillingPaymentMethod from './BillingPaymentMethod.tsx'
@@ -55,7 +56,7 @@ export class BillingContainer extends Component {
         return (
             <div className="full-width">
                 <PageHeader title="Billing & Usage" />
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <BillingUsage />
                     <BillingPaymentMethod />
                     {(paymentMethod === 'shopify' || hasCreditCard) && (

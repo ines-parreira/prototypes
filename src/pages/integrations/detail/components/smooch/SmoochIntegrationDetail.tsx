@@ -25,11 +25,11 @@ import {
     triggerCreateSuccess,
     updateOrCreateIntegration,
 } from '../../../../../state/integrations/actions'
-
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import InputField from '../../../../common/forms/InputField'
 import Loader from '../../../../common/components/Loader/Loader'
 import PageHeader from '../../../../common/components/PageHeader'
+import css from '../../../../settings/settings.less'
 
 import SmoochIntegrationNavigation from './SmoochIntegrationNavigation'
 
@@ -157,7 +157,7 @@ export class SmoochIntegrationDetail extends Component<Props, State> {
 
                 <SmoochIntegrationNavigation integration={integration} />
 
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <Row>
                         <Col md="8">
                             <Form onSubmit={this._handleSubmit}>

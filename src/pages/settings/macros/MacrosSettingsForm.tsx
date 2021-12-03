@@ -40,6 +40,7 @@ import PageHeader from '../../common/components/PageHeader'
 import MacroEdit from '../../tickets/common/macros/components/MacroEdit'
 import history from '../../history'
 import {errorToChildren} from '../../../utils'
+import settingsCss from '../settings.less'
 
 import css from './MacrosSettingsForm.less'
 
@@ -207,7 +208,7 @@ export function MacrosSettingsFormContainer({
             />
             <Container
                 fluid
-                className={classnames('page-container', css.container)}
+                className={classnames(css.container, settingsCss.pageContainer)}
             >
                 {isFetchPending ? (
                     <Loader />

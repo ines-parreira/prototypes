@@ -65,7 +65,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render loading button
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -220,7 +220,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >

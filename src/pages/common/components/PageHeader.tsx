@@ -1,6 +1,8 @@
 import React, {ReactNode} from 'react'
 import classnames from 'classnames'
 
+import css from './PageHeader.less'
+
 type Props = {
     title: string | unknown
     className?: string
@@ -8,16 +10,7 @@ type Props = {
 }
 
 const PageHeader = ({title, children, className}: Props) => (
-    <div
-        className={classnames(
-            'd-flex',
-            'align-items-center',
-            'justify-content-between',
-            'flex-wrap',
-            'page-header',
-            className
-        )}
-    >
+    <div className={classnames('page-header', css.pageHeader, className)}>
         {typeof title === 'string' ? (
             <h1 className="d-flex align-items-center">{title}</h1>
         ) : (

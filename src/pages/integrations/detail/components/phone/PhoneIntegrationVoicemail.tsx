@@ -12,6 +12,7 @@ import {
 } from '../../../../../models/integration/types'
 import {DEFAULT_VOICE_MESSAGE} from '../../../../../models/integration/constants'
 import BooleanField from '../../../../common/forms/BooleanField.js'
+import settingsCss from '../../../../settings/settings.less'
 
 import {updatePhoneVoicemailConfiguration} from './actions'
 import PhoneIntegrationBreadcrumbs from './PhoneIntegrationBreadcrumbs'
@@ -65,8 +66,7 @@ export function PhoneIntegrationVoicemail({
             />
 
             <PhoneIntegrationNavigation integration={fromJS(integration)} />
-
-            <Container fluid className="page-container">
+            <Container fluid className={settingsCss.pageContainer}>
                 <h4 className="mb-3">Set Voicemail</h4>
                 <Row>
                     <Col className="mb-4">

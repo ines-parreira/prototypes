@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 import {Container} from 'reactstrap'
 
 import Loader from '../../../../common/components/Loader/Loader'
+import settingsCss from '../../../settings.less'
 
 import css from './HelpCenterEditModal.less'
 
@@ -74,7 +75,7 @@ export const HelpCenterEditModal = ({
                 })}
             >
                 {isLoading ? (
-                    <Container fluid className="page-container">
+                    <Container fluid className={settingsCss.pageContainer}>
                         <Loader />
                     </Container>
                 ) : (

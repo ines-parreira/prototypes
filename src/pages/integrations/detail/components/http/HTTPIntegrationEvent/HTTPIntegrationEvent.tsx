@@ -10,6 +10,7 @@ import {countLines} from '../../../../../../utils/string'
 import {fetchHTTPIntegrationEvent} from '../../../../../../state/HTTPIntegrationEvents/actions'
 import {getHTTPIntegrationEvent} from '../../../../../../state/HTTPIntegrationEvents/selectors'
 import {RootState} from '../../../../../../state/types'
+import settingsCss from '../../../../../settings/settings.less'
 
 import HTTPParams from './HTTPIntegrationEventParams/HTTPIntegrationEventParams'
 import HTTPItem from './HTTPIntegrationEventItem/HTTPIntegrationEventItem'
@@ -73,7 +74,7 @@ export class HTTPIntegrationEventContainer extends Component<Props, State> {
 
         if (!request) {
             return (
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <Row>
                         <Col className="mb-4">
                             <h2 className="mb-4">Error</h2>
@@ -145,7 +146,7 @@ export class HTTPIntegrationEventContainer extends Component<Props, State> {
         }
 
         return (
-            <Container fluid className="page-container">
+            <Container fluid className={settingsCss.pageContainer}>
                 <Row>
                     <Col md="12" lg="6" className={`${css.request} mb-4`}>
                         <Container fluid>

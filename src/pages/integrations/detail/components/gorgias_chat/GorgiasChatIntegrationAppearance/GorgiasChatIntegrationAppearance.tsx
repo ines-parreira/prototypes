@@ -56,6 +56,7 @@ import wrench from '../../../../../../../img/icons/wrench.svg'
 import storefront from '../../../../../../../img/icons/storefront.svg'
 
 import Tooltip from '../../../../../common/components/Tooltip'
+import settingsCss from '../../../../../settings/settings.less'
 
 import css from './GorgiasChatIntegrationAppearance.less'
 import {StoreNameDropdown} from './StoreNameDropdown'
@@ -360,7 +361,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 <GorgiasChatIntegrationNavigation integration={integration} />
             )}
 
-            <Container fluid className="page-container">
+            <Container fluid className={settingsCss.pageContainer}>
                 <Row>
                     <Col>
                         {!isUpdate ? (

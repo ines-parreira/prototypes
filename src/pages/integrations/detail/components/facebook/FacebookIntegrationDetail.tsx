@@ -11,7 +11,6 @@ import {
     BreadcrumbItem,
     Container,
 } from 'reactstrap'
-
 import {connect, ConnectedProps} from 'react-redux'
 
 import {
@@ -31,6 +30,7 @@ import {
     deleteIntegration,
     updateOrCreateIntegration,
 } from '../../../../../state/integrations/actions'
+import css from '../../../../settings/settings.less'
 
 import FacebookIntegrationNavigation from './FacebookIntegrationNavigation'
 import FacebookLoginButton from './FacebookLoginButton/FacebookLoginButton'
@@ -290,7 +290,7 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
 
                 <FacebookIntegrationNavigation integration={integration} />
 
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <div className="d-flex align-items-center mb-3">
                         <img
                             alt="facebook logo"

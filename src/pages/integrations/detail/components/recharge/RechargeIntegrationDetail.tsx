@@ -12,16 +12,15 @@ import {
     Label,
     Row,
 } from 'reactstrap'
-
 import {connect, ConnectedProps} from 'react-redux'
 
 import * as integrationHelpers from '../../../../../state/integrations/helpers'
 import {deleteIntegration} from '../../../../../state/integrations/actions'
-
 import Loader from '../../../../common/components/Loader/Loader'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import InputField from '../../../../common/forms/InputField'
 import PageHeader from '../../../../common/components/PageHeader'
+import css from '../../../../settings/settings.less'
 
 type Props = {
     integration: Map<any, any>
@@ -109,7 +108,7 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
                     }
                 />
 
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <Row>
                         <Col md="8">
                             {isUpdate &&

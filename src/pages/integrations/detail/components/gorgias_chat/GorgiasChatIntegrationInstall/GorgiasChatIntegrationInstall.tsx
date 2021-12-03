@@ -13,6 +13,7 @@ import * as integrationSelectors from '../../../../../../state/integrations/sele
 import {RootState} from '../../../../../../state/types'
 import {IntegrationType} from '../../../../../../models/integration/types'
 import PageHeader from '../../../../../common/components/PageHeader'
+import css from '../../../../../settings/settings.less'
 
 import {renderChatCodeSnippet} from '../renderChatCodeSnippet.js'
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
@@ -96,7 +97,7 @@ function GorgiasChatIntegrationInstall({
 
             <GorgiasChatIntegrationNavigation integration={integration} />
 
-            <Container fluid className="page-container">
+            <Container fluid className={css.pageContainer}>
                 <Row>
                     <Col md="8">
                         {isShopifyChat && (

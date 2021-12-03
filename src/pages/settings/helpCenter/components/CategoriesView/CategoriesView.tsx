@@ -15,6 +15,7 @@ import {CATEGORIES_PER_PAGE} from '../../constants'
 import {useArticlesActions} from '../../hooks/useArticlesActions'
 import {useCategoriesActions} from '../../hooks/useCategoriesActions'
 import {useHelpCenterCategories} from '../../hooks/useHelpCenterCategories'
+import settingsCss from '../../../settings.less'
 
 import css from './CategoriesView.less'
 
@@ -64,7 +65,7 @@ export const CategoriesViews = ({
 
     if (isLoading && categories.length === 0) {
         return (
-            <Container fluid className="page-container">
+            <Container fluid className={settingsCss.pageContainer}>
                 <Loader />
             </Container>
         )
@@ -73,7 +74,7 @@ export const CategoriesViews = ({
     return (
         <>
             {showCreateFirst && (
-                <Container fluid className="page-container">
+                <Container fluid className={settingsCss.pageContainer}>
                     <h1>
                         Start your Help Center here&nbsp;
                         <span aria-label="books" role="img">

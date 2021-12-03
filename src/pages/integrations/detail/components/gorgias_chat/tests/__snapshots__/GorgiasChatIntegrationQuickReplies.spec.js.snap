@@ -88,7 +88,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header"
+          className="page-header pageHeader"
         >
           <Breadcrumb
             aria-label="breadcrumb"
@@ -258,12 +258,12 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
         </SecondaryNavbar>
       </GorgiasChatIntegrationNavigation>
       <Container
-        className="page-container"
+        className="pageContainer"
         fluid={true}
         tag="div"
       >
         <div
-          className="page-container container-fluid"
+          className="pageContainer container-fluid"
         >
           <Row
             tag="div"
@@ -998,7 +998,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header"
+          className="page-header pageHeader"
         >
           <Breadcrumb
             aria-label="breadcrumb"
@@ -1176,12 +1176,12 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
         </SecondaryNavbar>
       </GorgiasChatIntegrationNavigation>
       <Container
-        className="page-container"
+        className="pageContainer"
         fluid={true}
         tag="div"
       >
         <div
-          className="page-container container-fluid"
+          className="pageContainer container-fluid"
         >
           <Row
             tag="div"

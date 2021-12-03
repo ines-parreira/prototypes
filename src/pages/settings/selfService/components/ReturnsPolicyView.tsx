@@ -11,13 +11,11 @@ import {
     Row,
 } from 'reactstrap'
 import classNames from 'classnames'
-
 import {useSelector} from 'react-redux'
 
 import PageHeader from '../../../common/components/PageHeader'
 import SelectField from '../../../common/forms/SelectField/SelectField'
 import Loader from '../../../common/components/Loader/Loader'
-
 import {
     FilterKeyEnum,
     FilterOperatorEnum,
@@ -27,13 +25,12 @@ import {
 import {selfServiceConfigurationUpdated} from '../../../../state/entities/selfServiceConfigurations/actions'
 import {updateSelfServiceConfiguration} from '../../../../models/selfServiceConfiguration/resources'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
-
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
-
 import {GorgiasChatIntegrationSelfServicePaywall} from '../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
 import {hasAutomationLegacyFeatures} from '../../../../state/currentAccount/selectors'
 import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
+import settingsCss from '../../settings.less'
 
 import css from './ReturnsPolicyView.less'
 import {useConfigurationData} from './hooks'
@@ -202,7 +199,7 @@ export const ReturnsPolicyView = () => {
                     </Breadcrumb>
                 }
             />
-            <Container fluid className="page-container">
+            <Container fluid className={settingsCss.pageContainer}>
                 <Row>
                     <Col>
                         <div className="mb-3">

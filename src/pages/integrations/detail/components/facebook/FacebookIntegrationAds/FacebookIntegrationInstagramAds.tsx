@@ -26,6 +26,7 @@ import {
 import {RootState, StoreDispatch} from '../../../../../../state/types'
 import Loader from '../../../../../common/components/Loader/Loader'
 import {DatetimeLabel} from '../../../../../common/utils/labels'
+import settingsCss from '../../../../../settings/settings.less'
 
 import {fetchAds, updateAd} from './actions'
 import css from './FacebookIntegrationInstagramAds.less'
@@ -82,7 +83,7 @@ class FacebookIntegrationInstagramAds extends Component<Props> {
 
                 <FacebookIntegrationNavigation integration={integration} />
 
-                <Container fluid className="page-container">
+                <Container fluid className={settingsCss.pageContainer}>
                     <div className="mb-3">
                         <p>
                             It can take up to 2 hours to synchronize new
@@ -112,7 +113,10 @@ class FacebookIntegrationInstagramAds extends Component<Props> {
                 </Container>
 
                 {loading ? (
-                    <Container fluid>
+                    <Container
+                        fluid
+                        className={classnames(settingsCss.pageContainer)}
+                    >
                         <Loader />
                     </Container>
                 ) : (

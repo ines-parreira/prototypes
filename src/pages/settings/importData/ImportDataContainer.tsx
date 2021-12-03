@@ -3,6 +3,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {Alert, Button, Container} from 'reactstrap'
 import {useEffectOnce} from 'react-use'
 import {bindActionCreators} from 'redux'
+import classnames from 'classnames'
 
 import PageHeader from '../../common/components/PageHeader'
 import history from '../../history'
@@ -11,6 +12,7 @@ import {IntegrationType} from '../../../models/integration/types'
 import Loader from '../../common/components/Loader/Loader'
 import * as integrationSelectors from '../../../state/integrations/selectors'
 import * as integrationActions from '../../../state/integrations/actions'
+import css from '../settings.less'
 
 import ImportZendeskDataList from './zendesk/ImportZendeskDataList'
 
@@ -41,30 +43,37 @@ export const ImportDataContainer = (
                     Add account
                 </Button>
             </PageHeader>
-            <Container fluid className="page-container">
-                <div className="mb-5">
-                    <p>
-                        Import data (one way) from your current helpdesk into
-                        Gorgias.
-                    </p>
+            <Container fluid className={css.pageContainer}>
+                <div
+                    className={classnames(
+                        css['body-regular'],
+                        css.contentWrapper
+                    )}
+                >
+                    <div className={classnames(css.mb32)}>
+                        <p>
+                            Import data (one way) from your current helpdesk
+                            into Gorgias.
+                        </p>
+                    </div>
+                    <Alert color="info" className={css.mb16}>
+                        <i className="material-icons">info_outline</i> When you
+                        activate the integration, 2 years of data will be loaded
+                        from Zendesk at first, then continuous syncing will be
+                        enabled automatically.{' '}
+                        <a
+                            className="text-underline"
+                            href="https://docs.gorgias.com/helpdesk-migration/switching-from-zendesk"
+                        >
+                            Read more
+                        </a>
+                    </Alert>
+                    {zendeskIntegrations.isEmpty() ? (
+                        <span>You don't have any imports at the moment</span>
+                    ) : (
+                        <ImportZendeskDataList />
+                    )}
                 </div>
-                <Alert color="info" className="col-md-5">
-                    <i className="material-icons">info_outline</i> When you
-                    activate the integration, 2 years of data will be loaded
-                    from Zendesk at first, then continuous syncing will be
-                    enabled automatically.{' '}
-                    <a
-                        className="text-underline"
-                        href="https://docs.gorgias.com/helpdesk-migration/switching-from-zendesk"
-                    >
-                        Read more
-                    </a>
-                </Alert>
-                {zendeskIntegrations.isEmpty() ? (
-                    <span>You don't have any imports at the moment</span>
-                ) : (
-                    <ImportZendeskDataList />
-                )}
             </Container>
         </div>
     )

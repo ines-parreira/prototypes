@@ -38,6 +38,7 @@ import css from './MacroEdit.less'
 type OwnProps = {
     actions: List<any>
     agents: List<any>
+    className?: string
     currentMacro: Map<any, any>
     name: string
     setActions: (actions: List<any>) => void
@@ -150,7 +151,7 @@ export class MacroEdit extends Component<
     }
 
     render() {
-        const {currentMacro, hasIntegrationOfTypes} = this.props
+        const {className, currentMacro, hasIntegrationOfTypes} = this.props
 
         if (!currentMacro) {
             return null
@@ -172,7 +173,7 @@ export class MacroEdit extends Component<
 
         return (
             <form>
-                <div className="mt-3 mb-3">
+                <div className={className}>
                     <div>
                         <div className={classnames('mb-2', css.title)}>
                             Macro name

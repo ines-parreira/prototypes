@@ -18,7 +18,6 @@ import {
 } from 'reactstrap'
 
 import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from '../../../../../../constants/integration'
-
 import {
     getForwardingEmailAddress,
     getRedirectUri,
@@ -46,6 +45,7 @@ import BooleanField from '../../../../../common/forms/BooleanField.js'
 import RichFieldWithVariables from '../../../../../common/forms/RichFieldWithVariables'
 import {RootState} from '../../../../../../state/types'
 import {IntegrationType} from '../../../../../../models/integration/types'
+import css from '../../../../../settings/settings.less'
 
 type Props = {
     integration: Map<any, any>
@@ -590,7 +590,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         }
 
         return (
-            <Container fluid className="page-container">
+            <Container fluid className={css.pageContainer}>
                 {integration.get('type') === IntegrationType.Email &&
                     this._renderInstructions()}
 

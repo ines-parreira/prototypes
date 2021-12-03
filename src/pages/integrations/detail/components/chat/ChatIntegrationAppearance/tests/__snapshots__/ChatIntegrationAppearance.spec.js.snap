@@ -38,7 +38,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when cre
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -352,7 +352,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -699,7 +699,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -1050,7 +1050,7 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -1419,7 +1419,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -1770,7 +1770,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >

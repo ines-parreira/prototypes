@@ -5,7 +5,7 @@ exports[`<PhoneIntegrationList/> render() should render 1`] = `
   class="w-100"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -41,7 +41,7 @@ exports[`<PhoneIntegrationList/> render() should render 1`] = `
     </div>
   </div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer pb0 container-fluid"
   >
     <div
       class="mb-3"
@@ -101,7 +101,7 @@ exports[`<PhoneIntegrationList/> render() should render with a warning message 1
   class="w-100"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -137,7 +137,7 @@ exports[`<PhoneIntegrationList/> render() should render with a warning message 1
     </div>
   </div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer pb0 container-fluid"
   >
     <div
       class="mb-3"
@@ -224,7 +224,7 @@ exports[`<PhoneIntegrationList/> render() should render with an error message an
   class="w-100"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -252,7 +252,7 @@ exports[`<PhoneIntegrationList/> render() should render with an error message an
     </nav>
   </div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer pb0 container-fluid"
   >
     <div
       class="mb-3"
@@ -339,7 +339,7 @@ exports[`<PhoneIntegrationList/> render() should render with empty list 1`] = `
   class="w-100"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -375,7 +375,7 @@ exports[`<PhoneIntegrationList/> render() should render with empty list 1`] = `
     </div>
   </div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer pb0 container-fluid"
   >
     <div
       class="mb-3"

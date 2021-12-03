@@ -7,7 +7,6 @@ import {Alert, Button, Container, FormGroup, Label} from 'reactstrap'
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
 import Loader from '../../../../../common/components/Loader/Loader'
 import SelectField from '../../../../../common/forms/SelectField/SelectField'
-
 import {RootState} from '../../../../../../state/types'
 import * as currentUserSelectors from '../../../../../../state/currentUser/selectors'
 import {
@@ -16,6 +15,7 @@ import {
 } from '../../../../../../models/integration/constants'
 import {hasRole} from '../../../../../../utils'
 import {UserRole} from '../../../../../../config/types/user'
+import settingsCss from '../../../../../settings/settings.less'
 
 import css from './EmailDomainVerification.less'
 import RecordsTable from './components/RecordsTable'
@@ -59,7 +59,7 @@ export const EmailDomainVerificationContainer = (props: Props) => {
     const isOutlook = integration.get('type') === IntegrationType.Outlook
 
     return (
-        <Container fluid className="page-container">
+        <Container fluid className={settingsCss.pageContainer}>
             {emailDomain && (
                 <>
                     {emailDomain.get('verified') && (

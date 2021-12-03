@@ -26,6 +26,7 @@ import exchange from '../../../../../../../img/integrations/exchange.svg'
 import groups from '../../../../../../../img/integrations/google-groups.svg'
 import {RootState} from '../../../../../../state/types'
 import {IntegrationType} from '../../../../../../models/integration/types'
+import settingsCss from '../../../../../settings/settings.less'
 
 import css from './EmailIntegrationCreateForwarding.less'
 
@@ -208,7 +209,7 @@ export class EmailIntegrationCreateForwarding extends Component<Props, State> {
                     }
                 />
 
-                <Container fluid className="page-container">
+                <Container fluid className={settingsCss.pageContainer}>
                     <h1>Let's setup email forwarding</h1>
 
                     {this._renderInstructions()}

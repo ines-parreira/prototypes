@@ -461,6 +461,7 @@ export class MacroModalContainer extends Component<Props, State> {
                                 <MacroPreview currentMacro={currentMacro} />
                             ) : (
                                 <MacroEdit
+                                    className="mt-3 mb-3"
                                     currentMacro={currentMacro}
                                     agents={this.props.agents}
                                     name={this.state.name}

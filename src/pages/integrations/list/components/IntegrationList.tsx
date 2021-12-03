@@ -7,8 +7,8 @@ import {IntegrationType} from '../../../../models/integration/types'
 import {getCheapestPlanNameForFeature} from '../../../../utils/paywalls'
 import {toJS} from '../../../../utils'
 import PageHeader from '../../../common/components/PageHeader'
-
 import {isFeatureEnabled} from '../../../../utils/account'
+import css from '../../../settings/settings.less'
 
 import IntegrationListRow from './IntegrationListRow'
 
@@ -186,7 +186,7 @@ export default class IntegrationList extends React.Component<Props> {
         return (
             <div className="full-width">
                 <PageHeader title="Integrations" />
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <Row className="mb-4">
                         <Col md="10">
                             <p>

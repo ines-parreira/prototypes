@@ -38,6 +38,7 @@ export default class BooleanField extends InputField {
             name, // eslint-disable-line
             onChange, // eslint-disable-line
             value,
+            className, // eslint-disable-line
             ...rest
         } = this.props
 

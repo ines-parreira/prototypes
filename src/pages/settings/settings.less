@@ -1,0 +1,124 @@
+@import '~css/new/colorTokens';
+@import '~css/new/mixins';
+
+:local {
+    .body-regular {
+        font-size: 14px;
+        font-weight: 400;
+        letter-spacing: -0.1px;
+        line-height: 20px;
+    }
+
+    .body-semibold {
+        .body-regular();
+        font-weight: 600;
+    }
+
+    .caption-regular {
+        color: @classic-neutral-grey-4;
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: 0px;
+        line-height: 16px;
+    }
+
+    .contentWrapper {
+        color: @classic-neutral-grey-6;
+        max-width: 680px;
+        width: 70%;
+
+        @media @mobiles {
+            max-width: inherit;
+            width: 100%;
+        }
+    }
+
+    .heading-section-semibold {
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: -0.4px;
+        line-height: 28px;
+    }
+
+    .heading-subsection-semibold {
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0px;
+        line-height: 24px;
+    }
+
+    .inputField {
+        .mb16();
+
+        :global(.control-label:not(.form-check-label)) {
+            .mb8;
+            .body-semibold();
+        }
+
+        :global(.form-check) {
+            .mb16();
+        }
+
+        :global(.form-text) {
+            .caption-regular();
+            margin-top: 4px;
+        }
+    }
+
+    .leftSideWrapper {
+        .mb16();
+        .contentWrapper();
+    }
+
+    .mb8 {
+        margin-bottom: 8px;
+    }
+
+    .mb16 {
+        margin-bottom: 16px;
+    }
+
+    .mb24 {
+        margin-bottom: 24px;
+    }
+
+    .mb32 {
+        margin-bottom: 32px;
+    }
+
+    .mb40 {
+        margin-bottom: 40px;
+    }
+
+    .mt4 {
+        margin-top: 4px;
+    }
+
+    .pageContainer {
+        padding: 24px;
+    }
+
+    .pb0 {
+        padding-bottom: 0;
+    }
+
+    .pt0 {
+        padding-top: 0;
+    }
+
+    .py24 {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .profilePicture {
+        max-width: 170px;
+        width: 30%;
+        padding-left: 24px;
+
+        @media @mobiles {
+            padding-left: 0;
+            width: 100%;
+        }
+    }
+}

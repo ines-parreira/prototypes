@@ -104,7 +104,7 @@ const IntegrationListRow = ({integrationConfig}: Props) => {
         <div
             className={classnames(
                 css.component,
-                'card d-flex flex-row align-items-center mb-3'
+                'card d-flex flex-row align-items-center'
             )}
         >
             {content}
@@ -114,7 +114,7 @@ const IntegrationListRow = ({integrationConfig}: Props) => {
             className={classnames(
                 css.component,
                 css.link,
-                'card d-flex flex-row align-items-center mb-3'
+                'card d-flex flex-row align-items-center'
             )}
             onClick={() => {
                 segmentTracker.logEvent(

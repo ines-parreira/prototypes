@@ -6,7 +6,7 @@ exports[`<SelfServicePreferencesView/> ToggleButton.onChange() should deactivate
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -34,7 +34,7 @@ exports[`<SelfServicePreferencesView/> ToggleButton.onChange() should deactivate
       </nav>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"
@@ -312,7 +312,7 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -340,7 +340,7 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
       </nav>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"

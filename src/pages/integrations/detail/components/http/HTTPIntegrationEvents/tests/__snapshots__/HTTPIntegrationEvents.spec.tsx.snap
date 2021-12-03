@@ -15,7 +15,7 @@ exports[`<HTTPIntegrationEvents /> component should render a loader while the co
 exports[`<HTTPIntegrationEvents /> component should render events 1`] = `
 <div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer container-fluid"
   >
     <p>
       Shows the latest HTTP requests sent by this integration with their responses. This page is useful to see if this integration works correctly.

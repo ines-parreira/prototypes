@@ -6,7 +6,7 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -34,7 +34,7 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
       </nav>
     </div>
     <div
-      class="page-container container container-fluid"
+      class="container pageContainer container-fluid"
     >
       <section
         class="form"

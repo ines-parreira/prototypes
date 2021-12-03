@@ -6,7 +6,7 @@ exports[`<EmailIntegrationList/> render() should render the page when there are 
     class="w-100"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -42,7 +42,7 @@ exports[`<EmailIntegrationList/> render() should render the page when there are 
       </div>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer pb0 container-fluid"
     >
       <div
         class="mb-3"
@@ -69,7 +69,7 @@ exports[`<EmailIntegrationList/> render() should render the page with a warning 
     class="w-100"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -105,7 +105,7 @@ exports[`<EmailIntegrationList/> render() should render the page with a warning 
       </div>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer pb0 container-fluid"
     >
       <div
         class="mb-3"
@@ -190,7 +190,7 @@ exports[`<EmailIntegrationList/> render() should render the page with a warning 
     class="w-100"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -226,7 +226,7 @@ exports[`<EmailIntegrationList/> render() should render the page with a warning 
       </div>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer pb0 container-fluid"
     >
       <div
         class="mb-3"
@@ -311,7 +311,7 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
     class="w-100"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -347,7 +347,7 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
       </div>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer pb0 container-fluid"
     >
       <div
         class="mb-3"
@@ -422,7 +422,7 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
     class="w-100"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -458,7 +458,7 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
       </div>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer pb0 container-fluid"
     >
       <div
         class="mb-3"

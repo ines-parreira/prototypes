@@ -39,7 +39,7 @@ exports[`ShopifyIntegrationDetail should render the page for a deactivated integ
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -232,7 +232,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration bein
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -341,7 +341,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -524,7 +524,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -748,7 +748,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -931,7 +931,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -1124,7 +1124,7 @@ exports[`ShopifyIntegrationDetail should render the page to create a new integra
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -1233,7 +1233,7 @@ exports[`ShopifyIntegrationDetail should render the page to update an existing i
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >

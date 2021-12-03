@@ -2,35 +2,25 @@ import React, {useEffect, useState} from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
 import {useSelector} from 'react-redux'
 import {parse as parseQueryString} from 'query-string'
-
 import {AxiosError} from 'axios'
 
 import {CsvColumnPreview} from '../../../../models/helpCenter/types'
-
 import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
-
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
-
 import {useLocales} from '../hooks/useLocales'
-
 import Loader from '../../../common/components/Loader/Loader'
-
 import PageHeader from '../../../common/components/PageHeader'
-
 import useAppDispatch from '../../../../hooks/useAppDispatch'
-
 import {notify} from '../../../../state/notifications/actions'
 import {
     Notification,
     NotificationStatus,
 } from '../../../../state/notifications/types'
-
 import {HELP_CENTER_BASE_PATH} from '../constants'
 
 import {Components} from '../../../../../../../rest_api/help_center_api/client.generated'
 
 import CsvColumnMatching from './Imports/components/CsvColumnMatching/CsvColumnMatching'
-
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {GorgiasFieldsMappingsLocalized} from './Imports/components/CsvColumnMatching/types'
 import {gorgiasFieldsMappingsLocalizedToDto} from './Imports/components/CsvColumnMatching/utils'

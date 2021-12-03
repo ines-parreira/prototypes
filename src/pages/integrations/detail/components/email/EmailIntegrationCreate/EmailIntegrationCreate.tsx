@@ -11,6 +11,7 @@ import googleLogo from '../../../../../../../img/integrations/google-icon.svg'
 import officeLogo from '../../../../../../../img/integrations/office-transparent.png'
 import {IntegrationType} from '../../../../../../models/integration/types'
 import {RootState} from '../../../../../../state/types'
+import settingsCss from '../../../../../settings/settings.less'
 
 import css from './EmailIntegrationCreate.less'
 
@@ -42,7 +43,7 @@ export class EmailIntegrationCreate extends Component<Props> {
                     }
                 />
 
-                <Container fluid className="page-container">
+                <Container fluid className={settingsCss.pageContainer}>
                     <p>Choose the type of email account you want to add.</p>
 
                     <div className={css.form}>

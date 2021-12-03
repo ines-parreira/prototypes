@@ -13,10 +13,7 @@ export const PageContainer: React.FC<Props> = ({
     children,
     className,
 }: Props) => (
-    <Container
-        fluid
-        className={classNames('page-container', css.container, className)}
-    >
+    <Container fluid className={classNames(css.container, className)}>
         {children}
     </Container>
 )

@@ -104,7 +104,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
           }
         >
           <div
-            className="d-flex align-items-center justify-content-between flex-wrap page-header"
+            className="page-header pageHeader"
           >
             <Breadcrumb
               aria-label="breadcrumb"
@@ -238,12 +238,12 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
           </SecondaryNavbar>
         </FacebookIntegrationNavigation>
         <Container
-          className="page-container"
+          className="pageContainer"
           fluid={true}
           tag="div"
         >
           <div
-            className="page-container container-fluid"
+            className="pageContainer container-fluid"
           >
             <div
               className="mb-3"
@@ -265,11 +265,12 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
           </div>
         </Container>
         <Container
+          className="pageContainer"
           fluid={true}
           tag="div"
         >
           <div
-            className="container-fluid"
+            className="pageContainer container-fluid"
           >
             <Loader
               inline={false}
@@ -432,7 +433,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
           }
         >
           <div
-            className="d-flex align-items-center justify-content-between flex-wrap page-header"
+            className="page-header pageHeader"
           >
             <Breadcrumb
               aria-label="breadcrumb"
@@ -566,12 +567,12 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
           </SecondaryNavbar>
         </FacebookIntegrationNavigation>
         <Container
-          className="page-container"
+          className="pageContainer"
           fluid={true}
           tag="div"
         >
           <div
-            className="page-container container-fluid"
+            className="pageContainer container-fluid"
           >
             <div
               className="mb-3"
@@ -1386,7 +1387,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
           }
         >
           <div
-            className="d-flex align-items-center justify-content-between flex-wrap page-header"
+            className="page-header pageHeader"
           >
             <Breadcrumb
               aria-label="breadcrumb"
@@ -1520,12 +1521,12 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
           </SecondaryNavbar>
         </FacebookIntegrationNavigation>
         <Container
-          className="page-container"
+          className="pageContainer"
           fluid={true}
           tag="div"
         >
           <div
-            className="page-container container-fluid"
+            className="pageContainer container-fluid"
           >
             <div
               className="mb-3"
@@ -1837,7 +1838,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
           }
         >
           <div
-            className="d-flex align-items-center justify-content-between flex-wrap page-header"
+            className="page-header pageHeader"
           >
             <Breadcrumb
               aria-label="breadcrumb"
@@ -1971,12 +1972,12 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
           </SecondaryNavbar>
         </FacebookIntegrationNavigation>
         <Container
-          className="page-container"
+          className="pageContainer"
           fluid={true}
           tag="div"
         >
           <div
-            className="page-container container-fluid"
+            className="pageContainer container-fluid"
           >
             <div
               className="mb-3"
@@ -2403,7 +2404,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
           }
         >
           <div
-            className="d-flex align-items-center justify-content-between flex-wrap page-header"
+            className="page-header pageHeader"
           >
             <Breadcrumb
               aria-label="breadcrumb"
@@ -2537,12 +2538,12 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
           </SecondaryNavbar>
         </FacebookIntegrationNavigation>
         <Container
-          className="page-container"
+          className="pageContainer"
           fluid={true}
           tag="div"
         >
           <div
-            className="page-container container-fluid"
+            className="pageContainer container-fluid"
           >
             <div
               className="mb-3"

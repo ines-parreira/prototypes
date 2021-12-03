@@ -5,7 +5,7 @@ exports[`<EmailIntegrationCreate/> render() should render 1`] = `
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -42,7 +42,7 @@ exports[`<EmailIntegrationCreate/> render() should render 1`] = `
     </nav>
   </div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer container-fluid"
   >
     <p>
       Choose the type of email account you want to add.

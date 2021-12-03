@@ -29,6 +29,7 @@ import {
     PhoneFunction,
     PhoneType,
 } from '../../../../../business/twilio'
+import css from '../../../../settings/settings.less'
 
 import rawPhoneFunctionOptions from './options/functions.json'
 import rawCountryOptions from './options/countries.json'
@@ -207,7 +208,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                 }
             />
 
-            <Container fluid className="page-container">
+            <Container fluid className={css.pageContainer}>
                 <Row>
                     <Col lg={6}>
                         <p>

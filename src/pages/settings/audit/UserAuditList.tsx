@@ -20,6 +20,7 @@ import {
 } from '../../../state/usersAudit/selectors'
 import {getMoment} from '../../../utils/date'
 import {RootState} from '../../../state/types'
+import css from '../settings.less'
 
 import UserAuditRow from './UserAuditRow'
 import {DATETIME_LABEL_FORMAT} from './constants.js'
@@ -203,7 +204,7 @@ export class UserAuditListContainer extends Component<Props, State> {
                     </div>
                 </PageHeader>
 
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <div className="manage-requests-description">
                         <p>
                             User audit logs display recent actions performed by

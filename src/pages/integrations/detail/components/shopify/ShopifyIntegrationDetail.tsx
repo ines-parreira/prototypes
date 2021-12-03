@@ -22,9 +22,7 @@ import ConfirmButton from '../../../../common/components/ConfirmButton'
 import BooleanField from '../../../../common/forms/BooleanField.js'
 import InputField from '../../../../common/forms/InputField'
 import PageHeader from '../../../../common/components/PageHeader'
-
 import * as utils from '../../../../../utils'
-
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {notify} from '../../../../../state/notifications/actions'
 import {makeGetShopifyIntegrationByShopName} from '../../../../../state/integrations/selectors'
@@ -37,6 +35,7 @@ import {
     updateOrCreateIntegration,
 } from '../../../../../state/integrations/actions'
 import {RootState} from '../../../../../state/types'
+import css from '../../../../settings/settings.less'
 
 type Props = {
     integration: Map<any, any>
@@ -236,7 +235,7 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
                     }
                 />
 
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <Row>
                         <Col md="8">
                             {!isUpdate ? (

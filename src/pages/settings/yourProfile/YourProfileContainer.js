@@ -45,11 +45,6 @@ class YourProfileContainer extends React.Component {
         return (
             <YourProfileView
                 currentUser={prunedCurrentUser}
-                isLoading={currentUser.getIn([
-                    '_internal',
-                    'loading',
-                    'currentUser',
-                ])}
                 updateCurrentUser={this.props.updateCurrentUser}
                 submitSetting={this.props.submitSetting}
                 preferences={this.props.preferences}

@@ -32,6 +32,7 @@ import {notify} from '../../../../../../state/notifications/actions.ts'
 import * as campaignActions from '../../../../../../state/campaigns/actions'
 import * as integrationsSelectors from '../../../../../../state/integrations/selectors.ts'
 import * as agentSelectors from '../../../../../../state/agents/selectors.ts'
+import settingsCss from '../../../../../settings/settings.less'
 
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation.tsx'
 
@@ -418,7 +419,7 @@ export class CampaignForm extends React.Component {
         })
 
         return (
-            <Container fluid className="page-container">
+            <Container fluid className={settingsCss.pageContainer}>
                 <Row>
                     <Col>
                         <Form onSubmit={this._handleSubmit}>

@@ -74,7 +74,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -391,7 +391,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -724,7 +724,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -1097,7 +1097,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -1429,7 +1429,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -1817,7 +1817,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -2210,7 +2210,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -2603,7 +2603,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -2996,7 +2996,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -3389,7 +3389,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -3777,7 +3777,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -4165,7 +4165,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -4556,7 +4556,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -4942,7 +4942,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -5352,7 +5352,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -5745,7 +5745,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -6138,7 +6138,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -6534,7 +6534,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -6923,7 +6923,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -7312,7 +7312,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -7701,7 +7701,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -8090,7 +8090,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -8479,7 +8479,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -8868,7 +8868,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -9257,7 +9257,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -9646,7 +9646,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -10035,7 +10035,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -10424,7 +10424,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -10813,7 +10813,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -11202,7 +11202,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -11591,7 +11591,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -11980,7 +11980,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -12369,7 +12369,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -12742,7 +12742,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >

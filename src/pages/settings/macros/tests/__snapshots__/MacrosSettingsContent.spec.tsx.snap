@@ -29,7 +29,7 @@ exports[`<MacrosSettingsContent/> should match snapshot 1`] = `
     </div>
   </PageHeader>
   <Container
-    className="page-container"
+    className="pageContainer pb0"
     fluid={true}
     tag="div"
   >

@@ -38,6 +38,7 @@ import {TagSortableProperty} from '../../../state/tags/types'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from '../../common/utils/withCancellableRequest'
+import settingsCss from '../settings.less'
 
 import Table from './Table'
 import css from './ManageTags.less'
@@ -273,7 +274,7 @@ export class ManageTagsContainer extends Component<Props, State> {
                     </div>
                 </PageHeader>
 
-                <Container fluid className="page-container">
+                <Container fluid className={settingsCss.pageContainer}>
                     <div className={css.description}>
                         <div>
                             <p>

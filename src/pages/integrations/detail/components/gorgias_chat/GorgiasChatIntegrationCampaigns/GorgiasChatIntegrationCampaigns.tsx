@@ -10,6 +10,7 @@ import ToggleButton from '../../../../../common/components/ToggleButton'
 import PageHeader from '../../../../../common/components/PageHeader'
 import ForwardIcon from '../../ForwardIcon'
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
+import css from '../../../../../settings/settings.less'
 
 type Props = {
     integration: Map<any, any>
@@ -75,7 +76,7 @@ export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
                 </PageHeader>
 
                 <GorgiasChatIntegrationNavigation integration={integration} />
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <p>
                         Use campaigns to prompt visitors of your website to
                         start chatting with your team.

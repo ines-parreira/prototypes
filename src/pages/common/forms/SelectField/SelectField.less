@@ -21,6 +21,8 @@
     box-sizing: border-box;
 
     &.selectFullWidth {
+        padding: 0 0 0 @select-padding;
+
         .label {
             box-sizing: border-box;
             width: ~'calc(100% - (@{select-padding} * 2) + @{base-input-width})';

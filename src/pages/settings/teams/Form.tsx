@@ -31,6 +31,7 @@ import SecondaryNavbar from '../../common/components/SecondaryNavbar/SecondaryNa
 import ConfirmButton from '../../common/components/ConfirmButton'
 import EmojiPicker from '../../common/components/EmojiPicker/EmojiPicker'
 import history from '../../history'
+import settingsCss from '../settings.less'
 
 import css from './Form.less'
 
@@ -156,7 +157,7 @@ export class FormContainer extends Component<Props, State> {
                         </NavLink>
                     </SecondaryNavbar>
                 )}
-                <Container fluid className="page-container">
+                <Container fluid className={settingsCss.pageContainer}>
                     <BootstrapForm onSubmit={this._onSubmit}>
                         <Row>
                             <Col lg={6}>

@@ -24,6 +24,7 @@ import {
     triggerCreateSuccess,
     updateOrCreateIntegration,
 } from '../../../../../state/integrations/actions'
+import css from '../../../../settings/settings.less'
 
 interface IActions {
     deleteIntegration: typeof deleteIntegration
@@ -149,7 +150,7 @@ export class YotpoIntegrationDetailComponent extends React.Component<Props> {
                         </Breadcrumb>
                     }
                 />
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <Row>
                         <Col md="8">
                             <InputField

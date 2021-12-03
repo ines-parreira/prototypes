@@ -6,7 +6,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -35,7 +35,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
       </nav>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row mb-5"
@@ -221,7 +221,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -250,7 +250,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
       </nav>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row mb-5"
@@ -418,7 +418,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -447,7 +447,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
       </nav>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row mb-5"

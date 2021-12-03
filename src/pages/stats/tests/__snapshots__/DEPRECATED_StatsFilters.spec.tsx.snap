@@ -2,7 +2,7 @@
 
 exports[`<StatsFilters /> should display the page 1`] = `
 <div
-  class="d-flex align-items-center justify-content-between flex-wrap page-header mb-0"
+  class="page-header pageHeader mb-0"
 >
   <h1
     class="align-items-center"

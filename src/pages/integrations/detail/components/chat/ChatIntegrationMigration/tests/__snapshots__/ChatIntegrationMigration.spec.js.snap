@@ -6,7 +6,7 @@ exports[`ChatIntegrationMigration component should display the migration page 1`
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -88,7 +88,7 @@ exports[`ChatIntegrationMigration component should display the migration page 1`
       </a>
     </nav>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="alert alert-warning fade"

@@ -26,7 +26,7 @@ exports[`<HTTPIntegrationEvent /> component should render a loader while the com
 
 exports[`<HTTPIntegrationEvent /> component should render the data of HTTP request (Empty bodies) 1`] = `
 <Container
-  className="page-container"
+  className="pageContainer"
   fluid={true}
   tag="div"
 >
@@ -159,7 +159,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of HTTP reque
 
 exports[`<HTTPIntegrationEvent /> component should render the data of HTTP request (JSON bodies) 1`] = `
 <Container
-  className="page-container"
+  className="pageContainer"
   fluid={true}
   tag="div"
 >
@@ -326,7 +326,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of HTTP reque
 
 exports[`<HTTPIntegrationEvent /> component should render the data of a HTTP request (html response) 1`] = `
 <Container
-  className="page-container"
+  className="pageContainer"
   fluid={true}
   tag="div"
 >
@@ -490,7 +490,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of a HTTP req
 
 exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP request when there was an error making the request 1`] = `
 <Container
-  className="page-container"
+  className="pageContainer"
   fluid={true}
   tag="div"
 >
@@ -639,7 +639,7 @@ There is an error
 
 exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP request when there was an error making the request and the default message is already in the event 1`] = `
 <Container
-  className="page-container"
+  className="pageContainer"
   fluid={true}
   tag="div"
 >
@@ -779,7 +779,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP r
 
 exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP request with GET method and JSON Params, with a warning 1`] = `
 <Container
-  className="page-container"
+  className="pageContainer"
   fluid={true}
   tag="div"
 >
@@ -938,7 +938,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP r
 
 exports[`<HTTPIntegrationEvent /> component should render the error that occurred before we could send the request 1`] = `
 <Container
-  className="page-container"
+  className="pageContainer"
   fluid={true}
   tag="div"
 >

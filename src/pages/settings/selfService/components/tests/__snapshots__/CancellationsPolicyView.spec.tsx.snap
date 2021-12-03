@@ -6,7 +6,7 @@ exports[`<CancellationsPolicyView/> onSubmit() should set the eligibility option
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -43,7 +43,7 @@ exports[`<CancellationsPolicyView/> onSubmit() should set the eligibility option
       </nav>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"
@@ -185,7 +185,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -222,7 +222,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
       </nav>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"

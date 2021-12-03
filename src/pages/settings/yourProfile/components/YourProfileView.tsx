@@ -4,16 +4,7 @@ import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
 import _sortBy from 'lodash/sortBy'
 import moment from 'moment-timezone'
-import {
-    Button,
-    Col,
-    Container,
-    Form,
-    FormGroup,
-    FormText,
-    Label,
-    Row,
-} from 'reactstrap'
+import {Button, Container, Form, FormGroup, FormText, Label} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
 
@@ -32,6 +23,8 @@ import {
     User,
     UserSetting,
 } from '../../../../config/types/user'
+
+import css from '../../settings.less'
 
 const defaultContent: Pick<
     State,
@@ -53,7 +46,6 @@ type Props = {
         notification: boolean
     ) => Promise<unknown>
     preferences: Map<any, any>
-    isLoading: boolean
 }
 
 type State = {
@@ -61,7 +53,7 @@ type State = {
     email: string
     hasChangedEmail: boolean
     language: string
-    loadingPreferences: boolean
+    isLoading: boolean
     name: string
     preferences: Map<unknown, unknown>
     profilePictureUrl?: string
@@ -79,7 +71,7 @@ export default class YourProfileView extends Component<Props, State> {
 
         this.state = _merge(
             {
-                loadingPreferences: false,
+                isLoading: false,
                 preferences: props.preferences.get('data'),
                 hasChangedEmail: false,
             },
@@ -119,21 +111,34 @@ export default class YourProfileView extends Component<Props, State> {
         )
     }
 
-    _handleSubmit = (event: SyntheticEvent) => {
+    _handleSubmit = async (event: SyntheticEvent) => {
         event.preventDefault()
         const normalizedValues = _pick(
             this.state,
             Object.keys(defaultContent)
         ) as EditableUserProfile
 
-        return this.props.updateCurrentUser(normalizedValues).then((user) => {
-            if (user.email === normalizedValues.email) {
-                this.setState({
-                    hasChangedEmail: false,
-                    password_confirmation: null,
-                })
-            }
-        })
+        this.setState({isLoading: true})
+
+        const newSettings = this.props.preferences
+            .update('data', (data: Map<any, any>) =>
+                data.mergeDeep(this.state.preferences)
+            )
+            .toJS()
+
+        const [user] = await Promise.all([
+            this.props.updateCurrentUser(normalizedValues),
+            this.props.submitSetting(newSettings, false),
+        ])
+
+        this.setState({isLoading: false})
+
+        if (user.email === normalizedValues.email) {
+            this.setState({
+                hasChangedEmail: false,
+                password_confirmation: null,
+            })
+        }
     }
 
     _onEmailChange = (email: string) => {
@@ -151,35 +156,24 @@ export default class YourProfileView extends Component<Props, State> {
         })
     }
 
-    _savePreferences = (event: SyntheticEvent) => {
-        event.preventDefault()
-
-        this.setState({loadingPreferences: true})
-
-        const newSettings = this.props.preferences
-            .update('data', (data: Map<any, any>) =>
-                data.mergeDeep(this.state.preferences)
-            )
-            .toJS()
-
-        return this.props.submitSetting(newSettings, true).then(() => {
-            this.setState({loadingPreferences: false})
-        })
-    }
-
     render() {
-        const {hasChangedEmail, password_confirmation} = this.state
-        const {isLoading} = this.props
-        const loadingUser = isLoading && !this.state.loadingPreferences
+        const {isLoading, hasChangedEmail, password_confirmation} = this.state
 
         return (
             <div className="full-width">
                 <PageHeader title="Your profile" />
-                <Container fluid className="page-container">
-                    <p>Update your profile information.</p>
-                    <Form className="mb-4" onSubmit={this._handleSubmit}>
-                        <Row>
-                            <Col md="9">
+                <Container fluid className={css.pageContainer}>
+                    <div
+                        className={classnames(
+                            css['heading-subsection-semibold'],
+                            css.mb16
+                        )}
+                    >
+                        Personal information
+                    </div>
+                    <Form onSubmit={this._handleSubmit}>
+                        <div className="flex flex-wrap">
+                            <div className={css.leftSideWrapper}>
                                 <InputField
                                     type="text"
                                     name="name"
@@ -188,6 +182,7 @@ export default class YourProfileView extends Component<Props, State> {
                                     required
                                     value={this.state.name}
                                     onChange={(name) => this.setState({name})}
+                                    className={css.inputField}
                                 />
                                 <InputField
                                     type="email"
@@ -197,6 +192,7 @@ export default class YourProfileView extends Component<Props, State> {
                                     required
                                     value={this.state.email}
                                     onChange={this._onEmailChange}
+                                    className={css.inputField}
                                 />
                                 {hasChangedEmail ? (
                                     <InputField
@@ -211,6 +207,7 @@ export default class YourProfileView extends Component<Props, State> {
                                                 password_confirmation,
                                             })
                                         }
+                                        className={css.inputField}
                                     />
                                 ) : null}
                                 <InputField
@@ -229,8 +226,9 @@ export default class YourProfileView extends Component<Props, State> {
                                     }
                                     value={this.state.bio}
                                     onChange={(bio) => this.setState({bio})}
+                                    className={css.inputField}
                                 />
-                                <FormGroup>
+                                <FormGroup className={css.inputField}>
                                     <Label className="control-label">
                                         Timezone
                                     </Label>
@@ -268,7 +266,7 @@ export default class YourProfileView extends Component<Props, State> {
                                         fullWidth
                                     />
                                 </FormGroup>
-                                <FormGroup>
+                                <FormGroup className={css.inputField}>
                                     <Label className="control-label">
                                         Language
                                     </Label>
@@ -292,213 +290,199 @@ export default class YourProfileView extends Component<Props, State> {
                                         time format
                                     </FormText>
                                 </FormGroup>
-                            </Col>
-                            <Col xl={2} md={3} xs={12}>
-                                <FormGroup>
-                                    <Label className="control-label">
-                                        Profile picture
-                                    </Label>
+                            </div>
+                            <FormGroup
+                                className={classnames(
+                                    css.profilePicture,
+                                    css.inputField
+                                )}
+                            >
+                                <Label className="control-label">
+                                    Profile picture
+                                </Label>
 
-                                    <div>
-                                        <Avatar
-                                            name={this.state.name}
-                                            size={100}
-                                            url={this.state.profilePictureUrl}
-                                        />
-                                    </div>
+                                <Avatar
+                                    name={this.state.name}
+                                    size={100}
+                                    url={this.state.profilePictureUrl}
+                                    className={css.mb16}
+                                />
 
-                                    <FormText
-                                        color="muted"
-                                        className="mt-2 mb-2"
-                                    >
-                                        The picture must be square and weight
-                                        less than 500kB.
-                                    </FormText>
+                                <FileField
+                                    key={this.state.profilePictureUrl}
+                                    returnFiles={false}
+                                    noPreview={true}
+                                    onChange={(picture_url: string) =>
+                                        this.setState(
+                                            {
+                                                profilePictureUrl: picture_url,
+                                            },
+                                            () => {
+                                                void this._saveProfilePicture()
+                                            }
+                                        )
+                                    }
+                                    uploadType="profile_picture"
+                                    maxSize={500 * 1000}
+                                    className={css.mb16}
+                                />
 
-                                    <FileField
-                                        key={this.state.profilePictureUrl}
-                                        returnFiles={false}
-                                        noPreview={true}
-                                        onChange={(picture_url: string) =>
+                                <FormText color="muted">
+                                    The picture must be square and weight less
+                                    than 500kB.
+                                </FormText>
+
+                                {this.state.profilePictureUrl && (
+                                    <a
+                                        href="#"
+                                        className="text-danger"
+                                        onClick={(e) => {
+                                            e.preventDefault()
                                             this.setState(
                                                 {
                                                     profilePictureUrl:
-                                                        picture_url,
+                                                        undefined,
                                                 },
                                                 () => {
                                                     void this._saveProfilePicture()
                                                 }
                                             )
-                                        }
-                                        uploadType="profile_picture"
-                                        maxSize={500 * 1000}
-                                        className="mb-2"
-                                    />
+                                        }}
+                                    >
+                                        Remove Picture
+                                    </a>
+                                )}
+                            </FormGroup>
+                        </div>
+                        <div className={css.contentWrapper}>
+                            <div
+                                className={classnames(
+                                    css['heading-subsection-semibold'],
+                                    css.mb16
+                                )}
+                            >
+                                Account Preferences
+                            </div>
 
-                                    {this.state.profilePictureUrl && (
-                                        <a
-                                            href="#"
-                                            className="text-danger"
-                                            onClick={(e) => {
-                                                e.preventDefault()
-                                                this.setState(
-                                                    {
-                                                        profilePictureUrl:
-                                                            undefined,
-                                                    },
-                                                    () => {
-                                                        void this._saveProfilePicture()
-                                                    }
-                                                )
-                                            }}
-                                        >
-                                            Remove Picture
-                                        </a>
+                            <FormGroup
+                                className={classnames(
+                                    css.inputField,
+                                    css.mb32,
+                                    css['body-regular']
+                                )}
+                            >
+                                <BooleanField
+                                    name="show_macros"
+                                    type="checkbox"
+                                    label="Display macros by default on emails"
+                                    value={this.state.preferences.get(
+                                        'show_macros'
                                     )}
-                                </FormGroup>
-                            </Col>
-                        </Row>
+                                    onChange={(value: boolean) =>
+                                        this.setState({
+                                            preferences:
+                                                this.state.preferences.set(
+                                                    'show_macros',
+                                                    value
+                                                ),
+                                        })
+                                    }
+                                />
+                                <BooleanField
+                                    name="show_macros_suggestions"
+                                    type="checkbox"
+                                    label="Display macros suggestions in message editor"
+                                    value={this.state.preferences.get(
+                                        'show_macros_suggestions',
+                                        true
+                                    )}
+                                    onChange={(value: boolean) =>
+                                        this.setState({
+                                            preferences:
+                                                this.state.preferences.set(
+                                                    'show_macros_suggestions',
+                                                    value
+                                                ),
+                                        })
+                                    }
+                                />
+                            </FormGroup>
+                            <FormGroup
+                                className={classnames(css.inputField, css.mb40)}
+                            >
+                                <div
+                                    className={classnames(
+                                        css['heading-subsection-semibold'],
+                                        css.mb16
+                                    )}
+                                >
+                                    Forward calls to an external number
+                                </div>
+                                <p className={css['body-regular']}>
+                                    When you are routed a call in Gorgias,
+                                    forward the call to a mobile device or
+                                    landline.
+                                </p>
+
+                                <ToggleField
+                                    name="forward_calls"
+                                    label="Enable call forwarding"
+                                    value={
+                                        (this.state.preferences.get(
+                                            'forward_calls'
+                                        ) as boolean) ?? false
+                                    }
+                                    onChange={(value: boolean) => {
+                                        this.setState({
+                                            preferences:
+                                                this.state.preferences.set(
+                                                    'forward_calls',
+                                                    value
+                                                ),
+                                        })
+                                    }}
+                                />
+                                {this.state.preferences.get(
+                                    'forward_calls'
+                                ) && (
+                                    <div style={{marginLeft: '47px'}}>
+                                        <PhoneNumberInput
+                                            value={
+                                                (this.state.preferences.get(
+                                                    'forwarding_phone_number'
+                                                ) as string) ?? ''
+                                            }
+                                            onChange={(value: string) => {
+                                                this.setState({
+                                                    preferences:
+                                                        this.state.preferences.set(
+                                                            'forwarding_phone_number',
+                                                            value === ''
+                                                                ? null
+                                                                : value
+                                                        ),
+                                                })
+                                            }}
+                                            allowedCountries={Object.values(
+                                                CallForwardingCountries
+                                            )}
+                                        />
+                                    </div>
+                                )}
+                            </FormGroup>
+                        </div>
 
                         <Button
                             type="submit"
                             color="success"
                             className={classnames({
-                                'btn-loading': loadingUser,
+                                'btn-loading': isLoading,
                             })}
-                            disabled={loadingUser}
+                            disabled={isLoading}
                         >
-                            Save your profile
+                            Save Changes
                         </Button>
                     </Form>
-
-                    <Row>
-                        <Col md="9">
-                            <Form
-                                className="mb-4 mt-3"
-                                onSubmit={this._savePreferences}
-                            >
-                                <h3>Preferences</h3>
-
-                                <FormGroup>
-                                    <BooleanField
-                                        name="show_macros"
-                                        type="checkbox"
-                                        label="Display macros by default on emails"
-                                        value={this.state.preferences.get(
-                                            'show_macros'
-                                        )}
-                                        onChange={(value: boolean) =>
-                                            this.setState({
-                                                preferences:
-                                                    this.state.preferences.set(
-                                                        'show_macros',
-                                                        value
-                                                    ),
-                                            })
-                                        }
-                                    />
-                                </FormGroup>
-                                <FormGroup>
-                                    <BooleanField
-                                        name="show_macros_suggestions"
-                                        type="checkbox"
-                                        label="Display macros suggestions in message editor"
-                                        value={this.state.preferences.get(
-                                            'show_macros_suggestions',
-                                            true
-                                        )}
-                                        onChange={(value: boolean) =>
-                                            this.setState({
-                                                preferences:
-                                                    this.state.preferences.set(
-                                                        'show_macros_suggestions',
-                                                        value
-                                                    ),
-                                            })
-                                        }
-                                    />
-                                </FormGroup>
-
-                                <FormGroup>
-                                    <h4 className="mb-1 mt-5">
-                                        Forward calls to an external number
-                                    </h4>
-                                    <p>
-                                        When you are routed a call in Gorgias,
-                                        forward the call to a mobile device or
-                                        landline.
-                                    </p>
-
-                                    <ToggleField
-                                        name="forward_calls"
-                                        label="Enable call forwarding"
-                                        value={
-                                            (this.state.preferences.get(
-                                                'forward_calls'
-                                            ) as boolean) ?? false
-                                        }
-                                        onChange={(value: boolean) => {
-                                            this.setState({
-                                                preferences:
-                                                    this.state.preferences.set(
-                                                        'forward_calls',
-                                                        value
-                                                    ),
-                                            })
-                                        }}
-                                    />
-                                    {this.state.preferences.get(
-                                        'forward_calls'
-                                    ) && (
-                                        <div style={{marginLeft: '47px'}}>
-                                            <Row>
-                                                <Col md="6">
-                                                    <PhoneNumberInput
-                                                        value={
-                                                            (this.state.preferences.get(
-                                                                'forwarding_phone_number'
-                                                            ) as string) ?? ''
-                                                        }
-                                                        onChange={(
-                                                            value: string
-                                                        ) => {
-                                                            this.setState({
-                                                                preferences:
-                                                                    this.state.preferences.set(
-                                                                        'forwarding_phone_number',
-                                                                        value ===
-                                                                            ''
-                                                                            ? null
-                                                                            : value
-                                                                    ),
-                                                            })
-                                                        }}
-                                                        allowedCountries={Object.values(
-                                                            CallForwardingCountries
-                                                        )}
-                                                    />
-                                                </Col>
-                                            </Row>
-                                        </div>
-                                    )}
-                                </FormGroup>
-
-                                <div className="mt-4">
-                                    <Button
-                                        type="submit"
-                                        color="success"
-                                        className={classnames({
-                                            'btn-loading':
-                                                this.state.loadingPreferences,
-                                        })}
-                                        disabled={this.state.loadingPreferences}
-                                    >
-                                        Save preferences
-                                    </Button>
-                                </div>
-                            </Form>
-                        </Col>
-                    </Row>
                 </Container>
             </div>
         )

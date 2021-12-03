@@ -42,6 +42,7 @@ import PageHeader from '../../common/components/PageHeader'
 import PopoverModal from '../../common/components/PopoverModal'
 import history from '../../history'
 import {RootState} from '../../../state/types'
+import settingsCss from '../settings.less'
 
 import DeleteUser from './DeleteUser'
 import css from './Form.less'
@@ -194,7 +195,7 @@ export class FormContainer extends Component<Props, State> {
                     }
                 />
 
-                <Container fluid className="page-container">
+                <Container fluid className={settingsCss.pageContainer}>
                     {!isUpdate && (
                         <p>
                             We'll send login instructions via email when you add

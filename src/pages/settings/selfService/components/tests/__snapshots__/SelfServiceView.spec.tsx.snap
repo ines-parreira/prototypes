@@ -6,7 +6,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <h1
         class="d-flex align-items-center"
@@ -15,7 +15,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
       </h1>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"
@@ -257,7 +257,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <h1
         class="d-flex align-items-center"
@@ -266,7 +266,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
       </h1>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"
@@ -508,7 +508,7 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <h1
         class="d-flex align-items-center"
@@ -517,7 +517,7 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
       </h1>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"
@@ -714,7 +714,7 @@ exports[`<SelfServiceView/> render() should render the default message when ther
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <h1
         class="d-flex align-items-center"
@@ -723,7 +723,7 @@ exports[`<SelfServiceView/> render() should render the default message when ther
       </h1>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"

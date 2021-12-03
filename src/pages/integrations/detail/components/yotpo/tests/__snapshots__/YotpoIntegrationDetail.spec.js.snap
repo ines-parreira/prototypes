@@ -79,7 +79,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should not render anything 
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -214,7 +214,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render a small parag
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -341,7 +341,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render an alert beca
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -468,7 +468,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render buttons loadi
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -595,7 +595,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render not render de
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >

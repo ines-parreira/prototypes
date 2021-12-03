@@ -45,7 +45,7 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -256,7 +256,7 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >

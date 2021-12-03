@@ -1,13 +1,6 @@
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Button,
-    Col,
-    Container,
-    Row,
-} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Button, Col, Container} from 'reactstrap'
 import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom'
 import {fromJS, List, Map, Set} from 'immutable'
 import classnames from 'classnames'
@@ -25,6 +18,7 @@ import Pagination from '../../../common/components/Pagination'
 import Loader from '../../../common/components/Loader/Loader'
 import Search from '../../../common/components/Search'
 import {RootState} from '../../../../state/types'
+import settingsCss from '../../settings.less'
 import css from '../List.less'
 
 import AddMember from './AddMember'
@@ -216,10 +210,10 @@ export class MembersListContainer extends Component<Props, State> {
                     </NavLink>
                 </SecondaryNavbar>
                 {members.size > 0 ? (
-                    <Container fluid className="page-container">
-                        <Row className={css.listHeader}>
-                            <Col sm={4}>
-                                <div className="d-flex align-items-center mb-2">
+                    <>
+                        <div className={css.listHeader}>
+                            <Col sm={4} className={settingsCss.py24}>
+                                <div className="d-flex align-items-center mb-2 mt-3">
                                     <input
                                         type="checkbox"
                                         className="mr-4"
@@ -253,45 +247,51 @@ export class MembersListContainer extends Component<Props, State> {
                                     </Button>
                                 </div>
                             </Col>
-                        </Row>
-
-                        <div className={css.list}>
-                            {members.map((member: Map<any, any>) => {
-                                const memberId = member.get('id')
-                                return (
-                                    <UserRow
-                                        key={memberId}
-                                        member={member}
-                                        isAccountOwner={
-                                            memberId === accountOwnerId
-                                        }
-                                        deleteTeamMember={() =>
-                                            this._deleteTeamMember(memberId)
-                                        }
-                                        select={this._toggleTeamMemberSelection}
-                                        isSelected={this.state.selection.includes(
-                                            memberId
-                                        )}
-                                    />
-                                )
-                            })}
                         </div>
-                        <Pagination
-                            pageCount={pageCount}
-                            currentPage={currentPage}
-                            onChange={this._fetchPage}
+
+                        <Container
+                            fluid
                             className={classnames(
-                                css.pagination,
-                                'pagination-transparent'
+                                'page-container',
+                                settingsCss.pt0
                             )}
-                        />
-                    </Container>
+                        >
+                            <div className={css.list}>
+                                {members.map((member: Map<any, any>) => {
+                                    const memberId = member.get('id')
+                                    return (
+                                        <UserRow
+                                            key={memberId}
+                                            member={member}
+                                            isAccountOwner={
+                                                memberId === accountOwnerId
+                                            }
+                                            deleteTeamMember={() =>
+                                                this._deleteTeamMember(memberId)
+                                            }
+                                            select={
+                                                this._toggleTeamMemberSelection
+                                            }
+                                            isSelected={this.state.selection.includes(
+                                                memberId
+                                            )}
+                                        />
+                                    )
+                                })}
+                            </div>
+                            <Pagination
+                                pageCount={pageCount}
+                                currentPage={currentPage}
+                                onChange={this._fetchPage}
+                                className={classnames(
+                                    css.pagination,
+                                    'pagination-transparent'
+                                )}
+                            />
+                        </Container>
+                    </>
                 ) : (
-                    <Container
-                        fluid
-                        className="page-container"
-                        style={{minHeight: '500px'}}
-                    >
+                    <Container fluid className={settingsCss.pageContainer}>
                         {!this.state.search.length ? (
                             <p className="text-center">
                                 Start adding users to this team

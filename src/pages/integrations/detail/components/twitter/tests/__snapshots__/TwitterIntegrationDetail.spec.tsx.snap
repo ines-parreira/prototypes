@@ -5,7 +5,7 @@ exports[`<TwitterIntegrationDetail/> render() should render 1`] = `
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -42,7 +42,7 @@ exports[`<TwitterIntegrationDetail/> render() should render 1`] = `
     </nav>
   </div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer container-fluid"
   >
     <div
       class="row"
@@ -208,7 +208,7 @@ exports[`<TwitterIntegrationDetail/> render() should render 2`] = `
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -245,7 +245,7 @@ exports[`<TwitterIntegrationDetail/> render() should render 2`] = `
     </nav>
   </div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer container-fluid"
   >
     <div
       class="row"
@@ -411,7 +411,7 @@ exports[`<TwitterIntegrationDetail/> render() should render 3`] = `
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -448,7 +448,7 @@ exports[`<TwitterIntegrationDetail/> render() should render 3`] = `
     </nav>
   </div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer container-fluid"
   >
     <div
       class="row"
@@ -614,7 +614,7 @@ exports[`<TwitterIntegrationDetail/> render() should render 4`] = `
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -651,7 +651,7 @@ exports[`<TwitterIntegrationDetail/> render() should render 4`] = `
     </nav>
   </div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer container-fluid"
   >
     <div
       class="row"

@@ -3,7 +3,7 @@
 exports[`<EmailDomainVerificationContainer/> render() should render a delete button to account admins 1`] = `
 <div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer container-fluid"
   >
     <span>
       Your domain has been verified.
@@ -72,7 +72,7 @@ exports[`<EmailDomainVerificationContainer/> render() should render a delete but
 exports[`<EmailDomainVerificationContainer/> render() should render the page when domain is not verified 1`] = `
 <div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer container-fluid"
   >
     <div>
       <div
@@ -132,7 +132,7 @@ exports[`<EmailDomainVerificationContainer/> render() should render the page whe
 exports[`<EmailDomainVerificationContainer/> render() should render the page when domain is verified 1`] = `
 <div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer container-fluid"
   >
     <span>
       Your domain has been verified.
@@ -184,7 +184,7 @@ exports[`<EmailDomainVerificationContainer/> render() should render the page whe
 exports[`<EmailDomainVerificationContainer/> render() should render the page when there is no domain 1`] = `
 <div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer container-fluid"
   >
     <p>
       No domain and DKIM configuration has been created yet.
@@ -259,7 +259,7 @@ exports[`<EmailDomainVerificationContainer/> render() should render the page whe
 exports[`<EmailDomainVerificationContainer/> render() should render the page with an optional verification information box when there is no domain 1`] = `
 <div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer container-fluid"
   >
     <div
       class="alert alert-info fade"
@@ -356,7 +356,7 @@ exports[`<EmailDomainVerificationContainer/> render() should render the page wit
 exports[`<EmailDomainVerificationContainer/> render() should render the page with an optional verification information box when there is no domain 2`] = `
 <div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer container-fluid"
   >
     <div
       class="alert alert-info fade"

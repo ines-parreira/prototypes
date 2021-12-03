@@ -5,7 +5,7 @@ exports[`<RulesView/> should render the rule views 1`] = `
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <h1
       class="d-flex align-items-center"
@@ -25,7 +25,7 @@ exports[`<RulesView/> should render the rule views 1`] = `
     </div>
   </div>
   <div
-    class="page-container description container-fluid"
+    class="description pageContainer container-fluid"
   >
     <div
       class="mb-3 header"

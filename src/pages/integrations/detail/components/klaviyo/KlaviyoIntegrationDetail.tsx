@@ -1,5 +1,4 @@
 import React from 'react'
-
 import {
     Alert,
     Breadcrumb,
@@ -14,29 +13,24 @@ import {
     Row,
 } from 'reactstrap'
 import {Link} from 'react-router-dom'
-
 import classNames from 'classnames'
-
 import type {Map} from 'immutable'
 
 import PageHeader from '../../../../common/components/PageHeader'
 import InputField from '../../../../common/forms/InputField.js'
 import BooleanField from '../../../../common/forms/BooleanField.js'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
-
 import {KLAVIYO_INTEGRATION_TYPE} from '../../../../../constants/integration'
-
 import {
     KLAVIYO_INITIAL_SYNC_SYNCED,
     KLAVIYO_INITIAL_SYNC_SYNCING,
 } from '../../../../../config/integrations/klaviyo'
-
 import {
     deleteIntegration,
     klaviyoSyncHistoricalEvent,
     updateOrCreateIntegration,
 } from '../../../../../state/integrations/actions'
-
+import css from '../../../../settings/settings.less'
 interface IActions {
     updateOrCreateIntegration: typeof updateOrCreateIntegration
     deleteIntegration: typeof deleteIntegration
@@ -237,7 +231,7 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                         </Breadcrumb>
                     }
                 />
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <Row>
                         <Col md="8">
                             {!isUpdate ? (

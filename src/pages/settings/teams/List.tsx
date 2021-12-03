@@ -11,6 +11,7 @@ import {fetchTeamsPagination} from '../../../state/teams/actions'
 import Avatar from '../../common/components/Avatar/Avatar'
 import Loader from '../../common/components/Loader/Loader'
 import Pagination from '../../common/components/Pagination'
+import settingsCss from '../settings.less'
 
 import css from './List.less'
 
@@ -64,7 +65,7 @@ export class TeamListContainer extends Component<Props, State> {
                     </Button>
                 </PageHeader>
 
-                <Container fluid className="page-container">
+                <Container fluid className={settingsCss.pageContainer}>
                     <p>
                         Create teams of users to define what views they see by
                         default on your account.

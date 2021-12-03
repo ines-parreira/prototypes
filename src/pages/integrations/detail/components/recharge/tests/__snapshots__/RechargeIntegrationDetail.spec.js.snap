@@ -6,7 +6,7 @@ exports[`<RechargeIntegrationDetail/> render() should not render anything about 
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -41,7 +41,7 @@ exports[`<RechargeIntegrationDetail/> render() should not render anything about 
       </nav>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"
@@ -164,7 +164,7 @@ exports[`<RechargeIntegrationDetail/> render() should render a small paragraph b
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -199,7 +199,7 @@ exports[`<RechargeIntegrationDetail/> render() should render a small paragraph b
       </nav>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"
@@ -281,7 +281,7 @@ exports[`<RechargeIntegrationDetail/> render() should render an alert because th
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -316,7 +316,7 @@ exports[`<RechargeIntegrationDetail/> render() should render an alert because th
       </nav>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"
@@ -415,7 +415,7 @@ exports[`<RechargeIntegrationDetail/> render() should render buttons loading and
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -450,7 +450,7 @@ exports[`<RechargeIntegrationDetail/> render() should render buttons loading and
       </nav>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"
@@ -549,7 +549,7 @@ exports[`<RechargeIntegrationDetail/> render() should render not render deactiva
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -584,7 +584,7 @@ exports[`<RechargeIntegrationDetail/> render() should render not render deactiva
       </nav>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"

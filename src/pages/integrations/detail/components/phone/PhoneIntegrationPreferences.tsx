@@ -18,7 +18,6 @@ import {
     Label,
     Row,
 } from 'reactstrap'
-
 import classnames from 'classnames'
 
 import {PhoneFunction} from '../../../../../business/twilio'
@@ -31,6 +30,7 @@ import {
     deleteIntegration,
     updateOrCreateIntegration,
 } from '../../../../../state/integrations/actions'
+import css from '../../../../settings/settings.less'
 
 import PhoneIntegrationNavigation from './PhoneIntegrationNavigation'
 
@@ -215,7 +215,7 @@ export default function PhoneIntegrationPreferences({
 
             <PhoneIntegrationNavigation integration={integration} />
 
-            <Container fluid className="page-container">
+            <Container fluid className={css.pageContainer}>
                 <Row>
                     <Col lg={6} xl={7}>
                         <Form onSubmit={onSubmit}>

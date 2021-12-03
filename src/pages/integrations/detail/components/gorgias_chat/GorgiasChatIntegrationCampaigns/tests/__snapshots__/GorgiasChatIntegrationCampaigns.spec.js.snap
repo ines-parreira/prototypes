@@ -6,7 +6,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -89,7 +89,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
       </a>
     </nav>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <p>
         Use campaigns to prompt visitors of your website to start chatting with your team.
@@ -108,7 +108,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -191,7 +191,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
       </a>
     </nav>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <p>
         Use campaigns to prompt visitors of your website to start chatting with your team.

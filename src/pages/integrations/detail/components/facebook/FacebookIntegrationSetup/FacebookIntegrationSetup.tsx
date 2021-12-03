@@ -43,6 +43,7 @@ import {
     fetchFacebookOnboardingIntegrations,
     fetchIntegrations,
 } from '../../../../../../state/integrations/actions'
+import settingsCss from '../../../../../settings/settings.less'
 
 import css from './FacebookIntegrationSetup.less'
 
@@ -777,7 +778,7 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                     }
                 />
 
-                <Container fluid className="page-container">
+                <Container fluid className={settingsCss.pageContainer}>
                     <h1>Facebook Pages setup</h1>
                     <p>
                         One last step: choose the pages you want to manage with

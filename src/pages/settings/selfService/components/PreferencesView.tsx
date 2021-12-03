@@ -10,7 +10,6 @@ import {
 } from 'reactstrap'
 import {Link} from 'react-router-dom'
 import {useSelector} from 'react-redux'
-
 import classnames from 'classnames'
 
 import Tooltip from '../../../common/components/Tooltip'
@@ -20,10 +19,9 @@ import {PolicyEnum} from '../../../../models/selfServiceConfiguration/types'
 import {hasAutomationLegacyFeatures} from '../../../../state/currentAccount/selectors'
 import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
 import {GorgiasChatIntegrationSelfServicePaywall} from '../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
-
 import upgradeIcon from '../../../../../img/icons/upgrade-icon.svg'
-
 import {openChat} from '../../../../utils'
+import settingsCss from '../../settings.less'
 
 import {PolicyRow} from './PolicyRow'
 import {useConfigurationData} from './hooks'
@@ -60,7 +58,7 @@ export const PreferencesView = () => {
                 }
             />
 
-            <Container fluid className="page-container">
+            <Container fluid className={settingsCss.pageContainer}>
                 <Row>
                     <Col>
                         <div className="mb-3">

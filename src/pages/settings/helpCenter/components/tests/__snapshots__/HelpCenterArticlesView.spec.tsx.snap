@@ -6,7 +6,7 @@ exports[`<HelpCenterArticlesView/> should render the component 1`] = `
     class="full-width wrapper"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"

@@ -6,7 +6,7 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -96,7 +96,7 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
       </a>
     </nav>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <p>
         Use campaigns to prompt visitors of your website to start chatting with your team.
@@ -115,7 +115,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -205,7 +205,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
       </a>
     </nav>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <p>
         Use campaigns to prompt visitors of your website to start chatting with your team.

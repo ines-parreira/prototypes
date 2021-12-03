@@ -13,6 +13,7 @@ import InstallOnIntegrationsCard from '../../../../common/InstallOnIntegrationsC
 import {IntegrationType} from '../../../../../../models/integration/types'
 import {RootState} from '../../../../../../state/types'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
+import settingsCss from '../../../../../settings/settings.less'
 
 import {renderFacebookCodeSnippet} from './utils.js'
 import css from './FacebookIntegrationCustomerChat.less'
@@ -64,7 +65,7 @@ class FacebookIntegrationCustomerChat extends Component<Props, State> {
 
                 <FacebookIntegrationNavigation integration={integration} />
 
-                <Container fluid className="page-container">
+                <Container fluid className={settingsCss.pageContainer}>
                     <Row>
                         <Col md="6">
                             {targetIntegrationTypes.map(

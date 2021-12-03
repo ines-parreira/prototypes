@@ -16,10 +16,10 @@ import {parse} from 'query-string'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {notify} from '../../../../../state/notifications/actions'
 import {triggerCreateSuccess} from '../../../../../state/integrations/actions'
-
 import Loader from '../../../../common/components/Loader/Loader'
 import PageHeader from '../../../../common/components/PageHeader'
 import history from '../../../../history'
+import settingsCss from '../../../../settings/settings.less'
 
 import css from './Magento2ManualSelectionButton.less'
 import Magento2ManualIntegrationForm from './Magento2ManualIntegrationForm'
@@ -133,7 +133,7 @@ export class Magento2IntegrationDetail extends React.Component<Props, State> {
                     }
                 />
 
-                <Container fluid className="page-container">
+                <Container fluid className={settingsCss.pageContainer}>
                     <Row>
                         <Col md="8">
                             {!isUpdate ? (

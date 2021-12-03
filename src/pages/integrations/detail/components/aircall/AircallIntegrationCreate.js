@@ -18,6 +18,7 @@ import Clipboard from 'clipboard'
 
 import * as integrationsSelectors from '../../../../../state/integrations/selectors.ts'
 import PageHeader from '../../../../common/components/PageHeader.tsx'
+import css from '../../../../settings/settings.less'
 
 @connect((state) => {
     const aircallAuthData = integrationsSelectors.getAuthData('aircall')(state)
@@ -83,7 +84,7 @@ export default class AircallIntegrationCreate extends Component {
                     }
                 />
 
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <Row>
                         <Col md="8">
                             <h3>Setup Instructions</h3>

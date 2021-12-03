@@ -19,15 +19,13 @@ import {
     deleteIntegration,
     updateOrCreateIntegration,
 } from '../../../../../state/integrations/actions'
-
 import PageHeader from '../../../../common/components/PageHeader'
 import BooleanField from '../../../../common/forms/BooleanField.js'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
-
 import {IntegrationType} from '../../../../../models/integration/types'
 import {RootState} from '../../../../../state/types'
-
 import {getCurrentAccountState} from '../../../../../state/currentAccount/selectors'
+import css from '../../../../settings/settings.less'
 
 import {hasAccessToTwitterDMs} from './utils'
 
@@ -170,7 +168,7 @@ export function TwitterIntegrationDetail({
                     </Breadcrumb>
                 }
             />
-            <Container fluid className="page-container">
+            <Container fluid className={css.pageContainer}>
                 <Row>
                     <Col md="7">
                         <Row>

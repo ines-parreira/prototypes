@@ -107,7 +107,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header"
+          className="page-header pageHeader"
         >
           <Breadcrumb
             aria-label="breadcrumb"
@@ -280,12 +280,12 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
         </SecondaryNavbar>
       </GorgiasChatIntegrationNavigation>
       <Container
-        className="page-container"
+        className="pageContainer"
         fluid={true}
         tag="div"
       >
         <div
-          className="page-container container-fluid"
+          className="pageContainer container-fluid"
         >
           <Row
             tag="div"
@@ -1676,7 +1676,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header"
+          className="page-header pageHeader"
         >
           <Breadcrumb
             aria-label="breadcrumb"
@@ -1845,12 +1845,12 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
         </SecondaryNavbar>
       </GorgiasChatIntegrationNavigation>
       <Container
-        className="page-container"
+        className="pageContainer"
         fluid={true}
         tag="div"
       >
         <div
-          className="page-container container-fluid"
+          className="pageContainer container-fluid"
         >
           <Row
             tag="div"
@@ -2515,7 +2515,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header"
+          className="page-header pageHeader"
         >
           <Breadcrumb
             aria-label="breadcrumb"
@@ -2704,12 +2704,12 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
         </SecondaryNavbar>
       </GorgiasChatIntegrationNavigation>
       <Container
-        className="page-container"
+        className="pageContainer"
         fluid={true}
         tag="div"
       >
         <div
-          className="page-container container-fluid"
+          className="pageContainer container-fluid"
         >
           <Row
             tag="div"

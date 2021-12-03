@@ -32,6 +32,7 @@ import {
     getSubdomainValidationError,
     isValidSubdomain,
 } from '../utils/validations'
+import settingsCss from '../../settings.less'
 
 import {PageContainer} from './PageContainer'
 import {ThemeSwitch} from './ThemeSwitch'
@@ -213,7 +214,7 @@ export const HelpCenterNewView = ({
                     </Breadcrumb>
                 }
             />
-            <PageContainer>
+            <PageContainer className={settingsCss.pageContainer}>
                 <section className={css.form}>
                     <InputField
                         type="text"

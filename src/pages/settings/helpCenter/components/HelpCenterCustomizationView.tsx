@@ -28,6 +28,7 @@ import {
 } from '../hooks/useNavigationLinks'
 import {getLocaleSelectOptions} from '../utils/localeSelectOptions'
 import {saveNavigationLinks, saveSocialLinks} from '../utils/navigationLinks'
+import css from '../../settings.less'
 
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
@@ -199,7 +200,7 @@ export const HelpCenterCustomizationView = () => {
                 }
             />
             <HelpCenterNavigation helpCenterId={helpCenterId} />
-            <PageContainer>
+            <PageContainer className={css.pageContainer}>
                 <NavSection
                     availableLocales={localesOptions}
                     description="Change navigation elements at the top of the Help Center."

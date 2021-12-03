@@ -54,7 +54,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an active integration
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -293,7 +293,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an inactive integrati
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -531,7 +531,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an integration which 
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >

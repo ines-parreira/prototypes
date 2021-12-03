@@ -2,7 +2,7 @@ import React, {Component, SyntheticEvent} from 'react'
 import {List} from 'immutable'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
-import {Button, Col, Container, Form, Label, Row} from 'reactstrap'
+import {Button, Col, Container, Form, FormGroup, Label, Row} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
 
 import {TicketChannel} from '../../../business/types/ticket'
@@ -10,13 +10,13 @@ import UserActivityManager from '../../../services/userActivityManager'
 import {fetchChats} from '../../../state/chats/actions'
 import {submitSetting} from '../../../state/currentAccount/actions'
 import {getTicketAssignmentSettings} from '../../../state/currentAccount/selectors'
-
 import PageHeader from '../../common/components/PageHeader'
 import BooleanField from '../../common/forms/BooleanField.js'
 import MultiSelectOptionsField from '../../common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import {Option} from '../../common/forms/MultiSelectOptionsField/types'
 import {AccountSettingType} from '../../../state/currentAccount/types'
 import {RootState} from '../../../state/types'
+import css from '../settings.less'
 
 type Props = ConnectedProps<typeof connector>
 
@@ -136,11 +136,11 @@ export class TicketAssignmentContainer extends Component<Props, State> {
             <div className="full-width">
                 <PageHeader title="Ticket assignment" />
 
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <Form onSubmit={this._onSubmit}>
-                        <Row className="mb-2">
-                            <Col md="5">
-                                <div className="mb-2">
+                        <Row className={css.contentWrapper}>
+                            <Col>
+                                <FormGroup className={css.inputField}>
                                     <Label className="control-label">
                                         Auto-assign tickets
                                     </Label>
@@ -156,8 +156,8 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                             })
                                         }
                                     />
-                                </div>
-                                <div className="mb-2">
+                                </FormGroup>
+                                <FormGroup className={css.inputField}>
                                     <Label className="control-label">
                                         Un-assign on reply
                                     </Label>
@@ -173,7 +173,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                             })
                                         }
                                     />
-                                </div>
+                                </FormGroup>
                                 <div className="text-faded">
                                     Users are considered as not available when
                                     any of those conditions is true:
@@ -196,7 +196,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                         </li>
                                     </ul>
                                 </div>
-                                <div className="mb-2">
+                                <FormGroup className={css.inputField}>
                                     <Label className="control-label">
                                         Channels
                                     </Label>
@@ -217,7 +217,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                         matchInput
                                         caseInsensitive
                                     />
-                                </div>
+                                </FormGroup>
                             </Col>
                         </Row>
 

@@ -36,6 +36,7 @@ import RadioField from '../../../../common/forms/RadioField'
 import SelectField from '../../../../common/forms/SelectField/SelectField'
 import {EMAIL_INTEGRATION_TYPES} from '../../../../../constants/integration'
 import {RootState} from '../../../../../state/types'
+import settingsCss from '../../../../settings/settings.less'
 
 import ChatIntegrationNavigation from './GorgiasChatIntegrationNavigation'
 import ChatIntegrationPreview from './GorgiasChatIntegrationPreview/ChatIntegrationPreview'
@@ -281,7 +282,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
 
                 <ChatIntegrationNavigation integration={integration} />
 
-                <Container fluid className="page-container">
+                <Container fluid className={settingsCss.pageContainer}>
                     <Row>
                         <Col>
                             <Form onSubmit={this._submitPreferences}>

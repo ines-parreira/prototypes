@@ -13,6 +13,7 @@ import InputField from '../../../../../common/forms/InputField.js'
 import PageHeader from '../../../../../common/components/PageHeader'
 import {RootState} from '../../../../../../state/types'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
+import settingsCss from '../../../../../settings/settings.less'
 
 import css from './EmailIntegrationCreateCustom.less'
 
@@ -115,7 +116,7 @@ export class EmailIntegrationCreateCustom extends Component<Props, State> {
                     }
                 />
 
-                <Container fluid className="page-container">
+                <Container fluid className={settingsCss.pageContainer}>
                     <p>
                         You can connect your email to Gorgias by setting up
                         email forwarding. Follow the steps below to get started.

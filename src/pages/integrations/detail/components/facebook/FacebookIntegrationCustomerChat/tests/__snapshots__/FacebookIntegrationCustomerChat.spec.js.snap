@@ -93,7 +93,7 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header"
+          className="page-header pageHeader"
         >
           <Breadcrumb
             aria-label="breadcrumb"
@@ -230,12 +230,12 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
         </SecondaryNavbar>
       </FacebookIntegrationNavigation>
       <Container
-        className="page-container"
+        className="pageContainer"
         fluid={true}
         tag="div"
       >
         <div
-          className="page-container container-fluid"
+          className="pageContainer container-fluid"
         >
           <Row
             tag="div"

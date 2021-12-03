@@ -5,7 +5,7 @@ exports[`<PhoneIntegrationPreferences/> render() should render 1`] = `
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -73,7 +73,7 @@ exports[`<PhoneIntegrationPreferences/> render() should render 1`] = `
     </a>
   </nav>
   <div
-    class="page-container container-fluid"
+    class="pageContainer container-fluid"
   >
     <div
       class="row"
@@ -278,7 +278,7 @@ exports[`<PhoneIntegrationPreferences/> render() should render with IVR integrat
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -346,7 +346,7 @@ exports[`<PhoneIntegrationPreferences/> render() should render with IVR integrat
     </a>
   </nav>
   <div
-    class="page-container container-fluid"
+    class="pageContainer container-fluid"
   >
     <div
       class="row"

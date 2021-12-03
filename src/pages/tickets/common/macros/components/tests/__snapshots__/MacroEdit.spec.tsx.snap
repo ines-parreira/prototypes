@@ -15,9 +15,7 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
   setName={[Function]}
 >
   <form>
-    <div
-      className="mt-3 mb-3"
-    >
+    <div>
       <div>
         <div
           className="mb-2 title"

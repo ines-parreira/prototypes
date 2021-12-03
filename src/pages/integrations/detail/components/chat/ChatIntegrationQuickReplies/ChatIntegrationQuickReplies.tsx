@@ -22,10 +22,10 @@ import {
     QUICK_REPLIES_MAX_ITEM_LENGTH,
     QUICK_REPLIES_MAX_ITEMS,
 } from '../../../../../../config/integrations/smooch_inside'
-
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
 import ChatIntegrationPreview from '../ChatIntegrationPreview/ChatIntegrationPreview'
 import QuickRepliesPreview from '../ChatIntegrationPreview/QuickReplies'
+import css from '../../../../../settings/settings.less'
 
 type Props = {
     integration: Map<any, any>
@@ -142,7 +142,7 @@ export class ChatIntegrationQuickRepliesComponent extends Component<
 
                 <ChatIntegrationNavigation integration={integration} />
 
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <Row>
                         <Col>
                             <Form onSubmit={this._submit}>

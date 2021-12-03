@@ -3,6 +3,7 @@ import _pick from 'lodash/pick'
 import React, {useEffect, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Button, Container} from 'reactstrap'
+import classnames from 'classnames'
 
 import useDelayedAsyncFn from '../../../hooks/useDelayedAsyncFn'
 import useCancellableRequest from '../../../hooks/useCancellableRequest'
@@ -21,6 +22,7 @@ import Pagination from '../../common/components/Pagination'
 import Search from '../../common/components/Search'
 import {RootState} from '../../../state/types'
 import history from '../../history'
+import settingsCss from '../settings.less'
 
 import css from './MacrosSettingsContent.less'
 import MacrosSettingsTable from './MacrosSettingsTable'
@@ -115,7 +117,13 @@ export function MacrosSettingsContentContainer({
                     </Button>
                 </div>
             </PageHeader>
-            <Container className="page-container" fluid>
+            <Container
+                fluid
+                className={classnames(
+                    settingsCss.pageContainer,
+                    settingsCss.pb0
+                )}
+            >
                 <div className={css.description}>
                     <div className={css.descriptionText}>
                         <p>

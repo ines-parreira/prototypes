@@ -5,7 +5,7 @@ exports[`<TwitterIntegrationList/> render() should render 1`] = `
   class="w-100"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -48,7 +48,7 @@ exports[`<TwitterIntegrationList/> render() should render 1`] = `
     </div>
   </div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer pb0 container-fluid"
   >
     <div
       class="mb-3"
@@ -104,7 +104,7 @@ exports[`<TwitterIntegrationList/> render() should render with a warning message
   class="w-100"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -147,7 +147,7 @@ exports[`<TwitterIntegrationList/> render() should render with a warning message
     </div>
   </div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer pb0 container-fluid"
   >
     <div
       class="mb-3"
@@ -230,7 +230,7 @@ exports[`<TwitterIntegrationList/> render() should render with an error message 
   class="w-100"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -258,7 +258,7 @@ exports[`<TwitterIntegrationList/> render() should render with an error message 
     </nav>
   </div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer pb0 container-fluid"
   >
     <div
       class="mb-3"
@@ -341,7 +341,7 @@ exports[`<TwitterIntegrationList/> render() should render with empty list 1`] = 
   class="w-100"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -384,7 +384,7 @@ exports[`<TwitterIntegrationList/> render() should render with empty list 1`] = 
     </div>
   </div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer pb0 container-fluid"
   >
     <div
       class="mb-3"

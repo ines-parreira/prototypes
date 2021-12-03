@@ -44,6 +44,7 @@ import AutoResponderPreview from '../ChatIntegrationPreview/AutoResponder'
 import {EMAIL_INTEGRATION_TYPES} from '../../../../../../constants/integration'
 import {getIntegrationsByTypes} from '../../../../../../state/integrations/selectors'
 import {RootState} from '../../../../../../state/types'
+import css from '../../../../../settings/settings.less'
 
 const emailCaptureOptions = [
     {
@@ -281,7 +282,7 @@ export class ChatIntegrationPreferences extends Component<Props, State> {
 
                 <ChatIntegrationNavigation integration={integration} />
 
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <Row>
                         <Col>
                             <Form onSubmit={this._submitPreferences}>

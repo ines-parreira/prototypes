@@ -49,6 +49,7 @@ import {getSchemas} from '../../../state/schemas/selectors'
 import Loader from '../../common/components/Loader/Loader'
 import InputField from '../../common/forms/InputField'
 import Program from '../../common/components/ast/Program'
+import settingsCss from '../settings.less'
 
 import {RulesTriggerSelect} from './components/RulesTriggerSelect'
 import RuleItemButtons from './components/RuleItemButtons'
@@ -355,7 +356,6 @@ export function RulesSettingsFormContainer({
                                 onClick={() =>
                                     history.push('/app/settings/rules')
                                 }
-                                className={css.pageHeader}
                             >
                                 Rules
                             </span>
@@ -368,7 +368,7 @@ export function RulesSettingsFormContainer({
             />
             <Container
                 fluid
-                className={classnames('page-container', css.container)}
+                className={classnames(css.container, settingsCss.pageContainer)}
             >
                 {isFetchPending ? (
                     <Loader />

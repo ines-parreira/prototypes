@@ -54,7 +54,7 @@ const HelpCenterPaywall = (): JSX.Element => {
                         css[currentPlanName.toLowerCase()]
                     )}
                 />
-                <Container fluid className={'page-container'}>
+                <Container fluid className="page-container">
                     <Row>
                         <Col xs={12} xl={6} className={css.preview}>
                             <img

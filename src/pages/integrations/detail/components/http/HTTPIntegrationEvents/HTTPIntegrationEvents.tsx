@@ -4,7 +4,6 @@ import {Link} from 'react-router-dom'
 import {Container, Table} from 'reactstrap'
 import _truncate from 'lodash/truncate'
 import {Map} from 'immutable'
-
 import {useAsyncFn} from 'react-use'
 
 import {HTTP_METHOD_GET} from '../../../../../../config'
@@ -17,6 +16,7 @@ import HTTPStatusLabel from '../../../../../common/components/HTTPStatusLabel/HT
 import {fetchHTTPIntegrationEvents} from '../../../../../../state/HTTPIntegrationEvents/actions'
 import {getHTTPIntegrationEvents} from '../../../../../../state/HTTPIntegrationEvents/selectors'
 import {RootState} from '../../../../../../state/types'
+import css from '../../../../../settings/settings.less'
 
 function Event({
     event,
@@ -103,7 +103,7 @@ export function HTTPIntegrationEventsContainer({
 
     return (
         <div>
-            <Container fluid className="page-container">
+            <Container fluid className={css.pageContainer}>
                 <p>
                     Shows the latest HTTP requests sent by this integration with
                     their responses. This page is useful to see if this

@@ -27,6 +27,7 @@ import HelpCenterPreferencesView from '../../components/HelpCenterPreferencesVie
 import HelpCenterSelfServiceView from '../../components/HelpCenterSelfServiceView'
 import {useCurrentHelpCenter} from '../../hooks/useCurrentHelpCenter'
 import {useHelpCenterIdParam} from '../../hooks/useHelpCenterIdParam'
+import css from '../../../settings.less'
 
 import './CurrentHelpCenter.less'
 
@@ -58,7 +59,7 @@ export const CurrentHelpCenter = (): JSX.Element => {
 
     if (!helpCenter) {
         return (
-            <Container fluid className="page-container">
+            <Container fluid className={css.pageContainer}>
                 <Loader />
             </Container>
         )

@@ -157,7 +157,7 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -467,7 +467,7 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >

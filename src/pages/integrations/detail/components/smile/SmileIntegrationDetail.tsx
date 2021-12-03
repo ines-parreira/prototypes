@@ -15,7 +15,6 @@ import {parse} from 'query-string'
 import {connect, ConnectedProps} from 'react-redux'
 
 import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration'
-
 import Loader from '../../../../common/components/Loader/Loader'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import InputField from '../../../../common/forms/InputField'
@@ -25,6 +24,7 @@ import {
     deleteIntegration,
     updateOrCreateIntegration,
 } from '../../../../../state/integrations/actions'
+import css from '../../../../settings/settings.less'
 
 type Props = {
     integration: Map<any, any>
@@ -130,7 +130,7 @@ export class SmileIntegrationDetailComponent extends Component<Props, State> {
                     }
                 />
 
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <Row>
                         <Col md="8">
                             {isActive &&

@@ -18,8 +18,8 @@ import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {GorgiasChatIntegrationSelfServicePaywall} from '../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
 import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
-
 import {hasAutomationLegacyFeatures} from '../../../../state/currentAccount/selectors'
+import settingsCss from '../../settings.less'
 
 import {IntegrationRow} from './IntegrationRow'
 import css from './SelfServiceView.less'
@@ -74,7 +74,7 @@ export const SelfServiceView = () => {
             <PageHeader title="Self-service" />
 
             {hasSelfServiceV1Features || hasAutomationAddOn ? (
-                <Container fluid className="page-container">
+                <Container fluid className={settingsCss.pageContainer}>
                     <Row>
                         <Col className={css.contentColumn}>
                             <div className="mb-3">

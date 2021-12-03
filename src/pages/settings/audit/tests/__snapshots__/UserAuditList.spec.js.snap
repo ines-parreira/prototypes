@@ -92,7 +92,7 @@ exports[`UserAuditList component mounts correctly 1`] = `
     </div>
   </PageHeader>
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >

@@ -6,7 +6,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -96,7 +96,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
       </a>
     </nav>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"
@@ -689,7 +689,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -779,7 +779,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
       </a>
     </nav>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"
@@ -1476,7 +1476,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -1566,7 +1566,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
       </a>
     </nav>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"

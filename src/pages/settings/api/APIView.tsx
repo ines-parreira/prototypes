@@ -9,8 +9,8 @@ import {
     Button,
     Input,
     InputGroupAddon,
-    FormText,
 } from 'reactstrap'
+import classnames from 'classnames'
 
 import {getCurrentUser} from '../../../state/currentUser/selectors'
 import {getApiKey} from '../../../state/auths/selectors'
@@ -21,6 +21,7 @@ import PageHeader from '../../common/components/PageHeader'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker.js'
 import {RootState} from '../../../state/types'
 import {NotificationStatus} from '../../../state/notifications/types'
+import css from '../settings.less'
 
 type Props = ConnectedProps<typeof connector>
 
@@ -124,10 +125,8 @@ export class APIViewContainer extends Component<Props, State> {
     _renderCreateApiKeySection() {
         return (
             <div>
-                <p>
-                    <FormText color="muted">
-                        You can create an API Key using the button below.
-                    </FormText>
+                <p className={classnames(css['body-regular'], css.mb24)}>
+                    You can create an API Key using the button below.
                 </p>
                 <Button
                     className="resetBtn"
@@ -189,139 +188,194 @@ export class APIViewContainer extends Component<Props, State> {
         )
 
         return (
-            <div className="max-width">
+            <div className="full-width">
                 <PageHeader title="REST API" />
-
-                <Container className="page-container">
-                    <p>
-                        Gorgias prides itself on being a developer-friendly
-                        helpdesk. We expose a{' '}
-                        <a
-                            href="https://stackoverflow.com/questions/671118/what-exactly-is-restful-programming"
-                            target="_blank"
-                            rel="noopener noreferrer"
+                <Container fluid className={css.pageContainer}>
+                    <div className={css.contentWrapper}>
+                        <div
+                            className={classnames(
+                                css['body-regular'],
+                                css.mb32
+                            )}
                         >
-                            RESTful API
-                        </a>{' '}
-                        to make it easy for you to get, create, update and
-                        delete many objects including customers, tickets,
-                        messages and events. To find out more about our API,
-                        please consult our docs here:
-                        <a
-                            href="https://developers.gorgias.com/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            {' '}
-                            https://developers.gorgias.com/
-                        </a>
-                        .
-                    </p>
-                    <p>
-                        Below are the parameters you will need to access our
-                        API. We're using{' '}
-                        <a
-                            href="https://en.wikipedia.org/wiki/Basic_access_authentication"
-                            rel="noopener noreferrer"
-                        >
-                            HTTP basic authentication
-                        </a>{' '}
-                        to authenticate API requests.
-                    </p>
-                    <h4>API Access &amp; Credentials</h4>
-                    <FormGroup>
-                        <Label for="URL">Base API URL</Label>
-                        <InputGroup>
-                            <Input
-                                id="url"
-                                type="text"
-                                value={`https://${domain}.gorgias.com/api/`}
-                                readOnly
-                            />
-                            <InputGroupAddon addonType="append">
-                                <Button
-                                    className="copyBtn"
-                                    data-clipboard-target="#url"
+                            <p>
+                                Gorgias prides itself on being a
+                                developer-friendly helpdesk. We expose a{' '}
+                                <a
+                                    href="https://stackoverflow.com/questions/671118/what-exactly-is-restful-programming"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                 >
-                                    <i className="material-icons mr-2">
-                                        file_copy
-                                    </i>
-                                    {this.state.isCopiedUrl
-                                        ? 'Copied!'
-                                        : 'Copy'}
-                                </Button>
-                            </InputGroupAddon>
-                        </InputGroup>
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="email">Username (your email address)</Label>
-                        <InputGroup>
-                            <Input
-                                id="email"
-                                type="text"
-                                value={email}
-                                readOnly
-                            />
-                            <InputGroupAddon addonType="append">
-                                <Button
-                                    className="copyBtn"
-                                    data-clipboard-target="#email"
+                                    RESTful API
+                                </a>{' '}
+                                to make it easy for you to get, create, update
+                                and delete many objects including customers,
+                                tickets, messages and events. To find out more
+                                about our API, please consult our docs here:
+                                <a
+                                    href="https://developers.gorgias.com/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                 >
-                                    <i className="material-icons mr-2">
-                                        file_copy
-                                    </i>
-                                    {this.state.isCopiedEmail
-                                        ? 'Copied!'
-                                        : 'Copy'}
-                                </Button>
-                            </InputGroupAddon>
-                        </InputGroup>
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="apiKey">Password (API Key)</Label>
-                        {!!apiKey
-                            ? this._renderApiKeySection(apiKey)
-                            : this._renderCreateApiKeySection()}
-                    </FormGroup>
-                    <br />
-
-                    <h4>Postman collection</h4>
-                    <p>
-                        You can also import our{' '}
-                        <a
-                            href="https://www.getpostman.com/"
-                            target="_blank"
-                            rel="noopener noreferrer"
+                                    {' '}
+                                    https://developers.gorgias.com/
+                                </a>
+                                .
+                            </p>
+                            <p>
+                                Below are the parameters you will need to access
+                                our API. We're using{' '}
+                                <a
+                                    href="https://en.wikipedia.org/wiki/Basic_access_authentication"
+                                    rel="noopener noreferrer"
+                                >
+                                    HTTP basic authentication
+                                </a>{' '}
+                                to authenticate API requests.
+                            </p>
+                        </div>
+                        <div
+                            className={classnames(
+                                css['heading-section-semibold'],
+                                css.mb16
+                            )}
                         >
-                            Postman
-                        </a>{' '}
-                        collection below to quickly connect and use our REST
-                        API.
-                    </p>
-                    <div
-                        className="postman-run-button"
-                        data-postman-action="collection/import"
-                        data-postman-var-1="15687974-2ca60778-1282-4a00-9d6a-8e90213b8248"
-                        data-postman-collection-url="entityId=15687974-2ca60778-1282-4a00-9d6a-8e90213b8248&entityType=collection&workspaceId=b6894a63-39b4-496f-acdc-db697172e169"
-                        data-postman-param={postmanParams}
-                    />
-                    <br />
-                    <br />
+                            API Access &amp; Credentials
+                        </div>
+                        <FormGroup className={css.inputField}>
+                            <Label className="control-label" for="URL">
+                                Base API URL
+                            </Label>
+                            <InputGroup>
+                                <Input
+                                    id="url"
+                                    type="text"
+                                    value={`https://${domain}.gorgias.com/api/`}
+                                    readOnly
+                                />
+                                <InputGroupAddon addonType="append">
+                                    <Button
+                                        className="copyBtn"
+                                        data-clipboard-target="#url"
+                                    >
+                                        <i className="material-icons mr-2">
+                                            file_copy
+                                        </i>
+                                        {this.state.isCopiedUrl
+                                            ? 'Copied!'
+                                            : 'Copy'}
+                                    </Button>
+                                </InputGroupAddon>
+                            </InputGroup>
+                        </FormGroup>
+                        <FormGroup className={css.inputField}>
+                            <Label className="control-label" for="email">
+                                Username (your email address)
+                            </Label>
+                            <InputGroup>
+                                <Input
+                                    id="email"
+                                    type="text"
+                                    value={email}
+                                    readOnly
+                                />
+                                <InputGroupAddon addonType="append">
+                                    <Button
+                                        className="copyBtn"
+                                        data-clipboard-target="#email"
+                                    >
+                                        <i className="material-icons mr-2">
+                                            file_copy
+                                        </i>
+                                        {this.state.isCopiedEmail
+                                            ? 'Copied!'
+                                            : 'Copy'}
+                                    </Button>
+                                </InputGroupAddon>
+                            </InputGroup>
+                        </FormGroup>
+                        <FormGroup
+                            className={classnames(css.inputField, css.mb32)}
+                        >
+                            <Label className="control-label" for="apiKey">
+                                Password (API Key)
+                            </Label>
+                            {!!apiKey
+                                ? this._renderApiKeySection(apiKey)
+                                : this._renderCreateApiKeySection()}
+                        </FormGroup>
 
-                    <h4>Developer newsletter</h4>
-                    <p>
-                        If you're using our API, we highly encourage you to
-                        subscribe to our developer newsletter. It contains
-                        updates about{' '}
-                        <b>upcoming changes and breaking changes to the API</b>,
-                        new features and integrations.
-                    </p>
-                    <Button
-                        color="primary"
-                        onClick={this._subscribeToDeveloperNewsletter}
-                    >
-                        Subscribe
-                    </Button>
+                        <div
+                            className={classnames(
+                                css['heading-subsection-semibold'],
+                                css.mb8
+                            )}
+                        >
+                            Postman collection
+                        </div>
+                        <div
+                            className={classnames(
+                                css['body-regular'],
+                                css.mb24
+                            )}
+                        >
+                            <p>
+                                You can also import our{' '}
+                                <a
+                                    href="https://www.getpostman.com/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Postman
+                                </a>{' '}
+                                collection below to quickly connect and use our
+                                REST API.
+                            </p>
+                        </div>
+                        <div
+                            className={classnames(
+                                'postman-run-button',
+                                css.mb32
+                            )}
+                            data-postman-action="collection/import"
+                            data-postman-var-1="15687974-2ca60778-1282-4a00-9d6a-8e90213b8248"
+                            data-postman-collection-url="entityId=15687974-2ca60778-1282-4a00-9d6a-8e90213b8248&entityType=collection&workspaceId=b6894a63-39b4-496f-acdc-db697172e169"
+                            data-postman-param={postmanParams}
+                        />
+
+                        <div
+                            className={classnames(
+                                css['heading-subsection-semibold'],
+                                css.mb8
+                            )}
+                        >
+                            Developer newsletter
+                        </div>
+                        <div
+                            className={classnames(
+                                css['body-regular'],
+                                css.mb24
+                            )}
+                        >
+                            <p>
+                                If you're using our API, we highly encourage you
+                                to subscribe to our developer newsletter. It
+                                contains updates about{' '}
+                                <b>
+                                    upcoming changes and breaking changes to the
+                                    API
+                                </b>
+                                , new features and integrations.
+                            </p>
+                        </div>
+
+                        <Button
+                            color="primary"
+                            onClick={this._subscribeToDeveloperNewsletter}
+                        >
+                            Subscribe
+                        </Button>
+                    </div>
                 </Container>
             </div>
         )

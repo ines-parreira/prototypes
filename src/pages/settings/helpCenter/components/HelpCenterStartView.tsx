@@ -17,16 +17,14 @@ import {
     changeHelpCenterId,
     changeViewLanguage,
 } from '../../../../state/helpCenter/ui'
-
 import PageHeader from '../../../common/components/PageHeader'
-
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useLocales} from '../hooks/useLocales'
 import {HELP_CENTER_MAX_CREATION, HELP_CENTER_BASE_PATH} from '../constants'
 import Tooltip from '../../../common/components/Tooltip'
+import settingsCss from '../../settings.less'
 
 import HelpCentersTable from './HelpCenterTable'
-
 import css from './HelpCenterStartView.less'
 
 export const HelpCenterStartView: FunctionComponent = () => {
@@ -158,7 +156,7 @@ export const HelpCenterStartView: FunctionComponent = () => {
                 </Tooltip>
             </PageHeader>
 
-            <Container fluid className="page-container">
+            <Container fluid className={settingsCss.pageContainer}>
                 <p>
                     Help Center is a tool that makes it easier to answer your
                     client’s questions in an organic way. Set up a dedicated

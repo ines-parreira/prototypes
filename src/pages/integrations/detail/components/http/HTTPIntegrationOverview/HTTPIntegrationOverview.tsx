@@ -28,8 +28,8 @@ import ObjectListField, {Field} from '../ObjectListField'
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
 import InputField from '../../../../../common/forms/InputField'
 import BooleanField from '../../../../../common/forms/BooleanField.js'
-
 import {ContentType, HttpMethod} from '../../../../../../models/api/types'
+import css from '../../../../../settings/settings.less'
 
 import {DEFAULT_FORM} from './constants.js'
 import JSONBody from './JSONBody'
@@ -318,7 +318,7 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
 
         return (
             <div className="full-width">
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <p>
                         Add the details about the HTTP integration you want to
                         add below. If you need help, you can check our{' '}

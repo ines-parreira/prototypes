@@ -6,7 +6,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -42,7 +42,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
       </nav>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"
@@ -606,7 +606,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -681,7 +681,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
       </a>
     </nav>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"
@@ -1174,7 +1174,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -1249,7 +1249,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
       </a>
     </nav>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"
@@ -1741,7 +1741,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -1816,7 +1816,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
       </a>
     </nav>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"
@@ -2316,7 +2316,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -2391,7 +2391,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
       </a>
     </nav>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"
@@ -2883,7 +2883,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -2958,7 +2958,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
       </a>
     </nav>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"
@@ -3437,7 +3437,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -3473,7 +3473,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
       </nav>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <div
         class="row"

@@ -88,7 +88,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header"
+          className="page-header pageHeader"
         >
           <Breadcrumb
             aria-label="breadcrumb"
@@ -274,12 +274,12 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
         </SecondaryNavbar>
       </ChatIntegrationNavigation>
       <Container
-        className="page-container"
+        className="pageContainer"
         fluid={true}
         tag="div"
       >
         <div
-          className="page-container container-fluid"
+          className="pageContainer container-fluid"
         >
           <Row
             tag="div"
@@ -1014,7 +1014,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header"
+          className="page-header pageHeader"
         >
           <Breadcrumb
             aria-label="breadcrumb"
@@ -1208,12 +1208,12 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
         </SecondaryNavbar>
       </ChatIntegrationNavigation>
       <Container
-        className="page-container"
+        className="pageContainer"
         fluid={true}
         tag="div"
       >
         <div
-          className="page-container container-fluid"
+          className="pageContainer container-fluid"
         >
           <Row
             tag="div"

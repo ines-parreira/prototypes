@@ -6,7 +6,7 @@ exports[`<HelpCenterStartView/> should render the component 1`] = `
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <h1
         class="d-flex align-items-center"
@@ -36,7 +36,7 @@ exports[`<HelpCenterStartView/> should render the component 1`] = `
       </div>
     </div>
     <div
-      class="page-container container-fluid"
+      class="pageContainer container-fluid"
     >
       <p>
         Help Center is a tool that makes it easier to answer your client’s questions in an organic way. Set up a dedicated site to sideload your support flow.

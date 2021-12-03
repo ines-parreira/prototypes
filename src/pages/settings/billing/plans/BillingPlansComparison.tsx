@@ -120,10 +120,7 @@ export default function BillingPlansComparison({
 
     return (
         <SynchronizedScrollTopProvider>
-            <Container
-                fluid
-                className={classNames('page-container', css.planContainer)}
-            >
+            <Container fluid className={css.planContainer}>
                 <div className={css.intervalToggle}>
                     <ButtonGroup>
                         <Button

@@ -14,6 +14,7 @@ import TableBodyRow from '../../../common/components/table/TableBodyRow'
 import TableHead from '../../../common/components/table/TableHead'
 import TableWrapper from '../../../common/components/table/TableWrapper'
 import ToggleButton from '../../../common/components/ToggleButton'
+import settingsCss from '../../settings.less'
 
 import css from './HelpCenterTable.less'
 
@@ -47,7 +48,7 @@ export function HelpCentersTable({
 
     if (list.length === 0) {
         return (
-            <Container fluid className="page-container">
+            <Container fluid className={settingsCss.py24}>
                 <div>You have no Help Center at the moment.</div>
             </Container>
         )

@@ -3,7 +3,7 @@
 exports[`<HelpCenterTable/> should display a message when list is empty 1`] = `
 <div>
   <div
-    class="page-container container-fluid"
+    class="py24 container-fluid"
   >
     <div>
       You have no Help Center at the moment.

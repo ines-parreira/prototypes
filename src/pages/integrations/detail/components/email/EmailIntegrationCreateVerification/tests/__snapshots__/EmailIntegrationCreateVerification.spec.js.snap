@@ -45,7 +45,7 @@ exports[`<EmailIntegrationCreateVerification/> render() should render instructio
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -150,7 +150,7 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >

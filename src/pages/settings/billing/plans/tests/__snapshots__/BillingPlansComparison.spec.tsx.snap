@@ -2,7 +2,7 @@
 
 exports[`<BillingPlansComparison /> should display disabled link to modal for current plan with automation add-on 1`] = `
 <div
-  class="page-container planContainer container-fluid"
+  class="planContainer container-fluid"
 >
   <div
     class="intervalToggle"
@@ -1339,7 +1339,7 @@ Array [
 
 exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
 <div
-  class="page-container planContainer container-fluid"
+  class="planContainer container-fluid"
 >
   <div
     class="intervalToggle"
@@ -2957,7 +2957,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
 
 exports[`<BillingPlansComparison /> should render available plans 1`] = `
 <div
-  class="page-container planContainer container-fluid"
+  class="planContainer container-fluid"
 >
   <div
     class="intervalToggle"
@@ -4261,7 +4261,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
 
 exports[`<BillingPlansComparison /> should set plan cards to updating while plan is being updated 1`] = `
 <div
-  class="page-container planContainer container-fluid"
+  class="planContainer container-fluid"
 >
   <div
     class="intervalToggle"

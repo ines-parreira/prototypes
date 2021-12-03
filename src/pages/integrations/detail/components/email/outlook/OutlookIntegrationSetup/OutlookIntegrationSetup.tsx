@@ -22,6 +22,7 @@ import {
     fetchIntegrations,
     fetchOutlookOnboardingIntegrations,
 } from '../../../../../../../state/integrations/actions'
+import css from '../../../../../../settings/settings.less'
 
 type Props = {
     loading: Map<any, any>
@@ -182,7 +183,13 @@ export class OutlookIntegrationSetupContainer extends Component<Props, State> {
                     />
                 </PageHeader>
 
-                <Container fluid className="page-container with-space-bottom">
+                <Container
+                    fluid
+                    className={classnames(
+                        'page-container with-space-bottom',
+                        css.pageContainer
+                    )}
+                >
                     <h1>Outlook email addresses setup</h1>
                     <p>
                         One last step: choose the email addresses you want to

@@ -22,6 +22,7 @@ import {
     QUICK_REPLIES_MAX_ITEM_LENGTH,
     QUICK_REPLIES_MAX_ITEMS,
 } from '../../../../../config/integrations/gorgias_chat'
+import css from '../../../../settings/settings.less'
 
 import ChatIntegrationNavigation from './GorgiasChatIntegrationNavigation'
 import ChatIntegrationPreview from './GorgiasChatIntegrationPreview/ChatIntegrationPreview'
@@ -143,7 +144,7 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
 
                 <ChatIntegrationNavigation integration={integration} />
 
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <Row>
                         <Col>
                             <Form onSubmit={this._submit}>

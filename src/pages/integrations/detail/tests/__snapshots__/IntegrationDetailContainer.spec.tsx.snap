@@ -41,7 +41,7 @@ exports[`<IntegrationDetailContainer /> http should render the list of events p
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -103,7 +103,7 @@ exports[`<IntegrationDetailContainer /> http should render the page of an event
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -328,7 +328,7 @@ exports[`<IntegrationDetailContainer /> should render the page of a specific int
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -361,7 +361,7 @@ exports[`<IntegrationDetailContainer /> should render the page of a specific int
         >
            
           <span
-            class="text-faded"
+            class="text-faded align-top"
           />
         </li>
       </ol>
@@ -408,7 +408,7 @@ exports[`<IntegrationDetailContainer /> should render the page of a specific int
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"

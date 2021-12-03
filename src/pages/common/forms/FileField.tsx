@@ -41,7 +41,7 @@ export class FileFieldContainer extends InputField<Props, State> {
         'noPreview' | 'placeholder' | 'returnFiles' | 'type' | 'maxSize'
     > = {
         noPreview: false,
-        placeholder: 'Select a file...',
+        placeholder: 'Select a File...',
         returnFiles: false, // return urls of files only by default
         type: 'file',
         maxSize: 0,

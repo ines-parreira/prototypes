@@ -5,7 +5,7 @@ exports[`<EmailIntegrationCreateCustom/> render() should render 1`] = `
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -42,7 +42,7 @@ exports[`<EmailIntegrationCreateCustom/> render() should render 1`] = `
     </nav>
   </div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer container-fluid"
   >
     <p>
       You can connect your email to Gorgias by setting up email forwarding. Follow the steps below to get started.
@@ -124,7 +124,7 @@ exports[`<EmailIntegrationCreateCustom/> render() should render update 1`] = `
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -161,7 +161,7 @@ exports[`<EmailIntegrationCreateCustom/> render() should render update 1`] = `
     </nav>
   </div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer container-fluid"
   >
     <p>
       You can connect your email to Gorgias by setting up email forwarding. Follow the steps below to get started.

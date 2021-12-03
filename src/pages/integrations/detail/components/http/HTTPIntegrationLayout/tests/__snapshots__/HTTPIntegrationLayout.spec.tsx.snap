@@ -5,7 +5,7 @@ exports[`HTTPIntegrationLayout should render layout for a new HTTP integration 1
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -56,7 +56,7 @@ exports[`HTTPIntegrationLayout should render the layout of an event page of a HT
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -135,7 +135,7 @@ exports[`HTTPIntegrationLayout should render the layout of the events page of a 
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -203,7 +203,7 @@ exports[`HTTPIntegrationLayout should render the layout of the settings page of 
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"

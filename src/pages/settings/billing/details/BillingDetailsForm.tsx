@@ -20,6 +20,7 @@ import PageHeader from '../../../common/components/PageHeader'
 import {RootState} from '../../../../state/types'
 import BillingAddressInput from '../common/BillingAddressInputs'
 import {BillingContact} from '../../../../state/billing/types'
+import css from '../../settings.less'
 
 type Props = ConnectedProps<typeof connector>
 
@@ -115,7 +116,7 @@ export class BillingDetailsFormContainer extends Component<Props, State> {
                     }
                 />
 
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <p>
                         Please enter the billing details you'd like us to use on
                         your next invoice.

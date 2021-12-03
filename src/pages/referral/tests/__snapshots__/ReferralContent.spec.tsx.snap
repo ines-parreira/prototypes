@@ -5,7 +5,7 @@ exports[`<ReferralContent /> should display an empty container 1`] = `
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <h1
       class="d-flex align-items-center"

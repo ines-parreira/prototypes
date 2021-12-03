@@ -30,6 +30,7 @@ import InputField from '../../../../../common/forms/InputField.js'
 import history from '../../../../../history'
 import {RootState} from '../../../../../../state/types'
 import {JoinEventType} from '../../../../../../services/socketManager/types'
+import css from '../../../../../settings/settings.less'
 
 type OwnProps = {
     integration: Map<any, any>
@@ -261,7 +262,7 @@ export class EmailIntegrationCreateVerification extends Component<
                     }
                 />
 
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <h1>
                         <i className="material-icons"></i>
                         Verification in progress...

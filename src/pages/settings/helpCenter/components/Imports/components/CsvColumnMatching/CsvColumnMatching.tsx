@@ -20,6 +20,7 @@ import {ImportedLanguagesTags} from '../ImportedLanguagesTags'
 
 import {FlagLanguageItem} from '../../../../../../common/components/LanguageBulletList'
 import {ConfirmModalAction} from '../../../../../../common/components/ConfirmModalAction'
+import settingsCss from '../../../../../settings.less'
 
 import {
     CsvColumnsByName,
@@ -222,7 +223,7 @@ export const CsvColumnMatching = ({
         }
 
     return (
-        <Container fluid className="page-container">
+        <Container fluid className={settingsCss.pageContainer}>
             <h3>Column matching</h3>
 
             <p>Match the fields below with the ones in your CSV</p>

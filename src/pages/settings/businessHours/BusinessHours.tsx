@@ -15,6 +15,7 @@ import {
     AccountSettingType,
     AccountSettingBusinessHours,
 } from '../../../state/currentAccount/types'
+import settingsCss from '../settings.less'
 
 import {DEFAULT_BUSINESS_HOUR, MAX_BUSINESS_HOURS} from './constants.js'
 import BusinessHoursForm from './BusinessHoursForm'
@@ -88,105 +89,123 @@ export class BusinessHoursContainer extends Component<Props, State> {
             <div className="full-width">
                 <PageHeader title="Business hours" />
 
-                <Container fluid className="page-container">
-                    <p>
-                        Let customers know when your team is online.
-                        <br />
-                        This way, you can set different auto-responders in the
-                        rules based on when your team is working.
-                    </p>
-                    <p>
-                        The appearance of your{' '}
-                        <Link to="/app/settings/integrations/gorgias_chat">
-                            Chat integrations
-                        </Link>{' '}
-                        will change when outside business hours.
-                    </p>
+                <Container fluid className={settingsCss.pageContainer}>
+                    <div
+                        className={classnames(
+                            settingsCss['body-regular'],
+                            settingsCss.contentWrapper
+                        )}
+                    >
+                        <div className={settingsCss.mb32}>
+                            <p>
+                                Let customers know when your team is online.
+                                <br />
+                                This way, you can set different auto-responders
+                                in the rules based on when your team is working.
+                            </p>
+                            <p>
+                                The appearance of your{' '}
+                                <Link to="/app/settings/integrations/gorgias_chat">
+                                    Chat integrations
+                                </Link>{' '}
+                                will change when outside business hours.
+                            </p>
+                        </div>
 
-                    <Form onSubmit={this._onSubmit as any}>
-                        <Row className="mb-2">
-                            <Col md="9">
-                                <div className="mb-3">
-                                    <Label
+                        <Form onSubmit={this._onSubmit as any}>
+                            <Row>
+                                <Col>
+                                    <div
                                         className={classnames(
-                                            'control-label',
-                                            css.businessHoursLabel
+                                            settingsCss.inputField,
+                                            settingsCss.mb32
                                         )}
                                     >
-                                        Business hours
-                                    </Label>
-                                    {items.map((item, idx) => (
-                                        <div
-                                            key={idx}
-                                            className={
-                                                css.businessHoursInputWrapper
-                                            }
-                                        >
-                                            <BusinessHoursForm
-                                                businessHour={item}
-                                                onChange={(data) =>
-                                                    this.setState({
-                                                        items: items.set(
-                                                            idx!,
-                                                            data
-                                                        ),
-                                                    })
-                                                }
-                                            />
+                                        <Label className="control-label">
+                                            Business hours
+                                        </Label>
+                                        {items.map((item, idx) => (
                                             <div
-                                                className={css.deleteButton}
-                                                onClick={() =>
-                                                    this.setState({
-                                                        items: items.delete(
-                                                            idx!
-                                                        ),
-                                                    })
-                                                }
+                                                key={idx}
+                                                className={classnames(
+                                                    'flex',
+                                                    settingsCss.mb24
+                                                )}
                                             >
-                                                <i className="material-icons red">
-                                                    clear
-                                                </i>
+                                                <BusinessHoursForm
+                                                    businessHour={item}
+                                                    onChange={(data) =>
+                                                        this.setState({
+                                                            items: items.set(
+                                                                idx!,
+                                                                data
+                                                            ),
+                                                        })
+                                                    }
+                                                />
+                                                <div
+                                                    className={css.deleteButton}
+                                                    onClick={() =>
+                                                        this.setState({
+                                                            items: items.delete(
+                                                                idx!
+                                                            ),
+                                                        })
+                                                    }
+                                                >
+                                                    <i className="material-icons red">
+                                                        clear
+                                                    </i>
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
-                                    <Button
-                                        type="button"
-                                        onClick={this._addBusinessHours}
+                                        ))}
+                                        <Button
+                                            type="button"
+                                            onClick={this._addBusinessHours}
+                                        >
+                                            <i className="material-icons">
+                                                add
+                                            </i>{' '}
+                                            Add business hours
+                                        </Button>
+                                    </div>
+
+                                    <InputField
+                                        type="select"
+                                        name="timezone"
+                                        label="Time zone"
+                                        value={this.state.timezone}
+                                        onChange={(timezone) =>
+                                            this.setState({timezone})
+                                        }
+                                        className={classnames(
+                                            settingsCss.inputField,
+                                            settingsCss.mb40
+                                        )}
                                     >
-                                        <i className="material-icons">add</i>{' '}
-                                        Add business hours
-                                    </Button>
-                                </div>
+                                        {getMomentTimezoneNames().map(
+                                            (name) => (
+                                                <option key={name} value={name}>
+                                                    {name}
+                                                </option>
+                                            )
+                                        )}
+                                    </InputField>
+                                </Col>
+                            </Row>
 
-                                <InputField
-                                    type="select"
-                                    name="timezone"
-                                    label="Timezone"
-                                    value={this.state.timezone}
-                                    onChange={(timezone) =>
-                                        this.setState({timezone})
-                                    }
-                                >
-                                    {getMomentTimezoneNames().map((name) => (
-                                        <option key={name} value={name}>
-                                            {name}
-                                        </option>
-                                    ))}
-                                </InputField>
-                            </Col>
-                        </Row>
-
-                        <Button
-                            type="submit"
-                            color="success"
-                            className={classnames({
-                                'btn-loading': this.state.loading,
-                            })}
-                            disabled={this.state.loading}
-                        >
-                            Save changes
-                        </Button>
-                    </Form>
+                            <Button
+                                type="submit"
+                                color="success"
+                                className={classnames({
+                                    'btn-loading': this.state.loading,
+                                })}
+                                disabled={this.state.loading}
+                            >
+                                Save Changes
+                            </Button>
+                        </Form>
+                    </div>
                 </Container>
             </div>
         )

@@ -20,6 +20,7 @@ import {FileUpload, useFileUpload} from '../hooks/useFileUpload'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 import {HelpCenterTheme, isHelpCenterTheme} from '../types'
+import settingsCss from '../../settings.less'
 
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
@@ -206,7 +207,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 }
             />
             <HelpCenterNavigation helpCenterId={helpCenterId} />
-            <PageContainer>
+            <PageContainer className={settingsCss.pageContainer}>
                 <section>
                     <div className={css.heading}>
                         <h3>Appearance</h3>

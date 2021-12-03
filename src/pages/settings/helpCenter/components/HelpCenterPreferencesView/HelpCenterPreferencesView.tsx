@@ -17,6 +17,7 @@ import {HelpCenterPreferencesSettings} from '../../providers/HelpCenterPreferenc
 import {HelpCenterDetailsBreadcrumb} from '../HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from '../HelpCenterNavigation'
 import {PageContainer} from '../PageContainer'
+import settingsCss from '../../../settings.less'
 
 import {AvailableLanguagesTags} from './components/AvailableLanguagesTags'
 import {DefaultLanguageSelect} from './components/DefaultLanguageSelect'
@@ -41,7 +42,7 @@ export const HelpCenterPreferencesView: React.FC = () => {
 
     if (!helpCenter) {
         return (
-            <Container fluid className="page-container">
+            <Container fluid className={settingsCss.pageContainer}>
                 <Loader />
             </Container>
         )
@@ -59,7 +60,7 @@ export const HelpCenterPreferencesView: React.FC = () => {
             />
             <HelpCenterNavigation helpCenterId={helpCenter.id} />
             <HelpCenterPreferencesSettings helpCenter={helpCenter}>
-                <PageContainer>
+                <PageContainer className={settingsCss.pageContainer}>
                     <DisplayName />
                     <section>
                         <h3>Languages</h3>

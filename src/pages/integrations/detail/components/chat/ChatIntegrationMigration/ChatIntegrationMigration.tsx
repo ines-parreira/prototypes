@@ -6,9 +6,10 @@ import classnames from 'classnames'
 import _omit from 'lodash/omit'
 import {fromJS, Map} from 'immutable'
 
-import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
-import PageHeader from '../../../../../common/components/PageHeader'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
+import PageHeader from '../../../../../common/components/PageHeader'
+import css from '../../../../../settings/settings.less'
+import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
 
 type Props = {
     integration: Map<any, any>
@@ -106,7 +107,7 @@ export class ChatIntegrationMigration extends Component<Props, State> {
 
                 <ChatIntegrationNavigation integration={integration} />
 
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <Alert color="warning">
                         <span role="img" aria-label="warning">
                             ⚠️

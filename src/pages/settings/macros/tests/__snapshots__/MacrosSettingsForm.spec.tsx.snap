@@ -49,7 +49,7 @@ exports[`<MacrosSettingsForm/> should display a loader when fetching a macro 1`]
       }
     >
       <div
-        className="d-flex align-items-center justify-content-between flex-wrap page-header"
+        className="page-header pageHeader"
       >
         <Breadcrumb
           aria-label="breadcrumb"
@@ -97,12 +97,12 @@ exports[`<MacrosSettingsForm/> should display a loader when fetching a macro 1`]
       </div>
     </PageHeader>
     <Container
-      className="page-container container"
+      className="container pageContainer"
       fluid={true}
       tag="div"
     >
       <div
-        className="page-container container container-fluid"
+        className="container pageContainer container-fluid"
       >
         <Loader
           inline={false}
@@ -203,7 +203,7 @@ exports[`<MacrosSettingsForm/> should notify the user when failed to fetch the m
       }
     >
       <div
-        className="d-flex align-items-center justify-content-between flex-wrap page-header"
+        className="page-header pageHeader"
       >
         <Breadcrumb
           aria-label="breadcrumb"
@@ -251,12 +251,12 @@ exports[`<MacrosSettingsForm/> should notify the user when failed to fetch the m
       </div>
     </PageHeader>
     <Container
-      className="page-container container"
+      className="container pageContainer"
       fluid={true}
       tag="div"
     >
       <div
-        className="page-container container container-fluid"
+        className="container pageContainer container-fluid"
       >
         <Loader
           inline={false}
@@ -543,7 +543,7 @@ Sincerely,
       }
     >
       <div
-        className="d-flex align-items-center justify-content-between flex-wrap page-header"
+        className="page-header pageHeader"
       >
         <Breadcrumb
           aria-label="breadcrumb"
@@ -591,12 +591,12 @@ Sincerely,
       </div>
     </PageHeader>
     <Container
-      className="page-container container"
+      className="container pageContainer"
       fluid={true}
       tag="div"
     >
       <div
-        className="page-container container container-fluid"
+        className="container pageContainer container-fluid"
       >
         <Form
           onSubmit={[Function]}
@@ -747,7 +747,7 @@ exports[`<MacrosSettingsForm/> should render an empty form when no macro id 1`] 
     }
   />
   <Container
-    className="page-container container"
+    className="container pageContainer"
     fluid={true}
     tag="div"
   >

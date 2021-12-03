@@ -101,7 +101,7 @@ exports[`<TicketAssignment/> render() should render selected channels 1`] = `
     title="Ticket assignment"
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -110,7 +110,7 @@ exports[`<TicketAssignment/> render() should render selected channels 1`] = `
       tag="form"
     >
       <Row
-        className="mb-2"
+        className="contentWrapper"
         tag="div"
         widths={
           Array [
@@ -123,7 +123,6 @@ exports[`<TicketAssignment/> render() should render selected channels 1`] = `
         }
       >
         <Col
-          md="5"
           tag="div"
           widths={
             Array [
@@ -135,8 +134,9 @@ exports[`<TicketAssignment/> render() should render selected channels 1`] = `
             ]
           }
         >
-          <div
-            className="mb-2"
+          <FormGroup
+            className="inputField"
+            tag="div"
           >
             <Label
               className="control-label"
@@ -160,9 +160,10 @@ exports[`<TicketAssignment/> render() should render selected channels 1`] = `
               type="checkbox"
               value={true}
             />
-          </div>
-          <div
-            className="mb-2"
+          </FormGroup>
+          <FormGroup
+            className="inputField"
+            tag="div"
           >
             <Label
               className="control-label"
@@ -186,7 +187,7 @@ exports[`<TicketAssignment/> render() should render selected channels 1`] = `
               type="checkbox"
               value={true}
             />
-          </div>
+          </FormGroup>
           <div
             className="text-faded"
           >
@@ -207,8 +208,9 @@ exports[`<TicketAssignment/> render() should render selected channels 1`] = `
               </li>
             </ul>
           </div>
-          <div
-            className="mb-2"
+          <FormGroup
+            className="inputField"
+            tag="div"
           >
             <Label
               className="control-label"
@@ -320,7 +322,7 @@ exports[`<TicketAssignment/> render() should render selected channels 1`] = `
               }
               singular="channel"
             />
-          </div>
+          </FormGroup>
         </Col>
       </Row>
       <Button
@@ -345,7 +347,7 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox c
     title="Ticket assignment"
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -354,7 +356,7 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox c
       tag="form"
     >
       <Row
-        className="mb-2"
+        className="contentWrapper"
         tag="div"
         widths={
           Array [
@@ -367,7 +369,6 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox c
         }
       >
         <Col
-          md="5"
           tag="div"
           widths={
             Array [
@@ -379,8 +380,9 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox c
             ]
           }
         >
-          <div
-            className="mb-2"
+          <FormGroup
+            className="inputField"
+            tag="div"
           >
             <Label
               className="control-label"
@@ -404,9 +406,10 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox c
               type="checkbox"
               value={true}
             />
-          </div>
-          <div
-            className="mb-2"
+          </FormGroup>
+          <FormGroup
+            className="inputField"
+            tag="div"
           >
             <Label
               className="control-label"
@@ -430,7 +433,7 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox c
               type="checkbox"
               value={true}
             />
-          </div>
+          </FormGroup>
           <div
             className="text-faded"
           >
@@ -451,8 +454,9 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox c
               </li>
             </ul>
           </div>
-          <div
-            className="mb-2"
+          <FormGroup
+            className="inputField"
+            tag="div"
           >
             <Label
               className="control-label"
@@ -564,7 +568,7 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox c
               }
               singular="channel"
             />
-          </div>
+          </FormGroup>
         </Col>
       </Row>
       <Button
@@ -589,7 +593,7 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox u
     title="Ticket assignment"
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -598,7 +602,7 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox u
       tag="form"
     >
       <Row
-        className="mb-2"
+        className="contentWrapper"
         tag="div"
         widths={
           Array [
@@ -611,7 +615,6 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox u
         }
       >
         <Col
-          md="5"
           tag="div"
           widths={
             Array [
@@ -623,8 +626,9 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox u
             ]
           }
         >
-          <div
-            className="mb-2"
+          <FormGroup
+            className="inputField"
+            tag="div"
           >
             <Label
               className="control-label"
@@ -648,9 +652,10 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox u
               type="checkbox"
               value={false}
             />
-          </div>
-          <div
-            className="mb-2"
+          </FormGroup>
+          <FormGroup
+            className="inputField"
+            tag="div"
           >
             <Label
               className="control-label"
@@ -674,7 +679,7 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox u
               type="checkbox"
               value={true}
             />
-          </div>
+          </FormGroup>
           <div
             className="text-faded"
           >
@@ -695,8 +700,9 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox u
               </li>
             </ul>
           </div>
-          <div
-            className="mb-2"
+          <FormGroup
+            className="inputField"
+            tag="div"
           >
             <Label
               className="control-label"
@@ -808,7 +814,7 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox u
               }
               singular="channel"
             />
-          </div>
+          </FormGroup>
         </Col>
       </Row>
       <Button
@@ -833,7 +839,7 @@ exports[`<TicketAssignment/> render() should render the "Save changes" button lo
     title="Ticket assignment"
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -842,7 +848,7 @@ exports[`<TicketAssignment/> render() should render the "Save changes" button lo
       tag="form"
     >
       <Row
-        className="mb-2"
+        className="contentWrapper"
         tag="div"
         widths={
           Array [
@@ -855,7 +861,6 @@ exports[`<TicketAssignment/> render() should render the "Save changes" button lo
         }
       >
         <Col
-          md="5"
           tag="div"
           widths={
             Array [
@@ -867,8 +872,9 @@ exports[`<TicketAssignment/> render() should render the "Save changes" button lo
             ]
           }
         >
-          <div
-            className="mb-2"
+          <FormGroup
+            className="inputField"
+            tag="div"
           >
             <Label
               className="control-label"
@@ -892,9 +898,10 @@ exports[`<TicketAssignment/> render() should render the "Save changes" button lo
               type="checkbox"
               value={true}
             />
-          </div>
-          <div
-            className="mb-2"
+          </FormGroup>
+          <FormGroup
+            className="inputField"
+            tag="div"
           >
             <Label
               className="control-label"
@@ -918,7 +925,7 @@ exports[`<TicketAssignment/> render() should render the "Save changes" button lo
               type="checkbox"
               value={false}
             />
-          </div>
+          </FormGroup>
           <div
             className="text-faded"
           >
@@ -939,8 +946,9 @@ exports[`<TicketAssignment/> render() should render the "Save changes" button lo
               </li>
             </ul>
           </div>
-          <div
-            className="mb-2"
+          <FormGroup
+            className="inputField"
+            tag="div"
           >
             <Label
               className="control-label"
@@ -1052,7 +1060,7 @@ exports[`<TicketAssignment/> render() should render the "Save changes" button lo
               }
               singular="channel"
             />
-          </div>
+          </FormGroup>
         </Col>
       </Row>
       <Button
@@ -1077,7 +1085,7 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
     title="Ticket assignment"
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -1086,7 +1094,7 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
       tag="form"
     >
       <Row
-        className="mb-2"
+        className="contentWrapper"
         tag="div"
         widths={
           Array [
@@ -1099,7 +1107,6 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
         }
       >
         <Col
-          md="5"
           tag="div"
           widths={
             Array [
@@ -1111,8 +1118,9 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
             ]
           }
         >
-          <div
-            className="mb-2"
+          <FormGroup
+            className="inputField"
+            tag="div"
           >
             <Label
               className="control-label"
@@ -1136,9 +1144,10 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
               type="checkbox"
               value={true}
             />
-          </div>
-          <div
-            className="mb-2"
+          </FormGroup>
+          <FormGroup
+            className="inputField"
+            tag="div"
           >
             <Label
               className="control-label"
@@ -1162,7 +1171,7 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
               type="checkbox"
               value={true}
             />
-          </div>
+          </FormGroup>
           <div
             className="text-faded"
           >
@@ -1183,8 +1192,9 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
               </li>
             </ul>
           </div>
-          <div
-            className="mb-2"
+          <FormGroup
+            className="inputField"
+            tag="div"
           >
             <Label
               className="control-label"
@@ -1296,7 +1306,7 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
               }
               singular="channel"
             />
-          </div>
+          </FormGroup>
         </Col>
       </Row>
       <Button
@@ -1321,7 +1331,7 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
     title="Ticket assignment"
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -1330,7 +1340,7 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
       tag="form"
     >
       <Row
-        className="mb-2"
+        className="contentWrapper"
         tag="div"
         widths={
           Array [
@@ -1343,7 +1353,6 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
         }
       >
         <Col
-          md="5"
           tag="div"
           widths={
             Array [
@@ -1355,8 +1364,9 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
             ]
           }
         >
-          <div
-            className="mb-2"
+          <FormGroup
+            className="inputField"
+            tag="div"
           >
             <Label
               className="control-label"
@@ -1380,9 +1390,10 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
               type="checkbox"
               value={false}
             />
-          </div>
-          <div
-            className="mb-2"
+          </FormGroup>
+          <FormGroup
+            className="inputField"
+            tag="div"
           >
             <Label
               className="control-label"
@@ -1406,7 +1417,7 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
               type="checkbox"
               value={true}
             />
-          </div>
+          </FormGroup>
           <div
             className="text-faded"
           >
@@ -1427,8 +1438,9 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
               </li>
             </ul>
           </div>
-          <div
-            className="mb-2"
+          <FormGroup
+            className="inputField"
+            tag="div"
           >
             <Label
               className="control-label"
@@ -1540,7 +1552,7 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
               }
               singular="channel"
             />
-          </div>
+          </FormGroup>
         </Col>
       </Row>
       <Button
@@ -1565,7 +1577,7 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
     title="Ticket assignment"
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -1574,7 +1586,7 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
       tag="form"
     >
       <Row
-        className="mb-2"
+        className="contentWrapper"
         tag="div"
         widths={
           Array [
@@ -1587,7 +1599,6 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
         }
       >
         <Col
-          md="5"
           tag="div"
           widths={
             Array [
@@ -1599,8 +1610,9 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
             ]
           }
         >
-          <div
-            className="mb-2"
+          <FormGroup
+            className="inputField"
+            tag="div"
           >
             <Label
               className="control-label"
@@ -1624,9 +1636,10 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
               type="checkbox"
               value={true}
             />
-          </div>
-          <div
-            className="mb-2"
+          </FormGroup>
+          <FormGroup
+            className="inputField"
+            tag="div"
           >
             <Label
               className="control-label"
@@ -1650,7 +1663,7 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
               type="checkbox"
               value={false}
             />
-          </div>
+          </FormGroup>
           <div
             className="text-faded"
           >
@@ -1671,8 +1684,9 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
               </li>
             </ul>
           </div>
-          <div
-            className="mb-2"
+          <FormGroup
+            className="inputField"
+            tag="div"
           >
             <Label
               className="control-label"
@@ -1784,7 +1798,7 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
               }
               singular="channel"
             />
-          </div>
+          </FormGroup>
         </Col>
       </Row>
       <Button

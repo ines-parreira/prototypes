@@ -14,6 +14,7 @@ import {
 } from '../../../state/agents/selectors'
 import PageHeader from '../../common/components/PageHeader'
 import {RootState} from '../../../state/types'
+import settingsCss from '../settings.less'
 
 import Row from './Row'
 import css from './List.less'
@@ -61,7 +62,7 @@ export class UserListContainer extends Component<Props, State> {
                     </Button>
                 </PageHeader>
 
-                <Container fluid className="page-container">
+                <Container fluid className={settingsCss.pageContainer}>
                     <p>
                         Manage users for your Gorgias account. Users (Ex:
                         Agents, Admins, etc..) can view tickets and respond to

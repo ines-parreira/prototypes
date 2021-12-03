@@ -12,14 +12,14 @@ import {
 import {parse} from 'query-string'
 import moment from 'moment'
 import {List, Map} from 'immutable'
+import classnames from 'classnames'
 
 import {getIntegrationConfig} from '../../../../state/integrations/helpers'
 import {notify} from '../../../../state/notifications/actions'
 import PageHeader from '../../../common/components/PageHeader'
-
 import {IntegrationType} from '../../../../models/integration/types'
-
 import {NotificationStatus} from '../../../../state/notifications/types'
+import css from '../../../settings/settings.less'
 
 import NoIntegration from './NoIntegration.js'
 
@@ -142,7 +142,10 @@ class IntegrationList extends React.Component<Props> {
                     )}
                 </PageHeader>
 
-                <Container className="page-container" fluid>
+                <Container
+                    fluid
+                    className={classnames(css.pageContainer, css.pb0)}
+                >
                     <div className="mb-3">{longTypeDescription}</div>
                     {alert}
                     {this.displayAircallWebhookWarning(

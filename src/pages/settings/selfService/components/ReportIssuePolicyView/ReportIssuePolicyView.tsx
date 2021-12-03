@@ -15,6 +15,7 @@ import {GorgiasChatIntegrationSelfServicePaywall} from '../../../../integrations
 import {getHasAutomationAddOn} from '../../../../../state/billing/selectors'
 import {getLoading} from '../../../../../state/ui/selfServiceConfigurations/selectors'
 import Loader from '../../../../common/components/Loader/Loader'
+import settingsCss from '../../../settings.less'
 
 import ReportIssueCasesList from './components/ReportIssueCasesList'
 import css from './ReportIssuePolicyView.less'
@@ -65,7 +66,7 @@ const ReportIssuePolicyView: ComponentType = () => {
                 </Button>
             </PageHeader>
 
-            <Container fluid className="page-container">
+            <Container fluid className={settingsCss.pageContainer}>
                 <Row>
                     <Col>
                         <div className="mb-3">

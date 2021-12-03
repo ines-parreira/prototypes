@@ -92,44 +92,27 @@ exports[`YourProfileView render should render current user profile form 1`] = `
     title="Your profile"
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
-    <p>
-      Update your profile information.
-    </p>
+    <div
+      className="heading-subsection-semibold mb16"
+    >
+      Personal information
+    </div>
     <Form
-      className="mb-4"
       onSubmit={[Function]}
       tag="form"
     >
-      <Row
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <div
+        className="flex flex-wrap"
       >
-        <Col
-          md="9"
-          tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
+        <div
+          className="leftSideWrapper"
         >
           <InputField
+            className="inputField"
             label="Your name"
             name="name"
             onChange={[Function]}
@@ -139,6 +122,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
             value="Alex Plugaru"
           />
           <InputField
+            className="inputField"
             label="Your email"
             name="email"
             onChange={[Function]}
@@ -148,6 +132,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
             value="alex@gorgias.io"
           />
           <InputField
+            className="inputField"
             help={
               <span>
                 Your bio can be used in signatures as a variable. Admins can set up signatures
@@ -166,6 +151,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
             value="CTO"
           />
           <FormGroup
+            className="inputField"
             tag="div"
           >
             <Label
@@ -2574,6 +2560,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
             />
           </FormGroup>
           <FormGroup
+            className="inputField"
             tag="div"
           >
             <Label
@@ -2623,163 +2610,107 @@ exports[`YourProfileView render should render current user profile form 1`] = `
               Changing the language only changes the time format
             </FormText>
           </FormGroup>
-        </Col>
-        <Col
-          md={3}
+        </div>
+        <FormGroup
+          className="profilePicture inputField"
           tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-          xl={2}
-          xs={12}
         >
-          <FormGroup
-            tag="div"
+          <Label
+            className="control-label"
+            tag="label"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
           >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Profile picture
-            </Label>
-            <div>
-              <Avatar
-                email=""
-                name="Alex Plugaru"
-                size={100}
-                style={Object {}}
-              />
-            </div>
-            <FormText
-              className="mt-2 mb-2"
-              color="muted"
-              tag="small"
-            >
-              The picture must be square and weight less than 500kB.
-            </FormText>
-            <Connect(FileFieldContainer)
-              className="mb-2"
-              maxSize={500000}
-              noPreview={true}
-              onChange={[Function]}
-              returnFiles={false}
-              uploadType="profile_picture"
-            />
-          </FormGroup>
-        </Col>
-      </Row>
+            Profile picture
+          </Label>
+          <Avatar
+            className="mb16"
+            email=""
+            name="Alex Plugaru"
+            size={100}
+            style={Object {}}
+          />
+          <Connect(FileFieldContainer)
+            className="mb16"
+            maxSize={500000}
+            noPreview={true}
+            onChange={[Function]}
+            returnFiles={false}
+            uploadType="profile_picture"
+          />
+          <FormText
+            color="muted"
+            tag="small"
+          >
+            The picture must be square and weight less than 500kB.
+          </FormText>
+        </FormGroup>
+      </div>
+      <div
+        className="contentWrapper"
+      >
+        <div
+          className="heading-subsection-semibold mb16"
+        >
+          Account Preferences
+        </div>
+        <FormGroup
+          className="inputField mb32 body-regular"
+          tag="div"
+        >
+          <BooleanField
+            label="Display macros by default on emails"
+            name="show_macros"
+            onChange={[Function]}
+            type="checkbox"
+          />
+          <BooleanField
+            label="Display macros suggestions in message editor"
+            name="show_macros_suggestions"
+            onChange={[Function]}
+            type="checkbox"
+            value={true}
+          />
+        </FormGroup>
+        <FormGroup
+          className="inputField mb40"
+          tag="div"
+        >
+          <div
+            className="heading-subsection-semibold mb16"
+          >
+            Forward calls to an external number
+          </div>
+          <p
+            className="body-regular"
+          >
+            When you are routed a call in Gorgias, forward the call to a mobile device or landline.
+          </p>
+          <ToggleField
+            label="Enable call forwarding"
+            name="forward_calls"
+            onChange={[Function]}
+            value={false}
+          />
+        </FormGroup>
+      </div>
       <Button
         className=""
         color="success"
+        disabled={false}
         tag="button"
         type="submit"
       >
-        Save your profile
+        Save Changes
       </Button>
     </Form>
-    <Row
-      tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
-    >
-      <Col
-        md="9"
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <Form
-          className="mb-4 mt-3"
-          onSubmit={[Function]}
-          tag="form"
-        >
-          <h3>
-            Preferences
-          </h3>
-          <FormGroup
-            tag="div"
-          >
-            <BooleanField
-              label="Display macros by default on emails"
-              name="show_macros"
-              onChange={[Function]}
-              type="checkbox"
-            />
-          </FormGroup>
-          <FormGroup
-            tag="div"
-          >
-            <BooleanField
-              label="Display macros suggestions in message editor"
-              name="show_macros_suggestions"
-              onChange={[Function]}
-              type="checkbox"
-              value={true}
-            />
-          </FormGroup>
-          <FormGroup
-            tag="div"
-          >
-            <h4
-              className="mb-1 mt-5"
-            >
-              Forward calls to an external number
-            </h4>
-            <p>
-              When you are routed a call in Gorgias, forward the call to a mobile device or landline.
-            </p>
-            <ToggleField
-              label="Enable call forwarding"
-              name="forward_calls"
-              onChange={[Function]}
-              value={false}
-            />
-          </FormGroup>
-          <div
-            className="mt-4"
-          >
-            <Button
-              className=""
-              color="success"
-              disabled={false}
-              tag="button"
-              type="submit"
-            >
-              Save preferences
-            </Button>
-          </div>
-        </Form>
-      </Col>
-    </Row>
   </Container>
 </div>
 `;

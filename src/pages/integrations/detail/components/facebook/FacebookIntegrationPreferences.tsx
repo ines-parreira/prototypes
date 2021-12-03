@@ -16,6 +16,7 @@ import {updateOrCreateIntegration} from '../../../../../state/integrations/actio
 import PageHeader from '../../../../common/components/PageHeader'
 import ToggleButton from '../../../../common/components/ToggleButton'
 import RadioField from '../../../../common/forms/RadioField'
+import css from '../../../../settings/settings.less'
 
 import FacebookIntegrationNavigation from './FacebookIntegrationNavigation'
 
@@ -137,7 +138,7 @@ export class FacebookIntegrationPreferences extends Component<Props, State> {
 
                 <FacebookIntegrationNavigation integration={integration} />
 
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <Form onSubmit={this._submitPreferences}>
                         <div className="mb-4">
                             <h4>Auto-responder</h4>

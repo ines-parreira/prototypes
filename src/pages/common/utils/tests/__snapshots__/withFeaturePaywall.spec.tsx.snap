@@ -6,7 +6,7 @@ exports[`withFeaturePaywall should not render the passed component when the feat
     class="full-width pageWrapper"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header pageHeader"
+      class="page-header pageHeader"
     >
       <h1
         class="d-flex align-items-center"
@@ -155,7 +155,7 @@ exports[`withFeaturePaywall should pass custom paywall configuration props 1`] =
     class="full-width pageWrapper"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header pageHeader"
+      class="page-header pageHeader"
     >
       <h1
         class="d-flex align-items-center"

@@ -60,17 +60,31 @@ describe('YourProfileView', () => {
     describe('_handleSubmit', () => {
         it('should submit user data', () => {
             const updateCurrentUserSpy = jest.fn(() => Promise.resolve(user))
+            const submitSetting = jest
+                .fn()
+                .mockReturnValueOnce(Promise.resolve())
+            const preferences = fromJS({data: {foo: 'bar'}})
+            const newPreferences = fromJS({hello: 'world'})
+            const expectedPreferences = preferences
+                .update('data', (data) => data.mergeDeep(newPreferences))
+                .toJS()
+
             const component = shallow(
                 <YourProfileView
                     updateCurrentUser={updateCurrentUserSpy}
                     currentUser={fromJS(user)}
-                    submitSetting={jest.fn()}
-                    preferences={fromJS({data: {}})}
+                    submitSetting={submitSetting}
+                    preferences={fromJS({data: {foo: 'bar'}})}
                 />
             ).instance()
+            component.setState({preferences: newPreferences})
 
             component._handleSubmit({preventDefault: jest.fn()})
             expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
+            expect(submitSetting).toHaveBeenCalledWith(
+                expectedPreferences,
+                false
+            )
         })
 
         it(
@@ -149,37 +163,6 @@ describe('YourProfileView', () => {
             })
             component._saveProfilePicture()
             expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
-        })
-    })
-
-    describe('_savePreferences', () => {
-        it('should save preferences', (done) => {
-            const submitSetting = jest
-                .fn()
-                .mockReturnValueOnce(Promise.resolve())
-            const preferences = fromJS({data: {foo: 'bar'}})
-            const newPreferences = fromJS({hello: 'world'})
-            const expectedPreferences = preferences
-                .update('data', (data) => data.mergeDeep(newPreferences))
-                .toJS()
-
-            const component = shallow(
-                <YourProfileView
-                    updateCurrentUser={mockUpdateCurrentUser}
-                    currentUser={fromJS(user)}
-                    submitSetting={submitSetting}
-                    preferences={fromJS({data: {foo: 'bar'}})}
-                />
-            ).instance()
-
-            component.setState({preferences: newPreferences})
-            component._savePreferences({preventDefault: jest.fn()}).then(() => {
-                expect(submitSetting).toHaveBeenCalledWith(
-                    expectedPreferences,
-                    true
-                )
-                done()
-            })
         })
     })
 

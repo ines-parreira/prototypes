@@ -59,10 +59,7 @@ const Paywall = ({feature, paywallConfigs = defaultPaywallConfigs}: Props) => {
             {config && requiredPlanName && (
                 <>
                     {config.pageHeader && (
-                        <PageHeader
-                            title={config.pageHeader}
-                            className={css.pageHeader}
-                        />
+                        <PageHeader title={config.pageHeader} />
                     )}
                     <Container
                         fluid

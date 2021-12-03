@@ -31,7 +31,7 @@ const EmailIntegrationUpdateLayout = ({integration, children}: Props) => {
                         </BreadcrumbItem>
                         <BreadcrumbItem active>
                             {integration.get('name')}{' '}
-                            <span className="text-faded">
+                            <span className="text-faded align-top">
                                 {integration.getIn(['meta', 'address'])}
                             </span>
                         </BreadcrumbItem>

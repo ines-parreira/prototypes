@@ -20,6 +20,7 @@ import {
 } from '../../../state/entities/rules/selectors'
 import {fetchRules} from '../../../models/rule/resources'
 import {notify} from '../../../state/notifications/actions'
+import settingsCss from '../settings.less'
 
 import RulesTable from './components/RulesTable'
 
@@ -63,7 +64,10 @@ export function RulesViewContainer({
 
             <Container
                 fluid
-                className={classnames('page-container', css.description)}
+                className={classnames(
+                    css.description,
+                    settingsCss.pageContainer
+                )}
             >
                 <div className={classnames('mb-3', css.header)}>
                     <p>

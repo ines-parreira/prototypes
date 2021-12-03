@@ -275,7 +275,7 @@ exports[`<Paywall /> should render a page header for the feature with a page hea
   class="full-width pageWrapper"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header pageHeader"
+    class="page-header pageHeader"
   >
     <h1
       class="d-flex align-items-center"

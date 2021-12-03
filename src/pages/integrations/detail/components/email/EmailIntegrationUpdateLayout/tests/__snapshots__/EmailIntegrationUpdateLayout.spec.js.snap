@@ -6,7 +6,7 @@ exports[`EmailIntegrationUpdateLayout should render the layout for an email inte
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <nav
         aria-label="breadcrumb"
@@ -39,7 +39,7 @@ exports[`EmailIntegrationUpdateLayout should render the layout for an email inte
           >
              
             <span
-              class="text-faded"
+              class="text-faded align-top"
             >
               some-email@addres.com
             </span>

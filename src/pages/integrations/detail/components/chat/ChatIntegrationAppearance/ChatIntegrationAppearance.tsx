@@ -53,6 +53,7 @@ import {
     deleteIntegration,
     updateOrCreateIntegration,
 } from '../../../../../../state/integrations/actions'
+import settingsCss from '../../../../../settings/settings.less'
 
 import css from './ChatIntegrationAppearance.less'
 
@@ -297,7 +298,7 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                     <ChatIntegrationNavigation integration={integration} />
                 )}
 
-                <Container fluid className="page-container">
+                <Container fluid className={settingsCss.pageContainer}>
                     <Row>
                         <Col>
                             <Form onSubmit={this._handleSubmit}>

@@ -6,7 +6,7 @@ exports[`HelpCenterPaywall should render the component correctly "for" Pro legac
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <h1
         class="d-flex align-items-center"
@@ -106,7 +106,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Advanced" 
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <h1
         class="d-flex align-items-center"
@@ -207,7 +207,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Basic" leg
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <h1
         class="d-flex align-items-center"
@@ -307,7 +307,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Enterprise
     class="full-width"
   >
     <div
-      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+      class="page-header pageHeader"
     >
       <h1
         class="d-flex align-items-center"

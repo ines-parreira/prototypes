@@ -73,7 +73,7 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -192,7 +192,7 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -303,7 +303,7 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -455,7 +455,7 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >
@@ -609,7 +609,7 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
     }
   />
   <Container
-    className="page-container"
+    className="pageContainer"
     fluid={true}
     tag="div"
   >

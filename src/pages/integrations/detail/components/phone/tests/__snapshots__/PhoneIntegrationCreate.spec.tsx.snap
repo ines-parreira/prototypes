@@ -5,7 +5,7 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -42,7 +42,7 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
     </nav>
   </div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer container-fluid"
   >
     <div
       class="row"
@@ -377,7 +377,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when IVR function is s
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -414,7 +414,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when IVR function is s
     </nav>
   </div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer container-fluid"
   >
     <div
       class="row"
@@ -750,7 +750,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -787,7 +787,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
     </nav>
   </div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer container-fluid"
   >
     <div
       class="row"
@@ -1655,7 +1655,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when type "Toll-free" 
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="page-header pageHeader"
   >
     <nav
       aria-label="breadcrumb"
@@ -1692,7 +1692,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when type "Toll-free" 
     </nav>
   </div>
   <div
-    class="page-container container-fluid"
+    class="pageContainer container-fluid"
   >
     <div
       class="row"

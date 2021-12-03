@@ -10,7 +10,6 @@ import {
     Row,
 } from 'reactstrap'
 import classNames from 'classnames'
-
 import {useSelector} from 'react-redux'
 
 import PageHeader from '../../../common/components/PageHeader'
@@ -31,15 +30,12 @@ import {
 import {updateSelfServiceConfiguration} from '../../../../models/selfServiceConfiguration/resources'
 import {selfServiceConfigurationUpdated} from '../../../../state/entities/selfServiceConfigurations/actions'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
-
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
-
 import {hasAutomationLegacyFeatures} from '../../../../state/currentAccount/selectors'
-
 import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
-
 import {GorgiasChatIntegrationSelfServicePaywall} from '../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
+import settingsCss from '../../settings.less'
 
 import {useConfigurationData} from './hooks'
 import css from './CancellationPolicyView.less'
@@ -188,7 +184,7 @@ export const CancellationsPolicyView = () => {
                     </Breadcrumb>
                 }
             />
-            <Container fluid className="page-container">
+            <Container fluid className={settingsCss.pageContainer}>
                 <Row>
                     <Col>
                         <div className="mb-3">

@@ -3,6 +3,7 @@ import axios from 'axios'
 import _debounce from 'lodash/debounce'
 import {useHistory, useLocation} from 'react-router-dom'
 import {Button, Container} from 'reactstrap'
+import classnames from 'classnames'
 
 import {isProduction} from '../../../../utils/environment'
 
@@ -25,6 +26,7 @@ import {
     getSubdomainValidationError,
     isValidSubdomain,
 } from '../utils/validations'
+import settingsCss from '../../settings.less'
 
 import {Paths} from '../../../../../../../rest_api/help_center_api/client.generated'
 
@@ -176,7 +178,9 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
                 }
             />
             <HelpCenterNavigation helpCenterId={helpCenterId} />
-            <PageContainer className={css.container}>
+            <PageContainer
+                className={classnames(css.container, settingsCss.pageContainer)}
+            >
                 <SubdomainSection
                     value={subdomainValue}
                     href={getAbsoluteUrl({domain: helpCenterDomain})}

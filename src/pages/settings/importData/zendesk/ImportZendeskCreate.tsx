@@ -14,8 +14,8 @@ import * as utils from '../../../../utils'
 import {RootState, StoreDispatch} from '../../../../state/types'
 import {getIntegrationsByTypes} from '../../../../state/integrations/selectors'
 import {IntegrationType} from '../../../../models/integration/types'
-
 import Tooltip from '../../../common/components/Tooltip'
+import css from '../../settings.less'
 
 import {ZENDESK_CONNECTION_TYPE} from './types'
 
@@ -74,8 +74,8 @@ export const ImportZendeskCreate = (
                 }
             />
 
-            <Container fluid className="page-container">
-                <div className="col-sm-13 col-md-9 col-lg-6 pl-0 mt-5 mb-5">
+            <Container fluid className={css.pageContainer}>
+                <div className="col-sm-13 col-md-9 col-lg-6 pl-0 mb-5">
                     <b>Let's connect your account to Gorgias.</b>
                     <br />
                     We'll import your up to {

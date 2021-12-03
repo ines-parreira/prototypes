@@ -14,7 +14,7 @@ import ToggleButton from '../../../../../common/components/ToggleButton'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import useAppDispatch from '../../../../../../hooks/useAppDispatch'
 import Tooltip from '../../../../../common/components/Tooltip'
-
+import settingsCss from '../../../../../settings/settings.less'
 import ChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
 
 import css from './GorgiasChatIntegrationSelfService.less'
@@ -136,7 +136,7 @@ export function GorgiasChatIntegrationSelfServiceComponent({
 
             <ChatIntegrationNavigation integration={integration} />
 
-            <Container fluid className="page-container">
+            <Container fluid className={settingsCss.pageContainer}>
                 <h4>Enable Self-service</h4>
                 <p>
                     Enabling{' '}

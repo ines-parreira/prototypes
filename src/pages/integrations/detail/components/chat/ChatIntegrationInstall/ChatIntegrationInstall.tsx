@@ -13,6 +13,7 @@ import InstallOnIntegrationsCard from '../../../../common/InstallOnIntegrationsC
 import {IntegrationType} from '../../../../../../models/integration/types'
 import {RootState} from '../../../../../../state/types'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
+import css from '../../../../../settings/settings.less'
 
 import {renderChatCodeSnippet} from './utils.js'
 
@@ -63,7 +64,7 @@ export class ChatIntegrationInstallContainer extends Component<Props, State> {
 
                 <ChatIntegrationNavigation integration={integration} />
 
-                <Container fluid className="page-container">
+                <Container fluid className={css.pageContainer}>
                     <Row>
                         <Col md="8">
                             {targetIntegrationsType.map(
