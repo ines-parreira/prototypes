@@ -6,7 +6,6 @@ import {Button, Container} from 'reactstrap'
 import classnames from 'classnames'
 
 import {isProduction} from '../../../../utils/environment'
-
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {
     helpCenterDeleted,
@@ -35,7 +34,6 @@ import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
 import {ImportSection} from './Imports/components/ImportSection'
 import {SubdomainSection} from './SubdomainSection'
-import {PageContainer} from './PageContainer'
 
 import css from './HelpCenterInstallationView.less'
 import {ConnectToShopSection} from './ConnectToShopSection'
@@ -152,7 +150,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
 
     if (!helpCenter) {
         return (
-            <Container fluid className="page-container">
+            <Container fluid className={settingsCss.pageContainer}>
                 <Loader />
             </Container>
         )
@@ -178,110 +176,115 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
                 }
             />
             <HelpCenterNavigation helpCenterId={helpCenterId} />
-            <PageContainer
+            <Container
+                fluid
                 className={classnames(css.container, settingsCss.pageContainer)}
             >
-                <SubdomainSection
-                    value={subdomainValue}
-                    href={getAbsoluteUrl({domain: helpCenterDomain})}
-                    placeholder="brand-name"
-                    onChange={setSubdomainValue}
-                    error={subdomainError}
-                >
-                    <Button
-                        color="primary"
-                        disabled={!isNewSubdomainValid}
-                        onClick={() =>
-                            handleOnUpdateHelpCenter({
-                                subdomain: subdomainValue,
-                            })
-                        }
+                <div className={settingsCss.contentWrapper}>
+                    <SubdomainSection
+                        value={subdomainValue}
+                        href={getAbsoluteUrl({domain: helpCenterDomain})}
+                        placeholder="brand-name"
+                        onChange={setSubdomainValue}
+                        error={subdomainError}
                     >
-                        Save Changes
-                    </Button>
-                </SubdomainSection>
-                <CustomDomain />
-                <ImportSection />
+                        <Button
+                            color="primary"
+                            disabled={!isNewSubdomainValid}
+                            onClick={() =>
+                                handleOnUpdateHelpCenter({
+                                    subdomain: subdomainValue,
+                                })
+                            }
+                        >
+                            Save Changes
+                        </Button>
+                    </SubdomainSection>
+                    <CustomDomain />
+                    <ImportSection />
 
-                {
-                    // TODO: Remove this to release SSP in Help Center
-                    !isProduction() && (
-                        <ConnectToShopSection
-                            onUpdate={handleOnUpdateHelpCenter}
-                            helpCenter={helpCenter}
-                        />
-                    )
-                }
+                    {
+                        // TODO: Remove this to release SSP in Help Center
+                        !isProduction() && (
+                            <ConnectToShopSection
+                                onUpdate={handleOnUpdateHelpCenter}
+                                helpCenter={helpCenter}
+                            />
+                        )
+                    }
 
-                <section>
-                    <ConfirmModalAction
-                        actions={(onClose) => (
-                            <div className={css['modal-actions']}>
-                                <Button
-                                    onClick={() => {
-                                        setDeleteModalConfirmation('')
-                                        onClose()
-                                    }}
-                                >
-                                    Cancel
-                                </Button>
+                    <section>
+                        <ConfirmModalAction
+                            actions={(onClose) => (
+                                <div className={css['modal-actions']}>
+                                    <Button
+                                        onClick={() => {
+                                            setDeleteModalConfirmation('')
+                                            onClose()
+                                        }}
+                                    >
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        className={css['delete-btn']}
+                                        onClick={handleOnDeleteHelpCenter}
+                                        disabled={deleteBtnDisabled}
+                                    >
+                                        <i className="material-icons">delete</i>
+                                        Delete Forever
+                                    </Button>
+                                </div>
+                            )}
+                            content={
+                                <>
+                                    <p>
+                                        This Help Center and its articles,
+                                        categories, pages and images will be
+                                        deleted permanently. Future contact form
+                                        submissions will not be captured.
+                                    </p>
+
+                                    <p>
+                                        <strong>
+                                            Confirm by typing{' '}
+                                            <span
+                                                className={
+                                                    css[
+                                                        'delete-modal-help-center'
+                                                    ]
+                                                }
+                                            >
+                                                {helpCenter.name}
+                                            </span>{' '}
+                                            below
+                                        </strong>
+                                    </p>
+
+                                    <InputField
+                                        type="text"
+                                        className={css['delete-modal-input']}
+                                        name="help-center-delete-confirmation"
+                                        placeholder={'[Help Center Name]'}
+                                        value={deleteModalConfirmation}
+                                        onChange={setDeleteModalConfirmation}
+                                    />
+                                </>
+                            }
+                            title="Delete confirmation"
+                        >
+                            {(onClick) => (
                                 <Button
                                     className={css['delete-btn']}
-                                    onClick={handleOnDeleteHelpCenter}
-                                    disabled={deleteBtnDisabled}
+                                    onClick={onClick}
                                 >
                                     <i className="material-icons">delete</i>
-                                    Delete Forever
+                                    Delete Help Center
                                 </Button>
-                            </div>
-                        )}
-                        content={
-                            <>
-                                <p>
-                                    This Help Center and its articles,
-                                    categories, pages and images will be deleted
-                                    permanently. Future contact form submissions
-                                    will not be captured.
-                                </p>
-
-                                <p>
-                                    <strong>
-                                        Confirm by typing{' '}
-                                        <span
-                                            className={
-                                                css['delete-modal-help-center']
-                                            }
-                                        >
-                                            {helpCenter.name}
-                                        </span>{' '}
-                                        below
-                                    </strong>
-                                </p>
-
-                                <InputField
-                                    type="text"
-                                    className={css['delete-modal-input']}
-                                    name="help-center-delete-confirmation"
-                                    placeholder={'[Help Center Name]'}
-                                    value={deleteModalConfirmation}
-                                    onChange={setDeleteModalConfirmation}
-                                />
-                            </>
-                        }
-                        title="Delete confirmation"
-                    >
-                        {(onClick) => (
-                            <Button
-                                className={css['delete-btn']}
-                                onClick={onClick}
-                            >
-                                <i className="material-icons">delete</i>
-                                Delete Help Center
-                            </Button>
-                        )}
-                    </ConfirmModalAction>
-                </section>
-            </PageContainer>
+                            )}
+                        </ConfirmModalAction>
+                    </section>
+                </div>
+            </Container>
         </div>
     )
 }

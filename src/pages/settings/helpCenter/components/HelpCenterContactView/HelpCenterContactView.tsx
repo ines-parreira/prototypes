@@ -18,14 +18,13 @@ import {HelpCenterTranslation} from '../../providers/HelpCenterTranslation'
 import {getLocaleSelectOptions} from '../../utils/localeSelectOptions'
 import {HelpCenterDetailsBreadcrumb} from '../HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from '../HelpCenterNavigation'
-import {PageContainer} from '../PageContainer'
+import settingsCss from '../../../settings.less'
 
 import ChatApplication from './components/ChatApplication'
 import ChatContactInfoSection from './components/ChatContactInfoSection'
 import EmailContactInfoSection from './components/EmailContactInfoSection'
 import FooterActions from './components/FooterActions'
 import PhoneContactInfoSection from './components/PhoneContactInfoSection'
-
 import css from './HelpCenterContactView.less'
 
 const HelpCenterContactView: React.FC = () => {
@@ -68,49 +67,52 @@ const HelpCenterContactView: React.FC = () => {
             />
             <HelpCenterNavigation helpCenterId={helpCenter.id} />
             <HelpCenterTranslation helpCenter={helpCenter}>
-                <PageContainer>
-                    <section>
-                        <div className={css.heading}>
-                            <div>
-                                <h3>Chat Widget</h3>
-                                <p>
-                                    This chat integration is going to be
-                                    displayed as a widget on every page of your
-                                    help center.
-                                </p>
+                <Container fluid className={settingsCss.pageContainer}>
+                    <div className={settingsCss.contentWrapper}>
+                        <section>
+                            <div className={css.heading}>
+                                <div>
+                                    <h3>Chat Widget</h3>
+                                    <p>
+                                        This chat integration is going to be
+                                        displayed as a widget on every page of
+                                        your help center.
+                                    </p>
+                                </div>
+                                <SelectField
+                                    value={viewLanguage}
+                                    onChange={handleOnChangeLocale}
+                                    options={supportedLocales}
+                                    className={css.select}
+                                />
                             </div>
-                            <SelectField
-                                value={viewLanguage}
-                                onChange={handleOnChangeLocale}
-                                options={supportedLocales}
-                                className={css.select}
-                            />
-                        </div>
-                        <ChatApplication />
-                    </section>
+                            <ChatApplication />
+                        </section>
 
-                    <section>
-                        <div className={css.heading}>
-                            <div>
-                                <h3>Contact cards</h3>
-                                <p>
-                                    This section is displayed in your home page
-                                    after the articles and before the footer.
-                                </p>
+                        <section>
+                            <div className={css.heading}>
+                                <div>
+                                    <h3>Contact cards</h3>
+                                    <p>
+                                        This section is displayed in your home
+                                        page after the articles and before the
+                                        footer.
+                                    </p>
+                                </div>
+                                <SelectField
+                                    value={viewLanguage}
+                                    onChange={handleOnChangeLocale}
+                                    options={supportedLocales}
+                                    className={css.select}
+                                />
                             </div>
-                            <SelectField
-                                value={viewLanguage}
-                                onChange={handleOnChangeLocale}
-                                options={supportedLocales}
-                                className={css.select}
-                            />
-                        </div>
-                    </section>
-                    <EmailContactInfoSection />
-                    <PhoneContactInfoSection />
-                    <ChatContactInfoSection />
-                    <FooterActions />
-                </PageContainer>
+                        </section>
+                        <EmailContactInfoSection />
+                        <PhoneContactInfoSection />
+                        <ChatContactInfoSection />
+                        <FooterActions />
+                    </div>
+                </Container>
             </HelpCenterTranslation>
         </div>
     )

@@ -25,7 +25,6 @@ import settingsCss from '../../settings.less'
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
 import {ImageUpload} from './ImageUpload'
-import {PageContainer} from './PageContainer'
 import {ThemeSwitch} from './ThemeSwitch'
 import {UpdateToggle} from './UpdateToggle'
 
@@ -190,7 +189,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
 
     if (!helpCenter) {
         return (
-            <Container fluid className="page-container">
+            <Container fluid className={settingsCss.pageContainer}>
                 <Loader />
             </Container>
         )
@@ -207,137 +206,145 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 }
             />
             <HelpCenterNavigation helpCenterId={helpCenterId} />
-            <PageContainer className={settingsCss.pageContainer}>
-                <section>
-                    <div className={css.heading}>
-                        <h3>Appearance</h3>
-                        <p>
-                            Upload your logo to complete the branding of your
-                            Help Center. Select theme and colors to customize.
-                        </p>
-                    </div>
-                </section>
-                <section className={css.logos}>
-                    <ImageUpload
-                        id="primary_logo"
-                        title="Standard Logo"
-                        info="Used in the main navigation when with the light theme."
-                        file={primaryLogo.payload}
-                        defaultPreview={helpCenter?.brand_logo_url || ''}
-                        onChangeFile={primaryLogo.changeFile}
-                        isTouched={primaryLogo.isTouched}
-                        helpTextProps={{
-                            highlight: getImageUploadHighlightText(
-                                primaryLogo,
-                                helpCenter?.brand_logo_url
-                            ),
-                            text: 'maximum 10 MB',
-                        }}
-                    />
-                    <ImageUpload
-                        id="light_logo"
-                        title="Light Logo"
-                        info="Used in the main navigation when with the dark theme."
-                        file={lightLogo.payload}
-                        defaultPreview={helpCenter?.brand_logo_light_url || ''}
-                        onChangeFile={lightLogo.changeFile}
-                        isTouched={lightLogo.isTouched}
-                        helpTextProps={{
-                            highlight: getImageUploadHighlightText(
-                                lightLogo,
-                                helpCenter?.brand_logo_light_url
-                            ),
-                            text: 'maximum 10 MB',
-                        }}
-                    />
-                    <ImageUpload
-                        id="favicon"
-                        title="Favicon"
-                        info="This is shown in each browser beside your website’s name."
-                        file={favicon.payload}
-                        defaultPreview={helpCenter?.favicon_url || ''}
-                        onChangeFile={favicon.changeFile}
-                        isTouched={favicon.isTouched}
-                        helpTextProps={{
-                            highlight: getImageUploadHighlightText(
-                                favicon,
-                                helpCenter?.favicon_url
-                            ),
-                            text: 'recommended size 64 x 64',
-                        }}
-                        accept="image/png,image/jpeg,image/x-icon"
-                        size="small"
-                    />
-                </section>
-                <section>
-                    <ThemeSwitch
-                        selectedTheme={selectedTheme}
-                        currentColor={currentColor}
-                        onThemeChange={setSelectedTheme}
-                        onColorChange={setCurrentColor}
-                    />
-                </section>
-                <section>
-                    <div className={css.heading}>
-                        <h3>Banner settings</h3>
-                        <p>
-                            This is displayed on top of your help center’s{' '}
-                            <strong>home page</strong>.
-                        </p>
-                    </div>
-                    <ImageUpload
-                        id="banner_image"
-                        title="Banner Background"
-                        info="Your banner is an image  that’s displayed on the top of your home page."
-                        file={bannerImage.payload}
-                        defaultPreview={helpCenter?.banner_image_url || ''}
-                        onChangeFile={bannerImage.changeFile}
-                        isTouched={bannerImage.isTouched}
-                        isFluid
-                        helpTextProps={{
-                            highlight: getImageUploadHighlightText(
-                                bannerImage,
-                                helpCenter?.banner_image_url
-                            ),
-                            text: 'recommended size 1440 x 316 - Maximum 10 MB',
-                        }}
-                    />
-                </section>
-                <section>
-                    <h3>Other settings</h3>
-                    <UpdateToggle
-                        activated={
-                            helpCenter.search_deactivated_datetime === null
-                        }
-                        label="Enable search bar"
-                        description="Use this toggle to display or hide the search bar in your Help Center."
-                        fieldName="search_deactivated"
-                    />
-                    <UpdateToggle
-                        activated={
-                            helpCenter.powered_by_deactivated_datetime === null
-                        }
-                        label="Powered by Gorgias"
-                        description="Use this toggle to display or hide the Gorgias branding on the footer in Help Center."
-                        fieldName="powered_by_deactivated"
-                    />
-                </section>
-                <footer>
-                    <FormGroup>
-                        <Button
-                            className="mr-2"
-                            color="success"
-                            disabled={!canSaveCurrentAppearance}
-                            onClick={saveCurrentAppearance}
-                        >
-                            {updateResponse.loading
-                                ? 'Saving...'
-                                : 'Save Changes'}
-                        </Button>
-                        <Button onClick={resetCurrentAppearance}>Cancel</Button>
-                    </FormGroup>
-                </footer>
-            </PageContainer>
+            <Container fluid className={settingsCss.pageContainer}>
+                <div className={settingsCss.contentWrapper}>
+                    <section>
+                        <div className={css.heading}>
+                            <h3>Appearance</h3>
+                            <p>
+                                Upload your logo to complete the branding of
+                                your Help Center. Select theme and colors to
+                                customize.
+                            </p>
+                        </div>
+                    </section>
+                    <section className={css.logos}>
+                        <ImageUpload
+                            id="primary_logo"
+                            title="Standard Logo"
+                            info="Used in the main navigation when with the light theme."
+                            file={primaryLogo.payload}
+                            defaultPreview={helpCenter?.brand_logo_url || ''}
+                            onChangeFile={primaryLogo.changeFile}
+                            isTouched={primaryLogo.isTouched}
+                            helpTextProps={{
+                                highlight: getImageUploadHighlightText(
+                                    primaryLogo,
+                                    helpCenter?.brand_logo_url
+                                ),
+                                text: 'maximum 10 MB',
+                            }}
+                        />
+                        <ImageUpload
+                            id="light_logo"
+                            title="Light Logo"
+                            info="Used in the main navigation when with the dark theme."
+                            file={lightLogo.payload}
+                            defaultPreview={
+                                helpCenter?.brand_logo_light_url || ''
+                            }
+                            onChangeFile={lightLogo.changeFile}
+                            isTouched={lightLogo.isTouched}
+                            helpTextProps={{
+                                highlight: getImageUploadHighlightText(
+                                    lightLogo,
+                                    helpCenter?.brand_logo_light_url
+                                ),
+                                text: 'maximum 10 MB',
+                            }}
+                        />
+                        <ImageUpload
+                            id="favicon"
+                            title="Favicon"
+                            info="This is shown in each browser beside your website’s name."
+                            file={favicon.payload}
+                            defaultPreview={helpCenter?.favicon_url || ''}
+                            onChangeFile={favicon.changeFile}
+                            isTouched={favicon.isTouched}
+                            helpTextProps={{
+                                highlight: getImageUploadHighlightText(
+                                    favicon,
+                                    helpCenter?.favicon_url
+                                ),
+                                text: 'recommended size 64 x 64',
+                            }}
+                            accept="image/png,image/jpeg,image/x-icon"
+                            size="small"
+                        />
+                    </section>
+                    <section>
+                        <ThemeSwitch
+                            selectedTheme={selectedTheme}
+                            currentColor={currentColor}
+                            onThemeChange={setSelectedTheme}
+                            onColorChange={setCurrentColor}
+                        />
+                    </section>
+                    <section>
+                        <div className={css.heading}>
+                            <h3>Banner settings</h3>
+                            <p>
+                                This is displayed on top of your help center’s{' '}
+                                <strong>home page</strong>.
+                            </p>
+                        </div>
+                        <ImageUpload
+                            id="banner_image"
+                            title="Banner Background"
+                            info="Your banner is an image  that’s displayed on the top of your home page."
+                            file={bannerImage.payload}
+                            defaultPreview={helpCenter?.banner_image_url || ''}
+                            onChangeFile={bannerImage.changeFile}
+                            isTouched={bannerImage.isTouched}
+                            isFluid
+                            helpTextProps={{
+                                highlight: getImageUploadHighlightText(
+                                    bannerImage,
+                                    helpCenter?.banner_image_url
+                                ),
+                                text: 'recommended size 1440 x 316 - Maximum 10 MB',
+                            }}
+                        />
+                    </section>
+                    <section>
+                        <h3>Other settings</h3>
+                        <UpdateToggle
+                            activated={
+                                helpCenter.search_deactivated_datetime === null
+                            }
+                            label="Enable search bar"
+                            description="Use this toggle to display or hide the search bar in your Help Center."
+                            fieldName="search_deactivated"
+                        />
+                        <UpdateToggle
+                            activated={
+                                helpCenter.powered_by_deactivated_datetime ===
+                                null
+                            }
+                            label="Powered by Gorgias"
+                            description="Use this toggle to display or hide the Gorgias branding on the footer in Help Center."
+                            fieldName="powered_by_deactivated"
+                        />
+                    </section>
+                    <footer>
+                        <FormGroup>
+                            <Button
+                                className="mr-2"
+                                color="success"
+                                disabled={!canSaveCurrentAppearance}
+                                onClick={saveCurrentAppearance}
+                            >
+                                {updateResponse.loading
+                                    ? 'Saving...'
+                                    : 'Save Changes'}
+                            </Button>
+                            <Button onClick={resetCurrentAppearance}>
+                                Cancel
+                            </Button>
+                        </FormGroup>
+                    </footer>
+                </div>
+            </Container>
         </div>
     )
 }

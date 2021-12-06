@@ -33,7 +33,6 @@ import css from '../../settings.less'
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
 import {NavSection} from './NavSection'
-import {PageContainer} from './PageContainer'
 
 export const HelpCenterCustomizationView = () => {
     const dispatch = useAppDispatch()
@@ -178,7 +177,7 @@ export const HelpCenterCustomizationView = () => {
 
     if (!helpCenter) {
         return (
-            <Container fluid className="page-container">
+            <Container fluid className={css.pageContainer}>
                 <Loader />
             </Container>
         )
@@ -200,58 +199,60 @@ export const HelpCenterCustomizationView = () => {
                 }
             />
             <HelpCenterNavigation helpCenterId={helpCenterId} />
-            <PageContainer className={css.pageContainer}>
-                <NavSection
-                    availableLocales={localesOptions}
-                    description="Change navigation elements at the top of the Help Center."
-                    items={headerNavigation.links}
-                    name="header"
-                    selectedLocale={selectedLocale}
-                    title="Header settings"
-                    onChangeLink={(ev, key, id) => {
-                        headerNavigation.update(ev.target.value, id, key)
-                    }}
-                    onClickAdd={() => headerNavigation.add(selectedLocale)}
-                    onChangeLocale={handleOnChangeLocale}
-                    onClickRemove={headerNavigation.remove}
-                />
-                <NavSection
-                    availableLocales={localesOptions}
-                    description="Change navigation elements at the bottom of the Help Center."
-                    items={footerNavigation.links}
-                    name="footer"
-                    selectedLocale={selectedLocale}
-                    title="Footer settings"
-                    onChangeLink={(ev, key, id) => {
-                        footerNavigation.update(ev.target.value, id, key)
-                    }}
-                    onClickAdd={() => footerNavigation.add(selectedLocale)}
-                    onChangeLocale={handleOnChangeLocale}
-                    onClickRemove={footerNavigation.remove}
-                />
-                <SocialNavigationLinks
-                    links={socialNavigation.links}
-                    locale={selectedLocale}
-                    onBlurLink={(ev, key, id) => {
-                        socialNavigation.update(ev.target.value, id, key)
-                    }}
-                />
-                <FormGroup>
-                    <Button
-                        disabled={
-                            !headerNavigation.isListValid() ||
-                            !footerNavigation.isListValid() ||
-                            !socialNavigation.isListValid()
-                        }
-                        className="mr-2"
-                        color="success"
-                        onClick={handleOnSave}
-                    >
-                        Save Changes
-                    </Button>
-                    <Button onClick={handleOnReset}>Cancel</Button>
-                </FormGroup>
-            </PageContainer>
+            <Container fluid className={css.pageContainer}>
+                <div className={css.contentWrapper}>
+                    <NavSection
+                        availableLocales={localesOptions}
+                        description="Change navigation elements at the top of the Help Center."
+                        items={headerNavigation.links}
+                        name="header"
+                        selectedLocale={selectedLocale}
+                        title="Header settings"
+                        onChangeLink={(ev, key, id) => {
+                            headerNavigation.update(ev.target.value, id, key)
+                        }}
+                        onClickAdd={() => headerNavigation.add(selectedLocale)}
+                        onChangeLocale={handleOnChangeLocale}
+                        onClickRemove={headerNavigation.remove}
+                    />
+                    <NavSection
+                        availableLocales={localesOptions}
+                        description="Change navigation elements at the bottom of the Help Center."
+                        items={footerNavigation.links}
+                        name="footer"
+                        selectedLocale={selectedLocale}
+                        title="Footer settings"
+                        onChangeLink={(ev, key, id) => {
+                            footerNavigation.update(ev.target.value, id, key)
+                        }}
+                        onClickAdd={() => footerNavigation.add(selectedLocale)}
+                        onChangeLocale={handleOnChangeLocale}
+                        onClickRemove={footerNavigation.remove}
+                    />
+                    <SocialNavigationLinks
+                        links={socialNavigation.links}
+                        locale={selectedLocale}
+                        onBlurLink={(ev, key, id) => {
+                            socialNavigation.update(ev.target.value, id, key)
+                        }}
+                    />
+                    <FormGroup>
+                        <Button
+                            disabled={
+                                !headerNavigation.isListValid() ||
+                                !footerNavigation.isListValid() ||
+                                !socialNavigation.isListValid()
+                            }
+                            className="mr-2"
+                            color="success"
+                            onClick={handleOnSave}
+                        >
+                            Save Changes
+                        </Button>
+                        <Button onClick={handleOnReset}>Cancel</Button>
+                    </FormGroup>
+                </div>
+            </Container>
         </div>
     )
 }

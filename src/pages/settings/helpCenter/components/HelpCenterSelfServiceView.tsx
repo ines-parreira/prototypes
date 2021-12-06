@@ -14,13 +14,13 @@ import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
+import settingsCss from '../../settings.less'
 import {useCurrentHelpCenter} from '../hooks/useCurrentHelpCenter'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
-import {PageContainer} from './PageContainer'
 import {SelfServiceSection} from './SelfServiceSection'
 
 export const HelpCenterSelfServiceView = (): JSX.Element | null => {
@@ -79,7 +79,7 @@ export const HelpCenterSelfServiceView = (): JSX.Element | null => {
 
     if (helpCenter === null || isLoadingIntegrations) {
         return (
-            <Container fluid className="page-container">
+            <Container fluid className={settingsCss.pageContainer}>
                 <Loader />
             </Container>
         )
@@ -106,14 +106,16 @@ export const HelpCenterSelfServiceView = (): JSX.Element | null => {
                 }
             />
             <HelpCenterNavigation helpCenterId={helpCenterId} />
-            <PageContainer>
-                <SelfServiceSection
-                    shopifyIntegration={shopifyIntegration}
-                    helpCenter={helpCenter}
-                    updateHelpCenter={updateHelpCenter}
-                    updating={updatingHelpCenter}
-                />
-            </PageContainer>
+            <Container fluid className={settingsCss.pageContainer}>
+                <div className={settingsCss.contentWrapper}>
+                    <SelfServiceSection
+                        shopifyIntegration={shopifyIntegration}
+                        helpCenter={helpCenter}
+                        updateHelpCenter={updateHelpCenter}
+                        updating={updatingHelpCenter}
+                    />
+                </div>
+            </Container>
         </div>
     )
 }

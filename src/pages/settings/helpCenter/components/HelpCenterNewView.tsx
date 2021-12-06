@@ -34,7 +34,6 @@ import {
 } from '../utils/validations'
 import settingsCss from '../../settings.less'
 
-import {PageContainer} from './PageContainer'
 import {ThemeSwitch} from './ThemeSwitch'
 
 import css from './HelpCenterNewView.less'
@@ -196,7 +195,7 @@ export const HelpCenterNewView = ({
 
     if (isLoading) {
         return (
-            <Container fluid className="page-container">
+            <Container fluid className={settingsCss.pageContainer}>
                 <Loader />
             </Container>
         )
@@ -214,81 +213,83 @@ export const HelpCenterNewView = ({
                     </Breadcrumb>
                 }
             />
-            <PageContainer className={settingsCss.pageContainer}>
-                <section className={css.form}>
-                    <InputField
-                        type="text"
-                        name="name"
-                        label="Help Center name"
-                        tooltip="This is going to be displayed whenever your logo isn’t available and also in search engines."
-                        placeholder="Ex. Customer Support"
-                        className={classnames(css.formInput)}
-                        required
-                        value={newHelpCenter.name}
-                        onChange={handleChangeName}
-                    />
-                    <SubdomainInput
-                        value={newHelpCenter.subdomain}
-                        onChange={handleChangeSubdomain}
-                        tooltip="This is the URL for your Help Center. If you don't provide a value, we will generate one for you."
-                        error={subdomainError}
-                    />
-                </section>
-
-                <section>
-                    <h3>Languages</h3>
-                    <h4>Default language</h4>
-                    <p>
-                        Choose a default language. This will be the default
-                        setting when the selected language isn't available or
-                        cannot be detected.
-                    </p>
-                    <div id="language-select">
-                        <SelectField
-                            options={localeOptions}
-                            value={newHelpCenter.default_locale}
-                            onChange={handleOnSelect}
-                            fullWidth
+            <Container fluid className={settingsCss.pageContainer}>
+                <div className={settingsCss.contentWrapper}>
+                    <section className={css.form}>
+                        <InputField
+                            type="text"
+                            name="name"
+                            label="Help Center name"
+                            tooltip="This is going to be displayed whenever your logo isn’t available and also in search engines."
+                            placeholder="Ex. Customer Support"
+                            className={classnames(css.formInput)}
+                            required
+                            value={newHelpCenter.name}
+                            onChange={handleChangeName}
                         />
+                        <SubdomainInput
+                            value={newHelpCenter.subdomain}
+                            onChange={handleChangeSubdomain}
+                            tooltip="This is the URL for your Help Center. If you don't provide a value, we will generate one for you."
+                            error={subdomainError}
+                        />
+                    </section>
+
+                    <section>
+                        <h3>Languages</h3>
+                        <h4>Default language</h4>
+                        <p>
+                            Choose a default language. This will be the default
+                            setting when the selected language isn't available
+                            or cannot be detected.
+                        </p>
+                        <div id="language-select">
+                            <SelectField
+                                options={localeOptions}
+                                value={newHelpCenter.default_locale}
+                                onChange={handleOnSelect}
+                                fullWidth
+                            />
+                        </div>
+                    </section>
+
+                    <section>
+                        <h3 className="mb-3">Appearance</h3>
+                        <ThemeSwitch
+                            selectedTheme={newHelpCenter.theme}
+                            currentColor={newHelpCenter.primary_color}
+                            onThemeChange={(theme) => {
+                                setNewHelpCenter((prevNewHelpCenter) => ({
+                                    ...prevNewHelpCenter,
+                                    theme,
+                                }))
+                            }}
+                            onColorChange={(color) => {
+                                setNewHelpCenter((prevNewHelpCenter) => ({
+                                    ...prevNewHelpCenter,
+                                    primary_color: color,
+                                }))
+                            }}
+                        />
+                    </section>
+
+                    <div className="d-flex">
+                        <Button
+                            color="success"
+                            disabled={!canSubmit}
+                            onClick={handleSubmit}
+                        >
+                            Add new Help Center
+                        </Button>
+                        <Button
+                            className={css.cancelButton}
+                            onClick={navigateToStartView}
+                        >
+                            Cancel
+                        </Button>
                     </div>
-                </section>
-
-                <section>
-                    <h3 className="mb-3">Appearance</h3>
-                    <ThemeSwitch
-                        selectedTheme={newHelpCenter.theme}
-                        currentColor={newHelpCenter.primary_color}
-                        onThemeChange={(theme) => {
-                            setNewHelpCenter((prevNewHelpCenter) => ({
-                                ...prevNewHelpCenter,
-                                theme,
-                            }))
-                        }}
-                        onColorChange={(color) => {
-                            setNewHelpCenter((prevNewHelpCenter) => ({
-                                ...prevNewHelpCenter,
-                                primary_color: color,
-                            }))
-                        }}
-                    />
-                </section>
-
-                <div className="d-flex">
-                    <Button
-                        color="success"
-                        disabled={!canSubmit}
-                        onClick={handleSubmit}
-                    >
-                        Add new Help Center
-                    </Button>
-                    <Button
-                        className={css.cancelButton}
-                        onClick={navigateToStartView}
-                    >
-                        Cancel
-                    </Button>
                 </div>
-            </PageContainer>
+            </Container>
         </div>
     )
 }

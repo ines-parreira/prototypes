@@ -16,7 +16,6 @@ import {useLocales} from '../../hooks/useLocales'
 import {HelpCenterPreferencesSettings} from '../../providers/HelpCenterPreferencesSettings'
 import {HelpCenterDetailsBreadcrumb} from '../HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from '../HelpCenterNavigation'
-import {PageContainer} from '../PageContainer'
 import settingsCss from '../../../settings.less'
 
 import {AvailableLanguagesTags} from './components/AvailableLanguagesTags'
@@ -60,21 +59,25 @@ export const HelpCenterPreferencesView: React.FC = () => {
             />
             <HelpCenterNavigation helpCenterId={helpCenter.id} />
             <HelpCenterPreferencesSettings helpCenter={helpCenter}>
-                <PageContainer className={settingsCss.pageContainer}>
-                    <DisplayName />
-                    <section>
-                        <h3>Languages</h3>
-                        <DefaultLanguageSelect availableLocales={locales} />
-                        <AvailableLanguagesTags availableLocales={locales} />
-                    </section>
-                    <SEO
-                        helpCenter={helpCenter}
-                        availableLocales={locales}
-                        viewLanguage={viewLanguage}
-                        onChangeLocale={handleOnChangeLocale}
-                    />
-                    <FooterActions />
-                </PageContainer>
+                <Container fluid className={settingsCss.pageContainer}>
+                    <div className={settingsCss.contentWrapper}>
+                        <DisplayName />
+                        <section>
+                            <h3>Languages</h3>
+                            <DefaultLanguageSelect availableLocales={locales} />
+                            <AvailableLanguagesTags
+                                availableLocales={locales}
+                            />
+                        </section>
+                        <SEO
+                            helpCenter={helpCenter}
+                            availableLocales={locales}
+                            viewLanguage={viewLanguage}
+                            onChangeLocale={handleOnChangeLocale}
+                        />
+                        <FooterActions />
+                    </div>
+                </Container>
             </HelpCenterPreferencesSettings>
         </div>
     )

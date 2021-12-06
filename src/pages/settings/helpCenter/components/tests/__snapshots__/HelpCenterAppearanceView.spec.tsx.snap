@@ -92,500 +92,504 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
       </a>
     </nav>
     <div
-      class="container pageContainer container-fluid"
+      class="pageContainer container-fluid"
     >
-      <section>
-        <div
-          class="heading"
-        >
-          <h3>
-            Appearance
-          </h3>
-          <p>
-            Upload your logo to complete the branding of your Help Center. Select theme and colors to customize.
-          </p>
-        </div>
-      </section>
-      <section
-        class="logos"
+      <div
+        class="contentWrapper"
       >
-        <div
-          class="container"
+        <section>
+          <div
+            class="heading"
+          >
+            <h3>
+              Appearance
+            </h3>
+            <p>
+              Upload your logo to complete the branding of your Help Center. Select theme and colors to customize.
+            </p>
+          </div>
+        </section>
+        <section
+          class="logos"
         >
           <div
             class="container"
           >
-            Standard Logo
-            <i
-              class="help material-icons-outlined ml-2"
-              role="img"
-            >
-              info
-            </i>
-          </div>
-          <label
-            class="wrapper"
-            data-testid="dropZone"
-            for="primary_logo"
-          >
             <div
-              class="container drop-zone"
+              class="container"
+            >
+              Standard Logo
+              <i
+                class="help material-icons-outlined ml-2"
+                role="img"
+              >
+                info
+              </i>
+            </div>
+            <label
+              class="wrapper"
+              data-testid="dropZone"
+              for="primary_logo"
             >
               <div
-                class="content"
+                class="container drop-zone"
               >
                 <div
                   class="content"
                 >
                   <div
-                    class="wrapper"
+                    class="content"
                   >
-                    <img
-                      alt="upload"
-                      class="icon"
-                      src="test-file-stub"
-                    />
                     <div
-                      class="text"
+                      class="wrapper"
                     >
-                      <span>
-                        Drop your image here, or
-                      </span>
-                      <span
-                        class="browseInput"
+                      <img
+                        alt="upload"
+                        class="icon"
+                        src="test-file-stub"
+                      />
+                      <div
+                        class="text"
                       >
-                        browse
-                      </span>
+                        <span>
+                          Drop your image here, or
+                        </span>
+                        <span
+                          class="browseInput"
+                        >
+                          browse
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+            </label>
+            <input
+              accept="image/jpeg,image/png"
+              id="primary_logo"
+              style="display: none;"
+              type="file"
+            />
+            <div
+              class="container"
+            >
+              <span
+                class="highlight clickable"
+              >
+                Upload image
+              </span>
+              <span>
+                maximum 10 MB
+              </span>
             </div>
-          </label>
-          <input
-            accept="image/jpeg,image/png"
-            id="primary_logo"
-            style="display: none;"
-            type="file"
-          />
+          </div>
           <div
             class="container"
-          >
-            <span
-              class="highlight clickable"
-            >
-              Upload image
-            </span>
-            <span>
-              maximum 10 MB
-            </span>
-          </div>
-        </div>
-        <div
-          class="container"
-        >
-          <div
-            class="container"
-          >
-            Light Logo
-            <i
-              class="help material-icons-outlined ml-2"
-              role="img"
-            >
-              info
-            </i>
-          </div>
-          <label
-            class="wrapper"
-            data-testid="dropZone"
-            for="light_logo"
           >
             <div
-              class="container drop-zone"
+              class="container"
+            >
+              Light Logo
+              <i
+                class="help material-icons-outlined ml-2"
+                role="img"
+              >
+                info
+              </i>
+            </div>
+            <label
+              class="wrapper"
+              data-testid="dropZone"
+              for="light_logo"
             >
               <div
-                class="content"
+                class="container drop-zone"
               >
                 <div
                   class="content"
                 >
                   <div
-                    class="wrapper"
+                    class="content"
                   >
-                    <img
-                      alt="upload"
-                      class="icon"
-                      src="test-file-stub"
-                    />
                     <div
-                      class="text"
+                      class="wrapper"
                     >
-                      <span>
-                        Drop your image here, or
-                      </span>
-                      <span
-                        class="browseInput"
+                      <img
+                        alt="upload"
+                        class="icon"
+                        src="test-file-stub"
+                      />
+                      <div
+                        class="text"
                       >
-                        browse
-                      </span>
+                        <span>
+                          Drop your image here, or
+                        </span>
+                        <span
+                          class="browseInput"
+                        >
+                          browse
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+            </label>
+            <input
+              accept="image/jpeg,image/png"
+              id="light_logo"
+              style="display: none;"
+              type="file"
+            />
+            <div
+              class="container"
+            >
+              <span
+                class="highlight clickable"
+              >
+                Upload image
+              </span>
+              <span>
+                maximum 10 MB
+              </span>
             </div>
-          </label>
-          <input
-            accept="image/jpeg,image/png"
-            id="light_logo"
-            style="display: none;"
-            type="file"
-          />
+          </div>
           <div
             class="container"
-          >
-            <span
-              class="highlight clickable"
-            >
-              Upload image
-            </span>
-            <span>
-              maximum 10 MB
-            </span>
-          </div>
-        </div>
-        <div
-          class="container"
-        >
-          <div
-            class="container"
-          >
-            Favicon
-            <i
-              class="help material-icons-outlined ml-2"
-              role="img"
-            >
-              info
-            </i>
-          </div>
-          <label
-            class="wrapper"
-            data-testid="dropZone"
-            for="favicon"
           >
             <div
-              class="container small drop-zone drop-zone-small"
+              class="container"
+            >
+              Favicon
+              <i
+                class="help material-icons-outlined ml-2"
+                role="img"
+              >
+                info
+              </i>
+            </div>
+            <label
+              class="wrapper"
+              data-testid="dropZone"
+              for="favicon"
             >
               <div
-                class="content"
+                class="container small drop-zone drop-zone-small"
               >
                 <div
                   class="content"
                 >
                   <div
-                    class="wrapper"
+                    class="content"
                   >
-                    <img
-                      alt="upload"
-                      class="icon icon-small"
-                      src="test-file-stub"
-                    />
+                    <div
+                      class="wrapper"
+                    >
+                      <img
+                        alt="upload"
+                        class="icon icon-small"
+                        src="test-file-stub"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </label>
-          <input
-            accept="image/png,image/jpeg,image/x-icon"
-            id="favicon"
-            style="display: none;"
-            type="file"
-          />
-          <div
-            class="container"
-          >
-            <span
-              class="highlight clickable"
-            >
-              Upload image
-            </span>
-            <span>
-              recommended size 64 x 64
-            </span>
-          </div>
-        </div>
-      </section>
-      <section>
-        <h4>
-          Theme
-        </h4>
-        <p>
-          Select your preferred Help Center theme. This will adjust the theme for header and footer.
-        </p>
-        <div
-          class="list"
-        >
-          <button
-            aria-label="Light Theme"
-            class="wrapper selected"
-          >
+            </label>
+            <input
+              accept="image/png,image/jpeg,image/x-icon"
+              id="favicon"
+              style="display: none;"
+              type="file"
+            />
             <div
-              class="preview"
+              class="container"
             >
-              <img
-                alt="preview-light"
-                src="test-file-stub"
-              />
-            </div>
-            <div
-              class="label"
-            >
-              <input
-                checked=""
-                class="form-check-input"
-                readonly=""
-                tabindex="-1"
-                type="radio"
-              />
               <span
-                class="text"
+                class="highlight clickable"
               >
-                Light Theme
+                Upload image
+              </span>
+              <span>
+                recommended size 64 x 64
               </span>
             </div>
-          </button>
-          <button
-            aria-label="Dark Theme"
-            class="wrapper"
-          >
-            <div
-              class="preview"
-            >
-              <img
-                alt="preview-dark"
-                src="test-file-stub"
-              />
-            </div>
-            <div
-              class="label"
-            >
-              <input
-                class="form-check-input"
-                readonly=""
-                tabindex="-1"
-                type="radio"
-              />
-              <span
-                class="text"
-              >
-                Dark Theme
-              </span>
-            </div>
-          </button>
-        </div>
-        <div
-          class="InputField form-group"
-          color=""
-        >
-          <label
-            class="control-label"
-            for="id-input-1"
-          >
-            Primary Color
-          </label>
-          <div
-            class=""
-          >
-            <div
-              class="d-inline-block"
-            >
-              <button
-                class="button btn btn-secondary"
-                id="color-picker-2"
-                type="button"
-              >
-                <div
-                  class="color"
-                  style="background-color: rgb(74, 141, 249);"
-                />
-              </button>
-            </div>
           </div>
-          <small
-            class="form-text text-muted"
-          >
-            This will be used as your primary color in hyperlinks, pagination and icons.
-          </small>
-        </div>
-      </section>
-      <section>
-        <div
-          class="heading"
-        >
-          <h3>
-            Banner settings
-          </h3>
+        </section>
+        <section>
+          <h4>
+            Theme
+          </h4>
           <p>
-            This is displayed on top of your help center’s
-             
-            <strong>
-              home page
-            </strong>
-            .
+            Select your preferred Help Center theme. This will adjust the theme for header and footer.
           </p>
-        </div>
-        <div
-          class="container"
-        >
+          <div
+            class="list"
+          >
+            <button
+              aria-label="Light Theme"
+              class="wrapper selected"
+            >
+              <div
+                class="preview"
+              >
+                <img
+                  alt="preview-light"
+                  src="test-file-stub"
+                />
+              </div>
+              <div
+                class="label"
+              >
+                <input
+                  checked=""
+                  class="form-check-input"
+                  readonly=""
+                  tabindex="-1"
+                  type="radio"
+                />
+                <span
+                  class="text"
+                >
+                  Light Theme
+                </span>
+              </div>
+            </button>
+            <button
+              aria-label="Dark Theme"
+              class="wrapper"
+            >
+              <div
+                class="preview"
+              >
+                <img
+                  alt="preview-dark"
+                  src="test-file-stub"
+                />
+              </div>
+              <div
+                class="label"
+              >
+                <input
+                  class="form-check-input"
+                  readonly=""
+                  tabindex="-1"
+                  type="radio"
+                />
+                <span
+                  class="text"
+                >
+                  Dark Theme
+                </span>
+              </div>
+            </button>
+          </div>
+          <div
+            class="InputField form-group"
+            color=""
+          >
+            <label
+              class="control-label"
+              for="id-input-1"
+            >
+              Primary Color
+            </label>
+            <div
+              class=""
+            >
+              <div
+                class="d-inline-block"
+              >
+                <button
+                  class="button btn btn-secondary"
+                  id="color-picker-2"
+                  type="button"
+                >
+                  <div
+                    class="color"
+                    style="background-color: rgb(74, 141, 249);"
+                  />
+                </button>
+              </div>
+            </div>
+            <small
+              class="form-text text-muted"
+            >
+              This will be used as your primary color in hyperlinks, pagination and icons.
+            </small>
+          </div>
+        </section>
+        <section>
+          <div
+            class="heading"
+          >
+            <h3>
+              Banner settings
+            </h3>
+            <p>
+              This is displayed on top of your help center’s
+               
+              <strong>
+                home page
+              </strong>
+              .
+            </p>
+          </div>
           <div
             class="container"
           >
-            Banner Background
-            <i
-              class="help material-icons-outlined ml-2"
-              role="img"
-            >
-              info
-            </i>
-          </div>
-          <label
-            class="wrapper"
-            data-testid="dropZone"
-            for="banner_image"
-          >
             <div
-              class="container drop-zone"
-              style="width: 100%;"
+              class="container"
+            >
+              Banner Background
+              <i
+                class="help material-icons-outlined ml-2"
+                role="img"
+              >
+                info
+              </i>
+            </div>
+            <label
+              class="wrapper"
+              data-testid="dropZone"
+              for="banner_image"
             >
               <div
-                class="content"
+                class="container drop-zone"
+                style="width: 100%;"
               >
                 <div
                   class="content"
                 >
                   <div
-                    class="wrapper"
+                    class="content"
                   >
-                    <img
-                      alt="upload"
-                      class="icon"
-                      src="test-file-stub"
-                    />
                     <div
-                      class="text"
+                      class="wrapper"
                     >
-                      <span>
-                        Drop your image here, or
-                      </span>
-                      <span
-                        class="browseInput"
+                      <img
+                        alt="upload"
+                        class="icon"
+                        src="test-file-stub"
+                      />
+                      <div
+                        class="text"
                       >
-                        browse
-                      </span>
+                        <span>
+                          Drop your image here, or
+                        </span>
+                        <span
+                          class="browseInput"
+                        >
+                          browse
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+            </label>
+            <input
+              accept="image/jpeg,image/png"
+              id="banner_image"
+              style="display: none;"
+              type="file"
+            />
+            <div
+              class="container"
+            >
+              <span
+                class="highlight clickable"
+              >
+                Upload image
+              </span>
+              <span>
+                recommended size 1440 x 316 - Maximum 10 MB
+              </span>
             </div>
-          </label>
-          <input
-            accept="image/jpeg,image/png"
-            id="banner_image"
-            style="display: none;"
-            type="file"
-          />
-          <div
-            class="container"
-          >
-            <span
-              class="highlight clickable"
-            >
-              Upload image
-            </span>
-            <span>
-              recommended size 1440 x 316 - Maximum 10 MB
-            </span>
           </div>
-        </div>
-      </section>
-      <section>
-        <h3>
-          Other settings
-        </h3>
-        <div
-          class="toggle form-group"
-        >
+        </section>
+        <section>
+          <h3>
+            Other settings
+          </h3>
           <div
-            class="container"
+            class="toggle form-group"
           >
-            <label
-              class="switch toggle-switch"
+            <div
+              class="container"
             >
-              <input
-                readonly=""
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-            </label>
-            <label
-              class="control-label mb-0 ml-2 clickable"
-            >
-              Enable search bar
-            </label>
+              <label
+                class="switch toggle-switch"
+              >
+                <input
+                  readonly=""
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+              </label>
+              <label
+                class="control-label mb-0 ml-2 clickable"
+              >
+                Enable search bar
+              </label>
+            </div>
           </div>
-        </div>
-        <p>
-          Use this toggle to display or hide the search bar in your Help Center.
-        </p>
-        <div
-          class="toggle form-group"
-        >
+          <p>
+            Use this toggle to display or hide the search bar in your Help Center.
+          </p>
           <div
-            class="container"
+            class="toggle form-group"
           >
-            <label
-              class="switch toggle-switch"
+            <div
+              class="container"
             >
-              <input
-                checked=""
-                readonly=""
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-            </label>
-            <label
-              class="control-label mb-0 ml-2 clickable"
-            >
-              Powered by Gorgias
-            </label>
+              <label
+                class="switch toggle-switch"
+              >
+                <input
+                  checked=""
+                  readonly=""
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+              </label>
+              <label
+                class="control-label mb-0 ml-2 clickable"
+              >
+                Powered by Gorgias
+              </label>
+            </div>
           </div>
-        </div>
-        <p>
-          Use this toggle to display or hide the Gorgias branding on the footer in Help Center.
-        </p>
-      </section>
-      <footer>
-        <div
-          class="form-group"
-        >
-          <button
-            class="mr-2 btn btn-success disabled"
-            disabled=""
-            type="button"
+          <p>
+            Use this toggle to display or hide the Gorgias branding on the footer in Help Center.
+          </p>
+        </section>
+        <footer>
+          <div
+            class="form-group"
           >
-            Save Changes
-          </button>
-          <button
-            class="btn btn-secondary"
-            type="button"
-          >
-            Cancel
-          </button>
-        </div>
-      </footer>
+            <button
+              class="mr-2 btn btn-success disabled"
+              disabled=""
+              type="button"
+            >
+              Save Changes
+            </button>
+            <button
+              class="btn btn-secondary"
+              type="button"
+            >
+              Cancel
+            </button>
+          </div>
+        </footer>
+      </div>
     </div>
   </div>
 </div>
