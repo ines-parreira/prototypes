@@ -15,7 +15,10 @@ import {
     Row,
 } from 'reactstrap'
 
-import {DEFAULT_VOICE_MESSAGE} from '../../../../../models/integration/constants'
+import {
+    DEFAULT_VOICE_MESSAGE,
+    DEFAULT_IVR_SETTINGS,
+} from '../../../../../models/integration/constants'
 import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
 import PageHeader from '../../../../common/components/PageHeader'
 import Alert, {AlertType} from '../../../../common/components/Alert/Alert'
@@ -209,6 +212,10 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                                 ...DEFAULT_VOICE_MESSAGE,
                                 voice_message_type: VoiceMessageType.None,
                             },
+                            ivr:
+                                phoneFunction === PhoneFunction.Ivr
+                                    ? DEFAULT_IVR_SETTINGS
+                                    : undefined,
                             address_information: addressInformation,
                         },
                     })

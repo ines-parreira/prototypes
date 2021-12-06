@@ -12,6 +12,7 @@ import {
     isPhoneIntegration,
 } from '../../../../../models/integration/types'
 import {DEFAULT_VOICE_MESSAGE} from '../../../../../models/integration/constants'
+import settingsCss from '../../../../settings/settings.less'
 
 import {updatePhoneIvrConfiguration} from './actions'
 import PhoneIntegrationBreadcrumbs from './PhoneIntegrationBreadcrumbs'
@@ -69,7 +70,7 @@ const PhoneIntegrationIvr = (props: Props): JSX.Element | null => {
             />
 
             <PhoneIntegrationNavigation integration={fromJS(integration)} />
-            <Container fluid className="page-container">
+            <Container fluid className={settingsCss.pageContainer}>
                 <h4 className="mb-3">Greeting message</h4>
                 <Row>
                     <Col lg={6} xl={7}>
