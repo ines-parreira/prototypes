@@ -18,6 +18,7 @@ import DEPRECATED_Stats from './DEPRECATED_Stats'
 import RevenueStatsRestrictedFeature from './RevenueStatsRestrictedFeature'
 
 import css from './DEPRECATED_StatsPage.less'
+import SelfServiceStatsPage from './self-service/SelfServiceStatsPage'
 
 export default function DEPRECATED_StatsPage() {
     const {view} = useParams<{view?: string}>()
@@ -27,6 +28,7 @@ export default function DEPRECATED_StatsPage() {
     const isOnRevenuePage = view === views.getIn(['revenue', 'link'])
     const isOnLiveOverviewPage = view === views.getIn(['live-overview', 'link'])
     const isOnLiveAgentsPage = view === views.getIn(['live-agents', 'link'])
+    const isOnSelfServicePage = view === views.getIn(['self-service', 'link'])
     const globalFilters = useSelector(getFilters)
     const hasLiveAgentsFeature = useSelector(
         currentAccountHasFeature(AccountFeature.UsersLiveStatistics)
@@ -79,6 +81,10 @@ export default function DEPRECATED_StatsPage() {
 
     if (!hasLiveAgentsFeature && isOnLiveAgentsPage) {
         return <Paywall feature={AccountFeature.UsersLiveStatistics} />
+    }
+
+    if (isOnSelfServicePage) {
+        return <SelfServiceStatsPage />
     }
 
     return (

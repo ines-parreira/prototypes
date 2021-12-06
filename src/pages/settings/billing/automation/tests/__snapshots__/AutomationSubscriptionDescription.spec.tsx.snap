@@ -105,6 +105,22 @@ exports[`<AutomationSubscriptionDescription /> should render for customers alrea
         Custom report issue flows
       </span>
     </li>
+    <li
+      class="d-flex align-items-center featureListItem"
+    >
+      <span
+        class="featureIcon mr-3"
+      >
+        <i
+          class="icon material-icons"
+        >
+          insights
+        </i>
+      </span>
+      <span>
+        Self-service statistics
+      </span>
+    </li>
   </div>
 </div>
 `;
@@ -180,6 +196,22 @@ exports[`<AutomationSubscriptionDescription /> should render for customers witho
       </span>
       <span>
         Custom report issue flows
+      </span>
+    </li>
+    <li
+      class="d-flex align-items-center featureListItem"
+    >
+      <span
+        class="featureIcon mr-3"
+      >
+        <i
+          class="icon material-icons"
+        >
+          insights
+        </i>
+      </span>
+      <span>
+        Self-service statistics
       </span>
     </li>
   </div>

@@ -1,4 +1,4 @@
-import {ReactElement} from 'react'
+import React, {ReactElement} from 'react'
 
 import {AccountFeature} from '../state/currentAccount/types'
 
@@ -63,5 +63,16 @@ export const paywallConfigs: Partial<Record<AccountFeature, PaywallConfig>> = {
         description:
             'Track your agents in real-time. See how long they have been online, how many tickets have been assigned to them and the work they have accomplished over a given day.',
         preview: `${assetsURL}/static/private/img/paywalls/screens/live-agents-statistic.png`,
+    },
+    [AccountFeature.AutomationSelfServiceStatistics]: {
+        header: 'Track self-service’s interactions',
+        description: (
+            <div>
+                Activate <b>self-service</b> and see the number of your
+                customers’ requests passing through it and how many of these
+                interactions you are <b>automating!</b>
+            </div>
+        ),
+        preview: `${assetsURL}/static/private/img/paywalls/screens/self-service-statistics.png`,
     },
 }

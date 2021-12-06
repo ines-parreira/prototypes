@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProductCell should render a product cell tickets with image placeholder 1`] = `
+<div
+  class="container"
+>
+  <div
+    class="product-image"
+  >
+    <img
+      alt="Placeholder"
+      class="placeholder"
+      src="test-file-stub"
+    />
+  </div>
+  <h5
+    class="product-name"
+  >
+    Sunglasses
+  </h5>
+</div>
+`;
+
+exports[`ProductCell should render a product cell with image url 1`] = `
+<div
+  class="container"
+>
+  <div
+    class="product-image"
+    style="background-image: url(https://domain.com/my-image.png);"
+  />
+  <h5
+    class="product-name"
+  >
+    Sunglasses
+  </h5>
+</div>
+`;

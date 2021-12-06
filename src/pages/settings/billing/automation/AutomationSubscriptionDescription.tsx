@@ -83,6 +83,10 @@ const AutomationSubscriptionDescription = () => {
                             icon: 'slow_motion_video',
                             label: 'Custom report issue flows',
                         },
+                        {
+                            icon: 'insights',
+                            label: 'Self-service statistics',
+                        },
                     ].map(({icon, label}) => (
                         <li
                             key={label}

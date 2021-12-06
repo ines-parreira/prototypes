@@ -1,5 +1,6 @@
 import React, {ComponentType, ReactElement, ReactNode, ReactText} from 'react'
 import {fromJS, Map, List} from 'immutable'
+import {Link} from 'react-router-dom'
 import moment from 'moment'
 import _merge from 'lodash/merge'
 import _isString from 'lodash/isString'
@@ -16,8 +17,11 @@ import StatCurrentDate from '../pages/stats/common/components/StatCurrentDate'
 import TicketsClosedPerAgentViewLink from '../pages/stats/common/TicketsClosedPerAgentViewLink'
 import TicketsCreatedPerTagViewLink from '../pages/stats/common/TicketsCreatedPerTagViewLink'
 import TicketsCreatedPerChannelViewLink from '../pages/stats/common/TicketsCreatedPerChannelViewLink'
-
+import {REASONS_DROPDOWN_OPTIONS} from '../pages/settings/selfService/components/ReportIssueCaseEditor/constants'
 import {AutomationAddOnStatsButton} from '../pages/stats/AutomationAddOnStatsButton'
+import {SelectableOption} from '../pages/common/forms/SelectField/types'
+import {ReportIssueReasons} from '../models/selfServiceConfiguration/types'
+import SelfServiceIntegrationsFilter from '../pages/stats/self-service/SelfServiceIntegrationsFilter'
 
 import css from './stats.less'
 
@@ -54,6 +58,23 @@ export const SUPPORT_VOLUME_PER_HOUR = 'support-volume-per-hour'
 export const AUTOMATION_OVERVIEW = 'automation-overview'
 export const AUTOMATION_FLOW = 'automation-flow'
 export const AUTOMATION_PER_CHANNEL = 'automation-per-channel'
+export const SELF_SERVICE_OVERVIEW = 'self-service-overview'
+export const SELF_SERVICE_FLOWS_DISTRIBUTION = 'self-service-flows-distribution'
+export const SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES =
+    'self-service-product-with-most-issues'
+export const SELF_SERVICE_TOP_REPORTED_ISSUES =
+    'self-service-top-reported-issues'
+export const SELF_SERVICE_MOST_RETURNED_PRODUCTS =
+    'self-service-most-returned-products'
+export const SELF_SERVICE_TOTAL_INTERACTIONS = 'self-service-total-interactions'
+export const SELF_SERVICE_TOTAL_UNIQUE_CUSTOMERS =
+    'self-service-total-unique-customers'
+export const SELF_SERVICE_SECTION_REPORT_ISSUE =
+    'self-service-section-report-issue'
+export const SELF_SERVICE_SECTION_RETURN = 'self-service-section-return'
+export const SELF_SERVICE_TICKETS_DEFLECTED = 'self-service-tickets-deflected'
+export const SELF_SERVICE_TICKETS_CREATED = 'self-service-tickets-created'
+export const SELF_SERVICE_USAGE = 'self-service-usage'
 
 const mainBlue = '#152065'
 export const colors = [
@@ -230,6 +251,8 @@ export enum StatValueType {
     TicketDetails = 'ticket-details',
     Duration = 'duration',
     Object = 'object',
+    Product = 'product',
+    SelfServiceIssue = 'self-service-issue',
 }
 
 export type StatConfigCellCallbackData = {
@@ -256,7 +279,9 @@ export type StatConfigCallbacks<T extends ReactNode = ReactNode> = {
 
 export type StatConfig = {
     helpText?: string
+    helpTextLink?: ComponentType
     style: string
+    padding?: string
     downloadable?: boolean
     callbacks?: StatConfigCallbacks
     lines?: Record<string, unknown>
@@ -1413,6 +1438,205 @@ export const stats = toImmutable<
             },
         }),
     },
+    [SELF_SERVICE_OVERVIEW]: {
+        style: 'key-metrics',
+        api_resource_name: SELF_SERVICE_OVERVIEW,
+        labelStyle: 'centered',
+        metrics: [
+            {
+                name: 'total_interactions',
+                label: 'Self-service requests',
+                tooltip:
+                    'Number of times customers complete a self-service request using Track, Return, Cancel or Report an Issue flows.',
+            },
+            {
+                name: 'tickets_deflected',
+                label: 'Automated requests',
+                tooltip:
+                    "Percentage of self-service requests automated by using the Track flow. Automated requests don't create any tickets.",
+            },
+            {
+                name: 'total_unique_customers',
+                label: 'Unique customers',
+                tooltip:
+                    'Number of unique customers who completed at least one self-service request.',
+            },
+            {
+                name: 'tickets_created',
+                label: 'Tickets created',
+                tooltip:
+                    'Number of self-service requests made by Return, Cancel and Report Issues flows. These requests create auto-generated chat tickets that are easier to handle by agents.',
+            },
+            // {
+            //     name: 'self-service_usage',
+            //     label: 'Self-service usage',
+            //     tooltip:
+            //         'Percentage of self-service requests (including automated ones) compared to the total number of chat tickets (live chats and self-service requests) within the selected stores.',
+            // },
+        ],
+    },
+    [SELF_SERVICE_FLOWS_DISTRIBUTION]: {
+        style: 'normalized-bar',
+        padding: '0px 30px 30px 30px',
+        downloadable: true,
+        totalOptions: {
+            label: 'Total interactions',
+            tooltip: 'Average distribution of the different self-service flows',
+        },
+        lines: {
+            track: {
+                label: 'Track (automated)',
+                color: '#4A8DF9',
+                disabledLink: '/app/settings/self-service',
+            },
+            report_issues: {
+                label: 'Report issue',
+                color: '#24D69D',
+                disabledLink: '/app/settings/self-service',
+            },
+            returns: {
+                label: 'Return',
+                color: '#8088D6',
+                disabledLink: '/app/settings/self-service',
+            },
+            cancellations: {
+                label: 'Cancel',
+                color: '#FD9B5A',
+                disabledLink: '/app/settings/self-service',
+            },
+            // other_tickets: {
+            //     label: 'Live chat tickets',
+            //     color: '#D2D7DE',
+            // },
+        },
+        options: (legend: Map<any, any>) => ({
+            scales: {
+                x: {
+                    stacked: true,
+                    grid: defaultXAxeGridLines,
+                    ticks: _merge({}, defaultTicks, {
+                        callback: formatDateAxeCb,
+                    }),
+                },
+
+                y: {
+                    title: _merge({}, defaultScaleLabel, {
+                        text: legend.getIn(['axes', 'y']),
+                        display: !!legend.getIn(['axes', 'y']),
+                    }),
+                    ticks: _merge({}, defaultTicks, {
+                        callback: (value: string) => `${value}%`,
+                    }),
+                    min: 0,
+                    max: 100,
+                    grid: defaultYAxeGridLines,
+                    stacked: true,
+                },
+            },
+            plugins: {
+                tooltip: {
+                    intersect: true,
+                    position: 'nearest',
+                    callbacks: {
+                        label: ({
+                            dataset,
+                            dataIndex,
+                        }: {
+                            dataset: {
+                                label: string
+                                dataRaw: number[]
+                                data: number[]
+                            }
+                            dataIndex: number
+                        }) =>
+                            ` ${dataset.label}: ${
+                                dataset.dataRaw[dataIndex]
+                            } (${dataset.data[dataIndex].toFixed(0)}%)`,
+                    },
+                },
+            },
+        }),
+    },
+    [SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES]: {
+        style: 'table',
+        downloadable: true,
+        callbacks: {
+            cell: ({value, axis}) => {
+                if (axis.name === 'Issue') {
+                    const translatedIssue = (
+                        REASONS_DROPDOWN_OPTIONS as SelectableOption[]
+                    ).find(
+                        ({value: dropDownValue}) => value === dropDownValue
+                    )?.label
+
+                    return <>{translatedIssue || value}</>
+                }
+
+                return value
+            },
+        } as StatConfigCallbacks<ReactNode>,
+    },
+    [SELF_SERVICE_TOP_REPORTED_ISSUES]: {
+        helpText:
+            'Only the reasons you have configured will be displayed below. You can also customize the list of reasons available to your customers depending on the order statuses.',
+        helpTextLink: () => (
+            <a
+                href="https://docs.gorgias.com/self-service/configure-your-self-service-portal"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Learn more
+            </a>
+        ),
+        axisHelpers: {
+            'Percentage of tickets':
+                'Percentage of tickets for a given reason compared to all auto-generated chat tickets  when customers report an issue in self-service.',
+        },
+        style: 'table',
+        padding: '6px 30px 30px 30px',
+        downloadable: true,
+        tableOptions: {
+            showLines: 6,
+        },
+        callbacks: {
+            cell: ({value, axis}) => {
+                if (axis.name === 'Reason') {
+                    const translatedIssue = (
+                        REASONS_DROPDOWN_OPTIONS as SelectableOption[]
+                    ).find(
+                        ({value: dropDownValue}) => value === dropDownValue
+                    )?.label
+
+                    return value === ReportIssueReasons.REASON_OTHER ? (
+                        <div style={{display: 'flex', alignItems: 'center'}}>
+                            <h5 style={{margin: 16}}>
+                                {translatedIssue || value}
+                            </h5>
+                            <Link to="/app/settings/self-service">
+                                Customize Report Issues
+                            </Link>
+                        </div>
+                    ) : (
+                        <h5 style={{margin: 16}}>{translatedIssue || value}</h5>
+                    )
+                }
+
+                return value
+            },
+        } as StatConfigCallbacks<ReactNode>,
+    },
+    [SELF_SERVICE_MOST_RETURNED_PRODUCTS]: {
+        style: 'table',
+        downloadable: true,
+    },
+    [SELF_SERVICE_SECTION_REPORT_ISSUE]: {
+        style: 'element',
+        component: () => <h3 style={{marginBottom: 6}}>Report issues flow</h3>,
+    },
+    [SELF_SERVICE_SECTION_RETURN]: {
+        style: 'element',
+        component: () => <h3 style={{marginBottom: 6}}>Returns flow</h3>,
+    },
 })
 
 // Callbacks to format values of datasets or axes
@@ -1671,6 +1895,37 @@ Intents can be used in rules and macros to automate your ticket-reply workflow.`
             INTENTS_OVERVIEW,
             INTENTS_BREAKDOWN_PER_DAY,
             INTENTS_OCCURRENCE,
+        ],
+    },
+    'self-service': {
+        name: 'Self-service',
+        description: () => (
+            <div>
+                Self-service statistics give you an overview of the performance
+                of your self-service features which can automate tickets and
+                save you time. This view shows data from the{' '}
+                <b>Chat channels and the Help centers combined</b>.
+            </div>
+        ),
+        url: 'https://docs.gorgias.com/self-service/installing-and-using-the-self-service-chat-portal',
+        filters: [
+            {
+                type: 'integrations',
+                options: {
+                    customFilter: SelfServiceIntegrationsFilter,
+                },
+            },
+            {type: 'period'},
+        ],
+        link: 'self-service',
+        stats: [
+            SELF_SERVICE_OVERVIEW,
+            SELF_SERVICE_FLOWS_DISTRIBUTION,
+            SELF_SERVICE_SECTION_REPORT_ISSUE,
+            SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES,
+            SELF_SERVICE_TOP_REPORTED_ISSUES,
+            SELF_SERVICE_SECTION_RETURN,
+            SELF_SERVICE_MOST_RETURNED_PRODUCTS,
         ],
     },
 })

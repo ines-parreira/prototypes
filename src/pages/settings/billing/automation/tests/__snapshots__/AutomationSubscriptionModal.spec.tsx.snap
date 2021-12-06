@@ -159,6 +159,22 @@ exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
                       Custom report issue flows
                     </span>
                   </li>
+                  <li
+                    class="d-flex align-items-center featureListItem"
+                  >
+                    <span
+                      class="featureIcon mr-3"
+                    >
+                      <i
+                        class="icon material-icons"
+                      >
+                        insights
+                      </i>
+                    </span>
+                    <span>
+                      Self-service statistics
+                    </span>
+                  </li>
                 </div>
               </div>
             </div>

@@ -209,4 +209,58 @@ describe('TableStat', () => {
         )
         expect(component).toMatchSnapshot()
     })
+
+    it('should render a table with the expand button and one line visible', () => {
+        const config = {
+            ...statsConfig
+                .find((config, key) => key === TICKETS_PER_TAG)
+                .toJS(),
+            tableOptions: {showLines: 1},
+        }
+        const component = shallow(
+            <TableStat
+                {...(tableStatData
+                    .setIn(
+                        ['data', 'lines'],
+                        fromJS([
+                            tableStatData.getIn(['data', 'lines', 0]),
+                            tableStatData.getIn(['data', 'lines', 0]),
+                        ])
+                    )
+                    .toObject() as ComponentProps<typeof TableStat>)}
+                context={{tagColors: null}}
+                config={fromJS(config)}
+            />
+        )
+
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should extend the table to show all the elements', () => {
+        const config = {
+            ...statsConfig
+                .find((config, key) => key === TICKETS_PER_TAG)
+                .toJS(),
+            tableOptions: {showLines: 1},
+        }
+        const component = shallow(
+            <TableStat
+                {...(tableStatData
+                    .setIn(
+                        ['data', 'lines'],
+                        fromJS([
+                            tableStatData.getIn(['data', 'lines', 0]),
+                            tableStatData.getIn(['data', 'lines', 0]),
+                        ])
+                    )
+                    .toObject() as ComponentProps<typeof TableStat>)}
+                context={{tagColors: null}}
+                config={fromJS(config)}
+            />
+        )
+
+        component.find('button').simulate('click')
+
+        expect(component).toMatchSnapshot()
+    })
 })

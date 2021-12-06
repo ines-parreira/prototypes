@@ -28,7 +28,10 @@ import DistributionVariantStat from '../DistributionVariantStat'
 import StatPercentageDiff from '../../StatPercentageDiff'
 import StatsHelpIcon from '../../StatsHelpIcon'
 import {TicketChannel} from '../../../../../../business/types/ticket'
+import expandDown from '../../../../../../../img/infobar/expand-down.svg'
+import expandUp from '../../../../../../../img/infobar/expand-up-blue.svg'
 
+import ProductCell from './cells/ProductCell'
 import css from './TableStat.less'
 import TicketDetailsStat from './TicketDetailsStat'
 
@@ -42,7 +45,18 @@ type OwnProps = {
     }
 }
 
-export class TableStat extends Component<OwnProps & RouteComponentProps> {
+type State = {
+    expanded: boolean
+}
+
+export class TableStat extends Component<
+    OwnProps & RouteComponentProps,
+    State
+> {
+    state = {
+        expanded: false,
+    }
+
     // Render a table cell depending on its value type (percent, date, delta, etc.)
     _renderCell = (
         line: List<any>,
@@ -277,6 +291,14 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
                     </Link>
                 )
             }
+            case StatValueType.Product: {
+                return (
+                    <ProductCell
+                        name={metric.getIn(['value', 'name'])}
+                        imageUrl={metric.getIn(['value', 'image_url'])}
+                    />
+                )
+            }
             default:
                 return callback(callbackData, callbackContext)
         }
@@ -285,18 +307,57 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
     // Render the table
     render() {
         const {data, config} = this.props
+        const showLines = config.getIn(['tableOptions', 'showLines'])
+        const {expanded} = this.state
+
+        const lines = (data.get('lines') as List<List<Map<any, any>>>)
+            .map((line, lineIdx) => (
+                <tr key={lineIdx}>
+                    {line!.map((metric, metricIdx) => {
+                        const type = data.getIn([
+                            'axes',
+                            'x',
+                            metricIdx,
+                            'type',
+                        ]) as string
+                        return (
+                            <td
+                                key={metricIdx}
+                                className={classnames(
+                                    css.lineCell,
+                                    css[`${type}`]
+                                )}
+                            >
+                                <span className={css['cell-wrapper']}>
+                                    {this._renderCell(
+                                        line!,
+                                        metric!,
+                                        lineIdx!,
+                                        metricIdx!
+                                    )}
+                                </span>
+                            </td>
+                        )
+                    })}
+                </tr>
+            ))
+            .toList()
+
+        const displayExpandButton = showLines && lines.size > showLines
 
         return (data.get('lines') as List<any>).isEmpty() ? (
             <div className="text-muted">There is no data for this period.</div>
         ) : (
-            <Table hover className={css.table}>
-                <thead>
-                    <tr>
-                        {(data.getIn(['axes', 'x']) as List<Map<any, any>>).map(
-                            (axe, index) => {
+            <>
+                <Table hover className={css.table}>
+                    <thead>
+                        <tr>
+                            {(
+                                data.getIn(['axes', 'x']) as List<Map<any, any>>
+                            ).map((axe, index) => {
                                 const axisId = `${(
                                     axe!.get('name') as string
-                                ).replace(' ', '-')}-tooltip`
+                                ).replace(/ /g, '-')}-tooltip`
                                 return (
                                     <th
                                         key={index}
@@ -335,47 +396,44 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
                                         </span>
                                     </th>
                                 )
-                            }
+                            })}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {showLines && !expanded
+                            ? lines.slice(0, showLines)
+                            : lines}
+                    </tbody>
+                </Table>
+                {displayExpandButton && (
+                    <button
+                        onClick={() =>
+                            this.setState({expanded: !this.state.expanded})
+                        }
+                        className={css.showLinesButton}
+                    >
+                        {expanded ? (
+                            <div>
+                                <img
+                                    src={expandUp}
+                                    alt="Contract"
+                                    className="mr-3"
+                                />
+                                Show less
+                            </div>
+                        ) : (
+                            <div>
+                                <img
+                                    src={expandDown}
+                                    alt="Expand"
+                                    className="mr-3"
+                                />
+                                Show More
+                            </div>
                         )}
-                    </tr>
-                </thead>
-                <tbody>
-                    {(data.get('lines') as List<List<Map<any, any>>>)
-                        .map((line, lineIdx) => (
-                            <tr key={lineIdx}>
-                                {line!.map((metric, metricIdx) => {
-                                    const type = data.getIn([
-                                        'axes',
-                                        'x',
-                                        metricIdx,
-                                        'type',
-                                    ]) as string
-                                    return (
-                                        <td
-                                            key={metricIdx}
-                                            className={classnames(
-                                                css.lineCell,
-                                                css[`${type}`]
-                                            )}
-                                        >
-                                            <span
-                                                className={css['cell-wrapper']}
-                                            >
-                                                {this._renderCell(
-                                                    line!,
-                                                    metric!,
-                                                    lineIdx!,
-                                                    metricIdx!
-                                                )}
-                                            </span>
-                                        </td>
-                                    )
-                                })}
-                            </tr>
-                        ))
-                        .toList()}
-                </tbody>
-            </Table>
+                    </button>
+                )}
+            </>
         )
     }
 }

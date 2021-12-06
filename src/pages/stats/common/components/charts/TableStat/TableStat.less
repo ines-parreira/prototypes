@@ -21,6 +21,10 @@
             }
         }
 
+        td {
+            color: @neutral10;
+        }
+
         .satisfaction-survey-link {
             width: 50%;
             word-break: break-word;
@@ -28,6 +32,14 @@
 
         .ticket-details {
             width: 30%;
+        }
+
+        .product ~ th {
+            width: 25%;
+        }
+
+        .issue-reason {
+            width: 45%;
         }
 
         tbody tr {
@@ -72,6 +84,25 @@
             &.isOnline {
                 background-color: @green;
             }
+        }
+    }
+    .showLinesButton {
+        width: 100%;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        background-color: @blue0;
+        &:focus:not(:focus-visible) {
+            outline: none;
+        }
+
+        & > div {
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 20px;
+            color: @blue;
         }
     }
 }

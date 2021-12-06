@@ -34,6 +34,7 @@ import TableStat from './TableStat/TableStat'
 import PerHourPerWeekTableStat from './PerHourPerWeekTableStat/PerHourPerWeekTableStat'
 import KeyMetricStat from './KeyMetricStat/KeyMetricStat'
 import BarStat from './BarStat'
+import NormalizedBarStat from './NormalizedBarStat'
 import SankeyStat from './SankeyStat'
 
 import css from './DEPRECATED_Stat.less'
@@ -121,6 +122,9 @@ export class StatContainer extends Component<Props, State> {
             | ComponentType
             | undefined
         const helpText = config.get('helpText')
+        const HelpTextLink = config.get('helpTextLink') as
+            | ComponentType
+            | undefined
         // approximate height of a chart
         const downloadable = config.get('downloadable') || false
         // Loading states of key metrics statistics are displayed inside their components.
@@ -142,7 +146,19 @@ export class StatContainer extends Component<Props, State> {
                     <div className="mb-3 d-flex justify-content-between align-items-baseline">
                         <h5 className="mb-0 d-flex" style={{fontSize: '17px'}}>
                             {stat.data.label}
-                            {helpText ? (
+                            {helpText && HelpTextLink ? (
+                                <span>
+                                    <StatsHelpIcon id={name} />
+                                    <Tooltip
+                                        autohide={false}
+                                        placement="top"
+                                        delay={100}
+                                        target={name}
+                                    >
+                                        {helpText} <HelpTextLink />
+                                    </Tooltip>
+                                </span>
+                            ) : helpText ? (
                                 <span>
                                     <StatsHelpIcon id={name} />
                                     <Tooltip placement="top" target={name}>
@@ -212,6 +228,12 @@ export class StatContainer extends Component<Props, State> {
                         />
                     ) : statStyle === 'bar' ? (
                         <BarStat data={data} legend={legend} config={config} />
+                    ) : statStyle === 'normalized-bar' ? (
+                        <NormalizedBarStat
+                            data={data}
+                            legend={legend}
+                            config={config}
+                        />
                     ) : statStyle === 'line' ? (
                         <LineStat
                             data={data}

@@ -1,0 +1,91 @@
+@import '~css/new/colors';
+@import '~css/new/mixins';
+
+@large-screens: ~'only screen and (min-width: 1200px)';
+
+:local {
+    .pageHeader {
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1;
+        background: white;
+    }
+
+    .paywallWrapper {
+        height: 100%;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+
+        @media @large-screens {
+            padding-right: 0;
+        }
+
+        .coloredCircle {
+            position: absolute;
+            border-radius: 50%;
+            z-index: 0;
+            left: -50vh;
+            width: 110vh;
+            height: 110vh;
+            background-color: #f9f9f9;
+
+            @media @large-screens {
+                left: -40vh;
+            }
+        }
+
+        .info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            @media @large-screens {
+                padding: 0 70px;
+            }
+            .badgeWrapper {
+                margin-bottom: 20px;
+            }
+            .ctaButtonWrapper {
+                width: fit-content;
+            }
+            .header {
+                @color: @neutral6;
+                font-weight: 600;
+                font-size: 24px;
+                line-height: 32px;
+            }
+
+            .infoText {
+                color: @neutral8;
+                font-size: 16px;
+                line-height: 24px;
+                margin-bottom: 38px;
+            }
+        }
+
+        .preview {
+            margin-bottom: 30px;
+            .previewImage {
+                cursor: pointer;
+                border-radius: 6px;
+                box-shadow: 0px 8px 48px rgba(85, 104, 133, 0.16);
+                padding: 16px;
+                background-color: white;
+            }
+
+            @media @large-screens {
+                display: flex;
+                justify-content: flex-end;
+                padding-right: 0;
+                margin-bottom: 0;
+                .previewImage {
+                    align-self: baseline;
+                }
+            }
+        }
+    }
+}

@@ -148,6 +148,8 @@ export default class KeyMetricStat extends Component<Props> {
     render() {
         const {data, config, loading} = this.props
 
+        const labelStyle = config.get('labelStyle') as string
+
         return (
             <div className={css.metrics}>
                 {(config.get('metrics') as List<any>).map(
@@ -155,7 +157,6 @@ export default class KeyMetricStat extends Component<Props> {
                         const metricName = (metricConfig.get(
                             'api_resource_name'
                         ) || metricConfig.get('name')) as string
-
                         const Component = metricConfig.get('component')
                         if (Component) {
                             return <Component />
@@ -201,7 +202,12 @@ export default class KeyMetricStat extends Component<Props> {
                                 className={css.metric}
                                 key={`${metricName}-${index!}`}
                             >
-                                <div className={css.label}>
+                                <div
+                                    className={classnames(
+                                        css.label,
+                                        labelStyle ? css[labelStyle] : ''
+                                    )}
+                                >
                                     {metricConfig.get('label')}
                                     <span>
                                         <StatsHelpIcon

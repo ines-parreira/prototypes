@@ -1,0 +1,31 @@
+@import '~css/new/colors';
+
+:local {
+    .container {
+        display: flex;
+        align-items: center;
+
+        .product-image {
+            position: relative;
+            height: 48px;
+            width: 48px;
+            margin: 5px;
+            margin-right: 16px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            flex-shrink: 0;
+            border-radius: 4px;
+
+            .placeholder {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .product-name {
+            margin-bottom: 0;
+        }
+    }
+}

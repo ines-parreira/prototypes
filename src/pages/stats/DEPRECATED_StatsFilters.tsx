@@ -1,10 +1,16 @@
-import React, {ComponentProps, useCallback, useMemo, useState} from 'react'
+import React, {
+    ComponentProps,
+    ComponentType,
+    useCallback,
+    useMemo,
+    useState,
+} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import moment from 'moment-timezone'
 import {connect, ConnectedProps} from 'react-redux'
 import _upperFirst from 'lodash/upperFirst'
 import {withRouter, RouteComponentProps} from 'react-router-dom'
-import {DropdownItem, Button} from 'reactstrap'
+import {DropdownItem} from 'reactstrap'
 import {CancelToken} from 'axios'
 import {useDebounce} from 'react-use'
 
@@ -33,8 +39,9 @@ import {RootState} from '../../state/types'
 import {Account} from '../../state/currentAccount/types'
 import InfiniteScroll from '../common/components/InfiniteScroll/InfiniteScroll'
 import PageHeader from '../common/components/PageHeader'
-import PopoverModal from '../common/components/PopoverModal'
 import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMenu'
+import {Value} from '../common/forms/SelectField/types'
+
 import gmail from '../../../img/integrations/gmail.png'
 import outlook from '../../../img/integrations/outlook.svg'
 import aircall from '../../../img/integrations/aircall.png'
@@ -50,6 +57,7 @@ import {hasAccessToTwitterDMs} from '../integrations/detail/components/twitter/u
 import PeriodPicker from './common/PeriodPicker'
 import SelectFilter from './common/SelectFilter'
 import css from './DEPRECATED_StatsFilters.less'
+import StatsTitleWithPopOver from './common/components/StatsTitleWithPopOver'
 
 const TagDropdownMenuWrapper = (
     props: ComponentProps<typeof TagDropdownMenu>
@@ -325,6 +333,12 @@ export const StatsFiltersContainer = ({
             case 'integrations': {
                 const options: Map<any, any> = filter.get('options', fromJS({}))
                 const allowedTypes: List<any> = options.get('allowedTypes')
+                const CustomFilter = options.get('customFilter') as
+                    | ComponentType<{
+                          value: Value[]
+                          onChange: (value: Value[]) => void
+                      }>
+                    | undefined
                 const data = allowedTypes
                     ? integrations.filter((integration) =>
                           allowedTypes.includes(integration.type)
@@ -338,6 +352,21 @@ export const StatsFiltersContainer = ({
                     smooch,
                     smooch_inside: smooch,
                     zendesk,
+                }
+
+                if (CustomFilter) {
+                    return (
+                        <CustomFilter
+                            key={filterType}
+                            value={(
+                                filters!.get(
+                                    'integrations',
+                                    fromJS([])
+                                ) as List<any>
+                            ).toJS()}
+                            onChange={handleFilterChange('integrations')}
+                        />
+                    )
                 }
 
                 return (
@@ -421,27 +450,7 @@ export const StatsFiltersContainer = ({
     const pageTitle = useMemo(
         () =>
             config.get('description') ? (
-                <h1 className="align-items-center">
-                    <span>{config.get('title') ?? config.get('name')}</span>
-                    <PopoverModal className="ml-3" placement="bottom-start">
-                        <p className={css.learnMoreContent}>
-                            {config.get('description')}
-                        </p>
-                        <Button
-                            className={css.titleTooltipButton}
-                            color="secondary"
-                            type="button"
-                            onClick={() => {
-                                window
-                                    .open(config.get('url'), '_blank')!
-                                    .focus()
-                            }}
-                        >
-                            Learn More{' '}
-                            <i className="material-icons">arrow_forward</i>
-                        </Button>
-                    </PopoverModal>
-                </h1>
+                <StatsTitleWithPopOver config={config} />
             ) : (
                 ((config.get('title') ?? config.get('name')) as string)
             ),

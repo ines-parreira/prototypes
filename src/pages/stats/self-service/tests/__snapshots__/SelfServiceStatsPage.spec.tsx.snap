@@ -1,0 +1,141 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SelfServiceStatsPage /> should display the loader on loading 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <div
+      class="inner"
+      style="min-height: 500px;"
+    >
+      <i
+        class="icon-custom icon-circle-o-notch md-spin"
+        style="font-size: 40px;"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SelfServiceStatsPage /> should render the automation add-on upgrade paywall if the current account doesnt have the feature 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="page-header pageHeader pageHeader"
+    >
+      <h1
+        class="align-items-center"
+      >
+        <span>
+          Self-service
+        </span>
+        <button
+          class="wrapper ml-3 btn btn-secondary"
+          type="button"
+        >
+          <div
+            class="content"
+          >
+            <i
+              class="icon material-icons"
+            >
+              info_outline
+            </i>
+            <span
+              class="label ml-1"
+            >
+              Learn
+            </span>
+          </div>
+        </button>
+      </h1>
+    </div>
+    <div
+      class="paywallWrapper"
+    >
+      <div
+        class="coloredCircle"
+      />
+      <div
+        class="page-container container-fluid"
+      >
+        <div
+          class="row"
+        >
+          <div
+            class="preview col-12 col-xl-6"
+          >
+            <img
+              alt="Feature preview"
+              class="img-fluid previewImage"
+              src="/static/private/img/paywalls/screens/self-service-statistics.png"
+            />
+          </div>
+          <div
+            class="info col-12 col-xl-6"
+          >
+            <div
+              class="badgeWrapper"
+            >
+              <span
+                class="badge badge badge-secondary"
+              >
+                AUTOMATION ADD-ON
+              </span>
+            </div>
+            <h1
+              class="header"
+            >
+              Track self-service’s interactions
+            </h1>
+            <p
+              class="infoText"
+            >
+              <div>
+                Activate 
+                <b>
+                  self-service
+                </b>
+                 and see the number of your customers’ requests passing through it and how many of these interactions you are 
+                <b>
+                  automating!
+                </b>
+              </div>
+            </p>
+            <div
+              class="ctaButtonWrapper"
+            >
+              <div
+                class=""
+              >
+                <div
+                  class="d-flex align-items-center upgradeLink"
+                >
+                  <button
+                    class="upgradeButton btn btn-outline-warning"
+                    type="button"
+                  >
+                    <span
+                      class="mr-2 upgradeLabel"
+                    >
+                      Get Automation Features
+                    </span>
+                    <img
+                      alt="upgrade-icon"
+                      class="upgradeIcon"
+                      src="test-file-stub"
+                    />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

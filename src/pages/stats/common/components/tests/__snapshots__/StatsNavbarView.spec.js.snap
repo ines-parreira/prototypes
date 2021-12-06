@@ -126,6 +126,15 @@ exports[`StatsNavbarView should render 1`] = `
       >
         Intents
       </NavLink>
+      <NavLink
+        activeClassName="active"
+        className="item item"
+        exact={true}
+        key="Self-service"
+        to="/app/stats/self-service"
+      >
+        Self-service
+      </NavLink>
     </div>
   </NavbarBlock>
 </Fragment>

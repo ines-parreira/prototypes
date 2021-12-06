@@ -145,7 +145,10 @@ export class StatsContainer extends React.Component<Props> {
                 {(viewConfig.get('stats') as List<any>).map(
                     (statName: string, idx?: number) => {
                         const statConfig = statsConfig.get(statName)
-                        let padding = '30px'
+                        let padding = statConfig.get(
+                            'padding',
+                            '30px'
+                        ) as string
                         // First key metrics statistics are stuck to the top
                         if (
                             idx === 0 &&
