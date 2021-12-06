@@ -74,6 +74,7 @@ import {CurrentHelpCenter} from './settings/helpCenter/providers/CurrentHelpCent
 import {HelpCenterApiClientProvider} from './settings/helpCenter/hooks/useHelpCenterApi'
 import DefaultStatsFilters from './stats/DefaultStatsFilters'
 import HelpCenterPaywall from './settings/helpCenter/components/Paywalls/HelpCenterPaywall'
+import ImportPhoneNumber from './tasks/detail/ImportPhoneNumber'
 
 const assetsURL = window.GORGIAS_ASSETS_URL || ''
 
@@ -117,6 +118,7 @@ export function AppRoutes({match: {path}}: RouteComponentProps) {
             <Route path={`${path}/user`} render={UserRoutes} />
             <Route path={`${path}/ticket`} render={TicketRoutes} />
             <Route path={`${path}/tickets`} render={TicketsRoutes} />
+            <Route path={`${path}/admin/tasks`} render={AdminTasksRoutes} />
             <Route
                 path={`${path}/stats`}
                 render={(props) => <StatsRoutes {...props} />}
@@ -901,6 +903,24 @@ export function ImportSettingsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: withUserRoleRequired(
                         ImportZendeskDetail,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+        </Switch>
+    )
+}
+
+export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/import-phone-number`}
+                exact
+                render={appRender({
+                    content: withUserRoleRequired(
+                        ImportPhoneNumber,
                         ADMIN_ROLE
                     ),
                     navbar: SettingsNavbarContainer,
