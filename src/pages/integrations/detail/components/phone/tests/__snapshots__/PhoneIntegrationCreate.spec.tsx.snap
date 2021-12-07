@@ -230,6 +230,36 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
                       United States
                     </span>
                   </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Australia
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      United Kingdom
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      France
+                    </span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -279,6 +309,202 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
                   role="menu"
                   tabindex="-1"
                 >
+                  <h6
+                    class="dropdown-header"
+                    tabindex="-1"
+                  >
+                    No result
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <button
+            class="mt-5 mb-5 btn btn-success"
+            type="submit"
+          >
+            Add phone number
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneIntegrationCreate/> render() should render address validation form for Australia or United Kingdom 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/phone"
+          >
+            Phone
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Add Phone Number
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-lg-6"
+      >
+        <p>
+          Create a new phone number in Gorgias or forward calls from an existing number to a Gorgias internal number. To learn more about forwarding existing calls, check out
+           
+          <a
+            href="https://docs.gorgias.com/voice-and-phone/gorgias-phone-integration"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            our phone docs
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+    <div
+      class="row"
+    >
+      <div
+        class="col-lg-6 col-xl-7"
+      >
+        <div
+          class="alert info mt-3 mb-4"
+        >
+          <img
+            alt="icon"
+            class="icon"
+            src="test-file-stub"
+          />
+          <div
+            class="content"
+          >
+            <span
+              class="label"
+            >
+              Creating phone numbers from Australia and UK requires address verification
+            </span>
+          </div>
+        </div>
+        <form
+          class=""
+        >
+          <div
+            class="form-group"
+          >
+            <h4
+              class="mb-3"
+            >
+              Phone number settings
+            </h4>
+            <label
+              class="control-label"
+              for="title"
+            >
+              Phone title
+            </label>
+            <div
+              class="container"
+            >
+              <div
+                class="picker emojiPicker"
+              >
+                <span
+                  class="material-icons empty icon"
+                >
+                  insert_emoticon
+                </span>
+              </div>
+              <input
+                class="input form-control"
+                id="title"
+                placeholder="Ex: Company Support Line"
+                required=""
+                tabindex="0"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            class="form-group"
+          >
+            <label
+              class="control-label"
+              for="phoneFunction"
+            >
+              Function
+            </label>
+            <div>
+              <div
+                class="dropdown"
+              >
+                <div
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class=""
+                  data-toggle="dropdown"
+                >
+                  <div
+                    class="select dropdown-toggle selectFullWidth"
+                  >
+                    <span
+                      class="label"
+                      style="min-width: 10px; opacity: 1;"
+                    >
+                      Standard number
+                    </span>
+                    <input
+                      autocomplete="chrome-off"
+                      class="input"
+                      id="phoneFunction"
+                      style="min-width: 10px;"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  aria-hidden="true"
+                  class="options optionsFullWidth dropdown-menu"
+                  role="menu"
+                  tabindex="-1"
+                >
                   
                   <button
                     class="option option--focused dropdown-item"
@@ -287,7 +513,66 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
                     type="button"
                   >
                     <span>
-                      Local
+                      Interactive Voice Response (IVR)
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="form-group"
+          >
+            <label
+              class="control-label"
+              for="country"
+            >
+              Country
+            </label>
+            <div>
+              <div
+                class="dropdown"
+              >
+                <div
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class=""
+                  data-toggle="dropdown"
+                >
+                  <div
+                    class="select dropdown-toggle selectFullWidth"
+                  >
+                    <span
+                      class="label"
+                      style="min-width: 10px; opacity: 1;"
+                    >
+                      Australia
+                    </span>
+                    <input
+                      autocomplete="chrome-off"
+                      class="input"
+                      id="country"
+                      style="min-width: 10px;"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  aria-hidden="true"
+                  class="options optionsFullWidth dropdown-menu"
+                  role="menu"
+                  tabindex="-1"
+                >
+                  
+                  <button
+                    class="option option--focused dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Canada
                     </span>
                   </button>
                   <button
@@ -297,7 +582,27 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
                     type="button"
                   >
                     <span>
-                      Toll-free
+                      United States
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      United Kingdom
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      France
                     </span>
                   </button>
                 </div>
@@ -349,18 +654,784 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
                   role="menu"
                   tabindex="-1"
                 >
-                  <h6
-                    class="dropdown-header"
-                    tabindex="-1"
+                  
+                  <button
+                    class="option option--focused dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
                   >
-                    No result
-                  </h6>
+                    <span>
+                      Adelaide (888)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Adelaide (87)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Adelaide (872)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Albany (8)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Albury (260)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Alice Springs (889)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Armadale (861)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Avalon Beach, Dural, Terrey Hills (284)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Ayr (7)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Bairnsdale (3)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Ballarat (343)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Bankstown, Liverpool (281)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Beenleigh (730)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Bendigo (344)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Blacktown, Parramatta (286)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Brisbane (73)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Bunbury (897)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Bundaberg (743)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Carins (742)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Caloundra (Caboolture) (753)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Canberra (251)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Clayton (385)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Craigieburn, Point Cook (383)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Croydon (382)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Dandenong (387)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Darwin (879)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Dubbo (258)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Eltham (384)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Engadine, Sutherland (285)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Geelon (342)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Gosford (243)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Hobart (361)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Kalkallo, Whittlesea (381)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Launceston (363)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Mandurah (Pinjarra) (895)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Melbourne (39)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Mildura (340)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Newcastle (240)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Orange (253)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Perth (862)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Perth (86)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Port Macquarie (Wauchope) (255)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Ringwood (388)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Rockhampton (748)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Sandgate (731)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Sheppaton (358)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Sunbury, Werribee (380)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Sydney (27)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Tamworth (257)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Toowoomba (745)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Townsville (744)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Tweed Heads (Beaudesert) (756)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Wagga Wagga (259)
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Wollongong  (242)
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div
+            class="container"
+          >
+            <h4
+              class="mb-3"
+            >
+              Address verification
+            </h4>
+            <div
+              class="mb-3 row"
+            >
+              <div
+                class="pr-0 col"
+              >
+                <label
+                  class="boxLabel form-check-label"
+                >
+                  <input
+                    checked=""
+                    class="form-check-input"
+                    type="radio"
+                  />
+                  <strong
+                    class="ml-1"
+                  >
+                    Business information
+                  </strong>
+                </label>
+              </div>
+              <div
+                class="col"
+              >
+                <label
+                  class="boxLabel form-check-label"
+                >
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                  />
+                  <strong
+                    class="ml-1"
+                  >
+                    Personal information
+                  </strong>
+                </label>
+              </div>
+            </div>
+            <div
+              class="InputField required form-group"
+              color=""
+            >
+              <label
+                class="control-label"
+                for="id-input-1"
+              >
+                Business name
+              </label>
+              <div
+                class=""
+              >
+                <input
+                  class="form-control"
+                  id="id-input-1"
+                  required=""
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="InputField required form-group"
+              color=""
+            >
+              <label
+                class="control-label"
+                for="id-input-2"
+              >
+                Address 1
+              </label>
+              <div
+                class=""
+              >
+                <input
+                  class="form-control"
+                  id="id-input-2"
+                  required=""
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="row"
+            >
+              <div
+                class="pr-0 col"
+              >
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-3"
+                  >
+                    Address 2
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-3"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="col"
+              >
+                <div
+                  class="InputField required form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-4"
+                  >
+                    City
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-4"
+                      required=""
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="row"
+            >
+              <div
+                class="pr-0 col"
+              >
+                <div
+                  class="InputField required form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-5"
+                  >
+                    State/Province/Region
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-5"
+                      required=""
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="pr-0 col"
+              >
+                <div
+                  class="InputField required form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-6"
+                  >
+                    Postal Code
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-6"
+                      required=""
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="col"
+              >
+                <div
+                  class="InputField required form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-7"
+                  >
+                    Country
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      disabled=""
+                      id="id-input-7"
+                      required=""
+                      type="text"
+                      value="Australia"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           <button
-            class="mt-5 btn btn-success"
+            class="mt-5 mb-5 btn btn-success"
             type="submit"
           >
             Add phone number
@@ -603,6 +1674,36 @@ exports[`<PhoneIntegrationCreate/> render() should render when IVR function is s
                       United States
                     </span>
                   </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Australia
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      United Kingdom
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      France
+                    </span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -652,76 +1753,6 @@ exports[`<PhoneIntegrationCreate/> render() should render when IVR function is s
                   role="menu"
                   tabindex="-1"
                 >
-                  
-                  <button
-                    class="option option--focused dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Local
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Toll-free
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="form-group"
-          >
-            <label
-              class="control-label"
-              for="area-code"
-            >
-              Area code
-            </label>
-            <div>
-              <div
-                class="dropdown"
-              >
-                <div
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                  class=""
-                  data-toggle="dropdown"
-                >
-                  <div
-                    class="select dropdown-toggle selectFullWidth"
-                  >
-                    <span
-                      class="label placeholder"
-                      style="min-width: 10px; opacity: 1;"
-                    >
-                      Select an option
-                    </span>
-                    <input
-                      autocomplete="chrome-off"
-                      class="input"
-                      id="area-code"
-                      required=""
-                      style="min-width: 10px;"
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
-                <div
-                  aria-hidden="true"
-                  class="options optionsFullWidth dropdown-menu"
-                  role="menu"
-                  tabindex="-1"
-                >
                   <h6
                     class="dropdown-header"
                     tabindex="-1"
@@ -732,8 +1763,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when IVR function is s
               </div>
             </div>
           </div>
+          
           <button
-            class="mt-5 btn btn-success"
+            class="mt-5 mb-5 btn btn-success"
             type="submit"
           >
             Add phone number
@@ -962,6 +1994,36 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                   >
                     <span>
                       Canada
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Australia
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      United Kingdom
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      France
                     </span>
                   </button>
                 </div>
@@ -1637,8 +2699,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
               </div>
             </div>
           </div>
+          
           <button
-            class="mt-5 btn btn-success"
+            class="mt-5 mb-5 btn btn-success"
             type="submit"
           >
             Add phone number
@@ -1869,6 +2932,36 @@ exports[`<PhoneIntegrationCreate/> render() should render when type "Toll-free" 
                       United States
                     </span>
                   </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Australia
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      United Kingdom
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      France
+                    </span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -2043,8 +3136,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when type "Toll-free" 
               </div>
             </div>
           </div>
+          
           <button
-            class="mt-5 btn btn-success"
+            class="mt-5 mb-5 btn btn-success"
             type="submit"
           >
             Add phone number

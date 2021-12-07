@@ -60,5 +60,25 @@ describe('<PhoneIntegrationCreate/>', () => {
 
             expect(container.firstChild).toMatchSnapshot()
         })
+
+        it('should render address validation form for Australia or United Kingdom', () => {
+            const {container, getByText, queryByText} = render(
+                <PhoneIntegrationCreate actions={{updateOrCreateIntegration}} />
+            )
+
+            fireEvent.click(getByText('United States'))
+            expect(queryByText('Address verification')).toBe(null)
+
+            fireEvent.click(getByText('Canada'))
+            expect(queryByText('Address verification')).toBe(null)
+
+            fireEvent.click(getByText('United Kingdom'))
+            expect(queryByText('Address verification')).not.toBe(null)
+
+            fireEvent.click(getByText('Australia'))
+            expect(queryByText('Address verification')).not.toBe(null)
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
     })
 })

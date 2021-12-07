@@ -1,9 +1,8 @@
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useState, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import {
-    Alert,
     Breadcrumb,
     BreadcrumbItem,
     Button,
@@ -15,16 +14,23 @@ import {
     Row,
 } from 'reactstrap'
 
-import {DEFAULT_IVR_SETTINGS} from '../../../../../models/integration/constants'
+import {
+    DEFAULT_IVR_SETTINGS,
+    DEFAULT_VOICE_MESSAGE,
+} from '../../../../../models/integration/constants'
 import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
 import PageHeader from '../../../../common/components/PageHeader'
+import Alert, {AlertType} from '../../../../common/components/Alert/Alert'
 import {
     IntegrationType,
     VoiceMessageType,
+    AddressInformation,
+    AddressType,
 } from '../../../../../models/integration/types'
 import EmojiTextInput from '../../../../common/forms/EmojiTextInput/EmojiTextInput'
 import SelectField from '../../../../common/forms/SelectField/SelectField'
-import type {Option} from '../../../../common/forms/SelectField/types'
+import InputField from '../../../../common/forms/InputField.js'
+import type {SelectableOption} from '../../../../common/forms/SelectField/types'
 import {
     PhoneCountry,
     PhoneFunction,
@@ -34,31 +40,61 @@ import css from '../../../../settings/settings.less'
 
 import rawPhoneFunctionOptions from './options/functions.json'
 import rawCountryOptions from './options/countries.json'
-import rawTypeOptions from './options/types.json'
 import rawStateOptions from './options/states.json'
 import rawCaAreaCodeOptions from './options/area-codes/ca.json'
 import rawUsAreaCodeOptions from './options/area-codes/us.json'
+import rawGbAreaCodeOptions from './options/area-codes/gb.json'
+import rawAuAreaCodeOptions from './options/area-codes/au.json'
 import rawTollFreeAreaCodeOptions from './options/area-codes/toll-free.json'
 
-interface StateOptions {
-    [key: string]: Option[]
+import PhoneAddressInformation from './PhoneAddressInformation'
+
+type StateOptions = {
+    [key: string]: SelectableOption[]
 }
 
-type AreaCodeOptions = Option[]
-
-interface AreaCodeOptionsByState {
-    [key: string]: AreaCodeOptions
-}
-
-const phoneFunctionOptions: Option[] = rawPhoneFunctionOptions
-const countryOptions: Option[] = rawCountryOptions
-const typeOptions: Option[] = rawTypeOptions
+const phoneFunctionOptions: SelectableOption[] = rawPhoneFunctionOptions
+const countryOptions: SelectableOption[] = rawCountryOptions
 const stateOptions: StateOptions = rawStateOptions
-const caAreaCodeOptions: AreaCodeOptions = rawCaAreaCodeOptions
-const usAreaCodeOptions: AreaCodeOptionsByState = rawUsAreaCodeOptions
-const tollFreeAreaCodeOptions: AreaCodeOptions = rawTollFreeAreaCodeOptions
-const DEFAULT_TEXT_TO_SPEECH_CONTENT =
-    "Hello, unfortunately we aren't able to take your call right now. Please call us back later. Thank you!"
+
+type LocalAreaCodes = {
+    [PhoneCountry.US]: Record<string, SelectableOption[]>
+    [PhoneCountry.CA]: SelectableOption[]
+    [PhoneCountry.AU]: SelectableOption[]
+    [PhoneCountry.GB]: SelectableOption[]
+    [PhoneCountry.FR]: SelectableOption[]
+}
+
+const LOCAL_AREA_CODES: LocalAreaCodes = {
+    [PhoneCountry.US]: rawUsAreaCodeOptions,
+    [PhoneCountry.CA]: rawCaAreaCodeOptions,
+    [PhoneCountry.AU]: rawAuAreaCodeOptions,
+    [PhoneCountry.GB]: rawGbAreaCodeOptions,
+    [PhoneCountry.FR]: [],
+}
+
+const TOLL_FREE_AREA_CODE_OPTIONS: SelectableOption[] =
+    rawTollFreeAreaCodeOptions
+
+const COUNTRY_PHONE_TYPES: Record<PhoneCountry, PhoneType[]> = {
+    [PhoneCountry.US]: [PhoneType.Local, PhoneType.TollFree],
+    [PhoneCountry.CA]: [PhoneType.Local, PhoneType.TollFree],
+    [PhoneCountry.GB]: [PhoneType.Local, PhoneType.National, PhoneType.Mobile],
+    [PhoneCountry.AU]: [PhoneType.Local],
+    [PhoneCountry.FR]: [],
+}
+
+const PHONE_TYPE_LABELS = {
+    [PhoneType.Local]: 'Local',
+    [PhoneType.TollFree]: 'Toll-free',
+    [PhoneType.Mobile]: 'Mobile',
+    [PhoneType.National]: 'National',
+}
+
+const GB_AREA_CODES = {
+    [PhoneType.Mobile]: '7',
+    [PhoneType.National]: '330',
+}
 
 type Props = {
     actions: {
@@ -72,12 +108,29 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
     const [title, setTitle] = useState('')
     const [emoji, setEmoji] = useState<string | null>(null)
     const [phoneFunction, setPhoneFunction] = useState(PhoneFunction.Standard)
-    const [country, setCountry] = useState('')
-    const [phoneType, setPhoneType] = useState('')
+    const [country, setCountry] = useState<PhoneCountry | undefined>()
+    const [phoneType, setPhoneType] = useState<PhoneType | undefined>()
     const [state, setState] = useState('')
     const [areaCode, setAreaCode] = useState('')
-    const shouldRenderState =
+    const [addressInformation, setAddressInformation] =
+        useState<Partial<AddressInformation> | null>({
+            country,
+            type: AddressType.Company,
+        })
+    const shouldValidateAddress = useCallback(
+        (country) =>
+            country === PhoneCountry.GB ||
+            country === PhoneCountry.AU ||
+            country === PhoneCountry.FR,
+        []
+    )
+    const shouldShowState =
         phoneType === PhoneType.Local && country === PhoneCountry.US
+    const shouldShowType =
+        country !== PhoneCountry.AU && country !== PhoneCountry.FR
+    const shouldShowAreaCodes =
+        (phoneType === PhoneType.Local || phoneType === PhoneType.TollFree) &&
+        country !== PhoneCountry.FR
 
     const onCountryChange = useCallback(
         (country) => {
@@ -85,17 +138,42 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
             setPhoneType(PhoneType.Local)
             setState('')
             setAreaCode('')
+            if (shouldValidateAddress(country)) {
+                setAddressInformation((addressInformation) => ({
+                    ...(addressInformation ?? {type: AddressType.Company}),
+                    country,
+                }))
+            } else {
+                setAddressInformation(null)
+            }
         },
-        [setCountry, setPhoneType, setState, setAreaCode]
+        [
+            setCountry,
+            setPhoneType,
+            setState,
+            setAreaCode,
+            setAddressInformation,
+            shouldValidateAddress,
+        ]
     )
 
     const onTypeChange = useCallback(
         (phoneType) => {
             setPhoneType(phoneType)
             setState('')
-            setAreaCode('')
+
+            if (country === PhoneCountry.GB) {
+                if (phoneType === PhoneType.National) {
+                    setAreaCode(GB_AREA_CODES[PhoneType.National])
+                }
+                if (phoneType === PhoneType.Mobile) {
+                    setAreaCode(GB_AREA_CODES[PhoneType.Mobile])
+                }
+            } else {
+                setAreaCode('')
+            }
         },
-        [setPhoneType, setState, setAreaCode]
+        [setPhoneType, setState, setAreaCode, country]
     )
 
     const onStateChange = useCallback(
@@ -113,7 +191,6 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
             try {
                 setIsLoading(true)
                 setError(null)
-
                 const parsedAreaCode =
                     phoneType === PhoneType.Local
                         ? parseInt(areaCode.split('-').pop() as string)
@@ -136,11 +213,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                                 record_outbound_calls: false,
                             },
                             voicemail: {
-                                voice_message_type:
-                                    VoiceMessageType.TextToSpeech,
-                                voice_recording_file_path: null,
-                                text_to_speech_content:
-                                    DEFAULT_TEXT_TO_SPEECH_CONTENT,
+                                ...DEFAULT_VOICE_MESSAGE,
                                 allow_to_leave_voicemail: true,
                             },
                             greeting_message: {
@@ -151,6 +224,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                                 phoneFunction === PhoneFunction.Ivr
                                     ? DEFAULT_IVR_SETTINGS
                                     : undefined,
+                            address_information: addressInformation,
                         },
                     })
                 ) as unknown as Promise<any>)
@@ -171,25 +245,42 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
             actions,
             setIsLoading,
             setError,
+            addressInformation,
         ]
     )
 
-    let areaCodes: AreaCodeOptions = []
-    if (phoneType === PhoneType.Local) {
-        switch (country) {
-            case PhoneCountry.US:
-                areaCodes = !!state ? usAreaCodeOptions[state] : []
-                break
-            case PhoneCountry.CA:
-                areaCodes = caAreaCodeOptions
-                break
+    const areaCodeOptions: SelectableOption[] = useMemo(() => {
+        switch (phoneType) {
+            case PhoneType.TollFree:
+                return TOLL_FREE_AREA_CODE_OPTIONS
+
+            case PhoneType.Local: {
+                if (!country) {
+                    return []
+                }
+                if (country === PhoneCountry.US) {
+                    return !!state ? LOCAL_AREA_CODES[country][state] : []
+                }
+                return LOCAL_AREA_CODES[country]
+            }
+
             default:
-                areaCodes = []
-                break
+                return []
         }
-    } else if (phoneType === PhoneType.TollFree) {
-        areaCodes = tollFreeAreaCodeOptions
-    }
+    }, [phoneType, country, state])
+
+    const typeOptions: SelectableOption[] = useMemo(() => {
+        if (!country) {
+            return []
+        }
+
+        const toTypeOption = (type: PhoneType) => ({
+            value: type,
+            label: PHONE_TYPE_LABELS[type],
+        })
+
+        return COUNTRY_PHONE_TYPES[country].map(toTypeOption)
+    }, [country])
 
     return (
         <div className="full-width">
@@ -234,11 +325,39 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                 </Row>
                 <Row>
                     <Col lg={6} xl={7}>
+                        {shouldValidateAddress(country) &&
+                            country === PhoneCountry.FR && (
+                                <Alert showIcon className="mt-3 mb-4">
+                                    French numbers are only available through
+                                    the{' '}
+                                    <a
+                                        href="https://gorgias.typeform.com/to/YhvfA3qK"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        French number request form.
+                                    </a>
+                                </Alert>
+                            )}
+                        {shouldValidateAddress(country) &&
+                            country !== PhoneCountry.FR && (
+                                <Alert showIcon className="mt-3 mb-4">
+                                    Creating phone numbers from Australia and UK
+                                    requires address verification
+                                </Alert>
+                            )}
                         <Form onSubmit={onSubmit}>
                             {!!error && (
-                                <Alert color="danger">{error.toString()}</Alert>
+                                <Alert type={AlertType.Error}>
+                                    {error.toString()}
+                                </Alert>
                             )}
                             <FormGroup>
+                                {shouldValidateAddress(country) && (
+                                    <h4 className="mb-3">
+                                        Phone number settings
+                                    </h4>
+                                )}
                                 <Label
                                     htmlFor="title"
                                     className="control-label"
@@ -289,20 +408,25 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                                     required
                                 />
                             </FormGroup>
-                            <FormGroup>
-                                <Label htmlFor="type" className="control-label">
-                                    Type
-                                </Label>
-                                <SelectField
-                                    id="type"
-                                    value={phoneType}
-                                    onChange={onTypeChange}
-                                    options={typeOptions}
-                                    fullWidth
-                                    required
-                                />
-                            </FormGroup>
-                            {shouldRenderState && (
+                            {shouldShowType && (
+                                <FormGroup>
+                                    <Label
+                                        htmlFor="type"
+                                        className="control-label"
+                                    >
+                                        Type
+                                    </Label>
+                                    <SelectField
+                                        id="type"
+                                        value={phoneType}
+                                        onChange={onTypeChange}
+                                        options={typeOptions}
+                                        fullWidth
+                                        required
+                                    />
+                                </FormGroup>
+                            )}
+                            {shouldShowState && (
                                 <FormGroup>
                                     <Label
                                         htmlFor="state"
@@ -324,31 +448,59 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                                     />
                                 </FormGroup>
                             )}
-                            <FormGroup>
-                                <Label
-                                    htmlFor="area-code"
-                                    className="control-label"
-                                >
-                                    Area code
-                                </Label>
-                                <SelectField
-                                    id="area-code"
-                                    value={areaCode}
-                                    onChange={(value) =>
-                                        setAreaCode(value as string)
-                                    }
-                                    options={areaCodes}
-                                    fullWidth
-                                    required
-                                />
-                            </FormGroup>
+                            {shouldShowAreaCodes && (
+                                <FormGroup>
+                                    <Label
+                                        htmlFor="area-code"
+                                        className="control-label"
+                                    >
+                                        Area code
+                                    </Label>
+                                    <SelectField
+                                        id="area-code"
+                                        value={areaCode}
+                                        onChange={(value) =>
+                                            setAreaCode(value as string)
+                                        }
+                                        options={areaCodeOptions}
+                                        fullWidth
+                                        required
+                                    />
+                                </FormGroup>
+                            )}
+                            {areaCode && !shouldShowAreaCodes && (
+                                <FormGroup>
+                                    <Label
+                                        htmlFor="area-code"
+                                        className="control-label"
+                                    >
+                                        Area code
+                                    </Label>
+                                    <InputField
+                                        value={areaCode}
+                                        onChange={(value) =>
+                                            setAreaCode(value as string)
+                                        }
+                                        disabled
+                                    />
+                                </FormGroup>
+                            )}
+                            {addressInformation &&
+                                shouldValidateAddress(country) && (
+                                    <PhoneAddressInformation
+                                        value={addressInformation}
+                                        onChange={setAddressInformation}
+                                    />
+                                )}
                             <Button
                                 type="submit"
                                 color="success"
-                                className={classnames('mt-5', {
+                                className={classnames('mt-5', 'mb-5', {
                                     'btn-loading': isLoading,
                                 })}
-                                disabled={isLoading}
+                                disabled={
+                                    isLoading || country === PhoneCountry.FR
+                                }
                             >
                                 Add phone number
                             </Button>

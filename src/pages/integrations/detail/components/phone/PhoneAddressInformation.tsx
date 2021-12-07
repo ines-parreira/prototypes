@@ -6,10 +6,12 @@ import {
     AddressType,
     AddressInformation,
 } from '../../../../../models/integration/types'
+import {PhoneCountry} from '../../../../../business/twilio'
+
 import {SelectableOption} from '../../../../common/forms/SelectField/types'
 import InputField from '../../../../common/forms/InputField.js'
 
-import rawCountries from './options/countries-with-address.json'
+import rawCountries from './options/countries.json'
 
 import css from './PhoneAddressInformation.less'
 
@@ -26,6 +28,7 @@ export default function PhoneAddressInformation({
 }: Props): JSX.Element {
     const [address1, setAddress1] = useState('')
     const [address2, setAddress2] = useState('')
+    const isDisabled = value.country === PhoneCountry.FR
 
     const countryName = value.country
         ? countries.find((c) => c.value === value.country)?.label ??
@@ -63,6 +66,7 @@ export default function PhoneAddressInformation({
                                 handleChange('type', AddressType.Company)
                             }
                             checked={value.type === AddressType.Company}
+                            disabled={isDisabled}
                         />
                         <strong className="ml-1">Business information</strong>
                     </Label>
@@ -75,6 +79,7 @@ export default function PhoneAddressInformation({
                                 handleChange('type', AddressType.Personal)
                             }
                             checked={value.type === AddressType.Personal}
+                            disabled={isDisabled}
                         />
                         <strong className="ml-1">Personal information</strong>
                     </Label>
@@ -88,6 +93,7 @@ export default function PhoneAddressInformation({
                 }
                 required
                 value={value.business_name ?? ''}
+                disabled={isDisabled}
                 onChange={(value: string) =>
                     handleChange('business_name', value)
                 }
@@ -97,6 +103,7 @@ export default function PhoneAddressInformation({
                 required
                 value={address1}
                 onChange={setAddress1}
+                disabled={isDisabled}
             />
             <Row>
                 <Col className="pr-0">
@@ -104,6 +111,7 @@ export default function PhoneAddressInformation({
                         label="Address 2"
                         value={address2}
                         onChange={setAddress2}
+                        disabled={isDisabled}
                     />
                 </Col>
                 <Col>
@@ -114,6 +122,7 @@ export default function PhoneAddressInformation({
                         onChange={(value: string) =>
                             handleChange('city', value)
                         }
+                        disabled={isDisabled}
                     />
                 </Col>
             </Row>
@@ -126,6 +135,7 @@ export default function PhoneAddressInformation({
                         onChange={(value: string) =>
                             handleChange('region', value)
                         }
+                        disabled={isDisabled}
                     />
                 </Col>
                 <Col className="pr-0">
@@ -136,6 +146,7 @@ export default function PhoneAddressInformation({
                         onChange={(value: string) =>
                             handleChange('postal_code', value)
                         }
+                        disabled={isDisabled}
                     />
                 </Col>
                 <Col>
