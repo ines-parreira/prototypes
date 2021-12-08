@@ -4,7 +4,7 @@ import {Moment} from 'moment'
 
 import reducer, {initialState} from '../reducers'
 import * as newMessageTypes from '../../newMessage/constants'
-import * as customerTypes from '../../customers/constants.js'
+import * as customerTypes from '../../customers/constants'
 import * as types from '../constants'
 import * as ticketFixtures from '../../../fixtures/ticket'
 import {AuditLogEventType} from '../../../models/event/types'

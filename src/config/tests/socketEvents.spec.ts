@@ -8,7 +8,7 @@ import {TicketStatuses} from '../../business/ticket'
 import {shouldTicketBeDisplayedInRecentChats} from '../../business/recentChats'
 
 import * as chatActions from '../../state/chats/actions'
-import * as currentAccountConstants from '../../state/currentAccount/constants.js'
+import * as currentAccountConstants from '../../state/currentAccount/constants'
 import * as currentAccountSelectors from '../../state/currentAccount/selectors'
 import {viewsCountFetched} from '../../state/entities/viewsCount/actions'
 import * as integrationActions from '../../state/integrations/actions'

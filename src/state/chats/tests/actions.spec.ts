@@ -1,19 +1,22 @@
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
 import PushJS from 'push.js'
 
-import client from '../../../models/api/resources.ts'
-import browserNotification from '../../../services/browserNotification.ts'
-import * as actions from '../actions.ts'
-import {initialState} from '../reducers.ts'
+import client from '../../../models/api/resources'
+import browserNotification from '../../../services/browserNotification'
+import * as actions from '../actions'
+import {initialState} from '../reducers'
+import {StoreDispatch} from '../../types'
+import {Ticket} from '../../../models/ticket/types'
+import {RecentChatTicket} from '../../../business/types/recentChats'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-jest.mock('../../notifications/actions.ts', () => {
+jest.mock('../../notifications/actions', () => {
     return {
-        notify: jest.fn(() => (args) => args),
+        notify: jest.fn(() => (args: unknown) => args),
     }
 })
 
@@ -24,11 +27,13 @@ jest.mock('../../../services/browserNotification', () => {
 })
 
 describe('actions', () => {
-    let store
-    let mockServer
+    let store: MockStoreEnhanced<unknown, StoreDispatch>
+    let mockServer: MockAdapter
 
     beforeEach(() => {
-        store = mockStore({currentAccount: initialState})
+        store = mockStore({
+            currentAccount: initialState,
+        })
         mockServer = new MockAdapter(client)
         jest.clearAllMocks()
     })
@@ -37,11 +42,16 @@ describe('actions', () => {
         describe('fetchChats()', () => {
             it('should fetch chats', () => {
                 const chats = {
-                    tickets: [{id: 123}, {id: 2}],
+                    tickets: [
+                        {
+                            id: 123,
+                        },
+                        {
+                            id: 2,
+                        },
+                    ],
                 }
-
                 mockServer.onGet('/api/activity/chats/').reply(200, chats)
-
                 return store
                     .dispatch(actions.fetchChats())
                     .then(() => expect(store.getActions()).toMatchSnapshot())
@@ -57,11 +67,13 @@ describe('actions', () => {
                             name: 'Mark Frizeli',
                         },
                         last_message_body_text: 'Hi',
-                    },
+                    } as unknown as Ticket,
                 ]
                 store.dispatch(actions.setChats(chats))
                 expect(store.getActions()).toMatchSnapshot()
-                expect(PushJS.getAll()).toMatchSnapshot()
+                expect(
+                    (PushJS as unknown as {getAll: () => any[]}).getAll()
+                ).toMatchSnapshot()
             })
         })
 
@@ -76,7 +88,7 @@ describe('actions', () => {
                     name: 'Mark Frizeli',
                 },
                 last_message_body_text: 'Hi',
-            }
+            } as unknown as RecentChatTicket
 
             it('should add chat with notifications', () => {
                 store.dispatch(actions.addChat(chat, true))

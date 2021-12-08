@@ -1,29 +1,31 @@
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 
-import * as actions from '../actions.ts'
-import {initialState} from '../reducers.ts'
+import * as actions from '../actions'
+import {initialState} from '../reducers'
 import * as types from '../constants'
-import {UserSettingType} from '../../../config/types/user.ts'
-import client from '../../../models/api/resources.ts'
+import {UserSetting, UserSettingType} from '../../../config/types/user'
+import client from '../../../models/api/resources'
+import {StoreDispatch} from '../../types'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-jest.mock('../../notifications/actions.ts', () => {
+jest.mock('../../notifications/actions', () => {
     return {
-        notify: jest.fn(() => (args) => args),
+        notify: jest.fn(() => (args: unknown) => args),
     }
 })
-
 describe('current user actions', () => {
-    let store
-    let mockServer
+    let store: MockStoreEnhanced<unknown, StoreDispatch>
+    let mockServer: MockAdapter
 
     beforeEach(() => {
-        store = mockStore({currentUser: initialState})
+        store = mockStore({
+            currentUser: initialState,
+        })
         mockServer = new MockAdapter(client)
     })
 
@@ -32,34 +34,39 @@ describe('current user actions', () => {
             old_password: 'password',
             new_password: 'newPassword',
         }
-
         mockServer.onPut('/api/users/0/').reply(200, data)
-
         return store
-            .dispatch(actions.changePassword(data))
+            .dispatch(
+                actions.changePassword(data.old_password, data.new_password)
+            )
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     describe('submit setting', () => {
         it('creation', () => {
-            const data = {type: 'macro', hello: 'world', data: {}}
-
+            const data = {
+                type: 'macro',
+                hello: 'world',
+                data: {},
+            } as unknown as UserSetting
             mockServer
                 .onPost('/api/users/0/settings/')
                 .reply(200, {...data, id: 1})
-
             return store
-                .dispatch(actions.submitSetting(data))
+                .dispatch(actions.submitSetting(data, false))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
         it('update', () => {
-            const data = {type: 'macro', id: 1, hello: 'world', data: {}}
-
+            const data = {
+                type: 'macro',
+                id: 1,
+                hello: 'world',
+                data: {},
+            } as unknown as UserSetting
             mockServer.onPut('/api/users/0/settings/1/').reply(200, data)
-
             return store
-                .dispatch(actions.submitSetting(data))
+                .dispatch(actions.submitSetting(data, false))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
@@ -68,24 +75,35 @@ describe('current user actions', () => {
             const settings = fromJS([
                 {
                     type: 'preferences',
-                    data: {available: true},
+                    data: {
+                        available: true,
+                    },
                 },
             ])
             const state = initialState.set('settings', settings)
-            store = mockStore({currentUser: state})
-
+            store = mockStore({
+                currentUser: state,
+            })
             // update his status
-            const newSetting = {type: 'preferences', data: {available: false}}
+            const newSetting = {
+                type: 'preferences',
+                data: {
+                    available: false,
+                },
+            } as unknown as UserSetting
             const chats = {
-                tickets: [{id: 1}],
+                tickets: [
+                    {
+                        id: 1,
+                    },
+                ],
             }
             mockServer
                 .onPost('/api/users/0/settings/')
                 .reply(200, {...newSetting, id: 1})
             mockServer.onGet('/api/activity/chats/').reply(200, chats)
-
             return store
-                .dispatch(actions.submitSetting(newSetting))
+                .dispatch(actions.submitSetting(newSetting, false))
                 .then(() => {
                     setTimeout(() => {
                         expect(store.getActions()).toMatchSnapshot()
@@ -96,23 +114,14 @@ describe('current user actions', () => {
     })
 
     describe('toggleActiveStatus()', () => {
-        it('should dispatch without status', () => {
+        it.each([true, false])('should dispatch with status', (status) => {
             const expectedActions = [
                 {
                     type: types.TOGGLE_ACTIVE_STATUS,
+                    status,
                 },
             ]
-            store.dispatch(actions.toggleActiveStatus())
-            expect(store.getActions()).toEqual(expectedActions)
-        })
-        it('should dispatch with status', () => {
-            const expectedActions = [
-                {
-                    type: types.TOGGLE_ACTIVE_STATUS,
-                    status: true,
-                },
-            ]
-            store.dispatch(actions.toggleActiveStatus(true))
+            store.dispatch(actions.toggleActiveStatus(status))
             expect(store.getActions()).toEqual(expectedActions)
         })
 
@@ -139,8 +148,7 @@ describe('current user actions', () => {
                 },
                 id: 1,
                 type: UserSettingType.TicketViews,
-            }
-
+            } as unknown as UserSetting
             store.dispatch(actions.submitSettingSuccess(req, true))
             expect(store.getActions()).toMatchSnapshot()
         })

@@ -2,7 +2,7 @@ import {fromJS, Map, List} from 'immutable'
 import moment from 'moment'
 
 import {TicketAuditLogEvent} from '../../constants/integrations/types/event'
-import * as customerTypes from '../customers/constants.js'
+import * as customerTypes from '../customers/constants'
 import ticketReplyCache from '../newMessage/ticketReplyCache'
 import * as newMessageTypes from '../newMessage/constants'
 import {compare} from '../../utils'

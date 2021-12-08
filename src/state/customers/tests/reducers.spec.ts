@@ -1,18 +1,21 @@
 import {fromJS} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 
-import {OPEN_STATUS, CLOSED_STATUS} from '../../../config/ticket.ts'
-import reducer, {initialState} from '../reducers.ts'
-import * as newMessageTypes from '../../newMessage/constants.ts'
-import * as viewTypes from '../../views/constants.ts'
-import * as ticketTypes from '../../ticket/constants.ts'
+import {OPEN_STATUS, CLOSED_STATUS} from '../../../config/ticket'
+import reducer, {initialState} from '../reducers'
+import * as newMessageTypes from '../../newMessage/constants'
+import * as viewTypes from '../../views/constants'
+import * as ticketTypes from '../../ticket/constants'
 import * as types from '../constants'
+import {GorgiasAction} from '../../types'
 
 jest.addMatchers(immutableMatchers)
 
 describe('customers reducers', () => {
     it('initial state', () => {
-        expect(reducer(undefined, {})).toEqualImmutable(initialState)
+        expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(
+            initialState
+        )
     })
 
     it('fetch list', () => {

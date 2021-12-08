@@ -16,7 +16,7 @@ import {
 } from '../../config/types/user'
 import client from '../../models/api/resources'
 
-import * as constants from './constants.js'
+import * as constants from './constants'
 import * as currentUserSelectors from './selectors'
 
 export const changePassword =

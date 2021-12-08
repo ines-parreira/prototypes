@@ -1,18 +1,22 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
+import {RavenStatic} from 'raven-js'
 
-import reducer, {initialState} from '../reducers.ts'
+import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
+import {GorgiasAction} from '../../types'
 
 jest.addMatchers(immutableMatchers)
 
 window.Raven = {
     setUserContext: jest.fn(),
-}
+} as unknown as RavenStatic
 
 describe('current user reducers', () => {
     it('initial state', () => {
-        expect(reducer(undefined, {})).toEqualImmutable(initialState)
+        expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(
+            initialState
+        )
     })
 
     it('submit current user', () => {

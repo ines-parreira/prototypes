@@ -1,21 +1,29 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
-import reducer, {initialState} from '../reducers.ts'
-import * as types from '../constants.ts'
+import reducer, {initialState} from '../reducers'
+import * as types from '../constants'
+import {GorgiasAction} from '../../types'
 
 jest.addMatchers(immutableMatchers)
 
 describe('reducers', () => {
     describe('chats', () => {
         it('initial state', () => {
-            expect(reducer(undefined, {})).toEqualImmutable(initialState)
+            expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(
+                initialState
+            )
         })
 
         it('should handle SET_CHATS', () => {
             const state = initialState.set(
                 'tickets',
-                fromJS([{id: 1, is_unread: true}])
+                fromJS([
+                    {
+                        id: 1,
+                        is_unread: true,
+                    },
+                ])
             )
             const action = {
                 type: types.SET_CHATS,
@@ -32,14 +40,20 @@ describe('reducers', () => {
                     },
                 ],
             }
-
-            expect(reducer(state, action).toJS()).toMatchSnapshot()
+            expect(
+                reducer(state, action as unknown as GorgiasAction).toJS()
+            ).toMatchSnapshot()
         })
 
         it('should handle ADD_CHAT', () => {
             const state = initialState.set(
                 'tickets',
-                fromJS([{id: 1, is_unread: true}])
+                fromJS([
+                    {
+                        id: 1,
+                        is_unread: true,
+                    },
+                ])
             )
             const action = {
                 type: types.ADD_CHAT,
@@ -50,7 +64,9 @@ describe('reducers', () => {
                 },
             }
 
-            expect(reducer(state, action).toJS()).toMatchSnapshot()
+            expect(
+                reducer(state, action as unknown as GorgiasAction).toJS()
+            ).toMatchSnapshot()
         })
 
         it('should handle REMOVE_CHAT', () => {
@@ -60,9 +76,15 @@ describe('reducers', () => {
             }
             const state = initialState.set(
                 'tickets',
-                fromJS([{id: 1}, {id: 2}])
+                fromJS([
+                    {
+                        id: 1,
+                    },
+                    {
+                        id: 2,
+                    },
+                ])
             )
-
             expect(reducer(state, action).toJS()).toMatchSnapshot()
         })
 
@@ -73,9 +95,13 @@ describe('reducers', () => {
             }
             const state = initialState.set(
                 'tickets',
-                fromJS([{id: 1, is_unread: true}])
+                fromJS([
+                    {
+                        id: 1,
+                        is_unread: true,
+                    },
+                ])
             )
-
             expect(reducer(state, action).toJS()).toMatchSnapshot()
         })
 
@@ -86,9 +112,13 @@ describe('reducers', () => {
             }
             const state = initialState.set(
                 'tickets',
-                fromJS([{id: 1, is_unread: false}])
+                fromJS([
+                    {
+                        id: 1,
+                        is_unread: false,
+                    },
+                ])
             )
-
             expect(reducer(state, action).toJS()).toMatchSnapshot()
         })
     })

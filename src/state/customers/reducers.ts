@@ -8,7 +8,7 @@ import * as viewsConstants from '../views/constants'
 
 import {GorgiasAction} from '../types'
 
-import * as constants from './constants.js'
+import * as constants from './constants'
 import {CustomersState} from './types'
 
 export const initialState: CustomersState = fromJS({

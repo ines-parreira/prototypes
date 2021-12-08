@@ -45,7 +45,7 @@ enum GorgiasChatEmailCaptureType {
     AlwaysRequired = 'always-required',
 }
 
-type Campaign = {
+export type Campaign = {
     id: string
     message: {
         author?: {

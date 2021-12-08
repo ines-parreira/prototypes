@@ -13,7 +13,7 @@ import {NotificationStatus} from '../notifications/types'
 import type {StoreDispatch, RootState} from '../types'
 import {onApiError} from '../utils'
 
-import * as types from './constants.js'
+import * as types from './constants'
 import {mergeChannels} from './helpers'
 import {Customer, CustomerDraft} from './types'
 
@@ -58,7 +58,7 @@ export function fetchCustomer(customerId: string) {
     }
 }
 
-export function submitCustomer(data: CustomerDraft, customerId: number) {
+export function submitCustomer(data: CustomerDraft, customerId?: number) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         const isUpdate = !_isUndefined(customerId)
         let promise
@@ -69,7 +69,7 @@ export function submitCustomer(data: CustomerDraft, customerId: number) {
 
         if (isUpdate) {
             promise = client.put<CustomerDraft>(
-                `/api/customers/${customerId}/`,
+                `/api/customers/${customerId!}/`,
                 data
             )
         } else {

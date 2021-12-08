@@ -1,32 +1,34 @@
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 
-import * as actions from '../actions.ts'
-import {initialState} from '../reducers.ts'
-import client from '../../../models/api/resources.ts'
+import * as actions from '../actions'
+import {initialState} from '../reducers'
+import client from '../../../models/api/resources'
+import {StoreDispatch} from '../../types'
+import {Customer, CustomerDraft} from '../types'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
 jest.mock('../../notifications/actions.ts', () => {
     return {
-        notify: jest.fn(() => (args) => args),
+        notify: jest.fn(() => (args: unknown) => args),
     }
 })
 jest.mock('reapop', () => {
-    const reapop = require.requireActual('reapop')
+    const reapop: Record<string, unknown> = require.requireActual('reapop')
 
     return {
         ...reapop,
-        updateNotification: jest.fn(() => (args) => args),
+        updateNotification: jest.fn(() => (args: unknown) => args),
     }
 })
 
 describe('customers actions', () => {
-    let store
-    let mockServer
+    let store: MockStoreEnhanced<unknown, StoreDispatch>
+    let mockServer: MockAdapter
 
     beforeEach(() => {
         store = mockStore({customers: initialState})
@@ -37,7 +39,7 @@ describe('customers actions', () => {
         mockServer.onGet('/api/customers/2/').reply(200, {data: {id: 2}})
 
         return store
-            .dispatch(actions.fetchCustomer(2))
+            .dispatch(actions.fetchCustomer('2'))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
@@ -45,7 +47,7 @@ describe('customers actions', () => {
         const data = {
             name: 'Steve',
             email: 'steve@acme.gorgias.io',
-        }
+        } as unknown as CustomerDraft
 
         mockServer.onPost('/api/customers/').reply(200, {data})
 
@@ -59,7 +61,7 @@ describe('customers actions', () => {
             id: 2,
             name: 'Steve',
             email: 'steve@acme.gorgias.io',
-        }
+        } as unknown as Customer
 
         mockServer.onPut('/api/customers/2/').reply(200, {data})
 
@@ -115,7 +117,7 @@ describe('customers actions', () => {
             .reply(200, {data: [{id: 1}]})
 
         return store
-            .dispatch(actions.mergeCustomers(2, 3, {}))
+            .dispatch(actions.mergeCustomers(2, 3, {} as Customer))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 })

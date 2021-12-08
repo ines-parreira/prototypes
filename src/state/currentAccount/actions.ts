@@ -9,7 +9,7 @@ import {NotificationStatus} from '../notifications/types'
 import {StoreDispatch} from '../types'
 import client from '../../models/api/resources'
 
-import * as constants from './constants.js'
+import * as constants from './constants'
 import {Account, AccountSetting} from './types'
 
 export const updateAccount =

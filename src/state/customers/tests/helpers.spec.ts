@@ -1,7 +1,8 @@
 import {fromJS} from 'immutable'
 
-import * as helpers from '../helpers.ts'
-import {EMAIL_CHANNEL} from '../../../config/ticket.ts'
+import * as helpers from '../helpers'
+import {CustomerChannel} from '../../../models/customerChannel/types'
+import {TicketChannel} from '../../../business/types/ticket'
 
 describe('customers helpers', () => {
     it('getDisplayName', () => {
@@ -9,17 +10,19 @@ describe('customers helpers', () => {
         const email = 'cedric@gmail.com'
         const id = 1234
 
-        expect(helpers.getDisplayName()).toBe('Unknown customer')
-        expect(helpers.getDisplayName('')).toBe('Unknown customer')
-        expect(helpers.getDisplayName(name)).toBe(name)
-        expect(helpers.getDisplayName({name})).toBe(name)
+        expect(helpers.getDisplayName(undefined as any)).toBe(
+            'Unknown customer'
+        )
+        expect(helpers.getDisplayName('' as any)).toBe('Unknown customer')
+        expect(helpers.getDisplayName(name as any)).toBe(name)
+        expect(helpers.getDisplayName({name} as any)).toBe(name)
         expect(helpers.getDisplayName(fromJS({name}))).toBe(name)
-        expect(helpers.getDisplayName({name, email})).toBe(name)
-        expect(helpers.getDisplayName({email})).toBe(email)
-        expect(helpers.getDisplayName({name: `  ${name}   `})).toBe(name)
-        expect(helpers.getDisplayName({id})).toBe(`Customer #${id}`)
-        expect(helpers.getDisplayName({name, email, id})).toBe(name)
-        expect(helpers.getDisplayName({hello: 'world'})).toBe(
+        expect(helpers.getDisplayName({name, email} as any)).toBe(name)
+        expect(helpers.getDisplayName({email} as any)).toBe(email)
+        expect(helpers.getDisplayName({name: `  ${name}   `} as any)).toBe(name)
+        expect(helpers.getDisplayName({id} as any)).toBe(`Customer #${id}`)
+        expect(helpers.getDisplayName({name, email, id} as any)).toBe(name)
+        expect(helpers.getDisplayName({hello: 'world'} as any)).toBe(
             'Unknown customer'
         )
     })
@@ -28,18 +31,18 @@ describe('customers helpers', () => {
         const channel1 = {
             address: 'address1@foo.bar',
             preferred: false,
-            type: EMAIL_CHANNEL,
-        }
+            type: TicketChannel.Email,
+        } as CustomerChannel
         const channel2 = {
             address: 'address2@foo.bar',
             preferred: false,
-            type: EMAIL_CHANNEL,
-        }
+            type: TicketChannel.Email,
+        } as CustomerChannel
         const sameChannel1 = {
             address: 'ADDRESS1@foo.bar',
             preferred: false,
-            type: EMAIL_CHANNEL,
-        }
+            type: TicketChannel.Email,
+        } as CustomerChannel
 
         it('should return all channels because emails are different', () => {
             expect(helpers.mergeChannels([channel1, channel2])).toEqual([

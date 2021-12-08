@@ -2,7 +2,7 @@ import {fromJS, Map, List} from 'immutable'
 
 import {GorgiasAction} from '../types'
 
-import * as constants from './constants.js'
+import * as constants from './constants'
 import {CurrentAccountState} from './types'
 
 export const initialState: CurrentAccountState = fromJS({

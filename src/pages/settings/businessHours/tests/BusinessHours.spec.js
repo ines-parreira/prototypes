@@ -6,7 +6,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import BusinessHours, {BusinessHoursContainer} from '../BusinessHours.tsx'
-import {SETTING_TYPE_BUSINESS_HOURS} from '../../../../state/currentAccount/constants'
+import {SETTING_TYPE_BUSINESS_HOURS} from '../../../../state/currentAccount/constants.ts'
 
 const mockStore = configureMockStore([thunk])
 

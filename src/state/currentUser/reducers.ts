@@ -4,7 +4,7 @@ import _isUndefined from 'lodash/isUndefined'
 import {UserSetting} from '../../config/types/user'
 import {GorgiasAction} from '../types'
 
-import * as constants from './constants.js'
+import * as constants from './constants'
 import {CurrentUserState} from './types'
 
 export const initialState: CurrentUserState = fromJS({

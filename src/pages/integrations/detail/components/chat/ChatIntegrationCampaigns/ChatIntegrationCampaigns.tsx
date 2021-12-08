@@ -5,7 +5,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import moment from 'moment'
 import {Breadcrumb, BreadcrumbItem, Button, Container, Table} from 'reactstrap'
 
-import * as campaignActions from '../../../../../../state/campaigns/actions.js'
+import * as campaignActions from '../../../../../../state/campaigns/actions'
 import ToggleButton from '../../../../../common/components/ToggleButton'
 import PageHeader from '../../../../../common/components/PageHeader'
 import ForwardIcon from '../../ForwardIcon'

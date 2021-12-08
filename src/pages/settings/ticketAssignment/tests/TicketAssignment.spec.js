@@ -3,7 +3,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 
 import {TicketChannels} from '../../../../business/ticket.ts'
-import * as currentAccountConstants from '../../../../state/currentAccount/constants'
+import * as currentAccountConstants from '../../../../state/currentAccount/constants.ts'
 
 import {TicketAssignmentContainer} from '../TicketAssignment.tsx'
 

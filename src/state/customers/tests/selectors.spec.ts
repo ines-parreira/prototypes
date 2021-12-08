@@ -1,13 +1,14 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
-import * as selectors from '../selectors.ts'
-import {initialState} from '../reducers.ts'
+import * as selectors from '../selectors'
+import {initialState} from '../reducers'
+import {RootState} from '../../types'
 
 jest.addMatchers(immutableMatchers)
 
 describe('customers selectors', () => {
-    let state
+    let state: RootState
 
     beforeEach(() => {
         state = {
@@ -21,21 +22,25 @@ describe('customers selectors', () => {
                     },
                 },
             }),
-        }
+        } as RootState
     })
 
     it('getCustomersState', () => {
         expect(selectors.getCustomersState(state)).toEqualImmutable(
             state.customers
         )
-        expect(selectors.getCustomersState({})).toEqualImmutable(fromJS({}))
+        expect(selectors.getCustomersState({} as RootState)).toEqualImmutable(
+            fromJS({})
+        )
     })
 
     it('getLoading', () => {
         expect(selectors.getLoading(state)).toEqualImmutable(
             selectors.getCustomersState(state).getIn(['_internal', 'loading'])
         )
-        expect(selectors.getLoading({})).toEqualImmutable(fromJS({}))
+        expect(selectors.getLoading({} as RootState)).toEqualImmutable(
+            fromJS({})
+        )
     })
 
     it('isLoading', () => {
@@ -48,20 +53,24 @@ describe('customers selectors', () => {
         expect(selectors.getCustomers(state)).toEqualImmutable(
             selectors.getCustomersState(state).get('items')
         )
-        expect(selectors.getCustomers({})).toEqualImmutable(fromJS([]))
+        expect(selectors.getCustomers({} as RootState)).toEqualImmutable(
+            fromJS([])
+        )
     })
 
     it('getActiveCustomer', () => {
         expect(selectors.getActiveCustomer(state)).toEqualImmutable(
             selectors.getCustomersState(state).get('active')
         )
-        expect(selectors.getActiveCustomer({})).toEqualImmutable(fromJS({}))
+        expect(selectors.getActiveCustomer({} as RootState)).toEqualImmutable(
+            fromJS({})
+        )
     })
 
     it('getActiveCustomerId', () => {
         expect(selectors.getActiveCustomerId(state)).toEqualImmutable(
             selectors.getCustomersState(state).getIn(['active', 'id'])
         )
-        expect(selectors.getActiveCustomerId({})).toBe(undefined)
+        expect(selectors.getActiveCustomerId({} as RootState)).toBe(undefined)
     })
 })

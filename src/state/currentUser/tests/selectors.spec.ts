@@ -1,56 +1,64 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
-import {fromJS} from 'immutable'
+import {fromJS, List} from 'immutable'
 
-import {UserSettingType} from '../../../config/types/user.ts'
-import * as selectors from '../selectors.ts'
-import {initialState} from '../reducers.ts'
-import * as usersFixtures from '../../../fixtures/users.ts'
-
-import {DEFAULT_PREFERENCES} from './../../../config.ts'
+import {UserSettingType} from '../../../config/types/user'
+import * as selectors from '../selectors'
+import {initialState} from '../reducers'
+import * as usersFixtures from '../../../fixtures/users'
+import {DEFAULT_PREFERENCES} from '../../../config'
+import {RootState} from '../../types'
 
 jest.addMatchers(immutableMatchers)
 
 describe('current user selectors', () => {
-    let state
+    let state: RootState
 
     beforeEach(() => {
         state = {
             currentUser: initialState.mergeDeep(fromJS(usersFixtures.user)),
-        }
+        } as RootState
     })
 
     it('getCurrentUserState', () => {
         expect(selectors.getCurrentUserState(state)).toEqualImmutable(
             state.currentUser
         )
-        expect(selectors.getCurrentUserState({})).toEqualImmutable(fromJS({}))
+        expect(selectors.getCurrentUserState({} as RootState)).toEqualImmutable(
+            fromJS({})
+        )
     })
 
     it('getCurrentUser', () => {
         expect(selectors.getCurrentUser(state)).toEqualImmutable(
             state.currentUser
         )
-        expect(selectors.getCurrentUser({})).toEqualImmutable(fromJS({}))
+        expect(selectors.getCurrentUser({} as RootState)).toEqualImmutable(
+            fromJS({})
+        )
     })
 
     it('getSettings', () => {
         expect(selectors.getSettings(state)).toEqualImmutable(
             state.currentUser.get('settings')
         )
-        expect(selectors.getSettings({})).toEqualImmutable(fromJS([]))
+        expect(selectors.getSettings({} as RootState)).toEqualImmutable(
+            fromJS([])
+        )
     })
 
     it('getSettingsByType', () => {
         expect(
             selectors.getSettingsByType(UserSettingType.Preferences)(state)
-        ).toEqualImmutable(state.currentUser.get('settings').first())
+        ).toEqualImmutable(
+            (state.currentUser.get('settings') as List<any>).first()
+        )
     })
 
     it('getPreferences', () => {
         expect(selectors.getPreferences(state)).toEqualImmutable(
-            state.currentUser.get('settings').last()
+            (state.currentUser.get('settings') as List<any>).last()
         )
-        expect(selectors.getPreferences({})).toEqualImmutable(
+        expect(selectors.getPreferences({} as RootState)).toEqualImmutable(
             fromJS({
                 type: 'preferences',
                 data: DEFAULT_PREFERENCES,
@@ -60,22 +68,22 @@ describe('current user selectors', () => {
 
     it('isAvailableForChat', () => {
         expect(selectors.isAvailable(state)).toBe(true)
-        expect(selectors.isAvailable({})).toBe(true)
+        expect(selectors.isAvailable({} as RootState)).toBe(true)
     })
 
     it('isHidingTips', () => {
         expect(selectors.isHidingTips(state)).toBe(true)
-        expect(selectors.isHidingTips({})).toBe(false)
+        expect(selectors.isHidingTips({} as RootState)).toBe(false)
     })
 
     it('isActive', () => {
-        state = {currentUser: fromJS({})}
+        state = {currentUser: fromJS({})} as RootState
         expect(selectors.isActive(state)).toBe(true)
 
-        state = {currentUser: fromJS({is_active: true})}
+        state = {currentUser: fromJS({is_active: true})} as RootState
         expect(selectors.isActive(state)).toBe(true)
 
-        state = {currentUser: fromJS({is_active: false})}
+        state = {currentUser: fromJS({is_active: false})} as RootState
         expect(selectors.isActive(state)).toBe(false)
     })
 
@@ -83,7 +91,7 @@ describe('current user selectors', () => {
         expect(selectors.getTimezone(state)).toEqualImmutable(
             state.currentUser.get('timezone')
         )
-        expect(selectors.getTimezone({})).toEqualImmutable(null)
+        expect(selectors.getTimezone({} as RootState)).toEqualImmutable(null)
     })
 
     describe('makeGetSettingsByType', () => {
@@ -91,7 +99,7 @@ describe('current user selectors', () => {
             const selector = selectors.makeGetSettingsByType()
             const settings = selector(state, UserSettingType.Preferences)
             expect(settings).toEqualImmutable(
-                state.currentUser.get('settings').first()
+                (state.currentUser.get('settings') as List<any>).first()
             )
         })
     })

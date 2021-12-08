@@ -3,7 +3,7 @@ import _isEqual from 'lodash/isEqual'
 
 import {StoreAction} from '../types'
 import {UserRole, User} from '../../config/types/user'
-import * as currentUserConstants from '../currentUser/constants.js'
+import * as currentUserConstants from '../currentUser/constants'
 
 import * as agentsConstants from './constants'
 import {AgentsState} from './types'

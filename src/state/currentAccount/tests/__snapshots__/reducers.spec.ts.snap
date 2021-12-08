@@ -107,7 +107,7 @@ Object {
     "loading": Object {},
   },
   "current_subscription": Object {
-    "plan": "basic-usd-1",
+    "plan": "basic-monthly-usd-2",
   },
   "settings": Array [],
 }
@@ -119,7 +119,7 @@ Object {
     "loading": Object {},
   },
   "current_subscription": Object {
-    "plan": "basic-usd-1",
+    "plan": "basic-monthly-usd-2",
   },
   "settings": Array [],
 }

@@ -29,7 +29,7 @@ import {sanitizeHtmlDefault} from '../../../../../../utils/html.ts'
 import {convertToHTML} from '../../../../../../utils/editor.tsx'
 
 import {notify} from '../../../../../../state/notifications/actions.ts'
-import * as campaignActions from '../../../../../../state/campaigns/actions'
+import * as campaignActions from '../../../../../../state/campaigns/actions.ts'
 import * as integrationsSelectors from '../../../../../../state/integrations/selectors.ts'
 import * as agentSelectors from '../../../../../../state/agents/selectors.ts'
 
