@@ -3,21 +3,16 @@ import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import {Map} from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
-import {
-    Alert,
-    Breadcrumb,
-    BreadcrumbItem,
-    Container,
-    Row,
-    Col,
-} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
 import {parse} from 'query-string'
+import classNames from 'classnames'
 
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {notify} from '../../../../../state/notifications/actions'
 import {triggerCreateSuccess} from '../../../../../state/integrations/actions'
 import Loader from '../../../../common/components/Loader/Loader'
 import PageHeader from '../../../../common/components/PageHeader'
+import Alert, {AlertType} from '../../../../common/components/Alert/Alert'
 import history from '../../../../history'
 import settingsCss from '../../../../settings/settings.less'
 
@@ -146,7 +141,10 @@ export class Magento2IntegrationDetail extends React.Component<Props, State> {
                                         you, you'll be able to see their Magento
                                         2 information next to tickets.
                                     </p>
-                                    <Alert color="warning">
+                                    <Alert
+                                        type={AlertType.Warning}
+                                        className={settingsCss.mb16}
+                                    >
                                         To add a Magento 2 integration to
                                         Gorgias, you will need to have installed
                                         the{' '}
@@ -181,7 +179,7 @@ export class Magento2IntegrationDetail extends React.Component<Props, State> {
                                         </Link>
                                     </p>
                                 ) : (
-                                    <Alert color="info" className="mb-4">
+                                    <Alert className={settingsCss.mb16}>
                                         <p>
                                             <b className="alert-heading">
                                                 <i className="material-icons md-spin mr-2">
@@ -191,7 +189,7 @@ export class Magento2IntegrationDetail extends React.Component<Props, State> {
                                                 customers
                                             </b>
                                         </p>
-                                        <p>
+                                        <span>
                                             We're currently importing all your
                                             Magento 2 customers. This way,
                                             you'll see customer & orders info
@@ -202,7 +200,7 @@ export class Magento2IntegrationDetail extends React.Component<Props, State> {
                                             <Link to="/app/customers">
                                                 Review imported customers.
                                             </Link>
-                                        </p>
+                                        </span>
                                     </Alert>
                                 )
                             ) : null}
@@ -212,9 +210,10 @@ export class Magento2IntegrationDetail extends React.Component<Props, State> {
                                         How do you want to add this integration?
                                     </span>
                                     <div
-                                        className={
-                                            css['selection-button-group']
-                                        }
+                                        className={classNames(
+                                            css['selection-button-group'],
+                                            settingsCss.mt4
+                                        )}
                                     >
                                         <Magento2ModeSelectionButton
                                             text="One-click installation"
@@ -242,8 +241,8 @@ export class Magento2IntegrationDetail extends React.Component<Props, State> {
 
                             {!isUpdate && this.state.isManual && (
                                 <Alert
-                                    color="warning"
-                                    style={{marginBottom: '15px'}}
+                                    type={AlertType.Warning}
+                                    className="mb-3"
                                 >
                                     This option is useful if you have a firewall
                                     configured on your Magento store that

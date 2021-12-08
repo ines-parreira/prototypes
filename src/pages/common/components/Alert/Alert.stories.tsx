@@ -2,6 +2,8 @@ import {Meta, Story} from '@storybook/react'
 import React, {ComponentProps} from 'react'
 import {Button} from 'reactstrap'
 
+import gorgiasLogo from '../../../../../../public/img/gorgias-light-icon-48.png'
+
 import Alert from './Alert'
 
 const storyConfig: Meta = {
@@ -28,6 +30,13 @@ const storyConfig: Meta = {
                 type: null,
             },
         },
+        icon: {
+            description:
+                'Precise whether you want to show the default icon or not. You can also pass custom JSX you want to use as the icon.',
+            control: {
+                type: null,
+            },
+        },
     },
 }
 
@@ -42,7 +51,13 @@ export const Info = Template.bind({})
 Info.args = {...defaultProps}
 
 export const WithIcon = Template.bind({})
-WithIcon.args = {...defaultProps, showIcon: true}
+WithIcon.args = {...defaultProps, icon: true}
+
+export const WithCustomIcon = Template.bind({})
+WithCustomIcon.args = {
+    ...defaultProps,
+    icon: <img src={gorgiasLogo} alt="custom-icon" />,
+}
 
 export const Closable = Template.bind({})
 Closable.args = {...defaultProps}

@@ -6,17 +6,7 @@ exports[`<ViewSharingModalBody/> render() should render an error 1`] = `
     className="m-3"
   >
     <Alert
-      closeAriaLabel="Close"
-      color="danger"
-      fade={true}
-      isOpen={true}
-      tag="div"
-      transition={
-        Object {
-          "baseClass": "",
-          "timeout": 0,
-        }
-      }
+      type="error"
     >
       Error: foo bar
     </Alert>
@@ -149,19 +139,8 @@ exports[`<ViewSharingModalBody/> render() should render shared body 1`] = `
   </div>
   <Alert
     className="m-3"
-    closeAriaLabel="Close"
-    color="info"
-    fade={true}
-    isOpen={true}
-    tag="div"
-    transition={
-      Object {
-        "baseClass": "",
-        "timeout": 0,
-      }
-    }
   >
-    Lead agents and admins see all the shared views.
+    Lead agents and admins see all the shared views
   </Alert>
   <ViewSharingModalWarning
     initialTeams={Immutable.List []}

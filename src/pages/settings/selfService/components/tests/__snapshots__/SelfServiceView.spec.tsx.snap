@@ -753,10 +753,17 @@ exports[`<SelfServiceView/> render() should render the default message when ther
               </i>
             </h5>
             <div
-              class="alert alert-warning fade"
-              role="alert"
+              class="alert warning"
             >
-              No active Shopify store detected. Please make sure to add a Shopify integration to access the Self-service features.
+              <div
+                class="content"
+              >
+                <span
+                  class="label"
+                >
+                  No active Shopify store detected. Please make sure to add a Shopify integration to access the Self-service features.
+                </span>
+              </div>
             </div>
           </div>
         </div>

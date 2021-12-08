@@ -553,33 +553,10 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
           ]
         }
       >
-        <Alert
-          className="mb-4"
-          closeAriaLabel="Close"
-          color="info"
-          fade={true}
-          isOpen={true}
-          tag="div"
-          transition={
-            Object {
-              "appear": true,
-              "baseClass": "fade",
-              "baseClassActive": "show",
-              "enter": true,
-              "exit": true,
-              "in": true,
-              "mountOnEnter": false,
-              "onEnter": [Function],
-              "onEntered": [Function],
-              "onEntering": [Function],
-              "onExit": [Function],
-              "onExited": [Function],
-              "onExiting": [Function],
-              "tag": "div",
-              "timeout": 150,
-              "unmountOnExit": true,
-            }
-          }
+        <LinkAlert
+          actionHref="/app/customers"
+          actionLabel="Review imported customers"
+          className="mb16"
         >
           <p>
             <b
@@ -593,16 +570,10 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
               Importing your Shopify customers
             </b>
           </p>
-          <p>
+          <span>
             We're currently importing all your Shopify customers. This way, you'll see customer info & orders next to tickets. We'll notify you via email when the import is done. We typically sync 3,000 customers an hour.
-             
-            <Link
-              to="/app/customers"
-            >
-              Review imported customers.
-            </Link>
-          </p>
-        </Alert>
+          </span>
+        </LinkAlert>
         <Form
           onSubmit={[Function]}
           tag="form"

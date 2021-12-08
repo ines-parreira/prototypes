@@ -61,31 +61,7 @@ exports[`CreditCard component should display credit card form 1`] = `
         }
       >
         <Alert
-          closeAriaLabel="Close"
-          color="info"
-          fade={true}
-          isOpen={true}
-          tag="div"
-          transition={
-            Object {
-              "appear": true,
-              "baseClass": "fade",
-              "baseClassActive": "show",
-              "enter": true,
-              "exit": true,
-              "in": true,
-              "mountOnEnter": false,
-              "onEnter": [Function],
-              "onEntered": [Function],
-              "onEntering": [Function],
-              "onExit": [Function],
-              "onExited": [Function],
-              "onExiting": [Function],
-              "tag": "div",
-              "timeout": 150,
-              "unmountOnExit": true,
-            }
-          }
+          className="mb-3"
         >
           You will be charged for the current period of your plan once you add your Credit Card
         </Alert>
@@ -317,31 +293,7 @@ exports[`CreditCard component should not render the billing address form when a 
         }
       >
         <Alert
-          closeAriaLabel="Close"
-          color="info"
-          fade={true}
-          isOpen={true}
-          tag="div"
-          transition={
-            Object {
-              "appear": true,
-              "baseClass": "fade",
-              "baseClassActive": "show",
-              "enter": true,
-              "exit": true,
-              "in": true,
-              "mountOnEnter": false,
-              "onEnter": [Function],
-              "onEntered": [Function],
-              "onEntering": [Function],
-              "onExit": [Function],
-              "onExited": [Function],
-              "onExiting": [Function],
-              "tag": "div",
-              "timeout": 150,
-              "unmountOnExit": true,
-            }
-          }
+          className="mb-3"
         >
           You will be charged for the current period of your plan once you add your Credit Card
         </Alert>
@@ -534,31 +486,7 @@ exports[`CreditCard component should render billing plan card with automation fo
         }
       >
         <Alert
-          closeAriaLabel="Close"
-          color="info"
-          fade={true}
-          isOpen={true}
-          tag="div"
-          transition={
-            Object {
-              "appear": true,
-              "baseClass": "fade",
-              "baseClassActive": "show",
-              "enter": true,
-              "exit": true,
-              "in": true,
-              "mountOnEnter": false,
-              "onEnter": [Function],
-              "onEntered": [Function],
-              "onEntering": [Function],
-              "onExit": [Function],
-              "onExited": [Function],
-              "onExiting": [Function],
-              "tag": "div",
-              "timeout": 150,
-              "unmountOnExit": true,
-            }
-          }
+          className="mb-3"
         >
           You will be charged for the current period of your plan once you add your Credit Card
         </Alert>
@@ -802,31 +730,7 @@ exports[`CreditCard component should render nothing if loaded, but no current su
         }
       >
         <Alert
-          closeAriaLabel="Close"
-          color="info"
-          fade={true}
-          isOpen={true}
-          tag="div"
-          transition={
-            Object {
-              "appear": true,
-              "baseClass": "fade",
-              "baseClassActive": "show",
-              "enter": true,
-              "exit": true,
-              "in": true,
-              "mountOnEnter": false,
-              "onEnter": [Function],
-              "onEntered": [Function],
-              "onEntering": [Function],
-              "onExit": [Function],
-              "onExited": [Function],
-              "onExiting": [Function],
-              "tag": "div",
-              "timeout": 150,
-              "unmountOnExit": true,
-            }
-          }
+          className="mb-3"
         >
           You will be charged for the current period of your plan once you add your Credit Card
         </Alert>
@@ -1028,31 +932,7 @@ exports[`CreditCard component should render the billing address form when accoun
         }
       >
         <Alert
-          closeAriaLabel="Close"
-          color="info"
-          fade={true}
-          isOpen={true}
-          tag="div"
-          transition={
-            Object {
-              "appear": true,
-              "baseClass": "fade",
-              "baseClassActive": "show",
-              "enter": true,
-              "exit": true,
-              "in": true,
-              "mountOnEnter": false,
-              "onEnter": [Function],
-              "onEntered": [Function],
-              "onEntering": [Function],
-              "onExit": [Function],
-              "onExited": [Function],
-              "onExiting": [Function],
-              "tag": "div",
-              "timeout": 150,
-              "unmountOnExit": true,
-            }
-          }
+          className="mb-3"
         >
           You will be charged for the current period of your plan once you add your Credit Card
         </Alert>

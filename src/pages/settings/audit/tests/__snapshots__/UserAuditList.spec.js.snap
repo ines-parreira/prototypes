@@ -103,31 +103,7 @@ exports[`UserAuditList component mounts correctly 1`] = `
         User audit logs display recent actions performed by users in Gorgias.
       </p>
       <Alert
-        closeAriaLabel="Close"
-        color="info"
-        fade={true}
-        isOpen={true}
-        tag="div"
-        transition={
-          Object {
-            "appear": true,
-            "baseClass": "fade",
-            "baseClassActive": "show",
-            "enter": true,
-            "exit": true,
-            "in": true,
-            "mountOnEnter": false,
-            "onEnter": [Function],
-            "onEntered": [Function],
-            "onEntering": [Function],
-            "onExit": [Function],
-            "onExited": [Function],
-            "onExiting": [Function],
-            "tag": "div",
-            "timeout": 150,
-            "unmountOnExit": true,
-          }
-        }
+        className="mb16"
       >
         This section is still under development, more details will be added to the list in the future. We'd love to hear your feedback!
       </Alert>

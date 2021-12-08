@@ -1,44 +1,78 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RestrictedFeature component should render image carusel and Lightbox 1`] = `
+exports[`RestrictedFeature component should render alert with a link and an action 1`] = `
 <div
   className="col mt-2"
 >
-  <Alert
-    closeAriaLabel="Close"
-    color="danger"
-    fade={true}
-    isOpen={true}
-    tag="div"
-    transition={
-      Object {
-        "appear": true,
-        "baseClass": "fade",
-        "baseClassActive": "show",
-        "enter": true,
-        "exit": true,
-        "in": true,
-        "mountOnEnter": false,
-        "onEnter": [Function],
-        "onEntered": [Function],
-        "onEntering": [Function],
-        "onExit": [Function],
-        "onExited": [Function],
-        "onExiting": [Function],
-        "tag": "div",
-        "timeout": 150,
-        "unmountOnExit": true,
-      }
-    }
+  <LinkAlert
+    actionHref="/app/settings/billing/plans"
+    actionLabel="Upgrade here."
+    className="my-3"
+    type="error"
   >
     This feature is only available for Pro and above plans.
-    <Link
-      to="/app/settings/billing/plans"
-    >
-       
-      Upgrade here.
-    </Link>
-  </Alert>
+  </LinkAlert>
+  <p>
+    text
+  </p>
+  <Carousel
+    arrows={false}
+    autoplay={true}
+    imagesUrl={
+      Array [
+        "url1",
+        "url2",
+      ]
+    }
+    onImageClick={[Function]}
+    slidesToShow={2}
+  />
+  <Lightbox
+    backdropClosesModal={true}
+    closeButtonTitle="Close (Esc)"
+    currentImage={0}
+    enableKeyboardInput={true}
+    imageCountSeparator=" of "
+    images={
+      Array [
+        Object {
+          "src": "url1",
+        },
+        Object {
+          "src": "url2",
+        },
+      ]
+    }
+    isOpen={false}
+    leftArrowTitle="Previous (Left arrow key)"
+    onClickNext={[Function]}
+    onClickPrev={[Function]}
+    onClickShowNextImage={true}
+    onClickThumbnail={[Function]}
+    onClose={[Function]}
+    preloadNextImage={true}
+    rightArrowTitle="Next (Right arrow key)"
+    showCloseButton={true}
+    showImageCount={true}
+    showThumbnails={true}
+    theme={Object {}}
+    thumbnailOffset={2}
+    width={1024}
+  />
+</div>
+`;
+
+exports[`RestrictedFeature component should render image carousel and Lightbox 1`] = `
+<div
+  className="col mt-2"
+>
+  <LinkAlert
+    actionLabel=""
+    className="my-3"
+    type="error"
+  >
+    This feature is only available for Pro and above plans.
+  </LinkAlert>
   <p>
     text
   </p>

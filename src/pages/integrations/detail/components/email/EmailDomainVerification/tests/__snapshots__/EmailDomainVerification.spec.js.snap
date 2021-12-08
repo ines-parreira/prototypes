@@ -76,10 +76,17 @@ exports[`<EmailDomainVerificationContainer/> render() should render the page whe
   >
     <div>
       <div
-        class="alert alert-warning fade"
-        role="alert"
+        class="alert warning mb16"
       >
-        This domain has not yet been verified. You can still send emails from this address but you may be more susceptible to deliverability issues. Please verify your domain to ensure the best possible performance.
+        <div
+          class="content"
+        >
+          <span
+            class="label"
+          >
+            This domain has not yet been verified. You can still send emails from this address but you may be more susceptible to deliverability issues. Please verify your domain to ensure the best possible performance.
+          </span>
+        </div>
       </div>
       <span>
         To enable DKIM signing for your domain, please add the information below to your DNS records via your DNS registrar. Note that verification of these settings may take up to 72 hours after submission.
@@ -262,26 +269,33 @@ exports[`<EmailDomainVerificationContainer/> render() should render the page wit
     class="pageContainer container-fluid"
   >
     <div
-      class="alert alert-info fade"
-      role="alert"
+      class="alert info mb16"
     >
-      Domain verification is 
-      <b>
-        not required
-      </b>
-       
-      for 
-      <b>
-        Gmail and Outlook
-      </b>
-       integrations
-       
-      <i>
-        unless you have disabled the "email sending" setting in Gorgias for a Gmail integration.
-      </i>
-      <br />
-      <br />
-      While it is not required, you can verify the domain of a Gmail or Outlook integration, which may allow you to continue to send emails in the event of an outage on either platform, as we will be able to attempt to route your emails through our system as a backup.
+      <div
+        class="content"
+      >
+        <span
+          class="label"
+        >
+          Domain verification is 
+          <b>
+            not required
+          </b>
+           
+          for 
+          <b>
+            Gmail and Outlook
+          </b>
+           integrations
+           
+          <i>
+            unless you have disabled the "email sending" setting in Gorgias for a Gmail integration.
+          </i>
+          <br />
+          <br />
+          While it is not required, you can verify the domain of a Gmail or Outlook integration, which may allow you to continue to send emails in the event of an outage on either platform, as we will be able to attempt to route your emails through our system as a backup.
+        </span>
+      </div>
     </div>
     <p>
       No domain and DKIM configuration has been created yet.
@@ -359,26 +373,33 @@ exports[`<EmailDomainVerificationContainer/> render() should render the page wit
     class="pageContainer container-fluid"
   >
     <div
-      class="alert alert-info fade"
-      role="alert"
+      class="alert info mb16"
     >
-      Domain verification is 
-      <b>
-        not required
-      </b>
-       
-      for 
-      <b>
-        Gmail and Outlook
-      </b>
-       integrations
-       
-      <i>
-        unless you have disabled the "email sending" setting in Gorgias for a Gmail integration.
-      </i>
-      <br />
-      <br />
-      While it is not required, you can verify the domain of a Gmail or Outlook integration, which may allow you to continue to send emails in the event of an outage on either platform, as we will be able to attempt to route your emails through our system as a backup.
+      <div
+        class="content"
+      >
+        <span
+          class="label"
+        >
+          Domain verification is 
+          <b>
+            not required
+          </b>
+           
+          for 
+          <b>
+            Gmail and Outlook
+          </b>
+           integrations
+           
+          <i>
+            unless you have disabled the "email sending" setting in Gorgias for a Gmail integration.
+          </i>
+          <br />
+          <br />
+          While it is not required, you can verify the domain of a Gmail or Outlook integration, which may allow you to continue to send emails in the event of an outage on either platform, as we will be able to attempt to route your emails through our system as a backup.
+        </span>
+      </div>
     </div>
     <p>
       No domain and DKIM configuration has been created yet.

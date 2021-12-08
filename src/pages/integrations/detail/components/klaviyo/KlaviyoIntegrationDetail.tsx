@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-    Alert,
     Breadcrumb,
     BreadcrumbItem,
     Button,
@@ -20,6 +19,8 @@ import PageHeader from '../../../../common/components/PageHeader'
 import InputField from '../../../../common/forms/InputField.js'
 import BooleanField from '../../../../common/forms/BooleanField.js'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
+import Alert from '../../../../common/components/Alert/Alert'
+
 import {KLAVIYO_INTEGRATION_TYPE} from '../../../../../constants/integration'
 import {
     KLAVIYO_INITIAL_SYNC_SYNCED,
@@ -278,7 +279,7 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                                     )}
                                     {isSyncing ===
                                         KLAVIYO_INITIAL_SYNC_SYNCING && (
-                                        <Alert color="info" className="mb-4">
+                                        <Alert className={css.mb16}>
                                             <p>
                                                 <b className="alert-heading">
                                                     <i className="material-icons md-spin mr-2">
@@ -288,7 +289,7 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                                                     Klaviyo
                                                 </b>
                                             </p>
-                                            <p>
+                                            <span>
                                                 We are syncing historical data
                                                 from Gorgias to Klaviyo. You
                                                 will start to see your tickets
@@ -299,7 +300,7 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                                                 and Gorgias will sync new data
                                                 to Klaviyo every time it
                                                 happens.
-                                            </p>
+                                            </span>
                                         </Alert>
                                     )}
                                 </div>

@@ -1,6 +1,5 @@
-import React, {MouseEvent} from 'react'
+import React from 'react'
 import {
-    Alert,
     Breadcrumb,
     BreadcrumbItem,
     Col,
@@ -15,6 +14,9 @@ import classnames from 'classnames'
 import Tooltip from '../../../common/components/Tooltip'
 import PageHeader from '../../../common/components/PageHeader'
 import Loader from '../../../common/components/Loader/Loader'
+import Alert, {AlertType} from '../../../common/components/Alert/Alert'
+import LinkAlert from '../../../common/components/Alert/LinkAlert'
+
 import {PolicyEnum} from '../../../../models/selfServiceConfiguration/types'
 import {hasAutomationLegacyFeatures} from '../../../../state/currentAccount/selectors'
 import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
@@ -100,93 +102,52 @@ export const PreferencesView = () => {
                             {loading ? (
                                 <Loader />
                             ) : !configuration ? (
-                                <Alert color="warning">
+                                <Alert type={AlertType.Warning}>
                                     Could not find the configuration for this
                                     store. Please try again later.
                                 </Alert>
                             ) : (
                                 <>
                                     {configuration.deactivated_datetime ? (
-                                        <Alert color="warning">
+                                        <Alert
+                                            type={AlertType.Warning}
+                                            className={settingsCss.mb16}
+                                        >
                                             Self-service is inactive for this
                                             store. Go to the main Self-service
                                             page to activate it.
                                         </Alert>
                                     ) : null}
                                     {!hasAutomationAddOn ? (
-                                        <Alert
-                                            className={
-                                                css.alertBeforeAutomationContainer
-                                            }
-                                            color="info"
-                                        >
-                                            <div>
+                                        <LinkAlert
+                                            type={AlertType.Warning}
+                                            onAction={openChat}
+                                            actionLabel="Contact Us"
+                                            className={settingsCss.mb16}
+                                            icon={
                                                 <img
                                                     src={upgradeIcon}
                                                     alt="upgrade-icon"
                                                     className={classnames(
-                                                        css.upgradeIcon,
-                                                        'sm' && css['sm']
+                                                        css.upgradeIcon
                                                     )}
                                                 />
-                                                <span
-                                                    className={
-                                                        css.automationHelp
-                                                    }
-                                                >
-                                                    Speak to one of our
-                                                    specialists to learn more
-                                                    about our automation add-on!
-                                                </span>
-                                            </div>
-                                            <a
-                                                style={{cursor: 'pointer'}}
-                                                onClick={(
-                                                    event: MouseEvent
-                                                ) => {
-                                                    openChat(event)
-                                                }}
-                                            >
-                                                Contact Us
-                                            </a>
-                                        </Alert>
-                                    ) : (
-                                        <Alert
-                                            className={
-                                                css.alertPostAutomationContainer
                                             }
-                                            color="info"
                                         >
-                                            <div>
-                                                <i
-                                                    style={{
-                                                        marginRight: '17.67px',
-                                                    }}
-                                                    className="align-middle material-icons md-2"
-                                                >
-                                                    info
-                                                </i>
-                                                <span
-                                                    className={
-                                                        css.automationHelp
-                                                    }
-                                                >
-                                                    Do you want help from one of
-                                                    our agents to improve
-                                                    automations?
-                                                </span>
-                                            </div>
-                                            <a
-                                                style={{cursor: 'pointer'}}
-                                                onClick={(
-                                                    event: MouseEvent
-                                                ) => {
-                                                    openChat(event)
-                                                }}
-                                            >
-                                                Contact Us
-                                            </a>
-                                        </Alert>
+                                            Speak to one of our specialists to
+                                            learn more about our automation
+                                            add-on!
+                                        </LinkAlert>
+                                    ) : (
+                                        <LinkAlert
+                                            className={settingsCss.mb16}
+                                            actionLabel="Contact Us"
+                                            onAction={openChat}
+                                            icon
+                                        >
+                                            Do you want help from one of our
+                                            agents to improve automations?
+                                        </LinkAlert>
                                     )}
                                     <Table>
                                         <tbody>

@@ -332,33 +332,10 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
           ]
         }
       >
-        <Alert
-          className="mb-4"
-          closeAriaLabel="Close"
-          color="info"
-          fade={true}
-          isOpen={true}
-          tag="div"
-          transition={
-            Object {
-              "appear": true,
-              "baseClass": "fade",
-              "baseClassActive": "show",
-              "enter": true,
-              "exit": true,
-              "in": true,
-              "mountOnEnter": false,
-              "onEnter": [Function],
-              "onEntered": [Function],
-              "onEntering": [Function],
-              "onExit": [Function],
-              "onExited": [Function],
-              "onExiting": [Function],
-              "tag": "div",
-              "timeout": 150,
-              "unmountOnExit": true,
-            }
-          }
+        <LinkAlert
+          actionHref="/app/customers"
+          actionLabel="Review imported customers"
+          className="mb16"
         >
           <p>
             <b
@@ -372,16 +349,10 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
               Importing your Smile customers
             </b>
           </p>
-          <p>
+          <span>
             We're currently importing all your Smile customers. This way, you'll see customer rewards points next to tickets. We'll notify you via email when the import is done.
-             
-            <Link
-              to="/app/customers"
-            >
-              Review imported customers.
-            </Link>
-          </p>
-        </Alert>
+          </span>
+        </LinkAlert>
         <InputField
           label="Integration name"
           name="name"
@@ -484,33 +455,10 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
           ]
         }
       >
-        <Alert
-          className="mb-4"
-          closeAriaLabel="Close"
-          color="info"
-          fade={true}
-          isOpen={true}
-          tag="div"
-          transition={
-            Object {
-              "appear": true,
-              "baseClass": "fade",
-              "baseClassActive": "show",
-              "enter": true,
-              "exit": true,
-              "in": true,
-              "mountOnEnter": false,
-              "onEnter": [Function],
-              "onEntered": [Function],
-              "onEntering": [Function],
-              "onExit": [Function],
-              "onExited": [Function],
-              "onExiting": [Function],
-              "tag": "div",
-              "timeout": 150,
-              "unmountOnExit": true,
-            }
-          }
+        <LinkAlert
+          actionHref="/app/customers"
+          actionLabel="Review imported customers"
+          className="mb16"
         >
           <p>
             <b
@@ -524,16 +472,10 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
               Importing your Smile customers
             </b>
           </p>
-          <p>
+          <span>
             We're currently importing all your Smile customers. This way, you'll see customer rewards points next to tickets. We'll notify you via email when the import is done.
-             
-            <Link
-              to="/app/customers"
-            >
-              Review imported customers.
-            </Link>
-          </p>
-        </Alert>
+          </span>
+        </LinkAlert>
         <InputField
           label="Integration name"
           name="name"
@@ -638,33 +580,10 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
           ]
         }
       >
-        <Alert
-          className="mb-4"
-          closeAriaLabel="Close"
-          color="info"
-          fade={true}
-          isOpen={true}
-          tag="div"
-          transition={
-            Object {
-              "appear": true,
-              "baseClass": "fade",
-              "baseClassActive": "show",
-              "enter": true,
-              "exit": true,
-              "in": true,
-              "mountOnEnter": false,
-              "onEnter": [Function],
-              "onEntered": [Function],
-              "onEntering": [Function],
-              "onExit": [Function],
-              "onExited": [Function],
-              "onExiting": [Function],
-              "tag": "div",
-              "timeout": 150,
-              "unmountOnExit": true,
-            }
-          }
+        <LinkAlert
+          actionHref="/app/customers"
+          actionLabel="Review imported customers"
+          className="mb16"
         >
           <p>
             <b
@@ -678,16 +597,10 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
               Importing your Smile customers
             </b>
           </p>
-          <p>
+          <span>
             We're currently importing all your Smile customers. This way, you'll see customer rewards points next to tickets. We'll notify you via email when the import is done.
-             
-            <Link
-              to="/app/customers"
-            >
-              Review imported customers.
-            </Link>
-          </p>
-        </Alert>
+          </span>
+        </LinkAlert>
         <InputField
           label="Integration name"
           name="name"

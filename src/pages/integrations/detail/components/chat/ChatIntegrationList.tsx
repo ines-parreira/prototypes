@@ -2,17 +2,18 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import {List, Map} from 'immutable'
-import Alert from 'reactstrap/lib/Alert'
 
 import {
     activateIntegration,
     deactivateIntegration,
 } from '../../../../../state/integrations/actions'
 import ToggleButton from '../../../../common/components/ToggleButton'
+import Alert, {AlertType} from '../../../../common/components/Alert/Alert'
 import history from '../../../../history'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
 import {IntegrationType} from '../../../../../models/integration/types'
+import css from '../../../../settings/settings.less'
 
 type Props = {
     integrations: List<Map<any, any>>
@@ -32,10 +33,7 @@ export class ChatIntegrationListContainer extends Component<Props> {
             return (
                 <div>
                     {hasActiveSmoochInsideIntegration ? (
-                        <Alert color="danger">
-                            <span role="img" aria-label="warning">
-                                ⚠️
-                            </span>{' '}
+                        <Alert type={AlertType.Error} icon className={css.mb16}>
                             A{' '}
                             <Link to="/app/settings/integrations/gorgias_chat">
                                 new version of the chat

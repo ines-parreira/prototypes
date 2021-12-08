@@ -5,7 +5,6 @@ import classNames from 'classnames'
 import {Map} from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
 import {
-    Alert,
     Breadcrumb,
     BreadcrumbItem,
     Button,
@@ -22,6 +21,8 @@ import ConfirmButton from '../../../../common/components/ConfirmButton'
 import BooleanField from '../../../../common/forms/BooleanField.js'
 import InputField from '../../../../common/forms/InputField'
 import PageHeader from '../../../../common/components/PageHeader'
+import LinkAlert from '../../../../common/components/Alert/LinkAlert'
+
 import * as utils from '../../../../../utils'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {notify} from '../../../../../state/notifications/actions'
@@ -259,7 +260,11 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                         </Link>
                                     </p>
                                 ) : (
-                                    <Alert color="info" className="mb-4">
+                                    <LinkAlert
+                                        className={css.mb16}
+                                        actionLabel="Review imported customers"
+                                        actionHref="/app/customers"
+                                    >
                                         <p>
                                             <b className="alert-heading">
                                                 <i className="material-icons md-spin mr-2">
@@ -268,19 +273,16 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                                 Importing your Shopify customers
                                             </b>
                                         </p>
-                                        <p>
+                                        <span>
                                             We're currently importing all your
                                             Shopify customers. This way, you'll
                                             see customer info & orders next to
                                             tickets. We'll notify you via email
                                             when the import is done. We
                                             typically sync 3,000 customers an
-                                            hour.{' '}
-                                            <Link to="/app/customers">
-                                                Review imported customers.
-                                            </Link>
-                                        </p>
-                                    </Alert>
+                                            hour.
+                                        </span>
+                                    </LinkAlert>
                                 )
                             ) : null}
 

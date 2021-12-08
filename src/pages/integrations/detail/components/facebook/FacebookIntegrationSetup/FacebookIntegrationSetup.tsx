@@ -11,7 +11,6 @@ import {
     BreadcrumbItem,
     Button,
     Container,
-    Alert,
 } from 'reactstrap'
 
 import history from '../../../../../history'
@@ -20,11 +19,13 @@ import ToggleButton from '../../../../../common/components/ToggleButton'
 import PageHeader from '../../../../../common/components/PageHeader'
 import Pagination from '../../../../../common/components/Pagination'
 import BooleanField from '../../../../../common/forms/BooleanField.js'
+import Alert, {AlertType} from '../../../../../common/components/Alert/Alert'
 import {
     getOnboardingMeta,
     getOnboardingIntegrations,
 } from '../../../../../../state/integrations/selectors'
 import pageIconDefault from '../../../../../../../img/integrations/facebook-page.png'
+import warningIcon from '../../../../../../../img/icons/warning2.svg'
 import {
     canEnableMetaSetting,
     FacebookRole,
@@ -351,7 +352,8 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                 getInstagramDMSettingsInlineComponent(
                                     instagramDMSettingStatus,
                                     currentAccount,
-                                    currentPlan
+                                    currentPlan,
+                                    id
                                 )
 
                             const displayPermissionAlert =
@@ -373,6 +375,14 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                 !canEnableInstagramMentions &&
                                 !canEnableInstagramAds &&
                                 !canEnableInstagramDirectMessage
+
+                            const shouldDisplayDisabledWithTooltip =
+                                currentPlanHasInstagramDMFeature &&
+                                !instagramIsDisabled &&
+                                (instagramDMSettingStatus ===
+                                    InstagramDMSettingStatus.SHOULD_RECONNECT ||
+                                    instagramDMSettingStatus ===
+                                        InstagramDMSettingStatus.NOT_ALLOWED)
 
                             return (
                                 <div
@@ -449,64 +459,50 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                         )}
                                     </div>
                                     {!canModerate && (
-                                        <div className="d-flex mt-3">
-                                            <Alert
-                                                color="warning"
-                                                className="d-flex align-items-center"
-                                            >
-                                                <i className="material-icons md-3 mr-3">
-                                                    warning
-                                                </i>
-                                                In order to be able to integrate
-                                                this page you need to have one
-                                                of the following roles: Admin,
-                                                Editor, Moderator.
-                                            </Alert>
-                                        </div>
+                                        <Alert
+                                            type={AlertType.Warning}
+                                            className={settingsCss.mt16}
+                                            icon
+                                        >
+                                            In order to be able to integrate
+                                            this page you need to have one of
+                                            the following roles: Admin, Editor,
+                                            Moderator.
+                                        </Alert>
                                     )}
 
                                     {pageEnabled &&
                                         !displayPermissionAlert &&
                                         canModerate &&
                                         instagramIsDisabled && (
-                                            <div className="d-flex mt-3">
-                                                <Alert
-                                                    color="warning"
-                                                    className="d-flex align-items-center"
-                                                >
-                                                    <i className="material-icons md-3 mr-3">
-                                                        warning
-                                                    </i>
-                                                    Create an Instagram account
-                                                    for this page and you will
-                                                    be able to enable Instagram
-                                                    features.
-                                                </Alert>
-                                            </div>
+                                            <Alert
+                                                type={AlertType.Warning}
+                                                className={settingsCss.mt16}
+                                                icon
+                                            >
+                                                Create an Instagram account for
+                                                this page and you will be able
+                                                to enable Instagram features.
+                                            </Alert>
                                         )}
 
                                     {displayPermissionAlert && (
-                                        <div className="d-flex mt-3">
-                                            <Alert
-                                                color="warning"
-                                                className="align-items-center"
-                                            >
-                                                <i className="material-icons md-3 mr-3">
-                                                    warning
-                                                </i>
-                                                Entire page or some features are
-                                                disabled because you didn't
-                                                grant all the permissions we
-                                                asked for when logging to
-                                                Facebook. To fix this, navigate
-                                                to{' '}
-                                                <a href="https://www.facebook.com/settings?tab=business_tools&ref=settings">
-                                                    this URL
-                                                </a>
-                                                , delete the Gorgias app then
-                                                try again.
-                                            </Alert>
-                                        </div>
+                                        <Alert
+                                            type={AlertType.Warning}
+                                            className={settingsCss.mt16}
+                                            icon
+                                        >
+                                            Entire page or some features are
+                                            disabled because you didn't grant
+                                            all the permissions we asked for
+                                            when logging to Facebook. To fix
+                                            this, navigate to{' '}
+                                            <a href="https://www.facebook.com/settings?tab=business_tools&ref=settings">
+                                                this URL
+                                            </a>
+                                            , delete the Gorgias app then try
+                                            again.
+                                        </Alert>
                                     )}
                                     {!nothingToEnable && canModerate && (
                                         <div className={css.settings}>
@@ -653,7 +649,47 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                                                     <BooleanField
                                                                         name={`${id}.instagram_direct_message_enabled`}
                                                                         type="checkbox"
-                                                                        label="Enable Instagram direct messages"
+                                                                        label={
+                                                                            <div
+                                                                                id={`instagram_direct_message-${id}`}
+                                                                                style={
+                                                                                    shouldDisplayDisabledWithTooltip
+                                                                                        ? {
+                                                                                              cursor: 'pointer',
+                                                                                          }
+                                                                                        : undefined
+                                                                                }
+                                                                            >
+                                                                                <span
+                                                                                    style={
+                                                                                        shouldDisplayDisabledWithTooltip
+                                                                                            ? {
+                                                                                                  borderBottom:
+                                                                                                      '1px dashed #D2D7DE',
+                                                                                              }
+                                                                                            : undefined
+                                                                                    }
+                                                                                >
+                                                                                    Enable
+                                                                                    Instagram
+                                                                                    direct
+                                                                                    messages
+                                                                                </span>
+                                                                                {!!shouldDisplayDisabledWithTooltip && (
+                                                                                    <img
+                                                                                        src={
+                                                                                            warningIcon
+                                                                                        }
+                                                                                        className="ml-3"
+                                                                                        style={{
+                                                                                            verticalAlign:
+                                                                                                'text-bottom',
+                                                                                        }}
+                                                                                        alt="icon"
+                                                                                    />
+                                                                                )}
+                                                                            </div>
+                                                                        }
                                                                         value={this._getSettingValue(
                                                                             id,
                                                                             'instagram_direct_message_enabled'

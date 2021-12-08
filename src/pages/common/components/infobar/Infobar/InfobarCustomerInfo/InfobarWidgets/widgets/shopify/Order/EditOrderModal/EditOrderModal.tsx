@@ -1,6 +1,6 @@
 import React, {useCallback, useMemo} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Alert, Button, ModalFooter} from 'reactstrap'
+import {Button, ModalFooter} from 'reactstrap'
 import {fromJS, List, Map} from 'immutable'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
@@ -32,6 +32,7 @@ import {
 import ProductSearchInput from '../../../../../../../../../forms/ProductSearchInput/ProductSearchInput'
 import Loader from '../../../../../../../../Loader/Loader'
 import {InfobarModalProps} from '../../../types'
+import Alert, {AlertType} from '../../../../../../../../Alert/Alert'
 import Modal from '../../../../../../../../Modal'
 import {ShopifyActionType} from '../../types'
 
@@ -205,7 +206,7 @@ export function EditOrderModalContainer(
                     handleReset()
                 }}
             >
-                <Alert color="danger">
+                <Alert type={AlertType.Error}>
                     Missing Shopify permissions. To use this new feature, please
                     go to the{' '}
                     <Link

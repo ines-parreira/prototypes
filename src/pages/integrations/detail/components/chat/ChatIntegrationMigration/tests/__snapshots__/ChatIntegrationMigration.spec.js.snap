@@ -91,34 +91,43 @@ exports[`ChatIntegrationMigration component should display the migration page 1`
       class="pageContainer container-fluid"
     >
       <div
-        class="alert alert-warning fade"
-        role="alert"
+        class="alert warning mb16"
       >
-        <span
-          aria-label="warning"
-          role="img"
+        <div
+          class="iconContainer"
         >
-          ⚠️
-        </span>
-         
-        A
-         
-        <a
-          to="/app/settings/integrations/gorgias_chat"
+          <img
+            alt="icon"
+            class="icon"
+            src="test-file-stub"
+          />
+        </div>
+        <div
+          class="content"
         >
-          new version of the chat
-        </a>
-         
-        with additional features is available, please migrate to the new version by following the steps outlined in
-         
-        <a
-          href="https://docs.gorgias.com/gorgias-chat/migrating-to-new-chat-integration-beta-version"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          this article
-        </a>
-        .
+          <span
+            class="label"
+          >
+            A
+             
+            <a
+              to="/app/settings/integrations/gorgias_chat"
+            >
+              new version of the chat
+            </a>
+             
+            with additional features is available, please migrate to the new version by following the steps outlined in
+             
+            <a
+              href="https://docs.gorgias.com/gorgias-chat/migrating-to-new-chat-integration-beta-version"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              this article
+            </a>
+            .
+          </span>
+        </div>
       </div>
       <div
         class="mb-4"

@@ -3,7 +3,6 @@ import {List, Map} from 'immutable'
 import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import classNames from 'classnames'
 import {
-    Alert,
     Breadcrumb,
     BreadcrumbItem,
     Button,
@@ -20,6 +19,7 @@ import Loader from '../../../../common/components/Loader/Loader'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import InputField from '../../../../common/forms/InputField'
 import PageHeader from '../../../../common/components/PageHeader'
+import LinkAlert from '../../../../common/components/Alert/LinkAlert'
 import css from '../../../../settings/settings.less'
 
 type Props = {
@@ -123,7 +123,11 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
                                         </Link>
                                     </p>
                                 ) : (
-                                    <Alert color="info" className="mb-4">
+                                    <LinkAlert
+                                        className={css.mb16}
+                                        actionHref="/app/customers"
+                                        actionLabel="Review imported customers"
+                                    >
                                         <p>
                                             <b className="alert-heading">
                                                 <i className="material-icons md-spin mr-2">
@@ -133,17 +137,14 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
                                                 customers
                                             </b>
                                         </p>
-                                        <p>
+                                        <span>
                                             We're currently importing all your
                                             Recharge customers. This way, you'll
                                             see customer info & orders next to
                                             tickets. We'll notify you via email
-                                            when the import is done.{' '}
-                                            <Link to="/app/customers">
-                                                Review imported customers.
-                                            </Link>
-                                        </p>
-                                    </Alert>
+                                            when the import is done.
+                                        </span>
+                                    </LinkAlert>
                                 ))}
 
                             {isUpdate ? (

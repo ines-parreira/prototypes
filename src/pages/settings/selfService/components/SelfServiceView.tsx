@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {useSelector} from 'react-redux'
-import {Alert, Col, Container, Row, Table} from 'reactstrap'
+import {Col, Container, Row, Table} from 'reactstrap'
 import {Map} from 'immutable'
 
 import PageHeader from '../../../common/components/PageHeader'
@@ -14,6 +14,7 @@ import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {selfServiceConfigurationsFetched} from '../../../../state/entities/selfServiceConfigurations/actions'
 import {fetchSelfServiceConfigurations} from '../../../../models/selfServiceConfiguration/resources'
 import Loader from '../../../common/components/Loader/Loader'
+import Alert, {AlertType} from '../../../common/components/Alert/Alert'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {GorgiasChatIntegrationSelfServicePaywall} from '../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
@@ -108,7 +109,7 @@ export const SelfServiceView = () => {
                                     </Tooltip>
                                 </h5>
                                 {shopifyIntegrations.size === 0 ? (
-                                    <Alert color="warning">
+                                    <Alert type={AlertType.Warning}>
                                         No active Shopify store detected. Please
                                         make sure to add a Shopify integration
                                         to access the Self-service features.

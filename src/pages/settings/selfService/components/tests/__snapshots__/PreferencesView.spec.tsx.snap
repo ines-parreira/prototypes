@@ -76,26 +76,36 @@ exports[`<SelfServicePreferencesView/> ToggleButton.onChange() should deactivate
               about all existing order shipment statuses & corresponding available actions.
             </p>
             <div
-              class="alertBeforeAutomationContainer alert alert-info fade"
-              role="alert"
+              class="alert warning mb16"
             >
-              <div>
+              <div
+                class="iconContainer"
+              >
                 <img
                   alt="upgrade-icon"
-                  class="upgradeIcon sm"
+                  class="upgradeIcon"
                   src="test-file-stub"
                 />
+              </div>
+              <div
+                class="content"
+              >
                 <span
-                  class="automationHelp"
+                  class="label"
                 >
                   Speak to one of our specialists to learn more about our automation add-on!
                 </span>
+                <div
+                  class="customActions"
+                >
+                  <a
+                    class="actionLink"
+                    to="#"
+                  >
+                    Contact Us
+                  </a>
+                </div>
               </div>
-              <a
-                style="cursor: pointer;"
-              >
-                Contact Us
-              </a>
             </div>
             <table
               class="table"
@@ -382,26 +392,36 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
               about all existing order shipment statuses & corresponding available actions.
             </p>
             <div
-              class="alertBeforeAutomationContainer alert alert-info fade"
-              role="alert"
+              class="alert warning mb16"
             >
-              <div>
+              <div
+                class="iconContainer"
+              >
                 <img
                   alt="upgrade-icon"
-                  class="upgradeIcon sm"
+                  class="upgradeIcon"
                   src="test-file-stub"
                 />
+              </div>
+              <div
+                class="content"
+              >
                 <span
-                  class="automationHelp"
+                  class="label"
                 >
                   Speak to one of our specialists to learn more about our automation add-on!
                 </span>
+                <div
+                  class="customActions"
+                >
+                  <a
+                    class="actionLink"
+                    to="#"
+                  >
+                    Contact Us
+                  </a>
+                </div>
               </div>
-              <a
-                style="cursor: pointer;"
-              >
-                Contact Us
-              </a>
             </div>
             <table
               class="table"

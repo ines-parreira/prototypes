@@ -1,7 +1,6 @@
 import React, {useMemo} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Map, List} from 'immutable'
-import {Alert} from 'reactstrap'
+import {List, Map} from 'immutable'
 
 import * as agentSelectors from '../../../../../state/agents/selectors'
 import * as teamsSelectors from '../../../../../state/teams/selectors'
@@ -9,6 +8,7 @@ import RadioChoiceField from '../../../forms/RadioChoiceField'
 import {ViewVisibility} from '../../../../../models/view/types'
 import {RootState} from '../../../../../state/types'
 import Loader from '../../Loader/Loader'
+import Alert, {AlertType} from '../../Alert/Alert'
 
 import SharedBody from './SharedBody'
 import PublicBody from './PublicBody'
@@ -92,12 +92,7 @@ export function ViewSharingModalBodyContainer({
         <>
             {error && (
                 <div className="m-3">
-                    <Alert
-                        color="danger"
-                        transition={{baseClass: '', timeout: 0}}
-                    >
-                        {error.toString()}
-                    </Alert>
+                    <Alert type={AlertType.Error}>{error.toString()}</Alert>
                 </div>
             )}
             <div className="m-3">
@@ -110,12 +105,8 @@ export function ViewSharingModalBodyContainer({
             {isPublic && <PublicBody />}
             {isShared && (
                 <>
-                    <Alert
-                        color="info"
-                        className="m-3"
-                        transition={{baseClass: '', timeout: 0}}
-                    >
-                        Lead agents and admins see all the shared views.
+                    <Alert className="m-3">
+                        Lead agents and admins see all the shared views
                     </Alert>
                     <ViewSharingModalWarning
                         initialTeams={initialTeams}

@@ -406,11 +406,15 @@ exports[`<PhoneIntegrationCreate/> render() should render address validation for
         <div
           class="alert info mt-3 mb-4"
         >
-          <img
-            alt="icon"
-            class="icon"
-            src="test-file-stub"
-          />
+          <div
+            class="iconContainer"
+          >
+            <img
+              alt="icon"
+              class="icon"
+              src="test-file-stub"
+            />
+          </div>
           <div
             class="content"
           >

@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import {useAsyncFn} from 'react-use'
 import classnames from 'classnames'
-import {Alert, Button, Container} from 'reactstrap'
+import {Button, Container} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, withRouter} from 'react-router-dom'
 
@@ -9,6 +9,7 @@ import PageHeader from '../../common/components/PageHeader'
 
 import Video from '../../common/components/Video/Video'
 import Loader from '../../common/components/Loader/Loader'
+import Alert, {AlertType} from '../../common/components/Alert/Alert'
 
 import {RuleLimitStatus} from '../../../state/rules/types'
 import {NotificationStatus} from '../../../state/notifications/types'
@@ -98,38 +99,25 @@ export function RulesViewContainer({
                         .
                     </p>
                     {limitStatus === RuleLimitStatus.Reaching && (
-                        <Alert color="warning">
-                            <span
-                                className={classnames(
-                                    'd-flex',
-                                    'align-items-center',
-                                    css.statusInfo
-                                )}
-                            >
-                                <i className="material-icons mr-2">info</i>
-                                <span>
-                                    You are using
-                                    <b> {rules.length} rules of 70 </b>
-                                    allowed on Gorgias. To add more rules,
-                                    please delete any inactive rules.
-                                </span>
-                            </span>
+                        <Alert
+                            type={AlertType.Warning}
+                            icon
+                            className={settingsCss.mb16}
+                        >
+                            You are using
+                            <b> {rules.length} rules of 70 </b>
+                            allowed on Gorgias. To add more rules, please delete
+                            any inactive rules.
                         </Alert>
                     )}
                     {limitStatus === RuleLimitStatus.Reached && (
-                        <Alert color="danger">
-                            <span
-                                className={classnames(
-                                    'd-flex',
-                                    'align-items-center',
-                                    css.statusInfo
-                                )}
-                            >
-                                <i className="material-icons mr-2">error</i>
-                                <b>Your account has reached the rule limit.</b>
-                                To add more rules, please delete any inactive
-                                rules.
-                            </span>
+                        <Alert
+                            type={AlertType.Error}
+                            icon
+                            className={settingsCss.mb16}
+                        >
+                            <b>Your account has reached the rule limit.</b> To
+                            add more rules, please delete any inactive rules.
                         </Alert>
                     )}
                 </div>

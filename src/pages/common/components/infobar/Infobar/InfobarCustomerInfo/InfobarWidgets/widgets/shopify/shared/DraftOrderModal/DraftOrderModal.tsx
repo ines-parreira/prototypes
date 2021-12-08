@@ -1,6 +1,6 @@
 import React, {useCallback, useContext, useMemo} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Alert, Button, ModalFooter} from 'reactstrap'
+import {Button, ModalFooter} from 'reactstrap'
 import {fromJS, List, Map} from 'immutable'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
@@ -36,6 +36,7 @@ import Loader from '../../../../../../../../Loader/Loader'
 import {InfobarModalProps} from '../../../types'
 import Modal from '../../../../../../../../Modal'
 import {ShopifyActionType} from '../../types'
+import Alert, {AlertType} from '../../../../../../../../Alert/Alert'
 
 import AddCustomItemPopover from './AddCustomItemPopover/AddCustomItemPopover'
 import EmailInvoicePopover from './EmailInvoicePopover/EmailInvoicePopover'
@@ -236,14 +237,14 @@ export function DraftOrderModalContainer(
                     handleReset()
                 }}
             >
-                <Alert color="danger">
+                <Alert type={AlertType.Error}>
                     Missing Shopify permissions. To use this new feature, please
                     go to the{' '}
                     <Link
                         to={`/app/settings/integrations/shopify/${integrationId}`}
                     >
                         settings page of your Shopify integration
-                    </Link>
+                    </Link>{' '}
                     and click on "Update app permissions".
                 </Alert>
             </Modal>

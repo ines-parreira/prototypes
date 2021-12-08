@@ -1,7 +1,7 @@
 import React, {Component, SyntheticEvent} from 'react'
 import {Link} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
-import {Breadcrumb, BreadcrumbItem, Button, Container, Alert} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Button, Container} from 'reactstrap'
 import classnames from 'classnames'
 import _omit from 'lodash/omit'
 import {fromJS, Map} from 'immutable'
@@ -10,6 +10,7 @@ import {updateOrCreateIntegration} from '../../../../../../state/integrations/ac
 import PageHeader from '../../../../../common/components/PageHeader'
 import css from '../../../../../settings/settings.less'
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
+import Alert, {AlertType} from '../../../../../common/components/Alert/Alert'
 
 type Props = {
     integration: Map<any, any>
@@ -108,10 +109,7 @@ export class ChatIntegrationMigration extends Component<Props, State> {
                 <ChatIntegrationNavigation integration={integration} />
 
                 <Container fluid className={css.pageContainer}>
-                    <Alert color="warning">
-                        <span role="img" aria-label="warning">
-                            ⚠️
-                        </span>{' '}
+                    <Alert type={AlertType.Warning} icon className={css.mb16}>
                         A{' '}
                         <Link to="/app/settings/integrations/gorgias_chat">
                             new version of the chat

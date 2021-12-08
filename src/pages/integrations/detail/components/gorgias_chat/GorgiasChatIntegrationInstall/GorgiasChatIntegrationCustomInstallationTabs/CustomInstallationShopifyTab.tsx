@@ -1,7 +1,7 @@
 import React from 'react'
-import {Alert} from 'reactstrap'
 
 import CodeSnippet from '../../../../../../common/components/CodeSnippet'
+import Alert, {AlertType} from '../../../../../../common/components/Alert/Alert'
 
 import css from './CustomInstallationTabs.less'
 
@@ -48,7 +48,7 @@ export function CustomInstallationShopifyTab({code}: Props) {
                     <b>&#x3C;/body&#x3E;</b> tag
                 </div>
             </div>
-            <Alert color="warning">
+            <Alert type={AlertType.Warning}>
                 Please note that by copying the code to your Shopify{' '}
                 <b>theme.liquid</b> files, the chat will also be shown on all
                 webpages. Make sure to copy the code to just specific pages if

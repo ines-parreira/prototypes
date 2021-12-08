@@ -173,31 +173,8 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
             Let's connect your store to Gorgias. We'll import your Magento 2 customers in Gorgias, along with their order information. This way, when they contact you, you'll be able to see their Magento 2 information next to tickets.
           </p>
           <Alert
-            closeAriaLabel="Close"
-            color="warning"
-            fade={true}
-            isOpen={true}
-            tag="div"
-            transition={
-              Object {
-                "appear": true,
-                "baseClass": "fade",
-                "baseClassActive": "show",
-                "enter": true,
-                "exit": true,
-                "in": true,
-                "mountOnEnter": false,
-                "onEnter": [Function],
-                "onEntered": [Function],
-                "onEntering": [Function],
-                "onExit": [Function],
-                "onExited": [Function],
-                "onExiting": [Function],
-                "tag": "div",
-                "timeout": 150,
-                "unmountOnExit": true,
-              }
-            }
+            className="mb16"
+            type="warning"
           >
             To add a Magento 2 integration to Gorgias, you will need to have installed the
              
@@ -226,7 +203,7 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
           How do you want to add this integration?
         </span>
         <div
-          className="selection-button-group"
+          className="selection-button-group mt4"
         >
           <Magento2ModeSelectionButton
             icon="storefront"
@@ -322,32 +299,7 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
         }
       >
         <Alert
-          className="mb-4"
-          closeAriaLabel="Close"
-          color="info"
-          fade={true}
-          isOpen={true}
-          tag="div"
-          transition={
-            Object {
-              "appear": true,
-              "baseClass": "fade",
-              "baseClassActive": "show",
-              "enter": true,
-              "exit": true,
-              "in": true,
-              "mountOnEnter": false,
-              "onEnter": [Function],
-              "onEntered": [Function],
-              "onEntering": [Function],
-              "onExit": [Function],
-              "onExited": [Function],
-              "onExiting": [Function],
-              "tag": "div",
-              "timeout": 150,
-              "unmountOnExit": true,
-            }
-          }
+          className="mb16"
         >
           <p>
             <b
@@ -361,7 +313,7 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
               Importing your Magento 2 customers
             </b>
           </p>
-          <p>
+          <span>
             We're currently importing all your Magento 2 customers. This way, you'll see customer & orders info next to tickets. We'll notify you via email when the import is done. We typically sync 3,000 customers an hour.
              
             <Link
@@ -369,7 +321,7 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
             >
               Review imported customers.
             </Link>
-          </p>
+          </span>
         </Alert>
         <Connect(Magento2OneClickIntegrationForm)
           integration={
@@ -466,31 +418,8 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to create 
             Let's connect your store to Gorgias. We'll import your Magento 2 customers in Gorgias, along with their order information. This way, when they contact you, you'll be able to see their Magento 2 information next to tickets.
           </p>
           <Alert
-            closeAriaLabel="Close"
-            color="warning"
-            fade={true}
-            isOpen={true}
-            tag="div"
-            transition={
-              Object {
-                "appear": true,
-                "baseClass": "fade",
-                "baseClassActive": "show",
-                "enter": true,
-                "exit": true,
-                "in": true,
-                "mountOnEnter": false,
-                "onEnter": [Function],
-                "onEntered": [Function],
-                "onEntering": [Function],
-                "onExit": [Function],
-                "onExited": [Function],
-                "onExiting": [Function],
-                "tag": "div",
-                "timeout": 150,
-                "unmountOnExit": true,
-              }
-            }
+            className="mb16"
+            type="warning"
           >
             To add a Magento 2 integration to Gorgias, you will need to have installed the
              
@@ -519,7 +448,7 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to create 
           How do you want to add this integration?
         </span>
         <div
-          className="selection-button-group"
+          className="selection-button-group mt4"
         >
           <Magento2ModeSelectionButton
             icon="storefront"

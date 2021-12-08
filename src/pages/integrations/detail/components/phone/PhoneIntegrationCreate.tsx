@@ -327,7 +327,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                     <Col lg={6} xl={7}>
                         {shouldValidateAddress(country) &&
                             country === PhoneCountry.FR && (
-                                <Alert showIcon className="mt-3 mb-4">
+                                <Alert icon className="mt-3 mb-4">
                                     French numbers are only available through
                                     the{' '}
                                     <a
@@ -341,14 +341,17 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                             )}
                         {shouldValidateAddress(country) &&
                             country !== PhoneCountry.FR && (
-                                <Alert showIcon className="mt-3 mb-4">
+                                <Alert icon className="mt-3 mb-4">
                                     Creating phone numbers from Australia and UK
                                     requires address verification
                                 </Alert>
                             )}
                         <Form onSubmit={onSubmit}>
                             {!!error && (
-                                <Alert type={AlertType.Error}>
+                                <Alert
+                                    type={AlertType.Error}
+                                    className={css.mb16}
+                                >
                                     {error.toString()}
                                 </Alert>
                             )}

@@ -1,12 +1,13 @@
 import React, {Component} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect, ConnectedProps} from 'react-redux'
-import {Button, Alert} from 'reactstrap'
+import {Button} from 'reactstrap'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 
 import {Action} from '../../../../../models/ticket/types'
 import Tooltip from '../../../../common/components/Tooltip'
+import Alert, {AlertType} from '../../../../common/components/Alert/Alert'
 import * as TicketActions from '../../../../../state/ticket/actions'
 import * as NewMessageActions from '../../../../../state/newMessage/actions'
 import {getActionTemplate, stripErrorMessage} from '../../../../../utils'
@@ -145,15 +146,11 @@ class Error extends Component<Props, State> {
                 <span className="mr-2">
                     <Button
                         id={id}
-                        size="sm"
                         type="button"
-                        outline={this.state.loading !== RETRY}
-                        color="danger"
+                        color="primary"
                         onClick={this.retry}
-                        className="mb-1 mb-lg-0"
                         disabled={!!this.state.loading}
                     >
-                        <i className="material-icons md-1 mr-2">cached</i>
                         Retry
                     </Button>
                     <Tooltip placement="top" target={id} offset="0, 4px">
@@ -170,17 +167,11 @@ class Error extends Component<Props, State> {
                 <span className="mr-2">
                     <Button
                         id={id}
-                        size="sm"
                         type="button"
-                        outline={this.state.loading !== FORCE}
-                        color="danger"
+                        color="primary"
                         onClick={this.force}
-                        className="mb-1 mb-lg-0"
                         disabled={!!this.state.loading}
                     >
-                        <i className="material-icons md-1 mr-2">
-                            chevron_right
-                        </i>
                         Force
                     </Button>
                     <Tooltip placement="top" target={id} offset="0, 4px">
@@ -198,16 +189,11 @@ class Error extends Component<Props, State> {
                 <span>
                     <Button
                         id={id}
-                        size="sm"
                         type="button"
-                        outline={this.state.loading !== CANCEL}
-                        color="danger"
+                        color="secondary"
                         onClick={this.cancel}
                         disabled={!!this.state.loading}
                     >
-                        <i className="material-icons md-1 mr-2">
-                            not_interested
-                        </i>
                         Cancel
                     </Button>
                     <Tooltip
@@ -231,29 +217,29 @@ class Error extends Component<Props, State> {
                     [css.showActions]: this.state.showActions,
                 })}
             >
-                <Alert color="danger">
-                    <div className="d-md-flex align-items-center">
-                        <i className="material-icons md-3 mr-3 d-none d-md-block">
-                            error
-                        </i>
-                        <div className="text-danger mr-3 flex-grow mb-1 mb-md-0">
-                            <span
-                                dangerouslySetInnerHTML={{
-                                    __html: sanitizeHtmlDefault(error),
-                                }}
-                            />
-                            <a
-                                className={css.toggleActions}
-                                onClick={this._toggleActions}
-                            >
-                                Find out why?
-                            </a>
-                        </div>
+                <Alert
+                    type={AlertType.Error}
+                    icon
+                    customActions={
                         <div className={css.buttons}>
                             {retryButton}
                             {forceButton}
                             {cancelButton}
                         </div>
+                    }
+                >
+                    <div>
+                        <span
+                            dangerouslySetInnerHTML={{
+                                __html: sanitizeHtmlDefault(error),
+                            }}
+                        />{' '}
+                        <a
+                            className={css.toggleActions}
+                            onClick={this._toggleActions}
+                        >
+                            Find out why?
+                        </a>
                     </div>
 
                     <ul className={css.actions}>

@@ -1,22 +1,22 @@
-import React, {MouseEvent, useMemo} from 'react'
+import React, {ComponentProps, MouseEvent, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 
-import Alert, {AlertProps} from './Alert'
+import Alert from './Alert'
 
 import css from './LinkAlert.less'
 
-type LinkAlertProps = {
+export type Props = {
     actionHref?: string
     actionLabel: string
     onAction?: (e: MouseEvent) => void
-} & Omit<AlertProps, 'customActions'>
+} & Omit<ComponentProps<typeof Alert>, 'customActions'>
 
 const LinkAlert = ({
     actionHref,
     actionLabel,
     onAction,
     ...alertProps
-}: LinkAlertProps) => {
+}: Props) => {
     const handleClick = (event: MouseEvent) => {
         if (onAction) {
             event.preventDefault()

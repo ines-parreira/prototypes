@@ -56,31 +56,7 @@ exports[`<CustomInstallationOtherWebsiteTab/> should display the custom installa
     </div>
   </div>
   <Alert
-    closeAriaLabel="Close"
-    color="warning"
-    fade={true}
-    isOpen={true}
-    tag="div"
-    transition={
-      Object {
-        "appear": true,
-        "baseClass": "fade",
-        "baseClassActive": "show",
-        "enter": true,
-        "exit": true,
-        "in": true,
-        "mountOnEnter": false,
-        "onEnter": [Function],
-        "onEntered": [Function],
-        "onEntering": [Function],
-        "onExit": [Function],
-        "onExited": [Function],
-        "onExiting": [Function],
-        "tag": "div",
-        "timeout": 150,
-        "unmountOnExit": true,
-      }
-    }
+    type="warning"
   >
     Please note that by inserting this snippet on your webpage, it will load the chat on that specific webpage only. Make sure to insert the snippet on all the pages for which you wish to display the chat widget.
   </Alert>

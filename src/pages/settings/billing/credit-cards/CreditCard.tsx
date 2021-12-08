@@ -4,7 +4,6 @@ import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import classnames from 'classnames'
 import _pick from 'lodash/pick'
 import {
-    Alert,
     Breadcrumb,
     BreadcrumbItem,
     Button,
@@ -45,6 +44,7 @@ import {notify} from '../../../../state/notifications/actions'
 import {createStripeCardToken} from '../../../../utils/stripe'
 import history from '../../../history'
 import LegacyPlanBanner from '../../../common/components/LegacyPlanBanner'
+import Alert from '../../../common/components/Alert/Alert'
 import BillingPlanCard from '../plans/BillingPlanCard'
 import {RootState} from '../../../../state/types'
 import {NotificationStatus} from '../../../../state/notifications/types'
@@ -414,7 +414,7 @@ export class CreditCardContainer extends Component<Props, State> {
                                 />
                             )}
                             {!isUpdating && (
-                                <Alert color="info">
+                                <Alert className="mb-3">
                                     You will be charged for the current period
                                     of your plan once you add your Credit Card
                                 </Alert>

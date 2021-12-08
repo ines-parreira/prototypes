@@ -1,5 +1,5 @@
 @import '~css/new/mixins';
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 :local {
     .component {
@@ -14,14 +14,8 @@
 
     .toggleActions {
         display: none;
-        margin-left: 0.4em;
-
+        color: @classic-main-primary !important;
         cursor: pointer;
-        text-decoration: underline !important;
-
-        &:hover {
-            text-decoration: none !important;
-        }
     }
 
     .hasActions .toggleActions {
@@ -53,7 +47,8 @@
     }
 
     .actionError {
-        margin-bottom: 10px;
-        color: @darkRed;
+        &:not(:last-of-type) {
+            margin-bottom: 10px;
+        }
     }
 }

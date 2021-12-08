@@ -1044,70 +1044,16 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                                 </div>
                                               </div>
                                               <Alert
-                                                closeAriaLabel="Close"
-                                                color="warning"
-                                                fade={true}
-                                                isOpen={true}
-                                                tag="div"
-                                                transition={
-                                                  Object {
-                                                    "appear": true,
-                                                    "baseClass": "fade",
-                                                    "baseClassActive": "show",
-                                                    "enter": true,
-                                                    "exit": true,
-                                                    "in": true,
-                                                    "mountOnEnter": false,
-                                                    "onEnter": [Function],
-                                                    "onEntered": [Function],
-                                                    "onEntering": [Function],
-                                                    "onExit": [Function],
-                                                    "onExited": [Function],
-                                                    "onExiting": [Function],
-                                                    "tag": "div",
-                                                    "timeout": 150,
-                                                    "unmountOnExit": true,
-                                                  }
-                                                }
+                                                type="warning"
                                               >
-                                                <Fade
-                                                  appear={true}
-                                                  baseClass="fade"
-                                                  baseClassActive="show"
-                                                  className="alert alert-warning"
-                                                  enter={true}
-                                                  exit={true}
-                                                  in={true}
-                                                  mountOnEnter={false}
-                                                  onEnter={[Function]}
-                                                  onEntered={[Function]}
-                                                  onEntering={[Function]}
-                                                  onExit={[Function]}
-                                                  onExited={[Function]}
-                                                  onExiting={[Function]}
-                                                  role="alert"
-                                                  tag="div"
-                                                  timeout={150}
-                                                  unmountOnExit={true}
+                                                <div
+                                                  className="alert warning"
                                                 >
-                                                  <Transition
-                                                    appear={true}
-                                                    enter={true}
-                                                    exit={true}
-                                                    in={true}
-                                                    mountOnEnter={false}
-                                                    onEnter={[Function]}
-                                                    onEntered={[Function]}
-                                                    onEntering={[Function]}
-                                                    onExit={[Function]}
-                                                    onExited={[Function]}
-                                                    onExiting={[Function]}
-                                                    timeout={150}
-                                                    unmountOnExit={true}
+                                                  <div
+                                                    className="content"
                                                   >
-                                                    <div
-                                                      className="alert alert-warning fade"
-                                                      role="alert"
+                                                    <span
+                                                      className="label"
                                                     >
                                                       Please note that by copying the code to your Shopify
                                                        
@@ -1115,9 +1061,9 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                                         theme.liquid
                                                       </b>
                                                        files, the chat will also be shown on all webpages. Make sure to copy the code to just specific pages if needed.
-                                                    </div>
-                                                  </Transition>
-                                                </Fade>
+                                                    </span>
+                                                  </div>
+                                                </div>
                                               </Alert>
                                               <CodeSnippet
                                                 code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
@@ -1276,75 +1222,21 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                                 </div>
                                               </div>
                                               <Alert
-                                                closeAriaLabel="Close"
-                                                color="warning"
-                                                fade={true}
-                                                isOpen={true}
-                                                tag="div"
-                                                transition={
-                                                  Object {
-                                                    "appear": true,
-                                                    "baseClass": "fade",
-                                                    "baseClassActive": "show",
-                                                    "enter": true,
-                                                    "exit": true,
-                                                    "in": true,
-                                                    "mountOnEnter": false,
-                                                    "onEnter": [Function],
-                                                    "onEntered": [Function],
-                                                    "onEntering": [Function],
-                                                    "onExit": [Function],
-                                                    "onExited": [Function],
-                                                    "onExiting": [Function],
-                                                    "tag": "div",
-                                                    "timeout": 150,
-                                                    "unmountOnExit": true,
-                                                  }
-                                                }
+                                                type="warning"
                                               >
-                                                <Fade
-                                                  appear={true}
-                                                  baseClass="fade"
-                                                  baseClassActive="show"
-                                                  className="alert alert-warning"
-                                                  enter={true}
-                                                  exit={true}
-                                                  in={true}
-                                                  mountOnEnter={false}
-                                                  onEnter={[Function]}
-                                                  onEntered={[Function]}
-                                                  onEntering={[Function]}
-                                                  onExit={[Function]}
-                                                  onExited={[Function]}
-                                                  onExiting={[Function]}
-                                                  role="alert"
-                                                  tag="div"
-                                                  timeout={150}
-                                                  unmountOnExit={true}
+                                                <div
+                                                  className="alert warning"
                                                 >
-                                                  <Transition
-                                                    appear={true}
-                                                    enter={true}
-                                                    exit={true}
-                                                    in={true}
-                                                    mountOnEnter={false}
-                                                    onEnter={[Function]}
-                                                    onEntered={[Function]}
-                                                    onEntering={[Function]}
-                                                    onExit={[Function]}
-                                                    onExited={[Function]}
-                                                    onExiting={[Function]}
-                                                    timeout={150}
-                                                    unmountOnExit={true}
+                                                  <div
+                                                    className="content"
                                                   >
-                                                    <div
-                                                      className="alert alert-warning fade"
-                                                      role="alert"
+                                                    <span
+                                                      className="label"
                                                     >
                                                       Please note that by inserting this snippet on your webpage, it will load the chat on that specific webpage only. Make sure to insert the snippet on all the pages for which you wish to display the chat widget.
-                                                    </div>
-                                                  </Transition>
-                                                </Fade>
+                                                    </span>
+                                                  </div>
+                                                </div>
                                               </Alert>
                                               <CodeSnippet
                                                 code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
@@ -2107,75 +1999,21 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                                                 </div>
                                               </div>
                                               <Alert
-                                                closeAriaLabel="Close"
-                                                color="warning"
-                                                fade={true}
-                                                isOpen={true}
-                                                tag="div"
-                                                transition={
-                                                  Object {
-                                                    "appear": true,
-                                                    "baseClass": "fade",
-                                                    "baseClassActive": "show",
-                                                    "enter": true,
-                                                    "exit": true,
-                                                    "in": true,
-                                                    "mountOnEnter": false,
-                                                    "onEnter": [Function],
-                                                    "onEntered": [Function],
-                                                    "onEntering": [Function],
-                                                    "onExit": [Function],
-                                                    "onExited": [Function],
-                                                    "onExiting": [Function],
-                                                    "tag": "div",
-                                                    "timeout": 150,
-                                                    "unmountOnExit": true,
-                                                  }
-                                                }
+                                                type="warning"
                                               >
-                                                <Fade
-                                                  appear={true}
-                                                  baseClass="fade"
-                                                  baseClassActive="show"
-                                                  className="alert alert-warning"
-                                                  enter={true}
-                                                  exit={true}
-                                                  in={true}
-                                                  mountOnEnter={false}
-                                                  onEnter={[Function]}
-                                                  onEntered={[Function]}
-                                                  onEntering={[Function]}
-                                                  onExit={[Function]}
-                                                  onExited={[Function]}
-                                                  onExiting={[Function]}
-                                                  role="alert"
-                                                  tag="div"
-                                                  timeout={150}
-                                                  unmountOnExit={true}
+                                                <div
+                                                  className="alert warning"
                                                 >
-                                                  <Transition
-                                                    appear={true}
-                                                    enter={true}
-                                                    exit={true}
-                                                    in={true}
-                                                    mountOnEnter={false}
-                                                    onEnter={[Function]}
-                                                    onEntered={[Function]}
-                                                    onEntering={[Function]}
-                                                    onExit={[Function]}
-                                                    onExited={[Function]}
-                                                    onExiting={[Function]}
-                                                    timeout={150}
-                                                    unmountOnExit={true}
+                                                  <div
+                                                    className="content"
                                                   >
-                                                    <div
-                                                      className="alert alert-warning fade"
-                                                      role="alert"
+                                                    <span
+                                                      className="label"
                                                     >
                                                       Please note that by inserting this snippet on your webpage, it will load the chat on that specific webpage only. Make sure to insert the snippet on all the pages for which you wish to display the chat widget.
-                                                    </div>
-                                                  </Transition>
-                                                </Fade>
+                                                    </span>
+                                                  </div>
+                                                </div>
                                               </Alert>
                                               <CodeSnippet
                                                 code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
@@ -3159,70 +2997,16 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                                 </div>
                                               </div>
                                               <Alert
-                                                closeAriaLabel="Close"
-                                                color="warning"
-                                                fade={true}
-                                                isOpen={true}
-                                                tag="div"
-                                                transition={
-                                                  Object {
-                                                    "appear": true,
-                                                    "baseClass": "fade",
-                                                    "baseClassActive": "show",
-                                                    "enter": true,
-                                                    "exit": true,
-                                                    "in": true,
-                                                    "mountOnEnter": false,
-                                                    "onEnter": [Function],
-                                                    "onEntered": [Function],
-                                                    "onEntering": [Function],
-                                                    "onExit": [Function],
-                                                    "onExited": [Function],
-                                                    "onExiting": [Function],
-                                                    "tag": "div",
-                                                    "timeout": 150,
-                                                    "unmountOnExit": true,
-                                                  }
-                                                }
+                                                type="warning"
                                               >
-                                                <Fade
-                                                  appear={true}
-                                                  baseClass="fade"
-                                                  baseClassActive="show"
-                                                  className="alert alert-warning"
-                                                  enter={true}
-                                                  exit={true}
-                                                  in={true}
-                                                  mountOnEnter={false}
-                                                  onEnter={[Function]}
-                                                  onEntered={[Function]}
-                                                  onEntering={[Function]}
-                                                  onExit={[Function]}
-                                                  onExited={[Function]}
-                                                  onExiting={[Function]}
-                                                  role="alert"
-                                                  tag="div"
-                                                  timeout={150}
-                                                  unmountOnExit={true}
+                                                <div
+                                                  className="alert warning"
                                                 >
-                                                  <Transition
-                                                    appear={true}
-                                                    enter={true}
-                                                    exit={true}
-                                                    in={true}
-                                                    mountOnEnter={false}
-                                                    onEnter={[Function]}
-                                                    onEntered={[Function]}
-                                                    onEntering={[Function]}
-                                                    onExit={[Function]}
-                                                    onExited={[Function]}
-                                                    onExiting={[Function]}
-                                                    timeout={150}
-                                                    unmountOnExit={true}
+                                                  <div
+                                                    className="content"
                                                   >
-                                                    <div
-                                                      className="alert alert-warning fade"
-                                                      role="alert"
+                                                    <span
+                                                      className="label"
                                                     >
                                                       Please note that by copying the code to your Shopify
                                                        
@@ -3230,9 +3014,9 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                                         theme.liquid
                                                       </b>
                                                        files, the chat will also be shown on all webpages. Make sure to copy the code to just specific pages if needed.
-                                                    </div>
-                                                  </Transition>
-                                                </Fade>
+                                                    </span>
+                                                  </div>
+                                                </div>
                                               </Alert>
                                               <CodeSnippet
                                                 code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
@@ -3391,75 +3175,21 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                                 </div>
                                               </div>
                                               <Alert
-                                                closeAriaLabel="Close"
-                                                color="warning"
-                                                fade={true}
-                                                isOpen={true}
-                                                tag="div"
-                                                transition={
-                                                  Object {
-                                                    "appear": true,
-                                                    "baseClass": "fade",
-                                                    "baseClassActive": "show",
-                                                    "enter": true,
-                                                    "exit": true,
-                                                    "in": true,
-                                                    "mountOnEnter": false,
-                                                    "onEnter": [Function],
-                                                    "onEntered": [Function],
-                                                    "onEntering": [Function],
-                                                    "onExit": [Function],
-                                                    "onExited": [Function],
-                                                    "onExiting": [Function],
-                                                    "tag": "div",
-                                                    "timeout": 150,
-                                                    "unmountOnExit": true,
-                                                  }
-                                                }
+                                                type="warning"
                                               >
-                                                <Fade
-                                                  appear={true}
-                                                  baseClass="fade"
-                                                  baseClassActive="show"
-                                                  className="alert alert-warning"
-                                                  enter={true}
-                                                  exit={true}
-                                                  in={true}
-                                                  mountOnEnter={false}
-                                                  onEnter={[Function]}
-                                                  onEntered={[Function]}
-                                                  onEntering={[Function]}
-                                                  onExit={[Function]}
-                                                  onExited={[Function]}
-                                                  onExiting={[Function]}
-                                                  role="alert"
-                                                  tag="div"
-                                                  timeout={150}
-                                                  unmountOnExit={true}
+                                                <div
+                                                  className="alert warning"
                                                 >
-                                                  <Transition
-                                                    appear={true}
-                                                    enter={true}
-                                                    exit={true}
-                                                    in={true}
-                                                    mountOnEnter={false}
-                                                    onEnter={[Function]}
-                                                    onEntered={[Function]}
-                                                    onEntering={[Function]}
-                                                    onExit={[Function]}
-                                                    onExited={[Function]}
-                                                    onExiting={[Function]}
-                                                    timeout={150}
-                                                    unmountOnExit={true}
+                                                  <div
+                                                    className="content"
                                                   >
-                                                    <div
-                                                      className="alert alert-warning fade"
-                                                      role="alert"
+                                                    <span
+                                                      className="label"
                                                     >
                                                       Please note that by inserting this snippet on your webpage, it will load the chat on that specific webpage only. Make sure to insert the snippet on all the pages for which you wish to display the chat widget.
-                                                    </div>
-                                                  </Transition>
-                                                </Fade>
+                                                    </span>
+                                                  </div>
+                                                </div>
                                               </Alert>
                                               <CodeSnippet
                                                 code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"

@@ -44,21 +44,26 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
           class="col-sm-12 col-md-7 col-lg-4"
         >
           <div
-            class="alert alert-info fade"
-            role="alert"
+            class="alert info"
           >
-            <b
-              class="heading"
+            <div
+              class="iconContainer"
             >
-              <i
-                class="material-icons mr-3"
+              <img
+                alt="icon"
+                class="icon"
+                src="test-file-stub"
+              />
+            </div>
+            <div
+              class="content"
+            >
+              <span
+                class="label"
               >
-                info_outline
-              </i>
-              <span>
                 Initial import successful, continuous synchronization paused.
               </span>
-            </b>
+            </div>
           </div>
         </div>
       </div>
@@ -259,21 +264,26 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
           class="col-sm-12 col-md-7 col-lg-4"
         >
           <div
-            class="alert alert-danger fade"
-            role="alert"
+            class="alert error"
           >
-            <b
-              class="heading"
+            <div
+              class="iconContainer"
             >
-              <i
-                class="material-icons mr-3"
+              <img
+                alt="icon"
+                class="icon"
+                src="test-file-stub"
+              />
+            </div>
+            <div
+              class="content"
+            >
+              <span
+                class="label"
               >
-                error_outline
-              </i>
-              <span>
                 Import failed because of permissions issues.
               </span>
-            </b>
+            </div>
           </div>
         </div>
       </div>
@@ -456,21 +466,28 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
           class="col-sm-12 col-md-7 col-lg-4"
         >
           <div
-            class="alert alert-info fade"
-            role="alert"
+            class="alert info"
           >
-            <b
-              class="heading"
+            <div
+              class="iconContainer"
             >
               <i
-                class="material-icons md-spin mr-3"
+                class="material-icons md-spin"
               >
                 refresh
               </i>
-              <span>
-                Importing your Zendesk data
+            </div>
+            <div
+              class="content"
+            >
+              <span
+                class="label"
+              >
+                <span>
+                  Importing your Zendesk data
+                </span>
               </span>
-            </b>
+            </div>
           </div>
         </div>
       </div>

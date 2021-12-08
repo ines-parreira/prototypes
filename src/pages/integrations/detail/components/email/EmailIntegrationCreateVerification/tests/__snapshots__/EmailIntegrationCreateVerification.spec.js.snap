@@ -57,32 +57,8 @@ exports[`<EmailIntegrationCreateVerification/> render() should render instructio
     </h1>
     <div>
       <Alert
-        className="mb-4"
-        closeAriaLabel="Close"
-        color="warning"
-        fade={true}
-        isOpen={true}
-        tag="div"
-        transition={
-          Object {
-            "appear": true,
-            "baseClass": "fade",
-            "baseClassActive": "show",
-            "enter": true,
-            "exit": true,
-            "in": true,
-            "mountOnEnter": false,
-            "onEnter": [Function],
-            "onEntered": [Function],
-            "onEntering": [Function],
-            "onExit": [Function],
-            "onExited": [Function],
-            "onExiting": [Function],
-            "tag": "div",
-            "timeout": 150,
-            "unmountOnExit": true,
-          }
-        }
+        className="mb16"
+        type="warning"
       >
         In order to verify your base email integration, you need to verify your own email address. Please check your inbox, you should have received a verification email from us. If you did not, you can re-send this email by
          
@@ -162,38 +138,15 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
     </h1>
     <div>
       <Alert
-        className="mb-4"
-        closeAriaLabel="Close"
-        color="info"
-        fade={true}
-        isOpen={true}
-        tag="div"
-        transition={
-          Object {
-            "appear": true,
-            "baseClass": "fade",
-            "baseClassActive": "show",
-            "enter": true,
-            "exit": true,
-            "in": true,
-            "mountOnEnter": false,
-            "onEnter": [Function],
-            "onEntered": [Function],
-            "onEntering": [Function],
-            "onExit": [Function],
-            "onExited": [Function],
-            "onExiting": [Function],
-            "tag": "div",
-            "timeout": 150,
-            "unmountOnExit": true,
-          }
+        className="mb16"
+        icon={
+          <i
+            className="material-icons md-spin"
+          >
+            autorenew
+          </i>
         }
       >
-        <i
-          className="material-icons md-spin mr-2"
-        >
-          autorenew
-        </i>
         We're waiting to receive your verification email on
          
         <strong>

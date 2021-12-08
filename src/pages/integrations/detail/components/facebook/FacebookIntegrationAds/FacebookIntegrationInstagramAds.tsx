@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import {
-    Alert,
     Breadcrumb,
     BreadcrumbItem,
     Card,
@@ -25,6 +24,7 @@ import {
 } from '../../../../../../state/facebookAds/selectors'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
 import Loader from '../../../../../common/components/Loader/Loader'
+import Alert, {AlertType} from '../../../../../common/components/Alert/Alert'
 import {DatetimeLabel} from '../../../../../common/utils/labels'
 import settingsCss from '../../../../../settings/settings.less'
 
@@ -194,7 +194,7 @@ export default connector(FacebookIntegrationInstagramAds)
 // Alerts
 function UpgradePlanAlert() {
     return (
-        <Alert color="success">
+        <Alert type={AlertType.Success} className={settingsCss.mb16}>
             <strong>Need to synchronize more ads?</strong>{' '}
             <Link to="/app/settings/billing" className="alert-link">
                 Upgrade your plan!

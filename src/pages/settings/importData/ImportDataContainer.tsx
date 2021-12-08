@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Alert, Button, Container} from 'reactstrap'
+import {Button, Container} from 'reactstrap'
 import {useEffectOnce} from 'react-use'
 import {bindActionCreators} from 'redux'
 import classnames from 'classnames'
@@ -10,6 +10,7 @@ import history from '../../history'
 import {RootState, StoreDispatch} from '../../../state/types'
 import {IntegrationType} from '../../../models/integration/types'
 import Loader from '../../common/components/Loader/Loader'
+import LinkAlert from '../../common/components/Alert/LinkAlert'
 import * as integrationSelectors from '../../../state/integrations/selectors'
 import * as integrationActions from '../../../state/integrations/actions'
 import css from '../settings.less'
@@ -56,18 +57,16 @@ export const ImportDataContainer = (
                             into Gorgias.
                         </p>
                     </div>
-                    <Alert color="info" className={css.mb16}>
-                        <i className="material-icons">info_outline</i> When you
-                        activate the integration, 2 years of data will be loaded
-                        from Zendesk at first, then continuous syncing will be
-                        enabled automatically.{' '}
-                        <a
-                            className="text-underline"
-                            href="https://docs.gorgias.com/helpdesk-migration/switching-from-zendesk"
-                        >
-                            Read more
-                        </a>
-                    </Alert>
+                    <LinkAlert
+                        className={css.mb16}
+                        icon
+                        actionLabel="Read more"
+                        actionHref="https://docs.gorgias.com/helpdesk-migration/switching-from-zendesk"
+                    >
+                        When you activate the integration, 2 years of data will
+                        be loaded from Zendesk at first, then continuous syncing
+                        will be enabled automatically.{' '}
+                    </LinkAlert>
                     {zendeskIntegrations.isEmpty() ? (
                         <span>You don't have any imports at the moment</span>
                     ) : (

@@ -5,16 +5,27 @@ exports[`<RevenueStatsRestrictedFeature /> should render the restricted feature 
   class="col mt-2"
 >
   <div
-    class="alert alert-danger fade"
-    role="alert"
+    class="alert error my-3"
   >
-    Your e-commerce store needs to be connected to Gorgias to use this feature.
-    <a
-      to="/app/settings/integrations/shopify/new"
+    <div
+      class="content"
     >
-       
-      Add one here
-    </a>
+      <span
+        class="label"
+      >
+        Your e-commerce store needs to be connected to Gorgias to use this feature.
+      </span>
+      <div
+        class="customActions"
+      >
+        <a
+          class="actionLink"
+          to="/app/settings/integrations/shopify/new"
+        >
+          Add one here
+        </a>
+      </div>
+    </div>
   </div>
   <p>
     Assess how much sales your support team is influencing. Staff and reward your support team according to sales. Track and increase conversion, using Chat campaigns, for example.

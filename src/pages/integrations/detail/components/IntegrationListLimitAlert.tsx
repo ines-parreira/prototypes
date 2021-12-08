@@ -1,6 +1,7 @@
 import React from 'react'
-import {Alert} from 'reactstrap'
 import {Link} from 'react-router-dom'
+
+import Alert, {AlertType} from '../../../common/components/Alert/Alert'
 
 type Props = {
     totalIntegrations: number
@@ -21,11 +22,11 @@ export default function IntegrationListLimitAlert({
 
     return (
         <Alert
-            color={isLimitAlmostReached ? 'warning' : 'danger'}
+            type={isLimitAlmostReached ? AlertType.Warning : AlertType.Error}
             className="d-inline-flex"
+            icon
         >
             <span className="d-flex align-items-center">
-                <i className="material-icons mr-2">info</i>
                 You have reached {totalIntegrations}/{maxIntegrations}{' '}
                 integrations. To add more, you must
                 <Link to="/app/settings/billing/plans" className="ml-1 mr-1">

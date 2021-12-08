@@ -348,7 +348,15 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                         >
                           <BooleanField
                             disabled={false}
-                            label="Enable Instagram direct messages"
+                            label={
+                              <div
+                                id="instagram_direct_message-1"
+                              >
+                                <span>
+                                  Enable Instagram direct messages
+                                </span>
+                              </div>
+                            }
                             name="1.instagram_direct_message_enabled"
                             onChange={[Function]}
                             type="checkbox"
@@ -601,7 +609,15 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                         >
                           <BooleanField
                             disabled={true}
-                            label="Enable Instagram direct messages"
+                            label={
+                              <div
+                                id="instagram_direct_message-1"
+                              >
+                                <span>
+                                  Enable Instagram direct messages
+                                </span>
+                              </div>
+                            }
                             name="1.instagram_direct_message_enabled"
                             onChange={[Function]}
                             type="checkbox"
@@ -870,7 +886,36 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                         >
                           <BooleanField
                             disabled={true}
-                            label="Enable Instagram direct messages"
+                            label={
+                              <div
+                                id="instagram_direct_message-1"
+                                style={
+                                  Object {
+                                    "cursor": "pointer",
+                                  }
+                                }
+                              >
+                                <span
+                                  style={
+                                    Object {
+                                      "borderBottom": "1px dashed #D2D7DE",
+                                    }
+                                  }
+                                >
+                                  Enable Instagram direct messages
+                                </span>
+                                <img
+                                  alt="icon"
+                                  className="ml-3"
+                                  src="test-file-stub"
+                                  style={
+                                    Object {
+                                      "verticalAlign": "text-bottom",
+                                    }
+                                  }
+                                />
+                              </div>
+                            }
                             name="1.instagram_direct_message_enabled"
                             onChange={[Function]}
                             type="checkbox"
@@ -880,33 +925,11 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                         <td
                           className="pl-0"
                         >
-                          <Alert
-                            className="ml-1 py-1 mt-3"
-                            closeAriaLabel="Close"
-                            color="warning"
-                            fade={true}
-                            isOpen={true}
-                            tag="div"
-                            transition={
-                              Object {
-                                "appear": true,
-                                "baseClass": "fade",
-                                "baseClassActive": "show",
-                                "enter": true,
-                                "exit": true,
-                                "in": true,
-                                "mountOnEnter": false,
-                                "onEnter": [Function],
-                                "onEntered": [Function],
-                                "onEntering": [Function],
-                                "onExit": [Function],
-                                "onExited": [Function],
-                                "onExiting": [Function],
-                                "tag": "div",
-                                "timeout": 150,
-                                "unmountOnExit": true,
-                              }
-                            }
+                          <Tooltip
+                            autohide={false}
+                            delay={0}
+                            placement="top-end"
+                            target="instagram_direct_message-1"
                           >
                             To activate Instagram Messaging, please click the green
                              
@@ -934,7 +957,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                             </a>
                              
                             or contact us via chat.
-                          </Alert>
+                          </Tooltip>
                         </td>
                       </tr>
                     </tbody>
@@ -1179,7 +1202,15 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                         >
                           <BooleanField
                             disabled={true}
-                            label="Enable Instagram direct messages"
+                            label={
+                              <div
+                                id="instagram_direct_message-1"
+                              >
+                                <span>
+                                  Enable Instagram direct messages
+                                </span>
+                              </div>
+                            }
                             name="1.instagram_direct_message_enabled"
                             onChange={[Function]}
                             type="checkbox"
@@ -1373,91 +1404,27 @@ exports[`FacebookIntegrationSetup should render integrations because there is av
                 </div>
               </div>
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="d-flex align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
-              >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                In order to be able to integrate this page you need to have one of the following roles: Admin, Editor, Moderator.
-              </Alert>
-            </div>
-            <div
-              className="d-flex mt-3"
+              In order to be able to integrate this page you need to have one of the following roles: Admin, Editor, Moderator.
+            </Alert>
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
+               
+              <a
+                href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
               >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
-                 
-                <a
-                  href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
-                >
-                  this URL
-                </a>
-                , delete the Gorgias app then try again.
-              </Alert>
-            </div>
+                this URL
+              </a>
+              , delete the Gorgias app then try again.
+            </Alert>
           </div>
         </div>
         <Pagination
@@ -1592,45 +1559,13 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
                 value={true}
               />
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="d-flex align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
-              >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Create an Instagram account for this page and you will be able to enable Instagram features.
-              </Alert>
-            </div>
+              Create an Instagram account for this page and you will be able to enable Instagram features.
+            </Alert>
             <div
               className="settings"
             >
@@ -1702,7 +1637,15 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
                         >
                           <BooleanField
                             disabled={true}
-                            label="Enable Instagram direct messages"
+                            label={
+                              <div
+                                id="instagram_direct_message-1"
+                              >
+                                <span>
+                                  Enable Instagram direct messages
+                                </span>
+                              </div>
+                            }
                             name="1.instagram_direct_message_enabled"
                             onChange={[Function]}
                             type="checkbox"
@@ -1955,7 +1898,36 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                         >
                           <BooleanField
                             disabled={true}
-                            label="Enable Instagram direct messages"
+                            label={
+                              <div
+                                id="instagram_direct_message-1"
+                                style={
+                                  Object {
+                                    "cursor": "pointer",
+                                  }
+                                }
+                              >
+                                <span
+                                  style={
+                                    Object {
+                                      "borderBottom": "1px dashed #D2D7DE",
+                                    }
+                                  }
+                                >
+                                  Enable Instagram direct messages
+                                </span>
+                                <img
+                                  alt="icon"
+                                  className="ml-3"
+                                  src="test-file-stub"
+                                  style={
+                                    Object {
+                                      "verticalAlign": "text-bottom",
+                                    }
+                                  }
+                                />
+                              </div>
+                            }
                             name="1.instagram_direct_message_enabled"
                             onChange={[Function]}
                             type="checkbox"
@@ -1965,36 +1937,12 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                         <td
                           className="pl-0"
                         >
-                          <Alert
-                            className="ml-1 py-1 mt-3"
-                            closeAriaLabel="Close"
-                            color="warning"
-                            fade={true}
-                            isOpen={true}
-                            tag="div"
-                            transition={
-                              Object {
-                                "appear": true,
-                                "baseClass": "fade",
-                                "baseClassActive": "show",
-                                "enter": true,
-                                "exit": true,
-                                "in": true,
-                                "mountOnEnter": false,
-                                "onEnter": [Function],
-                                "onEntered": [Function],
-                                "onEntering": [Function],
-                                "onExit": [Function],
-                                "onExited": [Function],
-                                "onExiting": [Function],
-                                "tag": "div",
-                                "timeout": 150,
-                                "unmountOnExit": true,
-                              }
-                            }
+                          <Tooltip
+                            placement="top-end"
+                            target="instagram_direct_message-1"
                           >
                             Reconnect your integration to grant us the permissions to access the Messenger API for Instagram on your behalf
-                          </Alert>
+                          </Tooltip>
                         </td>
                       </tr>
                     </tbody>
@@ -2164,52 +2112,20 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                 </div>
               </div>
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
+               
+              <a
+                href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
               >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
-                 
-                <a
-                  href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
-                >
-                  this URL
-                </a>
-                , delete the Gorgias app then try again.
-              </Alert>
-            </div>
+                this URL
+              </a>
+              , delete the Gorgias app then try again.
+            </Alert>
           </div>
         </div>
         <Pagination
@@ -2340,91 +2256,27 @@ exports[`FacebookIntegrationSetup should render the integration list without sho
                 </div>
               </div>
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="d-flex align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
-              >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                In order to be able to integrate this page you need to have one of the following roles: Admin, Editor, Moderator.
-              </Alert>
-            </div>
-            <div
-              className="d-flex mt-3"
+              In order to be able to integrate this page you need to have one of the following roles: Admin, Editor, Moderator.
+            </Alert>
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
+               
+              <a
+                href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
               >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
-                 
-                <a
-                  href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
-                >
-                  this URL
-                </a>
-                , delete the Gorgias app then try again.
-              </Alert>
-            </div>
+                this URL
+              </a>
+              , delete the Gorgias app then try again.
+            </Alert>
           </div>
         </div>
         <Pagination
@@ -2555,91 +2407,27 @@ exports[`FacebookIntegrationSetup should render the integration with canModerate
                 </div>
               </div>
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="d-flex align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
-              >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                In order to be able to integrate this page you need to have one of the following roles: Admin, Editor, Moderator.
-              </Alert>
-            </div>
-            <div
-              className="d-flex mt-3"
+              In order to be able to integrate this page you need to have one of the following roles: Admin, Editor, Moderator.
+            </Alert>
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
+               
+              <a
+                href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
               >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
-                 
-                <a
-                  href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
-                >
-                  this URL
-                </a>
-                , delete the Gorgias app then try again.
-              </Alert>
-            </div>
+                this URL
+              </a>
+              , delete the Gorgias app then try again.
+            </Alert>
           </div>
         </div>
         <Pagination
@@ -2774,52 +2562,20 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                 value={true}
               />
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
+               
+              <a
+                href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
               >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
-                 
-                <a
-                  href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
-                >
-                  this URL
-                </a>
-                , delete the Gorgias app then try again.
-              </Alert>
-            </div>
+                this URL
+              </a>
+              , delete the Gorgias app then try again.
+            </Alert>
             <div
               className="settings"
             >
@@ -2891,7 +2647,36 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         >
                           <BooleanField
                             disabled={true}
-                            label="Enable Instagram direct messages"
+                            label={
+                              <div
+                                id="instagram_direct_message-1"
+                                style={
+                                  Object {
+                                    "cursor": "pointer",
+                                  }
+                                }
+                              >
+                                <span
+                                  style={
+                                    Object {
+                                      "borderBottom": "1px dashed #D2D7DE",
+                                    }
+                                  }
+                                >
+                                  Enable Instagram direct messages
+                                </span>
+                                <img
+                                  alt="icon"
+                                  className="ml-3"
+                                  src="test-file-stub"
+                                  style={
+                                    Object {
+                                      "verticalAlign": "text-bottom",
+                                    }
+                                  }
+                                />
+                              </div>
+                            }
                             name="1.instagram_direct_message_enabled"
                             onChange={[Function]}
                             type="checkbox"
@@ -2901,36 +2686,12 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         <td
                           className="pl-0"
                         >
-                          <Alert
-                            className="ml-1 py-1 mt-3"
-                            closeAriaLabel="Close"
-                            color="warning"
-                            fade={true}
-                            isOpen={true}
-                            tag="div"
-                            transition={
-                              Object {
-                                "appear": true,
-                                "baseClass": "fade",
-                                "baseClassActive": "show",
-                                "enter": true,
-                                "exit": true,
-                                "in": true,
-                                "mountOnEnter": false,
-                                "onEnter": [Function],
-                                "onEntered": [Function],
-                                "onEntering": [Function],
-                                "onExit": [Function],
-                                "onExited": [Function],
-                                "onExiting": [Function],
-                                "tag": "div",
-                                "timeout": 150,
-                                "unmountOnExit": true,
-                              }
-                            }
+                          <Tooltip
+                            placement="top-end"
+                            target="instagram_direct_message-1"
                           >
                             Reconnect your integration to grant us the permissions to access the Messenger API for Instagram on your behalf
-                          </Alert>
+                          </Tooltip>
                         </td>
                       </tr>
                     </tbody>
@@ -3100,52 +2861,20 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                 </div>
               </div>
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
+               
+              <a
+                href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
               >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
-                 
-                <a
-                  href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
-                >
-                  this URL
-                </a>
-                , delete the Gorgias app then try again.
-              </Alert>
-            </div>
+                this URL
+              </a>
+              , delete the Gorgias app then try again.
+            </Alert>
           </div>
         </div>
         <Pagination
@@ -3280,52 +3009,20 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                 value={true}
               />
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
+               
+              <a
+                href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
               >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
-                 
-                <a
-                  href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
-                >
-                  this URL
-                </a>
-                , delete the Gorgias app then try again.
-              </Alert>
-            </div>
+                this URL
+              </a>
+              , delete the Gorgias app then try again.
+            </Alert>
             <div
               className="settings"
             >
@@ -3397,7 +3094,36 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         >
                           <BooleanField
                             disabled={true}
-                            label="Enable Instagram direct messages"
+                            label={
+                              <div
+                                id="instagram_direct_message-1"
+                                style={
+                                  Object {
+                                    "cursor": "pointer",
+                                  }
+                                }
+                              >
+                                <span
+                                  style={
+                                    Object {
+                                      "borderBottom": "1px dashed #D2D7DE",
+                                    }
+                                  }
+                                >
+                                  Enable Instagram direct messages
+                                </span>
+                                <img
+                                  alt="icon"
+                                  className="ml-3"
+                                  src="test-file-stub"
+                                  style={
+                                    Object {
+                                      "verticalAlign": "text-bottom",
+                                    }
+                                  }
+                                />
+                              </div>
+                            }
                             name="1.instagram_direct_message_enabled"
                             onChange={[Function]}
                             type="checkbox"
@@ -3407,36 +3133,12 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         <td
                           className="pl-0"
                         >
-                          <Alert
-                            className="ml-1 py-1 mt-3"
-                            closeAriaLabel="Close"
-                            color="warning"
-                            fade={true}
-                            isOpen={true}
-                            tag="div"
-                            transition={
-                              Object {
-                                "appear": true,
-                                "baseClass": "fade",
-                                "baseClassActive": "show",
-                                "enter": true,
-                                "exit": true,
-                                "in": true,
-                                "mountOnEnter": false,
-                                "onEnter": [Function],
-                                "onEntered": [Function],
-                                "onEntering": [Function],
-                                "onExit": [Function],
-                                "onExited": [Function],
-                                "onExiting": [Function],
-                                "tag": "div",
-                                "timeout": 150,
-                                "unmountOnExit": true,
-                              }
-                            }
+                          <Tooltip
+                            placement="top-end"
+                            target="instagram_direct_message-1"
                           >
                             Reconnect your integration to grant us the permissions to access the Messenger API for Instagram on your behalf
-                          </Alert>
+                          </Tooltip>
                         </td>
                       </tr>
                     </tbody>
@@ -3610,52 +3312,20 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                 value={true}
               />
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
+               
+              <a
+                href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
               >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
-                 
-                <a
-                  href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
-                >
-                  this URL
-                </a>
-                , delete the Gorgias app then try again.
-              </Alert>
-            </div>
+                this URL
+              </a>
+              , delete the Gorgias app then try again.
+            </Alert>
             <div
               className="settings"
             >
@@ -3727,7 +3397,36 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         >
                           <BooleanField
                             disabled={true}
-                            label="Enable Instagram direct messages"
+                            label={
+                              <div
+                                id="instagram_direct_message-1"
+                                style={
+                                  Object {
+                                    "cursor": "pointer",
+                                  }
+                                }
+                              >
+                                <span
+                                  style={
+                                    Object {
+                                      "borderBottom": "1px dashed #D2D7DE",
+                                    }
+                                  }
+                                >
+                                  Enable Instagram direct messages
+                                </span>
+                                <img
+                                  alt="icon"
+                                  className="ml-3"
+                                  src="test-file-stub"
+                                  style={
+                                    Object {
+                                      "verticalAlign": "text-bottom",
+                                    }
+                                  }
+                                />
+                              </div>
+                            }
                             name="1.instagram_direct_message_enabled"
                             onChange={[Function]}
                             type="checkbox"
@@ -3737,36 +3436,12 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         <td
                           className="pl-0"
                         >
-                          <Alert
-                            className="ml-1 py-1 mt-3"
-                            closeAriaLabel="Close"
-                            color="warning"
-                            fade={true}
-                            isOpen={true}
-                            tag="div"
-                            transition={
-                              Object {
-                                "appear": true,
-                                "baseClass": "fade",
-                                "baseClassActive": "show",
-                                "enter": true,
-                                "exit": true,
-                                "in": true,
-                                "mountOnEnter": false,
-                                "onEnter": [Function],
-                                "onEntered": [Function],
-                                "onEntering": [Function],
-                                "onExit": [Function],
-                                "onExited": [Function],
-                                "onExiting": [Function],
-                                "tag": "div",
-                                "timeout": 150,
-                                "unmountOnExit": true,
-                              }
-                            }
+                          <Tooltip
+                            placement="top-end"
+                            target="instagram_direct_message-1"
                           >
                             Reconnect your integration to grant us the permissions to access the Messenger API for Instagram on your behalf
-                          </Alert>
+                          </Tooltip>
                         </td>
                       </tr>
                     </tbody>
@@ -3940,52 +3615,20 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                 value={true}
               />
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
+               
+              <a
+                href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
               >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
-                 
-                <a
-                  href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
-                >
-                  this URL
-                </a>
-                , delete the Gorgias app then try again.
-              </Alert>
-            </div>
+                this URL
+              </a>
+              , delete the Gorgias app then try again.
+            </Alert>
             <div
               className="settings"
             >
@@ -4057,7 +3700,36 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         >
                           <BooleanField
                             disabled={true}
-                            label="Enable Instagram direct messages"
+                            label={
+                              <div
+                                id="instagram_direct_message-1"
+                                style={
+                                  Object {
+                                    "cursor": "pointer",
+                                  }
+                                }
+                              >
+                                <span
+                                  style={
+                                    Object {
+                                      "borderBottom": "1px dashed #D2D7DE",
+                                    }
+                                  }
+                                >
+                                  Enable Instagram direct messages
+                                </span>
+                                <img
+                                  alt="icon"
+                                  className="ml-3"
+                                  src="test-file-stub"
+                                  style={
+                                    Object {
+                                      "verticalAlign": "text-bottom",
+                                    }
+                                  }
+                                />
+                              </div>
+                            }
                             name="1.instagram_direct_message_enabled"
                             onChange={[Function]}
                             type="checkbox"
@@ -4067,36 +3739,12 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         <td
                           className="pl-0"
                         >
-                          <Alert
-                            className="ml-1 py-1 mt-3"
-                            closeAriaLabel="Close"
-                            color="warning"
-                            fade={true}
-                            isOpen={true}
-                            tag="div"
-                            transition={
-                              Object {
-                                "appear": true,
-                                "baseClass": "fade",
-                                "baseClassActive": "show",
-                                "enter": true,
-                                "exit": true,
-                                "in": true,
-                                "mountOnEnter": false,
-                                "onEnter": [Function],
-                                "onEntered": [Function],
-                                "onEntering": [Function],
-                                "onExit": [Function],
-                                "onExited": [Function],
-                                "onExiting": [Function],
-                                "tag": "div",
-                                "timeout": 150,
-                                "unmountOnExit": true,
-                              }
-                            }
+                          <Tooltip
+                            placement="top-end"
+                            target="instagram_direct_message-1"
                           >
                             Reconnect your integration to grant us the permissions to access the Messenger API for Instagram on your behalf
-                          </Alert>
+                          </Tooltip>
                         </td>
                       </tr>
                     </tbody>
@@ -4266,52 +3914,20 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                 </div>
               </div>
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
+               
+              <a
+                href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
               >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
-                 
-                <a
-                  href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
-                >
-                  this URL
-                </a>
-                , delete the Gorgias app then try again.
-              </Alert>
-            </div>
+                this URL
+              </a>
+              , delete the Gorgias app then try again.
+            </Alert>
           </div>
         </div>
         <Pagination
@@ -4446,52 +4062,20 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                 value={true}
               />
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
+               
+              <a
+                href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
               >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
-                 
-                <a
-                  href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
-                >
-                  this URL
-                </a>
-                , delete the Gorgias app then try again.
-              </Alert>
-            </div>
+                this URL
+              </a>
+              , delete the Gorgias app then try again.
+            </Alert>
             <div
               className="settings"
             >
@@ -4563,7 +4147,36 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         >
                           <BooleanField
                             disabled={true}
-                            label="Enable Instagram direct messages"
+                            label={
+                              <div
+                                id="instagram_direct_message-1"
+                                style={
+                                  Object {
+                                    "cursor": "pointer",
+                                  }
+                                }
+                              >
+                                <span
+                                  style={
+                                    Object {
+                                      "borderBottom": "1px dashed #D2D7DE",
+                                    }
+                                  }
+                                >
+                                  Enable Instagram direct messages
+                                </span>
+                                <img
+                                  alt="icon"
+                                  className="ml-3"
+                                  src="test-file-stub"
+                                  style={
+                                    Object {
+                                      "verticalAlign": "text-bottom",
+                                    }
+                                  }
+                                />
+                              </div>
+                            }
                             name="1.instagram_direct_message_enabled"
                             onChange={[Function]}
                             type="checkbox"
@@ -4573,36 +4186,12 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         <td
                           className="pl-0"
                         >
-                          <Alert
-                            className="ml-1 py-1 mt-3"
-                            closeAriaLabel="Close"
-                            color="warning"
-                            fade={true}
-                            isOpen={true}
-                            tag="div"
-                            transition={
-                              Object {
-                                "appear": true,
-                                "baseClass": "fade",
-                                "baseClassActive": "show",
-                                "enter": true,
-                                "exit": true,
-                                "in": true,
-                                "mountOnEnter": false,
-                                "onEnter": [Function],
-                                "onEntered": [Function],
-                                "onEntering": [Function],
-                                "onExit": [Function],
-                                "onExited": [Function],
-                                "onExiting": [Function],
-                                "tag": "div",
-                                "timeout": 150,
-                                "unmountOnExit": true,
-                              }
-                            }
+                          <Tooltip
+                            placement="top-end"
+                            target="instagram_direct_message-1"
                           >
                             Reconnect your integration to grant us the permissions to access the Messenger API for Instagram on your behalf
-                          </Alert>
+                          </Tooltip>
                         </td>
                       </tr>
                     </tbody>
@@ -4772,52 +4361,20 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                 </div>
               </div>
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
+               
+              <a
+                href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
               >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
-                 
-                <a
-                  href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
-                >
-                  this URL
-                </a>
-                , delete the Gorgias app then try again.
-              </Alert>
-            </div>
+                this URL
+              </a>
+              , delete the Gorgias app then try again.
+            </Alert>
           </div>
         </div>
         <Pagination
@@ -4952,52 +4509,20 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                 value={true}
               />
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
+               
+              <a
+                href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
               >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
-                 
-                <a
-                  href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
-                >
-                  this URL
-                </a>
-                , delete the Gorgias app then try again.
-              </Alert>
-            </div>
+                this URL
+              </a>
+              , delete the Gorgias app then try again.
+            </Alert>
             <div
               className="settings"
             >
@@ -5069,7 +4594,36 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         >
                           <BooleanField
                             disabled={true}
-                            label="Enable Instagram direct messages"
+                            label={
+                              <div
+                                id="instagram_direct_message-1"
+                                style={
+                                  Object {
+                                    "cursor": "pointer",
+                                  }
+                                }
+                              >
+                                <span
+                                  style={
+                                    Object {
+                                      "borderBottom": "1px dashed #D2D7DE",
+                                    }
+                                  }
+                                >
+                                  Enable Instagram direct messages
+                                </span>
+                                <img
+                                  alt="icon"
+                                  className="ml-3"
+                                  src="test-file-stub"
+                                  style={
+                                    Object {
+                                      "verticalAlign": "text-bottom",
+                                    }
+                                  }
+                                />
+                              </div>
+                            }
                             name="1.instagram_direct_message_enabled"
                             onChange={[Function]}
                             type="checkbox"
@@ -5079,36 +4633,12 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         <td
                           className="pl-0"
                         >
-                          <Alert
-                            className="ml-1 py-1 mt-3"
-                            closeAriaLabel="Close"
-                            color="warning"
-                            fade={true}
-                            isOpen={true}
-                            tag="div"
-                            transition={
-                              Object {
-                                "appear": true,
-                                "baseClass": "fade",
-                                "baseClassActive": "show",
-                                "enter": true,
-                                "exit": true,
-                                "in": true,
-                                "mountOnEnter": false,
-                                "onEnter": [Function],
-                                "onEntered": [Function],
-                                "onEntering": [Function],
-                                "onExit": [Function],
-                                "onExited": [Function],
-                                "onExiting": [Function],
-                                "tag": "div",
-                                "timeout": 150,
-                                "unmountOnExit": true,
-                              }
-                            }
+                          <Tooltip
+                            placement="top-end"
+                            target="instagram_direct_message-1"
                           >
                             Reconnect your integration to grant us the permissions to access the Messenger API for Instagram on your behalf
-                          </Alert>
+                          </Tooltip>
                         </td>
                       </tr>
                     </tbody>
@@ -5278,52 +4808,20 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                 </div>
               </div>
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
+               
+              <a
+                href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
               >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
-                 
-                <a
-                  href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
-                >
-                  this URL
-                </a>
-                , delete the Gorgias app then try again.
-              </Alert>
-            </div>
+                this URL
+              </a>
+              , delete the Gorgias app then try again.
+            </Alert>
           </div>
         </div>
         <Pagination
@@ -5458,52 +4956,20 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                 value={true}
               />
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
+               
+              <a
+                href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
               >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
-                 
-                <a
-                  href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
-                >
-                  this URL
-                </a>
-                , delete the Gorgias app then try again.
-              </Alert>
-            </div>
+                this URL
+              </a>
+              , delete the Gorgias app then try again.
+            </Alert>
             <div
               className="settings"
             >
@@ -5575,7 +5041,36 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         >
                           <BooleanField
                             disabled={true}
-                            label="Enable Instagram direct messages"
+                            label={
+                              <div
+                                id="instagram_direct_message-1"
+                                style={
+                                  Object {
+                                    "cursor": "pointer",
+                                  }
+                                }
+                              >
+                                <span
+                                  style={
+                                    Object {
+                                      "borderBottom": "1px dashed #D2D7DE",
+                                    }
+                                  }
+                                >
+                                  Enable Instagram direct messages
+                                </span>
+                                <img
+                                  alt="icon"
+                                  className="ml-3"
+                                  src="test-file-stub"
+                                  style={
+                                    Object {
+                                      "verticalAlign": "text-bottom",
+                                    }
+                                  }
+                                />
+                              </div>
+                            }
                             name="1.instagram_direct_message_enabled"
                             onChange={[Function]}
                             type="checkbox"
@@ -5585,36 +5080,12 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         <td
                           className="pl-0"
                         >
-                          <Alert
-                            className="ml-1 py-1 mt-3"
-                            closeAriaLabel="Close"
-                            color="warning"
-                            fade={true}
-                            isOpen={true}
-                            tag="div"
-                            transition={
-                              Object {
-                                "appear": true,
-                                "baseClass": "fade",
-                                "baseClassActive": "show",
-                                "enter": true,
-                                "exit": true,
-                                "in": true,
-                                "mountOnEnter": false,
-                                "onEnter": [Function],
-                                "onEntered": [Function],
-                                "onEntering": [Function],
-                                "onExit": [Function],
-                                "onExited": [Function],
-                                "onExiting": [Function],
-                                "tag": "div",
-                                "timeout": 150,
-                                "unmountOnExit": true,
-                              }
-                            }
+                          <Tooltip
+                            placement="top-end"
+                            target="instagram_direct_message-1"
                           >
                             Reconnect your integration to grant us the permissions to access the Messenger API for Instagram on your behalf
-                          </Alert>
+                          </Tooltip>
                         </td>
                       </tr>
                     </tbody>
@@ -5784,52 +5255,20 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                 </div>
               </div>
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
+               
+              <a
+                href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
               >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
-                 
-                <a
-                  href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
-                >
-                  this URL
-                </a>
-                , delete the Gorgias app then try again.
-              </Alert>
-            </div>
+                this URL
+              </a>
+              , delete the Gorgias app then try again.
+            </Alert>
           </div>
         </div>
         <Pagination
@@ -5964,52 +5403,20 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                 value={true}
               />
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
+               
+              <a
+                href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
               >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
-                 
-                <a
-                  href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
-                >
-                  this URL
-                </a>
-                , delete the Gorgias app then try again.
-              </Alert>
-            </div>
+                this URL
+              </a>
+              , delete the Gorgias app then try again.
+            </Alert>
             <div
               className="settings"
             >
@@ -6081,7 +5488,15 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         >
                           <BooleanField
                             disabled={false}
-                            label="Enable Instagram direct messages"
+                            label={
+                              <div
+                                id="instagram_direct_message-1"
+                              >
+                                <span>
+                                  Enable Instagram direct messages
+                                </span>
+                              </div>
+                            }
                             name="1.instagram_direct_message_enabled"
                             onChange={[Function]}
                             type="checkbox"
@@ -6259,52 +5674,20 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                 </div>
               </div>
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
+               
+              <a
+                href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
               >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
-                 
-                <a
-                  href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
-                >
-                  this URL
-                </a>
-                , delete the Gorgias app then try again.
-              </Alert>
-            </div>
+                this URL
+              </a>
+              , delete the Gorgias app then try again.
+            </Alert>
           </div>
         </div>
         <Pagination
@@ -6439,52 +5822,20 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                 value={true}
               />
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
+               
+              <a
+                href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
               >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
-                 
-                <a
-                  href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
-                >
-                  this URL
-                </a>
-                , delete the Gorgias app then try again.
-              </Alert>
-            </div>
+                this URL
+              </a>
+              , delete the Gorgias app then try again.
+            </Alert>
             <div
               className="settings"
             >
@@ -6556,7 +5907,36 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         >
                           <BooleanField
                             disabled={true}
-                            label="Enable Instagram direct messages"
+                            label={
+                              <div
+                                id="instagram_direct_message-1"
+                                style={
+                                  Object {
+                                    "cursor": "pointer",
+                                  }
+                                }
+                              >
+                                <span
+                                  style={
+                                    Object {
+                                      "borderBottom": "1px dashed #D2D7DE",
+                                    }
+                                  }
+                                >
+                                  Enable Instagram direct messages
+                                </span>
+                                <img
+                                  alt="icon"
+                                  className="ml-3"
+                                  src="test-file-stub"
+                                  style={
+                                    Object {
+                                      "verticalAlign": "text-bottom",
+                                    }
+                                  }
+                                />
+                              </div>
+                            }
                             name="1.instagram_direct_message_enabled"
                             onChange={[Function]}
                             type="checkbox"
@@ -6566,36 +5946,12 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         <td
                           className="pl-0"
                         >
-                          <Alert
-                            className="ml-1 py-1 mt-3"
-                            closeAriaLabel="Close"
-                            color="warning"
-                            fade={true}
-                            isOpen={true}
-                            tag="div"
-                            transition={
-                              Object {
-                                "appear": true,
-                                "baseClass": "fade",
-                                "baseClassActive": "show",
-                                "enter": true,
-                                "exit": true,
-                                "in": true,
-                                "mountOnEnter": false,
-                                "onEnter": [Function],
-                                "onEntered": [Function],
-                                "onEntering": [Function],
-                                "onExit": [Function],
-                                "onExited": [Function],
-                                "onExiting": [Function],
-                                "tag": "div",
-                                "timeout": 150,
-                                "unmountOnExit": true,
-                              }
-                            }
+                          <Tooltip
+                            placement="top-end"
+                            target="instagram_direct_message-1"
                           >
                             Reconnect your integration to grant us the permissions to access the Messenger API for Instagram on your behalf
-                          </Alert>
+                          </Tooltip>
                         </td>
                       </tr>
                     </tbody>
@@ -6765,52 +6121,20 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                 </div>
               </div>
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
+               
+              <a
+                href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
               >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
-                 
-                <a
-                  href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
-                >
-                  this URL
-                </a>
-                , delete the Gorgias app then try again.
-              </Alert>
-            </div>
+                this URL
+              </a>
+              , delete the Gorgias app then try again.
+            </Alert>
           </div>
         </div>
         <Pagination
@@ -6941,52 +6265,20 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                 </div>
               </div>
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
+               
+              <a
+                href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
               >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
-                 
-                <a
-                  href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
-                >
-                  this URL
-                </a>
-                , delete the Gorgias app then try again.
-              </Alert>
-            </div>
+                this URL
+              </a>
+              , delete the Gorgias app then try again.
+            </Alert>
           </div>
         </div>
         <Pagination
@@ -7121,52 +6413,20 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                 value={true}
               />
             </div>
-            <div
-              className="d-flex mt-3"
+            <Alert
+              className="mt16"
+              icon={true}
+              type="warning"
             >
-              <Alert
-                className="align-items-center"
-                closeAriaLabel="Close"
-                color="warning"
-                fade={true}
-                isOpen={true}
-                tag="div"
-                transition={
-                  Object {
-                    "appear": true,
-                    "baseClass": "fade",
-                    "baseClassActive": "show",
-                    "enter": true,
-                    "exit": true,
-                    "in": true,
-                    "mountOnEnter": false,
-                    "onEnter": [Function],
-                    "onEntered": [Function],
-                    "onEntering": [Function],
-                    "onExit": [Function],
-                    "onExited": [Function],
-                    "onExiting": [Function],
-                    "tag": "div",
-                    "timeout": 150,
-                    "unmountOnExit": true,
-                  }
-                }
+              Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
+               
+              <a
+                href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
               >
-                <i
-                  className="material-icons md-3 mr-3"
-                >
-                  warning
-                </i>
-                Entire page or some features are disabled because you didn't grant all the permissions we asked for when logging to Facebook. To fix this, navigate to
-                 
-                <a
-                  href="https://www.facebook.com/settings?tab=business_tools&ref=settings"
-                >
-                  this URL
-                </a>
-                , delete the Gorgias app then try again.
-              </Alert>
-            </div>
+                this URL
+              </a>
+              , delete the Gorgias app then try again.
+            </Alert>
             <div
               className="settings"
             >
@@ -7238,7 +6498,15 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         >
                           <BooleanField
                             disabled={false}
-                            label="Enable Instagram direct messages"
+                            label={
+                              <div
+                                id="instagram_direct_message-1"
+                              >
+                                <span>
+                                  Enable Instagram direct messages
+                                </span>
+                              </div>
+                            }
                             name="1.instagram_direct_message_enabled"
                             onChange={[Function]}
                             type="checkbox"

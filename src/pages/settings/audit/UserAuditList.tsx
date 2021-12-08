@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Alert, Container, Table} from 'reactstrap'
+import {Container, Table} from 'reactstrap'
 import _pick from 'lodash/pick'
 import moment from 'moment-timezone'
 import {Map} from 'immutable'
@@ -10,6 +10,7 @@ import PageHeader from '../../common/components/PageHeader'
 import PeriodPicker from '../../stats/common/PeriodPicker'
 import SelectFilter from '../../stats/common/SelectFilter'
 import Pagination from '../../common/components/Pagination'
+import Alert from '../../common/components/Alert/Alert'
 import {fetchUsersAudit} from '../../../state/usersAudit/actions'
 import {
     getUserAuditEvents,
@@ -210,7 +211,7 @@ export class UserAuditListContainer extends Component<Props, State> {
                             User audit logs display recent actions performed by
                             users in Gorgias.
                         </p>
-                        <Alert color="info">
+                        <Alert className={css.mb16}>
                             This section is still under development, more
                             details will be added to the list in the future.
                             We'd love to hear your feedback!

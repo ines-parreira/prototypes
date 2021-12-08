@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom'
 import {fromJS, Map} from 'immutable'
 import Clipboard from 'clipboard'
 import {
-    Alert,
     Breadcrumb,
     BreadcrumbItem,
     Button,
@@ -26,6 +25,7 @@ import {IntegrationType} from '../../../../../models/integration/types'
 import EmojiTextInput from '../../../../common/forms/EmojiTextInput/EmojiTextInput'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import BooleanField from '../../../../common/forms/BooleanField.js'
+import Alert, {AlertType} from '../../../../common/components/Alert/Alert'
 import {
     deleteIntegration,
     updateOrCreateIntegration,
@@ -220,7 +220,12 @@ export default function PhoneIntegrationPreferences({
                     <Col lg={6} xl={7}>
                         <Form onSubmit={onSubmit}>
                             {!!error && (
-                                <Alert color="danger">{error.toString()}</Alert>
+                                <Alert
+                                    type={AlertType.Error}
+                                    className={css.mb16}
+                                >
+                                    {error.toString()}
+                                </Alert>
                             )}
                             <FormGroup>
                                 <Label

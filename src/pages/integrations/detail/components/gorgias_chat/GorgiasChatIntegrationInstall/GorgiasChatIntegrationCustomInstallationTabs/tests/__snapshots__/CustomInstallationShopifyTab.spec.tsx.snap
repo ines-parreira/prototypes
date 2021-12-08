@@ -93,31 +93,7 @@ exports[`<CustomInstallationShopifyTab/> should display the custom installation 
     </div>
   </div>
   <Alert
-    closeAriaLabel="Close"
-    color="warning"
-    fade={true}
-    isOpen={true}
-    tag="div"
-    transition={
-      Object {
-        "appear": true,
-        "baseClass": "fade",
-        "baseClassActive": "show",
-        "enter": true,
-        "exit": true,
-        "in": true,
-        "mountOnEnter": false,
-        "onEnter": [Function],
-        "onEntered": [Function],
-        "onEntering": [Function],
-        "onExit": [Function],
-        "onExited": [Function],
-        "onExiting": [Function],
-        "tag": "div",
-        "timeout": 150,
-        "unmountOnExit": true,
-      }
-    }
+    type="warning"
   >
     Please note that by copying the code to your Shopify
      
@@ -225,31 +201,7 @@ exports[`<CustomInstallationShopifyTab/> should display the custom installation 
     </div>
   </div>
   <Alert
-    closeAriaLabel="Close"
-    color="warning"
-    fade={true}
-    isOpen={true}
-    tag="div"
-    transition={
-      Object {
-        "appear": true,
-        "baseClass": "fade",
-        "baseClassActive": "show",
-        "enter": true,
-        "exit": true,
-        "in": true,
-        "mountOnEnter": false,
-        "onEnter": [Function],
-        "onEntered": [Function],
-        "onEntering": [Function],
-        "onExit": [Function],
-        "onExited": [Function],
-        "onExiting": [Function],
-        "tag": "div",
-        "timeout": 150,
-        "unmountOnExit": true,
-      }
-    }
+    type="warning"
   >
     Please note that by copying the code to your Shopify
      

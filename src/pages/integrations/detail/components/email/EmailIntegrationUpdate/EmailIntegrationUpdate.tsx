@@ -12,7 +12,6 @@ import {
     Button,
     InputGroup,
     InputGroupAddon,
-    Alert,
     Input,
     FormGroup,
 } from 'reactstrap'
@@ -39,6 +38,7 @@ import {
     OUTLOOK_IMPORTED_EMAILS_FOR_YEARS,
 } from '../../../../../../config'
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
+import Alert from '../../../../../common/components/Alert/Alert'
 
 import InputField from '../../../../../common/forms/InputField.js'
 import BooleanField from '../../../../../common/forms/BooleanField.js'
@@ -323,7 +323,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         if (isGorgiasSupportAddress(address)) {
             // no need to display instructions for our own support address
             return (
-                <Alert color="info">
+                <Alert>
                     Emails sent to <b>{address}</b> will arrive in the helpdesk,
                     but we recommend using your own company support address.
                 </Alert>
@@ -373,7 +373,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                     </InputGroupAddon>
                 </InputGroup>
                 <br />
-                <Alert color="info">
+                <Alert>
                     We also <strong>highly recommend</strong> you{' '}
                     <a
                         target="_blank"

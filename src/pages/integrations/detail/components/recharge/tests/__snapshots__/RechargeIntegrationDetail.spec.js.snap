@@ -50,30 +50,41 @@ exports[`<RechargeIntegrationDetail/> render() should not render anything about 
           class="col-md-8"
         >
           <div
-            class="mb-4 alert alert-info fade"
-            role="alert"
+            class="alert info mb16"
           >
-            <p>
-              <b
-                class="alert-heading"
+            <div
+              class="content"
+            >
+              <span
+                class="label"
               >
-                <i
-                  class="material-icons md-spin mr-2"
+                <p>
+                  <b
+                    class="alert-heading"
+                  >
+                    <i
+                      class="material-icons md-spin mr-2"
+                    >
+                      autorenew
+                    </i>
+                    Importing your Recharge customers
+                  </b>
+                </p>
+                <span>
+                  We're currently importing all your Recharge customers. This way, you'll see customer info & orders next to tickets. We'll notify you via email when the import is done.
+                </span>
+              </span>
+              <div
+                class="customActions"
+              >
+                <a
+                  class="actionLink"
+                  to="/app/customers"
                 >
-                  autorenew
-                </i>
-                Importing your Recharge customers
-              </b>
-            </p>
-            <p>
-              We're currently importing all your Recharge customers. This way, you'll see customer info & orders next to tickets. We'll notify you via email when the import is done.
-               
-              <a
-                to="/app/customers"
-              >
-                Review imported customers.
-              </a>
-            </p>
+                  Review imported customers
+                </a>
+              </div>
+            </div>
           </div>
           <div
             class="InputField required form-group"
@@ -325,30 +336,41 @@ exports[`<RechargeIntegrationDetail/> render() should render an alert because th
           class="col-md-8"
         >
           <div
-            class="mb-4 alert alert-info fade"
-            role="alert"
+            class="alert info mb16"
           >
-            <p>
-              <b
-                class="alert-heading"
+            <div
+              class="content"
+            >
+              <span
+                class="label"
               >
-                <i
-                  class="material-icons md-spin mr-2"
+                <p>
+                  <b
+                    class="alert-heading"
+                  >
+                    <i
+                      class="material-icons md-spin mr-2"
+                    >
+                      autorenew
+                    </i>
+                    Importing your Recharge customers
+                  </b>
+                </p>
+                <span>
+                  We're currently importing all your Recharge customers. This way, you'll see customer info & orders next to tickets. We'll notify you via email when the import is done.
+                </span>
+              </span>
+              <div
+                class="customActions"
+              >
+                <a
+                  class="actionLink"
+                  to="/app/customers"
                 >
-                  autorenew
-                </i>
-                Importing your Recharge customers
-              </b>
-            </p>
-            <p>
-              We're currently importing all your Recharge customers. This way, you'll see customer info & orders next to tickets. We'll notify you via email when the import is done.
-               
-              <a
-                to="/app/customers"
-              >
-                Review imported customers.
-              </a>
-            </p>
+                  Review imported customers
+                </a>
+              </div>
+            </div>
           </div>
           <div
             class="InputField required form-group"
@@ -459,30 +481,41 @@ exports[`<RechargeIntegrationDetail/> render() should render buttons loading and
           class="col-md-8"
         >
           <div
-            class="mb-4 alert alert-info fade"
-            role="alert"
+            class="alert info mb16"
           >
-            <p>
-              <b
-                class="alert-heading"
+            <div
+              class="content"
+            >
+              <span
+                class="label"
               >
-                <i
-                  class="material-icons md-spin mr-2"
+                <p>
+                  <b
+                    class="alert-heading"
+                  >
+                    <i
+                      class="material-icons md-spin mr-2"
+                    >
+                      autorenew
+                    </i>
+                    Importing your Recharge customers
+                  </b>
+                </p>
+                <span>
+                  We're currently importing all your Recharge customers. This way, you'll see customer info & orders next to tickets. We'll notify you via email when the import is done.
+                </span>
+              </span>
+              <div
+                class="customActions"
+              >
+                <a
+                  class="actionLink"
+                  to="/app/customers"
                 >
-                  autorenew
-                </i>
-                Importing your Recharge customers
-              </b>
-            </p>
-            <p>
-              We're currently importing all your Recharge customers. This way, you'll see customer info & orders next to tickets. We'll notify you via email when the import is done.
-               
-              <a
-                to="/app/customers"
-              >
-                Review imported customers.
-              </a>
-            </p>
+                  Review imported customers
+                </a>
+              </div>
+            </div>
           </div>
           <div
             class="InputField required form-group"
@@ -593,30 +626,41 @@ exports[`<RechargeIntegrationDetail/> render() should render not render deactiva
           class="col-md-8"
         >
           <div
-            class="mb-4 alert alert-info fade"
-            role="alert"
+            class="alert info mb16"
           >
-            <p>
-              <b
-                class="alert-heading"
+            <div
+              class="content"
+            >
+              <span
+                class="label"
               >
-                <i
-                  class="material-icons md-spin mr-2"
+                <p>
+                  <b
+                    class="alert-heading"
+                  >
+                    <i
+                      class="material-icons md-spin mr-2"
+                    >
+                      autorenew
+                    </i>
+                    Importing your Recharge customers
+                  </b>
+                </p>
+                <span>
+                  We're currently importing all your Recharge customers. This way, you'll see customer info & orders next to tickets. We'll notify you via email when the import is done.
+                </span>
+              </span>
+              <div
+                class="customActions"
+              >
+                <a
+                  class="actionLink"
+                  to="/app/customers"
                 >
-                  autorenew
-                </i>
-                Importing your Recharge customers
-              </b>
-            </p>
-            <p>
-              We're currently importing all your Recharge customers. This way, you'll see customer info & orders next to tickets. We'll notify you via email when the import is done.
-               
-              <a
-                to="/app/customers"
-              >
-                Review imported customers.
-              </a>
-            </p>
+                  Review imported customers
+                </a>
+              </div>
+            </div>
           </div>
           <div
             class="InputField required form-group"

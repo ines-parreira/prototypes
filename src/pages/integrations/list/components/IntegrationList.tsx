@@ -1,12 +1,14 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
-import {Alert, Container, Row, Col} from 'reactstrap'
+import {Col, Container, Row} from 'reactstrap'
 import {List, Map} from 'immutable'
 
 import {IntegrationType} from '../../../../models/integration/types'
 import {getCheapestPlanNameForFeature} from '../../../../utils/paywalls'
 import {toJS} from '../../../../utils'
 import PageHeader from '../../../common/components/PageHeader'
+import {AlertType} from '../../../common/components/Alert/Alert'
+import LinkAlert from '../../../common/components/Alert/LinkAlert'
+
 import {isFeatureEnabled} from '../../../../utils/account'
 import css from '../../../settings/settings.less'
 
@@ -32,12 +34,16 @@ export default class IntegrationList extends React.Component<Props> {
         }
 
         return (
-            <Alert
-                color={remainingIntegrations > 0 ? 'warning' : 'danger'}
-                className="d-flex align-items-center"
+            <LinkAlert
+                type={
+                    remainingIntegrations > 0
+                        ? AlertType.Warning
+                        : AlertType.Error
+                }
+                icon
+                actionLabel="Upgrade your plan"
+                actionHref={'/app/settings/billing'}
             >
-                <i className="material-icons md-3 mr-3">error</i>
-
                 {remainingIntegrations > 0 ? (
                     <span>
                         You are using{' '}
@@ -50,25 +56,17 @@ export default class IntegrationList extends React.Component<Props> {
                         <strong>
                             {this.props.currentPlan.get('name')} plan.
                         </strong>{' '}
-                        Need more?{' '}
-                        <Link to="/app/settings/billing" className="alert-link">
-                            Upgrade your account.
-                        </Link>
+                        Need more?
                     </span>
                 ) : (
                     <span>
                         <strong>
-                            {' '}
                             Your account has reached the integration limit.{' '}
                         </strong>
-                        To add more integrations,{' '}
-                        <Link to="/app/settings/billing" className="alert-link">
-                            upgrade your plan
-                        </Link>
-                        .
+                        Need more?
                     </span>
                 )}
-            </Alert>
+            </LinkAlert>
         )
     }
 
@@ -106,25 +104,24 @@ export default class IntegrationList extends React.Component<Props> {
 
     _deprecatedChatWarning = () => {
         return (
-            <Alert color="danger">
-                <span>
-                    You are currently using a deprecated version of the chat
-                    integration. If applicable, please migrate to the{' '}
-                    <Link to="/app/settings/integrations/gorgias_chat">
-                        new chat integration
-                    </Link>{' '}
-                    by 03/31 following these{' '}
-                    <a
-                        href="https://docs.gorgias.com/gorgias-chat/migrating-to-new-chat-integration-beta-version"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        instructions
-                    </a>
-                    . Past this date, any remaining active integrations will be
-                    automatically removed.
-                </span>
-            </Alert>
+            <LinkAlert
+                type={AlertType.Error}
+                actionLabel="Migrate"
+                actionHref="/app/settings/integrations/gorgias_chat"
+            >
+                You are currently using a deprecated version of the chat
+                integration. If applicable, please migrate to the{' '}
+                <strong>new chat integration</strong> by 03/31 following these{' '}
+                <a
+                    href="https://docs.gorgias.com/gorgias-chat/migrating-to-new-chat-integration-beta-version"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    instructions
+                </a>
+                . Past this date, any remaining active integrations will be
+                automatically removed.
+            </LinkAlert>
         )
     }
 
@@ -202,7 +199,7 @@ export default class IntegrationList extends React.Component<Props> {
                         </Col>
                     </Row>
                     {hasActiveSmoochInsideIntegrations && (
-                        <Row>
+                        <Row className="mb-4">
                             <Col>{this._deprecatedChatWarning()}</Col>
                         </Row>
                     )}

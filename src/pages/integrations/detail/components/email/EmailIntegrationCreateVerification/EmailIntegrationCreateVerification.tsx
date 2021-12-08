@@ -1,12 +1,5 @@
 import React, {Component, FormEvent} from 'react'
-import {
-    Alert,
-    Button,
-    Breadcrumb,
-    BreadcrumbItem,
-    Container,
-    Form,
-} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Button, Container, Form} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import classNames from 'classnames'
@@ -14,6 +7,7 @@ import {Map} from 'immutable'
 
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
 import PageHeader from '../../../../../common/components/PageHeader'
+import Alert, {AlertType} from '../../../../../common/components/Alert/Alert'
 import socketManager from '../../../../../../services/socketManager/socketManager'
 import {resendVerificationEmail} from '../../../../../../state/currentAccount/actions'
 import {
@@ -127,8 +121,12 @@ export class EmailIntegrationCreateVerification extends Component<
         return (
             <div>
                 {!isShowingManualEmailVerificationForm && (
-                    <Alert color="info" className="mb-4">
-                        <i className="material-icons md-spin mr-2">autorenew</i>
+                    <Alert
+                        className={css.mb16}
+                        icon={
+                            <i className="material-icons md-spin">autorenew</i>
+                        }
+                    >
                         We're waiting to receive your verification email on{' '}
                         <strong>{forwardingEmailAddress}</strong>.
                     </Alert>
@@ -210,7 +208,7 @@ export class EmailIntegrationCreateVerification extends Component<
 
         return (
             <div>
-                <Alert color="warning" className="mb-4">
+                <Alert type={AlertType.Warning} className={css.mb16}>
                     In order to verify your base email integration, you need to
                     verify your own email address. Please check your inbox, you
                     should have received a verification email from us. If you

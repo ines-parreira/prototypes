@@ -3,28 +3,36 @@
 exports[`<LegacyPlanBanner /> should render the legacy plan banner 1`] = `
 <div>
   <div
-    class="legacyExpirationBanner"
+    class="alert error legacyExpirationAlert"
   >
-    <i
-      class="material-icons"
-    >
-      error
-    </i>
     <div
-      class="legacyExpirationBannerLabel"
+      class="iconContainer"
     >
-      You are subscribed to a legacy plan. New features are only
-                available on our new plans. Reach out to our support team with any questions.
-       
-      <a
-        to="/app/settings/billing/plans"
+      <img
+        alt="icon"
+        class="icon"
+        src="test-file-stub"
+      />
+    </div>
+    <div
+      class="content"
+    >
+      <span
+        class="label"
       >
-        <span
-          class="plansLink"
+        You are subscribed to a legacy plan. New features are only
+                available on our new plans. Reach out to our support team with any questions.
+      </span>
+      <div
+        class="customActions"
+      >
+        <a
+          class="actionLink"
+          to="/app/settings/billing/plans"
         >
           See all new plans.
-        </span>
-      </a>
+        </a>
+      </div>
     </div>
   </div>
 </div>
@@ -33,24 +41,36 @@ exports[`<LegacyPlanBanner /> should render the legacy plan banner 1`] = `
 exports[`<LegacyPlanBanner /> should render the legacy plan banner 2`] = `
 <div>
   <div
-    class="legacyExpirationBanner"
+    class="alert error legacyExpirationAlert"
   >
-    <i
-      class="material-icons"
-    >
-      error
-    </i>
     <div
-      class="legacyExpirationBannerLabel"
+      class="iconContainer"
     >
-      You are subscribed to a legacy plan. New features are only
-                available on our new plans.
-       
-      <a
-        href=""
+      <img
+        alt="icon"
+        class="icon"
+        src="test-file-stub"
+      />
+    </div>
+    <div
+      class="content"
+    >
+      <span
+        class="label"
       >
-        Reach out to support
-      </a>
+        You are subscribed to a legacy plan. New features are only
+                available on our new plans.
+      </span>
+      <div
+        class="customActions"
+      >
+        <a
+          class="actionLink"
+          to="#"
+        >
+          Reach out to support
+        </a>
+      </div>
     </div>
   </div>
 </div>

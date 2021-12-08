@@ -1,14 +1,7 @@
 import React, {ReactNode} from 'react'
 import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
-import {
-    Alert,
-    Breadcrumb,
-    BreadcrumbItem,
-    Button,
-    Container,
-    Table,
-} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Button, Container, Table} from 'reactstrap'
 import {parse} from 'query-string'
 import moment from 'moment'
 import {List, Map} from 'immutable'
@@ -17,6 +10,8 @@ import classnames from 'classnames'
 import {getIntegrationConfig} from '../../../../state/integrations/helpers'
 import {notify} from '../../../../state/notifications/actions'
 import PageHeader from '../../../common/components/PageHeader'
+import Alert, {AlertType} from '../../../common/components/Alert/Alert'
+
 import {IntegrationType} from '../../../../models/integration/types'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import css from '../../../settings/settings.less'
@@ -81,7 +76,7 @@ class IntegrationList extends React.Component<Props> {
 
         if (olderIntegrations.size > 0) {
             return (
-                <Alert color="warning">
+                <Alert type={AlertType.Warning}>
                     Due to security reasons, we updated the webhook URL for
                     Aircall. Please update your integration by clicking ”Connect
                     Aircall”.

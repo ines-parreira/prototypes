@@ -1,10 +1,10 @@
 import React from 'react'
-import {Alert} from 'reactstrap'
 import {Map} from 'immutable'
 
 import UpgradeButton from '../../../../common/components/UpgradeButton/UpgradeButton'
 import {SegmentEvent} from '../../../../../store/middlewares/types/segmentTracker'
 import {AccountFeature} from '../../../../../state/currentAccount/types'
+import Tooltip from '../../../../common/components/Tooltip'
 
 // PERMISSIONS in FB documentation
 // https://developers.facebook.com/docs/pages/overview/permissions-features#permissions
@@ -256,7 +256,8 @@ export function getInstagramDMSettingStatus(
 export function getInstagramDMSettingsInlineComponent(
     instagramDMSettingStatus: number,
     currentAccount: Map<any, any>,
-    currentPlan: Map<any, any>
+    currentPlan: Map<any, any>,
+    tooltipId?: number
 ) {
     const currentPlanHasInstagramDMFeature = currentPlan.getIn([
         'features',
@@ -288,16 +289,32 @@ export function getInstagramDMSettingsInlineComponent(
         instagramDMSettingStatus === InstagramDMSettingStatus.SHOULD_RECONNECT
     ) {
         return (
-            <Alert color="warning" className="ml-1 py-1 mt-3">
+            <Tooltip
+                target={
+                    tooltipId
+                        ? `instagram_direct_message-${tooltipId}`
+                        : 'instagram_direct_message'
+                }
+                placement="top-end"
+            >
                 Reconnect your integration to grant us the permissions to access
                 the Messenger API for Instagram on your behalf
-            </Alert>
+            </Tooltip>
         )
     } else if (
         instagramDMSettingStatus === InstagramDMSettingStatus.NOT_ALLOWED
     ) {
         return (
-            <Alert color="warning" className="ml-1 py-1 mt-3">
+            <Tooltip
+                target={
+                    tooltipId
+                        ? `instagram_direct_message-${tooltipId}`
+                        : 'instagram_direct_message'
+                }
+                placement="top-end"
+                autohide={false}
+                delay={0}
+            >
                 To activate Instagram Messaging, please click the green{' '}
                 <b>Reconnect</b> button. If this message persists, please check
                 that you have enabled the{' '}
@@ -318,7 +335,7 @@ export function getInstagramDMSettingsInlineComponent(
                     our support team
                 </a>{' '}
                 or contact us via chat.
-            </Alert>
+            </Tooltip>
         )
     }
 

@@ -1,7 +1,7 @@
 import React from 'react'
-import {Alert} from 'reactstrap'
 
 import CodeSnippet from '../../../../../../common/components/CodeSnippet'
+import Alert, {AlertType} from '../../../../../../common/components/Alert/Alert'
 
 import css from './CustomInstallationTabs.less'
 
@@ -37,7 +37,7 @@ export function CustomInstallationOtherWebsiteTab({code}: Props) {
                     Save the file and commit the changes
                 </div>
             </div>
-            <Alert color="warning">
+            <Alert type={AlertType.Warning}>
                 Please note that by inserting this snippet on your webpage, it
                 will load the chat on that specific webpage only. Make sure to
                 insert the snippet on all the pages for which you wish to

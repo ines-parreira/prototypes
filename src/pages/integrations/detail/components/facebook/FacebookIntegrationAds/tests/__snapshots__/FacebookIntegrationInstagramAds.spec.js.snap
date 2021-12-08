@@ -645,70 +645,17 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                     </h3>
                     <UpgradePlanAlert>
                       <Alert
-                        closeAriaLabel="Close"
-                        color="success"
-                        fade={true}
-                        isOpen={true}
-                        tag="div"
-                        transition={
-                          Object {
-                            "appear": true,
-                            "baseClass": "fade",
-                            "baseClassActive": "show",
-                            "enter": true,
-                            "exit": true,
-                            "in": true,
-                            "mountOnEnter": false,
-                            "onEnter": [Function],
-                            "onEntered": [Function],
-                            "onEntering": [Function],
-                            "onExit": [Function],
-                            "onExited": [Function],
-                            "onExiting": [Function],
-                            "tag": "div",
-                            "timeout": 150,
-                            "unmountOnExit": true,
-                          }
-                        }
+                        className="mb16"
+                        type="success"
                       >
-                        <Fade
-                          appear={true}
-                          baseClass="fade"
-                          baseClassActive="show"
-                          className="alert alert-success"
-                          enter={true}
-                          exit={true}
-                          in={true}
-                          mountOnEnter={false}
-                          onEnter={[Function]}
-                          onEntered={[Function]}
-                          onEntering={[Function]}
-                          onExit={[Function]}
-                          onExited={[Function]}
-                          onExiting={[Function]}
-                          role="alert"
-                          tag="div"
-                          timeout={150}
-                          unmountOnExit={true}
+                        <div
+                          className="alert success mb16"
                         >
-                          <Transition
-                            appear={true}
-                            enter={true}
-                            exit={true}
-                            in={true}
-                            mountOnEnter={false}
-                            onEnter={[Function]}
-                            onEntered={[Function]}
-                            onEntering={[Function]}
-                            onExit={[Function]}
-                            onExited={[Function]}
-                            onExiting={[Function]}
-                            timeout={150}
-                            unmountOnExit={true}
+                          <div
+                            className="content"
                           >
-                            <div
-                              className="alert alert-success fade"
-                              role="alert"
+                            <span
+                              className="label"
                             >
                               <strong>
                                 Need to synchronize more ads?
@@ -725,9 +672,9 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                   Upgrade your plan!
                                 </a>
                               </Link>
-                            </div>
-                          </Transition>
-                        </Fade>
+                            </span>
+                          </div>
+                        </div>
                       </Alert>
                     </UpgradePlanAlert>
                     <div

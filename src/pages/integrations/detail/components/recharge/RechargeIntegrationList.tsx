@@ -1,16 +1,18 @@
 import React from 'react'
 import {List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
-import {Button, Alert} from 'reactstrap'
+import {Button} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 import Lightbox from 'react-images'
 
 import {getRedirectUri} from '../../../../../state/integrations/selectors'
 import {IntegrationType} from '../../../../../models/integration/types'
 import {RootState} from '../../../../../state/types'
+import css from '../../../../settings/settings.less'
 
 import history from '../../../../history'
 import Carousel from '../../../common/Carousel'
+import Alert, {AlertType} from '../../../../common/components/Alert/Alert'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
 
@@ -65,12 +67,12 @@ export class RechargeIntegrationList extends React.Component<Props, State> {
             <div>
                 {this._shouldHideCreateButton() &&
                     (!rechargeIntegrations.size ? (
-                        <Alert color="danger">
+                        <Alert type={AlertType.Error} className={css.mb16}>
                             You need to have at least one Shopify integration to
                             add Recharge integrations.
                         </Alert>
                     ) : (
-                        <Alert color="info">
+                        <Alert className={css.mb16}>
                             All your Shopify integrations have a Recharge
                             integration connected.
                         </Alert>

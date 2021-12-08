@@ -1,14 +1,17 @@
-import React, {ReactNode, Component} from 'react'
-
-import {Alert} from 'reactstrap'
+import React, {ReactNode, Component, ComponentProps} from 'react'
 import Lightbox from 'react-images'
 
 import Carousel from './../../integrations/common/Carousel'
+import LinkAlert from './Alert/LinkAlert'
+import {AlertType} from './Alert/Alert'
 
+type LinkAlertProps = ComponentProps<typeof LinkAlert>
 type Props = {
     imagesURL: string[]
     info: string
     alertMsg: ReactNode
+    actionHref?: LinkAlertProps['actionHref']
+    actionLabel?: LinkAlertProps['actionLabel']
 }
 
 type State = {
@@ -38,11 +41,24 @@ export default class RestrictedFeature extends Component<Props, State> {
     }
 
     render() {
-        const {imagesURL, info, alertMsg} = this.props
+        const {
+            imagesURL,
+            info,
+            alertMsg,
+            actionHref,
+            actionLabel = '',
+        } = this.props
 
         return (
             <div className="col mt-2">
-                <Alert color="danger">{alertMsg}</Alert>
+                <LinkAlert
+                    type={AlertType.Error}
+                    className="my-3"
+                    actionLabel={actionLabel}
+                    actionHref={actionHref}
+                >
+                    {alertMsg}
+                </LinkAlert>
                 <p>{info}</p>
                 <Carousel
                     imagesUrl={imagesURL}

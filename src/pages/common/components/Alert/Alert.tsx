@@ -1,10 +1,11 @@
-import React, {ReactNode, MouseEvent} from 'react'
+import React, {ReactNode, MouseEvent, isValidElement} from 'react'
 import classnames from 'classnames'
 
 import infoIcon from '../../../../../img/icons/info.svg'
 import successIcon from '../../../../../img/icons/success.svg'
 import warningIcon from '../../../../../img/icons/warning2.svg'
 import errorIcon from '../../../../../img/icons/error.svg'
+import closeIcon from '../../../../../img/icons/close.svg'
 
 import css from './Alert.less'
 
@@ -22,11 +23,11 @@ const alertIcon = {
     [AlertType.Error]: errorIcon,
 }
 
-export type AlertProps = {
+export type Props = {
     children: ReactNode
     className?: string
     customActions?: ReactNode
-    showIcon?: boolean
+    icon?: boolean | ReactNode
     onClose?: (e: MouseEvent) => void
     type?: AlertType
 }
@@ -35,10 +36,10 @@ const Alert = ({
     children,
     className,
     customActions,
-    showIcon = false,
+    icon = false,
     onClose,
     type = AlertType.Info,
-}: AlertProps) => {
+}: Props) => {
     return (
         <div
             className={classnames(
@@ -50,8 +51,18 @@ const Alert = ({
                 className
             )}
         >
-            {showIcon && (
-                <img src={alertIcon[type]} alt="icon" className={css.icon} />
+            {icon && (
+                <div className={css.iconContainer}>
+                    {isValidElement(icon) ? (
+                        icon
+                    ) : (
+                        <img
+                            src={alertIcon[type]}
+                            alt="icon"
+                            className={css.icon}
+                        />
+                    )}
+                </div>
             )}
             <div className={css.content}>
                 <span className={css.label}>{children}</span>
@@ -63,8 +74,14 @@ const Alert = ({
                 <div
                     className={css.close}
                     onClick={onClose}
-                    data-testid="close-trigger"
-                />
+                    aria-label={'Close Icon'}
+                >
+                    <img
+                        src={closeIcon}
+                        alt="close-icon"
+                        className={css.closeIcon}
+                    />
+                </div>
             )}
         </div>
     )

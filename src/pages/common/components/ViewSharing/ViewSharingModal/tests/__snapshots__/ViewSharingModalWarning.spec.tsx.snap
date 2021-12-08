@@ -9,17 +9,7 @@ exports[`<ViewSharingModalWarning/> render() should render one missing team 1`] 
   className="m-3"
 >
   <Alert
-    closeAriaLabel="Close"
-    color="warning"
-    fade={true}
-    isOpen={true}
-    tag="div"
-    transition={
-      Object {
-        "baseClass": "",
-        "timeout": 0,
-      }
-    }
+    type="warning"
   >
     <span
       className="totalItems"
@@ -50,17 +40,7 @@ exports[`<ViewSharingModalWarning/> render() should render one missing user 1`] 
   className="m-3"
 >
   <Alert
-    closeAriaLabel="Close"
-    color="warning"
-    fade={true}
-    isOpen={true}
-    tag="div"
-    transition={
-      Object {
-        "baseClass": "",
-        "timeout": 0,
-      }
-    }
+    type="warning"
   >
     <span
       className="totalItems"
@@ -91,17 +71,7 @@ exports[`<ViewSharingModalWarning/> render() should render one missing user and 
   className="m-3"
 >
   <Alert
-    closeAriaLabel="Close"
-    color="warning"
-    fade={true}
-    isOpen={true}
-    tag="div"
-    transition={
-      Object {
-        "baseClass": "",
-        "timeout": 0,
-      }
-    }
+    type="warning"
   >
     <span
       className="totalItems"
@@ -151,17 +121,7 @@ exports[`<ViewSharingModalWarning/> render() should render two missing teams 1`]
   className="m-3"
 >
   <Alert
-    closeAriaLabel="Close"
-    color="warning"
-    fade={true}
-    isOpen={true}
-    tag="div"
-    transition={
-      Object {
-        "baseClass": "",
-        "timeout": 0,
-      }
-    }
+    type="warning"
   >
     <span
       className="totalItems"
@@ -199,17 +159,7 @@ exports[`<ViewSharingModalWarning/> render() should render two missing users 1`]
   className="m-3"
 >
   <Alert
-    closeAriaLabel="Close"
-    color="warning"
-    fade={true}
-    isOpen={true}
-    tag="div"
-    transition={
-      Object {
-        "baseClass": "",
-        "timeout": 0,
-      }
-    }
+    type="warning"
   >
     <span
       className="totalItems"
@@ -247,17 +197,7 @@ exports[`<ViewSharingModalWarning/> render() should render two missing users and
   className="m-3"
 >
   <Alert
-    closeAriaLabel="Close"
-    color="warning"
-    fade={true}
-    isOpen={true}
-    tag="div"
-    transition={
-      Object {
-        "baseClass": "",
-        "timeout": 0,
-      }
-    }
+    type="warning"
   >
     <span
       className="totalItems"

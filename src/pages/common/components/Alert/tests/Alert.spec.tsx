@@ -11,22 +11,22 @@ describe('<Alert />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
+    it('should render an alert with an icon when icon prop is passed', () => {
+        const {container} = render(<Alert icon>This is an alert!</Alert>)
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
     it.each(Object.values(AlertType))(
         'should render icon for %s alert type',
         (type) => {
             const {container} = render(
-                <Alert type={type} showIcon>
+                <Alert type={type} icon>
                     This is an alert!
                 </Alert>
             )
             expect(container.firstChild).toMatchSnapshot()
         }
     )
-
-    it('should render an alert with an icon when showIcon prop is passed', () => {
-        const {container} = render(<Alert showIcon>This is an alert!</Alert>)
-        expect(container.firstChild).toMatchSnapshot()
-    })
 
     it('should render an alert with custom actions', () => {
         const {container} = render(
@@ -45,10 +45,17 @@ describe('<Alert />', () => {
     })
 
     it('should call onClose() prop when the close trigger is clicked ', () => {
-        const {getByTestId} = render(
+        const {getByLabelText} = render(
             <Alert onClose={onClose}>This is an alert!</Alert>
         )
-        fireEvent.click(getByTestId('close-trigger'))
+        fireEvent.click(getByLabelText('Close Icon'))
         expect(onClose).toHaveBeenCalled()
+    })
+
+    it('should render a custom icon when the icon is a react node', () => {
+        const {container} = render(
+            <Alert icon={<img alt="custom-icon" />}>This is an alert!</Alert>
+        )
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

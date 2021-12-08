@@ -24,19 +24,104 @@ exports[`StatsPage should render "Overview" statistics 1`] = `
 
 exports[`StatsPage should render "Revenue" statistics 1`] = `
 <div
-  class="full-width wrapper"
+  class="col mt-2"
 >
   <div
-    class="filtersWrapper"
+    class="alert error my-3"
   >
-    StatsFilters
+    <div
+      class="content"
+    >
+      <span
+        class="label"
+      >
+        Your e-commerce store needs to be connected to Gorgias to use this feature.
+      </span>
+      <div
+        class="customActions"
+      >
+        <a
+          class="actionLink"
+          to="/app/settings/integrations/shopify/new"
+        >
+          Add one here
+        </a>
+      </div>
+    </div>
   </div>
+  <p>
+    Assess how much sales your support team is influencing. Staff and reward your support team according to sales. Track and increase conversion, using Chat campaigns, for example.
+  </p>
   <div
-    class="statsWrapper"
+    class="carouselContainer"
   >
-    <div>
-      Stats Component: 
-      revenue
+    <div
+      class="slick-slider slick-initialized"
+    >
+      
+      <div
+        class="slick-list"
+      >
+        <div
+          class="slick-track"
+          style="opacity: 1; transform: translate3d(0px, 0px, 0px);"
+        >
+          <div
+            aria-hidden="false"
+            class="slick-slide slick-active slick-current"
+            data-index="0"
+            style="outline: none; width: 0px;"
+            tabindex="-1"
+          >
+            <div>
+              <div
+                class="carouselContent"
+                style="width: 100%; display: inline-block;"
+                tabindex="-1"
+              >
+                <a
+                  href="/static/private/img/presentationals/revenue-presentation.png"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <img
+                    alt="carousel content"
+                    src="/static/private/img/presentationals/revenue-presentation.png"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+          <div
+            aria-hidden="false"
+            class="slick-slide slick-active slick-cloned"
+            data-index="1"
+            style="width: 0px;"
+            tabindex="-1"
+          >
+            <div>
+              <div
+                class="carouselContent"
+                style="width: 100%; display: inline-block;"
+                tabindex="-1"
+              >
+                <a
+                  href="/static/private/img/presentationals/revenue-presentation.png"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <img
+                    alt="carousel content"
+                    src="/static/private/img/presentationals/revenue-presentation.png"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
     </div>
   </div>
 </div>
@@ -99,9 +184,107 @@ exports[`StatsPage should render paywall when on live overview page and the live
 `;
 
 exports[`StatsPage should render paywall when on revenue page and the revenue statistics feature is not available 1`] = `
-<div>
-  Paywall for feature: 
-  revenue_statistics
+<div
+  class="col mt-2"
+>
+  <div
+    class="alert error my-3"
+  >
+    <div
+      class="content"
+    >
+      <span
+        class="label"
+      >
+        Your e-commerce store needs to be connected to Gorgias to use this feature.
+      </span>
+      <div
+        class="customActions"
+      >
+        <a
+          class="actionLink"
+          to="/app/settings/integrations/shopify/new"
+        >
+          Add one here
+        </a>
+      </div>
+    </div>
+  </div>
+  <p>
+    Assess how much sales your support team is influencing. Staff and reward your support team according to sales. Track and increase conversion, using Chat campaigns, for example.
+  </p>
+  <div
+    class="carouselContainer"
+  >
+    <div
+      class="slick-slider slick-initialized"
+    >
+      
+      <div
+        class="slick-list"
+      >
+        <div
+          class="slick-track"
+          style="opacity: 1; transform: translate3d(0px, 0px, 0px);"
+        >
+          <div
+            aria-hidden="false"
+            class="slick-slide slick-active slick-current"
+            data-index="0"
+            style="outline: none; width: 0px;"
+            tabindex="-1"
+          >
+            <div>
+              <div
+                class="carouselContent"
+                style="width: 100%; display: inline-block;"
+                tabindex="-1"
+              >
+                <a
+                  href="/static/private/img/presentationals/revenue-presentation.png"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <img
+                    alt="carousel content"
+                    src="/static/private/img/presentationals/revenue-presentation.png"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+          <div
+            aria-hidden="false"
+            class="slick-slide slick-active slick-cloned"
+            data-index="1"
+            style="width: 0px;"
+            tabindex="-1"
+          >
+            <div>
+              <div
+                class="carouselContent"
+                style="width: 100%; display: inline-block;"
+                tabindex="-1"
+              >
+                <a
+                  href="/static/private/img/presentationals/revenue-presentation.png"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <img
+                    alt="carousel content"
+                    src="/static/private/img/presentationals/revenue-presentation.png"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
+    </div>
+  </div>
 </div>
 `;
 
@@ -117,16 +300,27 @@ exports[`StatsPage should restrict feature when on revenue statistics page and i
   class="col mt-2"
 >
   <div
-    class="alert alert-danger fade"
-    role="alert"
+    class="alert error my-3"
   >
-    Your e-commerce store needs to be connected to Gorgias to use this feature.
-    <a
-      to="/app/settings/integrations/shopify/new"
+    <div
+      class="content"
     >
-       
-      Add one here
-    </a>
+      <span
+        class="label"
+      >
+        Your e-commerce store needs to be connected to Gorgias to use this feature.
+      </span>
+      <div
+        class="customActions"
+      >
+        <a
+          class="actionLink"
+          to="/app/settings/integrations/shopify/new"
+        >
+          Add one here
+        </a>
+      </div>
+    </div>
   </div>
   <p>
     Assess how much sales your support team is influencing. Staff and reward your support team according to sales. Track and increase conversion, using Chat campaigns, for example.

@@ -1,9 +1,8 @@
-import {Alert} from 'reactstrap'
-import classnames from 'classnames'
 import {Map} from 'immutable'
 import React from 'react'
 
-import css from './ImportStatusAlert.less'
+import Alert, {AlertType} from '../../../common/components/Alert/Alert'
+
 import {ImportStatus} from './types'
 
 interface ImportStatusAlertProps {
@@ -11,15 +10,11 @@ interface ImportStatusAlertProps {
 }
 
 const ImportStatusAlert = ({integrationMeta}: ImportStatusAlertProps) => {
-    const alertHeadingClassName = classnames(css.heading)
     const importStatus = integrationMeta.get('status')
     if (importStatus === ImportStatus.Pending) {
         return (
-            <Alert color="info">
-                <b className={alertHeadingClassName}>
-                    <i className="material-icons md-spin mr-3">refresh</i>
-                    <span>Importing your Zendesk data</span>
-                </b>
+            <Alert icon={<i className="material-icons md-spin">refresh</i>}>
+                <span>Importing your Zendesk data</span>
             </Alert>
         )
     } else if (importStatus === ImportStatus.Success) {
@@ -29,40 +24,24 @@ const ImportStatusAlert = ({integrationMeta}: ImportStatusAlertProps) => {
         )
         if (synchronizationEnabled) {
             return (
-                <Alert color="success">
-                    <b className={alertHeadingClassName}>
-                        <i className="material-icons mr-3">check_circle</i>
-                        <span>
-                            Initial import successful, continuous
-                            synchronization active.
-                        </span>
-                    </b>
+                <Alert type={AlertType.Success} icon>
+                    Initial import successful, continuous synchronization
+                    active.
                 </Alert>
             )
         }
         return (
-            <Alert color="info">
-                <b className={alertHeadingClassName}>
-                    <i className="material-icons mr-3">info_outline</i>
-                    <span>
-                        Initial import successful, continuous synchronization
-                        paused.
-                    </span>
-                </b>
+            <Alert icon>
+                Initial import successful, continuous synchronization paused.
             </Alert>
         )
     }
     return (
-        <Alert color="danger">
-            <b className={alertHeadingClassName}>
-                <i className="material-icons mr-3">error_outline</i>
-                <span>
-                    {integrationMeta.get(
-                        'error',
-                        'Import failed. Please contact our support.'
-                    )}
-                </span>
-            </b>
+        <Alert type={AlertType.Error} icon>
+            {integrationMeta.get(
+                'error',
+                'Import failed. Please contact our support.'
+            )}
         </Alert>
     )
 }

@@ -1,6 +1,8 @@
 import React from 'react'
-import {Alert, UncontrolledTooltip} from 'reactstrap'
+import {UncontrolledTooltip} from 'reactstrap'
 import {List} from 'immutable'
+
+import Alert, {AlertType} from '../../Alert/Alert'
 
 import css from './ViewSharingModalWarning.less'
 
@@ -38,7 +40,7 @@ export default function ViewSharingModalWarning({
 
     return (
         <div className="m-3">
-            <Alert color="warning" transition={{baseClass: '', timeout: 0}}>
+            <Alert type={AlertType.Warning}>
                 {!!missingTeams.size && (
                     <>
                         <span

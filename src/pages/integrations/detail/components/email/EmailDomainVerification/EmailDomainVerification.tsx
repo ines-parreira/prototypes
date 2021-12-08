@@ -2,11 +2,13 @@ import React, {useLayoutEffect, useState} from 'react'
 import {RouteComponentProps, withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {Map} from 'immutable'
-import {Alert, Button, Container, FormGroup, Label} from 'reactstrap'
+import {Button, Container, FormGroup, Label} from 'reactstrap'
 
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
 import Loader from '../../../../../common/components/Loader/Loader'
 import SelectField from '../../../../../common/forms/SelectField/SelectField'
+import Alert, {AlertType} from '../../../../../common/components/Alert/Alert'
+
 import {RootState} from '../../../../../../state/types'
 import * as currentUserSelectors from '../../../../../../state/currentUser/selectors'
 import {
@@ -67,7 +69,10 @@ export const EmailDomainVerificationContainer = (props: Props) => {
                     )}
                     {!emailDomain.get('verified') && (
                         <div>
-                            <Alert color="warning">
+                            <Alert
+                                type={AlertType.Warning}
+                                className={settingsCss.mb16}
+                            >
                                 This domain has not yet been verified. You can
                                 still send emails from this address but you may
                                 be more susceptible to deliverability issues.
@@ -108,7 +113,7 @@ export const EmailDomainVerificationContainer = (props: Props) => {
             {!emailDomain && (
                 <>
                     {isBaseEmailIntegration && (
-                        <Alert color="warning">
+                        <Alert type={AlertType.Warning}>
                             The base email integration cannot have a domain
                             associated.
                         </Alert>
@@ -116,7 +121,7 @@ export const EmailDomainVerificationContainer = (props: Props) => {
                     {!isBaseEmailIntegration && (
                         <>
                             {(isGmail || isOutlook) && (
-                                <Alert color="info">
+                                <Alert className={settingsCss.mb16}>
                                     Domain verification is <b>not required</b>{' '}
                                     for <b>Gmail and Outlook</b> integrations{' '}
                                     <i>

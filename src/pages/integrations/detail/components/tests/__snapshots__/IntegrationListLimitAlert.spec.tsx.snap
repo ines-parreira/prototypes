@@ -4,60 +4,82 @@ exports[`<IntegrationListLimitAlert/> should not render 1`] = `null`;
 
 exports[`<IntegrationListLimitAlert/> should render a warning message 1`] = `
 <div
-  class="d-inline-flex alert alert-warning fade"
-  role="alert"
+  class="alert warning d-inline-flex"
 >
-  <span
-    class="d-flex align-items-center"
+  <div
+    class="iconContainer"
   >
-    <i
-      class="material-icons mr-2"
+    <img
+      alt="icon"
+      class="icon"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    class="content"
+  >
+    <span
+      class="label"
     >
-      info
-    </i>
-    You have reached 
-    1
-    /
-    2
-     
-    integrations. To add more, you must
-    <a
-      class="ml-1 mr-1"
-      to="/app/settings/billing/plans"
-    >
-      upgrade
-    </a>
-    to a higher plan.
-  </span>
+      <span
+        class="d-flex align-items-center"
+      >
+        You have reached 
+        1
+        /
+        2
+         
+        integrations. To add more, you must
+        <a
+          class="ml-1 mr-1"
+          to="/app/settings/billing/plans"
+        >
+          upgrade
+        </a>
+        to a higher plan.
+      </span>
+    </span>
+  </div>
 </div>
 `;
 
 exports[`<IntegrationListLimitAlert/> should render an error message 1`] = `
 <div
-  class="d-inline-flex alert alert-danger fade"
-  role="alert"
+  class="alert error d-inline-flex"
 >
-  <span
-    class="d-flex align-items-center"
+  <div
+    class="iconContainer"
   >
-    <i
-      class="material-icons mr-2"
+    <img
+      alt="icon"
+      class="icon"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    class="content"
+  >
+    <span
+      class="label"
     >
-      info
-    </i>
-    You have reached 
-    2
-    /
-    2
-     
-    integrations. To add more, you must
-    <a
-      class="ml-1 mr-1"
-      to="/app/settings/billing/plans"
-    >
-      upgrade
-    </a>
-    to a higher plan.
-  </span>
+      <span
+        class="d-flex align-items-center"
+      >
+        You have reached 
+        2
+        /
+        2
+         
+        integrations. To add more, you must
+        <a
+          class="ml-1 mr-1"
+          to="/app/settings/billing/plans"
+        >
+          upgrade
+        </a>
+        to a higher plan.
+      </span>
+    </span>
+  </div>
 </div>
 `;
