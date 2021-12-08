@@ -1,7 +1,7 @@
 import {fromJS, Map, List} from 'immutable'
 import {createSelector} from 'reselect'
 
-import {getActiveCustomer} from '../customers/selectors'
+import {DEPRECATED_getActiveCustomer} from '../customers/selectors'
 
 import {RootState} from '../types'
 
@@ -47,7 +47,7 @@ export const hasWidgetsWithContext = (context?: WidgetContextType) =>
 export const getSources = (state: RootState) => {
     return fromJS({
         ticket: state.ticket,
-        customer: getActiveCustomer(state),
+        customer: DEPRECATED_getActiveCustomer(state),
     }) as Map<any, any>
 }
 

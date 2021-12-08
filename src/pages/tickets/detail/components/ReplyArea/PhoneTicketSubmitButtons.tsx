@@ -7,7 +7,7 @@ import parsePhoneNumber from 'libphonenumber-js'
 
 import {getNewMessageSource} from '../../../../../state/newMessage/selectors'
 import {RootState} from '../../../../../state/types'
-import {getTicket} from '../../../../../state/ticket/selectors'
+import {DEPRECATED_getTicket} from '../../../../../state/ticket/selectors'
 import {getCurrentUser} from '../../../../../state/currentUser/selectors'
 import {useOutboundCall} from '../../../../../hooks/integrations/phone/useOutboundCall'
 
@@ -49,7 +49,7 @@ const mapStateToProps = (state: RootState) => ({
     device: state.twilio.device,
     call: state.twilio.call,
     source: getNewMessageSource(state),
-    ticketId: getTicket(state).get('id'),
+    ticketId: DEPRECATED_getTicket(state).get('id'),
     agentId: getCurrentUser(state).get('id'),
 })
 

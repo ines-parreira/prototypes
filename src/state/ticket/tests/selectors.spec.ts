@@ -111,11 +111,17 @@ describe('ticket selectors', () => {
     })
 
     it('getTicket', () => {
+        const expected = state.ticket.delete('_internal').delete('state').toJS()
+        expect(selectors.getTicket(state)).toEqual(expected)
+        expect(selectors.getTicket(fromJS({}))).toEqual({})
+    })
+
+    it('DEPRECATED_getTicket', () => {
         const expected = state.ticket.delete('_internal').delete('state')
-        expect(selectors.getTicket(state)).toEqualImmutable(expected)
-        expect(selectors.getTicket({} as RootState)).toEqualImmutable(
-            fromJS({})
-        )
+        expect(selectors.DEPRECATED_getTicket(state)).toEqualImmutable(expected)
+        expect(
+            selectors.DEPRECATED_getTicket({} as RootState)
+        ).toEqualImmutable(fromJS({}))
     })
 
     it('getIntegrationsData', () => {

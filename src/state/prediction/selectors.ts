@@ -5,7 +5,7 @@ import {getCurrentAccountState} from '../currentAccount/selectors'
 import {CurrentAccountState} from '../currentAccount/types'
 import {getCurrentUser} from '../currentUser/selectors'
 import {CurrentUserState} from '../currentUser/types'
-import {getTicket, getCustomerMessages} from '../ticket/selectors'
+import {DEPRECATED_getTicket, getCustomerMessages} from '../ticket/selectors'
 import {RootState} from '../types'
 
 import {PredictionContext} from './types'
@@ -19,7 +19,7 @@ export const getContext = createSelector<
     List<any>
 >(
     getCurrentUser,
-    getTicket,
+    DEPRECATED_getTicket,
     getCurrentAccountState,
     getCustomerMessages,
     (user, ticket, account, customerMessages) => {

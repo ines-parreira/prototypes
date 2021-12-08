@@ -455,7 +455,7 @@ export class TicketReplyArea extends Component<Props, State> {
 const connector = connect(
     (state: RootState) => ({
         cacheAdded: newMessageSelectors.isCacheAdded(state),
-        currentTicket: ticketSelectors.getTicket(state),
+        currentTicket: ticketSelectors.DEPRECATED_getTicket(state),
         newMessage: state.newMessage,
         newMessageType: newMessageSelectors.getNewMessageType(state),
         preferences: getPreferences(state),

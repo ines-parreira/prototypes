@@ -11,7 +11,7 @@ import _debounce from 'lodash/debounce'
 import type {RootState} from '../../../../../../state/types'
 
 import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker.js'
-import {getTicket} from '../../../../../../state/ticket/selectors'
+import {DEPRECATED_getTicket} from '../../../../../../state/ticket/selectors'
 import {TicketState} from '../../../../../../state/ticket/types'
 import {getCurrentAccountState} from '../../../../../../state/currentAccount/selectors'
 import {CurrentAccountState} from '../../../../../../state/currentAccount/types'
@@ -28,7 +28,7 @@ type Props = {
 }
 
 export const MacrosQuickReply = ({macros, applyMacro}: Props) => {
-    const ticket = useSelector<RootState, TicketState>(getTicket)
+    const ticket = useSelector<RootState, TicketState>(DEPRECATED_getTicket)
     const account = useSelector<RootState, CurrentAccountState>(
         getCurrentAccountState
     )

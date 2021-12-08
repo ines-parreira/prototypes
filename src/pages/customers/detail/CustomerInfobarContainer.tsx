@@ -9,7 +9,7 @@ import {InfobarState} from '../../../state/infobar/types'
 import * as WidgetActions from '../../../state/widgets/actions'
 import {WidgetContextType} from '../../../state/widgets/types'
 import {
-    getActiveCustomer,
+    DEPRECATED_getActiveCustomer,
     getActiveCustomerId,
 } from '../../../state/customers/selectors'
 import {getSources} from '../../../state/widgets/selectors'
@@ -57,7 +57,7 @@ export const CustomerInfobarContainer = ({
 const connector = connect(
     (state: RootState) => ({
         widgets: state.widgets,
-        activeCustomer: getActiveCustomer(state),
+        activeCustomer: DEPRECATED_getActiveCustomer(state),
         activeCustomerId: getActiveCustomerId(state),
         sources: getSources(state),
     }),

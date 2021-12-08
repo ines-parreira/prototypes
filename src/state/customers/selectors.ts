@@ -3,7 +3,7 @@ import {createSelector} from 'reselect'
 
 import {RootState} from '../types'
 
-import {CustomersState} from './types'
+import {Customer, CustomersState} from './types'
 
 export const getCustomersState = (state: RootState) =>
     state.customers || fromJS({})
@@ -52,7 +52,7 @@ export const getCustomers = createSelector<
     (state: CustomersState) => (state.get('items') as List<any>) || fromJS([])
 )
 
-export const getActiveCustomer = createSelector<
+export const DEPRECATED_getActiveCustomer = createSelector<
     RootState,
     Map<any, any>,
     CustomersState
@@ -62,12 +62,24 @@ export const getActiveCustomer = createSelector<
         (state.get('active') as Map<any, any>) || fromJS({})
 )
 
+export const getActiveCustomer = createSelector<
+    RootState,
+    Customer | Record<string, never>,
+    CustomersState
+>(
+    getCustomersState,
+    (state) =>
+        (state.get('active') as Map<any, any>).toJS() as
+            | Customer
+            | Record<string, never>
+)
+
 export const getActiveCustomerId = createSelector<
     RootState,
     Maybe<number>,
     Map<any, any>
 >(
-    getActiveCustomer,
+    DEPRECATED_getActiveCustomer,
     (activeCustomer: Map<any, any>) => activeCustomer.get('id') as Maybe<number>
 )
 
@@ -76,7 +88,7 @@ export const getActiveCustomerIntegrationData = createSelector<
     List<any>,
     Map<any, any>
 >(
-    getActiveCustomer,
+    DEPRECATED_getActiveCustomer,
     (activeCustomer: Map<any, any>) =>
         (activeCustomer.get('integrations') as List<any>) || fromJS([])
 )

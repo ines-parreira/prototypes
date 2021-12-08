@@ -1,5 +1,5 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
-import {fromJS} from 'immutable'
+import {Map, fromJS} from 'immutable'
 
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
@@ -59,12 +59,28 @@ describe('customers selectors', () => {
     })
 
     it('getActiveCustomer', () => {
-        expect(selectors.getActiveCustomer(state)).toEqualImmutable(
+        expect(selectors.getActiveCustomer(state)).toEqual(
+            (
+                selectors.getCustomersState(state).get('active') as Map<
+                    any,
+                    any
+                >
+            ).toJS()
+        )
+        expect(
+            selectors.getActiveCustomer({
+                customers: fromJS({active: {}}),
+            } as RootState)
+        ).toEqual({})
+    })
+
+    it('DEPRECATED_getActiveCustomer', () => {
+        expect(selectors.DEPRECATED_getActiveCustomer(state)).toEqualImmutable(
             selectors.getCustomersState(state).get('active')
         )
-        expect(selectors.getActiveCustomer({} as RootState)).toEqualImmutable(
-            fromJS({})
-        )
+        expect(
+            selectors.DEPRECATED_getActiveCustomer(fromJS({}))
+        ).toEqualImmutable(fromJS({}))
     })
 
     it('getActiveCustomerId', () => {

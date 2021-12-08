@@ -12,7 +12,7 @@ import {
 import {addEmailExtra} from '../../../../state/newMessage/actions'
 import Ellipsis from '../../components/Ellipsis'
 import {RootState} from '../../../../state/types'
-import {getBody, getTicket} from '../../../../state/ticket/selectors'
+import {getBody, DEPRECATED_getTicket} from '../../../../state/ticket/selectors'
 import {
     getReplyThreadMessages,
     isSignatureTextAdded,
@@ -88,7 +88,7 @@ const connector = connect(
     (state: RootState) => {
         return {
             signature: getNewMessageSignature(state),
-            ticket: getTicket(state),
+            ticket: DEPRECATED_getTicket(state),
             ticketMessages: getBody(state),
             isNewMessageEmailExtraAdded: isNewMessageEmailExtraAdded(state),
             newMessageChannel: getNewMessageChannel(state),

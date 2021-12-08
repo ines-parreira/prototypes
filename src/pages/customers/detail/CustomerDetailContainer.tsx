@@ -16,7 +16,7 @@ import Modal from '../../common/components/Modal'
 import {Customer} from '../../../state/customers/types'
 import {
     getCustomerHistory,
-    getActiveCustomer,
+    DEPRECATED_getActiveCustomer,
     makeIsLoading,
 } from '../../../state/customers/selectors'
 import * as customersHelpers from '../../../state/customers/helpers'
@@ -116,7 +116,7 @@ export const CustomerDetailContainer = ({
 
 const connector = connect(
     (state: RootState) => ({
-        activeCustomer: getActiveCustomer(state),
+        activeCustomer: DEPRECATED_getActiveCustomer(state),
         customerHistory: getCustomerHistory(state),
         customersIsLoading: makeIsLoading(state),
     }),

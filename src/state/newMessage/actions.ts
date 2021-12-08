@@ -407,12 +407,7 @@ export const prepare =
     (sourceType: TicketMessageSourceType) =>
     (dispatch: StoreDispatch, getState: () => RootState) => {
         const state = getState()
-        //$TsFixMe remove casting once ticket selectors are migrated
-        const currentTicket = (
-            ticketSelectors as {
-                getTicket: (state: RootState) => Map<any, any>
-            }
-        ).getTicket(state)
+        const currentTicket = ticketSelectors.DEPRECATED_getTicket(state)
         // cache source type when changed
         responseUtils.setSourceTypeCache(currentTicket.get('id'), sourceType)
 

@@ -19,7 +19,7 @@ import {
     fetchCustomerHistory,
 } from '../../../state/customers/actions'
 import {
-    getActiveCustomer,
+    DEPRECATED_getActiveCustomer,
     getCustomersState,
 } from '../../../state/customers/selectors'
 import {
@@ -465,7 +465,7 @@ export const TicketDetailContainer = ({
 const connector = connect(
     (state: RootState) => ({
         activeView: getActiveView(state),
-        activeCustomer: getActiveCustomer(state),
+        activeCustomer: DEPRECATED_getActiveCustomer(state),
         currentUser: state.currentUser,
         customers: getCustomersState(state),
         ticket: state.ticket,

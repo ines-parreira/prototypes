@@ -13,7 +13,7 @@ import parsePhoneNumber from 'libphonenumber-js'
 import {RootState} from '../../../../state/types'
 import {getPhoneIntegrations} from '../../../../state/integrations/selectors'
 import {useOutboundCall} from '../../../../hooks/integrations/phone/useOutboundCall'
-import {getTicket} from '../../../../state/ticket/selectors'
+import {DEPRECATED_getTicket} from '../../../../state/ticket/selectors'
 import {getCurrentUser} from '../../../../state/currentUser/selectors'
 
 import css from './ClickablePhoneNumber.less'
@@ -112,7 +112,7 @@ const mapStateToProps = (state: RootState) => ({
     integrations: getPhoneIntegrations(state),
     device: state.twilio.device,
     call: state.twilio.call,
-    ticketId: getTicket(state).get('id'),
+    ticketId: DEPRECATED_getTicket(state).get('id'),
     agentId: getCurrentUser(state).get('id'),
 })
 

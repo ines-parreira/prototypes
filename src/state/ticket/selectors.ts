@@ -3,7 +3,7 @@ import {createSelector} from 'reselect'
 
 import {createImmutableSelector} from '../../utils'
 import {getNewMessageState} from '../newMessage/selectors'
-import {NewMessageState} from '../newMessage/types'
+import {Ticket, NewMessageState} from '../newMessage/types'
 import {RootState} from '../types'
 import {TicketVia} from '../../business/types/ticket'
 
@@ -18,13 +18,26 @@ export const getProperty = (property: string) =>
         (state) => state.get(property) as Map<any, any>
     )
 
-export const getTicket = createImmutableSelector<
+export const DEPRECATED_getTicket = createImmutableSelector<
     RootState,
     Map<any, any>,
     TicketState
 >(
     getTicketState,
     (state) => state.delete('_internal').delete('state') || fromJS({})
+)
+
+export const getTicket = createImmutableSelector<
+    RootState,
+    Omit<Ticket, 'state' | '_internal'>,
+    TicketState
+>(
+    getTicketState,
+    (state) =>
+        state.delete('_internal').delete('state').toJS() as Omit<
+            Ticket,
+            'state' | '_internal'
+        >
 )
 
 export const getIntegrationsData = createSelector<
