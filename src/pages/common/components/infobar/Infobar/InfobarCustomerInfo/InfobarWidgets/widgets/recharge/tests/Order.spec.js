@@ -252,7 +252,7 @@ describe('Order', () => {
         it('should render the base link because a customer hash was passed and no custom link is set', () => {
             const component = shallow(
                 <TitleWrapper
-                    source={fromJS({order_id: 1, customer_id: 4564})}
+                    source={fromJS({order_id: 1, customer_id: 4564, id: 2345})}
                     template={fromJS({})}
                     getIntegrationData={() =>
                         fromJS({customer: {hash: 's8d4f6sdf4'}})
