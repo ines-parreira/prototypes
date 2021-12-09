@@ -67,7 +67,6 @@ export default function DEPRECATED_StatsPage() {
     }
 
     if (isOnRevenuePage) {
-        return <RevenueStatsRestrictedFeature />
         if (!hasRevenueStatisticsFeature) {
             return <Paywall feature={AccountFeature.RevenueStatistics} />
         }
