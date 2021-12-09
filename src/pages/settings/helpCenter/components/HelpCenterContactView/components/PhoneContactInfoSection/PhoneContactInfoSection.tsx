@@ -1,4 +1,5 @@
 import React from 'react'
+import parsePhoneNumber from 'libphonenumber-js'
 
 import {PhoneContactInfoDto} from '../../../../../../../models/helpCenter/types'
 import InputField from '../../../../../../common/forms/InputField'
@@ -65,7 +66,10 @@ const PhoneContactInfoSection: React.FC = () => {
                                 ? `${phoneNumber.reference}:`
                                 : ''}
                             &nbsp;
-                            {phoneNumber.phone_number}
+                            {parsePhoneNumber(
+                                phoneNumber.phone_number
+                            )?.formatInternational() ||
+                                phoneNumber.phone_number}
                         </div>
                     ))}
                 </div>
