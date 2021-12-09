@@ -83,10 +83,11 @@ const RecurringPrices = ({
                         Leverage the power of self-service to answer customers
                         quickly, 24/7:
                         <br />
-                        - Tracking order flows
+                        - Track, Return & Cancel order flows
                         <br />
                         - Customized report issue workflows
-                        <br />- Return & Cancellations flows
+                        <br />- Self-service integrated in chat and help center
+                        <br />- Self-service statistics
                     </Tooltip>
                 </Label>
             ) : (

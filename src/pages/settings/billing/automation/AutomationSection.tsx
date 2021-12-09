@@ -62,20 +62,43 @@ const AutomationSection = () => {
                                         self-service
                                     </Link>
                                 </b>
-                                ! You can activate:
+                                , activate:
                             </p>
                             <div>
                                 <ul>
-                                    <li>Tracking order flows</li>
-                                    <li>Custom report issue workflows</li>
-                                    <li>Return & Cancellations flows</li>
+                                    <li>
+                                        Self-service in <b>chat</b> and in{' '}
+                                        <b>help center</b>
+                                    </li>
+                                    <li>
+                                        <b>Track</b>, <b>Return</b> &{' '}
+                                        <b>Cancel</b> order flows
+                                    </li>
+                                    <li>
+                                        <b>Customized</b> report issue workflows
+                                    </li>
                                 </ul>
                             </div>
+                            <p>
+                                Track the performance in a{' '}
+                                <b>
+                                    {' '}
+                                    <Link to="/app/stats/self-service">
+                                        dedicated report
+                                    </Link>
+                                </b>
+                                !
+                            </p>
                         </>
                     ) : isSelfServeLegacy ? (
                         <p>
-                            Leverage the power of <b>self-service</b> and
-                            activate the new customized report issue workflows!
+                            Leverage the power of the{' '}
+                            <b>advanced self-service features</b> like
+                            customized report issue flow and self-service
+                            integrated in help center!
+                            <br />
+                            <b>Track</b> your customers’ requests and see{' '}
+                            <b>how many you automate</b>.
                         </p>
                     ) : (
                         <p>

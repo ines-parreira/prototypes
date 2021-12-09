@@ -43,11 +43,7 @@ exports[`<AutomationSubscriptionDescription /> should render for customers alrea
     class="flex"
   >
     <div>
-      Activate 
-      <b>
-        the new custom report issue workflow
-      </b>
-       for self-service!
+      Unlock advanced features of the self-service, and track the performance!
       <br />
       Questions?
        
@@ -86,7 +82,11 @@ exports[`<AutomationSubscriptionDescription /> should render for customers alrea
         </i>
       </span>
       <span>
-        Tracking, Return & Cancellation flows
+        Track, Return, Cancel & Custom
+         
+        <b>
+          workflows
+        </b>
       </span>
     </li>
     <li
@@ -102,7 +102,15 @@ exports[`<AutomationSubscriptionDescription /> should render for customers alrea
         </i>
       </span>
       <span>
-        Custom report issue flows
+        Self-service portal in 
+        <b>
+          chat
+        </b>
+         and
+         
+        <b>
+          help center
+        </b>
       </span>
     </li>
     <li
@@ -118,7 +126,10 @@ exports[`<AutomationSubscriptionDescription /> should render for customers alrea
         </i>
       </span>
       <span>
-        Self-service statistics
+        Self-service 
+        <b>
+          statistics
+        </b>
       </span>
     </li>
   </div>
@@ -139,8 +150,9 @@ exports[`<AutomationSubscriptionDescription /> should render for customers witho
       </b>
        features, to answer customers 
       <b>
-        quickly, 24/7!
+        quickly, 24/7
       </b>
+      !
       <br />
       Questions?
        
@@ -179,7 +191,11 @@ exports[`<AutomationSubscriptionDescription /> should render for customers witho
         </i>
       </span>
       <span>
-        Tracking, Return & Cancellation flows
+        Track, Return, Cancel & Custom
+         
+        <b>
+          workflows
+        </b>
       </span>
     </li>
     <li
@@ -195,7 +211,15 @@ exports[`<AutomationSubscriptionDescription /> should render for customers witho
         </i>
       </span>
       <span>
-        Custom report issue flows
+        Self-service portal in 
+        <b>
+          chat
+        </b>
+         and
+         
+        <b>
+          help center
+        </b>
       </span>
     </li>
     <li
@@ -211,7 +235,10 @@ exports[`<AutomationSubscriptionDescription /> should render for customers witho
         </i>
       </span>
       <span>
-        Self-service statistics
+        Self-service 
+        <b>
+          statistics
+        </b>
       </span>
     </li>
   </div>

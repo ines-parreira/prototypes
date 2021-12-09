@@ -43,8 +43,8 @@ const AutomationSubscriptionDescription = () => {
                     </div>
                 ) : isSelfServeLegacy ? (
                     <div>
-                        Activate <b>the new custom report issue workflow</b> for
-                        self-service!
+                        Unlock advanced features of the self-service, and track
+                        the performance!
                         <br />
                         Questions?{' '}
                         <a href={`mailto:${window.GORGIAS_SUPPORT_EMAIL}`}>
@@ -54,7 +54,7 @@ const AutomationSubscriptionDescription = () => {
                 ) : (
                     <div>
                         Unlock the <b>self-service</b> features, to answer
-                        customers <b>quickly, 24/7!</b>
+                        customers <b>quickly, 24/7</b>!
                         <br />
                         Questions?{' '}
                         <a href={`mailto:${window.GORGIAS_SUPPORT_EMAIL}`}>
@@ -77,19 +77,33 @@ const AutomationSubscriptionDescription = () => {
                     {[
                         {
                             icon: 'low_priority',
-                            label: 'Tracking, Return & Cancellation flows',
+                            label: (
+                                <>
+                                    Track, Return, Cancel & Custom{' '}
+                                    <b>workflows</b>
+                                </>
+                            ),
                         },
                         {
                             icon: 'slow_motion_video',
-                            label: 'Custom report issue flows',
+                            label: (
+                                <>
+                                    Self-service portal in <b>chat</b> and{' '}
+                                    <b>help center</b>
+                                </>
+                            ),
                         },
                         {
                             icon: 'insights',
-                            label: 'Self-service statistics',
+                            label: (
+                                <>
+                                    Self-service <b>statistics</b>
+                                </>
+                            ),
                         },
                     ].map(({icon, label}) => (
                         <li
-                            key={label}
+                            key={icon}
                             className={classnames(
                                 'd-flex align-items-center',
                                 css.featureListItem

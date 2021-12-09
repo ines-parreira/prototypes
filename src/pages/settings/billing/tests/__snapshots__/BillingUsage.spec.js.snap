@@ -180,11 +180,22 @@ exports[`<BillingUsage/> should display price 1`] = `
           class="description"
         >
           <p>
-            Leverage the power of 
+            Leverage the power of the
+             
             <b>
-              self-service
+              advanced self-service features
             </b>
-             and activate the new customized report issue workflows!
+             like customized report issue flow and self-service integrated in help center!
+            <br />
+            <b>
+              Track
+            </b>
+             your customers’ requests and see
+             
+            <b>
+              how many you automate
+            </b>
+            .
           </p>
         </div>
         <div
@@ -403,11 +414,22 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
           class="description"
         >
           <p>
-            Leverage the power of 
+            Leverage the power of the
+             
             <b>
-              self-service
+              advanced self-service features
             </b>
-             and activate the new customized report issue workflows!
+             like customized report issue flow and self-service integrated in help center!
+            <br />
+            <b>
+              Track
+            </b>
+             your customers’ requests and see
+             
+            <b>
+              how many you automate
+            </b>
+            .
           </p>
         </div>
         <div

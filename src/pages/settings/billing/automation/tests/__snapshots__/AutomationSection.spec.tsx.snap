@@ -26,11 +26,22 @@ exports[`<AutomationSection /> should render 1`] = `
       class="description"
     >
       <p>
-        Leverage the power of 
+        Leverage the power of the
+         
         <b>
-          self-service
+          advanced self-service features
         </b>
-         and activate the new customized report issue workflows!
+         like customized report issue flow and self-service integrated in help center!
+        <br />
+        <b>
+          Track
+        </b>
+         your customers’ requests and see
+         
+        <b>
+          how many you automate
+        </b>
+        .
       </p>
     </div>
     <div
@@ -85,21 +96,57 @@ exports[`<AutomationSection /> should render for customers already with full add
             self-service
           </a>
         </b>
-        ! You can activate:
+        , activate:
       </p>
       <div>
         <ul>
           <li>
-            Tracking order flows
+            Self-service in 
+            <b>
+              chat
+            </b>
+             and in
+             
+            <b>
+              help center
+            </b>
           </li>
           <li>
-            Custom report issue workflows
+            <b>
+              Track
+            </b>
+            , 
+            <b>
+              Return
+            </b>
+             &
+             
+            <b>
+              Cancel
+            </b>
+             order flows
           </li>
           <li>
-            Return & Cancellations flows
+            <b>
+              Customized
+            </b>
+             report issue workflows
           </li>
         </ul>
       </div>
+      <p>
+        Track the performance in a
+         
+        <b>
+           
+          <a
+            to="/app/stats/self-service"
+          >
+            dedicated report
+          </a>
+        </b>
+        !
+      </p>
     </div>
     <button
       class="align-self-end btn btn-secondary"
@@ -137,11 +184,22 @@ exports[`<AutomationSection /> should render for customers already with legacy a
       class="description"
     >
       <p>
-        Leverage the power of 
+        Leverage the power of the
+         
         <b>
-          self-service
+          advanced self-service features
         </b>
-         and activate the new customized report issue workflows!
+         like customized report issue flow and self-service integrated in help center!
+        <br />
+        <b>
+          Track
+        </b>
+         your customers’ requests and see
+         
+        <b>
+          how many you automate
+        </b>
+        .
       </p>
     </div>
     <div
@@ -197,11 +255,22 @@ exports[`<AutomationSection /> should render for trialing customers 1`] = `
       class="description"
     >
       <p>
-        Leverage the power of 
+        Leverage the power of the
+         
         <b>
-          self-service
+          advanced self-service features
         </b>
-         and activate the new customized report issue workflows!
+         like customized report issue flow and self-service integrated in help center!
+        <br />
+        <b>
+          Track
+        </b>
+         your customers’ requests and see
+         
+        <b>
+          how many you automate
+        </b>
+        .
       </p>
     </div>
     <div
