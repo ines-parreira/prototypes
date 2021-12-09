@@ -83,6 +83,19 @@ export default class IntegrationList extends React.Component<Props> {
             )
     }
 
+    _hasKlaviyoIntegrations = () => {
+        return this.props.integrations
+            .filter(
+                (integration) =>
+                    integration!.get('type') === IntegrationType.Klaviyo
+            )
+            .find(
+                (integration) =>
+                    (integration!.get('deleted_datetime') as string | null) ===
+                    null
+            )
+    }
+
     _hasActiveSmoochInsideIntegrations = () => {
         return this.props.integrations
             .filter(
@@ -130,6 +143,8 @@ export default class IntegrationList extends React.Component<Props> {
         const hasActiveSmoochInsideIntegrations =
             this._hasActiveSmoochInsideIntegrations()
         const hasTwitterIntegrations = this._hasTwitterIntegrations()
+        const hasKlaviyoIntegrations = this._hasKlaviyoIntegrations()
+
         const displayList = integrationsConfig
             .filter((integration) => {
                 // do not return the smooch inside integration
@@ -146,6 +161,7 @@ export default class IntegrationList extends React.Component<Props> {
             .map((integration) => {
                 const requiredFeature = integration!.get('requiredFeature')
 
+                // Handle plan for twitter integrations
                 if (
                     requiredFeature &&
                     (currentPlan.isEmpty() ||
@@ -176,6 +192,24 @@ export default class IntegrationList extends React.Component<Props> {
                         'requiredPlanName',
                         requiredPlanName
                     )
+                }
+
+                // Handle deprecation of Klaviyo integrations
+                // TODO(@walter) remove this when Klaviyo migration is completed
+                if (integration!.get('type') === IntegrationType.Klaviyo) {
+                    if (!hasKlaviyoIntegrations) {
+                        return integration!
+                            .set(
+                                'url',
+                                'https://klaviyo.com/integration/gorgias'
+                            )
+                            .set(
+                                'description',
+                                'Send and receive Klaviyo SMS messages in Gorgias. ' +
+                                    'Send Gorgias events into Klaviyo for customer segmentation and analytics.'
+                            )
+                    }
+                    return integration!.set('title', 'Klaviyo - 🗄 DEPRECATED')
                 }
                 return integration
             })

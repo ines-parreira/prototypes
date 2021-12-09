@@ -3,6 +3,7 @@ import React from 'react'
 import {fromJS} from 'immutable'
 
 import IntegrationListRow from '../IntegrationListRow'
+import {IntegrationType} from '../../../../../models/integration/constants'
 
 describe('IntegrationListRow', () => {
     it('should display the integration row as a link', () => {
@@ -22,6 +23,20 @@ describe('IntegrationListRow', () => {
             title: 'an integration',
             description: 'this is a cool integration',
             url: 'http://www.foo.bar',
+        })
+
+        const {container} = render(
+            <IntegrationListRow integrationConfig={integrationConfig} />
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should display an external integration even if it has a type', () => {
+        const integrationConfig = fromJS({
+            title: 'an integration',
+            description: 'this is a cool integration',
+            url: 'http://www.foo.bar',
+            type: IntegrationType.Klaviyo,
         })
 
         const {container} = render(
