@@ -1907,7 +1907,7 @@ Intents can be used in rules and macros to automate your ticket-reply workflow.`
                 <b>Chat channels and the Help centers combined</b>.
             </div>
         ),
-        url: 'https://docs.gorgias.com/self-service/installing-and-using-the-self-service-chat-portal',
+        url: 'https://docs.gorgias.com/statistics/self-service-statistics',
         filters: [
             {
                 type: 'integrations',
