@@ -1,6 +1,11 @@
-import {Stat, StatType} from '../models/stat/types'
+import {
+    OneDimensionalChart,
+    Stat,
+    StatType,
+    TwoDimensionalChart,
+} from '../models/stat/types'
 
-export const firstResponseTimeStat: Stat = {
+export const firstResponseTimeStat: Stat<TwoDimensionalChart> = {
     data: {
         label: 'First response time (percentiles)',
         legend: {axes: {x: '', y: 'First response time'}},
@@ -26,7 +31,79 @@ export const firstResponseTimeStat: Stat = {
     },
 }
 
-export const totalMessagesSent: Stat = {
+export const ticketsPerTagStat: Stat<TwoDimensionalChart> = {
+    data: {
+        label: 'Tickets created per tag',
+        data: {
+            axes: {
+                x: [
+                    {
+                        name: 'Tag',
+                        type: StatType.String,
+                    },
+                    {
+                        name: 'Total',
+                        type: StatType.Number,
+                    },
+                    {
+                        name: 'Percentage',
+                        type: StatType.Percent,
+                    },
+                    {
+                        name: 'Delta',
+                        type: StatType.Delta,
+                    },
+                ],
+            },
+            lines: [
+                [
+                    {
+                        type: StatType.String,
+                        value: 'Untagged',
+                    },
+                    {
+                        type: StatType.Number,
+                        value: 44,
+                    },
+                    {
+                        type: StatType.Percent,
+                        value: 98,
+                    },
+                    {
+                        type: StatType.Delta,
+                        value: -40,
+                    },
+                ],
+                [
+                    {
+                        type: StatType.String,
+                        value: 'rejected',
+                    },
+                    {
+                        type: StatType.Number,
+                        value: 1,
+                    },
+                    {
+                        type: StatType.Percent,
+                        value: 2,
+                    },
+                    {
+                        type: StatType.Delta,
+                        value: 100,
+                    },
+                ],
+            ],
+        },
+    },
+    meta: {
+        previous_start_datetime: '2021-11-11T00:00:01+01:00',
+        start_datetime: '2021-11-18T00:00:00+01:00',
+        end_datetime: '2021-11-24T23:59:59+01:00',
+        previous_end_datetime: '2021-11-18T00:00:00+01:00',
+    },
+}
+
+export const totalMessagesSent: Stat<OneDimensionalChart> = {
     data: {
         data: {
             name: 'total_messages_sent',

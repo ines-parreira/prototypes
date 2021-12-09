@@ -79,4 +79,4 @@ export type StatCell =
           type: StatType.String
           value: string
       }
-    | {type: StatType.Number; value: number}
+    | {type: Exclude<StatType, StatType.String>; value: number}

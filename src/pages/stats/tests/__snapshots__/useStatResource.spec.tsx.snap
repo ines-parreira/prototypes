@@ -1,0 +1,230 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useStatResource debouncing fetch requests should debounce requests when stat filter change 1`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [
+    Object {
+      "cancelToken": CancelToken {
+        "promise": Promise {},
+      },
+      "data": "{\\"filters\\":{\\"period\\":{\\"start_datetime\\":\\"2021-04-02T00:00:00.000Z\\",\\"end_datetime\\":\\"2021-04-02T23:59:59.999Z\\"},\\"channels\\":[\\"email\\"],\\"tags\\":[2]}}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "post",
+      "timeout": 180000,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/stats/first-response-time/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": Array [],
+}
+`;
+
+exports[`useStatResource debouncing fetch requests should not debounce the request when statsFilters were initially set 1`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [
+    Object {
+      "cancelToken": CancelToken {
+        "promise": Promise {},
+      },
+      "data": "{\\"filters\\":{\\"period\\":{\\"start_datetime\\":\\"2021-04-02T00:00:00.000Z\\",\\"end_datetime\\":\\"2021-04-02T23:59:59.999Z\\"},\\"channels\\":[\\"email\\"]}}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "post",
+      "timeout": 180000,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/stats/first-response-time/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": Array [],
+}
+`;
+
+exports[`useStatResource should display error message on server response error 1`] = `
+Array [
+  Object {
+    "payload": Object {
+      "resourceName": "first-response-time",
+      "statName": "stat",
+    },
+    "type": "STAT/FETCH_STAT_STARTED",
+  },
+  Object {
+    "message": Object {
+      "status": "error",
+      "title": "Failed to retrieve statistic. Please retry in a few seconds.",
+    },
+    "type": "notify mock",
+  },
+  Object {
+    "payload": Object {
+      "resourceName": "first-response-time",
+      "statName": "stat",
+    },
+    "type": "STAT/FETCH_STAT_ENDED",
+  },
+]
+`;
+
+exports[`useStatResource should fetch and save the stat 1`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [
+    Object {
+      "cancelToken": CancelToken {
+        "promise": Promise {},
+      },
+      "data": "{\\"filters\\":{\\"period\\":{\\"start_datetime\\":\\"2021-04-02T00:00:00.000Z\\",\\"end_datetime\\":\\"2021-04-02T23:59:59.999Z\\"},\\"channels\\":[\\"email\\"]}}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "post",
+      "timeout": 180000,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/stats/first-response-time/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": Array [],
+}
+`;
+
+exports[`useStatResource should fetch and save the stat 2`] = `
+Array [
+  Object {
+    "payload": Object {
+      "resourceName": "first-response-time",
+      "statName": "stat",
+    },
+    "type": "STAT/FETCH_STAT_STARTED",
+  },
+  Object {
+    "payload": Object {
+      "resourceName": "first-response-time",
+      "statName": "stat",
+      "value": Object {
+        "data": Object {
+          "data": Object {
+            "axes": Object {
+              "x": Array [
+                1558760400,
+                1558846800,
+                1558933200,
+                1559019600,
+                1559106000,
+                1559192400,
+                1559278800,
+              ],
+              "y": Array [],
+            },
+            "lines": Array [
+              Object {
+                "data": Array [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  44772,
+                  0,
+                ],
+                "name": "50%",
+              },
+              Object {
+                "data": Array [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  80567,
+                  0,
+                ],
+                "name": "90%",
+              },
+            ],
+          },
+          "label": "First response time (percentiles)",
+          "legend": Object {
+            "axes": Object {
+              "x": "",
+              "y": "First response time",
+            },
+          },
+        },
+        "meta": Object {
+          "end_datetime": "2019-05-31T23:59:59-05:00",
+          "previous_end_datetime": "2019-05-25T00:00:00-05:00",
+          "previous_start_datetime": "2019-05-18T00:00:01-05:00",
+          "start_datetime": "2019-05-25T00:00:00-05:00",
+        },
+      },
+    },
+    "type": "STAT/STAT_FETCHED",
+  },
+  Object {
+    "payload": Object {
+      "resourceName": "first-response-time",
+      "statName": "stat",
+    },
+    "type": "STAT/FETCH_STAT_ENDED",
+  },
+]
+`;

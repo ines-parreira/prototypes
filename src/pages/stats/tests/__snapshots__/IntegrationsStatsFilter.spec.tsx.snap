@@ -1,0 +1,446 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IntegrationsStatsFilter should merge stats filters on item select 1`] = `
+Array [
+  Object {
+    "filters": Immutable.Map {
+      "integrations": Immutable.List [
+        5,
+      ],
+    },
+    "type": "MERGE_STATS_FILTERS",
+  },
+]
+`;
+
+exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
+<div
+  class="dropdown"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="mr-2 dropdown-toggle btn btn-secondary"
+    type="button"
+  >
+    <span>
+      2 integrations
+    </span>
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown dropdown-menu dropdown-menu-right"
+    role="menu"
+    tabindex="-1"
+  >
+    <h6
+      class="dropdown-item-input dropdownItemInput dropdown-header"
+      tabindex="-1"
+    >
+      <input
+        class="form-control"
+        placeholder="Search integrations..."
+        type="text"
+        value=""
+      />
+    </h6>
+    <button
+      class="component quickSelectionOption dropdown-item"
+      role="menuitem"
+      tabindex="0"
+      type="button"
+    >
+      <span>
+        Deselect all
+      </span>
+      <div
+        class="badge badge--unselect"
+      >
+        2
+      </div>
+    </button>
+    <div
+      class="dropdownDivider dropdown-divider"
+      tabindex="-1"
+    />
+    <div
+      class="content"
+    >
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          checked=""
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+        <i
+          class="icon material-icons icon"
+        >
+          http
+        </i>
+         Slack Webhook
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          checked=""
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+        <img
+          alt="logo-gmail"
+          class="integrationIcon"
+          src="test-file-stub"
+        />
+         Acme Billing
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+        <i
+          class="icon material-icons icon"
+        >
+          http
+        </i>
+         Backoffice Integration 2
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+        <i
+          class="icon material-icons icon"
+        >
+          http
+        </i>
+         Backoffice Integration
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+        <i
+          class="icon material-icons icon"
+        >
+          email
+        </i>
+         Acme Support
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+        <i
+          class="icon material-icons icon"
+        >
+          email
+        </i>
+         Acme Contact
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+        <i
+          class="icon material-icons icon"
+        >
+          email
+        </i>
+         Acme Unverified
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+        <i
+          class="icon material-icons icon"
+        >
+          phone
+        </i>
+         Acme Phone
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+        <i
+          class="icon material-icons icon"
+        >
+          chat
+        </i>
+         Chitty chatty
+      </label>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IntegrationsStatsFilter should render icon for aircall integration 1`] = `
+<label
+  class="item dropdown-item form-check-label"
+  role="menuitem"
+  tabindex="0"
+>
+  <input
+    class="mr-2 checkbox"
+    type="checkbox"
+  />
+  <img
+    alt="logo-aircall"
+    class="integrationIcon"
+    src="test-file-stub"
+  />
+   aircall integration
+</label>
+`;
+
+exports[`IntegrationsStatsFilter should render icon for email integration 1`] = `
+<label
+  class="item dropdown-item form-check-label"
+  role="menuitem"
+  tabindex="0"
+>
+  <input
+    class="mr-2 checkbox"
+    type="checkbox"
+  />
+  <i
+    class="icon material-icons icon"
+  >
+    email
+  </i>
+   email integration
+</label>
+`;
+
+exports[`IntegrationsStatsFilter should render icon for facebook integration 1`] = `
+<label
+  class="item dropdown-item form-check-label"
+  role="menuitem"
+  tabindex="0"
+>
+  <input
+    class="mr-2 checkbox"
+    type="checkbox"
+  />
+  <i
+    class="icon material-icons icon"
+  >
+    facebook
+  </i>
+   facebook integration
+</label>
+`;
+
+exports[`IntegrationsStatsFilter should render icon for gmail integration 1`] = `
+<label
+  class="item dropdown-item form-check-label"
+  role="menuitem"
+  tabindex="0"
+>
+  <input
+    class="mr-2 checkbox"
+    type="checkbox"
+  />
+  <img
+    alt="logo-gmail"
+    class="integrationIcon"
+    src="test-file-stub"
+  />
+   gmail integration
+</label>
+`;
+
+exports[`IntegrationsStatsFilter should render icon for gorgias_chat integration 1`] = `
+<label
+  class="item dropdown-item form-check-label"
+  role="menuitem"
+  tabindex="0"
+>
+  <input
+    class="mr-2 checkbox"
+    type="checkbox"
+  />
+  <i
+    class="icon material-icons icon"
+  >
+    chat
+  </i>
+   gorgias_chat integration
+</label>
+`;
+
+exports[`IntegrationsStatsFilter should render icon for http integration 1`] = `
+<label
+  class="item dropdown-item form-check-label"
+  role="menuitem"
+  tabindex="0"
+>
+  <input
+    class="mr-2 checkbox"
+    type="checkbox"
+  />
+  <i
+    class="icon material-icons icon"
+  >
+    http
+  </i>
+   http integration
+</label>
+`;
+
+exports[`IntegrationsStatsFilter should render icon for outlook integration 1`] = `
+<label
+  class="item dropdown-item form-check-label"
+  role="menuitem"
+  tabindex="0"
+>
+  <input
+    class="mr-2 checkbox"
+    type="checkbox"
+  />
+  <img
+    alt="logo-outlook"
+    class="integrationIcon"
+    src="test-file-stub"
+  />
+   outlook integration
+</label>
+`;
+
+exports[`IntegrationsStatsFilter should render icon for phone integration 1`] = `
+<label
+  class="item dropdown-item form-check-label"
+  role="menuitem"
+  tabindex="0"
+>
+  <input
+    class="mr-2 checkbox"
+    type="checkbox"
+  />
+  <i
+    class="icon material-icons icon"
+  >
+    phone
+  </i>
+   phone integration
+</label>
+`;
+
+exports[`IntegrationsStatsFilter should render icon for shopify integration 1`] = `
+<label
+  class="item dropdown-item form-check-label"
+  role="menuitem"
+  tabindex="0"
+>
+  <input
+    class="mr-2 checkbox"
+    type="checkbox"
+  />
+  <img
+    alt="logo-shopify"
+    class="integrationIcon"
+    src="test-file-stub"
+  />
+   shopify integration
+</label>
+`;
+
+exports[`IntegrationsStatsFilter should render icon for smooch integration 1`] = `
+<label
+  class="item dropdown-item form-check-label"
+  role="menuitem"
+  tabindex="0"
+>
+  <input
+    class="mr-2 checkbox"
+    type="checkbox"
+  />
+  <img
+    alt="logo-smooch"
+    class="integrationIcon"
+    src="test-file-stub"
+  />
+   smooch integration
+</label>
+`;
+
+exports[`IntegrationsStatsFilter should render icon for smooch_inside integration 1`] = `
+<label
+  class="item dropdown-item form-check-label"
+  role="menuitem"
+  tabindex="0"
+>
+  <input
+    class="mr-2 checkbox"
+    type="checkbox"
+  />
+  <img
+    alt="logo-smooch_inside"
+    class="integrationIcon"
+    src="test-file-stub"
+  />
+   smooch_inside integration
+</label>
+`;
+
+exports[`IntegrationsStatsFilter should render icon for zendesk integration 1`] = `
+<label
+  class="item dropdown-item form-check-label"
+  role="menuitem"
+  tabindex="0"
+>
+  <input
+    class="mr-2 checkbox"
+    type="checkbox"
+  />
+  <img
+    alt="logo-zendesk"
+    class="integrationIcon"
+    src="test-file-stub"
+  />
+   zendesk integration
+</label>
+`;

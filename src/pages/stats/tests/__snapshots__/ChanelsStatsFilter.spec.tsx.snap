@@ -1,0 +1,260 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChannelsStatsFilter should merge stats filters on item select 1`] = `
+Array [
+  Object {
+    "filters": Immutable.Map {
+      "channels": Immutable.List [
+        "email",
+      ],
+    },
+    "type": "MERGE_STATS_FILTERS",
+  },
+]
+`;
+
+exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
+<div
+  class="dropdown"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="mr-2 dropdown-toggle btn btn-secondary"
+    type="button"
+  >
+    <span>
+      1 channel
+    </span>
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown dropdown-menu dropdown-menu-right"
+    role="menu"
+    tabindex="-1"
+  >
+    <h6
+      class="dropdown-item-input dropdownItemInput dropdown-header"
+      tabindex="-1"
+    >
+      <input
+        class="form-control"
+        placeholder="Search channels..."
+        type="text"
+        value=""
+      />
+    </h6>
+    <button
+      class="component quickSelectionOption dropdown-item"
+      role="menuitem"
+      tabindex="0"
+      type="button"
+    >
+      <span>
+        Deselect
+      </span>
+      <div
+        class="badge badge--unselect"
+      >
+        1
+      </div>
+    </button>
+    <div
+      class="dropdownDivider dropdown-divider"
+      tabindex="-1"
+    />
+    <div
+      class="content"
+    >
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          checked=""
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+         Aircall
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+         Api
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+         Chat
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+         Email
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+         Facebook
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+         Facebook mention
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+         Facebook messenger
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+         Facebook recommendations
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+         Instagram ad comment
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+         Instagram comment
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+         Instagram mention
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+         Instagram direct message
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+         Phone
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+         Sms
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+         Twitter
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+         Twitter direct message
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+         Yotpo review
+      </label>
+    </div>
+  </div>
+</div>
+`;

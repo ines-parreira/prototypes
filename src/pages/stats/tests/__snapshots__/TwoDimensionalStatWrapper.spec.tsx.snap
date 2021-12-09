@@ -1,0 +1,233 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TwoDimensionalStatWrapper should display download error 1`] = `
+Array [
+  Array [
+    Object {
+      "status": "error",
+      "title": "foo error",
+    },
+  ],
+]
+`;
+
+exports[`TwoDimensionalStatWrapper should display spinner while downloading the stat 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="mb-3 d-flex justify-content-between align-items-baseline"
+  >
+    <h5
+      class="mb-0 d-flex header"
+    >
+      First response time (percentiles)
+    </h5>
+    <button
+      class="csvButton btn btn-secondary disabled"
+      disabled=""
+      type="button"
+    >
+      <div
+        class="container csvLoader mr-1"
+      >
+        <div
+          class="inner"
+          style="min-height: 14px;"
+        >
+          <i
+            class="icon-custom icon-circle-o-notch md-spin"
+            style="font-size: 14px;"
+          />
+        </div>
+      </div>
+      CSV
+    </button>
+  </div>
+  children
+</div>
+`;
+
+exports[`TwoDimensionalStatWrapper should download stat on download button click 1`] = `
+Array [
+  Array [
+    "foo.txt",
+    "foo",
+    "text/plain",
+  ],
+]
+`;
+
+exports[`TwoDimensionalStatWrapper should log event on download button click 1`] = `
+Array [
+  Array [
+    "stat-download-clicked",
+    Object {
+      "account_domain": "acme",
+      "name": "first-response-time",
+      "user_id": 2,
+    },
+  ],
+]
+`;
+
+exports[`TwoDimensionalStatWrapper should not render the children nor the title when stat is null 1`] = `
+<div
+  class="wrapper"
+/>
+`;
+
+exports[`TwoDimensionalStatWrapper should pass stat to children function 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="mb-3 d-flex justify-content-between align-items-baseline"
+  >
+    <h5
+      class="mb-0 d-flex header"
+    >
+      First response time (percentiles)
+    </h5>
+  </div>
+  {
+  "data": {
+    "label": "First response time (percentiles)",
+    "legend": {
+      "axes": {
+        "x": "",
+        "y": "First response time"
+      }
+    },
+    "data": {
+      "axes": {
+        "x": [
+          1558760400,
+          1558846800,
+          1558933200,
+          1559019600,
+          1559106000,
+          1559192400,
+          1559278800
+        ],
+        "y": []
+      },
+      "lines": [
+        {
+          "name": "50%",
+          "data": [
+            0,
+            0,
+            0,
+            0,
+            1563,
+            44772,
+            0
+          ]
+        },
+        {
+          "name": "90%",
+          "data": [
+            0,
+            0,
+            0,
+            0,
+            1563,
+            80567,
+            0
+          ]
+        }
+      ]
+    }
+  },
+  "meta": {
+    "previous_end_datetime": "2019-05-25T00:00:00-05:00",
+    "previous_start_datetime": "2019-05-18T00:00:01-05:00",
+    "end_datetime": "2019-05-31T23:59:59-05:00",
+    "start_datetime": "2019-05-25T00:00:00-05:00"
+  }
+}
+</div>
+`;
+
+exports[`TwoDimensionalStatWrapper should render the download button when isDownloadable is set to true 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="mb-3 d-flex justify-content-between align-items-baseline"
+  >
+    <h5
+      class="mb-0 d-flex header"
+    >
+      First response time (percentiles)
+    </h5>
+    <button
+      class="csvButton btn btn-secondary"
+      type="button"
+    >
+      <i
+        class="material-icons mr-1 csvButtonIcon"
+      >
+        file_download
+      </i>
+      CSV
+    </button>
+  </div>
+  children
+</div>
+`;
+
+exports[`TwoDimensionalStatWrapper should render the help icon when help text prop is defined 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="mb-3 d-flex justify-content-between align-items-baseline"
+  >
+    <h5
+      class="mb-0 d-flex header"
+    >
+      First response time (percentiles)
+      <span>
+        <i
+          class="material-icons ml-2 helpIcon"
+          id="tooltip-first-response-time"
+        >
+          info_outline
+        </i>
+      </span>
+    </h5>
+  </div>
+  children
+</div>
+`;
+
+exports[`TwoDimensionalStatWrapper should render the loader when stat is fetching 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="mb-3 d-flex justify-content-between align-items-baseline"
+  >
+    <h5
+      class="mb-0 d-flex header"
+    >
+      First response time (percentiles)
+    </h5>
+  </div>
+  <div
+    class="container"
+  >
+    <div
+      class="inner"
+      style="min-height: 400px;"
+    >
+      <i
+        class="icon-custom icon-circle-o-notch md-spin"
+        style="font-size: 40px;"
+      />
+    </div>
+  </div>
+</div>
+`;

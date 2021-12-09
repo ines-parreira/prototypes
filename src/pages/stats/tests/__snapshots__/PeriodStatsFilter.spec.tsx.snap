@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PeriodStatsFilter should merge stats filters on period change 1`] = `
+Array [
+  Object {
+    "filters": Immutable.Map {
+      "period": Immutable.Map {
+        "start_datetime": "2017-02-14T00:00:00-07:00",
+        "end_datetime": "2017-02-14T23:59:59-07:00",
+      },
+    },
+    "type": "MERGE_STATS_FILTERS",
+  },
+]
+`;
+
+exports[`PeriodStatsFilter should render period stats filter 1`] = `
+<div>
+  <button
+    class="btn btn-secondary"
+    type="button"
+  >
+    <i
+      class="material-icons mr-2"
+    >
+      calendar_today
+    </i>
+    <span>
+      May 02, 2021 - May 03, 2021
+    </span>
+    <i
+      class="material-icons md-2 strong ml-1"
+    >
+      arrow_drop_down
+    </i>
+  </button>
+</div>
+`;

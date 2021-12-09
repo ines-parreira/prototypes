@@ -1,5 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`selectors stats getStatsMessagingIntegrations should return only message integrations 1`] = `
+Array [
+  Object {
+    "id": 1,
+    "type": "gmail",
+  },
+]
+`;
+
 exports[`selectors stats getViewfilters() should add an integration in the filters because it's a required field 1`] = `
 Immutable.Map {
   "integrations": Immutable.List [

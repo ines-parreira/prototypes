@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TagsStatsFilter should merge stats filters on item select 1`] = `
+Array [
+  Object {
+    "filters": Immutable.Map {
+      "tags": Immutable.List [
+        2,
+      ],
+    },
+    "type": "MERGE_STATS_FILTERS",
+  },
+]
+`;
+
+exports[`TagsStatsFilter should render the selected tags 1`] = `
+<div
+  class="dropdown"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="mr-2 dropdown-toggle btn btn-secondary"
+    type="button"
+  >
+    <span>
+      2 tags
+    </span>
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu dropdown-menu-right"
+    role="menu"
+    style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+    tabindex="-1"
+  >
+    <h6
+      class="dropdown-item-input dropdownItemInput dropdown-header"
+      tabindex="-1"
+    >
+      <input
+        class="form-control"
+        placeholder="Search tags..."
+        type="text"
+        value=""
+      />
+    </h6>
+    <button
+      class="component quickSelectionOption dropdown-item"
+      role="menuitem"
+      tabindex="0"
+      type="button"
+    >
+      <span>
+        Deselect all
+      </span>
+      <div
+        class="badge badge--unselect"
+      >
+        2
+      </div>
+    </button>
+    <div
+      class="dropdownDivider dropdown-divider"
+      tabindex="-1"
+    />
+    <div
+      class="content"
+    >
+      <div
+        data-testid="infinite-container"
+      >
+        <label
+          class="item dropdown-item form-check-label"
+          role="menuitem"
+          tabindex="0"
+        >
+          <input
+            checked=""
+            class="mr-2 checkbox"
+            type="checkbox"
+          />
+           billing
+        </label>
+        <label
+          class="item dropdown-item form-check-label"
+          role="menuitem"
+          tabindex="0"
+        >
+          <input
+            class="mr-2 checkbox"
+            type="checkbox"
+          />
+           refund
+        </label>
+        <label
+          class="item dropdown-item form-check-label"
+          role="menuitem"
+          tabindex="0"
+        >
+          <input
+            checked=""
+            class="mr-2 checkbox"
+            type="checkbox"
+          />
+           refund accepted
+        </label>
+        <label
+          class="item dropdown-item form-check-label"
+          role="menuitem"
+          tabindex="0"
+        >
+          <input
+            class="mr-2 checkbox"
+            type="checkbox"
+          />
+           rejected
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+`;

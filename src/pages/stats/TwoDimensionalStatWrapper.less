@@ -1,0 +1,32 @@
+@import '../../../css/new/colorTokens';
+
+:local {
+    .wrapper {
+        padding: 30px;
+    }
+
+    .header {
+        font-size: 17px;
+    }
+
+    .csvButton {
+        width: 72px;
+    }
+
+    .csvButtonIcon {
+        vertical-align: middle;
+    }
+
+    .csvLoader {
+        display: inline-block;
+        width: 14px;
+
+        > div {
+            width: 14px !important;
+
+            i {
+                color: fade(@classic-neutral-grey-3, 32%);
+            }
+        }
+    }
+}

@@ -11,9 +11,7 @@ export const setStatsFilters = (filters: Map<any, any>) => {
     }
 }
 
-export const mergeStatsFilters = (
-    filters: Map<any, any>
-): ReturnType<StoreDispatch> => {
+export const mergeStatsFilters = (filters: Map<any, any>) => {
     return {
         type: constants.MERGE_STATS_FILTERS,
         filters,

@@ -1,62 +1,52 @@
 import React, {ComponentProps} from 'react'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
+import {Provider} from 'react-redux'
 import {act, fireEvent, render, waitFor} from '@testing-library/react'
+import _keyBy from 'lodash/keyBy'
+import {Action} from 'redux'
 
-import {views} from '../../../config/stats'
-import {agents as agentsFixtures} from '../../../fixtures/agents'
-import {integrationsState} from '../../../fixtures/integrations'
 import {tags as tagsFixtures} from '../../../fixtures/tag'
-import {TagsState} from '../../../state/entities/tags/types'
-import {StatsFiltersContainer} from '../DEPRECATED_StatsFilters'
+import {RootState} from '../../../state/types'
+import TagsStatsFilter from '../TagsStatsFilter'
 import {fetchTags} from '../../../models/tag/resources'
 import {TagSortableProperties} from '../../../models/tag/types'
 import {OrderDirection} from '../../../models/api/types'
+import * as tagsActions from '../../../state/entities/tags/actions'
 import InfiniteScroll from '../../common/components/InfiniteScroll/InfiniteScroll'
+import {MERGE_STATS_FILTERS} from '../../../state/stats/constants'
 
-jest.mock('../common/PeriodPicker', () => () => 'PeriodPicker')
 jest.mock('../../../models/tag/resources')
-jest.mock('../../common/components/InfiniteScroll/InfiniteScroll')
-;(
-    InfiniteScroll as jest.MockedFunction<typeof InfiniteScroll>
-).mockImplementation(
-    ({onLoad, ...others}: ComponentProps<typeof InfiniteScroll>) => {
-        return (
-            <div
-                {...others}
-                onClick={onLoad}
-                data-testid="infinite-container"
-            />
-        )
-    }
+jest.mock(
+    '../../common/components/InfiniteScroll/InfiniteScroll',
+    () =>
+        ({onLoad, children}: ComponentProps<typeof InfiniteScroll>) => {
+            return (
+                <div onClick={onLoad} data-testid="infinite-container">
+                    {children}
+                </div>
+            )
+        }
 )
 
+const mockStore = configureMockStore([thunk])
 const fetchTagsMock = fetchTags as jest.MockedFunction<typeof fetchTags>
+let tagsFetchedSpy: jest.SpiedFunction<typeof tagsActions.tagsFetched>
 
-describe('<StatsFilters />', () => {
-    const minProps = {
-        agents: agentsFixtures.map(({id, name}) => ({id, label: name})),
-        channels: [],
-        config: views.get('support-performance-overview'),
-        currentAccount: fromJS({}),
-        filters: fromJS({
-            period: {
-                start_datetime: '2021-05-29T00:00:00+02:00',
-                end_datetime: '2021-06-04T23:59:59+02:00',
-            },
+describe('TagsStatsFilter', () => {
+    const defaultState = {
+        stats: fromJS({
+            filters: null,
         }),
-        integrations: integrationsState.integrations,
-        tags: tagsFixtures.reduce((tags: TagsState, tag) => {
-            tags[tag.id.toString()] = tag
-            return tags
-        }, {}),
-        teams: [],
-        mergeStatsFilters: jest.fn(),
-        tagsFetched: jest.fn(),
-        notify: jest.fn(),
-    } as unknown as ComponentProps<typeof StatsFiltersContainer>
+        entities: {
+            tags: _keyBy(tagsFixtures, (tag) => tag.id),
+        } as unknown as RootState['entities'],
+    } as RootState
 
     beforeEach(() => {
         jest.clearAllMocks()
+        tagsFetchedSpy = jest.spyOn(tagsActions, 'tagsFetched')
         fetchTagsMock.mockResolvedValue({
             uri: '/api/tags/',
             data: tagsFixtures,
@@ -71,18 +61,43 @@ describe('<StatsFilters />', () => {
         })
     })
 
-    it('should display the page', () => {
-        const {container} = render(<StatsFiltersContainer {...minProps} />)
+    afterEach(() => {
+        tagsFetchedSpy.mockRestore()
+    })
+
+    it('should render the selected tags', async () => {
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <TagsStatsFilter
+                    value={[tagsFixtures[0].id, tagsFixtures[2].id]}
+                />
+            </Provider>
+        )
+
+        await waitFor(() =>
+            expect(tagsFetchedSpy).toHaveBeenCalledWith(tagsFixtures)
+        )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should retrieve tags on first render', async () => {
-        render(<StatsFiltersContainer {...minProps} />)
+    it('should merge stats filters on item select', async () => {
+        const store = mockStore(defaultState)
+        const {getByLabelText} = render(
+            <Provider store={store}>
+                <TagsStatsFilter value={[]} />
+            </Provider>
+        )
 
         await waitFor(() =>
-            expect(minProps.tagsFetched).toHaveBeenCalledWith(tagsFixtures)
+            expect(tagsFetchedSpy).toHaveBeenCalledWith(tagsFixtures)
         )
+        fireEvent.click(getByLabelText(tagsFixtures[0].name))
+
+        const mergeStatsFiltersActions = store
+            .getActions()
+            .filter((action: Action) => action.type === MERGE_STATS_FILTERS)
+        expect(mergeStatsFiltersActions).toMatchSnapshot()
     })
 
     describe('tags search', () => {
@@ -95,8 +110,11 @@ describe('<StatsFilters />', () => {
         })
 
         it('should debounce tag search requests', async () => {
+            const store = mockStore(defaultState)
             const {getByPlaceholderText} = render(
-                <StatsFiltersContainer {...minProps} />
+                <Provider store={store}>
+                    <TagsStatsFilter value={[1]} />
+                </Provider>
             )
 
             fireEvent.change(getByPlaceholderText('Search tags...'), {
@@ -112,7 +130,7 @@ describe('<StatsFilters />', () => {
                 jest.runOnlyPendingTimers()
             })
             await waitFor(() =>
-                expect(minProps.tagsFetched).toHaveBeenCalledWith(tagsFixtures)
+                expect(tagsFetchedSpy).toHaveBeenCalledWith(tagsFixtures)
             )
 
             expect(fetchTags).toHaveBeenCalledTimes(1)
@@ -128,8 +146,11 @@ describe('<StatsFilters />', () => {
         })
 
         it('should fetch tags on scroll', async () => {
+            const store = mockStore(defaultState)
             const {getByPlaceholderText, getByTestId} = render(
-                <StatsFiltersContainer {...minProps} />
+                <Provider store={store}>
+                    <TagsStatsFilter value={[1]} />
+                </Provider>
             )
 
             fireEvent.change(getByPlaceholderText('Search tags...'), {
@@ -148,7 +169,7 @@ describe('<StatsFilters />', () => {
                         page: 1,
                         search: 'foo',
                     },
-                    expect.any(Object)
+                    expect.anything()
                 )
             )
         })

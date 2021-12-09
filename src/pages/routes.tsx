@@ -74,6 +74,7 @@ import {CurrentHelpCenter} from './settings/helpCenter/providers/CurrentHelpCent
 import {HelpCenterApiClientProvider} from './settings/helpCenter/hooks/useHelpCenterApi'
 import DefaultStatsFilters from './stats/DefaultStatsFilters'
 import HelpCenterPaywall from './settings/helpCenter/components/Paywalls/HelpCenterPaywall'
+import SupportPerformanceTags from './stats/SupportPerformanceTags'
 import ImportPhoneNumber from './tasks/detail/ImportPhoneNumber'
 
 const assetsURL = window.GORGIAS_ASSETS_URL || ''
@@ -375,6 +376,14 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
                             }`}
                         />
                     )}
+                />
+                <Route
+                    exact
+                    path={`${path}/tags`}
+                    render={appRender({
+                        content: SupportPerformanceTags,
+                        navbar: StatsNavbarContainer,
+                    })}
                 />
                 <Route
                     path={`${path}/:view`}

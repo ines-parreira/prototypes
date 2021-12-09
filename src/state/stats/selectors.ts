@@ -5,10 +5,16 @@ import moment from 'moment-timezone'
 import {RootState} from '../types'
 import {views as statViewsConfig} from '../../config/stats'
 
-import {getIntegrations} from '../integrations/selectors'
+import {
+    getIntegrations,
+    getIntegrationsByTypes,
+} from '../integrations/selectors'
 import {getTimezone} from '../currentUser/selectors'
+import {IntegrationType} from '../../models/integration/constants'
+import {Integration} from '../../models/integration/types'
 
-import {StatsState} from './types'
+import {StatsFilters, StatsState} from './types'
+import {STATS_MESSAGING_INTEGRATIONS_TYPES} from './constants'
 
 export const getStatsState = (state: RootState): StatsState => state.stats
 
@@ -17,6 +23,10 @@ export const getFilters = createSelector<
     Maybe<Map<any, any>>,
     StatsState
 >(getStatsState, (state) => state.get('filters') as Maybe<Map<any, any>>)
+
+export const getStatsFiltersJS = createSelector(getFilters, (filters) =>
+    filters ? (filters.toJS() as StatsFilters) : null
+)
 
 export const DEPRECATED_makeStatsFiltersSelector = (viewName: string) =>
     createSelector<
@@ -110,3 +120,31 @@ export const getChannelsStatsFilters =
 
 export const getLiveAgentsStatsFilters =
     DEPRECATED_makeStatsFiltersSelector('live-agents')
+
+const makeIntegrationsStatsFilterSelector = (
+    allowedTypes: IntegrationType[]
+) => {
+    const getAllowedTypesIntegrations = getIntegrationsByTypes(allowedTypes)
+    return createSelector(
+        getStatsFiltersJS,
+        getAllowedTypesIntegrations,
+        (statFilters, allowedIntegrations) => {
+            const allowedIntegrationIds = allowedIntegrations.map(
+                (integration: Map<string, unknown>) => integration.get('id')
+            )
+            return statFilters?.integrations
+                ? statFilters.integrations.filter((integrationId: number) =>
+                      allowedIntegrationIds.includes(integrationId)
+                  )
+                : []
+        }
+    )
+}
+
+export const getMessagingIntegrationsStatsFilter =
+    makeIntegrationsStatsFilterSelector(STATS_MESSAGING_INTEGRATIONS_TYPES)
+
+export const getStatsMessagingIntegrations = createSelector(
+    getIntegrationsByTypes(STATS_MESSAGING_INTEGRATIONS_TYPES),
+    (integrations) => integrations.toJS() as Integration[]
+)
