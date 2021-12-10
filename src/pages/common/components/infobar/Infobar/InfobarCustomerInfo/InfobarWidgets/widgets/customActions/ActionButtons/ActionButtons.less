@@ -28,10 +28,40 @@
             padding: 6px;
         }
     }
+    .formParamRow {
+        display: flex;
+        margin-bottom: 0.7rem;
+        :global .form-group {
+            margin-bottom: 0;
+        }
+        & > div {
+            flex: 1 1 auto;
+            &:not(:last-of-type) {
+                margin-right: 1.1rem;
+            }
+        }
+        &.squash > div {
+            &:not(:last-of-type) {
+                margin-right: 0.6rem;
+            }
+        }
+    }
+    .formParamGroupIcon {
+        display: flex;
+        flex: 0 0 auto !important;
+    }
+    .formParamIcon {
+        font-size: 1.4rem !important;
+    }
+    .formParamCustomIcon {
+        padding: 0 0.2rem;
+        span {
+            display: none;
+        }
+    }
     .actionButtons {
         display: flex !important;
         flex-wrap: nowrap !important;
-        margin-bottom: 6px;
     }
     .actionButton {
         flex: 1 1 50% !important;

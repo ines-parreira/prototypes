@@ -2,16 +2,21 @@ import React from 'react'
 
 import {fromJS} from 'immutable'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import Link from '../Link'
+
+const mockStore = configureMockStore([thunk])
 
 describe('<Link/>', () => {
     const props = {
         index: 2,
         targetId: 'somepath-2',
         link: {
-            url: 'httpbin.org/get?first_name={{first_name}}&last_name={{last_name}}',
-            label: 'Query {{first_name}}',
+            url: 'httpbin.org/get?first_name={{first_name}}&last_name={{last_name}}&partner={{user.name}}',
+            label: 'Query {{ticket.someData}}',
         },
         source: fromJS({
             last_name: 'John',
@@ -26,17 +31,42 @@ describe('<Link/>', () => {
     })
 
     it('should render with template replaced with its according value', () => {
-        const {container} = render(<Link {...props} />)
+        const {container} = render(
+            <Provider
+                store={mockStore({
+                    customers: fromJS({active: {name: 'Johanna'}}),
+                    ticket: fromJS({someData: '1234'}),
+                })}
+            >
+                <Link {...props} />
+            </Provider>
+        )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render with the editor', () => {
-        const {container} = render(<Link {...props} isEditing />)
+        const {container} = render(
+            <Provider
+                store={mockStore({
+                    customers: fromJS({active: {}}),
+                })}
+            >
+                <Link {...props} isEditing />
+            </Provider>
+        )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should open Editor when editing a link and call onSubmit on click', async () => {
-        render(<Link {...props} isEditing />)
+        render(
+            <Provider
+                store={mockStore({
+                    customers: fromJS({active: {}}),
+                })}
+            >
+                <Link {...props} isEditing />
+            </Provider>
+        )
         fireEvent.click(screen.getByText('settings'))
         await waitFor(() => {
             fireEvent.click(screen.getByRole('button', {name: 'Save'}))
@@ -45,7 +75,15 @@ describe('<Link/>', () => {
     })
 
     it('should call onRemove when removing a link', () => {
-        render(<Link {...props} isEditing />)
+        render(
+            <Provider
+                store={mockStore({
+                    customers: fromJS({active: {}}),
+                })}
+            >
+                <Link {...props} isEditing />
+            </Provider>
+        )
         fireEvent.click(screen.getByText('close'))
         expect(props.onRemove).toHaveBeenCalledWith(props.index)
     })

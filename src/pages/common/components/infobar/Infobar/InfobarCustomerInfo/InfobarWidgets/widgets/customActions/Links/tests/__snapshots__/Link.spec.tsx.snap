@@ -6,11 +6,11 @@ exports[`<Link/> should render with template replaced with its according value 1
 >
   <a
     class="link"
-    href="httpbin.org/get?first_name=Doe&last_name=John"
+    href="httpbin.org/get?first_name=Doe&last_name=John&partner=Johanna"
     rel="noopener noreferrer"
     target="_blank"
   >
-    Query Doe
+    Query 1234
     <i
       class="linkIcon material-icons"
     >
@@ -26,11 +26,11 @@ exports[`<Link/> should render with the editor 1`] = `
 >
   <a
     class="link"
-    href="httpbin.org/get?first_name=Doe&last_name=John"
+    href="httpbin.org/get?first_name=Doe&last_name=John&partner="
     rel="noopener noreferrer"
     target="_blank"
   >
-    Query Doe
+    Query 
     <i
       class="linkIcon material-icons"
     >

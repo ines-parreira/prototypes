@@ -2,6 +2,7 @@ import React from 'react'
 import {render, fireEvent, screen, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
+import {HttpMethod} from '../../../../../../../../../../../../models/api/types'
 import {Editor} from '../Editor'
 
 describe('<Editor/>', () => {
@@ -11,10 +12,18 @@ describe('<Editor/>', () => {
         (...args: any) =>
             // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             actionMock(actionName, ...args)
+    const action = {
+        method: HttpMethod.Get,
+        url: '',
+        headers: [],
+        params: [],
+        body: {},
+    }
+
     const props = {
         buttons: [
-            {label: 'I am in snapshots'},
-            {label: 'I am in snapshots too'},
+            {label: 'I am in snapshots', action},
+            {label: 'I am in snapshots too', action},
         ],
         templatePath: 'some.template',
         templateAbsolutePath: 'some.absolute.template',
@@ -36,7 +45,7 @@ describe('<Editor/>', () => {
         render(<Editor {...props} />)
         fireEvent.click(screen.getByRole('button', {name: 'add Add Button'}))
         await waitFor(() => {
-            expect(screen.getByRole('button', {name: 'Save'})).toBeTruthy()
+            expect(screen.queryByRole('button', {name: 'Save'})).toBeTruthy()
         })
     })
     it('should close the modal when clicking "Cancel"', async () => {
@@ -57,7 +66,7 @@ describe('<Editor/>', () => {
         render(<Editor {...props} />)
         fireEvent.click(screen.getByRole('button', {name: 'add Add Button'}))
         await screen.findByRole('button', {name: 'Save'})
-        fireEvent.change(screen.getByLabelText('Title'), {
+        fireEvent.change(screen.getByLabelText('Button title'), {
             target: {value: 'ok'},
         })
         fireEvent.click(screen.getByRole('button', {name: 'Save'}))

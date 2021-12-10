@@ -33,7 +33,11 @@ describe('<ActionButtons/>', () => {
 
     it('should render links and buttons ', () => {
         const {container} = render(
-            <Provider store={mockStore({})}>
+            <Provider
+                store={mockStore({
+                    customers: fromJS({active: {}}),
+                })}
+            >
                 <CustomActions
                     template={template}
                     source={source}
@@ -47,7 +51,11 @@ describe('<ActionButtons/>', () => {
 
     it('should render links and buttons in edition mode', () => {
         const {container} = render(
-            <Provider store={mockStore({})}>
+            <Provider
+                store={mockStore({
+                    customers: fromJS({active: {}}),
+                })}
+            >
                 <CustomActions template={template} source={source} isEditing />
             </Provider>
         )

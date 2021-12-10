@@ -857,7 +857,7 @@ export const validateWebhookURL = (val: string): Maybe<string> => {
         },
         {
             test: /^(?!https:).*:/,
-            message: 'Only https protocol allowed',
+            message: 'Only https protocol is allowed',
         },
         {
             test: /(\.internal(\/.*)?|\.local(\/.*)?)$/,

@@ -1,8 +1,11 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useMemo} from 'react'
 import {ListGroupItem} from 'reactstrap'
 import {Map} from 'immutable'
+import {useSelector} from 'react-redux'
 
 import {renderTemplate} from '../../../../../../../../utils/template'
+import {getTicket} from '../../../../../../../../../../state/ticket/selectors'
+import {getActiveCustomer} from '../../../../../../../../../../state/customers/selectors'
 import {Link as LinkType, RemoveLink, SubmitLink} from '../types'
 
 import css from './Links.less'
@@ -18,7 +21,7 @@ type Props = {
     onSubmit: SubmitLink
 }
 
-export default function Link(props: Props) {
+export function Link(props: Props) {
     const {
         source,
         index,
@@ -31,9 +34,20 @@ export default function Link(props: Props) {
 
     const {url: linkUrl, label: linkLabel} = link
 
+    const ticket = useSelector(getTicket)
+    const user = useSelector(getActiveCustomer)
+
+    const templateContext = useMemo(() => {
+        return {
+            ...(source.toJS() as Record<string, unknown>),
+            ticket,
+            user,
+        }
+    }, [user, source, ticket])
+
     const renderLinkUrl = useCallback(() => {
-        return renderTemplate(linkUrl, source.toJS())
-    }, [linkUrl, source])
+        return renderTemplate(linkUrl, templateContext)
+    }, [linkUrl, templateContext])
 
     return (
         <ListGroupItem className={css.groupItem}>
@@ -43,7 +57,7 @@ export default function Link(props: Props) {
                 rel="noopener noreferrer"
                 className={css.link}
             >
-                {renderTemplate(linkLabel, source.toJS())}
+                {renderTemplate(linkLabel, templateContext)}
                 <i className={`${css.linkIcon} material-icons`}>open_in_new</i>
             </a>
             {isEditing && (
@@ -72,3 +86,5 @@ export default function Link(props: Props) {
         </ListGroupItem>
     )
 }
+
+export default Link

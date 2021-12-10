@@ -16,6 +16,13 @@ Array [
     Object {
       "buttons": Array [
         Object {
+          "action": Object {
+            "body": Object {},
+            "headers": Array [],
+            "method": "GET",
+            "params": Array [],
+            "url": "",
+          },
           "label": "I am in snapshots",
         },
       ],
@@ -35,9 +42,23 @@ Array [
     Object {
       "buttons": Array [
         Object {
+          "action": Object {
+            "body": Object {},
+            "headers": Array [],
+            "method": "GET",
+            "params": Array [],
+            "url": "",
+          },
           "label": "I am in snapshots",
         },
         Object {
+          "action": Object {
+            "body": Object {},
+            "headers": Array [],
+            "method": "GET",
+            "params": Array [],
+            "url": "",
+          },
           "label": "I am in snapshots too",
         },
       ],
@@ -57,12 +78,33 @@ Array [
     Object {
       "buttons": Array [
         Object {
+          "action": Object {
+            "body": Object {},
+            "headers": Array [],
+            "method": "GET",
+            "params": Array [],
+            "url": "",
+          },
           "label": "I am in snapshots",
         },
         Object {
+          "action": Object {
+            "body": Object {},
+            "headers": Array [],
+            "method": "GET",
+            "params": Array [],
+            "url": "",
+          },
           "label": "I am in snapshots too",
         },
         Object {
+          "action": Object {
+            "body": Object {},
+            "headers": Array [],
+            "method": "GET",
+            "params": Array [],
+            "url": "",
+          },
           "label": "ok",
         },
       ],

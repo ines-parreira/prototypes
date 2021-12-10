@@ -2,7 +2,7 @@ import React, {useCallback, useMemo, useState} from 'react'
 import {Button, ListGroup} from 'reactstrap'
 
 import {Map} from 'immutable'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 
 import {
     removeEditedWidget,
@@ -28,9 +28,6 @@ type Props = {
     templateAbsolutePath: string
     source: Map<string, unknown>
     buttons: ButtonType[]
-    startWidgetEdition: typeof startWidgetEdition
-    updateEditedWidget: typeof updateEditedWidget
-    removeEditedWidget: typeof removeEditedWidget
 }
 
 export function Editor({
@@ -41,7 +38,7 @@ export function Editor({
     startWidgetEdition,
     updateEditedWidget,
     removeEditedWidget,
-}: Props) {
+}: Props & ConnectedProps<typeof connector>) {
     const [isFormOpen, setFormOpen] = useState<boolean>(false)
     const [editorIndex, setFormIndex] = useState<number | null>(null)
     const handleRemove = useCallback<OnRemoveButton>(
@@ -144,8 +141,10 @@ export function Editor({
     )
 }
 
-export default connect(null, {
+const connector = connect(null, {
     updateEditedWidget,
     startWidgetEdition,
     removeEditedWidget,
-})(Editor)
+})
+
+export default connector(Editor)

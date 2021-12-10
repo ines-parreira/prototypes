@@ -15,7 +15,7 @@ exports[`<ButtonsGroup/> should render with correct label and without a dropdown
     class="actionButton btn btn-secondary"
     type="button"
   >
-    ok
+    ok 1234 Johanna
   </button>
 </div>
 `;

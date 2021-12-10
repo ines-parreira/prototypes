@@ -1,7 +1,7 @@
 import React, {useState, useMemo, memo, useCallback, useEffect} from 'react'
 import {Button, Collapse, ListGroup} from 'reactstrap'
 import {List, Map} from 'immutable'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 
 import expandUp from '../../../../../../../../../../../img/infobar/expand-up-blue.svg'
 import expandDown from '../../../../../../../../../../../img/infobar/expand-down.svg'
@@ -24,12 +24,9 @@ type Props = {
     source: Map<string, unknown>
     immutableLinks: List<Map<string, unknown>>
     isEditing?: boolean
-    startWidgetEdition: typeof startWidgetEdition
-    updateEditedWidget: typeof updateEditedWidget
-    removeEditedWidget: typeof removeEditedWidget
 }
 
-export function Links(props: Props) {
+export function Links(props: Props & ConnectedProps<typeof connector>) {
     const {
         templatePath,
         templateAbsolutePath,
@@ -121,7 +118,7 @@ export function Links(props: Props) {
         <>
             {allLinks.length > 0 && (
                 <>
-                    <ListGroup flush>
+                    <ListGroup flush className={css.listGroup}>
                         {isEditing || !isCollapsible ? (
                             allLinks
                         ) : (

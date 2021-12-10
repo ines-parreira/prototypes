@@ -90,7 +90,7 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
         />
       </FormGroup>
       <InputField
-        error="Only https protocol allowed"
+        error="Only https protocol is allowed"
         help={
           <div>
             You can use
@@ -349,7 +349,7 @@ exports[`HTTPIntegrationOverview should display data with url-encoded format 1`]
         />
       </FormGroup>
       <InputField
-        error="Only https protocol allowed"
+        error="Only https protocol is allowed"
         help={
           <div>
             You can use

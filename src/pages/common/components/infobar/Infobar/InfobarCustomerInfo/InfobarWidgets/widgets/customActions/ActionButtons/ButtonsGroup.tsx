@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useState} from 'react'
+import React, {memo, useCallback, useMemo, useState} from 'react'
 import {
     Button,
     ButtonDropdown,
@@ -8,8 +8,11 @@ import {
     DropdownToggle,
 } from 'reactstrap'
 import {Map} from 'immutable'
+import {useSelector} from 'react-redux'
 
 import {renderTemplate} from '../../../../../../../../utils/template'
+import {getTicket} from '../../../../../../../../../../state/ticket/selectors'
+import {getActiveCustomer} from '../../../../../../../../../../state/customers/selectors'
 
 import {Button as ButtonType} from '../types'
 
@@ -24,6 +27,17 @@ type Props = {
 
 function ButtonsGroup({buttons, source}: Props) {
     const [isDropdownOpen, setDropdownOpen] = useState(false)
+
+    const ticket = useSelector(getTicket)
+    const user = useSelector(getActiveCustomer)
+
+    const templateContext = useMemo(() => {
+        return {
+            ...(source.toJS() as Record<string, unknown>),
+            ticket,
+            user,
+        }
+    }, [user, source, ticket])
 
     const toggleDropdown = useCallback(() => {
         setDropdownOpen((isDropdownOpen) => !isDropdownOpen)
@@ -40,7 +54,7 @@ function ButtonsGroup({buttons, source}: Props) {
                         className={css.actionButton}
                         key={index}
                     >
-                        {renderTemplate(button.label, source.toJS())}
+                        {renderTemplate(button.label, templateContext)}
                     </Button>
                 )
             })}

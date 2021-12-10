@@ -5,15 +5,24 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 
+import {HttpMethod} from '../../../../../../../../../../../models/api/types'
 import ActionButtons from '../ActionButtons'
 
 const mockStore = configureMockStore([thunk])
 
 describe('<ActionButtons/>', () => {
+    const action = {
+        method: HttpMethod.Get,
+        url: '',
+        headers: [],
+        params: [],
+        body: {},
+    }
+
     const props = {
         immutableButtons: fromJS([
-            {label: 'I am in snapshots'},
-            {label: 'I am in snapshots too'},
+            {label: 'I am in snapshots', action},
+            {label: 'I am in snapshots too', action},
         ]),
         templatePath: '',
         templateAbsolutePath: '',
@@ -32,7 +41,13 @@ describe('<ActionButtons/>', () => {
 
     it('should render the action buttons if isEditing is set to false', () => {
         const {container} = render(
-            <ActionButtons {...props} isEditing={false} />
+            <Provider
+                store={mockStore({
+                    customers: fromJS({active: {}}),
+                })}
+            >
+                <ActionButtons {...props} isEditing={false} />
+            </Provider>
         )
 
         expect(container.firstChild).toMatchSnapshot()

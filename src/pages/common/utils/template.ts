@@ -4,6 +4,9 @@ import _unescape from 'lodash/unescape'
 import _trim from 'lodash/trim'
 import moment from 'moment'
 
+import {Customer} from '../../../state/customers/types'
+import {Ticket} from '../../../state/newMessage/types'
+
 export const filterRegex = /([\w_]+)\(([^(]*)\)/
 export const templateRegex = /{{([a-zA-Z0-9.\[\]"'_]+)\|?([\w_]+\([^(]*\))?}}/g
 
@@ -41,7 +44,9 @@ const filters = {
 }
 
 export type Context = {
-    [key: string]: Context | string | number | undefined | null
+    [key: string]: unknown
+    ticket?: Omit<Ticket, 'state' | '_internal'>
+    user?: Customer | Record<string, never>
 }
 
 /**

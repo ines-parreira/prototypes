@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Body/> should render with a json textarea 1`] = `
+<div
+  class="form-group"
+>
+  <label
+    class="control-label"
+  >
+    Body
+  </label>
+  <div
+    class="mb-3"
+  >
+    <div
+      class="form-check"
+      color=""
+    >
+      <label
+        class="control-label form-check-label"
+        for="id-input-1"
+      >
+        <input
+          checked=""
+          class="form-check-input form-check-input"
+          id="id-input-1"
+          type="radio"
+        />
+        <span
+          style="vertical-align: middle;"
+        >
+          application/json
+        </span>
+      </label>
+    </div>
+    <div
+      class="form-check"
+      color=""
+    >
+      <label
+        class="control-label form-check-label"
+        for="id-input-2"
+      >
+        <input
+          class="form-check-input form-check-input"
+          id="id-input-2"
+          type="radio"
+        />
+        <span
+          style="vertical-align: middle;"
+        >
+          application/x-www-form-urlencoded
+        </span>
+      </label>
+    </div>
+  </div>
+  <div
+    class="InputField form-group"
+    color=""
+  >
+    <div
+      class=""
+    >
+      <div
+        class="form-group"
+      >
+        <div
+          class="controls"
+        >
+          <textarea
+            class="form-control"
+            id="id-json"
+            rows="6"
+          >
+            {}
+          </textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Body/> should render with parameter fields 1`] = `
+<div
+  class="form-group"
+>
+  <label
+    class="control-label"
+  >
+    Body
+  </label>
+  <div
+    class="mb-3"
+  >
+    <div
+      class="form-check"
+      color=""
+    >
+      <label
+        class="control-label form-check-label"
+        for="id-input-3"
+      >
+        <input
+          class="form-check-input form-check-input"
+          id="id-input-3"
+          type="radio"
+        />
+        <span
+          style="vertical-align: middle;"
+        >
+          application/json
+        </span>
+      </label>
+    </div>
+    <div
+      class="form-check"
+      color=""
+    >
+      <label
+        class="control-label form-check-label"
+        for="id-input-4"
+      >
+        <input
+          checked=""
+          class="form-check-input form-check-input"
+          id="id-input-4"
+          type="radio"
+        />
+        <span
+          style="vertical-align: middle;"
+        >
+          application/x-www-form-urlencoded
+        </span>
+      </label>
+    </div>
+  </div>
+  <div>
+    <button
+      class="btn btn-secondary btn-sm"
+      type="button"
+    >
+      <i
+        class="material-icons formParamIcon"
+      >
+        add
+      </i>
+    </button>
+  </div>
+</div>
+`;

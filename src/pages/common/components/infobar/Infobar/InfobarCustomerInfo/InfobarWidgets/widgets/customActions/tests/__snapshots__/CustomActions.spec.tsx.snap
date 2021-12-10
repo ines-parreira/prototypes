@@ -5,7 +5,7 @@ exports[`<ActionButtons/> should render links and buttons  1`] = `
   class="container"
 >
   <ul
-    class="list-group list-group-flush"
+    class="listGroup list-group list-group-flush"
   >
     <li
       class="groupItem list-group-item"
@@ -50,7 +50,7 @@ exports[`<ActionButtons/> should render links and buttons in edition mode 1`] = 
   class="container"
 >
   <ul
-    class="list-group list-group-flush"
+    class="listGroup list-group list-group-flush"
   >
     <li
       class="groupItem list-group-item"
