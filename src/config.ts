@@ -233,10 +233,17 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/smile.svg',
     },
     {
-        title: 'Klaviyo',
+        title: 'Klaviyo - 🗄 DEPRECATED',
         type: IntegrationType.Klaviyo,
         description:
             'Handle your customers, lists and segments from your Klaviyo campaigns via emails or sms.',
+        image: 'integrations/klaviyo.png',
+    },
+    {
+        title: 'Klaviyo',
+        url: 'https://www.klaviyo.com/integration/gorgias',
+        description:
+            'Send and receive Klaviyo SMS messages in Gorgias. Send Gorgias events into Klaviyo for customer segmentation and analytics.',
         image: 'integrations/klaviyo.png',
     },
     {

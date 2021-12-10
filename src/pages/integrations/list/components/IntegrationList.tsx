@@ -156,6 +156,15 @@ export default class IntegrationList extends React.Component<Props> {
                     return false
                 }
 
+                // Handle deprecation of Klaviyo integrations
+                // TODO(@walter) remove this when Klaviyo migration is completed
+                if (
+                    integration!.get('type') === IntegrationType.Klaviyo &&
+                    !hasKlaviyoIntegrations
+                ) {
+                    return false
+                }
+
                 return !integration!.get('hide')
             })
             .map((integration) => {
@@ -194,23 +203,6 @@ export default class IntegrationList extends React.Component<Props> {
                     )
                 }
 
-                // Handle deprecation of Klaviyo integrations
-                // TODO(@walter) remove this when Klaviyo migration is completed
-                if (integration!.get('type') === IntegrationType.Klaviyo) {
-                    if (!hasKlaviyoIntegrations) {
-                        return integration!
-                            .set(
-                                'url',
-                                'https://klaviyo.com/integration/gorgias'
-                            )
-                            .set(
-                                'description',
-                                'Send and receive Klaviyo SMS messages in Gorgias. ' +
-                                    'Send Gorgias events into Klaviyo for customer segmentation and analytics.'
-                            )
-                    }
-                    return integration!.set('title', 'Klaviyo - 🗄 DEPRECATED')
-                }
                 return integration
             })
 
