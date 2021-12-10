@@ -109,6 +109,54 @@ describe('TicketReplyEditor component', () => {
         expect(component).toMatchSnapshot()
     })
 
+    it.each([
+        // Simulate having an existing GIF and adding a new attachment
+        [fromJS([{content_type: 'image/gif'}]), [{type: 'image/jpg'}]],
+        // Simulate having an existing attachment and adding a new GIF one
+        [fromJS([{content_type: 'image/jpg'}]), [{type: 'image/gif'}]],
+    ])(
+        'should not allow GIF + other attachments for Twitter tweets',
+        (existingAttachments, newAttachments) => {
+            const notifyMock = jest.fn()
+
+            const component = shallow(
+                <TicketReplyEditorContainer
+                    ticket={fromJS({})}
+                    addAttachments={_noop}
+                    newMessage={fromJS({
+                        state: {
+                            contentState: ContentState.createFromText(''),
+                        },
+                        _internal: {
+                            loading: {
+                                submitMessage: false,
+                            },
+                        },
+                        newMessage: {
+                            body_text: '',
+                            body_html: '',
+                        },
+                    })}
+                    attachments={existingAttachments}
+                    newMessageType={TicketMessageSourceType.TwitterTweet}
+                    agents={fromJS([])}
+                    notify={notifyMock}
+                    macros={fromJS([])}
+                />
+            )
+
+            // Simulate adding new file
+            component.instance().handleFiles(newAttachments)
+
+            expect(notifyMock).toBeCalledWith({
+                type: 'error',
+                status: 'warning',
+                message:
+                    'When answering to Twitter tweet messages, you can only attach a single GIF or a maximum of 4 pictures.',
+            })
+        }
+    )
+
     // test for debouncer bug
     // https://github.com/gorgias/gorgias/issues/2510
     it('should not set newMessage value after component is unmounted', (done) => {

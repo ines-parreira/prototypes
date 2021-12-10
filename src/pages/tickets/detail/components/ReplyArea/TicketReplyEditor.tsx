@@ -155,11 +155,21 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
 
         // Twitter only allows either a single GIF or a maximum of 4 pictures
         if (newMessageType === TicketMessageSourceType.TwitterTweet) {
+            // Filter the newly added files to be uploaded
             const gifFiles = files.filter(
                 (file) => file.type && file.type === 'image/gif'
             )
 
-            if (gifFiles.length > 0 && files.length > 1) {
+            // Filter the existing, already uploaded files
+            const gifAttachments = attachments.filter(
+                (attachment: Map<any, any>) =>
+                    attachment.get('content_type') === 'image/gif'
+            )
+
+            if (
+                gifAttachments.size + gifFiles.length > 0 &&
+                attachments.size + files.length > 1
+            ) {
                 void this.props.notify({
                     type: NotificationStatus.Error,
                     status: NotificationStatus.Warning,
