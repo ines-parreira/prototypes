@@ -701,13 +701,19 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                   <ChatIntegrationPreview
                     introductionText="this is an intro"
                     isOnline={true}
-                    language="en-US"
                     mainColor="#123456"
                     name="my chat integration"
-                    renderFooter={true}
+                    position={
+                      Object {
+                        "alignment": "bottom-right",
+                        "offsetX": 0,
+                        "offsetY": 0,
+                      }
+                    }
                   >
                     <div
                       className="preview"
+                      style={Object {}}
                     >
                       <div
                         className="titlebar"
@@ -863,7 +869,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                         </div>
                       </div>
                       <div
-                        className="button"
+                        className="button bottom-right"
                         style={
                           Object {
                             "backgroundColor": "#123456",
@@ -1619,13 +1625,19 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                   <ChatIntegrationPreview
                     introductionText="this is an intro"
                     isOnline={true}
-                    language="en-US"
                     mainColor="#123456"
                     name="my chat integration"
-                    renderFooter={true}
+                    position={
+                      Object {
+                        "alignment": "bottom-right",
+                        "offsetX": 0,
+                        "offsetY": 0,
+                      }
+                    }
                   >
                     <div
                       className="preview"
+                      style={Object {}}
                     >
                       <div
                         className="titlebar"
@@ -1781,7 +1793,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                         </div>
                       </div>
                       <div
-                        className="button"
+                        className="button bottom-right"
                         style={
                           Object {
                             "backgroundColor": "#123456",

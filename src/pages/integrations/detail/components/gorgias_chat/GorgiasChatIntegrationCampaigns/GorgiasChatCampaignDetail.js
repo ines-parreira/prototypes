@@ -40,6 +40,7 @@ import {
     CAMPAIGNS_TRIGGER_KEYS,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
+    GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
 } from '../../../../../../config/integrations/gorgias_chat.ts'
 import history from '../../../../../history.ts'
 
@@ -394,6 +395,21 @@ export class CampaignForm extends React.Component {
         const {integration, id, agents} = this.props
         const {name, triggers, message} = this.state
 
+        const position = {
+            alignment: integration.getIn(
+                ['decoration', 'position', 'alignment'],
+                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.alignment
+            ),
+            offsetX: integration.getIn(
+                ['decoration', 'position', 'offsetX'],
+                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetX
+            ),
+            offsetY: integration.getIn(
+                ['decoration', 'position', 'offsetY'],
+                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetY
+            ),
+        }
+
         const isUpdate = id !== 'new'
 
         const authorOptions = agents
@@ -614,6 +630,7 @@ export class CampaignForm extends React.Component {
                                         GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
                                 ]
                             }
+                            position={position}
                         />
                     </Col>
                 </Row>

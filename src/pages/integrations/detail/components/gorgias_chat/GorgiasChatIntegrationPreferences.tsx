@@ -26,6 +26,7 @@ import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS,
+    GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
 } from '../../../../../config/integrations/gorgias_chat'
 import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
 import {getIntegrationsByTypes} from '../../../../../state/integrations/selectors'
@@ -216,6 +217,20 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             ''
         )
         const language = integration.getIn(['meta', 'language'])
+        const position = {
+            alignment: integration.getIn(
+                ['decoration', 'position', 'alignment'],
+                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.alignment
+            ),
+            offsetX: integration.getIn(
+                ['decoration', 'position', 'offsetX'],
+                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetX
+            ),
+            offsetY: integration.getIn(
+                ['decoration', 'position', 'offsetY'],
+                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetY
+            ),
+        }
 
         const isPreviewOnline =
             preview === PREVIEW_AUTO_RESPONDER ||
@@ -487,6 +502,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                 ])}
                                 isOnline={isPreviewOnline}
                                 language={language}
+                                position={position}
                                 renderFooter={renderPreviewFooter}
                             >
                                 {previewChildren}

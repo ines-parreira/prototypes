@@ -11,8 +11,9 @@
     @textColor: #545454;
 
     .preview {
+        position: relative;
         overflow: hidden;
-        padding: 32px 32px 20px 32px;
+        padding: 70px 40px 40px 40px;
         background: @lighterGrey;
         border-radius: 5px;
         width: 30em;
@@ -23,11 +24,15 @@
         pointer-events: none;
 
         > .titlebar {
+            position: absolute;
+            z-index: 3;
             display: block;
-            height: 2em;
-            padding-left: 0.4em;
-            margin: -2.4em -2.4em 2em;
+            height: 28px;
+            padding-left: 5px;
+            top: 0;
+            left: 0;
             background-color: #edeeef;
+            width: 100%;
         }
 
         > .titlebar:before {
@@ -53,7 +58,6 @@
         min-height: 520px;
         background: white;
         border: 0;
-        margin-bottom: 1em;
         border-radius: 5px;
         box-shadow: 0 4px 1em rgba(0, 0, 0, 0.12);
 
@@ -528,6 +532,7 @@
     }
 
     .button {
+        position: relative;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -537,6 +542,118 @@
         background: @primary;
         border-radius: 50%;
         box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+
+        .axis-x {
+            position: absolute;
+            height: 15px;
+            z-index: 2;
+            border-right: 1px solid @red;
+            border-left: 1px solid @red;
+            display: flex;
+            align-items: center;
+
+            .offsetLine {
+                height: 1px;
+                background-color: @red;
+                align-content: center;
+                width: 100%;
+            }
+
+            .offsetContent {
+                position: absolute;
+                font-family: Inter;
+                font-style: normal;
+                font-weight: 600;
+                font-size: 12px;
+                line-height: 16px;
+                bottom: -12px;
+                left: 6px;
+                color: @red;
+            }
+        }
+
+        .axis-y  {
+            position: absolute;
+            width: 15px;
+            height: 40px;
+            z-index: 2;
+            border-top: 1px solid @red;
+            border-bottom: 1px solid @red;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .offsetLine {
+                width: 1px;
+                background-color: @red;
+                align-content: center;
+                height: 100%;
+            }
+            .offsetContent {
+                position: absolute;
+                font-family: Inter;
+                font-style: normal;
+                font-weight: 600;
+                font-size: 12px;
+                line-height: 16px;
+                right: 12px;
+                bottom: calc(~'50% - 8px');
+                color: @red;
+            }
+        }
+
+        &.top-right {
+            margin-bottom: 1em;
+            .axis-x  {
+                right: -40px;
+            }
+            .axis-y  {
+                top: -40px;
+            }
+        }
+
+        &.top-left {
+            float: left;
+            margin-bottom: 1em;
+            .axis-x  {
+                left: -40px;
+                .offsetContent {
+                    right: 6px;
+                }
+            }
+            .axis-y  {
+                top: -40px;
+                .offsetContent {
+                    left: 12px;
+                }
+            }
+        }
+
+        &.bottom-left {
+            float: left;
+            margin-top: 1em;
+            .axis-x  {
+                left: -40px;
+                .offsetContent {
+                    right: 6px;
+                }
+            }
+            .axis-y  {
+                bottom: -40px;
+                .offsetContent {
+                    left: 12px;
+                }
+            }
+        }
+
+        &.bottom-right {
+            margin-top: 1em;
+            .axis-x {
+                right: -40px;
+            }
+            .axis-y  {
+                bottom: -40px;
+            }
+        }
 
         .iconWrapper {
             position: relative;

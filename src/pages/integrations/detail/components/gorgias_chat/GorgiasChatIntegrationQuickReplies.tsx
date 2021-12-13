@@ -21,6 +21,7 @@ import {
     QUICK_REPLIES_DEFAULTS,
     QUICK_REPLIES_MAX_ITEM_LENGTH,
     QUICK_REPLIES_MAX_ITEMS,
+    GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
 } from '../../../../../config/integrations/gorgias_chat'
 import css from '../../../../settings/settings.less'
 
@@ -115,6 +116,21 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
     render() {
         const {integration} = this.props
         const {quickRepliesEnabled, isUpdating} = this.state
+
+        const position = {
+            alignment: integration.getIn(
+                ['decoration', 'position', 'alignment'],
+                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.alignment
+            ),
+            offsetX: integration.getIn(
+                ['decoration', 'position', 'offsetX'],
+                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetX
+            ),
+            offsetY: integration.getIn(
+                ['decoration', 'position', 'offsetY'],
+                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetY
+            ),
+        }
 
         return (
             <div className="full-width">
@@ -214,6 +230,7 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                                     'language',
                                 ])}
                                 isOnline
+                                position={position}
                             >
                                 <QuickRepliesPreview
                                     quickReplies={this.state.quickReplies.toJS()}

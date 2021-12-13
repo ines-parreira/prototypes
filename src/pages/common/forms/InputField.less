@@ -1,3 +1,4 @@
+@import '~css/new/colors';
 @import '~css/new/colorTokens';
 
 :local {
@@ -10,9 +11,39 @@
         }
     }
 
-    .tooltip {
-        margin-left: 4px;
-        line-height: 16px;
-        color: @classic-neutral-grey-4;
+    .label-wrapper {
+        display: flex;
+        & > label {
+            white-space: nowrap;
+        }
+        .tooltip {
+            margin-left: 4px;
+            margin-top: 4px;
+            line-height: 16px;
+            color: @classic-neutral-grey-4;
+        }
+    }
+
+    .with-suffix {
+        position: relative;
+        .input-suffix-wrapper {
+            pointer-events: none;
+            position: absolute;
+            display: flex;
+            top: 0;
+            left: 0;
+            margin-top: 6px;
+            margin-left: 11px;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            .spacer {
+                visibility: hidden;
+            }
+            .suffix {
+                margin-left: 4px;
+                color: @neutral6;
+            }
+        }
     }
 }

@@ -406,6 +406,13 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
           isOnline={true}
           language="en-US"
           mainColor="#789c5d"
+          position={
+            Object {
+              "alignment": "bottom-right",
+              "offsetX": 0,
+              "offsetY": 0,
+            }
+          }
           renderFooter={true}
         >
           <OptionalEmailCapture
@@ -719,6 +726,13 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
           isOnline={true}
           language="en-US"
           mainColor="#789c5d"
+          position={
+            Object {
+              "alignment": "bottom-right",
+              "offsetX": 0,
+              "offsetY": 0,
+            }
+          }
           renderFooter={true}
         >
           <OptionalEmailCapture

@@ -105,14 +105,14 @@ exports[`InputField should render a lowercase value and convert any uppercase in
       >
         <Input
           className=""
-          id="id-input-13"
+          id="id-input-14"
           onChange={[Function]}
           type="text"
           value="value"
         >
           <input
             className="form-control"
-            id="id-input-13"
+            id="id-input-14"
             onChange={[Function]}
             type="text"
             value="value"
@@ -213,6 +213,41 @@ exports[`InputField should render a text input with a right addon 1`] = `
 </FormGroup>
 `;
 
+exports[`InputField should render a text input with a suffix 1`] = `
+<FormGroup
+  className="InputField"
+  color=""
+  tag="div"
+>
+  <div
+    className="with-suffix"
+  >
+    <Input
+      className=""
+      id="id-input-12"
+      onChange={[Function]}
+      suffix="px"
+      type="text"
+      value="value"
+    />
+    <div
+      className="input-suffix-wrapper"
+    >
+      <div
+        className="spacer"
+      >
+        value
+      </div>
+      <div
+        className="suffix"
+      >
+        px
+      </div>
+    </div>
+  </div>
+</FormGroup>
+`;
+
 exports[`InputField should render a text input with an onChange handler, and call this handler on change 1`] = `
 <InputField
   onChange={[Function]}
@@ -258,38 +293,42 @@ exports[`InputField should render a tooltip next to the label 1`] = `
   color=""
   tag="div"
 >
-  <Label
-    className="control-label"
-    htmlFor="id-input-6"
-    tag="label"
-    widths={
-      Array [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
+  <div
+    className="label-wrapper"
   >
-    Label
-  </Label>
-  <i
-    className="material-icons-outlined tooltip"
-    id="id-input-6-tooltip"
-  >
-    info
-  </i>
-  <Tooltip
-    style={
-      Object {
-        "textAlign": "left",
+    <Label
+      className="control-label"
+      htmlFor="id-input-6"
+      tag="label"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
       }
-    }
-    target="id-input-6-tooltip"
-  >
-    I am a tooltip
-  </Tooltip>
+    >
+      Label
+    </Label>
+    <i
+      className="material-icons-outlined tooltip"
+      id="id-input-6-tooltip"
+    >
+      info
+    </i>
+    <Tooltip
+      style={
+        Object {
+          "textAlign": "left",
+        }
+      }
+      target="id-input-6-tooltip"
+    >
+      I am a tooltip
+    </Tooltip>
+  </div>
   <div
     className=""
   >
@@ -356,7 +395,7 @@ exports[`InputField should render the input with an error 1`] = `
   >
     <Input
       className="form-control-danger is-invalid"
-      id="id-input-12"
+      id="id-input-13"
       onChange={[Function]}
       type="text"
       value="value"

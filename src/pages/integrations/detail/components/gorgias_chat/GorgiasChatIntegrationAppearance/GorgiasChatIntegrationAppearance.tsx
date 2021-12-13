@@ -33,12 +33,18 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS_DEFAULTS,
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,
+    GORGIAS_CHAT_WIDGET_POSITION_OPTIONS,
+    GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
 } from '../../../../../../config/integrations/gorgias_chat'
 import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integrations'
 import {Language} from '../../../../../../constants/languages'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../constants/integration'
 import * as integrationSelectors from '../../../../../../state/integrations/selectors'
-import {IntegrationType} from '../../../../../../models/integration/types'
+import {
+    GorgiasChatPosition,
+    GorgiasChatPositionAlignmentEnum,
+    IntegrationType,
+} from '../../../../../../models/integration/types'
 import {RootState} from '../../../../../../state/types'
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
 import ColorField from '../../../../../common/forms/ColorField.js'
@@ -57,6 +63,11 @@ import css from './GorgiasChatIntegrationAppearance.less'
 import {StoreNameDropdown} from './StoreNameDropdown'
 import {GorgiasChatIntegrationStoreTypeRadioButton} from './GorgiasChatIntegrationStoreTypeRadioButton'
 
+export enum PositionAxis {
+    AXIS_X = 'axis-x',
+    AXIS_Y = 'axis-y',
+}
+
 export const defaultContent = {
     type: IntegrationType.GorgiasChat,
     name: '',
@@ -69,6 +80,7 @@ export const defaultContent = {
     language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     avatarType: GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,
     avatarTeamPictureUrl: undefined,
+    position: GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
 }
 
 const avatarTypeOptions = [
@@ -108,6 +120,8 @@ type State = {
     isCopied: boolean
     isShopifyInstructions: boolean
     isInitialized: boolean
+    position: GorgiasChatPosition
+    editedPositionAxis: PositionAxis | null
 }
 
 type SubmitForm = {
@@ -134,6 +148,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 isCopied: false,
                 isShopifyInstructions: true,
                 isInitialized: false,
+                editedPositionAxis: null,
             },
             defaultContent
         )
@@ -169,6 +184,20 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         'decoration',
                         'conversation_color',
                     ]),
+                    position: {
+                        alignment: integration.getIn(
+                            ['decoration', 'position', 'alignment'],
+                            GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.alignment
+                        ),
+                        offsetX: integration.getIn(
+                            ['decoration', 'position', 'offsetX'],
+                            GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetX
+                        ),
+                        offsetY: integration.getIn(
+                            ['decoration', 'position', 'offsetY'],
+                            GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetY
+                        ),
+                    },
                     language:
                         integration.getIn(['meta', 'language']) ===
                         Language.French
@@ -185,6 +214,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                     showSelectStoreField: true,
                     isCopied: false,
                     isShopifyInstructions: true,
+                    editedPositionAxis: null,
                 },
                 defaultContent
             )
@@ -214,6 +244,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 offline_introduction_text: state.offlineIntroductionText,
                 avatar_type: state.avatarType,
                 avatar_team_picture_url: state.avatarTeamPictureUrl,
+                position: state.position,
             },
             meta: {
                 language: state.language,
@@ -238,7 +269,10 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         if (isUpdate) {
             form.id = integration.get('id')
             const integrationMeta: Map<any, any> = integration.get('meta')
-            form.meta = integrationMeta.set('language', state.language).toJS()
+            form.meta = integrationMeta
+                .set('language', state.language)
+                .set('position', state.position)
+                .toJS()
         }
 
         return (
@@ -289,6 +323,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         conversationColor,
         language,
         isOnline,
+        position,
+        editedPositionAxis,
     } = state
 
     const isTeamPictureAvatarSelected =
@@ -571,26 +607,128 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                             )}
                                         </Fragment>
                                     )}
-                                    <ColorField
-                                        value={mainColor}
-                                        onChange={(value: string) => {
-                                            setState((prevState) => ({
-                                                ...prevState,
-                                                mainColor: value,
-                                            }))
-                                        }}
-                                        label="Main color"
-                                    />
-                                    <ColorField
-                                        value={conversationColor}
-                                        onChange={(value: string) =>
-                                            setState((prevState) => ({
-                                                ...prevState,
-                                                conversationColor: value,
-                                            }))
-                                        }
-                                        label="Conversation color"
-                                    />
+                                    <div className={css.colorPickersWrapper}>
+                                        <ColorField
+                                            value={mainColor}
+                                            onChange={(value: string) => {
+                                                setState((prevState) => ({
+                                                    ...prevState,
+                                                    mainColor: value,
+                                                }))
+                                            }}
+                                            label="Main color"
+                                        />
+                                        <ColorField
+                                            value={conversationColor}
+                                            onChange={(value: string) =>
+                                                setState((prevState) => ({
+                                                    ...prevState,
+                                                    conversationColor: value,
+                                                }))
+                                            }
+                                            label="Conversation color"
+                                        />
+                                    </div>
+                                    <div className={css.positionInputsWrapper}>
+                                        <InputField
+                                            type="select"
+                                            value={position.alignment}
+                                            options={GORGIAS_CHAT_WIDGET_POSITION_OPTIONS.toJS()}
+                                            onChange={(
+                                                alignment: GorgiasChatPositionAlignmentEnum
+                                            ) => {
+                                                setState((prevState) => ({
+                                                    ...prevState,
+                                                    position: {
+                                                        ...position,
+                                                        alignment,
+                                                    },
+                                                }))
+                                            }}
+                                            label="Chat position"
+                                        >
+                                            {GORGIAS_CHAT_WIDGET_POSITION_OPTIONS.map(
+                                                (option) => {
+                                                    const value =
+                                                        option?.get('value')
+                                                    const label =
+                                                        option?.get('label')
+                                                    return (
+                                                        <option
+                                                            key={value}
+                                                            value={value}
+                                                        >
+                                                            {label}
+                                                        </option>
+                                                    )
+                                                }
+                                            )}
+                                        </InputField>
+                                        <InputField
+                                            type="number"
+                                            value={position.offsetX}
+                                            onChange={(offsetX: number) => {
+                                                setState((prevState) => ({
+                                                    ...prevState,
+                                                    position: {
+                                                        ...position,
+                                                        offsetX,
+                                                    },
+                                                }))
+                                            }}
+                                            min="-20"
+                                            max="200"
+                                            label="Move widget left / right"
+                                            tooltip="Move the chat left or right to avoid overlap with other widgets you might have.
+                                            By default, the chat icon is displayed at 22px from the left/right edges and and 22px from the top/bottom edges."
+                                            suffix="px"
+                                            onFocus={() => {
+                                                setState((prevState) => ({
+                                                    ...prevState,
+                                                    editedPositionAxis:
+                                                        PositionAxis.AXIS_X,
+                                                }))
+                                            }}
+                                            onBlur={() => {
+                                                setState((prevState) => ({
+                                                    ...prevState,
+                                                    editedPositionAxis: null,
+                                                }))
+                                            }}
+                                        />
+                                        <InputField
+                                            type="number"
+                                            value={position.offsetY}
+                                            onChange={(offsetY: number) => {
+                                                setState((prevState) => ({
+                                                    ...prevState,
+                                                    position: {
+                                                        ...position,
+                                                        offsetY,
+                                                    },
+                                                }))
+                                            }}
+                                            min="-20"
+                                            max="200"
+                                            label="Move widget up / down"
+                                            tooltip="Move the chat up or down to avoid overlap with other widgets you might have.
+                                            By default, the chat icon is displayed at 22px from the left/right edges and and 22px from the top/bottom edges."
+                                            suffix="px"
+                                            onFocus={() => {
+                                                setState((prevState) => ({
+                                                    ...prevState,
+                                                    editedPositionAxis:
+                                                        PositionAxis.AXIS_Y,
+                                                }))
+                                            }}
+                                            onBlur={() => {
+                                                setState((prevState) => ({
+                                                    ...prevState,
+                                                    editedPositionAxis: null,
+                                                }))
+                                            }}
+                                        />
+                                    </div>
                                     <InputField
                                         type="select"
                                         value={language}
@@ -692,6 +830,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             mainColor={mainColor}
                             isOnline={isOnline}
                             language={language}
+                            position={position}
+                            editedPositionAxis={editedPositionAxis}
                         >
                             <MessageContentPreview
                                 conversationColor={conversationColor}

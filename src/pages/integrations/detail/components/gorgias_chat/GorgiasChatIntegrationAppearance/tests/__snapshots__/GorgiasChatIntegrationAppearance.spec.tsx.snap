@@ -256,31 +256,205 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
-                  color=""
+                  class="colorPickersWrapper"
                 >
-                  <label
-                    class="control-label"
-                    for="id-input-4"
-                  >
-                    Main color
-                  </label>
                   <div
-                    class=""
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-4"
+                    >
+                      Main color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="d-inline-block"
+                      >
+                        <button
+                          class="button btn btn-secondary"
+                          id="color-picker-5"
+                          type="button"
+                        >
+                          <div
+                            class="color"
+                            style="background-color: rgb(13, 135, 221);"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-6"
+                    >
+                      Conversation color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="d-inline-block"
+                      >
+                        <button
+                          class="button btn btn-secondary"
+                          id="color-picker-7"
+                          type="button"
+                        >
+                          <div
+                            class="color"
+                            style="background-color: rgb(13, 135, 221);"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="positionInputsWrapper"
+                >
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-8"
+                    >
+                      Chat position
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <select
+                        class="form-control"
+                        id="id-input-8"
+                        options="[object Object],[object Object],[object Object],[object Object]"
+                      >
+                        <option
+                          value="bottom-right"
+                        >
+                          Bottom right
+                        </option>
+                        <option
+                          value="bottom-left"
+                        >
+                          Bottom left
+                        </option>
+                        <option
+                          value="top-right"
+                        >
+                          Top right
+                        </option>
+                        <option
+                          value="top-left"
+                        >
+                          Top left
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
                   >
                     <div
-                      class="d-inline-block"
+                      class="label-wrapper"
                     >
-                      <button
-                        class="button btn btn-secondary"
-                        id="color-picker-5"
-                        type="button"
+                      <label
+                        class="control-label"
+                        for="id-input-9"
+                      >
+                        Move widget left / right
+                      </label>
+                      <i
+                        class="material-icons-outlined tooltip"
+                        id="id-input-9-tooltip"
+                      >
+                        info
+                      </i>
+                    </div>
+                    <div
+                      class="with-suffix"
+                    >
+                      <input
+                        class="form-control"
+                        id="id-input-9"
+                        max="200"
+                        min="-20"
+                        suffix="px"
+                        type="number"
+                        value="0"
+                      />
+                      <div
+                        class="input-suffix-wrapper"
                       >
                         <div
-                          class="color"
-                          style="background-color: rgb(13, 135, 221);"
-                        />
-                      </button>
+                          class="spacer"
+                        >
+                          0
+                        </div>
+                        <div
+                          class="suffix"
+                        >
+                          px
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <div
+                      class="label-wrapper"
+                    >
+                      <label
+                        class="control-label"
+                        for="id-input-10"
+                      >
+                        Move widget up / down
+                      </label>
+                      <i
+                        class="material-icons-outlined tooltip"
+                        id="id-input-10-tooltip"
+                      >
+                        info
+                      </i>
+                    </div>
+                    <div
+                      class="with-suffix"
+                    >
+                      <input
+                        class="form-control"
+                        id="id-input-10"
+                        max="200"
+                        min="-20"
+                        suffix="px"
+                        type="number"
+                        value="0"
+                      />
+                      <div
+                        class="input-suffix-wrapper"
+                      >
+                        <div
+                          class="spacer"
+                        >
+                          0
+                        </div>
+                        <div
+                          class="suffix"
+                        >
+                          px
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -290,36 +464,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="control-label"
-                    for="id-input-6"
-                  >
-                    Conversation color
-                  </label>
-                  <div
-                    class=""
-                  >
-                    <div
-                      class="d-inline-block"
-                    >
-                      <button
-                        class="button btn btn-secondary"
-                        id="color-picker-7"
-                        type="button"
-                      >
-                        <div
-                          class="color"
-                          style="background-color: rgb(13, 135, 221);"
-                        />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="InputField form-group"
-                  color=""
-                >
-                  <label
-                    class="control-label"
-                    for="id-input-8"
+                    for="id-input-11"
                   >
                     Language
                   </label>
@@ -328,7 +473,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <select
                       class="form-control"
-                      id="id-input-8"
+                      id="id-input-11"
                       options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
                     >
                       <option
@@ -578,7 +723,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
               </div>
             </div>
             <div
-              class="button"
+              class="button bottom-right"
               style="background-color: rgb(13, 135, 221);"
             >
               <div
@@ -704,7 +849,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="control-label"
-                    for="id-input-17"
+                    for="id-input-23"
                   >
                     Chat title
                   </label>
@@ -713,7 +858,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <input
                       class="form-control"
-                      id="id-input-17"
+                      id="id-input-23"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -727,7 +872,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="control-label"
-                    for="id-input-18"
+                    for="id-input-24"
                   >
                     Introduction text during business hours
                   </label>
@@ -736,7 +881,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <input
                       class="form-control"
-                      id="id-input-18"
+                      id="id-input-24"
                       maxlength="50"
                       type="text"
                       value="How can we help?"
@@ -749,7 +894,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="control-label"
-                    for="id-input-19"
+                    for="id-input-25"
                   >
                     Introduction text outside business hours
                   </label>
@@ -758,7 +903,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <input
                       class="form-control"
-                      id="id-input-19"
+                      id="id-input-25"
                       maxlength="50"
                       type="text"
                       value="We'll be back tomorrow"
@@ -807,31 +952,205 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </fieldset>
                 <div
-                  class="InputField form-group"
-                  color=""
+                  class="colorPickersWrapper"
                 >
-                  <label
-                    class="control-label"
-                    for="id-input-20"
-                  >
-                    Main color
-                  </label>
                   <div
-                    class=""
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-26"
+                    >
+                      Main color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="d-inline-block"
+                      >
+                        <button
+                          class="button btn btn-secondary"
+                          id="color-picker-27"
+                          type="button"
+                        >
+                          <div
+                            class="color"
+                            style="background-color: rgb(13, 135, 221);"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-28"
+                    >
+                      Conversation color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="d-inline-block"
+                      >
+                        <button
+                          class="button btn btn-secondary"
+                          id="color-picker-29"
+                          type="button"
+                        >
+                          <div
+                            class="color"
+                            style="background-color: rgb(13, 135, 221);"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="positionInputsWrapper"
+                >
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-30"
+                    >
+                      Chat position
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <select
+                        class="form-control"
+                        id="id-input-30"
+                        options="[object Object],[object Object],[object Object],[object Object]"
+                      >
+                        <option
+                          value="bottom-right"
+                        >
+                          Bottom right
+                        </option>
+                        <option
+                          value="bottom-left"
+                        >
+                          Bottom left
+                        </option>
+                        <option
+                          value="top-right"
+                        >
+                          Top right
+                        </option>
+                        <option
+                          value="top-left"
+                        >
+                          Top left
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
                   >
                     <div
-                      class="d-inline-block"
+                      class="label-wrapper"
                     >
-                      <button
-                        class="button btn btn-secondary"
-                        id="color-picker-21"
-                        type="button"
+                      <label
+                        class="control-label"
+                        for="id-input-31"
+                      >
+                        Move widget left / right
+                      </label>
+                      <i
+                        class="material-icons-outlined tooltip"
+                        id="id-input-31-tooltip"
+                      >
+                        info
+                      </i>
+                    </div>
+                    <div
+                      class="with-suffix"
+                    >
+                      <input
+                        class="form-control"
+                        id="id-input-31"
+                        max="200"
+                        min="-20"
+                        suffix="px"
+                        type="number"
+                        value="0"
+                      />
+                      <div
+                        class="input-suffix-wrapper"
                       >
                         <div
-                          class="color"
-                          style="background-color: rgb(13, 135, 221);"
-                        />
-                      </button>
+                          class="spacer"
+                        >
+                          0
+                        </div>
+                        <div
+                          class="suffix"
+                        >
+                          px
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <div
+                      class="label-wrapper"
+                    >
+                      <label
+                        class="control-label"
+                        for="id-input-32"
+                      >
+                        Move widget up / down
+                      </label>
+                      <i
+                        class="material-icons-outlined tooltip"
+                        id="id-input-32-tooltip"
+                      >
+                        info
+                      </i>
+                    </div>
+                    <div
+                      class="with-suffix"
+                    >
+                      <input
+                        class="form-control"
+                        id="id-input-32"
+                        max="200"
+                        min="-20"
+                        suffix="px"
+                        type="number"
+                        value="0"
+                      />
+                      <div
+                        class="input-suffix-wrapper"
+                      >
+                        <div
+                          class="spacer"
+                        >
+                          0
+                        </div>
+                        <div
+                          class="suffix"
+                        >
+                          px
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -841,36 +1160,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="control-label"
-                    for="id-input-22"
-                  >
-                    Conversation color
-                  </label>
-                  <div
-                    class=""
-                  >
-                    <div
-                      class="d-inline-block"
-                    >
-                      <button
-                        class="button btn btn-secondary"
-                        id="color-picker-23"
-                        type="button"
-                      >
-                        <div
-                          class="color"
-                          style="background-color: rgb(13, 135, 221);"
-                        />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="InputField form-group"
-                  color=""
-                >
-                  <label
-                    class="control-label"
-                    for="id-input-24"
+                    for="id-input-33"
                   >
                     Language
                   </label>
@@ -879,7 +1169,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <select
                       class="form-control"
-                      id="id-input-24"
+                      id="id-input-33"
                       options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
                     >
                       <option
@@ -1146,7 +1436,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
               </div>
             </div>
             <div
-              class="button"
+              class="button bottom-right"
               style="background-color: rgb(13, 135, 221);"
             >
               <div
@@ -1272,7 +1562,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="control-label"
-                    for="id-input-9"
+                    for="id-input-12"
                   >
                     Chat title
                   </label>
@@ -1281,7 +1571,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <input
                       class="form-control"
-                      id="id-input-9"
+                      id="id-input-12"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -1295,7 +1585,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="control-label"
-                    for="id-input-10"
+                    for="id-input-13"
                   >
                     Introduction text during business hours
                   </label>
@@ -1304,7 +1594,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <input
                       class="form-control"
-                      id="id-input-10"
+                      id="id-input-13"
                       maxlength="50"
                       type="text"
                       value="How can we help?"
@@ -1317,7 +1607,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="control-label"
-                    for="id-input-11"
+                    for="id-input-14"
                   >
                     Introduction text outside business hours
                   </label>
@@ -1326,7 +1616,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <input
                       class="form-control"
-                      id="id-input-11"
+                      id="id-input-14"
                       maxlength="50"
                       type="text"
                       value="We'll be back tomorrow"
@@ -1375,31 +1665,205 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </fieldset>
                 <div
-                  class="InputField form-group"
-                  color=""
+                  class="colorPickersWrapper"
                 >
-                  <label
-                    class="control-label"
-                    for="id-input-12"
-                  >
-                    Main color
-                  </label>
                   <div
-                    class=""
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-15"
+                    >
+                      Main color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="d-inline-block"
+                      >
+                        <button
+                          class="button btn btn-secondary"
+                          id="color-picker-16"
+                          type="button"
+                        >
+                          <div
+                            class="color"
+                            style="background-color: rgb(13, 135, 221);"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-17"
+                    >
+                      Conversation color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="d-inline-block"
+                      >
+                        <button
+                          class="button btn btn-secondary"
+                          id="color-picker-18"
+                          type="button"
+                        >
+                          <div
+                            class="color"
+                            style="background-color: rgb(13, 135, 221);"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="positionInputsWrapper"
+                >
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-19"
+                    >
+                      Chat position
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <select
+                        class="form-control"
+                        id="id-input-19"
+                        options="[object Object],[object Object],[object Object],[object Object]"
+                      >
+                        <option
+                          value="bottom-right"
+                        >
+                          Bottom right
+                        </option>
+                        <option
+                          value="bottom-left"
+                        >
+                          Bottom left
+                        </option>
+                        <option
+                          value="top-right"
+                        >
+                          Top right
+                        </option>
+                        <option
+                          value="top-left"
+                        >
+                          Top left
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
                   >
                     <div
-                      class="d-inline-block"
+                      class="label-wrapper"
                     >
-                      <button
-                        class="button btn btn-secondary"
-                        id="color-picker-13"
-                        type="button"
+                      <label
+                        class="control-label"
+                        for="id-input-20"
+                      >
+                        Move widget left / right
+                      </label>
+                      <i
+                        class="material-icons-outlined tooltip"
+                        id="id-input-20-tooltip"
+                      >
+                        info
+                      </i>
+                    </div>
+                    <div
+                      class="with-suffix"
+                    >
+                      <input
+                        class="form-control"
+                        id="id-input-20"
+                        max="200"
+                        min="-20"
+                        suffix="px"
+                        type="number"
+                        value="0"
+                      />
+                      <div
+                        class="input-suffix-wrapper"
                       >
                         <div
-                          class="color"
-                          style="background-color: rgb(13, 135, 221);"
-                        />
-                      </button>
+                          class="spacer"
+                        >
+                          0
+                        </div>
+                        <div
+                          class="suffix"
+                        >
+                          px
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <div
+                      class="label-wrapper"
+                    >
+                      <label
+                        class="control-label"
+                        for="id-input-21"
+                      >
+                        Move widget up / down
+                      </label>
+                      <i
+                        class="material-icons-outlined tooltip"
+                        id="id-input-21-tooltip"
+                      >
+                        info
+                      </i>
+                    </div>
+                    <div
+                      class="with-suffix"
+                    >
+                      <input
+                        class="form-control"
+                        id="id-input-21"
+                        max="200"
+                        min="-20"
+                        suffix="px"
+                        type="number"
+                        value="0"
+                      />
+                      <div
+                        class="input-suffix-wrapper"
+                      >
+                        <div
+                          class="spacer"
+                        >
+                          0
+                        </div>
+                        <div
+                          class="suffix"
+                        >
+                          px
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1409,36 +1873,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="control-label"
-                    for="id-input-14"
-                  >
-                    Conversation color
-                  </label>
-                  <div
-                    class=""
-                  >
-                    <div
-                      class="d-inline-block"
-                    >
-                      <button
-                        class="button btn btn-secondary"
-                        id="color-picker-15"
-                        type="button"
-                      >
-                        <div
-                          class="color"
-                          style="background-color: rgb(13, 135, 221);"
-                        />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="InputField form-group"
-                  color=""
-                >
-                  <label
-                    class="control-label"
-                    for="id-input-16"
+                    for="id-input-22"
                   >
                     Language
                   </label>
@@ -1447,7 +1882,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <select
                       class="form-control"
-                      id="id-input-16"
+                      id="id-input-22"
                       options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
                     >
                       <option
@@ -1713,7 +2148,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
               </div>
             </div>
             <div
-              class="button"
+              class="button bottom-right"
               style="background-color: rgb(13, 135, 221);"
             >
               <div
@@ -1839,7 +2274,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                 >
                   <label
                     class="control-label"
-                    for="id-input-25"
+                    for="id-input-34"
                   >
                     Chat title
                   </label>
@@ -1848,7 +2283,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   >
                     <input
                       class="form-control"
-                      id="id-input-25"
+                      id="id-input-34"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -1862,7 +2297,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                 >
                   <label
                     class="control-label"
-                    for="id-input-26"
+                    for="id-input-35"
                   >
                     Introduction text during business hours
                   </label>
@@ -1871,7 +2306,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   >
                     <input
                       class="form-control"
-                      id="id-input-26"
+                      id="id-input-35"
                       maxlength="50"
                       type="text"
                       value="How can we help?"
@@ -1884,7 +2319,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                 >
                   <label
                     class="control-label"
-                    for="id-input-27"
+                    for="id-input-36"
                   >
                     Introduction text outside business hours
                   </label>
@@ -1893,7 +2328,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   >
                     <input
                       class="form-control"
-                      id="id-input-27"
+                      id="id-input-36"
                       maxlength="50"
                       type="text"
                       value="We'll be back tomorrow"
@@ -1950,31 +2385,205 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
-                  color=""
+                  class="colorPickersWrapper"
                 >
-                  <label
-                    class="control-label"
-                    for="id-input-28"
-                  >
-                    Main color
-                  </label>
                   <div
-                    class=""
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-37"
+                    >
+                      Main color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="d-inline-block"
+                      >
+                        <button
+                          class="button btn btn-secondary"
+                          id="color-picker-38"
+                          type="button"
+                        >
+                          <div
+                            class="color"
+                            style="background-color: rgb(13, 135, 221);"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-39"
+                    >
+                      Conversation color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="d-inline-block"
+                      >
+                        <button
+                          class="button btn btn-secondary"
+                          id="color-picker-40"
+                          type="button"
+                        >
+                          <div
+                            class="color"
+                            style="background-color: rgb(13, 135, 221);"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="positionInputsWrapper"
+                >
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-41"
+                    >
+                      Chat position
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <select
+                        class="form-control"
+                        id="id-input-41"
+                        options="[object Object],[object Object],[object Object],[object Object]"
+                      >
+                        <option
+                          value="bottom-right"
+                        >
+                          Bottom right
+                        </option>
+                        <option
+                          value="bottom-left"
+                        >
+                          Bottom left
+                        </option>
+                        <option
+                          value="top-right"
+                        >
+                          Top right
+                        </option>
+                        <option
+                          value="top-left"
+                        >
+                          Top left
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
                   >
                     <div
-                      class="d-inline-block"
+                      class="label-wrapper"
                     >
-                      <button
-                        class="button btn btn-secondary"
-                        id="color-picker-29"
-                        type="button"
+                      <label
+                        class="control-label"
+                        for="id-input-42"
+                      >
+                        Move widget left / right
+                      </label>
+                      <i
+                        class="material-icons-outlined tooltip"
+                        id="id-input-42-tooltip"
+                      >
+                        info
+                      </i>
+                    </div>
+                    <div
+                      class="with-suffix"
+                    >
+                      <input
+                        class="form-control"
+                        id="id-input-42"
+                        max="200"
+                        min="-20"
+                        suffix="px"
+                        type="number"
+                        value="0"
+                      />
+                      <div
+                        class="input-suffix-wrapper"
                       >
                         <div
-                          class="color"
-                          style="background-color: rgb(13, 135, 221);"
-                        />
-                      </button>
+                          class="spacer"
+                        >
+                          0
+                        </div>
+                        <div
+                          class="suffix"
+                        >
+                          px
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <div
+                      class="label-wrapper"
+                    >
+                      <label
+                        class="control-label"
+                        for="id-input-43"
+                      >
+                        Move widget up / down
+                      </label>
+                      <i
+                        class="material-icons-outlined tooltip"
+                        id="id-input-43-tooltip"
+                      >
+                        info
+                      </i>
+                    </div>
+                    <div
+                      class="with-suffix"
+                    >
+                      <input
+                        class="form-control"
+                        id="id-input-43"
+                        max="200"
+                        min="-20"
+                        suffix="px"
+                        type="number"
+                        value="0"
+                      />
+                      <div
+                        class="input-suffix-wrapper"
+                      >
+                        <div
+                          class="spacer"
+                        >
+                          0
+                        </div>
+                        <div
+                          class="suffix"
+                        >
+                          px
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1984,36 +2593,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                 >
                   <label
                     class="control-label"
-                    for="id-input-30"
-                  >
-                    Conversation color
-                  </label>
-                  <div
-                    class=""
-                  >
-                    <div
-                      class="d-inline-block"
-                    >
-                      <button
-                        class="button btn btn-secondary"
-                        id="color-picker-31"
-                        type="button"
-                      >
-                        <div
-                          class="color"
-                          style="background-color: rgb(13, 135, 221);"
-                        />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="InputField form-group"
-                  color=""
-                >
-                  <label
-                    class="control-label"
-                    for="id-input-32"
+                    for="id-input-44"
                   >
                     Language
                   </label>
@@ -2022,7 +2602,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   >
                     <select
                       class="form-control"
-                      id="id-input-32"
+                      id="id-input-44"
                       options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
                     >
                       <option
@@ -2288,7 +2868,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
               </div>
             </div>
             <div
-              class="button"
+              class="button bottom-right"
               style="background-color: rgb(13, 135, 221);"
             >
               <div
@@ -2414,7 +2994,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 >
                   <label
                     class="control-label"
-                    for="id-input-41"
+                    for="id-input-56"
                   >
                     Chat title
                   </label>
@@ -2423,7 +3003,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   >
                     <input
                       class="form-control"
-                      id="id-input-41"
+                      id="id-input-56"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -2437,7 +3017,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 >
                   <label
                     class="control-label"
-                    for="id-input-42"
+                    for="id-input-57"
                   >
                     Introduction text during business hours
                   </label>
@@ -2446,7 +3026,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   >
                     <input
                       class="form-control"
-                      id="id-input-42"
+                      id="id-input-57"
                       maxlength="50"
                       type="text"
                       value="How can we help?"
@@ -2459,7 +3039,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 >
                   <label
                     class="control-label"
-                    for="id-input-43"
+                    for="id-input-58"
                   >
                     Introduction text outside business hours
                   </label>
@@ -2468,7 +3048,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   >
                     <input
                       class="form-control"
-                      id="id-input-43"
+                      id="id-input-58"
                       maxlength="50"
                       type="text"
                       value="We'll be back tomorrow"
@@ -2517,31 +3097,205 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   </div>
                 </fieldset>
                 <div
-                  class="InputField form-group"
-                  color=""
+                  class="colorPickersWrapper"
                 >
-                  <label
-                    class="control-label"
-                    for="id-input-44"
-                  >
-                    Main color
-                  </label>
                   <div
-                    class=""
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-59"
+                    >
+                      Main color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="d-inline-block"
+                      >
+                        <button
+                          class="button btn btn-secondary"
+                          id="color-picker-60"
+                          type="button"
+                        >
+                          <div
+                            class="color"
+                            style="background-color: rgb(13, 135, 221);"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-61"
+                    >
+                      Conversation color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="d-inline-block"
+                      >
+                        <button
+                          class="button btn btn-secondary"
+                          id="color-picker-62"
+                          type="button"
+                        >
+                          <div
+                            class="color"
+                            style="background-color: rgb(13, 135, 221);"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="positionInputsWrapper"
+                >
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-63"
+                    >
+                      Chat position
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <select
+                        class="form-control"
+                        id="id-input-63"
+                        options="[object Object],[object Object],[object Object],[object Object]"
+                      >
+                        <option
+                          value="bottom-right"
+                        >
+                          Bottom right
+                        </option>
+                        <option
+                          value="bottom-left"
+                        >
+                          Bottom left
+                        </option>
+                        <option
+                          value="top-right"
+                        >
+                          Top right
+                        </option>
+                        <option
+                          value="top-left"
+                        >
+                          Top left
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
                   >
                     <div
-                      class="d-inline-block"
+                      class="label-wrapper"
                     >
-                      <button
-                        class="button btn btn-secondary"
-                        id="color-picker-45"
-                        type="button"
+                      <label
+                        class="control-label"
+                        for="id-input-64"
+                      >
+                        Move widget left / right
+                      </label>
+                      <i
+                        class="material-icons-outlined tooltip"
+                        id="id-input-64-tooltip"
+                      >
+                        info
+                      </i>
+                    </div>
+                    <div
+                      class="with-suffix"
+                    >
+                      <input
+                        class="form-control"
+                        id="id-input-64"
+                        max="200"
+                        min="-20"
+                        suffix="px"
+                        type="number"
+                        value="0"
+                      />
+                      <div
+                        class="input-suffix-wrapper"
                       >
                         <div
-                          class="color"
-                          style="background-color: rgb(13, 135, 221);"
-                        />
-                      </button>
+                          class="spacer"
+                        >
+                          0
+                        </div>
+                        <div
+                          class="suffix"
+                        >
+                          px
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <div
+                      class="label-wrapper"
+                    >
+                      <label
+                        class="control-label"
+                        for="id-input-65"
+                      >
+                        Move widget up / down
+                      </label>
+                      <i
+                        class="material-icons-outlined tooltip"
+                        id="id-input-65-tooltip"
+                      >
+                        info
+                      </i>
+                    </div>
+                    <div
+                      class="with-suffix"
+                    >
+                      <input
+                        class="form-control"
+                        id="id-input-65"
+                        max="200"
+                        min="-20"
+                        suffix="px"
+                        type="number"
+                        value="0"
+                      />
+                      <div
+                        class="input-suffix-wrapper"
+                      >
+                        <div
+                          class="spacer"
+                        >
+                          0
+                        </div>
+                        <div
+                          class="suffix"
+                        >
+                          px
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2551,36 +3305,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 >
                   <label
                     class="control-label"
-                    for="id-input-46"
-                  >
-                    Conversation color
-                  </label>
-                  <div
-                    class=""
-                  >
-                    <div
-                      class="d-inline-block"
-                    >
-                      <button
-                        class="button btn btn-secondary"
-                        id="color-picker-47"
-                        type="button"
-                      >
-                        <div
-                          class="color"
-                          style="background-color: rgb(13, 135, 221);"
-                        />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="InputField form-group"
-                  color=""
-                >
-                  <label
-                    class="control-label"
-                    for="id-input-48"
+                    for="id-input-66"
                   >
                     Language
                   </label>
@@ -2589,7 +3314,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   >
                     <select
                       class="form-control"
-                      id="id-input-48"
+                      id="id-input-66"
                       options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
                     >
                       <option
@@ -2855,7 +3580,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
               </div>
             </div>
             <div
-              class="button"
+              class="button bottom-right"
               style="background-color: rgb(13, 135, 221);"
             >
               <div
@@ -2981,7 +3706,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 >
                   <label
                     class="control-label"
-                    for="id-input-33"
+                    for="id-input-45"
                   >
                     Chat title
                   </label>
@@ -2990,7 +3715,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   >
                     <input
                       class="form-control"
-                      id="id-input-33"
+                      id="id-input-45"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -3004,7 +3729,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 >
                   <label
                     class="control-label"
-                    for="id-input-34"
+                    for="id-input-46"
                   >
                     Introduction text during business hours
                   </label>
@@ -3013,7 +3738,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   >
                     <input
                       class="form-control"
-                      id="id-input-34"
+                      id="id-input-46"
                       maxlength="50"
                       type="text"
                       value="How can we help?"
@@ -3026,7 +3751,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 >
                   <label
                     class="control-label"
-                    for="id-input-35"
+                    for="id-input-47"
                   >
                     Introduction text outside business hours
                   </label>
@@ -3035,7 +3760,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   >
                     <input
                       class="form-control"
-                      id="id-input-35"
+                      id="id-input-47"
                       maxlength="50"
                       type="text"
                       value="We'll be back tomorrow"
@@ -3098,31 +3823,205 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
-                  color=""
+                  class="colorPickersWrapper"
                 >
-                  <label
-                    class="control-label"
-                    for="id-input-36"
-                  >
-                    Main color
-                  </label>
                   <div
-                    class=""
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-48"
+                    >
+                      Main color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="d-inline-block"
+                      >
+                        <button
+                          class="button btn btn-secondary"
+                          id="color-picker-49"
+                          type="button"
+                        >
+                          <div
+                            class="color"
+                            style="background-color: rgb(13, 135, 221);"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-50"
+                    >
+                      Conversation color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="d-inline-block"
+                      >
+                        <button
+                          class="button btn btn-secondary"
+                          id="color-picker-51"
+                          type="button"
+                        >
+                          <div
+                            class="color"
+                            style="background-color: rgb(13, 135, 221);"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="positionInputsWrapper"
+                >
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-52"
+                    >
+                      Chat position
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <select
+                        class="form-control"
+                        id="id-input-52"
+                        options="[object Object],[object Object],[object Object],[object Object]"
+                      >
+                        <option
+                          value="bottom-right"
+                        >
+                          Bottom right
+                        </option>
+                        <option
+                          value="bottom-left"
+                        >
+                          Bottom left
+                        </option>
+                        <option
+                          value="top-right"
+                        >
+                          Top right
+                        </option>
+                        <option
+                          value="top-left"
+                        >
+                          Top left
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
                   >
                     <div
-                      class="d-inline-block"
+                      class="label-wrapper"
                     >
-                      <button
-                        class="button btn btn-secondary"
-                        id="color-picker-37"
-                        type="button"
+                      <label
+                        class="control-label"
+                        for="id-input-53"
+                      >
+                        Move widget left / right
+                      </label>
+                      <i
+                        class="material-icons-outlined tooltip"
+                        id="id-input-53-tooltip"
+                      >
+                        info
+                      </i>
+                    </div>
+                    <div
+                      class="with-suffix"
+                    >
+                      <input
+                        class="form-control"
+                        id="id-input-53"
+                        max="200"
+                        min="-20"
+                        suffix="px"
+                        type="number"
+                        value="0"
+                      />
+                      <div
+                        class="input-suffix-wrapper"
                       >
                         <div
-                          class="color"
-                          style="background-color: rgb(13, 135, 221);"
-                        />
-                      </button>
+                          class="spacer"
+                        >
+                          0
+                        </div>
+                        <div
+                          class="suffix"
+                        >
+                          px
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <div
+                      class="label-wrapper"
+                    >
+                      <label
+                        class="control-label"
+                        for="id-input-54"
+                      >
+                        Move widget up / down
+                      </label>
+                      <i
+                        class="material-icons-outlined tooltip"
+                        id="id-input-54-tooltip"
+                      >
+                        info
+                      </i>
+                    </div>
+                    <div
+                      class="with-suffix"
+                    >
+                      <input
+                        class="form-control"
+                        id="id-input-54"
+                        max="200"
+                        min="-20"
+                        suffix="px"
+                        type="number"
+                        value="0"
+                      />
+                      <div
+                        class="input-suffix-wrapper"
+                      >
+                        <div
+                          class="spacer"
+                        >
+                          0
+                        </div>
+                        <div
+                          class="suffix"
+                        >
+                          px
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -3132,36 +4031,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 >
                   <label
                     class="control-label"
-                    for="id-input-38"
-                  >
-                    Conversation color
-                  </label>
-                  <div
-                    class=""
-                  >
-                    <div
-                      class="d-inline-block"
-                    >
-                      <button
-                        class="button btn btn-secondary"
-                        id="color-picker-39"
-                        type="button"
-                      >
-                        <div
-                          class="color"
-                          style="background-color: rgb(13, 135, 221);"
-                        />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="InputField form-group"
-                  color=""
-                >
-                  <label
-                    class="control-label"
-                    for="id-input-40"
+                    for="id-input-55"
                   >
                     Language
                   </label>
@@ -3170,7 +4040,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   >
                     <select
                       class="form-control"
-                      id="id-input-40"
+                      id="id-input-55"
                       options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
                     >
                       <option
@@ -3409,7 +4279,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
               </div>
             </div>
             <div
-              class="button"
+              class="button bottom-right"
               style="background-color: rgb(13, 135, 221);"
             >
               <div
@@ -3684,7 +4554,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 >
                   <label
                     class="control-label"
-                    for="id-input-49"
+                    for="id-input-67"
                   >
                     Chat title
                   </label>
@@ -3693,7 +4563,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   >
                     <input
                       class="form-control"
-                      id="id-input-49"
+                      id="id-input-67"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -3707,7 +4577,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 >
                   <label
                     class="control-label"
-                    for="id-input-50"
+                    for="id-input-68"
                   >
                     Introduction text during business hours
                   </label>
@@ -3716,7 +4586,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   >
                     <input
                       class="form-control"
-                      id="id-input-50"
+                      id="id-input-68"
                       maxlength="50"
                       type="text"
                       value="How can we help?"
@@ -3729,7 +4599,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 >
                   <label
                     class="control-label"
-                    for="id-input-51"
+                    for="id-input-69"
                   >
                     Introduction text outside business hours
                   </label>
@@ -3738,7 +4608,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   >
                     <input
                       class="form-control"
-                      id="id-input-51"
+                      id="id-input-69"
                       maxlength="50"
                       type="text"
                       value="We'll be back tomorrow"
@@ -3746,31 +4616,205 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
-                  color=""
+                  class="colorPickersWrapper"
                 >
-                  <label
-                    class="control-label"
-                    for="id-input-52"
-                  >
-                    Main color
-                  </label>
                   <div
-                    class=""
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-70"
+                    >
+                      Main color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="d-inline-block"
+                      >
+                        <button
+                          class="button btn btn-secondary"
+                          id="color-picker-71"
+                          type="button"
+                        >
+                          <div
+                            class="color"
+                            style="background-color: rgb(13, 135, 221);"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-72"
+                    >
+                      Conversation color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="d-inline-block"
+                      >
+                        <button
+                          class="button btn btn-secondary"
+                          id="color-picker-73"
+                          type="button"
+                        >
+                          <div
+                            class="color"
+                            style="background-color: rgb(13, 135, 221);"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="positionInputsWrapper"
+                >
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-74"
+                    >
+                      Chat position
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <select
+                        class="form-control"
+                        id="id-input-74"
+                        options="[object Object],[object Object],[object Object],[object Object]"
+                      >
+                        <option
+                          value="bottom-right"
+                        >
+                          Bottom right
+                        </option>
+                        <option
+                          value="bottom-left"
+                        >
+                          Bottom left
+                        </option>
+                        <option
+                          value="top-right"
+                        >
+                          Top right
+                        </option>
+                        <option
+                          value="top-left"
+                        >
+                          Top left
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
                   >
                     <div
-                      class="d-inline-block"
+                      class="label-wrapper"
                     >
-                      <button
-                        class="button btn btn-secondary"
-                        id="color-picker-53"
-                        type="button"
+                      <label
+                        class="control-label"
+                        for="id-input-75"
+                      >
+                        Move widget left / right
+                      </label>
+                      <i
+                        class="material-icons-outlined tooltip"
+                        id="id-input-75-tooltip"
+                      >
+                        info
+                      </i>
+                    </div>
+                    <div
+                      class="with-suffix"
+                    >
+                      <input
+                        class="form-control"
+                        id="id-input-75"
+                        max="200"
+                        min="-20"
+                        suffix="px"
+                        type="number"
+                        value="0"
+                      />
+                      <div
+                        class="input-suffix-wrapper"
                       >
                         <div
-                          class="color"
-                          style="background-color: rgb(13, 135, 221);"
-                        />
-                      </button>
+                          class="spacer"
+                        >
+                          0
+                        </div>
+                        <div
+                          class="suffix"
+                        >
+                          px
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <div
+                      class="label-wrapper"
+                    >
+                      <label
+                        class="control-label"
+                        for="id-input-76"
+                      >
+                        Move widget up / down
+                      </label>
+                      <i
+                        class="material-icons-outlined tooltip"
+                        id="id-input-76-tooltip"
+                      >
+                        info
+                      </i>
+                    </div>
+                    <div
+                      class="with-suffix"
+                    >
+                      <input
+                        class="form-control"
+                        id="id-input-76"
+                        max="200"
+                        min="-20"
+                        suffix="px"
+                        type="number"
+                        value="0"
+                      />
+                      <div
+                        class="input-suffix-wrapper"
+                      >
+                        <div
+                          class="spacer"
+                        >
+                          0
+                        </div>
+                        <div
+                          class="suffix"
+                        >
+                          px
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -3780,36 +4824,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 >
                   <label
                     class="control-label"
-                    for="id-input-54"
-                  >
-                    Conversation color
-                  </label>
-                  <div
-                    class=""
-                  >
-                    <div
-                      class="d-inline-block"
-                    >
-                      <button
-                        class="button btn btn-secondary"
-                        id="color-picker-55"
-                        type="button"
-                      >
-                        <div
-                          class="color"
-                          style="background-color: rgb(13, 135, 221);"
-                        />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="InputField form-group"
-                  color=""
-                >
-                  <label
-                    class="control-label"
-                    for="id-input-56"
+                    for="id-input-77"
                   >
                     Language
                   </label>
@@ -3818,7 +4833,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   >
                     <select
                       class="form-control"
-                      id="id-input-56"
+                      id="id-input-77"
                       options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
                     >
                       <option
@@ -4068,7 +5083,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
               </div>
             </div>
             <div
-              class="button"
+              class="button bottom-right"
               style="background-color: rgb(13, 135, 221);"
             >
               <div

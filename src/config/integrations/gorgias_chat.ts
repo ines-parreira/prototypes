@@ -14,6 +14,10 @@ import {
     CZECH_LANGUAGE,
     NORWEGIAN_LANGUAGE,
 } from '../../constants/languages'
+import {
+    GorgiasChatPosition,
+    GorgiasChatPositionAlignmentEnum,
+} from '../../models/integration/types'
 
 export const GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH = 50
 
@@ -56,6 +60,24 @@ export const GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS = 'team-members'
 export const GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE = 'team-picture'
 export const GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT =
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS
+
+// Position
+export const GORGIAS_CHAT_WIDGET_POSITION_DEFAULT: GorgiasChatPosition = {
+    alignment: GorgiasChatPositionAlignmentEnum.BOTTOM_RIGHT,
+    offsetX: 0,
+    offsetY: 0,
+}
+export const GORGIAS_CHAT_WIDGET_POSITION_OPTIONS: List<
+    Map<string, GorgiasChatPositionAlignmentEnum | string>
+> = fromJS([
+    {
+        value: GorgiasChatPositionAlignmentEnum.BOTTOM_RIGHT,
+        label: 'Bottom right',
+    },
+    {value: GorgiasChatPositionAlignmentEnum.BOTTOM_LEFT, label: 'Bottom left'},
+    {value: GorgiasChatPositionAlignmentEnum.TOP_RIGHT, label: 'Top right'},
+    {value: GorgiasChatPositionAlignmentEnum.TOP_LEFT, label: 'Top left'},
+])
 
 // Quick replies
 export const QUICK_REPLIES_DEFAULTS = fromJS([

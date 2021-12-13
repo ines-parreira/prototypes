@@ -46,18 +46,22 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
             class="InputField formInput required form-group"
             color=""
           >
-            <label
-              class="control-label"
-              for="id-name"
+            <div
+              class="label-wrapper"
             >
-              Help Center name
-            </label>
-            <i
-              class="material-icons-outlined tooltip"
-              id="id-name-tooltip"
-            >
-              info
-            </i>
+              <label
+                class="control-label"
+                for="id-name"
+              >
+                Help Center name
+              </label>
+              <i
+                class="material-icons-outlined tooltip"
+                id="id-name-tooltip"
+              >
+                info
+              </i>
+            </div>
             <div
               class=""
             >
@@ -75,18 +79,22 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
             class="InputField input form-group"
             color=""
           >
-            <label
-              class="control-label"
-              for="id-subdomain"
+            <div
+              class="label-wrapper"
             >
-              Subdomain
-            </label>
-            <i
-              class="material-icons-outlined tooltip"
-              id="id-subdomain-tooltip"
-            >
-              info
-            </i>
+              <label
+                class="control-label"
+                for="id-subdomain"
+              >
+                Subdomain
+              </label>
+              <i
+                class="material-icons-outlined tooltip"
+                id="id-subdomain-tooltip"
+              >
+                info
+              </i>
+            </div>
             <div
               class="input-group"
             >

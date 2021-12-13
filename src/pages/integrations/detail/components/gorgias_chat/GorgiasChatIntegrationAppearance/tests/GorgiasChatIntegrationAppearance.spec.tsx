@@ -314,6 +314,11 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                       "offline_introduction_text": "We'll be back tomorrow",
                       "avatar_type": "team-members",
                       "avatar_team_picture_url": undefined,
+                      "position": Immutable.Map {
+                        "alignment": "bottom-right",
+                        "offsetX": 0,
+                        "offsetY": 0,
+                      },
                     },
                     "meta": Immutable.Map {
                       "language": "en-US",

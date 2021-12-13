@@ -105,6 +105,11 @@ describe('InputField', () => {
         expect(component).toMatchSnapshot()
     })
 
+    it('should render a text input with a suffix', () => {
+        const component = shallow(<InputField {...minProps} suffix="px" />)
+        expect(component).toMatchSnapshot()
+    })
+
     it('should render the input with an error', () => {
         const component = shallow(
             <InputField {...minProps} error="the value is wrong" />

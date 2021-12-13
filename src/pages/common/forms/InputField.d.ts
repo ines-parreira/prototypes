@@ -17,6 +17,7 @@ interface OwnProps extends InputProps {
     rightAddon?: string
     caseInsensitive?: boolean
     tooltip?: string
+    suffix?: string
 }
 
 export default class InputField<Props, State> extends Component<

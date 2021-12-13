@@ -10,6 +10,26 @@
     .fieldset {
         flex: 1;
         padding-right: 2em;
+
+        .colorPickersWrapper {
+            display: flex;
+
+            & > div:not(:first-child) {
+                margin-left: 80px;
+            }
+        }
+
+        .positionInputsWrapper {
+            display: flex;
+
+            & > div:first-child {
+                width: 300px;
+            }
+
+            & > div:not(:first-child) {
+                margin-left: 16px;
+            }
+        }
     }
 
     .redStar {

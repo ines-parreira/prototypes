@@ -99,6 +99,7 @@ export default class InputField extends FormField {
             help,
             tooltip,
             className,
+            suffix,
         } = this.props
 
         const color = error ? 'danger' : ''
@@ -121,35 +122,37 @@ export default class InputField extends FormField {
                 })}
                 color={color}
             >
-                {label && (
-                    <>
+                {label && tooltip && (
+                    <div className={css['label-wrapper']}>
                         <Label htmlFor={this.id} className="control-label">
                             {label}
                         </Label>
-                        {tooltip && (
-                            <>
-                                <i
-                                    id={`${this.id}-tooltip`}
-                                    className={classnames(
-                                        'material-icons-outlined',
-                                        css.tooltip
-                                    )}
-                                >
-                                    info
-                                </i>
-                                <Tooltip
-                                    target={`${this.id}-tooltip`}
-                                    style={{textAlign: 'left'}}
-                                >
-                                    {tooltip}
-                                </Tooltip>
-                            </>
-                        )}
-                    </>
+                        <i
+                            id={`${this.id}-tooltip`}
+                            className={classnames(
+                                'material-icons-outlined',
+                                css.tooltip
+                            )}
+                        >
+                            info
+                        </i>
+                        <Tooltip
+                            target={`${this.id}-tooltip`}
+                            style={{textAlign: 'left'}}
+                        >
+                            {tooltip}
+                        </Tooltip>
+                    </div>
+                )}
+                {label && !tooltip && (
+                    <Label htmlFor={this.id} className="control-label">
+                        {label}
+                    </Label>
                 )}
                 <div
                     className={classnames({
                         'input-group': !!rightAddon || !!leftAddon,
+                        [css['with-suffix']]: !!suffix,
                     })}
                 >
                     {leftAddon && (
@@ -166,6 +169,12 @@ export default class InputField extends FormField {
                                 {rightAddon}
                             </span>
                         </span>
+                    )}
+                    {suffix && (
+                        <div className={css['input-suffix-wrapper']}>
+                            <div className={css.spacer}>{this.props.value}</div>
+                            <div className={css.suffix}>{suffix}</div>
+                        </div>
                     )}
                     {error && <Errors>{error}</Errors>}
                 </div>

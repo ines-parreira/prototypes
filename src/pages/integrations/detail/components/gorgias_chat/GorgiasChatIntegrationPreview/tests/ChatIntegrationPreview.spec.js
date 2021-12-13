@@ -6,7 +6,9 @@ import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../../config/int
 import {
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+    GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
 } from '../../../../../../../config/integrations/gorgias_chat.ts'
+import {PositionAxis} from '../../GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance.tsx'
 
 import AutoResponder from '../AutoResponder.tsx'
 import ChatIntegrationPreview from '../ChatIntegrationPreview.tsx'
@@ -31,6 +33,7 @@ describe('<ChatIntegrationPreview/>', () => {
                     language={GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT}
                     avatarType={GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE}
                     avatarTeamPictureUrl="https://gorgias.io/avatar.png"
+                    position={GORGIAS_CHAT_WIDGET_POSITION_DEFAULT}
                 >
                     <MessageContent
                         conversationColor={conversationColor}
@@ -51,6 +54,7 @@ describe('<ChatIntegrationPreview/>', () => {
                     mainColor={mainColor}
                     isOnline={true}
                     language={GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT}
+                    position={GORGIAS_CHAT_WIDGET_POSITION_DEFAULT}
                 >
                     <MessageContent
                         conversationColor={conversationColor}
@@ -71,6 +75,7 @@ describe('<ChatIntegrationPreview/>', () => {
                     mainColor={mainColor}
                     isOnline={false}
                     language={GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT}
+                    position={GORGIAS_CHAT_WIDGET_POSITION_DEFAULT}
                 >
                     <MessageContent
                         conversationColor={conversationColor}
@@ -92,6 +97,7 @@ describe('<ChatIntegrationPreview/>', () => {
                     optionalEmailCapture={true}
                     isOnline
                     language={GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT}
+                    position={GORGIAS_CHAT_WIDGET_POSITION_DEFAULT}
                 >
                     <OptionalEmailCapture
                         conversationColor={conversationColor}
@@ -114,11 +120,34 @@ describe('<ChatIntegrationPreview/>', () => {
                     requiredEmailCapture={true}
                     isOnline
                     language={GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT}
+                    position={GORGIAS_CHAT_WIDGET_POSITION_DEFAULT}
                     renderFooter={false}
                 >
                     <RequiredEmailCapture
                         conversationColor={conversationColor}
                         language={GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT}
+                    />
+                </ChatIntegrationPreview>
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should display the sliders when editing the position', () => {
+            const component = shallow(
+                <ChatIntegrationPreview
+                    name="My little chat integration"
+                    currentUser={currentUser}
+                    introductionText="intro"
+                    mainColor={mainColor}
+                    isOnline={true}
+                    language={GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT}
+                    position={GORGIAS_CHAT_WIDGET_POSITION_DEFAULT}
+                    isEditingPosition={true}
+                >
+                    <MessageContent
+                        conversationColor={conversationColor}
+                        currentUser={currentUser}
                     />
                 </ChatIntegrationPreview>
             )
@@ -136,6 +165,7 @@ describe('<ChatIntegrationPreview/>', () => {
                     requiredEmailCapture={true}
                     isOnline
                     language={GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT}
+                    position={GORGIAS_CHAT_WIDGET_POSITION_DEFAULT}
                     renderFooter={false}
                 >
                     <AutoResponder
@@ -143,6 +173,57 @@ describe('<ChatIntegrationPreview/>', () => {
                         language={GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT}
                         name="My little chat integration"
                         autoResponderReply={CHAT_AUTO_RESPONDER_REPLY_DEFAULT}
+                    />
+                </ChatIntegrationPreview>
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should display display the offsets when editing axis x', () => {
+            const component = shallow(
+                <ChatIntegrationPreview
+                    name="My little chat integration"
+                    introductionText="intro"
+                    mainColor="#123456"
+                    conversationColor="#456789"
+                    requiredEmailCapture={true}
+                    isOnline
+                    language={GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT}
+                    position={{
+                        ...GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
+                        offsetX: 1000,
+                    }}
+                    renderFooter={false}
+                    editedPositionAxis={PositionAxis.AXIS_X}
+                >
+                    <MessageContent
+                        conversationColor={conversationColor}
+                        currentUser={currentUser}
+                    />
+                </ChatIntegrationPreview>
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should display display the offsets when editing axis y', () => {
+            const component = shallow(
+                <ChatIntegrationPreview
+                    name="My little chat integration"
+                    introductionText="intro"
+                    mainColor="#123456"
+                    conversationColor="#456789"
+                    requiredEmailCapture={true}
+                    isOnline
+                    language={GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT}
+                    position={GORGIAS_CHAT_WIDGET_POSITION_DEFAULT}
+                    renderFooter={false}
+                    editedPositionAxis={PositionAxis.AXIS_Y}
+                >
+                    <MessageContent
+                        conversationColor={conversationColor}
+                        currentUser={currentUser}
                     />
                 </ChatIntegrationPreview>
             )

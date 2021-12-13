@@ -3,6 +3,7 @@
 exports[`<ChatIntegrationPreview/> render() should display auto responder 1`] = `
 <div
   className="preview"
+  style={Object {}}
 >
   <div
     className="titlebar"
@@ -51,7 +52,7 @@ exports[`<ChatIntegrationPreview/> render() should display auto responder 1`] = 
     </div>
   </div>
   <div
-    className="button"
+    className="button bottom-right"
     style={
       Object {
         "backgroundColor": "#123456",
@@ -72,9 +73,195 @@ exports[`<ChatIntegrationPreview/> render() should display auto responder 1`] = 
 </div>
 `;
 
+exports[`<ChatIntegrationPreview/> render() should display display the offsets when editing axis x 1`] = `
+<div
+  className="preview"
+  style={
+    Object {
+      "paddingRight": 60,
+      "width": 440,
+    }
+  }
+>
+  <div
+    className="titlebar"
+  />
+  <div
+    className="dialog"
+  >
+    <div
+      className="header"
+      style={
+        Object {
+          "backgroundColor": "#123456",
+        }
+      }
+    >
+      <ChatIntegrationAvatar
+        isOnline={true}
+        mainColor="#123456"
+        offlineColor="#A1A9B6"
+      />
+      <div
+        className="details"
+      >
+        <div
+          className="appName"
+        >
+          My little chat integration
+        </div>
+        <div
+          className="introductionText"
+        >
+          intro
+        </div>
+      </div>
+    </div>
+    <MessageContent
+      conversationColor="#456789"
+      currentUser={
+        Immutable.Map {
+          "name": "Charles",
+        }
+      }
+    />
+    <div
+      className="poweredby"
+    >
+      Powered by Gorgias
+    </div>
+  </div>
+  <div
+    className="button bottom-right"
+    style={
+      Object {
+        "backgroundColor": "#123456",
+      }
+    }
+  >
+    <div
+      className="iconWrapper"
+    >
+      <i
+        className="icon"
+      />
+      <div
+        className="shadow"
+      />
+    </div>
+    <div
+      className="axis-x"
+      style={
+        Object {
+          "right": -60,
+          "width": 60,
+        }
+      }
+    >
+      <div
+        className="offsetLine"
+      />
+      <div
+        className="offsetContent"
+      >
+        1000px
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ChatIntegrationPreview/> render() should display display the offsets when editing axis y 1`] = `
+<div
+  className="preview"
+  style={Object {}}
+>
+  <div
+    className="titlebar"
+  />
+  <div
+    className="dialog"
+  >
+    <div
+      className="header"
+      style={
+        Object {
+          "backgroundColor": "#123456",
+        }
+      }
+    >
+      <ChatIntegrationAvatar
+        isOnline={true}
+        mainColor="#123456"
+        offlineColor="#A1A9B6"
+      />
+      <div
+        className="details"
+      >
+        <div
+          className="appName"
+        >
+          My little chat integration
+        </div>
+        <div
+          className="introductionText"
+        >
+          intro
+        </div>
+      </div>
+    </div>
+    <MessageContent
+      conversationColor="#456789"
+      currentUser={
+        Immutable.Map {
+          "name": "Charles",
+        }
+      }
+    />
+    <div
+      className="poweredby"
+    >
+      Powered by Gorgias
+    </div>
+  </div>
+  <div
+    className="button bottom-right"
+    style={
+      Object {
+        "backgroundColor": "#123456",
+      }
+    }
+  >
+    <div
+      className="iconWrapper"
+    >
+      <i
+        className="icon"
+      />
+      <div
+        className="shadow"
+      />
+    </div>
+    <div
+      className="axis-y"
+    >
+      <div
+        className="offsetLine"
+      />
+      <div
+        className="offsetContent"
+      >
+        0px
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<ChatIntegrationPreview/> render() should display optional email capture 1`] = `
 <div
   className="preview"
+  style={Object {}}
 >
   <div
     className="titlebar"
@@ -134,7 +321,7 @@ exports[`<ChatIntegrationPreview/> render() should display optional email captur
     </div>
   </div>
   <div
-    className="button"
+    className="button bottom-right"
     style={
       Object {
         "backgroundColor": "#123456",
@@ -158,6 +345,7 @@ exports[`<ChatIntegrationPreview/> render() should display optional email captur
 exports[`<ChatIntegrationPreview/> render() should display required email capture 1`] = `
 <div
   className="preview"
+  style={Object {}}
 >
   <div
     className="titlebar"
@@ -204,7 +392,7 @@ exports[`<ChatIntegrationPreview/> render() should display required email captur
     </div>
   </div>
   <div
-    className="button"
+    className="button bottom-right"
     style={
       Object {
         "backgroundColor": "#123456",
@@ -228,6 +416,7 @@ exports[`<ChatIntegrationPreview/> render() should display required email captur
 exports[`<ChatIntegrationPreview/> render() should display the avatar team picture in the header because the URL is set and the option is enabled 1`] = `
 <div
   className="preview"
+  style={Object {}}
 >
   <div
     className="titlebar"
@@ -292,7 +481,7 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
     </div>
   </div>
   <div
-    className="button"
+    className="button bottom-right"
     style={
       Object {
         "backgroundColor": "#123456",
@@ -316,6 +505,7 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
 exports[`<ChatIntegrationPreview/> render() should display the offline status because chat is offline 1`] = `
 <div
   className="preview"
+  style={Object {}}
 >
   <div
     className="titlebar"
@@ -383,7 +573,7 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
     </div>
   </div>
   <div
-    className="button"
+    className="button bottom-right"
     style={
       Object {
         "backgroundColor": "#123456",
@@ -407,6 +597,7 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
 exports[`<ChatIntegrationPreview/> render() should display the online status because chat is online 1`] = `
 <div
   className="preview"
+  style={Object {}}
 >
   <div
     className="titlebar"
@@ -469,7 +660,94 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
     </div>
   </div>
   <div
-    className="button"
+    className="button bottom-right"
+    style={
+      Object {
+        "backgroundColor": "#123456",
+      }
+    }
+  >
+    <div
+      className="iconWrapper"
+    >
+      <i
+        className="icon"
+      />
+      <div
+        className="shadow"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ChatIntegrationPreview/> render() should display the sliders when editing the position 1`] = `
+<div
+  className="preview"
+  style={Object {}}
+>
+  <div
+    className="titlebar"
+  />
+  <div
+    className="dialog"
+  >
+    <div
+      className="header"
+      style={
+        Object {
+          "backgroundColor": "#123456",
+        }
+      }
+    >
+      <ChatIntegrationAvatar
+        isOnline={true}
+        mainColor="#123456"
+        offlineColor="#A1A9B6"
+      />
+      <div
+        className="details"
+      >
+        <div
+          className="appName"
+        >
+          My little chat integration
+        </div>
+        <div
+          className="introductionText"
+        >
+          intro
+        </div>
+      </div>
+    </div>
+    <MessageContent
+      conversationColor="#456789"
+      currentUser={
+        Immutable.Map {
+          "name": "Charles",
+        }
+      }
+    />
+    <div
+      className="poweredby"
+    >
+      Powered by Gorgias
+    </div>
+    <div
+      className="footer"
+    >
+      <div
+        className="placeholder"
+      >
+        Type a message...
+      </div>
+      <i
+        className="icon camera"
+      />
+    </div>
+  </div>
+  <div
+    className="button bottom-right"
     style={
       Object {
         "backgroundColor": "#123456",

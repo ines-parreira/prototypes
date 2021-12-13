@@ -666,7 +666,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
               </div>
             </div>
             <div
-              class="button"
+              class="button bottom-right"
               style="background-color: rgb(254, 254, 254);"
             >
               <img
@@ -1453,7 +1453,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
               </div>
             </div>
             <div
-              class="button"
+              class="button bottom-right"
               style="background-color: rgb(254, 254, 254);"
             >
               <img
@@ -2240,7 +2240,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
               </div>
             </div>
             <div
-              class="button"
+              class="button bottom-right"
               style="background-color: rgb(254, 254, 254);"
             >
               <img

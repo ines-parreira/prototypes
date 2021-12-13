@@ -37,6 +37,7 @@ export type GorgiasChatIntegrationMeta = {
         enabled?: boolean
         configurations?: SelfServiceConfiguration[]
     }
+    position?: GorgiasChatPosition
 }
 
 enum GorgiasChatEmailCaptureType {
@@ -72,3 +73,16 @@ export const isGorgiasChatIntegration = createTypeGuard<
 >((input: Maybe<Integration>) =>
     input?.type === IntegrationType.GorgiasChat ? input : undefined
 )
+
+export enum GorgiasChatPositionAlignmentEnum {
+    BOTTOM_RIGHT = 'bottom-right',
+    BOTTOM_LEFT = 'bottom-left',
+    TOP_RIGHT = 'top-right',
+    TOP_LEFT = 'top-left',
+}
+
+export interface GorgiasChatPosition {
+    alignment: GorgiasChatPositionAlignmentEnum
+    offsetX: number
+    offsetY: number
+}
