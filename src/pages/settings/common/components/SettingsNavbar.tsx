@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import {Link, RouteComponentProps} from 'react-router-dom'
 import {Map} from 'immutable'
 
+import css from '../../../../../css/navbar.less'
 import {hasRole} from '../../../../utils'
 import {ADMIN_ROLE, AGENT_ROLE} from '../../../../config/user'
 import {UserRole} from '../../../../config/types/user'
@@ -178,7 +179,7 @@ export default class SettingsNavbar extends Component<Props> {
         ]
 
         return (
-            <div>
+            <>
                 {categories.map(({name, icon, links}, index) => {
                     const displayedLinks = links
                         .filter((link) => !link.isHidden)
@@ -200,7 +201,7 @@ export default class SettingsNavbar extends Component<Props> {
                                 <Link
                                     key={to}
                                     to={`/app/settings/${to}`}
-                                    className={classnames(className, 'item', {
+                                    className={classnames(css.link, className, {
                                         active: isActive,
                                     })}
                                     onClick={() => {
@@ -224,16 +225,24 @@ export default class SettingsNavbar extends Component<Props> {
                     }
 
                     return (
-                        <div className="item" key={index}>
-                            <h4>
-                                <i className="material-icons">{icon}</i> {name}
+                        <div className={css.category} key={index}>
+                            <h4 className={css['category-title']}>
+                                <i
+                                    className={classnames(
+                                        'material-icons',
+                                        css.icon
+                                    )}
+                                >
+                                    {icon}
+                                </i>
+                                {name}
                             </h4>
 
-                            <div className="menu">{displayedLinks}</div>
+                            <div className={css.menu}>{displayedLinks}</div>
                         </div>
                     )
                 })}
-            </div>
+            </>
         )
     }
 }

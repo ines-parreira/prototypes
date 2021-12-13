@@ -9,7 +9,7 @@ exports[`<TicketNavbarView/> should render 1`] = `
     id="ticket-navbar-view-7"
   >
     <a
-      class="item"
+      class="link"
       title="New & Open Tickets 4999+"
       to="/app/tickets/7/new-%26-open-tickets"
     >

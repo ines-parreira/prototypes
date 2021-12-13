@@ -12,22 +12,21 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import shortcutManager from '../../../services/shortcutManager/index'
-
-import * as currentUserActions from '../../../state/currentUser/actions'
-import * as layoutActions from '../../../state/layout/actions'
-
-import * as layoutSelectors from '../../../state/layout/selectors'
-import * as currentUserSelectors from '../../../state/currentUser/selectors'
-import * as billingSelectors from '../../../state/billing/selectors'
-import {RootState} from '../../../state/types'
-
+import '../../../../css/typography.less'
 import ToggleButton from '../../../pages/common/components/ToggleButton'
-import './Navbar.less'
+import shortcutManager from '../../../services/shortcutManager/index'
+import * as billingSelectors from '../../../state/billing/selectors'
+import * as currentUserActions from '../../../state/currentUser/actions'
+import * as currentUserSelectors from '../../../state/currentUser/selectors'
+import * as layoutActions from '../../../state/layout/actions'
+import * as layoutSelectors from '../../../state/layout/selectors'
+import {RootState} from '../../../state/types'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker.js'
 import {reportError} from '../../../utils/errors'
 
 import Avatar from './Avatar/Avatar'
+
+import css from './Navbar.less'
 
 type NavLinkProps = {
     to: string
@@ -209,18 +208,28 @@ export class Navbar extends React.Component<Props, State> {
 
         return (
             <div
-                className={classnames('nav-primary navbar-panel', {
-                    'hidden-panel': !this.props.isOpenedPanel,
+                className={classnames(css['nav-primary'], {
+                    [css['hidden-panel']]: !this.props.isOpenedPanel,
                 })}
             >
-                <UncontrolledDropdown className="nav-dropdown">
-                    <DropdownToggle color="transparent">
+                <UncontrolledDropdown className={css['nav-dropdown']}>
+                    <DropdownToggle
+                        color="transparent"
+                        className={css['dropdown-toggle']}
+                    >
                         <div>
                             {this.state.title || ''}
-                            <i className="material-icons md-2">more_vert</i>
+                            <i
+                                className={classnames(
+                                    'material-icons',
+                                    css['icon-more']
+                                )}
+                            >
+                                more_vert
+                            </i>
                         </div>
                     </DropdownToggle>
-                    <DropdownMenu>
+                    <DropdownMenu className={css['dropdown-menu']}>
                         {mainMenu.map((item) => {
                             return (
                                 <DropdownItem
@@ -231,8 +240,14 @@ export class Navbar extends React.Component<Props, State> {
                                         this.setState({title: item.label})
                                         this._closePanel()
                                     }}
+                                    className={css['dropdown-item']}
                                 >
-                                    <i className="material-icons mr-2">
+                                    <i
+                                        className={classnames(
+                                            'material-icons mr-2',
+                                            css.icon
+                                        )}
+                                    >
                                         {item.icon}
                                     </i>
                                     {item.label}
@@ -242,19 +257,24 @@ export class Navbar extends React.Component<Props, State> {
                     </DropdownMenu>
                 </UncontrolledDropdown>
 
-                <div className="navbar-content">{this.props.children}</div>
+                <div className={css['navbar-content']}>
+                    {this.props.children}
+                </div>
 
                 <Dropdown
-                    className="nav-dropdown dropup"
                     toggle={this._toggleBottomDropdown}
                     isOpen={this.state.bottomDropdownOpen}
+                    className={css['nav-dropdown']}
                 >
                     <DropdownToggle
                         color="transparent"
-                        style={{overflow: 'hidden'}}
+                        className={classnames(
+                            css['dropdown-toggle'],
+                            css['dropdown-toggle-dropup']
+                        )}
                     >
                         <div>
-                            <span>
+                            <span className="body-semibold">
                                 {currentUser.get('name')}
                                 <Avatar
                                     name={currentUser.get('name')}
@@ -275,8 +295,12 @@ export class Navbar extends React.Component<Props, State> {
                             </span>
                         </div>
                     </DropdownToggle>
-                    <DropdownMenu>
-                        <DropdownItem tag="a" className="mt-2" toggle={false}>
+                    <DropdownMenu className={css['dropdown-menu']}>
+                        <DropdownItem
+                            tag="a"
+                            toggle={false}
+                            className={css['dropdown-item']}
+                        >
                             <div className="d-flex justify-content-between align-items-center">
                                 <div>Available</div>
                                 <div>
@@ -297,8 +321,16 @@ export class Navbar extends React.Component<Props, State> {
                             onClick={() => {
                                 this._closePanel()
                             }}
+                            className={css['dropdown-item']}
                         >
-                            <i className="material-icons mr-2">person</i>
+                            <i
+                                className={classnames(
+                                    'material-icons mr-2',
+                                    css.icon
+                                )}
+                            >
+                                person
+                            </i>
                             Your profile
                         </DropdownItem>
                         <DropdownItem
@@ -310,9 +342,13 @@ export class Navbar extends React.Component<Props, State> {
                                     segmentTracker.EVENTS.HELP_CENTER_CLICKED
                                 )
                             }
+                            className={css['dropdown-item']}
                         >
                             <i
-                                className="material-icons mr-2"
+                                className={classnames(
+                                    'material-icons mr-2',
+                                    css.icon
+                                )}
                                 title="Help Center"
                             >
                                 help
@@ -323,9 +359,13 @@ export class Navbar extends React.Component<Props, State> {
                             tag="a"
                             href="https://status.gorgias.com/"
                             target="_blank"
+                            className={css['dropdown-item']}
                         >
                             <i
-                                className="material-icons mr-2"
+                                className={classnames(
+                                    'material-icons mr-2',
+                                    css.icon
+                                )}
                                 title="Service status"
                             >
                                 query_stats
@@ -339,8 +379,16 @@ export class Navbar extends React.Component<Props, State> {
                                 href="https://calendly.com/gorgias-office-hours"
                                 target="_blank"
                                 title="Book a meeting with a Customer Success Manager at Gorgias."
+                                className={css['dropdown-item']}
                             >
-                                <i className="material-icons mr-2">event</i>
+                                <i
+                                    className={classnames(
+                                        'material-icons mr-2',
+                                        css.icon
+                                    )}
+                                >
+                                    event
+                                </i>
                                 Book office hours
                             </DropdownItem>
                         )}
@@ -348,16 +396,32 @@ export class Navbar extends React.Component<Props, State> {
                             tag="a"
                             href="https://portal.productboard.com/gorgias/1-gorgias-product-roadmap/tabs/3-planned/"
                             target="_blank"
+                            className={css['dropdown-item']}
                         >
-                            <i className="material-icons mr-2">map</i>
+                            <i
+                                className={classnames(
+                                    'material-icons mr-2',
+                                    css.icon
+                                )}
+                            >
+                                map
+                            </i>
                             Roadmap
                         </DropdownItem>
                         <DropdownItem
                             tag="div"
                             id="noticeable-widget"
                             toggle={false}
+                            className={css['dropdown-item']}
                         >
-                            <i className="material-icons mr-2">new_releases</i>
+                            <i
+                                className={classnames(
+                                    'material-icons mr-2',
+                                    css.icon
+                                )}
+                            >
+                                new_releases
+                            </i>
                             Latest updates
                             <span id="noticeable-widget-notification" />
                         </DropdownItem>
@@ -368,15 +432,31 @@ export class Navbar extends React.Component<Props, State> {
                                     'SHOW_HELP'
                                 )
                             }}
+                            className={css['dropdown-item']}
                         >
-                            <i className="material-icons mr-2">keyboard</i>
+                            <i
+                                className={classnames(
+                                    'material-icons mr-2',
+                                    css.icon
+                                )}
+                            >
+                                keyboard
+                            </i>
                             Keyboard shortcuts
                         </DropdownItem>
                         <DropdownItem
                             tag="a"
                             href={`/logout?csrf-token=${window.CSRF_TOKEN}`}
+                            className={css['dropdown-item']}
                         >
-                            <i className="material-icons mr-2">exit_to_app</i>
+                            <i
+                                className={classnames(
+                                    'material-icons mr-2',
+                                    css.icon
+                                )}
+                            >
+                                exit_to_app
+                            </i>
                             Log out
                         </DropdownItem>
                     </DropdownMenu>

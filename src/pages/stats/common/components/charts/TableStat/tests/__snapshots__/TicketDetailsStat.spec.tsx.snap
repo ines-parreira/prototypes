@@ -84,7 +84,7 @@ exports[`TicketDetailsStat should render open tickets and channels breakdown 1`]
       class="channel"
     >
       <i
-        class="icon d-inline-block text-purple material-icons channelIcon"
+        class="icon d-inline-block material-icons channelIcon"
       >
         forum
       </i>

@@ -5,6 +5,7 @@ import {useDrag} from 'react-dnd'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 
+import navbarCss from '../../../../css/navbar.less'
 import {UserRole} from '../../../config/types/user'
 import {MAX_TICKET_COUNT_PER_VIEW} from '../../../config/views'
 import {View, ViewVisibility} from '../../../models/view/types'
@@ -98,13 +99,14 @@ export function TicketNavbarViewContainer({
                 return (
                     <div id={ticketNavbarId} ref={wrapperRef}>
                         <Link
-                            className={classnames('item', {
+                            className={classnames(navbarCss.link, {
                                 active: view.id === activeViewId && !isOver,
                                 focused:
                                     window.location.pathname.startsWith(
                                         `/app/tickets/${view.id}/`
                                     ) && !isOver,
-                                [css.isDragged]: isDragging,
+                                [navbarCss.isDragged]: isDragging,
+                                [navbarCss.isNested]: view.section_id != null,
                             })}
                             title={`${view.name} ${
                                 count >= MAX_TICKET_COUNT_PER_VIEW
@@ -119,12 +121,13 @@ export function TicketNavbarViewContainer({
                             <span
                                 className={classnames(
                                     css.viewName,
-                                    'item-name flex-grow'
+                                    navbarCss['item-name'],
+                                    'flex-grow'
                                 )}
                             >
                                 <ViewName view={fromJS(view)} />
                             </span>
-                            <span className="item-count">
+                            <span className={navbarCss['item-count']}>
                                 <ViewCount view={fromJS(view)} />
                             </span>
                         </Link>

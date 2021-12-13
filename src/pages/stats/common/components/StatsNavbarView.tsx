@@ -1,8 +1,8 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom'
 import {Map} from 'immutable'
-import classnames from 'classnames'
 
+import css from '../../../../../css/navbar.less'
 import {
     supportPerformanceViews,
     liveViews,
@@ -10,19 +10,17 @@ import {
 } from '../../../../config/stats'
 import NavbarBlock from '../../../common/components/navbar/NavbarBlock'
 
-import css from './StatsNavbarView.less'
-
 export default function StatsNavbarView() {
     return (
         <>
             <NavbarBlock icon="adjust" title="Live">
-                <div className="menu">
+                <div className={css.menu}>
                     {(
                         liveViews.map((view: Map<any, any>) => {
                             return (
                                 <NavLink
                                     key={view.get('name')}
-                                    className={classnames('item', css.item)}
+                                    className={css.link}
                                     to={`/app/stats/${
                                         view.get('link') as string
                                     }`}
@@ -39,13 +37,13 @@ export default function StatsNavbarView() {
                 </div>
             </NavbarBlock>
             <NavbarBlock icon="insights" title="Support Performance">
-                <div className="menu">
+                <div className={css.menu}>
                     {(
                         supportPerformanceViews.map((view: Map<any, any>) => {
                             return (
                                 <NavLink
                                     key={view.get('name')}
-                                    className={classnames('item', css.item)}
+                                    className={css.link}
                                     to={`/app/stats/${
                                         view.get('link') as string
                                     }`}
@@ -62,13 +60,13 @@ export default function StatsNavbarView() {
                 </div>
             </NavbarBlock>
             <NavbarBlock icon="bolt" title="Automations">
-                <div className="menu">
+                <div className={css.menu}>
                     {(
                         automationViews.map((view: Map<any, any>) => {
                             return (
                                 <NavLink
                                     key={view.get('name')}
-                                    className={classnames('item', css.item)}
+                                    className={css.link}
                                     to={`/app/stats/${
                                         view.get('link') as string
                                     }`}

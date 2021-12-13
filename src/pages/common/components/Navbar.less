@@ -1,89 +1,113 @@
 @import '~css/new/colors';
 @import '~css/navbar';
+@import '~css/new/colorTokens';
+@import '~css/new/mixins';
+@import '~css/typography';
 
-.nav-primary {
-    display: flex;
-    flex-direction: column;
-    width: @navbarWidth;
+:local {
+    .nav-primary {
+        @media @mobiles {
+            @width: 80%;
+            width: @width;
+            min-width: @width;
+            max-width: @width;
+            z-index: 1040;
+            transition: all 0.2s linear;
+            top: 0;
+            height: 100%;
 
-    background: @navbarBgColor;
+            position: absolute;
+            left: 0;
+
+            &.hidden-panel {
+                transform: translateX(-100%);
+            }
+        }
+
+        @media print {
+            display: none !important;
+        }
+
+        display: flex;
+        flex-direction: column;
+        width: @navbarWidth;
+        background: @classic-neutral-grey-6;
+    }
 
     .nav-dropdown {
-        & > button {
-            height: 60px;
-            padding: 20px 19px 17px 20px;
-            width: 100%;
-            transition: all 0.1s linear;
-            box-shadow: none;
-            border-color: #284064;
-            border-style: solid;
-            border-width: 0 0 1px;
-            border-radius: 0;
-
-            color: #fff;
-            font-size: 15px;
-            font-weight: 600;
-
-            > div {
-                // content is wrapped in div because some browsers forbid flex in buttons
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-            }
-
-            &:hover {
-                background-color: darken(@navbarBgColor, 4%);
-            }
-
-            &:active {
-                background-color: darken(@navbarBgColor, 8%);
-            }
-        }
-
-        &.show > button {
-            background-color: darken(@navbarBgColor, 4%);
-        }
-
-        &.dropup > button {
-            border-width: 1px 0 0;
-            padding-top: 12px;
-            padding-bottom: 12px;
-
-            font-size: 14px;
-        }
-
-        .dropdown-menu {
-            width: 100%;
-            /* HACK Popper.js's preventOverflow adds 5px to the left of the dropdowns.
-       * Need the negativ margin until we can configure it in bootstrap:
-       * https://github.com/twbs/bootstrap/issues/25529
-       */
-            margin: 0 0 0 -5px;
-            border-radius: 0;
-            border: solid 1px #cfe0ee;
-            border-top: none;
-
-            .dropdown-item {
-                display: block;
-                padding: 8px 16px;
-                color: #0c0c0c;
-                font-weight: normal;
-                outline: none;
-
-                &.current {
-                    font-weight: 600;
-                }
-
-                &:hover {
-                    background-color: #f3f3f3;
-                }
-            }
+        &:global.show > button {
+            background-color: darken(@classic-neutral-grey-6, 4%);
         }
     }
 
-    .navbar-views-settings {
-        font-size: 15px;
+    .dropdown-toggle {
+        height: 60px;
+        padding: 20px 19px 17px 20px;
+        width: 100%;
+        transition: all 0.1s linear;
+        box-shadow: none;
+        border-color: #284064;
+        border-style: solid;
+        border-width: 0 0 1px;
+        border-radius: 0;
+
+        color: @classic-neutral-grey-0;
+        .heading-subsection-semibold();
+
+        > div {
+            // content is wrapped in div because some browsers forbid flex in buttons
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        &:hover {
+            background-color: darken(@classic-neutral-grey-6, 4%);
+            color: @classic-neutral-grey-0;
+        }
+
+        &:active {
+            background-color: darken(@classic-neutral-grey-6, 8%);
+        }
+    }
+
+    .dropdown-toggle-dropup {
+        border-width: 1px 0 0;
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
+
+    .dropdown-menu {
+        width: 100%;
+        /* HACK Popper.js's preventOverflow adds 5px to the left of the dropdowns.
+        * Need the negativ margin until we can configure it in bootstrap:
+        * https://github.com/twbs/bootstrap/issues/25529
+        */
+        margin: 0 0 0 -5px;
+        border-radius: 0;
+        border: solid 1px #cfe0ee;
+        border-top: none;
+        padding: 4px 0;
+
+        .dropdown-item {
+            display: block;
+            padding: 8px 16px;
+            color: @classic-neutral-grey-6;
+            font-weight: normal;
+            outline: none;
+            vertical-align: middle;
+
+            &:global.current {
+                color: @classic-neutral-grey-6;
+                font-weight: 600;
+            }
+
+            &:global:hover {
+                background-color: @classic-neutral-grey-2;
+                color: @classic-neutral-grey-6;
+            }
+        }
     }
 
     .navbar-content {
@@ -91,99 +115,14 @@
         overflow: auto;
         background-color: transparent !important;
         margin: 0;
-        padding: 14px 0;
+    }
 
-        .item > h4 {
-            color: white;
-            font-weight: 600;
-            font-size: 11px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+    .icon {
+        font-size: 16px;
+        vertical-align: middle;
+    }
 
-            .icon {
-                margin-right: 0.5em;
-
-                font-size: 15px;
-                line-height: inherit;
-            }
-        }
-
-        .menu {
-            @item-transition: all 0.1s;
-
-            margin: 0.5em -1.14285714em 0;
-            white-space: nowrap;
-
-            .item {
-                display: flex;
-                position: relative;
-                vertical-align: middle;
-                line-height: 22px;
-                text-decoration: none;
-                flex: 0 0 auto;
-                user-select: none;
-                background: 0 0;
-                text-transform: none;
-                font-weight: 400;
-                transition: @item-transition;
-                color: rgba(255, 255, 255, 0.45);
-                padding: 1px 1.33333333em;
-                font-size: 14px;
-                overflow: hidden;
-                align-items: center;
-            }
-
-            & > .item {
-                .item-name {
-                    flex: 1;
-                    margin-right: 8px;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                }
-
-                .item-count {
-                    color: @navbarItemFadedColor;
-                    font-size: 14px;
-                    line-height: 14px;
-                    font-weight: 500;
-                    text-transform: uppercase;
-                    transition: @item-transition;
-                }
-
-                &.active,
-                &.focused,
-                &:hover {
-                    font-weight: 600;
-                    color: @quartz;
-
-                    .item-count {
-                        font-weight: 600;
-                        color: @quartz;
-                    }
-                }
-
-                &.focused {
-                    background-color: @blue;
-                }
-
-                & > i.icon {
-                    width: 1.2em;
-                    float: none !important;
-                    margin: inherit !important;
-                    margin-right: 6px !important;
-                    opacity: 0.6;
-                    color: @quartz;
-                    transition: @item-transition;
-                }
-
-                &:hover .icon {
-                    opacity: 1;
-                }
-            }
-        }
-
-        > div > .item {
-            padding: 0.92857143em 1.14285714em;
-        }
+    .icon-more {
+        font-size: 21px;
     }
 }

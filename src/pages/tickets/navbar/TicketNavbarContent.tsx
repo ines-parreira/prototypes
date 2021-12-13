@@ -1,4 +1,3 @@
-import classnames from 'classnames'
 import React, {useCallback} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {DropTargetMonitor} from 'react-dnd'
@@ -165,7 +164,7 @@ export function TicketNavbarContentContainer({
                     ? views[item.id].visibility === ViewVisibility.Private
                     : views[item.id].visibility !== ViewVisibility.Private
             }}
-            className={classnames(css.wrapper, 'menu')}
+            className={css.wrapper}
             onDrop={handleDrop}
             topIndicatorClassName={css.contentTopIndicator}
             bottomIndicatorClassName={css.contentBottomIndicator}

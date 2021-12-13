@@ -1,70 +1,38 @@
 @import '~css/new/colors';
 
-:global .nav-primary .navbar-content .menu {
-    :local .section {
-        color: @neutral5;
-        font-weight: 600;
-        overflow: visible;
-        box-sizing: border-box;
-        line-height: 28px;
-        border-radius: 3px;
-        display: block;
-        padding-left: 0;
-        padding-right: 0;
-        margin-left: 0;
-        margin-right: 0;
-
-        &:hover {
-            color: @neutral5;
-
-            .editSectionIcon {
-                opacity: 1;
-            }
-        }
-    }
-
-    :local .sectionView :global .item {
-        padding-left: 29px;
-
-        & .item-count {
-            color: rgba(255, 255, 255, 0.45);
-            font-weight: 400;
-        }
-
-        &:hover > .item-count {
-            color: @quartz;
-            font-weight: 600;
-        }
-    }
-}
-
 :local {
     .toggleSectionIconWrapper {
         min-width: 12px;
         height: 12px;
         overflow: hidden;
         position: relative;
+        margin-right: 10px;
     }
+
     .toggleSectionIcon {
-        font-size: 24px;
+        font-size: 16px;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
     }
+
     .nameWrapper {
         cursor: pointer;
-        min-width: 0;
-        margin-left: 4px;
-        margin-right: 11px;
-        padding-left: 14px;
-        padding-right: 14px;
+        margin-right: 6px;
+        padding: 0 20px;
     }
 
     .name {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        flex: 1;
+        margin-right: 8px;
+
+        .emoji {
+            margin-right: 8px;
+        }
     }
 
     .editSectionIcon {
@@ -99,6 +67,7 @@
         padding-bottom: 2px;
         padding-left: 7px;
         padding-top: 2px;
+        line-height: 28px;
 
         &:focus {
             outline: none;
@@ -121,6 +90,19 @@
     }
 
     div.viewIntoSectionIndicator {
-        left: 29px;
+        left: 42px;
+    }
+
+    .section {
+        color: @neutral5;
+        font-weight: 600;
+
+        &:hover {
+            color: @neutral5;
+
+            .editSectionIcon {
+                opacity: 1;
+            }
+        }
     }
 }

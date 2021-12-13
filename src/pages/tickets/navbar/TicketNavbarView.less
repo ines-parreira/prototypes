@@ -1,34 +1,3 @@
-@import '~css/new/colors';
-
-:global .nav-primary .navbar-content .menu {
-    :local .view {
-        position: relative;
-
-        :global .item {
-            & .item-count {
-                font-weight: 500;
-                color: @navbarItemFadedColor;
-            }
-
-            &.focused {
-                background-color: @blue;
-            }
-
-            &.active,
-            &:hover,
-            &:hover .item-count,
-            &.active .item-count {
-                color: @quartz;
-                font-weight: 600;
-            }
-
-            &:local.isDragged {
-                opacity: 0.3;
-            }
-        }
-    }
-}
-
 :local {
     .viewName {
         text-overflow: ellipsis;
@@ -37,6 +6,10 @@
     }
 
     div.nestedViewIndicator {
-        left: 29px;
+        left: 42px;
+    }
+
+    .view {
+        position: relative;
     }
 }

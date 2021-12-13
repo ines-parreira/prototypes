@@ -2,7 +2,7 @@
 
 exports[`<Navbar /> should render the navbar 1`] = `
 <div
-  class="nav-primary navbar-panel hidden-panel"
+  class="nav-primary hidden-panel"
 >
   <div
     class="nav-dropdown dropdown"
@@ -10,13 +10,13 @@ exports[`<Navbar /> should render the navbar 1`] = `
     <button
       aria-expanded="false"
       aria-haspopup="true"
-      class="btn btn-transparent"
+      class="dropdown-toggle btn btn-transparent"
       type="button"
     >
       <div>
         
         <i
-          class="material-icons md-2"
+          class="material-icons icon-more"
         >
           more_vert
         </i>
@@ -24,57 +24,57 @@ exports[`<Navbar /> should render the navbar 1`] = `
     </button>
     <div
       aria-hidden="true"
-      class="dropdown-menu"
+      class="dropdown-menu dropdown-menu"
       role="menu"
       tabindex="-1"
     >
       <a
-        class="dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item dropdown-item"
         role="menuitem"
         tabindex="0"
         to="/app/tickets"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           question_answer
         </i>
         Tickets
       </a>
       <a
-        class="dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item dropdown-item"
         role="menuitem"
         tabindex="0"
         to="/app/customers"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           people
         </i>
         Customers
       </a>
       <a
-        class="dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item dropdown-item"
         role="menuitem"
         tabindex="0"
         to="/app/stats"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           bar_chart
         </i>
         Statistics
       </a>
       <a
-        class="dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item dropdown-item"
         role="menuitem"
         tabindex="0"
         to="/app/settings"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           settings
         </i>
@@ -86,17 +86,18 @@ exports[`<Navbar /> should render the navbar 1`] = `
     class="navbar-content"
   />
   <div
-    class="nav-dropdown dropup dropdown"
+    class="nav-dropdown dropdown"
   >
     <button
       aria-expanded="false"
       aria-haspopup="true"
-      class="btn btn-transparent"
-      style="overflow: hidden;"
+      class="dropdown-toggle dropdown-toggle-dropup btn btn-transparent"
       type="button"
     >
       <div>
-        <span>
+        <span
+          class="body-semibold"
+        >
           Alex Plugaru
           <div
             class="component"
@@ -122,12 +123,12 @@ exports[`<Navbar /> should render the navbar 1`] = `
     </button>
     <div
       aria-hidden="true"
-      class="dropdown-menu"
+      class="dropdown-menu dropdown-menu"
       role="menu"
       tabindex="-1"
     >
       <a
-        class="mt-2 dropdown-item"
+        class="dropdown-item dropdown-item"
         role="menuitem"
         tabindex="0"
       >
@@ -158,27 +159,27 @@ exports[`<Navbar /> should render the navbar 1`] = `
         tabindex="-1"
       />
       <a
-        class="dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item dropdown-item"
         role="menuitem"
         tabindex="0"
         to="/app/settings/profile"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           person
         </i>
         Your profile
       </a>
       <a
-        class="dropdown-item"
+        class="dropdown-item dropdown-item"
         href="https://docs.gorgias.com/"
         role="menuitem"
         tabindex="0"
         target="_blank"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
           title="Help Center"
         >
           help
@@ -186,14 +187,14 @@ exports[`<Navbar /> should render the navbar 1`] = `
         Help Center
       </a>
       <a
-        class="dropdown-item"
+        class="dropdown-item dropdown-item"
         href="https://status.gorgias.com/"
         role="menuitem"
         tabindex="0"
         target="_blank"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
           title="Service status"
         >
           query_stats
@@ -201,27 +202,27 @@ exports[`<Navbar /> should render the navbar 1`] = `
         Service status
       </a>
       <a
-        class="dropdown-item"
+        class="dropdown-item dropdown-item"
         href="https://portal.productboard.com/gorgias/1-gorgias-product-roadmap/tabs/3-planned/"
         role="menuitem"
         tabindex="0"
         target="_blank"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           map
         </i>
         Roadmap
       </a>
       <div
-        class="dropdown-item"
+        class="dropdown-item dropdown-item"
         id="noticeable-widget"
         role="menuitem"
         tabindex="0"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           new_releases
         </i>
@@ -231,26 +232,26 @@ exports[`<Navbar /> should render the navbar 1`] = `
         />
       </div>
       <button
-        class="dropdown-item"
+        class="dropdown-item dropdown-item"
         role="menuitem"
         tabindex="0"
         type="button"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           keyboard
         </i>
         Keyboard shortcuts
       </button>
       <a
-        class="dropdown-item"
+        class="dropdown-item dropdown-item"
         href="/logout?csrf-token=abcd"
         role="menuitem"
         tabindex="0"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           exit_to_app
         </i>
@@ -263,7 +264,7 @@ exports[`<Navbar /> should render the navbar 1`] = `
 
 exports[`<Navbar /> should render the opened panel 1`] = `
 <div
-  class="nav-primary navbar-panel"
+  class="nav-primary"
 >
   <div
     class="nav-dropdown dropdown"
@@ -271,13 +272,13 @@ exports[`<Navbar /> should render the opened panel 1`] = `
     <button
       aria-expanded="false"
       aria-haspopup="true"
-      class="btn btn-transparent"
+      class="dropdown-toggle btn btn-transparent"
       type="button"
     >
       <div>
         
         <i
-          class="material-icons md-2"
+          class="material-icons icon-more"
         >
           more_vert
         </i>
@@ -285,57 +286,57 @@ exports[`<Navbar /> should render the opened panel 1`] = `
     </button>
     <div
       aria-hidden="true"
-      class="dropdown-menu"
+      class="dropdown-menu dropdown-menu"
       role="menu"
       tabindex="-1"
     >
       <a
-        class="dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item dropdown-item"
         role="menuitem"
         tabindex="0"
         to="/app/tickets"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           question_answer
         </i>
         Tickets
       </a>
       <a
-        class="dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item dropdown-item"
         role="menuitem"
         tabindex="0"
         to="/app/customers"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           people
         </i>
         Customers
       </a>
       <a
-        class="dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item dropdown-item"
         role="menuitem"
         tabindex="0"
         to="/app/stats"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           bar_chart
         </i>
         Statistics
       </a>
       <a
-        class="dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item dropdown-item"
         role="menuitem"
         tabindex="0"
         to="/app/settings"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           settings
         </i>
@@ -347,17 +348,18 @@ exports[`<Navbar /> should render the opened panel 1`] = `
     class="navbar-content"
   />
   <div
-    class="nav-dropdown dropup dropdown"
+    class="nav-dropdown dropdown"
   >
     <button
       aria-expanded="false"
       aria-haspopup="true"
-      class="btn btn-transparent"
-      style="overflow: hidden;"
+      class="dropdown-toggle dropdown-toggle-dropup btn btn-transparent"
       type="button"
     >
       <div>
-        <span>
+        <span
+          class="body-semibold"
+        >
           Alex Plugaru
           <div
             class="component"
@@ -383,12 +385,12 @@ exports[`<Navbar /> should render the opened panel 1`] = `
     </button>
     <div
       aria-hidden="true"
-      class="dropdown-menu"
+      class="dropdown-menu dropdown-menu"
       role="menu"
       tabindex="-1"
     >
       <a
-        class="mt-2 dropdown-item"
+        class="dropdown-item dropdown-item"
         role="menuitem"
         tabindex="0"
       >
@@ -419,27 +421,27 @@ exports[`<Navbar /> should render the opened panel 1`] = `
         tabindex="-1"
       />
       <a
-        class="dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item dropdown-item"
         role="menuitem"
         tabindex="0"
         to="/app/settings/profile"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           person
         </i>
         Your profile
       </a>
       <a
-        class="dropdown-item"
+        class="dropdown-item dropdown-item"
         href="https://docs.gorgias.com/"
         role="menuitem"
         tabindex="0"
         target="_blank"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
           title="Help Center"
         >
           help
@@ -447,14 +449,14 @@ exports[`<Navbar /> should render the opened panel 1`] = `
         Help Center
       </a>
       <a
-        class="dropdown-item"
+        class="dropdown-item dropdown-item"
         href="https://status.gorgias.com/"
         role="menuitem"
         tabindex="0"
         target="_blank"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
           title="Service status"
         >
           query_stats
@@ -462,27 +464,27 @@ exports[`<Navbar /> should render the opened panel 1`] = `
         Service status
       </a>
       <a
-        class="dropdown-item"
+        class="dropdown-item dropdown-item"
         href="https://portal.productboard.com/gorgias/1-gorgias-product-roadmap/tabs/3-planned/"
         role="menuitem"
         tabindex="0"
         target="_blank"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           map
         </i>
         Roadmap
       </a>
       <div
-        class="dropdown-item"
+        class="dropdown-item dropdown-item"
         id="noticeable-widget"
         role="menuitem"
         tabindex="0"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           new_releases
         </i>
@@ -492,26 +494,26 @@ exports[`<Navbar /> should render the opened panel 1`] = `
         />
       </div>
       <button
-        class="dropdown-item"
+        class="dropdown-item dropdown-item"
         role="menuitem"
         tabindex="0"
         type="button"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           keyboard
         </i>
         Keyboard shortcuts
       </button>
       <a
-        class="dropdown-item"
+        class="dropdown-item dropdown-item"
         href="/logout?csrf-token=abcd"
         role="menuitem"
         tabindex="0"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           exit_to_app
         </i>
@@ -524,7 +526,7 @@ exports[`<Navbar /> should render the opened panel 1`] = `
 
 exports[`<Navbar /> should render the user as unavailable 1`] = `
 <div
-  class="nav-primary navbar-panel hidden-panel"
+  class="nav-primary hidden-panel"
 >
   <div
     class="nav-dropdown dropdown"
@@ -532,13 +534,13 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
     <button
       aria-expanded="false"
       aria-haspopup="true"
-      class="btn btn-transparent"
+      class="dropdown-toggle btn btn-transparent"
       type="button"
     >
       <div>
         
         <i
-          class="material-icons md-2"
+          class="material-icons icon-more"
         >
           more_vert
         </i>
@@ -546,57 +548,57 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
     </button>
     <div
       aria-hidden="true"
-      class="dropdown-menu"
+      class="dropdown-menu dropdown-menu"
       role="menu"
       tabindex="-1"
     >
       <a
-        class="dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item dropdown-item"
         role="menuitem"
         tabindex="0"
         to="/app/tickets"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           question_answer
         </i>
         Tickets
       </a>
       <a
-        class="dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item dropdown-item"
         role="menuitem"
         tabindex="0"
         to="/app/customers"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           people
         </i>
         Customers
       </a>
       <a
-        class="dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item dropdown-item"
         role="menuitem"
         tabindex="0"
         to="/app/stats"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           bar_chart
         </i>
         Statistics
       </a>
       <a
-        class="dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item dropdown-item"
         role="menuitem"
         tabindex="0"
         to="/app/settings"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           settings
         </i>
@@ -608,17 +610,18 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
     class="navbar-content"
   />
   <div
-    class="nav-dropdown dropup dropdown"
+    class="nav-dropdown dropdown"
   >
     <button
       aria-expanded="false"
       aria-haspopup="true"
-      class="btn btn-transparent"
-      style="overflow: hidden;"
+      class="dropdown-toggle dropdown-toggle-dropup btn btn-transparent"
       type="button"
     >
       <div>
-        <span>
+        <span
+          class="body-semibold"
+        >
           Alex Plugaru
           <div
             class="component"
@@ -644,12 +647,12 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
     </button>
     <div
       aria-hidden="true"
-      class="dropdown-menu"
+      class="dropdown-menu dropdown-menu"
       role="menu"
       tabindex="-1"
     >
       <a
-        class="mt-2 dropdown-item"
+        class="dropdown-item dropdown-item"
         role="menuitem"
         tabindex="0"
       >
@@ -679,27 +682,27 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
         tabindex="-1"
       />
       <a
-        class="dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item dropdown-item"
         role="menuitem"
         tabindex="0"
         to="/app/settings/profile"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           person
         </i>
         Your profile
       </a>
       <a
-        class="dropdown-item"
+        class="dropdown-item dropdown-item"
         href="https://docs.gorgias.com/"
         role="menuitem"
         tabindex="0"
         target="_blank"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
           title="Help Center"
         >
           help
@@ -707,14 +710,14 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
         Help Center
       </a>
       <a
-        class="dropdown-item"
+        class="dropdown-item dropdown-item"
         href="https://status.gorgias.com/"
         role="menuitem"
         tabindex="0"
         target="_blank"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
           title="Service status"
         >
           query_stats
@@ -722,27 +725,27 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
         Service status
       </a>
       <a
-        class="dropdown-item"
+        class="dropdown-item dropdown-item"
         href="https://portal.productboard.com/gorgias/1-gorgias-product-roadmap/tabs/3-planned/"
         role="menuitem"
         tabindex="0"
         target="_blank"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           map
         </i>
         Roadmap
       </a>
       <div
-        class="dropdown-item"
+        class="dropdown-item dropdown-item"
         id="noticeable-widget"
         role="menuitem"
         tabindex="0"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           new_releases
         </i>
@@ -752,26 +755,26 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
         />
       </div>
       <button
-        class="dropdown-item"
+        class="dropdown-item dropdown-item"
         role="menuitem"
         tabindex="0"
         type="button"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           keyboard
         </i>
         Keyboard shortcuts
       </button>
       <a
-        class="dropdown-item"
+        class="dropdown-item dropdown-item"
         href="/logout?csrf-token=abcd"
         role="menuitem"
         tabindex="0"
       >
         <i
-          class="material-icons mr-2"
+          class="material-icons mr-2 icon"
         >
           exit_to_app
         </i>

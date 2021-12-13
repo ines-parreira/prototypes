@@ -2,7 +2,7 @@
 
 exports[`SourceIcon component should show SYSTEM_SOURCE_TYPES icons 1`] = `
 <i
-  className="icon d-inline-block text-warning material-icons"
+  className="icon d-inline-block material-icons"
 >
   note
 </i>
@@ -18,7 +18,7 @@ exports[`SourceIcon component should show SYSTEM_SOURCE_TYPES icons 2`] = `
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 1`] = `
 <i
-  className="icon d-inline-block text-purple material-icons"
+  className="icon d-inline-block material-icons"
 >
   forum
 </i>
@@ -94,7 +94,7 @@ exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 12`] = `
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 13`] = `
 <i
-  className="icon d-inline-block text-warning material-icons"
+  className="icon d-inline-block material-icons"
 >
   note
 </i>

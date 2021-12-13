@@ -1,17 +1,21 @@
-:local .settingButton {
-    font-size: 15px;
+@import '~css/new/colorTokens';
 
-    &,
-    &:focus {
-        display: inline-block;
-        float: right;
-        position: relative;
-        color: rgba(255, 255, 255, 0.5);
-        transition: color 0.2s, border-color 0.2s;
-        cursor: pointer;
-    }
-    &:hover,
-    &.active {
-        color: #ffffff;
+:local {
+    .settingButton {
+        font-size: 15px;
+
+        &,
+        &:focus {
+            display: inline-block;
+            float: right;
+            position: relative;
+            color: rgba(255, 255, 255, 0.5);
+            transition: color 0.2s, border-color 0.2s;
+            cursor: pointer;
+        }
+        &:hover,
+        &.active {
+            color: @classic-neutral-grey-0;
+        }
     }
 }

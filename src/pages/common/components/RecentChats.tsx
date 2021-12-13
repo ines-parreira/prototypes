@@ -5,16 +5,14 @@ import classnames from 'classnames'
 import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import {Map, fromJS, List} from 'immutable'
 
+import navbarCss from '../../../../css/navbar.less'
 import {isCurrentlyOnTicket} from '../../../utils'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker.js'
-
 import {RootState} from '../../../state/types'
-
 import {MAX_RECENT_CHATS} from '../../../config/recentChats'
 
 import Tooltip from './Tooltip'
 import SourceIcon from './SourceIcon'
-
 import css from './RecentChats.less'
 
 type ItemProps = {
@@ -40,7 +38,7 @@ class RecentChatsItem extends Component<ItemProps> {
             `Customer #${customerID}`
         // is the current link active or not?
         const isActive = isCurrentlyOnTicket(recentTicket.get('id'))
-        const linkClasses = classnames('item', css.menuItem, {
+        const linkClasses = classnames(navbarCss.link, css.menuItem, {
             active: isActive,
             focused: isActive,
             [css.hasSomethingNew]: recentTicket.get('is_unread') && !isActive,
@@ -66,10 +64,7 @@ class RecentChatsItem extends Component<ItemProps> {
                 className={linkClasses}
                 title={customerName}
             >
-                <SourceIcon
-                    type={channel}
-                    className={classnames('uncolored mr-2')}
-                />
+                <SourceIcon type={channel} />
                 <span>{customerName}</span>
             </Link>
         )
@@ -95,8 +90,13 @@ class RecentChats extends Component<Props> {
 
         return (
             <div className={css.component}>
-                <div className="item">
-                    <h4 className={css.title}>
+                <div
+                    className={classnames(
+                        navbarCss.category,
+                        css.chatsCategory
+                    )}
+                >
+                    <h4 className={navbarCss['category-title']}>
                         <span id="active-chats-title">Chats</span>
                     </h4>
                     <Tooltip
@@ -107,7 +107,7 @@ class RecentChats extends Component<Props> {
                         Open chats assigned to you or unassigned
                     </Tooltip>
 
-                    <div className="menu">
+                    <div className={navbarCss.menu}>
                         {tickets.slice(0, MAX_RECENT_CHATS).map((e, index) => (
                             <RecentChatsItem
                                 key={e!.get('id')}

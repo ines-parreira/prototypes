@@ -398,7 +398,7 @@ Object {
 
 exports[`<TicketNavbarContent/> rendering should expand/collapse a section 1`] = `
 <div
-  class="wrapper wrapper menu"
+  class="wrapper wrapper"
 >
   <div
     data-testid="TicketNavbarSection"
@@ -415,7 +415,7 @@ exports[`<TicketNavbarContent/> rendering should expand/collapse a section 1`] =
 
 exports[`<TicketNavbarContent/> rendering should expand/collapse a section 2`] = `
 <div
-  class="wrapper wrapper menu"
+  class="wrapper wrapper"
 >
   <div
     data-testid="TicketNavbarSection"
@@ -432,7 +432,7 @@ exports[`<TicketNavbarContent/> rendering should expand/collapse a section 2`] =
 
 exports[`<TicketNavbarContent/> rendering should render 1`] = `
 <div
-  class="wrapper wrapper menu"
+  class="wrapper wrapper"
 >
   <div
     data-testid="TicketNavbarSection"

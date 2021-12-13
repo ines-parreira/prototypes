@@ -89,12 +89,7 @@ export function TicketNavbarSectionContainer({
                     id={ticketNavbarSectionId}
                     ref={nameRef}
                 >
-                    <div
-                        className={classnames(
-                            css.toggleSectionIconWrapper,
-                            'mr-2'
-                        )}
-                    >
+                    <div className={css.toggleSectionIconWrapper}>
                         <i
                             onClick={handleClick}
                             className={classnames(
@@ -107,10 +102,10 @@ export function TicketNavbarSectionContainer({
                     </div>
                     <div
                         onClick={handleClick}
-                        className={classnames(css.name, 'item-name flex-grow')}
+                        className={classnames(css.name, 'flex-grow')}
                         title={section.name}
                     >
-                        {emoji ? `${emoji} ` : null}
+                        {!!emoji && <span className={css.emoji}>{emoji}</span>}
                         {section.name}
                     </div>
                     {(onSectionDeleteClick || onSectionRenameClick) && (
@@ -159,11 +154,7 @@ export function TicketNavbarSectionContainer({
             </TicketNavbarDropTarget>
             {isExpanded &&
                 children.map((view) => (
-                    <TicketNavbarView
-                        className={css.sectionView}
-                        key={view.id}
-                        view={view}
-                    />
+                    <TicketNavbarView key={view.id} view={view} />
                 ))}
         </TicketNavbarDropTarget>
     )

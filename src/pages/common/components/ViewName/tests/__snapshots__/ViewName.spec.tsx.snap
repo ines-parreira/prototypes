@@ -2,7 +2,12 @@
 
 exports[`<ViewName/> .render() should display emoji 1`] = `
 <span>
-  X foo bar
+  <span
+    class="emoji"
+  >
+    X
+  </span>
+  foo bar
 </span>
 `;
 

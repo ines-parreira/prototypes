@@ -20,13 +20,11 @@ const sourceTypeToIcon = (
     const icon = {
         name: 'live_help',
         custom: false,
-        extra: '',
     }
 
     switch (sourceType) {
         case TicketMessageSourceType.InternalNote:
             icon.name = 'note'
-            icon.extra = 'text-warning'
             break
         case TicketMessageSourceType.Email:
         case IntegrationType.Gmail:
@@ -41,7 +39,6 @@ const sourceTypeToIcon = (
         case IntegrationType.Smooch:
         case IntegrationType.SmoochInside:
             icon.name = 'forum'
-            icon.extra = 'text-purple'
             break
         case TicketMessageSourceType.Api:
             icon.name = 'code'
@@ -122,7 +119,6 @@ const SourceIcon = ({type, className, ...otherProps}: Props) => {
         <i
             className={classnames(
                 'icon d-inline-block',
-                icon.extra,
                 {
                     [`icon-custom icon-${icon.name}`]: icon.custom,
                     ['material-icons']: !icon.custom,

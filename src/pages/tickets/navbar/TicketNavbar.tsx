@@ -66,6 +66,7 @@ import {submitSettingSuccess as submitAccountSettingSuccess} from '../../../stat
 import DeleteSectionModal from './DeleteSectionModal'
 import SectionFormModal from './SectionFormModal'
 import TicketNavbarContent, {TicketNavbarElement} from './TicketNavbarContent'
+import css from './TicketNavbar.less'
 
 export enum TicketNavbarElementType {
     View = 'view',
@@ -364,8 +365,6 @@ export function TicketNavbarContainer({
 
     return (
         <>
-            {/*$TsFixMe remove once Navbar is migrated*/}
-            {/*@ts-ignore*/}
             <Navbar activeContent="tickets">
                 <RecentChats />
                 <NavbarBlock
@@ -388,6 +387,7 @@ export function TicketNavbarContainer({
                             : []
                     }
                     title="Shared views"
+                    className={css.navbarBlock}
                 >
                     <TicketNavbarContent
                         {...(isAgent
@@ -416,6 +416,7 @@ export function TicketNavbarContainer({
                         },
                     ]}
                     title="Private views"
+                    className={css.navbarBlock}
                 >
                     <TicketNavbarContent
                         elements={privateElements}

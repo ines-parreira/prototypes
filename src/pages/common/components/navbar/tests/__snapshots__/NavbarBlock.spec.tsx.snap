@@ -1,127 +1,119 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<NavbarBlock/> should render 1`] = `
-<div>
-  <div
-    className="item"
+<div
+  className="category"
+>
+  <h4
+    className="category-title"
   >
-    <h4
-      className="header"
+    <div
+      className="title"
     >
-      <div
-        className="title"
+      Foo
+    </div>
+    <Dropdown
+      a11y={true}
+      active={false}
+      addonType={false}
+      direction="down"
+      inNavbar={false}
+      isOpen={false}
+      nav={false}
+      setActiveFromChild={false}
+      toggle={[Function]}
+    >
+      <DropdownToggle
+        aria-haspopup={true}
+        className="toggle btn-transparent"
+        color="secondary"
+        type="button"
       >
-        Foo
-      </div>
-      <Dropdown
-        a11y={true}
-        active={false}
-        addonType={false}
-        direction="down"
-        inNavbar={false}
-        isOpen={false}
-        nav={false}
-        setActiveFromChild={false}
-        toggle={[Function]}
+        <i
+          className="material-icons"
+        >
+          add
+        </i>
+      </DropdownToggle>
+      <DropdownMenu
+        flip={true}
+        right={true}
+        tag="div"
       >
-        <DropdownToggle
-          aria-haspopup={true}
-          className="toggle btn-transparent"
-          color="secondary"
-          type="button"
+        <DropdownItem
+          className="action"
+          key="foo"
+          onClick={[MockFunction]}
+          tag="button"
+          toggle={true}
         >
-          <i
-            className="material-icons"
-          >
-            add
-          </i>
-        </DropdownToggle>
-        <DropdownMenu
-          flip={true}
-          right={true}
-          tag="div"
-        >
-          <DropdownItem
-            className="action"
-            key="foo"
-            onClick={[MockFunction]}
-            tag="button"
-            toggle={true}
-          >
-            foo
-          </DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
-    </h4>
-    foobar
-  </div>
+          foo
+        </DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
+  </h4>
+  foobar
 </div>
 `;
 
 exports[`<NavbarBlock/> should render an icon 1`] = `
-<div>
-  <div
-    className="item"
+<div
+  className="category"
+>
+  <h4
+    className="category-title"
   >
-    <h4
-      className="header"
+    <div
+      className="title"
     >
-      <div
-        className="title"
+      <i
+        className="material-icons icon"
       >
-        <span
-          className="iconWrapper"
-        >
-          <i
-            className="material-icons icon"
-          >
-            adjust
-          </i>
-        </span>
-        Foo
-      </div>
-      <Dropdown
-        a11y={true}
-        active={false}
-        addonType={false}
-        direction="down"
-        inNavbar={false}
-        isOpen={false}
-        nav={false}
-        setActiveFromChild={false}
-        toggle={[Function]}
+        adjust
+      </i>
+      Foo
+    </div>
+    <Dropdown
+      a11y={true}
+      active={false}
+      addonType={false}
+      direction="down"
+      inNavbar={false}
+      isOpen={false}
+      nav={false}
+      setActiveFromChild={false}
+      toggle={[Function]}
+    >
+      <DropdownToggle
+        aria-haspopup={true}
+        className="toggle btn-transparent"
+        color="secondary"
+        type="button"
       >
-        <DropdownToggle
-          aria-haspopup={true}
-          className="toggle btn-transparent"
-          color="secondary"
-          type="button"
+        <i
+          className="material-icons"
         >
-          <i
-            className="material-icons"
-          >
-            add
-          </i>
-        </DropdownToggle>
-        <DropdownMenu
-          flip={true}
-          right={true}
-          tag="div"
+          add
+        </i>
+      </DropdownToggle>
+      <DropdownMenu
+        flip={true}
+        right={true}
+        tag="div"
+      >
+        <DropdownItem
+          className="action"
+          key="foo"
+          onClick={[MockFunction]}
+          tag="button"
+          toggle={true}
         >
-          <DropdownItem
-            className="action"
-            key="foo"
-            onClick={[MockFunction]}
-            tag="button"
-            toggle={true}
-          >
-            foo
-          </DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
-    </h4>
-    foobar
-  </div>
+          foo
+        </DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
+  </h4>
+  foobar
 </div>
 `;
 
@@ -137,142 +129,140 @@ exports[`<NavbarBlock/> should toggle the menu on clicking the dropdown toggle 1
   }
   title="Foo"
 >
-  <div>
-    <div
-      className="item"
+  <div
+    className="category"
+  >
+    <h4
+      className="category-title"
     >
-      <h4
-        className="header"
+      <div
+        className="title"
       >
-        <div
-          className="title"
-        >
-          Foo
-        </div>
-        <Dropdown
-          a11y={true}
-          active={false}
-          addonType={false}
-          direction="down"
-          inNavbar={false}
-          isOpen={true}
-          nav={false}
-          setActiveFromChild={false}
-          toggle={[Function]}
-        >
-          <Manager>
-            <div
-              className="dropdown show"
-              onKeyDown={[Function]}
+        Foo
+      </div>
+      <Dropdown
+        a11y={true}
+        active={false}
+        addonType={false}
+        direction="down"
+        inNavbar={false}
+        isOpen={true}
+        nav={false}
+        setActiveFromChild={false}
+        toggle={[Function]}
+      >
+        <Manager>
+          <div
+            className="dropdown show"
+            onKeyDown={[Function]}
+          >
+            <DropdownToggle
+              aria-haspopup={true}
+              className="toggle btn-transparent"
+              color="secondary"
+              type="button"
             >
-              <DropdownToggle
-                aria-haspopup={true}
-                className="toggle btn-transparent"
-                color="secondary"
-                type="button"
-              >
-                <Reference>
-                  <InnerReference
-                    setReferenceNode={[Function]}
+              <Reference>
+                <InnerReference
+                  setReferenceNode={[Function]}
+                >
+                  <Button
+                    aria-expanded={true}
+                    aria-haspopup={true}
+                    className="toggle btn-transparent"
+                    color="secondary"
+                    innerRef={[Function]}
+                    onClick={[Function]}
+                    tag="button"
+                    type="button"
                   >
-                    <Button
+                    <button
                       aria-expanded={true}
                       aria-haspopup={true}
-                      className="toggle btn-transparent"
-                      color="secondary"
-                      innerRef={[Function]}
+                      aria-label={null}
+                      className="toggle btn-transparent btn btn-secondary"
                       onClick={[Function]}
-                      tag="button"
                       type="button"
                     >
-                      <button
-                        aria-expanded={true}
-                        aria-haspopup={true}
-                        aria-label={null}
-                        className="toggle btn-transparent btn btn-secondary"
-                        onClick={[Function]}
-                        type="button"
+                      <i
+                        className="material-icons"
                       >
-                        <i
-                          className="material-icons"
-                        >
-                          add
-                        </i>
-                      </button>
-                    </Button>
-                  </InnerReference>
-                </Reference>
-              </DropdownToggle>
-              <DropdownMenu
-                flip={true}
-                right={true}
-                tag="div"
+                        add
+                      </i>
+                    </button>
+                  </Button>
+                </InnerReference>
+              </Reference>
+            </DropdownToggle>
+            <DropdownMenu
+              flip={true}
+              right={true}
+              tag="div"
+            >
+              <Popper
+                placement="bottom-end"
+                positionFixed={false}
               >
-                <Popper
+                <InnerPopper
+                  eventsEnabled={true}
                   placement="bottom-end"
                   positionFixed={false}
+                  referenceElement={
+                    <button
+                      aria-expanded="true"
+                      aria-haspopup="true"
+                      class="toggle btn-transparent btn btn-secondary"
+                      type="button"
+                    >
+                      <i
+                        class="material-icons"
+                      >
+                        add
+                      </i>
+                    </button>
+                  }
                 >
-                  <InnerPopper
-                    eventsEnabled={true}
-                    placement="bottom-end"
-                    positionFixed={false}
-                    referenceElement={
+                  <div
+                    aria-hidden={false}
+                    className="dropdown-menu dropdown-menu-right show"
+                    role="menu"
+                    style={
+                      Object {
+                        "left": 0,
+                        "opacity": 0,
+                        "pointerEvents": "none",
+                        "position": "absolute",
+                        "top": 0,
+                      }
+                    }
+                    tabIndex="-1"
+                  >
+                    <DropdownItem
+                      className="action"
+                      key="foo"
+                      onClick={[MockFunction]}
+                      tag="button"
+                      toggle={true}
+                    >
                       <button
-                        aria-expanded="true"
-                        aria-haspopup="true"
-                        class="toggle btn-transparent btn btn-secondary"
+                        className="action dropdown-item"
+                        onClick={[Function]}
+                        role="menuitem"
+                        tabIndex="0"
                         type="button"
                       >
-                        <i
-                          class="material-icons"
-                        >
-                          add
-                        </i>
+                        foo
                       </button>
-                    }
-                  >
-                    <div
-                      aria-hidden={false}
-                      className="dropdown-menu dropdown-menu-right show"
-                      role="menu"
-                      style={
-                        Object {
-                          "left": 0,
-                          "opacity": 0,
-                          "pointerEvents": "none",
-                          "position": "absolute",
-                          "top": 0,
-                        }
-                      }
-                      tabIndex="-1"
-                    >
-                      <DropdownItem
-                        className="action"
-                        key="foo"
-                        onClick={[MockFunction]}
-                        tag="button"
-                        toggle={true}
-                      >
-                        <button
-                          className="action dropdown-item"
-                          onClick={[Function]}
-                          role="menuitem"
-                          tabIndex="0"
-                          type="button"
-                        >
-                          foo
-                        </button>
-                      </DropdownItem>
-                    </div>
-                  </InnerPopper>
-                </Popper>
-              </DropdownMenu>
-            </div>
-          </Manager>
-        </Dropdown>
-      </h4>
-      foobar
-    </div>
+                    </DropdownItem>
+                  </div>
+                </InnerPopper>
+              </Popper>
+            </DropdownMenu>
+          </div>
+        </Manager>
+      </Dropdown>
+    </h4>
+    foobar
   </div>
 </NavbarBlock>
 `;

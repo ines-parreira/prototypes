@@ -1,16 +1,23 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
+@import '~css/typography';
 
 :local {
     .component {
         .menuItem {
-            padding-right: 2.7em !important;
+            align-items: center;
+
+            &:global > i.icon {
+                width: 1.2em;
+                float: none !important;
+                margin: inherit;
+                margin-right: 6px;
+            }
         }
 
         .hasSomethingNew {
             &,
             & > * {
-                color: @quartz !important;
-                opacity: 1 !important;
+                color: @classic-neutral-grey-2 !important;
             }
 
             span {
@@ -19,14 +26,14 @@
         }
     }
 
-    .title {
-        margin-bottom: 1.6em;
-    }
-
     /* after react 16 and reactstrap upgrade,
     * set boundariesElement on tooltip and remove.
     */
     .tooltip {
         left: 40px !important;
+    }
+
+    .chatsCategory:last-child {
+        padding-bottom: 11px;
     }
 }

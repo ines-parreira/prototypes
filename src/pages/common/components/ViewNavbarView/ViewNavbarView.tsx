@@ -6,6 +6,7 @@ import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 import {Map, List} from 'immutable'
 
+import navbarCss from '../../../../../css/navbar.less'
 import {MAX_TICKET_COUNT_PER_VIEW} from '../../../../config/views'
 import {getPluralObjectName} from '../../../../utils'
 import Tooltip from '../Tooltip'
@@ -149,9 +150,16 @@ class ViewNavbarView extends Component<Props, State> {
 
         return (
             <div>
-                <div className="item">
-                    <h4>
-                        <i className="icon material-icons">view_list</i>
+                <div className={navbarCss.category}>
+                    <h4 className={navbarCss['category-title']}>
+                        <i
+                            className={classnames(
+                                'material-icons',
+                                navbarCss.icon
+                            )}
+                        >
+                            view_list
+                        </i>
                         Views
                         {/*
                         TODO(customers-migration): remove this condition when we finished to migrate views
@@ -183,7 +191,7 @@ class ViewNavbarView extends Component<Props, State> {
                             </span>
                         ) : null}
                     </h4>
-                    <div className="menu">
+                    <div className={navbarCss.menu}>
                         {hasEditMode ? (
                             <ViewNavbarViewEditor
                                 setting={settings}
@@ -204,7 +212,7 @@ class ViewNavbarView extends Component<Props, State> {
                                 const key = `${view.get('slug') as string}-${
                                     view.get('id') as number
                                 }`
-                                const classes = classnames('item', {
+                                const classes = classnames(navbarCss.link, {
                                     active: isCurrentView,
                                     focused: isFocused,
                                 })
@@ -243,10 +251,14 @@ class ViewNavbarView extends Component<Props, State> {
                                             ).closePanel()
                                         }}
                                     >
-                                        <span className="item-name">
+                                        <span
+                                            className={navbarCss['item-name']}
+                                        >
                                             <ViewName view={view} />
                                         </span>
-                                        <span className="item-count">
+                                        <span
+                                            className={navbarCss['item-count']}
+                                        >
                                             <ViewCount view={view} />
                                         </span>
                                     </Link>
