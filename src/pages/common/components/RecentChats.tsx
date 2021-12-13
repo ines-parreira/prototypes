@@ -5,7 +5,8 @@ import classnames from 'classnames'
 import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import {Map, fromJS, List} from 'immutable'
 
-import navbarCss from '../../../../css/navbar.less'
+import navbarCss from 'assets/css/navbar.less'
+
 import {isCurrentlyOnTicket} from '../../../utils'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker.js'
 import {RootState} from '../../../state/types'

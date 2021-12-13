@@ -1,0 +1,403 @@
+.rule-note {
+    margin-top: 5px;
+}
+
+.view-table tbody.table-row {
+    border-bottom: 1px solid rgba(34, 36, 38, 0.1);
+
+    .cell-wrapper {
+        height: auto;
+        min-height: 65px;
+        padding: 8px 18px;
+    }
+}
+
+.ui.selectable.table tbody tr.no-hover:hover {
+    background-color: transparent !important;
+}
+
+pre {
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+.IfStatement {
+    .button {
+        color: @white !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        text-align: center;
+    }
+
+    .keyword.button {
+        width: 50px;
+        height: 35px;
+        padding-top: 8px;
+
+        &,
+        &:active,
+        &:focus {
+            background-color: @lightBlue !important;
+        }
+
+        &:hover {
+            background-color: #81c7f8 !important;
+            color: rgba(255, 255, 255, 0.5) !important;
+
+            i {
+                margin-top: 1px; // fix icon margin
+                color: white !important;
+            }
+        }
+    }
+
+    .operator .button {
+        width: 50px;
+        height: 35px;
+        padding-top: 8px;
+        cursor: default;
+        border-color: @red;
+        background-color: @red;
+    }
+
+    .dropdown {
+        border-color: @lightBlue;
+    }
+
+    .neutral {
+        border-color: @grey !important;
+        color: @grey !important;
+    }
+
+    .BlockStatementItem {
+        position: relative;
+    }
+
+    .matching-rules-num {
+        position: absolute;
+        right: 20px;
+        padding: 4.5px 10px !important;
+        cursor: default;
+    }
+}
+
+.Program {
+    .field {
+        display: inline-block;
+    }
+
+    .ExpressionStatement .field {
+        display: block;
+    }
+
+    .test {
+        .operator button {
+            margin-top: 10px !important;
+        }
+
+        .Identifier,
+        .Literal {
+            margin-right: 0.25rem !important;
+
+            .dropdown.selection {
+                min-width: 140px;
+            }
+        }
+    }
+}
+
+.BinaryExpression {
+    .left,
+    .operator,
+    .right {
+        margin-left: 5px;
+    }
+}
+
+.delete-blockstatement {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    z-index: 5;
+    color: white;
+
+    .material-icons {
+        color: @lightRed;
+    }
+}
+
+.IfStatement,
+.ExpressionStatement {
+    position: relative;
+}
+
+.item .segments > .segment:last-child {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.action {
+    .segment {
+        margin-top: 7px;
+        margin-bottom: -10px;
+    }
+
+    .button {
+        color: white !important;
+    }
+
+    & > span {
+        display: inline-block;
+    }
+}
+
+// new design
+@basicPadding: 59px;
+
+.Program {
+    font-size: 12px;
+
+    .dropdown-menu.show {
+        font-size: 13px;
+    }
+}
+
+.BlockStatementItem {
+    width: 100%;
+}
+
+.IfStatement,
+.ExpressionStatement {
+    &.hovered:hover {
+        background: lighten(@neutral1, 3);
+        border: 1px;
+        border-color: @indigo;
+        border-radius: 4px;
+    }
+}
+
+.BlockStatement,
+.IfStatement,
+.consequent,
+.alternate,
+.Action {
+    padding-top: 2.5px;
+    padding-bottom: 2.5px;
+}
+
+// For If/Then/Else labels and their dropdown menu
+.test,
+.consequent,
+.alternate {
+    .btn-group {
+        & > .ControlStructureButton.dropdown-toggle {
+            transition: color 0.2s, background-color 0.2s;
+        }
+
+        &.show {
+            & > .ControlStructureButton.dropdown-toggle {
+                color: @white !important;
+                background: @blue !important;
+            }
+        }
+    }
+}
+
+.test {
+    padding-bottom: 2px;
+}
+
+.rule-badge-mixin {
+    margin-right: 0.25rem !important;
+    border-radius: 15px !important;
+    border: none !important;
+    font-size: 12px !important;
+    font-weight: 600;
+    padding: 3px 8px;
+    height: 26px;
+    text-transform: uppercase;
+    line-height: 20px !important;
+
+    &::after {
+        margin-left: 3px !important;
+        opacity: 0.3 !important;
+        vertical-align: middle;
+    }
+}
+
+.LogicalOperator {
+    .rule-badge-mixin;
+    background-color: @logicalOperatorBackground;
+    color: @orange !important;
+}
+
+.ControlStructureButton,
+.ControlStructureButton:hover,
+.ControlStructureButton:active {
+    .rule-badge-mixin;
+    background-color: @controlStructureButtonBackground !important;
+    color: @blue !important;
+}
+
+.OperatorDropdown .dropdown-toggle {
+    .rule-badge-mixin;
+    background-color: @operatorBackground !important;
+    color: @navy !important;
+    line-height: 20px !important;
+}
+
+.OperatorDropdown .dropdown-toggle input {
+    top: 0;
+    left: 0.5rem;
+    text-transform: uppercase;
+    color: @navy;
+    font-weight: 600;
+}
+
+.IdentifierDropdown .dropdown-toggle {
+    .rule-badge-mixin;
+    padding: 2px 8px;
+    font-weight: normal;
+    text-transform: none;
+    background-color: @identifierBackground;
+    line-height: 20px !important;
+    color: @indigo !important;
+
+    input {
+        top: 0;
+        left: 0.5rem;
+    }
+}
+
+.OperatorDropdown *,
+.IdentifierDropdown * {
+    line-height: normal !important;
+}
+
+.Literal {
+    .LiteralWidget.MultiSelectField > div {
+        background: none;
+        border: none;
+
+        input {
+            background: none;
+        }
+    }
+
+    .LiteralWidget.MultiSelectField .badge.badge-secondary {
+        margin: 0.25rem !important;
+    }
+
+    .LiteralWidget.MultiSelectField .badge.badge-secondary,
+    .dropdown-toggle,
+    input,
+    input:focus {
+        .rule-badge-mixin;
+        text-transform: none;
+        font-weight: 500;
+        background-color: @literalBackground;
+        color: @violet !important;
+    }
+
+    .dropdown-toggle {
+        & > span {
+            line-height: normal;
+            height: auto;
+        }
+
+        input {
+            padding: 0 0;
+            background: none;
+            top: 0;
+            left: 0.5rem;
+        }
+    }
+
+    .LiteralWidget.Text .badge,
+    .LiteralWidget.Text .dropdown-item {
+        white-space: pre;
+    }
+}
+
+.Literal,
+.ActionWidget {
+    .badge.badge-secondary .material-icons {
+        vertical-align: middle;
+    }
+}
+
+.Action {
+    padding-right: @basicPadding;
+
+    .ActionSelect .dropdown-toggle {
+        .rule-badge-mixin;
+        background-color: @actionButtonBackground;
+        color: @green !important;
+    }
+
+    .card-action {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .compact-action {
+        flex-grow: 1;
+
+        .ActionWidget {
+            &.InputField {
+                flex-grow: 1;
+            }
+
+            // For default Input field
+            input {
+                .rule-badge-mixin;
+                background: none !important;
+                border: none;
+                text-transform: none;
+                font-weight: normal;
+                color: @violet !important;
+
+                &:focus {
+                    box-shadow: none;
+                }
+            }
+
+            // For MultiSelect field
+            &.MultiSelectField > div {
+                background: none;
+                border: none;
+
+                input,
+                input:focus {
+                    padding: 3px 8px !important;
+                    background: none;
+                }
+            }
+
+            .badge.badge-secondary, // for labels in MultiSelect field
+      .dropdown-toggle,  // for displayed label of Dropdowns
+      input, input:focus {
+                // for input in labels of Dropdowns, and inputs in MultiSelect field
+                .rule-badge-mixin;
+                text-transform: none;
+                font-weight: 500;
+                background-color: @actionInputBackground;
+                color: @violet !important;
+            }
+
+            .dropdown-toggle {
+                & > span {
+                    line-height: normal;
+                    height: auto;
+                }
+
+                input,
+                input:focus {
+                    padding: 0 !important;
+                    background: none;
+                    top: 0;
+                    left: 0.5rem;
+                }
+            }
+        }
+    }
+}

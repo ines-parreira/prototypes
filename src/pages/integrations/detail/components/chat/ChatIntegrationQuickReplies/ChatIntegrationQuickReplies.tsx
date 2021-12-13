@@ -22,6 +22,7 @@ import {
     QUICK_REPLIES_MAX_ITEM_LENGTH,
     QUICK_REPLIES_MAX_ITEMS,
 } from '../../../../../../config/integrations/smooch_inside'
+
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
 import ChatIntegrationPreview from '../ChatIntegrationPreview/ChatIntegrationPreview'
 import QuickRepliesPreview from '../ChatIntegrationPreview/QuickReplies'

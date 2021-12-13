@@ -2,7 +2,7 @@ import React, {ReactNode} from 'react'
 import classnames from 'classnames'
 import {Button} from 'reactstrap'
 
-import expandDown from '../../../../../../../img/infobar/expand-down.svg'
+import expandDown from 'assets/img/infobar/expand-down.svg'
 
 import css from './ShowMore.less'
 

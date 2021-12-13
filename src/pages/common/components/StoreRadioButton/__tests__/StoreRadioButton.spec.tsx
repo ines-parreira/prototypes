@@ -1,7 +1,7 @@
 import React from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 
-import storefront from '../../../../../../img/icons/storefront.svg'
+import storefront from 'assets/img/icons/storefront.svg'
 
 import {StoreRadioButton, StoreRadioButtonProps} from '../StoreRadioButton'
 

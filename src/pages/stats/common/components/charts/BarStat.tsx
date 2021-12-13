@@ -2,14 +2,13 @@ import {Map, List} from 'immutable'
 import React, {Component} from 'react'
 
 import _isEqual from 'lodash/isEqual'
+import {Bar} from 'react-chartjs-2'
 
 import {
     colors as colorsConfig,
     chartMaxHeight,
 } from '../../../../../config/stats'
 import Legend from '../Legend/Legend'
-
-import {Bar} from 'react-chartjs-2'
 
 type Props = {
     data: Map<any, any>

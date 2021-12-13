@@ -5,11 +5,12 @@ import {getSizedImageUrl} from '@shopify/theme-images'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 
+import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
+
 import {
     getDraftOrderLineItemDiscountedPrice,
     getDraftOrderLineItemTotal,
 } from '../../../../../../../../../../../../business/shopify/lineItem'
-import defaultImage from '../../../../../../../../../../../../../img/presentationals/shopify-product-default-image.png'
 import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker.js'
 import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
 import {ProductStockQuantity} from '../../StockQuantity'

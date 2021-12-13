@@ -2,11 +2,12 @@ import React from 'react'
 import {useSelector} from 'react-redux'
 import {Map} from 'immutable'
 
+import shopify from 'assets/img/integrations/shopify.png'
+
 import {getIntegrationsByTypes} from '../../../state/integrations/selectors'
 import {IntegrationType} from '../../../models/integration/constants'
 import {getSelfServiceConfigurations} from '../../../state/entities/selfServiceConfigurations/selectors'
 import {Value} from '../../common/forms/SelectField/types'
-import shopify from '../../../../img/integrations/shopify.png'
 import SelectFilter from '../common/SelectFilter'
 
 import css from './SelfServiceIntegrationsFilter.less'

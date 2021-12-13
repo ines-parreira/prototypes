@@ -1,10 +1,10 @@
 import {Map} from 'immutable'
 import React, {ReactNode} from 'react'
-
 import {Card, CardBody, CardTitle} from 'reactstrap'
 
+import logo from 'assets/img/infobar/klaviyo.svg'
+
 import {CardHeaderIcon} from '../CardHeaderIcon'
-import logo from '../../../../../../../../../../img/infobar/klaviyo.svg'
 import {CardHeaderTitle} from '../CardHeaderTitle'
 import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
 

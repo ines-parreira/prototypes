@@ -4,6 +4,8 @@ import {useSelector} from 'react-redux'
 import {parse as parseQueryString} from 'query-string'
 import {AxiosError} from 'axios'
 
+import {Components} from 'rest_api/help_center_api/client.generated'
+
 import {CsvColumnPreview} from '../../../../models/helpCenter/types'
 import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
@@ -17,8 +19,6 @@ import {
     NotificationStatus,
 } from '../../../../state/notifications/types'
 import {HELP_CENTER_BASE_PATH} from '../constants'
-
-import {Components} from '../../../../../../../rest_api/help_center_api/client.generated'
 
 import CsvColumnMatching from './Imports/components/CsvColumnMatching/CsvColumnMatching'
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'

@@ -3,8 +3,9 @@ import {Button, Collapse, ListGroup} from 'reactstrap'
 import {List, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
-import expandUp from '../../../../../../../../../../../img/infobar/expand-up-blue.svg'
-import expandDown from '../../../../../../../../../../../img/infobar/expand-down.svg'
+import expandUp from 'assets/img/infobar/expand-up-blue.svg'
+import expandDown from 'assets/img/infobar/expand-down.svg'
+
 import {
     updateEditedWidget,
     startWidgetEdition,

@@ -1,8 +1,8 @@
 import React from 'react'
 
-import facebookLogo from '../../../../../../img/icons/social/facebook.svg'
-import twitterLogo from '../../../../../../img/icons/social/twitter.svg'
-import instagramLogo from '../../../../../../img/icons/social/instagram.svg'
+import facebookLogo from 'assets/img/icons/social/facebook.svg'
+import twitterLogo from 'assets/img/icons/social/twitter.svg'
+import instagramLogo from 'assets/img/icons/social/instagram.svg'
 
 import {
     LocaleCode,

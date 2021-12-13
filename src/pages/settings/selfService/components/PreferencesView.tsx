@@ -11,6 +11,8 @@ import {Link} from 'react-router-dom'
 import {useSelector} from 'react-redux'
 import classnames from 'classnames'
 
+import upgradeIcon from 'assets/img/icons/upgrade-icon.svg'
+
 import Tooltip from '../../../common/components/Tooltip'
 import PageHeader from '../../../common/components/PageHeader'
 import Loader from '../../../common/components/Loader/Loader'
@@ -21,7 +23,6 @@ import {PolicyEnum} from '../../../../models/selfServiceConfiguration/types'
 import {hasAutomationLegacyFeatures} from '../../../../state/currentAccount/selectors'
 import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
 import {GorgiasChatIntegrationSelfServicePaywall} from '../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
-import upgradeIcon from '../../../../../img/icons/upgrade-icon.svg'
 import {openChat} from '../../../../utils'
 import settingsCss from '../../settings.less'
 

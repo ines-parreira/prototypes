@@ -6,6 +6,7 @@ import {Map, List} from 'immutable'
 import _flatten from 'lodash/flatten'
 import _isEqual from 'lodash/isEqual'
 import {connect, ConnectedProps} from 'react-redux'
+import {Line} from 'react-chartjs-2'
 
 import Legend from '../Legend/Legend'
 import {
@@ -18,8 +19,6 @@ import {RootState} from '../../../../../state/types'
 import {getBusinessHoursRangesByUserTimezone} from '../../../../../state/currentAccount/selectors'
 
 import {highlightTimeRanges} from './plugins'
-
-import {Line} from 'react-chartjs-2'
 
 type Props = {
     data: Map<any, any>

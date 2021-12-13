@@ -2,8 +2,8 @@ import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 import React, {useState} from 'react'
 import {List, Map} from 'immutable'
 
-import shopifyStore from '../../../../../../../img/icons/shopifyStore.svg'
-import warningIcon from '../../../../../../../img/icons/warning.svg'
+import shopifyStore from 'assets/img/icons/shopifyStore.svg'
+import warningIcon from 'assets/img/icons/warning.svg'
 
 import css from './StoreNameDropdown.less'
 

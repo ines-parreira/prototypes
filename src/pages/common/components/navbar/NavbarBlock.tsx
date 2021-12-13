@@ -2,7 +2,7 @@ import React, {ReactNode, useState} from 'react'
 import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 import classnames from 'classnames'
 
-import navbarCss from '../../../../../css/navbar.less'
+import navbarCss from 'assets/css/navbar.less'
 
 import css from './NavbarBlock.less'
 

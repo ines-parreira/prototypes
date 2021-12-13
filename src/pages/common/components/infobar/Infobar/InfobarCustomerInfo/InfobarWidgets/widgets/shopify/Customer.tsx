@@ -3,10 +3,11 @@ import {connect, ConnectedProps} from 'react-redux'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {fromJS, Map} from 'immutable'
 
+import logo from 'assets/img/infobar/shopify.svg'
+
 import * as integrationsSelectors from '../../../../../../../../../state/integrations/selectors'
 import {RootState} from '../../../../../../../../../state/types'
 import {IntegrationType} from '../../../../../../../../../models/integration/types'
-import logo from '../../../../../../../../../../img/infobar/shopify.svg'
 import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
 import ActionButtonsGroup from '../ActionButtonsGroup'
 import {CardHeaderDetails} from '../CardHeaderDetails'

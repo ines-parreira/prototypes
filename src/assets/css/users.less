@@ -1,0 +1,136 @@
+.UsersView {
+    min-width: 484px;
+    max-width: 900px;
+
+    .ui.text.menu {
+        margin: -0.5em;
+    }
+
+    .ui.grid.view-header {
+        margin: 1em 0 0 0;
+    }
+
+    .UserList {
+        .ui.items {
+            margin: 0;
+        }
+
+        .grid {
+            width: 100%;
+            margin: 0;
+
+            &.no-margin {
+                margin: 0;
+            }
+
+            .row {
+                padding: 0;
+
+                &.UserRow {
+                    padding: 0.5em 0;
+                }
+                &.head-row {
+                    padding-top: 0;
+                    font-weight: 600;
+                }
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            }
+            .column {
+                &:first-child {
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+                padding: 0.71428571em;
+            }
+            .infinite-container {
+                width: 100%;
+                padding: 0;
+                .grid {
+                    padding: 0;
+                    margin: 0;
+                }
+                > div {
+                    width: 100%;
+                }
+                .row:hover {
+                    background: rgba(0, 0, 0, 0.05) !important;
+                    color: rgba(0, 0, 0, 0.95) !important;
+                }
+                .column {
+                    // Vertically center every line
+                    line-height: 2.64em;
+                    &.details {
+                        // Except for .details which has 2 line (subject & body)
+                        line-height: 1.4285rem;
+                    }
+                }
+            }
+            .checkbox {
+                margin-left: 8px;
+            }
+            .user-item {
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.UserRow {
+    transition: background 0.2s;
+
+    .ui.inverted.basic.button {
+        text-transform: capitalize;
+    }
+
+    &:hover {
+        background: #eee;
+        transition: background 0.2s;
+
+        .ui.inverted.basic.button {
+            &.blue {
+                color: @lightBlue !important;
+                box-shadow: 0 0 0 1px @lightBlue inset !important;
+            }
+            &.red {
+                color: @red !important;
+                box-shadow: 0 0 0 1px @red inset !important;
+            }
+        }
+    }
+    button.ui.button.left {
+        float: left;
+    }
+    button.ui.button.right {
+        float: right;
+    }
+}
+
+.UserHeader {
+    .ui.text.menu {
+        margin: 0;
+    }
+    .ui.header {
+        margin-top: 0;
+    }
+    .ui.text.menu .item:first-child {
+        padding-left: 0;
+    }
+    .user-tag:first-child {
+    }
+    .misc {
+        text-align: right;
+        .user-id {
+            padding-right: 10px;
+        }
+    }
+}
+
+.UserContainer {
+    .header-meta {
+        padding: 0;
+    }
+
+    .user-id {
+        color: @grey;
+    }
+}

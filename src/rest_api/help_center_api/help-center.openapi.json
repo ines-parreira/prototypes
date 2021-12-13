@@ -1,0 +1,4215 @@
+{
+    "openapi": "3.0.0",
+    "paths": {
+        "/api/help-center/help-centers/{help_center_id}/import/csv/process": {
+            "post": {
+                "operationId": "importCsv",
+                "summary": "Import a CSV file",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProcessCsvRequestDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProcessCsvResponseDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["import-csv"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/import/csv/analysis": {
+            "post": {
+                "operationId": "analyseCsv",
+                "summary": "Provide information on a CSV file with a preview of its rows",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AnalyseCsvRequestDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnalyseCsvResponseDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["import-csv"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/import/csv/template": {
+            "post": {
+                "operationId": "generateCsvTemplate",
+                "summary": "Generate a template CSV based on the help-center's languages",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {"schema": {"type": "string"}}
+                        }
+                    }
+                },
+                "tags": ["import-csv"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/import/hotswap/token": {
+            "post": {
+                "operationId": "createHotswapSessionToken",
+                "summary": "Generate hotswap session token",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HotswapResponseDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["import-hotswap"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/import/hotswap/complete": {
+            "post": {
+                "operationId": "complete",
+                "summary": "Webhook called by hotswap when import is completed",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/HotswapWebhookDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {"201": {"description": ""}},
+                "tags": ["import-hotswap"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/import/hotswap/status": {
+            "get": {
+                "operationId": "getHotswapStatus",
+                "summary": "Get hotswap import status",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HotswapProgressDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["import-hotswap"]
+            }
+        },
+        "/api/help-center/help-centers": {
+            "post": {
+                "operationId": "createHelpCenter",
+                "summary": "Create a help center",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateHelpCenterDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HelpCenterEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["help-centers"]
+            },
+            "get": {
+                "operationId": "listHelpCenters",
+                "summary": "List help centers",
+                "description": "List help centers.\n\nIf authenticated as agent, returns the list of help centers associated with the account domain\nthe agent belongs to.",
+                "parameters": [
+                    {
+                        "name": "subdomain",
+                        "required": false,
+                        "in": "query",
+                        "schema": {"type": "string"}
+                    },
+                    {
+                        "name": "custom_domain",
+                        "required": false,
+                        "in": "query",
+                        "schema": {"type": "string"}
+                    },
+                    {
+                        "name": "per_page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The number of resources to retrieve per request. E.g: 20",
+                        "schema": {}
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The index of the page to retrieve. E.g: 3",
+                        "schema": {}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HelpCentersListPageDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["help-centers"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            }
+        },
+        "/api/help-center/help-centers/account": {
+            "get": {
+                "operationId": "getAccountInfo",
+                "summary": "Get account information for a help center",
+                "description": "When both subdomain and custom_domain are provided, the subdomain will be used to search the help center",
+                "parameters": [
+                    {
+                        "name": "subdomain",
+                        "required": false,
+                        "in": "query",
+                        "schema": {"type": "string"}
+                    },
+                    {
+                        "name": "custom_domain",
+                        "required": false,
+                        "in": "query",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AccountInfoDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["help-centers"],
+                "security": [{"ApiKey": []}]
+            }
+        },
+        "/api/help-center/help-centers/subdomain/{subdomain}": {
+            "head": {
+                "operationId": "checkHelpCenterWithSubdomainExists",
+                "summary": "Check that a help center with this subdomain exists",
+                "parameters": [
+                    {
+                        "name": "subdomain",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "responses": {"204": {"description": ""}},
+                "tags": ["help-centers"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}": {
+            "get": {
+                "operationId": "getHelpCenter",
+                "summary": "Retrieve a help center",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HelpCenterEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["help-centers"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            },
+            "put": {
+                "operationId": "updateHelpCenter",
+                "summary": "Update a help center",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateHelpCenterDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HelpCenterEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["help-centers"]
+            },
+            "delete": {
+                "operationId": "deleteHelpCenter",
+                "summary": "Delete a help center",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {"200": {"description": ""}},
+                "tags": ["help-centers"]
+            }
+        },
+        "/api/help-center/help-centers/delete-account": {
+            "post": {
+                "operationId": "deleteAccountHelpCenters",
+                "summary": "Delete all Help centers of an account",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DeleteAccountDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {"201": {"description": ""}},
+                "tags": ["help-centers"]
+            }
+        },
+        "/api/help-center/help-centers/shop-name/{shop_name}/purge-cache": {
+            "post": {
+                "operationId": "purgeCache",
+                "summary": "Purge CDN cache",
+                "parameters": [
+                    {
+                        "name": "shop_name",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "responses": {"201": {"description": ""}},
+                "tags": ["help-centers"],
+                "security": [{"ApiKey": []}]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/translations": {
+            "get": {
+                "operationId": "listHelpCenterTranslations",
+                "summary": "List help center's translations",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "per_page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The number of resources to retrieve per request. E.g: 20",
+                        "schema": {}
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The index of the page to retrieve. E.g: 3",
+                        "schema": {}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HelpCenterTranslationsListPageDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["help-center-translations"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            },
+            "post": {
+                "operationId": "createHelpCenterTranslation",
+                "summary": "Create a help center translation",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateHelpCenterTranslationDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HelpCenterTranslationEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["help-center-translations"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/translations/{locale}": {
+            "put": {
+                "operationId": "updateHelpCenterTranslation",
+                "summary": "Update a help center translation",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "locale",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateHelpCenterTranslationDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HelpCenterTranslationEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["help-center-translations"]
+            },
+            "delete": {
+                "operationId": "deleteHelpCenterTranslation",
+                "summary": "Delete a help center translation",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "locale",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "responses": {"200": {"description": ""}},
+                "tags": ["help-center-translations"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/custom-domains": {
+            "get": {
+                "operationId": "listCustomDomains",
+                "summary": "List custom domains",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "per_page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The number of resources to retrieve per request. E.g: 20",
+                        "schema": {}
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The index of the page to retrieve. E.g: 3",
+                        "schema": {}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CustomDomainsListPageDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["custom-domains"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            },
+            "post": {
+                "operationId": "createCustomDomain",
+                "summary": "Create a custom domain",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateCustomDomainDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CustomDomain"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["custom-domains"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/custom-domains/{hostname}": {
+            "get": {
+                "operationId": "getCustomDomain",
+                "summary": "Retrieve a custom domain",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "hostname",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CustomDomain"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["custom-domains"]
+            },
+            "delete": {
+                "operationId": "deleteCustomDomain",
+                "summary": "Delete a custom domain",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "hostname",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "responses": {"200": {"description": ""}},
+                "tags": ["custom-domains"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/custom-domains/{hostname}/check-status": {
+            "post": {
+                "operationId": "checkCustomDomainStatus",
+                "summary": "Check the status of a custom domain",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "hostname",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CustomDomain"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["custom-domains"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            }
+        },
+        "/api/help-center/locales": {
+            "get": {
+                "operationId": "listLocales",
+                "summary": "List supported locales",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/LocaleEntity"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["locales"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            }
+        },
+        "/api/help-center/locales/{locale}": {
+            "get": {
+                "operationId": "getLocale",
+                "summary": "Retrieve a locale",
+                "parameters": [
+                    {
+                        "name": "locale",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LocaleEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["locales"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/categories": {
+            "post": {
+                "operationId": "createCategory",
+                "summary": "Create a category",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateCategoryDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CategoryWithLocalTranslation"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["categories"]
+            },
+            "get": {
+                "operationId": "listCategories",
+                "summary": "List categories",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "locale",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "enum": [
+                                "en-US",
+                                "fr-FR",
+                                "fr-CA",
+                                "es-ES",
+                                "de-DE",
+                                "nl-NL",
+                                "cs-CZ",
+                                "da-DK",
+                                "no-NO",
+                                "it-IT",
+                                "sv-SE"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "has_articles",
+                        "required": false,
+                        "in": "query",
+                        "schema": {"type": "boolean"}
+                    },
+                    {
+                        "name": "order_by",
+                        "required": false,
+                        "in": "query",
+                        "schema": {"enum": ["position"], "type": "string"}
+                    },
+                    {
+                        "name": "order_dir",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "default": "asc",
+                            "enum": ["asc", "desc"],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The number of resources to retrieve per request. E.g: 20",
+                        "schema": {}
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The index of the page to retrieve. E.g: 3",
+                        "schema": {}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CategoriesListPageDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["categories"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/categories/positions": {
+            "get": {
+                "operationId": "getCategoriesPositions",
+                "summary": "Retrieve categories' positions",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {"type": "number"}
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["categories"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            },
+            "put": {
+                "operationId": "setCategoriesPositions",
+                "summary": "Set categories' positions",
+                "description": "If the provided `id`s is missing an item, this item will be sorted last.",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {"type": "number"}
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {"type": "number"}
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["categories"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/categories/{id}": {
+            "get": {
+                "operationId": "getCategory",
+                "summary": "Retrieve a category",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "locale",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "enum": [
+                                "en-US",
+                                "fr-FR",
+                                "fr-CA",
+                                "es-ES",
+                                "de-DE",
+                                "nl-NL",
+                                "cs-CZ",
+                                "da-DK",
+                                "no-NO",
+                                "it-IT",
+                                "sv-SE"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "locale_fallback",
+                        "required": false,
+                        "in": "query",
+                        "description": "When true, if the translation for the requested\n    `locale` can't be found, the response will include a fallback translation.\n\n    If the requested resource exists in help center's default locale, that's the\n    one that'll be returned. Otherwise the first available translation will be returned.\n\n    The response will include the property `locale_fallback` that gives details\n    on how the fallback was chosen.",
+                        "schema": {"type": "boolean"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CategoryWithLocalTranslation"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["categories"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            },
+            "delete": {
+                "operationId": "deleteCategory",
+                "summary": "Delete a category",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {"200": {"description": ""}},
+                "tags": ["categories"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/categories/{category_id}/translations": {
+            "get": {
+                "operationId": "listCategoryTranslations",
+                "summary": "List category's translations",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "category_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "per_page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The number of resources to retrieve per request. E.g: 20",
+                        "schema": {}
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The index of the page to retrieve. E.g: 3",
+                        "schema": {}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CategoryTranslationsListPageDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["category-translations"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            },
+            "post": {
+                "operationId": "createCategoryTranslation",
+                "summary": "Create a category translation",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "category_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateCategoryTranslationDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CategoryTranslationEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["category-translations"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/categories/{category_id}/translations/{locale}": {
+            "put": {
+                "operationId": "updateCategoryTranslation",
+                "summary": "Update a category translation",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "category_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "locale",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateCategoryTranslationDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CategoryTranslationEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["category-translations"]
+            },
+            "delete": {
+                "operationId": "deleteCategoryTranslation",
+                "summary": "Delete a category translation",
+                "description": "So that a category have at least 1\n    translation, you can't delete a translation if it's the only\n    non-deleted translation.",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "category_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "locale",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "responses": {"200": {"description": ""}},
+                "tags": ["category-translations"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/categories/{category_id}/articles": {
+            "get": {
+                "operationId": "listCategoryArticles",
+                "summary": "List category's articles",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "category_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "locale",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "enum": [
+                                "en-US",
+                                "fr-FR",
+                                "fr-CA",
+                                "es-ES",
+                                "de-DE",
+                                "nl-NL",
+                                "cs-CZ",
+                                "da-DK",
+                                "no-NO",
+                                "it-IT",
+                                "sv-SE"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "order_by",
+                        "required": false,
+                        "in": "query",
+                        "schema": {"enum": ["position"], "type": "string"}
+                    },
+                    {
+                        "name": "order_dir",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "default": "asc",
+                            "enum": ["asc", "desc"],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The number of resources to retrieve per request. E.g: 20",
+                        "schema": {}
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The index of the page to retrieve. E.g: 3",
+                        "schema": {}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArticlesListPageDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["articles"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            },
+            "delete": {
+                "operationId": "deleteCategoryArticles",
+                "summary": "Delete category's articles",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "category_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {"200": {"description": ""}},
+                "tags": ["articles"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/categories/{category_id}/articles/positions": {
+            "get": {
+                "operationId": "getCategoryArticlesPositions",
+                "summary": "Retrieve articles' positions in category",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "category_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {"type": "number"}
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["articles"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            },
+            "put": {
+                "operationId": "setArticlesPositionsInCategory",
+                "summary": "Set articles' positions in category",
+                "description": "If the provided `id`s is missing an item, this item will be sorted last.",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "category_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {"type": "number"}
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {"type": "number"}
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["articles"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/articles": {
+            "get": {
+                "operationId": "listArticles",
+                "summary": "List articles",
+                "description": "If you want to get articles ordered by `position` in a category, prefer using\n`/categories/:category_id/articles`.",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "has_category",
+                        "required": false,
+                        "in": "query",
+                        "schema": {"type": "boolean"}
+                    },
+                    {
+                        "name": "locale",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "enum": [
+                                "en-US",
+                                "fr-FR",
+                                "fr-CA",
+                                "es-ES",
+                                "de-DE",
+                                "nl-NL",
+                                "cs-CZ",
+                                "da-DK",
+                                "no-NO",
+                                "it-IT",
+                                "sv-SE"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "order_by",
+                        "required": false,
+                        "in": "query",
+                        "schema": {"enum": ["position"], "type": "string"}
+                    },
+                    {
+                        "name": "order_dir",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "default": "asc",
+                            "enum": ["asc", "desc"],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The number of resources to retrieve per request. E.g: 20",
+                        "schema": {}
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The index of the page to retrieve. E.g: 3",
+                        "schema": {}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArticlesListPageDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["articles"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            },
+            "post": {
+                "operationId": "createArticle",
+                "summary": "Create an article",
+                "description": "Create an article for the given help center.\n\nA translation should be provided when creating an article.",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateArticleDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArticleWithLocalTranslation"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["articles"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/articles/uncategorized/positions": {
+            "get": {
+                "operationId": "getUncategorizedArticlesPositions",
+                "summary": "Retrieve uncategorized articles' positions",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {"type": "number"}
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["articles"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            },
+            "put": {
+                "operationId": "setUncategorizedArticlesPositions",
+                "summary": "Set uncategorized articles' positions",
+                "description": "If the provided `id`s is missing an item, this item will be sorted last.",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {"type": "number"}
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {"type": "number"}
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["articles"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/articles/{id}": {
+            "get": {
+                "operationId": "getArticle",
+                "summary": "Retrieve an article",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "locale",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "enum": [
+                                "en-US",
+                                "fr-FR",
+                                "fr-CA",
+                                "es-ES",
+                                "de-DE",
+                                "nl-NL",
+                                "cs-CZ",
+                                "da-DK",
+                                "no-NO",
+                                "it-IT",
+                                "sv-SE"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "locale_fallback",
+                        "required": false,
+                        "in": "query",
+                        "description": "When true, if the translation for the requested\n    `locale` can't be found, the response will include a fallback translation.\n\n    If the requested resource exists in help center's default locale, that's the\n    one that'll be returned. Otherwise the first available translation will be returned.\n\n    The response will include the property `locale_fallback` that gives details\n    on how the fallback was chosen.",
+                        "schema": {"type": "boolean"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArticleWithLocalTranslation"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["articles"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            },
+            "put": {
+                "operationId": "updateArticle",
+                "summary": "Update an article",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateArticleDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArticleEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["articles"]
+            },
+            "delete": {
+                "operationId": "deleteArticle",
+                "summary": "Delete an article",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {"200": {"description": ""}},
+                "tags": ["articles"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations": {
+            "get": {
+                "operationId": "listArticleTranslations",
+                "summary": "List article's translations",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "article_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "per_page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The number of resources to retrieve per request. E.g: 20",
+                        "schema": {}
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The index of the page to retrieve. E.g: 3",
+                        "schema": {}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArticleTranslationsListPageDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["article-translations"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            },
+            "post": {
+                "operationId": "createArticleTranslation",
+                "summary": "Create an article translation",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "article_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateArticleTranslationDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArticleTranslationEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["article-translations"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}": {
+            "put": {
+                "operationId": "updateArticleTranslation",
+                "summary": "Update an article translation",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "article_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "locale",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateArticleTranslationDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArticleTranslationEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["article-translations"]
+            },
+            "delete": {
+                "operationId": "deleteArticleTranslation",
+                "summary": "Delete an article translation",
+                "description": "So that an article have at least 1\n    translation, you can't delete a translation if it's the only\n    non-deleted translation.",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "article_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "locale",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "responses": {"200": {"description": ""}},
+                "tags": ["article-translations"]
+            }
+        },
+        "/api/help-center/auth": {
+            "post": {
+                "operationId": "createAccessToken",
+                "summary": "Generate JWT token",
+                "parameters": [],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AccessTokenDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["auth"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/navigation-links": {
+            "post": {
+                "operationId": "createNavigationLink",
+                "summary": "Create a navigation link",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateNavigationLinkDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NavigationLinkEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["navigation-links"]
+            },
+            "get": {
+                "operationId": "listNavigationLinks",
+                "summary": "List navigation links",
+                "description": "When sorting by `position` you need to specify a `group`.",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "locale",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "enum": [
+                                "en-US",
+                                "fr-FR",
+                                "fr-CA",
+                                "es-ES",
+                                "de-DE",
+                                "nl-NL",
+                                "cs-CZ",
+                                "da-DK",
+                                "no-NO",
+                                "it-IT",
+                                "sv-SE"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "group",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "enum": ["header", "footer"],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "order_by",
+                        "required": false,
+                        "in": "query",
+                        "schema": {"enum": ["position"], "type": "string"}
+                    },
+                    {
+                        "name": "order_dir",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "default": "asc",
+                            "enum": ["asc", "desc"],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The number of resources to retrieve per request. E.g: 20",
+                        "schema": {}
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The index of the page to retrieve. E.g: 3",
+                        "schema": {}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NavigationLinksListPageDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["navigation-links"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/navigation-links/{id}": {
+            "put": {
+                "operationId": "updateNavigationLink",
+                "summary": "Update a navigation link",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateNavigationLinkDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NavigationLinkEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["navigation-links"]
+            },
+            "delete": {
+                "operationId": "deleteNavigationLink",
+                "summary": "Delete a navigation link",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {"200": {"description": ""}},
+                "tags": ["navigation-links"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/navigation-links/{locale}/{group}/positions": {
+            "get": {
+                "operationId": "getNavigationLinksPositions",
+                "summary": "Retrieve navigation links' positions",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "locale",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "en-US",
+                                "fr-FR",
+                                "fr-CA",
+                                "es-ES",
+                                "de-DE",
+                                "nl-NL",
+                                "cs-CZ",
+                                "da-DK",
+                                "no-NO",
+                                "it-IT",
+                                "sv-SE"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "group",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string",
+                            "enum": ["header", "footer"]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {"type": "number"}
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["navigation-links"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            },
+            "put": {
+                "operationId": "setNavigationLinksPositions",
+                "summary": "Set navigation links' positions",
+                "description": "If the provided `id`s is missing an item, this item will be sorted last.",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "locale",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "en-US",
+                                "fr-FR",
+                                "fr-CA",
+                                "es-ES",
+                                "de-DE",
+                                "nl-NL",
+                                "cs-CZ",
+                                "da-DK",
+                                "no-NO",
+                                "it-IT",
+                                "sv-SE"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "group",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string",
+                            "enum": ["header", "footer"]
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {"type": "number"}
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {"type": "number"}
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["navigation-links"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/redirects": {
+            "post": {
+                "operationId": "createRedirect",
+                "summary": "Create a new redirect",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateRedirectDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RedirectEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["redirects"]
+            },
+            "get": {
+                "operationId": "getRedirect",
+                "summary": "Retrieve a redirect",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "from",
+                        "required": true,
+                        "in": "query",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RedirectEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["redirects"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            },
+            "delete": {
+                "operationId": "deleteRedirect",
+                "summary": "Delete a redirect",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "from",
+                        "required": true,
+                        "in": "query",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "responses": {"200": {"description": ""}},
+                "tags": ["redirects"]
+            }
+        }
+    },
+    "info": {
+        "title": "Help Center API",
+        "description": "",
+        "version": "v0",
+        "contact": {}
+    },
+    "tags": [],
+    "servers": [],
+    "components": {
+        "securitySchemes": {
+            "ApiKey": {"type": "apiKey", "in": "header", "name": "X-API-KEY"},
+            "AgentBasicAuth": {"scheme": "basic", "type": "http"},
+            "AgentBearerAuth": {"scheme": "bearer", "type": "http"}
+        },
+        "schemas": {
+            "ColumnSourceCsv": {
+                "type": "object",
+                "properties": {
+                    "kind": {"type": "string", "example": "CSV_COLUMN"},
+                    "csv_column": {
+                        "type": "string",
+                        "example": "csv_file_column_1"
+                    }
+                },
+                "required": ["kind", "csv_column"]
+            },
+            "ColumnSourceCsvOnly": {
+                "type": "object",
+                "properties": {
+                    "source": {"$ref": "#/components/schemas/ColumnSourceCsv"}
+                },
+                "required": ["source"]
+            },
+            "ColumnSourceAutoGenerated": {
+                "type": "object",
+                "properties": {
+                    "kind": {"type": "string", "example": "AUTO_GENERATED"}
+                },
+                "required": ["kind"]
+            },
+            "ColumnSourceCsvOrAutoGenerated": {
+                "type": "object",
+                "properties": {
+                    "source": {
+                        "discriminator": {
+                            "propertyName": "kind",
+                            "mapping": {
+                                "AUTO_GENERATED": "#/components/schemas/ColumnSourceAutoGenerated",
+                                "CSV_COLUMN": "#/components/schemas/ColumnSourceCsv"
+                            }
+                        },
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/ColumnSourceAutoGenerated"
+                            },
+                            {"$ref": "#/components/schemas/ColumnSourceCsv"}
+                        ]
+                    }
+                },
+                "required": ["source"]
+            },
+            "ArticleLocaleColumns": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "$ref": "#/components/schemas/ColumnSourceCsvOnly"
+                    },
+                    "content": {
+                        "$ref": "#/components/schemas/ColumnSourceCsvOnly"
+                    },
+                    "slug": {
+                        "$ref": "#/components/schemas/ColumnSourceCsvOrAutoGenerated"
+                    },
+                    "excerpt": {
+                        "$ref": "#/components/schemas/ColumnSourceCsvOrAutoGenerated"
+                    }
+                },
+                "required": ["title", "content", "slug"]
+            },
+            "ArticleColumns": {
+                "type": "object",
+                "properties": {
+                    "locales": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/ArticleLocaleColumns"
+                        }
+                    }
+                },
+                "required": ["locales"]
+            },
+            "CategoryLocaleColumns": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "$ref": "#/components/schemas/ColumnSourceCsvOnly"
+                    },
+                    "description": {
+                        "$ref": "#/components/schemas/ColumnSourceCsvOnly"
+                    },
+                    "slug": {
+                        "$ref": "#/components/schemas/ColumnSourceCsvOrAutoGenerated"
+                    }
+                },
+                "required": ["name", "slug"]
+            },
+            "CategoryColumns": {
+                "type": "object",
+                "properties": {
+                    "locales": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/CategoryLocaleColumns"
+                        }
+                    }
+                },
+                "required": ["locales"]
+            },
+            "ProcessCsvRequestDto": {
+                "type": "object",
+                "properties": {
+                    "file_url": {
+                        "type": "string",
+                        "description": "Configuration for importing the CSV file."
+                    },
+                    "article_columns": {
+                        "allOf": [
+                            {"$ref": "#/components/schemas/ArticleColumns"}
+                        ]
+                    },
+                    "category_columns": {
+                        "allOf": [
+                            {"$ref": "#/components/schemas/CategoryColumns"}
+                        ]
+                    }
+                },
+                "required": ["file_url", "article_columns", "category_columns"]
+            },
+            "ProcessCsvResponseSuccessDto": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "example": "SUCCESS",
+                        "enum": ["SUCCESS"]
+                    },
+                    "num_imported_csv_rows": {"type": "number"}
+                },
+                "required": ["status", "num_imported_csv_rows"]
+            },
+            "ProcessCsvResponsePartialDto": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "example": "PARTIAL",
+                        "enum": ["PARTIAL"]
+                    },
+                    "num_imported_csv_rows": {"type": "number"},
+                    "num_erroneous_csv_rows": {"type": "number"},
+                    "erroneous_csv_rows_file_url": {"type": "string"}
+                },
+                "required": [
+                    "status",
+                    "num_imported_csv_rows",
+                    "num_erroneous_csv_rows"
+                ]
+            },
+            "ProcessCsvResponseFailedDto": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "example": "FAILED",
+                        "enum": ["FAILED"]
+                    },
+                    "failed_reason": {"type": "string"}
+                },
+                "required": ["status"]
+            },
+            "ProcessCsvResponseDto": {
+                "type": "object",
+                "properties": {
+                    "report": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/ProcessCsvResponseSuccessDto"
+                            },
+                            {
+                                "$ref": "#/components/schemas/ProcessCsvResponsePartialDto"
+                            },
+                            {
+                                "$ref": "#/components/schemas/ProcessCsvResponseFailedDto"
+                            }
+                        ],
+                        "example": {
+                            "status": "SUCCESS",
+                            "num_imported_rows": 100
+                        }
+                    }
+                },
+                "required": ["report"]
+            },
+            "AnalyseCsvRequestDto": {
+                "type": "object",
+                "properties": {
+                    "file_url": {
+                        "type": "string",
+                        "description": "Configuration for analysing the CSV file."
+                    }
+                },
+                "required": ["file_url"]
+            },
+            "AnalyseCsvResponseColumnDto": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string", "example": "article_title"},
+                    "samples": {
+                        "example": ["What is Gorgias?", "Installation Guide"],
+                        "type": "array",
+                        "items": {"type": "string"}
+                    }
+                },
+                "required": ["name", "samples"]
+            },
+            "AnalyseCsvResponseSuccessDto": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "example": "SUCCESS",
+                        "enum": ["SUCCESS"]
+                    },
+                    "columns": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AnalyseCsvResponseColumnDto"
+                        }
+                    },
+                    "num_rows": {"type": "number", "example": 1000}
+                },
+                "required": ["status", "columns", "num_rows"]
+            },
+            "AnalyseCsvResponseFailedDto": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "example": "FAILED",
+                        "enum": ["FAILED"]
+                    },
+                    "error": {
+                        "enum": [
+                            "MALFORMED_FILE",
+                            "FILE_OVER_400_ROWS",
+                            "INTERNAL"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": ["status", "error"]
+            },
+            "AnalyseCsvResponseDto": {
+                "type": "object",
+                "properties": {
+                    "result": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/AnalyseCsvResponseSuccessDto"
+                            },
+                            {
+                                "$ref": "#/components/schemas/AnalyseCsvResponseFailedDto"
+                            }
+                        ]
+                    }
+                },
+                "required": ["result"]
+            },
+            "HotswapResponseDto": {
+                "type": "object",
+                "properties": {
+                    "token": {
+                        "type": "string",
+                        "description": "Session token generated for hotswap widget",
+                        "example": "abcdef-abcdef-abcdef-abcdef"
+                    }
+                },
+                "required": ["token"]
+            },
+            "HotswapWebhookDto": {
+                "type": "object",
+                "properties": {
+                    "session_id": {
+                        "type": "string",
+                        "description": "Session id generated by hotswap service"
+                    },
+                    "progress": {
+                        "description": "Status of import",
+                        "enum": [
+                            "NOT_STARTED",
+                            "IN_PROGRESS",
+                            "SUCCESS",
+                            "FAILURE"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": ["session_id", "progress"]
+            },
+            "HotswapProgressDto": {
+                "type": "object",
+                "properties": {
+                    "progress": {
+                        "type": "string",
+                        "enum": [
+                            "NOT_STARTED",
+                            "IN_PROGRESS",
+                            "SUCCESS",
+                            "FAILURE"
+                        ]
+                    }
+                },
+                "required": ["progress"]
+            },
+            "CreateHelpCenterDto": {
+                "type": "object",
+                "properties": {
+                    "default_locale": {
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ],
+                        "type": "string"
+                    },
+                    "favicon_url": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Should be a valid URL."
+                    },
+                    "brand_logo_url": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Should be a valid URL."
+                    },
+                    "brand_logo_light_url": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Should be a valid URL."
+                    },
+                    "banner_image_url": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Should be a valid URL."
+                    },
+                    "search_deactivated": {
+                        "type": "boolean",
+                        "description": "Boolean indicating if search feature is deactivated for this Help center.",
+                        "example": false
+                    },
+                    "primary_color": {"type": "string", "nullable": true},
+                    "theme": {
+                        "nullable": true,
+                        "default": "light",
+                        "type": "object"
+                    },
+                    "shop_name": {"type": "string", "nullable": true},
+                    "self_service_enabled": {"type": "boolean"},
+                    "name": {
+                        "type": "string",
+                        "example": "My Help Center",
+                        "minLength": 2
+                    },
+                    "subdomain": {
+                        "type": "string",
+                        "description": "A valid subdomain for the Help center.\n\nShould be:\n- length no greater than 63\n- must begin and end with an alpha-numeric\n- may contain hyphens (dashes)\n- may not begin or end with a hyphen\n\nIf not provided, a subdomain will be generated.",
+                        "example": "mysubdomain"
+                    }
+                },
+                "required": ["default_locale", "name"]
+            },
+            "HelpCenterEntity": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "id": {"type": "number"},
+                    "deactivated_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "default_locale": {
+                        "type": "string",
+                        "readOnly": true,
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ]
+                    },
+                    "supported_locales": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "en-US",
+                                "fr-FR",
+                                "fr-CA",
+                                "es-ES",
+                                "de-DE",
+                                "nl-NL",
+                                "cs-CZ",
+                                "da-DK",
+                                "no-NO",
+                                "it-IT",
+                                "sv-SE"
+                            ]
+                        }
+                    },
+                    "favicon_url": {"type": "string", "nullable": true},
+                    "brand_logo_url": {"type": "string", "nullable": true},
+                    "brand_logo_light_url": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "banner_image_url": {"type": "string", "nullable": true},
+                    "search_deactivated_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "powered_by_deactivated_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "algolia_api_key": {"type": "string", "nullable": true},
+                    "primary_color": {"type": "string"},
+                    "theme": {"type": "string"},
+                    "shop_name": {"type": "string", "nullable": true},
+                    "self_service_enabled": {"type": "boolean"},
+                    "hotswap_session_token": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "subdomain": {"type": "string"},
+                    "name": {"type": "string"}
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "id",
+                    "deactivated_datetime",
+                    "default_locale",
+                    "supported_locales",
+                    "search_deactivated_datetime",
+                    "powered_by_deactivated_datetime",
+                    "algolia_api_key",
+                    "primary_color",
+                    "theme",
+                    "shop_name",
+                    "self_service_enabled",
+                    "hotswap_session_token",
+                    "subdomain",
+                    "name"
+                ]
+            },
+            "AccountInfoDto": {
+                "type": "object",
+                "properties": {
+                    "account_id": {"type": "number"},
+                    "shop_name": {"type": "string", "nullable": true}
+                },
+                "required": ["account_id", "shop_name"]
+            },
+            "PageMetaDto": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "type": "number",
+                        "description": "The current page index.",
+                        "example": 1
+                    },
+                    "per_page": {
+                        "type": "number",
+                        "description": "The number of items returned in this response.",
+                        "example": 20
+                    },
+                    "current_page": {
+                        "type": "string",
+                        "description": "The path to the current page.",
+                        "example": "/my-items?page=1&per_page=20"
+                    },
+                    "item_count": {
+                        "type": "number",
+                        "description": "The total count of items.",
+                        "example": 32
+                    },
+                    "nb_pages": {
+                        "type": "number",
+                        "description": "The number of pages in this pagination.",
+                        "example": 3
+                    },
+                    "next_page": {
+                        "type": "string",
+                        "description": "The path to the next page.\n\nIf none, there is no next page.",
+                        "example": "/my-items?page=2&per_page=20"
+                    }
+                },
+                "required": [
+                    "page",
+                    "per_page",
+                    "current_page",
+                    "item_count",
+                    "nb_pages"
+                ]
+            },
+            "HelpCentersListPageDto": {
+                "type": "object",
+                "properties": {
+                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "object": {
+                        "type": "string",
+                        "default": "list",
+                        "enum": ["list"]
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/HelpCenterEntity"
+                        }
+                    }
+                },
+                "required": ["meta", "object", "data"]
+            },
+            "UpdateHelpCenterDto": {
+                "type": "object",
+                "properties": {
+                    "default_locale": {
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ],
+                        "type": "string"
+                    },
+                    "favicon_url": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Should be a valid URL."
+                    },
+                    "brand_logo_url": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Should be a valid URL."
+                    },
+                    "brand_logo_light_url": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Should be a valid URL."
+                    },
+                    "banner_image_url": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Should be a valid URL."
+                    },
+                    "search_deactivated": {
+                        "type": "boolean",
+                        "description": "Boolean indicating if search feature is deactivated for this Help center.",
+                        "example": false
+                    },
+                    "primary_color": {"type": "string", "nullable": true},
+                    "theme": {
+                        "nullable": true,
+                        "default": "light",
+                        "type": "object"
+                    },
+                    "shop_name": {"type": "string", "nullable": true},
+                    "self_service_enabled": {"type": "boolean"},
+                    "powered_by_deactivated": {
+                        "type": "boolean",
+                        "description": "Boolean indicating if \"Powered By Gorgias\" will be displayed in this help center footer",
+                        "example": false
+                    },
+                    "deactivated": {
+                        "type": "boolean",
+                        "description": "Boolean indicating if the help center is deactivated.",
+                        "example": false
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "My Help Center",
+                        "minLength": 2
+                    },
+                    "subdomain": {
+                        "type": "string",
+                        "description": "A valid subdomain for the Help center.\n\nShould be:\n- length no greater than 63\n- must begin and end with an alpha-numeric\n- may contain hyphens (dashes)\n- may not begin or end with a hyphen\n\nIf not provided, a subdomain will be generated.",
+                        "example": "mysubdomain"
+                    }
+                }
+            },
+            "DeleteAccountDto": {
+                "type": "object",
+                "properties": {
+                    "account_id": {
+                        "type": "number",
+                        "description": "The account id whose help centers should be deleted",
+                        "example": 1
+                    }
+                },
+                "required": ["account_id"]
+            },
+            "HelpCenterTranslationSeoMeta": {
+                "type": "object",
+                "properties": {
+                    "title": {"type": "string", "nullable": true},
+                    "description": {"type": "string", "nullable": true}
+                },
+                "required": ["title", "description"]
+            },
+            "EmailContactInfo": {
+                "type": "object",
+                "properties": {
+                    "deactivated_datetime": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "description": {"type": "string"},
+                    "email": {"type": "string"}
+                },
+                "required": ["deactivated_datetime", "description", "email"]
+            },
+            "ContactPhoneNumber": {
+                "type": "object",
+                "properties": {
+                    "reference": {"type": "string"},
+                    "phone_number": {"type": "string"}
+                },
+                "required": ["reference", "phone_number"]
+            },
+            "PhoneContactInfo": {
+                "type": "object",
+                "properties": {
+                    "deactivated_datetime": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "description": {"type": "string"},
+                    "phone_numbers": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ContactPhoneNumber"
+                        }
+                    }
+                },
+                "required": [
+                    "deactivated_datetime",
+                    "description",
+                    "phone_numbers"
+                ]
+            },
+            "ChatContactInfo": {
+                "type": "object",
+                "properties": {
+                    "deactivated_datetime": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "description": {"type": "string"}
+                },
+                "required": ["deactivated_datetime", "description"]
+            },
+            "ContactInfo": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "allOf": [
+                            {"$ref": "#/components/schemas/EmailContactInfo"}
+                        ]
+                    },
+                    "phone": {
+                        "allOf": [
+                            {"$ref": "#/components/schemas/PhoneContactInfo"}
+                        ]
+                    },
+                    "chat": {
+                        "allOf": [
+                            {"$ref": "#/components/schemas/ChatContactInfo"}
+                        ]
+                    }
+                },
+                "required": ["email", "phone", "chat"]
+            },
+            "HelpCenterTranslationEntity": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "help_center_id": {"type": "number"},
+                    "locale": {
+                        "type": "string",
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ]
+                    },
+                    "seo_meta": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/HelpCenterTranslationSeoMeta"
+                            }
+                        ]
+                    },
+                    "contact_info": {
+                        "allOf": [{"$ref": "#/components/schemas/ContactInfo"}]
+                    },
+                    "chat_application_id": {"type": "number", "nullable": true}
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "help_center_id",
+                    "locale",
+                    "seo_meta",
+                    "contact_info",
+                    "chat_application_id"
+                ]
+            },
+            "HelpCenterTranslationsListPageDto": {
+                "type": "object",
+                "properties": {
+                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "object": {
+                        "type": "string",
+                        "default": "list",
+                        "enum": ["list"]
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/HelpCenterTranslationEntity"
+                        }
+                    }
+                },
+                "required": ["meta", "object", "data"]
+            },
+            "CreateHelpCenterTranslationSeoMetaDto": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "The content of the `<title />` HTML tag for the help center translation."
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "The content of the `<meta name=\"description\">` HTML tag for the help center translation."
+                    }
+                },
+                "required": ["title", "description"]
+            },
+            "CreateHelpCenterTranslationDto": {
+                "type": "object",
+                "properties": {
+                    "seo_meta": {
+                        "description": "The SEO meta attributes of the help center in the `locale`'s translation.",
+                        "default": {"title": null, "description": null},
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CreateHelpCenterTranslationSeoMetaDto"
+                            }
+                        ]
+                    },
+                    "chat_application_id": {"type": "number", "nullable": true},
+                    "locale": {
+                        "type": "string",
+                        "description": "The locale of the translation.\n\nIt should be in help center's supported locales.",
+                        "example": "fr-FR",
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ]
+                    }
+                },
+                "required": ["seo_meta", "locale"]
+            },
+            "EmailContactInfoDto": {
+                "type": "object",
+                "properties": {
+                    "email": {"type": "string"},
+                    "enabled": {"type": "boolean"},
+                    "description": {"type": "string"}
+                },
+                "required": ["email", "enabled", "description"]
+            },
+            "ContactPhoneNumberDto": {
+                "type": "object",
+                "properties": {
+                    "reference": {"type": "string"},
+                    "phone_number": {"type": "string"}
+                },
+                "required": ["reference", "phone_number"]
+            },
+            "PhoneContactInfoDto": {
+                "type": "object",
+                "properties": {
+                    "phone_numbers": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ContactPhoneNumberDto"
+                        }
+                    },
+                    "enabled": {"type": "boolean"},
+                    "description": {"type": "string"}
+                },
+                "required": ["phone_numbers", "enabled", "description"]
+            },
+            "ChatContactInfoDto": {
+                "type": "object",
+                "properties": {
+                    "enabled": {"type": "boolean"},
+                    "description": {"type": "string"}
+                },
+                "required": ["enabled", "description"]
+            },
+            "ContactInfoDto": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "$ref": "#/components/schemas/EmailContactInfoDto"
+                    },
+                    "phone": {
+                        "$ref": "#/components/schemas/PhoneContactInfoDto"
+                    },
+                    "chat": {"$ref": "#/components/schemas/ChatContactInfoDto"}
+                },
+                "required": ["email", "phone", "chat"]
+            },
+            "UpdateHelpCenterTranslationDto": {
+                "type": "object",
+                "properties": {
+                    "seo_meta": {
+                        "description": "The SEO meta attributes of the help center in the `locale`'s translation.",
+                        "default": {"title": null, "description": null},
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CreateHelpCenterTranslationSeoMetaDto"
+                            }
+                        ]
+                    },
+                    "chat_application_id": {"type": "number", "nullable": true},
+                    "contact_info": {
+                        "allOf": [
+                            {"$ref": "#/components/schemas/ContactInfoDto"}
+                        ]
+                    }
+                }
+            },
+            "CustomDomain": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "id": {"type": "number"},
+                    "help_center_id": {"type": "number"},
+                    "verification_errors": {
+                        "type": "array",
+                        "items": {"type": "string"}
+                    },
+                    "status": {
+                        "description": "The status of this custom domain:\n- `active`: the custom domain is validated and working\n- `pending`: the custom domain is pending validation\n- `unknown`: the custom domain is in an unknown status, check `verification_errors`\nto know more.",
+                        "enum": ["active", "pending", "unknown"],
+                        "type": "string"
+                    },
+                    "hostname": {"type": "string"}
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "id",
+                    "help_center_id",
+                    "status",
+                    "hostname"
+                ]
+            },
+            "CustomDomainsListPageDto": {
+                "type": "object",
+                "properties": {
+                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "object": {
+                        "type": "string",
+                        "default": "list",
+                        "enum": ["list"]
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {"$ref": "#/components/schemas/CustomDomain"}
+                    }
+                },
+                "required": ["meta", "object", "data"]
+            },
+            "CreateCustomDomainDto": {
+                "type": "object",
+                "properties": {"hostname": {"type": "string"}},
+                "required": ["hostname"]
+            },
+            "LocaleEntity": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "code": {
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": ["name", "code"]
+            },
+            "CreateCategoryTranslationSeoMetaDto": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "The content of the `<title />` HTML tag for the category translation."
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "The content of the `<meta name=\"description\">` HTML tag for the category translation."
+                    }
+                },
+                "required": ["title", "description"]
+            },
+            "CreateCategoryTranslationDto": {
+                "type": "object",
+                "properties": {
+                    "seo_meta": {
+                        "description": "The SEO meta attributes of the category in the `locale`'s translation.",
+                        "default": {"title": null, "description": null},
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CreateCategoryTranslationSeoMetaDto"
+                            }
+                        ]
+                    },
+                    "locale": {
+                        "description": "The locale of the translation.\n\nIt should be in help center's supported locales.",
+                        "example": "fr-FR",
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ],
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "The title of the category in the `locale`'s translation.",
+                        "example": "Orders",
+                        "maxLength": 250
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "The description of the category in the `locale`'s translation.",
+                        "example": "Information about orders"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "description": "A slug for the category that'll be used to construct category's URLs.\n\nShould only contains alphanumeric values and hyphens.",
+                        "example": "orders"
+                    }
+                },
+                "required": [
+                    "seo_meta",
+                    "locale",
+                    "title",
+                    "description",
+                    "slug"
+                ]
+            },
+            "CreateCategoryDto": {
+                "type": "object",
+                "properties": {
+                    "translation": {
+                        "description": "A translation for the category.\n\nWhen creating a category, a translation should be provided.",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CreateCategoryTranslationDto"
+                            }
+                        ]
+                    }
+                },
+                "required": ["translation"]
+            },
+            "CategoryTranslationSeoMeta": {
+                "type": "object",
+                "properties": {
+                    "title": {"type": "string", "nullable": true},
+                    "description": {"type": "string", "nullable": true}
+                },
+                "required": ["title", "description"]
+            },
+            "LocalCategoryTranslation": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "category_id": {"type": "number"},
+                    "locale": {
+                        "type": "string",
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ]
+                    },
+                    "seo_meta": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CategoryTranslationSeoMeta"
+                            }
+                        ]
+                    },
+                    "locale_fallback": {
+                        "description": "Gives details on how the translation fallback was chosen:\n- `undefined`: the translation is the requested one\n- `default`: the translation is in help center's default locale\n- `available`: the translation corresponds to the first available one",
+                        "enum": ["default", "available"],
+                        "type": "string"
+                    },
+                    "title": {"type": "string"},
+                    "description": {"type": "string", "nullable": true},
+                    "slug": {"type": "string"}
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "category_id",
+                    "locale",
+                    "seo_meta",
+                    "title",
+                    "description",
+                    "slug"
+                ]
+            },
+            "CategoryWithLocalTranslation": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "help_center_id": {"type": "number"},
+                    "available_locales": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "en-US",
+                                "fr-FR",
+                                "fr-CA",
+                                "es-ES",
+                                "de-DE",
+                                "nl-NL",
+                                "cs-CZ",
+                                "da-DK",
+                                "no-NO",
+                                "it-IT",
+                                "sv-SE"
+                            ]
+                        }
+                    },
+                    "translation": {
+                        "$ref": "#/components/schemas/LocalCategoryTranslation"
+                    },
+                    "id": {"type": "number"}
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "help_center_id",
+                    "available_locales",
+                    "translation",
+                    "id"
+                ]
+            },
+            "CategoriesListPageDto": {
+                "type": "object",
+                "properties": {
+                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "object": {
+                        "type": "string",
+                        "default": "list",
+                        "enum": ["list"]
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CategoryWithLocalTranslation"
+                        }
+                    }
+                },
+                "required": ["meta", "object", "data"]
+            },
+            "CategoryTranslationEntity": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "category_id": {"type": "number"},
+                    "locale": {
+                        "type": "string",
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ]
+                    },
+                    "seo_meta": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CategoryTranslationSeoMeta"
+                            }
+                        ]
+                    },
+                    "title": {"type": "string"},
+                    "description": {"type": "string", "nullable": true},
+                    "slug": {"type": "string"}
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "category_id",
+                    "locale",
+                    "seo_meta",
+                    "title",
+                    "description",
+                    "slug"
+                ]
+            },
+            "CategoryTranslationsListPageDto": {
+                "type": "object",
+                "properties": {
+                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "object": {
+                        "type": "string",
+                        "default": "list",
+                        "enum": ["list"]
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CategoryTranslationEntity"
+                        }
+                    }
+                },
+                "required": ["meta", "object", "data"]
+            },
+            "UpdateCategoryTranslationDto": {
+                "type": "object",
+                "properties": {
+                    "seo_meta": {
+                        "description": "The SEO meta attributes of the category in the `locale`'s translation.",
+                        "default": {"title": null, "description": null},
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CreateCategoryTranslationSeoMetaDto"
+                            }
+                        ]
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "The title of the category in the `locale`'s translation.",
+                        "example": "Orders",
+                        "maxLength": 250
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "The description of the category in the `locale`'s translation.",
+                        "example": "Information about orders"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "description": "A slug for the category that'll be used to construct category's URLs.\n\nShould only contains alphanumeric values and hyphens.",
+                        "example": "orders"
+                    }
+                }
+            },
+            "ArticleTranslationSeoMeta": {
+                "type": "object",
+                "properties": {
+                    "title": {"type": "string", "nullable": true},
+                    "description": {"type": "string", "nullable": true}
+                },
+                "required": ["title", "description"]
+            },
+            "LocalArticleTranslation": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "locale": {
+                        "type": "string",
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ]
+                    },
+                    "article_id": {"type": "number"},
+                    "seo_meta": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ArticleTranslationSeoMeta"
+                            }
+                        ]
+                    },
+                    "locale_fallback": {
+                        "description": "Gives details on how the translation fallback was chosen:\n- `undefined`: the translation is the requested one\n- `default`: the translation is in help center's default locale\n- `available`: the translation corresponds to the first available one",
+                        "enum": ["default", "available"],
+                        "type": "string"
+                    },
+                    "title": {"type": "string"},
+                    "excerpt": {"type": "string"},
+                    "content": {"type": "string"},
+                    "slug": {"type": "string"}
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "locale",
+                    "article_id",
+                    "seo_meta",
+                    "title",
+                    "excerpt",
+                    "content",
+                    "slug"
+                ]
+            },
+            "ArticleWithLocalTranslation": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "category_id": {"type": "number", "nullable": true},
+                    "help_center_id": {"type": "number"},
+                    "available_locales": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "en-US",
+                                "fr-FR",
+                                "fr-CA",
+                                "es-ES",
+                                "de-DE",
+                                "nl-NL",
+                                "cs-CZ",
+                                "da-DK",
+                                "no-NO",
+                                "it-IT",
+                                "sv-SE"
+                            ]
+                        }
+                    },
+                    "translation": {
+                        "$ref": "#/components/schemas/LocalArticleTranslation"
+                    },
+                    "id": {"type": "number"}
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "help_center_id",
+                    "available_locales",
+                    "translation",
+                    "id"
+                ]
+            },
+            "ArticlesListPageDto": {
+                "type": "object",
+                "properties": {
+                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "object": {
+                        "type": "string",
+                        "default": "list",
+                        "enum": ["list"]
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ArticleWithLocalTranslation"
+                        }
+                    }
+                },
+                "required": ["meta", "object", "data"]
+            },
+            "UpdateArticleDto": {
+                "type": "object",
+                "properties": {
+                    "category_id": {"type": "number", "nullable": true}
+                }
+            },
+            "ArticleEntity": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "category_id": {"type": "number", "nullable": true},
+                    "help_center_id": {"type": "number"},
+                    "available_locales": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "en-US",
+                                "fr-FR",
+                                "fr-CA",
+                                "es-ES",
+                                "de-DE",
+                                "nl-NL",
+                                "cs-CZ",
+                                "da-DK",
+                                "no-NO",
+                                "it-IT",
+                                "sv-SE"
+                            ]
+                        }
+                    },
+                    "id": {"type": "number"}
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "help_center_id",
+                    "available_locales",
+                    "id"
+                ]
+            },
+            "CreateArticleTranslationSeoMetaDto": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "The content of the `<title />` HTML tag for the article translation."
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "The content of the `<meta name=\"description\">` HTML tag for the article translation."
+                    }
+                },
+                "required": ["title", "description"]
+            },
+            "CreateArticleTranslationDto": {
+                "type": "object",
+                "properties": {
+                    "seo_meta": {
+                        "description": "The SEO meta attributes of the article in the `locale`'s translation.",
+                        "default": {"title": null, "description": null},
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CreateArticleTranslationSeoMetaDto"
+                            }
+                        ]
+                    },
+                    "locale": {
+                        "description": "The locale of the translation.\n\nIt should be in help center's supported locales.",
+                        "example": "fr-FR",
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ],
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "The title of the article in the `locale`'s translation.",
+                        "example": "How to cancel an order",
+                        "maxLength": 250
+                    },
+                    "excerpt": {
+                        "type": "string",
+                        "description": "The excerpt of the article in the `locale`'s translation.",
+                        "example": "Explains how to cancel an order",
+                        "maxLength": 250
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "The content of the article in the `locale`'s translation.\n\nSupports HTML formatted content.",
+                        "example": "I can be <strong>HTML</strong>"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "description": "A slug for the article that'll be used to construct article's URLs.\n\nShould only contains alphanumeric values and hyphens.",
+                        "example": "cancel-an-order"
+                    }
+                },
+                "required": [
+                    "seo_meta",
+                    "locale",
+                    "title",
+                    "excerpt",
+                    "content",
+                    "slug"
+                ]
+            },
+            "CreateArticleDto": {
+                "type": "object",
+                "properties": {
+                    "category_id": {"type": "number", "nullable": true},
+                    "translation": {
+                        "description": "A translation for the article.\n\nWhen creating an article, a translation should be provided.",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CreateArticleTranslationDto"
+                            }
+                        ]
+                    }
+                },
+                "required": ["translation"]
+            },
+            "ArticleTranslationEntity": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "locale": {
+                        "type": "string",
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ]
+                    },
+                    "article_id": {"type": "number"},
+                    "seo_meta": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ArticleTranslationSeoMeta"
+                            }
+                        ]
+                    },
+                    "title": {"type": "string"},
+                    "excerpt": {"type": "string"},
+                    "content": {"type": "string"},
+                    "slug": {"type": "string"}
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "locale",
+                    "article_id",
+                    "seo_meta",
+                    "title",
+                    "excerpt",
+                    "content",
+                    "slug"
+                ]
+            },
+            "ArticleTranslationsListPageDto": {
+                "type": "object",
+                "properties": {
+                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "object": {
+                        "type": "string",
+                        "default": "list",
+                        "enum": ["list"]
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ArticleTranslationEntity"
+                        }
+                    }
+                },
+                "required": ["meta", "object", "data"]
+            },
+            "UpdateArticleTranslationDto": {
+                "type": "object",
+                "properties": {
+                    "seo_meta": {
+                        "description": "The SEO meta attributes of the article in the `locale`'s translation.",
+                        "default": {"title": null, "description": null},
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CreateArticleTranslationSeoMetaDto"
+                            }
+                        ]
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "The title of the article in the `locale`'s translation.",
+                        "example": "How to cancel an order",
+                        "maxLength": 250
+                    },
+                    "excerpt": {
+                        "type": "string",
+                        "description": "The excerpt of the article in the `locale`'s translation.",
+                        "example": "Explains how to cancel an order",
+                        "maxLength": 250
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "The content of the article in the `locale`'s translation.\n\nSupports HTML formatted content.",
+                        "example": "I can be <strong>HTML</strong>"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "description": "A slug for the article that'll be used to construct article's URLs.\n\nShould only contains alphanumeric values and hyphens.",
+                        "example": "cancel-an-order"
+                    }
+                }
+            },
+            "AccessTokenDto": {
+                "type": "object",
+                "properties": {
+                    "access_token": {"type": "string"},
+                    "token_type": {"type": "string"}
+                },
+                "required": ["access_token", "token_type"]
+            },
+            "NavigationLinkMeta": {
+                "type": "object",
+                "properties": {
+                    "network": {
+                        "enum": ["facebook", "twitter", "instagram"],
+                        "type": "string"
+                    }
+                }
+            },
+            "CreateNavigationLinkDto": {
+                "type": "object",
+                "properties": {
+                    "label": {
+                        "type": "string",
+                        "description": "The label of the navigation link."
+                    },
+                    "value": {
+                        "type": "string",
+                        "description": "The URL of the navigation link.\n\nShould be an absolute URL with protocol and host.",
+                        "example": "https://gorgias.com/pricing"
+                    },
+                    "locale": {
+                        "type": "string",
+                        "description": "The locale of the navigation link.\n\nIt should be in help center's supported locales.",
+                        "example": "fr-FR",
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ]
+                    },
+                    "group": {
+                        "type": "string",
+                        "description": "The group of the navigation link.",
+                        "enum": ["header", "footer"]
+                    },
+                    "meta": {"$ref": "#/components/schemas/NavigationLinkMeta"}
+                },
+                "required": ["label", "value", "locale", "group"]
+            },
+            "NavigationLinkEntity": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "locale": {
+                        "type": "string",
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ]
+                    },
+                    "meta": {"$ref": "#/components/schemas/NavigationLinkMeta"},
+                    "help_center_id": {"type": "number"},
+                    "id": {"type": "number"},
+                    "label": {"type": "string"},
+                    "value": {"type": "string"},
+                    "group": {"enum": ["header", "footer"], "type": "string"}
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "locale",
+                    "help_center_id",
+                    "id",
+                    "label",
+                    "value",
+                    "group"
+                ]
+            },
+            "UpdateNavigationLinkDto": {
+                "type": "object",
+                "properties": {
+                    "label": {
+                        "type": "string",
+                        "description": "The label of the navigation link."
+                    },
+                    "value": {
+                        "type": "string",
+                        "description": "The URL of the navigation link.\n\nShould be an absolute URL with protocol and host.",
+                        "example": "https://gorgias.com/pricing"
+                    },
+                    "group": {
+                        "type": "string",
+                        "description": "The group of the navigation link.",
+                        "enum": ["header", "footer"]
+                    },
+                    "meta": {"$ref": "#/components/schemas/NavigationLinkMeta"}
+                }
+            },
+            "NavigationLinksListPageDto": {
+                "type": "object",
+                "properties": {
+                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "object": {
+                        "type": "string",
+                        "default": "list",
+                        "enum": ["list"]
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/NavigationLinkEntity"
+                        }
+                    }
+                },
+                "required": ["meta", "object", "data"]
+            },
+            "CreateRedirectDto": {
+                "type": "object",
+                "properties": {
+                    "from": {"type": "string"},
+                    "to": {"type": "string"}
+                },
+                "required": ["from", "to"]
+            },
+            "RedirectEntity": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "help_center_id": {"type": "number"},
+                    "id": {"type": "number"},
+                    "from": {"type": "string"},
+                    "to": {"type": "string"}
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "help_center_id",
+                    "id",
+                    "from",
+                    "to"
+                ]
+            }
+        }
+    },
+    "security": [{"AgentBasicAuth": []}]
+}

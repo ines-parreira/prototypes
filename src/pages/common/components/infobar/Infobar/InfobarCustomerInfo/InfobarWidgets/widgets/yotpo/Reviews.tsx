@@ -1,15 +1,10 @@
 import React from 'react'
-import type {Map} from 'immutable'
 import ReactStars from 'react-rating-stars-component'
-
-import {List} from 'immutable'
+import {List, Map} from 'immutable'
 
 import {CardHeaderValue} from '../CardHeaderValue'
-
 import {DatetimeLabel} from '../../../../../../../utils/labels'
-
 import {CardHeaderBadge} from '../CardHeaderBadge'
-
 import {StarRatingColors} from '../../../../../utils'
 
 import css from './Reviews.less'

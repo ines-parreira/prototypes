@@ -6,6 +6,7 @@ import _merge from 'lodash/merge'
 import _isString from 'lodash/isString'
 
 import {ChartType, Scale, TooltipItem} from 'chart.js'
+import {defaults} from 'react-chartjs-2'
 
 import {TicketChannel} from '../business/types/ticket'
 import {formatDuration} from '../pages/stats/common/utils'
@@ -24,8 +25,6 @@ import {ReportIssueReasons} from '../models/selfServiceConfiguration/types'
 import SelfServiceIntegrationsFilter from '../pages/stats/self-service/SelfServiceIntegrationsFilter'
 
 import css from './stats.less'
-
-import {defaults} from 'react-chartjs-2'
 
 // Available Stats. These names should match names in `g/stats/config`
 export const OVERVIEW = 'overview'

@@ -8,11 +8,10 @@ import {
     IvrMenuAction,
     IvrMenuActionType,
     IvrForwardCallMenuAction,
-} from '../../../../../models/integration/types'
-import {DEFAULT_VOICE_MESSAGE} from '../../../../../models/integration/constants'
-
-import SelectField from '../../../../common/forms/SelectField/SelectField'
-import {Drawer} from '../../../../common/components/Drawer'
+} from 'models/integration/types'
+import {DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {Drawer} from 'pages/common/components/Drawer'
 
 import VoiceMessageField from './VoiceMessageField'
 import IvrPhoneNumberSelectField from './IvrPhoneNumberSelectField'

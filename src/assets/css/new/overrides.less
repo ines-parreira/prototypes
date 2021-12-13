@@ -1,0 +1,221 @@
+@import 'mixins';
+@import 'colors';
+
+html {
+    font-size: 14px;
+}
+
+body {
+    width: 100%;
+    color: @indigo;
+    font-family: 'Inter', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+}
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-weight: 500;
+    margin-bottom: 0.8rem;
+
+    .image,
+    img {
+        display: inline-block;
+        margin: 0;
+        width: 32px;
+        height: auto;
+        vertical-align: middle;
+    }
+}
+
+h1 {
+    font-size: 1.78rem;
+}
+h2 {
+    font-size: 1.64rem;
+}
+h3 {
+    font-size: 1.42rem;
+}
+h4 {
+    font-size: 1.21rem;
+}
+h5 {
+    font-size: 1.07rem;
+}
+
+// never underline links
+a,
+.btn.btn-link {
+    text-decoration: none !important;
+}
+
+// tooltip have higher z-index than normal
+.tooltip {
+    z-index: 9999 !important;
+}
+
+// help text under inputs
+.form-text {
+    font-size: 12px;
+}
+
+label.control-label {
+    font-weight: 600;
+}
+
+.table th {
+    border-top: 0;
+}
+
+label.form-check-label {
+    display: flex;
+    font-weight: normal;
+
+    input {
+        align-self: center;
+    }
+}
+
+// add btn loading animation
+.btn {
+    position: relative;
+    transition: all 0.2s linear;
+    white-space: nowrap;
+    line-height: 20px;
+
+    &.btn-sm {
+        line-height: 18px;
+    }
+
+    &.btn-loading {
+        color: transparent !important;
+        @loader-size: 16px;
+
+        &:before {
+            content: '';
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: @loader-size;
+            height: @loader-size;
+            left: 50%;
+            top: 50%;
+            margin: -@loader-size / 2 0 0 -@loader-size / 2;
+            animation: spin 0.6s infinite linear;
+            border-radius: 50%;
+            border: 0.2em solid rgba(0, 0, 0, 0.5);
+        }
+
+        &:after {
+            content: '';
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: @loader-size;
+            height: @loader-size;
+            left: 50%;
+            top: 50%;
+            margin: -@loader-size / 2 0 0 -@loader-size / 2;
+            animation: spin 0.6s infinite linear;
+            border-radius: 50%;
+            border-color: #fff transparent transparent;
+            border-style: solid;
+            border-width: 0.2em;
+        }
+    }
+}
+
+// gives more padding to caret in dropdowns
+.dropdown-toggle::after {
+    margin-left: 8px;
+    margin-top: -2px;
+}
+
+.btn-group {
+    button:nth-child(2).dropdown-toggle {
+        padding: 0 10px 0 2px;
+    }
+}
+
+// override breadcrumbs style
+.breadcrumb {
+    background: transparent;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    margin-bottom: 4px; // no need for the big default margin since we have no background, default padding is enough
+
+    .breadcrumb-item.active {
+        color: @neutral10;
+        font-weight: 400;
+    }
+}
+
+@media (min-width: 576px) {
+    .modal-dialog.modal-lg {
+        max-width: 800px;
+        margin: 30px auto;
+    }
+}
+
+// allow selecting text in button if it is a div
+div.btn {
+    -webkit-user-select: initial;
+    -moz-user-select: initial;
+    -ms-user-select: initial;
+    user-select: initial;
+}
+
+// input placeholder color override
+input,
+textarea {
+    @placeholder-color: @lightGrey;
+
+    &::-webkit-input-placeholder {
+        color: @placeholder-color !important;
+    }
+
+    &::-moz-placeholder {
+        color: @placeholder-color !important;
+        opacity: 1;
+    }
+
+    &:-ms-input-placeholder {
+        color: @placeholder-color !important;
+        opacity: 1;
+    }
+
+    &:-moz-placeholder {
+        color: @placeholder-color !important;
+        opacity: 1;
+    }
+}
+
+.page-container {
+    padding-left: 30px;
+    padding-right: 30px;
+
+    &.with-space-bottom {
+        padding-bottom: 50px;
+    }
+}
+
+// todo(pwlmaciejewski): It should be removed after bumping reactstrap to version higher than 5.0.0
+.dropup .dropdown-menu {
+    top: initial;
+    bottom: initial;
+}
+
+b,
+strong {
+    font-weight: 600;
+}

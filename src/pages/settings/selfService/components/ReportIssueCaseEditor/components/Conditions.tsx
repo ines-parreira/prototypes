@@ -1,6 +1,5 @@
 import React, {useMemo} from 'react'
 import produce from 'immer'
-
 import {
     DropdownItem,
     DropdownMenu,
@@ -8,7 +7,7 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import shopify from '../../../../../../../img/integrations/shopify.png'
+import shopify from 'assets/img/integrations/shopify.png'
 
 import {
     ReportIssueVariable,
@@ -18,9 +17,7 @@ import {
 } from '../../../../../../models/selfServiceConfiguration/types'
 
 import {parseJsonLogicRule} from './utils'
-
 import ConditionRow from './ConditionRow'
-
 import css from './Conditions.less'
 
 interface ConditionsProps {

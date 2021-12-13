@@ -3,7 +3,8 @@ import {chain as _chain} from 'lodash'
 import _isNumber from 'lodash/isNumber'
 import {useSelector} from 'react-redux'
 
-import {HelpCenterClient} from '../../../../../../../rest_api/help_center_api/index'
+import {HelpCenterClient} from 'rest_api/help_center_api/index'
+
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {
     Article,

@@ -1,0 +1,174 @@
+@import '~css/new/colors';
+
+.rich-content-wrapper {
+    figure {
+        margin: 0 !important;
+        display: inline-block !important;
+    }
+
+    img {
+        max-width: 100%;
+    }
+}
+
+.rich-textarea-wrapper {
+    .rich-content-wrapper;
+
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
+    position: relative;
+
+    .editor-wrapper {
+        margin: 3px 3px 26px 3px;
+        border: 3px dashed transparent;
+        padding: 4px 4px 4px 1px !important;
+        transition: border-color 0.2s;
+        min-height: 200px;
+
+        @media @mobiles {
+            margin-top: 4px;
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        &::before {
+            content: 'Drop files here';
+            position: absolute;
+            pointer-events: none;
+            display: block;
+            width: calc(~'100% - 25px');
+            font-size: 30px;
+            color: #a2abb3;
+            top: calc(~'50% - 36px');
+            text-align: center;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        &.drop {
+            border-color: #a2abb3;
+
+            & > * {
+                opacity: 0.3;
+            }
+
+            &::before {
+                opacity: 1;
+            }
+        }
+    }
+
+    &.display-only {
+        border: none;
+
+        .badge-variable {
+            /* prevent double click on variables */
+            pointer-events: none;
+        }
+
+        .editor-wrapper {
+            border: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .variable-edit-btn,
+        .editor-toolbar {
+            display: none;
+        }
+    }
+
+    &:not(.display-only) {
+        img:hover {
+            cursor: default;
+            border-radius: 2px;
+            box-shadow: 0 0 0 3px #d2e3f7;
+        }
+    }
+}
+
+.textarea-toolbar {
+    position: relative;
+    z-index: 2;
+    background-color: @quartz;
+    padding: 0.6rem 0.5rem;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    margin-bottom: -2px;
+    border: 1px solid #e4e4e4;
+
+    & + textarea {
+        border-top-color: #e4e4e4 !important;
+        border-top-left-radius: 0 !important;
+        border-top-right-radius: 0 !important;
+    }
+}
+
+.badge-variable {
+    position: relative;
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0 4px;
+    background-color: #deedff;
+    color: #4889ec;
+    border-radius: 3px;
+
+    &.badge-variable-type-survey i {
+        width: 30px;
+        font-size: 25px;
+    }
+
+    &.badge-variable-type-shopify {
+        background-color: @TEMP_shopifyBadgeBG;
+        color: @TEMP_shopifyBadgeColor;
+    }
+
+    &.badge-variable-type-recharge {
+        background-color: #defaff;
+        color: #2aafbf;
+    }
+
+    &.badge-variable-type-smile {
+        background-color: #fff8e7;
+        color: #f4c548;
+    }
+
+    &.badge-variable-type-magento2 {
+        background-color: #ffdcc1;
+        color: #ea5202;
+    }
+
+    .badge-variable-icon {
+        @size: 12px;
+        width: @size;
+        max-height: @size;
+        margin-top: -4px;
+        margin-bottom: -2px;
+        margin-right: 5px;
+    }
+
+    &:hover .variable-edit-btn.btn {
+        right: -1.6rem;
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+.badge-variable-content {
+    /* prevent cursor positioning INSIDE tag */
+    pointer-events: none;
+}
+
+.variable-edit-btn.btn {
+    position: absolute;
+    top: -1px;
+    right: -0.8rem;
+    z-index: 1;
+    padding: 0.1rem 0.2rem;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.08s ease-out;
+    transition-delay: 0.2s;
+}

@@ -2,9 +2,9 @@ import {Button} from 'reactstrap'
 import classnames from 'classnames'
 import React from 'react'
 
-import shopifyLogo from '../../../../../../../img/integrations/shopify.png'
+import shopifyLogo from 'assets/img/integrations/shopify.png'
+import warningIcon from 'assets/img/icons/warning.svg'
 
-import warningIcon from '../../../../../../../img/icons/warning.svg'
 import Tooltip from '../../../../../common/components/Tooltip'
 
 import css from './GorgiasChatIntegrationOneClickInstallationCard.less'

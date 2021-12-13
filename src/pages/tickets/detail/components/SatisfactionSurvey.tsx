@@ -3,10 +3,11 @@ import pluralize from 'pluralize'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 
+import fullStar from 'assets/img/satisfaction-survey/full-star.svg'
+
 import {DatetimeLabel} from '../../../common/utils/labels'
 
 import css from './SatisfactionSurvey.less'
-import fullStar from './../../../../../img/satisfaction-survey/full-star.svg'
 
 type PropTypes = {
     satisfactionSurvey: Map<any, any>

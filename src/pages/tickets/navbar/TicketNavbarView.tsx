@@ -5,7 +5,8 @@ import {useDrag} from 'react-dnd'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 
-import navbarCss from '../../../../css/navbar.less'
+import navbarCss from 'assets/css/navbar.less'
+
 import {UserRole} from '../../../config/types/user'
 import {MAX_TICKET_COUNT_PER_VIEW} from '../../../config/views'
 import {View, ViewVisibility} from '../../../models/view/types'

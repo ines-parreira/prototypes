@@ -1,0 +1,328 @@
+@import '~bootstrap/dist/css/bootstrap.css';
+@import '~bootstrap-daterangepicker/daterangepicker.css';
+@import '../colors';
+
+/* global styles for react-bootstrap-daterangepicker
+ */
+
+/* bootstrap-daterangepicker doesn't support custom icons:
+ * https://github.com/dangrossman/daterangepicker/issues/1593
+ * overwrite font-awesome to use material-icons.
+ * Material icons codes are available here:
+ * https://github.com/google/material-design-icons/blob/master/iconfont/codepoints
+ */
+.daterangepicker .fa {
+    .material-icons();
+
+    font-size: 18px;
+    line-height: 1;
+
+    &.fa-chevron-left:before {
+        content: '\e5cb';
+    }
+
+    &.fa-chevron-right:before {
+        content: '\e5cc';
+    }
+
+    &.fa-calendar:before {
+        content: '\e8df';
+    }
+
+    &.fa-clock-o:before {
+        content: '\e192';
+    }
+}
+
+/* tweak calendar icon position
+ */
+.daterangepicker .daterangepicker_input i {
+    top: 6px;
+}
+
+.daterangepicker {
+    font-family: 'Inter', sans-serif;
+    padding: 24px;
+
+    .calendar-time {
+        margin: 0 0 10px;
+    }
+
+    .drp-calendar {
+        .calendar-table {
+            thead {
+                th.available:hover {
+                    background-color: @neutral1;
+                }
+
+                tr {
+                    &:first-of-type {
+                        height: 40px;
+
+                        @media @mobiles {
+                            height: 30px;
+                        }
+                    }
+
+                    &:nth-of-type(2) th {
+                        font-size: 11px;
+                    }
+
+                    th {
+                        font-weight: 600;
+                    }
+                }
+            }
+
+            .month {
+                font-size: 16px;
+                text-transform: none;
+            }
+
+            text-transform: uppercase;
+
+            .next span,
+            .prev span {
+                border: solid @neutral8;
+                border-width: 0 2px 2px 0;
+            }
+        }
+    }
+
+    &.show-ranges.ltr .drp-calendar.left,
+    &.show-ranges.single.ltr .drp-calendar.left,
+    &.show-ranges.ltr .drp-calendar.right {
+        border-left: none;
+        padding: 0 24px 0 0;
+
+        @media @mobiles {
+            padding: 0;
+        }
+    }
+
+    &:not(.show-ranges) .drp-calendar.left.single {
+        padding: 0 0 16px 0;
+
+        @media @mobiles {
+            padding: 0;
+        }
+    }
+
+    &.displayed.show-ranges {
+        display: grid !important;
+        grid-template-columns: repeat(3, auto);
+        grid-template-rows: 32px auto;
+        padding: 24px;
+
+        @media @mobiles {
+            grid-template-columns: repeat(2, auto);
+            grid-template-rows: repeat(3, auto);
+            padding: 12px;
+        }
+    }
+
+    .ranges {
+        grid-column-start: 3;
+        grid-column-end: 4;
+        grid-row-start: 2;
+        grid-row-end: 3;
+
+        @media @mobiles {
+            grid-column-start: 1;
+            grid-column-end: 2;
+            grid-row-start: 3;
+            grid-row-end: 4;
+        }
+
+        ul {
+            width: auto;
+
+            li {
+                background-color: @neutral1;
+                border-radius: 4px;
+                color: @neutral10;
+                cursor: pointer;
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 20px;
+                padding: 6px 12px;
+                text-align: center;
+                width: 130px;
+
+                &:not(:last-child) {
+                    margin-bottom: 8px;
+                }
+
+                &.active {
+                    background-color: @blue;
+                }
+
+                @media @mobiles {
+                    font-size: 13px;
+                    padding: 3px 12px;
+                    width: auto;
+                }
+            }
+
+            &::before {
+                color: @neutral6;
+                content: attr(label);
+                display: block;
+                font-size: 11px;
+                font-weight: 600;
+                text-transform: uppercase;
+            }
+
+            &.with-label::before {
+                letter-spacing: 0.05em;
+                margin-bottom: 8px;
+            }
+        }
+    }
+
+    .drp-calendar {
+        &.left {
+            display: flex !important;
+            flex-direction: column-reverse;
+            justify-content: flex-end;
+            grid-column-start: 1;
+            grid-column-end: 2;
+            grid-row-start: 1;
+            grid-row-end: 3;
+
+            @media @mobiles {
+                grid-column-start: 1;
+                grid-column-end: 3;
+                grid-row-start: 1;
+                grid-row-end: 2;
+            }
+
+            .calendar-table {
+                padding-right: 0;
+            }
+        }
+
+        &.right {
+            display: flex;
+            flex-direction: column-reverse;
+            justify-content: flex-end;
+            grid-column-start: 2;
+            grid-column-end: 3;
+            grid-row-start: 1;
+            grid-row-end: 3;
+
+            @media @mobiles {
+                grid-column-start: 1;
+                grid-column-end: 3;
+                grid-row-start: 2;
+                grid-row-end: 3;
+                margin-top: 10px;
+            }
+        }
+    }
+
+    .drp-buttons {
+        border: none;
+        font-size: 14px;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        padding: 0;
+        grid-column-start: 3;
+        grid-column-end: 4;
+        grid-row-start: 1;
+        grid-row-end: 2;
+
+        @media @mobiles {
+            grid-column-start: 2;
+            grid-column-end: 3;
+            grid-row-start: 3;
+            grid-row-end: 4;
+            flex-direction: column-reverse;
+            justify-content: flex-end;
+            margin: 37px 0 0 15px;
+        }
+
+        .btn {
+            font-size: 14px;
+            font-weight: 500;
+            height: 32px;
+            line-height: 20px;
+            margin-left: 0;
+
+            @media @mobiles {
+                margin: 10px 0 !important;
+
+                &.applyBtn {
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
+
+    &.show-calendar {
+        .drp-buttons {
+            display: flex;
+        }
+
+        .ranges {
+            margin-top: 24px;
+        }
+    }
+
+    select {
+        &.hourselect,
+        &.minuteselect,
+        &.secondselect,
+        &.ampmselect {
+            appearance: none;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            background: @white;
+            @arrowColor: escape(@neutral6);
+            background-image: url('data:image/svg+xml;utf8,<svg width="7" height="5" viewBox="0 0 7 5" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.591547 1.75837L2.74988 3.91671C3.07488 4.24171 3.59988 4.24171 3.92488 3.91671L6.08321 1.75837C6.60821 1.23337 6.23321 0.333374 5.49155 0.333374H1.17488C0.433213 0.333374 0.0665467 1.23337 0.591547 1.75837Z" fill="@{arrowColor}"/></svg>');
+            background-position: right 0.7em top 50%, 0 0;
+            background-repeat: no-repeat, repeat;
+            border: 1px solid @neutral4;
+            border-radius: 4px;
+            color: @neutral10;
+            font-size: 14px;
+            height: 32px;
+            line-height: 1.3;
+            margin: 0;
+            padding: 0 8px;
+            width: 69px;
+        }
+    }
+
+    td {
+        &.active,
+        &.active:hover {
+            background-color: @blue;
+        }
+
+        &:hover,
+        &.available:not(.active):hover {
+            background-color: @neutral1;
+        }
+
+        &.disabled {
+            background-color: @neutral1;
+            border-radius: 0;
+            color: @neutral4;
+            text-decoration: none;
+        }
+
+        &.off.available {
+            color: @neutral6;
+        }
+
+        &.in-range:not(.active):not(.off) {
+            background-color: @blue0;
+            color: @blue;
+        }
+    }
+
+    .drp-selected {
+        display: none;
+    }
+}

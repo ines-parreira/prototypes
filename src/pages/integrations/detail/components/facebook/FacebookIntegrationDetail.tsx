@@ -12,7 +12,9 @@ import {
 } from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 
-import warningIcon from '../../../../../../img/icons/warning2.svg'
+import warningIcon from 'assets/img/icons/warning2.svg'
+import pageIconDefault from 'assets/img/integrations/facebook-page.png'
+
 import {
     FACEBOOK_LANGUAGE_OPTIONS,
     FACEBOOK_LANGUAGE_DEFAULT,
@@ -23,7 +25,6 @@ import Loader from '../../../../common/components/Loader/Loader'
 import PageHeader from '../../../../common/components/PageHeader'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import Alert, {AlertType} from '../../../../common/components/Alert/Alert'
-import pageIconDefault from '../../../../../../img/integrations/facebook-page.png'
 import * as billingSelectors from '../../../../../state/billing/selectors'
 import {AccountFeature} from '../../../../../state/currentAccount/types'
 import {RootState} from '../../../../../state/types'

@@ -1,0 +1,54 @@
+@import '../new/mixins';
+
+.TicketDetailContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.TicketAssignee {
+    .ui.vertical.menu {
+        max-height: none;
+        margin-left: -45px;
+    }
+}
+
+.button.ticket-owner-btn {
+    padding: 0;
+
+    &:hover,
+    &:focus,
+    &.button.active {
+        background: none;
+    }
+}
+
+.ticket-details-item:not(:last-child) {
+    margin-right: 1.2em;
+    //font-weight: bold;
+}
+
+.ticket-id {
+    color: @lightGrey;
+}
+
+.TicketReply > .form > div > textarea {
+    border: none;
+}
+
+.TicketMessages {
+    margin-top: 16px;
+    margin-bottom: 6px;
+}
+
+.icon.flag.ticket-priority {
+    color: @lightBlue;
+}
+
+.item.ticket-owner {
+    color: @lightBlack;
+}
+
+.new-line-interpret {
+    white-space: pre-line;
+}

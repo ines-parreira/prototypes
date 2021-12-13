@@ -1,0 +1,43 @@
+/* utils
+ */
+
+.clearfix {
+    &:before,
+    &:after {
+        content: ' ';
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
+}
+
+/* until bootstrap provides its own
+ * https://github.com/twbs/bootstrap/issues/21944
+ */
+.flex-grow {
+    flex-grow: 1;
+}
+
+/* btn-frozen
+ */
+.btn-frozen {
+    pointer-events: none;
+}
+
+/* font weight medium
+ */
+.font-weight-medium {
+    font-weight: 500;
+}
+
+/* animation
+ */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

@@ -1,7 +1,7 @@
 import React from 'react'
-import type {KeyboardEventHandler} from 'react'
 import {Input} from 'reactstrap'
 import classnames from 'classnames'
+import type {KeyboardEventHandler} from 'react'
 
 import css from './PeopleSearchInput.less'
 

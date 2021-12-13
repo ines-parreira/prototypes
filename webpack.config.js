@@ -14,7 +14,7 @@ const GORGIAS_ASSETS_URL = __PRODUCTION__
     : ''
 const BUNDLE_PUBLIC_PATH = 'http://acme.gorgias.docker:8080/'
 
-const srcDir = path.join(__dirname, 'g/static/private')
+const srcDir = path.join(__dirname, 'g/static/private/js')
 const buildDir = path.join(__dirname, 'g/static/public/web-app')
 const jsBundleFile = __PRODUCTION__
     ? `helpdesk.app.${HASH}.js`
@@ -130,7 +130,7 @@ module.exports = (env = {}) => {
             fs: 'empty',
         },
         entry: {
-            build: `${srcDir}/js/main.tsx`,
+            build: `${srcDir}/main.tsx`,
         },
         output: {
             ...outputOptions,
@@ -217,9 +217,10 @@ module.exports = (env = {}) => {
         resolve: {
             alias: {
                 ...aliasOptions,
-                css: `${srcDir}/css/`,
+                css: `${srcDir}/assets/css/`,
             },
             extensions: ['.ts', '.tsx', '.js'],
+            modules: ['node_modules', srcDir],
         },
     }
 }

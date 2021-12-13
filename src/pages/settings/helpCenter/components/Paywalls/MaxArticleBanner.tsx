@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 
-import warningIcon from '../../../../../../img/icons/warning.svg'
+import warningIcon from 'assets/img/icons/warning.svg'
+
 import {
     HELP_CENTER_MAX_ARTICLES,
     HELP_CENTER_MAX_ARTICLES_WARNING_THRESHOLD,

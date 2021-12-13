@@ -1,0 +1,231 @@
+@import 'mixins';
+@import 'util';
+@import 'icons';
+@import 'scrollbars';
+// shared component styles
+@import 'components/btn';
+@import 'components/input-icon';
+@import 'components/dropdown';
+@import 'components/badge';
+@import 'components/no-result-container';
+@import 'components/forms';
+@import 'components/rich-field';
+@import 'components/pagination';
+@import 'components/modal';
+@import 'components/popover';
+@import 'components/alert';
+@import 'components/table';
+@import 'components/daterangepicker';
+
+* {
+    font-smooth: antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    @media @mobiles {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+// pointer cursor forced on buttons
+button:not(:disabled) {
+    .clickable;
+}
+
+small {
+    kbd {
+        padding: 0.05rem 0.3rem !important;
+    }
+}
+
+// force cursor as pointer
+.cursor-pointer {
+    cursor: pointer !important;
+}
+
+// padding for container of app content, same in all app
+.container-padding {
+    padding: 14px 30px !important;
+
+    @media @mobiles {
+        padding: 14px !important;
+    }
+}
+
+// set z index of dropdown menu to 1 so it is over other elements around
+div[class*='bs-tether'] {
+    z-index: 1;
+}
+
+.divider {
+    display: table;
+    white-space: nowrap;
+    height: auto;
+    overflow: hidden;
+    line-height: 1;
+    text-align: center;
+    margin: 15px 0;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(0, 0, 0, 0.85);
+    user-select: none;
+    font-size: 1rem;
+
+    &::after,
+    &::before {
+        content: '';
+        display: table-cell;
+        position: relative;
+        top: 50%;
+        width: 50%;
+        background-repeat: no-repeat;
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABaAAAAACCAYAAACuTHuKAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo1OThBRDY4OUNDMTYxMUU0OUE3NUVGOEJDMzMzMjE2NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo1OThBRDY4QUNDMTYxMUU0OUE3NUVGOEJDMzMzMjE2NyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjU5OEFENjg3Q0MxNjExRTQ5QTc1RUY4QkMzMzMyMTY3IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU5OEFENjg4Q0MxNjExRTQ5QTc1RUY4QkMzMzMyMTY3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+VU513gAAADVJREFUeNrs0DENACAQBDBIWLGBJQby/mUcJn5sJXQmOQMAAAAAAJqt+2prAAAAAACg2xdgANk6BEVuJgyMAAAAAElFTkSuQmCC);
+    }
+
+    &::before {
+        background-position: right 1em top 50%;
+    }
+
+    &::after {
+        background-position: left 1em top 50%;
+    }
+}
+
+input.form-control {
+    min-width: 50px !important; // override the large min width on inputs of Firefox
+}
+
+// inline form fields don't have vertical margin
+.form-group,
+.form-check {
+    &[class*='d-inline'] {
+        margin: 0;
+    }
+}
+
+// form fields in a row (divided in horizontal columns) don't have vertical margin
+.form-row {
+    .form-group {
+        margin: 0;
+    }
+}
+
+// bigger checkbox and radio inputs than natively
+input[type='checkbox'],
+input[type='radio'] {
+    margin-top: 2px;
+    font-size: 16px;
+}
+
+// colors for icons
+.fa:not(.uncolored),
+.material-icons:not(.uncolored) {
+    &.red {
+        color: #db2828;
+    }
+
+    &.orange {
+        color: #f2711c;
+    }
+
+    &.yellow {
+        color: #fbbd08;
+    }
+
+    &.green {
+        color: #21ba45;
+    }
+
+    &.blue {
+        color: #2185d0;
+    }
+
+    &.purple {
+        color: #a333c8;
+    }
+}
+
+// shrink a table cell to its minimum width
+table td.smallest {
+    white-space: nowrap;
+    width: 1px;
+}
+
+// override twitter color picker css used in ColorField
+.twitter-picker {
+    position: absolute !important;
+    z-index: 1;
+    top: 40px;
+    left: 0;
+
+    input {
+        height: 30px !important;
+    }
+}
+
+// override inputs from react-select library
+.Select-control {
+    height: 34px !important;
+
+    .Select-input {
+        height: 31px !important;
+    }
+}
+
+/* main layout
+ */
+
+html,
+body,
+#App {
+    height: 100%;
+}
+
+#App {
+    position: absolute;
+    top: 0;
+    width: 100vw;
+}
+
+.app-content {
+    flex: 1;
+    overflow: auto;
+}
+
+table td.link-full-td {
+    padding: 0;
+
+    > a {
+        color: inherit !important;
+
+        > div {
+            padding: 15px 8px;
+            height: 100%;
+            width: 100%;
+        }
+    }
+}
+
+/* TODO check if still used
+ */
+#system-message.message {
+    position: absolute;
+    z-index: 1001;
+    top: 20px;
+    left: 25%;
+    width: 50%;
+}
+
+#system-message.modal {
+    & > .close.icon {
+        top: 10px;
+        right: 10px;
+        font-size: 2em;
+        color: @black;
+    }
+}

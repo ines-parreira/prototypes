@@ -1,0 +1,21 @@
+::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+    padding: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: fade(#a7b3d8, 60%);
+    background-clip: padding-box;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    visibility: hidden;
+}
+
+*:hover > ::-webkit-scrollbar-thumb {
+    visibility: visible;
+}

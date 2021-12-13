@@ -1,8 +1,8 @@
 import React from 'react'
 import classnames from 'classnames'
 
-import radioChecked from '../../../../img/icons/radio-checked.svg'
-import radioUnchecked from '../../../../img/icons/radio-unchecked.svg'
+import radioChecked from 'assets/img/icons/radio-checked.svg'
+import radioUnchecked from 'assets/img/icons/radio-unchecked.svg'
 
 import css from './RadioChoiceField.less'
 

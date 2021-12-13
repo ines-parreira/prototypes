@@ -1,0 +1,41 @@
+/* Inter
+ * font family
+ */
+
+.font-family-mixin(@style, @weight, @fileName) {
+    @font-face {
+        font-family: 'Inter';
+        font-style: @style;
+        font-weight: @weight;
+        font-display: swap;
+        src: url('../font/inter/@{fileName}.woff2') format('woff2'),
+            url('../font/inter/@{fileName}.woff') format('woff');
+    }
+}
+
+.font-family-mixin(normal, 100, 'Inter-Thin');
+.font-family-mixin(italic, 100, 'Inter-ThinItalic');
+
+.font-family-mixin(normal, 200, 'Inter-ExtraLight');
+.font-family-mixin(italic, 200, 'Inter-ExtraLightItalic');
+
+.font-family-mixin(normal, 300, 'Inter-Light');
+.font-family-mixin(italic, 300, 'Inter-LightItalic');
+
+.font-family-mixin(normal, 400, 'Inter-Regular');
+.font-family-mixin(italic, 400, 'Inter-Italic');
+
+.font-family-mixin(normal, 500, 'Inter-Medium');
+.font-family-mixin(italic, 500, 'Inter-MediumItalic');
+
+.font-family-mixin(normal, 600, 'Inter-SemiBold');
+.font-family-mixin(italic, 600, 'Inter-SemiBoldItalic');
+
+.font-family-mixin(normal, 700, 'Inter-Bold');
+.font-family-mixin(italic, 700, 'Inter-BoldItalic');
+
+.font-family-mixin(normal, 800, 'Inter-ExtraBold');
+.font-family-mixin(italic, 800, 'Inter-ExtraBoldItalic');
+
+.font-family-mixin(normal, 900, 'Inter-Black');
+.font-family-mixin(italic, 900, 'Inter-BlackItalic');

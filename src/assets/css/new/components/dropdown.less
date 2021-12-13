@@ -1,0 +1,75 @@
+/* dropdown
+ * overrides bootstrap's dropdown
+ */
+
+@import '../colors';
+
+.dropdown-toggle.caret-only::after {
+    margin-left: 0;
+}
+
+// dropdown menu
+.dropdown-menu {
+    padding-left: 4px;
+    padding-right: 4px;
+    box-shadow: 0 2px 3px rgba(21, 32, 101, 0.2);
+    border-color: @darkQuartz;
+
+    > div {
+        display: block;
+    }
+}
+
+.dropdown-menu .dropdown-item .icon {
+    margin-right: 0.5rem;
+}
+
+.dropdown-divider {
+    margin-left: -4px;
+    margin-right: -4px;
+}
+
+// dropdown
+.dropdown-item {
+    border-radius: 3px;
+
+    color: @indigo;
+    font-weight: 500;
+
+    &:hover,
+    &:active {
+        background-color: @quartz;
+
+        color: @indigo;
+    }
+}
+
+// prevent text in dropdown items to overflow
+.dropdown-item,
+.dropdown-header {
+    padding: 5px 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    a {
+        color: inherit;
+    }
+}
+
+.dropdown-header {
+    color: @blue;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 1.1px;
+}
+
+// item containing an input
+.dropdown-item-input {
+    overflow: visible;
+    padding: 0;
+
+    input {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+}

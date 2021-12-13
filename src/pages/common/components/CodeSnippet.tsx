@@ -3,7 +3,7 @@ import Clipboard from 'clipboard'
 import {Alert, Button} from 'reactstrap'
 import _uniqueId from 'lodash/uniqueId'
 
-import CopyIcon from '../../../../../../static/private/img/icons/copy.svg'
+import CopyIcon from 'assets/img/icons/copy.svg'
 
 import css from './CodeSnippet.less'
 

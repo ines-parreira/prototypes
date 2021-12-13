@@ -2,12 +2,13 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {List, Map} from 'immutable'
 
+import shopifyLogo from 'assets/img/integrations/shopify.png'
+import warningIcon from 'assets/img/icons/warning.svg'
+
 import ToggleButton from '../../../../common/components/ToggleButton'
 import history from '../../../../history'
 import ForwardIcon from '../ForwardIcon'
 import IntegrationList from '../IntegrationList'
-import shopifyLogo from '../../../../../../img/integrations/shopify.png'
-import warningIcon from '../../../../../../img/icons/warning.svg'
 import Tooltip from '../../../../common/components/Tooltip'
 import {IntegrationType} from '../../../../../models/integration/types'
 

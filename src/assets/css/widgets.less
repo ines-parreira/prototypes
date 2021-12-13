@@ -1,0 +1,223 @@
+@import '~css/new/colors';
+
+.widgets-list {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    align-content: flex-start;
+
+    * {
+        & > .tools {
+            float: right;
+            opacity: 0;
+            i {
+                padding: 0 6px;
+            }
+        }
+
+        &:hover {
+            & > .tools {
+                opacity: 1;
+            }
+        }
+    }
+
+    .footer {
+        padding: 1rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.125);
+        background: @white0;
+        box-shadow: 0 1px 1px rgba(21, 32, 101, 0.04), inset 0 -1px 0 @white3;
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+    }
+
+    .card {
+        border-radius: 0;
+        border-width: 1px 0 0 0;
+        word-break: break-word;
+        position: relative;
+
+        &.wrapper {
+            box-shadow: none;
+        }
+
+        &:not(.transparent):hover {
+            box-shadow: 0 2px 9px rgba(21, 32, 101, 0.29);
+            z-index: 1;
+        }
+
+        .content {
+            padding: 0.5rem 0 0 0;
+
+            &.hidden {
+                display: none;
+            }
+        }
+
+        .header {
+            position: relative;
+            border-bottom: 1px dashed @white3;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 1.28em;
+
+            .meta {
+                font-size: 0.8em;
+            }
+        }
+
+        .simple-field {
+            position: relative;
+            padding: 0.25rem 1.25rem;
+            border: 1px solid transparent;
+            transition: all 0.1s linear;
+            display: flex;
+            align-items: center;
+            & + .list {
+                margin-top: 0.25rem;
+            }
+
+            &:last-child {
+                margin-bottom: 0.25rem;
+            }
+
+            .field-label {
+                padding-right: 8px;
+                flex-shrink: 0;
+            }
+
+            .field-value {
+                font-weight: 600;
+                width: 100%;
+                // the property belows prevents subcomponents (e.g. MultiSelectOptionsField) from auto-overflowing
+                // without preventing elements to overflow when desired (with absolute positionning)
+                min-width: 0;
+            }
+
+            .badge:not(.MultiSelectField *) {
+                padding-left: 8px;
+                padding-right: 8px;
+                font-size: 11px !important;
+            }
+        }
+    }
+
+    // First level
+    > div {
+        flex: 1 0 20rem;
+        min-width: 20rem;
+        margin: 0.5rem;
+    }
+
+    > div > .card > .content > .expandable.card:not(.closed) {
+        box-shadow: 0 2px 9px rgba(21, 32, 101, 0.29);
+
+        &:not(:last-child) {
+            margin-bottom: 0.5rem;
+        }
+    }
+
+    > div > .card > .content > .card,
+    > div > .card > .content > .list {
+        &:first-child {
+            border-width: 1px 0 0 0;
+            border-radius: 6px 6px 0 0;
+        }
+
+        // Second level
+        > .content > .card:not(.transparent),
+        > .card:not(.transparent) {
+            &:not(.closed) {
+                box-shadow: 0 2px 9px rgba(21, 32, 101, 0.29);
+                margin: 0.5rem 0;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+
+    // Widgets that display a list as first sub-widget
+    > div
+        > .card
+        > .content
+        > .list:first-child
+        > .card:not(.transparent).expandable:first-child {
+        margin-top: 0 !important;
+        border-radius: 6px 6px 0 0;
+    }
+
+    &.editing {
+        & > div:empty {
+            // leave some space in the bar to drop things in it, otherwise it is fully collapsed
+            min-height: 300px;
+        }
+
+        .card {
+            border-width: 1px;
+            border-radius: 3px;
+
+            .expand-all {
+                display: none;
+            }
+
+            & > .content {
+                padding: 1rem;
+
+                & > div:empty {
+                    // leave some space in the bar to drop things in it, otherwise it is fully collapsed
+                    min-height: 28px;
+                }
+            }
+
+            &:hover .action-buttons.action-buttons-float {
+                visibility: hidden;
+                opacity: 0;
+            }
+        }
+
+        .card,
+        .list {
+            margin-top: 1em;
+        }
+
+        .draggable {
+            cursor: move;
+            cursor: -webkit-grabbing;
+        }
+
+        .simple-field {
+            &.draggable {
+                &:hover {
+                    border: 1px dashed #b4b4b4;
+                }
+            }
+
+            &.edited {
+                border: 1px dashed #007ffd !important;
+            }
+
+            &.sortable-ghost {
+                background-color: #007ffd !important;
+                color: @white !important;
+
+                .field-label {
+                    color: @white !important;
+                }
+            }
+
+            .tools {
+                opacity: 0;
+                position: absolute;
+                right: 3px;
+            }
+
+            &:hover {
+                .tools {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}

@@ -9,12 +9,12 @@ import {
 } from 'reactstrap'
 import {Map, List} from 'immutable'
 
+import {GorgiasThunkDispatch} from 'types/redux-thunk'
 import {setFieldVisibility} from '../../../../state/views/actions'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
 import {notify} from '../../../../state/notifications/actions'
 
 import BooleanField from '../../forms/BooleanField.js'
-import {GorgiasThunkDispatch} from '../../../../../../../../types/redux-thunk'
 import {NotificationStatus} from '../../../../state/notifications/types'
 
 type OwnProps = {

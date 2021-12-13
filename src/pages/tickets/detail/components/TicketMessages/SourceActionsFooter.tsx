@@ -3,23 +3,24 @@ import classNamesBind from 'classnames/bind'
 import {connect, ConnectedProps} from 'react-redux'
 import {Badge} from 'reactstrap'
 
-import * as infobarActions from '../../../../../state/infobar/actions'
+import likeIcon from 'assets/img/integrations/facebook-reaction-like.svg'
+import likedIcon from 'assets/img/integrations/facebook-reaction-liked.svg'
+import hahaIcon from 'assets/img/integrations/facebook-reaction-haha.svg'
+import wowIcon from 'assets/img/integrations/facebook-reaction-wow.svg'
+import loveIcon from 'assets/img/integrations/facebook-reaction-love.svg'
+import angryIcon from 'assets/img/integrations/facebook-reaction-angry.svg'
+import sadIcon from 'assets/img/integrations/facebook-reaction-sad.svg'
+import prideIcon from 'assets/img/integrations/facebook-reaction-pride.png'
+import careIcon from 'assets/img/integrations/facebook-reaction-care.svg'
+
+import {FacebookReactionType} from '../../../../../constants/integrations/facebook'
 import {
     FacebookReactionCounter,
     FacebookReaction,
     Meta,
     Source,
 } from '../../../../../models/ticket/types'
-import {FacebookReactionType} from '../../../../../constants/integrations/facebook'
-import likeIcon from '../../../../../../img/integrations/facebook-reaction-like.svg'
-import likedIcon from '../../../../../../img/integrations/facebook-reaction-liked.svg'
-import hahaIcon from '../../../../../../img/integrations/facebook-reaction-haha.svg'
-import wowIcon from '../../../../../../img/integrations/facebook-reaction-wow.svg'
-import loveIcon from '../../../../../../img/integrations/facebook-reaction-love.svg'
-import angryIcon from '../../../../../../img/integrations/facebook-reaction-angry.svg'
-import sadIcon from '../../../../../../img/integrations/facebook-reaction-sad.svg'
-import prideIcon from '../../../../../../img/integrations/facebook-reaction-pride.png'
-import careIcon from '../../../../../../img/integrations/facebook-reaction-care.svg'
+import * as infobarActions from '../../../../../state/infobar/actions'
 import Loader from '../../../../common/components/Loader/Loader'
 import {TicketMessageSourceType} from '../../../../../business/types/ticket'
 

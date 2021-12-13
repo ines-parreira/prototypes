@@ -76,7 +76,7 @@ module.exports = {
     // A map from regular expressions to module names that allow to stub out resources with a single module
     moduleNameMapper: {
         '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
-            '<rootDir>/g/static/private/js/tests/__mocks__/fileMock.js',
+            '<rootDir>/tests/__mocks__/fileMock.js',
         '\\.(css|less)$': 'identity-obj-proxy',
     },
 
@@ -111,23 +111,23 @@ module.exports = {
     // restoreMocks: false,
 
     // The root directory that Jest should scan for tests and modules within
-    // rootDir: null,
+    rootDir: 'g/static/private/js/',
 
     // A list of paths to directories that Jest should use to search for files in
-    // roots: [
-    //   "<rootDir>"
-    // ],
+    roots: ['<rootDir>'],
+    modulePaths: ['<rootDir>'],
+    moduleDirectories: ['node_modules'],
 
     // Allows you to use a custom runner instead of Jest's default test runner
     // runner: "jest-runner",
 
     // The paths to modules that run some code to configure or set up the testing environment before each test
-    setupFiles: ['./g/static/private/js/tests/setup.js'],
+    setupFiles: ['./tests/setup.js'],
 
     // The path to a module that runs some code to configure or set up the testing framework before each test
     setupFilesAfterEnv: [
-        '<rootDir>/node_modules/jest-enzyme/lib/index.js',
-        '<rootDir>/g/static/private/js/tests/jest-enzyme-setup.ts',
+        'jest-enzyme/lib/index.js',
+        '<rootDir>/tests/jest-enzyme-setup.ts',
     ],
 
     // A list of paths to snapshot serializer modules Jest should use for snapshot testing

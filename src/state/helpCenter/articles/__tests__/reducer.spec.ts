@@ -2,7 +2,6 @@ import _keyBy from 'lodash/keyBy'
 import produce from 'immer'
 
 import {createArticleFromDto} from '../../../../models/helpCenter/utils'
-
 import {
     getArticlesResponseFixture,
     getSingleArticleEnglish as singleArticle,

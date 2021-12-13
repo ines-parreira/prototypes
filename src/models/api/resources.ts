@@ -2,10 +2,11 @@ import axios, {AxiosResponse} from 'axios'
 import rateLimit from 'axios-rate-limit'
 import {Store} from 'redux'
 
-import refreshIcon from '../../../img/icons/refresh.svg'
+import {NotificationStatus} from 'state/notifications/types'
+import {StoreDispatch} from 'state/types'
+import refreshIcon from 'assets/img/icons/refresh.svg'
+
 import {notify} from '../../state/notifications/actions'
-import {NotificationStatus} from '../../state/notifications/types'
-import {StoreDispatch} from '../../state/types'
 
 const client = createClient()
 

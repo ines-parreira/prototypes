@@ -2,11 +2,17 @@ const path = require('path')
 
 const _ = require('lodash')
 
-const outputPath = path.join(process.cwd(), 'g/static/private/css/new/')
+const outputPath = path.join(
+    process.cwd(),
+    'g/static/private/js/assets/css/new/'
+)
 
 const StyleDictionary = require('style-dictionary').extend({
     source: [
-        `${path.join(process.cwd(), 'g/static/private/tokens')}/**/*.json`,
+        `${path.join(
+            process.cwd(),
+            'g/static/private/js/assets/tokens'
+        )}/**/*.json`,
     ],
     platforms: {
         less: {

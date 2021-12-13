@@ -9,7 +9,8 @@ import React, {
 import {
     getHelpCenterClient,
     HelpCenterClient,
-} from '../../../../../../../rest_api/help_center_api/index'
+} from 'rest_api/help_center_api/index'
+
 import {getHelpCenterAuthApiBaseUrl} from '../../../../utils/environment'
 
 type UseHelpCenterApiInterface = {

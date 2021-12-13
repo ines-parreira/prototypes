@@ -1,17 +1,14 @@
 import React, {useState} from 'react'
-
 import {Button, UncontrolledTooltip} from 'reactstrap'
-
 import moment from 'moment'
-
 import classnames from 'classnames'
 
-import messengerIcon from '../../../../../img/integrations/facebook-messenger-dark-icon.svg'
-import instagramDirectMessageIcon from '../../../../../img/integrations/Instagram-direct-message-blue.svg'
+import messengerIcon from 'assets/img/integrations/facebook-messenger-dark-icon.svg'
+import instagramDirectMessageIcon from 'assets/img/integrations/Instagram-direct-message-blue.svg'
+
 import type {Actor, Meta, Source} from '../../../../models/ticket/types'
 
 import PrivateReplyModal from './PrivateReplyModal/PrivateReplyModal'
-
 import css from './PrivateReplyButton.less'
 
 type Props = {

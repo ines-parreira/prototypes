@@ -8,15 +8,14 @@ import {fromJS, List, Map} from 'immutable'
 
 import {IntegrationDataItemType} from '../models/integration/types'
 import {ApiListResponsePagination} from '../models/api/types'
+import {EditOrderAction} from '../constants/integrations/types/shopify'
+import {createClient} from '../models/api/resources'
+import {AuditLogEvent} from '../models/event/types'
 import type {
     PollingConfig,
     Refund,
     Edit_to_perform,
 } from '../constants/integrations/types/shopify'
-
-import {EditOrderAction} from '../constants/integrations/types/shopify'
-import {createClient} from '../models/api/resources'
-import {AuditLogEvent} from '../models/event/types'
 
 type GorgiasApiOptions = {
     requestsCancellation?: boolean

@@ -1,0 +1,98 @@
+{
+    "📺 Classic": {
+        "Feedback": {
+            "Variations": {
+                "Error_0": {"value": "#fef6f7"},
+                "Error_1": {"value": "#f89eab"},
+                "Error_2": {"value": "#f4697d"},
+                "Error_3": {"value": "#d6384d"},
+                "Error_4": {"value": "#a32e2e"},
+                "Success_0": {"value": "#f4fdfa"},
+                "Success_1": {"value": "#87e8c9"},
+                "Success_2": {"value": "#3adaa7"},
+                "Success_3": {"value": "#20c08c"},
+                "Success_4": {"value": "#1a9970"},
+                "Warning_0": {"value": "#fffbf7"},
+                "Warning_1": {"value": "#fed7a3"},
+                "Warning_2": {"value": "#ffc476"},
+                "Warning_3": {"value": "#fdab40"},
+                "Warning_4": {"value": "#d89238"}
+            },
+            "Error": {"value": "#f24f66"},
+            "Success": {"value": "#24d69d"},
+            "Warning": {"value": "#fd9b5a"}
+        },
+        "Main": {
+            "Variations": {
+                "Primary_0": {"value": "#f6f9ff"},
+                "Primary_1": {"value": "#9bc0fc"},
+                "Primary_2": {"value": "#5c98fa"},
+                "Primary_3": {"value": "#3373db"},
+                "Primary_4": {"value": "#3067c0"},
+                "Secondary_0": {"value": "#f9cbab"},
+                "Secondary_1": {"value": "#ef6c0e"},
+                "Secondary_2": {"value": "#dc630d"}
+            },
+            "Primary": {"value": "#4a8df9"},
+            "Secondary": {"value": "#ef6c0e"}
+        },
+        "Neutral": {
+            "Grey_0": {"value": "#ffffff"},
+            "Grey_1": {"value": "#f9f9f9"},
+            "Grey_2": {"value": "#f4f5f7"},
+            "Grey_3": {"value": "#d2d7de"},
+            "Grey_4": {"value": "#99a5b6"},
+            "Grey_5": {"value": "#556885"},
+            "Grey_6": {"value": "#1d365c"}
+        }
+    },
+    "🖥 Modern": {
+        "Feedback": {
+            "Variations": {
+                "Error_0": {"value": "#fef6f7"},
+                "Error_1": {"value": "#f89eab"},
+                "Error_2": {"value": "#f4697d"},
+                "Error_3": {"value": "#d6384d"},
+                "Error_4": {"value": "#a32e2e"},
+                "Success_0": {"value": "#f4fdfa"},
+                "Success_1": {"value": "#87e8c9"},
+                "Success_2": {"value": "#3adaa7"},
+                "Success_3": {"value": "#20c08c"},
+                "Success_4": {"value": "#1a9970"},
+                "Warning_0": {"value": "#fffbf7"},
+                "Warning_1": {"value": "#fed7a3"},
+                "Warning_2": {"value": "#ffc476"},
+                "Warning_3": {"value": "#fdab40"},
+                "Warning_4": {"value": "#d89238"}
+            },
+            "Success": {"value": "#24d69d"}
+        },
+        "Main": {
+            "Variations": {
+                "Secondary_0": {"value": "#fff4f3"},
+                "Secondary_1": {"value": "#ffb6b1"},
+                "Secondary_2": {"value": "#f58d86"},
+                "Primary_0": {"value": "#f6faff"},
+                "Primary_1": {"value": "#9ac8ff"},
+                "Primary_2": {"value": "#4f97eb"},
+                "Primary_3": {"value": "#156fda"},
+                "Primary_4": {"value": "#115cb5"}
+            },
+            "Gradient": {
+                "value": " linear-gradient(90.0deg, rgba(245, 141, 134, 1.0) 0%, rgba(0, 117, 255, 1.0) 100%)"
+            },
+            "Human": {"value": "#fff9f4"},
+            "Primary": {"value": "#0075ff"},
+            "Secondary": {"value": "#f58d86"}
+        },
+        "Neutral": {
+            "Neutral_0": {"value": "#ffffff"},
+            "Neutral_1": {"value": "#f9f9f9"},
+            "Neutral_2": {"value": "#eeeeee"},
+            "Neutral_3": {"value": "#dddddd"},
+            "Neutral_4": {"value": "#afafaf"},
+            "Neutral_5": {"value": "#6a6a6a"},
+            "Neutral_6": {"value": "#161616"}
+        }
+    }
+}

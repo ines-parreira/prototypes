@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import {Button as ReactstrapButton} from 'reactstrap'
 import classnames from 'classnames'
 
-import upgradeIcon from '../../../../../img/icons/upgrade-icon.svg'
+import upgradeIcon from 'assets/img/icons/upgrade-icon.svg'
 
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
 

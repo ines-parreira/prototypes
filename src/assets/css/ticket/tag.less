@@ -1,0 +1,45 @@
+/* ticket-tags
+ */
+
+.label.ticket-tag {
+    position: relative;
+    margin-right: 0.4em;
+    margin-bottom: 0 !important;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    background-color: transparent;
+    border: 1px solid @lightBlue;
+    transition: all 0.12s;
+
+    color: @lightBlue;
+    text-transform: uppercase;
+}
+
+.label.ticket-tag .icon.close {
+    position: absolute;
+    top: 0.6em;
+    right: 0.6em;
+
+    opacity: 0;
+    transform: translate3d(-1em, 0, 0);
+    transition: all 0.08s;
+}
+
+.ticket-tag:not(.no-icon):hover,
+.ticket-tag:not(.no-icon):active {
+    padding-right: 1.6em;
+}
+
+.ticket-tag:hover .icon.close,
+.ticket-tag:active .icon.close {
+    opacity: 0.5;
+    transform: translate3d(0, 0, 0);
+}
+
+.ticket-tags-wrapper {
+    display: inline-block;
+
+    .label.ticket-tag {
+        margin-bottom: 5px !important;
+    }
+}

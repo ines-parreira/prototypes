@@ -1,11 +1,8 @@
 import _difference from 'lodash/difference'
 import _isEqual from 'lodash/isEqual'
-
 import React, {useState, useMemo} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-
 import {AxiosError} from 'axios'
-
 import {useAsyncFn} from 'react-use'
 
 import {sendIntentFeedbackSuccess} from '../../../../../../state/ticket/actions'
@@ -15,13 +12,12 @@ import {getCurrentAccountState} from '../../../../../../state/currentAccount/sel
 import {getCurrentUser} from '../../../../../../state/currentUser/selectors'
 import {humanizeString} from '../../../../../../utils'
 import client from '../../../../../../models/api/resources'
-
+import {notify} from '../../../../../../state/notifications/actions'
+import type {RootState} from '../../../../../../state/types'
 import type {
     TicketMessage,
     TicketMessageIntent,
 } from '../../../../../../models/ticket/types'
-import type {RootState} from '../../../../../../state/types'
-import {notify} from '../../../../../../state/notifications/actions'
 
 import {Messages} from './constants'
 import {IntentsFeedbackDropdown} from './IntentsFeedbackDropdown'

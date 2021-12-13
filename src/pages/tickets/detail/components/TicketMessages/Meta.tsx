@@ -2,13 +2,11 @@ import classnames from 'classnames'
 import React, {ReactNode} from 'react'
 import {Link} from 'react-router-dom'
 import moment from 'moment'
-
 import ReactStars from 'react-rating-stars-component'
 
 import {TicketVias} from '../../../../../business/ticket'
 import {Meta as MetaType, Source} from '../../../../../models/ticket/types'
 import {TicketMessageSourceType} from '../../../../../business/types/ticket'
-
 import {starRatingProps} from '../../../../common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/yotpo/Reviews'
 
 import css from './Meta.less'

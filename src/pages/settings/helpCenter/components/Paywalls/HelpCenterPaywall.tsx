@@ -5,12 +5,13 @@ import React, {useState} from 'react'
 import {useSelector} from 'react-redux'
 import {Map} from 'immutable'
 
+import helpCenterImagePreview from 'assets/img/paywalls/screens/helpcenter-steve-madden.png'
+
 import UpgradeButton from '../../../../common/components/UpgradeButton'
 import PageHeader from '../../../../common/components/PageHeader'
 import {getCurrentPlan, getPlans} from '../../../../../state/billing/selectors'
 import {openChat} from '../../../../../utils'
 import {PlanInterval} from '../../../../../models/billing/types'
-import helpCenterImagePreview from '../../../../../../img/paywalls/screens/helpcenter-steve-madden.png'
 import {
     convertLegacyPlanNameToPublicPlanName,
     PlanName,

@@ -7,7 +7,7 @@ import NotificationsSystem from 'reapop'
 import {RouteComponentProps} from 'react-router-dom'
 import {Map} from 'immutable'
 
-import '../../css/main.less'
+import 'assets/css/main.less'
 import pendingMessageManager from '../services/pendingMessageManager/pendingMessageManager'
 import pollingManager from '../services/pollingManager'
 import shortcutManager from '../services/shortcutManager'

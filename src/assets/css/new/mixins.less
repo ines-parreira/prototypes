@@ -1,0 +1,129 @@
+@import 'colors';
+
+// inspired by Bootstrap 4 SCSS mixins https://github.com/twbs/bootstrap/tree/v4-dev/scss/mixins
+
+.border-color(@color) {
+    border-color: multiply(@color, #efefef);
+}
+
+.button-variant(@color; @bg; @lightBg; @activeBg) {
+    // important because we can have buttons as <a/> and we already change color of <a/>
+    color: @color !important;
+    background-color: @bg;
+
+    .border-color(@bg);
+
+    &:hover {
+        background-color: @lightBg;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+
+        .border-color(@lightBg);
+    }
+
+    &.disabled,
+    &:disabled {
+        background-color: lighten(@bg, 22%);
+        box-shadow: none;
+        .border-color(lighten(@bg, 22%));
+
+        color: fade(@color, 10%);
+    }
+
+    &:active,
+    &.active,
+    .show > &.dropdown-toggle {
+        background-color: @activeBg !important;
+        box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.05) !important;
+
+        .border-color(@activeBg) !important;
+    }
+
+    &:focus,
+    &.focus {
+        background-color: @bg;
+        .border-color(@bg);
+    }
+}
+
+/**
+ * Temporary mixin for rebranding
+ */
+.TEMP_button-variant(@color; @bg; @border; @hoverBorder; @activeBorder; @disabledColor: fade(@color, 10%)) {
+    // important because we can have buttons as <a/> and we already change color of <a/>
+    color: @color !important;
+    background-color: @bg;
+    border-color: @border;
+
+    &:hover {
+        background-color: @bg;
+        box-shadow: 0px 1px 2px 0px fade(@TEMP_neutral5, 14%);
+        border-color: @hoverBorder;
+    }
+
+    &.disabled,
+    &:disabled {
+        background-color: transparent;
+        box-shadow: none;
+        border-color: @border;
+        color: @disabledColor !important;
+    }
+
+    &:active,
+    &.active,
+    .show > &.dropdown-toggle {
+        background-color: @bg !important;
+        box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.05) !important;
+        border-color: @activeBorder !important;
+    }
+
+    &:focus,
+    &.focus {
+        background-color: @bg;
+        .border-color(@bg);
+    }
+}
+
+.button-outline-variant(@color; @color-hover: #fff) {
+    color: @color;
+    background-color: transparent;
+    background-image: none;
+    border-color: @color;
+
+    &:hover {
+        color: @color-hover;
+        background-color: @color;
+        border-color: @color;
+    }
+
+    &.disabled,
+    &:disabled {
+        color: @color;
+        background-color: transparent;
+    }
+
+    &:active,
+    &.active,
+    .show > &.dropdown-toggle {
+        color: @color-hover;
+        background-color: @color;
+        border-color: @color;
+    }
+}
+
+.badge-variant(@background; @color: #fff) {
+    color: @color;
+    background-color: @background;
+
+    &[href] {
+        &:focus,
+        &:hover {
+            background-color: darken(@background, 10%);
+        }
+    }
+}
+
+// used for @media rules
+@mobiles: ~'only screen and (max-width: 768px)';
+@tablets: ~'only screen and (min-width: 768px) and (max-width: 992px)';
+@desktops: ~'only screen and (min-width: 992px)';
+@large-desktops: ~'only screen and (min-width: 1200px)';

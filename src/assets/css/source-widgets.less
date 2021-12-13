@@ -1,0 +1,115 @@
+@import '~css/new/colors';
+
+.source-widgets {
+    .data-fields {
+        width: 100%;
+        box-shadow: none;
+        margin-bottom: 12px;
+
+        > .header {
+            background-color: #eef3f9;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+            padding: 1em;
+
+            .title {
+                font-weight: 600;
+                font-size: 1.2em;
+                margin-bottom: 8px;
+            }
+        }
+
+        .widgets-list {
+            & > div {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+                align-items: baseline;
+            }
+
+            .sortable-chosen,
+            .sortable-chosen .card {
+                background-color: fade(@purple, 10%);
+            }
+
+            .card {
+                width: 100%;
+
+                &.wrapper {
+                    border-color: #e2cca2;
+
+                    & > .header {
+                        background-color: #fffaf3;
+                        border-color: #e2cca2;
+                        color: #573a08;
+                        padding: 1em;
+                    }
+
+                    &.shopify {
+                        border-color: #b2cf8a;
+
+                        & > .header {
+                            background-color: #e0ecc8;
+                            border-color: #b2cf8a;
+                            color: #5a7529;
+                        }
+                    }
+
+                    &.recharge {
+                        border-color: #2aafbf;
+
+                        & > .header {
+                            background-color: #d7efff;
+                            border-color: #2aafbf;
+                            color: #3789a6;
+                        }
+                    }
+
+                    &.smooch_inside {
+                        border-color: #e2a2a2;
+
+                        & > .header {
+                            background-color: #ffd7d7;
+                            border-color: #e2a2a2;
+                            color: #570808;
+                        }
+                    }
+
+                    &.magento2 {
+                        border-color: #ea5202;
+
+                        & > .header {
+                            background-color: #ffdcc1;
+                            border-color: #ea5202;
+                            color: #563110;
+                        }
+                    }
+
+                    &.yotpo {
+                        border-color: #2f84ed;
+
+                        & > .header {
+                            background-color: #4a8df9;
+                            border-color: #2f84ed;
+                            color: #ffffff;
+                        }
+                    }
+
+                    &.klaviyo {
+                        border-color: #0f5802;
+
+                        & > .header {
+                            background-color: #9bc69a;
+                            border-color: #015102;
+                            color: #1f4e01;
+                        }
+                    }
+                }
+
+                .card-title {
+                    margin: 0 !important;
+                }
+            }
+        }
+    }
+}

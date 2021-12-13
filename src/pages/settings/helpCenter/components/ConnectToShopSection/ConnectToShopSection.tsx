@@ -4,13 +4,13 @@ import {useSelector} from 'react-redux'
 import {Map} from 'immutable'
 import classNames from 'classnames'
 
-import Modal from '../../../../common/components/Modal'
+import shopify from 'assets/img/integrations/shopify.png'
 
+import Modal from '../../../../common/components/Modal'
 import SelectField from '../../../../common/forms/SelectField/SelectField'
 import {IntegrationType} from '../../../../../models/integration/types'
 import {getIntegrationsByTypes} from '../../../../../state/integrations/selectors'
 import {Option} from '../../../../common/forms/SelectField/types'
-import shopify from '../../../../../../img/integrations/shopify.png'
 import {HelpCenter} from '../../../../../models/helpCenter/types'
 import Tooltip from '../../../../common/components/Tooltip'
 

@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react'
 
-import emptyTicketList from '../../../../../../img/empty-ticket-list.svg'
+import emptyTicketList from 'assets/img/empty-ticket-list.svg'
 
 type Props = {
     totalClosedTickets: number | null

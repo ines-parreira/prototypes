@@ -1,0 +1,39 @@
+/* JSON Tree */
+
+.json-tree {
+    padding: 15px;
+    border-radius: 3px;
+    background: @darkWhite;
+    text-align: left;
+    font-family: monospace;
+    font-size: 9pt;
+
+    .field {
+        margin: 0 0 1px !important;
+    }
+
+    .content {
+        padding-left: 10px;
+    }
+
+    .string-key {
+        // nothing yet
+    }
+
+    .string-value {
+        color: @lightBlue;
+        white-space: pre-line;
+    }
+
+    .number-value {
+        color: #43a62e;
+    }
+
+    .boolean-value {
+        color: #d25252;
+    }
+
+    .null-value {
+        color: #caae1e;
+    }
+}

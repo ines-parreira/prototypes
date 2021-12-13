@@ -12,7 +12,8 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import '../../../../css/typography.less'
+import 'assets/css/typography.less'
+
 import ToggleButton from '../../../pages/common/components/ToggleButton'
 import shortcutManager from '../../../services/shortcutManager/index'
 import * as billingSelectors from '../../../state/billing/selectors'

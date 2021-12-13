@@ -17,6 +17,7 @@ import {
 } from 'reactstrap'
 
 import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from '../../../../../../constants/integration'
+
 import {
     getForwardingEmailAddress,
     getRedirectUri,

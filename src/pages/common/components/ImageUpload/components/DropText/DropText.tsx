@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import React, {FC} from 'react'
 
-import imageIcon from '../../../../../../../img/icons/image-icon.svg'
+import imageIcon from 'assets/img/icons/image-icon.svg'
 
 import css from './DropText.less'
 

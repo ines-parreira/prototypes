@@ -1,0 +1,20 @@
+@import '../colors';
+
+.form-control {
+    border: 1px solid @darkQuartz;
+    border-radius: 3px;
+    &:focus {
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.1);
+    }
+}
+
+.form-row {
+    margin-left: -10px;
+    margin-right: -10px;
+}
+
+.form-row > .col,
+.form-row > [class*='col-'] {
+    padding-left: 10px;
+    padding-right: 10px;
+}

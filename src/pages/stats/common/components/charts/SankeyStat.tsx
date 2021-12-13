@@ -5,14 +5,12 @@ import {
     ScriptableContext,
     ChartOptions,
 } from 'chart.js'
-
 import {Map} from 'immutable'
 import _isEqual from 'lodash/isEqual'
 import _merge from 'lodash/merge'
+import ChartComponent from 'react-chartjs-2'
 
 import {chartMaxHeight} from '../../../../../config/stats'
-
-import ChartComponent from 'react-chartjs-2'
 
 type Props = {
     data: Map<any, any>

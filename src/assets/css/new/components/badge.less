@@ -1,0 +1,65 @@
+@import '../colors';
+
+.badge {
+    border-radius: 3px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    & + & {
+        margin-left: 9px;
+    }
+}
+
+/* pill badge
+ */
+.badge.badge-pill {
+    border-radius: 9px;
+}
+
+/* tag style on badge
+ */
+.badge.badge-tag {
+    position: relative;
+    padding: 0.68em;
+    background-color: transparent;
+    border-radius: 3px;
+    transition: all 0.2s linear;
+
+    color: @purple;
+
+    /* derive the background color from the text color
+   */
+    &:before {
+        content: '';
+        position: absolute;
+        margin: -0.68em;
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: currentColor;
+        opacity: 0.05;
+        border-radius: inherit;
+
+        pointer-events: none;
+    }
+}
+
+/* dot badge
+ * for notification numbers
+ */
+.badge-dot {
+    right: -6px;
+    width: 18px;
+    height: 18px;
+    padding: 0.25em 0;
+    border-radius: 50%;
+
+    text-align: center;
+}
+
+.badge-dot,
+.btn .badge-dot {
+    position: absolute;
+    top: -6px;
+}

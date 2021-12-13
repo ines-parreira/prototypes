@@ -1,0 +1,87 @@
+@import './new/colors';
+@import './new/mixins';
+
+// no margin-bottom on last checkbox in a form-group
+.form-group > .form-check:last-child {
+    margin-bottom: 0;
+}
+
+.form-group {
+    position: relative;
+
+    &.binary-choice,
+    &.multi-select-binary-choice {
+        margin: 20px 0 !important;
+
+        .label {
+            font-weight: 600;
+            margin: 10px 5%;
+        }
+
+        .options {
+            width: 100%;
+            display: inline-flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+        }
+
+        .option {
+            border: 1px solid @lightGrey;
+            border-radius: 3px;
+            padding: 10px;
+            cursor: pointer;
+
+            &.disabled {
+                cursor: default;
+                opacity: 0.5;
+            }
+
+            &.active {
+                background: @blueBackground;
+                border: 1px solid @lightBlue;
+            }
+        }
+    }
+
+    &.binary-choice {
+        .options .option {
+            width: 45%;
+            margin: 0 5%;
+        }
+    }
+
+    &.multi-select-binary-choice {
+        .label {
+            margin: 10px 5%;
+        }
+
+        .options {
+            .option-container {
+                width: 45%;
+                margin: 0 5%;
+
+                .option {
+                    text-align: left;
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    }
+
+    &.inline {
+        display: inline-block;
+    }
+}
+
+.action.field label {
+    cursor: pointer;
+}
+
+// react-select higher menu z-index
+.Select-menu-outer {
+    z-index: 10 !important;
+}
+
+.Select-menu {
+    overflow-x: hidden;
+}

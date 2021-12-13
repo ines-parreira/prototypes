@@ -1,6 +1,6 @@
 import React from 'react'
 
-import icon from '../../../../../img/icons/invalid-filters.svg'
+import icon from 'assets/img/icons/invalid-filters.svg'
 
 import css from './DeactivatedViewMessage.less'
 

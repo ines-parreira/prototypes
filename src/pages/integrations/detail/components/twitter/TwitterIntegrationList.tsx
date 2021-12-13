@@ -1,23 +1,17 @@
 import React from 'react'
-
 import {List, Map} from 'immutable'
-
 import {connect, ConnectedProps} from 'react-redux'
 
+import twitterWhiteIcon from 'assets/img/integrations/twitter-white.svg'
+
 import IntegrationList from '../IntegrationList'
-
 import {IntegrationType} from '../../../../../models/integration/types'
-
-import twitterWhiteIcon from '../../../../../../img/integrations/twitter-white.svg'
-
 import {RootState} from '../../../../../state/types'
 import {getCurrentAccountFeatures} from '../../../../../state/currentAccount/selectors'
 import {AccountFeature} from '../../../../../state/currentAccount/types'
-
 import IntegrationListLimitAlert from '../IntegrationListLimitAlert'
 
 import TwitterIntegrationListItem from './TwitterIntegrationListItem'
-
 import css from './TwitterIntegrationList.less'
 
 type OwnProps = {

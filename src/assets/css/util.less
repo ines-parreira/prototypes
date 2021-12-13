@@ -1,0 +1,211 @@
+/* utils
+ */
+
+input[readonly] {
+    background: #f5fafd !important;
+}
+
+.label.thin {
+    padding: 3px 6px;
+}
+
+i.icon.action {
+    cursor: pointer;
+
+    &.remove.modal-close {
+        float: right;
+    }
+}
+
+.one-fixed {
+    width: 60px !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.max-width {
+    max-width: 800px;
+}
+
+.ui.basic.button {
+    text-transform: uppercase;
+}
+
+.padding-10 {
+    padding: 10px;
+}
+
+.ui.tiny.popup.inverted {
+    font-family: Sans-serif;
+    white-space: pre;
+}
+
+.ui.wide.popup {
+    width: 100%;
+}
+
+.ui.label.smaller {
+    padding: 0.2em 0.4em 0.3em;
+}
+
+.flex-spaced-row {
+    display: flex !important;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+
+    &.no-wrap {
+        flex-wrap: nowrap;
+    }
+}
+
+.flex {
+    display: flex;
+
+    &.flex-center {
+        justify-content: center;
+        align-items: center;
+    }
+
+    &.flex-column {
+        flex-direction: column;
+    }
+}
+
+/*
+  Margin and padding helper
+*/
+
+@types: p padding, m margin;
+@positions: t top, b bottom, r right, l left;
+@spaces: 0, 5, 10, 15, 20, 25, 30;
+
+// Margin & padding
+.margin-padding-variant(@i:1) when (@i <= length(@types)) {
+    .margin-padding-variant-1(@j:1) when (@j <= length(@spaces)) {
+        @typeKey: extract(extract(@types, @i), 1);
+        @typeValue: extract(extract(@types, @i), 2);
+        @spaceValue: extract(@spaces, @j);
+
+        // all directions
+        .@{typeKey}@{spaceValue} {
+            @{typeValue}: unit(@spaceValue, px);
+        }
+        .@{typeKey}@{spaceValue}i {
+            @{typeValue}: unit(@spaceValue, px) !important;
+        }
+
+        // vertical
+        .@{typeKey}v@{spaceValue} {
+            @{typeValue}-top: unit(@spaceValue, px);
+            @{typeValue}-bottom: unit(@spaceValue, px);
+        }
+        .@{typeKey}v@{spaceValue}i {
+            @{typeValue}-top: unit(@spaceValue, px) !important;
+            @{typeValue}-bottom: unit(@spaceValue, px) !important;
+        }
+
+        // horizontal
+        .@{typeKey}h@{spaceValue} {
+            @{typeValue}-right: unit(@spaceValue, px);
+            @{typeValue}-left: unit(@spaceValue, px);
+        }
+        .@{typeKey}h@{spaceValue}i {
+            @{typeValue}-right: unit(@spaceValue, px) !important;
+            @{typeValue}-left: unit(@spaceValue, px) !important;
+        }
+
+        .margin-padding-variant-2(@k:1) when (@k <= length(@positions)) {
+            @positionKey: extract(extract(@positions, @k), 1);
+            @positionValue: extract(extract(@positions, @k), 2);
+
+            // for a specific direction
+            // positive value
+            // E.g : mr5 - margin-right: 5px;
+            .@{typeKey}@{positionKey}@{spaceValue} {
+                @{typeValue}-@{positionValue}: unit(@spaceValue, px);
+            }
+            .@{typeKey}@{positionKey}@{spaceValue}i {
+                @{typeValue}-@{positionValue}: unit(@spaceValue, px) !important;
+            }
+
+            // for a specific direction
+            // negative value
+            // E.g : mr5n - margin-right: -5px;
+            .@{typeKey}@{positionKey}@{spaceValue}n {
+                @{typeValue}-@{positionValue}: unit(-@spaceValue, px);
+            }
+            .@{typeKey}@{positionKey}@{spaceValue}ni {
+                @{typeValue}-@{positionValue}: unit(
+                    -@spaceValue,
+                    px
+                ) !important;
+            }
+
+            .margin-padding-variant-2(@k + 1);
+        }
+        .margin-padding-variant-2();
+        .margin-padding-variant-1(@j + 1);
+    }
+    .margin-padding-variant-1();
+    .margin-padding-variant(@i + 1);
+}
+
+.margin-padding-variant();
+
+/**
+ * Text helpers
+ */
+
+.text-underline {
+    text-decoration: underline !important;
+}
+
+.text-light-black {
+    color: @lightBlack;
+}
+
+.text-black {
+    color: @blockTextColor;
+}
+
+.page-header {
+    border-bottom: 1px solid @neutral4;
+    min-height: 60px;
+    padding: 0 30px;
+    font-size: 20px;
+    margin-bottom: 20px;
+
+    h1 {
+        font-size: 20px;
+        margin: 0;
+    }
+
+    .breadcrumb {
+        padding: 0;
+        margin: 0;
+    }
+
+    .text-faded {
+        font-size: 15px;
+    }
+}
+
+.ta-center {
+    text-align: center;
+}
+
+.ta-left {
+    text-align: left;
+}
+
+.ta-right {
+    text-align: right;
+}

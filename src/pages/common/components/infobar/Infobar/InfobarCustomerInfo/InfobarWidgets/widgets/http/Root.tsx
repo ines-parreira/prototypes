@@ -1,7 +1,8 @@
 import React, {ReactNode} from 'react'
 import {Map} from 'immutable'
 
-import logo from '../../../../../../../../../../img/integrations/http.png'
+import logo from 'assets/img/integrations/http.png'
+
 import {CardHeaderTitle} from '../CardHeaderTitle'
 import {CardHeaderIcon} from '../CardHeaderIcon'
 import {renderTemplate} from '../../../../../../../utils/template'

@@ -2,7 +2,8 @@ import React, {ReactNode} from 'react'
 import {Map} from 'immutable'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
-import logo from '../../../../../../../../../../img/infobar/recharge.svg'
+import logo from 'assets/img/infobar/recharge.svg'
+
 import {renderTemplate} from '../../../../../../../utils/template'
 import {CardHeaderDetails} from '../CardHeaderDetails'
 import {CardHeaderValue} from '../CardHeaderValue'

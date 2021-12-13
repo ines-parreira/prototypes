@@ -2,7 +2,8 @@ import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
 import _noop from 'lodash/noop'
 
-import refreshIcon from '../../../../../img/icons/refresh.svg'
+import refreshIcon from 'assets/img/icons/refresh.svg'
+
 import {NotificationStatus} from '../../../../state/notifications/types'
 
 import BannerNotification from './BannerNotification'

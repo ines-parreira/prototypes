@@ -2,8 +2,8 @@ import React, {useState, Children, ReactNode} from 'react'
 import classnames from 'classnames'
 import {Button} from 'reactstrap'
 
-import expandDown from '../../../../../../../img/infobar/expand-down.svg'
-import expandUp from '../../../../../../../img/infobar/expand-up-blue.svg'
+import expandDown from 'assets/img/infobar/expand-down.svg'
+import expandUp from 'assets/img/infobar/expand-up-blue.svg'
 
 import css from './ShowMore.less'
 

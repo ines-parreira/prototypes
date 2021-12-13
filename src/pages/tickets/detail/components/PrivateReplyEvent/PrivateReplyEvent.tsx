@@ -1,17 +1,16 @@
 import React, {useState} from 'react'
 import {fromJS, Map} from 'immutable'
-
 import classnames from 'classnames'
-
 import {Button, Card, CardBody} from 'reactstrap'
 
-import {AgentLabel, DatetimeLabel} from '../../../../common/utils/labels'
-import TicketMessageEmbeddedCard from '../../../../common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
+import facebookIcon from 'assets/img/integrations/facebook-dark-icon.svg'
+import facebookMessengerIcon from 'assets/img/integrations/facebook-messenger-dark-event-icon.svg'
+import InstagramDirectMessageIcon from 'assets/img/integrations/Instagram-direct-message-blue.svg'
+import InstagramIcon from 'assets/img/integrations/instagram-icon-blue.svg'
+
 import {Actor, Meta, Source} from '../../../../../models/ticket/types'
-import facebookIcon from '../../../../../../img/integrations/facebook-dark-icon.svg'
-import facebookMessengerIcon from '../../../../../../img/integrations/facebook-messenger-dark-event-icon.svg'
-import InstagramDirectMessageIcon from '../../../../../../img/integrations/Instagram-direct-message-blue.svg'
-import InstagramIcon from '../../../../../../img/integrations/instagram-icon-blue.svg'
+import TicketMessageEmbeddedCard from '../../../../common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
+import {AgentLabel, DatetimeLabel} from '../../../../common/utils/labels'
 import {renderDetails} from '../Event'
 
 import css from './PrivateReplyEvent.less'

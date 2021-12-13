@@ -24,7 +24,7 @@ export const getIconUrl = (type: string): string => {
 
 export const getIconFromUrl = (url: string): string => {
     //eslint-disable-next-line  @typescript-eslint/no-var-requires
-    return url ? (require(`../../../img/${url}`) as string) : ''
+    return url ? (require(`assets/img/${url}`) as string) : ''
 }
 
 export const getIconFromType = (type: string): string => {

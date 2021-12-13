@@ -1,16 +1,16 @@
-import {Locale} from '../../../../models/helpCenter/types'
+import enUs from 'assets/img/flags/en-us.svg'
+import frFr from 'assets/img/flags/fr-fr.svg'
+import frCa from 'assets/img/flags/fr-ca.svg'
+import csCz from 'assets/img/flags/cs-cz.svg'
+import daDk from 'assets/img/flags/da-dk.svg'
+import nlNl from 'assets/img/flags/nl-nl.svg'
+import deDe from 'assets/img/flags/de-de.svg'
+import itIt from 'assets/img/flags/it-it.svg'
+import noNo from 'assets/img/flags/no-no.svg'
+import esEs from 'assets/img/flags/es-es.svg'
+import svSe from 'assets/img/flags/sv-se.svg'
 
-import enUs from '../../../../../img/flags/en-us.svg'
-import frFr from '../../../../../img/flags/fr-fr.svg'
-import frCa from '../../../../../img/flags/fr-ca.svg'
-import csCz from '../../../../../img/flags/cs-cz.svg'
-import daDk from '../../../../../img/flags/da-dk.svg'
-import nlNl from '../../../../../img/flags/nl-nl.svg'
-import deDe from '../../../../../img/flags/de-de.svg'
-import itIt from '../../../../../img/flags/it-it.svg'
-import noNo from '../../../../../img/flags/no-no.svg'
-import esEs from '../../../../../img/flags/es-es.svg'
-import svSe from '../../../../../img/flags/sv-se.svg'
+import {Locale} from '../../../../models/helpCenter/types'
 
 // TODO: create ENUM from FLAGS somewhere in a shared folder
 const FLAGS: {[key: string]: string} = {

@@ -6,7 +6,8 @@ import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 import {Map, List} from 'immutable'
 
-import navbarCss from '../../../../../css/navbar.less'
+import navbarCss from 'assets/css/navbar.less'
+
 import {MAX_TICKET_COUNT_PER_VIEW} from '../../../../config/views'
 import {getPluralObjectName} from '../../../../utils'
 import Tooltip from '../Tooltip'

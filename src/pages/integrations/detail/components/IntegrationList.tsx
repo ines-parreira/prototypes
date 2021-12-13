@@ -13,6 +13,7 @@ import PageHeader from '../../../common/components/PageHeader'
 import Alert, {AlertType} from '../../../common/components/Alert/Alert'
 
 import {IntegrationType} from '../../../../models/integration/types'
+
 import {NotificationStatus} from '../../../../state/notifications/types'
 import css from '../../../settings/settings.less'
 

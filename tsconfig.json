@@ -16,20 +16,12 @@
         "strict": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
+        "baseUrl": "./g/static/private/js",
+        "typeRoots": ["./g/static/private/js/types", "./node_modules/@types"],
         "paths": {
-            "moment-timezone": [
-                "node_modules/@types/moment-timezone/node_modules/moment-timezone/index.d.ts"
-            ],
-            "react-chartjs-2": ["types/react-chartjs-2.d.ts"]
+            "react-chartjs-2": ["./types/react-chartjs-2.d.ts"]
         },
-        "baseUrl": ".",
         "types": ["stripe-v2", "webpack-env", "twemoji"]
     },
-    "include": [
-        "g/static/private/js/**/*.ts",
-        "g/static/private/js/**/*.d.ts",
-        "g/static/private/js/**/*.tsx",
-        "types/**/*.d.ts"
-    ],
-    "exclude": ["node_modules"]
+    "include": ["**/*.ts", "**/*.d.ts", "**/*.tsx"]
 }

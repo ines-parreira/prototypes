@@ -13,6 +13,9 @@ import {
     Container,
 } from 'reactstrap'
 
+import pageIconDefault from 'assets/img/integrations/facebook-page.png'
+import warningIcon from 'assets/img/icons/warning2.svg'
+
 import history from '../../../../../history'
 import Loader from '../../../../../common/components/Loader/Loader'
 import ToggleButton from '../../../../../common/components/ToggleButton'
@@ -24,8 +27,7 @@ import {
     getOnboardingMeta,
     getOnboardingIntegrations,
 } from '../../../../../../state/integrations/selectors'
-import pageIconDefault from '../../../../../../../img/integrations/facebook-page.png'
-import warningIcon from '../../../../../../../img/icons/warning2.svg'
+
 import {
     canEnableMetaSetting,
     FacebookRole,

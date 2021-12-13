@@ -1,5 +1,4 @@
 import classNames from 'classnames'
-
 import React, {ChangeEvent, useRef, useState, useEffect} from 'react'
 import {useSelector} from 'react-redux'
 import {Link, useHistory} from 'react-router-dom'
@@ -12,30 +11,24 @@ import {
     Spinner,
 } from 'reactstrap'
 import {useAsyncFn} from 'react-use'
-
 import {fromJS, Map} from 'immutable'
 import {AxiosError} from 'axios'
 
+import zendeskLogo from 'assets/img/integrations/zendesk.png'
+import helpdocsLogo from 'assets/img/integrations/helpdocs.png'
+
 import {notify} from '../../../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../../../state/notifications/types'
-
 import Loader from '../../../../../../common/components/Loader/Loader'
 import useAppDispatch from '../../../../../../../hooks/useAppDispatch'
 import {getCurrentHelpCenter} from '../../../../../../../state/entities/helpCenters/selectors'
 import {helpCenterUpdated} from '../../../../../../../state/entities/helpCenters/actions'
-
 import {uploadFiles} from '../../../../../../../utils'
-
 import {useHelpCenterApi} from '../../../../hooks/useHelpCenterApi'
-
 import {saveFileAsDownloaded} from '../../../../../../../utils/file'
-
-import zendeskLogo from '../../../../../../../../img/integrations/zendesk.png'
-import helpdocsLogo from '../../../../../../../../img/integrations/helpdocs.png'
 import {HOTSWAP_SDK_URL} from '../../../../../../../config'
 
 import css from './ImportSection.less'
-
 import {
     buildCsvColumnMatchingUrl,
     fileIsTooBig,

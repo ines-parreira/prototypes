@@ -4,6 +4,7 @@ import React from 'react'
 import {Map, List} from 'immutable'
 import _isEqual from 'lodash/isEqual'
 import {Link} from 'react-router-dom'
+import {Bar} from 'react-chartjs-2'
 
 import {
     colors as colorsConfig,
@@ -14,8 +15,6 @@ import StatsHelpIcon from '../StatsHelpIcon'
 import Tooltip from '../../../../common/components/Tooltip'
 
 import css from './NormalizedBarStat.less'
-
-import {Bar} from 'react-chartjs-2'
 
 type Props = {
     data: Map<any, any>

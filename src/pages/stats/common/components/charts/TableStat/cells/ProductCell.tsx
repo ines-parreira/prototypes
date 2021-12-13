@@ -1,6 +1,6 @@
 import React from 'react'
 
-import imagePlaceholder from '../../../../../../../../img/icons/insert-photo.svg'
+import imagePlaceholder from 'assets/img/icons/insert-photo.svg'
 
 import css from './ProductCell.less'
 

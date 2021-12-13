@@ -1,7 +1,8 @@
 import {useEffect, useMemo, useState} from 'react'
 import {useSelector} from 'react-redux'
 
-import {Paths} from '../../../../../../../rest_api/help_center_api/client.generated'
+import {Paths} from 'rest_api/help_center_api/client.generated'
+
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {Category} from '../../../../models/helpCenter/types'
 import {createCategoryFromDto} from '../../../../models/helpCenter/utils'

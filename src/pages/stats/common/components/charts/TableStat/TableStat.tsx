@@ -8,6 +8,9 @@ import {Table} from 'reactstrap'
 import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import classnames from 'classnames'
 
+import expandDown from 'assets/img/infobar/expand-down.svg'
+import expandUp from 'assets/img/infobar/expand-up-blue.svg'
+
 import Tooltip from '../../../../../common/components/Tooltip'
 import {DatetimeLabel} from '../../../../../common/utils/labels'
 import {
@@ -28,8 +31,6 @@ import DistributionVariantStat from '../DistributionVariantStat'
 import StatPercentageDiff from '../../StatPercentageDiff'
 import StatsHelpIcon from '../../StatsHelpIcon'
 import {TicketChannel} from '../../../../../../business/types/ticket'
-import expandDown from '../../../../../../../img/infobar/expand-down.svg'
-import expandUp from '../../../../../../../img/infobar/expand-up-blue.svg'
 
 import ProductCell from './cells/ProductCell'
 import css from './TableStat.less'

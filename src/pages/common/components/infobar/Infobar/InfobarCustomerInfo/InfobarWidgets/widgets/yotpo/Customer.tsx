@@ -2,14 +2,14 @@ import React, {ReactNode} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import type {Map} from 'immutable'
 
-import logo from '../../../../../../../../../../img/infobar/yotpo.svg'
+import logo from 'assets/img/infobar/yotpo.svg'
+
 import {CardHeaderDetails} from '../CardHeaderDetails'
 import {CardHeaderTitle} from '../CardHeaderTitle'
 import {CardHeaderIcon} from '../CardHeaderIcon'
 import ExpandAllButton from '../ExpandAllButton'
 import {CardHeaderBadge} from '../CardHeaderBadge'
 import {CardHeaderStatusLabel} from '../CardHeaderStatusLabel'
-
 import {CardHeaderValue} from '../CardHeaderValue'
 
 import {CardHeaderYotpoRatingThumbs} from './custom/CardHeaderYotpoRatingThumbs'

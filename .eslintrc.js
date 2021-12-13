@@ -36,6 +36,18 @@ module.exports = {
         amplitude: false,
     },
     plugins: ['prettier'],
+    ignorePatterns: [
+        'g/static/private/js/types/**',
+        'g/static/private/js/rest_api/help_center_api/**',
+    ],
+    settings: {
+        'import/resolver': {
+            node: {
+                extensions: ['.js', '.jsx', '.ts', '.tsx', '.d.ts'],
+                paths: ['g/static/private/js'],
+            },
+        },
+    },
     overrides: [
         {
             files: ['*.ts', '*.tsx'],
@@ -43,6 +55,19 @@ module.exports = {
                 ...commonRules,
                 'no-unused-vars': 'off',
                 'import/default': ['off'],
+                'import/order': [
+                    'error',
+                    {
+                        groups: [
+                            'builtin',
+                            'external',
+                            'internal',
+                            'parent',
+                            'sibling',
+                            'index',
+                        ],
+                    },
+                ],
                 'import/namespace': ['off'],
                 'import/no-named-as-default-member': ['off'],
                 'import/no-named-as-default': ['error'],

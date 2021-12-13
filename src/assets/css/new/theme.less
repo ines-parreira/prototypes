@@ -1,0 +1,190 @@
+@import 'colors';
+@import 'mixins';
+
+// btn
+.btn {
+    font-weight: 500;
+
+    &:focus {
+        outline: none;
+        box-shadow: none;
+    }
+}
+
+.btn-primary {
+    .button-variant(@white; @blue; @lightBlue; @darkBlue);
+}
+
+.btn-secondary {
+    .TEMP_button-variant(@neutral10; @neutral1; @neutral3; @neutral4; @neutral5; @neutral4);
+}
+
+.btn-success {
+    .button-variant(@white; @green; @lightGreen; @darkGreen);
+}
+
+.btn-info {
+    .button-variant(@white; @indigo; @lightIndigo; @darkIndigo);
+}
+
+.btn-warning {
+    .button-variant(@white; @orange; @lightOrange; @darkOrange);
+}
+
+.btn-danger {
+    .button-variant(@white; @red; @lightRed; @darkRed);
+}
+
+.btn-light {
+    .button-variant(#2d4366; @white; @white; @white);
+
+    &:hover {
+        background: @white !important;
+    }
+}
+
+.btn-clue {
+    .button-variant(@white; @purple; @lightPurple; @darkPurple);
+}
+
+.btn-transparent {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+// btn outline
+.btn-outline-primary {
+    .button-outline-variant(@blue);
+}
+
+.btn-outline-secondary {
+    .button-outline-variant(@quartz);
+}
+
+.btn-outline-success {
+    .button-outline-variant(@green);
+}
+
+.btn-outline-info {
+    .button-outline-variant(@indigo);
+}
+
+.btn-outline-warning {
+    .button-outline-variant(@yellow);
+}
+
+.btn-outline-danger {
+    .button-outline-variant(@red);
+}
+
+// badge
+.badge-primary {
+    .badge-variant(@blue);
+}
+
+.badge-secondary {
+    .badge-variant(@grey);
+}
+
+.badge-success {
+    .badge-variant(@green);
+}
+
+.badge-info {
+    .badge-variant(@indigo);
+}
+
+.badge-warning {
+    .badge-variant(@orange);
+}
+
+.badge-danger {
+    .badge-variant(@red);
+}
+
+// disabled buttons
+.btn.disbled,
+.btn:disabled {
+    opacity: 1;
+}
+
+// text
+.text-primary {
+    color: @blue !important;
+}
+
+.text-secondary {
+    color: @grey !important;
+}
+
+.text-success {
+    color: @green !important;
+}
+
+.text-danger {
+    color: @red !important;
+}
+
+.text-warning {
+    color: @yellow !important;
+}
+
+.text-info {
+    color: @indigo !important;
+}
+
+.text-muted {
+    color: #bcc2c5 !important;
+}
+
+.text-purple {
+    color: @purple;
+}
+
+// lighter color of grey text (lighter than text-muted)
+.text-faded {
+    color: @lightGrey !important;
+
+    a {
+        color: @lightBlue;
+    }
+
+    kbd {
+        background-color: @lightGrey !important;
+    }
+}
+
+/* inherit parent color
+ */
+.uncolored {
+    color: inherit !important;
+}
+
+// modal
+.modal-title {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.close {
+    color: @indigo;
+    font-weight: normal;
+}
+
+// breadcrumbs
+.breadcrumb-item {
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: @neutral4;
+    content: '>';
+}
+
+// card
+.card {
+    border-color: @neutral4;
+    border-radius: 4px;
+}

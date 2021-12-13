@@ -4,13 +4,14 @@ import _throttle from 'lodash/throttle'
 import {removeNotification} from 'reapop'
 import {EnhancedStore} from '@reduxjs/toolkit'
 
+import refreshIcon from 'assets/img/icons/refresh.svg'
+
 import * as socketEvents from '../../config/socketEvents'
 import {notify} from '../../state/notifications/actions'
 import {store} from '../../init'
 import {devLog} from '../../utils'
 import {NotificationStatus} from '../../state/notifications/types'
 import {StoreDispatch} from '../../state/types'
-import refreshIcon from '../../../img/icons/refresh.svg'
 
 import {BROADCAST_CHANNEL_NAME} from './constants.js'
 import {

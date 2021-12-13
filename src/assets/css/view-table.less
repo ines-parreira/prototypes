@@ -1,0 +1,121 @@
+@import '~css/new/colors';
+
+.view-table {
+    margin-bottom: 20px;
+    width: 100%;
+
+    a {
+        color: inherit !important;
+    }
+
+    tbody {
+        tr:hover {
+            background: @quartz;
+        }
+
+        tr {
+            border-bottom: 1px solid @darkQuartz2;
+            &.highlighted {
+                font-weight: 600 !important;
+
+                .subject {
+                    font-weight: 600 !important;
+                }
+
+                .description {
+                    font-weight: initial !important;
+                }
+            }
+        }
+
+        .subject {
+            font-size: 15px;
+            font-weight: normal;
+        }
+
+        .description {
+            color: @darkGrey;
+            font-size: 13px;
+        }
+    }
+
+    tr {
+        .cell-wrapper {
+            position: relative;
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 15px 18px;
+            min-height: 65px;
+            cursor: pointer;
+        }
+
+        .cell-short {
+            display: table-cell;
+            width: 50px;
+            min-width: 50px;
+            max-width: 50px;
+            padding-left: 30px;
+            padding-right: 20px;
+
+            & > *:not(input) {
+                vertical-align: middle;
+            }
+
+            &:first-child + td {
+                .cell-wrapper {
+                    padding-left: 8px;
+                }
+            }
+        }
+    }
+
+    thead {
+        tr {
+            border-bottom: 1px solid @darkQuartz;
+        }
+
+        tr:first-child span:first-child {
+            color: @grey;
+
+            font-size: 11px;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+        }
+
+        .view-selection {
+            box-shadow: inset 0 1px 0 @almostWhite;
+            background-color: @quartz;
+            text-align: center;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            color: #7c899f;
+        }
+
+        .view-selection b {
+            font-weight: 500;
+        }
+
+        .clickable {
+            font-weight: 500;
+            color: @blue;
+        }
+
+        td > div {
+            color: #b7bec4;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .cell-wrapper {
+            font-weight: 600;
+            min-height: 36px;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+}

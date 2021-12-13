@@ -17,6 +17,9 @@ import {
 } from 'reactstrap'
 import classNames from 'classnames'
 
+import wrench from 'assets/img/icons/wrench.svg'
+import storefront from 'assets/img/icons/storefront.svg'
+
 import * as IntegrationsActions from '../../../../../../state/integrations/actions'
 import {
     GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
@@ -34,12 +37,9 @@ import {
 import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integrations'
 import {Language} from '../../../../../../constants/languages'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../constants/integration'
-
 import * as integrationSelectors from '../../../../../../state/integrations/selectors'
-
 import {IntegrationType} from '../../../../../../models/integration/types'
 import {RootState} from '../../../../../../state/types'
-
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
 import ColorField from '../../../../../common/forms/ColorField.js'
 import FileField from '../../../../../common/forms/FileField'
@@ -47,14 +47,9 @@ import InputField from '../../../../../common/forms/InputField.js'
 import Loader from '../../../../../common/components/Loader/Loader'
 import PageHeader from '../../../../../common/components/PageHeader'
 import RadioField from '../../../../../common/forms/RadioField'
-
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
 import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import MessageContentPreview from '../GorgiasChatIntegrationPreview/MessageContent'
-
-import wrench from '../../../../../../../img/icons/wrench.svg'
-import storefront from '../../../../../../../img/icons/storefront.svg'
-
 import Tooltip from '../../../../../common/components/Tooltip'
 import settingsCss from '../../../../../settings/settings.less'
 

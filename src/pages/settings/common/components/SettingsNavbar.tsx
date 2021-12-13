@@ -4,7 +4,8 @@ import classnames from 'classnames'
 import {Link, RouteComponentProps} from 'react-router-dom'
 import {Map} from 'immutable'
 
-import css from '../../../../../css/navbar.less'
+import css from 'assets/css/navbar.less'
+
 import {hasRole} from '../../../../utils'
 import {ADMIN_ROLE, AGENT_ROLE} from '../../../../config/user'
 import {UserRole} from '../../../../config/types/user'

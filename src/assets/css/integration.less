@@ -1,0 +1,108 @@
+.facebook-page-disabled {
+    background: black;
+    opacity: 0.5;
+}
+
+.FacebookPageSettingsView {
+    .form > a {
+        text-decoration: underline;
+        color: red;
+    }
+}
+
+.IntegrationEditView h1 > img {
+    max-width: 60px;
+    max-height: 50px;
+    width: initial !important; // override Semantic images width in headers
+}
+
+.IntegrationsListView,
+.IntegrationEditView,
+.FacebookPagesView {
+    width: 100%;
+}
+
+.IntegrationsListView {
+    i.mail {
+        color: dodgerblue;
+        line-height: 1;
+        vertical-align: middle;
+        font-size: 3.5em;
+    }
+}
+
+.IntegrationEditView {
+    // right and left have other meanings coupled with icon
+    .left:not(.icon) {
+        float: left;
+    }
+
+    .right:not(.icon) {
+        float: right;
+    }
+
+    .header {
+        min-width: 360px;
+    }
+
+    tr {
+        td {
+            padding-left: 1em !important;
+        }
+    }
+}
+
+.FacebookPagesView {
+    .FacebookPageRow {
+        cursor: pointer;
+    }
+}
+
+.shopifyIntegrationsList {
+    .shopifyLogo {
+        height: 30px;
+        margin-right: 15px;
+    }
+}
+
+.FacebookPageRow {
+    .grid {
+        .column {
+            &:first-child {
+                padding-right: 0;
+            }
+        }
+    }
+}
+
+.table-integrations {
+    width: 100%;
+
+    .icon-go-forward {
+        color: @lightPurple2;
+    }
+
+    th:first-child {
+        padding-left: 2.14rem;
+    }
+
+    td {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+
+        &:first-child {
+            padding-left: 1.5rem;
+
+            :global(.toggle-switch) {
+                margin-left: 0.75em;
+            }
+        }
+        &:last-child {
+            padding-right: 2.14rem;
+        }
+    }
+
+    tr:hover .icon-go-forward {
+        color: @blue;
+    }
+}

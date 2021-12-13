@@ -3,9 +3,10 @@ import classNames from 'classnames'
 import {fromJS, Map} from 'immutable'
 import _rangeRight from 'lodash/rangeRight'
 
+import fullStar from 'assets/img/satisfaction-survey/full-star.svg'
+import emptyStar from 'assets/img/satisfaction-survey/empty-star.svg'
+
 import css from './DistributionVariantStat.less'
-import fullStar from './../../../../../../img/satisfaction-survey/full-star.svg'
-import emptyStar from './../../../../../../img/satisfaction-survey/empty-star.svg'
 
 type Props = {
     minValue: number

@@ -3,13 +3,14 @@ import {useSelector} from 'react-redux'
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import classnames from 'classnames'
 
+import ArrowForward from 'assets/img/icons/arrow-forward.svg'
+
 import {
     getAddOnAutomationAmountCurrentPlan,
     getCurrentPlan,
     getEquivalentRegularCurrentPlan,
     getHasAutomationAddOn,
 } from '../../../../state/billing/selectors'
-import ArrowForward from '../../../../../img/icons/arrow-forward.svg'
 import SynchronizedScrollTopProvider from '../../../common/components/SynchronizedScrollTop/SynchronizedScrollTopProvider'
 import SynchronizedScrollTopContainer from '../../../common/components/SynchronizedScrollTop/SynchronizedScrollTopContainer'
 

@@ -1,3 +1,5 @@
+import {Components} from 'rest_api/help_center_api/client.generated'
+
 import {
     isColumnSourceCsv,
     LocaleCode,
@@ -5,7 +7,6 @@ import {
 import {slugify} from '../../../../utils/helpCenter.utils'
 import {CsvSourceSoftware} from '../../types'
 import {guessCsvSourceSoftware} from '../../utils/guess-csv-source-software'
-import {Components} from '../../../../../../../../../../rest_api/help_center_api/client.generated'
 
 import {
     CsvColumnsByName,

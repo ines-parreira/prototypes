@@ -4,13 +4,14 @@ import {fromJS, Map} from 'immutable'
 import _capitalize from 'lodash/capitalize'
 import _sortBy from 'lodash/sortBy'
 
-import client from '../../models/api/resources'
-import {ApiListResponsePagination} from '../../models/api/types'
-import {Integration, IntegrationType} from '../../models/integration/types'
+import client from 'models/api/resources'
+import {ApiListResponsePagination} from 'models/api/types'
+import {Integration, IntegrationType} from 'models/integration/types'
+
 import {notify} from '../notifications/actions'
 import {NotificationStatus} from '../notifications/types'
-import type {StoreDispatch, RootState} from '../types'
 import history from '../../pages/history'
+import type {StoreDispatch, RootState} from '../types'
 
 import * as constants from './constants.js'
 import * as integrationSelectors from './selectors'

@@ -1,0 +1,40 @@
+@import 'mixins';
+@import './colors';
+
+@media @mobiles {
+    // hide Smooch chat
+    #sk-holder {
+        display: none !important;
+    }
+
+    .mobile-nav {
+        padding: 10px;
+        background-color: @navbarBgColor;
+        color: #fff;
+        z-index: 1030;
+        flex-shrink: 0;
+
+        > button {
+            color: #fff !important;
+        }
+    }
+
+    .infobar-panel {
+        @width: 80%;
+        width: @width !important;
+        min-width: @width !important;
+        max-width: @width !important;
+        z-index: 1040;
+        transition: all 0.2s linear !important;
+        top: 0;
+        height: 100%;
+        position: absolute !important;
+        right: 0 !important;
+        opacity: 1;
+
+        &.hidden-panel {
+            opacity: 0;
+            pointer-events: none;
+        }
+    }
+}

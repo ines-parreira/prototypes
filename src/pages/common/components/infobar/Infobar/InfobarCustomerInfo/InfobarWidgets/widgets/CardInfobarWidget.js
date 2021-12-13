@@ -5,7 +5,6 @@ import classnames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
 import {Card, CardBody, Popover, PopoverBody} from 'reactstrap'
 
-import expandUp from '../../../../../../../../../img/infobar/expand-up.svg'
 import {renderInfobarTemplate} from '../../../../../../utils/infobar.tsx'
 import {renderTemplate} from '../../../../../../utils/template.ts'
 import DragWrapper from '../../../../../dragging/WidgetsDragWrapper'
@@ -14,6 +13,8 @@ import InfobarWidget from '../InfobarWidget'
 import PopoverWidgetEditCard from './forms/PopoverWidgetEditCard'
 import css from './CardInfobarWidget.less'
 import CustomActions from './customActions/index.ts'
+
+import expandUp from 'assets/img/infobar/expand-up.svg'
 
 export default class CardInfobarWidget extends React.Component {
     static propTypes = {

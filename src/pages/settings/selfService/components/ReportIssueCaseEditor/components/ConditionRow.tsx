@@ -1,18 +1,16 @@
 import React, {ReactElement, useMemo} from 'react'
-
 import {Input} from 'reactstrap'
 import classNames from 'classnames'
 
+import shopify from 'assets/img/integrations/shopify.png'
+
 import MultiSelectOptionsField from '../../../../../common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import {Option} from '../../../../../common/forms/MultiSelectOptionsField/types'
-import shopify from '../../../../../../../img/integrations/shopify.png'
-
 import {
     JsonLogicOperator,
     JsonLogicRuleOverVariable,
     ReportIssueVariable,
 } from '../../../../../../models/selfServiceConfiguration/types'
-
 import {
     FINANCIAL_STATUSES_OPTIONS,
     FULFILLEMENT_STATUSES_OPTIONS,
@@ -21,7 +19,6 @@ import {
 } from '../constants'
 
 import {parseJsonLogicRule} from './utils'
-
 import css from './ConditionRow.less'
 
 type ConditionRowProps = {

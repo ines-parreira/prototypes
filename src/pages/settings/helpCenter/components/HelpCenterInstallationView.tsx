@@ -5,6 +5,8 @@ import {useHistory, useLocation} from 'react-router-dom'
 import {Button, Container} from 'reactstrap'
 import classnames from 'classnames'
 
+import {Paths} from 'rest_api/help_center_api/client.generated'
+
 import {isProduction} from '../../../../utils/environment'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {
@@ -27,14 +29,11 @@ import {
 } from '../utils/validations'
 import settingsCss from '../../settings.less'
 
-import {Paths} from '../../../../../../../rest_api/help_center_api/client.generated'
-
 import {CustomDomain} from './CustomDomain'
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
 import {ImportSection} from './Imports/components/ImportSection'
 import {SubdomainSection} from './SubdomainSection'
-
 import css from './HelpCenterInstallationView.less'
 import {ConnectToShopSection} from './ConnectToShopSection'
 

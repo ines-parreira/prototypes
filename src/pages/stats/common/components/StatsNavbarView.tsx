@@ -2,7 +2,7 @@ import React from 'react'
 import {NavLink} from 'react-router-dom'
 import {Map} from 'immutable'
 
-import css from '../../../../../css/navbar.less'
+import css from 'assets/css/navbar.less'
 import {
     supportPerformanceViews,
     liveViews,

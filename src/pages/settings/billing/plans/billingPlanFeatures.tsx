@@ -1,13 +1,14 @@
 import _pickBy from 'lodash/pickBy'
 import React from 'react'
 
+import magentoIcon from 'assets/img/integrations/magento2-mono.svg'
+
 import {isFeatureEnabled} from '../../../../utils/account'
 import {
     AccountFeature,
     AccountFeatures,
 } from '../../../../state/currentAccount/types'
 import {PlanWithCurrencySign} from '../../../../state/billing/types'
-import magentoIcon from '../../../../../img/integrations/magento2-mono.svg'
 
 import {PlanCardFeature} from './PlanCard'
 import BillableTicketsLabel from './BillableTicketsLabel'

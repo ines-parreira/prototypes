@@ -2,7 +2,8 @@ import React, {Component} from 'react'
 import classnames from 'classnames'
 import {getSizedImageUrl} from '@shopify/theme-images'
 
-import defaultImage from '../../../../../img/presentationals/shopify-product-default-image.png'
+import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
+
 import {ProductStockQuantity} from '../../components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/StockQuantity'
 import {Image} from '../../../../constants/integrations/types/shopify'
 

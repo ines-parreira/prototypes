@@ -4,13 +4,14 @@ import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {Button} from 'reactstrap'
 
+import gmailImg from 'assets/img/integrations/gmail.png'
+import outlookImg from 'assets/img/integrations/outlook.png'
+
 import ForwardIcon from '../ForwardIcon'
 import IntegrationList from '../IntegrationList'
 import Loader from '../../../../common/components/Loader/Loader'
 import Tooltip from '../../../../common/components/Tooltip'
 import {getIntegrationsByTypes} from '../../../../../state/integrations/helpers'
-import gmailImg from '../../../../../../img/integrations/gmail.png'
-import outlookImg from '../../../../../../img/integrations/outlook.png'
 import history from '../../../../history'
 import {
     EmailDomain,

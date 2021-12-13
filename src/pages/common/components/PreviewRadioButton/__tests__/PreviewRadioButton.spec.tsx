@@ -1,7 +1,7 @@
 import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
 
-import previewLight from '../../../../../../img/help-center/preview-light.svg'
+import previewLight from 'assets/img/help-center/preview-light.svg'
 
 import {
     PreviewRadioButton,

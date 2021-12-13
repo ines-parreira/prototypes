@@ -1,11 +1,11 @@
 import React, {ReactNode, MouseEvent, isValidElement} from 'react'
 import classnames from 'classnames'
 
-import infoIcon from '../../../../../img/icons/info.svg'
-import successIcon from '../../../../../img/icons/success.svg'
-import warningIcon from '../../../../../img/icons/warning2.svg'
-import errorIcon from '../../../../../img/icons/error.svg'
-import closeIcon from '../../../../../img/icons/close.svg'
+import infoIcon from 'assets/img/icons/info.svg'
+import successIcon from 'assets/img/icons/success.svg'
+import warningIcon from 'assets/img/icons/warning2.svg'
+import errorIcon from 'assets/img/icons/error.svg'
+import closeIcon from 'assets/img/icons/close.svg'
 
 import css from './Alert.less'
 

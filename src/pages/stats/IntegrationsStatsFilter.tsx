@@ -1,17 +1,16 @@
 import React, {ComponentProps, useCallback, useMemo} from 'react'
 import {fromJS} from 'immutable'
-
+import aircallIcon from 'assets/img/integrations/aircall.png'
+import gmailIcon from 'assets/img/integrations/gmail.png'
+import outlookIcon from 'assets/img/integrations/outlook.svg'
+import shopifyIcon from 'assets/img/integrations/shopify.png'
+import smoochIcon from 'assets/img/integrations/smooch.png'
+import zendeskIcon from 'assets/img/integrations/zendesk.png'
 import {
     IntegrationsStatsFilterValue,
     StatsFilterType,
 } from '../../state/stats/types'
 import {IntegrationType} from '../../models/integration/constants'
-import aircallIcon from '../../../img/integrations/aircall.png'
-import gmailIcon from '../../../img/integrations/gmail.png'
-import outlookIcon from '../../../img/integrations/outlook.svg'
-import shopifyIcon from '../../../img/integrations/shopify.png'
-import smoochIcon from '../../../img/integrations/smooch.png'
-import zendeskIcon from '../../../img/integrations/zendesk.png'
 import {mergeStatsFilters} from '../../state/stats/actions'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import {Integration} from '../../models/integration/types'

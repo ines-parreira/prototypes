@@ -1,7 +1,7 @@
 import React, {useCallback, useRef, useState} from 'react'
 import classnames from 'classnames'
 
-import logo from '../../../../../../../../../img/infobar/expand-all.svg'
+import logo from 'assets/img/infobar/expand-all.svg'
 
 import css from './ExpandAllButton.less'
 
