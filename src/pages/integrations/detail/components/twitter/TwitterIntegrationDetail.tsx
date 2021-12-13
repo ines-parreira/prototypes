@@ -13,8 +13,6 @@ import {
     Row,
 } from 'reactstrap'
 
-import {connect, ConnectedProps} from 'react-redux'
-
 import {
     deleteIntegration,
     updateOrCreateIntegration,
@@ -23,11 +21,7 @@ import PageHeader from '../../../../common/components/PageHeader'
 import BooleanField from '../../../../common/forms/BooleanField.js'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import {IntegrationType} from '../../../../../models/integration/types'
-import {RootState} from '../../../../../state/types'
-import {getCurrentAccountState} from '../../../../../state/currentAccount/selectors'
 import css from '../../../../settings/settings.less'
-
-import {hasAccessToTwitterDMs} from './utils'
 
 type Props = {
     integration: Map<string, any>
@@ -38,12 +32,11 @@ type Props = {
     redirectUri: string
 }
 
-export function TwitterIntegrationDetail({
+export default function TwitterIntegrationDetail({
     integration,
     actions,
     redirectUri,
-    currentAccount,
-}: Props & ConnectedProps<typeof connector>): JSX.Element {
+}: Props): JSX.Element {
     const [isInitialized, setIsInitialized] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [integrationName, setIntegrationName] = useState('')
@@ -215,17 +208,13 @@ export function TwitterIntegrationDetail({
                                         value={mentionsEnabled}
                                         onChange={setMentionsEnabled}
                                     />
-                                    {hasAccessToTwitterDMs(
-                                        currentAccount.get('domain')
-                                    ) && (
-                                        <BooleanField
-                                            name="direct_messages_enabled"
-                                            type="checkbox"
-                                            label="Enable Twitter direct messages"
-                                            value={directMessagesEnabled}
-                                            onChange={setDirectMessagesEnabled}
-                                        />
-                                    )}
+                                    <BooleanField
+                                        name="direct_messages_enabled"
+                                        type="checkbox"
+                                        label="Enable Twitter direct messages"
+                                        value={directMessagesEnabled}
+                                        onChange={setDirectMessagesEnabled}
+                                    />
                                 </FormGroup>
                                 <div>
                                     <Button
@@ -275,9 +264,3 @@ export function TwitterIntegrationDetail({
         </div>
     )
 }
-// TODO: remove this before twitter dm goes live
-const connector = connect((state: RootState) => ({
-    currentAccount: getCurrentAccountState(state),
-}))
-
-export default connector(TwitterIntegrationDetail)

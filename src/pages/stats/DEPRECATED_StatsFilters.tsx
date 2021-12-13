@@ -36,7 +36,6 @@ import {mergeStatsFilters} from '../../state/stats/actions'
 import {DEPRECATED_makeStatsFiltersSelector} from '../../state/stats/selectors'
 import {getLabelledTeams} from '../../state/teams/selectors'
 import {RootState} from '../../state/types'
-import {Account} from '../../state/currentAccount/types'
 import InfiniteScroll from '../common/components/InfiniteScroll/InfiniteScroll'
 import PageHeader from '../common/components/PageHeader'
 import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMenu'
@@ -48,11 +47,6 @@ import aircall from '../../../img/integrations/aircall.png'
 import shopify from '../../../img/integrations/shopify.png'
 import smooch from '../../../img/integrations/smooch.png'
 import zendesk from '../../../img/integrations/zendesk.png'
-
-import {TicketChannel} from '../../business/types/ticket'
-
-import {getCurrentAccountState} from '../../state/currentAccount/selectors'
-import {hasAccessToTwitterDMs} from '../integrations/detail/components/twitter/utils'
 
 import PeriodPicker from './common/PeriodPicker'
 import SelectFilter from './common/SelectFilter'
@@ -483,24 +477,14 @@ const makeMapStateToProps = () => {
         makeGetPlainJS<{id: number; label: string; members: string[]}[]>(
             getLabelledTeams
         )
-    const getCurrentAccountToJS = makeGetPlainJS<Account>(
-        getCurrentAccountState
-    )
 
     return (state: RootState, props: OwnProps) => {
         const view = props.match.params.view
         const config: Map<any, any> = statViewsConfig.get(view)
-        const {domain} = getCurrentAccountToJS(state)
 
         return {
             agents: getAgentsToJS(state),
-            // TODO: remove this before twitter dm goes live
-            channels: getChannels().filter((channel) => {
-                if (channel.value === TicketChannel.TwitterDirectMessage) {
-                    return hasAccessToTwitterDMs(domain)
-                }
-                return true
-            }),
+            channels: getChannels(),
             config,
             filters: DEPRECATED_makeStatsFiltersSelector(
                 props.match.params.view
