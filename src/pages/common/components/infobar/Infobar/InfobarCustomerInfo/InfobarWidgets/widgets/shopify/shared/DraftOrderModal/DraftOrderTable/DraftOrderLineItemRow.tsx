@@ -105,7 +105,7 @@ function DraftOrderLineItemRow({
             setRestock(event.target.checked)
             debouncedRestock(event.target.checked, lineItem, index, onChange)
         },
-        []
+        [index, lineItem, onChange]
     )
     const handleQuantityChange = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
