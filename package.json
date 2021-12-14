@@ -12,7 +12,7 @@
         "lint": "run-p stylelint:less eslint",
         "quality": "run-s lint types",
         "jest": "export TZ=America/Creston; LC_ALL=\"en_US.UTF-8\" NODE_ICU_DATA=node_modules/full-icu jest",
-        "storybook": "start-storybook -s ./g",
+        "storybook": "start-storybook -s ./g/static/private/js",
         "test": "run-s quality jest",
         "test:debug": "node --inspect-brk ./node_modules/.bin/jest -i",
         "test:cover": "run-s quality \"jest --coverage\"",

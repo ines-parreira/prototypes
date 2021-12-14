@@ -1,6 +1,6 @@
 require('@storybook/addon-console')
 
-require('../g/static/private/css/main.less')
+require('assets/css/main.less')
 
 export const parameters = {
     options: {

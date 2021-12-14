@@ -1,7 +1,7 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-const srcDir = path.join(__dirname, '../g/static/private')
+const srcDir = path.join(__dirname, '../g/static/private/js')
 
 const HASH = process.env.RELEASE ? process.env.RELEASE : '[hash]'
 const __PRODUCTION__ = process.env.NODE_ENV === 'production'
@@ -16,7 +16,7 @@ const styleBundleFile = __PRODUCTION__
     : 'helpdesk.app.css'
 
 module.exports = {
-    stories: ['../g/static/private/js/**/*.stories.@(js|jsx|ts|tsx|mdx)'],
+    stories: [`${srcDir}/**/*.stories.@(js|jsx|ts|tsx|mdx)`],
     addons: [
         '@storybook/addon-docs',
         '@storybook/addon-links',
@@ -115,8 +115,12 @@ module.exports = {
             ],
         })
 
-        config.resolve.alias = {
-            css: `${srcDir}/css/`,
+        config.resolve = {
+            alias: {
+                css: `${srcDir}/assets/css/`,
+            },
+            extensions: ['.ts', '.tsx', '.js'],
+            modules: ['node_modules', srcDir],
         }
 
         config.plugins.push(
