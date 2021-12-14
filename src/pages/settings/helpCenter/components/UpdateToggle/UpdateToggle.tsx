@@ -40,7 +40,7 @@ export const UpdateToggle = ({
                     void dispatch(helpCenterUpdated(data))
                     void dispatch(
                         notify({
-                            message: 'Help Center successfully updated',
+                            message: 'Help Center updated with success',
                             status: NotificationStatus.Success,
                         })
                     )
@@ -49,7 +49,7 @@ export const UpdateToggle = ({
 
                     void dispatch(
                         notify({
-                            message: "Couldn't update the Help Center",
+                            message: 'Failed to update the Help Center',
                             status: NotificationStatus.Error,
                         })
                     )

@@ -142,7 +142,7 @@ export const useCurrentHelpCenter = (): CurrentHelpCenterApi => {
 
                     void dispatch(
                         notify({
-                            message: 'Help Center successfully updated',
+                            message: 'Help Center updated with success',
                             status: NotificationStatus.Success,
                         })
                     )
@@ -154,7 +154,7 @@ export const useCurrentHelpCenter = (): CurrentHelpCenterApi => {
 
                     void dispatch(
                         notify({
-                            message: `Failed to update Help Center${errorMessage}`,
+                            message: `Failed to update Help Center: ${errorMessage}`,
                             status: NotificationStatus.Error,
                         })
                     )

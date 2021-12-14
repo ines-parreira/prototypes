@@ -2,6 +2,8 @@ import {chain as _chain} from 'lodash'
 import {useState} from 'react'
 import {useSelector} from 'react-redux'
 
+import {notify} from '../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../state/notifications/types'
 import {
     Category,
     CreateCategoryDto,
@@ -208,10 +210,22 @@ export const useCategoriesActions = () => {
                 )
 
                 setIsLoading(false)
+                void dispatch(
+                    notify({
+                        message: 'Categories reordered with success',
+                        status: NotificationStatus.Success,
+                    })
+                )
 
                 return positions
             } catch (error) {
                 setIsLoading(false)
+                void dispatch(
+                    notify({
+                        message: 'Failed to reorder categories',
+                        status: NotificationStatus.Error,
+                    })
+                )
 
                 throw error
             }

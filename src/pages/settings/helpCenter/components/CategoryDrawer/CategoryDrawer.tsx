@@ -81,7 +81,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
 
             void dispatch(
                 notify({
-                    message: 'Successfully updated the category',
+                    message: 'Category updated with success',
                     status: NotificationStatus.Success,
                 })
             )
@@ -112,7 +112,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
 
             void dispatch(
                 notify({
-                    message: 'Successfully created the category',
+                    message: 'Category created with success',
                     status: NotificationStatus.Success,
                 })
             )
@@ -141,7 +141,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
 
             void dispatch(
                 notify({
-                    message: 'Successfully deleted the category',
+                    message: 'Category deleted with success',
                     status: NotificationStatus.Success,
                 })
             )
@@ -149,7 +149,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
         } catch (err) {
             void dispatch(
                 notify({
-                    message: 'Something went wrong',
+                    message: 'Failed to delete the category',
                     status: NotificationStatus.Error,
                 })
             )
@@ -170,15 +170,14 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
 
             void dispatch(
                 notify({
-                    message: 'Successfully deleted the category translations',
+                    message: 'Category translation deleted with success',
                     status: NotificationStatus.Success,
                 })
             )
         } catch (err) {
             void dispatch(
                 notify({
-                    message:
-                        'Something went wrong. Cannot delete category translation',
+                    message: 'Failed to delete category translation',
                     status: NotificationStatus.Error,
                 })
             )

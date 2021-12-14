@@ -500,7 +500,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
 
                     void dispatch(
                         notify({
-                            message: 'Successfully copied the link',
+                            message: 'Link copied with success',
                             status: NotificationStatus.Success,
                         })
                     )
@@ -523,7 +523,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
 
                 void dispatch(
                     notify({
-                        message: 'Duplicated the article with success',
+                        message: 'Article duplicated with success',
                         status: NotificationStatus.Success,
                     })
                 )
@@ -583,7 +583,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
 
             void dispatch(
                 notify({
-                    message: 'Article successfully saved',
+                    message: 'Article saved with success',
                     status: NotificationStatus.Success,
                 })
             )
@@ -619,6 +619,12 @@ export const HelpCenterArticlesView = (): JSX.Element => {
 
         try {
             await articlesActions.deleteArticle(selectedArticle.id)
+            void dispatch(
+                notify({
+                    message: 'Article deleted with success',
+                    status: NotificationStatus.Success,
+                })
+            )
         } catch (err) {
             void dispatch(
                 notify({

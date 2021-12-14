@@ -131,7 +131,7 @@ export const HelpCenterNewView = ({
             navigateToStartView()
 
             void notify({
-                message: 'Help Center successfully created',
+                message: 'Help Center created with success',
                 status: NotificationStatus.Success,
             })
         } catch (err) {

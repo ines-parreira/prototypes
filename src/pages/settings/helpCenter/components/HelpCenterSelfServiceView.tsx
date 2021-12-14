@@ -56,14 +56,14 @@ export const HelpCenterSelfServiceView = (): JSX.Element | null => {
 
                     void dispatch(
                         notify({
-                            message: 'Help Center successfully updated',
+                            message: 'Help Center updated with success',
                             status: NotificationStatus.Success,
                         })
                     )
                 } catch (err) {
                     void dispatch(
                         notify({
-                            message: `Couldn't update the Help Center, please try again later`,
+                            message: `Could not update the Help Center, please try again later`,
                             status: NotificationStatus.Error,
                         })
                     )

@@ -22,6 +22,9 @@ import {
 } from '../../../../state/helpCenter/articles'
 import {getViewLanguage} from '../../../../state/helpCenter/ui'
 
+import {notify} from '../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../state/notifications/types'
+
 import {useHelpCenterApi} from './useHelpCenterApi'
 import {useHelpCenterIdParam} from './useHelpCenterIdParam'
 
@@ -351,9 +354,20 @@ export const useArticlesActions = () => {
                 dispatch(updateArticlesOrder(response))
 
                 setIsLoading(false)
+                void dispatch(
+                    notify({
+                        message: 'Articles reordered with success',
+                        status: NotificationStatus.Success,
+                    })
+                )
             } catch (err) {
                 setIsLoading(false)
-
+                void dispatch(
+                    notify({
+                        message: 'Failed to reorder articles',
+                        status: NotificationStatus.Error,
+                    })
+                )
                 throw err
             }
         },

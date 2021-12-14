@@ -62,7 +62,7 @@ export const CustomDomain = () => {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Success,
-                        message: 'Domain successfully removed.',
+                        message: 'Domain removed with success',
                     })
                 )
 
@@ -72,7 +72,7 @@ export const CustomDomain = () => {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,
-                        message: 'Could not delete the domain.',
+                        message: 'Failed to delete the domain',
                     })
                 )
             }
@@ -99,7 +99,7 @@ export const CustomDomain = () => {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Success,
-                        message: 'Domain successfully created.',
+                        message: 'Domain created with success',
                     })
                 )
 
@@ -130,7 +130,7 @@ export const CustomDomain = () => {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Success,
-                        message: 'Domain status successfully updated.',
+                        message: 'Domain status updated with success',
                     })
                 )
 
@@ -140,7 +140,7 @@ export const CustomDomain = () => {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,
-                        message: 'Could not check domain status.',
+                        message: 'Could not check domain status',
                     })
                 )
             }

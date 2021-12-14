@@ -98,7 +98,7 @@ export const HelpCenterTranslation: React.FC<Props> = ({
 
             void dispatch(
                 notify({
-                    message: 'Help Center successfully updated',
+                    message: 'Help Center updated with success',
                     status: NotificationStatus.Success,
                 })
             )
@@ -110,7 +110,7 @@ export const HelpCenterTranslation: React.FC<Props> = ({
 
             void dispatch(
                 notify({
-                    message: `Couldn't update the Help Center${errorMessage}`,
+                    message: `Could not update the Help Center: ${errorMessage}`,
                     status: NotificationStatus.Error,
                 })
             )

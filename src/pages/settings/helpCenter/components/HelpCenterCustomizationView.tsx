@@ -156,7 +156,7 @@ export const HelpCenterCustomizationView = () => {
 
                 void dispatch(
                     notify({
-                        message: 'Successfully saved the links',
+                        message: 'Links saved with success',
                         status: NotificationStatus.Success,
                     })
                 )

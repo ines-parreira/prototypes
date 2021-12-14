@@ -97,7 +97,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
 
                 void dispatch(
                     notify({
-                        message: 'Help Center successfully updated',
+                        message: 'Help Center updated with success',
                         status: NotificationStatus.Success,
                     })
                 )
@@ -109,7 +109,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
 
                 void dispatch(
                     notify({
-                        message: `Couldn't update the Help Center: ${errorMessage}`,
+                        message: `Failed to update the Help Center: ${errorMessage}`,
                         status: NotificationStatus.Error,
                     })
                 )

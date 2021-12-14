@@ -248,7 +248,7 @@ export const HelpCenterCategory = ({
 
         void dispatch(
             notify({
-                message: 'Successfully copied the link',
+                message: 'Link copied with success',
                 status: NotificationStatus.Success,
             })
         )

@@ -90,7 +90,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
                     )
                     void dispatch(
                         notify({
-                            message: 'Help Center successfully deleted',
+                            message: 'Help Center deleted with success',
                             status: NotificationStatus.Success,
                         })
                     )
@@ -113,7 +113,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
                     dispatch(helpCenterUpdated(response.data))
                     void dispatch(
                         notify({
-                            message: 'Help Center successfully updated',
+                            message: 'Help Center updated with success',
                             status: NotificationStatus.Success,
                         })
                     )
@@ -122,7 +122,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
                     // TODO: Add different messages based on error response code
                     void dispatch(
                         notify({
-                            message: "Couldn't update the Help Center",
+                            message: 'Could not update the Help Center',
                             status: NotificationStatus.Error,
                         })
                     )
