@@ -41,7 +41,7 @@ exports[`BillingDetailsForm component should display loader 1`] = `
             <BreadcrumbItem
               tag="li"
             >
-              Billing details
+              Change billing address
             </BreadcrumbItem>
           </Breadcrumb>
         }
@@ -86,7 +86,7 @@ exports[`BillingDetailsForm component should display loader 1`] = `
                   <li
                     className="breadcrumb-item"
                   >
-                    Billing details
+                    Change billing address
                   </li>
                 </BreadcrumbItem>
               </ol>
@@ -102,9 +102,9 @@ exports[`BillingDetailsForm component should display loader 1`] = `
         <div
           className="pageContainer container-fluid"
         >
-          <p>
-            Please enter the billing details you'd like us to use on your next invoice.
-          </p>
+          <h3>
+            Billing information
+          </h3>
           <Row
             tag="div"
             widths={
@@ -215,7 +215,7 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
             <BreadcrumbItem
               tag="li"
             >
-              Billing details
+              Change billing address
             </BreadcrumbItem>
           </Breadcrumb>
         }
@@ -260,7 +260,7 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
                   <li
                     className="breadcrumb-item"
                   >
-                    Billing details
+                    Change billing address
                   </li>
                 </BreadcrumbItem>
               </ol>
@@ -276,9 +276,9 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
         <div
           className="pageContainer container-fluid"
         >
-          <p>
-            Please enter the billing details you'd like us to use on your next invoice.
-          </p>
+          <h3>
+            Billing information
+          </h3>
           <Row
             tag="div"
             widths={
@@ -1025,21 +1025,17 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
                         </Row>
                       </BillingAddressInputs>
                       <div>
-                        <Button
-                          className=""
-                          color="success"
-                          disabled={false}
-                          tag="button"
+                        <ForwardRef
+                          className="submitButton"
+                          isLoading={false}
                         >
                           <button
-                            aria-label={null}
-                            className="btn btn-success"
+                            className="wrapper submitButton primary medium"
                             disabled={false}
-                            onClick={[Function]}
                           >
-                            Update billing details
+                            Update Address
                           </button>
-                        </Button>
+                        </ForwardRef>
                       </div>
                     </form>
                   </Form>
@@ -1111,7 +1107,7 @@ exports[`BillingDetailsForm component should display the form with billing conta
             <BreadcrumbItem
               tag="li"
             >
-              Billing details
+              Change billing address
             </BreadcrumbItem>
           </Breadcrumb>
         }
@@ -1156,7 +1152,7 @@ exports[`BillingDetailsForm component should display the form with billing conta
                   <li
                     className="breadcrumb-item"
                   >
-                    Billing details
+                    Change billing address
                   </li>
                 </BreadcrumbItem>
               </ol>
@@ -1172,9 +1168,9 @@ exports[`BillingDetailsForm component should display the form with billing conta
         <div
           className="pageContainer container-fluid"
         >
-          <p>
-            Please enter the billing details you'd like us to use on your next invoice.
-          </p>
+          <h3>
+            Billing information
+          </h3>
           <Row
             tag="div"
             widths={
@@ -1921,21 +1917,17 @@ exports[`BillingDetailsForm component should display the form with billing conta
                         </Row>
                       </BillingAddressInputs>
                       <div>
-                        <Button
-                          className=""
-                          color="success"
-                          disabled={false}
-                          tag="button"
+                        <ForwardRef
+                          className="submitButton"
+                          isLoading={false}
                         >
                           <button
-                            aria-label={null}
-                            className="btn btn-success"
+                            className="wrapper submitButton primary medium"
                             disabled={false}
-                            onClick={[Function]}
                           >
-                            Update billing details
+                            Update Address
                           </button>
-                        </Button>
+                        </ForwardRef>
                       </div>
                     </form>
                   </Form>

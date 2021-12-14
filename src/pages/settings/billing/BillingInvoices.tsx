@@ -18,6 +18,8 @@ import {notify} from '../../../state/notifications/actions'
 import {RootState} from '../../../state/types'
 import {NotificationStatus} from '../../../state/notifications/types'
 
+import BillingHeader from './common/BillingHeader'
+
 type Props = ConnectedProps<typeof connector>
 
 type State = {
@@ -113,9 +115,7 @@ export class BillingInvoicesContainer extends Component<Props, State> {
 
         return (
             <div>
-                <h4>
-                    <i className="material-icons">receipt</i> Payment history
-                </h4>
+                <BillingHeader icon="receipt">Payment history</BillingHeader>
                 <p>
                     The account owner will receive an invoice by email at the
                     start of each billing period.

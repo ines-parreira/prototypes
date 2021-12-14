@@ -32,14 +32,20 @@ exports[`BillingInvoices component should display invoices, without PDF download
   shopifyBillingStatus="inactive"
 >
   <div>
-    <h4>
-      <i
-        className="material-icons"
+    <BillingHeader
+      icon="receipt"
+    >
+      <h4
+        className="header"
       >
-        receipt
-      </i>
-       Payment history
-    </h4>
+        <i
+          className="icon material-icons"
+        >
+          receipt
+        </i>
+        Payment history
+      </h4>
+    </BillingHeader>
     <p>
       The account owner will receive an invoice by email at the start of each billing period.
     </p>

@@ -112,16 +112,22 @@ exports[`BillingPaymentMethod Shopify should render a button 1`] = `
   }
 >
   <div
-    className="mb-5"
+    className="wrapper"
   >
-    <h4>
-      <i
-        className="material-icons"
+    <BillingHeader
+      icon="credit_card"
+    >
+      <h4
+        className="header"
       >
-        credit_card
-      </i>
-       Payment method
-    </h4>
+        <i
+          className="icon material-icons"
+        >
+          credit_card
+        </i>
+        Payment method
+      </h4>
+    </BillingHeader>
     <Card
       tag="div"
     >
@@ -171,16 +177,13 @@ exports[`BillingPaymentMethod Shopify should render a button 1`] = `
 
 exports[`BillingPaymentMethod Shopify should render a button to reactivate billing 1`] = `
 <div
-  className="mb-5"
+  className="wrapper"
 >
-  <h4>
-    <i
-      className="material-icons"
-    >
-      credit_card
-    </i>
-     Payment method
-  </h4>
+  <BillingHeader
+    icon="credit_card"
+  >
+    Payment method
+  </BillingHeader>
   <Card
     tag="div"
   >
@@ -215,16 +218,13 @@ exports[`BillingPaymentMethod Shopify should render a button to reactivate billi
 
 exports[`BillingPaymentMethod Shopify should render a disabled button 1`] = `
 <div
-  className="mb-5"
+  className="wrapper"
 >
-  <h4>
-    <i
-      className="material-icons"
-    >
-      credit_card
-    </i>
-     Payment method
-  </h4>
+  <BillingHeader
+    icon="credit_card"
+  >
+    Payment method
+  </BillingHeader>
   <Card
     tag="div"
   >
@@ -338,16 +338,22 @@ exports[`BillingPaymentMethod Shopify should render an active status 1`] = `
   }
 >
   <div
-    className="mb-5"
+    className="wrapper"
   >
-    <h4>
-      <i
-        className="material-icons"
+    <BillingHeader
+      icon="credit_card"
+    >
+      <h4
+        className="header"
       >
-        credit_card
-      </i>
-       Payment method
-    </h4>
+        <i
+          className="icon material-icons"
+        >
+          credit_card
+        </i>
+        Payment method
+      </h4>
+    </BillingHeader>
     <Card
       tag="div"
     >
@@ -426,16 +432,22 @@ exports[`BillingPaymentMethod Stripe should render a button 1`] = `
   }
 >
   <div
-    className="mb-5"
+    className="wrapper"
   >
-    <h4>
-      <i
-        className="material-icons"
+    <BillingHeader
+      icon="credit_card"
+    >
+      <h4
+        className="header"
       >
-        credit_card
-      </i>
-       Payment method
-    </h4>
+        <i
+          className="icon material-icons"
+        >
+          credit_card
+        </i>
+        Payment method
+      </h4>
+    </BillingHeader>
     <Card
       tag="div"
     >
@@ -465,6 +477,26 @@ exports[`BillingPaymentMethod Stripe should render a button 1`] = `
               >
                 <Col
                   className="content"
+                  sm={8}
+                  tag="div"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                >
+                  <div
+                    className="content col-sm-8"
+                  >
+                    No credit card registered
+                  </div>
+                </Col>
+                <Col
+                  className="text-right"
                   sm={4}
                   tag="div"
                   widths={
@@ -478,32 +510,7 @@ exports[`BillingPaymentMethod Stripe should render a button 1`] = `
                   }
                 >
                   <div
-                    className="content col-sm-4"
-                  >
-                    No credit card registered
-                  </div>
-                </Col>
-                <Col
-                  className="text-right"
-                  sm={
-                    Object {
-                      "offset": 4,
-                      "size": 4,
-                    }
-                  }
-                  tag="div"
-                  widths={
-                    Array [
-                      "xs",
-                      "sm",
-                      "md",
-                      "lg",
-                      "xl",
-                    ]
-                  }
-                >
-                  <div
-                    className="text-right col-sm-4 offset-sm-4"
+                    className="text-right col-sm-4"
                   >
                     <div
                       id="add-payment-method-button"
@@ -624,16 +631,22 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
   }
 >
   <div
-    className="mb-5"
+    className="wrapper"
   >
-    <h4>
-      <i
-        className="material-icons"
+    <BillingHeader
+      icon="credit_card"
+    >
+      <h4
+        className="header"
       >
-        credit_card
-      </i>
-       Payment method
-    </h4>
+        <i
+          className="icon material-icons"
+        >
+          credit_card
+        </i>
+        Payment method
+      </h4>
+    </BillingHeader>
     <Card
       tag="div"
     >
@@ -663,6 +676,35 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
               >
                 <Col
                   className="content"
+                  sm={8}
+                  tag="div"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                >
+                  <div
+                    className="content col-sm-8"
+                  >
+                    <span
+                      className="cardLabel"
+                    >
+                      Visa
+                       ending with
+                       
+                      <strong>
+                        4242
+                      </strong>
+                    </span>
+                  </div>
+                </Col>
+                <Col
+                  className="text-right"
                   sm={4}
                   tag="div"
                   widths={
@@ -676,49 +718,7 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
                   }
                 >
                   <div
-                    className="content col-sm-4"
-                  >
-                    <span>
-                      Visa
-                       ending in
-                       
-                      <strong>
-                        4242
-                         
-                      </strong>
-                    </span>
-                    <span>
-                      will expire on
-                       
-                      <em>
-                        9
-                        /
-                        2017
-                      </em>
-                    </span>
-                  </div>
-                </Col>
-                <Col
-                  className="text-right"
-                  sm={
-                    Object {
-                      "offset": 4,
-                      "size": 4,
-                    }
-                  }
-                  tag="div"
-                  widths={
-                    Array [
-                      "xs",
-                      "sm",
-                      "md",
-                      "lg",
-                      "xl",
-                    ]
-                  }
-                >
-                  <div
-                    className="text-right col-sm-4 offset-sm-4"
+                    className="text-right col-sm-4"
                   >
                     <Button
                       color="secondary"
@@ -755,16 +755,13 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
 
 exports[`BillingPaymentMethod Stripe should render a disabled button 1`] = `
 <div
-  className="mb-5"
+  className="wrapper"
 >
-  <h4>
-    <i
-      className="material-icons"
-    >
-      credit_card
-    </i>
-     Payment method
-  </h4>
+  <BillingHeader
+    icon="credit_card"
+  >
+    Payment method
+  </BillingHeader>
   <Card
     tag="div"
   >
@@ -785,7 +782,7 @@ exports[`BillingPaymentMethod Stripe should render a disabled button 1`] = `
       >
         <Col
           className="content"
-          sm={4}
+          sm={8}
           tag="div"
           widths={
             Array [
@@ -801,12 +798,7 @@ exports[`BillingPaymentMethod Stripe should render a disabled button 1`] = `
         </Col>
         <Col
           className="text-right"
-          sm={
-            Object {
-              "offset": 4,
-              "size": 4,
-            }
-          }
+          sm={4}
           tag="div"
           widths={
             Array [

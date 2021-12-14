@@ -41,15 +41,17 @@ exports[`<BillingUsage/> should display loader 1`] = `
 
 exports[`<BillingUsage/> should display price 1`] = `
 <div
-  class="mb-5"
+  class="wrapper"
 >
-  <h4>
+  <h4
+    class="header"
+  >
     <i
-      class="material-icons"
+      class="icon material-icons"
     >
       insert_chart
     </i>
-     Usage & Plans
+    Usage & Plans
   </h4>
   <div
     class="card-group card-group"
@@ -275,15 +277,17 @@ exports[`<BillingUsage/> should display warning progress bar 1`] = `
 
 exports[`<BillingUsage/> should load with empty props 1`] = `
 <div
-  class="mb-5"
+  class="wrapper"
 >
-  <h4>
+  <h4
+    class="header"
+  >
     <i
-      class="material-icons"
+      class="icon material-icons"
     >
       insert_chart
     </i>
-     Usage & Plans
+    Usage & Plans
   </h4>
   <div
     class="card-group card-group"

@@ -21,6 +21,7 @@ import {RootState} from '../../../state/types'
 import {PaymentMethodType} from '../../../state/billing/types'
 
 import css from './BillingPaymentMethod.less'
+import BillingHeader from './common/BillingHeader'
 
 type State = {
     isLoading: boolean
@@ -54,19 +55,10 @@ export class BillingPaymentMethodContainer extends Component<
 
         if (!creditCard.isEmpty()) {
             creditCardLabel = (
-                <>
-                    <span>
-                        {creditCard.get('brand')} ending in{' '}
-                        <strong>{creditCard.get('last4')} </strong>
-                    </span>
-                    <span>
-                        will expire on{' '}
-                        <em>
-                            {creditCard.get('exp_month')}/
-                            {creditCard.get('exp_year')}
-                        </em>
-                    </span>
-                </>
+                <span className={css.cardLabel}>
+                    {creditCard.get('brand')} ending with{' '}
+                    <strong>{creditCard.get('last4')}</strong>
+                </span>
             )
         }
 
@@ -74,10 +66,10 @@ export class BillingPaymentMethodContainer extends Component<
             <Card>
                 <CardBody>
                     <Row>
-                        <Col className={css.content} sm={4}>
+                        <Col className={css.content} sm={8}>
                             {creditCardLabel}
                         </Col>
-                        <Col sm={{size: 4, offset: 4}} className="text-right">
+                        <Col sm={4} className="text-right">
                             {creditCard.isEmpty() ? (
                                 <div
                                     id="add-payment-method-button"
@@ -245,10 +237,8 @@ export class BillingPaymentMethodContainer extends Component<
         }
 
         return (
-            <div className="mb-5">
-                <h4>
-                    <i className="material-icons">credit_card</i> Payment method
-                </h4>
+            <div className={css.wrapper}>
+                <BillingHeader icon="credit_card">Payment method</BillingHeader>
                 {paymentMethod === PaymentMethodType.Stripe
                     ? this.renderStripe()
                     : this.renderShopify()}

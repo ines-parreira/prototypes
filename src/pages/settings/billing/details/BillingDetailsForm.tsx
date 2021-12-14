@@ -1,16 +1,7 @@
 import React, {Component, SyntheticEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Button,
-    Container,
-    Form,
-    Row,
-    Col,
-} from 'reactstrap'
-import classNames from 'classnames'
+import {Breadcrumb, BreadcrumbItem, Container, Form, Row, Col} from 'reactstrap'
 import {fromJS} from 'immutable'
 
 import {fetchContact, updateContact} from '../../../../state/billing/actions'
@@ -20,7 +11,9 @@ import PageHeader from '../../../common/components/PageHeader'
 import {RootState} from '../../../../state/types'
 import BillingAddressInput from '../common/BillingAddressInputs'
 import {BillingContact} from '../../../../state/billing/types'
-import css from '../../settings.less'
+import Button from '../../../common/components/button/Button'
+
+import css from './BillingDetailsForm.less'
 
 type Props = ConnectedProps<typeof connector>
 
@@ -111,16 +104,15 @@ export class BillingDetailsFormContainer extends Component<Props, State> {
                                     Billing & Usage
                                 </Link>
                             </BreadcrumbItem>
-                            <BreadcrumbItem>Billing details</BreadcrumbItem>
+                            <BreadcrumbItem>
+                                Change billing address
+                            </BreadcrumbItem>
                         </Breadcrumb>
                     }
                 />
 
                 <Container fluid className={css.pageContainer}>
-                    <p>
-                        Please enter the billing details you'd like us to use on
-                        your next invoice.
-                    </p>
+                    <h3>Billing information</h3>
                     <Row>
                         <Col lg={6}>
                             {isLoading ? (
@@ -137,14 +129,10 @@ export class BillingDetailsFormContainer extends Component<Props, State> {
                                     />
                                     <div>
                                         <Button
-                                            color="success"
-                                            className={classNames({
-                                                'btn-loading':
-                                                    this.state.isSubmitting,
-                                            })}
-                                            disabled={this.state.isSubmitting}
+                                            className={css.submitButton}
+                                            isLoading={this.state.isSubmitting}
                                         >
-                                            Update billing details
+                                            Update Address
                                         </Button>
                                     </div>
                                 </Form>

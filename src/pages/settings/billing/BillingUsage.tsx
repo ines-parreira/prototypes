@@ -35,6 +35,7 @@ import AutomationSection from './automation/AutomationSection'
 import CurrentPlanBadge from './plans/CurrentPlanBadge'
 
 import css from './BillingUsage.less'
+import BillingHeader from './common/BillingHeader'
 
 const BillingUsage = () => {
     const dispatch = useAppDispatch()
@@ -278,13 +279,11 @@ const BillingUsage = () => {
     return isLoading ? (
         <Loader />
     ) : (
-        <div className="mb-5">
+        <div className={css.wrapper}>
             {accountHasLegacyPlan && (
                 <LegacyPlanBanner isCustomPlan={currentPlan.get('custom')} />
             )}
-            <h4>
-                <i className="material-icons">insert_chart</i> Usage & Plans
-            </h4>
+            <BillingHeader icon="insert_chart">Usage & Plans</BillingHeader>
 
             {currentSubscription.isEmpty()
                 ? renderNoSubscription()

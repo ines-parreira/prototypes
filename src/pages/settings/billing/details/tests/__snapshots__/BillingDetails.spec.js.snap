@@ -2,19 +2,13 @@
 
 exports[`BillingDetails component should display billing contact information 1`] = `
 <div
-  className="mb-5"
+  className="wrapper"
 >
-  <h4>
-    <i
-      className="material-icons"
-    >
-      notes
-    </i>
-     Billing details
-  </h4>
-  <p>
-    This information will appear on your next invoice. Invoices are sent to the billing email address below.
-  </p>
+  <BillingHeader
+    icon="person_pin"
+  >
+    Billing address
+  </BillingHeader>
   <Card
     tag="div"
   >
@@ -22,6 +16,7 @@ exports[`BillingDetails component should display billing contact information 1`]
       tag="div"
     >
       <Row
+        className="row"
         tag="div"
         widths={
           Array [
@@ -34,7 +29,7 @@ exports[`BillingDetails component should display billing contact information 1`]
         }
       >
         <Col
-          sm={4}
+          sm={8}
           tag="div"
           widths={
             Array [
@@ -57,44 +52,31 @@ exports[`BillingDetails component should display billing contact information 1`]
             </dd>
             <br />
             <dt>
-              Company:
+              Company name:
             </dt>
             <dd>
               Gorgias
             </dd>
             <br />
             <dt>
-              Address:
-            </dt>
-            <dd>
-              <div>
-                52 Washburn St
-              </div>
-              <div />
-              <div>
-                San Francisco CA 94103
-              </div>
-              <div>
-                United States
-              </div>
-            </dd>
-            <br />
-            <dt>
-              Phone:
+              Phone number:
             </dt>
             <dd>
               4155555556
+            </dd>
+            <br />
+            <dt>
+              Address:
+            </dt>
+            <dd>
+              52 Washburn St, San Francisco, CA, 94103
+               – United States
             </dd>
           </address>
         </Col>
         <Col
           className="text-right"
-          sm={
-            Object {
-              "offset": 4,
-              "size": 4,
-            }
-          }
+          sm={4}
           tag="div"
           widths={
             Array [
@@ -111,7 +93,7 @@ exports[`BillingDetails component should display billing contact information 1`]
             tag={[Function]}
             to="/app/settings/billing/update-billing-details"
           >
-            Update billing details
+            Change Address
           </Button>
         </Col>
       </Row>

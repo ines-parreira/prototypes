@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<BillingHeader /> should render 1`] = `
+<h4
+  class="header"
+>
+  <i
+    class="icon material-icons"
+  >
+    test
+  </i>
+  Foo
+</h4>
+`;
