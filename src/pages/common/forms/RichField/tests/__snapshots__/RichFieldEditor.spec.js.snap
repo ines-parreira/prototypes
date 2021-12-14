@@ -388,6 +388,7 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
         onLinkOpen={[Function]}
         onLinkTextChange={[Function]}
         onLinkUrlChange={[Function]}
+        productCardsEnabled={true}
         type="text"
       />
     </div>

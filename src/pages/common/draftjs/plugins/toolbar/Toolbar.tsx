@@ -26,6 +26,7 @@ type Props = {
     buttons: ReactNode[]
     attachFiles: (T: Array<Blob>) => void
     canDropFiles: boolean
+    productCardsEnabled: boolean
     displayedActions?: ActionName[]
     linkAction: ReactNode
     imageAction: ReactNode
@@ -104,6 +105,7 @@ export class Toolbar extends Component<Props, State> {
             setEditorState,
             quickReply,
             integrations,
+            productCardsEnabled,
         } = this.props
         const actionsProps = {getEditorState, setEditorState}
 
@@ -152,6 +154,7 @@ export class Toolbar extends Component<Props, State> {
                                     getEditorState={actionsProps.getEditorState}
                                     setEditorState={actionsProps.setEditorState}
                                     integrations={integrations}
+                                    productCardsEnabled={productCardsEnabled}
                                 />
                             </div>
                         )}

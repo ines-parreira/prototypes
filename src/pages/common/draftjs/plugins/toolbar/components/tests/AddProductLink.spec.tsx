@@ -14,6 +14,7 @@ const minProps = {
     integrations: integrationsStateWithShopify.get('integrations') as List<any>,
     getEditorState: jest.fn(),
     setEditorState: jest.fn(),
+    productCardsEnabled: true,
 }
 
 const middlewares = [thunk]
@@ -56,6 +57,7 @@ describe('<AddProductLink/>', () => {
                     integrations={integrations}
                     getEditorState={minProps.getEditorState}
                     setEditorState={minProps.setEditorState}
+                    productCardsEnabled
                 />
             </Provider>
         )

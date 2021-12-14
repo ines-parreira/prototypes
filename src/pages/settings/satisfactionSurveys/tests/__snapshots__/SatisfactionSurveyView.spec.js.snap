@@ -1742,6 +1742,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                             onLinkTextChange={[Function]}
                                             onLinkUrlChange={[Function]}
                                             onMentionSearchChange={[Function]}
+                                            productCardsEnabled={true}
                                             type="text"
                                             value={
                                               Object {
@@ -3232,6 +3233,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                           "setReadOnly": [Function],
                                                         }
                                                       }
+                                                      productCardsEnabled={true}
                                                       type="text"
                                                       value={
                                                         Object {
@@ -3277,6 +3279,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                             url=""
                                                           />
                                                         }
+                                                        productCardsEnabled={true}
                                                         setEditorState={[Function]}
                                                         setReadOnly={[Function]}
                                                       >
@@ -3320,6 +3323,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                               url=""
                                                             />
                                                           }
+                                                          productCardsEnabled={true}
                                                           setEditorState={[Function]}
                                                           setReadOnly={[Function]}
                                                         >

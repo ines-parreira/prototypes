@@ -42,6 +42,7 @@ type OwnProps = {
     getEditorState: EditorStateGetter
     setEditorState: EditorStateSetter
     integrations: List<any>
+    productCardsEnabled: boolean
 }
 
 export function AddProductLink({
@@ -53,6 +54,7 @@ export function AddProductLink({
     newMessageChannel,
     isNewMessagePublic,
     currentAccount,
+    productCardsEnabled,
 }: ConnectedProps<typeof connector> & OwnProps) {
     const [isOpen, setOpen] = useState(false)
     const [pickedShopifyIntegration, setPickedShopifyIntegration] =
@@ -95,10 +97,12 @@ export function AddProductLink({
     const addProductLink = useCallback(
         (productCardDetails: ProductCardDetails) => {
             const editorState = getEditorState()
-            if (
-                newMessageChannel === (TicketChannel.Chat as string) ||
-                !isNewMessagePublic
-            ) {
+            const canAddCard =
+                productCardsEnabled &&
+                (newMessageChannel === (TicketChannel.Chat as string) ||
+                    !isNewMessagePublic)
+
+            if (canAddCard) {
                 addProductCardAttachments(ticket, productCardDetails)
             } else {
                 let newEditorState
@@ -145,6 +149,7 @@ export function AddProductLink({
             setOpen,
             newMessageChannel,
             isNewMessagePublic,
+            productCardsEnabled,
         ]
     )
 

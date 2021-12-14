@@ -1072,6 +1072,7 @@ exports[`RichField should render default content state 1`] = `
                   onLinkTextChange={[Function]}
                   onLinkUrlChange={[Function]}
                   onMentionSearchChange={[Function]}
+                  productCardsEnabled={true}
                   type="text"
                   value={
                     Object {
@@ -2538,6 +2539,7 @@ exports[`RichField should render default content state 1`] = `
                                 "setReadOnly": [Function],
                               }
                             }
+                            productCardsEnabled={true}
                             type="text"
                             value={
                               Object {
@@ -2583,6 +2585,7 @@ exports[`RichField should render default content state 1`] = `
                                   url=""
                                 />
                               }
+                              productCardsEnabled={true}
                               setEditorState={[Function]}
                               setReadOnly={[Function]}
                             >
@@ -2626,6 +2629,7 @@ exports[`RichField should render default content state 1`] = `
                                     url=""
                                   />
                                 }
+                                productCardsEnabled={true}
                                 setEditorState={[Function]}
                                 setReadOnly={[Function]}
                               >
@@ -4763,6 +4767,7 @@ exports[`RichField should render immutable variable 1`] = `
                   onLinkTextChange={[Function]}
                   onLinkUrlChange={[Function]}
                   onMentionSearchChange={[Function]}
+                  productCardsEnabled={true}
                   type="text"
                   value={
                     Object {
@@ -8150,6 +8155,7 @@ exports[`RichField should render immutable variable 1`] = `
                                 "setReadOnly": [Function],
                               }
                             }
+                            productCardsEnabled={true}
                             type="text"
                             value={
                               Object {
@@ -8195,6 +8201,7 @@ exports[`RichField should render immutable variable 1`] = `
                                   url=""
                                 />
                               }
+                              productCardsEnabled={true}
                               setEditorState={[Function]}
                               setReadOnly={[Function]}
                             >
@@ -8238,6 +8245,7 @@ exports[`RichField should render immutable variable 1`] = `
                                     url=""
                                   />
                                 }
+                                productCardsEnabled={true}
                                 setEditorState={[Function]}
                                 setReadOnly={[Function]}
                               >
@@ -9391,6 +9399,7 @@ exports[`RichField should render mutable variable 1`] = `
                   onLinkTextChange={[Function]}
                   onLinkUrlChange={[Function]}
                   onMentionSearchChange={[Function]}
+                  productCardsEnabled={true}
                   type="text"
                   value={
                     Object {
@@ -11000,6 +11009,7 @@ exports[`RichField should render mutable variable 1`] = `
                                 "setReadOnly": [Function],
                               }
                             }
+                            productCardsEnabled={true}
                             type="text"
                             value={
                               Object {
@@ -11045,6 +11055,7 @@ exports[`RichField should render mutable variable 1`] = `
                                   url=""
                                 />
                               }
+                              productCardsEnabled={true}
                               setEditorState={[Function]}
                               setReadOnly={[Function]}
                             >
@@ -11088,6 +11099,7 @@ exports[`RichField should render mutable variable 1`] = `
                                     url=""
                                   />
                                 }
+                                productCardsEnabled={true}
                                 setEditorState={[Function]}
                                 setReadOnly={[Function]}
                               >

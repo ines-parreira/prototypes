@@ -19,6 +19,7 @@ type Props = {
         text: string
     }
     defaultContentState?: ContentState
+    productCardsEnabled?: boolean
 } & Partial<Omit<RichFieldEditorProps, 'editorState'>>
 
 type State = {

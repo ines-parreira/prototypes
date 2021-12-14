@@ -24,6 +24,7 @@ type Props = {
     onLinkClose: () => void
     quickReply: ReactNode
     pluginMethods?: PluginMethods
+    productCardsEnabled: boolean
 }
 
 export default function RichFieldToolbar(props: Props) {
@@ -57,6 +58,7 @@ export default function RichFieldToolbar(props: Props) {
             }
             quickReply={props.quickReply}
             {...pluginMethods}
+            productCardsEnabled={props.productCardsEnabled}
         />
     )
 }

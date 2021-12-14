@@ -127,6 +127,7 @@ export default class SetResponseTextAction extends React.Component {
                     }}
                     onChange={this._setResponseText}
                     spellCheck
+                    productCardsEnabled={false}
                 />
             </div>
         )

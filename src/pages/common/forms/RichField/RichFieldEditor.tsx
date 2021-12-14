@@ -60,6 +60,7 @@ export type Props = {
     required: boolean
     displayOnly: boolean
     emailExtraEnabled: boolean
+    productCardsEnabled: boolean
     isFocused: boolean
     onFocus: (event: MouseEvent<HTMLDivElement>) => void
     onBlur: () => void
@@ -92,6 +93,7 @@ export class RichFieldEditor extends InputField<Props, State> {
     static defaultProps: Pick<
         Props,
         | 'emailExtraEnabled'
+        | 'productCardsEnabled'
         | 'notify'
         | 'attachFiles'
         | 'canDropFiles'
@@ -100,6 +102,7 @@ export class RichFieldEditor extends InputField<Props, State> {
     > &
         Pick<ComponentProps<typeof InputField>, 'type'> = {
         emailExtraEnabled: false,
+        productCardsEnabled: true,
         type: 'text',
         notify: () => Promise.resolve(),
         attachFiles: _noop,
@@ -331,8 +334,14 @@ export class RichFieldEditor extends InputField<Props, State> {
     }
 
     _getField = () => {
-        const {required, displayOnly, onFocus, emailExtraEnabled, ticket} =
-            this.props
+        const {
+            required,
+            displayOnly,
+            onFocus,
+            emailExtraEnabled,
+            ticket,
+            productCardsEnabled,
+        } = this.props
         // $TsFixMe remove casting after migrating createMentionPlugin
         const {MentionSuggestions} = this.mentionPlugin as {
             MentionSuggestions: ComponentType<{
@@ -418,6 +427,7 @@ export class RichFieldEditor extends InputField<Props, State> {
                     >)}
                     canDropFiles={this._getCanDropFiles()}
                     pluginMethods={this.editor?.getPluginMethods()}
+                    productCardsEnabled={productCardsEnabled}
                 />
             </div>
         )
