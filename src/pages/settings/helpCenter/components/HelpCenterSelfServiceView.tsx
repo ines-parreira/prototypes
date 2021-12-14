@@ -11,6 +11,9 @@ import {helpCenterUpdated} from '../../../../state/entities/helpCenters/actions'
 import {fetchIntegrations} from '../../../../state/integrations/actions'
 import {getIntegrations} from '../../../../state/integrations/selectors'
 import {notify} from '../../../../state/notifications/actions'
+import {GorgiasChatIntegrationSelfServicePaywall} from '../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
+import {hasAutomationLegacyFeatures} from '../../../../state/currentAccount/selectors'
+import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
@@ -26,6 +29,8 @@ import {SelfServiceSection} from './SelfServiceSection'
 export const HelpCenterSelfServiceView = (): JSX.Element | null => {
     const helpCenterId = useHelpCenterIdParam()
     const {helpCenter} = useCurrentHelpCenter()
+    const hasSelfServiceV1Features = useSelector(hasAutomationLegacyFeatures)
+    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
     const integrations = useSelector(getIntegrations)
     const {client} = useHelpCenterApi()
     const dispatch = useAppDispatch()
@@ -79,9 +84,19 @@ export const HelpCenterSelfServiceView = (): JSX.Element | null => {
 
     if (helpCenter === null || isLoadingIntegrations) {
         return (
-            <Container fluid className={settingsCss.pageContainer}>
-                <Loader />
-            </Container>
+            <div className="full-width">
+                <PageHeader
+                    title={
+                        <HelpCenterDetailsBreadcrumb
+                            helpCenterName={helpCenter?.name || ''}
+                            activeLabel="Self-service"
+                        />
+                    }
+                />
+                <Container fluid className={settingsCss.pageContainer}>
+                    <Loader />
+                </Container>
+            </div>
         )
     }
 
@@ -106,16 +121,20 @@ export const HelpCenterSelfServiceView = (): JSX.Element | null => {
                 }
             />
             <HelpCenterNavigation helpCenterId={helpCenterId} />
-            <Container fluid className={settingsCss.pageContainer}>
-                <div className={settingsCss.contentWrapper}>
-                    <SelfServiceSection
-                        shopifyIntegration={shopifyIntegration}
-                        helpCenter={helpCenter}
-                        updateHelpCenter={updateHelpCenter}
-                        updating={updatingHelpCenter}
-                    />
-                </div>
-            </Container>
+            {hasSelfServiceV1Features || hasAutomationAddOn ? (
+                <Container fluid className={settingsCss.pageContainer}>
+                    <div className={settingsCss.contentWrapper}>
+                        <SelfServiceSection
+                            shopifyIntegration={shopifyIntegration}
+                            helpCenter={helpCenter}
+                            updateHelpCenter={updateHelpCenter}
+                            updating={updatingHelpCenter}
+                        />
+                    </div>
+                </Container>
+            ) : (
+                <GorgiasChatIntegrationSelfServicePaywall />
+            )}
         </div>
     )
 }
