@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
 
 import * as actions from '../actions.ts'
-import * as constants from '../constants'
+import * as constants from '../constants.ts'
 import client from '../../../models/api/resources.ts'
 
 const middlewares = [thunk]

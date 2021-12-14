@@ -31,7 +31,7 @@ Array [
 exports[`integrations actions fetch integration fails 1`] = `
 Array [
   Object {
-    "id": 1,
+    "id": "1",
     "type": "FETCH_INTEGRATION_START",
   },
   Object {
@@ -45,7 +45,7 @@ Array [
 exports[`integrations actions fetch integration success 1`] = `
 Array [
   Object {
-    "id": 1,
+    "id": "1",
     "type": "FETCH_INTEGRATION_START",
   },
   Object {

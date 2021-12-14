@@ -4,9 +4,9 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import {
     shopifyCalculatedDraftOrderFixture,
     shopifyDraftOrderPayloadFixture,
-} from '../../../../../fixtures/shopify.ts'
-import reducer, {initialState} from '../reducers.ts'
-import * as constants from '../constants.ts'
+} from '../../../../../fixtures/shopify'
+import reducer, {initialState} from '../reducers'
+import * as constants from '../constants'
 
 jest.addMatchers(immutableMatchers)
 
@@ -61,11 +61,14 @@ describe('infobarActions.shopify.createOrder reducer', () => {
 
     describe('SET_PRODUCTS', () => {
         it('should set products', () => {
-            const products = new Map([
-                [1, {id: 1}],
-                [2, {id: 2}],
-            ])
-            const action = {type: constants.SET_PRODUCTS, products}
+            const products = fromJS({
+                1: {id: 1},
+                2: {id: 2},
+            })
+            const action = {
+                type: constants.SET_PRODUCTS,
+                products,
+            }
             const nextState = reducer(initialState, action)
             expect(nextState.get('products')).toEqual(products)
         })

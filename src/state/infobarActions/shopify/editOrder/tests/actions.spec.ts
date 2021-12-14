@@ -1,6 +1,6 @@
 import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import {fromJS, Map} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
 
 import {
@@ -8,29 +8,30 @@ import {
     shopifyCalculatedEditOrderFixture,
     shopifyDraftOrderPayloadFixture,
     shopifyOrderFixture,
-} from '../../../../../fixtures/shopify.ts'
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../constants/integration.ts'
-import {initialState} from '../reducers.ts'
-import * as actions from '../actions.ts'
-import client from '../../../../../models/api/resources.ts'
+} from '../../../../../fixtures/shopify'
+import {initialState} from '../reducers'
+import * as actions from '../actions'
+import client from '../../../../../models/api/resources'
+import {IntegrationType} from '../../../../../models/integration/types'
+import {StoreDispatch} from '../../../../types'
 
-jest.mock('lodash/debounce', () => (fn) => {
+jest.mock('lodash/debounce', () => (fn: Record<string, unknown>) => {
     fn.cancel = jest.fn()
     return fn
 })
 
-jest.mock('../../../../infobar/actions.ts')
+jest.mock('../../../../infobar/actions')
 
 describe('infobarActions.shopify.editOrder actions', () => {
     const middlewares = [thunk]
     const mockStore = configureMockStore(middlewares)
     const integrationId = 1
-    const order = fromJS(shopifyOrderFixture())
+    const order: Map<any, any> = fromJS(shopifyOrderFixture())
 
     const mockServer = new MockAdapter(client)
     mockServer
         .onPost(
-            `/integrations/${SHOPIFY_INTEGRATION_TYPE}/order/edit/calculate/`
+            `/integrations/${IntegrationType.Shopify}/order/edit/calculate/`
         )
         .reply(200, {
             data: {
@@ -38,14 +39,14 @@ describe('infobarActions.shopify.editOrder actions', () => {
             },
         })
 
-    let store
+    let store: MockStoreEnhanced<unknown, StoreDispatch>
 
     describe('onLineItemChange()', () => {
         beforeEach(() => {
             jest.useFakeTimers()
             store = mockStore({
                 infobarActions: {
-                    [SHOPIFY_INTEGRATION_TYPE]: {
+                    [IntegrationType.Shopify]: {
                         editOrder: initialState
                             .set(
                                 'payload',
@@ -66,9 +67,9 @@ describe('infobarActions.shopify.editOrder actions', () => {
         it('should edit the payload with the first product quantity set to 6', async () => {
             await store.dispatch(
                 actions.onLineItemChange(integrationId, {
-                    newLineItem: order
-                        .getIn(['line_items', 0])
-                        .set('quantity', 6),
+                    newLineItem: (
+                        order.getIn(['line_items', 0]) as Map<any, any>
+                    ).set('quantity', 6),
                     index: 0,
                 })
             )

@@ -1,19 +1,15 @@
-import {fromJS} from 'immutable'
+import {fromJS, Map, Seq} from 'immutable'
 
-import {
-    FACEBOOK_INTEGRATION_TYPE,
-    OUTLOOK_INTEGRATION_TYPE,
-    SMOOCH_INSIDE_INTEGRATION_TYPE,
-} from '../../../constants/integration.ts'
-
-import {integrationsState} from '../../../fixtures/integrations.ts'
-import {getIntegrationsState, getEmailIntegrations} from '../selectors.ts'
-import reducer, {initialState} from '../reducers.ts'
+import {integrationsState} from '../../../fixtures/integrations'
+import {getIntegrationsState, getEmailIntegrations} from '../selectors'
+import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
+import {RootState} from '../../types'
+import {IntegrationType} from '../../../models/integration/types'
 
 const state = {
     integrations: fromJS(integrationsState),
-}
+} as RootState
 
 describe('integrations reducers', () => {
     it('should handle DELETE_INTEGRATION_SUCCESS', () => {
@@ -24,10 +20,13 @@ describe('integrations reducers', () => {
         const newState = reducer(state.integrations, action)
         const expected = getIntegrationsState(state)
             .update('integrations', (integrations) =>
-                integrations
-                    .valueSeq()
-                    .filter((int) => int.get('id') !== action.id)
-                    .toList()
+                (
+                    (integrations as Map<any, any>)
+                        .valueSeq()
+                        .filter(
+                            (int: Map<any, any>) => int.get('id') !== action.id
+                        ) as Seq.Indexed<Map<any, any>>
+                ).toList()
             )
             .setIn(['state', 'loading', 'delete'], false)
 
@@ -62,8 +61,8 @@ describe('integrations reducers', () => {
 
     describe('FETCH_ONBOARDING_INTEGRATIONS_SUCCESS', () => {
         const integrationTypes = [
-            FACEBOOK_INTEGRATION_TYPE,
-            OUTLOOK_INTEGRATION_TYPE,
+            IntegrationType.Facebook,
+            IntegrationType.Outlook,
         ]
 
         integrationTypes.forEach((integrationType) => {
@@ -121,7 +120,7 @@ describe('integrations reducers', () => {
                 ).toEqual(
                     getIntegrationsState({
                         integrations: integrationsState,
-                    }).setIn(
+                    } as RootState).setIn(
                         ['extra', integrationType, 'onboardingIntegrations'],
                         fromJS(onboardingIntegrations)
                     )
@@ -157,7 +156,7 @@ describe('integrations reducers', () => {
                 ).toEqual(
                     getIntegrationsState({
                         integrations: integrationsState,
-                    }).setIn(
+                    } as RootState).setIn(
                         ['extra', integrationType, 'onboardingIntegrations'],
                         fromJS(onboardingIntegrations)
                     )
@@ -196,7 +195,7 @@ describe('integrations reducers', () => {
                     ).toEqual(
                         getIntegrationsState({
                             integrations: integrationsState,
-                        }).setIn(
+                        } as RootState).setIn(
                             [
                                 'extra',
                                 integrationType,
@@ -218,7 +217,7 @@ describe('integrations reducers', () => {
             () => {
                 const newIntegration = {
                     id: 118712,
-                    type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+                    type: IntegrationType.SmoochInside,
                 }
 
                 const integrationsState = initialState.mergeDeep(
@@ -226,7 +225,7 @@ describe('integrations reducers', () => {
                         integrations: [
                             {
                                 id: 241,
-                                type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+                                type: IntegrationType.SmoochInside,
                                 meta: {foo: 'bar'},
                             },
                         ],
@@ -250,9 +249,9 @@ describe('integrations reducers', () => {
             () => {
                 const integration = {
                     id: 118712,
-                    type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+                    type: IntegrationType.SmoochInside,
                 }
-                const updatedIntegration = Object.assign({}, ...integration, {
+                const updatedIntegration = Object.assign({}, integration, {
                     meta: {foo: 'bar'},
                 })
 
@@ -261,7 +260,7 @@ describe('integrations reducers', () => {
                         integrations: [
                             {
                                 id: 241,
-                                type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+                                type: IntegrationType.SmoochInside,
                                 meta: {foo: 'bar'},
                             },
                             integration,

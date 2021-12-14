@@ -88,13 +88,13 @@ export type GorgiasAction = {
     event?: HTTPIntegrationEvent
     callback?: (arg: unknown) => void
     loading?: boolean
-    message?: string
+    message?: string | null
     orderId?: number
     payload?: unknown
     addresses?: List<Map<any, any>>
     lineItems?: List<any>
     refund?: Map<any, any>
-    amount?: number
+    amount?: number | string
     restock?: boolean
     calculatedDraftOrder?: Map<any, any>
     calculatedOrderId?: string

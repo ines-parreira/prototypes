@@ -9,7 +9,7 @@ import {NotificationStatus} from '../notifications/types'
 import {notify} from '../notifications/actions'
 import {StoreDispatch} from '../types'
 
-import * as constants from './constants.js'
+import * as constants from './constants'
 import {getErrorReason} from './utils'
 
 export type fetchMacrosParamsTypes = {

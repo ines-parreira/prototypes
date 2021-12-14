@@ -1,7 +1,9 @@
+import {AxiosResponse} from 'axios'
 import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import {fromJS, Map} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
+import {AnyAction} from 'redux'
 
 import {
     shopifyCalculatedDraftOrderFixture,
@@ -12,23 +14,24 @@ import {
     shopifyOrderFixture,
     shopifyProductFixture,
     shopifyVariantFixture,
-} from '../../../../../fixtures/shopify.ts'
-import {ShopifyAction} from '../../../../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/constants.ts'
+} from '../../../../../fixtures/shopify'
+import {ShopifyAction} from '../../../../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/constants'
+import {executeAction} from '../../../../infobar/actions'
+import {initialState} from '../reducers'
+import * as actions from '../actions'
+import client from '../../../../../models/api/resources'
 import {
-    INTEGRATION_DATA_ITEM_TYPE_PRODUCT,
-    SHOPIFY_INTEGRATION_TYPE,
-} from '../../../../../constants/integration.ts'
-import {executeAction} from '../../../../infobar/actions.ts'
-import {initialState} from '../reducers.ts'
-import * as actions from '../actions.ts'
-import client from '../../../../../models/api/resources.ts'
+    IntegrationDataItemType,
+    IntegrationType,
+} from '../../../../../models/integration/types'
+import {RootState, StoreDispatch} from '../../../../types'
 
-jest.mock('lodash/debounce', () => (fn) => {
+jest.mock('lodash/debounce', () => (fn: Record<string, unknown>) => {
     fn.cancel = jest.fn()
     return fn
 })
 
-jest.mock('../../../../infobar/actions.ts')
+jest.mock('../../../../infobar/actions')
 jest.useFakeTimers()
 
 describe('infobarActions.shopify.createOrder actions', () => {
@@ -36,26 +39,29 @@ describe('infobarActions.shopify.createOrder actions', () => {
     const mockStore = configureMockStore(middlewares)
     const integrationId = 1
     const draftOrderId = 1
-    const integrationDataItemType = INTEGRATION_DATA_ITEM_TYPE_PRODUCT
+    const integrationDataItemType =
+        IntegrationDataItemType.IntegrationDataItemTypeProduct
     const currencyCode = 'USD'
-    const order = fromJS(shopifyOrderFixture())
-    const customer = fromJS(shopifyCustomerFixture())
+    const order: Map<any, any> = fromJS(shopifyOrderFixture())
+    const customer: Map<any, any> = fromJS(shopifyCustomerFixture())
     const mockServer = new MockAdapter(client)
-    let store
+    let store: MockStoreEnhanced<unknown, StoreDispatch>
 
     const getActions = () =>
-        store.getActions().map((action) => {
-            if (action.type === 'ADD_NOTIFICATION') {
-                action.payload.id = 1
-            }
+        store
+            .getActions()
+            .map((action: AnyAction & {payload: Record<string, unknown>}) => {
+                if (action.type === 'ADD_NOTIFICATION') {
+                    action.payload.id = 1
+                }
 
-            return action
-        })
+                return action
+            })
 
     function mockCalculateSuccess() {
         mockServer
             .onPost(
-                `/integrations/${SHOPIFY_INTEGRATION_TYPE}/order/draft/calculate/`
+                `/integrations/${IntegrationType.Shopify}/order/draft/calculate/`
             )
             .reply(200, {
                 data: {
@@ -69,7 +75,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
 
     function mockCreateSuccess() {
         mockServer
-            .onPost(`/integrations/${SHOPIFY_INTEGRATION_TYPE}/order/draft/`)
+            .onPost(`/integrations/${IntegrationType.Shopify}/order/draft/`)
             .reply(200, {
                 draft_order: {
                     id: draftOrderId,
@@ -81,7 +87,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
     beforeEach(() => {
         store = mockStore({
             infobarActions: {
-                [SHOPIFY_INTEGRATION_TYPE]: {
+                [IntegrationType.Shopify]: {
                     createOrder: initialState,
                 },
             },
@@ -97,7 +103,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
     })
 
     describe('onInit()', () => {
-        let onError
+        let onError: jest.Mock
 
         beforeEach(() => {
             onError = jest.fn()
@@ -169,7 +175,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
             it('should call onError', async () => {
                 mockServer
                     .onPost(
-                        `/integrations/${SHOPIFY_INTEGRATION_TYPE}/order/draft/calculate`
+                        `/integrations/${IntegrationType.Shopify}/order/draft/calculate`
                     )
                     .reply(500, {
                         error: {
@@ -193,14 +199,14 @@ describe('infobarActions.shopify.createOrder actions', () => {
     })
 
     describe('onPayloadChange()', () => {
-        let payload
+        let payload: Map<any, any>
 
         beforeEach(() => {
             payload = fromJS(shopifyDraftOrderPayloadFixture())
 
             store = mockStore({
                 infobarActions: {
-                    [SHOPIFY_INTEGRATION_TYPE]: {
+                    [IntegrationType.Shopify]: {
                         createOrder: initialState.set('payload', payload),
                     },
                 },
@@ -224,7 +230,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
 
             store = mockStore({
                 infobarActions: {
-                    [SHOPIFY_INTEGRATION_TYPE]: {
+                    [IntegrationType.Shopify]: {
                         createOrder: initialState.set('payload', payload),
                     },
                 },
@@ -250,7 +256,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
 
             store = mockStore({
                 infobarActions: {
-                    [SHOPIFY_INTEGRATION_TYPE]: {
+                    [IntegrationType.Shopify]: {
                         createOrder: initialState.set('payload', payload),
                     },
                 },
@@ -261,9 +267,9 @@ describe('infobarActions.shopify.createOrder actions', () => {
         it('edits the payload with the new product line', async () => {
             await store.dispatch(
                 actions.onLineItemChange(integrationId, {
-                    newLineItem: order
-                        .getIn(['line_items', 0])
-                        .set('quantity', 6),
+                    newLineItem: (
+                        order.getIn(['line_items', 0]) as Map<any, any>
+                    ).set('quantity', 6),
                     index: 0,
                 })
             )
@@ -286,7 +292,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
 
             store = mockStore({
                 infobarActions: {
-                    [SHOPIFY_INTEGRATION_TYPE]: {
+                    [IntegrationType.Shopify]: {
                         createOrder: initialState.set('payload', payload),
                     },
                 },
@@ -302,7 +308,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
 
     describe('onReset()', () => {
         it('should reset state', async () => {
-            await store.dispatch(actions.onReset())
+            await (store.dispatch(actions.onReset()) as unknown as Promise<any>)
             expect(getActions()).toMatchSnapshot()
         })
     })
@@ -313,10 +319,10 @@ describe('infobarActions.shopify.createOrder actions', () => {
         const customerId = 789
 
         let draftOrderPayload
-        let invoicePayload
-        let onSuccess
+        let invoicePayload: Map<any, any>
+        let onSuccess: jest.Mock
 
-        const initTest = (error) => {
+        const initTest = (error: boolean) => {
             // Mock order creation
             draftOrderPayload = fromJS(shopifyDraftOrderPayloadFixture())
             invoicePayload = fromJS(shopifyInvoicePayloadFixture())
@@ -327,7 +333,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
                     id: ticketId,
                 }),
                 infobarActions: {
-                    [SHOPIFY_INTEGRATION_TYPE]: {
+                    [IntegrationType.Shopify]: {
                         createOrder: initialState.set(
                             'payload',
                             draftOrderPayload
@@ -339,17 +345,25 @@ describe('infobarActions.shopify.createOrder actions', () => {
             mockCreateSuccess()
 
             // Mock action "send invoice"
-            const response = {status: error ? 'error' : 'success'}
+            const response = {
+                status: error ? 'error' : 'success',
+            } as unknown as AxiosResponse
 
-            executeAction.mockImplementation((...args) => (...reduxArgs) => {
-                const {executeAction: realImplementation} = jest.requireActual(
-                    '../../../../infobar/actions.ts'
-                )
-                const result = realImplementation(...args)(...reduxArgs)
-                const callback = args[4]
-                callback(response)
-                return result
-            })
+            ;(
+                executeAction as jest.MockedFunction<typeof executeAction>
+            ).mockImplementation(
+                (...args: ArgumentsOf<typeof executeAction>) =>
+                    (...reduxArgs: [StoreDispatch, () => RootState]) => {
+                        const {executeAction: realImplementation} =
+                            jest.requireActual('../../../../infobar/actions')
+                        const result = (
+                            realImplementation as typeof executeAction
+                        )(...args)(...reduxArgs)
+                        const callback = args[4]
+                        callback!(response)
+                        return result
+                    }
+            )
 
             mockServer
                 .onPost('/api/actions/execute/')

@@ -13,7 +13,7 @@ import {NotificationStatus} from '../notifications/types'
 import history from '../../pages/history'
 import type {StoreDispatch, RootState} from '../types'
 
-import * as constants from './constants.js'
+import * as constants from './constants'
 import * as integrationSelectors from './selectors'
 
 export function fetchIntegrations() {

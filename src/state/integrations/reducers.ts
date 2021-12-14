@@ -5,7 +5,7 @@ import {IntegrationType} from '../../models/integration/types'
 
 import {GorgiasAction} from '../types'
 
-import * as constants from './constants.js'
+import * as constants from './constants'
 import {IntegrationsState} from './types'
 
 export const initialState: IntegrationsState = fromJS({

@@ -2,7 +2,7 @@ import {fromJS} from 'immutable'
 
 import {GorgiasAction} from '../types'
 
-import * as types from './constants.js'
+import * as types from './constants'
 import {LayoutState} from './types'
 
 const initialState: LayoutState = fromJS({

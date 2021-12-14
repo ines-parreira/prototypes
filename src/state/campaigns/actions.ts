@@ -3,7 +3,7 @@ import {Map} from 'immutable'
 import client from '../../models/api/resources'
 import history from '../../pages/history'
 import {onUpdateSuccess, fetchIntegration} from '../integrations/actions'
-import * as types from '../integrations/constants.js'
+import * as types from '../integrations/constants'
 import {StoreDispatch} from '../types'
 import {Campaign} from '../../models/integration/types'
 

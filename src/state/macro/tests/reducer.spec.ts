@@ -1,13 +1,13 @@
-import {fromJS} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 
 import {UPSERT_MACRO, DELETE_MACRO, UPSERT_MACROS} from '../constants'
-import reducer from '../reducer.ts'
+import reducer from '../reducer'
 
 describe('macro reducer', () => {
     describe('UPSERT_MACRO', () => {
         it('should insert new macro', () => {
             const macro = fromJS({id: 1})
-            const state = fromJS({})
+            const state: Map<any, any> = fromJS({})
             const newState = reducer(state, {
                 type: UPSERT_MACRO,
                 payload: macro,
@@ -17,7 +17,10 @@ describe('macro reducer', () => {
 
         it('should update existing macro', () => {
             const macro = fromJS({id: 1, name: 'bar'})
-            const state = fromJS({}).set(1, fromJS({id: 1, name: 'foo'}))
+            const state = (fromJS({}) as Map<any, any>).set(
+                1,
+                fromJS({id: 1, name: 'foo'})
+            )
             const newState = reducer(state, {
                 type: UPSERT_MACRO,
                 payload: macro,
@@ -28,7 +31,7 @@ describe('macro reducer', () => {
 
     describe('UPSERT_MACROS', () => {
         it('should insert and update macros', () => {
-            const macros = fromJS([
+            const macros: List<any> = fromJS([
                 {
                     id: 1,
                     name: 'foo',
@@ -38,7 +41,7 @@ describe('macro reducer', () => {
                     name: 'baz',
                 },
             ])
-            const state = fromJS({}).set(
+            const state = (fromJS({}) as Map<any, any>).set(
                 2,
                 fromJS({
                     is: 2,
@@ -58,7 +61,7 @@ describe('macro reducer', () => {
 
     describe('DELETE_MACRO', () => {
         it('should delete the macro', () => {
-            const state = fromJS({}).set(1, fromJS({id: 1}))
+            const state = (fromJS({}) as Map<any, any>).set(1, fromJS({id: 1}))
             const newState = reducer(state, {
                 type: DELETE_MACRO,
                 payload: 1,

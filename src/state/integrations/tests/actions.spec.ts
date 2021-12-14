@@ -1,30 +1,32 @@
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
 
-import history from '../../../pages/history.ts'
-import * as actions from '../actions.ts'
-import {initialState} from '../reducers.ts'
-import client from '../../../models/api/resources.ts'
+import history from '../../../pages/history'
+import * as actions from '../actions'
+import {initialState} from '../reducers'
+import client from '../../../models/api/resources'
+import {StoreDispatch} from '../../types'
+import {Integration, IntegrationType} from '../../../models/integration/types'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-jest.mock('../../notifications/actions.ts', () => {
+jest.mock('../../notifications/actions', () => {
     return {
-        notify: jest.fn(() => (args) => args),
+        notify: jest.fn(() => (args: unknown) => args),
     }
 })
 jest.mock('../../../pages/history.ts')
 
 window.location = {
     pathname: '/integration/1',
-}
+} as Location
 
 describe('integrations actions', () => {
-    let store
-    let mockServer
+    let store: MockStoreEnhanced<unknown, StoreDispatch>
+    let mockServer: MockAdapter
 
     beforeEach(() => {
         store = mockStore({integrations: initialState})
@@ -44,13 +46,13 @@ describe('integrations actions', () => {
     it('should do some action and redirect correctly on create email success', () => {
         const integration = {
             id: 1,
-            type: 'email',
-        }
+            type: IntegrationType.Email,
+        } as Integration
 
         const p = history.push
         let logUrl = ''
 
-        history.push = (url) => (logUrl = url)
+        history.push = (url: string) => (logUrl = url)
 
         actions.onCreateSuccess(store.dispatch, integration)
         expect(store.getActions()).toMatchSnapshot()
@@ -62,13 +64,13 @@ describe('integrations actions', () => {
     it('should do some action and redirect correctly on create smooch_inside success', () => {
         const integration = {
             id: 1,
-            type: 'smooch_inside',
-        }
+            type: IntegrationType.SmoochInside,
+        } as Integration
 
         const p = history.push
         let logUrl = ''
 
-        history.push = (url) => (logUrl = url)
+        history.push = (url: string) => (logUrl = url)
 
         actions.onCreateSuccess(store.dispatch, integration)
         expect(store.getActions()).toMatchSnapshot()
@@ -80,13 +82,13 @@ describe('integrations actions', () => {
     it('should do some action and redirect correctly on create smooch success', () => {
         const integration = {
             id: 1,
-            type: 'smooch',
-        }
+            type: IntegrationType.Smooch,
+        } as Integration
 
         const p = history.push
         let logUrl = ''
 
-        history.push = (url) => (logUrl = url)
+        history.push = (url: string) => (logUrl = url)
 
         actions.onCreateSuccess(store.dispatch, integration)
         expect(store.getActions()).toMatchSnapshot()
@@ -98,10 +100,10 @@ describe('integrations actions', () => {
     it('on update success', () => {
         const integration = {
             id: 1,
-            type: 'email',
-        }
+            type: IntegrationType.Email,
+        } as Integration
 
-        actions.onUpdateSuccess(store.dispatch, integration)
+        void actions.onUpdateSuccess(store.dispatch, integration)
         expect(store.getActions()).toMatchSnapshot()
     })
 
@@ -112,7 +114,7 @@ describe('integrations actions', () => {
                 .reply(200, {id: 1, name: 'http'})
 
             return store
-                .dispatch(actions.fetchIntegration(1, 'http'))
+                .dispatch(actions.fetchIntegration('1', 'http'))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
@@ -122,7 +124,7 @@ describe('integrations actions', () => {
                 .reply(200, {id: 1, name: 'http'})
 
             return store
-                .dispatch(actions.fetchIntegration(1, 'http', true))
+                .dispatch(actions.fetchIntegration('1', 'http', true))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
@@ -130,7 +132,7 @@ describe('integrations actions', () => {
             mockServer.onGet('/api/integrations/1/').reply(400)
 
             return store
-                .dispatch(actions.fetchIntegration(1, 'http'))
+                .dispatch(actions.fetchIntegration('1', 'http'))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })
@@ -138,7 +140,7 @@ describe('integrations actions', () => {
     it('delete integration', () => {
         const integration = fromJS({
             id: 1,
-            type: 'email',
+            type: IntegrationType.Email,
         })
 
         mockServer.onDelete('/api/integrations/1/').reply(200)

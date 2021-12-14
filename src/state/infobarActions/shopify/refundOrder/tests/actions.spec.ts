@@ -1,20 +1,22 @@
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import thunk from 'redux-thunk'
+import {AnyAction} from '@reduxjs/toolkit'
 
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../constants/integration.ts'
 import {
     shopifyOrderFixture,
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../fixtures/shopify.ts'
-import {initialState} from '../reducers.ts'
-import * as actions from '../../refundOrder/actions.ts'
-import {initRefundOrderLineItems} from '../../../../../business/shopify/order.ts'
-import client from '../../../../../models/api/resources.ts'
+} from '../../../../../fixtures/shopify'
+import {initialState} from '../reducers'
+import * as actions from '../../refundOrder/actions'
+import {initRefundOrderLineItems} from '../../../../../business/shopify/order'
+import client from '../../../../../models/api/resources'
+import {StoreDispatch} from '../../../../types'
+import {IntegrationType} from '../../../../../models/integration/types'
 
-jest.mock('lodash/debounce', () => (fn) => {
+jest.mock('lodash/debounce', () => (fn: Record<string, unknown>) => {
     fn.cancel = jest.fn()
     return fn
 })
@@ -25,33 +27,34 @@ describe('infobarActions.shopify.refundOrder actions', () => {
     const middlewares = [thunk]
     const mockStore = configureMockStore(middlewares)
     const integrationId = 1
-    const order = fromJS(shopifyOrderFixture())
-    const payload = fromJS(shopifyRefundOrderPayloadFixture())
-    const orderId = order.get('id')
+    const order: Map<any, any> = fromJS(shopifyOrderFixture())
+    const payload: Map<any, any> = fromJS(shopifyRefundOrderPayloadFixture())
+    const orderId: number = order.get('id')
     const mockServer = new MockAdapter(client)
-    const refundWithoutShipping = fromJS(shopifySuggestedRefundFixture()).setIn(
-        ['shipping', 'maximum_refundable'],
-        '10.00'
-    )
+    const refundWithoutShipping = (
+        fromJS(shopifySuggestedRefundFixture()) as Map<any, any>
+    ).setIn(['shipping', 'maximum_refundable'], '10.00')
     const refund = refundWithoutShipping
         .setIn(['shipping', 'amount'], '10.00')
         .setIn(['shipping', 'tax'], '00.90')
 
-    let store
+    let store: MockStoreEnhanced<unknown, StoreDispatch>
 
     const getActions = () =>
-        store.getActions().map((action) => {
-            if (action.type === 'ADD_NOTIFICATION') {
-                action.payload.id = 1
-            }
+        store
+            .getActions()
+            .map((action: AnyAction & {payload: {id: number}}) => {
+                if (action.type === 'ADD_NOTIFICATION') {
+                    action.payload.id = 1
+                }
 
-            return action
-        })
+                return action
+            })
 
     beforeEach(() => {
         store = mockStore({
             infobarActions: {
-                [SHOPIFY_INTEGRATION_TYPE]: {
+                [IntegrationType.Shopify]: {
                     refundOrder: initialState
                         .set('orderId', orderId)
                         .set('payload', payload),
@@ -132,7 +135,7 @@ describe('infobarActions.shopify.refundOrder actions', () => {
         beforeEach(() => {
             store = mockStore({
                 infobarActions: {
-                    [SHOPIFY_INTEGRATION_TYPE]: {
+                    [IntegrationType.Shopify]: {
                         refundOrder: initialState
                             .set('orderId', orderId)
                             .set('payload', payload.set('restock', false)),
@@ -207,14 +210,16 @@ describe('infobarActions.shopify.refundOrder actions', () => {
 
     describe('onCancel()', () => {
         it('should cancel debounced call to calculateRefund()', async () => {
-            await store.dispatch(actions.onCancel())
+            await (store.dispatch(
+                actions.onCancel('')
+            ) as unknown as Promise<any>)
             expect(actions.calculateRefund.cancel).toHaveBeenCalled()
         })
     })
 
     describe('onReset()', () => {
         it('should reset state', async () => {
-            await store.dispatch(actions.onReset())
+            await (store.dispatch(actions.onReset()) as unknown as Promise<any>)
             expect(getActions()).toMatchSnapshot()
         })
     })

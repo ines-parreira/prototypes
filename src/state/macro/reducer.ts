@@ -2,7 +2,7 @@ import {fromJS, Map} from 'immutable'
 
 import {GorgiasAction} from '../types'
 
-import {UPSERT_MACRO, UPSERT_MACROS, DELETE_MACRO} from './constants.js'
+import {UPSERT_MACRO, UPSERT_MACROS, DELETE_MACRO} from './constants'
 import type {State, Macro} from './types'
 
 export default function reducer(

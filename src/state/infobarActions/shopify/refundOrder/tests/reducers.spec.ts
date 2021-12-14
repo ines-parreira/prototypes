@@ -6,10 +6,10 @@ import {
     shopifyDraftOrderPayloadFixture,
     shopifyOrderFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../fixtures/shopify.ts'
-import {initRefundOrderLineItems} from '../../../../../business/shopify/order.ts'
-import reducer, {initialState} from '../reducers.ts'
-import * as constants from '../constants.ts'
+} from '../../../../../fixtures/shopify'
+import {initRefundOrderLineItems} from '../../../../../business/shopify/order'
+import reducer, {initialState} from '../reducers'
+import * as constants from '../constants'
 
 jest.addMatchers(immutableMatchers)
 

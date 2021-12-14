@@ -5,7 +5,7 @@ import * as integrationSelectors from '../../../../../state/integrations/selecto
 import {notify} from '../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {fetchIntegration} from '../../../../../state/integrations/actions'
-import * as constants from '../../../../../state/integrations/constants.js'
+import * as constants from '../../../../../state/integrations/constants'
 import {
     IntegrationType,
     VoiceMessage,

@@ -1,19 +1,19 @@
 import {fromJS} from 'immutable'
 
-import {
-    getDefaultMacro,
-    generateDefaultAction,
-    getErrorReason,
-} from '../utils.ts'
+import {GorgiasError} from '../../../models/api/types'
+import {MacroActionName} from '../../../models/macroAction/types'
+import {getDefaultMacro, generateDefaultAction, getErrorReason} from '../utils'
 
 describe('macro utils', () => {
     describe('generateDefaultAction', () => {
         it('should return default action for setResponseText', () => {
-            expect(generateDefaultAction('setResponseText')).toEqual(
+            expect(
+                generateDefaultAction(MacroActionName.SetResponseText)
+            ).toEqual(
                 fromJS({
                     type: 'user',
                     execution: 'front',
-                    name: 'setResponseText',
+                    name: MacroActionName.SetResponseText,
                     title: 'Add response text',
                     arguments: {
                         body_text: '',
@@ -33,7 +33,7 @@ describe('macro utils', () => {
                         {
                             type: 'user',
                             execution: 'front',
-                            name: 'setResponseText',
+                            name: MacroActionName.SetResponseText,
                             title: 'Add response text',
                             arguments: {
                                 body_text: '',
@@ -74,7 +74,7 @@ describe('macro utils', () => {
                         },
                     },
                 },
-            }
+            } as unknown as GorgiasError
             expect(getErrorReason(error)).toMatchSnapshot()
         })
     })
