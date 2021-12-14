@@ -1,202 +1,176 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1`] = `
-<div
-  className="metrics"
->
+<div>
   <div
-    className="metric"
-    key="tickets_created-0"
+    class="metrics"
   >
     <div
-      className="label"
+      class="metric"
     >
-      Tickets created
-      <span>
-        <StatsHelpIcon
-          className="info-icon"
-          id="title-tickets_created-0"
-        />
-        <Tooltip
-          placement="top"
-          target="title-tickets_created-0"
-        >
-          Number of tickets created during the selected period
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      <div>
-        <div
-          className="value"
-        >
-          833
-        </div>
-        <span
-          className="diff"
-          id="value-tickets_created-0"
-        >
-          <StatPercentageDiff
-            label={52}
-            moreIsBetter={true}
-            percentage={52}
-          />
-          <Tooltip
-            placement="top"
-            target="value-tickets_created-0"
+      <div
+        class="label"
+      >
+        Tickets created
+        <span>
+          <i
+            class="material-icons ml-2 helpIcon info-icon"
+            id="title-tickets_created-0"
           >
-            Compared to : Apr 07, 2019 - Jul 06, 2019
-          </Tooltip>
+            info_outline
+          </i>
         </span>
       </div>
-    </div>
-  </div>
-  <div
-    className="metric"
-    key="tickets_converted-1"
-  >
-    <div
-      className="label"
-    >
-      Tickets converted
-      <span>
-        <StatsHelpIcon
-          className="info-icon"
-          id="title-tickets_converted-1"
-        />
-        <Tooltip
-          placement="top"
-          target="title-tickets_converted-1"
-        >
-          Number of tickets converted during the selected period
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      <div>
-        <div
-          className="value"
-        >
-          153
-        </div>
-        <span
-          className="diff"
-          id="value-tickets_converted-1"
-        >
-          <StatPercentageDiff
-            label={43}
-            moreIsBetter={true}
-            percentage={43}
-          />
-          <Tooltip
-            placement="top"
-            target="value-tickets_converted-1"
+      <div
+        class="mt-3 statsDisplay"
+      >
+        <div>
+          <div
+            class="value"
           >
-            Compared to : Apr 07, 2019 - Jul 06, 2019
-          </Tooltip>
-        </span>
+            833
+          </div>
+          <span
+            class="diff"
+            id="value-tickets_created-0"
+          >
+            <span>
+              <i
+                class="material-icons mr-1 statsDifference positive"
+              >
+                arrow_upward
+              </i>
+              52
+              %
+            </span>
+          </span>
+        </div>
       </div>
     </div>
-  </div>
-  <div
-    className="metric"
-    key="conversion_ratio-2"
-  >
     <div
-      className="label"
+      class="metric"
     >
-      Conversion ratio
-      <span>
-        <StatsHelpIcon
-          className="info-icon"
-          id="title-conversion_ratio-2"
-        />
-        <Tooltip
-          placement="top"
-          target="title-conversion_ratio-2"
-        >
-          Ratio between created vs converted tickets
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      <div>
-        <div
-          className="value"
-        >
-          50%
-        </div>
-        <span
-          className="diff"
-          id="value-conversion_ratio-2"
-        >
-          <StatPercentageDiff
-            label={10}
-            moreIsBetter={true}
-            percentage={10}
-          />
-          <Tooltip
-            placement="top"
-            target="value-conversion_ratio-2"
+      <div
+        class="label"
+      >
+        Tickets converted
+        <span>
+          <i
+            class="material-icons ml-2 helpIcon info-icon"
+            id="title-tickets_converted-1"
           >
-            Compared to : Apr 07, 2019 - Jul 06, 2019
-          </Tooltip>
+            info_outline
+          </i>
         </span>
       </div>
-    </div>
-  </div>
-  <div
-    className="metric"
-    key="total_sales_from_support-3"
-  >
-    <div
-      className="label"
-    >
-      Total sales from support
-      <span>
-        <StatsHelpIcon
-          className="info-icon"
-          id="title-total_sales_from_support-3"
-        />
-        <Tooltip
-          placement="top"
-          target="title-total_sales_from_support-3"
-        >
-          Sum of the order amount for each converted ticket
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      <div>
-        <div
-          className="value"
-        >
-          €42
-        </div>
-        <span
-          className="diff"
-          id="value-total_sales_from_support-3"
-        >
-          <StatPercentageDiff
-            label={21}
-            moreIsBetter={true}
-            percentage={21}
-          />
-          <Tooltip
-            placement="top"
-            target="value-total_sales_from_support-3"
+      <div
+        class="mt-3 statsDisplay"
+      >
+        <div>
+          <div
+            class="value"
           >
-            Compared to : Apr 07, 2019 - Jul 06, 2019
-          </Tooltip>
+            153
+          </div>
+          <span
+            class="diff"
+            id="value-tickets_converted-1"
+          >
+            <span>
+              <i
+                class="material-icons mr-1 statsDifference positive"
+              >
+                arrow_upward
+              </i>
+              43
+              %
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="metric"
+    >
+      <div
+        class="label"
+      >
+        Conversion ratio
+        <span>
+          <i
+            class="material-icons ml-2 helpIcon info-icon"
+            id="title-conversion_ratio-2"
+          >
+            info_outline
+          </i>
         </span>
+      </div>
+      <div
+        class="mt-3 statsDisplay"
+      >
+        <div>
+          <div
+            class="value"
+          >
+            50%
+          </div>
+          <span
+            class="diff"
+            id="value-conversion_ratio-2"
+          >
+            <span>
+              <i
+                class="material-icons mr-1 statsDifference positive"
+              >
+                arrow_upward
+              </i>
+              10
+              %
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="metric"
+    >
+      <div
+        class="label"
+      >
+        Total sales from support
+        <span>
+          <i
+            class="material-icons ml-2 helpIcon info-icon"
+            id="title-total_sales_from_support-3"
+          >
+            info_outline
+          </i>
+        </span>
+      </div>
+      <div
+        class="mt-3 statsDisplay"
+      >
+        <div>
+          <div
+            class="value"
+          >
+            €42
+          </div>
+          <span
+            class="diff"
+            id="value-total_sales_from_support-3"
+          >
+            <span>
+              <i
+                class="material-icons mr-1 statsDifference positive"
+              >
+                arrow_upward
+              </i>
+              21
+              %
+            </span>
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -204,431 +178,576 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
 `;
 
 exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 1`] = `
-<div
-  className="metrics"
->
+<div>
   <div
-    className="metric"
-    key="total-tickets-created-0"
+    class="metrics"
   >
     <div
-      className="label"
+      class="metric"
     >
-      Tickets created
-      <span>
-        <StatsHelpIcon
-          className="info-icon"
-          id="title-total-tickets-created-0"
-        />
-        <Tooltip
-          placement="top"
-          target="title-total-tickets-created-0"
-        >
-          Number of tickets created
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      -
-    </div>
-  </div>
-  <div
-    className="metric"
-    key="total-tickets-replied-1"
-  >
-    <div
-      className="label"
-    >
-      Tickets replied
-      <span>
-        <StatsHelpIcon
-          className="info-icon"
-          id="title-total-tickets-replied-1"
-        />
-        <Tooltip
-          placement="top"
-          target="title-total-tickets-replied-1"
-        >
-          Number of tickets replied by agents
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      -
-    </div>
-  </div>
-  <div
-    className="metric"
-    key="total-tickets-closed-2"
-  >
-    <div
-      className="label"
-    >
-      Tickets closed
-      <span>
-        <StatsHelpIcon
-          className="info-icon"
-          id="title-total-tickets-closed-2"
-        />
-        <Tooltip
-          placement="top"
-          target="title-total-tickets-closed-2"
-        >
-          Number of tickets closed (if a ticket was closed multiple times, we only count the last time). This metric can evolve over time if tickets are reopened and closed on the following days.
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      -
-    </div>
-  </div>
-  <div
-    className="metric"
-    key="total-messages-sent-3"
-  >
-    <div
-      className="label"
-    >
-      Messages sent
-      <span>
-        <StatsHelpIcon
-          className="info-icon"
-          id="title-total-messages-sent-3"
-        />
-        <Tooltip
-          placement="top"
-          target="title-total-messages-sent-3"
-        >
-          Number of messages sent by agents and rules
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      <div>
-        <div
-          className="value"
-        >
-          20
-        </div>
-        <span
-          className="diff"
-          id="value-total-messages-sent-3"
-        >
-          <StatPercentageDiff
-            label={0}
-            percentage={0}
-          />
-          <Tooltip
-            placement="top"
-            target="value-total-messages-sent-3"
+      <div
+        class="label"
+      >
+        Tickets created
+        <span>
+          <i
+            class="material-icons ml-2 helpIcon info-icon"
+            id="title-total-tickets-created-0"
           >
-            Compared to : Apr 07, 2019 - Jul 06, 2019
-          </Tooltip>
+            info_outline
+          </i>
         </span>
       </div>
-    </div>
-  </div>
-  <div
-    className="metric"
-    key="total-messages-received-4"
-  >
-    <div
-      className="label"
-    >
-      Messages received
-      <span>
-        <StatsHelpIcon
-          className="info-icon"
-          id="title-total-messages-received-4"
-        />
-        <Tooltip
-          placement="top"
-          target="title-total-messages-received-4"
-        >
-          Number of messages received from customers
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      -
-    </div>
-  </div>
-  <div
-    className="metric"
-    key="median-first-response-time-5"
-  >
-    <div
-      className="label"
-    >
-      First response time
-      <span>
-        <StatsHelpIcon
-          className="info-icon"
-          id="title-median-first-response-time-5"
-        />
-        <Tooltip
-          placement="top"
-          target="title-median-first-response-time-5"
-        >
-          Median time between the first message from a customer and the first response from an agent (messages sent by rules don't count)
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      -
-    </div>
-  </div>
-  <div
-    className="metric"
-    key="median-resolution-time-6"
-  >
-    <div
-      className="label"
-    >
-      Resolution time
-      <span>
-        <StatsHelpIcon
-          className="info-icon"
-          id="title-median-resolution-time-6"
-        />
-        <Tooltip
-          placement="top"
-          target="title-median-resolution-time-6"
-        >
-          Median time between the first message from a customer and the moment a ticket with at least one response is closed by an agent or a rule
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      <div>
-        <div
-          className="value"
-        >
-          3d 23h 
-        </div>
-        <span
-          className="diff"
-          id="value-median-resolution-time-6"
-        >
-          <StatPercentageDiff
-            label={100}
-            moreIsBetter={false}
-            percentage={100}
-          />
-          <Tooltip
-            placement="top"
-            target="value-median-resolution-time-6"
-          >
-            Compared to : Apr 07, 2019 - Jul 06, 2019
-          </Tooltip>
-        </span>
+      <div
+        class="mt-3 statsDisplay"
+      >
+        -
       </div>
     </div>
-  </div>
-  <div
-    className="metric"
-    key="total-one-touch-tickets-7"
-  >
     <div
-      className="label"
+      class="metric"
     >
-      One-touch tickets
-      <span>
-        <StatsHelpIcon
-          className="info-icon"
-          id="title-total-one-touch-tickets-7"
-        />
-        <Tooltip
-          placement="top"
-          target="title-total-one-touch-tickets-7"
-        >
-          Percentage of tickets closed with only one response from an agent or a rule
-        </Tooltip>
-      </span>
+      <div
+        class="label"
+      >
+        Tickets replied
+        <span>
+          <i
+            class="material-icons ml-2 helpIcon info-icon"
+            id="title-total-tickets-replied-1"
+          >
+            info_outline
+          </i>
+        </span>
+      </div>
+      <div
+        class="mt-3 statsDisplay"
+      >
+        -
+      </div>
     </div>
     <div
-      className="mt-3 statsDisplay"
+      class="metric"
     >
-      -
+      <div
+        class="label"
+      >
+        Tickets closed
+        <span>
+          <i
+            class="material-icons ml-2 helpIcon info-icon"
+            id="title-total-tickets-closed-2"
+          >
+            info_outline
+          </i>
+        </span>
+      </div>
+      <div
+        class="mt-3 statsDisplay"
+      >
+        -
+      </div>
+    </div>
+    <div
+      class="metric"
+    >
+      <div
+        class="label"
+      >
+        Messages sent
+        <span>
+          <i
+            class="material-icons ml-2 helpIcon info-icon"
+            id="title-total-messages-sent-3"
+          >
+            info_outline
+          </i>
+        </span>
+      </div>
+      <div
+        class="mt-3 statsDisplay"
+      >
+        <div>
+          <div
+            class="value"
+          >
+            20
+          </div>
+          <span
+            class="diff"
+            id="value-total-messages-sent-3"
+          >
+            <span>
+              <i
+                class="material-icons mr-1 statsDifference"
+              >
+                arrow_forward
+              </i>
+              0
+              %
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="metric"
+    >
+      <div
+        class="label"
+      >
+        Messages received
+        <span>
+          <i
+            class="material-icons ml-2 helpIcon info-icon"
+            id="title-total-messages-received-4"
+          >
+            info_outline
+          </i>
+        </span>
+      </div>
+      <div
+        class="mt-3 statsDisplay"
+      >
+        -
+      </div>
+    </div>
+    <div
+      class="metric"
+    >
+      <div
+        class="label"
+      >
+        First response time
+        <span>
+          <i
+            class="material-icons ml-2 helpIcon info-icon"
+            id="title-median-first-response-time-5"
+          >
+            info_outline
+          </i>
+        </span>
+      </div>
+      <div
+        class="mt-3 statsDisplay"
+      >
+        -
+      </div>
+    </div>
+    <div
+      class="metric"
+    >
+      <div
+        class="label"
+      >
+        Resolution time
+        <span>
+          <i
+            class="material-icons ml-2 helpIcon info-icon"
+            id="title-median-resolution-time-6"
+          >
+            info_outline
+          </i>
+        </span>
+      </div>
+      <div
+        class="mt-3 statsDisplay"
+      >
+        <div>
+          <div
+            class="value"
+          >
+            3d 23h 
+          </div>
+          <span
+            class="diff"
+            id="value-median-resolution-time-6"
+          >
+            <span>
+              <i
+                class="material-icons mr-1 statsDifference negative"
+              >
+                arrow_upward
+              </i>
+              100
+              %
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="metric"
+    >
+      <div
+        class="label"
+      >
+        One-touch tickets
+        <span>
+          <i
+            class="material-icons ml-2 helpIcon info-icon"
+            id="title-total-one-touch-tickets-7"
+          >
+            info_outline
+          </i>
+        </span>
+      </div>
+      <div
+        class="mt-3 statsDisplay"
+      >
+        -
+      </div>
     </div>
   </div>
 </div>
 `;
 
 exports[`KeyMetricStat should render a key metrics chart with distribution and donut components 1`] = `
-<div
-  className="metrics"
->
+<div>
   <div
-    className="metric"
-    key="total_sent-0"
+    class="metrics"
   >
     <div
-      className="label"
+      class="metric"
     >
-      Survey sent
-      <span>
-        <StatsHelpIcon
-          className="info-icon"
-          id="title-total_sent-0"
-        />
-        <Tooltip
-          placement="top"
-          target="title-total_sent-0"
-        >
-          Total number of customer satisfaction surveys sent
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      -
-    </div>
-  </div>
-  <div
-    className="metric"
-    key="response_rate-1"
-  >
-    <div
-      className="label"
-    >
-      Response rate
-      <span>
-        <StatsHelpIcon
-          className="info-icon"
-          id="title-response_rate-1"
-        />
-        <Tooltip
-          placement="top"
-          target="title-response_rate-1"
-        >
-          Total number of responses for surveys sent
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      -
-    </div>
-  </div>
-  <div
-    className="metric"
-    key="average_rating-2"
-  >
-    <div
-      className="label"
-    >
-      Average rating
-      <span>
-        <StatsHelpIcon
-          className="info-icon"
-          id="title-average_rating-2"
-        />
-        <Tooltip
-          placement="top"
-          target="title-average_rating-2"
-        >
-          Average score given by the customers
-        </Tooltip>
-      </span>
-    </div>
-    <div
-      className="mt-3 statsDisplay"
-    >
-      <DonutKeyMetricStat
-        differenceComponent={
-          <span
-            className="diff"
-            id="value-average_rating-2"
+      <div
+        class="label"
+      >
+        Survey sent
+        <span>
+          <i
+            class="material-icons ml-2 helpIcon info-icon"
+            id="title-total_sent-0"
           >
-            <StatPercentageDiff
-              label={10}
-              percentage={10}
-            />
-            <Tooltip
-              placement="top"
-              target="value-average_rating-2"
-            >
-              Compared to : Sep 05, 2017 - Sep 06, 2017
-            </Tooltip>
-          </span>
-        }
-        fill="warning"
-        formattedValue={20}
-        height={320}
-        innerRadius={0.83}
-        label="10%"
-        maxValue={5}
-        outerRadius={0.95}
-        startAngle={0}
-        total={null}
-        value={20}
-        width={320}
-      />
+            info_outline
+          </i>
+        </span>
+      </div>
+      <div
+        class="mt-3 statsDisplay"
+      >
+        -
+      </div>
     </div>
-  </div>
-  <div
-    className="metric"
-    key="response_distribution-3"
-  >
     <div
-      className="label"
+      class="metric"
     >
-      Response Distribution
-      <span>
-        <StatsHelpIcon
-          className="info-icon"
-          id="title-response_distribution-3"
-        />
-        <Tooltip
-          placement="top"
-          target="title-response_distribution-3"
+      <div
+        class="label"
+      >
+        Response rate
+        <span>
+          <i
+            class="material-icons ml-2 helpIcon info-icon"
+            id="title-response_rate-1"
+          >
+            info_outline
+          </i>
+        </span>
+      </div>
+      <div
+        class="mt-3 statsDisplay"
+      >
+        -
+      </div>
+    </div>
+    <div
+      class="metric"
+    >
+      <div
+        class="label"
+      >
+        Average rating
+        <span>
+          <i
+            class="material-icons ml-2 helpIcon info-icon"
+            id="title-average_rating-2"
+          >
+            info_outline
+          </i>
+        </span>
+      </div>
+      <div
+        class="mt-3 statsDisplay"
+      >
+        <div
+          class="container"
         >
-          Percentage of responses, grouped by the given score
-        </Tooltip>
-      </span>
+          <svg
+            class="donut"
+            viewBox="0 0 320 320"
+          >
+            <path
+              class="path-warning"
+              d="M159.99,8.00
+          A152.00,152.00 0 1 1 160.00,8.00A5.76,5.76 0 1 1 160.00,27.20A132.79,132.79 0 1 0 159.99,27.20A5.76,5.76 0 1 1 159.99,8.00"
+            />
+            <path
+              class="path-empty"
+              d="M160.00,8.00
+          A152.00,152.00 0 0 1 159.99,8.00A5.76,5.76 0 0 0 159.99,27.20A132.79,132.79 0 0 0 160.00,27.20A5.76,5.76 0 0 0 160.00,8.00"
+            />
+          </svg>
+          <div
+            class="difference"
+          >
+            <div
+              class="value"
+            >
+              20
+            </div>
+            <div>
+              <span
+                class="diff"
+                id="value-average_rating-2"
+              >
+                <span>
+                  <i
+                    class="material-icons mr-1 statsDifference"
+                  >
+                    arrow_upward
+                  </i>
+                  10
+                  %
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div
-      className="mt-3 statsDisplay"
+      class="metric"
     >
-      <DistributionKeyMetricStat
-        config={
-          Immutable.Map {
-            "name": "response_distribution",
-            "label": "Response Distribution",
-            "tooltip": "Percentage of responses, grouped by the given score",
-            "type": "distribution",
-            "variant": "star",
-            "minValue": 1,
-            "maxValue": 5,
-          }
-        }
-        formattedValue={
-          Immutable.Map {
-            "1": 12,
-            "2": 38,
-            "3": 14.5,
-            "4": 14.5,
-            "5": 21,
-          }
-        }
-      />
+      <div
+        class="label"
+      >
+        Response Distribution
+        <span>
+          <i
+            class="material-icons ml-2 helpIcon info-icon"
+            id="title-response_distribution-3"
+          >
+            info_outline
+          </i>
+        </span>
+      </div>
+      <div
+        class="mt-3 statsDisplay"
+      >
+        <div>
+          <div
+            class="mb-1 row"
+          >
+            <div
+              class="col-md-6 ta-left"
+            >
+              <span
+                class="distribution"
+              >
+                <img
+                  alt="filled star"
+                  class="star"
+                  src="test-file-stub"
+                />
+                <img
+                  alt="filled star"
+                  class="star"
+                  src="test-file-stub"
+                />
+                <img
+                  alt="filled star"
+                  class="star"
+                  src="test-file-stub"
+                />
+                <img
+                  alt="filled star"
+                  class="star"
+                  src="test-file-stub"
+                />
+                <img
+                  alt="filled star"
+                  class="star"
+                  src="test-file-stub"
+                />
+              </span>
+            </div>
+            <div
+              class="value col-md-3 ta-right"
+            >
+              21
+            </div>
+          </div>
+          <div
+            class="mb-1 row"
+          >
+            <div
+              class="col-md-6 ta-left"
+            >
+              <span
+                class="distribution"
+              >
+                <img
+                  alt="filled star"
+                  class="star"
+                  src="test-file-stub"
+                />
+                <img
+                  alt="filled star"
+                  class="star"
+                  src="test-file-stub"
+                />
+                <img
+                  alt="filled star"
+                  class="star"
+                  src="test-file-stub"
+                />
+                <img
+                  alt="filled star"
+                  class="star"
+                  src="test-file-stub"
+                />
+                <img
+                  alt="empty star"
+                  class="star"
+                  src="test-file-stub"
+                />
+              </span>
+            </div>
+            <div
+              class="value col-md-3 ta-right"
+            >
+              14.5
+            </div>
+          </div>
+          <div
+            class="mb-1 row"
+          >
+            <div
+              class="col-md-6 ta-left"
+            >
+              <span
+                class="distribution"
+              >
+                <img
+                  alt="filled star"
+                  class="star"
+                  src="test-file-stub"
+                />
+                <img
+                  alt="filled star"
+                  class="star"
+                  src="test-file-stub"
+                />
+                <img
+                  alt="filled star"
+                  class="star"
+                  src="test-file-stub"
+                />
+                <img
+                  alt="empty star"
+                  class="star"
+                  src="test-file-stub"
+                />
+                <img
+                  alt="empty star"
+                  class="star"
+                  src="test-file-stub"
+                />
+              </span>
+            </div>
+            <div
+              class="value col-md-3 ta-right"
+            >
+              14.5
+            </div>
+          </div>
+          <div
+            class="mb-1 row"
+          >
+            <div
+              class="col-md-6 ta-left"
+            >
+              <span
+                class="distribution"
+              >
+                <img
+                  alt="filled star"
+                  class="star"
+                  src="test-file-stub"
+                />
+                <img
+                  alt="filled star"
+                  class="star"
+                  src="test-file-stub"
+                />
+                <img
+                  alt="empty star"
+                  class="star"
+                  src="test-file-stub"
+                />
+                <img
+                  alt="empty star"
+                  class="star"
+                  src="test-file-stub"
+                />
+                <img
+                  alt="empty star"
+                  class="star"
+                  src="test-file-stub"
+                />
+              </span>
+            </div>
+            <div
+              class="value col-md-3 ta-right"
+            >
+              38
+            </div>
+          </div>
+          <div
+            class="mb-1 row"
+          >
+            <div
+              class="col-md-6 ta-left"
+            >
+              <span
+                class="distribution"
+              >
+                <img
+                  alt="filled star"
+                  class="star"
+                  src="test-file-stub"
+                />
+                <img
+                  alt="empty star"
+                  class="star"
+                  src="test-file-stub"
+                />
+                <img
+                  alt="empty star"
+                  class="star"
+                  src="test-file-stub"
+                />
+                <img
+                  alt="empty star"
+                  class="star"
+                  src="test-file-stub"
+                />
+                <img
+                  alt="empty star"
+                  class="star"
+                  src="test-file-stub"
+                />
+              </span>
+            </div>
+            <div
+              class="value col-md-3 ta-right"
+            >
+              12
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

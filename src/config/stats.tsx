@@ -19,7 +19,7 @@ import TicketsClosedPerAgentViewLink from '../pages/stats/common/TicketsClosedPe
 import TicketsCreatedPerTagViewLink from '../pages/stats/common/TicketsCreatedPerTagViewLink'
 import TicketsCreatedPerChannelViewLink from '../pages/stats/common/TicketsCreatedPerChannelViewLink'
 import {REASONS_DROPDOWN_OPTIONS} from '../pages/settings/selfService/components/ReportIssueCaseEditor/constants'
-import {AutomationAddOnStatsButton} from '../pages/stats/AutomationAddOnStatsButton'
+import {AutomationStatsSelfServiceMetric} from '../pages/stats/AutomationStatsSelfServiceMetric'
 import {SelectableOption} from '../pages/common/forms/SelectField/types'
 import {ReportIssueReasons} from '../models/selfServiceConfiguration/types'
 import SelfServiceIntegrationsFilter from '../pages/stats/self-service/SelfServiceIntegrationsFilter'
@@ -296,6 +296,7 @@ export type StatConfig = {
         minValue?: number
         maxValue?: number
         variant?: string
+        component?: ReactNode
     }[]
     api_resource_name?: string
     formatData?: (stat?: Map<any, any>) => Map<any, any> | undefined
@@ -304,6 +305,11 @@ export type StatConfig = {
     hasBusinessHoursHighlight?: boolean
     colorMap?: {[key: string]: string}
     priority?: {[key: string]: number}
+    totalOptions?: {
+        label: string
+        tooltip: string
+    }
+    tableOptions?: {showLines: number}
 }
 
 export type StatMap = Map<keyof StatConfig, ValueOf<StatConfig>>
@@ -1335,10 +1341,17 @@ export const stats = toImmutable<
                     'The top 10% merchants of Gorgias are able to reach 33% of overall automation',
             },
             {
-                label: 'Get access to more automations',
-                name: 'more_automations',
-                // @ts-ignore
-                component: AutomationAddOnStatsButton,
+                label: 'Automated via rules',
+                name: 'automated_via_rules',
+                tooltip:
+                    'Percentage of customer interactions automated using rules. ',
+            },
+            {
+                label: 'Automated via self-service',
+                name: 'automated_via_selfservice',
+                tooltip:
+                    'Percentage of customer interactions automated using self-service. ',
+                component: AutomationStatsSelfServiceMetric,
             },
         ],
     },
@@ -1394,6 +1407,10 @@ export const stats = toImmutable<
                 label: 'Automated via rule',
                 color: '#24d69d',
             },
+            automated_selfserve: {
+                label: 'Automated via Self-Service',
+                color: '#8088D6',
+            },
             not_automated: {
                 label: 'Not automated',
                 color: '#d2d7de',
@@ -1440,7 +1457,6 @@ export const stats = toImmutable<
     [SELF_SERVICE_OVERVIEW]: {
         style: 'key-metrics',
         api_resource_name: SELF_SERVICE_OVERVIEW,
-        labelStyle: 'centered',
         metrics: [
             {
                 name: 'total_interactions',
@@ -1837,7 +1853,7 @@ export const automationViews: Map<any, any> = fromJS({
 (answered and closed without agent intervention) thanks to Gorgias automation rules.
 You can see at a glance how many interactions are automated depending on its source and the automation
 tool used to answer it.`,
-        url: 'https://docs.gorgias.com/statistics/statistics',
+        url: 'https://docs.gorgias.com/statistics/automation-statistics',
         filters: [
             {
                 type: 'integrations',

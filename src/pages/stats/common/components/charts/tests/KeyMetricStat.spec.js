@@ -1,6 +1,6 @@
 import React from 'react'
-import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+import {render} from '@testing-library/react'
 
 import {
     OVERVIEW,
@@ -42,14 +42,14 @@ describe('KeyMetricStat', () => {
                 previous_end_datetime: '2019-07-06 00:00:00',
             },
         })
-        const component = shallow(
+        const {container} = render(
             <KeyMetricStat
                 {...minProps}
                 config={config}
                 {...splittedKeyMetricsStat.toObject()}
             />
         )
-        expect(component).toMatchSnapshot()
+        expect(container).toMatchSnapshot()
     })
 
     it('should render a key metrics chart (grouped key metrics)', () => {
@@ -95,14 +95,14 @@ describe('KeyMetricStat', () => {
                 previous_end_datetime: '2019-07-06 00:00:00',
             },
         })
-        const component = shallow(
+        const {container} = render(
             <KeyMetricStat
                 {...minProps}
                 config={config}
                 {...groupedKeyMetricsStat.toObject()}
             />
         )
-        expect(component).toMatchSnapshot()
+        expect(container).toMatchSnapshot()
     })
 
     it('should render a key metrics chart with distribution and donut components', () => {
@@ -135,13 +135,13 @@ describe('KeyMetricStat', () => {
             },
         })
 
-        const component = shallow(
+        const {container} = render(
             <KeyMetricStat
                 {...minProps}
                 config={config}
                 {...satisfactionSurveyStat.toObject()}
             />
         )
-        expect(component).toMatchSnapshot()
+        expect(container).toMatchSnapshot()
     })
 })

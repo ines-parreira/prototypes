@@ -1,0 +1,33 @@
+:local {
+    .metric {
+        margin: 0;
+        flex-grow: 1;
+        padding: 25px 20px;
+        background: #f7f8fc;
+
+        @media (max-width: 992px) {
+            flex-basis: 0;
+        }
+
+        &:nth-child(n + 1) {
+            border-left: 1px solid #e2e3ec;
+        }
+
+        & > * {
+            text-align: left;
+        }
+
+        .label {
+            font-weight: 600;
+            color: #152065;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .info-icon {
+            font-weight: 700;
+            font-size: 13px;
+        }
+    }
+}

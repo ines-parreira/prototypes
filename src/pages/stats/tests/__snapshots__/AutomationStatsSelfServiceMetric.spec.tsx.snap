@@ -1,0 +1,254 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AutomationStatsSelfServiceMetric /> should render paywall 1`] = `
+<div>
+  <div
+    class="metric"
+  >
+    <div
+      class="label"
+    >
+      Get access to more automations
+    </div>
+    <div
+      class="mt-3 button"
+    >
+      <div
+        class=""
+      >
+        <div
+          class="d-flex align-items-center upgradeLink"
+        >
+          <button
+            class="upgradeButton btn btn-outline-warning"
+            type="button"
+          >
+            <span
+              class="mr-2 upgradeLabel"
+            >
+              Get Automation Features
+            </span>
+            <img
+              alt="upgrade-icon"
+              class="upgradeIcon"
+              src="test-file-stub"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AutomationStatsSelfServiceMetric /> should render setup 1`] = `
+<div>
+  <div
+    class="metric"
+  >
+    <div
+      class="label"
+    >
+      Automated via self-service
+    </div>
+    <div
+      class="mt-3 button"
+    >
+      <button
+        class="wrapper primary medium"
+      >
+        Setup Self-Service
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AutomationStatsSelfServiceMetric /> should render setup and paywall 1`] = `
+<div>
+  <div
+    class="metric"
+  >
+    <div
+      class="label"
+    >
+      Automated via self-service
+    </div>
+    <div
+      class="mt-3 button"
+    >
+      <button
+        class="wrapper primary medium"
+      >
+        Setup Self-Service
+      </button>
+    </div>
+  </div>
+  <div
+    class="metric"
+  >
+    <div
+      class="label"
+    >
+      Get access to more automations
+    </div>
+    <div
+      class="mt-3 button"
+    >
+      <div
+        class=""
+      >
+        <div
+          class="d-flex align-items-center upgradeLink"
+        >
+          <button
+            class="upgradeButton btn btn-outline-warning"
+            type="button"
+          >
+            <span
+              class="mr-2 upgradeLabel"
+            >
+              Get Automation Features
+            </span>
+            <img
+              alt="upgrade-icon"
+              class="upgradeIcon"
+              src="test-file-stub"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AutomationStatsSelfServiceMetric /> should render stats 1`] = `
+<div>
+  <div
+    class="metric"
+  >
+    <div
+      class="label"
+    >
+      Automated via self-service
+      <span>
+        <i
+          class="material-icons ml-2 helpIcon info-icon"
+          id="title-automated_via_selfservice-2"
+        >
+          info_outline
+        </i>
+      </span>
+    </div>
+    <div
+      class="mt-3 statsDisplay"
+    >
+      <div>
+        <div
+          class="value"
+        >
+          25%
+        </div>
+        <span
+          class="diff"
+          id="value-automated_via_selfservice-2"
+        >
+          <span>
+            <i
+              class="material-icons mr-1 statsDifference positive"
+            >
+              arrow_upward
+            </i>
+            100
+            %
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AutomationStatsSelfServiceMetric /> should render stats and paywall 1`] = `
+<div>
+  <div
+    class="metric"
+  >
+    <div
+      class="label"
+    >
+      Automated via self-service
+      <span>
+        <i
+          class="material-icons ml-2 helpIcon info-icon"
+          id="title-automated_via_selfservice-2"
+        >
+          info_outline
+        </i>
+      </span>
+    </div>
+    <div
+      class="mt-3 statsDisplay"
+    >
+      <div>
+        <div
+          class="value"
+        >
+          25%
+        </div>
+        <span
+          class="diff"
+          id="value-automated_via_selfservice-2"
+        >
+          <span>
+            <i
+              class="material-icons mr-1 statsDifference positive"
+            >
+              arrow_upward
+            </i>
+            100
+            %
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    class="metric"
+  >
+    <div
+      class="label"
+    >
+      Get access to more automations
+    </div>
+    <div
+      class="mt-3 button"
+    >
+      <div
+        class=""
+      >
+        <div
+          class="d-flex align-items-center upgradeLink"
+        >
+          <button
+            class="upgradeButton btn btn-outline-warning"
+            type="button"
+          >
+            <span
+              class="mr-2 upgradeLabel"
+            >
+              Get Automation Features
+            </span>
+            <img
+              alt="upgrade-icon"
+              class="upgradeIcon"
+              src="test-file-stub"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
