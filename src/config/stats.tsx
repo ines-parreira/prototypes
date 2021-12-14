@@ -1482,12 +1482,12 @@ export const stats = toImmutable<
                 tooltip:
                     'Number of self-service requests made by Return, Cancel and Report Issues flows. These requests create auto-generated chat tickets that are easier to handle by agents.',
             },
-            // {
-            //     name: 'self-service_usage',
-            //     label: 'Self-service usage',
-            //     tooltip:
-            //         'Percentage of self-service requests (including automated ones) compared to the total number of chat tickets (live chats and self-service requests) within the selected stores.',
-            // },
+            {
+                name: 'self-service_usage',
+                label: 'Self-service usage',
+                tooltip:
+                    'Percentage of self-service requests (including automated ones) compared to the total number of chat tickets (live chats and self-service requests) within the selected stores.',
+            },
         ],
     },
     [SELF_SERVICE_FLOWS_DISTRIBUTION]: {
@@ -1519,10 +1519,10 @@ export const stats = toImmutable<
                 color: '#FD9B5A',
                 disabledLink: '/app/settings/self-service',
             },
-            // other_tickets: {
-            //     label: 'Live chat tickets',
-            //     color: '#D2D7DE',
-            // },
+            other_tickets: {
+                label: 'Live chat tickets',
+                color: '#D2D7DE',
+            },
         },
         options: (legend: Map<any, any>) => ({
             scales: {

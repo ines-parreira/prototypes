@@ -51,8 +51,8 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
               "name": "Cancel",
             },
             Object {
-              "background": "#dfee90",
-              "name": "other_tickets",
+              "background": "#D2D7DE",
+              "name": "Live chat tickets",
             },
           ]
         }
@@ -153,7 +153,7 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
                   "label": "Cancel",
                 },
                 Object {
-                  "backgroundColor": "#dfee904D",
+                  "backgroundColor": "#D2D7DE4D",
                   "data": Array [
                     29.81651376146789,
                     32.37410071942446,
@@ -166,7 +166,7 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
                     87,
                     9,
                   ],
-                  "label": "other_tickets",
+                  "label": "Live chat tickets",
                 },
               ],
               "labels": Array [
@@ -364,21 +364,21 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
         </div>
         <div
           className="bar-total-data-wrapper"
-          key="other_tickets"
+          key="Live chat tickets"
         >
           <div
             className="label mr-4 mb-2"
-            key="other_tickets"
+            key="Live chat tickets"
           >
             <span
               className="circle mr-2"
               style={
                 Object {
-                  "background": "#dfee90",
+                  "background": "#D2D7DE",
                 }
               }
             />
-            other_tickets
+            Live chat tickets
           </div>
           <div
             className="data"
