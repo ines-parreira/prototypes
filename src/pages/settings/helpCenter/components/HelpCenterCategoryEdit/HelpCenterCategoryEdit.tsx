@@ -12,8 +12,8 @@ import {
     Label,
 } from 'reactstrap'
 
-import useAppDispatch from '../../../../../../hooks/useAppDispatch'
-import {SCREEN_SIZE, useScreenSize} from '../../../../../../hooks/useScreenSize'
+import useAppDispatch from '../../../../../hooks/useAppDispatch'
+import {SCREEN_SIZE, useScreenSize} from '../../../../../hooks/useScreenSize'
 import {
     Category,
     CreateCategoryTranslationDto,
@@ -21,34 +21,34 @@ import {
     LocalCategoryTranslation,
     LocaleCode,
     UpdateCategoryTranslationDto,
-} from '../../../../../../models/helpCenter/types'
-import {getViewLanguage} from '../../../../../../state/helpCenter/ui'
-import {notify} from '../../../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../../../state/notifications/types'
-import {Drawer} from '../../../../../common/components/Drawer'
-import AutoPopulateInput from '../../../../../common/forms/AutoPopulateInput/AutoPopulateInput'
+} from '../../../../../models/helpCenter/types'
+import {getViewLanguage} from '../../../../../state/helpCenter/ui'
+import {notify} from '../../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../../state/notifications/types'
+import {Drawer} from '../../../../common/components/Drawer'
+import AutoPopulateInput from '../../../../common/forms/AutoPopulateInput/AutoPopulateInput'
 import {
     DRAWER_TRANSITION_DURATION_MS,
     HELP_CENTER_DEFAULT_LOCALE,
     HELP_CENTER_TITLE_MAX_LENGTH,
-} from '../../../constants'
-import {useLocales} from '../../../hooks/useLocales'
+} from '../../constants'
+import {useLocales} from '../../hooks/useLocales'
 import {
     getAbsoluteUrl,
     getCategoryUrl,
     getHelpCenterDomain,
     slugify,
-} from '../../../utils/helpCenter.utils'
-import {getLocaleSelectOptions} from '../../../utils/localeSelectOptions'
-import {ConfirmationModal} from '../../ConfirmationModal'
-import {SearchEnginePreview} from '../../SearchEnginePreview'
+} from '../../utils/helpCenter.utils'
+import {getLocaleSelectOptions} from '../../utils/localeSelectOptions'
+import {ConfirmationModal} from '../ConfirmationModal'
+import {SearchEnginePreview} from '../SearchEnginePreview'
 import {
     ActionType,
     ArticleLanguageSelect,
     OptionItem,
-} from '../ArticleLanguageSelect'
+} from '../articles/ArticleLanguageSelect'
 
-import css from './HelpCenterCategory.less'
+import css from './HelpCenterCategoryEdit.less'
 
 type Props = {
     isOpen: boolean
@@ -69,7 +69,7 @@ type Props = {
     onDelete?: (categoryId: number) => void
 }
 
-export const HelpCenterCategory = ({
+export const HelpCenterCategoryEdit = ({
     isOpen,
     isCreate,
     isLoading,
@@ -271,7 +271,7 @@ export const HelpCenterCategory = ({
                         selected={locale}
                         list={options}
                         onSelect={handleOnChangeLocale}
-                        onClickAction={handleOnClickAction}
+                        onActionClick={handleOnClickAction}
                     />
                     <button
                         type="button"

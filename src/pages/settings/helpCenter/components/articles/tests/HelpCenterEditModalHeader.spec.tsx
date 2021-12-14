@@ -3,8 +3,9 @@ import {render, fireEvent} from '@testing-library/react'
 
 import {LocaleCode} from '../../../../../../models/helpCenter/types'
 
-import HelpCenterEditModalHeader from '../HelpCenterEditModalHeader'
-import {getSingleArticleEnglish} from '../../../fixtures/getArticlesResponse.fixture'
+import HelpCenterEditModalHeader, {
+    Props as HelpCenterEditModalHeaderProps,
+} from '../HelpCenterEditModalHeader'
 import {getSingleHelpCenterResponseFixture} from '../../../fixtures/getHelpCentersResponse.fixture'
 
 jest.mock('../../../hooks/useLocales', () => ({
@@ -28,20 +29,20 @@ jest.mock('../../../hooks/useLocales', () => ({
     ],
 }))
 
-const mockedOnChangeLanguage = jest.fn()
+const mockedOnLanguageSelect = jest.fn()
 const mockedOnClose = jest.fn()
 const mockedOnResize = jest.fn()
-const mockedOnClickAction = jest.fn()
+const mockedOnArticleLanguageSelectActionClick = jest.fn()
 
 describe('<HelpCenterEditModalHeader/>', () => {
-    const props = {
+    const props: HelpCenterEditModalHeaderProps = {
         title: 'Article',
         language: 'fr-FR' as LocaleCode,
         supportedLocales: ['en-US', 'fr-FR'] as LocaleCode[],
-        selectedArticle: {...getSingleArticleEnglish, position: 0},
-        onChangeLanguage: mockedOnChangeLanguage,
+        onLanguageSelect: mockedOnLanguageSelect,
         onClose: mockedOnClose,
-        onClickAction: mockedOnClickAction,
+        onArticleLanguageSelectActionClick:
+            mockedOnArticleLanguageSelectActionClick,
         helpCenter: getSingleHelpCenterResponseFixture,
     }
 

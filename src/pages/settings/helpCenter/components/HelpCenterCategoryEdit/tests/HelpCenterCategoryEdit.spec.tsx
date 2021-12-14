@@ -4,17 +4,17 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {HelpCenter} from '../../../../../../../models/helpCenter/types'
-import {initialState as articlesState} from '../../../../../../../state/helpCenter/articles/reducer'
-import {initialState as categoriesState} from '../../../../../../../state/helpCenter/categories/reducer'
-import {initialState as uiState} from '../../../../../../../state/helpCenter/ui/reducer'
-import {RootState, StoreDispatch} from '../../../../../../../state/types'
-import {HELP_CENTER_DOMAIN} from '../../../../constants'
-import {getSingleCustomDomainResponseFixture as customDomain} from '../../../../fixtures/getCustomDomainsResponse.fixture'
-import {getSingleHelpCenterResponseFixture} from '../../../../fixtures/getHelpCentersResponse.fixture'
-import {HelpCenterCategory} from '../HelpCenterCategory'
+import {HelpCenter} from '../../../../../../models/helpCenter/types'
+import {initialState as articlesState} from '../../../../../../state/helpCenter/articles/reducer'
+import {initialState as categoriesState} from '../../../../../../state/helpCenter/categories/reducer'
+import {initialState as uiState} from '../../../../../../state/helpCenter/ui/reducer'
+import {RootState, StoreDispatch} from '../../../../../../state/types'
+import {HELP_CENTER_DOMAIN} from '../../../constants'
+import {getSingleCustomDomainResponseFixture as customDomain} from '../../../fixtures/getCustomDomainsResponse.fixture'
+import {getSingleHelpCenterResponseFixture} from '../../../fixtures/getHelpCentersResponse.fixture'
+import {HelpCenterCategoryEdit} from '../HelpCenterCategoryEdit'
 
-jest.mock('../../../../hooks/useLocales', () => ({
+jest.mock('../../../hooks/useLocales', () => ({
     useLocales: () => [
         {
             name: 'English - USA',
@@ -65,7 +65,7 @@ const Example = ({
             <button data-testid="toggle-btn" onClick={() => setOpen(true)}>
                 Click me
             </button>
-            <HelpCenterCategory
+            <HelpCenterCategoryEdit
                 isOpen={open}
                 isLoading={false}
                 canSave={canSave}
@@ -78,11 +78,11 @@ const Example = ({
     )
 }
 
-describe('<HelpCenterCategory>', () => {
+describe('<HelpCenterCategoryEdit>', () => {
     it('renders in a hidden state by default', () => {
         const {getByTestId} = render(
             <Provider store={mockedStore(defaultState)}>
-                <HelpCenterCategory
+                <HelpCenterCategoryEdit
                     isOpen={false}
                     isLoading={false}
                     canSave

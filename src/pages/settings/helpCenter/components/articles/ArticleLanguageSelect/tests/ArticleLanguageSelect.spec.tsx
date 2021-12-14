@@ -22,7 +22,7 @@ describe('<ArticleLanguageSelect>', () => {
                 selected="en-US"
                 list={list}
                 onSelect={() => null}
-                onClickAction={() => null}
+                onActionClick={() => null}
             />
         )
 
@@ -37,7 +37,7 @@ describe('<ArticleLanguageSelect>', () => {
                 selected="en-US"
                 list={list}
                 onSelect={() => null}
-                onClickAction={() => null}
+                onActionClick={() => null}
             />
         )
 
@@ -56,7 +56,7 @@ describe('<ArticleLanguageSelect>', () => {
                 selected="en-US"
                 list={list}
                 onSelect={selectFn}
-                onClickAction={() => null}
+                onActionClick={() => null}
             />
         )
         fireEvent.click(getByRole('button'))
@@ -81,7 +81,7 @@ describe('<ArticleLanguageSelect>', () => {
                 selected="en-US"
                 list={mock}
                 onSelect={() => null}
-                onClickAction={() => null}
+                onActionClick={() => null}
             />
         )
 
@@ -105,7 +105,7 @@ describe('<ArticleLanguageSelect>', () => {
                 selected="en-US"
                 list={mock}
                 onSelect={() => null}
-                onClickAction={() => null}
+                onActionClick={() => null}
             />
         )
 
@@ -130,7 +130,7 @@ describe('<ArticleLanguageSelect>', () => {
                 selected="en-US"
                 list={mock}
                 onSelect={() => null}
-                onClickAction={() => null}
+                onActionClick={() => null}
             />
         )
 

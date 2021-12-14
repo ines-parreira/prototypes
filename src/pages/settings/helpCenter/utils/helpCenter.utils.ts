@@ -1,4 +1,6 @@
 import {
+    Article,
+    CreateArticleDto,
     CreateArticleTranslationDto,
     CreateHelpCenterTranslationDto,
     HelpCenter,
@@ -23,6 +25,10 @@ export const getNewArticleTranslation = (
         description: null,
     },
 })
+
+export const isExistingArticle = (
+    article: CreateArticleDto | Article | null
+): article is Article => (article ? 'id' in article : false)
 
 export const helpCenterSeoMetaFields: Partial<
     keyof CreateHelpCenterTranslationDto['seo_meta']

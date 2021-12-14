@@ -82,8 +82,8 @@ describe('<CategoriesViews />', () => {
                 <CategoriesViews
                     helpCenter={getSingleHelpCenterResponseFixture}
                     renderArticleList={() => <div />}
-                    createArticle={jest.fn()}
-                    createCategory={jest.fn()}
+                    onCreateArticle={jest.fn()}
+                    onCreateCategory={jest.fn()}
                 />
             </Provider>
         )
@@ -137,8 +137,8 @@ describe('<CategoriesViews />', () => {
                     <CategoriesViews
                         helpCenter={getSingleHelpCenterResponseFixture}
                         renderArticleList={() => <div />}
-                        createArticle={jest.fn()}
-                        createCategory={jest.fn()}
+                        onCreateArticle={jest.fn()}
+                        onCreateCategory={jest.fn()}
                     />
                 </DndProvider>
             </Provider>
@@ -176,8 +176,8 @@ describe('<CategoriesViews />', () => {
                     <CategoriesViews
                         helpCenter={getSingleHelpCenterResponseFixture}
                         renderArticleList={() => <div />}
-                        createArticle={jest.fn()}
-                        createCategory={jest.fn()}
+                        onCreateArticle={jest.fn()}
+                        onCreateCategory={jest.fn()}
                     />
                 </DndProvider>
             </Provider>

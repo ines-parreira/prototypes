@@ -14,7 +14,7 @@ import ArticleCategorySelect from './ArticleCategorySelect'
 
 import css from './HelpCenterEditModalHeader.less'
 
-type Props = {
+export type Props = {
     title: string
     helpCenter: HelpCenter
     language: LocaleCode
@@ -22,12 +22,15 @@ type Props = {
     supportedLocales: LocaleCode[]
     articleLocales?: LocaleCode[]
     selectedCategoryId?: number | null
-    onEditTitle?: (title: string) => void
-    onEditCategory?: (categoryId: number | null) => void
-    onChangeLanguage: (localeCode: LocaleCode) => void
+    onTitleChange?: (title: string) => void
+    onCategorySelect?: (categoryId: number | null) => void
+    onLanguageSelect: (localeCode: LocaleCode) => void
     onResize?: () => void
     onClose: () => void
-    onClickAction: (action: ActionType, currentOption: OptionItem) => void
+    onArticleLanguageSelectActionClick: (
+        action: ActionType,
+        currentOption: OptionItem
+    ) => void
     toggleModalBtn?: ReactChild
 }
 
@@ -38,12 +41,12 @@ export const HelpCenterEditModalHeader = ({
     language,
     supportedLocales,
     articleLocales,
-    onEditTitle,
-    onEditCategory,
+    onTitleChange,
+    onCategorySelect,
     onClose,
     onResize,
-    onChangeLanguage,
-    onClickAction,
+    onLanguageSelect,
+    onArticleLanguageSelectActionClick,
     toggleModalBtn,
     selectedCategoryId,
 }: Props): JSX.Element => {
@@ -93,13 +96,13 @@ export const HelpCenterEditModalHeader = ({
     return (
         <header className={css.header}>
             <div className={css.headerTopContainer}>
-                {onEditTitle ? (
+                {onTitleChange ? (
                     <input
                         type="text"
                         value={title}
                         placeholder="Title"
                         onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                            onEditTitle(event.target.value)
+                            onTitleChange(event.target.value)
                         }
                         className={css.titleInput}
                         maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
@@ -111,8 +114,8 @@ export const HelpCenterEditModalHeader = ({
                     <ArticleLanguageSelect
                         selected={language}
                         list={localeSelectOptions}
-                        onSelect={onChangeLanguage}
-                        onClickAction={onClickAction}
+                        onSelect={onLanguageSelect}
+                        onActionClick={onArticleLanguageSelectActionClick}
                     />
                     {toggleModalBtn}
                     {onResize && getResizeModalButton()}
@@ -127,14 +130,14 @@ export const HelpCenterEditModalHeader = ({
                 </div>
             </div>
             <div className={css.break} />
-            {onEditCategory && selectedCategoryId !== undefined && (
+            {onCategorySelect && selectedCategoryId !== undefined && (
                 <div className={css.categorySelect}>
                     <ArticleCategorySelect
                         locale={language}
                         helpCenterId={helpCenter.id}
                         categoryId={selectedCategoryId}
                         onChange={(value: number | null) => {
-                            onEditCategory(value)
+                            onCategorySelect(value)
                         }}
                     />
                 </div>

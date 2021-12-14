@@ -21,14 +21,14 @@ type Props = {
     selected?: LocaleCode
     list?: OptionItem[]
     onSelect: (localeCode: LocaleCode) => void
-    onClickAction: (action: ActionType, currentOption: OptionItem) => void
+    onActionClick: (action: ActionType, currentOption: OptionItem) => void
 }
 
 export const ArticleLanguageSelect = ({
     selected,
     list = [],
     onSelect,
-    onClickAction,
+    onActionClick,
 }: Props): JSX.Element => {
     const $ref = createRef<HTMLDivElement>()
     const {isOpen, onOpen, onClose} = useOpenToggle($ref, false)
@@ -42,7 +42,7 @@ export const ArticleLanguageSelect = ({
         const handleOnClickAction =
             (action: ActionType) => (event: React.MouseEvent) => {
                 event.stopPropagation()
-                onClickAction(action, option)
+                onActionClick(action, option)
             }
 
         if (option.isComplete) {

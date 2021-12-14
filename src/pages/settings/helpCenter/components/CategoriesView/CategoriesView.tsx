@@ -21,15 +21,15 @@ import css from './CategoriesView.less'
 
 type Props = Pick<CategoriesTableProps, 'renderArticleList'> & {
     helpCenter: HelpCenter
-    createArticle: () => void
-    createCategory: () => void
+    onCreateArticle: () => void
+    onCreateCategory: () => void
 }
 
 export const CategoriesViews = ({
     helpCenter,
     renderArticleList,
-    createArticle,
-    createCategory,
+    onCreateArticle,
+    onCreateCategory,
 }: Props): JSX.Element | null => {
     const actions = useCategoriesActions()
     const {getArticleCount} = useArticlesActions()
@@ -87,14 +87,14 @@ export const CategoriesViews = ({
                     </p>
                     <Button
                         color="success"
-                        onClick={createArticle}
+                        onClick={onCreateArticle}
                         className="mr-2"
                     >
                         <i className="material-icons-outlined mr-1">article</i>
                         Create Article
                     </Button>
 
-                    <Button onClick={createCategory}>
+                    <Button onClick={onCreateCategory}>
                         <i className="material-icons mr-1">list</i>
                         Create Category
                     </Button>

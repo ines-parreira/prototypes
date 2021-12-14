@@ -17,7 +17,7 @@ import {notify} from '../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {MODALS} from '../../constants'
 import {useCategoriesActions} from '../../hooks/useCategoriesActions'
-import {HelpCenterCategory} from '../articles/HelpCenterCategory'
+import {HelpCenterCategoryEdit} from '../HelpCenterCategoryEdit'
 
 type Props = {
     helpCenter: HelpCenter
@@ -187,7 +187,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
     }
 
     return (
-        <HelpCenterCategory
+        <HelpCenterCategoryEdit
             isLoading={loading}
             isCreate={params?.isCreate}
             category={category}
