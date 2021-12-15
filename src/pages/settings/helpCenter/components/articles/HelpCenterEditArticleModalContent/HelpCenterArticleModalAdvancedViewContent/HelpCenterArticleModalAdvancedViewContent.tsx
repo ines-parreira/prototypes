@@ -1,47 +1,33 @@
 import React from 'react'
 
 import {
-    Article,
-    CreateArticleDto,
     CreateArticleTranslationDto,
-    HelpCenter,
     LocaleCode,
 } from '../../../../../../../models/helpCenter/types'
 import {Components} from '../../../../../../../rest_api/help_center_api/client.generated'
-import {isExistingArticle} from '../../../../utils/helpCenter.utils'
+import {useCurrentHelpCenter} from '../../../../hooks/useCurrentHelpCenter'
+import {useEditionManager} from '../../../../providers/EditionManagerContext'
+import {
+    getHelpCenterDomain,
+    isExistingArticle,
+} from '../../../../utils/helpCenter.utils'
 import {ActionType, OptionItem} from '../../ArticleLanguageSelect'
 import HelpCenterEditAdvancedArticleForm from '../../HelpCenterEditAdvancedArticleForm'
 import HelpCenterEditModalFooter from '../../HelpCenterEditModalFooter'
 import HelpCenterEditModalHeader from '../../HelpCenterEditModalHeader'
 import css from '../HelpCenterEditArticleModalContent.less'
-import {HelpCenterArticleModalView, HelpCenterArticleModalState} from '../types'
+import {HelpCenterArticleModalView} from '../types'
 
 type Props = {
-    selectedArticle: CreateArticleDto | Article
-    helpCenter: HelpCenter
     onArticleLanguageSelect: (localeCode: LocaleCode) => void
-    articleLocales?: LocaleCode[]
     autoFocus: boolean
 
     onArticleModalClose: () => void
-
-    // should be set is redux ui
-    selectedArticleLanguage: LocaleCode
-    setSelectedArticle: React.Dispatch<
-        React.SetStateAction<
-            Components.Schemas.CreateArticleDto | Article | null
-        >
-    >
 
     onArticleLanguageSelectActionClick: (
         action: ActionType,
         option: OptionItem
     ) => void
-
-    // should be set in redux ui state
-    setEditModal: React.Dispatch<
-        React.SetStateAction<HelpCenterArticleModalState>
-    >
 
     // should be removed
     counters?: {charCount: number}
@@ -51,7 +37,6 @@ type Props = {
     // or in a CurrentArticleTranslationEditionContext shared across the Main and Advanced mode
     canSaveArticle: boolean
 
-    // ???
     requiredFieldsArticle: Partial<
         keyof Components.Schemas.CreateArticleTranslationDto
     >[]
@@ -64,22 +49,13 @@ type Props = {
     onArticleDelete: () => Promise<void>
 
     onChangesDiscard: () => void
-
-    helpCenterDomain: string
 }
 
 const HelpCenterArticleModalAdvancedViewContent = ({
-    selectedArticle,
-    helpCenter,
-    articleLocales,
     autoFocus,
     onArticleLanguageSelect,
     onArticleModalClose,
-    selectedArticleLanguage,
-    setSelectedArticle,
     onArticleLanguageSelectActionClick,
-    setEditModal,
-    helpCenterDomain,
     counters,
     canSaveArticle,
     requiredFieldsArticle,
@@ -87,12 +63,21 @@ const HelpCenterArticleModalAdvancedViewContent = ({
     onArticleDelete,
     onChangesDiscard,
 }: Props) => {
+    const {setEditModal, selectedArticle, setSelectedArticle} =
+        useEditionManager()
+
+    const {helpCenter} = useCurrentHelpCenter()
+
+    if (!selectedArticle?.translation || !helpCenter) {
+        return null
+    }
+
+    const helpCenterDomain = getHelpCenterDomain(helpCenter)
+
     return (
         <span className={css.modalForm}>
             <HelpCenterEditModalHeader
-                helpCenter={helpCenter}
-                language={selectedArticleLanguage}
-                articleLocales={articleLocales}
+                helpCenterId={helpCenter.id}
                 supportedLocales={helpCenter.supported_locales}
                 onLanguageSelect={onArticleLanguageSelect}
                 title="Article Settings"

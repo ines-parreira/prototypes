@@ -9,7 +9,6 @@ import {Button, Container} from 'reactstrap'
 import {useLimitations} from '../../../../hooks/helpCenter/useLimitations'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {Event, useModalManager} from '../../../../hooks/useModalManager'
-import {SCREEN_SIZE, useScreenSize} from '../../../../hooks/useScreenSize'
 import {
     Article,
     ArticleTranslation,
@@ -42,6 +41,8 @@ import {
     isExistingArticle,
 } from '../utils/helpCenter.utils'
 
+import {useEditionManager} from '../providers/EditionManagerContext'
+
 import {ActionType, OptionItem} from './articles/ArticleLanguageSelect'
 import {CloseArticleModal} from './articles/CloseArticleModal'
 import HelpCenterEditModal from './articles/HelpCenterEditModal'
@@ -56,16 +57,28 @@ import MaxArticleBanner from './Paywalls/MaxArticleBanner'
 import css from './HelpCenterArticlesView.less'
 import HelpCenterArticleModalBasicViewContent from './articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalBasicViewContent'
 import HelpCenterArticleModalAdvancedViewContent from './articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalAdvancedViewContent'
-import {
-    HelpCenterArticleModalView,
-    HelpCenterArticleModalState,
-} from './articles/HelpCenterEditArticleModalContent/types'
+import {HelpCenterArticleModalView} from './articles/HelpCenterEditArticleModalContent/types'
 
 export const HelpCenterArticlesView = (): JSX.Element => {
     const dispatch = useAppDispatch()
     const {client} = useHelpCenterApi()
     const articlesActions = useArticlesActions()
     const {helpCenter, getHelpCenterCustomDomain} = useCurrentHelpCenter()
+
+    /**
+     * EditionManagerContext
+     */
+    const {
+        selectedCategoryId,
+        setSelectedCategoryId,
+        selectedArticleLanguage,
+        setSelectedArticleLanguage,
+        selectedArticle,
+        setSelectedArticle,
+        editModal,
+        setEditModal,
+        isEditorCodeViewActive,
+    } = useEditionManager()
 
     /**
      * States
@@ -81,39 +94,22 @@ export const HelpCenterArticlesView = (): JSX.Element => {
     const articleModal = useModalManager(MODALS.ARTICLE, {autoDestroy: false})
 
     // modal states
-    const [editModal, setEditModal] = useState<HelpCenterArticleModalState>({
-        isOpened: false,
-        view: null,
-    })
     const [pendingDeleteLocaleOptionItem, setPendingDeleteLocaleOptionItem] =
         useState<OptionItem>()
     const [isPendingCloseArticle, setIsPendingCloseArticle] = useState(false)
-    const screenSize = useScreenSize()
-    const [isFullscreenEditModal, setIsFullscreenEditModal] = useState(false)
 
     // article states
-    const [selectedArticle, setSelectedArticle] = useState<
-        CreateArticleDto | Article | null
-    >(null)
     const [selectedArticleTranslations, setSelectedArticleTranslations] =
         useState<ArticleTranslation[] | null>(null)
     const [
         selectedExistingArticleTranslation,
         setSelectedExistingArticleTranslation,
     ] = useState<ArticleTranslation | null>(null)
-    const [selectedArticleLanguage, setSelectedArticleLanguage] =
-        useState(viewLanguage)
     const [isFetchingArticleTranslations, setIsFetchingArticleTranslations] =
         useState(false)
 
-    // category states
-    const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
-        null
-    )
-
     // editor states
     const [counters, setCounters] = useState<{charCount: number}>()
-    const [isEditorCodeViewActive, setIsEditorCodeViewActive] = useState(false)
 
     /**
      * Effects
@@ -128,21 +124,6 @@ export const HelpCenterArticlesView = (): JSX.Element => {
     useEffect(() => {
         void getHelpCenterCustomDomain()
     }, [helpCenter !== null])
-
-    // Make sure to exit fullscreen mode when modal view changes
-    useEffect(() => {
-        if (isFullscreenEditModal) {
-            setIsFullscreenEditModal(false)
-        }
-    }, [editModal])
-
-    // change the selected article locale whenever we change of selectedArticle
-    // ??: is this effect still relevant?
-    useEffect(() => {
-        if (selectedArticle?.translation) {
-            setSelectedArticleLanguage(selectedArticle.translation.locale)
-        }
-    }, [selectedArticle])
 
     useEffect(() => {
         async function updateSelectedArticleTranslations() {
@@ -506,10 +487,6 @@ export const HelpCenterArticlesView = (): JSX.Element => {
             return null
         }
 
-        const helpCenterDomain = getHelpCenterDomain(helpCenter)
-        const articleLocales = isExistingArticle(selectedArticle)
-            ? selectedArticle.available_locales
-            : undefined
         const autoFocus =
             editModal.isOpened && !isExistingArticle(selectedArticle)
 
@@ -519,8 +496,6 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                     <HelpCenterArticleModalBasicViewContent
                         canSaveArticle={canSaveArticle}
                         counters={counters}
-                        helpCenter={helpCenter}
-                        isFullscreenEditModal={isFullscreenEditModal}
                         onArticleChange={onArticleChange}
                         onArticleDelete={onArticleDelete}
                         onArticleLanguageSelect={onArticleLanguageSelect}
@@ -530,40 +505,23 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                         onArticleModalClose={onArticleModalClose}
                         onArticleSave={onArticleSave}
                         onChangesDiscard={onCloseArticleModalDiscardChanges}
-                        selectedArticleLanguage={selectedArticleLanguage}
-                        selectedArticle={selectedArticle}
-                        screenSize={screenSize}
-                        setIsFullscreenEditModal={setIsFullscreenEditModal}
-                        setSelectedArticle={setSelectedArticle}
-                        selectedCategoryId={selectedCategoryId}
-                        setSelectedCategoryId={setSelectedCategoryId}
-                        setEditModal={setEditModal}
-                        setIsEditorCodeViewActive={setIsEditorCodeViewActive}
                         requiredFieldsArticle={requiredFieldsArticle}
-                        articleLocales={articleLocales}
                         autoFocus={autoFocus}
                     />
                 )
             case HelpCenterArticleModalView.ADVANCED:
                 return (
                     <HelpCenterArticleModalAdvancedViewContent
-                        selectedArticle={selectedArticle}
-                        helpCenter={helpCenter}
                         onArticleLanguageSelect={onArticleLanguageSelect}
                         onArticleModalClose={onArticleModalClose}
-                        selectedArticleLanguage={selectedArticleLanguage}
-                        setSelectedArticle={setSelectedArticle}
                         onArticleLanguageSelectActionClick={
                             onArticleLanguageSelectActionClick
                         }
-                        setEditModal={setEditModal}
                         canSaveArticle={canSaveArticle}
                         requiredFieldsArticle={requiredFieldsArticle}
                         onArticleSave={onArticleSave}
                         onArticleDelete={onArticleDelete}
                         onChangesDiscard={onCloseArticleModalDiscardChanges}
-                        helpCenterDomain={helpCenterDomain}
-                        articleLocales={articleLocales}
                         autoFocus={autoFocus}
                     />
                 )
@@ -685,11 +643,6 @@ export const HelpCenterArticlesView = (): JSX.Element => {
 
                 <CategoryDrawer helpCenter={helpCenter} />
                 <HelpCenterEditModal
-                    open={editModal.isOpened}
-                    fullscreen={
-                        isFullscreenEditModal ||
-                        screenSize === SCREEN_SIZE.SMALL
-                    }
                     isLoading={isFetchingArticleTranslations}
                     portalRootId="app-root"
                     onBackdropClick={() => {

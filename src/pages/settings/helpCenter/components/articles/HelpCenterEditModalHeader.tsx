@@ -1,11 +1,13 @@
 import React, {ChangeEvent, ReactChild, useEffect, useRef} from 'react'
 
-import {HelpCenter, LocaleCode} from '../../../../../models/helpCenter/types'
+import {LocaleCode} from '../../../../../models/helpCenter/types'
 import {
     DRAWER_TRANSITION_DURATION_MS,
     HELP_CENTER_TITLE_MAX_LENGTH,
 } from '../../constants'
 import {useLocales} from '../../hooks/useLocales'
+import {useEditionManager} from '../../providers/EditionManagerContext'
+import {isExistingArticle} from '../../utils/helpCenter.utils'
 import {getLocaleSelectOptions} from '../../utils/localeSelectOptions'
 import {
     ActionType,
@@ -19,14 +21,10 @@ import css from './HelpCenterEditModalHeader.less'
 
 export type Props = {
     title: string
-    helpCenter: HelpCenter
-    language: LocaleCode
     isFullscreen?: boolean
     supportedLocales: LocaleCode[]
-    articleLocales?: LocaleCode[]
-    selectedCategoryId?: number | null
+    helpCenterId: number
     onTitleChange?: (title: string) => void
-    onCategorySelect?: (categoryId: number | null) => void
     onLanguageSelect: (localeCode: LocaleCode) => void
     onResize?: () => void
     onClose: () => void
@@ -36,27 +34,36 @@ export type Props = {
     ) => void
     toggleModalBtn?: ReactChild
     autoFocus?: boolean
+    showCategorySelect?: boolean
 }
 
 export const HelpCenterEditModalHeader = ({
     title,
-    helpCenter,
     isFullscreen,
-    language,
     supportedLocales,
-    articleLocales,
     onTitleChange,
-    onCategorySelect,
     onClose,
     onResize,
     onLanguageSelect,
     onArticleLanguageSelectActionClick,
     toggleModalBtn,
-    selectedCategoryId,
+    helpCenterId,
     autoFocus = false,
-}: Props): JSX.Element => {
+    showCategorySelect = false,
+}: Props) => {
     const locales = useLocales()
     const titleInputRef = useRef<HTMLInputElement | null>(null)
+
+    const {
+        selectedCategoryId,
+        setSelectedCategoryId,
+        selectedArticle,
+        selectedArticleLanguage,
+    } = useEditionManager()
+
+    const articleLocales = isExistingArticle(selectedArticle)
+        ? selectedArticle.available_locales
+        : undefined
 
     const getResizeModalButton = () =>
         isFullscreen ? (
@@ -130,7 +137,7 @@ export const HelpCenterEditModalHeader = ({
                 )}
                 <div className={css.headerControls}>
                     <ArticleLanguageSelect
-                        selected={language}
+                        selected={selectedArticleLanguage}
                         list={localeSelectOptions}
                         onSelect={onLanguageSelect}
                         onActionClick={onArticleLanguageSelectActionClick}
@@ -148,14 +155,14 @@ export const HelpCenterEditModalHeader = ({
                 </div>
             </div>
             <div className={css.break} />
-            {onCategorySelect && selectedCategoryId !== undefined && (
+            {showCategorySelect && selectedCategoryId !== undefined && (
                 <div className={css.categorySelect}>
                     <ArticleCategorySelect
-                        locale={language}
-                        helpCenterId={helpCenter.id}
+                        locale={selectedArticleLanguage}
+                        helpCenterId={helpCenterId}
                         categoryId={selectedCategoryId}
                         onChange={(value: number | null) => {
-                            onCategorySelect(value)
+                            setSelectedCategoryId(value)
                         }}
                     />
                 </div>

@@ -11,6 +11,7 @@ import {initialState as uiState} from '../../../../../state/helpCenter/ui/reduce
 import {RootState, StoreDispatch} from '../../../../../state/types'
 import {renderWithRouter} from '../../../../../utils/testing'
 import {getHelpCentersResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
+import {EditionManagerContextProvider} from '../../providers/EditionManagerContext'
 import HelpCenterArticlesView from '../HelpCenterArticlesView'
 
 jest.mock('../../hooks/useHelpCenterApi', () => {
@@ -86,7 +87,9 @@ describe('<HelpCenterArticlesView/>', () => {
         const {container} = renderWithRouter(
             <Provider store={mockedStore(defaultState)}>
                 <DndProvider backend={HTML5Backend}>
-                    <HelpCenterArticlesView />
+                    <EditionManagerContextProvider>
+                        <HelpCenterArticlesView />
+                    </EditionManagerContextProvider>
                 </DndProvider>
             </Provider>,
             route

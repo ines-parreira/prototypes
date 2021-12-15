@@ -10,6 +10,7 @@ import {notify} from '../../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../../state/notifications/types'
 import {uploadFiles} from '../../../../../../utils'
 
+import {useEditionManager} from '../../../providers/EditionManagerContext'
 import {FroalaEditor, config} from './froala-config'
 import {Editor} from './types'
 
@@ -18,7 +19,6 @@ type Props = {
     locale: LocaleCode
     value?: string
     onChange: (value: string, charCount?: number) => void
-    onEditorCodeViewToggle: (value: boolean) => void
 }
 
 type FroalaEditorInstance = FroalaEditorComponent & {
@@ -26,17 +26,13 @@ type FroalaEditorInstance = FroalaEditorComponent & {
     editorInitialized: boolean
 }
 
-const HelpCenterEditor = ({
-    locale,
-    value = '',
-    onChange,
-    onEditorCodeViewToggle,
-}: Props) => {
+const HelpCenterEditor = ({locale, value = '', onChange}: Props) => {
     const dispatch = useAppDispatch()
     const editorRef = useRef<FroalaEditorInstance | null>(null)
+    const {setIsEditorCodeViewActive} = useEditionManager()
 
     useEffect(() => {
-        onEditorCodeViewToggle(false)
+        setIsEditorCodeViewActive(false)
     }, [])
 
     useEffect(() => {
@@ -112,7 +108,7 @@ const HelpCenterEditor = ({
 
                         if (!editor) return
 
-                        onEditorCodeViewToggle(editor.codeView.isActive())
+                        setIsEditorCodeViewActive(editor.codeView.isActive())
                     },
                     'video.linkError': function () {
                         const editor = editorRef.current?.editor

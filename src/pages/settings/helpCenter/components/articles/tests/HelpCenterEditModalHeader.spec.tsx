@@ -6,7 +6,24 @@ import {LocaleCode} from '../../../../../../models/helpCenter/types'
 import HelpCenterEditModalHeader, {
     Props as HelpCenterEditModalHeaderProps,
 } from '../HelpCenterEditModalHeader'
-import {getSingleHelpCenterResponseFixture} from '../../../fixtures/getHelpCentersResponse.fixture'
+
+const mockedUseEditionManager = {
+    selectedCategoryId: null,
+    setSelectedCategoryId: jest.fn(),
+    selectedArticle: null,
+    selectedArticleLanguage: 'fr-FR' as LocaleCode,
+}
+
+jest.mock('../../../providers/EditionManagerContext', () => {
+    const module: Record<string, unknown> = jest.requireActual(
+        '../../../providers/EditionManagerContext'
+    )
+
+    return {
+        ...module,
+        useEditionManager: () => mockedUseEditionManager,
+    }
+})
 
 jest.mock('../../../hooks/useLocales', () => ({
     useLocales: () => [
@@ -37,22 +54,28 @@ const mockedOnArticleLanguageSelectActionClick = jest.fn()
 describe('<HelpCenterEditModalHeader/>', () => {
     const props: HelpCenterEditModalHeaderProps = {
         title: 'Article',
-        language: 'fr-FR' as LocaleCode,
         supportedLocales: ['en-US', 'fr-FR'] as LocaleCode[],
         onLanguageSelect: mockedOnLanguageSelect,
         onClose: mockedOnClose,
         onArticleLanguageSelectActionClick:
             mockedOnArticleLanguageSelectActionClick,
-        helpCenter: getSingleHelpCenterResponseFixture,
+        helpCenterId: 1,
     }
 
     beforeEach(() => {
         jest.resetAllMocks()
     })
 
-    it('should display the component correctly', () => {
+    it('should display the component correctly - without the category selector', () => {
         const {container} = render(<HelpCenterEditModalHeader {...props} />)
-        expect(container).toMatchSnapshot()
+        expect(container).toMatchSnapshot('without the category selector')
+    })
+
+    it('should display the component correctly - with the category selector', () => {
+        const {container} = render(
+            <HelpCenterEditModalHeader {...props} showCategorySelect={true} />
+        )
+        expect(container).toMatchSnapshot('with the category selector')
     })
 
     describe('resize modal buttons', () => {

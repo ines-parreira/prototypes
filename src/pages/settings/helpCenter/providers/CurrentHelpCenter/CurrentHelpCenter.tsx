@@ -30,6 +30,7 @@ import {useHelpCenterIdParam} from '../../hooks/useHelpCenterIdParam'
 import css from '../../../settings.less'
 
 import './CurrentHelpCenter.less'
+import {EditionManagerContextProvider} from '../EditionManagerContext'
 
 export const CurrentHelpCenter = (): JSX.Element => {
     const dispatch = useAppDispatch()
@@ -71,7 +72,11 @@ export const CurrentHelpCenter = (): JSX.Element => {
                 <Route
                     path={`${path}/articles`}
                     exact
-                    component={HelpCenterArticlesView}
+                    render={() => (
+                        <EditionManagerContextProvider>
+                            <HelpCenterArticlesView />
+                        </EditionManagerContextProvider>
+                    )}
                 />
                 <Route
                     path={`${path}/appearance`}
