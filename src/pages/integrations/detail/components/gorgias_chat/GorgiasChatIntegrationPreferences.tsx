@@ -76,7 +76,6 @@ type State = {
     autoResponderEnabled: boolean
     autoResponderReply: string
     emailCaptureEnforcement: string
-    hideOnMobile: boolean
     isInitialized: boolean
     isUpdating: boolean
     preview: string
@@ -96,7 +95,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         autoResponderReply: CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
         emailCaptureEnforcement: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
         linkedEmailIntegration: null,
-        hideOnMobile: false,
 
         isInitialized: false,
         isUpdating: false,
@@ -124,11 +122,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                         'meta',
                         'preferences',
                         'email_capture_enforcement',
-                    ]),
-                    hideOnMobile: integration.getIn([
-                        'meta',
-                        'preferences',
-                        'hide_on_mobile',
                     ]),
                     linkedEmailIntegration: integration.getIn([
                         'meta',
@@ -175,12 +168,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         })
     }
 
-    _setHideOnMobile = (value: boolean) => {
-        this.setState({
-            hideOnMobile: value,
-        })
-    }
-
     _setLinkedEmailIntegration = (integrationId: number) => {
         this.setState({linkedEmailIntegration: integrationId})
     }
@@ -205,7 +192,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                     email_capture_enforcement:
                         this.state.emailCaptureEnforcement,
                     linked_email_integration: this.state.linkedEmailIntegration,
-                    hide_on_mobile: this.state.hideOnMobile,
                 },
             }),
         })
@@ -220,7 +206,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             autoResponderEnabled,
             autoResponderReply,
             emailCaptureEnforcement,
-            hideOnMobile,
             isUpdating,
             preview,
             linkedEmailIntegration,
@@ -361,26 +346,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                             this._setEmailCaptureEnforcement
                                         }
                                     />
-                                </div>
-
-                                <div className="mb-4">
-                                    <h4>Hide chat</h4>
-
-                                    <div className="mb-3 d-flex align-items-center">
-                                        <ToggleButton
-                                            onChange={this._setHideOnMobile}
-                                            value={hideOnMobile}
-                                        />
-
-                                        <div className="ml-2">
-                                            <b>Hide chat on mobile</b>
-                                        </div>
-
-                                        <div className="form-text text-muted ml-2">
-                                            Remove chat from your website when
-                                            customers access via mobile devices
-                                        </div>
-                                    </div>
                                 </div>
 
                                 <div className="mb-4">

@@ -5,7 +5,6 @@ Object {
   "autoResponderEnabled": false,
   "autoResponderReply": "reply-shortly",
   "emailCaptureEnforcement": "optional",
-  "hideOnMobile": false,
   "isInitialized": false,
   "isUpdating": false,
   "linkedEmailIntegration": null,
@@ -18,7 +17,6 @@ Object {
   "autoResponderEnabled": false,
   "autoResponderReply": "reply-shortly",
   "emailCaptureEnforcement": "optional",
-  "hideOnMobile": false,
   "isInitialized": false,
   "isUpdating": false,
   "linkedEmailIntegration": 234,
@@ -41,7 +39,6 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
             },
             "email_capture_enforcement": "optional",
             "linked_email_integration": null,
-            "hide_on_mobile": false,
           },
         },
       },
@@ -70,7 +67,6 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
             },
             "email_capture_enforcement": "optional",
             "linked_email_integration": null,
-            "hide_on_mobile": false,
           },
           "language": "en-US",
         },
@@ -91,7 +87,6 @@ Object {
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-in-minutes",
   "emailCaptureEnforcement": "always-required",
-  "hideOnMobile": false,
   "isInitialized": true,
   "isUpdating": false,
   "linkedEmailIntegration": null,
@@ -104,7 +99,6 @@ Object {
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-in-minutes",
   "emailCaptureEnforcement": "always-required",
-  "hideOnMobile": false,
   "isInitialized": true,
   "isUpdating": false,
   "linkedEmailIntegration": null,
@@ -254,33 +248,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
               }
               value="optional"
             />
-          </div>
-          <div
-            className="mb-4"
-          >
-            <h4>
-              Hide chat
-            </h4>
-            <div
-              className="mb-3 d-flex align-items-center"
-            >
-              <ToggleButton
-                onChange={[Function]}
-                value={false}
-              />
-              <div
-                className="ml-2"
-              >
-                <b>
-                  Hide chat on mobile
-                </b>
-              </div>
-              <div
-                className="form-text text-muted ml-2"
-              >
-                Remove chat from your website when customers access via mobile devices
-              </div>
-            </div>
           </div>
           <div
             className="mb-4"
@@ -601,33 +568,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
               }
               value="optional"
             />
-          </div>
-          <div
-            className="mb-4"
-          >
-            <h4>
-              Hide chat
-            </h4>
-            <div
-              className="mb-3 d-flex align-items-center"
-            >
-              <ToggleButton
-                onChange={[Function]}
-                value={false}
-              />
-              <div
-                className="ml-2"
-              >
-                <b>
-                  Hide chat on mobile
-                </b>
-              </div>
-              <div
-                className="form-text text-muted ml-2"
-              >
-                Remove chat from your website when customers access via mobile devices
-              </div>
-            </div>
           </div>
           <div
             className="mb-4"

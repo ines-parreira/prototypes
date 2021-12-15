@@ -397,6 +397,7 @@ export class ChatIntegrationPreferences extends Component<Props, State> {
                                     </div>
                                 </div>
                                 <h4>Associated email integration</h4>
+
                                 <div className="mb-4">
                                     <p className="mb-3">
                                         If a customer doesn't see your responses
