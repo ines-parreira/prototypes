@@ -22,6 +22,8 @@ type Props = {
     integration: Maybe<PhoneIntegration>
 }
 
+const MAX_RECORDING_DURATION = 20
+
 export function PhoneIntegrationGreetingMessage({
     integration,
 }: Props): JSX.Element | null {
@@ -82,6 +84,9 @@ export function PhoneIntegrationGreetingMessage({
                                 <VoiceMessageField
                                     value={payload ?? DEFAULT_VOICE_MESSAGE}
                                     onChange={setPayload}
+                                    maxRecordingDuration={
+                                        MAX_RECORDING_DURATION
+                                    }
                                     allowNone
                                 />
                             </div>

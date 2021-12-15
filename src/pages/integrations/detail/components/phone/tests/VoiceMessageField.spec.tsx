@@ -3,11 +3,8 @@ import {render, fireEvent, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {RootState, StoreDispatch} from '../../../../../../state/types'
-import {
-    VoiceMessageType,
-    VoiceMessage,
-} from '../../../../../../models/integration/types'
+import {VoiceMessageType, VoiceMessage} from 'models/integration/types'
+import {RootState, StoreDispatch} from 'state/types'
 
 import VoiceMessageField from '../VoiceMessageField'
 
@@ -62,7 +59,7 @@ describe('<VoiceMessageField />', () => {
     })
 
     it('should allow inserting a voice recording', async () => {
-        const file = new File(['image data'], 'example.mp3', {
+        const file = new File(['audio data'], 'example.mp3', {
             type: 'audio/mpeg',
         })
 
@@ -85,11 +82,48 @@ describe('<VoiceMessageField />', () => {
             expect(onChange).toHaveBeenCalledWith({
                 voice_message_type: VoiceMessageType.VoiceRecording,
                 new_voice_recording_file:
-                    'data:audio/mpeg;base64,aW1hZ2UgZGF0YQ==',
+                    'data:audio/mpeg;base64,YXVkaW8gZGF0YQ==',
                 new_voice_recording_file_name: 'example.mp3',
                 new_voice_recording_file_type: 'audio/mpeg',
             })
         })
+    })
+
+    it('should validate voice recording duration if given a maxRecordingDuration prop', async () => {
+        const file = new File(['audio data'], 'example.mp3', {
+            type: 'audio/mpeg',
+        })
+
+        const defaultMessage: VoiceMessage = {
+            voice_message_type: VoiceMessageType.VoiceRecording,
+        }
+
+        const {container} = render(
+            <Provider store={mockStore({})}>
+                <VoiceMessageField
+                    maxRecordingDuration={5}
+                    value={defaultMessage}
+                    onChange={onChange}
+                />
+            </Provider>
+        )
+
+        const input = container.querySelector('input[type="file"]')
+        if (input) {
+            fireEvent.change(input, {target: {files: [file]}})
+        }
+
+        await expect(
+            waitFor(() => {
+                expect(onChange).toHaveBeenCalledWith({
+                    voice_message_type: VoiceMessageType.VoiceRecording,
+                    new_voice_recording_file:
+                        'data:audio/mpeg;base64,YXVkaW8gZGF0YQ==',
+                    new_voice_recording_file_name: 'example.mp3',
+                    new_voice_recording_file_type: 'audio/mpeg',
+                })
+            })
+        ).rejects.toThrow()
     })
 
     it('should allow setting no voice message', () => {

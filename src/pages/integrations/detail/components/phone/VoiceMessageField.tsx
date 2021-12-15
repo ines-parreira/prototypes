@@ -2,17 +2,17 @@ import React, {useState, useEffect, useCallback} from 'react'
 
 import {Button, FormGroup, Input, Label} from 'reactstrap'
 
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
-import {notify} from '../../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../../state/notifications/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {
     VoiceMessageType,
     VoiceMessage,
     VoiceMessageRecording,
-} from '../../../../../models/integration/types'
+} from 'models/integration/types'
 
-import {countLines} from '../../../../../utils/string'
-import {getBase64} from '../../../../../utils/file'
+import {countLines} from 'utils/string'
+import {getBase64} from 'utils/file'
 
 import css from './VoiceMessageField.less'
 
@@ -20,6 +20,7 @@ type Props = {
     value: VoiceMessage
     onChange: (value: VoiceMessage) => void
     allowNone?: boolean
+    maxRecordingDuration?: number
 }
 
 const TEXT_TO_SPEECH_MAX_LENGTH = 1000
@@ -30,6 +31,7 @@ const VoiceMessageField = ({
     value,
     onChange,
     allowNone,
+    maxRecordingDuration,
 }: Props): JSX.Element => {
     const dispatch = useAppDispatch()
     const voiceRecordingFileInput = React.useRef<HTMLInputElement>(null)
@@ -78,7 +80,33 @@ const VoiceMessageField = ({
                 return
             }
 
-            setVoiceRecordingPath(window.URL.createObjectURL(uploadedFile))
+            const url = window.URL.createObjectURL(uploadedFile)
+
+            if (maxRecordingDuration) {
+                try {
+                    const duration = await getAudioFileDuration(url)
+                    if (duration > maxRecordingDuration) {
+                        void dispatch(
+                            notify({
+                                message: `Please upload an audio file of ${maxRecordingDuration} seconds or less.`,
+                                status: NotificationStatus.Error,
+                            })
+                        )
+                        return
+                    }
+                } catch {
+                    void dispatch(
+                        notify({
+                            message:
+                                'Invalid audio file provided. Please upload a valid mp3 file.',
+                            status: NotificationStatus.Error,
+                        })
+                    )
+                    return
+                }
+            }
+
+            setVoiceRecordingPath(url)
 
             const serializedFile = await getBase64(uploadedFile)
             const newValue: VoiceMessageRecording = {
@@ -90,7 +118,7 @@ const VoiceMessageField = ({
             }
             onChange(newValue)
         },
-        [value, onChange, dispatch]
+        [value, onChange, maxRecordingDuration, dispatch]
     )
 
     const textToSpeechLines =
@@ -195,6 +223,18 @@ const VoiceMessageField = ({
             )}
         </>
     )
+}
+
+function getAudioFileDuration(url: string): Promise<number> {
+    return new Promise((resolve, reject) => {
+        const audio = new Audio(url)
+        audio.addEventListener('error', () => reject(), false)
+        audio.addEventListener(
+            'canplaythrough',
+            () => resolve(audio.duration),
+            false
+        )
+    })
 }
 
 export default VoiceMessageField
