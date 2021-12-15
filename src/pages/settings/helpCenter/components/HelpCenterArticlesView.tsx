@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import axios from 'axios'
 import classnames from 'classnames'
 import copy from 'copy-to-clipboard'
@@ -112,10 +112,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
     )
 
     // editor states
-    const [counters, setCounters] = useState<{
-        charCount: number
-        wordCount: number
-    }>()
+    const [counters, setCounters] = useState<{charCount: number}>()
     const [isEditorCodeViewActive, setIsEditorCodeViewActive] = useState(false)
 
     /**
@@ -251,23 +248,26 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         })
     }
 
-    const onArticleChange = useCallback(
-        ({content}: {content: string}, counters) => {
-            setCounters(counters)
-            setSelectedArticle((prevSelectedArticle) =>
-                prevSelectedArticle?.translation
-                    ? {
-                          ...prevSelectedArticle,
-                          translation: {
-                              ...prevSelectedArticle.translation,
-                              content,
-                          },
-                      }
-                    : prevSelectedArticle
-            )
-        },
-        []
-    )
+    const onArticleChange = (
+        {content}: {content: string},
+        charCount?: number
+    ) => {
+        setSelectedArticle((prevSelectedArticle) =>
+            prevSelectedArticle?.translation
+                ? {
+                      ...prevSelectedArticle,
+                      translation: {
+                          ...prevSelectedArticle.translation,
+                          content,
+                      },
+                  }
+                : prevSelectedArticle
+        )
+
+        if (typeof charCount === 'number') {
+            setCounters({charCount})
+        }
+    }
 
     const onArticleSelect = (article: Article | CreateArticleDto) => {
         setSelectedArticleTranslations(null)
@@ -510,6 +510,8 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         const articleLocales = isExistingArticle(selectedArticle)
             ? selectedArticle.available_locales
             : undefined
+        const autoFocus =
+            editModal.isOpened && !isExistingArticle(selectedArticle)
 
         switch (editModal.view) {
             case HelpCenterArticleModalView.BASIC:
@@ -527,6 +529,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                         }
                         onArticleModalClose={onArticleModalClose}
                         onArticleSave={onArticleSave}
+                        onChangesDiscard={onCloseArticleModalDiscardChanges}
                         selectedArticleLanguage={selectedArticleLanguage}
                         selectedArticle={selectedArticle}
                         screenSize={screenSize}
@@ -538,6 +541,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                         setIsEditorCodeViewActive={setIsEditorCodeViewActive}
                         requiredFieldsArticle={requiredFieldsArticle}
                         articleLocales={articleLocales}
+                        autoFocus={autoFocus}
                     />
                 )
             case HelpCenterArticleModalView.ADVANCED:
@@ -557,8 +561,10 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                         requiredFieldsArticle={requiredFieldsArticle}
                         onArticleSave={onArticleSave}
                         onArticleDelete={onArticleDelete}
+                        onChangesDiscard={onCloseArticleModalDiscardChanges}
                         helpCenterDomain={helpCenterDomain}
                         articleLocales={articleLocales}
+                        autoFocus={autoFocus}
                     />
                 )
             default:

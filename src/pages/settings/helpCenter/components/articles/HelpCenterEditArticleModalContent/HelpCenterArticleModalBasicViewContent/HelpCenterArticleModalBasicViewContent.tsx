@@ -1,21 +1,23 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 
-import {SCREEN_SIZE} from '../../../../../../../hooks/useScreenSize'
+import {SCREEN_SIZE} from 'hooks/useScreenSize'
 import {
     Article,
     CreateArticleDto,
     HelpCenter,
     LocaleCode,
-} from '../../../../../../../models/helpCenter/types'
-import {Components} from '../../../../../../../rest_api/help_center_api/client.generated'
+} from 'models/helpCenter/types'
+import {Components} from 'rest_api/help_center_api/client.generated'
+
 import {EDITOR_MODAL_CONTAINER_ID} from '../../../../constants'
 import {isExistingArticle, slugify} from '../../../../utils/helpCenter.utils'
 import {ActionType, OptionItem} from '../../ArticleLanguageSelect'
-import HelpCenterEditArticleForm from '../../HelpCenterEditArticleForm'
 import HelpCenterEditModalFooter from '../../HelpCenterEditModalFooter'
 import HelpCenterEditModalHeader from '../../HelpCenterEditModalHeader'
+import HelpCenterEditor from '../../HelpCenterEditor/HelpCenterEditor'
+import {HelpCenterArticleModalState, HelpCenterArticleModalView} from '../types'
+
 import css from '../HelpCenterEditArticleModalContent.less'
-import {HelpCenterArticleModalView, HelpCenterArticleModalState} from '../types'
 
 type Props = {
     selectedArticle: CreateArticleDto | Article
@@ -23,6 +25,7 @@ type Props = {
     isFullscreenEditModal: boolean
     onArticleLanguageSelect: (localeCode: LocaleCode) => void
     articleLocales?: LocaleCode[]
+    autoFocus: boolean
 
     onArticleModalClose: () => void
 
@@ -67,10 +70,7 @@ type Props = {
     setIsEditorCodeViewActive: React.Dispatch<React.SetStateAction<boolean>>
 
     // should be removed
-    counters?: {
-        charCount: number
-        wordCount: number
-    }
+    counters?: {charCount: number}
 
     // should be defined inside this component as a local state to manage the CTA states
     // of "Save Changes" | "Create article" | "Publish article"
@@ -88,6 +88,8 @@ type Props = {
     onArticleSave: () => Promise<void>
     // same
     onArticleDelete: () => Promise<void>
+
+    onChangesDiscard: () => void
 }
 
 const HelpCenterArticleModalBasicViewContent = ({
@@ -95,6 +97,7 @@ const HelpCenterArticleModalBasicViewContent = ({
     helpCenter,
     isFullscreenEditModal,
     articleLocales,
+    autoFocus,
     onArticleLanguageSelect,
     onArticleModalClose,
     screenSize,
@@ -112,7 +115,19 @@ const HelpCenterArticleModalBasicViewContent = ({
     requiredFieldsArticle,
     onArticleSave,
     onArticleDelete,
+    onChangesDiscard,
 }: Props) => {
+    const {translation} = selectedArticle
+    const articleId =
+        'article_id' in translation ? translation.article_id : undefined
+
+    const onArticleContentEdit = useCallback(
+        (content: string, charCount?: number) => {
+            onArticleChange({...translation, content}, charCount)
+        },
+        [translation, onArticleChange]
+    )
+
     return (
         <span className={css.modalForm} id={EDITOR_MODAL_CONTAINER_ID}>
             <HelpCenterEditModalHeader
@@ -162,10 +177,13 @@ const HelpCenterArticleModalBasicViewContent = ({
                         <i className="material-icons">settings</i>
                     </button>
                 }
+                autoFocus={autoFocus}
             />
-            <HelpCenterEditArticleForm
-                translation={selectedArticle.translation}
-                onChange={onArticleChange}
+            <HelpCenterEditor
+                articleId={articleId}
+                locale={translation.locale}
+                value={translation.content}
+                onChange={onArticleContentEdit}
                 onEditorCodeViewToggle={setIsEditorCodeViewActive}
             />
             <HelpCenterEditModalFooter
@@ -175,6 +193,7 @@ const HelpCenterArticleModalBasicViewContent = ({
                 canDelete={isExistingArticle(selectedArticle)}
                 onSave={onArticleSave}
                 onDelete={onArticleDelete}
+                onDiscard={onChangesDiscard}
             />
         </span>
     )

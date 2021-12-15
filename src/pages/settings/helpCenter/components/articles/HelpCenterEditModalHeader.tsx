@@ -1,7 +1,10 @@
-import React, {ChangeEvent, ReactChild} from 'react'
+import React, {ChangeEvent, ReactChild, useEffect, useRef} from 'react'
 
 import {HelpCenter, LocaleCode} from '../../../../../models/helpCenter/types'
-import {HELP_CENTER_TITLE_MAX_LENGTH} from '../../constants'
+import {
+    DRAWER_TRANSITION_DURATION_MS,
+    HELP_CENTER_TITLE_MAX_LENGTH,
+} from '../../constants'
 import {useLocales} from '../../hooks/useLocales'
 import {getLocaleSelectOptions} from '../../utils/localeSelectOptions'
 import {
@@ -32,6 +35,7 @@ export type Props = {
         currentOption: OptionItem
     ) => void
     toggleModalBtn?: ReactChild
+    autoFocus?: boolean
 }
 
 export const HelpCenterEditModalHeader = ({
@@ -49,8 +53,10 @@ export const HelpCenterEditModalHeader = ({
     onArticleLanguageSelectActionClick,
     toggleModalBtn,
     selectedCategoryId,
+    autoFocus = false,
 }: Props): JSX.Element => {
     const locales = useLocales()
+    const titleInputRef = useRef<HTMLInputElement | null>(null)
 
     const getResizeModalButton = () =>
         isFullscreen ? (
@@ -93,6 +99,17 @@ export const HelpCenterEditModalHeader = ({
         [locales, supportedLocales, articleLocales]
     )
 
+    useEffect(() => {
+        if (autoFocus) {
+            // Only set the auto-focus after the drawer animation is finished,
+            // otherwise it breaks the animation
+            setTimeout(
+                () => titleInputRef.current?.focus(),
+                DRAWER_TRANSITION_DURATION_MS
+            )
+        }
+    }, [autoFocus])
+
     return (
         <header className={css.header}>
             <div className={css.headerTopContainer}>
@@ -106,6 +123,7 @@ export const HelpCenterEditModalHeader = ({
                         }
                         className={css.titleInput}
                         maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
+                        ref={titleInputRef}
                     />
                 ) : (
                     <span className={css.titleInput}>{title}</span>

@@ -21,6 +21,7 @@ type Props = {
     helpCenter: HelpCenter
     onArticleLanguageSelect: (localeCode: LocaleCode) => void
     articleLocales?: LocaleCode[]
+    autoFocus: boolean
 
     onArticleModalClose: () => void
 
@@ -43,10 +44,7 @@ type Props = {
     >
 
     // should be removed
-    counters?: {
-        charCount: number
-        wordCount: number
-    }
+    counters?: {charCount: number}
 
     // should be defined inside this component as a local state to manage the CTA states
     // of "Save Changes" | "Create article" | "Publish article"
@@ -65,6 +63,8 @@ type Props = {
     // same
     onArticleDelete: () => Promise<void>
 
+    onChangesDiscard: () => void
+
     helpCenterDomain: string
 }
 
@@ -72,6 +72,7 @@ const HelpCenterArticleModalAdvancedViewContent = ({
     selectedArticle,
     helpCenter,
     articleLocales,
+    autoFocus,
     onArticleLanguageSelect,
     onArticleModalClose,
     selectedArticleLanguage,
@@ -84,6 +85,7 @@ const HelpCenterArticleModalAdvancedViewContent = ({
     requiredFieldsArticle,
     onArticleSave,
     onArticleDelete,
+    onChangesDiscard,
 }: Props) => {
     return (
         <span className={css.modalForm}>
@@ -112,6 +114,7 @@ const HelpCenterArticleModalAdvancedViewContent = ({
                 onArticleLanguageSelectActionClick={
                     onArticleLanguageSelectActionClick
                 }
+                autoFocus={autoFocus}
             />
             <HelpCenterEditAdvancedArticleForm
                 articleId={
@@ -139,6 +142,7 @@ const HelpCenterArticleModalAdvancedViewContent = ({
                 canDelete={isExistingArticle(selectedArticle)}
                 onSave={onArticleSave}
                 onDelete={onArticleDelete}
+                onDiscard={onChangesDiscard}
             />
         </span>
     )

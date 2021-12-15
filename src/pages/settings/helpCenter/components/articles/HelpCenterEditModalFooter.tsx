@@ -1,4 +1,4 @@
-import React, {FormEvent} from 'react'
+import React, {FormEvent, useState} from 'react'
 import {Button} from 'reactstrap'
 
 import Tooltip from '../../../../common/components/Tooltip'
@@ -8,24 +8,25 @@ import {ConfirmationModal} from '../ConfirmationModal'
 import css from './HelpCenterEditModalFooter.less'
 
 type Props = {
-    counters?: {charCount: number; wordCount: number}
     canSave: boolean
-    requiredFields: typeof articleRequiredFields
     canDelete: boolean
+    requiredFields: typeof articleRequiredFields
     onSave: () => void
     onDelete: () => void
+    onDiscard: () => void
+    counters?: {charCount: number}
 }
 
-export const HelpCenterEditModalFooter = ({
-    counters,
+export const HelpCenterEditModalFooter: React.FC<Props> = ({
     canSave,
     canDelete,
-    onSave,
     requiredFields,
+    onSave,
     onDelete,
-}: Props): JSX.Element => {
-    const [pendingDeleteArticle, setPendingDeleteArticle] =
-        React.useState(false)
+    onDiscard,
+    counters,
+}: Props) => {
+    const [pendingDeleteArticle, setPendingDeleteArticle] = useState(false)
 
     const handleOnSave = (event: FormEvent) => {
         event.preventDefault()
@@ -39,42 +40,41 @@ export const HelpCenterEditModalFooter = ({
 
     return (
         <footer className={css.footer}>
-            <div className={css.buttonsWrapper}>
-                <div id="article-save-button-wrapper">
-                    <Button
-                        disabled={!canSave}
-                        color="primary"
-                        onClick={handleOnSave}
-                        className={css.submitButton}
-                    >
-                        Save Article
-                    </Button>
-                </div>
-                {requiredFields?.length >= 1 && (
-                    <Tooltip
-                        disabled={canSave}
-                        placement="top-start"
-                        target="article-save-button-wrapper"
-                    >
-                        You need to add a {requiredFields[0]}
-                    </Tooltip>
-                )}
-
-                {canDelete && (
-                    <Button
-                        className={css['delete-btn']}
-                        onClick={() => setPendingDeleteArticle(true)}
-                    >
-                        <i className="material-icons mr-2">delete</i>
-                        Delete Article
-                    </Button>
-                )}
+            <div id="article-save-button-wrapper">
+                <Button
+                    disabled={!canSave}
+                    color="primary"
+                    onClick={handleOnSave}
+                    className={css.submitButton}
+                >
+                    Save Article
+                </Button>
             </div>
+            {requiredFields.length >= 1 && (
+                <Tooltip
+                    disabled={canSave}
+                    placement="top-start"
+                    target="article-save-button-wrapper"
+                >
+                    You need to add a {requiredFields[0]}
+                </Tooltip>
+            )}
+            <Button name="discard" onClick={onDiscard}>
+                Discard changes
+            </Button>
             {counters && (
-                <div className={css.counters}>
-                    <span>Words: {counters?.wordCount}</span>
-                    <span>Characters: {counters?.charCount}</span>
+                <div className={css.counter}>
+                    Characters: {counters.charCount}
                 </div>
+            )}
+            {canDelete && (
+                <Button
+                    className={css.deleteButton}
+                    onClick={() => setPendingDeleteArticle(true)}
+                >
+                    <i className="material-icons">delete</i>
+                    Delete Article
+                </Button>
             )}
             {pendingDeleteArticle && (
                 <ConfirmationModal

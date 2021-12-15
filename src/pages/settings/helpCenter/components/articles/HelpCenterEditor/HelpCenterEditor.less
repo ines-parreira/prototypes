@@ -11,22 +11,53 @@
 
         // Remove round corners around the editor
         :global {
-            .fr-element.fr-view {
-                padding: 16px;
-            }
             .fr-toolbar.fr-top,
             .fr-second-toolbar {
                 border-radius: 0;
             }
+
             .fr-wrapper > .fr-view {
+                padding: 24px;
                 min-height: 100%;
             }
+
             .fr-action-buttons button.fr-command {
                 color: @classic-main-primary;
             }
+
             .fr-qi-helper a.fr-btn.fr-floating-btn {
                 padding: 0 10px;
             }
+
+            .fr-toolbar {
+                background-color: @classic-neutral-grey-2;
+            }
+
+            .fr-command {
+                color: @classic-neutral-grey-6 !important;
+
+                &.fr-btn {
+                    i {
+                        font-size: 18px;
+                    }
+
+                    svg path {
+                        fill: @classic-neutral-grey-6;
+                    }
+                }
+            }
+
+            .fr-separator {
+                background-color: @classic-neutral-grey-3;
+            }
+        }
+    }
+}
+
+:global {
+    .fr-popup .fr-command.fr-btn {
+        svg path {
+            fill: @classic-neutral-grey-6 !important;
         }
     }
 }
