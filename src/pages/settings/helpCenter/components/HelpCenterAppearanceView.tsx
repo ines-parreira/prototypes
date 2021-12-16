@@ -9,16 +9,15 @@ import {HelpCenter} from '../../../../models/helpCenter/types'
 import {helpCenterUpdated} from '../../../../state/entities/helpCenters/actions'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
-import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
 import {
     HELP_CENTER_DEFAULT_COLOR,
     HELP_CENTER_DEFAULT_THEME,
 } from '../constants'
-import {useCurrentHelpCenter} from '../hooks/useCurrentHelpCenter'
 import {FileUpload, useFileUpload} from '../hooks/useFileUpload'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
+import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
 import {HelpCenterTheme, isHelpCenterTheme} from '../types'
 import settingsCss from '../../settings.less'
 
@@ -33,14 +32,14 @@ import css from './HelpCenterAppearanceView.less'
 export const HelpCenterAppearanceView: React.FC = () => {
     const dispatch = useAppDispatch()
     const helpCenterId = useHelpCenterIdParam()
-    const {helpCenter} = useCurrentHelpCenter()
+    const helpCenter = useCurrentHelpCenter()
     const {client} = useHelpCenterApi()
     const helpCenterTheme: HelpCenterTheme =
-        helpCenter?.theme && isHelpCenterTheme(helpCenter?.theme)
+        helpCenter.theme && isHelpCenterTheme(helpCenter.theme)
             ? helpCenter.theme
             : HELP_CENTER_DEFAULT_THEME
     const helpCenterColor =
-        helpCenter?.primary_color || HELP_CENTER_DEFAULT_COLOR
+        helpCenter.primary_color || HELP_CENTER_DEFAULT_COLOR
     const [selectedTheme, setSelectedTheme] =
         useState<HelpCenterTheme>(helpCenterTheme)
     const [currentColor, setCurrentColor] = useState(helpCenterColor)
@@ -50,11 +49,11 @@ export const HelpCenterAppearanceView: React.FC = () => {
     const bannerImage = useFileUpload()
 
     useEffect(() => {
-        if (helpCenter?.theme && isHelpCenterTheme(helpCenter.theme)) {
+        if (helpCenter.theme && isHelpCenterTheme(helpCenter.theme)) {
             setSelectedTheme(helpCenter.theme)
         }
 
-        if (helpCenter?.primary_color) {
+        if (helpCenter.primary_color) {
             setCurrentColor(helpCenter.primary_color)
         }
     }, [helpCenter])
@@ -135,11 +134,11 @@ export const HelpCenterAppearanceView: React.FC = () => {
             return false
         }
 
-        if (selectedTheme !== helpCenter?.theme) {
+        if (selectedTheme !== helpCenter.theme) {
             return Boolean(selectedTheme)
         }
 
-        if (currentColor !== helpCenter?.primary_color) {
+        if (currentColor !== helpCenter.primary_color) {
             return isHexColor(currentColor)
         }
 
@@ -187,14 +186,6 @@ export const HelpCenterAppearanceView: React.FC = () => {
             : 'Upload image'
     }
 
-    if (!helpCenter) {
-        return (
-            <Container fluid className={settingsCss.pageContainer}>
-                <Loader />
-            </Container>
-        )
-    }
-
     return (
         <div className="full-width">
             <PageHeader
@@ -224,13 +215,13 @@ export const HelpCenterAppearanceView: React.FC = () => {
                             title="Standard Logo"
                             info="Used in the main navigation when with the light theme."
                             file={primaryLogo.payload}
-                            defaultPreview={helpCenter?.brand_logo_url || ''}
+                            defaultPreview={helpCenter.brand_logo_url || ''}
                             onChangeFile={primaryLogo.changeFile}
                             isTouched={primaryLogo.isTouched}
                             helpTextProps={{
                                 highlight: getImageUploadHighlightText(
                                     primaryLogo,
-                                    helpCenter?.brand_logo_url
+                                    helpCenter.brand_logo_url
                                 ),
                                 text: 'maximum 10 MB',
                             }}
@@ -241,14 +232,14 @@ export const HelpCenterAppearanceView: React.FC = () => {
                             info="Used in the main navigation when with the dark theme."
                             file={lightLogo.payload}
                             defaultPreview={
-                                helpCenter?.brand_logo_light_url || ''
+                                helpCenter.brand_logo_light_url || ''
                             }
                             onChangeFile={lightLogo.changeFile}
                             isTouched={lightLogo.isTouched}
                             helpTextProps={{
                                 highlight: getImageUploadHighlightText(
                                     lightLogo,
-                                    helpCenter?.brand_logo_light_url
+                                    helpCenter.brand_logo_light_url
                                 ),
                                 text: 'maximum 10 MB',
                             }}
@@ -258,13 +249,13 @@ export const HelpCenterAppearanceView: React.FC = () => {
                             title="Favicon"
                             info="This is shown in each browser beside your website’s name."
                             file={favicon.payload}
-                            defaultPreview={helpCenter?.favicon_url || ''}
+                            defaultPreview={helpCenter.favicon_url || ''}
                             onChangeFile={favicon.changeFile}
                             isTouched={favicon.isTouched}
                             helpTextProps={{
                                 highlight: getImageUploadHighlightText(
                                     favicon,
-                                    helpCenter?.favicon_url
+                                    helpCenter.favicon_url
                                 ),
                                 text: 'recommended size 64 x 64',
                             }}
@@ -293,14 +284,14 @@ export const HelpCenterAppearanceView: React.FC = () => {
                             title="Banner Background"
                             info="Your banner is an image  that’s displayed on the top of your home page."
                             file={bannerImage.payload}
-                            defaultPreview={helpCenter?.banner_image_url || ''}
+                            defaultPreview={helpCenter.banner_image_url || ''}
                             onChangeFile={bannerImage.changeFile}
                             isTouched={bannerImage.isTouched}
                             isFluid
                             helpTextProps={{
                                 highlight: getImageUploadHighlightText(
                                     bannerImage,
-                                    helpCenter?.banner_image_url
+                                    helpCenter.banner_image_url
                                 ),
                                 text: 'recommended size 1440 x 316 - Maximum 10 MB',
                             }}

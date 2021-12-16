@@ -1,15 +1,17 @@
 import React from 'react'
 import {fireEvent, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {RootState, StoreDispatch} from '../../../../../state/types'
 import {initialState as articlesState} from '../../../../../state/helpCenter/articles/reducer'
-import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
 import {initialState as categoriesState} from '../../../../../state/helpCenter/categories/reducer'
+import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
+import {RootState, StoreDispatch} from '../../../../../state/types'
 import {renderWithRouter} from '../../../../../utils/testing'
-import {getHelpCentersResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
+import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
+import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
+
 import HelpCenterAppearanceView from '../HelpCenterAppearanceView'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
@@ -19,7 +21,7 @@ const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
 const defaultState: Partial<RootState> = {
     entities: {
         helpCenters: {
-            '1': getHelpCentersResponseFixture.data[0],
+            '1': getSingleHelpCenterResponseFixture,
         },
     } as any,
     helpCenter: {
@@ -30,7 +32,7 @@ const defaultState: Partial<RootState> = {
 }
 
 const mockedUpdateHelpCenter = jest.fn().mockResolvedValue({
-    data: getHelpCentersResponseFixture.data[0],
+    data: getSingleHelpCenterResponseFixture,
 })
 
 jest.mock('../../hooks/useHelpCenterApi', () => {
@@ -44,14 +46,19 @@ jest.mock('../../hooks/useHelpCenterApi', () => {
     }
 })
 
+jest.mock('../../providers/CurrentHelpCenter')
+const mockedUseCurrentHelpCenter = (
+    useCurrentHelpCenter as jest.Mock
+).mockReturnValue(getSingleHelpCenterResponseFixture)
+
 const route = {
     path: '/app/settings/help-center/:helpCenterId/appearance',
     route: '/app/settings/help-center/1/appearance',
 }
 
-describe('<HelpCenterAppearanceView/>', () => {
+describe('<HelpCenterAppearanceView />', () => {
     beforeEach(() => {
-        jest.resetAllMocks()
+        jest.clearAllMocks()
     })
 
     it('should render the component', () => {
@@ -119,20 +126,21 @@ describe('<HelpCenterAppearanceView/>', () => {
     ])(
         'should update the Help center with the "%s" field set to null after dismissing it',
         async (imageField) => {
-            mockedUpdateHelpCenter.mockResolvedValueOnce({
-                data: {},
+            mockedUseCurrentHelpCenter.mockReturnValueOnce({
+                ...getSingleHelpCenterResponseFixture,
+                [imageField]: 'https://picsum.photos/200',
             })
 
             const stateWithImage: Partial<RootState> = {
+                ...defaultState,
                 entities: {
                     helpCenters: {
                         '1': {
-                            ...getHelpCentersResponseFixture.data[0],
+                            ...getSingleHelpCenterResponseFixture,
                             [imageField]: 'https://picsum.photos/200',
                         },
                     },
                 } as any,
-                helpCenter: defaultState.helpCenter,
             }
 
             const {getByText, getByRole} = renderWithRouter(

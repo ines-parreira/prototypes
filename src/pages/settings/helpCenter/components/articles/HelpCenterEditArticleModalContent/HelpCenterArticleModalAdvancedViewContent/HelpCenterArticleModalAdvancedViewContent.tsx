@@ -5,7 +5,7 @@ import {
     LocaleCode,
 } from '../../../../../../../models/helpCenter/types'
 import {Components} from '../../../../../../../rest_api/help_center_api/client.generated'
-import {useCurrentHelpCenter} from '../../../../hooks/useCurrentHelpCenter'
+import {useCurrentHelpCenter} from '../../../../providers/CurrentHelpCenter'
 import {useEditionManager} from '../../../../providers/EditionManagerContext'
 import {
     getHelpCenterDomain,
@@ -66,7 +66,7 @@ const HelpCenterArticleModalAdvancedViewContent = ({
     const {setEditModal, selectedArticle, setSelectedArticle} =
         useEditionManager()
 
-    const {helpCenter} = useCurrentHelpCenter()
+    const helpCenter = useCurrentHelpCenter()
 
     if (!selectedArticle?.translation || !helpCenter) {
         return null

@@ -22,12 +22,12 @@ import {changeViewLanguage} from '../../../../../state/helpCenter/ui/actions'
 import {notify} from '../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
+import {useHelpCenterActions} from '../../hooks/useHelpCenterActions'
 import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 import {
     getNewHelpCenterTranslation,
     helpCenterSeoMetaFields,
 } from '../../utils/helpCenter.utils'
-import {useCurrentHelpCenter} from '../../hooks/useCurrentHelpCenter'
 
 export type HelpCenterPreferencesState = {
     name: string
@@ -75,7 +75,7 @@ export const HelpCenterPreferencesSettings = ({
 }: Props): JSX.Element => {
     const dispatch = useAppDispatch()
     const {client} = useHelpCenterApi()
-    const {fetchHelpCenterTranslations} = useCurrentHelpCenter()
+    const {fetchHelpCenterTranslations} = useHelpCenterActions()
     const viewLanguage =
         useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const [preferences, updatePreferences] =

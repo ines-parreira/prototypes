@@ -1,8 +1,4 @@
 import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-
 import {
     act,
     fireEvent,
@@ -10,12 +6,16 @@ import {
     screen,
     waitForElementToBeRemoved,
 } from '@testing-library/react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {initialState as articlesState} from '../../../../../../state/helpCenter/articles/reducer'
 import {initialState as categoriesState} from '../../../../../../state/helpCenter/categories/reducer'
 import {initialState as uiState} from '../../../../../../state/helpCenter/ui/reducer'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
-import {getHelpCentersResponseFixture} from '../../../fixtures/getHelpCentersResponse.fixture'
+import {getSingleHelpCenterResponseFixture} from '../../../fixtures/getHelpCentersResponse.fixture'
+import {useCurrentHelpCenter} from '../../../providers/CurrentHelpCenter'
 import {CustomDomain} from '../CustomDomain'
 
 jest.mock('../../../hooks/useHelpCenterIdParam', () => {
@@ -102,12 +102,17 @@ jest.mock('../../../hooks/useHelpCenterApi', () => {
     }
 })
 
+jest.mock('../../../providers/CurrentHelpCenter')
+;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
+    getSingleHelpCenterResponseFixture
+)
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const defaultState: Partial<RootState> = {
     entities: {
         helpCenters: {
-            '1': getHelpCentersResponseFixture.data[0],
+            '1': getSingleHelpCenterResponseFixture,
         },
     } as any,
     helpCenter: {

@@ -1,0 +1,68 @@
+import useAppDispatch from 'hooks/useAppDispatch'
+import {helpCenterUpdated} from 'state/entities/helpCenters/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {reportError} from 'utils/errors'
+
+import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
+import {useHelpCenterApi} from './useHelpCenterApi'
+
+export const useHelpCenterActions = () => {
+    const dispatch = useAppDispatch()
+    const {client} = useHelpCenterApi()
+    const helpCenter = useCurrentHelpCenter()
+
+    return {
+        fetchHelpCenterTranslations: async () => {
+            if (client && helpCenter) {
+                try {
+                    const {
+                        data: {data: translations},
+                    } = await client.listHelpCenterTranslations({
+                        help_center_id: helpCenter.id,
+                    })
+
+                    dispatch(helpCenterUpdated({...helpCenter, translations}))
+                } catch (err) {
+                    void dispatch(
+                        notify({
+                            message:
+                                "Failed to fetch Help center's translations",
+                            status: NotificationStatus.Error,
+                        })
+                    )
+
+                    reportError(err as Error)
+                }
+            }
+        },
+
+        getHelpCenterCustomDomain: async () => {
+            if (client && helpCenter) {
+                try {
+                    const {
+                        data: {data: customDomains},
+                    } = await client.listCustomDomains({
+                        help_center_id: helpCenter.id,
+                    })
+
+                    const customDomain = customDomains.find(
+                        (domain) => domain.status === 'active'
+                    )
+
+                    dispatch(helpCenterUpdated({...helpCenter, customDomain}))
+                } catch (err) {
+                    void dispatch(
+                        notify({
+                            message:
+                                "Failed to fetch Help center's custom domains",
+                            status: NotificationStatus.Error,
+                        })
+                    )
+
+                    reportError(err as Error)
+                }
+            }
+        },
+    }
+}

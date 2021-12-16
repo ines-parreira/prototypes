@@ -18,9 +18,9 @@ import {NotificationStatus} from '../../../../state/notifications/types'
 import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
 import settingsCss from '../../settings.less'
-import {useCurrentHelpCenter} from '../hooks/useCurrentHelpCenter'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
+import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
 
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
@@ -28,7 +28,7 @@ import {SelfServiceSection} from './SelfServiceSection'
 
 export const HelpCenterSelfServiceView = (): JSX.Element | null => {
     const helpCenterId = useHelpCenterIdParam()
-    const {helpCenter} = useCurrentHelpCenter()
+    const helpCenter = useCurrentHelpCenter()
     const hasSelfServiceV1Features = useSelector(hasAutomationLegacyFeatures)
     const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
     const integrations = useSelector(getIntegrations)
@@ -82,13 +82,13 @@ export const HelpCenterSelfServiceView = (): JSX.Element | null => {
         [client, helpCenter]
     )
 
-    if (helpCenter === null || isLoadingIntegrations) {
+    if (isLoadingIntegrations) {
         return (
             <div className="full-width">
                 <PageHeader
                     title={
                         <HelpCenterDetailsBreadcrumb
-                            helpCenterName={helpCenter?.name || ''}
+                            helpCenterName={helpCenter.name}
                             activeLabel="Self-service"
                         />
                     }
@@ -115,7 +115,7 @@ export const HelpCenterSelfServiceView = (): JSX.Element | null => {
             <PageHeader
                 title={
                     <HelpCenterDetailsBreadcrumb
-                        helpCenterName={helpCenter?.name || ''}
+                        helpCenterName={helpCenter.name}
                         activeLabel="Self-service"
                     />
                 }

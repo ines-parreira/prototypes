@@ -1,24 +1,33 @@
 import React from 'react'
-
-import {Provider} from 'react-redux'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import {Provider as ReduxProvider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {initialState as articlesState} from '../../../../../../../../state/helpCenter/articles/reducer'
+import {initialState as categoriesState} from '../../../../../../../../state/helpCenter/categories/reducer'
+import {initialState as uiState} from '../../../../../../../../state/helpCenter/ui/reducer'
+import {RootState, StoreDispatch} from '../../../../../../../../state/types'
+import {renderWithRouter} from '../../../../../../../../utils/testing'
+import {getSingleHelpCenterResponseFixture} from '../../../../../fixtures/getHelpCentersResponse.fixture'
+import {useCurrentHelpCenter} from '../../../../../providers/CurrentHelpCenter'
+import {buildCsvColumnMatchingUrl, fileIsTooBig} from '../utils'
 import ImportSection from '../ImportSection'
 
-import {getSingleHelpCenterResponseFixture as helpCenter} from '../../../../../fixtures/getHelpCentersResponse.fixture'
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-import {RootState, StoreDispatch} from '../../../../../../../../state/types'
-import {initialState as articlesState} from '../../../../../../../../state/helpCenter/articles/reducer'
-import {initialState as uiState} from '../../../../../../../../state/helpCenter/ui/reducer'
-import {initialState as categoriesState} from '../../../../../../../../state/helpCenter/categories/reducer'
-import {buildCsvColumnMatchingUrl, fileIsTooBig} from '../utils'
-
-import {renderWithRouter} from '../../../../../../../../utils/testing'
-
-beforeEach(() => {
-    jest.clearAllMocks()
-})
+const defaultState: Partial<RootState> = {
+    entities: {
+        helpCenters: {
+            [getSingleHelpCenterResponseFixture.id]:
+                getSingleHelpCenterResponseFixture,
+        },
+    } as any,
+    helpCenter: {
+        ui: {...uiState, currentId: 1},
+        articles: articlesState,
+        categories: categoriesState,
+    },
+}
 
 jest.mock('../../../../../hooks/useHelpCenterApi', () => {
     return {
@@ -31,35 +40,23 @@ jest.mock('../../../../../hooks/useHelpCenterApi', () => {
     }
 })
 
+jest.mock('../../../../../providers/CurrentHelpCenter')
+;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
+    getSingleHelpCenterResponseFixture
+)
+
 describe('<ImportSection />', () => {
-    let store: MockStoreEnhanced
-    const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
-        thunk,
-    ])
-
     beforeEach(() => {
-        jest.resetAllMocks()
-
-        store = mockStore({
-            entities: {
-                helpCenters: {
-                    [helpCenter.id]: helpCenter,
-                },
-            } as any,
-            helpCenter: {
-                ui: {...uiState, currentId: 1},
-                articles: articlesState,
-                categories: categoriesState,
-            },
-        })
+        jest.clearAllMocks()
     })
 
     it('renders import modal', () => {
         const {container} = renderWithRouter(
-            <Provider store={store}>
+            <ReduxProvider store={mockStore(defaultState)}>
                 <ImportSection />
-            </Provider>
+            </ReduxProvider>
         )
+
         expect(container.firstChild).toMatchSnapshot()
     })
 

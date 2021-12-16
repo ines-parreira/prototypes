@@ -10,9 +10,10 @@ import {NotificationStatus} from '../../../../../state/notifications/types'
 import {isProduction} from '../../../../../utils/environment'
 import Loader from '../../../../common/components/Loader/Loader'
 import InputField from '../../../../common/forms/InputField'
-import {useCurrentHelpCenter} from '../../hooks/useCurrentHelpCenter'
+import {useHelpCenterActions} from '../../hooks/useHelpCenterActions'
 import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../../hooks/useHelpCenterIdParam'
+import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
 
 import {
     ConnectionStatus,
@@ -41,7 +42,8 @@ export const CustomDomain = () => {
     const dispatch = useAppDispatch()
     const {client} = useHelpCenterApi()
     const helpCenterId = useHelpCenterIdParam()
-    const {helpCenter, getHelpCenterCustomDomain} = useCurrentHelpCenter()
+    const helpCenter = useCurrentHelpCenter()
+    const {getHelpCenterCustomDomain} = useHelpCenterActions()
 
     const [domainValue, setDomainValue] = useState('')
     const [currentDomain, setCurrentDomain] = useState<CustomDomainEntity>()
@@ -149,14 +151,14 @@ export const CustomDomain = () => {
 
     useEffect(() => {
         void getHelpCenterCustomDomain()
-    }, [helpCenter !== null])
+    }, [])
 
     useEffect(() => {
-        if (helpCenter?.customDomain) {
+        if (helpCenter.customDomain) {
             setDomainValue(helpCenter.customDomain.hostname)
             setCurrentDomain(helpCenter.customDomain)
         }
-    }, [helpCenter?.customDomain])
+    }, [helpCenter.customDomain])
 
     const domain = isProduction() ? 'gorgias.help' : 'gorgias.rehab'
 
@@ -233,13 +235,11 @@ export const CustomDomain = () => {
                     your subdomain.`}
                 </p>
             </div>
-            <HelpText
-                isHidden={!helpCenter || currentDomain?.status === 'active'}
-            />
+            <HelpText isHidden={currentDomain?.status === 'active'} />
             <div className={css.domainForm}>
                 <div className={css.domainInput}>
                     <InputField
-                        disabled={!helpCenter || !!currentDomain?.status}
+                        disabled={!!currentDomain?.status}
                         help="Add a custom domain"
                         label="Custom domain"
                         name="domain"

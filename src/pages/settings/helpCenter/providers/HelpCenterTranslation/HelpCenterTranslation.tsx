@@ -18,7 +18,7 @@ import {getViewLanguage} from '../../../../../state/helpCenter/ui'
 import {notify} from '../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
-import {useCurrentHelpCenter} from '../../hooks/useCurrentHelpCenter'
+import {useHelpCenterActions} from '../../hooks/useHelpCenterActions'
 import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 
 export type HelpCenterTranslationState = {
@@ -71,7 +71,7 @@ export const HelpCenterTranslation: React.FC<Props> = ({
 }: Props) => {
     const dispatch = useAppDispatch()
     const {client} = useHelpCenterApi()
-    const {fetchHelpCenterTranslations} = useCurrentHelpCenter()
+    const {fetchHelpCenterTranslations} = useHelpCenterActions()
     const viewLanguage =
         useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const [translation, updateTranslation] =

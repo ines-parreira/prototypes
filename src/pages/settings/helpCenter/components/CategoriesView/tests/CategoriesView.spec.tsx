@@ -3,7 +3,6 @@ import {screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'
-
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -13,6 +12,7 @@ import {getSingleHelpCenterResponseFixture} from '../../../fixtures/getHelpCente
 import {getSingleArticleEnglish} from '../../../fixtures/getArticlesResponse.fixture'
 import {getSingleCategoryEnglish} from '../../../fixtures/getCategoriesResponse.fixtures'
 import {useHelpCenterApi} from '../../../hooks/useHelpCenterApi'
+import {useCurrentHelpCenter} from '../../../providers/CurrentHelpCenter'
 
 import {CategoriesViews} from '../CategoriesView'
 
@@ -25,6 +25,7 @@ jest.mock('../../../hooks/useHelpCenterIdParam', () => {
         useHelpCenterIdParam: jest.fn().mockReturnValue(1),
     }
 })
+
 jest.mock('../../../hooks/useHelpCenterApi')
 const useHelpCenterApiMock = useHelpCenterApi as jest.Mock
 
@@ -54,6 +55,11 @@ useHelpCenterApiMock.mockImplementation(() => ({
         }),
     },
 }))
+
+jest.mock('../../../providers/CurrentHelpCenter')
+;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
+    getSingleHelpCenterResponseFixture
+)
 
 describe('<CategoriesViews />', () => {
     it('should show starter screen', async () => {

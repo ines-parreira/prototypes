@@ -9,7 +9,7 @@ import {
 
 import {EDITOR_MODAL_CONTAINER_ID} from '../../../../constants'
 import {isExistingArticle, slugify} from '../../../../utils/helpCenter.utils'
-import {useCurrentHelpCenter} from '../../../../hooks/useCurrentHelpCenter'
+import {useCurrentHelpCenter} from '../../../../providers/CurrentHelpCenter'
 import {useEditionManager} from '../../../../providers/EditionManagerContext'
 import {ActionType, OptionItem} from '../../ArticleLanguageSelect'
 import HelpCenterEditModalFooter from '../../HelpCenterEditModalFooter'
@@ -92,7 +92,8 @@ const HelpCenterArticleModalBasicViewContent = ({
         },
         [selectedArticle?.translation, onArticleChange]
     )
-    const {helpCenter} = useCurrentHelpCenter()
+
+    const helpCenter = useCurrentHelpCenter()
 
     if (!selectedArticle?.translation || !helpCenter) {
         return null

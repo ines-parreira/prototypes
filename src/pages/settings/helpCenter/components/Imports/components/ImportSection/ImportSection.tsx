@@ -1,6 +1,5 @@
 import classNames from 'classnames'
 import React, {ChangeEvent, useRef, useState, useEffect} from 'react'
-import {useSelector} from 'react-redux'
 import {Link, useHistory} from 'react-router-dom'
 import {
     Button,
@@ -21,10 +20,10 @@ import {notify} from '../../../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../../../state/notifications/types'
 import Loader from '../../../../../../common/components/Loader/Loader'
 import useAppDispatch from '../../../../../../../hooks/useAppDispatch'
-import {getCurrentHelpCenter} from '../../../../../../../state/entities/helpCenters/selectors'
 import {helpCenterUpdated} from '../../../../../../../state/entities/helpCenters/actions'
 import {uploadFiles} from '../../../../../../../utils'
 import {useHelpCenterApi} from '../../../../hooks/useHelpCenterApi'
+import {useCurrentHelpCenter} from '../../../../providers/CurrentHelpCenter'
 import {saveFileAsDownloaded} from '../../../../../../../utils/file'
 import {HOTSWAP_SDK_URL} from '../../../../../../../config'
 
@@ -53,19 +52,17 @@ type ModalState =
     | ModalStateFileSelected
     | ModalStateImporting
 
-interface ImportSectionProps {
+interface Props {
     className?: string
 }
 
-export const ImportSection = ({
-    className,
-}: ImportSectionProps): JSX.Element | null => {
+export const ImportSection: React.FC<Props> = ({className}) => {
     const [modalState, setModalState] = useState<ModalState | null>(null)
     const hiddenFileInputRef = useRef<HTMLInputElement>(null)
     const dispatch = useAppDispatch()
     const history = useHistory()
-    const helpCenter = useSelector(getCurrentHelpCenter)
-    const {isReady, client} = useHelpCenterApi()
+    const {client} = useHelpCenterApi()
+    const helpCenter = useCurrentHelpCenter()
 
     useEffect(() => {
         if (document.querySelector(`script[src="${HOTSWAP_SDK_URL}"]`)) {
@@ -84,21 +81,21 @@ export const ImportSection = ({
         },
         updateHotswapImportProgressState,
     ] = useAsyncFn(async () => {
-        if (!helpCenter?.hotswap_session_token || !client) {
+        if (!helpCenter.hotswap_session_token || !client) {
             return
         }
 
         const response = await client.getHotswapStatus(helpCenter.id)
         return response.data.progress
-    }, [client, helpCenter?.hotswap_session_token])
+    }, [client, helpCenter.hotswap_session_token])
 
     useEffect(() => {
-        if (helpCenter?.hotswap_session_token) {
+        if (helpCenter.hotswap_session_token) {
             void updateHotswapImportProgressState()
         }
-    }, [helpCenter?.hotswap_session_token])
+    }, [helpCenter.hotswap_session_token])
 
-    if (helpCenter === null || !isReady || client === undefined) {
+    if (!client) {
         return null
     }
 

@@ -16,12 +16,11 @@ import {
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {ConfirmModalAction} from '../../../common/components/ConfirmModalAction'
-import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
 import InputField from '../../../common/forms/InputField'
-import {useCurrentHelpCenter} from '../hooks/useCurrentHelpCenter'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
+import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
 import {getAbsoluteUrl, getHelpCenterDomain} from '../utils/helpCenter.utils'
 import {
     getSubdomainValidationError,
@@ -42,7 +41,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
     const helpCenterId = useHelpCenterIdParam()
     const history = useHistory()
     const location = useLocation()
-    const {helpCenter} = useCurrentHelpCenter()
+    const helpCenter = useCurrentHelpCenter()
     const {isReady, client} = useHelpCenterApi()
     const [subdomainValue, setSubdomainValue] = useState<string>()
     const [isSubdomainAvailable, setIsSubdomainAvailable] = useState(true)
@@ -54,7 +53,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
                 client &&
                 subdomainValue &&
                 isValidSubdomain(subdomainValue) &&
-                subdomainValue !== helpCenter?.subdomain
+                subdomainValue !== helpCenter.subdomain
             ) {
                 try {
                     await client.checkHelpCenterWithSubdomainExists({
@@ -139,21 +138,13 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
         return () => checkSubdomainAvailability.cancel()
     }, [subdomainValue, checkSubdomainAvailability])
 
-    const deleteBtnDisabled = deleteModalConfirmation !== helpCenter?.name
+    const deleteBtnDisabled = deleteModalConfirmation !== helpCenter.name
 
     useEffect(() => {
-        if (helpCenter?.subdomain) {
+        if (helpCenter.subdomain) {
             setSubdomainValue(helpCenter.subdomain)
         }
-    }, [helpCenter?.subdomain])
-
-    if (!helpCenter) {
-        return (
-            <Container fluid className={settingsCss.pageContainer}>
-                <Loader />
-            </Container>
-        )
-    }
+    }, [helpCenter.subdomain])
 
     const subdomainError = subdomainValue
         ? getSubdomainValidationError(subdomainValue, isSubdomainAvailable)

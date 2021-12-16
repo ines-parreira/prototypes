@@ -10,8 +10,9 @@ import {initialState as categoriesState} from '../../../../../state/helpCenter/c
 import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
 import {RootState, StoreDispatch} from '../../../../../state/types'
 import {renderWithRouter} from '../../../../../utils/testing'
-import {getHelpCentersResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
 import {EditionManagerContextProvider} from '../../providers/EditionManagerContext'
+import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
+import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
 import HelpCenterArticlesView from '../HelpCenterArticlesView'
 
 jest.mock('../../hooks/useHelpCenterApi', () => {
@@ -50,6 +51,11 @@ jest.mock('../../hooks/useHelpCenterApi', () => {
     }
 })
 
+jest.mock('../../providers/CurrentHelpCenter')
+;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
+    getSingleHelpCenterResponseFixture
+)
+
 jest.mock('../../hooks/useHelpCenterIdParam', () => {
     return {
         useHelpCenterIdParam: jest.fn().mockReturnValue(1),
@@ -63,7 +69,7 @@ const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
 const defaultState: Partial<RootState> = {
     entities: {
         helpCenters: {
-            '1': getHelpCentersResponseFixture.data[0],
+            '1': getSingleHelpCenterResponseFixture,
         },
     } as any,
     helpCenter: {

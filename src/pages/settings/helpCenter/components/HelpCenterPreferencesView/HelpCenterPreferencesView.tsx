@@ -2,18 +2,16 @@ import React, {useEffect} from 'react'
 import {useSelector} from 'react-redux'
 import {Container} from 'reactstrap'
 
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
-import {LocaleCode} from '../../../../../models/helpCenter/types'
-import {
-    changeViewLanguage,
-    getViewLanguage,
-} from '../../../../../state/helpCenter/ui'
-import Loader from '../../../../common/components/Loader/Loader'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {LocaleCode} from 'models/helpCenter/types'
+import {changeViewLanguage, getViewLanguage} from 'state/helpCenter/ui'
+
 import PageHeader from '../../../../common/components/PageHeader'
 import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
-import {useCurrentHelpCenter} from '../../hooks/useCurrentHelpCenter'
+import {useHelpCenterActions} from '../../hooks/useHelpCenterActions'
 import {useLocales} from '../../hooks/useLocales'
 import {HelpCenterPreferencesSettings} from '../../providers/HelpCenterPreferencesSettings'
+import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
 import {HelpCenterDetailsBreadcrumb} from '../HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from '../HelpCenterNavigation'
 import settingsCss from '../../../settings.less'
@@ -27,7 +25,8 @@ import {SEO} from './components/SEO'
 export const HelpCenterPreferencesView: React.FC = () => {
     const dispatch = useAppDispatch()
     const locales = useLocales()
-    const {helpCenter, getHelpCenterCustomDomain} = useCurrentHelpCenter()
+    const helpCenter = useCurrentHelpCenter()
+    const {getHelpCenterCustomDomain} = useHelpCenterActions()
     const viewLanguage =
         useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
 
@@ -37,15 +36,7 @@ export const HelpCenterPreferencesView: React.FC = () => {
 
     useEffect(() => {
         void getHelpCenterCustomDomain()
-    }, [helpCenter !== null])
-
-    if (!helpCenter) {
-        return (
-            <Container fluid className={settingsCss.pageContainer}>
-                <Loader />
-            </Container>
-        )
-    }
+    }, [])
 
     return (
         <div className="full-width">

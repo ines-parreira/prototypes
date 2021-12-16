@@ -2,18 +2,15 @@ import React, {useMemo} from 'react'
 import {useSelector} from 'react-redux'
 import {Container} from 'reactstrap'
 
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
-import {validLocaleCode} from '../../../../../models/helpCenter/utils'
-import {
-    changeViewLanguage,
-    getViewLanguage,
-} from '../../../../../state/helpCenter/ui'
-import Loader from '../../../../common/components/Loader/Loader'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {validLocaleCode} from 'models/helpCenter/utils'
+import {changeViewLanguage, getViewLanguage} from 'state/helpCenter/ui'
+
 import PageHeader from '../../../../common/components/PageHeader'
 import SelectField from '../../../../common/forms/SelectField/SelectField'
 import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
-import {useCurrentHelpCenter} from '../../hooks/useCurrentHelpCenter'
 import {useLocales} from '../../hooks/useLocales'
+import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
 import {HelpCenterTranslation} from '../../providers/HelpCenterTranslation'
 import {getLocaleSelectOptions} from '../../utils/localeSelectOptions'
 import {HelpCenterDetailsBreadcrumb} from '../HelpCenterDetailsBreadcrumb'
@@ -30,29 +27,17 @@ import css from './HelpCenterContactView.less'
 const HelpCenterContactView: React.FC = () => {
     const dispatch = useAppDispatch()
     const locales = useLocales()
-    const {helpCenter} = useCurrentHelpCenter()
+    const helpCenter = useCurrentHelpCenter()
     const viewLanguage =
         useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
 
     const supportedLocales = useMemo(
-        () =>
-            getLocaleSelectOptions(
-                locales,
-                helpCenter?.supported_locales || []
-            ),
+        () => getLocaleSelectOptions(locales, helpCenter.supported_locales),
         [locales, helpCenter]
     )
 
     const handleOnChangeLocale = (value: React.ReactText) => {
         dispatch(changeViewLanguage(validLocaleCode(value)))
-    }
-
-    if (!helpCenter) {
-        return (
-            <Container fluid className="page-container">
-                <Loader />
-            </Container>
-        )
     }
 
     return (

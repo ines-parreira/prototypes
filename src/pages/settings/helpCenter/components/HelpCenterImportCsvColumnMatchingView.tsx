@@ -1,15 +1,14 @@
 import React, {useEffect, useState} from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
-import {useSelector} from 'react-redux'
 import {parse as parseQueryString} from 'query-string'
 import {AxiosError} from 'axios'
 
 import {Components} from 'rest_api/help_center_api/client.generated'
 
 import {CsvColumnPreview} from '../../../../models/helpCenter/types'
-import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useLocales} from '../hooks/useLocales'
+import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
 import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
@@ -62,10 +61,10 @@ There was an error importing ${num_erroneous_csv_rows} articles.${linkToFile}`,
     }
 }
 
-export const HelpCenterImportCsvColumnMatchingView = (): JSX.Element | null => {
+export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
     const locales = useLocales()
     const location = useLocation()
-    const helpCenter = useSelector(getCurrentHelpCenter)
+    const helpCenter = useCurrentHelpCenter()
     const [fileUrl, setFileUrl] = useState<string | null>(null)
     const {isReady, client} = useHelpCenterApi()
     const [csvColumns, setCsvColumns] = useState<CsvColumnPreview[] | null>(
@@ -173,7 +172,6 @@ export const HelpCenterImportCsvColumnMatchingView = (): JSX.Element | null => {
 
     // locales == [] can only occur if the locales haven't been retrieved yet
     if (
-        helpCenter === null ||
         locales.length === 0 ||
         csvColumns === null ||
         client === undefined ||

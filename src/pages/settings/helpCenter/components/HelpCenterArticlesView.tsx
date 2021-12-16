@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import copy from 'copy-to-clipboard'
 import _isEqual from 'lodash/isEqual'
 import {useSelector} from 'react-redux'
-import {Button, Container} from 'reactstrap'
+import {Button} from 'reactstrap'
 
 import {useLimitations} from '../../../../hooks/helpCenter/useLimitations'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
@@ -21,7 +21,6 @@ import {getViewLanguage} from '../../../../state/helpCenter/ui'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {reportError} from '../../../../utils/errors'
-import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
 import {
     DRAWER_TRANSITION_DURATION_MS,
@@ -29,9 +28,10 @@ import {
     MODALS,
 } from '../constants'
 import {useArticlesActions} from '../hooks/useArticlesActions'
-import {useCurrentHelpCenter} from '../hooks/useCurrentHelpCenter'
+import {useHelpCenterActions} from '../hooks/useHelpCenterActions'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
+import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
 import {SupportedLocalesProvider} from '../providers/SupportedLocales'
 import {
     articleRequiredFields,
@@ -59,11 +59,12 @@ import HelpCenterArticleModalBasicViewContent from './articles/HelpCenterEditArt
 import HelpCenterArticleModalAdvancedViewContent from './articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalAdvancedViewContent'
 import {HelpCenterArticleModalView} from './articles/HelpCenterEditArticleModalContent/types'
 
-export const HelpCenterArticlesView = (): JSX.Element => {
+export const HelpCenterArticlesView: React.FC = () => {
     const dispatch = useAppDispatch()
     const {client} = useHelpCenterApi()
     const articlesActions = useArticlesActions()
-    const {helpCenter, getHelpCenterCustomDomain} = useCurrentHelpCenter()
+    const helpCenter = useCurrentHelpCenter()
+    const {getHelpCenterCustomDomain} = useHelpCenterActions()
 
     /**
      * EditionManagerContext
@@ -123,13 +124,12 @@ export const HelpCenterArticlesView = (): JSX.Element => {
 
     useEffect(() => {
         void getHelpCenterCustomDomain()
-    }, [helpCenter !== null])
+    }, [])
 
     useEffect(() => {
         async function updateSelectedArticleTranslations() {
             if (
                 !client ||
-                !helpCenter?.id ||
                 !isExistingArticle(selectedArticle) ||
                 isFetchingArticleTranslations ||
                 selectedArticleTranslations
@@ -205,10 +205,6 @@ export const HelpCenterArticlesView = (): JSX.Element => {
     }
 
     const onArticleCreate = () => {
-        if (!helpCenter) {
-            return
-        }
-
         // FIXME: creating a template of an article should not select any article
         // we should separate the selection from the creation
         onArticleSelect({
@@ -260,7 +256,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
     }
 
     const onArticleSave = async () => {
-        if (!helpCenter || !selectedArticle?.translation) {
+        if (!selectedArticle?.translation) {
             return
         }
 
@@ -310,7 +306,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
     }
 
     const onArticleDelete = async () => {
-        if (!helpCenter || !isExistingArticle(selectedArticle)) {
+        if (!isExistingArticle(selectedArticle)) {
             return
         }
 
@@ -362,7 +358,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         }
 
         if (action === 'copyToClipboard') {
-            if (article?.translation && helpCenter?.subdomain) {
+            if (article?.translation) {
                 const {id: articleId, translation} = article
                 const {locale, slug} = translation
 
@@ -413,7 +409,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
     }
 
     const onArticleLanguageSelect = (localeCode: LocaleCode) => {
-        if (!helpCenter || !selectedArticle) {
+        if (!selectedArticle) {
             return
         }
 
@@ -483,7 +479,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
     }
 
     const renderArticleEditModalContent = () => {
-        if (!selectedArticle?.translation || !helpCenter) {
+        if (!selectedArticle?.translation) {
             return null
         }
 
@@ -590,14 +586,6 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         selectedCategoryId,
         isEditorCodeViewActive,
     ])
-
-    if (!helpCenter) {
-        return (
-            <Container fluid className="page-container">
-                <Loader />
-            </Container>
-        )
-    }
 
     return (
         <div className={classnames('full-width', css.wrapper)}>

@@ -14,11 +14,9 @@ import {
 } from '../../../../state/helpCenter/ui'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
-import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
 import {SocialNavigationLinks} from '../components/SocialNavigationLinks'
 import {HELP_CENTER_DEFAULT_LOCALE, SOCIAL_NAVIGATION_LINKS} from '../constants'
-import {useCurrentHelpCenter} from '../hooks/useCurrentHelpCenter'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 import {useLocales} from '../hooks/useLocales'
@@ -26,6 +24,7 @@ import {
     useNavigationLinks,
     useSocialNavigationLinks,
 } from '../hooks/useNavigationLinks'
+import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
 import {getLocaleSelectOptions} from '../utils/localeSelectOptions'
 import {saveNavigationLinks, saveSocialLinks} from '../utils/navigationLinks'
 import css from '../../settings.less'
@@ -39,7 +38,7 @@ export const HelpCenterCustomizationView = () => {
     const helpCenterId = useHelpCenterIdParam()
     const {isReady, client} = useHelpCenterApi()
     const locales = useLocales()
-    const {helpCenter} = useCurrentHelpCenter()
+    const helpCenter = useCurrentHelpCenter()
     const selectedLocale =
         useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const [links, setLinks] = useState<NavigationLink[]>([])
@@ -173,14 +172,6 @@ export const HelpCenterCustomizationView = () => {
                 console.error(err)
             }
         }
-    }
-
-    if (!helpCenter) {
-        return (
-            <Container fluid className={css.pageContainer}>
-                <Loader />
-            </Container>
-        )
     }
 
     const localesOptions = getLocaleSelectOptions(
