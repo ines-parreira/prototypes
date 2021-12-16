@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<HelpCenterEditModalHeader/> should display the component correctly - with the category selector: with the category selector 1`] = `
+exports[`<HelpCenterEditModalHeader /> should display the component correctly - with the category selector: with the category selector 1`] = `
 <div>
   <header
     class="header"
@@ -111,7 +111,7 @@ exports[`<HelpCenterEditModalHeader/> should display the component correctly - w
 </div>
 `;
 
-exports[`<HelpCenterEditModalHeader/> should display the component correctly - without the category selector: without the category selector 1`] = `
+exports[`<HelpCenterEditModalHeader /> should display the component correctly - without the category selector: without the category selector 1`] = `
 <div>
   <header
     class="header"

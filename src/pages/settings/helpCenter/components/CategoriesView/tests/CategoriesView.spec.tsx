@@ -11,8 +11,10 @@ import {RootState, StoreDispatch} from '../../../../../../state/types'
 import {getSingleHelpCenterResponseFixture} from '../../../fixtures/getHelpCentersResponse.fixture'
 import {getSingleArticleEnglish} from '../../../fixtures/getArticlesResponse.fixture'
 import {getSingleCategoryEnglish} from '../../../fixtures/getCategoriesResponse.fixtures'
+import {getLocalesResponseFixture} from '../../../fixtures/getLocalesResponse.fixtures'
 import {useHelpCenterApi} from '../../../hooks/useHelpCenterApi'
 import {useCurrentHelpCenter} from '../../../providers/CurrentHelpCenter'
+import {useSupportedLocales} from '../../../providers/SupportedLocales'
 
 import {CategoriesViews} from '../CategoriesView'
 
@@ -60,6 +62,9 @@ jest.mock('../../../providers/CurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
     getSingleHelpCenterResponseFixture
 )
+
+jest.mock('../../../providers/SupportedLocales')
+;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
 describe('<CategoriesViews />', () => {
     it('should show starter screen', async () => {

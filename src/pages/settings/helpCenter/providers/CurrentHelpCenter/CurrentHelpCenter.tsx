@@ -24,6 +24,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {isProduction} from 'utils/environment'
 
+import settingsCss from '../../../settings.less'
 import HelpCenterAppearanceView from '../../components/HelpCenterAppearanceView'
 import HelpCenterArticlesView from '../../components/HelpCenterArticlesView'
 import HelpCenterContactView from '../../components/HelpCenterContactView'
@@ -34,7 +35,6 @@ import HelpCenterPreferencesView from '../../components/HelpCenterPreferencesVie
 import HelpCenterSelfServiceView from '../../components/HelpCenterSelfServiceView'
 import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../../hooks/useHelpCenterIdParam'
-import settingsCss from '../../../settings.less'
 
 import './CurrentHelpCenter.less'
 import {EditionManagerContextProvider} from '../EditionManagerContext'

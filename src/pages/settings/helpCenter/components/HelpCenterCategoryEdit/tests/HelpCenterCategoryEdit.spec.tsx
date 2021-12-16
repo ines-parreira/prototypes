@@ -1,5 +1,5 @@
-import React from 'react'
 import {act, fireEvent, render, waitFor} from '@testing-library/react'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -12,32 +12,11 @@ import {RootState, StoreDispatch} from '../../../../../../state/types'
 import {HELP_CENTER_DOMAIN} from '../../../constants'
 import {getSingleCustomDomainResponseFixture as customDomain} from '../../../fixtures/getCustomDomainsResponse.fixture'
 import {getSingleHelpCenterResponseFixture} from '../../../fixtures/getHelpCentersResponse.fixture'
+import {getLocalesResponseFixture} from '../../../fixtures/getLocalesResponse.fixtures'
+import {useSupportedLocales} from '../../../providers/SupportedLocales'
 import {HelpCenterCategoryEdit} from '../HelpCenterCategoryEdit'
 
-jest.mock('../../../hooks/useLocales', () => ({
-    useLocales: () => [
-        {
-            name: 'English - USA',
-            code: 'en-US',
-        },
-        {
-            name: 'French - France',
-            code: 'fr-FR',
-        },
-        {
-            name: 'French - Canada',
-            code: 'fr-CA',
-        },
-        {
-            name: 'Czech - Czech Republic',
-            code: 'cs-CZ',
-        },
-    ],
-}))
-
-const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
-    thunk,
-])
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const defaultState: Partial<RootState> = {
     helpCenter: {
@@ -46,6 +25,15 @@ const defaultState: Partial<RootState> = {
         categories: categoriesState,
     },
 }
+
+const store = mockStore(defaultState)
+
+jest.mock('../../../providers/SupportedLocales')
+;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
+
+const wrapper = ({children}: {children?: React.ReactNode}) => (
+    <Provider store={store}>{children}</Provider>
+)
 
 type Props = {
     isOpen?: boolean
@@ -61,7 +49,7 @@ const Example = ({
     const [open, setOpen] = React.useState(isOpen)
 
     return (
-        <Provider store={mockedStore(defaultState)}>
+        <Provider store={store}>
             <button data-testid="toggle-btn" onClick={() => setOpen(true)}>
                 Click me
             </button>
@@ -78,20 +66,19 @@ const Example = ({
     )
 }
 
-describe('<HelpCenterCategoryEdit>', () => {
+describe('<HelpCenterCategoryEdit />', () => {
     it('renders in a hidden state by default', () => {
         const {getByTestId} = render(
-            <Provider store={mockedStore(defaultState)}>
-                <HelpCenterCategoryEdit
-                    isOpen={false}
-                    isLoading={false}
-                    canSave
-                    helpCenter={getSingleHelpCenterResponseFixture}
-                    onClose={jest.fn()}
-                    onLocaleChange={jest.fn()}
-                    onDeleteTranslation={jest.fn()}
-                />
-            </Provider>
+            <HelpCenterCategoryEdit
+                isOpen={false}
+                isLoading={false}
+                canSave
+                helpCenter={getSingleHelpCenterResponseFixture}
+                onClose={jest.fn()}
+                onLocaleChange={jest.fn()}
+                onDeleteTranslation={jest.fn()}
+            />,
+            {wrapper}
         )
 
         expect(getByTestId('category-edit').className).toEqual('drawer')

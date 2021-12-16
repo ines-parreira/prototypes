@@ -72,6 +72,7 @@ import HelpCenterStartView from './settings/helpCenter/components/HelpCenterStar
 import HelpCenterNewView from './settings/helpCenter/components/HelpCenterNewView'
 import {CurrentHelpCenter} from './settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
 import {HelpCenterApiClientProvider} from './settings/helpCenter/hooks/useHelpCenterApi'
+import {SupportedLocalesProvider} from './settings/helpCenter/providers/SupportedLocales'
 import DefaultStatsFilters from './stats/DefaultStatsFilters'
 import HelpCenterPaywall from './settings/helpCenter/components/Paywalls/HelpCenterPaywall'
 import SupportPerformanceTags from './stats/SupportPerformanceTags'
@@ -557,45 +558,57 @@ export function IntegrationsSettingsRoutes({
 export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
     return (
         <HelpCenterApiClientProvider>
-            <Switch>
-                <Route
-                    path={`${path}/`}
-                    exact
-                    render={appRender({
-                        content: withFeaturePaywall(
-                            AccountFeature.HelpCenter,
-                            HelpCenterPaywall
-                        )(
-                            withUserRoleRequired(
-                                HelpCenterStartView,
-                                ADMIN_ROLE
-                            )
-                        ),
-                        navbar: SettingsNavbarContainer,
-                    })}
-                />
-                <Route
-                    path={`${path}/new`}
-                    exact
-                    render={appRender({
-                        content: withFeaturePaywall(
-                            AccountFeature.HelpCenter,
-                            HelpCenterPaywall
-                        )(withUserRoleRequired(HelpCenterNewView, ADMIN_ROLE)),
-                        navbar: SettingsNavbarContainer,
-                    })}
-                />
-                <Route
-                    path={`${path}/:helpCenterId`}
-                    render={appRender({
-                        content: withFeaturePaywall(
-                            AccountFeature.HelpCenter,
-                            HelpCenterPaywall
-                        )(withUserRoleRequired(CurrentHelpCenter, ADMIN_ROLE)),
-                        navbar: SettingsNavbarContainer,
-                    })}
-                />
-            </Switch>
+            <SupportedLocalesProvider>
+                <Switch>
+                    <Route
+                        path={`${path}/`}
+                        exact
+                        render={appRender({
+                            content: withFeaturePaywall(
+                                AccountFeature.HelpCenter,
+                                HelpCenterPaywall
+                            )(
+                                withUserRoleRequired(
+                                    HelpCenterStartView,
+                                    ADMIN_ROLE
+                                )
+                            ),
+                            navbar: SettingsNavbarContainer,
+                        })}
+                    />
+                    <Route
+                        path={`${path}/new`}
+                        exact
+                        render={appRender({
+                            content: withFeaturePaywall(
+                                AccountFeature.HelpCenter,
+                                HelpCenterPaywall
+                            )(
+                                withUserRoleRequired(
+                                    HelpCenterNewView,
+                                    ADMIN_ROLE
+                                )
+                            ),
+                            navbar: SettingsNavbarContainer,
+                        })}
+                    />
+                    <Route
+                        path={`${path}/:helpCenterId`}
+                        render={appRender({
+                            content: withFeaturePaywall(
+                                AccountFeature.HelpCenter,
+                                HelpCenterPaywall
+                            )(
+                                withUserRoleRequired(
+                                    CurrentHelpCenter,
+                                    ADMIN_ROLE
+                                )
+                            ),
+                            navbar: SettingsNavbarContainer,
+                        })}
+                    />
+                </Switch>
+            </SupportedLocalesProvider>
         </HelpCenterApiClientProvider>
     )
 }

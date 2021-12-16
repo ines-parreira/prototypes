@@ -1,18 +1,17 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {fireEvent, render} from '@testing-library/react'
 import _keyBy from 'lodash/keyBy'
 
 import {Locale} from '../../../../../models/helpCenter/types'
-
 import HelpCenterTable from '../HelpCenterTable'
 import {getHelpCentersResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
 import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
 
-describe('<HelpCenterTable/>', () => {
+describe('<HelpCenterTable />', () => {
     const mockedOnClick = jest.fn()
     const mockedOnToggle = jest.fn()
 
-    const props = {
+    const props: ComponentProps<typeof HelpCenterTable> = {
         isLoading: false,
         list: getHelpCentersResponseFixture.data,
         locales: _keyBy<Locale>(getLocalesResponseFixture, 'code'),
@@ -21,7 +20,7 @@ describe('<HelpCenterTable/>', () => {
     }
 
     beforeEach(() => {
-        jest.resetAllMocks()
+        jest.clearAllMocks()
     })
 
     it('should display the table correctly when loading', () => {

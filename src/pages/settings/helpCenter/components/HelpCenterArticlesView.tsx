@@ -32,7 +32,6 @@ import {useHelpCenterActions} from '../hooks/useHelpCenterActions'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
-import {SupportedLocalesProvider} from '../providers/SupportedLocales'
 import {
     articleRequiredFields,
     getArticleUrl,
@@ -609,95 +608,89 @@ export const HelpCenterArticlesView: React.FC = () => {
                 </Button>
             </PageHeader>
             <HelpCenterNavigation helpCenterId={helpCenterId} />
-            <SupportedLocalesProvider>
-                <MaxArticleBanner
-                    nbArticles={limitations.createArticle.currentNumber}
-                />
-                <CategoriesViews
-                    helpCenter={helpCenter}
-                    onCreateArticle={onArticleCreate}
-                    onCreateCategory={onCategoryCreate}
-                    renderArticleList={(categoryId, articles) => (
-                        <ArticlesTable
-                            isNested
-                            categoryId={categoryId}
-                            articles={articles}
-                            onClick={onArticleSelect}
-                            onReorderFinish={onArticlesReorder}
-                            onClickSettings={onArticleRowSettingsClick}
-                        />
-                    )}
-                />
+            <MaxArticleBanner
+                nbArticles={limitations.createArticle.currentNumber}
+            />
+            <CategoriesViews
+                helpCenter={helpCenter}
+                onCreateArticle={onArticleCreate}
+                onCreateCategory={onCategoryCreate}
+                renderArticleList={(categoryId, articles) => (
+                    <ArticlesTable
+                        isNested
+                        categoryId={categoryId}
+                        articles={articles}
+                        onClick={onArticleSelect}
+                        onReorderFinish={onArticlesReorder}
+                        onClickSettings={onArticleRowSettingsClick}
+                    />
+                )}
+            />
 
-                <CategoryDrawer helpCenter={helpCenter} />
-                <HelpCenterEditModal
-                    isLoading={isFetchingArticleTranslations}
-                    portalRootId="app-root"
-                    onBackdropClick={() => {
-                        if (canSaveArticle || isEditorCodeViewActive) {
-                            setIsPendingCloseArticle(true)
-                        } else {
-                            setEditModal((prevState) => ({
-                                ...prevState,
-                                isOpened: false,
-                            }))
-                        }
-                    }}
-                    transitionDurationMs={DRAWER_TRANSITION_DURATION_MS}
+            <CategoryDrawer helpCenter={helpCenter} />
+            <HelpCenterEditModal
+                isLoading={isFetchingArticleTranslations}
+                portalRootId="app-root"
+                onBackdropClick={() => {
+                    if (canSaveArticle || isEditorCodeViewActive) {
+                        setIsPendingCloseArticle(true)
+                    } else {
+                        setEditModal((prevState) => ({
+                            ...prevState,
+                            isOpened: false,
+                        }))
+                    }
+                }}
+                transitionDurationMs={DRAWER_TRANSITION_DURATION_MS}
+            >
+                {renderArticleEditModalContent()}
+            </HelpCenterEditModal>
+            {isPendingCloseArticle && (
+                <CloseArticleModal
+                    isOpen={
+                        !!isPendingCloseArticle &&
+                        (canSaveArticle || isEditorCodeViewActive)
+                    }
+                    title={<span>Are you sure?</span>}
+                    style={{width: '100%', maxWidth: 500}}
+                    onDiscard={onCloseArticleModalDiscardChanges}
+                    onContinueEditing={onCloseArticleModalResume}
+                    {...(canSaveArticle && {
+                        onSave: onCloseArticleModalSave,
+                    })}
                 >
-                    {renderArticleEditModalContent()}
-                </HelpCenterEditModal>
-                {isPendingCloseArticle && (
-                    <CloseArticleModal
-                        isOpen={
-                            !!isPendingCloseArticle &&
-                            (canSaveArticle || isEditorCodeViewActive)
-                        }
-                        title={<span>Are you sure?</span>}
-                        style={{width: '100%', maxWidth: 500}}
-                        onDiscard={onCloseArticleModalDiscardChanges}
-                        onContinueEditing={onCloseArticleModalResume}
-                        {...(canSaveArticle && {
-                            onSave: onCloseArticleModalSave,
-                        })}
-                    >
+                    <span>
+                        If you close this article, you'll lose all changes made.{' '}
+                        {canSaveArticle && (
+                            <span>Do you want to save them?</span>
+                        )}
+                    </span>
+                </CloseArticleModal>
+            )}
+            {pendingDeleteLocaleOptionItem && (
+                <ConfirmationModal
+                    isOpen={!!pendingDeleteLocaleOptionItem}
+                    confirmText={`Delete ${pendingDeleteLocaleOptionItem?.text}`}
+                    title={
                         <span>
-                            If you close this article, you'll lose all changes
-                            made.{' '}
-                            {canSaveArticle && (
-                                <span>Do you want to save them?</span>
-                            )}
+                            Are you sure you want to delete{' '}
+                            {pendingDeleteLocaleOptionItem?.label} for this
+                            article?
                         </span>
-                    </CloseArticleModal>
-                )}
-                {pendingDeleteLocaleOptionItem && (
-                    <ConfirmationModal
-                        isOpen={!!pendingDeleteLocaleOptionItem}
-                        confirmText={`Delete ${pendingDeleteLocaleOptionItem?.text}`}
-                        title={
-                            <span>
-                                Are you sure you want to delete{' '}
-                                {pendingDeleteLocaleOptionItem?.label} for this
-                                article?
-                            </span>
-                        }
-                        style={{width: '100%', maxWidth: 610}}
-                        onClose={() =>
-                            setPendingDeleteLocaleOptionItem(undefined)
-                        }
-                        onConfirm={onArticleTranslationDeletionConfirm}
-                    >
-                        <span>
-                            You will lose all content saved and published of
-                            this language (
-                            {pendingDeleteLocaleOptionItem?.label}) for this
-                            article. You can’t undo this action, you’ll have to
-                            compose again all the content for this language if
-                            you decide to add it.
-                        </span>
-                    </ConfirmationModal>
-                )}
-            </SupportedLocalesProvider>
+                    }
+                    style={{width: '100%', maxWidth: 610}}
+                    onClose={() => setPendingDeleteLocaleOptionItem(undefined)}
+                    onConfirm={onArticleTranslationDeletionConfirm}
+                >
+                    <span>
+                        You will lose all content saved and published of this
+                        language ({pendingDeleteLocaleOptionItem?.label}) for
+                        this article. You can’t undo this action, you’ll have to
+                        compose again all the content for this language if you
+                        decide to add it.
+                    </span>
+                </ConfirmationModal>
+            )}
         </div>
     )
 }

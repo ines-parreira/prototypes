@@ -7,13 +7,13 @@ import CsvColumnMatching, {
 
 import {getSingleHelpCenterResponseFixture as helpCenter} from '../../../../../fixtures/getHelpCentersResponse.fixture'
 
-import {getLocalesResponseFixture as locales} from '../../../../../fixtures/getLocalesResponse.fixtures'
+import {getLocalesResponseFixture} from '../../../../../fixtures/getLocalesResponse.fixtures'
 
 import {analyseCsvResponse} from '../../../../../fixtures/analyseCsvResponse.fixture'
 
 const props: CsvColumnMatchingProps = {
     helpCenter,
-    locales,
+    locales: getLocalesResponseFixture,
     onCancel: jest.fn(),
     onImport: jest.fn(),
     csvColumns: analyseCsvResponse.columns,

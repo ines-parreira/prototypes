@@ -1,51 +1,51 @@
-import React from 'react'
-import _keyBy from 'lodash/keyBy'
+import React, {
+    createContext,
+    ReactNode,
+    useContext,
+    useEffect,
+    useState,
+} from 'react'
 
 import {Locale} from '../../../../../models/helpCenter/types'
-
 import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 
-const LocaleContext = React.createContext<LocalesByKey>({})
-
-export type LocalesByKey = {
-    [key: string]: Locale
-}
+const SupportedLocalesContext = createContext<Locale[] | null>(null)
 
 type Props = {
-    children: React.ReactNode
+    children: ReactNode
 }
 
-export const SupportedLocalesProvider = ({children}: Props): JSX.Element => {
-    const [locales, setLocales] = React.useState<LocalesByKey>({})
-    const [isLoading, setLoading] = React.useState(true)
-    const {isReady, client} = useHelpCenterApi()
+export const SupportedLocalesProvider: React.FC<Props> = ({children}) => {
+    const {client} = useHelpCenterApi()
+    const [locales, setLocales] = useState<Locale[]>([])
 
-    React.useEffect(() => {
+    useEffect(() => {
         async function init() {
-            if (Object.keys(locales).length > 0) {
-                return
-            }
-            if (isReady && client) {
+            if (client && locales.length === 0) {
                 const response = await client.listLocales()
-                setLocales(_keyBy(response.data, 'code'))
-                setLoading(false)
+
+                setLocales(response.data)
             }
         }
 
         void init()
-    }, [isReady])
-
-    if (isLoading) {
-        return <div />
-    }
+    }, [client, locales])
 
     return (
-        <LocaleContext.Provider value={locales}>
+        <SupportedLocalesContext.Provider value={locales}>
             {children}
-        </LocaleContext.Provider>
+        </SupportedLocalesContext.Provider>
     )
 }
 
-export const useSupportedLocales = (): LocalesByKey => {
-    return React.useContext(LocaleContext)
+export const useSupportedLocales = () => {
+    const locales = useContext(SupportedLocalesContext)
+
+    if (!locales) {
+        throw new Error(
+            `useSupportedLocales should be used inside the SupportedLocalesContext provider`
+        )
+    }
+
+    return locales
 }

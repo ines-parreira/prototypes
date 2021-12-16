@@ -93,7 +93,23 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Id
     <td>
       <div
         class="cellContent no-click"
-      />
+      >
+        <div
+          class="language-bullet-list"
+        >
+          <div
+            class="language-bullet-item"
+            data-testid="locale-bullet-en-US"
+          >
+            <img
+              alt="en-US"
+              class="flag-emoji"
+              data-testid="flag-en-US"
+              src="test-file-stub"
+            />
+          </div>
+        </div>
+      </div>
     </td>
     <td>
       <div
@@ -167,7 +183,23 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Lo
     <td>
       <div
         class="cellContent no-click"
-      />
+      >
+        <div
+          class="language-bullet-list"
+        >
+          <div
+            class="language-bullet-item"
+            data-testid="locale-bullet-en-US"
+          >
+            <img
+              alt="en-US"
+              class="flag-emoji"
+              data-testid="flag-en-US"
+              src="test-file-stub"
+            />
+          </div>
+        </div>
+      </div>
     </td>
     <td>
       <div

@@ -10,8 +10,9 @@ import {initialState as uiState} from '../../../../../state/helpCenter/ui/reduce
 import {RootState, StoreDispatch} from '../../../../../state/types'
 import {renderWithRouter} from '../../../../../utils/testing'
 import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
+import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
 import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
-
+import {useSupportedLocales} from '../../providers/SupportedLocales'
 import HelpCenterAppearanceView from '../HelpCenterAppearanceView'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
@@ -50,6 +51,9 @@ jest.mock('../../providers/CurrentHelpCenter')
 const mockedUseCurrentHelpCenter = (
     useCurrentHelpCenter as jest.Mock
 ).mockReturnValue(getSingleHelpCenterResponseFixture)
+
+jest.mock('../../providers/SupportedLocales')
+;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
 const route = {
     path: '/app/settings/help-center/:helpCenterId/appearance',

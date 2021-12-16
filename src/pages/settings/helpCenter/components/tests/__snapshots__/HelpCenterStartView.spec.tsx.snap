@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<HelpCenterStartView/> should render the component 1`] = `
+exports[`<HelpCenterStartView /> should render the component 1`] = `
 <div>
   <div
     class="full-width"

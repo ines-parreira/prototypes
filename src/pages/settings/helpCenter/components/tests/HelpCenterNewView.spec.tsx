@@ -1,15 +1,19 @@
 import React from 'react'
 import {act, fireEvent, waitFor} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
-import HelpCenterNewView from '../HelpCenterNewView'
-import {renderWithRouter} from '../../../../../utils/testing'
 import {RootState, StoreDispatch} from '../../../../../state/types'
-
+import {renderWithRouter} from '../../../../../utils/testing'
+import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
 import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
+import {useSupportedLocales} from '../../providers/SupportedLocales'
+import HelpCenterNewView from '../HelpCenterNewView'
 
-const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+
+const defaultState: Partial<RootState> = {}
+const store = mockStore(defaultState)
 
 jest.mock('../../hooks/useHelpCenterApi', () => {
     return {
@@ -24,29 +28,10 @@ jest.mock('../../hooks/useHelpCenterApi', () => {
     }
 })
 
-jest.mock('../../hooks/useLocales', () => ({
-    useLocales: () => [
-        {
-            name: 'English - USA',
-            code: 'en-US',
-        },
-        {
-            name: 'French - France',
-            code: 'fr-FR',
-        },
-        {
-            name: 'French - Canada',
-            code: 'fr-CA',
-        },
-        {
-            name: 'Czech - Czech Republic',
-            code: 'cs-CZ',
-        },
-    ],
-}))
+jest.mock('../../providers/SupportedLocales')
+;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
-describe('<HelpCenterNewView/>', () => {
-    const defaultState: Partial<RootState> = {}
+describe('<HelpCenterNewView />', () => {
     const props = {}
 
     beforeEach(() => {
@@ -55,7 +40,7 @@ describe('<HelpCenterNewView/>', () => {
 
     it('should render the component', async () => {
         const {container, findByRole} = renderWithRouter(
-            <Provider store={mockedStore(defaultState)}>
+            <Provider store={store}>
                 <HelpCenterNewView {...props} />
             </Provider>
         )
@@ -68,7 +53,7 @@ describe('<HelpCenterNewView/>', () => {
     describe('Submit form', () => {
         it('should disable the submit button if all the required fields are not filled', async () => {
             const {findByRole} = renderWithRouter(
-                <Provider store={mockedStore(defaultState)}>
+                <Provider store={store}>
                     <HelpCenterNewView {...props} />
                 </Provider>
             )
@@ -85,7 +70,7 @@ describe('<HelpCenterNewView/>', () => {
 
         it('should enable the submit button when all the required fields are filled', async () => {
             const {findByRole, getByRole} = renderWithRouter(
-                <Provider store={mockedStore(defaultState)}>
+                <Provider store={store}>
                     <HelpCenterNewView {...props} />
                 </Provider>
             )
@@ -116,7 +101,7 @@ describe('<HelpCenterNewView/>', () => {
 
         it('should call helpcenter API on submit a new help center', async () => {
             const {findByRole, getByTestId} = renderWithRouter(
-                <Provider store={mockedStore(defaultState)}>
+                <Provider store={store}>
                     <HelpCenterNewView {...props} />
                 </Provider>
             )

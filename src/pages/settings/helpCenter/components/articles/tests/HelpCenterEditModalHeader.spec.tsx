@@ -2,7 +2,8 @@ import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
 
 import {LocaleCode} from '../../../../../../models/helpCenter/types'
-
+import {useSupportedLocales} from '../../../providers/SupportedLocales'
+import {getLocalesResponseFixture} from '../../../fixtures/getLocalesResponse.fixtures'
 import HelpCenterEditModalHeader, {
     Props as HelpCenterEditModalHeaderProps,
 } from '../HelpCenterEditModalHeader'
@@ -25,33 +26,15 @@ jest.mock('../../../providers/EditionManagerContext', () => {
     }
 })
 
-jest.mock('../../../hooks/useLocales', () => ({
-    useLocales: () => [
-        {
-            name: 'English - USA',
-            code: 'en-US',
-        },
-        {
-            name: 'French - France',
-            code: 'fr-FR',
-        },
-        {
-            name: 'French - Canada',
-            code: 'fr-CA',
-        },
-        {
-            name: 'Czech - Czech Republic',
-            code: 'cs-CZ',
-        },
-    ],
-}))
-
 const mockedOnLanguageSelect = jest.fn()
 const mockedOnClose = jest.fn()
 const mockedOnResize = jest.fn()
 const mockedOnArticleLanguageSelectActionClick = jest.fn()
 
-describe('<HelpCenterEditModalHeader/>', () => {
+jest.mock('../../../providers/SupportedLocales')
+;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
+
+describe('<HelpCenterEditModalHeader />', () => {
     const props: HelpCenterEditModalHeaderProps = {
         title: 'Article',
         supportedLocales: ['en-US', 'fr-FR'] as LocaleCode[],
@@ -63,7 +46,7 @@ describe('<HelpCenterEditModalHeader/>', () => {
     }
 
     beforeEach(() => {
-        jest.resetAllMocks()
+        jest.clearAllMocks()
     })
 
     it('should display the component correctly - without the category selector', () => {
@@ -83,10 +66,12 @@ describe('<HelpCenterEditModalHeader/>', () => {
             const {queryByRole} = render(
                 <HelpCenterEditModalHeader {...props} />
             )
+
             const fullscreenBtn = queryByRole('button', {name: /fullscreen/i})
 
             expect(fullscreenBtn).toBeNull()
         })
+
         it('should have a fullscreen button when the resize callback is in props', () => {
             const {getByRole} = render(
                 <HelpCenterEditModalHeader
@@ -94,8 +79,10 @@ describe('<HelpCenterEditModalHeader/>', () => {
                     onResize={mockedOnResize}
                 />
             )
+
             const fullscreenBtn = getByRole('button', {name: /fullscreen/i})
             fireEvent.click(fullscreenBtn)
+
             expect(mockedOnResize).toHaveBeenCalledTimes(1)
         })
 
@@ -107,8 +94,10 @@ describe('<HelpCenterEditModalHeader/>', () => {
                     isFullscreen={true}
                 />
             )
+
             const halfScreenBtn = getByRole('button', {name: /halfscreen/i})
             fireEvent.click(halfScreenBtn)
+
             expect(mockedOnResize).toHaveBeenCalledTimes(1)
         })
     })

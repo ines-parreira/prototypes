@@ -1,17 +1,15 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import classNames from 'classnames'
+import _keyBy from 'lodash/keyBy'
 
 import {useLimitations} from '../../../../../../../hooks/helpCenter/useLimitations'
 import {Article} from '../../../../../../../models/helpCenter/types'
-
 import {LanguageList} from '../../../../../../common/components/LanguageBulletList'
 import BodyCell from '../../../../../../common/components/table/cells/BodyCell'
 import TableBodyRow from '../../../../../../common/components/table/TableBodyRow'
-
 import {ARTICLE_ROW_ACTIONS} from '../../../../constants'
-import {useReorderDnD, Callbacks} from '../../../../hooks/useReorderDnD'
 import {useSupportedLocales} from '../../../../providers/SupportedLocales'
-
+import {Callbacks, useReorderDnD} from '../../../../hooks/useReorderDnD'
 import {TableActions} from '../../../TableActions'
 
 import css from './ArticleRow.less'
@@ -44,7 +42,7 @@ export const ArticleRow = ({
     onDropEntity,
     onClickSettings,
 }: Props): JSX.Element => {
-    const localesByCode = useSupportedLocales()
+    const locales = useSupportedLocales()
     const limitations = useLimitations()
     const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
         {
@@ -57,7 +55,10 @@ export const ArticleRow = ({
     )
 
     const opacity = isDragging ? 0 : 1
-    const languageList = React.useMemo(() => {
+
+    const localesByCode = useMemo(() => _keyBy(locales, 'code'), [locales])
+
+    const languageList = useMemo(() => {
         if (article.available_locales.length > 0) {
             return article.available_locales.map((code) => localesByCode[code])
         }

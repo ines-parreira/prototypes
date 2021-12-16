@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<HelpCenterTable/> should display a message when list is empty 1`] = `
+exports[`<HelpCenterTable /> should display a message when list is empty 1`] = `
 <div>
   <div
     class="py24 container-fluid"
@@ -12,7 +12,7 @@ exports[`<HelpCenterTable/> should display a message when list is empty 1`] = `
 </div>
 `;
 
-exports[`<HelpCenterTable/> should display the table correctly when loading 1`] = `
+exports[`<HelpCenterTable /> should display the table correctly when loading 1`] = `
 <div>
   <div
     class="container"
@@ -30,7 +30,7 @@ exports[`<HelpCenterTable/> should display the table correctly when loading 1`] 
 </div>
 `;
 
-exports[`<HelpCenterTable/> should display the table correctly when not loading 1`] = `
+exports[`<HelpCenterTable /> should display the table correctly when not loading 1`] = `
 <div>
   <table
     class="table"

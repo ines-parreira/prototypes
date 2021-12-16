@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<HelpCenterNewView/> should render the component 1`] = `
+exports[`<HelpCenterNewView /> should render the component 1`] = `
 <div>
   <div
     class="full-width"
@@ -226,6 +226,139 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
                         />
                         <span>
                           Czech - Czech Republic
+                        </span>
+                      </span>
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      <span>
+                        <img
+                          alt="da-DK"
+                          class="flag-emoji"
+                          src="test-file-stub"
+                        />
+                        <span>
+                          Danish - Denmark
+                        </span>
+                      </span>
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      <span>
+                        <img
+                          alt="nl-NL"
+                          class="flag-emoji"
+                          src="test-file-stub"
+                        />
+                        <span>
+                          Dutch - Netherlands
+                        </span>
+                      </span>
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      <span>
+                        <img
+                          alt="de-DE"
+                          class="flag-emoji"
+                          src="test-file-stub"
+                        />
+                        <span>
+                          German - Germany
+                        </span>
+                      </span>
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      <span>
+                        <img
+                          alt="it-IT"
+                          class="flag-emoji"
+                          src="test-file-stub"
+                        />
+                        <span>
+                          Italian - Italy
+                        </span>
+                      </span>
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      <span>
+                        <img
+                          alt="no-NO"
+                          class="flag-emoji"
+                          src="test-file-stub"
+                        />
+                        <span>
+                          Norwegian - Norway
+                        </span>
+                      </span>
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      <span>
+                        <img
+                          alt="es-ES"
+                          class="flag-emoji"
+                          src="test-file-stub"
+                        />
+                        <span>
+                          Spanish - Spain
+                        </span>
+                      </span>
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      <span>
+                        <img
+                          alt="sv-SE"
+                          class="flag-emoji"
+                          src="test-file-stub"
+                        />
+                        <span>
+                          Swedish - Sweden
                         </span>
                       </span>
                     </span>

@@ -32,7 +32,7 @@ import {
     HELP_CENTER_DEFAULT_LOCALE,
     HELP_CENTER_TITLE_MAX_LENGTH,
 } from '../../constants'
-import {useLocales} from '../../hooks/useLocales'
+import {useSupportedLocales} from '../../providers/SupportedLocales'
 import {
     getAbsoluteUrl,
     getCategoryUrl,
@@ -87,7 +87,7 @@ export const HelpCenterCategoryEdit = ({
     const dispatch = useAppDispatch()
     const viewLanguage =
         useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
-    const locales = useLocales()
+    const locales = useSupportedLocales()
     const [title, setTitle] = useState('')
     const [slug, setSlug] = useState('')
     const [isPristineSlug, setPristineSlug] = useState(true)
@@ -102,7 +102,7 @@ export const HelpCenterCategoryEdit = ({
 
     const domain = useMemo(() => getHelpCenterDomain(helpCenter), [helpCenter])
 
-    const options: OptionItem[] = useMemo(
+    const localeOptions = useMemo(
         () =>
             getLocaleSelectOptions(locales, helpCenter.supported_locales).map(
                 (option) => {
@@ -269,7 +269,7 @@ export const HelpCenterCategoryEdit = ({
                 <Drawer.HeaderActions>
                     <ArticleLanguageSelect
                         selected={locale}
-                        list={options}
+                        list={localeOptions}
                         onSelect={handleOnChangeLocale}
                         onActionClick={handleOnClickAction}
                     />

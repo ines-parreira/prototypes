@@ -18,7 +18,7 @@ import settingsCss from '../../settings.less'
 
 import css from './HelpCenterTable.less'
 
-type HelpCentersTableProps = {
+type Props = {
     isLoading: boolean
     list: HelpCenter[]
     locales: {
@@ -28,13 +28,13 @@ type HelpCentersTableProps = {
     onClick: (helpCenterId: number) => void
 }
 
-export function HelpCentersTable({
+export const HelpCenterTable: React.FC<Props> = ({
     isLoading,
     list,
     locales,
     onToggle,
     onClick,
-}: HelpCentersTableProps): JSX.Element {
+}) => {
     const handleToggle =
         (helpCenterId: number) =>
         (isToggled: boolean, event?: MouseEvent): void => {
@@ -132,4 +132,4 @@ export function HelpCentersTable({
     )
 }
 
-export default HelpCentersTable
+export default HelpCenterTable

@@ -1,20 +1,25 @@
 import React from 'react'
 import {fireEvent} from '@testing-library/react'
 import {createBrowserHistory} from 'history'
-import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
-import HelpCenterStartView from '../HelpCenterStartView'
-import {HELP_CENTER_BASE_PATH} from '../../constants'
-import {renderWithRouter} from '../../../../../utils/testing'
-import {getHelpCentersResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
 import {RootState, StoreDispatch} from '../../../../../state/types'
+import {renderWithRouter} from '../../../../../utils/testing'
+import {HELP_CENTER_BASE_PATH} from '../../constants'
+import {getHelpCentersResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
+import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
+import {useSupportedLocales} from '../../providers/SupportedLocales'
+import HelpCenterStartView from '../HelpCenterStartView'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
 const mockedHistory = {...createBrowserHistory(), push: jest.fn()}
 
-describe('<HelpCenterStartView/>', () => {
+jest.mock('../../providers/SupportedLocales')
+;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
+
+describe('<HelpCenterStartView />', () => {
     const defaultState: Partial<RootState> = {
         entities: {
             helpCenters: {
@@ -27,7 +32,7 @@ describe('<HelpCenterStartView/>', () => {
     const props = {}
 
     beforeEach(() => {
-        jest.resetAllMocks()
+        jest.clearAllMocks()
     })
 
     it('should render the component', () => {
@@ -36,6 +41,7 @@ describe('<HelpCenterStartView/>', () => {
                 <HelpCenterStartView {...props} />
             </Provider>
         )
+
         expect(container).toMatchSnapshot()
     })
 
@@ -47,9 +53,7 @@ describe('<HelpCenterStartView/>', () => {
             {history: mockedHistory}
         )
         const newBtn = await findByText(/add new/i)
-        if (newBtn) {
-            fireEvent.click(newBtn)
-        }
+        fireEvent.click(newBtn)
 
         expect(mockedHistory.push).toHaveBeenLastCalledWith(
             `${HELP_CENTER_BASE_PATH}/new`

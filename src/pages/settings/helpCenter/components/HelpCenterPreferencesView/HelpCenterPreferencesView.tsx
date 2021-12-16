@@ -9,7 +9,7 @@ import {changeViewLanguage, getViewLanguage} from 'state/helpCenter/ui'
 import PageHeader from '../../../../common/components/PageHeader'
 import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
 import {useHelpCenterActions} from '../../hooks/useHelpCenterActions'
-import {useLocales} from '../../hooks/useLocales'
+import {useSupportedLocales} from '../../providers/SupportedLocales'
 import {HelpCenterPreferencesSettings} from '../../providers/HelpCenterPreferencesSettings'
 import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
 import {HelpCenterDetailsBreadcrumb} from '../HelpCenterDetailsBreadcrumb'
@@ -24,7 +24,7 @@ import {SEO} from './components/SEO'
 
 export const HelpCenterPreferencesView: React.FC = () => {
     const dispatch = useAppDispatch()
-    const locales = useLocales()
+    const locales = useSupportedLocales()
     const helpCenter = useCurrentHelpCenter()
     const {getHelpCenterCustomDomain} = useHelpCenterActions()
     const viewLanguage =

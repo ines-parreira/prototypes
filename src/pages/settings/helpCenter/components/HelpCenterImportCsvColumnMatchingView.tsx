@@ -7,7 +7,7 @@ import {Components} from 'rest_api/help_center_api/client.generated'
 
 import {CsvColumnPreview} from '../../../../models/helpCenter/types'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
-import {useLocales} from '../hooks/useLocales'
+import {useSupportedLocales} from '../providers/SupportedLocales'
 import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
 import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
@@ -62,7 +62,7 @@ There was an error importing ${num_erroneous_csv_rows} articles.${linkToFile}`,
 }
 
 export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
-    const locales = useLocales()
+    const locales = useSupportedLocales()
     const location = useLocation()
     const helpCenter = useCurrentHelpCenter()
     const [fileUrl, setFileUrl] = useState<string | null>(null)

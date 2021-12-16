@@ -24,7 +24,7 @@ import {
     HELP_CENTER_DEFAULT_THEME,
 } from '../constants'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
-import {useLocales} from '../hooks/useLocales'
+import {useSupportedLocales} from '../providers/SupportedLocales'
 import {HelpCenterTheme} from '../types'
 import {slugify} from '../utils/helpCenter.utils'
 import {localeToSelectOption} from '../utils/localeSelectOptions'
@@ -59,14 +59,18 @@ export const HelpCenterNewView = ({
 }: Props): JSX.Element => {
     const history = useHistory()
     const location = useLocation()
-    const locales = useLocales()
+    const locales = useSupportedLocales()
     const {client} = useHelpCenterApi()
     const [newHelpCenter, setNewHelpCenter] =
         useState<CreateHelpCenterPayload>(initialFormState)
     const [isLoading, setIsLoading] = useState(false)
     const [isPristineSubdomain, setPristineSubdomain] = useState(true)
     const [isSubdomainAvailable, setIsSubdomainAvailable] = useState(true)
-    const localeOptions = locales.map(localeToSelectOption)
+
+    const localeOptions = useMemo(
+        () => locales.map(localeToSelectOption),
+        [locales]
+    )
 
     const subdomainError = useMemo(
         () =>

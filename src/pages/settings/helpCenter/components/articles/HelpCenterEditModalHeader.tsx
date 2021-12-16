@@ -5,8 +5,8 @@ import {
     DRAWER_TRANSITION_DURATION_MS,
     HELP_CENTER_TITLE_MAX_LENGTH,
 } from '../../constants'
-import {useLocales} from '../../hooks/useLocales'
 import {useEditionManager} from '../../providers/EditionManagerContext'
+import {useSupportedLocales} from '../../providers/SupportedLocales'
 import {isExistingArticle} from '../../utils/helpCenter.utils'
 import {getLocaleSelectOptions} from '../../utils/localeSelectOptions'
 import {
@@ -51,7 +51,7 @@ export const HelpCenterEditModalHeader = ({
     autoFocus = false,
     showCategorySelect = false,
 }: Props) => {
-    const locales = useLocales()
+    const locales = useSupportedLocales()
     const titleInputRef = useRef<HTMLInputElement | null>(null)
 
     const {

@@ -9,7 +9,7 @@ import {changeViewLanguage, getViewLanguage} from 'state/helpCenter/ui'
 import PageHeader from '../../../../common/components/PageHeader'
 import SelectField from '../../../../common/forms/SelectField/SelectField'
 import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
-import {useLocales} from '../../hooks/useLocales'
+import {useSupportedLocales} from '../../providers/SupportedLocales'
 import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
 import {HelpCenterTranslation} from '../../providers/HelpCenterTranslation'
 import {getLocaleSelectOptions} from '../../utils/localeSelectOptions'
@@ -26,7 +26,7 @@ import css from './HelpCenterContactView.less'
 
 const HelpCenterContactView: React.FC = () => {
     const dispatch = useAppDispatch()
-    const locales = useLocales()
+    const locales = useSupportedLocales()
     const helpCenter = useCurrentHelpCenter()
     const viewLanguage =
         useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE

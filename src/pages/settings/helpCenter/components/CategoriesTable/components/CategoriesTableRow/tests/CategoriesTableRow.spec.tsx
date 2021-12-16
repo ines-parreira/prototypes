@@ -1,12 +1,13 @@
 import React from 'react'
 import {render} from '@testing-library/react'
-import {Provider} from 'react-redux'
+import {Provider as ReduxProvider} from 'react-redux'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'
-
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {useSupportedLocales} from '../../../../../providers/SupportedLocales'
+import {getLocalesResponseFixture} from '../../../../../fixtures/getLocalesResponse.fixtures'
 import {RootState, StoreDispatch} from '../../../../../../../../state/types'
 import {getSingleHelpCenterResponseFixture} from '../../../../../fixtures/getHelpCentersResponse.fixture'
 import {getSingleArticleEnglish} from '../../../../../fixtures/getArticlesResponse.fixture'
@@ -50,6 +51,9 @@ jest.mock('../../../../../hooks/useHelpCenterApi', () => {
     }
 })
 
+jest.mock('../../../../../providers/SupportedLocales')
+;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
+
 describe('<CategoriesTableRow />', () => {
     it('should render null if shouldRenderRowWithoutArticles is false and there are no articles', () => {
         const initialState: Partial<RootState> = {
@@ -73,14 +77,14 @@ describe('<CategoriesTableRow />', () => {
         }
 
         const {container} = render(
-            <Provider store={mockStore(initialState)}>
+            <ReduxProvider store={mockStore(initialState)}>
                 <CategoriesTableRow
                     categoryId={null}
                     renderArticleList={() => <div />}
                     title="Uncategorized articles"
                     shouldRenderRowWithoutArticles={false}
                 />
-            </Provider>
+            </ReduxProvider>
         )
 
         expect(container).toMatchSnapshot()
@@ -123,14 +127,14 @@ describe('<CategoriesTableRow />', () => {
         })
 
         const {container, findByText} = render(
-            <Provider store={mockStore(initialState)}>
+            <ReduxProvider store={mockStore(initialState)}>
                 <CategoriesTableRow
                     categoryId={null}
                     renderArticleList={() => <div />}
                     title="Uncategorized articles"
                     shouldRenderRowWithoutArticles={false}
                 />
-            </Provider>
+            </ReduxProvider>
         )
 
         await findByText('Uncategorized articles')
@@ -162,7 +166,7 @@ describe('<CategoriesTableRow />', () => {
         }
 
         const {container, findByText} = render(
-            <Provider store={mockStore(initialState)}>
+            <ReduxProvider store={mockStore(initialState)}>
                 <DndProvider backend={HTML5Backend}>
                     <CategoriesTableRow
                         categoryId={getSingleCategoryEnglish.id}
@@ -172,7 +176,7 @@ describe('<CategoriesTableRow />', () => {
                         title={getSingleCategoryEnglish.translation.title}
                     />
                 </DndProvider>
-            </Provider>
+            </ReduxProvider>
         )
 
         expect(container).toMatchSnapshot('Loading state')

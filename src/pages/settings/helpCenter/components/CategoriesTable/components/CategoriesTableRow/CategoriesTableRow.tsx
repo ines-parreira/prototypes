@@ -7,6 +7,7 @@ import React, {
     useState,
 } from 'react'
 import classNames from 'classnames'
+import _keyBy from 'lodash/keyBy'
 import {useSelector} from 'react-redux'
 import {usePrevious} from 'react-use'
 import {Badge, Spinner} from 'reactstrap'
@@ -89,8 +90,10 @@ const DroppableCategoriesTableRow = ({
     onDropEntity,
     position,
 }: DroppableCategoriesTableRowProps) => {
+    const locales = useSupportedLocales()
     const categoryModal = useModalManager(MODALS.CATEGORY, {autoDestroy: false})
-    const localesByCode = useSupportedLocales()
+
+    const localesByCode = useMemo(() => _keyBy(locales, 'code'), [locales])
 
     // FIXME: the form language selector is broken for this case
     // cf. https://linear.app/gorgias/issue/SS-1019/cms-the-language-selector-is-broken-when-creating-an-article-inside-a

@@ -12,7 +12,9 @@ import {RootState, StoreDispatch} from '../../../../../state/types'
 import {renderWithRouter} from '../../../../../utils/testing'
 import {EditionManagerContextProvider} from '../../providers/EditionManagerContext'
 import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
+import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
 import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
+import {useSupportedLocales} from '../../providers/SupportedLocales'
 import HelpCenterArticlesView from '../HelpCenterArticlesView'
 
 jest.mock('../../hooks/useHelpCenterApi', () => {
@@ -26,26 +28,6 @@ jest.mock('../../hooks/useHelpCenterApi', () => {
                 listArticleTranslations: jest.fn().mockResolvedValue({
                     data: {data: [], meta: {item_count: 0}},
                 }),
-                listLocales: jest.fn().mockResolvedValue({
-                    data: [
-                        {
-                            name: 'English - USA',
-                            code: 'en-US',
-                        },
-                        {
-                            name: 'French - France',
-                            code: 'fr-FR',
-                        },
-                        {
-                            name: 'French - Canada',
-                            code: 'fr-CA',
-                        },
-                        {
-                            name: 'Czech - Czech Republic',
-                            code: 'cs-CZ',
-                        },
-                    ],
-                }),
             },
         }),
     }
@@ -55,6 +37,9 @@ jest.mock('../../providers/CurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
     getSingleHelpCenterResponseFixture
 )
+
+jest.mock('../../providers/SupportedLocales')
+;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
 jest.mock('../../hooks/useHelpCenterIdParam', () => {
     return {
@@ -84,7 +69,7 @@ const route = {
     route: '/app/settings/help-center/1/articles',
 }
 
-describe('<HelpCenterArticlesView/>', () => {
+describe('<HelpCenterArticlesView />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
     })

@@ -19,7 +19,7 @@ import {SocialNavigationLinks} from '../components/SocialNavigationLinks'
 import {HELP_CENTER_DEFAULT_LOCALE, SOCIAL_NAVIGATION_LINKS} from '../constants'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
-import {useLocales} from '../hooks/useLocales'
+import {useSupportedLocales} from '../providers/SupportedLocales'
 import {
     useNavigationLinks,
     useSocialNavigationLinks,
@@ -37,7 +37,7 @@ export const HelpCenterCustomizationView = () => {
     const dispatch = useAppDispatch()
     const helpCenterId = useHelpCenterIdParam()
     const {isReady, client} = useHelpCenterApi()
-    const locales = useLocales()
+    const locales = useSupportedLocales()
     const helpCenter = useCurrentHelpCenter()
     const selectedLocale =
         useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE

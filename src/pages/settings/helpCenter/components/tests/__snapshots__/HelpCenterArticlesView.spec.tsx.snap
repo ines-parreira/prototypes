@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<HelpCenterArticlesView/> should render the component 1`] = `
+exports[`<HelpCenterArticlesView /> should render the component 1`] = `
 <div>
   <div
     class="full-width wrapper"
@@ -105,7 +105,451 @@ exports[`<HelpCenterArticlesView/> should render the component 1`] = `
         Installation
       </a>
     </nav>
-    <div />
+    <div
+      class="pageContainer container-fluid"
+    >
+      <h1>
+        Start your Help Center here 
+        <span
+          aria-label="books"
+          role="img"
+        >
+          📚
+        </span>
+      </h1>
+      <p>
+        Write your first article or create your first category to be displayed in your very own Help Center.
+      </p>
+      <button
+        class="mr-2 btn btn-success"
+        type="button"
+      >
+        <i
+          class="material-icons-outlined mr-1"
+        >
+          article
+        </i>
+        Create Article
+      </button>
+      <button
+        class="btn btn-secondary"
+        type="button"
+      >
+        <i
+          class="material-icons mr-1"
+        >
+          list
+        </i>
+        Create Category
+      </button>
+      <section
+        class="importSection"
+      >
+        <h4>
+          Import articles from another Help Center
+        </h4>
+        <p>
+          You can import your existing articles from
+           
+          <strong>
+            other supported help center solutions
+          </strong>
+           or by uploading a CSV.
+        </p>
+        <button
+          class="btn btn-secondary"
+          type="button"
+        >
+          <i
+            class="material-icons mr-2"
+          >
+            cloud_upload
+          </i>
+          Import Articles
+        </button>
+      </section>
+    </div>
+    <div
+      class="component"
+    >
+      <table
+        class="table"
+      >
+        <thead
+          class=""
+        >
+          <tr
+            class="headerRow"
+          >
+            <td
+              class="wrapper headerCell"
+              style="width: 25px;"
+            />
+            <td
+              class="wrapper headerCell"
+            />
+            <td
+              class="wrapper headerCell"
+              style="width: 124px;"
+            />
+            <td
+              class="wrapper headerCell"
+              style="width: 160px;"
+            />
+          </tr>
+        </thead>
+        <tbody
+          class="tableBody main-table"
+        />
+      </table>
+      <div
+        class="container loader"
+      >
+        <div
+          class="inner"
+          style="min-height: 0;"
+        >
+          <i
+            class="icon-custom icon-circle-o-notch md-spin"
+            style="font-size: 20px;"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="drawer-container"
+      style="z-index: -1; transition-delay: 300ms;"
+    >
+      <div
+        class="backdrop"
+        style="transition-delay: 0ms; transition-duration: 150ms;"
+      />
+      <div
+        class="drawer"
+        data-testid="category-edit"
+        style="transition-duration: 300ms;"
+      >
+        <header
+          class="header"
+        >
+          <h3>
+            Category Settings
+          </h3>
+          <div
+            class="header-actions"
+          >
+            <div
+              class="wrapper"
+            >
+              <button
+                class="trigger"
+                data-testid="dropdown-select-trigger"
+              >
+                <span
+                  class="label"
+                >
+                  <span>
+                    <img
+                      alt="en-US"
+                      class="flag-emoji"
+                      src="test-file-stub"
+                    />
+                    <span>
+                      English - USA
+                    </span>
+                  </span>
+                </span>
+                <span
+                  class="material-icons"
+                >
+                  arrow_drop_down
+                </span>
+              </button>
+            </div>
+            <button
+              aria-label="close modal"
+              class="close-btn"
+              data-testid="close-drawer"
+              type="button"
+            >
+              <i
+                class="material-icons"
+              >
+                keyboard_tab
+              </i>
+            </button>
+          </div>
+        </header>
+        <div
+          class="content"
+        >
+          <div
+            class="textfield required form-group"
+          >
+            <label
+              class=""
+              for="title"
+            >
+              Title
+            </label>
+            <input
+              class="form-control"
+              data-testid="title-input"
+              id="title"
+              maxlength="250"
+              name="title"
+              placeholder="Category title"
+              type="text"
+              value=""
+            />
+          </div>
+          <div
+            class="textfield required form-group"
+          >
+            <label
+              class=""
+              for="slug"
+            >
+              Slug
+            </label>
+            <button
+              class="copyButton"
+              type="button"
+            >
+              Copy URL
+              <i
+                class="material-icons"
+              >
+                content_copy
+              </i>
+            </button>
+            <div
+              class="input-group"
+            >
+              <div
+                class="input-group-prepend"
+              >
+                <span
+                  class="slug-prefix"
+                  data-testid="slug-prefix"
+                >
+                  https://acme.gorgias.rehab/en-US/articles/
+                </span>
+              </div>
+              <input
+                class="form-control"
+                data-testid="slug-input"
+                id="slug"
+                name="slug"
+                placeholder="Category slug"
+                type="text"
+                value=""
+              />
+              
+            </div>
+            <small
+              class="form-text text-muted"
+            >
+              This is your category’s link.
+            </small>
+          </div>
+          <div
+            class="textfield form-group"
+          >
+            <label
+              class=""
+              for="description"
+            >
+              Description
+            </label>
+            <textarea
+              class="form-control"
+              id="description"
+              maxlength="250"
+              name="description"
+              placeholder="Category description"
+              style="resize: vertical; min-height: 52px;"
+            />
+            <small
+              class="form-text text-muted"
+            >
+              Category description is displayed in search engines to help people find it.
+            </small>
+          </div>
+          <div
+            class="container"
+          >
+            <div
+              class="InputField required form-group"
+              color=""
+            >
+              <label
+                class="control-label"
+                for="id-seoTitle"
+              >
+                Meta Title
+              </label>
+              <div
+                class=""
+              >
+                <input
+                  class="form-control"
+                  disabled=""
+                  id="id-seoTitle"
+                  required=""
+                  type="text"
+                  value=""
+                />
+              </div>
+              <small
+                class="form-text text-muted"
+              >
+                SEO Title tag is how your category is going to be displayed in Search Engines.
+              </small>
+            </div>
+            <div
+              class="form-check"
+              color=""
+            >
+              <label
+                class="control-label form-check-label"
+                for="id-input-1"
+              >
+                <input
+                  checked=""
+                  class="form-check-input form-check-input"
+                  id="id-input-1"
+                  type="checkbox"
+                />
+                <span
+                  style="vertical-align: middle;"
+                >
+                  Use the same as Title
+                </span>
+              </label>
+            </div>
+          </div>
+          <div
+            class="container"
+          >
+            <div
+              class="InputField required form-group"
+              color=""
+            >
+              <label
+                class="control-label"
+                for="id-seoDescription"
+              >
+                Meta Description
+              </label>
+              <div
+                class=""
+              >
+                <textarea
+                  class="form-control"
+                  disabled=""
+                  id="id-seoDescription"
+                  required=""
+                  rows="2"
+                />
+              </div>
+              <small
+                class="form-text text-muted"
+              >
+                Category description is displayed in search engines to help people find it.
+              </small>
+            </div>
+            <div
+              class="form-check"
+              color=""
+            >
+              <label
+                class="control-label form-check-label"
+                for="id-input-2"
+              >
+                <input
+                  checked=""
+                  class="form-check-input form-check-input"
+                  id="id-input-2"
+                  type="checkbox"
+                />
+                <span
+                  style="vertical-align: middle;"
+                >
+                  Use the same as Description
+                </span>
+              </label>
+            </div>
+          </div>
+          <div
+            class="container"
+          >
+            <div
+              class="label"
+            >
+              Search Engine Preview
+            </div>
+            <div
+              class="preview"
+            >
+              <div
+                class="url"
+              >
+                https://acme.gorgias.rehab
+                <span
+                  class="url-item"
+                >
+                   › 
+                  articles
+                </span>
+                <span
+                  class="url-item"
+                >
+                   › 
+                  
+                </span>
+              </div>
+              <div
+                class="title"
+              />
+              <div
+                class="description"
+              />
+            </div>
+            <small
+              class="form-text text-muted"
+            >
+              This is a preview of how your category is going to look like in search engines (e.g. Google, Duckduckgo, Bing...)
+            </small>
+          </div>
+        </div>
+        <header
+          class="footer"
+        >
+          <button
+            class="btn btn-primary disabled"
+            data-testid="button-save"
+            disabled=""
+            type="button"
+          >
+            Save
+          </button>
+        </header>
+      </div>
+    </div>
+    <div
+      class="modal-container"
+      style="z-index: -1; transition-delay: 300ms;"
+    >
+      <div
+        class="backdrop"
+        style="transition-delay: 0ms; transition-duration: 150ms;"
+      />
+      <div
+        class="modal"
+        style="transition-duration: 300ms;"
+      />
+    </div>
   </div>
 </div>
 `;

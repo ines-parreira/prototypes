@@ -1,4 +1,4 @@
-import React, {useEffect, useCallback, useMemo, FunctionComponent} from 'react'
+import React, {useEffect, useCallback, useMemo} from 'react'
 import {useAsyncFn} from 'react-use'
 import {useSelector} from 'react-redux'
 import {useHistory} from 'react-router-dom'
@@ -19,20 +19,21 @@ import {
 } from '../../../../state/helpCenter/ui'
 import PageHeader from '../../../common/components/PageHeader'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
-import {useLocales} from '../hooks/useLocales'
+import {useSupportedLocales} from '../providers/SupportedLocales'
 import {HELP_CENTER_MAX_CREATION, HELP_CENTER_BASE_PATH} from '../constants'
 import Tooltip from '../../../common/components/Tooltip'
 import settingsCss from '../../settings.less'
 
-import HelpCentersTable from './HelpCenterTable'
+import HelpCenterTable from './HelpCenterTable'
 import css from './HelpCenterStartView.less'
 
-export const HelpCenterStartView: FunctionComponent = () => {
+export const HelpCenterStartView: React.FC = () => {
     const dispatch = useAppDispatch()
     const history = useHistory()
     const {client} = useHelpCenterApi()
-    const localeOptions = useLocales()
+    const localeOptions = useSupportedLocales()
     const helpCenterList = useSelector(getHelpCenterSortedList)
+
     const localesByCode = useMemo(
         () => _keyBy<Locale>(localeOptions, 'code'),
         [localeOptions]
@@ -172,7 +173,7 @@ export const HelpCenterStartView: FunctionComponent = () => {
                 </p>
             </Container>
 
-            <HelpCentersTable
+            <HelpCenterTable
                 list={helpCenterList}
                 locales={localesByCode}
                 isLoading={loading}
