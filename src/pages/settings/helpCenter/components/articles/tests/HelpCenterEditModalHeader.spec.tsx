@@ -1,12 +1,20 @@
 import React from 'react'
-import {render, fireEvent} from '@testing-library/react'
+import {fireEvent, render} from '@testing-library/react'
 
 import {LocaleCode} from '../../../../../../models/helpCenter/types'
-import {useSupportedLocales} from '../../../providers/SupportedLocales'
+import {getSingleArticleEnglish} from '../../../fixtures/getArticlesResponse.fixture'
 import {getLocalesResponseFixture} from '../../../fixtures/getLocalesResponse.fixtures'
+import {useSupportedLocales} from '../../../providers/SupportedLocales'
+import {getArticleUrl} from '../../../utils/helpCenter.utils'
 import HelpCenterEditModalHeader, {
     Props as HelpCenterEditModalHeaderProps,
 } from '../HelpCenterEditModalHeader'
+
+const windowOpenMock = jest.fn().mockReturnValue({
+    focus: jest.fn(),
+})
+
+global.open = windowOpenMock
 
 const mockedUseEditionManager = {
     selectedCategoryId: null,
@@ -36,7 +44,7 @@ jest.mock('../../../providers/SupportedLocales')
 
 describe('<HelpCenterEditModalHeader />', () => {
     const props: HelpCenterEditModalHeaderProps = {
-        title: 'Article',
+        title: getSingleArticleEnglish.translation.title,
         supportedLocales: ['en-US', 'fr-FR'] as LocaleCode[],
         onLanguageSelect: mockedOnLanguageSelect,
         onClose: mockedOnClose,
@@ -59,6 +67,34 @@ describe('<HelpCenterEditModalHeader />', () => {
             <HelpCenterEditModalHeader {...props} showCategorySelect={true} />
         )
         expect(container).toMatchSnapshot('with the category selector')
+    })
+
+    it('should render an input when onEditTitle is defined', () => {
+        const {container} = render(
+            <HelpCenterEditModalHeader {...props} onTitleChange={() => null} />
+        )
+
+        expect(container).toMatchSnapshot()
+    })
+
+    it('should render a preview article button', () => {
+        const articleUrl = getArticleUrl({
+            domain: 'acme.gorgias.rehab',
+            locale: getSingleArticleEnglish.translation.locale,
+            slug: getSingleArticleEnglish.translation.slug,
+            articleId: getSingleArticleEnglish.id,
+        })
+
+        const {container, getByRole} = render(
+            <HelpCenterEditModalHeader {...props} previewUrl={articleUrl} />
+        )
+
+        expect(container).toMatchSnapshot()
+
+        const previewBtn = getByRole('button', {name: /preview article/i})
+        fireEvent.click(previewBtn)
+
+        expect(windowOpenMock).toHaveBeenCalledWith(articleUrl, '_blank')
     })
 
     describe('resize modal buttons', () => {
@@ -86,7 +122,7 @@ describe('<HelpCenterEditModalHeader />', () => {
             expect(mockedOnResize).toHaveBeenCalledTimes(1)
         })
 
-        it('should have a fullscreen button when the resize callback is in props', () => {
+        it('should have a halfscreen button when the resize callback is in props and isFullscreen is true', () => {
             const {getByRole} = render(
                 <HelpCenterEditModalHeader
                     {...props}

@@ -33,14 +33,13 @@
     }
     .controlButton {
         border: 0;
-        background-color: white;
+        background-color: transparent;
         color: @classic-neutral-grey-6;
-    }
-    .controlButton:focus:not(:focus-visible) {
-        outline: none;
-    }
-    .controlButton > i {
         font-size: 20px;
+
+        &:focus:not(:focus-visible) {
+            outline: none;
+        }
     }
     .languageSelect {
         margin-bottom: 0;

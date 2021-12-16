@@ -8,6 +8,7 @@ import {Components} from '../../../../../../../rest_api/help_center_api/client.g
 import {useCurrentHelpCenter} from '../../../../providers/CurrentHelpCenter'
 import {useEditionManager} from '../../../../providers/EditionManagerContext'
 import {
+    getArticleUrl,
     getHelpCenterDomain,
     isExistingArticle,
 } from '../../../../utils/helpCenter.utils'
@@ -73,6 +74,16 @@ const HelpCenterArticleModalAdvancedViewContent = ({
     }
 
     const helpCenterDomain = getHelpCenterDomain(helpCenter)
+    const selectedArticleUrl =
+        isExistingArticle(selectedArticle) &&
+        'article_id' in selectedArticle.translation
+            ? getArticleUrl({
+                  domain: helpCenterDomain,
+                  locale: selectedArticle.translation.locale,
+                  slug: selectedArticle.translation.slug,
+                  articleId: selectedArticle.translation.article_id,
+              })
+            : undefined
 
     return (
         <span className={css.modalForm}>
@@ -100,6 +111,7 @@ const HelpCenterArticleModalAdvancedViewContent = ({
                     onArticleLanguageSelectActionClick
                 }
                 autoFocus={autoFocus}
+                previewUrl={selectedArticleUrl}
             />
             <HelpCenterEditAdvancedArticleForm
                 articleId={
@@ -133,4 +145,4 @@ const HelpCenterArticleModalAdvancedViewContent = ({
     )
 }
 
-export default React.memo(HelpCenterArticleModalAdvancedViewContent)
+export default HelpCenterArticleModalAdvancedViewContent

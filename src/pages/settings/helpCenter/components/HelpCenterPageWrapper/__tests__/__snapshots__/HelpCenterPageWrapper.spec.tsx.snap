@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HelpCenterPageWrapper /> should render the component 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/help-center"
+            >
+              Help Center
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            ACME Help Center
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            Articles
+          </li>
+        </ol>
+      </nav>
+      <div>
+        <div
+          class="header"
+        >
+          <button
+            aria-label="help center preview"
+            class="btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons"
+            >
+              open_in_new
+            </i>
+            <span>
+              Preview
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/articles"
+      >
+        Articles
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/contact"
+      >
+        Contact
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/appearance"
+      >
+        Appearance
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/customization"
+      >
+        Customization
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/self-service"
+      >
+        Self-service
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/installation"
+      >
+        Installation
+      </a>
+    </nav>
+    <div
+      class="pageContainer container-fluid"
+    >
+      <div
+        class="contentWrapper"
+      />
+    </div>
+  </div>
+</div>
+`;

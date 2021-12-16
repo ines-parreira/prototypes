@@ -6,39 +6,47 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
     class="footer"
   >
     <div
-      id="article-save-button-wrapper"
+      class="buttonsWrapper"
     >
+      <div
+        id="article-save-button-wrapper"
+      >
+        <button
+          class="submitButton btn btn-primary"
+          type="button"
+        >
+          Save Article
+        </button>
+      </div>
       <button
-        class="submitButton btn btn-primary"
+        class="btn btn-secondary"
+        name="discard"
         type="button"
       >
-        Save Article
+        Discard changes
       </button>
     </div>
-    <button
-      class="btn btn-secondary"
-      name="discard"
-      type="button"
-    >
-      Discard changes
-    </button>
     <div
-      class="counter"
+      class="buttonsWrapper"
     >
-      Characters: 
-      1752
-    </div>
-    <button
-      class="deleteButton btn btn-secondary"
-      type="button"
-    >
-      <i
-        class="material-icons"
+      <div
+        class="counter"
       >
-        delete
-      </i>
-      Delete Article
-    </button>
+        Characters: 
+        1752
+      </div>
+      <button
+        class="deleteButton btn btn-secondary"
+        type="button"
+      >
+        <i
+          class="material-icons"
+        >
+          delete
+        </i>
+        Delete Article
+      </button>
+    </div>
   </footer>
 </div>
 `;

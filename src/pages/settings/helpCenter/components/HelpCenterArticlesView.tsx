@@ -1,6 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import axios from 'axios'
-import classnames from 'classnames'
 import copy from 'copy-to-clipboard'
 import _isEqual from 'lodash/isEqual'
 import {useSelector} from 'react-redux'
@@ -21,7 +20,6 @@ import {getViewLanguage} from '../../../../state/helpCenter/ui'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {reportError} from '../../../../utils/errors'
-import PageHeader from '../../../common/components/PageHeader'
 import {
     DRAWER_TRANSITION_DURATION_MS,
     HELP_CENTER_DEFAULT_LOCALE,
@@ -30,7 +28,6 @@ import {
 import {useArticlesActions} from '../hooks/useArticlesActions'
 import {useHelpCenterActions} from '../hooks/useHelpCenterActions'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
-import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
 import {
     articleRequiredFields,
@@ -49,8 +46,7 @@ import {ArticlesTable} from './ArticlesTable'
 import {CategoryDrawer} from './CategoryDrawer'
 import {CategoriesViews} from './CategoriesView'
 import {ConfirmationModal} from './ConfirmationModal'
-import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
-import {HelpCenterNavigation} from './HelpCenterNavigation'
+import HelpCenterPageWrapper from './HelpCenterPageWrapper'
 import MaxArticleBanner from './Paywalls/MaxArticleBanner'
 
 import css from './HelpCenterArticlesView.less'
@@ -85,7 +81,6 @@ export const HelpCenterArticlesView: React.FC = () => {
      */
     // static states
     const limitations = useLimitations()
-    const helpCenterId = useHelpCenterIdParam()
     const viewLanguage =
         useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
 
@@ -357,7 +352,7 @@ export const HelpCenterArticlesView: React.FC = () => {
         }
 
         if (action === 'copyToClipboard') {
-            if (article?.translation) {
+            if (article.translation) {
                 const {id: articleId, translation} = article
                 const {locale, slug} = translation
 
@@ -587,27 +582,24 @@ export const HelpCenterArticlesView: React.FC = () => {
     ])
 
     return (
-        <div className={classnames('full-width', css.wrapper)}>
-            <PageHeader
-                title={
-                    <HelpCenterDetailsBreadcrumb
-                        helpCenterName={helpCenter.name}
-                        activeLabel="Articles"
-                    />
-                }
-            >
-                <Button className="mr-2" onClick={onCategoryCreate}>
-                    Create Category
-                </Button>
-                <Button
-                    color="success"
-                    onClick={onArticleCreate}
-                    disabled={limitations.createArticle.disabled}
-                >
-                    Create Article
-                </Button>
-            </PageHeader>
-            <HelpCenterNavigation helpCenterId={helpCenterId} />
+        <HelpCenterPageWrapper
+            activeLabel="Articles"
+            helpCenter={helpCenter}
+            actions={
+                <>
+                    <Button onClick={onCategoryCreate}>Create Category</Button>
+                    <Button
+                        color="success"
+                        onClick={onArticleCreate}
+                        disabled={limitations.createArticle.disabled}
+                    >
+                        Create Article
+                    </Button>
+                </>
+            }
+            fluidContainer={false}
+            className={css.wrapper}
+        >
             <MaxArticleBanner
                 nbArticles={limitations.createArticle.currentNumber}
             />
@@ -691,7 +683,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                     </span>
                 </ConfirmationModal>
             )}
-        </div>
+        </HelpCenterPageWrapper>
     )
 }
 

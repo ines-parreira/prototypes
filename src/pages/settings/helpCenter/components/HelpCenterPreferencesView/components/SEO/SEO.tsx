@@ -3,54 +3,28 @@ import React, {useMemo} from 'react'
 import {
     HelpCenter,
     HelpCenterTranslationSeoMeta,
-    Locale,
-    LocaleCode,
 } from '../../../../../../../models/helpCenter/types'
-import {validLocaleCode} from '../../../../../../../models/helpCenter/utils'
 import InputField from '../../../../../../common/forms/InputField'
-import SelectField from '../../../../../../common/forms/SelectField/SelectField'
 import {useHelpCenterPreferencesSettings} from '../../../../providers/HelpCenterPreferencesSettings'
 import {
     getAbsoluteUrl,
     getHelpCenterDomain,
 } from '../../../../utils/helpCenter.utils'
-import {getLocaleSelectOptions} from '../../../../utils/localeSelectOptions'
 import {SearchEnginePreview} from '../../../SearchEnginePreview'
 
 import css from './SEO.less'
 
 type Props = {
     helpCenter: HelpCenter
-    availableLocales: Locale[]
-    viewLanguage: LocaleCode
-    onChangeLocale: (value: LocaleCode) => void
 }
 
-export const SEO: React.FC<Props> = ({
-    helpCenter,
-    availableLocales,
-    viewLanguage,
-    onChangeLocale,
-}: Props) => {
+export const SEO: React.FC<Props> = ({helpCenter}: Props) => {
     const {
         preferences: {seoMeta},
         updatePreferences,
     } = useHelpCenterPreferencesSettings()
 
     const domain = useMemo(() => getHelpCenterDomain(helpCenter), [helpCenter])
-
-    const supportedLocales = useMemo(
-        () =>
-            getLocaleSelectOptions(
-                availableLocales,
-                helpCenter.supported_locales
-            ),
-        [availableLocales, helpCenter.supported_locales]
-    )
-
-    const handleOnChangeLocale = (value: React.ReactText) => {
-        onChangeLocale(validLocaleCode(value))
-    }
 
     const onEditSeoMeta =
         (editKey: keyof HelpCenterTranslationSeoMeta) => (value: string) => {
@@ -72,12 +46,6 @@ export const SEO: React.FC<Props> = ({
                         your help center page.
                     </p>
                 </div>
-                <SelectField
-                    value={viewLanguage}
-                    onChange={handleOnChangeLocale}
-                    options={supportedLocales}
-                    className={css.select}
-                />
             </div>
 
             <InputField

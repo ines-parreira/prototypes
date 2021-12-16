@@ -60,7 +60,7 @@ exports[`HelpCenterPaywall should render the component correctly "for" Pro legac
             <h1
               class="header"
             >
-              Offer self support via a knowledge base
+              Change plans to activate your Help Center
             </h1>
             <p
               class="infoText"
@@ -160,7 +160,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Advanced" 
             <h1
               class="header"
             >
-              Offer self support via a knowledge base
+              Change plans to activate your Help Center
             </h1>
             <p
               class="infoText"
@@ -261,7 +261,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Basic" leg
             <h1
               class="header"
             >
-              Offer self support via a knowledge base
+              Change plans to activate your Help Center
             </h1>
             <p
               class="infoText"
@@ -361,7 +361,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Enterprise
             <h1
               class="header"
             >
-              Offer self support via a knowledge base
+              Change plans to activate your Help Center
             </h1>
             <p
               class="infoText"

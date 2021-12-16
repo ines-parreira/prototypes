@@ -3,7 +3,7 @@
 exports[`<HelpCenterArticlesView /> should render the component 1`] = `
 <div>
   <div
-    class="full-width wrapper"
+    class="full-width"
   >
     <div
       class="page-header pageHeader"
@@ -38,18 +38,36 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
         </ol>
       </nav>
       <div>
-        <button
-          class="mr-2 btn btn-secondary"
-          type="button"
+        <div
+          class="header"
         >
-          Create Category
-        </button>
-        <button
-          class="btn btn-success"
-          type="button"
-        >
-          Create Article
-        </button>
+          <button
+            aria-label="help center preview"
+            class="btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons"
+            >
+              open_in_new
+            </i>
+            <span>
+              Preview
+            </span>
+          </button>
+          <button
+            class="btn btn-secondary"
+            type="button"
+          >
+            Create Category
+          </button>
+          <button
+            class="btn btn-success"
+            type="button"
+          >
+            Create Article
+          </button>
+        </div>
       </div>
     </div>
     <nav
@@ -333,7 +351,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                   class="slug-prefix"
                   data-testid="slug-prefix"
                 >
-                  https://acme.gorgias.rehab/en-US/articles/
+                  http://acme.gorgias.docker:4000/en-US/articles/
                 </span>
               </div>
               <input
@@ -495,7 +513,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
               <div
                 class="url"
               >
-                https://acme.gorgias.rehab
+                http://acme.gorgias.docker:4000
                 <span
                   class="url-item"
                 >

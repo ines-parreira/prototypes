@@ -26,6 +26,7 @@ export const HelpText: FunctionComponent<HelpTextProps> = ({
                 {highlight}
             </span>
         )}
+        <br />
         <span>{text}</span>
     </div>
 )

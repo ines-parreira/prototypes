@@ -11,7 +11,7 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
       <span
         class="titleInput"
       >
-        Article
+        Free article (EN)
       </span>
       <div
         class="headerControls"
@@ -50,7 +50,7 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
           type="button"
         >
           <i
-            class="material-icons mr-2"
+            class="material-icons"
           >
             keyboard_tab
           </i>
@@ -122,7 +122,7 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
       <span
         class="titleInput"
       >
-        Article
+        Free article (EN)
       </span>
       <div
         class="headerControls"
@@ -161,7 +161,148 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
           type="button"
         >
           <i
-            class="material-icons mr-2"
+            class="material-icons"
+          >
+            keyboard_tab
+          </i>
+        </button>
+      </div>
+    </div>
+    <div
+      class="break"
+    />
+  </header>
+</div>
+`;
+
+exports[`<HelpCenterEditModalHeader /> should render a preview article button 1`] = `
+<div>
+  <header
+    class="header"
+  >
+    <div
+      class="headerTopContainer"
+    >
+      <span
+        class="titleInput"
+      >
+        Free article (EN)
+      </span>
+      <div
+        class="headerControls"
+      >
+        <div
+          class="wrapper"
+        >
+          <button
+            class="trigger"
+            data-testid="dropdown-select-trigger"
+          >
+            <span
+              class="label"
+            >
+              <span>
+                <img
+                  alt="fr-FR"
+                  class="flag-emoji"
+                  src="test-file-stub"
+                />
+                <span>
+                  French - France
+                </span>
+              </span>
+            </span>
+            <span
+              class="material-icons"
+            >
+              arrow_drop_down
+            </span>
+          </button>
+        </div>
+        <button
+          aria-label="preview article"
+          class="controlButton"
+          type="button"
+        >
+          <i
+            class="material-icons"
+          >
+            open_in_new
+          </i>
+        </button>
+        <button
+          aria-label="close modal"
+          class="controlButton"
+          type="button"
+        >
+          <i
+            class="material-icons"
+          >
+            keyboard_tab
+          </i>
+        </button>
+      </div>
+    </div>
+    <div
+      class="break"
+    />
+  </header>
+</div>
+`;
+
+exports[`<HelpCenterEditModalHeader /> should render an input when onEditTitle is defined 1`] = `
+<div>
+  <header
+    class="header"
+  >
+    <div
+      class="headerTopContainer"
+    >
+      <input
+        class="titleInput"
+        maxlength="250"
+        placeholder="Title"
+        type="text"
+        value="Free article (EN)"
+      />
+      <div
+        class="headerControls"
+      >
+        <div
+          class="wrapper"
+        >
+          <button
+            class="trigger"
+            data-testid="dropdown-select-trigger"
+          >
+            <span
+              class="label"
+            >
+              <span>
+                <img
+                  alt="fr-FR"
+                  class="flag-emoji"
+                  src="test-file-stub"
+                />
+                <span>
+                  French - France
+                </span>
+              </span>
+            </span>
+            <span
+              class="material-icons"
+            >
+              arrow_drop_down
+            </span>
+          </button>
+        </div>
+        <button
+          aria-label="close modal"
+          class="controlButton"
+          type="button"
+        >
+          <i
+            class="material-icons"
           >
             keyboard_tab
           </i>

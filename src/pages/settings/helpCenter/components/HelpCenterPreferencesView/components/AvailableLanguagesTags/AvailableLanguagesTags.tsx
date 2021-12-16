@@ -3,7 +3,7 @@ import produce from 'immer'
 import _keyBy from 'lodash/keyBy'
 import {Button} from 'reactstrap'
 
-import {Locale} from '../../../../../../../models/helpCenter/types'
+import {Locale} from 'models/helpCenter/types'
 import {FlagLanguageItem} from '../../../../../../common/components/LanguageBulletList'
 import Modal from '../../../../../../common/components/Modal'
 import {useHelpCenterPreferencesSettings} from '../../../../providers/HelpCenterPreferencesSettings'
@@ -11,7 +11,6 @@ import {localeToSelectOption} from '../../../../utils/localeSelectOptions'
 import {BadgeItemProps, DynamicBadgeList} from '../BadgeList'
 
 import {transformToSelectedLocale} from './utils'
-
 import css from './AvailableLanguagesTags.less'
 
 function ensureDefaultLanguageIsFirst(
@@ -38,21 +37,24 @@ export const AvailableLanguagesTags: React.FC<Props> = ({
 }: Props) => {
     const {preferences, updatePreferences} = useHelpCenterPreferencesSettings()
     const [pendingLocale, setPendingLocale] = useState<BadgeItemProps | null>()
-    const supportedLocales = useMemo(
+
+    const localesByCode = useMemo(
         () => _keyBy(availableLocales, 'code'),
         [availableLocales]
     )
 
-    const availableList =
-        Object.values(supportedLocales).map(localeToSelectOption)
+    const localeOptions = useMemo(
+        () => availableLocales.map(localeToSelectOption),
+        [availableLocales]
+    )
 
     const selectedLocales = ensureDefaultLanguageIsFirst(
         preferences.availableLanguages,
         preferences.defaultLanguage
     )
-        .filter((localeCode) => supportedLocales[localeCode])
+        .filter((localeCode) => localesByCode[localeCode])
         .map((localeCode) => {
-            const locale = supportedLocales[localeCode]
+            const locale = localesByCode[localeCode]
 
             return transformToSelectedLocale(
                 locale,
@@ -106,9 +108,9 @@ export const AvailableLanguagesTags: React.FC<Props> = ({
                 customize your Help Center.
             </p>
             <DynamicBadgeList
-                availableList={availableList}
-                searchPlaceholder="Search Languages"
+                availableList={localeOptions}
                 selectedList={selectedLocales}
+                searchPlaceholder="Search Languages"
                 onSelectItem={handleOnAddLocale}
                 onRemoveItem={handleOnAttemptRemoveLocale}
             />
@@ -136,8 +138,8 @@ export const AvailableLanguagesTags: React.FC<Props> = ({
                 {pendingLocale && (
                     <p>
                         <FlagLanguageItem
-                            code={supportedLocales[pendingLocale.id].code}
-                            name={supportedLocales[pendingLocale.id].name}
+                            code={localesByCode[pendingLocale.id].code}
+                            name={localesByCode[pendingLocale.id].name}
                         />{' '}
                         content will not be available anymore until you add this
                         language back again.

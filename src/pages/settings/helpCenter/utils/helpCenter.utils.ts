@@ -1,3 +1,4 @@
+import {isDevelopment} from 'utils/environment'
 import {
     Article,
     CreateArticleDto,
@@ -5,7 +6,7 @@ import {
     CreateHelpCenterTranslationDto,
     HelpCenter,
     LocaleCode,
-} from '../../../../models/helpCenter/types'
+} from 'models/helpCenter/types'
 import {HELP_CENTER_DOMAIN} from '../constants'
 
 export const articleRequiredFields: Partial<
@@ -72,8 +73,9 @@ export const getAbsoluteUrl = (
     trailingSlash = true
 ): string => {
     const hasProtocol = /^((http|https|ftp):\/\/)/
+    const protocol = isDevelopment() ? 'http' : 'https'
 
-    let url = hasProtocol.test(domain) ? domain : `https://${domain}`
+    let url = hasProtocol.test(domain) ? domain : `${protocol}://${domain}`
 
     if (locale) {
         url += `/${locale}`

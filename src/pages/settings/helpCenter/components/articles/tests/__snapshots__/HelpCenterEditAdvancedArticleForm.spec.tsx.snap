@@ -50,7 +50,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
             <span
               class="input-group-text"
             >
-              https://acme.gorgias.rehab/en-US/
+              http://acme.gorgias.rehab/en-US/
             </span>
           </span>
           <input
@@ -237,7 +237,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
         <div
           class="url"
         >
-          https://acme.gorgias.rehab
+          http://acme.gorgias.rehab
           <span
             class="url-item"
           >

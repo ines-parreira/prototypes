@@ -110,7 +110,7 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
                 <span
                   class="input-group-text"
                 >
-                  .gorgias.rehab
+                  .gorgias.docker:4000
                 </span>
               </span>
             </div>
@@ -378,7 +378,10 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
             Theme
           </h4>
           <p>
-            Select your preferred Help Center theme. This will adjust the theme for header and footer.
+            Select which theme you prefer to use in your help center. 
+            <b>
+              This will affect the header & footer.
+            </b>
           </p>
           <div
             class="list"

@@ -40,42 +40,46 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
 
     return (
         <footer className={css.footer}>
-            <div id="article-save-button-wrapper">
-                <Button
-                    disabled={!canSave}
-                    color="primary"
-                    onClick={handleOnSave}
-                    className={css.submitButton}
-                >
-                    Save Article
+            <div className={css.buttonsWrapper}>
+                <div id="article-save-button-wrapper">
+                    <Button
+                        disabled={!canSave}
+                        color="primary"
+                        onClick={handleOnSave}
+                        className={css.submitButton}
+                    >
+                        Save Article
+                    </Button>
+                </div>
+                {requiredFields.length >= 1 && (
+                    <Tooltip
+                        disabled={canSave}
+                        placement="top-start"
+                        target="article-save-button-wrapper"
+                    >
+                        You need to add a {requiredFields[0]}
+                    </Tooltip>
+                )}
+                <Button name="discard" onClick={onDiscard}>
+                    Discard changes
                 </Button>
             </div>
-            {requiredFields.length >= 1 && (
-                <Tooltip
-                    disabled={canSave}
-                    placement="top-start"
-                    target="article-save-button-wrapper"
-                >
-                    You need to add a {requiredFields[0]}
-                </Tooltip>
-            )}
-            <Button name="discard" onClick={onDiscard}>
-                Discard changes
-            </Button>
-            {counters && (
-                <div className={css.counter}>
-                    Characters: {counters.charCount}
-                </div>
-            )}
-            {canDelete && (
-                <Button
-                    className={css.deleteButton}
-                    onClick={() => setPendingDeleteArticle(true)}
-                >
-                    <i className="material-icons">delete</i>
-                    Delete Article
-                </Button>
-            )}
+            <div className={css.buttonsWrapper}>
+                {counters && (
+                    <div className={css.counter}>
+                        Characters: {counters.charCount}
+                    </div>
+                )}
+                {canDelete && (
+                    <Button
+                        className={css.deleteButton}
+                        onClick={() => setPendingDeleteArticle(true)}
+                    >
+                        <i className="material-icons">delete</i>
+                        Delete Article
+                    </Button>
+                )}
+            </div>
             {pendingDeleteArticle && (
                 <ConfirmationModal
                     isOpen={!!pendingDeleteArticle}

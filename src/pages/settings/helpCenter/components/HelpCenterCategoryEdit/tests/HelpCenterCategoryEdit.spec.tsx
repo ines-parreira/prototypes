@@ -140,14 +140,14 @@ describe('<HelpCenterCategoryEdit />', () => {
         const {getByTestId} = render(<Example isOpen />)
 
         expect(getByTestId('slug-prefix').textContent).toEqual(
-            `https://${getSingleHelpCenterResponseFixture.subdomain}${HELP_CENTER_DOMAIN}/en-US/articles/`
+            `http://${getSingleHelpCenterResponseFixture.subdomain}${HELP_CENTER_DOMAIN}/en-US/articles/`
         )
 
         fireEvent.click(getByTestId('dropdown-select-trigger'))
         fireEvent.click(getByTestId('option-fr-FR'))
 
         expect(getByTestId('slug-prefix').textContent).toEqual(
-            `https://${getSingleHelpCenterResponseFixture.subdomain}${HELP_CENTER_DOMAIN}/fr-FR/articles/`
+            `http://${getSingleHelpCenterResponseFixture.subdomain}${HELP_CENTER_DOMAIN}/fr-FR/articles/`
         )
     })
 
@@ -163,7 +163,7 @@ describe('<HelpCenterCategoryEdit />', () => {
         )
 
         expect(getByTestId('slug-prefix').textContent).toEqual(
-            `https://${customDomain.hostname}/en-US/articles/`
+            `http://${customDomain.hostname}/en-US/articles/`
         )
     })
 

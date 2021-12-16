@@ -37,6 +37,26 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
           </li>
         </ol>
       </nav>
+      <div>
+        <div
+          class="header"
+        >
+          <button
+            aria-label="help center preview"
+            class="btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons"
+            >
+              open_in_new
+            </i>
+            <span>
+              Preview
+            </span>
+          </button>
+        </div>
+      </div>
     </div>
     <nav
       class="navbar navbar"
@@ -97,18 +117,16 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
       <div
         class="contentWrapper"
       >
-        <section>
-          <div
-            class="heading"
-          >
-            <h3>
-              Appearance
-            </h3>
-            <p>
-              Upload your logo to complete the branding of your Help Center. Select theme and colors to customize.
-            </p>
-          </div>
-        </section>
+        <div
+          class="heading"
+        >
+          <h4>
+            Logo & Favicon
+          </h4>
+          <p>
+            Select which logo you want to display on Light & Dark mode as well as the favicon.
+          </p>
+        </div>
         <section
           class="logos"
         >
@@ -179,6 +197,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               >
                 Upload image
               </span>
+              <br />
               <span>
                 maximum 10 MB
               </span>
@@ -251,6 +270,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               >
                 Upload image
               </span>
+              <br />
               <span>
                 maximum 10 MB
               </span>
@@ -311,6 +331,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               >
                 Upload image
               </span>
+              <br />
               <span>
                 recommended size 64 x 64
               </span>
@@ -322,7 +343,10 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             Theme
           </h4>
           <p>
-            Select your preferred Help Center theme. This will adjust the theme for header and footer.
+            Select which theme you prefer to use in your help center. 
+            <b>
+              This will affect the header & footer.
+            </b>
           </p>
           <div
             class="list"
@@ -504,6 +528,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               >
                 Upload image
               </span>
+              <br />
               <span>
                 recommended size 1440 x 316 - Maximum 10 MB
               </span>

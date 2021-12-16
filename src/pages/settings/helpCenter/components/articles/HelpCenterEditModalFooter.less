@@ -3,9 +3,13 @@
 :local {
     .footer {
         width: 100%;
-        height: 64px;
-        padding: 16px;
+        display: flex;
+        justify-content: space-between;
         background-color: @classic-neutral-grey-2;
+        padding: 16px;
+    }
+
+    .buttonsWrapper {
         display: flex;
         align-items: center;
         column-gap: 8px;
@@ -15,7 +19,6 @@
         color: @classic-neutral-grey-4;
         font-size: 12px;
         line-height: 16px;
-        margin-left: auto;
     }
 
     .deleteButton {

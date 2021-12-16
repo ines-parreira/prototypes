@@ -77,13 +77,13 @@ describe('slugify()', () => {
 describe('getAbsoluteUrl()', () => {
     it(`returns a valid absolute URL for domain 'gorgias.com'`, () => {
         expect(getAbsoluteUrl({domain: 'gorgias.com'})).toEqual(
-            'https://gorgias.com/'
+            'http://gorgias.com/'
         )
     })
 
     it(`returns a valid absolute URL for domain 'www.gorgias.com'`, () => {
         expect(getAbsoluteUrl({domain: 'www.gorgias.com'}, false)).toEqual(
-            'https://www.gorgias.com'
+            'http://www.gorgias.com'
         )
     })
 
@@ -102,14 +102,14 @@ describe('getAbsoluteUrl()', () => {
     it(`returns a valid absolute URL for domain 'acme.gorgias.help' and locale 'fr-FR'`, () => {
         expect(
             getAbsoluteUrl({domain: 'acme.gorgias.help', locale: 'fr-FR'})
-        ).toEqual('https://acme.gorgias.help/fr-FR/')
+        ).toEqual('http://acme.gorgias.help/fr-FR/')
     })
 })
 
 describe('getHelpCenterDomain()', () => {
     it(`returns the help center's preferred domain`, () => {
         expect(getHelpCenterDomain(getSingleHelpCenterResponseFixture)).toEqual(
-            'acme.gorgias.rehab'
+            'acme.gorgias.docker:4000'
         )
     })
 
@@ -132,7 +132,7 @@ describe('getArticleUrl()', () => {
                 slug: 'great-article',
                 articleId: 2,
             })
-        ).toEqual('https://acme.gorgias.rehab/en-US/great-article-2')
+        ).toEqual('http://acme.gorgias.rehab/en-US/great-article-2')
     })
 })
 
@@ -145,6 +145,6 @@ describe('getCategoryUrl()', () => {
                 slug: 'orders',
                 categoryId: 4,
             })
-        ).toEqual('https://acme.gorgias.rehab/en-US/articles/orders-4')
+        ).toEqual('http://acme.gorgias.rehab/en-US/articles/orders-4')
     })
 })

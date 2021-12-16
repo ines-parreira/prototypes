@@ -2,32 +2,25 @@ import React, {useEffect, useState} from 'react'
 import {Map} from 'immutable'
 import {useSelector} from 'react-redux'
 import {useAsyncFn} from 'react-use'
-import {Container} from 'reactstrap'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {HelpCenter} from '../../../../models/helpCenter/types'
 import {IntegrationType} from '../../../../models/integration/constants'
+import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
+import {hasAutomationLegacyFeatures} from '../../../../state/currentAccount/selectors'
 import {helpCenterUpdated} from '../../../../state/entities/helpCenters/actions'
 import {fetchIntegrations} from '../../../../state/integrations/actions'
 import {getIntegrations} from '../../../../state/integrations/selectors'
 import {notify} from '../../../../state/notifications/actions'
-import {GorgiasChatIntegrationSelfServicePaywall} from '../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
-import {hasAutomationLegacyFeatures} from '../../../../state/currentAccount/selectors'
-import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import Loader from '../../../common/components/Loader/Loader'
-import PageHeader from '../../../common/components/PageHeader'
-import settingsCss from '../../settings.less'
+import {GorgiasChatIntegrationSelfServicePaywall} from '../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
-import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
-
-import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
-import {HelpCenterNavigation} from './HelpCenterNavigation'
+import HelpCenterPageWrapper from './HelpCenterPageWrapper'
 import {SelfServiceSection} from './SelfServiceSection'
 
 export const HelpCenterSelfServiceView = (): JSX.Element | null => {
-    const helpCenterId = useHelpCenterIdParam()
     const helpCenter = useCurrentHelpCenter()
     const hasSelfServiceV1Features = useSelector(hasAutomationLegacyFeatures)
     const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
@@ -82,60 +75,47 @@ export const HelpCenterSelfServiceView = (): JSX.Element | null => {
         [client, helpCenter]
     )
 
-    if (isLoadingIntegrations) {
-        return (
-            <div className="full-width">
-                <PageHeader
-                    title={
-                        <HelpCenterDetailsBreadcrumb
-                            helpCenterName={helpCenter.name}
-                            activeLabel="Self-service"
-                        />
-                    }
-                />
-                <Container fluid className={settingsCss.pageContainer}>
-                    <Loader />
-                </Container>
-            </div>
-        )
-    }
+    const renderContent = () => {
+        if (isLoadingIntegrations) {
+            return <Loader />
+        }
 
-    const shopifyIntegration: Map<any, any> | undefined = integrations.find(
-        (shopifyIntegration: Map<any, any>) => {
+        const shopifyIntegration: Map<any, any> | undefined = integrations.find(
+            (shopifyIntegration: Map<any, any>) => {
+                return (
+                    shopifyIntegration.get('type') ===
+                        IntegrationType.Shopify &&
+                    helpCenter.shop_name ===
+                        shopifyIntegration.getIn(['meta', 'shop_name'])
+                )
+            }
+        )
+
+        if (hasSelfServiceV1Features || hasAutomationAddOn) {
             return (
-                shopifyIntegration.get('type') === IntegrationType.Shopify &&
-                helpCenter.shop_name ===
-                    shopifyIntegration.getIn(['meta', 'shop_name'])
+                <SelfServiceSection
+                    shopifyIntegration={shopifyIntegration}
+                    helpCenter={helpCenter}
+                    updateHelpCenter={updateHelpCenter}
+                    updating={updatingHelpCenter}
+                />
             )
         }
-    )
+
+        return <GorgiasChatIntegrationSelfServicePaywall />
+    }
 
     return (
-        <div className="full-width">
-            <PageHeader
-                title={
-                    <HelpCenterDetailsBreadcrumb
-                        helpCenterName={helpCenter.name}
-                        activeLabel="Self-service"
-                    />
-                }
-            />
-            <HelpCenterNavigation helpCenterId={helpCenterId} />
-            {hasSelfServiceV1Features || hasAutomationAddOn ? (
-                <Container fluid className={settingsCss.pageContainer}>
-                    <div className={settingsCss.contentWrapper}>
-                        <SelfServiceSection
-                            shopifyIntegration={shopifyIntegration}
-                            helpCenter={helpCenter}
-                            updateHelpCenter={updateHelpCenter}
-                            updating={updatingHelpCenter}
-                        />
-                    </div>
-                </Container>
-            ) : (
-                <GorgiasChatIntegrationSelfServicePaywall />
-            )}
-        </div>
+        <HelpCenterPageWrapper
+            activeLabel="Self-service"
+            helpCenter={helpCenter}
+            fluidContainer={
+                !isLoadingIntegrations &&
+                (hasSelfServiceV1Features || hasAutomationAddOn)
+            }
+        >
+            {renderContent()}
+        </HelpCenterPageWrapper>
     )
 }
 

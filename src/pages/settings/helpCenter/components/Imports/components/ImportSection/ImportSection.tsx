@@ -52,17 +52,17 @@ type ModalState =
     | ModalStateFileSelected
     | ModalStateImporting
 
-interface Props {
+type Props = {
     className?: string
 }
 
-export const ImportSection: React.FC<Props> = ({className}) => {
-    const [modalState, setModalState] = useState<ModalState | null>(null)
-    const hiddenFileInputRef = useRef<HTMLInputElement>(null)
+export const ImportSection: React.FC<Props> = ({className}: Props) => {
     const dispatch = useAppDispatch()
     const history = useHistory()
-    const {client} = useHelpCenterApi()
     const helpCenter = useCurrentHelpCenter()
+    const {client} = useHelpCenterApi()
+    const [modalState, setModalState] = useState<ModalState | null>(null)
+    const hiddenFileInputRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
         if (document.querySelector(`script[src="${HOTSWAP_SDK_URL}"]`)) {

@@ -2,7 +2,7 @@ import {
     LocaleCode,
     LocalSocialNavigationLink,
 } from '../../../models/helpCenter/types'
-import {isProduction} from '../../../utils/environment'
+import {isProduction, isStaging} from '../../../utils/environment'
 
 import {HelpCenterTheme} from './types'
 
@@ -16,7 +16,9 @@ export const HELP_CENTER_DEFAULT_LOCALE: LocaleCode = 'en-US'
 
 export const HELP_CENTER_DOMAIN = isProduction()
     ? '.gorgias.help'
-    : '.gorgias.rehab'
+    : isStaging()
+    ? '.gorgias.rehab'
+    : '.gorgias.docker:4000'
 
 export const HELP_CENTER_MAX_ARTICLES = 1000
 

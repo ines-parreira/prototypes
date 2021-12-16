@@ -27,8 +27,8 @@ export const ThemeSwitch: FunctionComponent<ThemeSwitchProps> = ({
         <>
             <h4>Theme</h4>
             <p>
-                Select your preferred Help Center theme. This will adjust the
-                theme for header and footer.
+                Select which theme you prefer to use in your help center.&nbsp;
+                <b>This will affect the header &amp; footer.</b>
             </p>
             <div className={css.list}>
                 <PreviewRadioButton

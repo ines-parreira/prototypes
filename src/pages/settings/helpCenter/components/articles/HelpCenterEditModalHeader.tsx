@@ -1,4 +1,4 @@
-import React, {ChangeEvent, ReactChild, useEffect, useRef} from 'react'
+import React, {ChangeEvent, ReactChild, useEffect, useMemo, useRef} from 'react'
 
 import {LocaleCode} from '../../../../../models/helpCenter/types'
 import {
@@ -35,6 +35,7 @@ export type Props = {
     toggleModalBtn?: ReactChild
     autoFocus?: boolean
     showCategorySelect?: boolean
+    previewUrl?: string
 }
 
 export const HelpCenterEditModalHeader = ({
@@ -50,6 +51,7 @@ export const HelpCenterEditModalHeader = ({
     helpCenterId,
     autoFocus = false,
     showCategorySelect = false,
+    previewUrl,
 }: Props) => {
     const locales = useSupportedLocales()
     const titleInputRef = useRef<HTMLInputElement | null>(null)
@@ -86,7 +88,7 @@ export const HelpCenterEditModalHeader = ({
             </button>
         )
 
-    const localeSelectOptions = React.useMemo(
+    const localeOptions = useMemo(
         () =>
             getLocaleSelectOptions(locales, supportedLocales).map((option) => {
                 let isComplete = false
@@ -138,10 +140,22 @@ export const HelpCenterEditModalHeader = ({
                 <div className={css.headerControls}>
                     <ArticleLanguageSelect
                         selected={selectedArticleLanguage}
-                        list={localeSelectOptions}
+                        list={localeOptions}
                         onSelect={onLanguageSelect}
                         onActionClick={onArticleLanguageSelectActionClick}
                     />
+                    {previewUrl && (
+                        <button
+                            type="button"
+                            onClick={() =>
+                                window.open(previewUrl, '_blank')?.focus()
+                            }
+                            className={css.controlButton}
+                            aria-label="preview article"
+                        >
+                            <i className="material-icons">open_in_new</i>
+                        </button>
+                    )}
                     {toggleModalBtn}
                     {onResize && getResizeModalButton()}
                     <button
@@ -150,7 +164,7 @@ export const HelpCenterEditModalHeader = ({
                         onClick={onClose}
                         aria-label="close modal"
                     >
-                        <i className="material-icons mr-2">keyboard_tab</i>
+                        <i className="material-icons">keyboard_tab</i>
                     </button>
                 </div>
             </div>

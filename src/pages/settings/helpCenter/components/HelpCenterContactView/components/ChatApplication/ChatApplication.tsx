@@ -5,12 +5,12 @@ import {useSelector} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {FormText, Label} from 'reactstrap'
 
-import {IntegrationType} from '../../../../../../../models/integration/types'
-import {getIntegrationsByTypes} from '../../../../../../../state/integrations/selectors'
-import SelectField from '../../../../../../common/forms/SelectField/SelectField'
-import ToggleField from '../../../../../../common/forms/ToggleField'
-import {useHelpCenterTranslation} from '../../../../providers/HelpCenterTranslation'
-import {SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS} from '../../../../../../../config/integrations/smooch_inside'
+import {GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS} from 'config/integrations/gorgias_chat'
+import {IntegrationType} from 'models/integration/types'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import ToggleField from 'pages/common/forms/ToggleField'
+import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
 
 import css from './ChatApplication.less'
 
@@ -19,7 +19,6 @@ const ChatApplication: React.FC = () => {
         translation: {chatApplicationId},
         updateTranslation,
     } = useHelpCenterTranslation()
-
     const chatIntegrations = useSelector(
         getIntegrationsByTypes(IntegrationType.GorgiasChat)
     )
@@ -42,10 +41,9 @@ const ChatApplication: React.FC = () => {
                         'meta',
                         'language',
                     ])
-                    const chatLanguage: Map<any, any> | undefined =
-                        SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS.find(
-                            (value: Map<any, any>) =>
-                                value.get('value') === chatLanguageCode
+                    const chatLanguage =
+                        GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.find(
+                            (value) => value?.get('value') === chatLanguageCode
                         )
                     const chatLanguageName =
                         chatLanguage !== undefined

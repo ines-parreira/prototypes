@@ -96,7 +96,7 @@ const HelpCenterPaywall = (): JSX.Element => {
                                 </Badge>
                             </div>
                             <h1 className={css.header}>
-                                Offer self support via a knowledge base
+                                Change plans to activate your Help Center
                             </h1>
                             <p className={css.infoText}>
                                 Create your own help center in order to help

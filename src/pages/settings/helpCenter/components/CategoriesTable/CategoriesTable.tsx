@@ -7,11 +7,11 @@ import TableBody from '../../../../common/components/table/TableBody'
 import TableHead from '../../../../common/components/table/TableHead'
 import TableWrapper from '../../../../common/components/table/TableWrapper'
 
-import css from './CategoriesTable.less'
 import {
     CategoriesTableRow,
     CategoriesTableRowProps,
 } from './components/CategoriesTableRow'
+import css from './CategoriesTable.less'
 
 export type CategoriesTableProps = Pick<
     CategoriesTableRowProps,

@@ -8,7 +8,12 @@ import {
 } from '../../../../../../../hooks/useScreenSize'
 
 import {EDITOR_MODAL_CONTAINER_ID} from '../../../../constants'
-import {isExistingArticle, slugify} from '../../../../utils/helpCenter.utils'
+import {
+    getArticleUrl,
+    getHelpCenterDomain,
+    isExistingArticle,
+    slugify,
+} from '../../../../utils/helpCenter.utils'
 import {useCurrentHelpCenter} from '../../../../providers/CurrentHelpCenter'
 import {useEditionManager} from '../../../../providers/EditionManagerContext'
 import {ActionType, OptionItem} from '../../ArticleLanguageSelect'
@@ -103,6 +108,16 @@ const HelpCenterArticleModalBasicViewContent = ({
         'article_id' in selectedArticle.translation
             ? selectedArticle.translation.article_id
             : undefined
+    const helpCenterDomain = getHelpCenterDomain(helpCenter)
+    const selectedArticleUrl =
+        isExistingArticle(selectedArticle) && articleId
+            ? getArticleUrl({
+                  domain: helpCenterDomain,
+                  locale: selectedArticle.translation.locale,
+                  slug: selectedArticle.translation.slug,
+                  articleId,
+              })
+            : undefined
 
     return (
         <span className={css.modalForm} id={EDITOR_MODAL_CONTAINER_ID}>
@@ -151,6 +166,7 @@ const HelpCenterArticleModalBasicViewContent = ({
                     </button>
                 }
                 autoFocus={autoFocus}
+                previewUrl={selectedArticleUrl}
             />
             <HelpCenterEditor
                 articleId={articleId}
@@ -171,4 +187,4 @@ const HelpCenterArticleModalBasicViewContent = ({
     )
 }
 
-export default React.memo(HelpCenterArticleModalBasicViewContent)
+export default HelpCenterArticleModalBasicViewContent
