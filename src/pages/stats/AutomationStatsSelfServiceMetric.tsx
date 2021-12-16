@@ -12,7 +12,7 @@ import {
     getCurrentAccountState,
     hasAutomationLegacyFeatures,
 } from '../../state/currentAccount/selectors'
-import {SegmentEvent} from '../../store/middlewares/types/segmentTracker'
+import {SegmentEvent} from '../../store/middlewares/segmentTracker'
 import UpgradeButton from '../common/components/UpgradeButton'
 import AutomationSubscriptionModal from '../settings/billing/automation/AutomationSubscriptionModal'
 import Button from '../common/components/button/Button'

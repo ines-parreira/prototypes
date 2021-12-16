@@ -3,7 +3,10 @@ import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../store/middlewares/segmentTracker'
 import {getIconFromUrl} from '../../../../state/integrations/helpers'
 import SourceIcon from '../../../common/components/SourceIcon'
 import UpgradeButton from '../../../common/components/UpgradeButton'
@@ -117,12 +120,9 @@ const IntegrationListRow = ({integrationConfig}: Props) => {
                 'card d-flex flex-row align-items-center'
             )}
             onClick={() => {
-                segmentTracker.logEvent(
-                    segmentTracker.EVENTS.INTEGRATION_CLICKED,
-                    {
-                        integration: integrationConfig.get('title'),
-                    }
-                )
+                logEvent(SegmentEvent.IntegrationClicked, {
+                    integration: integrationConfig.get('title'),
+                })
             }}
             to={linkHref}
         >

@@ -16,7 +16,7 @@ import {
     fetchCreditCard,
 } from '../../../state/billing/actions'
 import Loader from '../../common/components/Loader/Loader'
-import * as segmentTracker from '../../../store/middlewares/segmentTracker.js'
+import {logEvent, SegmentEvent} from '../../../store/middlewares/segmentTracker'
 import {RootState} from '../../../state/types'
 import {PaymentMethodType} from '../../../state/billing/types'
 
@@ -113,14 +113,11 @@ export class BillingPaymentMethodContainer extends Component<
     onActivateShopifyBilling = () => {
         const {currentUserId, currentAccountDomain} = this.props
 
-        segmentTracker.logEvent(
-            segmentTracker.EVENTS.PAYMENT_METHOD_ADD_CLICKED,
-            {
-                payment_method: 'shopify',
-                user_id: currentUserId,
-                account_domain: currentAccountDomain,
-            }
-        )
+        logEvent(SegmentEvent.PaymentMethodAddClicked, {
+            payment_method: 'shopify',
+            user_id: currentUserId,
+            account_domain: currentAccountDomain,
+        })
         this.setState({isActivatingShopifyBilling: true})
     }
 

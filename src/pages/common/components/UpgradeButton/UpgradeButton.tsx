@@ -5,7 +5,10 @@ import classnames from 'classnames'
 
 import upgradeIcon from 'assets/img/icons/upgrade-icon.svg'
 
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../store/middlewares/segmentTracker'
 
 import css from './UpgradeButton.less'
 
@@ -22,7 +25,7 @@ type Props = {
 }
 
 type SegmentEventToSend = {
-    name: string
+    name: SegmentEvent
     props: any
 }
 
@@ -32,10 +35,7 @@ function sendSegmentEvent(segmentEventToSend?: Partial<SegmentEventToSend>) {
         Object.prototype.hasOwnProperty.call(segmentEventToSend, 'name') &&
         Object.prototype.hasOwnProperty.call(segmentEventToSend, 'props')
     ) {
-        segmentTracker.logEvent(
-            segmentEventToSend.name,
-            segmentEventToSend.props
-        )
+        logEvent(segmentEventToSend.name!, segmentEventToSend.props)
     }
 }
 

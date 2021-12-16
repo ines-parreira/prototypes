@@ -9,7 +9,7 @@ import {tryLocalStorage} from '../../../services/common/utils'
 import * as agentSelectors from '../../../state/agents/selectors'
 import * as currentUserSelectors from '../../../state/currentUser/selectors'
 import * as integrationsSelectors from '../../../state/integrations/selectors'
-import * as segmentTracker from '../../../store/middlewares/segmentTracker.js'
+import {logEvent, SegmentEvent} from '../../../store/middlewares/segmentTracker'
 import {isAdmin} from '../../../utils'
 import InfobarLayout from '../../common/components/infobar/InfobarLayout'
 import Video from '../../common/components/Video/Video'
@@ -104,9 +104,8 @@ class TicketListInfobarContainer extends Component<Props> {
                                 to="/app/settings/integrations/shopify"
                                 className={css.button}
                                 onClick={() => {
-                                    segmentTracker.logEvent(
-                                        segmentTracker.EVENTS
-                                            .ONBOARDING_WIDGET_CLICKED,
+                                    logEvent(
+                                        SegmentEvent.OnboardingWidgetClicked,
                                         {
                                             name: 'Connect a Shopify store',
                                         }
@@ -121,9 +120,8 @@ class TicketListInfobarContainer extends Component<Props> {
                                 to="/app/settings/integrations/email"
                                 className={css.button}
                                 onClick={() => {
-                                    segmentTracker.logEvent(
-                                        segmentTracker.EVENTS
-                                            .ONBOARDING_WIDGET_CLICKED,
+                                    logEvent(
+                                        SegmentEvent.OnboardingWidgetClicked,
                                         {
                                             name: 'Connect an email address',
                                         }
@@ -139,9 +137,8 @@ class TicketListInfobarContainer extends Component<Props> {
                                 to="/app/settings/integrations/gorgias_chat"
                                 className={css.button}
                                 onClick={() => {
-                                    segmentTracker.logEvent(
-                                        segmentTracker.EVENTS
-                                            .ONBOARDING_WIDGET_CLICKED,
+                                    logEvent(
+                                        SegmentEvent.OnboardingWidgetClicked,
                                         {
                                             name: 'Connect chat',
                                         }
@@ -156,9 +153,8 @@ class TicketListInfobarContainer extends Component<Props> {
                                 to="/app/settings/integrations/facebook"
                                 className={css.button}
                                 onClick={() => {
-                                    segmentTracker.logEvent(
-                                        segmentTracker.EVENTS
-                                            .ONBOARDING_WIDGET_CLICKED,
+                                    logEvent(
+                                        SegmentEvent.OnboardingWidgetClicked,
                                         {
                                             name: 'Connect Facebook',
                                         }
@@ -173,9 +169,8 @@ class TicketListInfobarContainer extends Component<Props> {
                                 to="/app/settings/users/"
                                 className={css.button}
                                 onClick={() => {
-                                    segmentTracker.logEvent(
-                                        segmentTracker.EVENTS
-                                            .ONBOARDING_WIDGET_CLICKED,
+                                    logEvent(
+                                        SegmentEvent.OnboardingWidgetClicked,
                                         {
                                             name: 'Add team members',
                                         }

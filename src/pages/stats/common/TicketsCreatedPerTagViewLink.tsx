@@ -4,11 +4,11 @@ import {useSelector} from 'react-redux'
 import {getTagsStatsFilters} from '../../../state/stats/selectors'
 import {getTicketViewField, getTicketViewFieldPath} from '../../../config/views'
 import {ViewField} from '../../../models/view/types'
-import * as segmentTracker from '../../../store/middlewares/segmentTracker.js'
 import {
+    logEvent,
     SegmentEvent,
     StatViewLinkClickedStat,
-} from '../../../store/middlewares/types/segmentTracker'
+} from '../../../store/middlewares/segmentTracker'
 import {ViewFilter} from '../../../state/views/types'
 import {CollectionOperator} from '../../../state/rules/types'
 
@@ -52,7 +52,7 @@ export default function TicketsCreatedPerTagViewLink({
     return (
         <span
             onClick={() => {
-                segmentTracker.logEvent(SegmentEvent.StatViewLinkClicked, {
+                logEvent(SegmentEvent.StatViewLinkClicked, {
                     stat: StatViewLinkClickedStat.TicketsCreatedPerTagTotal,
                 })
             }}

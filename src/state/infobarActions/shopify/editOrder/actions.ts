@@ -11,7 +11,10 @@ import {
 } from '../../../../business/shopify/draftOrder'
 import {refreshAppliedDiscounts} from '../../../../business/shopify/discount'
 import {calculateEditDiff} from '../../../../business/shopify/calculatedEditOrder'
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../store/middlewares/segmentTracker'
 import {
     Product,
     Variant,
@@ -19,7 +22,6 @@ import {
 } from '../../../../constants/integrations/types/shopify'
 import {IntegrationDataItemType} from '../../../../models/integration/types'
 import GorgiasApi from '../../../../services/gorgiasApi'
-import {SegmentEvent} from '../../../../store/middlewares/types/segmentTracker'
 import {RootState, StoreDispatch} from '../../../types'
 import {onApiError} from '../../../utils'
 
@@ -469,7 +471,7 @@ export const addRow =
         if (actionName !== ShopifyActionType.EditOrder) return
         const eventName = SegmentEvent.ShopifyEditOrderLineItemAdded
 
-        segmentTracker.logEvent(eventName, {
+        logEvent(eventName, {
             productId: product.id,
             variantId: variant.id,
         })
@@ -535,7 +537,7 @@ export const onCancel =
 
         if (actionName !== ShopifyActionType.EditOrder) return
         const eventName = SegmentEvent.ShopifyEditOrderCancel
-        segmentTracker.logEvent(eventName, {via})
+        logEvent(eventName, {via})
     }
 
 /**

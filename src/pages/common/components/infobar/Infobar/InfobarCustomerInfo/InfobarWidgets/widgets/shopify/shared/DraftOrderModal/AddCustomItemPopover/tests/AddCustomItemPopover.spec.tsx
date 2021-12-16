@@ -5,9 +5,9 @@ import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
 
 import {
-    EVENTS,
     logEvent,
-} from '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+    SegmentEvent,
+} from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
 import AddCustomItemPopover from '../AddCustomItemPopover'
 import {ShopifyActionType} from '../../../../types'
 
@@ -15,7 +15,7 @@ jest.mock(
     '../../../../../../../../../../../../../store/middlewares/segmentTracker',
     () => {
         const segmentTracker: Record<string, unknown> = jest.requireActual(
-            '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+            '../../../../../../../../../../../../../store/middlewares/segmentTracker'
         )
 
         return {
@@ -51,13 +51,13 @@ describe('<AddCustomItemPopover/>', () => {
         it.each([
             [
                 ShopifyActionType.CreateOrder,
-                EVENTS.SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_OPEN,
-                EVENTS.SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_SAVE,
+                SegmentEvent.ShopifyCreateOrderCustomItemPopoverOpen,
+                SegmentEvent.ShopifyCreateOrderCustomItemPopoverSave,
             ],
             [
                 ShopifyActionType.DuplicateOrder,
-                EVENTS.SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_OPEN,
-                EVENTS.SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_SAVE,
+                SegmentEvent.ShopifyDuplicateOrderCustomItemPopoverOpen,
+                SegmentEvent.ShopifyDuplicateOrderCustomItemPopoverSave,
             ],
         ])(
             'should call prop `onSubmit` with form values',
@@ -117,11 +117,11 @@ describe('<AddCustomItemPopover/>', () => {
         it.each([
             [
                 ShopifyActionType.CreateOrder,
-                EVENTS.SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_CANCEL,
+                SegmentEvent.ShopifyCreateOrderCustomItemPopoverCancel,
             ],
             [
                 ShopifyActionType.DuplicateOrder,
-                EVENTS.SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_CANCEL,
+                SegmentEvent.ShopifyDuplicateOrderCustomItemPopoverCancel,
             ],
         ])('should track', (actionName, event) => {
             const component = shallow<AddCustomItemPopover>(

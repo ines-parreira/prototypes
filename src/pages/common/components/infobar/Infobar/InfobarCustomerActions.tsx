@@ -5,7 +5,10 @@ import {Button} from 'reactstrap'
 import {isCurrentlyOnTicket} from '../../../../../utils'
 import ConfirmButton from '../../ConfirmButton'
 
-import * as segmentTracker from '../../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../store/middlewares/segmentTracker'
 
 type Props = {
     customer: Map<any, any>
@@ -66,12 +69,9 @@ export default class InfobarCustomerActions extends React.Component<Props> {
                         onClick={() => {
                             toggleMergeCustomerModal(true)
                             // TODO(customers-migration): ask confirmation to update this event
-                            segmentTracker.logEvent(
-                                segmentTracker.EVENTS.USER_MERGE_CLICKED,
-                                {
-                                    location: 'user searched in infobar',
-                                }
-                            )
+                            logEvent(SegmentEvent.UserMergeClicked, {
+                                location: 'user searched in infobar',
+                            })
                         }}
                     >
                         Merge

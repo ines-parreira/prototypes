@@ -5,9 +5,9 @@ import _noop from 'lodash/noop'
 import {Button, Form, Popover} from 'reactstrap'
 
 import {
-    EVENTS,
+    SegmentEvent,
     logEvent,
-} from '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+} from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
 import {
     shopifyAvailableShippingRate,
     shopifyShippingLineFixture,
@@ -82,13 +82,13 @@ describe('<ShippingPopover/>', () => {
         it.each([
             [
                 ShopifyActionType.CreateOrder,
-                EVENTS.SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_OPEN,
-                EVENTS.SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_APPLY,
+                SegmentEvent.ShopifyCreateOrderShippingPopoverOpen,
+                SegmentEvent.ShopifyCreateOrderShippingPopoverApply,
             ],
             [
                 ShopifyActionType.DuplicateOrder,
-                EVENTS.SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_OPEN,
-                EVENTS.SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_APPLY,
+                SegmentEvent.ShopifyDuplicateOrderShippingPopoverOpen,
+                SegmentEvent.ShopifyDuplicateOrderShippingPopoverApply,
             ],
         ])(
             'should call onChange() with custom shipping line',
@@ -245,11 +245,11 @@ describe('<ShippingPopover/>', () => {
         it.each([
             [
                 ShopifyActionType.CreateOrder,
-                EVENTS.SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_REMOVE,
+                SegmentEvent.ShopifyCreateOrderShippingPopoverRemove,
             ],
             [
                 ShopifyActionType.DuplicateOrder,
-                EVENTS.SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_REMOVE,
+                SegmentEvent.ShopifyDuplicateOrderShippingPopoverRemove,
             ],
         ])('should call onChange() with no shipping line', () => {
             const shippingLine = fromJS(shopifyShippingLineFixture())
@@ -284,11 +284,11 @@ describe('<ShippingPopover/>', () => {
         it.each([
             [
                 ShopifyActionType.CreateOrder,
-                EVENTS.SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_CLOSE,
+                SegmentEvent.ShopifyCreateOrderShippingPopoverClose,
             ],
             [
                 ShopifyActionType.DuplicateOrder,
-                EVENTS.SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_CLOSE,
+                SegmentEvent.ShopifyDuplicateOrderShippingPopoverClose,
             ],
         ])('should track', (actionName, event) => {
             const component = shallow<ShippingPopover>(

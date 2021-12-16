@@ -18,8 +18,10 @@ import * as fileUtils from '../../../../../../utils/file'
 import {StatContainer} from '../DEPRECATED_Stat'
 import {user} from '../../../../../../fixtures/users'
 import {account} from '../../../../../../fixtures/account'
-import {logEvent} from '../../../../../../store/middlewares/segmentTracker.js'
-import {SegmentEvent} from '../../../../../../store/middlewares/types/segmentTracker'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../store/middlewares/segmentTracker'
 
 jest.spyOn(fileUtils, 'saveFileAsDownloaded')
 
@@ -39,7 +41,7 @@ jest.mock('../PerHourPerWeekTableStat/PerHourPerWeekTableStat', () => () => (
 
 jest.mock('../../StatCurrentDate', () => () => <div>StatCurrentDate</div>)
 
-jest.mock('../../../../../../store/middlewares/segmentTracker.js')
+jest.mock('../../../../../../store/middlewares/segmentTracker')
 
 const minProps = {
     name: 'stat_name',

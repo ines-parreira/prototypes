@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const mockImageOnload = () => {
-    let srcSet
+    let srcSet: PropertyDescriptor | undefined
 
     beforeEach(function () {
         srcSet = Object.getOwnPropertyDescriptor(global.Image.prototype, 'src')
@@ -10,13 +10,13 @@ export const mockImageOnload = () => {
                 // eslint-disable-next-line no-restricted-properties
                 axios
                     .get(value)
-                    .then(() => this.onload())
-                    .catch(() => this.onerror())
+                    .then(() => (this as {onload: () => void}).onload())
+                    .catch(() => (this as {onerror: () => void}).onerror())
             },
         })
     })
 
     afterEach(function () {
-        Object.defineProperty(global.Image.prototype, 'src', srcSet)
+        Object.defineProperty(global.Image.prototype, 'src', srcSet!)
     })
 }

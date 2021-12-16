@@ -1,3 +1,5 @@
+import {AxiosError} from 'axios'
+
 export enum ContentType {
     Json = 'application/json',
     Form = 'application/x-www-form-urlencoded',
@@ -37,18 +39,17 @@ export enum MetaSortOptions {
     Relevance = 'relevance',
 }
 
-export type GorgiasError = Error & {
-    response: {
-        data: {
-            error: {
-                msg: string
-                data: {
-                    actions: Record<
-                        string,
-                        Record<string, Record<string, string>[]>
-                    >
-                }
-            }
-        }
-    }
+export type GorgiasApiError<T = unknown> = Omit<AxiosError, 'response'> &
+    Pick<
+        Required<
+            AxiosError<{
+                error: GorgiasApiResponseDataError<T>
+            }>
+        >,
+        'response'
+    >
+
+export type GorgiasApiResponseDataError<T = unknown> = {
+    msg: string
+    data: T
 }

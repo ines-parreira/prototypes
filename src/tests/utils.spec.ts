@@ -1,9 +1,9 @@
 import moment from 'moment'
-import {fromJS} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
 
-import * as utils from '../utils.ts'
-import TICKET_LANGUAGES from '../config/ticketLanguages.ts'
+import * as utils from '../utils'
+import TICKET_LANGUAGES from '../config/ticketLanguages'
 import schemasJSON from '../fixtures/openapi.json'
 import {
     ADMIN_ROLE,
@@ -11,8 +11,8 @@ import {
     BASIC_AGENT_ROLE,
     LITE_AGENT_ROLE,
     OBSERVER_AGENT_ROLE,
-} from '../config/user.ts'
-import client from '../models/api/resources.ts'
+} from '../config/user'
+import client from '../models/api/resources'
 
 describe('global utils', () => {
     describe('formatDatetime', () => {
@@ -23,12 +23,18 @@ describe('global utils', () => {
         beforeAll(() => moment.locale('en'))
 
         it('invalid', () => {
-            // to disable warning
-            moment.createFromInputFallback = function fallback(config) {
+            // disable moment warning
+            // https://stackoverflow.com/a/34521624/15449849
+            ;(
+                moment as unknown as {
+                    createFromInputFallback: (config: {
+                        _d: Date
+                        _i: string
+                    }) => void
+                }
+            ).createFromInputFallback = function fallback(config) {
                 // unreliable string magic, or
-                /* eslint-disable */
                 config._d = new Date(config._i)
-                /* eslint-enable */
             }
             expect(utils.formatDatetime('test')).toBe('Invalid date')
         })
@@ -84,11 +90,11 @@ describe('global utils', () => {
                     id: 1,
                     created_datetime: '2017-01-12T18:00:00',
                 },
-            ]
+            ] as utils.Message[]
 
             const message = utils.getLastMessage(messages) || {}
 
-            expect(message.id).toBe(3)
+            expect((message as utils.Message).id).toBe(3)
         })
     })
 
@@ -366,40 +372,55 @@ describe('global utils', () => {
     })
 
     describe('findProperty', () => {
-        const schemas = fromJS(schemasJSON)
+        const schemas = fromJS(schemasJSON) as Map<any, any>
 
         it('should find property (always use ref)', () => {
             expect(
                 utils.findProperty('ticket.tags.name', schemas, true)
             ).toEqual(
-                schemas
-                    .getIn(['definitions', 'Tag', 'properties', 'name'])
-                    .toJS()
+                (
+                    schemas.getIn([
+                        'definitions',
+                        'Tag',
+                        'properties',
+                        'name',
+                    ]) as Map<any, any>
+                ).toJS()
             )
         })
 
         it('should find property (not always use ref)', () => {
             expect(utils.findProperty('ticket.customer.id', schemas)).toEqual(
-                schemas
-                    .getIn(['definitions', 'Ticket', 'properties', 'customer'])
-                    .toJS()
+                (
+                    schemas.getIn([
+                        'definitions',
+                        'Ticket',
+                        'properties',
+                        'customer',
+                    ]) as Map<any, any>
+                ).toJS()
             )
             expect(
                 utils.findProperty('message.source.from.address', schemas)
             ).toEqual(
-                schemas
-                    .getIn([
+                (
+                    schemas.getIn([
                         'definitions',
                         'SourceAddress',
                         'properties',
                         'address',
-                    ])
-                    .toJS()
+                    ]) as Map<any, any>
+                ).toJS()
             )
             expect(utils.findProperty('ticket.tags.name', schemas)).toEqual(
-                schemas
-                    .getIn(['definitions', 'Ticket', 'properties', 'tags'])
-                    .toJS()
+                (
+                    schemas.getIn([
+                        'definitions',
+                        'Ticket',
+                        'properties',
+                        'tags',
+                    ]) as Map<any, any>
+                ).toJS()
             )
         })
     })
@@ -669,7 +690,7 @@ describe('global utils', () => {
     })
 
     describe('uploadFiles()', () => {
-        let mockServer
+        let mockServer: MockAdapter
 
         beforeEach(() => {
             mockServer = new MockAdapter(client)
@@ -682,7 +703,7 @@ describe('global utils', () => {
             mockServer.onPost('/api/upload/').reply(200, uploadedFileData)
 
             const file = new File([''], name)
-            return utils.uploadFiles(file).then((data) => {
+            return utils.uploadFiles([file]).then((data) => {
                 expect(data).toEqual(uploadedFileData)
             })
         })
@@ -698,7 +719,7 @@ describe('global utils', () => {
             })
 
             const file = new File([''], name)
-            return utils.uploadFiles(file, passedParams).then((data) => {
+            return utils.uploadFiles([file], passedParams).then((data) => {
                 expect(data).toEqual(uploadedFileData)
             })
         })
@@ -731,14 +752,14 @@ describe('global utils', () => {
                     {id: 1, name: 'Homer'},
                     {id: 2, name: 'Marge'},
                 ],
-            }),
+            }) as Map<any, any>,
             list: fromJS([
                 {id: 3, name: 'Lisa'},
                 {id: 4, name: 'Bart'},
-            ]),
+            ]) as List<any>,
         }
-        const selectorFromMap = (state) => state.object || fromJS({})
-        const selectorFromList = (state) => state.list || fromJS({})
+        const selectorFromMap = (s: typeof state) => s.object || fromJS({})
+        const selectorFromList = (s: typeof state) => s.list || fromJS({})
 
         it('should return plain js object from an Immutable Map collection', () => {
             const getDataToJS = utils.makeGetPlainJS(selectorFromMap)

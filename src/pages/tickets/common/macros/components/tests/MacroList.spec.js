@@ -4,9 +4,9 @@ import {render, fireEvent} from '@testing-library/react'
 
 import {MacroListContainer} from '../MacroList.tsx'
 import {user} from '../../../../../../fixtures/users.ts'
-import {logEvent} from '../../../../../../store/middlewares/segmentTracker'
+import {logEvent} from '../../../../../../store/middlewares/segmentTracker.ts'
 
-jest.mock('../../../../../../store/middlewares/segmentTracker.js')
+jest.mock('../../../../../../store/middlewares/segmentTracker.ts')
 
 describe('MacroList component', () => {
     const macros = fromJS([

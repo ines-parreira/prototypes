@@ -9,7 +9,7 @@ export type TagDraft = {
     description?: string
 }
 
-export type Tag = TagDraft & {
+export type Tag = Omit<TagDraft, 'description'> & {
     created_datetime: string
     decoration: TagDecoration
     deleted_datetime: Maybe<string>

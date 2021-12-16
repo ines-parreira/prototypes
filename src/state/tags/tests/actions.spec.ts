@@ -10,7 +10,7 @@ import {StoreDispatch} from '../../types'
 import * as actions from '../actions'
 import * as types from '../constants'
 import {initialState} from '../reducers'
-import {Tag, TagSortableProperty} from '../types'
+import {Tag, TagDraft, TagSortableProperty} from '../types'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
@@ -171,7 +171,7 @@ describe('tags actions', () => {
     it('create', () => {
         mockServer.onPost('/api/tags/').reply(200, {id: 1})
         return store
-            .dispatch(actions.create({id: 1} as Tag))
+            .dispatch(actions.create({id: 1} as unknown as TagDraft))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 

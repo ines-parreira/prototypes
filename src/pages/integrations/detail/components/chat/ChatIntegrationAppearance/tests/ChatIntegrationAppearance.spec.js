@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import configureStore from '../../../../../../../store/configureStore'
+import configureStore from '../../../../../../../store/configureStore.ts'
 import {
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,

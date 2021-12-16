@@ -1,17 +1,18 @@
+import React from 'react'
 import MutationObserver from '@sheerun/mutationobserver-shim'
 import mockMoment from 'moment'
 import Enzyme from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import _noop from 'lodash/noop'
-import React from 'react'
+import {MomentTimezone} from 'moment-timezone'
 
-import history from '../pages/history.ts'
+import history from '../pages/history'
 
 Enzyme.configure({adapter: new Adapter()})
 
 // Set default moment timezone
 const moment = jest.requireActual('moment-timezone')
-moment.tz.setDefault('America/Creston')
+;(moment as {tz: MomentTimezone}).tz.setDefault('America/Creston')
 
 // jsdom does not support matchMedia
 Object.defineProperty(window, 'matchMedia', {
@@ -29,25 +30,28 @@ Object.defineProperty(window.HTMLMediaElement.prototype, 'load', {
     value: jest.fn(),
 })
 Object.defineProperty(window.HTMLMediaElement.prototype, 'play', {
-    value: jest.fn().mockResolvedValue(),
+    value: jest.fn().mockResolvedValue(undefined),
 })
 
 // https://github.com/testing-library/react-testing-library/issues/731
 global.MutationObserver = MutationObserver
 
 // https://github.com/mui-org/material-ui/issues/15726#issuecomment-493124813
-global.document.createRange = () => ({
-    setStart: _noop,
-    setEnd: _noop,
-    commonAncestorContainer: {
-        nodeName: 'BODY',
-        ownerDocument: document,
-    },
-})
+global.document.createRange = () =>
+    ({
+        setStart: _noop,
+        setEnd: _noop,
+        commonAncestorContainer: {
+            nodeName: 'BODY',
+            ownerDocument: document,
+        },
+    } as Range)
 
 // Mock of the localStorage API
 // to be able to test portion of code which access the localStorage API
 class LocalStorageMock {
+    store: Record<string, unknown>
+
     constructor() {
         this.store = {}
     }
@@ -58,15 +62,15 @@ class LocalStorageMock {
         this.store = {}
     }
 
-    getItem(key) {
+    getItem(key: string) {
         return this.store[key] || null
     }
 
-    setItem(key, value) {
+    setItem(key: string, value: string | number) {
         this.store[key] = value.toString()
     }
 
-    removeItem(key) {
+    removeItem(key: string) {
         delete this.store[key]
     }
 }
@@ -80,6 +84,8 @@ history.push = jest.fn()
 
 // Mock of the PushJS API (browser notification)
 class mockPushJS {
+    notifications: Record<string, unknown>[]
+
     constructor() {
         this.notifications = []
     }
@@ -92,7 +98,7 @@ class mockPushJS {
         this.notifications = []
     }
 
-    create(title, data) {
+    create(title: string, data: Record<string, unknown>) {
         this.notifications.push({
             title,
             ...data,
@@ -107,19 +113,22 @@ class MockSharedWorker {
     }
 }
 
-window.SharedWorker = MockSharedWorker
+;(window as unknown as {SharedWorker: typeof MockSharedWorker}).SharedWorker =
+    MockSharedWorker
 
 class MockBroadcastChannel {
     addEventListener = jest.fn()
     postMessage = jest.fn()
     constructorSpy = jest.fn()
 
-    constructor(...args) {
+    constructor(...args: unknown[]) {
         this.constructorSpy(...args)
     }
 }
 
-window.BroadcastChannel = MockBroadcastChannel
+;(
+    window as unknown as {BroadcastChannel: typeof MockBroadcastChannel}
+).BroadcastChannel = MockBroadcastChannel
 
 jest.mock('push.js', () => {
     return new mockPushJS()
@@ -130,25 +139,33 @@ jest.mock('../models/api/resources.ts')
 window.CSRF_TOKEN = 'abcd'
 window.GORGIAS_RELEASE = '1'
 
-jest.mock('../utils/date.ts', () => ({
-    ...jest.requireActual('../utils/date.ts'),
-    getMoment: jest.fn(() => mockMoment('2018-10-01T00:00:00Z')),
-    getMomentNow: jest.fn(() => 'nowTimestamp'),
-    getMomentUtcISOString: jest.fn(() => '2018-05-07T18:02:46.039Z'),
-    getMomentTimezoneNames: jest.fn(() => [
-        'UTC',
-        'US/Pacific',
-        'Australia/AUR',
-    ]),
-}))
+jest.mock(
+    '../utils/date.ts',
+    () =>
+        ({
+            ...jest.requireActual('../utils/date.ts'),
+            getMoment: jest.fn(() => mockMoment('2018-10-01T00:00:00Z')),
+            getMomentNow: jest.fn(() => 'nowTimestamp'),
+            getMomentUtcISOString: jest.fn(() => '2018-05-07T18:02:46.039Z'),
+            getMomentTimezoneNames: jest.fn(() => [
+                'UTC',
+                'US/Pacific',
+                'Australia/AUR',
+            ]),
+        } as Record<string, unknown>)
+)
 
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    /* eslint-disable jsx-a11y/anchor-has-content */
-    Link: (props) => <a {...props} />,
-    NavLink: (props) => <a {...props} />,
-    /* eslint-enable */
-}))
+jest.mock(
+    'react-router-dom',
+    () =>
+        ({
+            ...jest.requireActual('react-router-dom'),
+            /* eslint-disable jsx-a11y/anchor-has-content */
+            Link: (props: Record<string, unknown>) => <a {...props} />,
+            NavLink: (props: Record<string, unknown>) => <a {...props} />,
+            /* eslint-enable */
+        } as Record<string, unknown>)
+)
 
 jest.mock('chart.js')
 
@@ -168,7 +185,7 @@ global.jestSetTimeout = (body, timeout, done) => {
             body()
             done()
         } catch (error) {
-            done.fail(error)
+            ;(done as unknown as {fail: (error: Error) => void}).fail(error)
         }
     }, timeout)
 }
@@ -188,7 +205,8 @@ function supportsOffsetParent() {
 
 // offsetParent polyfill
 // WARNING does not support the complete spec (eg. position: fixed)
-function offsetParent() {
+function offsetParent(this: Node | null) {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     let element = this
     let style
     let parent = null
@@ -197,7 +215,7 @@ function offsetParent() {
     }
 
     while (element && element !== document.documentElement) {
-        style = window.getComputedStyle(element)
+        style = window.getComputedStyle(element as HTMLElement)
         if (style.getPropertyValue('display') === 'none') {
             return null
         }
@@ -222,6 +240,7 @@ if (!supportsOffsetParent()) {
 }
 
 const windowLocation = JSON.stringify(window.location)
+// @ts-ignore
 delete window.location
 window.location = JSON.parse(windowLocation)
 window.location.reload = jest.fn()

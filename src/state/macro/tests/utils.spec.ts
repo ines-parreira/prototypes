@@ -1,8 +1,8 @@
 import {fromJS} from 'immutable'
 
-import {GorgiasError} from '../../../models/api/types'
 import {MacroActionName} from '../../../models/macroAction/types'
 import {getDefaultMacro, generateDefaultAction, getErrorReason} from '../utils'
+import {MacroApiError} from '../types'
 
 describe('macro utils', () => {
     describe('generateDefaultAction', () => {
@@ -74,7 +74,7 @@ describe('macro utils', () => {
                         },
                     },
                 },
-            } as unknown as GorgiasError
+            } as unknown as MacroApiError
             expect(getErrorReason(error)).toMatchSnapshot()
         })
     })

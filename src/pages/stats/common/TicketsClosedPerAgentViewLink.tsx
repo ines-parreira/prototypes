@@ -5,11 +5,11 @@ import {List, Map} from 'immutable'
 import {getSupportPerformanceAgentsStatsFilters} from '../../../state/stats/selectors'
 import {getTicketViewField, getTicketViewFieldPath} from '../../../config/views'
 import {ViewField} from '../../../models/view/types'
-import * as segmentTracker from '../../../store/middlewares/segmentTracker.js'
 import {
+    logEvent,
     SegmentEvent,
     StatViewLinkClickedStat,
-} from '../../../store/middlewares/types/segmentTracker'
+} from '../../../store/middlewares/segmentTracker'
 import {getAgents} from '../../../state/agents/selectors'
 import {ViewFilter} from '../../../state/views/types'
 import {CollectionOperator, EqualityOperator} from '../../../state/rules/types'
@@ -61,7 +61,7 @@ export default function TicketsClosedPerAgentViewLink({
     return (
         <span
             onClick={() => {
-                segmentTracker.logEvent(SegmentEvent.StatViewLinkClicked, {
+                logEvent(SegmentEvent.StatViewLinkClicked, {
                     stat: StatViewLinkClickedStat.TicketsClosedPerAgentTotal,
                 })
             }}

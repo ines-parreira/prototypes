@@ -10,7 +10,7 @@ import _keyBy from 'lodash/keyBy'
 import {RootState, StoreDispatch} from '../../../../state/types'
 import {TicketChannels} from '../../../../business/ticket'
 import {integrationsState} from '../../../../fixtures/integrations'
-import {logEvent} from '../../../../store/middlewares/segmentTracker.js'
+import {logEvent} from '../../../../store/middlewares/segmentTracker'
 import TicketsCreatedPerTagViewLink from '../TicketsCreatedPerTagViewLink'
 import {tags} from '../../../../fixtures/tag'
 

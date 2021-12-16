@@ -14,14 +14,14 @@ import {
 } from '../../../../../../config/views'
 import {ViewField} from '../../../../../../models/view/types'
 import {getStatsViewFilters} from '../../../utils'
-import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+    StatViewLinkClickedStat,
+} from '../../../../../../store/middlewares/segmentTracker'
 import {EqualityOperator} from '../../../../../../state/rules/types'
 import ViewLink from '../../../ViewLink'
 import {TICKET_CHANNEL_NAMES} from '../../../../../../state/ticket/constants'
-import {
-    SegmentEvent,
-    StatViewLinkClickedStat,
-} from '../../../../../../store/middlewares/types/segmentTracker'
 
 import css from './TicketDetailsStat.less'
 
@@ -116,12 +116,9 @@ export default function TicketDetailsStat({
                     viewName={`Open tickets assigned to: ${agentName}`}
                     filters={openTicketsFilters}
                     onClick={() => {
-                        segmentTracker.logEvent(
-                            SegmentEvent.StatViewLinkClicked,
-                            {
-                                stat: StatViewLinkClickedStat.TicketsOpenPerAgentLive,
-                            }
-                        )
+                        logEvent(SegmentEvent.StatViewLinkClicked, {
+                            stat: StatViewLinkClickedStat.TicketsOpenPerAgentLive,
+                        })
                     }}
                 >
                     {openTickets}
@@ -145,12 +142,9 @@ export default function TicketDetailsStat({
                                 viewName={`Open tickets assigned to: ${agentName}, channel: ${TICKET_CHANNEL_NAMES[channel]}`}
                                 filters={channelFilters[channel]}
                                 onClick={() => {
-                                    segmentTracker.logEvent(
-                                        SegmentEvent.StatViewLinkClicked,
-                                        {
-                                            stat: StatViewLinkClickedStat.TicketsOpenPerAgentPerChannelLive,
-                                        }
-                                    )
+                                    logEvent(SegmentEvent.StatViewLinkClicked, {
+                                        stat: StatViewLinkClickedStat.TicketsOpenPerAgentPerChannelLive,
+                                    })
                                 }}
                             >
                                 {ticketsNumber}

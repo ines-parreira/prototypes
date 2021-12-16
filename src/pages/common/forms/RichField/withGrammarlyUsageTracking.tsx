@@ -1,7 +1,10 @@
 import React, {ComponentType, Component} from 'react'
 
 import {tryLocalStorage} from '../../../../services/common/utils'
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../store/middlewares/segmentTracker'
 
 export type InjectedProps = {
     detectGrammarly: () => void
@@ -46,7 +49,7 @@ export default function withGrammarlyUsageTracking<Props>(
                 if (grammarlyAlreadyLogged || !findGrammarlyOnPage()) {
                     return
                 }
-                segmentTracker.logEvent(segmentTracker.EVENTS.GRAMMARLY_ENABLED)
+                logEvent(SegmentEvent.GrammarlyEnabled)
                 this.setState({grammarlyAlreadyLogged: true})
                 tryLocalStorage(() =>
                     window.localStorage.setItem(

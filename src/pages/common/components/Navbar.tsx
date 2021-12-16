@@ -22,7 +22,7 @@ import * as currentUserSelectors from '../../../state/currentUser/selectors'
 import * as layoutActions from '../../../state/layout/actions'
 import * as layoutSelectors from '../../../state/layout/selectors'
 import {RootState} from '../../../state/types'
-import * as segmentTracker from '../../../store/middlewares/segmentTracker.js'
+import {logEvent, SegmentEvent} from '../../../store/middlewares/segmentTracker'
 import {reportError} from '../../../utils/errors'
 
 import Avatar from './Avatar/Avatar'
@@ -339,9 +339,7 @@ export class Navbar extends React.Component<Props, State> {
                             href="https://docs.gorgias.com/"
                             target="_blank"
                             onClick={() =>
-                                segmentTracker.logEvent(
-                                    segmentTracker.EVENTS.HELP_CENTER_CLICKED
-                                )
+                                logEvent(SegmentEvent.HelpCenterClicked)
                             }
                             className={css['dropdown-item']}
                         >

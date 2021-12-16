@@ -28,7 +28,10 @@ import {
 } from '../../../../../../utils'
 import {convertToHTML} from '../../../../../../utils/editor'
 import Loader from '../../../../../common/components/Loader/Loader'
-import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../store/middlewares/segmentTracker'
 import {
     deleteIntegration,
     importEmails,
@@ -342,13 +345,10 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                         rel="noopener noreferrer"
                         href="https://docs.gorgias.com/email-integrations/spf-dkim-support"
                         onClick={() => {
-                            segmentTracker.logEvent(
-                                segmentTracker.EVENTS.EXTERNAL_LINK_CLICKED,
-                                {
-                                    name: 'Step by step instructions in add email integration',
-                                    url: 'https://docs.gorgias.com/email-integrations/spf-dkim-support',
-                                }
-                            )
+                            logEvent(SegmentEvent.ExternalLinkClicked, {
+                                name: 'Step by step instructions in add email integration',
+                                url: 'https://docs.gorgias.com/email-integrations/spf-dkim-support',
+                            })
                         }}
                     >
                         step by step tutorial

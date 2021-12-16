@@ -69,6 +69,19 @@ export type Emoji = {
     unified: string
 }
 
+export type GorgiasInitialStateRecentChatTicket = Omit<
+    RecentChatTicket,
+    | 'status'
+    | 'assignee_user_id'
+    | 'spam'
+    | 'trashed_datetime'
+    | 'deleted_datetime'
+    | 'last_message_body_text'
+    | 'last_message_from_agent'
+>
+
+export type GorgiasInitialStateTag = Omit<Tag, 'usage'>
+
 export type GorgiasInitialState = {
     agents: {
         all: User[]
@@ -79,22 +92,23 @@ export type GorgiasInitialState = {
         }
     }
     chats: {
-        tickets: RecentChatTicket[]
+        tickets: GorgiasInitialStateRecentChatTicket[]
     }
     currentAccount: Account
     currentUser: User
     integrations: {
-        authentication: {
+        authentication: Partial<{
             [K in IntegrationType]: IntegrationAuthentication<K>
-        }
+        }>
         extra: {
-            [K in IntegrationType]: IntegrationExtra<K>
+            [IntegrationType.Facebook]: IntegrationExtra<IntegrationType.Facebook>
+            [IntegrationType.GorgiasChat]: IntegrationExtra<IntegrationType.GorgiasChat>
         }
         integrations: Integration[]
     }
     schemas: Record<string, unknown>
     tags: {
-        items: Tag[]
+        items: GorgiasInitialStateTag[]
     }
     teams: {
         all: {
@@ -102,7 +116,7 @@ export type GorgiasInitialState = {
         }
     }
     views: {
-        active: View
+        active: View | Record<string, unknown>
         counts: {
             [key: string]: number
         }

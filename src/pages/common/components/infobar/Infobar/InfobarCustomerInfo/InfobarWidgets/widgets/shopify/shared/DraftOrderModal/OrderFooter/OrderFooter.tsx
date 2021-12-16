@@ -10,7 +10,10 @@ import {getCreateOrderState} from '../../../../../../../../../../../../state/inf
 import {onPayloadChange} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions'
 import MultiSelectOptionsField from '../../../../../../../../../../forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import {Option} from '../../../../../../../../../../forms/MultiSelectOptionsField/types'
-import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../../../../../../../store/middlewares/segmentTracker'
 import {ShopifyActionType} from '../../../types'
 
 import OrderTotals from './OrderTotals/OrderTotals'
@@ -80,10 +83,10 @@ export class OrderFooterComponent extends Component<Props, State> {
     _trackNoteChanged = _debounce(() => {
         const {actionName} = this.props
 
-        segmentTracker.logEvent(
+        logEvent(
             actionName === ShopifyActionType.CreateOrder
-                ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_NOTES_CHANGED
-                : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_NOTES_CHANGED
+                ? SegmentEvent.ShopifyCreateOrderNotesChanged
+                : SegmentEvent.ShopifyDuplicateOrderNotesChanged
         )
     }, 1000)
 
@@ -95,10 +98,10 @@ export class OrderFooterComponent extends Component<Props, State> {
         const newPayload = payload.set('tags', newValue)
 
         onPayloadChange(integrationId, newPayload, false)
-        segmentTracker.logEvent(
+        logEvent(
             actionName === ShopifyActionType.CreateOrder
-                ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_TAGS_CHANGED
-                : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_TAGS_CHANGED
+                ? SegmentEvent.ShopifyCreateOrderTagsChanged
+                : SegmentEvent.ShopifyDuplicateOrderTagsChanged
         )
     }
 

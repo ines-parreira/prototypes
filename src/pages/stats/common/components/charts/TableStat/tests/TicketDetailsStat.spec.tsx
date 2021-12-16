@@ -9,7 +9,7 @@ import TicketDetailsStat from '../TicketDetailsStat'
 import {TicketChannel} from '../../../../../../../business/types/ticket'
 import {RootState, StoreDispatch} from '../../../../../../../state/types'
 import {integrationsState} from '../../../../../../../fixtures/integrations'
-import {logEvent} from '../../../../../../../store/middlewares/segmentTracker.js'
+import {logEvent} from '../../../../../../../store/middlewares/segmentTracker'
 import ViewLink from '../../../../ViewLink'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

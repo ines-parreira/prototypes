@@ -2,11 +2,14 @@ import {createStore, compose, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 
-import rootReducer from '../state/reducers.ts'
+import rootReducer from '../state/reducers'
+import {InitialRootState} from '../types'
 
 import serverErrorHandler from './middlewares/serverErrorHandler'
 
-export default function configureStore(initialState = {}) {
+export default function configureStore(
+    initialState: InitialRootState = {} as InitialRootState
+) {
     let middlewares = applyMiddleware(
         thunk,
         serverErrorHandler,
@@ -22,8 +25,9 @@ export default function configureStore(initialState = {}) {
     const store = createStore(rootReducer, initialState, middlewares)
 
     if (module.hot) {
-        module.hot.accept('../state/reducers.ts', () => {
-            const nextReducer = require('../state/reducers.ts').default
+        module.hot.accept('../state/reducers', () => {
+            // eslint-disable-next-line
+            const nextReducer = require('../state/reducers').default
             store.replaceReducer(nextReducer)
         })
     }

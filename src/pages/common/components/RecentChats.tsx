@@ -8,7 +8,7 @@ import {Map, fromJS, List} from 'immutable'
 import navbarCss from 'assets/css/navbar.less'
 
 import {isCurrentlyOnTicket} from '../../../utils'
-import * as segmentTracker from '../../../store/middlewares/segmentTracker.js'
+import {logEvent, SegmentEvent} from '../../../store/middlewares/segmentTracker'
 import {RootState} from '../../../state/types'
 import {MAX_RECENT_CHATS} from '../../../config/recentChats'
 
@@ -48,13 +48,10 @@ class RecentChatsItem extends Component<ItemProps> {
         return (
             <Link
                 onClick={() => {
-                    segmentTracker.logEvent(
-                        segmentTracker.EVENTS.RECENT_ACTIVITY_CLICKED,
-                        {
-                            position,
-                            ticket: recentTicket.toJS(),
-                        }
-                    )
+                    logEvent(SegmentEvent.RecentActivityClicked, {
+                        position,
+                        ticket: recentTicket.toJS(),
+                    })
                     ;(
                         this.context as {
                             closePanel: () => void

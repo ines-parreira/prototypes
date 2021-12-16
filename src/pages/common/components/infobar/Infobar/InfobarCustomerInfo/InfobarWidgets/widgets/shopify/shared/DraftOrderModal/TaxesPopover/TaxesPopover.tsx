@@ -17,7 +17,10 @@ import {
     PopoverBody,
 } from 'reactstrap'
 
-import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../../../../../../../store/middlewares/segmentTracker'
 import {focusElement} from '../../../../../../../../../../../../utils/html'
 import {ShopifyActionType} from '../../../types'
 
@@ -61,12 +64,10 @@ export default class TaxesPopover extends Component<Props, State> {
 
         if (onOpen) {
             focusElement(() => this._inputElement as HTMLInputElement)
-            segmentTracker.logEvent(
+            logEvent(
                 actionName === ShopifyActionType.CreateOrder
-                    ? segmentTracker.EVENTS
-                          .SHOPIFY_CREATE_ORDER_TAXES_POPOVER_OPEN
-                    : segmentTracker.EVENTS
-                          .SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_OPEN
+                    ? SegmentEvent.ShopifyCreateOrderTaxesPopoverOpen
+                    : SegmentEvent.ShopifyDuplicateOrderTaxesPopoverOpen
             )
         } else if (onClose) {
             focusElement(() => this._buttonElement as HTMLButtonElement)
@@ -108,11 +109,10 @@ export default class TaxesPopover extends Component<Props, State> {
         this._toggle()
         onChange(taxExempt)
 
-        segmentTracker.logEvent(
+        logEvent(
             actionName === ShopifyActionType.CreateOrder
-                ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_TAXES_POPOVER_APPLY
-                : segmentTracker.EVENTS
-                      .SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_APPLY
+                ? SegmentEvent.ShopifyCreateOrderTaxesPopoverApply
+                : SegmentEvent.ShopifyDuplicateOrderTaxesPopoverApply
         )
     }
 
@@ -121,11 +121,10 @@ export default class TaxesPopover extends Component<Props, State> {
 
         this._toggle()
 
-        segmentTracker.logEvent(
+        logEvent(
             actionName === ShopifyActionType.CreateOrder
-                ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_TAXES_POPOVER_CLOSE
-                : segmentTracker.EVENTS
-                      .SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_CLOSE
+                ? SegmentEvent.ShopifyCreateOrderTaxesPopoverClose
+                : SegmentEvent.ShopifyDuplicateOrderTaxesPopoverClose
         )
     }
 

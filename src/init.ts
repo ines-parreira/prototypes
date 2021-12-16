@@ -4,7 +4,7 @@ import {Store} from 'redux'
 import {Chart} from 'chart.js'
 import {SankeyController, Flow} from 'chartjs-chart-sankey'
 
-import './polyfills.js'
+import './polyfills'
 
 import {EditableUserProfile} from './config/types/user'
 import {resendVerificationEmail} from './state/currentAccount/actions'
@@ -14,8 +14,8 @@ import {
 } from './state/integrations/selectors'
 import {recentViewsStorage} from './state/views/utils'
 import {notify} from './state/notifications/actions'
-import configureStore from './store/configureStore.js'
-import * as segmentTracker from './store/middlewares/segmentTracker.js'
+import configureStore from './store/configureStore'
+import {logEvent, SegmentEvent} from './store/middlewares/segmentTracker'
 import {transformSystemMessagesToNotifications} from './utils'
 import {NotificationStatus} from './state/notifications/types'
 import {GorgiasInitialState, InitialRootState} from './types'
@@ -57,7 +57,7 @@ export const toInitialStoreState = (initialState: GorgiasInitialState) => {
 
     const tags = initialState.tags?.items.reduce(
         (acc: {[key: string]: Tag}, tag) => {
-            acc[tag.id] = tag
+            acc[tag.id] = tag as Tag
             return acc
         },
         {}
@@ -98,17 +98,12 @@ if (initialState.currentUser) {
 const eventsToTrack = window.SEGMENT_EVENTS_TO_TRACK
 if (eventsToTrack) {
     eventsToTrack.forEach((event) => {
-        segmentTracker.logEvent(event.type, event.data)
+        logEvent(event.type as SegmentEvent, event.data)
     })
     delete window.SEGMENT_EVENTS_TO_TRACK
 }
 
-//$TsFixMe: remove on configureStore migration
-export const store = (
-    configureStore as unknown as (
-        initialState: Record<string, unknown>
-    ) => Store
-)(toInitialStoreState(initialState))
+export const store = configureStore(toInitialStoreState(initialState))
 
 initializeNewReleaseHandler(store)
 

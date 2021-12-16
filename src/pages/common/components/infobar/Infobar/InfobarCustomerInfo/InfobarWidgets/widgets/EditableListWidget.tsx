@@ -11,7 +11,10 @@ import {isEditing} from '../../../../../../../../state/widgets/selectors'
 import {executeAction} from '../../../../../../../../state/infobar/actions'
 import {RootState} from '../../../../../../../../state/types'
 
-import * as segmentTracker from '../../../../../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../../../store/middlewares/segmentTracker'
 import Tooltip from '../../../../../Tooltip'
 
 import {ShopifyActionType} from './shopify/types'
@@ -77,22 +80,16 @@ export function EditableListWidget(
     }
     const _onFocus = () => {
         if (data_source === 'Customer') {
-            segmentTracker.logEvent(
-                segmentTracker.EVENTS.SHOPIFY_EDIT_CUSTOMER_TAG_SELECT,
-                {
-                    account_id: currentAccount.get('domain'),
-                    customer_id: widget_resource_ids?.target_id,
-                }
-            )
+            logEvent(SegmentEvent.ShopifyEditCustomerTagSelect, {
+                account_id: currentAccount.get('domain'),
+                customer_id: widget_resource_ids?.target_id,
+            })
         } else if (data_source === 'Order') {
-            segmentTracker.logEvent(
-                segmentTracker.EVENTS.SHOPIFY_EDIT_ORDER_TAG_EDIT_STARTED,
-                {
-                    account_id: currentAccount.get('domain'),
-                    order_id: widget_resource_ids?.target_id,
-                    customer_id: widget_resource_ids?.customer_id,
-                }
-            )
+            logEvent(SegmentEvent.ShopifyEditOrderTagEditStarted, {
+                account_id: currentAccount.get('domain'),
+                order_id: widget_resource_ids?.target_id,
+                customer_id: widget_resource_ids?.customer_id,
+            })
         }
     }
     const _submitChanges = () => {

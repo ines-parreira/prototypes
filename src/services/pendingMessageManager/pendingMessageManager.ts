@@ -9,7 +9,7 @@ import {
 import {notify} from '../../state/notifications/actions'
 import {NotificationStatus} from '../../state/notifications/types'
 import {applyMacro, messageDeleted} from '../../state/ticket/actions'
-import {logEvent, EVENTS} from '../../store/middlewares/segmentTracker.js'
+import {logEvent, SegmentEvent} from '../../store/middlewares/segmentTracker'
 import {RootState} from '../../state/types'
 import history from '../../pages/history'
 import {NewMessage, ReplyAreaState} from '../../state/newMessage/types'
@@ -99,7 +99,7 @@ export class PendingMessageManager {
             const {messageId, messageToSend, ticketId, replyAreaState} =
                 this.pendingSendMessagesArgs
 
-            logEvent(EVENTS.UNDO_SENT_MESSAGE, {
+            logEvent(SegmentEvent.UndoSentMessage, {
                 bodyText: messageToSend.body_text,
             })
             //eslint-disable-next-line @typescript-eslint/no-unsafe-call

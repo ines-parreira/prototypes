@@ -35,7 +35,10 @@ import Loader from '../../../common/components/Loader/Loader'
 import {loadScript} from '../../../../utils'
 import Errors from '../../../common/forms/Errors.js'
 import InputField from '../../../common/forms/InputField'
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../store/middlewares/segmentTracker'
 import PageHeader from '../../../common/components/PageHeader'
 import * as currentAccountSelectors from '../../../../state/currentAccount/selectors'
 import GorgiasApi from '../../../../services/gorgiasApi'
@@ -205,14 +208,11 @@ export class CreditCardContainer extends Component<Props, State> {
         cardToEncode.exp_year = expYear.trim() as any
 
         this.setState({isSubmitting: true})
-        segmentTracker.logEvent(
-            segmentTracker.EVENTS.PAYMENT_METHOD_ADD_CLICKED,
-            {
-                payment_method: 'stripe',
-                user_id: currentUser.get('id'),
-                account_domain: currentAccount.get('domain'),
-            }
-        )
+        logEvent(SegmentEvent.PaymentMethodAddClicked, {
+            payment_method: 'stripe',
+            user_id: currentUser.get('id'),
+            account_domain: currentAccount.get('domain'),
+        })
 
         // eslint-disable-next-line no-async-promise-executor, @typescript-eslint/no-misused-promises
         return new Promise<void>(async (resolve) => {
@@ -249,14 +249,11 @@ export class CreditCardContainer extends Component<Props, State> {
             this.props.setCreditCard(creditCard)
 
             if (!hasCreditCard) {
-                segmentTracker.logEvent(
-                    segmentTracker.EVENTS.PAYMENT_METHOD_ADDED,
-                    {
-                        payment_method: 'stripe',
-                        user_id: currentUser.get('id'),
-                        account_domain: currentAccount.get('domain'),
-                    }
-                )
+                logEvent(SegmentEvent.PaymentMethodAdded, {
+                    payment_method: 'stripe',
+                    user_id: currentUser.get('id'),
+                    account_domain: currentAccount.get('domain'),
+                })
             }
 
             if (hasSubscription && subscription.get('status') !== 'trialing') {

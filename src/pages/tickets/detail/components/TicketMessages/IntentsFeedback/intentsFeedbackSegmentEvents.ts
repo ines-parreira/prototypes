@@ -1,4 +1,7 @@
-import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../store/middlewares/segmentTracker'
 
 type BaseIntentFeedbackProps = {
     account_domain: string
@@ -28,15 +31,9 @@ export enum UserSubmissionSubEventType {
 }
 
 export const logUserSubmissionEvent = (event: UserSubmissionEventProps) => {
-    segmentTracker.logEvent(
-        segmentTracker.EVENTS.INTENT_FEEDBACK_USER_SUBMISSION,
-        event
-    )
+    logEvent(SegmentEvent.IntentFeedbackUserSubmission, event)
 }
 
 export const logDropdownOpenEvent = (event: DropdownOpenEventProps) => {
-    segmentTracker.logEvent(
-        segmentTracker.EVENTS.INTENT_FEEDBACK_DROPDOWN_OPEN,
-        event
-    )
+    logEvent(SegmentEvent.IntentFeedbackDropdownOpen, event)
 }

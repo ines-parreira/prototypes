@@ -1,8 +1,6 @@
 import crypto from 'crypto'
 
 import {SyntheticEvent} from 'react'
-
-import {AxiosError} from 'axios'
 import {EditorState, Modifier} from 'draft-js'
 import escodegen from 'escodegen'
 import esprima from 'esprima'
@@ -45,10 +43,11 @@ import {sanitizeHtmlDefault} from './utils/html'
 import {isProduction} from './utils/environment'
 import {linkify} from './utils/editor'
 import client from './models/api/resources'
+import {GorgiasApiResponseDataError} from './models/api/types'
 
-type Message = {
-    created_datetime: Date
-    source: {type: string}
+export type Message = {
+    id: number
+    created_datetime: string
 }
 type Property = {
     type: string
@@ -111,7 +110,7 @@ export function isEmail(string: string): string is string {
 /**
  * Validate if string is a list of emails
  */
-export function isEmailList(string: string, delimiter = ','): boolean {
+export function isEmailList(string?: string | null, delimiter = ','): boolean {
     if (!string) {
         return false
     }
@@ -140,7 +139,7 @@ export function isGorgiasSupportAddress(address: string): boolean {
 
 export function formatDatetime(
     datetime: Datetime,
-    timezone: Maybe<string>,
+    timezone?: string | null,
     format = 'calendar'
 ): Datetime {
     try {
@@ -792,9 +791,11 @@ function flattenErrors(
 }
 
 export const errorToChildren = (
-    incomingError: AxiosError<{error?: {data?: ValidationErrors}}>
-): Maybe<string> => {
-    const error = _get(incomingError, 'response.data.error', {})
+    incomingError: Record<string, unknown>
+): string | null => {
+    const error = _get(incomingError, 'response.data.error', {}) as
+        | GorgiasApiResponseDataError
+        | {data: never}
     const {data} = error
     const hasErrors = !!data
 
@@ -804,7 +805,7 @@ export const errorToChildren = (
 
     return `
         <ul className="m-0">
-            ${flattenErrors(data)
+            ${flattenErrors(data as ValidationErrors)
                 .map(({key, value}) =>
                     sanitizeHtmlDefault(`<li>${_startCase(key)}: ${value}</li>`)
                 )
@@ -816,7 +817,7 @@ export const errorToChildren = (
 /**
  * Convert hours to seconds.
  */
-export function hoursToSeconds(hours = 0): number {
+export function hoursToSeconds(hours: number | string = 0): number {
     if (typeof hours !== 'number') {
         return 0
     }
@@ -978,10 +979,10 @@ export const lightenDarkenColor = (color: string, amount: number): string => {
     )
 }
 
-export const makeGetPlainJS = <T = unknown>(
-    selector: Selector<RootState, Iterable<any, any>>
+export const makeGetPlainJS = <T = unknown, S = RootState>(
+    selector: Selector<S, Iterable<any, any>>
 ) =>
-    createSelector<RootState, T, Iterable<any, any>>(
+    createSelector<S, T, Iterable<any, any>>(
         selector,
         (data: Iterable<any, any>) => data.toJS() as T
     )

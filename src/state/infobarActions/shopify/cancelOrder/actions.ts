@@ -10,8 +10,10 @@ import {
     getRefundAmount,
     getTotalQuantities,
 } from '../../../../business/shopify/refund'
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
-import {SegmentEvent} from '../../../../store/middlewares/types/segmentTracker'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../store/middlewares/segmentTracker'
 import {formatPrice} from '../../../../business/shopify/number'
 import {StoreDispatch, RootState} from '../../../types'
 import GorgiasApi from '../../../../services/gorgiasApi'
@@ -89,7 +91,7 @@ export const onInit =
             const orderId = order.get('id') as number
             api.cancelPendingRequests(true)
 
-            segmentTracker.logEvent(SegmentEvent.ShopifyCancelOrderOpen, {
+            logEvent(SegmentEvent.ShopifyCancelOrderOpen, {
                 orderId,
             })
 
@@ -252,7 +254,7 @@ export const onCancel = (via: string) => () => {
     calculateRefund.cancel()
     _gorgiasApi = null
 
-    segmentTracker.logEvent(SegmentEvent.ShopifyCancelOrderCancel, {
+    logEvent(SegmentEvent.ShopifyCancelOrderCancel, {
         via,
     })
 }

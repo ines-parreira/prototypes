@@ -6,9 +6,10 @@ import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
 } from '../../../../../../../constants/integration'
-import configureStore from '../../../../../../../store/configureStore.js'
+import configureStore from '../../../../../../../store/configureStore'
 import GorgiasChatIntegrationInstall from '../GorgiasChatIntegrationInstall'
 import {renderChatCodeSnippet} from '../../renderChatCodeSnippet.js'
+import {InitialRootState} from '../../../../../../../types'
 
 describe('renderChatCodeSnippet()', () => {
     it('should render correctly with new format', () => {
@@ -63,7 +64,7 @@ describe('<GorgiasChatIntegrationInstall/>', () => {
     }
 
     const minProps = {
-        store: configureStore(minStore),
+        store: configureStore(minStore as InitialRootState),
         actions: {
             updateOrCreateIntegration: jest.fn(() => Promise.resolve()),
         },

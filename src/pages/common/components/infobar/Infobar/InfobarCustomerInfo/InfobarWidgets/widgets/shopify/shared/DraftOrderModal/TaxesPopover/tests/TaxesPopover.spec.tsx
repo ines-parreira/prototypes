@@ -4,9 +4,9 @@ import _noop from 'lodash/noop'
 import {Button, Form, Popover} from 'reactstrap'
 
 import {
-    EVENTS,
+    SegmentEvent,
     logEvent,
-} from '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+} from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
 import TaxesPopover from '../TaxesPopover'
 import {ShopifyActionType} from '../../../../types'
 
@@ -74,13 +74,13 @@ describe('<TaxesPopover/>', () => {
         it.each([
             [
                 ShopifyActionType.CreateOrder,
-                EVENTS.SHOPIFY_CREATE_ORDER_TAXES_POPOVER_OPEN,
-                EVENTS.SHOPIFY_CREATE_ORDER_TAXES_POPOVER_APPLY,
+                SegmentEvent.ShopifyCreateOrderTaxesPopoverOpen,
+                SegmentEvent.ShopifyCreateOrderTaxesPopoverApply,
             ],
             [
                 ShopifyActionType.DuplicateOrder,
-                EVENTS.SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_OPEN,
-                EVENTS.SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_APPLY,
+                SegmentEvent.ShopifyDuplicateOrderTaxesPopoverOpen,
+                SegmentEvent.ShopifyDuplicateOrderTaxesPopoverApply,
             ],
         ])(
             'should call onChange() with update value',
@@ -128,11 +128,11 @@ describe('<TaxesPopover/>', () => {
         it.each([
             [
                 ShopifyActionType.CreateOrder,
-                EVENTS.SHOPIFY_CREATE_ORDER_TAXES_POPOVER_CLOSE,
+                SegmentEvent.ShopifyCreateOrderTaxesPopoverClose,
             ],
             [
                 ShopifyActionType.DuplicateOrder,
-                EVENTS.SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_CLOSE,
+                SegmentEvent.ShopifyDuplicateOrderTaxesPopoverClose,
             ],
         ])('should track', (actionName, event) => {
             const taxExempt = false

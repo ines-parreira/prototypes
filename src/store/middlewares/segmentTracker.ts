@@ -1,3 +1,43 @@
+/// <reference types="@types/segment-analytics" />
+import _isUndefined from 'lodash/isUndefined'
+
+import {devLog} from '../../utils'
+import {isDevelopment} from '../../utils/environment'
+import {User} from '../../config/types/user'
+
+const analytics = window.analytics
+
+export const logEvent = (event: SegmentEvent, props = {}) => {
+    devLog('Track Segment', event, props)
+
+    if (
+        window.USER_IMPERSONATED ||
+        _isUndefined(analytics) ||
+        isDevelopment()
+    ) {
+        return
+    }
+
+    analytics.track(event, props)
+}
+
+export const identifyUser = (user: User) => {
+    if (window.USER_IMPERSONATED || _isUndefined(analytics)) {
+        return
+    }
+
+    const domain = window.location.hostname.split('.')[0]
+
+    analytics.identify(window.SEGMENT_ANALYTICS_USER_ID, {
+        gorgias_subdomain: domain,
+        name: user.name,
+        email: user.email,
+        country: user.country,
+        role: user.roles[0].name,
+        created_at: user.created_datetime,
+    })
+}
+
 export enum SegmentEvent {
     BookCallClicked = 'book-call-clicked',
     CustomerNoteEdited = 'customer-note-edited',
@@ -6,7 +46,13 @@ export enum SegmentEvent {
     HelpCenterClicked = 'help-center-clicked',
     InfobarIntegrationAddClicked = 'infobar-integration-add-clicked',
     IntegrationClicked = 'integration-clicked',
+    IntentFeedbackUserSubmission = 'intent-feedback-user-submission',
+    IntentFeedbackDropdownOpen = 'intent-feedback-dropdown-open',
     ModalToggled = 'modal-toggled',
+    MacroAppliedSearchbar = 'macro-applied-searchbar',
+    MacrosQuickReplyTooltip = 'macros-quick-reply-tooltip',
+    MacrosQuickReplyGetDetails = 'macros-quick-reply-get-details',
+    MacrosQuickReplySent = 'macros-quick-reply-sent',
     NavbarViewMoved = 'navbar-view-moved',
     NavbarViewToggled = 'navbar-view-toggled',
     OnboardingWidgetClicked = 'onboarding-widget-clicked',
@@ -16,6 +62,10 @@ export enum SegmentEvent {
     ShopifyCancelOrderCancel = 'shopify/cancel-order/cancel',
     ShopifyCancelOrderOpen = 'shopify/cancel-order/open',
     ShopifyCreateOrderCancel = 'shopify/create-order/cancel',
+    ShopifyEditOrderDiscountPopoverOpen = 'shopify/edit-order/discount-popover/open',
+    ShopifyEditOrderDiscountPopoverApply = 'shopify/edit-order/discount-popover/apply',
+    ShopifyEditOrderDiscountPopoverRemove = 'shopify/edit-order/discount-popover/remove',
+    ShopifyEditOrderDiscountPopoverClose = 'shopify/edit-order/discount-popover/close',
     ShopifyCreateOrderCustomItemPopoverCancel = 'shopify/create-order/custom-item-popover/cancel',
     ShopifyCreateOrderCustomItemPopoverOpen = 'shopify/create-order/custom-item-popover/open',
     ShopifyCreateOrderCustomItemPopoverSave = 'shopify/create-order/custom-item-popover/save',
@@ -28,6 +78,7 @@ export enum SegmentEvent {
     ShopifyCreateOrderEmailInvoicePopoverSend = 'shopify/create-order/email-invoice-popover/send',
     ShopifyCreateOrderLineItemAdded = 'shopify/create-order/line-item/added',
     ShopifyEditOrderLineItemAdded = 'shopify/edit-order/line-item/added',
+    ShopifyEditOrderLineItemQuantityChanged = 'shopify/edit-order/line-item/quantity/changed',
     ShopifyCreateOrderLineItemQuantityChanged = 'shopify/create-order/line-item/quantity/changed',
     ShopifyCreateOrderNotesChanged = 'shopify/create-order/notes/changed',
     ShopifyCreateOrderShippingPopoverApply = 'shopify/create-order/shipping-popover/apply',

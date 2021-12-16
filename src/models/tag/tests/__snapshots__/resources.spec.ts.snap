@@ -23,7 +23,7 @@ Object {
   "patch": Array [],
   "post": Array [
     Object {
-      "data": "{\\"name\\":\\"billing\\",\\"description\\":null}",
+      "data": "{\\"name\\":\\"billing\\"}",
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",

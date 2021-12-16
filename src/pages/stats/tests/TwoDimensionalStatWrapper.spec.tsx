@@ -13,7 +13,7 @@ import {StatsFilterType} from '../../../state/stats/types'
 import {saveFileAsDownloaded} from '../../../utils/file'
 import {notify} from '../../../state/notifications/actions'
 import {downloadStat} from '../../../models/stat/resources'
-import {logEvent} from '../../../store/middlewares/segmentTracker.js'
+import {logEvent} from '../../../store/middlewares/segmentTracker'
 import {RootState} from '../../../state/types'
 import {user} from '../../../fixtures/users'
 import {account} from '../../../fixtures/account'
@@ -21,7 +21,7 @@ import {account} from '../../../fixtures/account'
 jest.mock('../../../utils/file')
 jest.mock('../../../state/notifications/actions')
 jest.mock('../../../models/stat/resources')
-jest.mock('../../../store/middlewares/segmentTracker.js')
+jest.mock('../../../store/middlewares/segmentTracker')
 
 const mockStore = configureMockStore([thunk])
 const saveFileAsDownloadedMock = saveFileAsDownloaded as jest.MockedFunction<

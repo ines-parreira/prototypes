@@ -14,7 +14,10 @@ import * as customersActions from '../../../../../state/customers/actions'
 import {setCustomer} from '../../../../../state/ticket/actions'
 import * as WidgetsActions from '../../../../../state/widgets/actions'
 import history from '../../../../history'
-import * as segmentTracker from '../../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../store/middlewares/segmentTracker'
 import {ConnectedAction} from '../../../../../state/types'
 import {WidgetContextType} from '../../../../../state/widgets/types'
 import {ApiListResponsePagination} from '../../../../../models/api/types'
@@ -504,9 +507,8 @@ export const Infobar = ({
                                                 color="primary"
                                                 onClick={() => {
                                                     // TODO(customers-migration): ask confirmation to update this event
-                                                    segmentTracker.logEvent(
-                                                        segmentTracker.EVENTS
-                                                            .USER_MERGE_CLICKED,
+                                                    logEvent(
+                                                        SegmentEvent.UserMergeClicked,
                                                         {
                                                             location:
                                                                 'suggested user in infobar',

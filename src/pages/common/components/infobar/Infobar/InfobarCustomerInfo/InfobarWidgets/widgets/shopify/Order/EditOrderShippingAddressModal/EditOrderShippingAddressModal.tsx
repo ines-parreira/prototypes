@@ -49,8 +49,10 @@ import Loader from '../../../../../../../../Loader/Loader'
 
 import {getCurrentAccountState} from '../../../../../../../../../../../state/currentAccount/selectors'
 
-import * as segmentTracker from '../../../../../../../../../../../store/middlewares/segmentTracker.js'
-import {SegmentEvent} from '../../../../../../../../../../../store/middlewares/types/segmentTracker'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../../../../../../store/middlewares/segmentTracker'
 
 import css from './EditOrderShippingAddressModal.less'
 
@@ -145,28 +147,22 @@ export function EditOrderShippingAddressModal(
             () => {
                 onSubmit()
                 handleReset()
-                segmentTracker.logEvent(
-                    SegmentEvent.ShopifyEditOrderAddressEdited,
-                    {
-                        account_id: currentAccount.get('domain'),
-                        order_id: data.order_id,
-                        country: currentAddress.get('country'),
-                        zip: currentAddress.get('zip'),
-                    }
-                )
+                logEvent(SegmentEvent.ShopifyEditOrderAddressEdited, {
+                    account_id: currentAccount.get('domain'),
+                    order_id: data.order_id,
+                    country: currentAddress.get('country'),
+                    zip: currentAddress.get('zip'),
+                })
             }
         )
     }
 
     const handleCancel = useCallback(
         () => () => {
-            segmentTracker.logEvent(
-                SegmentEvent.ShopifyEditOrderAddressCancel,
-                {
-                    account_id: currentAccount.get('domain'),
-                    order_id: data.order_id,
-                }
-            )
+            logEvent(SegmentEvent.ShopifyEditOrderAddressCancel, {
+                account_id: currentAccount.get('domain'),
+                order_id: data.order_id,
+            })
             setCurrentAddress(
                 data.current_shipping_address || defaultCurrentAddressState
             )
@@ -232,13 +228,10 @@ export function EditOrderShippingAddressModal(
     const toggle = () => {
         setOpen(!dropdownOpen)
         if (!dropdownOpen) {
-            segmentTracker.logEvent(
-                SegmentEvent.ShopifyEditOrderAddressAddressDropdownOpen,
-                {
-                    account_id: currentAccount.get('domain'),
-                    order_id: data.order_id,
-                }
-            )
+            logEvent(SegmentEvent.ShopifyEditOrderAddressAddressDropdownOpen, {
+                account_id: currentAccount.get('domain'),
+                order_id: data.order_id,
+            })
         }
     }
 
@@ -252,25 +245,19 @@ export function EditOrderShippingAddressModal(
         })
         setProvinces(_getStatesList(selectedAddress.get('country')))
         setCurrentAddress(selectedAddress)
-        segmentTracker.logEvent(
-            SegmentEvent.ShopifyEditOrderAddressAddressDropdownClick,
-            {
-                account_id: currentAccount.get('domain'),
-                order_id: data.order_id,
-            }
-        )
+        logEvent(SegmentEvent.ShopifyEditOrderAddressAddressDropdownClick, {
+            account_id: currentAccount.get('domain'),
+            order_id: data.order_id,
+        })
     }
 
     useUpdateEffect(() => {
         if (!previousIsOpen && isOpen) {
             if (hasScope) {
-                segmentTracker.logEvent(
-                    SegmentEvent.ShopifyEditOrderAddressModalOpen,
-                    {
-                        account_id: currentAccount.get('domain'),
-                        order_id: data.order_id,
-                    }
-                )
+                logEvent(SegmentEvent.ShopifyEditOrderAddressModalOpen, {
+                    account_id: currentAccount.get('domain'),
+                    order_id: data.order_id,
+                })
                 void onInit(integrationId, data.customer_id, () => {
                     onClose()
                     handleReset()

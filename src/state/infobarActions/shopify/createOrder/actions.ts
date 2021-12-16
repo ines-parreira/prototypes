@@ -25,8 +25,10 @@ import {
     Product,
     Variant,
 } from '../../../../constants/integrations/types/shopify'
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
-import {SegmentEvent} from '../../../../store/middlewares/types/segmentTracker'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../store/middlewares/segmentTracker'
 import {RootState, StoreDispatch} from '../../../types'
 import GorgiasApi from '../../../../services/gorgiasApi'
 import {executeAction} from '../../../infobar/actions'
@@ -252,7 +254,7 @@ export const addRow =
                 ? SegmentEvent.ShopifyCreateOrderLineItemAdded
                 : SegmentEvent.ShopifyDuplicateOrderLineItemAdded
 
-        segmentTracker.logEvent(eventName, {
+        logEvent(eventName, {
             productId: product.id,
             variantId: variant.id,
         })
@@ -352,7 +354,7 @@ export const onCancel =
                 ? SegmentEvent.ShopifyCreateOrderCancel
                 : SegmentEvent.ShopifyDuplicateOrderCancel
 
-        segmentTracker.logEvent(eventName, {via})
+        logEvent(eventName, {via})
     }
 
 export const onReset = () => (dispatch: StoreDispatch) => resetState(dispatch)

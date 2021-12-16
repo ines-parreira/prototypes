@@ -7,7 +7,7 @@ import {
     SMOOCH_INSIDE_INTEGRATION_TYPE,
 } from '../../../../../../../constants/integration.ts'
 
-import configureStore from '../../../../../../../store/configureStore'
+import configureStore from '../../../../../../../store/configureStore.ts'
 import ChatIntegrationInstall from '../ChatIntegrationInstall.tsx'
 
 jest.mock(

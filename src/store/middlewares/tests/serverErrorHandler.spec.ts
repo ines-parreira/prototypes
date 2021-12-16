@@ -1,4 +1,4 @@
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import _get from 'lodash/get'
 
@@ -18,7 +18,7 @@ function removeWhitespace(str = '') {
 
 describe('middlewares', () => {
     describe('serverErrorHandler', () => {
-        let store
+        let store: MockStoreEnhanced<unknown>
 
         beforeEach(() => {
             store = mockStore()

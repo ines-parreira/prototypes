@@ -11,7 +11,10 @@ import {
     getDraftOrderLineItemDiscountedPrice,
     getDraftOrderLineItemTotal,
 } from '../../../../../../../../../../../../business/shopify/lineItem'
-import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../../../../../../../store/middlewares/segmentTracker'
 import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
 import {ProductStockQuantity} from '../../StockQuantity'
 import DiscountPopover from '../DiscountPopover/DiscountPopover'
@@ -62,22 +65,17 @@ const debouncedUpdateLineItem = _debounce(
         let action
         switch (actionName) {
             case ShopifyActionType.CreateOrder:
-                action =
-                    segmentTracker.EVENTS
-                        .SHOPIFY_CREATE_ORDER_LINE_ITEM_QUANTITY_CHANGED
+                action = SegmentEvent.ShopifyCreateOrderLineItemQuantityChanged
                 break
             case ShopifyActionType.DuplicateOrder:
                 action =
-                    segmentTracker.EVENTS
-                        .SHOPIFY_DUPLICATE_ORDER_LINE_ITEM_QUANTITY_CHANGED
+                    SegmentEvent.ShopifyDuplicateOrderLineItemQuantityChanged
                 break
             case ShopifyActionType.EditOrder:
-                action =
-                    segmentTracker.EVENTS
-                        .SHOPIFY_EDIT_ORDER_LINE_ITEM_QUANTITY_CHANGED
+                action = SegmentEvent.ShopifyEditOrderLineItemQuantityChanged
                 break
         }
-        segmentTracker.logEvent(action)
+        logEvent(action as SegmentEvent)
     },
     800
 )

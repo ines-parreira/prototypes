@@ -7,8 +7,10 @@ import axios, {AxiosError, Canceler} from 'axios'
 import classnames from 'classnames'
 
 import * as tagsSelectors from '../../../../../state/tags/selectors'
-import * as segmentTracker from '../../../../../store/middlewares/segmentTracker.js'
-import {SegmentEvent} from '../../../../../store/middlewares/types/segmentTracker'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../store/middlewares/segmentTracker'
 import {
     TICKETS_PER_TAG,
     stats as statsConfig,
@@ -71,7 +73,7 @@ export class StatContainer extends Component<Props, State> {
     _downloadStatistic = async () => {
         const {name, filters, currentUser, account, notify} = this.props
         this.setState({isDownloading: true})
-        segmentTracker.logEvent(SegmentEvent.StatDownloadClicked, {
+        logEvent(SegmentEvent.StatDownloadClicked, {
             name,
             user_id: currentUser.get('id'),
             account_domain: account.get('domain'),

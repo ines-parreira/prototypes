@@ -16,13 +16,13 @@ import {
     httpAction,
     macroFixture,
 } from '../../../../../../../fixtures/macro'
-import {logEvent} from '../../../../../../../store/middlewares/segmentTracker.js'
+import {logEvent} from '../../../../../../../store/middlewares/segmentTracker'
 
 import {ticket} from '../../../../../../../fixtures/ticket'
 import {account} from '../../../../../../../fixtures/account'
 import {user} from '../../../../../../../fixtures/users'
 
-jest.mock('../../../../../../../store/middlewares/segmentTracker.js')
+jest.mock('../../../../../../../store/middlewares/segmentTracker')
 jest.mock('lodash/debounce', () => {
     const _identity: <T>(v: T) => T = jest.requireActual('lodash/identity')
     return _identity

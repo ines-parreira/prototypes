@@ -15,7 +15,6 @@ import {
 } from 'reactstrap'
 
 import {DEFAULT_ACTIONS} from '../../../config'
-import {GorgiasError} from '../../../models/api/types'
 import {
     createMacro,
     deleteMacro,
@@ -41,6 +40,7 @@ import MacroEdit from '../../tickets/common/macros/components/MacroEdit'
 import history from '../../history'
 import {errorToChildren} from '../../../utils'
 import settingsCss from '../settings.less'
+import {MacroApiError} from '../../../state/macro/types'
 
 import css from './MacrosSettingsForm.less'
 
@@ -115,7 +115,7 @@ export function MacrosSettingsFormContainer({
                 })
                 history.push('/app/settings/macros')
             } catch (error) {
-                const gorgiasError = error as GorgiasError
+                const gorgiasError = error as MacroApiError
                 const message = gorgiasError.response.data.error.msg
                 const reason = getErrorReason(gorgiasError)
                 void notify({
@@ -164,7 +164,7 @@ export function MacrosSettingsFormContainer({
             history.push('/app/settings/macros')
         } catch (error) {
             void notify({
-                title: (error as GorgiasError).response.data.error.msg,
+                title: (error as MacroApiError).response.data.error.msg,
                 message: errorToChildren(error)!,
                 allowHTML: true,
                 status: NotificationStatus.Error,

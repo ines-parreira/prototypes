@@ -1,23 +1,24 @@
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {EMAIL_INTEGRATION_TYPE} from '../constants/integration.ts'
-import {initialState} from '../fixtures/initialState.ts'
+import {EMAIL_INTEGRATION_TYPE} from '../constants/integration'
+import {initialState} from '../fixtures/initialState'
 import {
     notifyAccountNotVerified,
     notifyDeprecatedTld,
     toInitialStoreState,
-} from '../init.ts'
+} from '../init'
+import {RootState} from '../state/types'
 
 const mockStore = configureMockStore([thunk])
 
 describe('init', () => {
-    let reduxStore
+    let reduxStore: MockStoreEnhanced<unknown>
 
     describe('notifyDeprecatedTld()', () => {
         beforeEach(() => {
-            reduxStore = mockStore({})
+            reduxStore = mockStore({} as RootState)
         })
 
         it("should not do anything because the URL's TLD is not `.io`", () => {

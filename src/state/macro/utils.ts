@@ -1,17 +1,15 @@
 import {fromJS, Map} from 'immutable'
 import _forEach from 'lodash/forEach'
 
-import {GorgiasError} from '../../models/api/types'
 import {MacroActionName} from '../../models/macroAction/types'
 import {getActionTemplate} from '../../utils'
+
+import {MacroApiError} from './types'
 
 export function generateDefaultAction(
     actionType: MacroActionName
 ): Maybe<Map<any, any>> {
-    //$TsFixMe remove cast once getActionTemplate is migrated
-    const actionTemplate = getActionTemplate(actionType) as Maybe<
-        Record<string, unknown>
-    >
+    const actionTemplate = getActionTemplate(actionType)
 
     if (!actionTemplate) {
         return null
@@ -65,7 +63,7 @@ export function getDefaultMacro() {
     }) as Map<any, any>
 }
 
-export function getErrorReason(error: GorgiasError) {
+export function getErrorReason(error: MacroApiError) {
     const errorsPerAction = Object.values(
         error.response.data.error.data?.actions || {}
     )

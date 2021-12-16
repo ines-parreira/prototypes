@@ -9,7 +9,10 @@ import {scrollToReactNode} from '../../../../common/utils/keyboard'
 import {isMacroDisabled} from '../utils'
 import {fetchMacrosParamsTypes} from '../../../../../state/macro/actions'
 import {getCurrentUser} from '../../../../../state/currentUser/selectors'
-import * as segmentTracker from '../../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../store/middlewares/segmentTracker'
 import {RootState} from '../../../../../state/types'
 
 import css from './MacroList.less'
@@ -97,11 +100,9 @@ export class MacroListContainer extends Component<Props> {
                                 if (isDisabled) {
                                     return
                                 }
-                                segmentTracker.logEvent(
-                                    segmentTracker.EVENTS
-                                        .MACRO_APPLIED_SEARCHBAR,
-                                    {user_id: currentUser.get('id')}
-                                )
+                                logEvent(SegmentEvent.MacroAppliedSearchbar, {
+                                    user_id: currentUser.get('id'),
+                                })
                                 onClickItem(macro)
                             }}
                             onMouseEnter={() => onHoverItem(macro)}

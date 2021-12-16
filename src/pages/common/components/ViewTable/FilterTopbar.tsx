@@ -48,7 +48,10 @@ import {
     SUBMIT_NEW_VIEW_ERROR,
     SUBMIT_UPDATE_VIEW_ERROR,
 } from '../../../../state/views/constants'
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../store/middlewares/segmentTracker'
 import {fieldPath, getDefaultOperator, slugify} from '../../../../utils'
 import {reportError} from '../../../../utils/errors'
 import history from '../../../history'
@@ -257,9 +260,7 @@ export const FilterTopbar = ({
                         size="sm"
                         className="mr-2"
                         onClick={() => {
-                            segmentTracker.logEvent(
-                                segmentTracker.EVENTS.VIEW_FILTER_ADD_CLICKED
-                            )
+                            logEvent(SegmentEvent.ViewFilterAddClicked)
                         }}
                     >
                         <i className="material-icons mr-2">add</i>

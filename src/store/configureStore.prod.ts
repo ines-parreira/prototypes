@@ -1,17 +1,18 @@
 import {createStore, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
 
-import rootReducer from '../state/reducers.ts'
+import rootReducer from '../state/reducers'
+import {InitialRootState} from '../types'
 
 import ravenCrashReporter from './middlewares/ravenCrashReporter'
 import serverErrorHandler from './middlewares/serverErrorHandler'
 
-const midlewares = [ravenCrashReporter, thunk, serverErrorHandler]
+const middlewares = [ravenCrashReporter, thunk, serverErrorHandler]
 
-export default function configureStore(initialState) {
+export default function configureStore(initialState: InitialRootState) {
     return createStore(
         rootReducer,
         initialState,
-        applyMiddleware(...midlewares)
+        applyMiddleware(...middlewares)
     )
 }

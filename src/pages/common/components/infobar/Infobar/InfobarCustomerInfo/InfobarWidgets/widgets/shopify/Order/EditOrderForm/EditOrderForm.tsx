@@ -13,7 +13,10 @@ import {Map} from 'immutable'
 
 import _debounce from 'lodash/debounce'
 
-import * as segmentTracker from '../../../../../../../../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../../../../../../store/middlewares/segmentTracker'
 
 import OrderTotals from './OrderTotals/OrderTotals'
 
@@ -56,9 +59,7 @@ export function EditOrderForm({
     }, 800)
 
     const _trackNoteChanged = _debounce(() => {
-        segmentTracker.logEvent(
-            segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_NOTES_CHANGED
-        )
+        logEvent(SegmentEvent.ShopifyCreateOrderNotesChanged)
     }, 1000)
 
     return (

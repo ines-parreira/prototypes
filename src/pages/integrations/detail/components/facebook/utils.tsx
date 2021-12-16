@@ -2,7 +2,7 @@ import React from 'react'
 import {Map} from 'immutable'
 
 import UpgradeButton from '../../../../common/components/UpgradeButton/UpgradeButton'
-import {SegmentEvent} from '../../../../../store/middlewares/types/segmentTracker'
+import {SegmentEvent} from '../../../../../store/middlewares/segmentTracker'
 import {AccountFeature} from '../../../../../state/currentAccount/types'
 import Tooltip from '../../../../common/components/Tooltip'
 

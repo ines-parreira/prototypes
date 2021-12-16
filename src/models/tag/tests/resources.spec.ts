@@ -89,7 +89,7 @@ describe('tag resources', () => {
     })
 
     describe('createTag', () => {
-        const tagDraftMock = _pick(tagsFixtures[0], ['name', 'description'])
+        const tagDraftMock = _pick(tagsFixtures[0], ['name'])
 
         it('should resolve with a new Tag on success', async () => {
             mockedServer.onPost('/api/tags/').reply(200, tagsFixtures[0])

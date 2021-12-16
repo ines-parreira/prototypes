@@ -5,9 +5,9 @@ import {Map} from 'immutable'
 
 import {submitCustomer} from '../../../../../../../state/customers/actions'
 import {
-    EVENTS,
+    SegmentEvent,
     logEvent,
-} from '../../../../../../../store/middlewares/segmentTracker.js'
+} from '../../../../../../../store/middlewares/segmentTracker'
 import {countLines} from '../../../../../../../utils/string'
 
 import css from './CustomerNote.less'
@@ -62,7 +62,7 @@ export class CustomerNote extends React.Component<Props, State> {
             return
         }
 
-        logEvent(EVENTS.CUSTOMER_NOTE_EDITED)
+        logEvent(SegmentEvent.CustomerNoteEdited)
 
         this.setState({isLoading: true})
 

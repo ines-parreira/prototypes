@@ -9,7 +9,10 @@ import _isUndefined from 'lodash/isUndefined'
 
 import BooleanField from '../../forms/BooleanField.js'
 
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../store/middlewares/segmentTracker'
 import {submitSetting} from '../../../../state/currentUser/actions'
 
 import ReactSortable from './../../../common/components/dragging/ReactSortable'
@@ -113,7 +116,7 @@ class ViewNavbarViewEditor extends Component<Props, State> {
         this.setState(_merge(this.state, value))
         void this._submitSetting()
 
-        segmentTracker.logEvent(segmentTracker.EVENTS.NAVBAR_VIEW_TOGGLED)
+        logEvent(SegmentEvent.NavbarViewToggled)
     }
 
     _updateOrder = (orders: string[]) => {
@@ -131,7 +134,7 @@ class ViewNavbarViewEditor extends Component<Props, State> {
 
         void this._submitSetting()
 
-        segmentTracker.logEvent(segmentTracker.EVENTS.NAVBAR_VIEW_MOVED)
+        logEvent(SegmentEvent.NavbarViewMoved)
     }
 
     _getDisplayOrder = (view: Map<any, any>) => {

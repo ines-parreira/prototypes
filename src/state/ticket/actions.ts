@@ -21,7 +21,7 @@ import {getSourceTypeCache} from '../newMessage/responseUtils'
 import {notify} from '../notifications/actions'
 import * as ticketsSelectors from '../tickets/selectors'
 import * as viewsSelectors from '../views/selectors'
-import * as segmentTracker from '../../store/middlewares/segmentTracker.js'
+import {logEvent, SegmentEvent} from '../../store/middlewares/segmentTracker'
 
 import {ApiListResponsePagination} from '../../models/api/types'
 import {
@@ -887,12 +887,9 @@ export const goToNextTicket =
 
 export const displayAuditLogEvents =
     (ticketId: number) => async (dispatch: StoreDispatch) => {
-        segmentTracker.logEvent(
-            segmentTracker.EVENTS.DISPLAY_ALL_EVENTS_CLICKED,
-            {
-                ticketId,
-            }
-        )
+        logEvent(SegmentEvent.DisplayAllEventsClicked, {
+            ticketId,
+        })
 
         const client = new GorgiasApi()
         const generator = client.getTicketEvents(ticketId)

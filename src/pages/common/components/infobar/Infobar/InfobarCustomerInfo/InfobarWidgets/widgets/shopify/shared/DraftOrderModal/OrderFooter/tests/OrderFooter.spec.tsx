@@ -3,9 +3,9 @@ import {shallow} from 'enzyme'
 import {fromJS, Map} from 'immutable'
 
 import {
-    EVENTS,
+    SegmentEvent,
     logEvent,
-} from '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+} from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
 import {shopifyDraftOrderPayloadFixture} from '../../../../../../../../../../../../../fixtures/shopify'
 import {OrderFooterComponent} from '../OrderFooter'
 import {ShopifyActionType} from '../../../../types'
@@ -74,11 +74,11 @@ describe('<OrderFooterComponent/>', () => {
         it.each([
             [
                 ShopifyActionType.CreateOrder,
-                EVENTS.SHOPIFY_CREATE_ORDER_NOTES_CHANGED,
+                SegmentEvent.ShopifyCreateOrderNotesChanged,
             ],
             [
                 ShopifyActionType.DuplicateOrder,
-                EVENTS.SHOPIFY_DUPLICATE_ORDER_NOTES_CHANGED,
+                SegmentEvent.ShopifyDuplicateOrderNotesChanged,
             ],
         ])(
             'should call onPayloadChange() with updated payload',
@@ -121,11 +121,11 @@ describe('<OrderFooterComponent/>', () => {
         it.each([
             [
                 ShopifyActionType.CreateOrder,
-                EVENTS.SHOPIFY_CREATE_ORDER_TAGS_CHANGED,
+                SegmentEvent.ShopifyCreateOrderTagsChanged,
             ],
             [
                 ShopifyActionType.DuplicateOrder,
-                EVENTS.SHOPIFY_DUPLICATE_ORDER_TAGS_CHANGED,
+                SegmentEvent.ShopifyDuplicateOrderTagsChanged,
             ],
         ])(
             'should call onPayloadChange() with updated payload',

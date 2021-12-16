@@ -1,5 +1,5 @@
 import {getAvatar, getAvatarFromCache} from '../utils'
-import {mockImageOnload} from '../../../../../tests/utils.js'
+import {mockImageOnload} from '../../../../../tests/utils'
 
 describe('Avatar utils', () => {
     const email = 'alex@gorgias.io'

@@ -6,7 +6,10 @@ import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
 
 import {isCustomerDataPresent, isCustomerDataValid} from '../infobar/utils'
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../store/middlewares/segmentTracker'
 
 import SourceIcon from '../SourceIcon'
 import Modal from '../Modal'
@@ -80,7 +83,7 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
     componentWillReceiveProps(nextProps: Props) {
         if (!this.props.isOpen && nextProps.isOpen) {
             // TODO(customers-migration): ask confirmation to update this event
-            segmentTracker.logEvent(segmentTracker.EVENTS.MODAL_TOGGLED, {
+            logEvent(SegmentEvent.ModalToggled, {
                 open: true,
                 name: 'merge users',
             })

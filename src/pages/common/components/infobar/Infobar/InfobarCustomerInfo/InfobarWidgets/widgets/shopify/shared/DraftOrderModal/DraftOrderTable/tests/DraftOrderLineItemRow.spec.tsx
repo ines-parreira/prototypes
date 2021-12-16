@@ -9,9 +9,9 @@ import {
     shopifyVariantFixture,
 } from '../../../../../../../../../../../../../fixtures/shopify'
 import {
-    EVENTS,
+    SegmentEvent,
     logEvent,
-} from '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+} from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
 import DraftOrderLineItemRow from '../DraftOrderLineItemRow'
 import {ShopifyActionType} from '../../../../types'
 import {InventoryManagement} from '../../../../../../../../../../../../../constants/integrations/types/shopify'
@@ -194,11 +194,11 @@ describe('<DraftOrderLineItemRow/>', () => {
         it.each([
             [
                 ShopifyActionType.CreateOrder,
-                EVENTS.SHOPIFY_CREATE_ORDER_LINE_ITEM_QUANTITY_CHANGED,
+                SegmentEvent.ShopifyCreateOrderLineItemQuantityChanged,
             ],
             [
                 ShopifyActionType.DuplicateOrder,
-                EVENTS.SHOPIFY_DUPLICATE_ORDER_LINE_ITEM_QUANTITY_CHANGED,
+                SegmentEvent.ShopifyDuplicateOrderLineItemQuantityChanged,
             ],
         ])(
             'should call onChange() with updated line item',

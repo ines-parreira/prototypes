@@ -4,13 +4,14 @@ import _get from 'lodash/get'
 
 import {Macro} from '../../models/macro/types'
 import client from '../../models/api/resources'
-import {ApiListResponsePagination, GorgiasError} from '../../models/api/types'
+import {ApiListResponsePagination} from '../../models/api/types'
 import {NotificationStatus} from '../notifications/types'
 import {notify} from '../notifications/actions'
 import {StoreDispatch} from '../types'
 
 import * as constants from './constants'
 import {getErrorReason} from './utils'
+import {MacroApiError} from './types'
 
 export type fetchMacrosParamsTypes = {
     search?: string
@@ -163,7 +164,7 @@ export const createMacro =
                     return Promise.resolve(resp)
                 },
                 (error) => {
-                    const gorgiasError = error as GorgiasError
+                    const gorgiasError = error as MacroApiError
                     const message = gorgiasError.response.data.error.msg
                     const reason = getErrorReason(gorgiasError)
                     return dispatch(
@@ -202,7 +203,7 @@ export const updateMacro =
                     return Promise.resolve(resp)
                 },
                 (error) => {
-                    const gorgiasError = error as GorgiasError
+                    const gorgiasError = error as MacroApiError
                     const message = gorgiasError.response.data.error.msg
                     const reason = getErrorReason(gorgiasError)
                     return dispatch(

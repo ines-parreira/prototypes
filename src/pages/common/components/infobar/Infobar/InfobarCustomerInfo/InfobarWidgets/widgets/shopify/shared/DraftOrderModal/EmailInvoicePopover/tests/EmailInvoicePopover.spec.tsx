@@ -5,17 +5,17 @@ import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
 
 import {
-    EVENTS,
+    SegmentEvent,
     logEvent,
-} from '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+} from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
 import EmailInvoicePopover from '../EmailInvoicePopover'
 import {ShopifyActionType} from '../../../../types'
 
 jest.mock(
-    '../../../../../../../../../../../../../store/middlewares/segmentTracker.js',
+    '../../../../../../../../../../../../../store/middlewares/segmentTracker',
     () => {
         const SegmentTracker = jest.requireActual(
-            '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+            '../../../../../../../../../../../../../store/middlewares/segmentTracker'
         )
         return {
             ...SegmentTracker,
@@ -57,13 +57,13 @@ describe('<EmailInvoicePopover/>', () => {
         it.each([
             [
                 ShopifyActionType.CreateOrder,
-                EVENTS.SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_OPEN,
-                EVENTS.SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_SEND,
+                SegmentEvent.ShopifyCreateOrderEmailInvoicePopoverOpen,
+                SegmentEvent.ShopifyCreateOrderEmailInvoicePopoverSend,
             ],
             [
                 ShopifyActionType.DuplicateOrder,
-                EVENTS.SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_OPEN,
-                EVENTS.SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_SEND,
+                SegmentEvent.ShopifyDuplicateOrderEmailInvoicePopoverOpen,
+                SegmentEvent.ShopifyDuplicateOrderEmailInvoicePopoverSend,
             ],
         ])(
             'should call prop `onSubmit` with form values',
@@ -117,11 +117,11 @@ describe('<EmailInvoicePopover/>', () => {
         it.each([
             [
                 ShopifyActionType.CreateOrder,
-                EVENTS.SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_CANCEL,
+                SegmentEvent.ShopifyCreateOrderEmailInvoicePopoverCancel,
             ],
             [
                 ShopifyActionType.DuplicateOrder,
-                EVENTS.SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_CANCEL,
+                SegmentEvent.ShopifyDuplicateOrderEmailInvoicePopoverCancel,
             ],
         ])('should track', (actionName, event) => {
             const component = shallow<EmailInvoicePopover>(

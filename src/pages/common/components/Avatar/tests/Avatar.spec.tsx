@@ -1,7 +1,7 @@
 import React from 'react'
 import {shallow, mount} from 'enzyme'
 
-import {mockImageOnload} from '../../../../../tests/utils.js'
+import {mockImageOnload} from '../../../../../tests/utils'
 
 import {getAvatar} from '../utils'
 import Avatar from '../Avatar'

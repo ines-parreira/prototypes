@@ -6,7 +6,7 @@ import {
     FACEBOOK_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
 } from '../../../../../../../constants/integration.ts'
-import configureStore from '../../../../../../../store/configureStore'
+import configureStore from '../../../../../../../store/configureStore.ts'
 import FacebookIntegrationCustomerChat from '../FacebookIntegrationCustomerChat.tsx'
 
 jest.mock(

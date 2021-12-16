@@ -10,7 +10,7 @@ import {RootState, StoreDispatch} from '../../../../state/types'
 import {TicketChannels} from '../../../../business/ticket'
 import {integrationsState} from '../../../../fixtures/integrations'
 import TicketsClosedPerAgentViewLink from '../TicketsClosedPerAgentViewLink'
-import {logEvent} from '../../../../store/middlewares/segmentTracker.js'
+import {logEvent} from '../../../../store/middlewares/segmentTracker'
 import {agents as agentsFixtures} from '../../../../fixtures/agents'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

@@ -9,8 +9,10 @@ import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 
 import type {RootState} from '../../../../../../state/types'
-
-import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../store/middlewares/segmentTracker'
 import {DEPRECATED_getTicket} from '../../../../../../state/ticket/selectors'
 import {TicketState} from '../../../../../../state/ticket/types'
 import {getCurrentAccountState} from '../../../../../../state/currentAccount/selectors'
@@ -45,10 +47,11 @@ export const MacrosQuickReply = ({macros, applyMacro}: Props) => {
 
     const buttonHandleHover = useCallback(
         (macroId, macroRank) => {
-            segmentTracker.logEvent(
-                segmentTracker.EVENTS.MACROS_QUICK_REPLY_GET_DETAILS,
-                {...baseSegmentPayload, macroId, macroRank}
-            )
+            logEvent(SegmentEvent.MacrosQuickReplyGetDetails, {
+                ...baseSegmentPayload,
+                macroId,
+                macroRank,
+            })
         },
         [baseSegmentPayload]
     )
@@ -66,8 +69,8 @@ export const MacrosQuickReply = ({macros, applyMacro}: Props) => {
                     className={classnames('material-icons', 'mr-2')}
                     id="macro-suggestion-info"
                     onMouseEnter={() =>
-                        segmentTracker.logEvent(
-                            segmentTracker.EVENTS.MACROS_QUICK_REPLY_TOOLTIP,
+                        logEvent(
+                            SegmentEvent.MacrosQuickReplyTooltip,
                             baseSegmentPayload
                         )
                     }
@@ -82,14 +85,11 @@ export const MacrosQuickReply = ({macros, applyMacro}: Props) => {
                         macro={macro.toJS()}
                         applyMacro={() => {
                             void applyMacro(macro)
-                            segmentTracker.logEvent(
-                                segmentTracker.EVENTS.MACROS_QUICK_REPLY_SENT,
-                                {
-                                    ...baseSegmentPayload,
-                                    macro_id: macro.get('id'),
-                                    macro_rank: macroRank + 1,
-                                }
-                            )
+                            logEvent(SegmentEvent.MacrosQuickReplySent, {
+                                ...baseSegmentPayload,
+                                macro_id: macro.get('id'),
+                                macro_rank: macroRank + 1,
+                            })
                         }}
                         key={macro.get('id')}
                         onHover={_debounce(

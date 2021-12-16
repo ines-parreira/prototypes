@@ -18,7 +18,10 @@ import {
 import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
 
-import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../../../../../../../store/middlewares/segmentTracker'
 import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
 import {focusElement} from '../../../../../../../../../../../../utils/html'
 import MoneyAmount from '../../../../MoneyAmount'
@@ -108,12 +111,10 @@ export default class ShippingPopover extends Component<Props, State> {
 
         if (onOpen) {
             focusElement(() => this._firstInputElement as HTMLInputElement)
-            segmentTracker.logEvent(
+            logEvent(
                 actionName === ShopifyActionType.CreateOrder
-                    ? segmentTracker.EVENTS
-                          .SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_OPEN
-                    : segmentTracker.EVENTS
-                          .SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_OPEN
+                    ? SegmentEvent.ShopifyCreateOrderShippingPopoverOpen
+                    : SegmentEvent.ShopifyDuplicateOrderShippingPopoverOpen
             )
         } else if (onClose) {
             focusElement(() => this._buttonElement as HTMLButtonElement)
@@ -212,12 +213,10 @@ export default class ShippingPopover extends Component<Props, State> {
                 break
         }
 
-        segmentTracker.logEvent(
+        logEvent(
             actionName === ShopifyActionType.CreateOrder
-                ? segmentTracker.EVENTS
-                      .SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_APPLY
-                : segmentTracker.EVENTS
-                      .SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_APPLY,
+                ? SegmentEvent.ShopifyCreateOrderShippingPopoverApply
+                : SegmentEvent.ShopifyDuplicateOrderShippingPopoverApply,
             {handle}
         )
     }
@@ -234,12 +233,10 @@ export default class ShippingPopover extends Component<Props, State> {
             price: '',
         })
 
-        segmentTracker.logEvent(
+        logEvent(
             actionName === ShopifyActionType.CreateOrder
-                ? segmentTracker.EVENTS
-                      .SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_REMOVE
-                : segmentTracker.EVENTS
-                      .SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_REMOVE
+                ? SegmentEvent.ShopifyCreateOrderShippingPopoverRemove
+                : SegmentEvent.ShopifyDuplicateOrderShippingPopoverRemove
         )
     }
 
@@ -248,12 +245,10 @@ export default class ShippingPopover extends Component<Props, State> {
 
         this._toggle()
 
-        segmentTracker.logEvent(
+        logEvent(
             actionName === ShopifyActionType.CreateOrder
-                ? segmentTracker.EVENTS
-                      .SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_CLOSE
-                : segmentTracker.EVENTS
-                      .SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_CLOSE
+                ? SegmentEvent.ShopifyCreateOrderShippingPopoverClose
+                : SegmentEvent.ShopifyDuplicateOrderShippingPopoverClose
         )
     }
 

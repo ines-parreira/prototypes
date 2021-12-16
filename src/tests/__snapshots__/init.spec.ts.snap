@@ -1,0 +1,524 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`init notifyAccountNotVerified() should dispatch a notification because the base email integration is not verified 1`] = `
+Array [
+  Object {
+    "payload": Object {
+      "allowHTML": true,
+      "buttons": Array [],
+      "closeButton": false,
+      "dismissAfter": 0,
+      "dismissible": false,
+      "id": "account-not-verified-notification",
+      "message": "Your email address is not verified. <span class=\\"text-primary\\">Click here to resend the verification email.</span>",
+      "onClick": [Function],
+      "position": "tc",
+      "status": "warning",
+      "style": "banner",
+    },
+    "type": "ADD_NOTIFICATION",
+  },
+]
+`;
+
+exports[`init notifyAccountNotVerified() should not do anything because the base email integration is verified 1`] = `Array []`;
+
+exports[`init notifyDeprecatedTld() should dispatch a notification because the URL's TLD is \`.io\` 1`] = `
+Array [
+  Object {
+    "payload": Object {
+      "allowHTML": true,
+      "buttons": Array [],
+      "closeButton": false,
+      "dismissAfter": 0,
+      "dismissible": false,
+      "id": "deprecated-tld-notification",
+      "message": "We're now a dot-com 🎉 please update your helpdesk links and bookmarks to <span class=\\"text-primary\\">https://acme.gorgias.com/</span>. This message will be hidden after you login there.",
+      "onClick": [Function],
+      "position": "tc",
+      "status": "warning",
+      "style": "banner",
+    },
+    "type": "ADD_NOTIFICATION",
+  },
+]
+`;
+
+exports[`init notifyDeprecatedTld() should not do anything because the URL's TLD is not \`.io\` 1`] = `Array []`;
+
+exports[`init toInitialStoreState() should return the expected store state 1`] = `
+Object {
+  "agents": Immutable.Map {
+    "all": Immutable.List [
+      Immutable.Map {
+        "lastname": "Plugaru",
+        "settings": Immutable.List [
+          Immutable.Map {
+            "data": Immutable.Map {
+              "show_macros": true,
+              "available": true,
+              "hide_tips": true,
+              "forward_calls": false,
+            },
+            "id": 3,
+            "type": "preferences",
+          },
+        ],
+        "meta": Immutable.Map {},
+        "active": true,
+        "bio": "CTO",
+        "deactivated_datetime": null,
+        "name": "Alex Plugaru",
+        "external_id": "2",
+        "created_datetime": "2016-12-22T19:36:12.487448+00:00",
+        "country": "US",
+        "language": "en",
+        "timezone": "EST",
+        "id": 2,
+        "firstname": "Alex",
+        "email": "alex@gorgias.io",
+        "roles": Immutable.List [
+          Immutable.Map {
+            "name": "admin",
+          },
+        ],
+        "updated_datetime": "2016-12-22T19:36:12.489432+00:00",
+      },
+    ],
+  },
+  "billing": Immutable.Map {
+    "plans": Immutable.Map {
+      "pro-yearly-usd-2": Immutable.Map {
+        "cost_per_ticket": 0.23,
+        "interval": "year",
+        "public": true,
+        "name": "Pro",
+        "trial_period_days": 7,
+        "order": 2,
+        "currency": "usd",
+        "free_tickets": 300,
+        "automation_addon_equivalent_plan": "pro-automation-yearly-usd-2",
+        "limits": Immutable.Map {
+          "tickets": Immutable.Map {
+            "min": 300,
+            "default": 350,
+            "max": 350,
+          },
+          "messages": Immutable.Map {
+            "min": 800,
+            "default": 1000,
+            "max": 1000,
+          },
+        },
+        "amount": 300000,
+        "id": "pro-yearly-usd-2",
+        "features": Immutable.Map {
+          "view_sharing": Immutable.Map {
+            "enabled": false,
+          },
+          "phone_integration": Immutable.Map {
+            "enabled": true,
+            "limit": 50,
+          },
+          "automation_cancellations_flow": Immutable.Map {
+            "enabled": false,
+          },
+          "revenue_statistics": Immutable.Map {
+            "enabled": false,
+          },
+          "facebook_comment": Immutable.Map {
+            "enabled": true,
+          },
+          "satisfaction_surveys": Immutable.Map {
+            "enabled": true,
+          },
+          "twitter_integration": Immutable.Map {
+            "enabled": false,
+            "limit": 0,
+          },
+          "user_roles": Immutable.Map {
+            "enabled": true,
+          },
+          "magento_integration": Immutable.Map {
+            "enabled": true,
+          },
+          "overview_live_statistics": Immutable.Map {
+            "enabled": false,
+          },
+          "instagram_comment": Immutable.Map {
+            "enabled": true,
+          },
+          "yotpo_integration": Immutable.Map {
+            "enabled": true,
+          },
+          "help_center": Immutable.Map {
+            "enabled": true,
+          },
+          "automation_return_flow": Immutable.Map {
+            "enabled": false,
+          },
+          "instagram_dm": Immutable.Map {
+            "enabled": true,
+          },
+          "teams": Immutable.Map {
+            "enabled": true,
+          },
+          "automation_report_issue_flow": Immutable.Map {
+            "enabled": false,
+          },
+          "automation_self_service_statistics": Immutable.Map {
+            "enabled": false,
+          },
+          "automation_track_order_flow": Immutable.Map {
+            "enabled": false,
+          },
+          "chat_campaigns": Immutable.Map {
+            "enabled": true,
+          },
+          "auto_assignment": Immutable.Map {
+            "enabled": true,
+          },
+          "users_live_statistics": Immutable.Map {
+            "enabled": false,
+          },
+        },
+        "integrations": 150,
+      },
+    },
+  },
+  "chats": Immutable.Map {
+    "tickets": Immutable.List [
+      Immutable.Map {
+        "channel": "chat",
+        "customer": Immutable.Map {
+          "email": "marïe@gorgias.io",
+          "id": 4,
+          "name": "Marie Curie",
+        },
+        "id": 32,
+        "is_unread": true,
+        "last_message_datetime": "2020-10-20T06:06:28.223864",
+      },
+    ],
+  },
+  "currentAccount": Immutable.Map {
+    "settings": Immutable.List [
+      Immutable.Map {
+        "id": 2,
+        "type": "business-hours",
+        "data": Immutable.Map {
+          "business_hours": Immutable.List [
+            Immutable.Map {
+              "days": "1,2,3,4,5",
+              "from_time": "00:00",
+              "to_time": "01:00",
+            },
+            Immutable.Map {
+              "days": "7",
+              "from_time": "07:00",
+              "to_time": "22:00",
+            },
+          ],
+          "timezone": "US/Pacific",
+        },
+      },
+    ],
+    "current_subscription": Immutable.Map {
+      "trial_start_datetime": "2017-08-23T01:38:53+00:00",
+      "trial_end_datetime": "2017-09-06T01:38:53+00:00",
+      "plan": "team-usd-1",
+      "status": "trialing",
+      "start_datetime": "2017-08-23T01:38:53+00:00",
+    },
+    "domain": "acme",
+    "meta": Immutable.Map {},
+    "deactivated_datetime": null,
+    "stripe_id": "cus_BGKUKAzUbK1bix",
+    "user_id": 1,
+    "created_datetime": "2017-08-23T01:38:52.479339+00:00",
+    "status": Immutable.Map {
+      "status": "active",
+    },
+    "features": Immutable.Map {
+      "view_sharing": Immutable.Map {
+        "enabled": true,
+      },
+      "phone_integration": Immutable.Map {
+        "enabled": true,
+        "limit": 3,
+      },
+      "automation_cancellations_flow": Immutable.Map {
+        "enabled": true,
+      },
+      "revenue_statistics": Immutable.Map {
+        "enabled": true,
+      },
+      "facebook_comment": Immutable.Map {
+        "enabled": true,
+      },
+      "satisfaction_surveys": Immutable.Map {
+        "enabled": true,
+      },
+      "twitter_integration": Immutable.Map {
+        "enabled": true,
+        "limit": 2,
+      },
+      "user_roles": Immutable.Map {
+        "enabled": true,
+      },
+      "magento_integration": Immutable.Map {
+        "enabled": true,
+      },
+      "overview_live_statistics": Immutable.Map {
+        "enabled": true,
+      },
+      "instagram_comment": Immutable.Map {
+        "enabled": true,
+      },
+      "yotpo_integration": Immutable.Map {
+        "enabled": true,
+      },
+      "help_center": Immutable.Map {
+        "enabled": true,
+      },
+      "automation_return_flow": Immutable.Map {
+        "enabled": true,
+      },
+      "instagram_dm": Immutable.Map {
+        "enabled": true,
+      },
+      "teams": Immutable.Map {
+        "enabled": true,
+      },
+      "automation_report_issue_flow": Immutable.Map {
+        "enabled": true,
+      },
+      "automation_self_service_statistics": Immutable.Map {
+        "enabled": true,
+      },
+      "automation_track_order_flow": Immutable.Map {
+        "enabled": true,
+      },
+      "chat_campaigns": Immutable.Map {
+        "enabled": true,
+      },
+      "auto_assignment": Immutable.Map {
+        "enabled": true,
+      },
+      "users_live_statistics": Immutable.Map {
+        "enabled": true,
+      },
+    },
+  },
+  "currentUser": Immutable.Map {
+    "lastname": "Plugaru",
+    "settings": Immutable.List [
+      Immutable.Map {
+        "data": Immutable.Map {
+          "show_macros": true,
+          "available": true,
+          "hide_tips": true,
+          "forward_calls": false,
+        },
+        "id": 3,
+        "type": "preferences",
+      },
+    ],
+    "meta": Immutable.Map {},
+    "active": true,
+    "bio": "CTO",
+    "deactivated_datetime": null,
+    "name": "Alex Plugaru",
+    "external_id": "2",
+    "created_datetime": "2016-12-22T19:36:12.487448+00:00",
+    "country": "US",
+    "language": "en",
+    "timezone": "EST",
+    "id": 2,
+    "firstname": "Alex",
+    "email": "alex@gorgias.io",
+    "roles": Immutable.List [
+      Immutable.Map {
+        "name": "admin",
+      },
+    ],
+    "updated_datetime": "2016-12-22T19:36:12.489432+00:00",
+  },
+  "entities": Object {
+    "sections": Object {
+      "1": Object {
+        "created_datetime": "2020-10-20T15:10:01.996156+00:00",
+        "decoration": Object {
+          "emoji": "😀",
+        },
+        "id": 1,
+        "name": "test",
+        "private": false,
+        "updated_datetime": "2020-10-20T15:10:01.996168+00:00",
+        "uri": "/api/view-sections/1/",
+      },
+    },
+    "tags": Object {
+      "4": Object {
+        "created_datetime": "2020-10-20T14:57:28.155180+00:00",
+        "decoration": Object {
+          "color": "#ABB8C3",
+        },
+        "deleted_datetime": null,
+        "description": null,
+        "id": 4,
+        "name": "refund accepted",
+        "uri": "/api/tags/4/",
+      },
+    },
+    "views": Object {
+      "9": Object {
+        "category": "system",
+        "created_datetime": "2020-10-20T14:57:27.612323+00:00",
+        "deactivated_datetime": null,
+        "decoration": null,
+        "display_order": 1,
+        "fields": Array [
+          "name",
+          "email",
+          "created",
+          "updated",
+        ],
+        "filters": "eq(user.roles.name, \\"user\\")",
+        "filters_ast": Object {},
+        "group_by": null,
+        "id": 9,
+        "name": "All customers",
+        "order_by": "updated_datetime",
+        "order_dir": "desc",
+        "search": null,
+        "section_id": null,
+        "slug": "all-customers",
+        "type": "customer-list",
+        "uri": "/api/views/9/",
+        "visibility": "public",
+      },
+    },
+  },
+  "integrations": Immutable.Map {
+    "authentication": Immutable.Map {
+      "shopify": Immutable.Map {
+        "redirect_uri": "https://{shop_name}.myshopify.com/admin/oauth/authorize?client_id=0d5570af054ce903798f1ae621c02291&scope=read_all_orders%2Cread_orders%2Cwrite_orders%2Cwrite_order_edits%2Cread_order_edits%2Cread_customers%2Cwrite_customers%2Cread_themes%2Cwrite_themes%2Cread_products%2Cread_draft_orders%2Cwrite_draft_orders&redirect_uri=https%3A%2F%2Faccounts.gorgias.xyz%2Fintegrations%2Fshopify%2Fauth%2Fcallback%2F&state=eyJhY2NvdW50X2RvbWFpbiI6ICJhY21lIn0%3D",
+      },
+      "facebook": Immutable.Map {
+        "redirect_uri": "https://www.facebook.com/v10.0/dialog/oauth?client_id=397863240692179&redirect_uri=https%3A%2F%2Faccounts.gorgias.xyz%2Fintegrations%2Ffacebook%2Fauth%2Fcallback&response_type=token&scope=pages_manage_ads%2Cpages_manage_metadata%2Cpages_read_engagement%2Cpages_read_user_content%2Cpages_manage_posts%2Cpages_manage_engagement%2Cbusiness_management%2Cpages_show_list%2Cread_page_mailboxes%2Cpages_messaging%2Cpages_messaging_subscriptions%2Cinstagram_basic%2Cinstagram_manage_comments%2Cinstagram_manage_messages%2Cads_read%2Cads_management&state=eyJhY2NvdW50X2RvbWFpbiI6ICJhY21lIiwgImlzX3JlY29ubmVjdCI6IGZhbHNlfQ%3D%3D",
+        "redirect_uri_reconnect": "https://www.facebook.com/v10.0/dialog/oauth?client_id=397863240692179&redirect_uri=https%3A%2F%2Faccounts.gorgias.xyz%2Fintegrations%2Ffacebook%2Fauth%2Fcallback&response_type=token&scope=pages_manage_ads%2Cpages_manage_metadata%2Cpages_read_engagement%2Cpages_read_user_content%2Cpages_manage_posts%2Cpages_manage_engagement%2Cbusiness_management%2Cpages_show_list%2Cread_page_mailboxes%2Cpages_messaging%2Cpages_messaging_subscriptions%2Cinstagram_basic%2Cinstagram_manage_comments%2Cinstagram_manage_messages%2Cads_read%2Cads_management&state=eyJhY2NvdW50X2RvbWFpbiI6ICJhY21lIiwgImlzX3JlY29ubmVjdCI6IHRydWV9",
+      },
+      "recharge": Immutable.Map {
+        "redirect_uri": "/integrations/recharge/auth/pre-callback/",
+      },
+      "aircall": Immutable.Map {
+        "show_old_url": false,
+        "webhook_url": "https://incoming.gorgias.xyz/api/incoming/aircall/BqarjZ9LD2nbGxV9OPdv5Q3zY4eo617w/",
+        "webhook_url_new": "https://incoming.gorgias.xyz/api/incoming/aircall/nZMRyOXmzx4QD53kXvpebGljr09B2kE6/",
+      },
+      "smile": Immutable.Map {
+        "redirect_uri": "https://connect.smile.io/oauth2/authorize?redirect_uri=https%3A%2F%2Faccounts.gorgias.xyz%2Fintegrations%2Fsmile%2Fauth%2Fcallback%2F&client_id=08YEKLFR5jmB0oDujlh8nFUDIaTK3PjWxOAj2HTmWj8&state=eyJhY2NvdW50X2RvbWFpbiI6ICJhY21lIn0%3D&response_type=code",
+      },
+      "outlook": Immutable.Map {
+        "redirect_uri": "/integrations/outlook/auth/pre-callback/",
+      },
+      "twitter": Immutable.Map {
+        "redirect_uri": "/integrations/twitter/auth/pre-callback/",
+      },
+      "magento2": Immutable.Map {
+        "redirect_uri": "/integrations/magento2/auth/pre-callback/",
+      },
+      "email": Immutable.Map {
+        "forwarding_email_address": "zp7d01g9zorymjke@emails.gorgias.xyz",
+      },
+      "yotpo": Immutable.Map {
+        "redirect_uri": "/integrations/yotpo/auth/pre-callback/",
+      },
+      "gmail": Immutable.Map {
+        "redirect_uri": "/integrations/gmail/auth/pre-callback",
+      },
+      "smooch": Immutable.Map {
+        "redirect_uri": "https://app.smooch.io/oauth/authorize/?client_id=gorgias_dev&response_type=code&state=eyJhY2NvdW50X2RvbWFpbiI6ICJhY21lIn0%3D&redirect_uri=https%3A%2F%2Faccounts.gorgias.xyz%2Fintegrations%2Fsmooch%2Fauth%2Fcallback%2F",
+      },
+    },
+    "extra": Immutable.Map {
+      "facebook": Immutable.Map {
+        "max_account_ads": 100,
+      },
+      "gorgias_chat": Immutable.Map {
+        "bundleUrl": "https://chat-bundle.test.gorgias.chat",
+        "chatUrl": "chat-api.test.gorgias.chat",
+        "wsUrl": "chat-ws.test.gorgias.chat",
+      },
+    },
+    "integrations": Immutable.List [],
+  },
+  "schemas": Immutable.Map {
+    "definitions": Immutable.Map {},
+    "info": Immutable.Map {
+      "description": "The new generation helpdesk",
+      "title": "Gorgias",
+      "version": "0.0.1",
+    },
+    "paths": Immutable.Map {},
+    "swagger": "2.0",
+  },
+  "tags": Immutable.Map {
+    "items": Immutable.List [
+      Immutable.Map {
+        "created_datetime": "2020-10-20T14:57:28.155180+00:00",
+        "decoration": Immutable.Map {
+          "color": "#ABB8C3",
+        },
+        "deleted_datetime": null,
+        "description": null,
+        "id": 4,
+        "name": "refund accepted",
+        "uri": "/api/tags/4/",
+      },
+    ],
+  },
+  "teams": Immutable.Map {
+    "all": Immutable.Map {},
+  },
+  "views": Immutable.Map {
+    "active": Immutable.Map {},
+    "counts": Immutable.Map {},
+    "items": Immutable.List [
+      Immutable.Map {
+        "search": null,
+        "order_by": "updated_datetime",
+        "deactivated_datetime": null,
+        "name": "All customers",
+        "slug": "all-customers",
+        "uri": "/api/views/9/",
+        "decoration": null,
+        "display_order": 1,
+        "created_datetime": "2020-10-20T14:57:27.612323+00:00",
+        "visibility": "public",
+        "section_id": null,
+        "group_by": null,
+        "fields": Immutable.List [
+          "name",
+          "email",
+          "created",
+          "updated",
+        ],
+        "type": "customer-list",
+        "id": 9,
+        "filters": "eq(user.roles.name, \\"user\\")",
+        "order_dir": "desc",
+        "filters_ast": Immutable.Map {},
+        "category": "system",
+      },
+    ],
+    "recent": Immutable.Map {
+      "9": Immutable.Map {
+        "inserted_datetime": "2020-10-28T09:23:35.294Z",
+        "updated_datetime": "2020-10-28T09:23:35.294Z",
+      },
+    },
+  },
+}
+`;

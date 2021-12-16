@@ -18,7 +18,7 @@ import {getCurrentAccountState} from '../../../state/currentAccount/selectors'
 import {fetchCurrentAuths, resetApiKey} from '../../../state/auths/actions'
 import {notify} from '../../../state/notifications/actions'
 import PageHeader from '../../common/components/PageHeader'
-import * as segmentTracker from '../../../store/middlewares/segmentTracker.js'
+import {logEvent, SegmentEvent} from '../../../store/middlewares/segmentTracker'
 import {RootState} from '../../../state/types'
 import {NotificationStatus} from '../../../state/notifications/types'
 import css from '../settings.less'
@@ -98,9 +98,7 @@ export class APIViewContainer extends Component<Props, State> {
     _subscribeToDeveloperNewsletter = () => {
         const {notify} = this.props
 
-        segmentTracker.logEvent(
-            segmentTracker.EVENTS.SUBSCRIBED_TO_DEV_NEWSLETTER
-        )
+        logEvent(SegmentEvent.SubscribedToDevNewsletter)
         void notify({
             status: NotificationStatus.Success,
             message:

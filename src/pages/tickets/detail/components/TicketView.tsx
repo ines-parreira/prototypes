@@ -9,7 +9,10 @@ import {
     displayHistoryOnNextPage,
     toggleHistory,
 } from '../../../../state/ticket/actions'
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../store/middlewares/segmentTracker'
 import {getNewMessageType} from '../../../../state/newMessage/selectors'
 import {
     TicketChannel,
@@ -200,7 +203,7 @@ export const TicketViewContainer = ({
         toggleHistory(shouldOpenHistory)
 
         // TODO(customers-migration): ask confirmation to update this event
-        segmentTracker.logEvent(segmentTracker.EVENTS.USER_HISTORY_TOGGLED, {
+        logEvent(SegmentEvent.UserHistoryToggled, {
             open: shouldOpenHistory,
             nbOfTicketsInTimeline: (
                 customers.getIn(['customerHistory', 'tickets']) as List<any>

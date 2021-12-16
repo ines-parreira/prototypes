@@ -9,7 +9,10 @@ import Loader from '../../../../common/components/Loader/Loader'
 import Modal from '../../../../common/components/Modal'
 import {DEFAULT_ACTIONS} from '../../../../../config'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
-import * as segmentTracker from '../../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../store/middlewares/segmentTracker'
 import shortcutManager from '../../../../../services/shortcutManager/index'
 import {
     createMacro,
@@ -77,7 +80,7 @@ export class MacroModalContainer extends Component<Props, State> {
     componentDidMount() {
         shortcutManager.pause(['MacroModal'])
 
-        segmentTracker.logEvent(segmentTracker.EVENTS.MODAL_TOGGLED, {
+        logEvent(SegmentEvent.ModalToggled, {
             open: true,
             name: 'macros',
         })

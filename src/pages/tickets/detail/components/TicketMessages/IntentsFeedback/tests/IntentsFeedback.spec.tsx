@@ -9,12 +9,12 @@ import {account} from '../../../../../../../fixtures/account'
 import {user} from '../../../../../../../fixtures/users'
 import {sendIntentFeedbackSuccess} from '../../../../../../../state/ticket/actions'
 import {TicketMessageIntent} from '../../../../../../../models/ticket/types'
-import {logEvent} from '../../../../../../../store/middlewares/segmentTracker.js'
+import {logEvent} from '../../../../../../../store/middlewares/segmentTracker'
 import client from '../../../../../../../models/api/resources'
 
 jest.mock('../../../../../../../state/ticket/actions')
 
-jest.mock('../../../../../../../store/middlewares/segmentTracker.js')
+jest.mock('../../../../../../../store/middlewares/segmentTracker')
 
 const logEventMock = logEvent as jest.Mock
 

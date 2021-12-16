@@ -5,9 +5,9 @@ import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
 
 import {
-    EVENTS,
     logEvent,
-} from '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+    SegmentEvent,
+} from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
 import {
     AppliedDiscount,
     DiscountType,
@@ -19,7 +19,7 @@ jest.mock(
     '../../../../../../../../../../../../../store/middlewares/segmentTracker',
     () => {
         const segmentTracker: Record<string, unknown> = jest.requireActual(
-            '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+            '../../../../../../../../../../../../../store/middlewares/segmentTracker'
         )
 
         return {
@@ -87,18 +87,18 @@ describe('<DiscountPopover/>', () => {
         it.each([
             [
                 ShopifyActionType.CreateOrder,
-                EVENTS.SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_OPEN,
-                EVENTS.SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_APPLY,
+                SegmentEvent.ShopifyCreateOrderDiscountPopoverOpen,
+                SegmentEvent.ShopifyCreateOrderDiscountPopoverApply,
             ],
             [
                 ShopifyActionType.DuplicateOrder,
-                EVENTS.SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_OPEN,
-                EVENTS.SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_APPLY,
+                SegmentEvent.ShopifyDuplicateOrderDiscountPopoverOpen,
+                SegmentEvent.ShopifyDuplicateOrderDiscountPopoverApply,
             ],
             [
                 ShopifyActionType.EditOrder,
-                EVENTS.SHOPIFY_EDIT_ORDER_DISCOUNT_POPOVER_OPEN,
-                EVENTS.SHOPIFY_EDIT_ORDER_DISCOUNT_POPOVER_APPLY,
+                SegmentEvent.ShopifyEditOrderDiscountPopoverOpen,
+                SegmentEvent.ShopifyEditOrderDiscountPopoverApply,
             ],
         ])(
             'should call prop `onChange` with fixed amount discount',
@@ -204,11 +204,11 @@ describe('<DiscountPopover/>', () => {
         it.each([
             [
                 ShopifyActionType.CreateOrder,
-                EVENTS.SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_REMOVE,
+                SegmentEvent.ShopifyCreateOrderDiscountPopoverRemove,
             ],
             [
                 ShopifyActionType.DuplicateOrder,
-                EVENTS.SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_REMOVE,
+                SegmentEvent.ShopifyDuplicateOrderDiscountPopoverRemove,
             ],
         ])('should call prop `onChange` with `null`', (actionName, event) => {
             const appliedDiscount: AppliedDiscount = {
@@ -250,11 +250,11 @@ describe('<DiscountPopover/>', () => {
         it.each([
             [
                 ShopifyActionType.CreateOrder,
-                EVENTS.SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_CLOSE,
+                SegmentEvent.ShopifyCreateOrderDiscountPopoverClose,
             ],
             [
                 ShopifyActionType.DuplicateOrder,
-                EVENTS.SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_CLOSE,
+                SegmentEvent.ShopifyDuplicateOrderDiscountPopoverClose,
             ],
         ])('should track', (actionName, event) => {
             const component = shallow<DiscountPopover>(

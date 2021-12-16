@@ -1,4 +1,5 @@
 import type {RavenStatic} from 'raven-js'
+import {Middleware} from 'redux'
 
 import {Page} from 'services/statusPageManager/types'
 import {GorgiasInitialState} from 'types'
@@ -48,13 +49,13 @@ declare global {
         }
         GORGIAS_SUPPORT_EMAIL: string
         STRIPE_PUBLIC_KEY?: string
-        Hotswap?: (params: {
-            token: string
-            onClose?: () => void
-        }) => {
+        Hotswap?: (params: {token: string; onClose?: () => void}) => {
             open: () => void
         }
         DISABLE_ACTIVITY_POLLING: string
+        USER_IMPERSONATED: true | null
+        SEGMENT_ANALYTICS_USER_ID: string
+        devToolsExtension: () => Middleware
     }
 
     function jestSetTimeout(

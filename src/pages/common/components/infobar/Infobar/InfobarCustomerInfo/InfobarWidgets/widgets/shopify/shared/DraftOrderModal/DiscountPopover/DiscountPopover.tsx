@@ -21,7 +21,10 @@ import {
 import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
 
-import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../../../../../../../store/middlewares/segmentTracker'
 import {getDiscountAmount} from '../../../../../../../../../../../../business/shopify/discount'
 import {
     AppliedDiscount,
@@ -88,25 +91,19 @@ export default class DiscountPopover extends PureComponent<Props, State> {
         if (onOpen) {
             focusElement(() => this._inputElement as HTMLInputElement)
             let action
-            //$TsFixMe use enum once migrated
             switch (actionName) {
                 case ShopifyActionType.CreateOrder:
-                    action =
-                        segmentTracker.EVENTS
-                            .SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_OPEN
+                    action = SegmentEvent.ShopifyCreateOrderDiscountPopoverOpen
                     break
                 case ShopifyActionType.DuplicateOrder:
                     action =
-                        segmentTracker.EVENTS
-                            .SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_OPEN
+                        SegmentEvent.ShopifyDuplicateOrderDiscountPopoverOpen
                     break
                 case ShopifyActionType.EditOrder:
-                    action =
-                        segmentTracker.EVENTS
-                            .SHOPIFY_EDIT_ORDER_DISCOUNT_POPOVER_OPEN
+                    action = SegmentEvent.ShopifyEditOrderDiscountPopoverOpen
                     break
             }
-            segmentTracker.logEvent(action)
+            logEvent(action as SegmentEvent)
         } else if (onClose) {
             focusElement(() => this._buttonElement as HTMLButtonElement)
         }
@@ -187,25 +184,18 @@ export default class DiscountPopover extends PureComponent<Props, State> {
         onChange(fromJS(newValue))
 
         let action
-        //$TsFixMe use enum once migrated
         switch (actionName) {
             case ShopifyActionType.CreateOrder:
-                action =
-                    segmentTracker.EVENTS
-                        .SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_APPLY
+                action = SegmentEvent.ShopifyCreateOrderDiscountPopoverApply
                 break
             case ShopifyActionType.DuplicateOrder:
-                action =
-                    segmentTracker.EVENTS
-                        .SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_APPLY
+                action = SegmentEvent.ShopifyDuplicateOrderDiscountPopoverApply
                 break
             case ShopifyActionType.EditOrder:
-                action =
-                    segmentTracker.EVENTS
-                        .SHOPIFY_EDIT_ORDER_DISCOUNT_POPOVER_APPLY
+                action = SegmentEvent.ShopifyEditOrderDiscountPopoverApply
                 break
         }
-        segmentTracker.logEvent(action)
+        logEvent(action as SegmentEvent)
     }
 
     _onRemove = () => {
@@ -221,25 +211,18 @@ export default class DiscountPopover extends PureComponent<Props, State> {
         })
 
         let action
-        //$TsFixMe use enum once migrated
         switch (actionName) {
             case ShopifyActionType.CreateOrder:
-                action =
-                    segmentTracker.EVENTS
-                        .SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_REMOVE
+                action = SegmentEvent.ShopifyCreateOrderDiscountPopoverRemove
                 break
             case ShopifyActionType.DuplicateOrder:
-                action =
-                    segmentTracker.EVENTS
-                        .SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_REMOVE
+                action = SegmentEvent.ShopifyDuplicateOrderDiscountPopoverRemove
                 break
             case ShopifyActionType.EditOrder:
-                action =
-                    segmentTracker.EVENTS
-                        .SHOPIFY_EDIT_ORDER_DISCOUNT_POPOVER_REMOVE
+                action = SegmentEvent.ShopifyEditOrderDiscountPopoverRemove
                 break
         }
-        segmentTracker.logEvent(action)
+        logEvent(action as SegmentEvent)
     }
 
     _onClose = () => {
@@ -248,25 +231,18 @@ export default class DiscountPopover extends PureComponent<Props, State> {
         this._toggle()
 
         let action
-        //$TsFixMe use enum once migrated
         switch (actionName) {
             case ShopifyActionType.CreateOrder:
-                action =
-                    segmentTracker.EVENTS
-                        .SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_CLOSE
+                action = SegmentEvent.ShopifyCreateOrderDiscountPopoverClose
                 break
             case ShopifyActionType.DuplicateOrder:
-                action =
-                    segmentTracker.EVENTS
-                        .SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_CLOSE
+                action = SegmentEvent.ShopifyDuplicateOrderDiscountPopoverClose
                 break
             case ShopifyActionType.EditOrder:
-                action =
-                    segmentTracker.EVENTS
-                        .SHOPIFY_EDIT_ORDER_DISCOUNT_POPOVER_CLOSE
+                action = SegmentEvent.ShopifyEditOrderDiscountPopoverClose
                 break
         }
-        segmentTracker.logEvent(action)
+        logEvent(action as SegmentEvent)
     }
 
     render() {

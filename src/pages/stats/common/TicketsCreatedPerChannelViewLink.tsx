@@ -8,11 +8,11 @@ import {ViewField} from '../../../models/view/types'
 import {ViewFilter} from '../../../state/views/types'
 import {EqualityOperator} from '../../../state/rules/types'
 import {reportError} from '../../../utils/errors'
-import * as segmentTracker from '../../../store/middlewares/segmentTracker.js'
 import {
+    logEvent,
     SegmentEvent,
     StatViewLinkClickedStat,
-} from '../../../store/middlewares/types/segmentTracker'
+} from '../../../store/middlewares/segmentTracker'
 import {TICKET_CHANNEL_NAMES} from '../../../state/ticket/constants'
 
 import ViewLink from './ViewLink'
@@ -56,7 +56,7 @@ export default function TicketsCreatedPerChannelViewLink({
     return (
         <span
             onClick={() => {
-                segmentTracker.logEvent(SegmentEvent.StatViewLinkClicked, {
+                logEvent(SegmentEvent.StatViewLinkClicked, {
                     stat: StatViewLinkClickedStat.TicketsCreatedPerChannelTotal,
                 })
             }}

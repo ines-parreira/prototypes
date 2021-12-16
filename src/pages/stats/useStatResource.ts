@@ -82,7 +82,7 @@ export default function useStatResource<T>({
                             ).response?.data?.error?.msg ||
                             'Failed to retrieve statistic. Please retry in a few seconds.',
                     }
-                    const errorDetails = errorToChildren(error as AxiosError)
+                    const errorDetails = errorToChildren(error)
                     if (errorDetails) {
                         notification.allowHTML = true
                         notification.message = errorDetails

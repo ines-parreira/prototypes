@@ -7,7 +7,10 @@ import Modal from '../Modal'
 import ConfirmButton from '../ConfirmButton'
 import {mergeTickets} from '../../../../state/mergeTickets/actions'
 import shortcutManager from '../../../../services/shortcutManager/shortcutManager'
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../store/middlewares/segmentTracker'
 import history from '../../../history'
 
 import css from './MergeTicketsContainer.less'
@@ -46,12 +49,9 @@ class MergeTicketsContainer extends React.Component<Props, State> {
             shortcutManager.bind('TicketDetailContainer')
         } else if (!prevProps.isOpen && this.props.isOpen) {
             shortcutManager.unbind('TicketDetailContainer')
-            segmentTracker.logEvent(
-                segmentTracker.EVENTS.TICKET_MERGE_CLICKED,
-                {
-                    sourceTicketId: this.props.sourceTicket.get('id'),
-                }
-            )
+            logEvent(SegmentEvent.TicketMergeClicked, {
+                sourceTicketId: this.props.sourceTicket.get('id'),
+            })
         }
     }
 

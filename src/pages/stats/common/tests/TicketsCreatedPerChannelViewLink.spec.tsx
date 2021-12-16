@@ -8,7 +8,7 @@ import {fireEvent, render} from '@testing-library/react'
 
 import {RootState, StoreDispatch} from '../../../../state/types'
 import {integrationsState} from '../../../../fixtures/integrations'
-import {logEvent} from '../../../../store/middlewares/segmentTracker.js'
+import {logEvent} from '../../../../store/middlewares/segmentTracker'
 import TicketsCreatedPerChannelViewLink from '../TicketsCreatedPerChannelViewLink'
 import {TicketChannel} from '../../../../business/types/ticket'
 import {reportError} from '../../../../utils/errors'
@@ -16,7 +16,7 @@ import {reportError} from '../../../../utils/errors'
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('../../../../utils/errors')
-jest.mock('../../../../store/middlewares/segmentTracker.js')
+jest.mock('../../../../store/middlewares/segmentTracker')
 jest.mock('../ViewLink', () => (props: LinkProps) => (
     <div>
         ViewLink Mock

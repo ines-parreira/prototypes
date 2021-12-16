@@ -17,7 +17,7 @@ import * as layoutActions from '../state/layout/actions'
 import * as layoutSelectors from '../state/layout/selectors'
 import {RootState} from '../state/types'
 import * as viewsActions from '../state/views/actions'
-import * as segmentTracker from '../store/middlewares/segmentTracker.js'
+import {identifyUser} from '../store/middlewares/segmentTracker'
 import {handleUsageBanner} from '../state/notifications/actions'
 import {hasIntegrationOfTypes} from '../state/integrations/selectors'
 import {IntegrationType} from '../models/integration/types'
@@ -76,7 +76,7 @@ class App extends React.Component<Props> {
                 action: () => pendingMessageManager.undoMessage(),
             },
         })
-        segmentTracker.identifyUser(this.props.currentUser.toJS())
+        identifyUser(this.props.currentUser.toJS())
     }
 
     componentWillUnmount() {

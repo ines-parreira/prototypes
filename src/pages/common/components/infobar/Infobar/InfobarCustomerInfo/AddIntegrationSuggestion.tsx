@@ -3,7 +3,10 @@ import {Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import {Card, CardBody, Button} from 'reactstrap'
 
-import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../store/middlewares/segmentTracker'
 
 type Props = {
     customer: Map<any, any>
@@ -110,9 +113,8 @@ export default function AddIntegrationSuggestion({customer}: Props) {
                                     color="info"
                                     to="/app/settings/integrations"
                                     onClick={() => {
-                                        segmentTracker.logEvent(
-                                            segmentTracker.EVENTS
-                                                .INFOBAR_INTEGRATION_ADD_CLICKED
+                                        logEvent(
+                                            SegmentEvent.InfobarIntegrationAddClicked
                                         )
                                     }}
                                 >

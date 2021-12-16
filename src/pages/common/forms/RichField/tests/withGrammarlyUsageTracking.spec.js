@@ -5,9 +5,12 @@ import withGrammarlyUsageTracking, {
     GRAMMARLY_FOUND_LOCAL_STORAGE_TAG,
 } from '../withGrammarlyUsageTracking.tsx'
 
-import {logEvent, EVENTS} from '../../../../../store/middlewares/segmentTracker'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../store/middlewares/segmentTracker.ts'
 
-jest.mock('../../../../../store/middlewares/segmentTracker')
+jest.mock('../../../../../store/middlewares/segmentTracker.ts')
 jest.useFakeTimers()
 
 describe('withGrammarlyUsageTracking', () => {
@@ -45,7 +48,7 @@ describe('withGrammarlyUsageTracking', () => {
                 localStorage.getItem(GRAMMARLY_FOUND_LOCAL_STORAGE_TAG)
             ).not.toBeNull()
             expect(logEvent).toBeCalledTimes(1)
-            expect(logEvent).toBeCalledWith(EVENTS.GRAMMARLY_ENABLED)
+            expect(logEvent).toBeCalledWith(SegmentEvent.GrammarlyEnabled)
         })
 
         it('should detect grammarly extension when last detected was more than 24 hours ago', () => {
@@ -68,7 +71,7 @@ describe('withGrammarlyUsageTracking', () => {
                 localStorage.getItem(GRAMMARLY_FOUND_LOCAL_STORAGE_TAG)
             ).not.toBeNull()
             expect(logEvent).toBeCalledTimes(1)
-            expect(logEvent).toBeCalledWith(EVENTS.GRAMMARLY_ENABLED)
+            expect(logEvent).toBeCalledWith(SegmentEvent.GrammarlyEnabled)
         })
 
         describe('with localStorage not working', () => {
@@ -95,7 +98,7 @@ describe('withGrammarlyUsageTracking', () => {
                 component.instance()._detectGrammarly()
                 jest.runAllTimers()
                 expect(logEvent).toBeCalledTimes(1)
-                expect(logEvent).toBeCalledWith(EVENTS.GRAMMARLY_ENABLED)
+                expect(logEvent).toBeCalledWith(SegmentEvent.GrammarlyEnabled)
                 expect(localStorage).toBeNull()
             })
         })

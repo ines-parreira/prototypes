@@ -7,7 +7,7 @@ import {Button, Popover, PopoverHeader, PopoverBody} from 'reactstrap'
 import {
     OrderDirection,
     MetaSortOptions,
-    GorgiasError,
+    GorgiasApiError,
 } from '../../../models/api/types'
 import {createMacro, deleteMacro} from '../../../models/macro/resources'
 import {MacroSortableProperties} from '../../../models/macro/types'
@@ -69,7 +69,7 @@ export function MacrosSettingsTableContainer({
             })
         } catch (error) {
             void notify({
-                title: (error as GorgiasError).response.data.error.msg,
+                title: (error as GorgiasApiError).response.data.error.msg,
                 message: errorToChildren(error)!,
                 allowHTML: true,
                 status: NotificationStatus.Error,

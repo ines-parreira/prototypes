@@ -18,7 +18,10 @@ import {
 import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
 
-import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../../../../../../../store/middlewares/segmentTracker'
 import {DraftOrderInvoice} from '../../../../../../../../../../../../constants/integrations/types/shopify'
 import {focusElement} from '../../../../../../../../../../../../utils/html'
 import {ShopifyActionType} from '../../../types'
@@ -66,12 +69,10 @@ export default class EmailInvoicePopover extends Component<Props, State> {
 
         if (onOpen) {
             focusElement(() => this._inputElement as HTMLInputElement)
-            segmentTracker.logEvent(
+            logEvent(
                 actionName === ShopifyActionType.CreateOrder
-                    ? segmentTracker.EVENTS
-                          .SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_OPEN
-                    : segmentTracker.EVENTS
-                          .SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_OPEN
+                    ? SegmentEvent.ShopifyCreateOrderEmailInvoicePopoverOpen
+                    : SegmentEvent.ShopifyDuplicateOrderEmailInvoicePopoverOpen
             )
         } else if (onClose) {
             focusElement(() => this._buttonElement as HTMLButtonElement)
@@ -124,12 +125,10 @@ export default class EmailInvoicePopover extends Component<Props, State> {
 
         onSubmit(fromJS(newValue))
 
-        segmentTracker.logEvent(
+        logEvent(
             actionName === ShopifyActionType.CreateOrder
-                ? segmentTracker.EVENTS
-                      .SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_SEND
-                : segmentTracker.EVENTS
-                      .SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_SEND
+                ? SegmentEvent.ShopifyCreateOrderEmailInvoicePopoverSend
+                : SegmentEvent.ShopifyDuplicateOrderEmailInvoicePopoverSend
         )
     }
 
@@ -138,12 +137,10 @@ export default class EmailInvoicePopover extends Component<Props, State> {
 
         this._toggle()
 
-        segmentTracker.logEvent(
+        logEvent(
             actionName === ShopifyActionType.CreateOrder
-                ? segmentTracker.EVENTS
-                      .SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_CANCEL
-                : segmentTracker.EVENTS
-                      .SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_CANCEL
+                ? SegmentEvent.ShopifyCreateOrderEmailInvoicePopoverCancel
+                : SegmentEvent.ShopifyDuplicateOrderEmailInvoicePopoverCancel
         )
     }
 

@@ -11,7 +11,10 @@ import {Map, List} from 'immutable'
 
 import {GorgiasThunkDispatch} from 'types/redux-thunk'
 import {setFieldVisibility} from '../../../../state/views/actions'
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../store/middlewares/segmentTracker'
 import {notify} from '../../../../state/notifications/actions'
 
 import BooleanField from '../../forms/BooleanField.js'
@@ -46,9 +49,7 @@ class ShowMoreFieldsDropdown extends React.Component<Props> {
             <UncontrolledDropdown
                 className="d-flex"
                 onClick={() => {
-                    segmentTracker.logEvent(
-                        segmentTracker.EVENTS.SHOW_MORE_FIELDS_CLICKED
-                    )
+                    logEvent(SegmentEvent.ShowMoreFieldsClicked)
                 }}
             >
                 <DropdownToggle

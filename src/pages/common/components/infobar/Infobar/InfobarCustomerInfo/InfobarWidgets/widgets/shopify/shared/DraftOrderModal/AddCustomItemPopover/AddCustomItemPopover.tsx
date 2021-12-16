@@ -17,7 +17,10 @@ import {
 import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
 
-import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../../../../../../../store/middlewares/segmentTracker'
 import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
 import {focusElement} from '../../../../../../../../../../../../utils/html'
 import AmountInput from '../../AmountInput/AmountInput'
@@ -71,12 +74,10 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
 
         if (onOpen) {
             focusElement(() => this._inputElement as HTMLInputElement)
-            segmentTracker.logEvent(
+            logEvent(
                 actionName === ShopifyActionType.CreateOrder
-                    ? segmentTracker.EVENTS
-                          .SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_OPEN
-                    : segmentTracker.EVENTS
-                          .SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_OPEN
+                    ? SegmentEvent.ShopifyCreateOrderCustomItemPopoverOpen
+                    : SegmentEvent.ShopifyDuplicateOrderCustomItemPopoverOpen
             )
         } else if (onClose) {
             focusElement(() => this._buttonElement as HTMLInputElement)
@@ -149,12 +150,10 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
             })
         )
 
-        segmentTracker.logEvent(
+        logEvent(
             actionName === ShopifyActionType.CreateOrder
-                ? segmentTracker.EVENTS
-                      .SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_SAVE
-                : segmentTracker.EVENTS
-                      .SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_SAVE
+                ? SegmentEvent.ShopifyCreateOrderCustomItemPopoverSave
+                : SegmentEvent.ShopifyDuplicateOrderCustomItemPopoverSave
         )
     }
 
@@ -164,12 +163,10 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
         this._toggle()
         this._resetValues()
 
-        segmentTracker.logEvent(
+        logEvent(
             actionName === ShopifyActionType.CreateOrder
-                ? segmentTracker.EVENTS
-                      .SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_CANCEL
-                : segmentTracker.EVENTS
-                      .SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_CANCEL
+                ? SegmentEvent.ShopifyCreateOrderCustomItemPopoverCancel
+                : SegmentEvent.ShopifyDuplicateOrderCustomItemPopoverCancel
         )
     }
 

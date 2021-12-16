@@ -31,8 +31,10 @@ import {getIconFromType} from '../../../../../../state/integrations/helpers'
 
 import {UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS} from '../../../../../../config/integrations/shopify'
 
-import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker.js'
-import {SegmentEvent} from '../../../../../../store/middlewares/types/segmentTracker'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../store/middlewares/segmentTracker'
 import {getCurrentAccountState} from '../../../../../../state/currentAccount/selectors'
 
 import css from './AddProductLink.less'
@@ -66,7 +68,7 @@ export function AddProductLink({
 
     const handlePopoverOpen = useCallback(() => {
         setOpen(true)
-        segmentTracker.logEvent(SegmentEvent.ShopifyInsertProductLinkOpen, {
+        logEvent(SegmentEvent.ShopifyInsertProductLinkOpen, {
             account_id: currentAccount?.get('domain'),
             channel: newMessageChannel,
             ticket: ticket?.get('id') || 'new',
@@ -131,16 +133,13 @@ export function AddProductLink({
                 setEditorState(newEditorState)
             }
 
-            segmentTracker.logEvent(
-                SegmentEvent.ShopifyInsertProductLinkAdded,
-                {
-                    account_id: currentAccount?.get('domain'),
-                    channel: newMessageChannel,
-                    product_id: productCardDetails.productId,
-                    variant_id: productCardDetails.variantId,
-                    ticket: ticket?.get('id') || 'new',
-                }
-            )
+            logEvent(SegmentEvent.ShopifyInsertProductLinkAdded, {
+                account_id: currentAccount?.get('domain'),
+                channel: newMessageChannel,
+                product_id: productCardDetails.productId,
+                variant_id: productCardDetails.variantId,
+                ticket: ticket?.get('id') || 'new',
+            })
             setOpen(false)
         },
         [
