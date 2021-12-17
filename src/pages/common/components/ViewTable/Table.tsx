@@ -1,4 +1,4 @@
-import React, {ReactNode, useEffect, useMemo, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
@@ -27,7 +27,6 @@ import Row from './Table/Row'
 import ViewSelection from './Table/ViewSelection'
 
 type OwnProps = {
-    headerRow?: ReactNode
     view: ViewImmutable
     config: Map<any, any>
     isLoading: (list: string) => boolean
@@ -50,7 +49,6 @@ type Props = OwnProps & ConnectedProps<typeof connector>
 
 const TableContainer = ({
     ActionsComponent,
-    headerRow,
     config,
     fetchViewItems,
     fields,
@@ -288,7 +286,6 @@ const TableContainer = ({
                     ) : null}
                 </thead>
                 <tbody>
-                    {headerRow}
                     {items.map((item: Map<any, any>, index) => {
                         const id = item.get('id')
 
