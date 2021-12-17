@@ -113,10 +113,18 @@ class BillingPlans extends React.Component<Props> {
                                     </dt>
                                     <dd>
                                         We provide all our customers with the
-                                        same level of support. We're available
-                                        9am-7pm PST, over chat, email & phone.
-                                        You can also join our Slack community to
-                                        chat with our team.
+                                        same level of support. We’re available
+                                        24/7, over chat and email. You can also
+                                        join our
+                                        <a
+                                            href="https://www.facebook.com/groups/customersupportgroup/"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            {' '}
+                                            Facebook community{' '}
+                                        </a>
+                                        to chat with our team.
                                     </dd>
 
                                     <dt>
