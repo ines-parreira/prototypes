@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MissingBillingInformationRow /> should render a row when conditions are met 1`] = `
+<tr>
+  <td
+    class="bannerWrapper"
+    colspan="20"
+  >
+    <div
+      class="alert error"
+    >
+      <div
+        class="iconContainer"
+      >
+        <img
+          alt="icon"
+          class="icon"
+          src="test-file-stub"
+        />
+      </div>
+      <div
+        class="content"
+      >
+        <span
+          class="label"
+        >
+          We’re missing critical information on your payment profile, please update them now.
+        </span>
+        <div
+          class="customActions"
+        >
+          <button
+            class="wrapper text small"
+          >
+            Update Now
+          </button>
+        </div>
+      </div>
+    </div>
+  </td>
+</tr>
+`;

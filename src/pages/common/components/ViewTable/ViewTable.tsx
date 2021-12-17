@@ -26,6 +26,7 @@ import css from './ViewTable.less'
 import withViewSearchUrlSync, {
     ViewSearchUrlSyncInjectedProps,
 } from './withViewSearchUrlSync'
+import MissingBillingInformationRow from './Table/MissingBillingInformationRow'
 
 type OwnProps = {
     className?: string
@@ -262,6 +263,7 @@ export class ViewTableContainer extends Component<Props> {
         return (
             <Table
                 view={activeView}
+                headerRow={<MissingBillingInformationRow />}
                 config={config}
                 isLoading={isLoading}
                 navigation={navigation}
