@@ -1,6 +1,7 @@
 @import 'colors';
 @import '~css/new/colors';
 @import '~css/new/mixins';
+@import '~css/new/colorTokens';
 
 :local {
     .wrapper {
@@ -66,6 +67,7 @@
     }
 
     .usage-progress {
+        background-color: @classic-neutral-grey-2;
         margin-bottom: 4px;
     }
 
@@ -94,5 +96,29 @@
         color: @neutral10;
         display: flex;
         justify-content: space-between;
+    }
+
+    .planTitle {
+        text-transform: capitalize;
+    }
+
+    .link {
+        color: @classic-main-primary;
+    }
+
+    .progressBar {
+        background-color: @classic-main-primary;
+
+        &.isWarning {
+            background-color: @classic-feedback-warning-2;
+        }
+    }
+
+    .remainingProgressBar {
+        background-color: @classic-feedback-warning-2;
+
+        &.isDanger {
+            background-color: @classic-feedback-error-2;
+        }
     }
 }

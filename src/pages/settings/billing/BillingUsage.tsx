@@ -4,7 +4,6 @@ import moment from 'moment'
 import {Link} from 'react-router-dom'
 import {useSelector} from 'react-redux'
 import {
-    Button,
     Card,
     CardBody,
     CardGroup,
@@ -29,6 +28,7 @@ import {NotificationStatus} from '../../../state/notifications/types'
 import LegacyPlanBadge from '../../common/components/LegacyPlanBadge'
 import LegacyPlanBanner from '../../common/components/LegacyPlanBanner'
 import Loader from '../../common/components/Loader/Loader'
+import Button, {ButtonIntent} from '../../common/components/button/Button'
 import history from '../../history'
 
 import AutomationSection from './automation/AutomationSection'
@@ -82,24 +82,11 @@ const BillingUsage = () => {
         // percentage used/remaining (depends on extra usage)
         let percentUsed = 100
         let percentRemaining = 100
-        let percentUsedColor = 'primary'
-        let percentRemainingColor
 
         if (includedTickets) {
             if (usedTickets >= includedTickets) {
                 percentUsed = Math.round((includedTickets * 100) / usedTickets)
                 percentRemaining = 100 - percentUsed
-
-                if (percentRemaining === 0) {
-                    // means the account consumed all their ticket credits - we color the whole bar warning
-                    percentUsedColor = 'warning'
-                } else if (percentRemaining > 0 && percentRemaining < 20) {
-                    // means the account surpassed their ticket credits and are now in extra usage - but not too much
-                    percentRemainingColor = 'warning'
-                } else if (percentRemaining >= 20) {
-                    // means the account surpassed their ticket credits and are now in extra usage - a lot of extra usage
-                    percentRemainingColor = 'danger'
-                }
             } else {
                 // we're still in the "no extra usage" zone of included tickets in the helpdesk
                 percentUsed = Math.round((usedTickets * 100) / includedTickets)
@@ -129,15 +116,27 @@ const BillingUsage = () => {
                     <Progress
                         bar
                         value={percentUsed}
-                        color={percentUsedColor}
+                        barClassName={classnames(css.progressBar, {
+                            [css.isWarning]:
+                                includedTickets &&
+                                usedTickets >= includedTickets &&
+                                percentRemaining === 0,
+                        })}
                     />
-                    {percentRemainingColor && (
-                        <Progress
-                            bar
-                            value={percentRemaining}
-                            color={percentRemainingColor}
-                        />
-                    )}
+                    {!!includedTickets &&
+                        usedTickets >= includedTickets &&
+                        percentRemaining > 0 && (
+                            <Progress
+                                bar
+                                value={percentRemaining}
+                                barClassName={classnames(
+                                    css.remainingProgressBar,
+                                    {
+                                        [css.isDanger]: percentRemaining >= 20,
+                                    }
+                                )}
+                            />
+                        )}
                 </Progress>
                 <div className="flex justify-content-between">
                     <div>${extraCost} extra cost</div>
@@ -160,7 +159,9 @@ const BillingUsage = () => {
             <div className={css['integration-numbers']}>
                 {usedIntegrations}/{includedIntegrations}{' '}
                 <b>
-                    <Link to="/app/settings/integrations">integrations</Link>
+                    <Link className={css.link} to="/app/settings/integrations">
+                        integrations
+                    </Link>
                 </b>{' '}
                 <a id="integrations-consumed">
                     <i className="material-icons text-muted">info_outline</i>
@@ -185,7 +186,7 @@ const BillingUsage = () => {
                     <div className={css.description}>
                         Please select a plan before updating you payment method.
                         <Button
-                            color="secondary"
+                            intent={ButtonIntent.Secondary}
                             onClick={() => {
                                 history.push('/app/settings/billing/plans')
                             }}
@@ -232,7 +233,7 @@ const BillingUsage = () => {
                             }
                         )}
                     >
-                        <div>{planTitle}</div>
+                        <div className={css.planTitle}>{planTitle}</div>
                         {accountHasLegacyPlan ? (
                             <LegacyPlanBadge />
                         ) : (
@@ -257,11 +258,10 @@ const BillingUsage = () => {
                             ) : (
                                 <div>
                                     Your current subscription started on{' '}
-                                    <strong>{currentSubscriptionStart}</strong>.
+                                    <strong>{currentSubscriptionStart}</strong>
                                 </div>
                             )}
                             <Button
-                                color="primary"
                                 onClick={() => {
                                     history.push('/app/settings/billing/plans')
                                 }}
@@ -292,11 +292,14 @@ const BillingUsage = () => {
             <p>
                 If you have any questions or if you want to unsubscribe, please
                 contact us at{' '}
-                <a href={`mailto:${window.GORGIAS_SUPPORT_EMAIL}`}>
+                <a
+                    className={css.link}
+                    href={`mailto:${window.GORGIAS_SUPPORT_EMAIL}`}
+                >
                     {window.GORGIAS_SUPPORT_EMAIL}
                 </a>{' '}
                 or{' '}
-                <a href="" onClick={openChat}>
+                <a className={css.link} href="" onClick={openChat}>
                     Live Chat
                 </a>
                 .

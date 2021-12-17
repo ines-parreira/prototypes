@@ -8,7 +8,7 @@ exports[`<BillingUsage/> should display danger progress bar 1`] = `
     aria-valuemax="100"
     aria-valuemin="0"
     aria-valuenow="63"
-    class="progress-bar bg-primary"
+    class="progress-bar progressBar"
     role="progressbar"
     style="width: 63%;"
   />
@@ -16,7 +16,7 @@ exports[`<BillingUsage/> should display danger progress bar 1`] = `
     aria-valuemax="100"
     aria-valuemin="0"
     aria-valuenow="37"
-    class="progress-bar bg-danger"
+    class="progress-bar remainingProgressBar isDanger"
     role="progressbar"
     style="width: 37%;"
   />
@@ -62,7 +62,9 @@ exports[`<BillingUsage/> should display price 1`] = `
       <div
         class="card-title current-plan-title pro card-title"
       >
-        <div>
+        <div
+          class="planTitle"
+        >
           Pro monthly plan
         </div>
         <span
@@ -100,7 +102,7 @@ exports[`<BillingUsage/> should display price 1`] = `
               aria-valuemax="100"
               aria-valuemin="0"
               aria-valuenow="50"
-              class="progress-bar bg-primary"
+              class="progress-bar progressBar"
               role="progressbar"
               style="width: 50%;"
             />
@@ -131,6 +133,7 @@ exports[`<BillingUsage/> should display price 1`] = `
            
           <b>
             <a
+              class="link"
               to="/app/settings/integrations"
             >
               integrations
@@ -156,11 +159,9 @@ exports[`<BillingUsage/> should display price 1`] = `
             <strong>
               Aug 22
             </strong>
-            .
           </div>
           <button
-            class="btn btn-primary"
-            type="button"
+            class="wrapper primary medium"
           >
             Update plan
           </button>
@@ -230,6 +231,7 @@ exports[`<BillingUsage/> should display price 1`] = `
     If you have any questions or if you want to unsubscribe, please contact us at
      
     <a
+      class="link"
       href="mailto:support@gorgias.com"
     >
       support@gorgias.com
@@ -238,6 +240,7 @@ exports[`<BillingUsage/> should display price 1`] = `
     or
      
     <a
+      class="link"
       href=""
     >
       Live Chat
@@ -268,7 +271,7 @@ exports[`<BillingUsage/> should display warning progress bar 1`] = `
     aria-valuemax="100"
     aria-valuemin="0"
     aria-valuenow="100"
-    class="progress-bar bg-warning"
+    class="progress-bar progressBar isWarning"
     role="progressbar"
     style="width: 100%;"
   />
@@ -298,7 +301,9 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
       <div
         class="card-title current-plan-title pro card-title"
       >
-        <div>
+        <div
+          class="planTitle"
+        >
           Pro monthly plan
         </div>
         <span
@@ -336,7 +341,7 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
               aria-valuemax="100"
               aria-valuemin="0"
               aria-valuenow="50"
-              class="progress-bar bg-primary"
+              class="progress-bar progressBar"
               role="progressbar"
               style="width: 50%;"
             />
@@ -367,6 +372,7 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
            
           <b>
             <a
+              class="link"
               to="/app/settings/integrations"
             >
               integrations
@@ -392,11 +398,9 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
             <strong>
               Aug 22
             </strong>
-            .
           </div>
           <button
-            class="btn btn-primary"
-            type="button"
+            class="wrapper primary medium"
           >
             Update plan
           </button>
@@ -466,6 +470,7 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
     If you have any questions or if you want to unsubscribe, please contact us at
      
     <a
+      class="link"
       href="mailto:support@gorgias.com"
     >
       support@gorgias.com
@@ -474,6 +479,7 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
     or
      
     <a
+      class="link"
       href=""
     >
       Live Chat
