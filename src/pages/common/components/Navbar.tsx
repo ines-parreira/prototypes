@@ -16,11 +16,16 @@ import 'assets/css/typography.less'
 
 import ToggleButton from '../../../pages/common/components/ToggleButton'
 import shortcutManager from '../../../services/shortcutManager/index'
-import * as billingSelectors from '../../../state/billing/selectors'
-import * as currentUserActions from '../../../state/currentUser/actions'
-import * as currentUserSelectors from '../../../state/currentUser/selectors'
-import * as layoutActions from '../../../state/layout/actions'
-import * as layoutSelectors from '../../../state/layout/selectors'
+import {getCurrentPlan} from '../../../state/billing/selectors'
+import {isTrialing} from '../../../state/currentAccount/selectors'
+import {submitSetting} from '../../../state/currentUser/actions'
+import {
+    getCurrentUser,
+    getPreferences,
+    isAvailable,
+} from '../../../state/currentUser/selectors'
+import {closePanels} from '../../../state/layout/actions'
+import {isOpenedPanel} from '../../../state/layout/selectors'
 import {RootState} from '../../../state/types'
 import {logEvent, SegmentEvent} from '../../../store/middlewares/segmentTracker'
 import {reportError} from '../../../utils/errors'
@@ -201,7 +206,7 @@ export class Navbar extends React.Component<Props, State> {
     }
 
     render() {
-        const {currentUser, currentPlan, available} = this.props
+        const {available, currentPlan, currentUser, isTrialing} = this.props
         const currentPlanName = (currentPlan.get('name') as string) || ''
         const isBasicOrPro = ['pro', 'basic'].some((planType) =>
             currentPlanName.toLowerCase().includes(planType)
@@ -371,8 +376,7 @@ export class Navbar extends React.Component<Props, State> {
                             </i>
                             Service status
                         </DropdownItem>
-                        {isBasicOrPro && (
-                            // show office hours link for basic/pro customers because they don't have a dedicated CSM
+                        {isBasicOrPro && !isTrialing && (
                             <DropdownItem
                                 tag="a"
                                 href="https://calendly.com/gorgias-office-hours"
@@ -467,15 +471,16 @@ export class Navbar extends React.Component<Props, State> {
 
 const connector = connect(
     (state: RootState) => ({
-        currentUser: currentUserSelectors.getCurrentUser(state),
-        currentUserPreferences: currentUserSelectors.getPreferences(state),
-        currentPlan: billingSelectors.getCurrentPlan(state),
-        available: currentUserSelectors.isAvailable(state),
-        isOpenedPanel: layoutSelectors.isOpenedPanel('navbar')(state),
+        currentUser: getCurrentUser(state),
+        currentUserPreferences: getPreferences(state),
+        currentPlan: getCurrentPlan(state),
+        available: isAvailable(state),
+        isOpenedPanel: isOpenedPanel('navbar')(state),
+        isTrialing: isTrialing(state),
     }),
     {
-        submitSetting: currentUserActions.submitSetting,
-        closePanels: layoutActions.closePanels,
+        submitSetting,
+        closePanels,
     }
 )
 

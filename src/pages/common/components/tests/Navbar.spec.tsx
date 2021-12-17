@@ -13,6 +13,7 @@ describe('<Navbar />', () => {
         activeContent: undefined,
         available: true,
         children: null,
+        closePanels: jest.fn(),
         currentPlan: fromJS(advancedPlan) as Map<any, any>,
         currentUser: fromJS(user),
         currentUserPreferences: fromJS({
@@ -20,7 +21,7 @@ describe('<Navbar />', () => {
             data: DEFAULT_PREFERENCES,
         }),
         isOpenedPanel: false,
-        closePanels: jest.fn(),
+        isTrialing: false,
         submitSetting: jest.fn(),
     }
 
@@ -65,6 +66,17 @@ describe('<Navbar />', () => {
             <Navbar {...minProps} currentPlan={fromJS(proPlan)} />
         )
         expect(getByText(/book office hours/i)).toBeTruthy()
+    })
+
+    it('should not render item to book office hours for trialing customers', () => {
+        const {queryByText} = render(
+            <Navbar
+                {...minProps}
+                currentPlan={fromJS(proPlan)}
+                isTrialing={true}
+            />
+        )
+        expect(queryByText(/book office hours/i)).toBeFalsy()
     })
 
     it('should toggle the dropdown when clicking on the current logged user', () => {
