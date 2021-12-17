@@ -54,7 +54,7 @@ export class TeamListContainer extends Component<Props, State> {
         const maxMembersPreview = 10
 
         return (
-            <div className={'full-width'}>
+            <div className={classnames(css.component, 'full-width')}>
                 <PageHeader title="Teams">
                     <Button
                         tag={Link}
@@ -94,12 +94,7 @@ export class TeamListContainer extends Component<Props, State> {
                                 key={teamId}
                                 to={`/app/settings/teams/${teamId}/members`}
                             >
-                                <div
-                                    className={classnames(
-                                        css.icon,
-                                        'd-flex justify-content-center mr-3'
-                                    )}
-                                >
+                                <div className="d-flex justify-content-center mr-3">
                                     {emoji ? (
                                         <Emoji
                                             emoji={emoji.toJS()}

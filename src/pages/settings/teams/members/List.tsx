@@ -252,7 +252,7 @@ export class MembersListContainer extends Component<Props, State> {
                         <Container
                             fluid
                             className={classnames(
-                                'page-container',
+                                settingsCss.pageContainer,
                                 settingsCss.pt0
                             )}
                         >

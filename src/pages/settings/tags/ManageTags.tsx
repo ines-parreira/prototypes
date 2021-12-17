@@ -202,7 +202,7 @@ export class ManageTagsContainer extends Component<Props, State> {
 
         return (
             <div
-                className={classnames('full-width', {
+                className={classnames('full-width overflow-auto', {
                     manageTagsClassName: selected > 0,
                 })}
             >
@@ -306,7 +306,10 @@ export class ManageTagsContainer extends Component<Props, State> {
                 />
 
                 <Pagination
-                    className="pagination-transparent"
+                    className={classnames(
+                        'pagination-transparent',
+                        css.pagination
+                    )}
                     pageCount={numberPages}
                     currentPage={currentPage}
                     onChange={(page) => this.props.setPage(page)}

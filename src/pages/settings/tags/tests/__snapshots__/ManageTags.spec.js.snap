@@ -2,7 +2,7 @@
 
 exports[`ManageTags component mounts correctly 1`] = `
 <div
-  className="full-width manageTagsClassName"
+  className="full-width overflow-auto manageTagsClassName"
 >
   <PageHeader
     title="Manage tags"
@@ -127,7 +127,7 @@ exports[`ManageTags component mounts correctly 1`] = `
     sort="usage"
   />
   <Pagination
-    className="pagination-transparent"
+    className="pagination-transparent pagination"
     currentPage={1}
     onChange={[Function]}
     pageCount={1}
