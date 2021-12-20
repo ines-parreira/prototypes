@@ -1027,4 +1027,48 @@ describe('TicketListActions component', () => {
         expect(queryByText('Mark as read')).toBe(null)
         expect(queryByText('Mark as unread')).not.toBe(null)
     })
+
+    it('should allow tag creation for lead and admin agents', async () => {
+        fieldEnumSearchCancellableMock.mockResolvedValue(fromJS([]))
+        const {getByText, getByPlaceholderText, findByText} = render(
+            <TicketListActionsContainer
+                {...minProps}
+                selectedItemsIds={fromJS([1])}
+                currentUser={fromJS({
+                    id: 1,
+                    name: 'Peter Parker',
+                    roles: [{id: 1, name: UserRole.Agent}],
+                })}
+            />
+        )
+
+        fireEvent.click(getByText('Add tag'))
+        fireEvent.change(getByPlaceholderText(/Search tags/i), {
+            target: {value: 'Foo'},
+        })
+        await waitFor(() => expect(findByText(/Create/i)).toBeTruthy())
+    })
+
+    it('should prevent tag creation for low-level agents', async () => {
+        fieldEnumSearchCancellableMock.mockResolvedValue(fromJS([]))
+        const {getByText, getByPlaceholderText, findByText} = render(
+            <TicketListActionsContainer
+                {...minProps}
+                selectedItemsIds={fromJS([1])}
+                currentUser={fromJS({
+                    id: 1,
+                    name: 'Peter Parker',
+                    roles: [{id: 1, name: UserRole.BasicAgent}],
+                })}
+            />
+        )
+
+        fireEvent.click(getByText('Add tag'))
+        fireEvent.change(getByPlaceholderText(/Search tags/i), {
+            target: {value: 'Foo'},
+        })
+        await waitFor(() =>
+            expect(findByText(/Couldn't find the tag: Foo/i)).toBeTruthy()
+        )
+    })
 })

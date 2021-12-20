@@ -192,6 +192,7 @@ export const TicketListActionsContainer = ({
     }
 
     const searchTags = (search: string) => {
+        setIsLoadingTags(true)
         setTagsSearchQuery(search)
         queryTagsOnSearch(search)
     }
@@ -377,19 +378,27 @@ export const TicketListActionsContainer = ({
         )
 
         if (!isInEnum && tagsSearchQuery) {
-            if (!tags.isEmpty()) {
+            if (!tags.isEmpty() && hasRole(currentUser, UserRole.Agent)) {
                 options = options.push(<DropdownItem key="divider" divider />)
             }
 
-            options = options.push(
-                <DropdownItem
-                    key="create"
-                    type="button"
-                    onClick={() => addTag(tagsSearchQuery)}
-                >
-                    <b>Create</b> {tagsSearchQuery}
-                </DropdownItem>
-            )
+            options = hasRole(currentUser, UserRole.Agent)
+                ? options.push(
+                      <DropdownItem
+                          key="create"
+                          type="button"
+                          onClick={() => addTag(tagsSearchQuery)}
+                      >
+                          <b>Create</b> {tagsSearchQuery}
+                      </DropdownItem>
+                  )
+                : tags.isEmpty()
+                ? options.push(
+                      <DropdownItem key="not_found" disabled>
+                          Couldn't find the tag: {tagsSearchQuery}
+                      </DropdownItem>
+                  )
+                : options
         }
 
         return options

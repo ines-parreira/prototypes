@@ -213,7 +213,10 @@ export class TicketTags extends Component<Props, State> {
         )
 
         if (!isInEnum && search) {
-            if (!availableTags.isEmpty()) {
+            if (
+                !availableTags.isEmpty() &&
+                hasRole(currentUser, UserRole.Agent)
+            ) {
                 options = options.push(<DropdownItem key="divider" divider />)
             }
 
