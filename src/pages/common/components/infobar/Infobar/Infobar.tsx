@@ -3,7 +3,6 @@ import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {useLocation} from 'react-router-dom'
 import {fromJS, Map} from 'immutable'
-import {Button} from 'reactstrap'
 import {CancelToken, AxiosError} from 'axios'
 import {usePrevious, useUpdateEffect} from 'react-use'
 
@@ -28,6 +27,9 @@ import Tooltip from '../../Tooltip'
 import InfobarLayout from '../InfobarLayout'
 import MergeCustomersContainer from '../../MergeCustomers/MergeCustomersContainer'
 import Search from '../../Search'
+import Button, {ButtonIntent} from '../../button/Button'
+import ButtonIconLabel from '../../button/ButtonIconLabel'
+import IconButton from '../../button/IconButton'
 
 import {areSourcesReady} from '../utils'
 import css from '../Infobar.less'
@@ -337,20 +339,17 @@ export const Infobar = ({
                         searchDebounceTime={1000}
                         ref={searchRef}
                     />
-                    <Button
+                    <IconButton
                         className={classnames(
-                            css.toggleWidgets,
                             'd-none d-md-inline-block ml-2 btn-transparent'
                         )}
-                        type="button"
                         id="toggle-widgets-edition-button"
-                        color="secondary"
-                        active={isEditing}
-                        disabled={!canEditWidgets}
+                        intent={ButtonIntent.Secondary}
+                        isDisabled={!canEditWidgets}
                         onClick={toggleEditionMode}
                     >
-                        <i className="material-icons md-2">settings</i>
-                    </Button>
+                        settings
+                    </IconButton>
                     <Tooltip
                         placement="left"
                         target="toggle-widgets-edition-button"
@@ -364,11 +363,14 @@ export const Infobar = ({
                     ) : mode === 'selected' ? (
                         <>
                             <div className="m-3">
-                                <Button type="button" onClick={resetSelected}>
-                                    <i className="material-icons md-2 mr-2">
-                                        arrow_back
-                                    </i>
-                                    Back
+                                <Button
+                                    className={css.selectionBackButton}
+                                    intent={ButtonIntent.Secondary}
+                                    onClick={resetSelected}
+                                >
+                                    <ButtonIconLabel icon="arrow_back">
+                                        Back
+                                    </ButtonIconLabel>
                                 </Button>
                                 <InfobarCustomerActions
                                     customer={customer}
@@ -441,13 +443,12 @@ export const Infobar = ({
                         <>
                             <div className="m-3">
                                 <Button
-                                    type="button"
+                                    intent={ButtonIntent.Secondary}
                                     onClick={() => resetSearch()}
                                 >
-                                    <i className="material-icons md-2 mr-2">
-                                        arrow_back
-                                    </i>
-                                    Back
+                                    <ButtonIconLabel icon="arrow_back">
+                                        Back
+                                    </ButtonIconLabel>
                                 </Button>
                             </div>
                             <InfobarSearchResultsList
@@ -503,8 +504,6 @@ export const Infobar = ({
                                         <div style={{marginBottom: '30px'}}>
                                             <Button
                                                 className="mr-2"
-                                                type="button"
-                                                color="primary"
                                                 onClick={() => {
                                                     // TODO(customers-migration): ask confirmation to update this event
                                                     logEvent(
@@ -519,10 +518,9 @@ export const Infobar = ({
                                                     )
                                                 }}
                                             >
-                                                <i className="material-icons mr-1">
-                                                    call_merge
-                                                </i>
-                                                Merge
+                                                <ButtonIconLabel icon="call_merge">
+                                                    Merge
+                                                </ButtonIconLabel>
                                             </Button>
                                         </div>
                                         <ActionButtonContext.Provider

@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import Clipboard from 'clipboard'
-import {Alert, Button} from 'reactstrap'
+import {Alert} from 'reactstrap'
 import _uniqueId from 'lodash/uniqueId'
 
-import CopyIcon from 'assets/img/icons/copy.svg'
-
+import Button, {ButtonIntent} from './button/Button'
+import ButtonIconLabel from './button/ButtonIconLabel'
 import css from './CodeSnippet.less'
 
 type Props = {
@@ -50,9 +50,11 @@ function CodeSnippet({code}: Props) {
                     id={`${id}-button`}
                     className={css['copy-button']}
                     data-clipboard-target={`#${id}`}
+                    intent={ButtonIntent.Secondary}
                 >
-                    <img src={CopyIcon} alt="copy icon" />
-                    {isCopied ? 'Copied!' : 'Copy'}
+                    <ButtonIconLabel icon="content_copy">
+                        {isCopied ? 'Copied!' : 'Copy'}
+                    </ButtonIconLabel>
                 </Button>
             )}
         </Alert>

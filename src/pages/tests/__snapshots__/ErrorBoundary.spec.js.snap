@@ -46,36 +46,29 @@ exports[`<ErrorBoundary/> should render an error message because an error occurr
     <h4>
       An error occurred!
     </h4>
-    <Button
-      className="mr-2 mb-2"
-      color="primary"
+    <ForwardRef
+      className="mr-2 mb-2 float-left"
       onClick={[Function]}
-      tag="button"
     >
       <button
-        aria-label={null}
-        className="mr-2 mb-2 btn btn-primary"
+        className="wrapper mr-2 mb-2 float-left primary medium"
         onClick={[Function]}
-        type="button"
       >
-        Reload the page
+        Reload page
       </button>
-    </Button>
-    <Button
+    </ForwardRef>
+    <ForwardRef
       className="mr-2 mb-2"
-      color="secondary"
+      intent="secondary"
       onClick={[Function]}
-      tag="button"
     >
       <button
-        aria-label={null}
-        className="mr-2 mb-2 btn btn-secondary"
+        className="wrapper mr-2 mb-2 secondary medium"
         onClick={[Function]}
-        type="button"
       >
         Show details
       </button>
-    </Button>
+    </ForwardRef>
     <Collapse
       appear={false}
       enter={true}

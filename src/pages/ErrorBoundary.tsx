@@ -1,11 +1,12 @@
 import React, {ReactNode, PureComponent} from 'react'
 import {datadogLogs} from '@datadog/browser-logs'
-import {Button, Card, CardBody, Collapse} from 'reactstrap'
+import {Card, CardBody, Collapse} from 'reactstrap'
 import {Emoji} from 'emoji-mart'
 
 import {isProduction, isStaging} from '../utils/environment'
 import {reportError} from '../utils/errors'
 
+import Button, {ButtonIntent} from './common/components/button/Button'
 import css from './ErrorBoundary.less'
 
 type Props = {
@@ -74,15 +75,14 @@ export class ErrorBoundary extends PureComponent<Props, State> {
                 </h1>
                 <h4>An error occurred!</h4>
                 <Button
-                    color="primary"
-                    className="mr-2 mb-2"
+                    className="mr-2 mb-2 float-left"
                     onClick={this._onReload}
                 >
-                    Reload the page
+                    Reload page
                 </Button>
                 <Button
-                    color="secondary"
                     className="mr-2 mb-2"
+                    intent={ButtonIntent.Secondary}
                     onClick={this._onToggle}
                 >
                     Show details

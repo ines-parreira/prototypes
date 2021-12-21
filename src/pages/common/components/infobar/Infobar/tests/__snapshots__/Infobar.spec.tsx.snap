@@ -18,12 +18,11 @@ exports[`<Infobar/> onSearchResultClick() should reset spinner and keep customer
         tabindex="10"
       />
       <button
-        class="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent btn btn-secondary"
+        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper medium secondary medium"
         id="toggle-widgets-edition-button"
-        type="button"
       >
         <i
-          class="material-icons md-2"
+          class="material-icons icon"
         >
           settings
         </i>
@@ -36,15 +35,18 @@ exports[`<Infobar/> onSearchResultClick() should reset spinner and keep customer
         class="m-3"
       >
         <button
-          class="btn btn-secondary"
-          type="button"
+          class="wrapper secondary medium"
         >
-          <i
-            class="material-icons md-2 mr-2"
+          <span
+            class="wrapper"
           >
-            arrow_back
-          </i>
-          Back
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              arrow_back
+            </i>
+            Back
+          </span>
         </button>
       </div>
       <div
@@ -85,12 +87,11 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
         tabindex="10"
       />
       <button
-        class="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent btn btn-secondary"
+        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper medium secondary medium"
         id="toggle-widgets-edition-button"
-        type="button"
       >
         <i
-          class="material-icons md-2"
+          class="material-icons icon"
         >
           settings
         </i>
@@ -127,15 +128,18 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
             style="margin-bottom: 30px;"
           >
             <button
-              class="mr-2 btn btn-primary"
-              type="button"
+              class="wrapper mr-2 primary medium"
             >
-              <i
-                class="material-icons mr-1"
+              <span
+                class="wrapper"
               >
-                call_merge
-              </i>
-              Merge
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  call_merge
+                </i>
+                Merge
+              </span>
             </button>
           </div>
           <div
@@ -175,12 +179,11 @@ exports[`<Infobar/> should render customer context 1`] = `
         tabindex="10"
       />
       <button
-        class="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent btn btn-secondary"
+        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper medium secondary medium"
         id="toggle-widgets-edition-button"
-        type="button"
       >
         <i
-          class="material-icons md-2"
+          class="material-icons icon"
         >
           settings
         </i>
@@ -221,12 +224,11 @@ exports[`<Infobar/> should render loading state because the customer is being fe
         tabindex="10"
       />
       <button
-        class="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent btn btn-secondary"
+        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper medium secondary medium"
         id="toggle-widgets-edition-button"
-        type="button"
       >
         <i
-          class="material-icons md-2"
+          class="material-icons icon"
         >
           settings
         </i>
@@ -271,12 +273,11 @@ exports[`<Infobar/> should render loading state because the search is in progres
         tabindex="10"
       />
       <button
-        class="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent btn btn-secondary"
+        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper medium secondary medium"
         id="toggle-widgets-edition-button"
-        type="button"
       >
         <i
-          class="material-icons md-2"
+          class="material-icons icon"
         >
           settings
         </i>
@@ -321,12 +322,11 @@ exports[`<Infobar/> should render search results 1`] = `
         tabindex="10"
       />
       <button
-        class="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent btn btn-secondary"
+        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper medium secondary medium"
         id="toggle-widgets-edition-button"
-        type="button"
       >
         <i
-          class="material-icons md-2"
+          class="material-icons icon"
         >
           settings
         </i>
@@ -339,15 +339,18 @@ exports[`<Infobar/> should render search results 1`] = `
         class="m-3"
       >
         <button
-          class="btn btn-secondary"
-          type="button"
+          class="wrapper secondary medium"
         >
-          <i
-            class="material-icons md-2 mr-2"
+          <span
+            class="wrapper"
           >
-            arrow_back
-          </i>
-          Back
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              arrow_back
+            </i>
+            Back
+          </span>
         </button>
       </div>
       <div
@@ -389,13 +392,12 @@ exports[`<Infobar/> should render selected customer 1`] = `
           tabindex="10"
         />
         <button
-          class="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent btn btn-secondary disabled"
+          class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper medium secondary medium isDisabled"
           disabled=""
           id="toggle-widgets-edition-button"
-          type="button"
         >
           <i
-            class="material-icons md-2"
+            class="material-icons icon"
           >
             settings
           </i>
@@ -408,15 +410,18 @@ exports[`<Infobar/> should render selected customer 1`] = `
           class="m-3"
         >
           <button
-            class="btn btn-secondary"
-            type="button"
+            class="wrapper selectionBackButton secondary medium"
           >
-            <i
-              class="material-icons md-2 mr-2"
+            <span
+              class="wrapper"
             >
-              arrow_back
-            </i>
-            Back
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                arrow_back
+              </i>
+              Back
+            </span>
           </button>
           <div
             class="float-right d-none d-md-block"
@@ -465,12 +470,11 @@ exports[`<Infobar/> should render the error when loading error 1`] = `
         tabindex="10"
       />
       <button
-        class="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent btn btn-secondary"
+        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper medium secondary medium"
         id="toggle-widgets-edition-button"
-        type="button"
       >
         <i
-          class="material-icons md-2"
+          class="material-icons icon"
         >
           settings
         </i>
@@ -483,15 +487,18 @@ exports[`<Infobar/> should render the error when loading error 1`] = `
         class="m-3"
       >
         <button
-          class="btn btn-secondary"
-          type="button"
+          class="wrapper secondary medium"
         >
-          <i
-            class="material-icons md-2 mr-2"
+          <span
+            class="wrapper"
           >
-            arrow_back
-          </i>
-          Back
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              arrow_back
+            </i>
+            Back
+          </span>
         </button>
       </div>
       <div
@@ -533,12 +540,11 @@ exports[`<Infobar/> should render ticket context 1`] = `
         tabindex="10"
       />
       <button
-        class="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent btn btn-secondary"
+        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper medium secondary medium"
         id="toggle-widgets-edition-button"
-        type="button"
       >
         <i
-          class="material-icons md-2"
+          class="material-icons icon"
         >
           settings
         </i>
@@ -579,13 +585,12 @@ exports[`<Infobar/> should render widgets edition mode 1`] = `
         tabindex="10"
       />
       <button
-        class="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent btn btn-secondary active disabled"
+        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper medium secondary medium isDisabled"
         disabled=""
         id="toggle-widgets-edition-button"
-        type="button"
       >
         <i
-          class="material-icons md-2"
+          class="material-icons icon"
         >
           settings
         </i>

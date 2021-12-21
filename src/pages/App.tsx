@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import React, {ComponentType, ReactNode} from 'react'
 import DocumentTitle from 'react-document-title'
 import {connect, ConnectedProps} from 'react-redux'
-import {Button, Container} from 'reactstrap'
+import {Container} from 'reactstrap'
 import NotificationsSystem from 'reapop'
 import {RouteComponentProps} from 'react-router-dom'
 import {Map} from 'immutable'
@@ -31,6 +31,8 @@ import ModalNotification from './common/components/ModalNotification'
 import notificationsTheme from './common/components/Notifications'
 import {ErrorBoundary} from './ErrorBoundary'
 import PhoneIntegrationBar from './common/components/PhoneIntegrationBar/PhoneIntegrationBar'
+import IconButton from './common/components/button/IconButton'
+import Button, {ButtonIntent} from './common/components/button/Button'
 
 type Props = {
     infobarOnMobile?: boolean
@@ -164,25 +166,21 @@ class App extends React.Component<Props> {
                                         )}
                                     >
                                         <div className="mobile-nav d-md-none d-flex justify-content-between align-items-center">
-                                            <Button
+                                            <IconButton
                                                 className="mr-3"
-                                                type="button"
-                                                color="link"
+                                                intent={ButtonIntent.Text}
                                                 onClick={() =>
                                                     this.props.openPanel(
                                                         'navbar'
                                                     )
                                                 }
                                             >
-                                                <i className="material-icons">
-                                                    menu
-                                                </i>
-                                            </Button>
+                                                menu
+                                            </IconButton>
                                             {infobarOnMobile && (
                                                 <Button
                                                     className="ml-3"
-                                                    type="button"
-                                                    color="link"
+                                                    intent={ButtonIntent.Text}
                                                     onClick={() =>
                                                         this.props.openPanel(
                                                             'infobar'
