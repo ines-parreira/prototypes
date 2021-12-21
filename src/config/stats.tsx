@@ -1459,34 +1459,34 @@ export const stats = toImmutable<
         api_resource_name: SELF_SERVICE_OVERVIEW,
         metrics: [
             {
-                name: 'total_interactions',
-                label: 'Self-service requests',
+                name: 'self-service_usage',
+                label: 'Self-service usage over chat',
                 tooltip:
-                    'Number of times customers complete a self-service request using Track, Return, Cancel or Report an Issue flows.',
+                    'Percentage of self-service interactions (including automated ones) compared to the total number of chat tickets (live chats and self-service interactions) within the selected stores.',
+            },
+            {
+                name: 'total_interactions',
+                label: 'Self-service interactions',
+                tooltip:
+                    'Number of times customers complete a self-service interaction using Track, Return, Cancel or Report an Issue flows. An interaction is counted when a customer completes a full flow until the end.',
             },
             {
                 name: 'tickets_deflected',
-                label: 'Automated requests',
+                label: 'Automated interactions',
                 tooltip:
-                    "Percentage of self-service requests automated by using the Track flow. Automated requests don't create any tickets.",
-            },
-            {
-                name: 'total_unique_customers',
-                label: 'Unique customers',
-                tooltip:
-                    'Number of unique customers who completed at least one self-service request.',
+                    "Percentage of self-service interactions automated by using the Track flow. Automated interactions don't create any tickets.",
             },
             {
                 name: 'tickets_created',
                 label: 'Tickets created',
                 tooltip:
-                    'Number of self-service requests made by Return, Cancel and Report Issues flows. These requests create auto-generated chat tickets that are easier to handle by agents.',
+                    'Number of self-service interactions made by Return, Cancel and Report Issue flows. These interactions create auto-generated chat tickets that are easier to handle by agents.',
             },
             {
-                name: 'self-service_usage',
-                label: 'Self-service usage',
+                name: 'total_unique_customers',
+                label: 'Unique customers',
                 tooltip:
-                    'Percentage of self-service requests (including automated ones) compared to the total number of chat tickets (live chats and self-service requests) within the selected stores.',
+                    'Number of unique customers who completed at least one self-service interaction.',
             },
         ],
     },
