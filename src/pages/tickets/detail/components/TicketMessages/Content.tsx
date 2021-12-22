@@ -10,6 +10,8 @@ import {
 } from '../../../../../utils/html'
 import Ellipsis from '../../../../common/components/Ellipsis'
 
+import css from './Content.less'
+
 type Props = {
     html?: string
     text?: string
@@ -84,7 +86,9 @@ export default class Content extends Component<Props, State> {
         return (
             <div>
                 <div
-                    className={classNames({'new-line-interpret': !isHtml})}
+                    className={classNames(css.content, {
+                        'new-line-interpret': !isHtml,
+                    })}
                     dangerouslySetInnerHTML={{__html: displayContent!}}
                 />
                 {isStripped && (

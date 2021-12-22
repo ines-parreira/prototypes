@@ -53,7 +53,7 @@ exports[`Body should display the Facebook carousel if there's matching metadata 
     >
       <div>
         <div
-          className="new-line-interpret"
+          className="content new-line-interpret"
           dangerouslySetInnerHTML={
             Object {
               "__html": "text <a href=\\"http://gorgias.io/\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">http://gorgias.io/</a>",
@@ -537,7 +537,7 @@ exports[`Body should display the Twitter quoted tweet card if there's matching m
     >
       <div>
         <div
-          className=""
+          className="content"
           dangerouslySetInnerHTML={
             Object {
               "__html": "si! more! <a href=\\"https://t.co/PcepQOiI6X\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">https://t.co/PcepQOiI6X</a> <a href=\\"https://t.co/F62lVxUXgG\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">https://t.co/F62lVxUXgG</a>",
