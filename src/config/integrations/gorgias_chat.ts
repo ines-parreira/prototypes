@@ -18,6 +18,8 @@ import {
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
 } from '../../models/integration/types'
+import EMAIL_CAPTURE_TEXTS_IMPORT from '../../../../../integrations/gorgias_chat/texts/email_capture_replies.json'
+import {CHAT_AUTO_RESPONDER_REPLY_OPTIONS} from './index'
 
 export const GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH = 50
 
@@ -54,6 +56,12 @@ export const GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT =
 
 // Auto responder
 export const GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT = true
+
+// Casting for typing json imports
+const EMAIL_CAPTURE_TEXTS: Record<
+    string,
+    Record<string, string>
+> = EMAIL_CAPTURE_TEXTS_IMPORT
 
 // Company picture types
 export const GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS = 'team-members'
@@ -131,3 +139,18 @@ export const CAMPAIGNS_TRIGGER_KEYS = fromJS([
         },
     },
 ])
+
+export const getAutoResponderReplyOptions = (language: string | null) => {
+    if (!language) {
+        return []
+    }
+
+    return CHAT_AUTO_RESPONDER_REPLY_OPTIONS.map((option: string) => {
+        return {
+            value: option,
+            label: `"${EMAIL_CAPTURE_TEXTS[language][option]}"`,
+        }
+    })
+}
+
+export {EMAIL_CAPTURE_TEXTS}

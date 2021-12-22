@@ -19,14 +19,14 @@ import {
 import {
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
-    getAutoResponderReplyOptions,
-} from '../../../../../config/integrations/index'
+} from '../../../../../config/integrations'
 import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
+    getAutoResponderReplyOptions,
 } from '../../../../../config/integrations/gorgias_chat'
 import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
 import {getIntegrationsByTypes} from '../../../../../state/integrations/selectors'
