@@ -1,12 +1,12 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 :local {
     .upgradeLink {
         font-weight: 600;
 
         .upgradeButton {
-            color: @orange2;
-            border-color: rgba(239, 108, 14, 0.5);
+            color: @classic-main-secondary;
+            border-color: fade(@classic-main-secondary, 50%);
 
             &.sm {
                 line-height: inherit;
@@ -16,9 +16,9 @@
 
             &:hover,
             &:not(:disabled):active {
-                color: @white;
-                background-color: @orange2 !important;
-                border-color: @orange2 !important;
+                color: @classic-neutral-grey-0;
+                background-color: @classic-main-secondary !important;
+                border-color: @classic-main-secondary !important;
             }
 
             &:focus:not(:disabled):active {
@@ -41,22 +41,22 @@
             }
 
             &.invertedColors {
-                background-color: @orange2;
-                border-color: @orange2;
-                color: @white;
+                background-color: @classic-main-secondary;
+                border-color: @classic-main-secondary;
+                color: @classic-neutral-grey-0;
 
                 .upgradeIcon {
                     filter: brightness(0) invert(1);
                 }
 
                 &:hover {
-                    background-color: @white !important;
-                    border-color: rgba(239, 108, 14, 0.5) !important;
-                    color: @orange2;
+                    background-color: @classic-neutral-grey-0 !important;
+                    border-color: fade(@classic-main-secondary, 50%) !important;
+                    color: @classic-main-secondary;
 
                     .upgradeIcon {
                         filter: none;
-                        fill: @orange2;
+                        fill: @classic-main-secondary;
                     }
                 }
             }
@@ -64,7 +64,7 @@
 
         &:hover {
             .upgradeButton {
-                color: @white;
+                color: @classic-neutral-grey-0;
 
                 .upgradeIcon {
                     filter: brightness(0) invert(1);

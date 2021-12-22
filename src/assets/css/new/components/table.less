@@ -1,12 +1,14 @@
-/* table
- */
+.table {
+    color: @classic-neutral-grey-6;
 
-.table td,
-.table th {
-    border-top: 0;
-    border-bottom: 1px solid @darkQuartz2;
-}
+    td,
+    thead th {
+        border-top: 0;
+        border-bottom: 1px solid @classic-neutral-grey-3;
+    }
 
-.table-hover tbody tr:hover {
-    background-color: @tableRowBgHover;
+    tbody tr:hover {
+        background-color: @classic-neutral-grey-1;
+        color: @classic-neutral-grey-6;
+    }
 }

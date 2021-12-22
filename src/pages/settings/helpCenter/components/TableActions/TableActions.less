@@ -1,4 +1,4 @@
-@import (reference) '~css/new/colors';
+@import (reference) '~css/new/colorTokens';
 
 :local {
     .action-list {
@@ -12,7 +12,7 @@
     .action {
         background: transparent;
         font-size: 18px;
-        color: @neutral6;
+        color: @classic-neutral-grey-4;
         border: none;
 
         &:focus:not(:focus-visible) {
@@ -20,7 +20,7 @@
         }
 
         &:hover:not(:disabled) {
-            color: @neutral10;
+            color: @classic-neutral-grey-6;
         }
     }
 }

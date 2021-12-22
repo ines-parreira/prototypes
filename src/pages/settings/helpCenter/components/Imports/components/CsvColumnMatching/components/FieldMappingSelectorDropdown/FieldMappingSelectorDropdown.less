@@ -1,4 +1,4 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 @select-padding: 14px;
 
@@ -8,13 +8,13 @@
     }
 
     .selector-button {
-        background-color: white;
+        background-color: @classic-neutral-grey-0;
         width: 100%;
     }
 
     .selector-button-inner {
         text-align: left;
-        color: @neutral10;
+        color: @classic-neutral-grey-6;
 
         box-sizing: border-box;
         display: inline-block;
@@ -22,7 +22,7 @@
     }
 
     .dropdown {
-        box-shadow: 0 0 5px rgba(21, 32, 101, 0.1);
+        box-shadow: 0 0 5px fade(@classic-neutral-grey-6, 10%);
         height: auto;
         margin-bottom: 1px;
         margin-left: -1px;
@@ -32,11 +32,11 @@
     }
 
     .placeholder {
-        color: @neutral6;
+        color: @classic-neutral-grey-4;
     }
 
     .selected-mark {
         float: right;
-        color: @neutral6;
+        color: @classic-neutral-grey-4;
     }
 }

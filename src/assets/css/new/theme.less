@@ -9,39 +9,39 @@
 }
 
 .btn-primary {
-    .button-variant(@white; @blue; @lightBlue; @darkBlue);
+    .button-variant(@classic-neutral-grey-0; @classic-main-primary; @classic-main-primary-3; @classic-main-primary-2; @classic-main-primary; @classic-main-primary-3; @classic-main-primary-4);
 }
 
 .btn-secondary {
-    .TEMP_button-variant(@neutral10; @neutral1; @neutral3; @neutral4; @neutral5; @neutral4);
+    .button-variant(@classic-neutral-grey-6; @classic-neutral-grey-2; @classic-neutral-grey-3; @classic-neutral-grey-2; @classic-neutral-grey-3; @classic-neutral-grey-2; @classic-neutral-grey-4);
 }
 
 .btn-success {
-    .button-variant(@white; @green; @lightGreen; @darkGreen);
+    .button-variant(@classic-neutral-grey-0; @classic-feedback-success; @classic-feedback-success-3; @classic-feedback-success-2; @classic-feedback-success; @classic-feedback-success-3; @classic-feedback-success-4);
 }
 
 .btn-info {
-    .button-variant(@white; @indigo; @lightIndigo; @darkIndigo);
+    .button-variant(@classic-neutral-grey-0; @classic-neutral-grey-6; @classic-neutral-grey-6; fade(@classic-neutral-grey-6, 80%); @classic-neutral-grey-6; darken(@classic-neutral-grey-6, 5%); darken(@classic-neutral-grey-6, 10%));
 }
 
 .btn-warning {
-    .button-variant(@white; @orange; @lightOrange; @darkOrange);
+    .button-variant(@classic-neutral-grey-0; @classic-feedback-warning; @classic-feedback-warning-3;  @classic-feedback-warning-2; @classic-feedback-warning; @classic-feedback-warning-3; @classic-feedback-warning-4);
 }
 
 .btn-danger {
-    .button-variant(@white; @red; @lightRed; @darkRed);
+    .button-variant(@classic-neutral-grey-0; @classic-feedback-error; @classic-feedback-error-3; @classic-feedback-error-2; @classic-feedback-error; @classic-feedback-error-3; @classic-feedback-error-4);
 }
 
 .btn-light {
-    .button-variant(#2d4366; @white; @white; @white);
+    .button-variant(@classic-neutral-grey-6; @classic-neutral-grey-0; @classic-neutral-grey-3; @classic-neutral-grey-0; @classic-neutral-grey-3; @classic-neutral-grey-0; @classic-neutral-grey-3);
 
     &:hover {
-        background: @white !important;
+        background: @classic-neutral-grey-0 !important;
     }
 }
 
 .btn-clue {
-    .button-variant(@white; @purple; @lightPurple; @darkPurple);
+    .button-variant(@classic-neutral-grey-0; @purple; @purple; @purple; @purple; @purple; @purple);
 }
 
 .btn-transparent {
@@ -52,19 +52,19 @@
 
 // btn outline
 .btn-outline-primary {
-    .button-outline-variant(@blue);
+    .button-outline-variant(@classic-main-primary);
 }
 
 .btn-outline-secondary {
-    .button-outline-variant(@quartz);
+    .button-outline-variant(@classic-neutral-grey-1);
 }
 
 .btn-outline-success {
-    .button-outline-variant(@green);
+    .button-outline-variant(@classic-feedback-success);
 }
 
 .btn-outline-info {
-    .button-outline-variant(@indigo);
+    .button-outline-variant(@classic-neutral-grey-6);
 }
 
 .btn-outline-warning {
@@ -72,32 +72,32 @@
 }
 
 .btn-outline-danger {
-    .button-outline-variant(@red);
+    .button-outline-variant(@classic-feedback-error);
 }
 
 // badge
 .badge-primary {
-    .badge-variant(@blue);
+    .badge-variant(@classic-main-primary);
 }
 
 .badge-secondary {
-    .badge-variant(@grey);
+    .badge-variant(@classic-neutral-grey-4);
 }
 
 .badge-success {
-    .badge-variant(@green);
+    .badge-variant(@classic-feedback-success);
 }
 
 .badge-info {
-    .badge-variant(@indigo);
+    .badge-variant(@classic-neutral-grey-6);
 }
 
 .badge-warning {
-    .badge-variant(@orange);
+    .badge-variant(@classic-feedback-warning);
 }
 
 .badge-danger {
-    .badge-variant(@red);
+    .badge-variant(@classic-feedback-error);
 }
 
 // disabled buttons
@@ -108,19 +108,19 @@
 
 // text
 .text-primary {
-    color: @blue !important;
+    color: @classic-main-primary !important;
 }
 
 .text-secondary {
-    color: @grey !important;
+    color: @classic-neutral-grey-4 !important;
 }
 
 .text-success {
-    color: @green !important;
+    color: @classic-feedback-success !important;
 }
 
 .text-danger {
-    color: @red !important;
+    color: @classic-feedback-error !important;
 }
 
 .text-warning {
@@ -128,7 +128,7 @@
 }
 
 .text-info {
-    color: @indigo !important;
+    color: @classic-neutral-grey-6 !important;
 }
 
 .text-muted {
@@ -141,14 +141,14 @@
 
 // lighter color of grey text (lighter than text-muted)
 .text-faded {
-    color: @lightGrey !important;
+    color: @classic-neutral-grey-4 !important;
 
     a {
-        color: @lightBlue;
+        color: @classic-main-primary-2;
     }
 
     kbd {
-        background-color: @lightGrey !important;
+        background-color: @classic-neutral-grey-4 !important;
     }
 }
 
@@ -165,7 +165,7 @@
 }
 
 .close {
-    color: @indigo;
+    color: @classic-neutral-grey-6;
     font-weight: normal;
 }
 
@@ -176,12 +176,12 @@
 }
 
 .breadcrumb-item + .breadcrumb-item::before {
-    color: @neutral4;
+    color: @classic-neutral-grey-3;
     content: '>';
 }
 
 // card
 .card {
-    border-color: @neutral4;
+    border-color: @classic-neutral-grey-3;
     border-radius: 4px;
 }

@@ -10,8 +10,8 @@
 .dropdown-menu {
     padding-left: 4px;
     padding-right: 4px;
-    box-shadow: 0 2px 3px rgba(21, 32, 101, 0.2);
-    border-color: @darkQuartz;
+    box-shadow: 0 2px 3px fade(@classic-neutral-grey-6, 20%);
+    border-color: @classic-neutral-grey-3;
 
     > div {
         display: block;
@@ -31,14 +31,14 @@
 .dropdown-item {
     border-radius: 3px;
 
-    color: @indigo;
+    color: @classic-neutral-grey-6;
     font-weight: 500;
 
     &:hover,
     &:active {
-        background-color: @quartz;
+        background-color: @classic-neutral-grey-2;
 
-        color: @indigo;
+        color: @classic-neutral-grey-6;
     }
 }
 
@@ -55,7 +55,7 @@
 }
 
 .dropdown-header {
-    color: @blue;
+    color: @classic-main-primary;
     font-weight: 600;
     font-size: 11px;
     letter-spacing: 1.1px;

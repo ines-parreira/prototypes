@@ -2,7 +2,7 @@
 
 .notification--status(@color, @lighten: 36%, @icon) {
     background-color: lighten(@color, @lighten);
-    box-shadow: 0 2px 6px 0 rgba(21, 32, 101, 0.2),
+    box-shadow: 0 2px 6px 0 fade(@classic-neutral-grey-6, 20%),
         inset 0 0 0 1px lighten(@color, 29%);
 
     color: @color;
@@ -28,7 +28,7 @@
 
     .notification {
         border-radius: 3px;
-        background-color: #fff;
+        background-color: @classic-neutral-grey-0;
 
         color: #292b2c;
         font-family: 'Inter', sans-serif;
@@ -42,7 +42,7 @@
     }
 
     .notification--success {
-        .notification--status(@green, 49%, 'check_circle');
+        .notification--status(@classic-feedback-success, 49%, 'check_circle');
 
         .button {
             border-color: @darkGreen;
@@ -51,19 +51,19 @@
     }
 
     .notification--info {
-        .notification--status(@blue, 35%, 'info_outline');
+        .notification--status(@classic-main-primary, 35%, 'info_outline');
     }
 
     .notification--warning {
-        .notification--status(@orange, 32%, 'warning');
+        .notification--status(@classic-feedback-warning, 32%, 'warning');
     }
 
     .notification--error {
-        .notification--status(@red, 36%, 'error');
+        .notification--status(@classic-feedback-error, 36%, 'error');
     }
 
     .notification--loading {
-        .notification--status(@blue, 50%, 'refresh');
+        .notification--status(@classic-main-primary, 50%, 'refresh');
 
         .notification-icon {
             :global {

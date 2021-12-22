@@ -1,16 +1,4 @@
-.rule-note {
-    margin-top: 5px;
-}
-
-.view-table tbody.table-row {
-    border-bottom: 1px solid rgba(34, 36, 38, 0.1);
-
-    .cell-wrapper {
-        height: auto;
-        min-height: 65px;
-        padding: 8px 18px;
-    }
-}
+@import '~css/new/colorTokens';
 
 .ui.selectable.table tbody tr.no-hover:hover {
     background-color: transparent !important;
@@ -22,62 +10,8 @@ pre {
 }
 
 .IfStatement {
-    .button {
-        color: @white !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        text-align: center;
-    }
-
-    .keyword.button {
-        width: 50px;
-        height: 35px;
-        padding-top: 8px;
-
-        &,
-        &:active,
-        &:focus {
-            background-color: @lightBlue !important;
-        }
-
-        &:hover {
-            background-color: #81c7f8 !important;
-            color: rgba(255, 255, 255, 0.5) !important;
-
-            i {
-                margin-top: 1px; // fix icon margin
-                color: white !important;
-            }
-        }
-    }
-
-    .operator .button {
-        width: 50px;
-        height: 35px;
-        padding-top: 8px;
-        cursor: default;
-        border-color: @red;
-        background-color: @red;
-    }
-
-    .dropdown {
-        border-color: @lightBlue;
-    }
-
-    .neutral {
-        border-color: @grey !important;
-        color: @grey !important;
-    }
-
     .BlockStatementItem {
         position: relative;
-    }
-
-    .matching-rules-num {
-        position: absolute;
-        right: 20px;
-        padding: 4.5px 10px !important;
-        cursor: default;
     }
 }
 
@@ -98,10 +32,6 @@ pre {
         .Identifier,
         .Literal {
             margin-right: 0.25rem !important;
-
-            .dropdown.selection {
-                min-width: 140px;
-            }
         }
     }
 }
@@ -119,35 +49,16 @@ pre {
     top: 4px;
     left: 4px;
     z-index: 5;
-    color: white;
+    color: @classic-neutral-grey-0;
 
     .material-icons {
-        color: @lightRed;
+        color: @classic-feedback-error-2;
     }
 }
 
 .IfStatement,
 .ExpressionStatement {
     position: relative;
-}
-
-.item .segments > .segment:last-child {
-    background-color: rgba(0, 0, 0, 0.05);
-}
-
-.action {
-    .segment {
-        margin-top: 7px;
-        margin-bottom: -10px;
-    }
-
-    .button {
-        color: white !important;
-    }
-
-    & > span {
-        display: inline-block;
-    }
 }
 
 // new design
@@ -168,9 +79,7 @@ pre {
 .IfStatement,
 .ExpressionStatement {
     &.hovered:hover {
-        background: lighten(@neutral1, 3);
-        border: 1px;
-        border-color: @indigo;
+        background: @classic-neutral-grey-0;
         border-radius: 4px;
     }
 }
@@ -195,8 +104,8 @@ pre {
 
         &.show {
             & > .ControlStructureButton.dropdown-toggle {
-                color: @white !important;
-                background: @blue !important;
+                color: @classic-neutral-grey-0 !important;
+                background: @classic-main-primary !important;
             }
         }
     }
@@ -226,21 +135,21 @@ pre {
 
 .LogicalOperator {
     .rule-badge-mixin;
-    background-color: @logicalOperatorBackground;
-    color: @orange !important;
+    background-color: @ultraLightOrange;
+    color: @classic-feedback-warning !important;
 }
 
 .ControlStructureButton,
 .ControlStructureButton:hover,
 .ControlStructureButton:active {
     .rule-badge-mixin;
-    background-color: @controlStructureButtonBackground !important;
-    color: @blue !important;
+    background-color: @ultraLightBlue !important;
+    color: @classic-main-primary-3 !important;
 }
 
 .OperatorDropdown .dropdown-toggle {
     .rule-badge-mixin;
-    background-color: @operatorBackground !important;
+    background-color: @ultraLightBlue !important;
     color: @navy !important;
     line-height: 20px !important;
 }
@@ -258,9 +167,9 @@ pre {
     padding: 2px 8px;
     font-weight: normal;
     text-transform: none;
-    background-color: @identifierBackground;
+    background-color: @ultraLightBlue;
     line-height: 20px !important;
-    color: @indigo !important;
+    color: @classic-neutral-grey-6 !important;
 
     input {
         top: 0;
@@ -294,7 +203,7 @@ pre {
         .rule-badge-mixin;
         text-transform: none;
         font-weight: 500;
-        background-color: @literalBackground;
+        background-color: @ultraLightPurple;
         color: @violet !important;
     }
 
@@ -330,8 +239,8 @@ pre {
 
     .ActionSelect .dropdown-toggle {
         .rule-badge-mixin;
-        background-color: @actionButtonBackground;
-        color: @green !important;
+        background-color: @classic-feedback-success-0;
+        color: @classic-feedback-success-3 !important;
     }
 
     .card-action {
@@ -374,13 +283,13 @@ pre {
             }
 
             .badge.badge-secondary, // for labels in MultiSelect field
-      .dropdown-toggle,  // for displayed label of Dropdowns
-      input, input:focus {
+            .dropdown-toggle,  // for displayed label of Dropdowns
+            input, input:focus {
                 // for input in labels of Dropdowns, and inputs in MultiSelect field
                 .rule-badge-mixin;
                 text-transform: none;
                 font-weight: 500;
-                background-color: @actionInputBackground;
+                background-color: @ultraLightPurple;
                 color: @violet !important;
             }
 

@@ -87,7 +87,7 @@ export default class Content extends Component<Props, State> {
             <div>
                 <div
                     className={classNames(css.content, {
-                        'new-line-interpret': !isHtml,
+                        [css['white-space']]: !isHtml,
                     })}
                     dangerouslySetInnerHTML={{__html: displayContent!}}
                 />

@@ -53,7 +53,7 @@ exports[`Body should display the Facebook carousel if there's matching metadata 
     >
       <div>
         <div
-          className="content new-line-interpret"
+          className="content white-space"
           dangerouslySetInnerHTML={
             Object {
               "__html": "text <a href=\\"http://gorgias.io/\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">http://gorgias.io/</a>",

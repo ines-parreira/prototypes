@@ -71,6 +71,8 @@ export function RulesTable({
                         <td>rule</td>
                         <td></td>
                         <td>last updated</td>
+                        <td></td>
+                        <td></td>
                     </tr>
                 </thead>
                 <ReactSortable

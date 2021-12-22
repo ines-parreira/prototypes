@@ -1,32 +1,11 @@
-/* alert
- */
-
 .alert-link {
     font-weight: normal;
     text-decoration: underline !important;
 }
 
-.alert-danger {
-    background: lighten(@red, 36%);
-    border-color: lighten(@red, 31%);
-
-    color: @darkRed;
-}
-
-.alert-danger .alert-link {
-    color: @darkRed;
-}
-
-.alert-info {
-    background-color: #f9fbff;
-    border-color: #ebf4fe;
-
-    color: @darkBlue;
-}
-
 .alert-warning {
-    background-color: @lightYellow;
-    border-color: @lightOrange2;
+    background-color: lighten(@internalYellow, 3%);
+    border-color: @internalYellow;
 
-    color: @darkOrange;
+    color: @classic-main-secondary;
 }

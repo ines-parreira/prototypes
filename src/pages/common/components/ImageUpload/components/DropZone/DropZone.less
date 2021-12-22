@@ -1,4 +1,4 @@
-@import '~css/new/colors.less';
+@import '~css/new/colorTokens';
 
 :local {
     .wrapper {
@@ -12,10 +12,10 @@
         width: 228px;
         height: 172px;
 
-        border: 2px dashed @neutral4;
+        border: 2px dashed @classic-neutral-grey-3;
         border-radius: 10px;
 
-        background-color: @neutral1;
+        background-color: @classic-neutral-grey-2;
 
         box-sizing: border-box;
 
@@ -27,13 +27,13 @@
         }
 
         &.accepted {
-            border-color: @green;
-            background-color: @green1;
+            border-color: @classic-feedback-success;
+            background-color: @classic-feedback-success-0;
         }
 
         &.rejected {
-            border-color: @red;
-            background-color: @red1;
+            border-color: @classic-feedback-error;
+            background-color: @classic-feedback-error-0;
         }
     }
 

@@ -1,4 +1,4 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 :local {
     .toggleSectionIconWrapper {
@@ -38,7 +38,7 @@
 
     .editSectionIcon {
         border: none;
-        color: @neutral7 !important;
+        color: @classic-neutral-grey-5 !important;
         font-size: 14px;
         line-height: 20px;
         padding: 3px 6px;
@@ -49,12 +49,12 @@
 
         &:hover,
         &:focus {
-            background-color: @neutral9;
-            color: @neutral0!important;
+            background-color: @classic-neutral-grey-6;
+            color: @classic-neutral-grey-1!important;
         }
 
         &:active {
-            background-color: @neutral5!important;
+            background-color: @classic-neutral-grey-4!important;
         }
 
         & > i {
@@ -75,7 +75,7 @@
         }
 
         &.red {
-            color: @red;
+            color: @classic-feedback-error;
         }
     }
 
@@ -95,11 +95,11 @@
     }
 
     .section {
-        color: @neutral5;
+        color: @classic-neutral-grey-4;
         font-weight: 600;
 
         &:hover {
-            color: @neutral5;
+            color: @classic-neutral-grey-4;
 
             .editSectionIcon {
                 opacity: 1;

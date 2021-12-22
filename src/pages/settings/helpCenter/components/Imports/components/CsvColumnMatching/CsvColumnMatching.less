@@ -1,13 +1,13 @@
-@import (reference) '~css/new/colors.less';
+@import (reference) '~css/new/colorTokens';
 
 :local {
     th.table-language-header-cell {
         position: sticky;
         top: 0;
-        background-color: #f9f9f9;
+        background-color: @classic-neutral-grey-1;
         padding: 16px;
         font-weight: bold;
-        color: #1d365c;
+        color: @classic-neutral-grey-6;
         z-index: 50;
     }
 
@@ -27,7 +27,7 @@
         padding: 8px;
         max-width: 270px;
         text-align: left;
-        background-color: rgba(0, 0, 0, 0.9);
+        background-color: fade(black, 90%);
         z-index: 200;
     }
 

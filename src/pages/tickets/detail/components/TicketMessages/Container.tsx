@@ -80,7 +80,6 @@ export default class Container extends Component<Props> {
                     this.props.className,
                     css.component,
                     {
-                        fromAgent: message.from_agent,
                         internal: !message.public,
                         appear: appear,
                         hasError: isFailed(message),

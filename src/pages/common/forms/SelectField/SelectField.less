@@ -1,4 +1,4 @@
-@import '~css/new/colors.less';
+@import '~css/new/colorTokens';
 
 @select-padding: 14px;
 @base-input-width: 2px;
@@ -9,12 +9,12 @@
     width: 100%;
     line-height: 1.25;
     padding: 0 @select-padding;
-    border: 1px solid rgba(0, 0, 0, 0.15);
+    border: 1px solid fade(black, 15%);
     border-radius: 0.25rem;
     background-clip: padding-box;
     -webkit-background-clip: padding-box;
     background-image: none;
-    background-color: #ffffff;
+    background-color: @classic-neutral-grey-0;
     color: #464a4c;
     font-size: 1rem;
     white-space: nowrap;
@@ -82,19 +82,19 @@
             }
 
             &.option--disabled {
-                background: @neutral1 !important;
+                background: @classic-neutral-grey-1 !important;
             }
         }
     }
 
     .optionDeprecated {
-        color: @yellow7;
+        color: @classic-feedback-warning-4;
         &.option--focused {
-            background: @yellow2 !important;
+            background: @classic-feedback-warning-0 !important;
 
             &:active {
                 outline: none;
-                background: @yellow4 !important;
+                background: @classic-feedback-warning-2 !important;
             }
         }
     }

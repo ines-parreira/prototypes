@@ -265,7 +265,7 @@ describe('<FilterTopbar />', () => {
 
     it('should not update the view and not set active view if update view request failed', async () => {
         const isDirtyMock = jest.spyOn(viewSelectors, 'isDirty')
-        isDirtyMock.mockImplementation(() => true)
+        isDirtyMock.mockReturnValue(true)
         const viewUpdatedMock = viewUpdated as jest.MockedFunction<
             typeof viewUpdated
         >
@@ -294,20 +294,17 @@ describe('<FilterTopbar />', () => {
         )
 
         fireEvent.click(getByText('Update view'))
-        fireEvent.click(getByText('Confirm'))
-        await waitFor(() => {
-            expect(
-                (getByText('Update view') as HTMLButtonElement).disabled
-            ).toBe(false)
-        })
 
-        expect(viewUpdatedMock).not.toHaveBeenCalled()
-        expect(activeViewIdSetMock).not.toHaveBeenCalled()
+        await waitFor(() => {
+            fireEvent.click(getByText('Confirm'))
+            expect(viewUpdatedMock).not.toHaveBeenCalled()
+            expect(activeViewIdSetMock).not.toHaveBeenCalled()
+        })
     })
 
     it('should not update the view and not set active view if create view request failed', async () => {
         const isDirtyMock = jest.spyOn(viewSelectors, 'isDirty')
-        isDirtyMock.mockImplementation(() => true)
+        isDirtyMock.mockReturnValue(true)
         const viewCreatedMock = viewCreated as jest.MockedFunction<
             typeof viewCreated
         >
@@ -356,6 +353,8 @@ describe('<FilterTopbar />', () => {
     })
 
     it('should close popover on view change', async () => {
+        const isDirtyMock = jest.spyOn(viewSelectors, 'isDirty')
+        isDirtyMock.mockReturnValue(true)
         const {rerender, getByText, queryByText} = render(
             <Provider store={mockStore(defaultState)}>
                 <FilterTopbar {...minProps} />
@@ -397,6 +396,8 @@ describe('<FilterTopbar />', () => {
     })
 
     it('should close popover on cancel', async () => {
+        const isDirtyMock = jest.spyOn(viewSelectors, 'isDirty')
+        isDirtyMock.mockReturnValue(true)
         const resetViewMock: jest.SpyInstance =
             resetView as jest.MockedFunction<typeof resetView>
         resetViewMock.mockImplementationOnce(() => () => ({}))
@@ -415,5 +416,34 @@ describe('<FilterTopbar />', () => {
         await waitFor(() => {
             expect(queryByText('Confirm')).toBeNull()
         })
+    })
+
+    it('should display a temporary message when attempting to save an unchanged view', async () => {
+        jest.useFakeTimers()
+
+        const isDirtyMock = jest.spyOn(viewSelectors, 'isDirty')
+        isDirtyMock.mockImplementation(() => false)
+        const {getByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <FilterTopbar {...minProps} />
+            </Provider>
+        )
+
+        fireEvent.click(getByText('Update view'))
+        await waitFor(() => {
+            expect(
+                getByText(/No changes have been made/i).classList.contains(
+                    'visible'
+                )
+            ).toBe(true)
+            jest.runAllTimers()
+            expect(
+                getByText(/No changes have been made/i).classList.contains(
+                    'visible'
+                )
+            ).toBe(false)
+        })
+
+        jest.useRealTimers()
     })
 })

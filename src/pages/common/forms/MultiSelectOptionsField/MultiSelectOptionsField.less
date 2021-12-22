@@ -1,3 +1,5 @@
+@import '~css/new/colorTokens';
+
 :local {
     .container {
         display: flex;
@@ -7,11 +9,11 @@
         font-size: 1rem;
         line-height: 1.25;
         color: #464a4c;
-        background-color: #ffffff;
+        background-color: @classic-neutral-grey-0;
         background-image: none;
         -webkit-background-clip: padding-box;
         background-clip: padding-box;
-        border: 1px solid rgba(0, 0, 0, 0.15);
+        border: 1px solid fade(black, 15%);
         border-radius: 0.25rem;
         padding: 0 0.25rem;
     }
@@ -21,7 +23,7 @@
     }
 
     .focused {
-        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.1);
+        box-shadow: 0 0 0 0.2rem fade(@classic-main-primary, 10%);
         border: 1px solid #80bdff;
         border-radius: 0.25rem;
     }

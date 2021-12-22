@@ -20,7 +20,7 @@ export default function DeleteBinaryExpression({actions, parent}: Props) {
     }
     return (
         <i
-            className="material-icons text-danger remove clickable delete-binaryexpression"
+            className="material-icons text-danger clickable"
             onClick={handleClick}
         >
             clear

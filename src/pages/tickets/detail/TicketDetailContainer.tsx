@@ -450,14 +450,12 @@ export const TicketDetailContainer = ({
         <DocumentTitle
             title={ticket.get('id') ? ticket.get('subject') : 'New ticket'}
         >
-            <div className="TicketDetailContainer">
-                <TicketView
-                    hideTicket={hideTicket}
-                    isTicketHidden={isTicketHidden}
-                    submit={submit}
-                    setStatus={handleStatusChange}
-                />
-            </div>
+            <TicketView
+                hideTicket={hideTicket}
+                isTicketHidden={isTicketHidden}
+                submit={submit}
+                setStatus={handleStatusChange}
+            />
         </DocumentTitle>
     )
 }

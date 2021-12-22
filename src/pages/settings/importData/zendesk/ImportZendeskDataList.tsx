@@ -32,7 +32,7 @@ export const ImportZendeskDataList = (
                         <i className="material-icons large green">
                             play_circle_filled
                         </i>{' '}
-                        <span className="text-black">Synchronizing</span>{' '}
+                        <span>Synchronizing</span>{' '}
                         <i className="material-icons">chevron_right</i>
                     </span>
                 )
@@ -42,7 +42,7 @@ export const ImportZendeskDataList = (
                     <i className="material-icons large blue">
                         pause_circle_filled
                     </i>{' '}
-                    <span className="text-black">Paused</span>{' '}
+                    <span>Paused</span>{' '}
                     <i className="material-icons">chevron_right</i>
                 </span>
             )

@@ -34,6 +34,8 @@ import PhoneEvent from './PhoneEvent/PhoneEvent'
 import PrivateReplyEvent from './PrivateReplyEvent/PrivateReplyEvent'
 import {PRIVATE_REPLY_ACTIONS} from './PrivateReplyEvent/constants'
 
+import css from './TicketBody.less'
+
 // $TSFixMe replace with importing HighlightedElements from AuditLogEvent.tsx on migration
 type HighlightedElements = {
     first: number
@@ -225,7 +227,7 @@ export class TicketBody extends React.Component<Props, State> {
         }
 
         return (
-            <div className="TicketMessages">
+            <div className={css.wrapper}>
                 {this._getGroupedElements().map((element, index: number) => {
                     if (Array.isArray(element)) {
                         return this._renderMessages(element, index)

@@ -1,8 +1,6 @@
-@import (reference) '~css/new/colors';
+@import (reference) '~css/new/colorTokens';
 
 :local {
-    @localTextColor: @neutral10;
-
     .close-btn {
         border: 0;
         background-color: transparent;
@@ -14,7 +12,7 @@
         margin-left: auto;
 
         i {
-            color: @red;
+            color: @classic-feedback-error;
         }
     }
 
@@ -22,7 +20,7 @@
         margin-bottom: 16px;
 
         label {
-            color: @localTextColor;
+            color: @classic-neutral-grey-6;
             font-size: 14px;
             font-weight: 600;
         }
@@ -31,19 +29,19 @@
             label:after {
                 content: '*';
                 margin-left: 4px;
-                color: @red;
+                color: @classic-feedback-error;
                 font-size: 14px;
             }
         }
 
         input {
             height: 32px;
-            border-color: @neutral4;
-            color: @localTextColor;
+            border-color: @classic-neutral-grey-3;
+            color: @classic-neutral-grey-6;
         }
 
         small {
-            color: #556885 !important;
+            color: @classic-neutral-grey-5 !important;
         }
     }
 
@@ -51,7 +49,7 @@
         position: absolute;
         top: 0;
         right: 0;
-        color: @blue;
+        color: @classic-main-primary;
         background-color: transparent;
         border: 0;
         padding: 0 8px;
@@ -73,10 +71,10 @@
     .slug-suffix {
         height: 32px;
         padding: 6px 8px;
-        border: 1px solid @neutral4;
-        background-color: @neutral1;
+        border: 1px solid @classic-neutral-grey-3;
+        background-color: @classic-neutral-grey-1;
 
-        color: @localTextColor;
+        color: @classic-neutral-grey-6;
         font-size: 14px;
         font-weight: 500;
         line-height: 20px;

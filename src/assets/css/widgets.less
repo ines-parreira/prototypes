@@ -1,4 +1,4 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 .widgets-list {
     display: flex;
@@ -24,9 +24,10 @@
 
     .footer {
         padding: 1rem;
-        border-top: 1px solid rgba(0, 0, 0, 0.125);
-        background: @white0;
-        box-shadow: 0 1px 1px rgba(21, 32, 101, 0.04), inset 0 -1px 0 @white3;
+        border-top: 1px solid fade(black, 12.5%);
+        background: @classic-neutral-grey-0;
+        box-shadow: 0 1px 1px fade(@classic-neutral-grey-6, 4%),
+            inset 0 -1px 0 @classic-neutral-grey-2;
         border-bottom-left-radius: 6px;
         border-bottom-right-radius: 6px;
     }
@@ -42,7 +43,7 @@
         }
 
         &:not(.transparent):hover {
-            box-shadow: 0 2px 9px rgba(21, 32, 101, 0.29);
+            box-shadow: 0 2px 9px fade(@classic-neutral-grey-6, 29%);
             z-index: 1;
         }
 
@@ -56,7 +57,7 @@
 
         .header {
             position: relative;
-            border-bottom: 1px dashed @white3;
+            border-bottom: 1px dashed @classic-neutral-grey-2;
             font-weight: 600;
             font-size: 14px;
             line-height: 1.28em;
@@ -110,7 +111,7 @@
     }
 
     > div > .card > .content > .expandable.card:not(.closed) {
-        box-shadow: 0 2px 9px rgba(21, 32, 101, 0.29);
+        box-shadow: 0 2px 9px fade(@classic-neutral-grey-6, 29%);
 
         &:not(:last-child) {
             margin-bottom: 0.5rem;
@@ -128,7 +129,7 @@
         > .content > .card:not(.transparent),
         > .card:not(.transparent) {
             &:not(.closed) {
-                box-shadow: 0 2px 9px rgba(21, 32, 101, 0.29);
+                box-shadow: 0 2px 9px fade(@classic-neutral-grey-6, 29%);
                 margin: 0.5rem 0;
 
                 &:last-child {
@@ -190,20 +191,20 @@
         .simple-field {
             &.draggable {
                 &:hover {
-                    border: 1px dashed #b4b4b4;
+                    border: 1px dashed @classic-neutral-grey-4;
                 }
             }
 
             &.edited {
-                border: 1px dashed #007ffd !important;
+                border: 1px dashed @classic-main-primary !important;
             }
 
             &.sortable-ghost {
-                background-color: #007ffd !important;
-                color: @white !important;
+                background-color: @classic-main-primary !important;
+                color: @classic-neutral-grey-0 !important;
 
                 .field-label {
-                    color: @white !important;
+                    color: @classic-neutral-grey-0 !important;
                 }
             }
 

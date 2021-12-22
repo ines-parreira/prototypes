@@ -6,7 +6,7 @@
 
         > .header {
             background-color: #eef3f9;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+            border-bottom: 1px solid fade(black, 12.5%);
             padding: 1em;
 
             .title {
@@ -84,12 +84,12 @@
                     }
 
                     &.yotpo {
-                        border-color: #2f84ed;
+                        border-color: darken(@yotpoBlue, 5%);
 
                         & > .header {
-                            background-color: #4a8df9;
-                            border-color: #2f84ed;
-                            color: #ffffff;
+                            background-color: @yotpoBlue;
+                            border-color: darken(@yotpoBlue, 5%);
+                            color: @classic-neutral-grey-0;
                         }
                     }
 

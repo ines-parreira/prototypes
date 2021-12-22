@@ -1,3 +1,5 @@
+@import '~css/new/colorTokens';
+
 :local .header {
     font-weight: 600;
 }
@@ -11,19 +13,19 @@
 
     &:hover {
         .viewItemName {
-            color: #ffffff !important;
+            color: @classic-neutral-grey-0 !important;
         }
     }
 
     &.draggable {
         cursor: move;
         &:hover:not(.chosen) {
-            border-color: rgba(255, 255, 255, 0.5) !important;
+            border-color: fade(@classic-neutral-grey-0, 50%) !important;
         }
         &.chosen {
             background: #1c4969 !important;
             & .viewItemName {
-                color: #ffffff !important;
+                color: @classic-neutral-grey-0 !important;
             }
         }
         &.ghost {

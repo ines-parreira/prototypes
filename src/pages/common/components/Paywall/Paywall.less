@@ -1,4 +1,4 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 @import '~css/new/mixins';
 
 @medium-and-large-screens: ~'only screen and (min-width: 992px) and (max-width: 1500px)';
@@ -10,7 +10,7 @@
         :global(.page-header) {
             position: fixed;
             width: 100%;
-            background: @white;
+            background: @classic-neutral-grey-0;
             z-index: 1;
         }
 
@@ -57,13 +57,15 @@
                             height: 37px;
                             width: 60%;
                             z-index: -1;
-                            box-shadow: 0px 16px 64px rgba(51, 115, 219, 0.16);
+                            box-shadow: 0px 16px 64px
+                                fade(@classic-main-primary-3, 16%);
                         }
 
                         img {
                             cursor: pointer;
                             border-radius: 8px;
-                            box-shadow: 0px 4px 24px rgba(74, 141, 249, 0.08);
+                            box-shadow: 0px 4px 24px
+                                fade(@classic-main-primary, 8%);
                         }
                     }
 
@@ -124,7 +126,7 @@
                     .contentTitle {
                         margin: 20px 0 8px;
                         font-weight: 600;
-                        color: @neutral10;
+                        color: @classic-neutral-grey-6;
 
                         @media @mobiles {
                             font-size: 20px;
@@ -132,7 +134,7 @@
                     }
 
                     .description {
-                        color: @neutral8;
+                        color: @classic-neutral-grey-5;
                         font-size: 16px;
 
                         @media @mobiles {
@@ -153,15 +155,15 @@
                             background-color: #0024a1;
                         }
                         &.advanced {
-                            background-color: #24d69d;
+                            background-color: @classic-feedback-success;
                         }
                         &.enterprise {
-                            background-color: @orange;
+                            background-color: @classic-main-secondary;
                         }
                     }
 
                     .upgradeChevron {
-                        color: @neutral6;
+                        color: @classic-neutral-grey-4;
                         margin: 0 8px;
                     }
 
@@ -169,7 +171,7 @@
                         margin-top: 40px;
 
                         .testimonialText {
-                            color: @neutral8;
+                            color: @classic-neutral-grey-5;
                             font-size: 14px;
                             font-style: italic;
                             letter-spacing: -0.01em;
@@ -195,15 +197,18 @@
                             .authorDetails {
                                 margin-bottom: 0;
                                 font-size: 12px;
-                                color: @neutral8;
+                                color: @classic-neutral-grey-5;
                                 line-height: 16px;
 
                                 a {
                                     display: inline-block;
-                                    color: @blue;
+                                    color: @classic-main-primary;
                                     transition: color 200ms;
                                     &:hover {
-                                        color: darken(@blue, 10%);
+                                        color: darken(
+                                            @classic-main-primary,
+                                            10%
+                                        );
                                     }
                                 }
                             }

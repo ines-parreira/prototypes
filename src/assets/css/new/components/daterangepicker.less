@@ -50,7 +50,7 @@
         .calendar-table {
             thead {
                 th.available:hover {
-                    background-color: @neutral1;
+                    background-color: @classic-neutral-grey-1;
                 }
 
                 tr {
@@ -81,7 +81,7 @@
 
             .next span,
             .prev span {
-                border: solid @neutral8;
+                border: solid @classic-neutral-grey-5;
                 border-width: 0 2px 2px 0;
             }
         }
@@ -136,9 +136,9 @@
             width: auto;
 
             li {
-                background-color: @neutral1;
+                background-color: @classic-neutral-grey-1;
                 border-radius: 4px;
-                color: @neutral10;
+                color: @classic-neutral-grey-6;
                 cursor: pointer;
                 font-size: 14px;
                 font-weight: 500;
@@ -152,7 +152,7 @@
                 }
 
                 &.active {
-                    background-color: @blue;
+                    background-color: @classic-main-primary;
                 }
 
                 @media @mobiles {
@@ -163,7 +163,7 @@
             }
 
             &::before {
-                color: @neutral6;
+                color: @classic-neutral-grey-4;
                 content: attr(label);
                 display: block;
                 font-size: 11px;
@@ -275,14 +275,14 @@
             appearance: none;
             -moz-appearance: none;
             -webkit-appearance: none;
-            background: @white;
-            @arrowColor: escape(@neutral6);
+            background: @classic-neutral-grey-0;
+            @arrowColor: escape(@classic-neutral-grey-4);
             background-image: url('data:image/svg+xml;utf8,<svg width="7" height="5" viewBox="0 0 7 5" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.591547 1.75837L2.74988 3.91671C3.07488 4.24171 3.59988 4.24171 3.92488 3.91671L6.08321 1.75837C6.60821 1.23337 6.23321 0.333374 5.49155 0.333374H1.17488C0.433213 0.333374 0.0665467 1.23337 0.591547 1.75837Z" fill="@{arrowColor}"/></svg>');
             background-position: right 0.7em top 50%, 0 0;
             background-repeat: no-repeat, repeat;
-            border: 1px solid @neutral4;
+            border: 1px solid @classic-neutral-grey-3;
             border-radius: 4px;
-            color: @neutral10;
+            color: @classic-neutral-grey-6;
             font-size: 14px;
             height: 32px;
             line-height: 1.3;
@@ -295,28 +295,28 @@
     td {
         &.active,
         &.active:hover {
-            background-color: @blue;
+            background-color: @classic-main-primary;
         }
 
         &:hover,
         &.available:not(.active):hover {
-            background-color: @neutral1;
+            background-color: @classic-neutral-grey-1;
         }
 
         &.disabled {
-            background-color: @neutral1;
+            background-color: @classic-neutral-grey-1;
             border-radius: 0;
-            color: @neutral4;
+            color: @classic-neutral-grey-3;
             text-decoration: none;
         }
 
         &.off.available {
-            color: @neutral6;
+            color: @classic-neutral-grey-4;
         }
 
         &.in-range:not(.active):not(.off) {
-            background-color: @blue0;
-            color: @blue;
+            background-color: @classic-main-primary-0;
+            color: @classic-main-primary;
         }
     }
 

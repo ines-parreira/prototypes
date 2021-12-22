@@ -1,4 +1,4 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 :local {
     .wrapper {
@@ -20,16 +20,16 @@
     }
 
     .label {
-        color: @blue !important;
+        color: @classic-main-primary-3 !important;
         font-weight: 500;
 
         .btn-group.show & {
-            color: white !important;
+            color: @classic-neutral-grey-0 !important;
         }
     }
 
     .options {
-        background: @white;
+        background: @classic-neutral-grey-0;
         overflow-y: auto;
         max-height: 400px;
         max-width: 350px;

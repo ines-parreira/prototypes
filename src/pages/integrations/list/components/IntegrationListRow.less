@@ -1,10 +1,10 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 :local .component {
     position: relative;
     padding: 10px;
 
-    color: @indigo;
+    color: @classic-neutral-grey-6;
     font-size: 13px;
     transition: all 0.12s ease-out;
 
@@ -15,13 +15,13 @@
     &.link {
         &:hover {
             top: -1px;
-            box-shadow: 0 2px 3px rgba(21, 32, 101, 0.2);
+            box-shadow: 0 2px 3px fade(@classic-neutral-grey-6, 20%);
 
-            color: @indigo;
+            color: @classic-neutral-grey-6;
         }
 
         &:active {
-            box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.05);
+            box-shadow: inset 1px 1px 2px fade(black, 5%);
         }
     }
 
@@ -49,9 +49,9 @@
         margin-right: 20px;
         padding: 2px 5px;
         border-radius: 20px;
-        border: 1px solid @darkQuartz;
+        border: 1px solid @classic-neutral-grey-3;
 
-        color: @lightPurple2;
+        color: @classic-neutral-grey-4;
 
         i {
             line-height: 1.2;
@@ -62,7 +62,7 @@
     .earlyAccess {
         padding-right: 8px;
 
-        color: @indigo;
+        color: @classic-neutral-grey-6;
         font-weight: 600;
     }
 
@@ -77,7 +77,7 @@
         width: 14px;
         height: 14px;
         margin-right: 6px;
-        background-color: @green;
+        background-color: @classic-feedback-success;
 
         vertical-align: middle;
     }

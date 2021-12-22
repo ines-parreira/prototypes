@@ -19,7 +19,7 @@ export default class HTTPIntegrationEventParams extends Component<Props> {
                     .map((value, key) => (
                         <li key={key}>
                             <b className="mr-1">{key}:</b>
-                            <span className="text-black">{value}</span>
+                            <span>{value}</span>
                         </li>
                     ))
                     .valueSeq()

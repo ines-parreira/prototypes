@@ -1,4 +1,4 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 :local {
     .card {
@@ -8,7 +8,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background-color: white;
+        background-color: @classic-neutral-grey-0;
         border-bottom: none;
         height: 68px;
         h3 {
@@ -29,10 +29,10 @@
             outline: none;
         }
         button:focus-visible {
-            outline: 2px solid @indigo;
+            outline: 2px solid @classic-neutral-grey-6;
         }
         i {
-            color: @neutral6;
+            color: @classic-neutral-grey-4;
             font-size: 25px;
         }
     }
@@ -56,7 +56,8 @@
         }
         .tabLink.activeTab {
             border-bottom-width: 2px;
-            border-color: transparent transparent @blue transparent;
+            border-color: transparent transparent @classic-main-primary
+                transparent;
         }
     }
 }

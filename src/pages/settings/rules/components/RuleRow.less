@@ -1,26 +1,17 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 :local {
     .row {
-        &:first-child {
-            box-shadow: inset 0 -1px 0 0 @darkQuartz2,
-                inset 0 1px 0 0 @darkQuartz2;
-            border-top: none;
-        }
-
-        box-shadow: inset 0 -1px 0 0 @darkQuartz2;
+        border-bottom: 1px solid @classic-neutral-grey-3;
 
         .middle-column {
             cursor: pointer;
         }
 
         &:hover {
-            background: @quartz !important;
+            background: @classic-neutral-grey-1 !important;
         }
 
-        td {
-            border: none;
-        }
         cursor: pointer;
     }
 
@@ -47,7 +38,7 @@
             .material-icons-outlined {
                 transition: 0.2s all;
                 opacity: 0.3;
-                color: @indigo;
+                color: @classic-neutral-grey-6;
             }
 
             &:hover .material-icons {
@@ -60,11 +51,11 @@
         }
     }
     .deleteButton:hover :global(.material-icons) {
-        color: @lightRed;
+        color: @classic-feedback-error-2;
     }
 
     .name {
-        color: @indigo;
+        color: @classic-neutral-grey-6;
         font-weight: 600;
     }
     .descriptionWrapper {
@@ -72,6 +63,6 @@
         overflow: hidden;
     }
     .popoverBody {
-        color: @indigo;
+        color: @classic-neutral-grey-6;
     }
 }

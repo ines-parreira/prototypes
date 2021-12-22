@@ -3,13 +3,9 @@
 
 :local .component {
     position: relative;
-    background: @quartz;
+    background: @classic-neutral-grey-1;
     border-top: 1px solid #cfe0ee;
     padding: 15px;
-
-    .notes {
-        margin-top: 10px;
-    }
 
     .closeIcon {
         position: absolute;
@@ -44,5 +40,9 @@
         :global(.form-group) {
             min-width: 50%;
         }
+    }
+
+    .note {
+        color: @classic-neutral-grey-4;
     }
 }

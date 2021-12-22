@@ -4,7 +4,7 @@ html {
 
 body {
     width: 100%;
-    color: @indigo;
+    color: @classic-neutral-grey-6;
     font-family: 'Inter', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 }
 
@@ -67,10 +67,6 @@ label.control-label {
     font-weight: 600;
 }
 
-.table th {
-    border-top: 0;
-}
-
 label.form-check-label {
     display: flex;
     font-weight: normal;
@@ -108,7 +104,7 @@ label.form-check-label {
             margin: -@loader-size / 2 0 0 -@loader-size / 2;
             animation: spin 0.6s infinite linear;
             border-radius: 50%;
-            border: 0.2em solid rgba(0, 0, 0, 0.5);
+            border: 0.2em solid fade(@black, 50%);
         }
 
         &:after {
@@ -124,7 +120,7 @@ label.form-check-label {
             margin: -@loader-size / 2 0 0 -@loader-size / 2;
             animation: spin 0.6s infinite linear;
             border-radius: 50%;
-            border-color: #fff transparent transparent;
+            border-color: @classic-neutral-grey-0 transparent transparent;
             border-style: solid;
             border-width: 0.2em;
         }
@@ -152,7 +148,7 @@ label.form-check-label {
     margin-bottom: 4px; // no need for the big default margin since we have no background, default padding is enough
 
     .breadcrumb-item.active {
-        color: @neutral10;
+        color: @classic-neutral-grey-6;
         font-weight: 400;
     }
 }
@@ -175,7 +171,7 @@ div.btn {
 // input placeholder color override
 input,
 textarea {
-    @placeholder-color: @lightGrey;
+    @placeholder-color: @classic-neutral-grey-4;
 
     &::-webkit-input-placeholder {
         color: @placeholder-color !important;

@@ -1,4 +1,4 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 @fontSize: 20px;
 @size: @fontSize + 4px;
@@ -10,7 +10,7 @@
     text-align: center;
 
     .icon {
-        color: @darkGrey;
+        color: @classic-neutral-grey-4;
         font-size: @fontSize;
         line-height: @size;
         transition: 0.2s all;
@@ -18,7 +18,7 @@
 
         &.empty:hover {
             font-size: @size;
-            color: @indigo;
+            color: @classic-neutral-grey-6;
         }
     }
 }

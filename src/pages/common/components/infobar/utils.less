@@ -1,4 +1,4 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 :local {
     .starRatingWrapper {
@@ -8,17 +8,17 @@
     .thumb {
         padding: 0.25rem;
         border-radius: 1rem;
-        color: white;
+        color: @classic-neutral-grey-0;
         float: right;
     }
 
     .greenThumb {
         .thumb();
-        background-color: @green;
+        background-color: @classic-feedback-success;
     }
 
     .redThumb {
         .thumb();
-        background-color: @red;
+        background-color: @classic-feedback-error;
     }
 }

@@ -10,9 +10,7 @@ exports[`HTTPIntegrationEventItem should render its name with an empty label bec
     foo
     :
   </b>
-  <span
-    className="text-black"
-  >
+  <span>
     empty
   </span>
 </div>
@@ -28,9 +26,7 @@ exports[`HTTPIntegrationEventItem should render its name with an empty label bec
     foo
     :
   </b>
-  <span
-    className="text-black"
-  >
+  <span>
     empty
   </span>
 </div>
@@ -46,9 +42,7 @@ exports[`HTTPIntegrationEventItem should render its name with an empty label bec
     foo
     :
   </b>
-  <span
-    className="text-black"
-  >
+  <span>
     empty
   </span>
 </div>

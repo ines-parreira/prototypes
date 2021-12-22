@@ -1,4 +1,4 @@
-@import '~css/new/colors.less';
+@import '~css/new/colorTokens';
 
 :local {
     .dropdown {
@@ -9,24 +9,24 @@
     }
     .wrapper > .dropdown > button {
         width: 100%;
-        background-color: white;
+        background-color: @classic-neutral-grey-0;
         display: flex;
         align-items: center;
         justify-content: space-between;
         font-weight: 400;
         &:hover {
             box-shadow: none;
-            background-color: white;
+            background-color: @classic-neutral-grey-0;
         }
         &:focus,
         &:active {
-            background-color: white !important;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.1) !important;
-            border: 1px solid #80bdff !important;
+            background-color: @classic-neutral-grey-0 !important;
+            box-shadow: 0 0 0 0.2rem fade(@classic-main-primary, 0.1) !important;
+            border: 1px solid @classic-main-primary-1 !important;
             border-radius: 3px !important;
         }
         &::after {
-            color: @neutral6;
+            color: @classic-neutral-grey-4;
         }
     }
     .innerItem > span {
@@ -42,18 +42,18 @@
         font-weight: 600;
     }
     .dropdownValue {
-        color: @neutral10;
+        color: @classic-neutral-grey-6;
     }
     .dropdownPlaceholder {
-        color: @neutral5;
+        color: @classic-neutral-grey-4;
     }
     .dropdownInfo {
-        color: @neutral8;
+        color: @classic-neutral-grey-5;
         font-size: 12px;
         font-weight: 400;
     }
     .dropdownDisconnectedInfo {
-        color: @orange;
+        color: @classic-feedback-warning;
         margin-left: 9.65px;
     }
 }

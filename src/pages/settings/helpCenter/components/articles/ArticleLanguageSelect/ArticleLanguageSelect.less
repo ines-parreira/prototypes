@@ -1,10 +1,10 @@
-@import (reference) '~css/new/colors';
+@import (reference) '~css/new/colorTokens';
 
 :local {
     .wrapper {
         position: relative;
 
-        color: @neutral10;
+        color: @classic-neutral-grey-6;
         font-size: 14px;
         font-weight: 500;
         line-height: 20px;
@@ -20,7 +20,7 @@
     }
 
     .label {
-        color: @neutral10;
+        color: @classic-neutral-grey-6;
     }
 
     .dropdown {
@@ -32,11 +32,11 @@
 
         min-width: 260px;
         padding: 8px;
-        border: 1px solid @neutral4;
+        border: 1px solid @classic-neutral-grey-3;
         border-radius: 4px;
 
-        background: white;
-        box-shadow: 0px 2px 4px rgba(22, 22, 22, 0.16);
+        background: @classic-neutral-grey-0;
+        box-shadow: 0px 2px 4px fade(black, 16%);
         z-index: 100;
 
         ul {
@@ -59,10 +59,10 @@
             transition: background 250ms ease-out;
 
             &:hover {
-                background: @neutral1;
+                background: @classic-neutral-grey-2;
 
                 .status:not(.completed) {
-                    background: @green;
+                    background: @classic-feedback-success;
                 }
             }
         }

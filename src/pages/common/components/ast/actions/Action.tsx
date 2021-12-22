@@ -123,7 +123,6 @@ export type ActionConfig = {
         }
     }
     validate?: ValidateFn
-    note?: string
 }
 
 export const actionsConfig: {[key: string]: ActionConfig} = {
@@ -348,11 +347,6 @@ export default class Action extends React.Component<Props> {
                 <span key="children" className="compact-action">
                     {children}
                 </span>,
-                config.note ? (
-                    <div className="rule-note" key="note">
-                        {config.note}
-                    </div>
-                ) : null,
                 <Errors key="errors" inline>
                     {errors}
                 </Errors>,
@@ -364,9 +358,6 @@ export default class Action extends React.Component<Props> {
                 <Card>
                     <CardBody>
                         {children}
-                        {!!config.note && (
-                            <div className="rule-note">{config.note}</div>
-                        )}
                         <Errors>
                             {errors.map((error, id) => (
                                 <div key={id}>{error}</div>

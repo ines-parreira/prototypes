@@ -1,7 +1,9 @@
+@import '~css/new/colorTokens';
+
 :local {
     @primary: #0097ff;
     @active-bluegreen: #06d79c;
-    @grey: #c3c8d0;
+    @classic-neutral-grey-4: #c3c8d0;
     @darker-grey: #424242;
 
     .preview {
@@ -41,9 +43,9 @@
         overflow: hidden;
         width: 100%;
         max-height: 500px;
-        background: #fff;
+        background: @classic-neutral-grey-0;
         border-radius: 5px;
-        box-shadow: 0 10px 64px rgba(0, 0, 0, 0.09);
+        box-shadow: 0 10px 64px fade(black, 9%);
         margin-bottom: 10px;
 
         .header {
@@ -85,7 +87,7 @@
         .poweredby {
             clear: both;
 
-            color: @grey;
+            color: @classic-neutral-grey-4;
             font-size: 12px;
             text-align: center;
             margin-bottom: 15px;
@@ -95,7 +97,7 @@
             cursor: pointer;
             padding: 15px 20px;
             border-top: 1px solid #e8e8e8;
-            color: @grey;
+            color: @classic-neutral-grey-4;
         }
     }
 
@@ -108,7 +110,7 @@
         height: 3.625em;
         background: @primary;
         border-radius: 50%;
-        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+        box-shadow: 0 2px 5px 0 fade(black, 26%);
 
         &.top-left {
             margin-bottom: 1em;

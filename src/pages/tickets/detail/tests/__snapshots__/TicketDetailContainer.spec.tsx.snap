@@ -2,10 +2,6 @@
 
 exports[`TicketDetailContainer component should render container for new ticket 1`] = `
 <div
-  class="TicketDetailContainer"
->
-  <div
-    data-testid="TicketView-close"
-  />
-</div>
+  data-testid="TicketView-close"
+/>
 `;

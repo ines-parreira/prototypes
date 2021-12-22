@@ -8,8 +8,8 @@
     .whenBtn {
         margin-right: 0.25rem;
         border-radius: 15px;
-        background-color: @whenEventsButtonBackground;
-        color: @blue;
+        background-color: @ultraLightBlue;
+        color: @classic-main-primary-3;
         border: none;
         font-weight: 600;
         padding: 3px 8px;
@@ -31,27 +31,23 @@
     .whenEvents :global(.badge.badge-secondary) {
         margin: 0 0.25rem !important;
         text-transform: uppercase;
-        background-color: #e8f1fe !important;
+        background-color: @ultraLightBlue !important;
     }
 
     .whenEvents :global(.badge.badge-secondary),
-    input,
-    input:focus {
+    input {
+        font-weight: 500;
         margin-right: 0.25rem !important;
         border-radius: 15px !important;
         border: none !important;
         font-size: 12px !important;
         padding: 5px 8px;
 
-        background-color: @whenEventsInputBackground;
-        color: @blue !important;
+        color: @classic-main-primary-3 !important;
 
         &::after {
             margin-left: 3px !important;
             opacity: 0.3 !important;
         }
-    }
-    input {
-        font-weight: 500;
     }
 }

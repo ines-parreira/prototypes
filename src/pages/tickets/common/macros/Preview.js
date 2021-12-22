@@ -158,10 +158,7 @@ class Preview extends React.Component {
                 <strong className="text-muted mr-2 align-middle">
                     Assign to user:
                 </strong>
-                <span
-                    key={`action-assign-${setAssigneeAction.id}`}
-                    className="ticket-owner-btn ticket-details-item"
-                >
+                <span>
                     <AgentLabel
                         className="align-middle"
                         name={setAssigneeAction.getIn([
@@ -185,10 +182,7 @@ class Preview extends React.Component {
                 <strong className="text-muted mr-2 align-middle">
                     Assign to team:
                 </strong>
-                <span
-                    key={`action-assign-${setTeamAssigneeAction.id}`}
-                    className="ticket-owner-btn ticket-details-item"
-                >
+                <span>
                     <TeamLabel
                         className="align-middle"
                         name={setTeamAssigneeAction.getIn([

@@ -1,167 +1,28 @@
+@import './colorTokens';
+
 /*---  Colors  ---*/
 @black: #1b1c1d;
-@blue: #4a8df9;
-@quartz: #f7f8fc;
 @indigo: #152065;
 @green: #24d69e;
 @purple: #8088d6;
 @violet: #a541ab;
-@orange: #fd9b5a;
-@orange2: #ef6c0e;
 @yellow: #fbbd08;
-@red: #f24f66;
 @navy: #143498;
-@blockTextColor: #363636;
 
-// Shades of white are not specified in the design system yet
-@white7: #d4d4d5;
-@midWhite: #dcddde; //TODO: rename to @white6?
-@white5: #cddfed;
-@almostWhite: #e2e3ec; // TODO: rename to @white4?
-@white3: #e6e6e6;
-@white2: #e2edf4;
-@darkWhite: #f9f9f9; // TODO: rename to @white1?
-@white0: #fdfdfd;
-@white: #ffffff;
-
-@secondaryGrey: #546683;
-@lightGrey: #9fa9b9;
-@grey: #a7abc5;
-@darkGrey: darken(#a7abc5, 5%);
-
-/* Neutrals
- */
-@neutral10: #1d365c;
-@neutral9: #2d4366;
-@neutral8: #556885;
-@neutral7: #8390a5;
-@neutral6: #99a5b6;
-@neutral5: #bbc3ce;
-@neutral4: #d2d7de;
-@neutral3: #dde1e7;
-@neutral2: #e8ebef;
-@neutral1: #f4f5f7;
-@neutral0: #fcfcfc;
-
-/* Supporting
- */
-@blue8: #2c5390;
-@blue7: #3067c0;
-@blue6: #3373db;
-@blue5: #5c98fa;
-@blue4: #77a9fa;
-@blue3: #9bc0fc;
-@blue2: #d2e2fd;
-@blue1: #e4eefe;
-@blue0: #f6f9ff;
-
-@red8: #7b2323;
-@red7: #a32e2e;
-@red6: #d6384d;
-@red5: #f4697d;
-@red4: #f68494;
-@red3: #f89eab;
-@red2: #fab9c2;
-@red1: #fde5e8;
-@red0: #fef6f7;
-
-@yellow8: #9b6f36;
-@yellow7: #e69d3d;
-@yellow6: #fdab40;
-@yellow5: #febd69;
-@yellow4: #fec882;
-@yellow3: #fed7a3;
-@yellow2: #ffedd5;
-@yellow1: #fff4e6;
-@yellow0: #fffbf7;
-@highlightYellow: #fef6dc;
-
-@green8: #12694d;
-@green7: #1a9970;
-@green6: #20c08c;
-@green5: #3adaa7;
-@green4: #66e2bb;
-@green3: #87e8c9;
-@green2: #a8eed8;
-@green1: #def9f0;
-@green0: #f4fdfa;
-
-/* Light Colors
- * Used for :hover
- */
-@lightBlue: screen(@blue, #1f1f1f);
-@lightQuartz: screen(@quartz, #1f1f1f);
-@lightGreen: screen(@green, #1f1f1f);
-@lightPurple: screen(@purple, #1f1f1f);
-/* desaturated, used for some icons */
-@lightPurple2: #b0b4cc;
-@lightIndigo: screen(@indigo, #1f1f1f);
-@lightRed: screen(@red, #1f1f1f);
-@lightOrange: screen(@orange, #1f1f1f);
-/* lighter, used for some borders */
-@lightOrange2: #ffede1;
-@lightGrey: #c5c7d9;
-@lighterGrey: #dfe3f0;
-@lightYellow: #fffcf9;
+@highlightYellow: lighten(@classic-feedback-warning-1, 12%);
 @internalYellow: #fff2e5;
-@lightBlack: #545454;
-
-@collisionColor: #fee08c;
-@navbarBgColor: #1d365c;
-@navbarItemFadedColor: #4f6485;
-@toggleOffColor: #b0b4cc;
 
 /**
  * Ultra Light Colors
  * Used for label backgrounds
  */
-@ultraLightRed: #fef9fa;
-@ultraLightBlue: #e8f1fe;
-@ultraLightNavy: #e8f0fb;
-@ultraLightGreen: #e4faf3;
-@ultraLightGrey: #eff0fa;
-@ultraLightOrange: #fff3ea;
-@ultraLightPurple: #f4f4ff;
+@ultraLightRed: lighten(@classic-feedback-error-1, 19%);
+@ultraLightBlue: lighten(@classic-main-primary-1, 15%);
+@ultraLightOrange: lighten(@classic-feedback-warning-1, 13%);
+@ultraLightPurple: lighten(@purple, 30%);
 
-/* Dark Colors
- * Used for :active
- */
-@darkBlue: multiply(@blue, #efefef);
-@darkQuartz: multiply(@quartz, #efefef);
-/* lighter, needed for some borders */
-@darkQuartz2: #f0f1f5;
 /* saturated, timeline borders */
-@darkQuartz3: #d3d5e2;
 @darkGreen: multiply(@green, #efefef);
-@darkPurple: multiply(@purple, #efefef);
-@darkIndigo: multiply(@indigo, #efefef);
-@darkOrange: multiply(@orange, #efefef);
-@darkRed: multiply(@red, #efefef);
-
-// Table
-@tableHeadBorder: @darkQuartz;
-@tableRowBorder: @darkQuartz2;
-@tableRowBorderHover: #e2e3ec;
-@tableRowBgHover: #f9fbff;
-
-// Rules
-@whenEventsInputBackground: @ultraLightGrey;
-@whenEventsButtonBackground: @ultraLightBlue;
-
-@actionButtonBackground: @ultraLightGreen;
-@actionInputBackground: @ultraLightPurple;
-
-@identifierBackground: @ultraLightGrey;
-@logicalOperatorBackground: @ultraLightOrange;
-@literalBackground: @ultraLightPurple;
-
-@controlStructureButtonBackground: @ultraLightBlue;
-@operatorBackground: @ultraLightNavy;
-
-/* Old design
- */
-@blueBackground: #dff0ff;
-@linkColor: @lightBlue;
 
 // Third-party services colors
 @chatPurple: #8088d6;
@@ -174,6 +35,8 @@
 @yotpoBlue: #4a8df9;
 @twitterBlue: #1d9bf0;
 @klaviyoGreen: #45b670;
+@office356: #dc3e15;
+@google: #4285f4;
 
 /**
  * Temporary values for rebranding

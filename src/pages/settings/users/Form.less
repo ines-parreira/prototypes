@@ -1,10 +1,10 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 :local {
     .required {
         &::after {
             content: ' *';
-            color: @red;
+            color: @classic-feedback-error;
         }
     }
 
@@ -15,17 +15,6 @@
 
     .roleDropdown {
         margin-bottom: 14px;
-    }
-
-    .paywall {
-        background: @neutral0;
-        border: 1px solid @lighterGrey;
-        border-radius: 3px;
-        padding: 10px;
-
-        div {
-            color: @neutral8;
-        }
     }
 
     .learnMore {

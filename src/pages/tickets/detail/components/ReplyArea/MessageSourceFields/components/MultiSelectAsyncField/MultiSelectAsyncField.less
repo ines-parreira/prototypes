@@ -1,4 +1,4 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 :local .field {
     position: relative;
@@ -26,17 +26,17 @@
     .item {
         position: relative;
         padding: 0.38em 24px 0.38em 0.76em;
-        background: @quartz;
+        background: @classic-neutral-grey-1;
         margin: 0 4px 2px 0;
         cursor: pointer;
         outline: none !important; // prevent outline from focus
 
-        color: @indigo;
+        color: @classic-neutral-grey-6;
         font-weight: 500;
         white-space: nowrap;
 
         &.item--focused {
-            background: @darkQuartz;
+            background: fade(@classic-neutral-grey-3, 70%);
         }
 
         .item-remove-button {
@@ -58,9 +58,9 @@
         width: 100%;
         border-radius: 3px;
         overflow: hidden;
-        background: #fff;
-        box-shadow: 0 2px 3px rgba(21, 32, 101, 0.2);
-        border: 1px solid @darkQuartz;
+        background: @classic-neutral-grey-0;
+        box-shadow: 0 2px 3px fade(@classic-neutral-grey-6, 20%);
+        border: 1px solid @classic-neutral-grey-3;
 
         text-overflow: ellipsis;
 
@@ -72,14 +72,14 @@
             padding: 6px 8px;
             cursor: pointer;
 
-            color: @indigo;
+            color: @classic-neutral-grey-6;
             font-weight: 500;
             white-space: nowrap;
 
             &.suggestion--focused {
-                background-color: @quartz;
+                background-color: @classic-neutral-grey-1;
 
-                color: @indigo;
+                color: @classic-neutral-grey-6;
             }
         }
     }

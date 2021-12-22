@@ -14,7 +14,7 @@ export default class HTTPIntegrationEventItem extends Component<Props> {
             return (
                 <div className="mt-1">
                     <b className="mr-1">{name}:</b>
-                    <span className="text-black">empty</span>
+                    <span>empty</span>
                 </div>
             )
         }
@@ -22,11 +22,7 @@ export default class HTTPIntegrationEventItem extends Component<Props> {
         return (
             <div className="mt-1">
                 <b className="mr-1">{name}:</b>
-                {children ? (
-                    children
-                ) : (
-                    <span className="text-black">{value}</span>
-                )}
+                {children ? children : <span>{value}</span>}
             </div>
         )
     }

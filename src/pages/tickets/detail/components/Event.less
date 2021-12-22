@@ -1,4 +1,4 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 :local .component {
     display: flex;
@@ -13,7 +13,7 @@
         left: 0;
         top: 0;
         height: 100%;
-        border-left: 1px solid @darkQuartz;
+        border-left: 1px solid @classic-neutral-grey-3;
     }
 
     &.last::before {
@@ -50,21 +50,21 @@
                 margin-left: -27px;
                 margin-right: 28px;
                 border-radius: 50%;
-                background-color: @indigo;
+                background-color: @classic-neutral-grey-6;
 
                 font-size: 14px;
-                color: white;
+                color: @classic-neutral-grey-0;
 
                 &.success {
-                    background-color: @green;
+                    background-color: @classic-feedback-success;
                 }
 
                 &.danger {
-                    background-color: @red;
+                    background-color: @classic-feedback-error;
                 }
 
                 &.warning {
-                    background-color: @orange;
+                    background-color: @classic-feedback-warning;
                 }
             }
 
@@ -81,7 +81,7 @@
                 margin-right: 28px;
 
                 font-size: 14px;
-                color: white;
+                color: @classic-neutral-grey-0;
             }
 
             .actionName {

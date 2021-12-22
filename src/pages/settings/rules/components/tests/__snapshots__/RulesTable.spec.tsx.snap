@@ -19,6 +19,8 @@ exports[`<RulesView/> should render the rule views 1`] = `
         <td>
           last updated
         </td>
+        <td />
+        <td />
       </tr>
     </thead>
     <tbody>

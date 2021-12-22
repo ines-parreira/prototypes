@@ -13,9 +13,7 @@ exports[`HTTPIntegrationEventParams should render the given params 1`] = `
       params1
       :
     </b>
-    <span
-      className="text-black"
-    >
+    <span>
       value1
     </span>
   </li>
@@ -28,9 +26,7 @@ exports[`HTTPIntegrationEventParams should render the given params 1`] = `
       params2
       :
     </b>
-    <span
-      className="text-black"
-    >
+    <span>
       value2
     </span>
   </li>
@@ -43,9 +39,7 @@ exports[`HTTPIntegrationEventParams should render the given params 1`] = `
       params3
       :
     </b>
-    <span
-      className="text-black"
-    >
+    <span>
       value3
     </span>
   </li>

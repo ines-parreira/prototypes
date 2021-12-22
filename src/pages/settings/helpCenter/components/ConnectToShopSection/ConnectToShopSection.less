@@ -1,4 +1,4 @@
-@import (reference) '~css/new/colors.less';
+@import (reference) '~css/new/colorTokens';
 
 :local {
     .modal-centered {
@@ -17,32 +17,32 @@
     }
 
     .select-default {
-        color: @neutral6;
+        color: @classic-neutral-grey-4;
     }
 
     .select-connected-chats {
         margin-left: auto;
-        color: @neutral6;
+        color: @classic-neutral-grey-4;
     }
 
     .connected-store {
-        background: @darkWhite;
+        background: @classic-neutral-grey-1;
         padding: 8px;
         display: flex;
         align-items: center;
     }
 
     .disconnect-button {
-        color: @neutral6;
+        color: @classic-neutral-grey-4;
         cursor: pointer;
 
         &:hover {
-            color: @red;
+            color: @classic-feedback-error;
         }
     }
 
     .store-name {
-        color: @neutral10;
+        color: @classic-neutral-grey-6;
         font-weight: bold;
     }
 }

@@ -1,4 +1,4 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 @import '~css/new/mixins';
 
 .editor-toolbar {
@@ -73,13 +73,13 @@
         height: 100%;
         margin: 0 4px;
         padding: 0.1em;
-        background: rgba(255, 255, 255, 0.8);
-        border: 3px dashed @grey;
+        background: fade(@classic-neutral-grey-0, 80%);
+        border: 3px dashed @classic-neutral-grey-4;
         visibility: hidden;
         opacity: 0;
         transition: all 0.1s ease-out;
 
-        color: @grey;
+        color: @classic-neutral-grey-4;
         font-weight: 600;
         text-align: center;
         line-height: 1.9;
@@ -95,7 +95,7 @@
         margin-left: 1px;
         margin-right: 1px;
         height: 100%;
-        background-color: @lightGrey;
+        background-color: @classic-neutral-grey-4;
     }
 
     .separatorContainer {

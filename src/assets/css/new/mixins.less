@@ -4,84 +4,42 @@
     border-color: multiply(@color, #efefef);
 }
 
-.button-variant(@color; @bg; @lightBg; @activeBg) {
-    // important because we can have buttons as <a/> and we already change color of <a/>
-    color: @color !important;
-    background-color: @bg;
-
-    .border-color(@bg);
-
-    &:hover {
-        background-color: @lightBg;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-
-        .border-color(@lightBg);
-    }
-
-    &.disabled,
-    &:disabled {
-        background-color: lighten(@bg, 22%);
-        box-shadow: none;
-        .border-color(lighten(@bg, 22%));
-
-        color: fade(@color, 10%);
-    }
-
-    &:active,
-    &.active,
-    .show > &.dropdown-toggle {
-        background-color: @activeBg !important;
-        box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.05) !important;
-
-        .border-color(@activeBg) !important;
-    }
-
-    &:focus,
-    &.focus {
-        background-color: @bg;
-        .border-color(@bg);
-    }
-}
-
-/**
- * Temporary mixin for rebranding
- */
-.TEMP_button-variant(@color; @bg; @border; @hoverBorder; @activeBorder; @disabledColor: fade(@color, 10%)) {
+.button-variant(@color; @bg; @border; @hoverBg; @hoverBorder; @activeBg; @activeBorder) {
     // important because we can have buttons as <a/> and we already change color of <a/>
     color: @color !important;
     background-color: @bg;
     border-color: @border;
 
     &:hover {
-        background-color: @bg;
-        box-shadow: 0px 1px 2px 0px fade(@TEMP_neutral5, 14%);
+        background-color: @hoverBg;
+        box-shadow: 0 1px 2px fade(black, 10%);
         border-color: @hoverBorder;
     }
 
     &.disabled,
     &:disabled {
-        background-color: transparent;
+        background-color: @classic-neutral-grey-1;
         box-shadow: none;
-        border-color: @border;
-        color: @disabledColor !important;
+        border-color: @classic-neutral-grey-3;
+        color: @classic-neutral-grey-3 !important;
     }
 
     &:active,
     &.active,
     .show > &.dropdown-toggle {
-        background-color: @bg !important;
-        box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.05) !important;
+        background-color: @activeBg !important;
+        box-shadow: inset 1px 1px 2px fade(@black, 5%) !important;
         border-color: @activeBorder !important;
     }
 
     &:focus,
     &.focus {
         background-color: @bg;
-        .border-color(@bg);
+        border-color: @border;
     }
 }
 
-.button-outline-variant(@color; @color-hover: #fff) {
+.button-outline-variant(@color; @color-hover: @classic-neutral-grey-0) {
     color: @color;
     background-color: transparent;
     background-image: none;
@@ -108,7 +66,7 @@
     }
 }
 
-.badge-variant(@background; @color: #fff) {
+.badge-variant(@background; @color: @classic-neutral-grey-0) {
     color: @color;
     background-color: @background;
 

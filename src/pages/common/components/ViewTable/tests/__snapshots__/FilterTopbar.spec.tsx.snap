@@ -158,7 +158,9 @@ exports[`<FilterTopbar /> render should not render delete button when creating n
     <div
       class="d-flex align-items-center justify-content-between"
     >
-      <div>
+      <div
+        class="footer"
+      >
         <button
           class="btn btn-primary"
           type="submit"
@@ -171,6 +173,11 @@ exports[`<FilterTopbar /> render should not render delete button when creating n
         >
           Cancel
         </button>
+        <span
+          class="updateViewFeedback"
+        >
+          No changes have been made.
+        </span>
       </div>
     </div>
   </div>
@@ -490,13 +497,14 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
     <div
       class="d-flex align-items-center justify-content-between"
     >
-      <div>
+      <div
+        class="footer"
+      >
         <div
           class="btn-group"
         >
           <button
-            class="btn btn-success disabled"
-            disabled=""
+            class="btn btn-success"
             id="update-view-button"
             type="submit"
           >
@@ -536,6 +544,11 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
         >
           Cancel
         </button>
+        <span
+          class="updateViewFeedback"
+        >
+          No changes have been made.
+        </span>
       </div>
       <div />
     </div>

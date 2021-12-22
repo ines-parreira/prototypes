@@ -1,4 +1,4 @@
-@import '~css/new/colors.less';
+@import '~css/new/colors';
 
 :local {
     .container {
@@ -6,12 +6,12 @@
         padding: 2px;
         height: 18px;
         &:global(.primary) {
-            background: rgba(74, 141, 249, 0.1);
+            background: fade(@classic-main-primary, 10%);
             color: @yotpoBlue;
         }
         &:global(.secondary) {
-            background-color: fade(@neutral6, 10%);
-            color: @neutral6;
+            background-color: fade(@classic-neutral-grey-4, 10%);
+            color: @classic-neutral-grey-4;
         }
     }
     .children {

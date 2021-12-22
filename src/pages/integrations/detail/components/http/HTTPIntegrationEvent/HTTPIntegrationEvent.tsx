@@ -74,7 +74,7 @@ export class HTTPIntegrationEventContainer extends Component<Props, State> {
 
         if (!request) {
             return (
-                <Container fluid className={css.pageContainer}>
+                <Container fluid className={settingsCss.pageContainer}>
                     <Row>
                         <Col className="mb-4">
                             <h2 className="mb-4">Error</h2>

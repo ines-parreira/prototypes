@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {Map, List} from 'immutable'
 import {useSelector} from 'react-redux'
 import classnames from 'classnames'
@@ -39,7 +39,7 @@ import {
     areFiltersValid as getAreFiltersValid,
     getActiveView,
     getPristineActiveView,
-    isDirty as getIsDirty,
+    isDirty as getIsViewDirty,
 } from '../../../../state/views/selectors'
 import {getSchemas} from '../../../../state/schemas/selectors'
 import {GorgiasAction} from '../../../../state/types'
@@ -84,15 +84,25 @@ export const FilterTopbar = ({
     const dispatch = useAppDispatch()
 
     const [askUpdateConfirmation, setAskUpdateConfirmation] = useState(false)
+    const [showNoChangeFeedback, setShowNoChangeFeedback] = useState(false)
+    const timeoutChangeFeedbackRef = useRef<Maybe<number>>(null)
 
     const activeView = useSelector(getActiveView)
     const previousActiveView = usePrevious(activeView)
     const areFiltersValid = useSelector(getAreFiltersValid)
     const config = getConfigByName(type)
     const currentUser = useSelector(getCurrentUser)
-    const isDirty = useSelector(getIsDirty)
+    const isViewDirty = useSelector(getIsViewDirty)
     const pristineActiveView = useSelector(getPristineActiveView)
     const schemas = useSelector(getSchemas)
+
+    useEffect(
+        () => () => {
+            timeoutChangeFeedbackRef.current &&
+                window.clearTimeout(timeoutChangeFeedbackRef.current)
+        },
+        []
+    )
 
     useUpdateEffect(() => {
         const isSameView =
@@ -221,7 +231,17 @@ export const FilterTopbar = ({
     }
 
     const toggleUpdateConfirmation = () => {
-        setAskUpdateConfirmation(!askUpdateConfirmation)
+        if (!askUpdateConfirmation && !isViewDirty) {
+            timeoutChangeFeedbackRef.current &&
+                window.clearTimeout(timeoutChangeFeedbackRef.current)
+            setShowNoChangeFeedback(true)
+            timeoutChangeFeedbackRef.current = window.setTimeout(
+                () => setShowNoChangeFeedback(false),
+                2000
+            )
+        } else {
+            setAskUpdateConfirmation(!askUpdateConfirmation)
+        }
     }
 
     const isSystemView = activeView.get('category') === SYSTEM_VIEW_CATEGORY
@@ -282,7 +302,7 @@ export const FilterTopbar = ({
             {!isSearch && (
                 <CardFooter>
                     <div className="d-flex align-items-center justify-content-between">
-                        <div>
+                        <div className={css.footer}>
                             {isSystemView ? (
                                 <span>
                                     <i className="material-icons mr-2">info</i>
@@ -298,11 +318,8 @@ export const FilterTopbar = ({
                                             'btn-loading': isSubmitting,
                                         })}
                                         disabled={
-                                            isSubmitting ||
-                                            !areFiltersValid ||
-                                            !isDirty
+                                            isSubmitting || !areFiltersValid
                                         }
-                                        onClick={toggleUpdateConfirmation}
                                     >
                                         Update view
                                     </Button>
@@ -372,6 +389,13 @@ export const FilterTopbar = ({
                                     Cancel
                                 </Button>
                             )}
+                            <span
+                                className={classnames(css.updateViewFeedback, {
+                                    [css.visible]: showNoChangeFeedback,
+                                })}
+                            >
+                                No changes have been made.
+                            </span>
                         </div>
                         {!isSearch && !isSystemView && isUpdate && (
                             <ConfirmButton

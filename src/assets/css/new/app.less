@@ -71,7 +71,7 @@ div[class*='bs-tether'] {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: rgba(0, 0, 0, 0.85);
+    color: fade(black, 85%);
     user-select: none;
     font-size: 1rem;
 
@@ -207,24 +207,5 @@ table td.link-full-td {
             height: 100%;
             width: 100%;
         }
-    }
-}
-
-/* TODO check if still used
- */
-#system-message.message {
-    position: absolute;
-    z-index: 1001;
-    top: 20px;
-    left: 25%;
-    width: 50%;
-}
-
-#system-message.modal {
-    & > .close.icon {
-        top: 10px;
-        right: 10px;
-        font-size: 2em;
-        color: @black;
     }
 }

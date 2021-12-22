@@ -1,5 +1,9 @@
+*:hover > ::-webkit-scrollbar {
+    background: @classic-neutral-grey-2;
+}
+
 ::-webkit-scrollbar {
-    width: 9px;
+    width: 6px;
     height: 9px;
 }
 
@@ -9,8 +13,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: fade(#a7b3d8, 60%);
-    background-clip: padding-box;
+    background: @classic-neutral-grey-3;
     border: 2px solid transparent;
     border-radius: 12px;
     visibility: hidden;

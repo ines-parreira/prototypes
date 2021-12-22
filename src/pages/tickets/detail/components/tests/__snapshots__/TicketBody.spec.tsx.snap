@@ -2,13 +2,13 @@
 
 exports[`TicketBody last read message should not pass \`isLastReadMessage\` for a new message 1`] = `
 <div
-  className="TicketMessages"
+  className="wrapper"
 />
 `;
 
 exports[`TicketBody last read message should pass \`isLastReadMessage\` only for the last read message 1`] = `
 <div
-  className="TicketMessages"
+  className="wrapper"
 >
   <TicketMessages
     hasCursor={false}
@@ -171,7 +171,7 @@ exports[`TicketBody last read message should pass \`isLastReadMessage\` only for
 
 exports[`TicketBody should display and highlight the messages 1`] = `
 <div
-  className="TicketMessages"
+  className="wrapper"
 >
   <TicketMessages
     hasCursor={true}
@@ -234,7 +234,7 @@ exports[`TicketBody should display and highlight the messages 1`] = `
 
 exports[`TicketBody should display and not highlight the messages 1`] = `
 <div
-  className="TicketMessages"
+  className="wrapper"
 >
   <TicketMessages
     hasCursor={true}
@@ -297,7 +297,7 @@ exports[`TicketBody should display and not highlight the messages 1`] = `
 
 exports[`TicketBody should display audit log events with messages 1`] = `
 <div
-  className="TicketMessages"
+  className="wrapper"
 >
   <TicketMessages
     hasCursor={false}
@@ -375,7 +375,7 @@ exports[`TicketBody should display audit log events with messages 1`] = `
 
 exports[`TicketBody should display events with messages 1`] = `
 <div
-  className="TicketMessages"
+  className="wrapper"
 >
   <TicketMessages
     hasCursor={false}
@@ -478,7 +478,7 @@ exports[`TicketBody should display events with messages 1`] = `
 
 exports[`TicketBody should display messages 1`] = `
 <div
-  className="TicketMessages"
+  className="wrapper"
 >
   <TicketMessages
     hasCursor={true}
@@ -537,7 +537,7 @@ exports[`TicketBody should display messages 1`] = `
 
 exports[`TicketBody should display phone events 1`] = `
 <div
-  className="TicketMessages"
+  className="wrapper"
 >
   <PhoneEvent
     event={

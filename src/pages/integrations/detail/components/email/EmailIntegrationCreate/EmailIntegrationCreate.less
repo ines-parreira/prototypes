@@ -1,3 +1,5 @@
+@import '~css/new/colors';
+
 :local .form {
     max-width: 400px !important;
 }
@@ -10,30 +12,30 @@
     height: 50px;
 
     &.gmailButton {
-        background: #4285f4;
-        border-color: #4285f4;
+        background: @google;
+        border-color: @google;
 
         span {
-            color: white;
+            color: @classic-neutral-grey-0;
         }
 
         &:hover {
-            background-color: #3f80db !important;
-            border-color: #3f80db !important;
+            background-color: darken(@google, 5%) !important;
+            border-color: darken(@google, 5%) !important;
         }
     }
 
     &.outlookButton {
-        background-color: #eb3c02;
-        border-color: #eb3c02;
+        background-color: @office356;
+        border-color: @office356;
 
         span {
-            color: white;
+            color: @classic-neutral-grey-0;
         }
 
         &:hover {
-            background-color: #e13c02 !important;
-            border-color: #e13c02 !important;
+            background-color: darken(@office356, 5%) !important;
+            border-color: darken(@office356, 5%) !important;
         }
     }
 

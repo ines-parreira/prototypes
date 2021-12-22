@@ -232,16 +232,13 @@ export default class TicketReplyAction extends Component<Props> {
                     close
                 </i>
                 {argsComponent}
-                {!!notes && (
-                    <div className="notes">
-                        {notes.map((note, idx) => (
-                            <div key={idx} className="text-light-black">
-                                <i className="material-icons">info</i>
-                                {note}
-                            </div>
-                        ))}
-                    </div>
-                )}
+                {!!notes &&
+                    notes.map((note, idx) => (
+                        <div key={idx} className={css.note}>
+                            <i className="material-icons mr-1">info</i>
+                            {note}
+                        </div>
+                    ))}
             </div>
         )
     }

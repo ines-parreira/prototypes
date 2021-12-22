@@ -1,4 +1,4 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 :local {
     .title {
@@ -9,7 +9,7 @@
     .dropdown {
         margin-left: -1px;
         margin-bottom: 1px;
-        box-shadow: 0 0 5px rgba(21, 32, 101, 0.1);
+        box-shadow: 0 0 5px fade(@classic-neutral-grey-6, 10%);
         width: max-content;
         height: auto;
         max-height: 33vh;
@@ -17,7 +17,7 @@
     }
 
     .description {
-        color: @lightGrey;
+        color: @classic-neutral-grey-4;
         font-size: 0.9rem;
         margin-bottom: 10px;
     }

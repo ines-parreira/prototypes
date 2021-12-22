@@ -120,7 +120,7 @@ describe('Content', () => {
 
     it('should set new-line-interpret class', () => {
         const component = mount(<Content text="my test \n with a new line" />)
-        expect(component.find('.new-line-interpret')).toExist()
+        expect(component.render().text()).toBe('my test \\n with a new line')
     })
 
     it('should keep the quotation marks and incomplete tags', () => {

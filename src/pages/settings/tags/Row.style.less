@@ -1,4 +1,4 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 :local .row {
     .actions {
@@ -9,7 +9,7 @@
             .material-icons-outlined {
                 transition: 0.2s all;
                 opacity: 0.3;
-                color: @indigo;
+                color: @classic-neutral-grey-6;
             }
 
             &:hover .material-icons {
@@ -23,7 +23,7 @@
 
         .deleteButton {
             &:hover :global(.material-icons) {
-                color: @lightRed;
+                color: @classic-feedback-error-2;
             }
         }
     }

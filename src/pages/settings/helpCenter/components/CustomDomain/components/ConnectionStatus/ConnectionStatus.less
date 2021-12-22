@@ -1,4 +1,4 @@
-@import (reference) '~css/new/colors.less';
+@import (reference) '~css/new/colorTokens';
 
 :local {
     .container {
@@ -13,11 +13,11 @@
         }
 
         .connected {
-            color: @green;
+            color: @classic-feedback-success;
         }
 
         .disconnected {
-            color: @red;
+            color: @classic-feedback-error;
         }
 
         span + span {

@@ -1,9 +1,9 @@
-@import '~css/new/colors.less';
+@import '~css/new/colorTokens';
 
 :local {
     .container {
-        background-color: @green7;
-        color: white;
+        background-color: @classic-feedback-success-4;
+        color: @classic-neutral-grey-0;
         display: flex;
         position: relative;
         cursor: pointer;
@@ -30,14 +30,14 @@
             .accept {
                 margin-left: auto;
                 margin-right: 1rem;
-                color: @green7 !important;
+                color: @classic-feedback-success-4 !important;
                 font-size: 14px;
                 line-height: 17px;
                 padding: 7px 12px;
             }
 
             .decline {
-                color: @red !important;
+                color: @classic-feedback-error !important;
                 font-size: 14px;
                 line-height: 17px;
                 padding: 7px 12px;

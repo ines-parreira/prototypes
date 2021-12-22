@@ -14,17 +14,13 @@
         margin: 0 -16px;
     }
 
-    &.fromAgent {
-        background: fade(@lightPurple, 2%);
-    }
-
     &:hover {
-        background: @darkWhite;
+        background: @classic-neutral-grey-1;
     }
 
     &.internal {
         background: @internalYellow;
-        box-shadow: inset 5px 0 0 0 #fd9b5a;
+        box-shadow: inset 5px 0 0 0 @classic-feedback-warning;
 
         &:hover {
             background: darken(@internalYellow, 1%);
@@ -33,7 +29,7 @@
         :global {
             .text-faded,
             .gorgias-mention {
-                color: darken(@darkGrey, 10%) !important;
+                color: darken(@classic-neutral-grey-4, 10%) !important;
             }
         }
     }
@@ -87,7 +83,7 @@
         background-color: @highlightYellow;
     }
     to {
-        background-color: @white;
+        background-color: @classic-neutral-grey-0;
     }
 }
 
@@ -137,7 +133,7 @@
         border-radius: 100%;
         border-width: 2px;
         border-style: solid;
-        border-color: rgba(0, 0, 0, 0.6) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1);
+        border-color: fade(black, 60%) fade(black, 10%) fade(black, 10%);
         animation: ticket-message-loading-spin 0.4s infinite linear,
             ticket-message-loading-spinner-opacity 0.4s @delay forwards linear;
     }
@@ -152,5 +148,5 @@
 /* Mentioned agent's name text
  */
 .gorgias-mention {
-    color: @grey;
+    color: @classic-neutral-grey-4;
 }

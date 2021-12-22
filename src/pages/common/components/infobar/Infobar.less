@@ -1,13 +1,11 @@
 @import '~css/new/colors';
 
-@infobarBorderColor: @darkQuartz;
-
 :local .component {
     position: relative;
     display: flex;
     flex-direction: column;
-    background-color: @quartz;
-    border-left: 1px solid @infobarBorderColor;
+    background-color: @classic-neutral-grey-1;
+    border-left: 1px solid @classic-neutral-grey-3;
 
     .widgetsList {
         > :global(.card:first-child) {
@@ -25,7 +23,7 @@
 
     .suggestedCustomer {
         margin: 1.5rem;
-        background-color: @white2;
+        background-color: @classic-neutral-grey-2;
         border-radius: 3px;
         padding: 16px;
 
@@ -48,9 +46,9 @@
     }
 
     .customerInfo {
-        background: white;
+        background: @classic-neutral-grey-0;
         padding: 1rem;
-        box-shadow: inset 0 -1px 0 @almostWhite;
+        box-shadow: inset 0 -1px 0 @classic-neutral-grey-2;
     }
 
     .customerProfile {
@@ -62,7 +60,7 @@
 
     .displayName {
         margin: 0;
-        color: @indigo;
+        color: @classic-neutral-grey-6;
         font-weight: 600;
         font-size: 17px;
     }
@@ -84,13 +82,13 @@
     }
 
     .cardTitle {
-        color: @indigo;
+        color: @classic-neutral-grey-6;
         font-size: 17px;
         font-weight: 500;
     }
 
     .subtitle {
-        color: @indigo;
+        color: @classic-neutral-grey-6;
         font-weight: 500;
     }
 
@@ -104,9 +102,9 @@
 
     .footer {
         padding: 0.78em;
-        background-color: @quartz;
-        border-top: 1px solid @infobarBorderColor;
-        box-shadow: 1px 0 6px fade(@indigo, 10%);
+        background-color: @classic-neutral-grey-1;
+        border-top: 1px solid @classic-neutral-grey-3;
+        box-shadow: 1px 0 6px fade(@classic-neutral-grey-6, 10%);
     }
 
     .infobarContent {
@@ -120,7 +118,7 @@
         content: ' ';
         display: block;
         width: 100%;
-        border-bottom: 1px solid @white5;
+        border-bottom: 1px solid @classic-neutral-grey-3;
         white-space: pre;
         margin: 8px 0;
     }
@@ -128,20 +126,8 @@
     .infobarSearchWrapper {
         padding: 12px;
         margin-bottom: 1px;
-        background: @white;
-        border-bottom: 1px solid @infobarBorderColor;
-
-        .icon-edit-mode {
-            margin-left: 12px;
-            margin-right: 0;
-            font-size: 1.1em;
-            padding: 6px 9px !important;
-
-            &.active {
-                color: @white;
-                background-color: @lightBlue;
-            }
-        }
+        background: @classic-neutral-grey-0;
+        border-bottom: 1px solid @classic-neutral-grey-3;
     }
 }
 
@@ -162,7 +148,7 @@
     z-index: 1021;
     height: 100%;
     width: 6px;
-    background: rgba(0, 0, 0, 0);
+    background: fade(black, 0%);
 }
 
 /* set the cursor to resize on the entire document
@@ -185,7 +171,7 @@
         transform: translate(-50%, -50%);
     }
     .error {
-        color: @red;
+        color: @classic-feedback-error;
     }
 }
 
@@ -194,7 +180,7 @@ Infobar suggestion
  */
 .blurred {
     filter: blur(1.8px);
-    color: @white7;
+    color: @classic-neutral-grey-3;
 }
 
 .suggestion {

@@ -1,4 +1,4 @@
-@import '~css/new/colors.less';
+@import '~css/new/colorTokens';
 
 :local {
     .container:hover {
@@ -17,9 +17,9 @@
         align-items: center;
         max-width: 280px;
         height: 72px;
-        border: 1px solid @neutral4;
+        border: 1px solid @classic-neutral-grey-3;
         border-radius: 4px;
-        background-color: white;
+        background-color: @classic-neutral-grey-0;
         flex-basis: 0;
         flex-grow: 1;
 
@@ -27,7 +27,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: @blue0;
+            background-color: @classic-main-primary-0;
             height: 48px;
             width: 48px;
             border-radius: 50%;
@@ -38,10 +38,10 @@
             font-weight: 600;
             font-size: 14px;
             line-height: 20px;
-            color: @neutral10;
+            color: @classic-neutral-grey-6;
         }
     }
     .selected {
-        border: 1px solid @blue;
+        border: 1px solid @classic-main-primary;
     }
 }

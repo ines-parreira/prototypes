@@ -1,4 +1,4 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 :local {
     .card {
@@ -8,7 +8,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background-color: white;
+        background-color: @classic-neutral-grey-0;
         border-bottom: none;
         height: 68px;
         h3 {
@@ -23,7 +23,7 @@
             margin-bottom: 24px;
         }
         .one-click-installation {
-            background-color: @neutral1;
+            background-color: @classic-neutral-grey-2;
             border-radius: 4px;
             display: flex;
             align-items: center;
@@ -49,7 +49,7 @@
                 margin-left: 18px;
             }
             .disconnected-store {
-                color: @orange;
+                color: @classic-feedback-warning;
                 margin-left: 16px;
                 font-size: 12px;
             }

@@ -6,11 +6,8 @@
         table-layout: fixed;
 
         thead tr {
-            border-bottom: 1px solid @tableHeadBorder;
-
             th {
-                border-bottom: none;
-                color: @grey;
+                color: @classic-neutral-grey-4;
                 font-size: 11px;
                 letter-spacing: 0.6px;
                 text-transform: uppercase;
@@ -22,7 +19,7 @@
         }
 
         td {
-            color: @neutral10;
+            color: @classic-neutral-grey-6;
         }
 
         .satisfaction-survey-link {
@@ -43,11 +40,8 @@
         }
 
         tbody tr {
-            border-bottom: 1px solid @tableRowBorder;
-
             &:hover {
-                border-bottom: 1px solid @tableRowBorderHover;
-                background: @tableRowBgHover;
+                background: @classic-neutral-grey-1;
             }
 
             td:first-child {
@@ -66,7 +60,7 @@
         }
 
         .emptyDuration {
-            color: @neutral6;
+            color: @classic-neutral-grey-4;
         }
 
         .userName {
@@ -74,7 +68,7 @@
         }
 
         .statusDot {
-            background-color: @orange;
+            background-color: @classic-feedback-warning;
             border-radius: 4px;
             display: inline-block;
             height: 8px;
@@ -82,7 +76,7 @@
             width: 8px;
 
             &.isOnline {
-                background-color: @green;
+                background-color: @classic-feedback-success;
             }
         }
     }
@@ -93,7 +87,7 @@
         align-items: center;
         justify-content: center;
         border: none;
-        background-color: @blue0;
+        background-color: @classic-main-primary-0;
         &:focus:not(:focus-visible) {
             outline: none;
         }
@@ -102,7 +96,7 @@
             font-weight: 500;
             font-size: 14px;
             line-height: 20px;
-            color: @blue;
+            color: @classic-main-primary;
         }
     }
 }

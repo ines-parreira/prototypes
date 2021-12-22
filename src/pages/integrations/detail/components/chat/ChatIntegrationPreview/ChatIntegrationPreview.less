@@ -1,4 +1,4 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 :local {
     @primary: #479af5;
@@ -53,7 +53,7 @@
         border: 0;
         margin-bottom: 1em;
         border-radius: 5px;
-        box-shadow: 0 4px 1em rgba(0, 0, 0, 0.12);
+        box-shadow: 0 4px 1em fade(black, 12%);
 
         display: flex;
         flex-direction: column;
@@ -63,7 +63,7 @@
             padding: 0.6em 1.6em;
             background: @primary;
 
-            color: white;
+            color: @classic-neutral-grey-0;
             text-align: center;
 
             .icon.times {
@@ -86,7 +86,7 @@
         }
 
         .details {
-            color: white;
+            color: @classic-neutral-grey-0;
             overflow: hidden;
             flex: 1;
             padding: 0.8em;
@@ -105,7 +105,7 @@
                 font-size: 13px;
                 border-radius: 50px;
                 background: #959ca6;
-                color: white;
+                color: @classic-neutral-grey-0;
                 padding: 0 10px;
                 width: auto;
                 margin-top: 5px;
@@ -249,7 +249,7 @@
             }
 
             .offlineMarker {
-                background: @orange;
+                background: @classic-feedback-warning;
             }
         }
     }
@@ -292,7 +292,7 @@
             float: right;
             background: @primary;
 
-            color: white;
+            color: @classic-neutral-grey-0;
         }
 
         &.firstMessageOfAppUser {
@@ -331,7 +331,7 @@
 
         border-radius: 50px !important;
         overflow: hidden;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.09);
+        box-shadow: 0 4px 6px fade(black, 9%);
 
         display: flex;
         align-items: center;
@@ -349,7 +349,7 @@
     .optionalEmailCapture {
         clear: both;
         padding: 15px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 2px 4px fade(black, 12%);
 
         background: @lighterGrey;
         border: 1px solid @lightGrey;
@@ -394,13 +394,13 @@
                 width: 40px;
                 background: @primary;
                 font-size: 30px;
-                color: white;
+                color: @classic-neutral-grey-0;
 
                 display: flex;
                 justify-content: center;
                 align-items: center;
 
-                border: 1px solid rgba(0, 0, 0, 0.1);
+                border: 1px solid fade(black, 10%);
                 border-radius: 0 3px 3px 0;
             }
         }
@@ -468,7 +468,7 @@
                 border: none;
                 border-radius: 3px;
 
-                color: white;
+                color: @classic-neutral-grey-0;
                 background: @primary;
                 text-align: center;
                 font-size: 15px;
@@ -534,7 +534,7 @@
         height: 3.625em;
         background: @primary;
         border-radius: 50%;
-        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+        box-shadow: 0 2px 5px 0 fade(black, 26%);
 
         .iconWrapper {
             position: relative;
@@ -557,7 +557,7 @@
                 width: 55%;
                 height: 55%;
                 border-radius: 100px;
-                box-shadow: 0 13px 26px 0 rgba(0, 0, 0, 0.2);
+                box-shadow: 0 13px 26px 0 fade(black, 20%);
             }
         }
     }

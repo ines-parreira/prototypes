@@ -1,5 +1,5 @@
 @import (reference) '~css/new/mixins';
-@import (reference) '~css/new/colors';
+@import (reference) '~css/new/colorTokens';
 @import (reference) '~css/backdrop';
 
 :local {
@@ -14,13 +14,13 @@
 
         .drawer {
             width: 50vw;
-            background-color: @neutral1;
+            background-color: @classic-neutral-grey-2;
             position: absolute;
             top: 0;
             height: 100%;
             transition-property: transform;
             transition-timing-function: ease-in-out;
-            box-shadow: 0px 4px 16px rgba(22, 22, 22, 0.24);
+            box-shadow: 0px 4px 16px fade(black, 24%);
             z-index: 3;
             right: -50vw;
             display: grid;
@@ -53,7 +53,7 @@
 
         padding: 0 16px;
 
-        background-color: @white;
+        background-color: @classic-neutral-grey-0;
     }
 
     .header-actions {
@@ -70,7 +70,7 @@
         grid-area: main;
         overflow: auto;
         padding: 16px;
-        border-bottom: 1px solid @neutral4;
+        border-bottom: 1px solid @classic-neutral-grey-3;
     }
 
     .footer {

@@ -1,5 +1,6 @@
 @import '~css/new/mixins';
 @import '~css/backdrop';
+@import '~css/new/colorTokens';
 
 :local {
     .modal-container {
@@ -13,13 +14,13 @@
 
         .modal {
             width: 70vw;
-            background-color: white;
+            background-color: @classic-neutral-grey-0;
             position: absolute;
             top: 0;
             height: 100%;
             transition-property: transform;
             transition-timing-function: ease-in-out;
-            box-shadow: 0px 4px 16px rgba(22, 22, 22, 0.24);
+            box-shadow: 0px 4px 16px fade(black, 24%);
             z-index: 5;
             right: -70vw;
 

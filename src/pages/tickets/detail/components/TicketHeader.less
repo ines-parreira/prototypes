@@ -1,16 +1,16 @@
 @import '~css/new/mixins';
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 :local .component {
     padding: 1px 10px 5px 20px;
-    background: #fff;
+    background: @classic-neutral-grey-0;
 
     @media @mobiles {
         padding-top: 6px;
     }
 
     .editableTitle {
-        color: @indigo;
+        color: @classic-neutral-grey-6;
         font-size: 20px;
         font-weight: 500;
         height: 32px;

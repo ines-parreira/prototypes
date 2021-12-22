@@ -1,4 +1,4 @@
-@import '~css/new/colors.less';
+@import '~css/new/colorTokens';
 
 :local .option {
     &:hover,
@@ -7,13 +7,13 @@
     }
 }
 :local .optionDeprecated {
-    color: @yellow7 !important;
+    color: @classic-feedback-warning-4 !important;
     &.option--focused {
-        background: @yellow2 !important;
+        background: @classic-feedback-warning-0 !important;
 
         &:active {
             outline: none;
-            background: @yellow4 !important;
+            background: @classic-feedback-warning-2 !important;
         }
     }
 }
