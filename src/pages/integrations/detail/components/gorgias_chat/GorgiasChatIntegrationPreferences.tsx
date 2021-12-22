@@ -61,7 +61,8 @@ const emailCaptureOptions = [
     {
         value: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
         label: 'Always required',
-        description: 'Reduces conversation volume by around 30%',
+        description:
+            "Recommended if you can't provide instant replies. Reduces conversation volume by around 30%",
     },
 ]
 

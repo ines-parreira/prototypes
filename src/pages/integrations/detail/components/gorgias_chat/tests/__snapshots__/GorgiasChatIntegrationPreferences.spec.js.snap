@@ -246,7 +246,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
                     "value": "required-outside-business-hours",
                   },
                   Object {
-                    "description": "Reduces conversation volume by around 30%",
+                    "description": "Recommended if you can't provide instant replies. Reduces conversation volume by around 30%",
                     "label": "Always required",
                     "value": "always-required",
                   },
@@ -595,7 +595,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                     "value": "required-outside-business-hours",
                   },
                   Object {
-                    "description": "Reduces conversation volume by around 30%",
+                    "description": "Recommended if you can't provide instant replies. Reduces conversation volume by around 30%",
                     "label": "Always required",
                     "value": "always-required",
                   },
