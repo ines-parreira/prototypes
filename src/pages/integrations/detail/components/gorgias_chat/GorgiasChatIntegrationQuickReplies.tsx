@@ -132,6 +132,19 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
             ),
         }
 
+        const autoResponderEnabled = integration.getIn([
+            'meta',
+            'preferences',
+            'auto_responder',
+            'enabled',
+        ])
+        const autoResponderReply = integration.getIn([
+            'meta',
+            'preferences',
+            'auto_responder',
+            'reply',
+        ])
+
         return (
             <div className="full-width">
                 <PageHeader
@@ -231,6 +244,8 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                                 ])}
                                 isOnline
                                 position={position}
+                                autoResponderEnabled={autoResponderEnabled}
+                                autoResponderReply={autoResponderReply}
                             >
                                 <QuickRepliesPreview
                                     quickReplies={this.state.quickReplies.toJS()}

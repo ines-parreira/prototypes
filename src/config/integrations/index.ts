@@ -30,7 +30,13 @@ export const CHAT_AUTO_RESPONDER_REPLY_OPTIONS = [
     CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
     CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
     CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
-]
+] as const
+
+export const isAutoresponderReply = (
+    option: any
+): option is typeof CHAT_AUTO_RESPONDER_REPLY_OPTIONS[number] => {
+    return CHAT_AUTO_RESPONDER_REPLY_OPTIONS.includes(option)
+}
 
 // Casting for typing json imports
 const CHAT_AUTO_RESPONDER_TEXTS: Record<

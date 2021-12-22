@@ -539,6 +539,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                 language={language}
                                 position={position}
                                 renderFooter={renderPreviewFooter}
+                                autoResponderEnabled={autoResponderEnabled}
+                                autoResponderReply={autoResponderReply}
                             >
                                 {previewChildren}
                             </ChatIntegrationPreview>

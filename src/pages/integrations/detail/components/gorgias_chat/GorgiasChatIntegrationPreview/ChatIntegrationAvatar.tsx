@@ -57,7 +57,7 @@ const ChatIntegrationAvatar = (props: Props) => {
                     style={{borderColor: isOnline ? mainColor : offlineColor}}
                 >
                     <i className="material-icons">person</i>
-                    {statusMarker}
+                    {position === 'middle' && statusMarker}
                 </div>
             ))}
         </div>

@@ -362,6 +362,19 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         return <Loader />
     }
 
+    const autoResponderEnabled = integration.getIn([
+        'meta',
+        'preferences',
+        'auto_responder',
+        'enabled',
+    ])
+    const autoResponderReply = integration.getIn([
+        'meta',
+        'preferences',
+        'auto_responder',
+        'reply',
+    ])
+
     return (
         <div className="full-width">
             <PageHeader
@@ -832,6 +845,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             language={language}
                             position={position}
                             editedPositionAxis={editedPositionAxis}
+                            autoResponderEnabled={autoResponderEnabled}
+                            autoResponderReply={autoResponderReply}
                         >
                             <MessageContentPreview
                                 conversationColor={conversationColor}

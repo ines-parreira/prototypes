@@ -1,11 +1,20 @@
 import React, {ReactNode} from 'react'
 import {Map} from 'immutable'
 import classnames from 'classnames'
+import moment from 'moment'
 
+import clockIcon from 'assets/img/icons/clock.svg'
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from '../../../../../../config/integrations/gorgias_chat'
+import {
+    CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
+    CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
+    CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
+    CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
+    isAutoresponderReply,
+} from '../../../../../../config/integrations'
 import {
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
@@ -30,6 +39,8 @@ type Props = {
     renderFooter?: boolean
     position: GorgiasChatPosition
     editedPositionAxis?: PositionAxis | null
+    autoResponderEnabled?: boolean
+    autoResponderReply?: string
 }
 
 const ChatIntegrationPreview = (props: Props) => {
@@ -46,6 +57,8 @@ const ChatIntegrationPreview = (props: Props) => {
         renderFooter = true,
         position,
         editedPositionAxis,
+        autoResponderReply,
+        autoResponderEnabled,
     } = props
 
     // Preserve the space which should be occupied by a string when the string is empty
@@ -96,6 +109,23 @@ const ChatIntegrationPreview = (props: Props) => {
                 : 'right']: -getOffsetXWidth(),
             width: getOffsetXWidth(),
         }
+    }
+
+    const getTypicalResponseText = () => {
+        if (!isAutoresponderReply(autoResponderReply)) {
+            return null
+        }
+
+        return {
+            [CHAT_AUTO_RESPONDER_REPLY_SHORTLY]:
+                translatedTexts.usualReplyTimeMinutes,
+            [CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES]:
+                translatedTexts.usualReplyTimeMinutes,
+            [CHAT_AUTO_RESPONDER_REPLY_IN_HOURS]:
+                translatedTexts.usualReplyTimeHours,
+            [CHAT_AUTO_RESPONDER_REPLY_IN_DAY]:
+                translatedTexts.usualReplyTimeDay,
+        }[autoResponderReply]
     }
 
     return (
@@ -156,10 +186,29 @@ const ChatIntegrationPreview = (props: Props) => {
                             )}
                         </div>
                         {!isOnline && (
-                            <div className={css['business-hours-back-badge']}>
-                                {translatedTexts.backLabelBackTomorrow}
+                            <div className={css.replyTime}>
+                                <img src={clockIcon} alt="Back online time" />
+                                {translatedTexts.backLabelBackAt.replace(
+                                    '{time}',
+                                    moment()
+                                        .hour(9)
+                                        .minutes(0)
+                                        .locale(language)
+                                        .format('LT')
+                                )}
                             </div>
                         )}
+                        {isOnline &&
+                            autoResponderEnabled &&
+                            autoResponderReply && (
+                                <div className={css.replyTime}>
+                                    <img
+                                        src={clockIcon}
+                                        alt="Typical reply time"
+                                    />
+                                    {getTypicalResponseText()}
+                                </div>
+                            )}
                     </div>
                 </div>
 

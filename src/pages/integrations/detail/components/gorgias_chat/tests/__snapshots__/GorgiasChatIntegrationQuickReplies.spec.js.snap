@@ -751,9 +751,6 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                 >
                                   person
                                 </i>
-                                <div
-                                  className="onlineMarker"
-                                />
                               </div>
                               <div
                                 className="agent middle"
@@ -787,9 +784,6 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                 >
                                   person
                                 </i>
-                                <div
-                                  className="onlineMarker"
-                                />
                               </div>
                             </div>
                           </ChatIntegrationAvatar>
@@ -1675,9 +1669,6 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                 >
                                   person
                                 </i>
-                                <div
-                                  className="onlineMarker"
-                                />
                               </div>
                               <div
                                 className="agent middle"
@@ -1711,9 +1702,6 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                 >
                                   person
                                 </i>
-                                <div
-                                  className="onlineMarker"
-                                />
                               </div>
                             </div>
                           </ChatIntegrationAvatar>

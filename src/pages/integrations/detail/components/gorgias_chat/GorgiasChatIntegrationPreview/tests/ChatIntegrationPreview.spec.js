@@ -2,7 +2,13 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../../config/integrations/index.ts'
+import {
+    CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
+    CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
+    CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
+    CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
+    CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
+} from '../../../../../../../config/integrations/index'
 import {
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
@@ -230,5 +236,39 @@ describe('<ChatIntegrationPreview/>', () => {
 
             expect(component).toMatchSnapshot()
         })
+
+        it.each([
+            CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
+            CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
+            CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
+            CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
+        ])(
+            'should display typical response time for %s',
+            (autoResponderReply) => {
+                const component = shallow(
+                    <ChatIntegrationPreview
+                        name="My little chat integration"
+                        introductionText="intro"
+                        mainColor="#123456"
+                        conversationColor="#456789"
+                        requiredEmailCapture={true}
+                        isOnline
+                        language={GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT}
+                        position={GORGIAS_CHAT_WIDGET_POSITION_DEFAULT}
+                        renderFooter={false}
+                        editedPositionAxis={PositionAxis.AXIS_Y}
+                        autoResponderEnabled
+                        autoResponderReply={autoResponderReply}
+                    >
+                        <MessageContent
+                            conversationColor={conversationColor}
+                            currentUser={currentUser}
+                        />
+                    </ChatIntegrationPreview>
+                )
+
+                expect(component).toMatchSnapshot()
+            }
+        )
     })
 })

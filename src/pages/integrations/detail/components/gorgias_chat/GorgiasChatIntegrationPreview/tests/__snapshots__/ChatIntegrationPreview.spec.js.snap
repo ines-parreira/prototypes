@@ -540,9 +540,13 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
            
         </div>
         <div
-          className="business-hours-back-badge"
+          className="replyTime"
         >
-          Back tomorrow
+          <img
+            alt="Back online time"
+            src="test-file-stub"
+          />
+          Back online at 9:00 AM
         </div>
       </div>
     </div>
@@ -763,6 +767,390 @@ exports[`<ChatIntegrationPreview/> render() should display the sliders when edit
       <div
         className="shadow"
       />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ChatIntegrationPreview/> render() should display typical response time for reply-in-day 1`] = `
+<div
+  className="preview"
+  style={Object {}}
+>
+  <div
+    className="titlebar"
+  />
+  <div
+    className="dialog"
+  >
+    <div
+      className="header"
+      style={
+        Object {
+          "backgroundColor": "#123456",
+        }
+      }
+    >
+      <ChatIntegrationAvatar
+        isOnline={true}
+        mainColor="#123456"
+        offlineColor="#A1A9B6"
+      />
+      <div
+        className="details"
+      >
+        <div
+          className="appName"
+        >
+          My little chat integration
+        </div>
+        <div
+          className="introductionText"
+        >
+          intro
+        </div>
+        <div
+          className="replyTime"
+        >
+          <img
+            alt="Typical reply time"
+            src="test-file-stub"
+          />
+          Typically replies within a day
+        </div>
+      </div>
+    </div>
+    <MessageContent
+      conversationColor="#456789"
+      currentUser={
+        Immutable.Map {
+          "name": "Charles",
+        }
+      }
+    />
+    <div
+      className="poweredby"
+    >
+      Powered by Gorgias
+    </div>
+  </div>
+  <div
+    className="button bottom-right"
+    style={
+      Object {
+        "backgroundColor": "#123456",
+      }
+    }
+  >
+    <div
+      className="iconWrapper"
+    >
+      <i
+        className="icon"
+      />
+      <div
+        className="shadow"
+      />
+    </div>
+    <div
+      className="axis-y"
+    >
+      <div
+        className="offsetLine"
+      />
+      <div
+        className="offsetContent"
+      >
+        0px
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ChatIntegrationPreview/> render() should display typical response time for reply-in-hours 1`] = `
+<div
+  className="preview"
+  style={Object {}}
+>
+  <div
+    className="titlebar"
+  />
+  <div
+    className="dialog"
+  >
+    <div
+      className="header"
+      style={
+        Object {
+          "backgroundColor": "#123456",
+        }
+      }
+    >
+      <ChatIntegrationAvatar
+        isOnline={true}
+        mainColor="#123456"
+        offlineColor="#A1A9B6"
+      />
+      <div
+        className="details"
+      >
+        <div
+          className="appName"
+        >
+          My little chat integration
+        </div>
+        <div
+          className="introductionText"
+        >
+          intro
+        </div>
+        <div
+          className="replyTime"
+        >
+          <img
+            alt="Typical reply time"
+            src="test-file-stub"
+          />
+          Typically replies in a few hours
+        </div>
+      </div>
+    </div>
+    <MessageContent
+      conversationColor="#456789"
+      currentUser={
+        Immutable.Map {
+          "name": "Charles",
+        }
+      }
+    />
+    <div
+      className="poweredby"
+    >
+      Powered by Gorgias
+    </div>
+  </div>
+  <div
+    className="button bottom-right"
+    style={
+      Object {
+        "backgroundColor": "#123456",
+      }
+    }
+  >
+    <div
+      className="iconWrapper"
+    >
+      <i
+        className="icon"
+      />
+      <div
+        className="shadow"
+      />
+    </div>
+    <div
+      className="axis-y"
+    >
+      <div
+        className="offsetLine"
+      />
+      <div
+        className="offsetContent"
+      >
+        0px
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ChatIntegrationPreview/> render() should display typical response time for reply-in-minutes 1`] = `
+<div
+  className="preview"
+  style={Object {}}
+>
+  <div
+    className="titlebar"
+  />
+  <div
+    className="dialog"
+  >
+    <div
+      className="header"
+      style={
+        Object {
+          "backgroundColor": "#123456",
+        }
+      }
+    >
+      <ChatIntegrationAvatar
+        isOnline={true}
+        mainColor="#123456"
+        offlineColor="#A1A9B6"
+      />
+      <div
+        className="details"
+      >
+        <div
+          className="appName"
+        >
+          My little chat integration
+        </div>
+        <div
+          className="introductionText"
+        >
+          intro
+        </div>
+        <div
+          className="replyTime"
+        >
+          <img
+            alt="Typical reply time"
+            src="test-file-stub"
+          />
+          Typically replies in a few minutes
+        </div>
+      </div>
+    </div>
+    <MessageContent
+      conversationColor="#456789"
+      currentUser={
+        Immutable.Map {
+          "name": "Charles",
+        }
+      }
+    />
+    <div
+      className="poweredby"
+    >
+      Powered by Gorgias
+    </div>
+  </div>
+  <div
+    className="button bottom-right"
+    style={
+      Object {
+        "backgroundColor": "#123456",
+      }
+    }
+  >
+    <div
+      className="iconWrapper"
+    >
+      <i
+        className="icon"
+      />
+      <div
+        className="shadow"
+      />
+    </div>
+    <div
+      className="axis-y"
+    >
+      <div
+        className="offsetLine"
+      />
+      <div
+        className="offsetContent"
+      >
+        0px
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ChatIntegrationPreview/> render() should display typical response time for reply-shortly 1`] = `
+<div
+  className="preview"
+  style={Object {}}
+>
+  <div
+    className="titlebar"
+  />
+  <div
+    className="dialog"
+  >
+    <div
+      className="header"
+      style={
+        Object {
+          "backgroundColor": "#123456",
+        }
+      }
+    >
+      <ChatIntegrationAvatar
+        isOnline={true}
+        mainColor="#123456"
+        offlineColor="#A1A9B6"
+      />
+      <div
+        className="details"
+      >
+        <div
+          className="appName"
+        >
+          My little chat integration
+        </div>
+        <div
+          className="introductionText"
+        >
+          intro
+        </div>
+        <div
+          className="replyTime"
+        >
+          <img
+            alt="Typical reply time"
+            src="test-file-stub"
+          />
+          Typically replies in a few minutes
+        </div>
+      </div>
+    </div>
+    <MessageContent
+      conversationColor="#456789"
+      currentUser={
+        Immutable.Map {
+          "name": "Charles",
+        }
+      }
+    />
+    <div
+      className="poweredby"
+    >
+      Powered by Gorgias
+    </div>
+  </div>
+  <div
+    className="button bottom-right"
+    style={
+      Object {
+        "backgroundColor": "#123456",
+      }
+    }
+  >
+    <div
+      className="iconWrapper"
+    >
+      <i
+        className="icon"
+      />
+      <div
+        className="shadow"
+      />
+    </div>
+    <div
+      className="axis-y"
+    >
+      <div
+        className="offsetLine"
+      />
+      <div
+        className="offsetContent"
+      >
+        0px
+      </div>
     </div>
   </div>
 </div>

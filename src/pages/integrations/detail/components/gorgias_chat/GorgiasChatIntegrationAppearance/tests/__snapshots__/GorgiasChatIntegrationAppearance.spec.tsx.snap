@@ -595,9 +595,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       person
                     </i>
-                    <div
-                      class="onlineMarker"
-                    />
                   </div>
                   <div
                     class="agent middle"
@@ -621,9 +618,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       person
                     </i>
-                    <div
-                      class="onlineMarker"
-                    />
                   </div>
                 </div>
                 <div
@@ -1308,9 +1302,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       person
                     </i>
-                    <div
-                      class="onlineMarker"
-                    />
                   </div>
                   <div
                     class="agent middle"
@@ -1334,9 +1325,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       person
                     </i>
-                    <div
-                      class="onlineMarker"
-                    />
                   </div>
                 </div>
                 <div
@@ -2020,9 +2008,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       person
                     </i>
-                    <div
-                      class="onlineMarker"
-                    />
                   </div>
                   <div
                     class="agent middle"
@@ -2046,9 +2031,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       person
                     </i>
-                    <div
-                      class="onlineMarker"
-                    />
                   </div>
                 </div>
                 <div
@@ -2740,9 +2722,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     >
                       person
                     </i>
-                    <div
-                      class="onlineMarker"
-                    />
                   </div>
                   <div
                     class="agent middle"
@@ -2766,9 +2745,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     >
                       person
                     </i>
-                    <div
-                      class="onlineMarker"
-                    />
                   </div>
                 </div>
                 <div
@@ -3452,9 +3428,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       person
                     </i>
-                    <div
-                      class="onlineMarker"
-                    />
                   </div>
                   <div
                     class="agent middle"
@@ -3478,9 +3451,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       person
                     </i>
-                    <div
-                      class="onlineMarker"
-                    />
                   </div>
                 </div>
                 <div
@@ -4955,9 +4925,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     >
                       person
                     </i>
-                    <div
-                      class="onlineMarker"
-                    />
                   </div>
                   <div
                     class="agent middle"
@@ -4981,9 +4948,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     >
                       person
                     </i>
-                    <div
-                      class="onlineMarker"
-                    />
                   </div>
                 </div>
                 <div
