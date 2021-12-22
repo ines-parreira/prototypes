@@ -6,6 +6,7 @@ Object {
   "autoResponderReply": "reply-shortly",
   "emailCaptureEnforcement": "optional",
   "hideOnMobile": false,
+  "hideOutsideBusinessHours": false,
   "isInitialized": false,
   "isUpdating": false,
   "linkedEmailIntegration": null,
@@ -19,6 +20,7 @@ Object {
   "autoResponderReply": "reply-shortly",
   "emailCaptureEnforcement": "optional",
   "hideOnMobile": false,
+  "hideOutsideBusinessHours": false,
   "isInitialized": false,
   "isUpdating": false,
   "linkedEmailIntegration": 234,
@@ -42,6 +44,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
             "email_capture_enforcement": "optional",
             "linked_email_integration": null,
             "hide_on_mobile": false,
+            "hide_outside_business_hours": false,
           },
         },
       },
@@ -71,6 +74,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
             "email_capture_enforcement": "optional",
             "linked_email_integration": null,
             "hide_on_mobile": false,
+            "hide_outside_business_hours": false,
           },
           "language": "en-US",
         },
@@ -92,6 +96,7 @@ Object {
   "autoResponderReply": "reply-in-minutes",
   "emailCaptureEnforcement": "always-required",
   "hideOnMobile": false,
+  "hideOutsideBusinessHours": false,
   "isInitialized": true,
   "isUpdating": false,
   "linkedEmailIntegration": null,
@@ -105,6 +110,7 @@ Object {
   "autoResponderReply": "reply-in-minutes",
   "emailCaptureEnforcement": "always-required",
   "hideOnMobile": false,
+  "hideOutsideBusinessHours": false,
   "isInitialized": true,
   "isUpdating": false,
   "linkedEmailIntegration": null,
@@ -279,6 +285,41 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
                 className="form-text text-muted ml-2"
               >
                 Remove chat from your website when customers access via mobile devices
+              </div>
+            </div>
+            <div
+              className="mb-3 d-flex align-items-center"
+            >
+              <ToggleButton
+                onChange={[Function]}
+                value={false}
+              />
+              <div
+                className="ml-2"
+              >
+                <b>
+                  Hide chat outside of business hours
+                </b>
+                <i
+                  className="material-icons-outlined icon-hide-outside-business-hours-help"
+                  id="hide-outside-business-hours-help"
+                >
+                  info
+                </i>
+                <Tooltip
+                  arrowClassName="tooltip-arrow"
+                  innerClassName="tooltip-inner"
+                  placement="top-start"
+                  popperClassName="tooltip"
+                  target="hide-outside-business-hours-help"
+                >
+                  Your customers will be notified in the chat 30 min before the end of your business hours. For customers with no active conversations, the chat will be hidden immediately. For customers with an active conversation, the chat icon will be hidden 5 min after being closed.
+                </Tooltip>
+              </div>
+              <div
+                className="form-text text-muted ml-2"
+              >
+                Chat will be removed from your website after business hours
               </div>
             </div>
           </div>
@@ -628,6 +669,41 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                 className="form-text text-muted ml-2"
               >
                 Remove chat from your website when customers access via mobile devices
+              </div>
+            </div>
+            <div
+              className="mb-3 d-flex align-items-center"
+            >
+              <ToggleButton
+                onChange={[Function]}
+                value={false}
+              />
+              <div
+                className="ml-2"
+              >
+                <b>
+                  Hide chat outside of business hours
+                </b>
+                <i
+                  className="material-icons-outlined icon-hide-outside-business-hours-help"
+                  id="hide-outside-business-hours-help"
+                >
+                  info
+                </i>
+                <Tooltip
+                  arrowClassName="tooltip-arrow"
+                  innerClassName="tooltip-inner"
+                  placement="top-start"
+                  popperClassName="tooltip"
+                  target="hide-outside-business-hours-help"
+                >
+                  Your customers will be notified in the chat 30 min before the end of your business hours. For customers with no active conversations, the chat will be hidden immediately. For customers with an active conversation, the chat icon will be hidden 5 min after being closed.
+                </Tooltip>
+              </div>
+              <div
+                className="form-text text-muted ml-2"
+              >
+                Chat will be removed from your website after business hours
               </div>
             </div>
           </div>

@@ -78,6 +78,7 @@ type State = {
     autoResponderReply: string
     emailCaptureEnforcement: string
     hideOnMobile: boolean
+    hideOutsideBusinessHours: boolean
     isInitialized: boolean
     isUpdating: boolean
     preview: string
@@ -98,7 +99,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         emailCaptureEnforcement: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
         linkedEmailIntegration: null,
         hideOnMobile: false,
-
+        hideOutsideBusinessHours: false,
         isInitialized: false,
         isUpdating: false,
         preview: PREVIEW_EMAIL_CAPTURE,
@@ -130,6 +131,11 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                         'meta',
                         'preferences',
                         'hide_on_mobile',
+                    ]),
+                    hideOutsideBusinessHours: integration.getIn([
+                        'meta',
+                        'preferences',
+                        'hide_outside_business_hours',
                     ]),
                     linkedEmailIntegration: integration.getIn([
                         'meta',
@@ -182,6 +188,12 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         })
     }
 
+    _setHideOutsideBusinessHours = (value: boolean) => {
+        this.setState({
+            hideOutsideBusinessHours: value,
+        })
+    }
+
     _setLinkedEmailIntegration = (integrationId: number) => {
         this.setState({linkedEmailIntegration: integrationId})
     }
@@ -207,6 +219,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                         this.state.emailCaptureEnforcement,
                     linked_email_integration: this.state.linkedEmailIntegration,
                     hide_on_mobile: this.state.hideOnMobile,
+                    hide_outside_business_hours:
+                        this.state.hideOutsideBusinessHours,
                 },
             }),
         })
@@ -222,6 +236,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             autoResponderReply,
             emailCaptureEnforcement,
             hideOnMobile,
+            hideOutsideBusinessHours,
             isUpdating,
             preview,
             linkedEmailIntegration,
@@ -366,7 +381,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
 
                                 <div className="mb-4">
                                     <h4>Hide chat</h4>
-
                                     <div className="mb-3 d-flex align-items-center">
                                         <ToggleButton
                                             onChange={this._setHideOnMobile}
@@ -380,6 +394,60 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         <div className="form-text text-muted ml-2">
                                             Remove chat from your website when
                                             customers access via mobile devices
+                                        </div>
+                                    </div>
+                                    <div className="mb-3 d-flex align-items-center">
+                                        <ToggleButton
+                                            onChange={
+                                                this
+                                                    ._setHideOutsideBusinessHours
+                                            }
+                                            value={hideOutsideBusinessHours}
+                                        />
+
+                                        <div className="ml-2">
+                                            <b>
+                                                Hide chat outside of business
+                                                hours
+                                            </b>
+                                            <i
+                                                id="hide-outside-business-hours-help"
+                                                className={classnames(
+                                                    'material-icons-outlined',
+                                                    css[
+                                                        'icon-hide-outside-business-hours-help'
+                                                    ]
+                                                )}
+                                            >
+                                                info
+                                            </i>
+                                            <Tooltip
+                                                target="hide-outside-business-hours-help"
+                                                placement="top-start"
+                                                popperClassName={css.tooltip}
+                                                innerClassName={
+                                                    css['tooltip-inner']
+                                                }
+                                                arrowClassName={
+                                                    css['tooltip-arrow']
+                                                }
+                                            >
+                                                Your customers will be notified
+                                                in the chat 30 min before the
+                                                end of your business hours. For
+                                                customers with no active
+                                                conversations, the chat will be
+                                                hidden immediately. For
+                                                customers with an active
+                                                conversation, the chat icon will
+                                                be hidden 5 min after being
+                                                closed.
+                                            </Tooltip>
+                                        </div>
+
+                                        <div className="form-text text-muted ml-2">
+                                            Chat will be removed from your
+                                            website after business hours
                                         </div>
                                     </div>
                                 </div>
