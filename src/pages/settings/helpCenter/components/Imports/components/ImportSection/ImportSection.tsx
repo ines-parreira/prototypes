@@ -15,6 +15,8 @@ import {AxiosError} from 'axios'
 
 import zendeskLogo from 'assets/img/integrations/zendesk.png'
 import helpdocsLogo from 'assets/img/integrations/helpdocs.png'
+import reamazeLogo from 'assets/img/integrations/reamaze.png'
+import intercomLogo from 'assets/img/integrations/intercom.png'
 
 import {notify} from '../../../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../../../state/notifications/types'
@@ -381,6 +383,16 @@ export const ImportSection: React.FC<Props> = ({className}: Props) => {
                                             <img
                                                 src={zendeskLogo}
                                                 alt="Zendesk"
+                                                className={css.providerLogo}
+                                            />
+                                            <img
+                                                src={reamazeLogo}
+                                                alt="Re:amaze"
+                                                className={css.providerLogo}
+                                            />
+                                            <img
+                                                src={intercomLogo}
+                                                alt="Intercom"
                                                 className={css.providerLogo}
                                             />
                                         </div>
