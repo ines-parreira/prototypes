@@ -426,9 +426,8 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                 class="d-inline-block"
               >
                 <button
-                  class="button btn btn-secondary"
+                  class="wrapper secondary medium"
                   id="color-picker-2"
-                  type="button"
                 >
                   <div
                     class="color"

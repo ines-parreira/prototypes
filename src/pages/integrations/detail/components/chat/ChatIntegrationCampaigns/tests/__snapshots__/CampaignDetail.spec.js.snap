@@ -501,34 +501,31 @@ exports[`CampaignDetail component should display default value when it's a new c
                               class="actions"
                             >
                               <button
-                                class="button btn btn-secondary btn-transparent"
+                                class="wrapper button wrapper small secondary small"
                                 title="Bold"
-                                type="button"
                               >
                                 <i
-                                  class="material-icons"
+                                  class="material-icons icon"
                                 >
                                   format_bold
                                 </i>
                               </button>
                               <button
-                                class="button btn btn-secondary btn-transparent"
+                                class="wrapper button wrapper small secondary small"
                                 title="Italic"
-                                type="button"
                               >
                                 <i
-                                  class="material-icons"
+                                  class="material-icons icon"
                                 >
                                   format_italic
                                 </i>
                               </button>
                               <button
-                                class="button btn btn-secondary btn-transparent"
+                                class="wrapper button wrapper small secondary small"
                                 title="Underline"
-                                type="button"
                               >
                                 <i
-                                  class="material-icons"
+                                  class="material-icons icon"
                                 >
                                   format_underline
                                 </i>
@@ -537,12 +534,11 @@ exports[`CampaignDetail component should display default value when it's a new c
                                 class="popoverWrapper"
                               >
                                 <button
-                                  class="button btn btn-secondary btn-transparent"
+                                  class="wrapper button wrapper small secondary small"
                                   title="Insert image"
-                                  type="button"
                                 >
                                   <i
-                                    class="material-icons"
+                                    class="material-icons icon"
                                   >
                                     insert_photo
                                   </i>
@@ -555,12 +551,11 @@ exports[`CampaignDetail component should display default value when it's a new c
                                 class="popoverWrapper"
                               >
                                 <button
-                                  class="button btn btn-secondary btn-transparent"
+                                  class="wrapper button wrapper small secondary small"
                                   title="Insert emoji"
-                                  type="button"
                                 >
                                   <i
-                                    class="material-icons"
+                                    class="material-icons icon"
                                   >
                                     insert_emoticon
                                   </i>
@@ -1255,34 +1250,31 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                               class="actions"
                             >
                               <button
-                                class="button btn btn-secondary btn-transparent"
+                                class="wrapper button wrapper small secondary small"
                                 title="Bold"
-                                type="button"
                               >
                                 <i
-                                  class="material-icons"
+                                  class="material-icons icon"
                                 >
                                   format_bold
                                 </i>
                               </button>
                               <button
-                                class="button btn btn-secondary btn-transparent"
+                                class="wrapper button wrapper small secondary small"
                                 title="Italic"
-                                type="button"
                               >
                                 <i
-                                  class="material-icons"
+                                  class="material-icons icon"
                                 >
                                   format_italic
                                 </i>
                               </button>
                               <button
-                                class="button btn btn-secondary btn-transparent"
+                                class="wrapper button wrapper small secondary small"
                                 title="Underline"
-                                type="button"
                               >
                                 <i
-                                  class="material-icons"
+                                  class="material-icons icon"
                                 >
                                   format_underline
                                 </i>
@@ -1291,12 +1283,11 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                 class="popoverWrapper"
                               >
                                 <button
-                                  class="button btn btn-secondary btn-transparent"
+                                  class="wrapper button wrapper small secondary small"
                                   title="Insert image"
-                                  type="button"
                                 >
                                   <i
-                                    class="material-icons"
+                                    class="material-icons icon"
                                   >
                                     insert_photo
                                   </i>
@@ -1309,12 +1300,11 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                 class="popoverWrapper"
                               >
                                 <button
-                                  class="button btn btn-secondary btn-transparent"
+                                  class="wrapper button wrapper small secondary small"
                                   title="Insert emoji"
-                                  type="button"
                                 >
                                   <i
-                                    class="material-icons"
+                                    class="material-icons icon"
                                   >
                                     insert_emoticon
                                   </i>
@@ -2031,34 +2021,31 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                               class="actions"
                             >
                               <button
-                                class="button btn btn-secondary btn-transparent"
+                                class="wrapper button wrapper small secondary small"
                                 title="Bold"
-                                type="button"
                               >
                                 <i
-                                  class="material-icons"
+                                  class="material-icons icon"
                                 >
                                   format_bold
                                 </i>
                               </button>
                               <button
-                                class="button btn btn-secondary btn-transparent"
+                                class="wrapper button wrapper small secondary small"
                                 title="Italic"
-                                type="button"
                               >
                                 <i
-                                  class="material-icons"
+                                  class="material-icons icon"
                                 >
                                   format_italic
                                 </i>
                               </button>
                               <button
-                                class="button btn btn-secondary btn-transparent"
+                                class="wrapper button wrapper small secondary small"
                                 title="Underline"
-                                type="button"
                               >
                                 <i
-                                  class="material-icons"
+                                  class="material-icons icon"
                                 >
                                   format_underline
                                 </i>
@@ -2067,12 +2054,11 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                 class="popoverWrapper"
                               >
                                 <button
-                                  class="button btn btn-secondary btn-transparent"
+                                  class="wrapper button wrapper small secondary small"
                                   title="Insert image"
-                                  type="button"
                                 >
                                   <i
-                                    class="material-icons"
+                                    class="material-icons icon"
                                   >
                                     insert_photo
                                   </i>
@@ -2085,12 +2071,11 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                 class="popoverWrapper"
                               >
                                 <button
-                                  class="button btn btn-secondary btn-transparent"
+                                  class="wrapper button wrapper small secondary small"
                                   title="Insert emoji"
-                                  type="button"
                                 >
                                   <i
-                                    class="material-icons"
+                                    class="material-icons icon"
                                   >
                                     insert_emoticon
                                   </i>

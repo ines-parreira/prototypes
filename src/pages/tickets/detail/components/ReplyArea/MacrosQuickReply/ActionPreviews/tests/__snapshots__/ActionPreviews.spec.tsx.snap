@@ -87,34 +87,31 @@ exports[`<ActionPreviews /> should render both set text action and other type of
                       class="actions"
                     >
                       <button
-                        class="button btn btn-secondary btn-transparent"
+                        class="wrapper button wrapper small secondary small"
                         title="Bold"
-                        type="button"
                       >
                         <i
-                          class="material-icons"
+                          class="material-icons icon"
                         >
                           format_bold
                         </i>
                       </button>
                       <button
-                        class="button btn btn-secondary btn-transparent"
+                        class="wrapper button wrapper small secondary small"
                         title="Italic"
-                        type="button"
                       >
                         <i
-                          class="material-icons"
+                          class="material-icons icon"
                         >
                           format_italic
                         </i>
                       </button>
                       <button
-                        class="button btn btn-secondary btn-transparent"
+                        class="wrapper button wrapper small secondary small"
                         title="Underline"
-                        type="button"
                       >
                         <i
-                          class="material-icons"
+                          class="material-icons icon"
                         >
                           format_underline
                         </i>
@@ -123,12 +120,11 @@ exports[`<ActionPreviews /> should render both set text action and other type of
                         class="popoverWrapper"
                       >
                         <button
-                          class="button btn btn-secondary btn-transparent"
+                          class="wrapper button wrapper small secondary small"
                           title="Insert link"
-                          type="button"
                         >
                           <i
-                            class="material-icons"
+                            class="material-icons icon"
                           >
                             link
                           </i>
@@ -141,12 +137,11 @@ exports[`<ActionPreviews /> should render both set text action and other type of
                         class="popoverWrapper"
                       >
                         <button
-                          class="button btn btn-secondary btn-transparent"
+                          class="wrapper button wrapper small secondary small"
                           title="Insert image"
-                          type="button"
                         >
                           <i
-                            class="material-icons"
+                            class="material-icons icon"
                           >
                             insert_photo
                           </i>
@@ -159,12 +154,11 @@ exports[`<ActionPreviews /> should render both set text action and other type of
                         class="popoverWrapper"
                       >
                         <button
-                          class="button btn btn-secondary btn-transparent"
+                          class="wrapper button wrapper small secondary small"
                           title="Insert emoji"
-                          type="button"
                         >
                           <i
-                            class="material-icons"
+                            class="material-icons icon"
                           >
                             insert_emoticon
                           </i>
@@ -303,34 +297,31 @@ exports[`<ActionPreviews /> should render set text action  1`] = `
                       class="actions"
                     >
                       <button
-                        class="button btn btn-secondary btn-transparent"
+                        class="wrapper button wrapper small secondary small"
                         title="Bold"
-                        type="button"
                       >
                         <i
-                          class="material-icons"
+                          class="material-icons icon"
                         >
                           format_bold
                         </i>
                       </button>
                       <button
-                        class="button btn btn-secondary btn-transparent"
+                        class="wrapper button wrapper small secondary small"
                         title="Italic"
-                        type="button"
                       >
                         <i
-                          class="material-icons"
+                          class="material-icons icon"
                         >
                           format_italic
                         </i>
                       </button>
                       <button
-                        class="button btn btn-secondary btn-transparent"
+                        class="wrapper button wrapper small secondary small"
                         title="Underline"
-                        type="button"
                       >
                         <i
-                          class="material-icons"
+                          class="material-icons icon"
                         >
                           format_underline
                         </i>
@@ -339,12 +330,11 @@ exports[`<ActionPreviews /> should render set text action  1`] = `
                         class="popoverWrapper"
                       >
                         <button
-                          class="button btn btn-secondary btn-transparent"
+                          class="wrapper button wrapper small secondary small"
                           title="Insert link"
-                          type="button"
                         >
                           <i
-                            class="material-icons"
+                            class="material-icons icon"
                           >
                             link
                           </i>
@@ -357,12 +347,11 @@ exports[`<ActionPreviews /> should render set text action  1`] = `
                         class="popoverWrapper"
                       >
                         <button
-                          class="button btn btn-secondary btn-transparent"
+                          class="wrapper button wrapper small secondary small"
                           title="Insert image"
-                          type="button"
                         >
                           <i
-                            class="material-icons"
+                            class="material-icons icon"
                           >
                             insert_photo
                           </i>
@@ -375,12 +364,11 @@ exports[`<ActionPreviews /> should render set text action  1`] = `
                         class="popoverWrapper"
                       >
                         <button
-                          class="button btn btn-secondary btn-transparent"
+                          class="wrapper button wrapper small secondary small"
                           title="Insert emoji"
-                          type="button"
                         >
                           <i
-                            class="material-icons"
+                            class="material-icons icon"
                           >
                             insert_emoticon
                           </i>

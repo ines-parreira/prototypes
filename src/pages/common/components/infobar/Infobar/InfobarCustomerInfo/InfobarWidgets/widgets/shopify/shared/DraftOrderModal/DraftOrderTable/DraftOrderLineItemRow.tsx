@@ -1,11 +1,13 @@
 import React, {ChangeEvent, memo, useCallback, useState} from 'react'
-import {Button, Input, Label, FormGroup} from 'reactstrap'
+import {Input, Label, FormGroup} from 'reactstrap'
 import {Map, List} from 'immutable'
 import {getSizedImageUrl} from '@shopify/theme-images'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 
 import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
 
 import {
     getDraftOrderLineItemDiscountedPrice,
@@ -333,15 +335,14 @@ function DraftOrderLineItemRow({
                         />
                     </strong>
                     {removable && !isShownInEditOrder && (
-                        <Button
-                            type="button"
-                            color="link"
+                        <IconButton
+                            intent={ButtonIntent.Text}
                             tabIndex={0}
-                            className={classnames(css.delete, css.focusable)}
+                            className={css.delete}
                             onClick={() => onDelete(index)}
                         >
-                            <i className="material-icons">close</i>
-                        </Button>
+                            close
+                        </IconButton>
                     )}
                 </div>
             </td>
@@ -359,15 +360,14 @@ function DraftOrderLineItemRow({
         return (
             <td className={classnames(css.numberCol, css.centered)}>
                 {!shouldRestock && (
-                    <Button
-                        type="button"
-                        color="link"
+                    <IconButton
+                        intent={ButtonIntent.Text}
                         tabIndex={0}
-                        className={classnames(css.delete, css.focusable)}
+                        className={css.delete}
                         onClick={clickFunc}
                     >
-                        <i className="material-icons">close</i>
-                    </Button>
+                        close
+                    </IconButton>
                 )}
 
                 {shouldRestock && !lineItem.get('newly_added') && (

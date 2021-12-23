@@ -1,9 +1,10 @@
 import React, {ChangeEvent, memo, useCallback, useState} from 'react'
-import {Button, Input, InputGroup, InputGroupAddon} from 'reactstrap'
+import {Input, InputGroup, InputGroupAddon} from 'reactstrap'
 import {Map} from 'immutable'
 import classnames from 'classnames'
 import {useDebounce} from 'react-use'
 
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import {
     getOrderLineItemDiscountedPrice,
     getOrderLineItemPrice,
@@ -190,27 +191,27 @@ function OrderLineItemRow({
                         className={css.quantityButtonsContainer}
                     >
                         <Button
-                            type="button"
                             tabIndex={0}
                             className={classnames(
                                 css.focusable,
                                 css.quantityBtn,
                                 css.quantityBtnUp
                             )}
-                            disabled={quantity === maxQuantity}
+                            intent={ButtonIntent.Secondary}
+                            isDisabled={quantity === maxQuantity}
                             onClick={onQuantityUp}
                         >
                             &#9650;
                         </Button>
                         <Button
-                            type="button"
                             tabIndex={0}
                             className={classnames(
                                 css.focusable,
                                 css.quantityBtn,
                                 css.quantityBtnDown
                             )}
-                            disabled={quantity === 0}
+                            intent={ButtonIntent.Secondary}
+                            isDisabled={quantity === 0}
                             onClick={onQuantityDown}
                         >
                             &#9660;

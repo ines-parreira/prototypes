@@ -1,6 +1,8 @@
-import React, {ChangeEvent, Component} from 'react'
+import React, {ChangeEvent, Component, MouseEvent} from 'react'
 import _uniqueId from 'lodash/uniqueId'
-import {Button, Popover, PopoverBody, Input} from 'reactstrap'
+import {Popover, PopoverBody, Input} from 'reactstrap'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import {DEFAULT_TAG_COLOR} from '../../../config'
 
@@ -60,7 +62,8 @@ export default class ColorPicker extends Component<Props, State> {
         this.props.onChange(value)
     }
 
-    _togglePopup = () => {
+    _togglePopup = (event?: MouseEvent) => {
+        event?.preventDefault()
         this.setState({displayPopup: !this.state.displayPopup})
     }
 
@@ -70,9 +73,7 @@ export default class ColorPicker extends Component<Props, State> {
             <div className="d-inline-block">
                 <Button
                     id={this.uniqueId}
-                    type="button"
-                    color="secondary"
-                    className={css.button}
+                    intent={ButtonIntent.Secondary}
                     onClick={this._togglePopup}
                 >
                     <div

@@ -4,16 +4,15 @@ exports[`<DialPad/> should render as closed 1`] = `
 HTMLCollection [
   <div>
     <button
-      class="btn btn-secondary"
+      class="wrapper wrapper medium secondary medium"
       data-testid="dial-pad-button"
       id="dial-pad-button"
-      type="button"
     >
-      <span
-        class="material-icons"
+      <i
+        class="material-icons icon"
       >
         dialpad
-      </span>
+      </i>
     </button>
   </div>,
 ]
@@ -23,16 +22,15 @@ exports[`<DialPad/> should render as open 1`] = `
 HTMLCollection [
   <div>
     <button
-      class="btn btn-secondary"
+      class="wrapper wrapper medium secondary medium"
       data-testid="dial-pad-button"
       id="dial-pad-button"
-      type="button"
     >
-      <span
-        class="material-icons"
+      <i
+        class="material-icons icon"
       >
         dialpad
-      </span>
+      </i>
     </button>
   </div>,
   <div>
@@ -229,16 +227,15 @@ exports[`<DialPad/> should render as open when 10 digits have been pressed 1`] =
 HTMLCollection [
   <div>
     <button
-      class="btn btn-secondary"
+      class="wrapper wrapper medium secondary medium"
       data-testid="dial-pad-button"
       id="dial-pad-button"
-      type="button"
     >
-      <span
-        class="material-icons"
+      <i
+        class="material-icons icon"
       >
         dialpad
-      </span>
+      </i>
     </button>
   </div>,
   <div>
@@ -437,16 +434,15 @@ exports[`<DialPad/> should render as open when 11 digits have been pressed 1`] =
 HTMLCollection [
   <div>
     <button
-      class="btn btn-secondary"
+      class="wrapper wrapper medium secondary medium"
       data-testid="dial-pad-button"
       id="dial-pad-button"
-      type="button"
     >
-      <span
-        class="material-icons"
+      <i
+        class="material-icons icon"
       >
         dialpad
-      </span>
+      </i>
     </button>
   </div>,
   <div>

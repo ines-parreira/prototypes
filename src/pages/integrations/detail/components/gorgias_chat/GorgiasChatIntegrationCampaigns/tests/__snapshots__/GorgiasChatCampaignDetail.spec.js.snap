@@ -494,34 +494,31 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
                               class="actions"
                             >
                               <button
-                                class="button btn btn-secondary btn-transparent"
+                                class="wrapper button wrapper small secondary small"
                                 title="Bold"
-                                type="button"
                               >
                                 <i
-                                  class="material-icons"
+                                  class="material-icons icon"
                                 >
                                   format_bold
                                 </i>
                               </button>
                               <button
-                                class="button btn btn-secondary btn-transparent"
+                                class="wrapper button wrapper small secondary small"
                                 title="Italic"
-                                type="button"
                               >
                                 <i
-                                  class="material-icons"
+                                  class="material-icons icon"
                                 >
                                   format_italic
                                 </i>
                               </button>
                               <button
-                                class="button btn btn-secondary btn-transparent"
+                                class="wrapper button wrapper small secondary small"
                                 title="Underline"
-                                type="button"
                               >
                                 <i
-                                  class="material-icons"
+                                  class="material-icons icon"
                                 >
                                   format_underline
                                 </i>
@@ -530,12 +527,11 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
                                 class="popoverWrapper"
                               >
                                 <button
-                                  class="button btn btn-secondary btn-transparent"
+                                  class="wrapper button wrapper small secondary small"
                                   title="Insert link"
-                                  type="button"
                                 >
                                   <i
-                                    class="material-icons"
+                                    class="material-icons icon"
                                   >
                                     link
                                   </i>
@@ -548,12 +544,11 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
                                 class="popoverWrapper"
                               >
                                 <button
-                                  class="button btn btn-secondary btn-transparent"
+                                  class="wrapper button wrapper small secondary small"
                                   title="Insert image"
-                                  type="button"
                                 >
                                   <i
-                                    class="material-icons"
+                                    class="material-icons icon"
                                   >
                                     insert_photo
                                   </i>
@@ -566,12 +561,11 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
                                 class="popoverWrapper"
                               >
                                 <button
-                                  class="button btn btn-secondary btn-transparent"
+                                  class="wrapper button wrapper small secondary small"
                                   title="Insert emoji"
-                                  type="button"
                                 >
                                   <i
-                                    class="material-icons"
+                                    class="material-icons icon"
                                   >
                                     insert_emoticon
                                   </i>
@@ -1259,34 +1253,31 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                               class="actions"
                             >
                               <button
-                                class="button btn btn-secondary btn-transparent"
+                                class="wrapper button wrapper small secondary small"
                                 title="Bold"
-                                type="button"
                               >
                                 <i
-                                  class="material-icons"
+                                  class="material-icons icon"
                                 >
                                   format_bold
                                 </i>
                               </button>
                               <button
-                                class="button btn btn-secondary btn-transparent"
+                                class="wrapper button wrapper small secondary small"
                                 title="Italic"
-                                type="button"
                               >
                                 <i
-                                  class="material-icons"
+                                  class="material-icons icon"
                                 >
                                   format_italic
                                 </i>
                               </button>
                               <button
-                                class="button btn btn-secondary btn-transparent"
+                                class="wrapper button wrapper small secondary small"
                                 title="Underline"
-                                type="button"
                               >
                                 <i
-                                  class="material-icons"
+                                  class="material-icons icon"
                                 >
                                   format_underline
                                 </i>
@@ -1295,12 +1286,11 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                 class="popoverWrapper"
                               >
                                 <button
-                                  class="button btn btn-secondary btn-transparent"
+                                  class="wrapper button wrapper small secondary small"
                                   title="Insert link"
-                                  type="button"
                                 >
                                   <i
-                                    class="material-icons"
+                                    class="material-icons icon"
                                   >
                                     link
                                   </i>
@@ -1313,12 +1303,11 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                 class="popoverWrapper"
                               >
                                 <button
-                                  class="button btn btn-secondary btn-transparent"
+                                  class="wrapper button wrapper small secondary small"
                                   title="Insert image"
-                                  type="button"
                                 >
                                   <i
-                                    class="material-icons"
+                                    class="material-icons icon"
                                   >
                                     insert_photo
                                   </i>
@@ -1331,12 +1320,11 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                 class="popoverWrapper"
                               >
                                 <button
-                                  class="button btn btn-secondary btn-transparent"
+                                  class="wrapper button wrapper small secondary small"
                                   title="Insert emoji"
-                                  type="button"
                                 >
                                   <i
-                                    class="material-icons"
+                                    class="material-icons icon"
                                   >
                                     insert_emoticon
                                   </i>
@@ -2046,34 +2034,31 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                               class="actions"
                             >
                               <button
-                                class="button btn btn-secondary btn-transparent"
+                                class="wrapper button wrapper small secondary small"
                                 title="Bold"
-                                type="button"
                               >
                                 <i
-                                  class="material-icons"
+                                  class="material-icons icon"
                                 >
                                   format_bold
                                 </i>
                               </button>
                               <button
-                                class="button btn btn-secondary btn-transparent"
+                                class="wrapper button wrapper small secondary small"
                                 title="Italic"
-                                type="button"
                               >
                                 <i
-                                  class="material-icons"
+                                  class="material-icons icon"
                                 >
                                   format_italic
                                 </i>
                               </button>
                               <button
-                                class="button btn btn-secondary btn-transparent"
+                                class="wrapper button wrapper small secondary small"
                                 title="Underline"
-                                type="button"
                               >
                                 <i
-                                  class="material-icons"
+                                  class="material-icons icon"
                                 >
                                   format_underline
                                 </i>
@@ -2082,12 +2067,11 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                 class="popoverWrapper"
                               >
                                 <button
-                                  class="button btn btn-secondary btn-transparent"
+                                  class="wrapper button wrapper small secondary small"
                                   title="Insert link"
-                                  type="button"
                                 >
                                   <i
-                                    class="material-icons"
+                                    class="material-icons icon"
                                   >
                                     link
                                   </i>
@@ -2100,12 +2084,11 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                 class="popoverWrapper"
                               >
                                 <button
-                                  class="button btn btn-secondary btn-transparent"
+                                  class="wrapper button wrapper small secondary small"
                                   title="Insert image"
-                                  type="button"
                                 >
                                   <i
-                                    class="material-icons"
+                                    class="material-icons icon"
                                   >
                                     insert_photo
                                   </i>
@@ -2118,12 +2101,11 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                 class="popoverWrapper"
                               >
                                 <button
-                                  class="button btn btn-secondary btn-transparent"
+                                  class="wrapper button wrapper small secondary small"
                                   title="Insert emoji"
-                                  type="button"
                                 >
                                   <i
-                                    class="material-icons"
+                                    class="material-icons icon"
                                   >
                                     insert_emoticon
                                   </i>
