@@ -12,6 +12,7 @@ import classnames from 'classnames'
 import {getCountryCallingCode, CountryCode} from 'libphonenumber-js'
 import {useUpdateEffect} from 'react-use'
 
+import {getCountryCountryCallingCodeSelectOptions} from 'pages/settings/helpCenter/utils/phoneCodeSelectOptions'
 import countries from '../../../../config/countries.json'
 import {useOnClickOutside} from '../../../common/hooks/useOnClickOutside'
 import SelectField from '../../../common/forms/SelectField/SelectField'
@@ -83,11 +84,10 @@ const PhoneNumberInput = ({
 
     const options = useMemo(
         () =>
-            allowedCountries
-                ? typedCountries.filter((country) =>
-                      allowedCountries.includes(country.value)
-                  )
-                : typedCountries,
+            getCountryCountryCallingCodeSelectOptions(
+                typedCountries,
+                allowedCountries
+            ),
         [allowedCountries]
     )
 
