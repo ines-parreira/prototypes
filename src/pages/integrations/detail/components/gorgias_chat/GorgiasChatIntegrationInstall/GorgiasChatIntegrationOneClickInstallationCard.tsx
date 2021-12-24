@@ -11,12 +11,14 @@ type Props = {
     integration: Map<any, any>
     updateOrCreateIntegration: (integration: Map<any, any>) => Promise<void>
     shopifyIntegrations: List<Map<any, any>>
+    hasAutomationAddOn: boolean
 }
 
 export function GorgiasChatIntegrationOneClickInstallationCard({
     integration,
     updateOrCreateIntegration,
     shopifyIntegrations,
+    hasAutomationAddOn,
 }: Props) {
     const [loading, setLoading] = useState<{[key: string]: boolean}>({})
     const shopifyIntegrationIds: List<number> = integration.getIn(
@@ -162,9 +164,17 @@ export function GorgiasChatIntegrationOneClickInstallationCard({
             <CardBody className={css['card-body']}>
                 <p>
                     Activate the customer chat widget on your Shopify store in
-                    one click. Note that this will <br></br> automatically
-                    enable{' '}
-                    <Link to={`/app/settings/self-service`}>Self-Service</Link>.
+                    one click.
+                    {hasAutomationAddOn && (
+                        <span>
+                            {' '}
+                            Note that this will automatically enable{' '}
+                            <Link to={`/app/settings/self-service`}>
+                                Self-Service
+                            </Link>
+                            .
+                        </span>
+                    )}
                 </p>
                 {!associatedShopifyStoreId ? (
                     <OneClickInstallationCardStoreRow

@@ -41,6 +41,7 @@ describe('<GorgiasChatIntegrationOneClickInstallationCard/>', () => {
                         created_datetime: '2019-01-01 00:00:00',
                     },
                 ])}
+                hasAutomationAddOn={true}
             />
         )
         expect(container).toMatchSnapshot()
@@ -88,6 +89,7 @@ describe('<GorgiasChatIntegrationOneClickInstallationCard/>', () => {
                         created_datetime: '2019-01-01 00:00:00',
                     },
                 ])}
+                hasAutomationAddOn={true}
             />
         )
         expect(container).toMatchSnapshot()
@@ -107,6 +109,71 @@ describe('<GorgiasChatIntegrationOneClickInstallationCard/>', () => {
                 type: GORGIAS_CHAT_INTEGRATION_TYPE,
                 meta: updatedMeta,
             })
+        )
+    })
+
+    const defaultShopifyIntegration = fromJS([
+        {
+            id: 3,
+            name: 'mylittleintegration3',
+            type: SHOPIFY_INTEGRATION_TYPE,
+            created_datetime: '2019-01-01 00:00:00',
+        },
+    ])
+
+    it('should NOT display the message "Note that this will automatically enable Self-Service"', () => {
+        const chatIntegration: Map<any, any> = fromJS({
+            id: 1,
+            name: 'mychat',
+            type: GORGIAS_CHAT_INTEGRATION_TYPE,
+            meta: {
+                shop_name: 'mylittleintegration3',
+                shop_type: SHOPIFY_INTEGRATION_TYPE,
+                shopify_integration_ids: [],
+                script_url: 'config.gorgias.io/foo/chat/bar',
+            },
+        })
+
+        const {container} = render(
+            <GorgiasChatIntegrationOneClickInstallationCard
+                integration={chatIntegration}
+                updateOrCreateIntegration={mockedUpdateOrCreateIntegration}
+                shopifyIntegrations={defaultShopifyIntegration}
+                hasAutomationAddOn={false}
+            />
+        )
+
+        expect(container).toMatchSnapshot()
+        expect(container.querySelector('.card-body > p')?.textContent).toBe(
+            'Activate the customer chat widget on your Shopify store in one click.'
+        )
+    })
+
+    it('should display the message "Note that this will automatically enable Self-Service"', () => {
+        const chatIntegration: Map<any, any> = fromJS({
+            id: 1,
+            name: 'mychat',
+            type: GORGIAS_CHAT_INTEGRATION_TYPE,
+            meta: {
+                shop_name: 'mylittleintegration3',
+                shop_type: SHOPIFY_INTEGRATION_TYPE,
+                shopify_integration_ids: [],
+                script_url: 'config.gorgias.io/foo/chat/bar',
+            },
+        })
+
+        const {container} = render(
+            <GorgiasChatIntegrationOneClickInstallationCard
+                integration={chatIntegration}
+                updateOrCreateIntegration={mockedUpdateOrCreateIntegration}
+                shopifyIntegrations={defaultShopifyIntegration}
+                hasAutomationAddOn={true}
+            />
+        )
+
+        expect(container).toMatchSnapshot()
+        expect(container.querySelector('.card-body > p')?.textContent).toBe(
+            'Activate the customer chat widget on your Shopify store in one click. Note that this will automatically enable Self-Service.'
         )
     })
 })

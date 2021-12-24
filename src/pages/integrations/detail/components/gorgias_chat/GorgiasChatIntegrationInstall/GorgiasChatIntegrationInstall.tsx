@@ -4,6 +4,7 @@ import {List, Map, fromJS} from 'immutable'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
 
+import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
@@ -32,6 +33,7 @@ type OwnProps = {
 const mapStateToProps = (state: RootState) => {
     return {
         domain: state.currentAccount.get('domain'),
+        hasAutomationAddOn: getHasAutomationAddOn(state),
         getIntegrationsByTypes:
             integrationSelectors.makeGetIntegrationsByTypes(state),
         gorgiasChatExtraState:
@@ -50,6 +52,7 @@ function GorgiasChatIntegrationInstall({
     getIntegrationsByTypes,
     actions,
     gorgiasChatExtraState,
+    hasAutomationAddOn,
 }: OwnProps & ReturnType<typeof mapStateToProps>) {
     // During the chat creation, the user associated this chat to a shopify store.
     // This chat can only be installed on this specific store
@@ -108,6 +111,7 @@ function GorgiasChatIntegrationInstall({
                                     actions.updateOrCreateIntegration
                                 }
                                 shopifyIntegrations={shopifyIntegrations}
+                                hasAutomationAddOn={hasAutomationAddOn}
                             />
                         )}
 

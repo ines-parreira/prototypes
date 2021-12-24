@@ -6,6 +6,8 @@ import classNames from 'classnames'
 
 import shopify from 'assets/img/integrations/shopify.png'
 
+import {getHasAutomationAddOn} from '../../../../../state/billing/selectors'
+
 import Modal from '../../../../common/components/Modal'
 import SelectField from '../../../../common/forms/SelectField/SelectField'
 import {IntegrationType} from '../../../../../models/integration/types'
@@ -52,6 +54,8 @@ export const ConnectToShopSection = ({
     const [selectedShop, setSelectedShop] = useState<string>(
         helpCenter.shop_name ?? NO_SELECTED_SHOP
     )
+
+    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
 
     const disconnectButtonRef = useRef<HTMLSpanElement>(null)
 
@@ -158,7 +162,8 @@ export const ConnectToShopSection = ({
                         <PopoverBody>
                             <p>
                                 Disconnecting this store from the help center
-                                will remove Self-Service features.
+                                will remove Self-Service features (if the
+                                features are enabled).
                             </p>
 
                             <p>
@@ -219,8 +224,14 @@ export const ConnectToShopSection = ({
                 <>
                     <p>
                         Activate the customer chat widget on your Shopify store
-                        in one click. Note that this will automatically enable
-                        Self-Service.
+                        in one click.
+                        {hasAutomationAddOn && (
+                            <span>
+                                {' '}
+                                Note that this will automatically enable
+                                Self-Service.
+                            </span>
+                        )}
                     </p>
 
                     <SelectField

@@ -43,6 +43,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
     domain="acme"
     getIntegrationsByTypes={[Function]}
     gorgiasChatExtraState={Immutable.Map {}}
+    hasAutomationAddOn={false}
     integration={
       Immutable.Map {
         "id": 2,
@@ -319,6 +320,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                   className="col-md-8"
                 >
                   <GorgiasChatIntegrationOneClickInstallationCard
+                    hasAutomationAddOn={false}
                     integration={
                       Immutable.Map {
                         "id": 2,
@@ -385,20 +387,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                             className="card-body card-body"
                           >
                             <p>
-                              Activate the customer chat widget on your Shopify store in one click. Note that this will 
-                              <br />
-                               automatically enable
-                               
-                              <Link
-                                to="/app/settings/self-service"
-                              >
-                                <a
-                                  to="/app/settings/self-service"
-                                >
-                                  Self-Service
-                                </a>
-                              </Link>
-                              .
+                              Activate the customer chat widget on your Shopify store in one click.
                             </p>
                             <OneClickInstallationCardStoreRow
                               isChatInstalled={false}
@@ -1508,6 +1497,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
     domain="acme"
     getIntegrationsByTypes={[Function]}
     gorgiasChatExtraState={Immutable.Map {}}
+    hasAutomationAddOn={false}
     integration={
       Immutable.Map {
         "id": 2,
@@ -2289,6 +2279,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
     domain="acme"
     getIntegrationsByTypes={[Function]}
     gorgiasChatExtraState={Immutable.Map {}}
+    hasAutomationAddOn={false}
     integration={
       Immutable.Map {
         "id": 2,
@@ -2581,6 +2572,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                   className="col-md-8"
                 >
                   <GorgiasChatIntegrationOneClickInstallationCard
+                    hasAutomationAddOn={false}
                     integration={
                       Immutable.Map {
                         "id": 2,
@@ -2647,20 +2639,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                             className="card-body card-body"
                           >
                             <p>
-                              Activate the customer chat widget on your Shopify store in one click. Note that this will 
-                              <br />
-                               automatically enable
-                               
-                              <Link
-                                to="/app/settings/self-service"
-                              >
-                                <a
-                                  to="/app/settings/self-service"
-                                >
-                                  Self-Service
-                                </a>
-                              </Link>
-                              .
+                              Activate the customer chat widget on your Shopify store in one click.
                             </p>
                             <OneClickInstallationCardStoreRow
                               isChatInstalled={true}
