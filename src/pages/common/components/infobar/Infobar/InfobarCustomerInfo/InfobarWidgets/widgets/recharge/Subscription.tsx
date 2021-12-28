@@ -1,7 +1,11 @@
-import React, {ReactNode} from 'react'
+import React, {
+    ContextType,
+    ReactNode,
+    createContext,
+    useContext,
+    FunctionComponent,
+} from 'react'
 import {fromJS, Map} from 'immutable'
-import PropTypes from 'prop-types'
-import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect, ConnectedProps} from 'react-redux'
 import {Badge} from 'reactstrap'
 
@@ -24,6 +28,7 @@ import {DatetimeLabel} from '../../../../../../../utils/labels'
 import ActionButtonsGroup from '../ActionButtonsGroup'
 import {CardHeaderDetails} from '../CardHeaderDetails'
 import {CardHeaderValue} from '../CardHeaderValue'
+import {IntegrationContext} from '../IntegrationContext'
 
 export default function Subscription() {
     return {
@@ -32,6 +37,20 @@ export default function Subscription() {
         Wrapper,
     }
 }
+
+const OrderContext = createContext<{
+    order: Map<string, unknown> | null
+    orderId: number | null
+    isSubscriptionCancelled: boolean | null
+    integrationId: number | null
+    integration: Map<string, unknown>
+}>({
+    order: null,
+    orderId: null,
+    isSubscriptionCancelled: null,
+    integrationId: null,
+    integration: fromJS({}),
+})
 
 type AfterTitleProps = {
     isEditing: boolean
@@ -44,10 +63,8 @@ const statusColors = {
 }
 
 export class AfterTitle extends React.Component<AfterTitleProps> {
-    static contextTypes = {
-        integrationId: PropTypes.number,
-        isSubscriptionCancelled: PropTypes.bool.isRequired,
-    }
+    static contextType = OrderContext
+    context!: ContextType<typeof OrderContext>
 
     render() {
         const {isEditing, source} = this.props
@@ -155,16 +172,16 @@ type TitleWrapperProps = {
 } & ConnectedProps<typeof connectorTitleWrapper>
 
 export class TitleWrapperContainer extends React.Component<TitleWrapperProps> {
-    static contextTypes = {
-        integration: ImmutablePropTypes.map.isRequired,
-    }
+    static contextType = OrderContext
+    context!: ContextType<typeof OrderContext>
 
     render() {
         const {children, source, getIntegrationData, template} = this.props
-        const {integration}: {integration: Map<any, any>} = this.context
+        const {integration, integrationId} = this.context
         const storeName = integration.getIn(['meta', 'store_name']) as string
+
         const customerHash = getIntegrationData(
-            integration.get('id'),
+            integrationId!,
             source.get('customer_id')
         ).getIn(['customer', 'hash']) as string
         const subscriptionId = source.get('id') as string
@@ -219,31 +236,23 @@ const connectorTitleWrapper = connect((state: RootState) => {
 
 export const TitleWrapper = connectorTitleWrapper(TitleWrapperContainer)
 
-type WrapperProps = {
-    children: Node
-    source: Map<any, any>
-}
-
-class Wrapper extends React.Component<WrapperProps> {
-    static childContextTypes = {
-        order: ImmutablePropTypes.map.isRequired,
-        orderId: PropTypes.number,
-        isSubscriptionCancelled: PropTypes.bool.isRequired,
-    }
-
-    getChildContext() {
-        const order = this.props.source || fromJS({})
-
-        const isCancelled = !!order.get('cancelled_at')
-
-        return {
-            order,
-            orderId: order.get('id'),
-            isSubscriptionCancelled: isCancelled,
-        }
-    }
-
-    render() {
-        return this.props.children
-    }
+export const Wrapper: FunctionComponent<{source: Map<string, any>}> = ({
+    source: order = fromJS({}) as Map<string, any>,
+    children,
+}) => {
+    const {integrationId, integration} = useContext(IntegrationContext)
+    const isCancelled = !!order.get('cancelled_at')
+    return (
+        <OrderContext.Provider
+            value={{
+                order,
+                orderId: order.get('id'),
+                isSubscriptionCancelled: isCancelled,
+                integrationId,
+                integration,
+            }}
+        >
+            {children}
+        </OrderContext.Provider>
+    )
 }

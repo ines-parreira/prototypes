@@ -1,6 +1,5 @@
-import React, {Component, ReactNode} from 'react'
+import React, {Component, ContextType, ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import ImmutablePropTypes from 'react-immutable-proptypes'
 import {fromJS, Map} from 'immutable'
 
 import logo from 'assets/img/infobar/shopify.svg'
@@ -8,6 +7,7 @@ import logo from 'assets/img/infobar/shopify.svg'
 import * as integrationsSelectors from '../../../../../../../../../state/integrations/selectors'
 import {RootState} from '../../../../../../../../../state/types'
 import {IntegrationType} from '../../../../../../../../../models/integration/types'
+import {IntegrationContext} from '../IntegrationContext'
 import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
 import ActionButtonsGroup from '../ActionButtonsGroup'
 import {CardHeaderDetails} from '../CardHeaderDetails'
@@ -36,10 +36,8 @@ type AfterTitleProps = {
 class AfterTitleContainer extends Component<
     AfterTitleProps & ConnectedProps<typeof connector>
 > {
-    static contextTypes = {
-        integration: ImmutablePropTypes.map.isRequired,
-    }
-
+    static contextType = IntegrationContext
+    context!: ContextType<typeof IntegrationContext>
     render() {
         const {source, integrations} = this.props
 
@@ -78,11 +76,10 @@ class AfterTitleContainer extends Component<
             },
         ]
 
-        const shopName: string = (
-            this.context as {
-                integration: Map<any, any>
-            }
-        ).integration.getIn(['meta', 'shop_name'])
+        const shopName: string = this.context.integration.getIn([
+            'meta',
+            'shop_name',
+        ])
         const payload = {
             customer_id: source.get('id'),
         }
@@ -125,10 +122,6 @@ type TitleWrapperProps = {
 }
 
 class TitleWrapper extends Component<TitleWrapperProps> {
-    static contextTypes = {
-        integration: ImmutablePropTypes.map.isRequired,
-    }
-
     render() {
         const {children, source} = this.props
         const shopName: string = (
@@ -154,3 +147,4 @@ class TitleWrapper extends Component<TitleWrapperProps> {
         )
     }
 }
+TitleWrapper.contextType = IntegrationContext

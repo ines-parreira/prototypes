@@ -1,11 +1,11 @@
 import React from 'react'
 import {fromJS} from 'immutable'
-import {mount, shallow} from 'enzyme'
-import ImmutablePropTypes from 'react-immutable-proptypes'
+import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {IntegrationContext} from '../../IntegrationContext.ts'
 import Order, {statusColors} from '../Order.tsx'
 
 const mockStore = configureMockStore([thunk])
@@ -17,8 +17,8 @@ const TitleWrapper = orderWidgets.TitleWrapper
 
 jest.mock('../../../../../../../../utils/labels', () => {
     return {
-        ...require.requireActual('../../../../../../../../utils/labels'),
-        DatetimeLabel: 'DatetimeLabelMock',
+        ...jest.requireActual('../../../../../../../../utils/labels'),
+        DatetimeLabel: 'time',
     }
 })
 
@@ -26,7 +26,7 @@ describe('Order', () => {
     describe('<BeforeContent/>', () => {
         const customerId = 1
         const orderId = 2
-        const integrationId = 3
+        const integrationId = 1
 
         const shipments = [
             {
@@ -81,14 +81,14 @@ describe('Order', () => {
             it.each(Object.keys(statusColors))(
                 `should render with a label for the %s state and a created at date but no shipments because there are none`,
                 (state) => {
-                    const component = mount(
+                    const {container} = render(
                         <Provider
                             store={mockStore({
                                 customers: fromJS({
                                     active: {
                                         id: customerId,
                                         integrations: {
-                                            [integrationId.toString()]: {
+                                            [integrationId]: {
                                                 customer: {id: customerId},
                                                 shipments: [],
                                             },
@@ -97,40 +97,37 @@ describe('Order', () => {
                                 }),
                             })}
                         >
-                            <BeforeContent
-                                source={fromJS({
-                                    customer_id: customerId,
-                                    entity_id: orderId,
-                                    state: state,
-                                    created_at: createdAt,
-                                })}
-                            />
-                        </Provider>,
-                        {
-                            context: {
-                                integration: fromJS({
-                                    id: integrationId,
-                                }),
-                            },
-                            childContextTypes: {
-                                integration: ImmutablePropTypes.map.isRequired,
-                            },
-                        }
+                            <IntegrationContext.Provider
+                                value={{
+                                    integrationId,
+                                    integration: fromJS({}),
+                                }}
+                            >
+                                <BeforeContent
+                                    source={fromJS({
+                                        customer_id: customerId,
+                                        entity_id: orderId,
+                                        state: state,
+                                        created_at: createdAt,
+                                    })}
+                                />
+                            </IntegrationContext.Provider>
+                        </Provider>
                     )
 
-                    expect(component).toMatchSnapshot()
+                    expect(container).toMatchSnapshot()
                 }
             )
 
             it(`should render the state and an empty created at date but no shipments because there are none`, () => {
-                const component = mount(
+                const {container} = render(
                     <Provider
                         store={mockStore({
                             customers: fromJS({
                                 active: {
                                     id: customerId,
                                     integrations: {
-                                        [integrationId.toString()]: {
+                                        [integrationId]: {
                                             customer: {id: customerId},
                                             shipments: [],
                                         },
@@ -139,38 +136,35 @@ describe('Order', () => {
                             }),
                         })}
                     >
-                        <BeforeContent
-                            source={fromJS({
-                                customer_id: customerId,
-                                entity_id: orderId,
-                                state: statusColors.new,
-                            })}
-                        />
-                    </Provider>,
-                    {
-                        context: {
-                            integration: fromJS({
-                                id: integrationId,
-                            }),
-                        },
-                        childContextTypes: {
-                            integration: ImmutablePropTypes.map.isRequired,
-                        },
-                    }
+                        <IntegrationContext.Provider
+                            value={{
+                                integrationId,
+                                integration: fromJS({}),
+                            }}
+                        >
+                            <BeforeContent
+                                source={fromJS({
+                                    customer_id: customerId,
+                                    entity_id: orderId,
+                                    state: statusColors.new,
+                                })}
+                            />
+                        </IntegrationContext.Provider>
+                    </Provider>
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container).toMatchSnapshot()
             })
 
             it('should display shipments with links because there is an admin url suffix', () => {
-                const component = mount(
+                const {container} = render(
                     <Provider
                         store={mockStore({
                             customers: fromJS({
                                 active: {
                                     id: customerId,
                                     integrations: {
-                                        [integrationId.toString()]: {
+                                        [integrationId]: {
                                             customer: {id: customerId},
                                             shipments,
                                         },
@@ -179,43 +173,41 @@ describe('Order', () => {
                             }),
                         })}
                     >
-                        <BeforeContent
-                            source={fromJS({
-                                customer_id: customerId,
-                                entity_id: orderId,
-                                state: statusColors.new,
-                                created_at: createdAt,
-                            })}
-                        />
-                    </Provider>,
-                    {
-                        context: {
-                            integration: fromJS({
-                                id: integrationId,
-                                meta: {
-                                    store_url: storeUrl,
-                                    admin_url_suffix: adminUrlSuffix,
-                                },
-                            }),
-                        },
-                        childContextTypes: {
-                            integration: ImmutablePropTypes.map.isRequired,
-                        },
-                    }
+                        <IntegrationContext.Provider
+                            value={{
+                                integrationId,
+                                integration: fromJS({
+                                    meta: {
+                                        store_url: storeUrl,
+                                        admin_url_suffix: adminUrlSuffix,
+                                    },
+                                }),
+                            }}
+                        >
+                            <BeforeContent
+                                source={fromJS({
+                                    customer_id: customerId,
+                                    entity_id: orderId,
+                                    state: statusColors.new,
+                                    created_at: createdAt,
+                                })}
+                            />
+                        </IntegrationContext.Provider>
+                    </Provider>
                 )
 
-                expect(component.children()).toMatchSnapshot()
+                expect(container).toMatchSnapshot()
             })
 
             it('should display shipments without links because there is no admin url suffix', () => {
-                const component = mount(
+                const {container} = render(
                     <Provider
                         store={mockStore({
                             customers: fromJS({
                                 active: {
                                     id: customerId,
                                     integrations: {
-                                        [integrationId.toString()]: {
+                                        [integrationId]: {
                                             customer: {id: customerId},
                                             shipments,
                                         },
@@ -224,76 +216,79 @@ describe('Order', () => {
                             }),
                         })}
                     >
-                        <BeforeContent
-                            source={fromJS({
-                                customer_id: customerId,
-                                entity_id: orderId,
-                                state: statusColors.new,
-                                created_at: createdAt,
-                            })}
-                        />
-                    </Provider>,
-                    {
-                        context: {
-                            integration: fromJS({
-                                id: integrationId,
-                                meta: {
-                                    store_url: storeUrl,
-                                    admin_url_suffix: '',
-                                },
-                            }),
-                        },
-                        childContextTypes: {
-                            integration: ImmutablePropTypes.map.isRequired,
-                        },
-                    }
+                        <IntegrationContext.Provider
+                            value={{
+                                integrationId,
+                                integration: fromJS({
+                                    meta: {
+                                        store_url: storeUrl,
+                                        admin_url_suffix: '',
+                                    },
+                                }),
+                            }}
+                        >
+                            <BeforeContent
+                                source={fromJS({
+                                    customer_id: customerId,
+                                    entity_id: orderId,
+                                    state: statusColors.new,
+                                    created_at: createdAt,
+                                })}
+                            />
+                        </IntegrationContext.Provider>
+                    </Provider>
                 )
 
-                expect(component.children()).toMatchSnapshot()
+                expect(container).toMatchSnapshot()
             })
         })
     })
 
     describe('<TitleWrapper/>', () => {
+        const integrationId = 3
         describe('render()', () => {
             it('should not render link because there is no admin url suffix', () => {
-                const component = shallow(
-                    <TitleWrapper source={fromJS({entity_id: 1})}>
-                        <div>foo bar</div>
-                    </TitleWrapper>,
-                    {
-                        context: {
+                const {container} = render(
+                    <IntegrationContext.Provider
+                        value={{
+                            integrationId,
                             integration: fromJS({
                                 meta: {
                                     store_url: 'magento.gorgi.us',
                                     admin_url_suffix: '',
                                 },
                             }),
-                        },
-                    }
+                        }}
+                    >
+                        <TitleWrapper source={fromJS({entity_id: 1})}>
+                            <div>foo bar</div>
+                        </TitleWrapper>
+                    </IntegrationContext.Provider>
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container).toMatchSnapshot()
             })
 
             it('should render link', () => {
-                const component = shallow(
-                    <TitleWrapper source={fromJS({entity_id: 1})}>
-                        <div>foo bar</div>
-                    </TitleWrapper>,
-                    {
-                        context: {
+                const {container} = render(
+                    <IntegrationContext.Provider
+                        value={{
+                            integrationId,
                             integration: fromJS({
                                 meta: {
                                     store_url: 'magento.gorgi.us',
                                     admin_url_suffix: 'admin_12df',
                                 },
                             }),
-                        },
-                    }
+                        }}
+                    >
+                        <TitleWrapper source={fromJS({entity_id: 1})}>
+                            <div>foo bar</div>
+                        </TitleWrapper>{' '}
+                    </IntegrationContext.Provider>
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container).toMatchSnapshot()
             })
         })
     })
@@ -301,7 +296,7 @@ describe('Order', () => {
     describe('<AfterContent/>', () => {
         const customerId = 1
         const orderId = 2
-        const integrationId = 3
+        const integrationId = 5
 
         const creditMemos = [
             {
@@ -323,7 +318,7 @@ describe('Order', () => {
             },
             {
                 order_id: orderId,
-                entity_id: 852,
+                entity_id: 854,
                 updated_at: '2018-11-07 05:22',
                 items: [],
             },
@@ -331,11 +326,12 @@ describe('Order', () => {
 
         describe('render()', () => {
             it('should return null because the order has no shipments nor credit memos', () => {
-                const component = shallow(
-                    <AfterContent
+                const {container} = render(
+                    <Provider
                         store={mockStore({
                             customers: fromJS({
                                 active: {
+                                    id: customerId,
                                     integrations: {
                                         [integrationId]: {
                                             customer: {id: customerId},
@@ -346,25 +342,35 @@ describe('Order', () => {
                                 },
                             }),
                         })}
-                        source={fromJS({
-                            customer_id: customerId,
-                            entity_id: orderId,
-                        })}
-                    />
+                    >
+                        <IntegrationContext.Provider
+                            value={{
+                                integrationId,
+                                integration: fromJS({}),
+                            }}
+                        >
+                            <AfterContent
+                                source={fromJS({
+                                    customer_id: customerId,
+                                    entity_id: orderId,
+                                })}
+                            />
+                        </IntegrationContext.Provider>
+                    </Provider>
                 )
 
-                expect(component).toEqual({})
+                expect(container).toMatchSnapshot()
             })
 
             it('should display credit memos with links because there is an admin url suffix', () => {
-                const component = mount(
+                const {container} = render(
                     <Provider
                         store={mockStore({
                             customers: fromJS({
                                 active: {
                                     id: customerId,
                                     integrations: {
-                                        [integrationId.toString()]: {
+                                        [integrationId]: {
                                             customer: {id: customerId},
                                             shipments: [],
                                             credit_memos: creditMemos,
@@ -374,41 +380,39 @@ describe('Order', () => {
                             }),
                         })}
                     >
-                        <AfterContent
-                            source={fromJS({
-                                customer_id: customerId,
-                                entity_id: orderId,
-                            })}
-                        />
-                    </Provider>,
-                    {
-                        context: {
-                            integration: fromJS({
-                                id: integrationId,
-                                meta: {
-                                    store_url: 'magento.gorgi.us',
-                                    admin_url_suffix: 'admin_123',
-                                },
-                            }),
-                        },
-                        childContextTypes: {
-                            integration: ImmutablePropTypes.map.isRequired,
-                        },
-                    }
+                        <IntegrationContext.Provider
+                            value={{
+                                integrationId,
+                                integration: fromJS({
+                                    meta: {
+                                        store_url: 'magento.gorgi.us',
+                                        admin_url_suffix: 'admin_123',
+                                    },
+                                }),
+                            }}
+                        >
+                            <AfterContent
+                                source={fromJS({
+                                    customer_id: customerId,
+                                    entity_id: orderId,
+                                })}
+                            />
+                        </IntegrationContext.Provider>
+                    </Provider>
                 )
 
-                expect(component.children()).toMatchSnapshot()
+                expect(container).toMatchSnapshot()
             })
 
             it('should display credit memos without links because there is no admin url suffix', () => {
-                const component = mount(
+                const {container} = render(
                     <Provider
                         store={mockStore({
                             customers: fromJS({
                                 active: {
                                     id: customerId,
                                     integrations: {
-                                        [integrationId.toString()]: {
+                                        [integrationId]: {
                                             customer: {id: customerId},
                                             shipments: [],
                                             credit_memos: creditMemos,
@@ -418,30 +422,29 @@ describe('Order', () => {
                             }),
                         })}
                     >
-                        <AfterContent
-                            source={fromJS({
-                                customer_id: customerId,
-                                entity_id: orderId,
-                            })}
-                        />
-                    </Provider>,
-                    {
-                        context: {
-                            integration: fromJS({
-                                id: integrationId,
-                                meta: {
-                                    store_url: 'magento.gorgi.us',
-                                    admin_url_suffix: '',
-                                },
-                            }),
-                        },
-                        childContextTypes: {
-                            integration: ImmutablePropTypes.map.isRequired,
-                        },
-                    }
+                        <IntegrationContext.Provider
+                            value={{
+                                integrationId,
+                                integration: fromJS({
+                                    id: integrationId,
+                                    meta: {
+                                        store_url: 'magento.gorgi.us',
+                                        admin_url_suffix: '',
+                                    },
+                                }),
+                            }}
+                        >
+                            <AfterContent
+                                source={fromJS({
+                                    customer_id: customerId,
+                                    entity_id: orderId,
+                                })}
+                            />
+                        </IntegrationContext.Provider>
+                    </Provider>
                 )
 
-                expect(component.children()).toMatchSnapshot()
+                expect(container).toMatchSnapshot()
             })
         })
     })

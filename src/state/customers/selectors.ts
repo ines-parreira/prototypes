@@ -85,22 +85,19 @@ export const getActiveCustomerId = createSelector<
 
 export const getActiveCustomerIntegrationData = createSelector<
     RootState,
-    List<any>,
+    Map<any, any>,
     Map<any, any>
 >(
     DEPRECATED_getActiveCustomer,
     (activeCustomer: Map<any, any>) =>
-        (activeCustomer.get('integrations') as List<any>) || fromJS([])
+        (activeCustomer.get('integrations') as Map<any, any>) || fromJS([])
 )
 
 export const getActiveCustomerIntegrationDataByIntegrationId = (
-    integrationId: string
+    integrationId: number
 ) =>
-    createSelector<RootState, Map<any, any>, List<any>>(
+    createSelector<RootState, Map<any, any>, Map<any, any>>(
         getActiveCustomerIntegrationData,
-        (data: List<any>) =>
-            (data.get(String(integrationId) as unknown as number) as Map<
-                any,
-                any
-            >) || fromJS({})
+        (data: Map<any, any>) =>
+            (data.get(integrationId.toString()) as Map<any, any>) || fromJS({})
     )

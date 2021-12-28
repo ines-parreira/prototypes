@@ -1,6 +1,10 @@
-import React, {ReactNode} from 'react'
-import PropTypes from 'prop-types'
-import ImmutablePropTypes from 'react-immutable-proptypes'
+import React, {
+    ContextType,
+    ReactNode,
+    createContext,
+    useContext,
+    FunctionComponent,
+} from 'react'
 import {fromJS, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 import {Badge, CardBody} from 'reactstrap'
@@ -18,6 +22,7 @@ import {
 import {renderTemplate} from '../../../../../../../utils/template'
 import {LineItem} from '../../../../../../../../../constants/integrations/types/shopify'
 import {RootState} from '../../../../../../../../../state/types'
+import {IntegrationContext} from '../IntegrationContext'
 
 import ActionButtonsGroup from '../ActionButtonsGroup'
 
@@ -31,18 +36,26 @@ export default function Charge() {
     }
 }
 
-type AfterTitleProps = {
-    isEditing: boolean
+const ChargeContext = createContext<{
+    charge: Map<string, unknown> | null
+    chargeId: number | null
+    chargeStatus: string | null
+    integrationId: number | null
+}>({
+    charge: null,
+    chargeId: null,
+    chargeStatus: null,
+    integrationId: null,
+})
+
+export class AfterTitle extends React.Component<{
+    isEditing?: boolean
     source: Map<any, any>
-}
-
-export class AfterTitle extends React.Component<AfterTitleProps> {
-    static contextTypes = {
-        integrationId: PropTypes.number,
-    }
-
+}> {
+    static contextType = IntegrationContext
+    context!: ContextType<typeof IntegrationContext>
     render() {
-        const {isEditing, source} = this.props
+        const {isEditing = false, source} = this.props
         const {integrationId} = this.context
 
         if (isEditing || !integrationId) {
@@ -105,19 +118,14 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
     }
 }
 
-type SubscriptionAfterTitleProps = {
-    isEditing: boolean
+export class SubscriptionAfterTitle extends React.Component<{
+    isEditing?: boolean
     source: Map<any, any>
-}
-
-export class SubscriptionAfterTitle extends React.Component<SubscriptionAfterTitleProps> {
-    static contextTypes = {
-        integrationId: PropTypes.number,
-        chargeStatus: PropTypes.string.isRequired,
-    }
-
+}> {
+    static contextType = ChargeContext
+    context!: ContextType<typeof ChargeContext>
     render() {
-        const {isEditing, source} = this.props
+        const {isEditing = false, source} = this.props
         const {integrationId, chargeStatus} = this.context
 
         if (isEditing || !integrationId) {
@@ -192,11 +200,9 @@ const statusColors = {
     skipped: 'info',
 }
 
-type BeforeContentProps = {
+class BeforeContent extends React.Component<{
     source: Map<any, any>
-}
-
-class BeforeContent extends React.Component<BeforeContentProps> {
+}> {
     render() {
         const {source} = this.props
 
@@ -219,12 +225,10 @@ class BeforeContent extends React.Component<BeforeContentProps> {
     }
 }
 
-type AfterContentProps = {
+export class AfterContent extends React.Component<{
     isEditing: boolean
     source: Map<any, any>
-}
-
-export class AfterContent extends React.Component<AfterContentProps> {
+}> {
     render() {
         const {source, isEditing} = this.props
 
@@ -282,15 +286,14 @@ type TitleWrapperProps = {
 } & ConnectedProps<typeof connectorTitleWrapper>
 
 export class TitleWrapperContainer extends React.Component<TitleWrapperProps> {
-    static contextTypes = {
-        integration: ImmutablePropTypes.map.isRequired,
-    }
-
+    static contextType = ChargeContext
+    context!: ContextType<typeof ChargeContext>
     render() {
         const {children, template, source, getIntegrationData} = this.props
-        const {integration} = this.context as {integration: Map<any, any>}
+        const {integrationId} = this.context
+
         const customerHash = getIntegrationData(
-            integration.get('id'),
+            integrationId!,
             source.get('customer_id')
         ).getIn(['customer', 'hash'])
 
@@ -314,9 +317,9 @@ export class TitleWrapperContainer extends React.Component<TitleWrapperProps> {
 
 const connectorTitleWrapper = connect((state: RootState) => {
     return {
-        getIntegrationData: (integrationId: string, customerId: string) => {
+        getIntegrationData: (integrationId: number, customerId: string) => {
             const integrationData = isCurrentlyOnTicket()
-                ? getIntegrationDataByIntegrationId(integrationId as any)(state)
+                ? getIntegrationDataByIntegrationId(integrationId)(state)
                 : getActiveCustomerIntegrationDataByIntegrationId(
                       integrationId
                   )(state)
@@ -339,29 +342,21 @@ const connectorTitleWrapper = connect((state: RootState) => {
 
 export const TitleWrapper = connectorTitleWrapper(TitleWrapperContainer)
 
-type WrapperProps = {
-    children: Node
-    source: Map<any, any>
-}
-
-class Wrapper extends React.Component<WrapperProps> {
-    static childContextTypes = {
-        charge: ImmutablePropTypes.map.isRequired,
-        chargeId: PropTypes.number,
-        chargeStatus: PropTypes.string.isRequired,
-    }
-
-    getChildContext() {
-        const charge = this.props.source || fromJS({})
-
-        return {
-            charge,
-            chargeId: charge.get('id'),
-            chargeStatus: _lowerCase(charge.get('status', '')),
-        }
-    }
-
-    render() {
-        return this.props.children
-    }
+const Wrapper: FunctionComponent<{source: Map<string, any>}> = ({
+    source: charge = fromJS({}) as Map<string, any>,
+    children,
+}) => {
+    const {integrationId} = useContext(IntegrationContext)
+    return (
+        <ChargeContext.Provider
+            value={{
+                charge,
+                chargeId: charge.get('id', null),
+                chargeStatus: _lowerCase(charge.get('status', null)),
+                integrationId,
+            }}
+        >
+            {children}
+        </ChargeContext.Provider>
+    )
 }

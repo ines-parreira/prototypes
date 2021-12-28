@@ -1,37 +1,44 @@
 import React from 'react'
-import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+import {render} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import thunk from 'redux-thunk'
+import configureMockStore from 'redux-mock-store'
 
-import {AfterTitle, TitleWrapperContainer} from '../Subscription.tsx'
+import {IntegrationContext} from '../../IntegrationContext.ts'
+import {AfterTitle, TitleWrapperContainer, Wrapper} from '../Subscription.tsx'
+
+const mockStore = configureMockStore([thunk])
+const integrationContextData = {integration: fromJS({}), integrationId: 1}
 
 describe('Subscription', () => {
     describe('AfterTitle', () => {
         it('should display only the cancel action because the subscription is not cancelled', () => {
-            const component = shallow(
-                <AfterTitle isEditing={false} source={fromJS({})} />,
-                {
-                    context: {
-                        isSubscriptionCancelled: false,
-                        integrationId: 1,
-                    },
-                }
+            const {container} = render(
+                <Provider store={mockStore({})}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <Wrapper source={fromJS({cancelled_at: false})}>
+                            <AfterTitle isEditing={false} source={fromJS({})} />
+                        </Wrapper>
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
 
         it('should display only the activate action because the subscription is cancelled', () => {
-            const component = shallow(
-                <AfterTitle isEditing={false} source={fromJS({})} />,
-                {
-                    context: {
-                        isSubscriptionCancelled: true,
-                        integrationId: 1,
-                    },
-                }
+            const {container} = render(
+                <Provider store={mockStore({})}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <Wrapper source={fromJS({cancelled_at: true})}>
+                            <AfterTitle isEditing={false} source={fromJS({})} />
+                        </Wrapper>
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
     })
 
@@ -51,7 +58,9 @@ describe('Subscription', () => {
             customer_id: customerId,
             address_id: 101112,
         })
-        const context = {
+
+        const integrationContextData2 = {
+            integrationId,
             integration: fromJS({
                 id: integrationId,
                 meta: {store_name: 'mystore'},
@@ -61,39 +70,55 @@ describe('Subscription', () => {
         it('should not render any link because no customer hash is available', () => {
             window.location.pathname = ''
 
-            let component = shallow(
-                <TitleWrapperContainer
-                    getIntegrationData={() =>
-                        fromJS({
-                            customer: {},
-                        })
-                    }
-                    source={subscriptionData}
-                    template={fromJS({})}
-                />,
-                {context}
+            const {container} = render(
+                <Provider store={mockStore({})}>
+                    <IntegrationContext.Provider
+                        value={integrationContextData2}
+                    >
+                        <Wrapper source={fromJS({})}>
+                            <TitleWrapperContainer
+                                getIntegrationData={() =>
+                                    fromJS({
+                                        customer: {},
+                                    })
+                                }
+                                source={subscriptionData}
+                                template={fromJS({})}
+                            />
+                        </Wrapper>
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
 
         it('should not render any provided link when no customer hash is available', () => {
-            const component = shallow(
-                <TitleWrapperContainer
-                    getIntegrationData={() =>
-                        fromJS({
-                            customer: {},
-                        })
-                    }
-                    source={subscriptionData}
-                    template={fromJS({
-                        meta: {link: 'https://gorgias.io/{{customerHash}}/'},
-                    })}
-                />,
-                {context}
+            const {container} = render(
+                <Provider store={mockStore({})}>
+                    <IntegrationContext.Provider
+                        value={integrationContextData2}
+                    >
+                        <Wrapper source={fromJS({})}>
+                            <TitleWrapperContainer
+                                getIntegrationData={() =>
+                                    fromJS({
+                                        customer: {},
+                                    })
+                                }
+                                source={subscriptionData}
+                                template={fromJS({
+                                    meta: {
+                                        link: 'https://gorgias.io/{{customerHash}}/',
+                                    },
+                                })}
+                            />
+                        </Wrapper>
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
 
         describe('ticket context', () => {
@@ -102,33 +127,47 @@ describe('Subscription', () => {
             })
 
             it('should render default link because no custom link is set', () => {
-                const component = shallow(
-                    <TitleWrapperContainer
-                        getIntegrationData={getIntegrationData}
-                        source={subscriptionData}
-                        template={fromJS({})}
-                    />,
-                    {context}
+                const {container} = render(
+                    <Provider store={mockStore({})}>
+                        <IntegrationContext.Provider
+                            value={integrationContextData2}
+                        >
+                            <Wrapper source={fromJS({})}>
+                                <TitleWrapperContainer
+                                    getIntegrationData={getIntegrationData}
+                                    source={subscriptionData}
+                                    template={fromJS({})}
+                                />
+                            </Wrapper>
+                        </IntegrationContext.Provider>
+                    </Provider>
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container).toMatchSnapshot()
             })
 
             it('should render custom link because it is set', () => {
-                const component = shallow(
-                    <TitleWrapperContainer
-                        getIntegrationData={getIntegrationData}
-                        source={subscriptionData}
-                        template={fromJS({
-                            meta: {
-                                link: 'https://gorgias.io/{{customerHash}}/',
-                            },
-                        })}
-                    />,
-                    {context}
+                const {container} = render(
+                    <Provider store={mockStore({})}>
+                        <IntegrationContext.Provider
+                            value={integrationContextData2}
+                        >
+                            <Wrapper source={fromJS({})}>
+                                <TitleWrapperContainer
+                                    getIntegrationData={getIntegrationData}
+                                    source={subscriptionData}
+                                    template={fromJS({
+                                        meta: {
+                                            link: 'https://gorgias.io/{{customerHash}}/',
+                                        },
+                                    })}
+                                />
+                            </Wrapper>
+                        </IntegrationContext.Provider>
+                    </Provider>
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container).toMatchSnapshot()
             })
         })
 
@@ -138,33 +177,47 @@ describe('Subscription', () => {
             })
 
             it('should render default link because no custom link is set', () => {
-                const component = shallow(
-                    <TitleWrapperContainer
-                        getIntegrationData={getIntegrationData}
-                        source={subscriptionData}
-                        template={fromJS({})}
-                    />,
-                    {context}
+                const {container} = render(
+                    <Provider store={mockStore({})}>
+                        <IntegrationContext.Provider
+                            value={integrationContextData2}
+                        >
+                            <Wrapper source={fromJS({})}>
+                                <TitleWrapperContainer
+                                    getIntegrationData={getIntegrationData}
+                                    source={subscriptionData}
+                                    template={fromJS({})}
+                                />
+                            </Wrapper>
+                        </IntegrationContext.Provider>
+                    </Provider>
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container).toMatchSnapshot()
             })
 
             it('should render custom link because it is set', () => {
-                const component = shallow(
-                    <TitleWrapperContainer
-                        getIntegrationData={getIntegrationData}
-                        source={subscriptionData}
-                        template={fromJS({
-                            meta: {
-                                link: 'https://gorgias.io/{{customerHash}}/',
-                            },
-                        })}
-                    />,
-                    {context}
+                const {container} = render(
+                    <Provider store={mockStore({})}>
+                        <IntegrationContext.Provider
+                            value={integrationContextData2}
+                        >
+                            <Wrapper source={fromJS({})}>
+                                <TitleWrapperContainer
+                                    getIntegrationData={getIntegrationData}
+                                    source={subscriptionData}
+                                    template={fromJS({
+                                        meta: {
+                                            link: 'https://gorgias.io/{{customerHash}}/',
+                                        },
+                                    })}
+                                />
+                            </Wrapper>
+                        </IntegrationContext.Provider>
+                    </Provider>
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container).toMatchSnapshot()
             })
         })
     })

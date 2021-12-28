@@ -1,7 +1,5 @@
 import React, {useContext, useState, useMemo} from 'react'
-import PropTypes from 'prop-types'
 import {connect, ConnectedProps} from 'react-redux'
-import {fromJS} from 'immutable'
 import _uniqueId from 'lodash/uniqueId'
 
 import MultiSelectOptionsField from '../../../../../../forms/MultiSelectOptionsField/MultiSelectOptionsField'
@@ -16,44 +14,34 @@ import {
     SegmentEvent,
 } from '../../../../../../../../store/middlewares/segmentTracker'
 import Tooltip from '../../../../../Tooltip'
+import {WidgetContext} from '../../InfobarWidgets/WidgetContext'
 
 import {ShopifyActionType} from './shopify/types'
 import {ActionButtonContext} from './ActionButton'
+import {IntegrationContext} from './IntegrationContext'
 
 type OwnProps = {
     selectedOptions: string
 }
 
-type Context = {
-    integrationId: number
-    data_source: string
-    widget_resource_ids: IWidgetRessources
-}
-
-interface IWidgetRessources {
-    target_id: number
-    customer_id?: number
-}
-
-interface ISelectedValues {
+type SelectedValues = {
     label: string
     value: string
 }
 
-export function EditableListWidget(
-    {
-        selectedOptions,
-        executeAction,
-        activeCustomerId,
-        currentAccount,
-        widgetIsEditing,
-    }: OwnProps & ConnectedProps<typeof connector>,
-    {integrationId, data_source, widget_resource_ids}: Context
-) {
-    const [selectedValues, setSelectedValues] = useState(fromJS([]))
+export function EditableListWidget({
+    selectedOptions,
+    executeAction,
+    activeCustomerId,
+    currentAccount,
+    widgetIsEditing,
+}: OwnProps & ConnectedProps<typeof connector>) {
+    const [selectedValues, setSelectedValues] = useState<SelectedValues[]>([])
     const [syncedValues, setSyncedValues] = useState('')
 
     const {actionError} = useContext(ActionButtonContext)
+    const {integrationId} = useContext(IntegrationContext)
+    const {data_source, widget_resource_ids} = useContext(WidgetContext)
 
     const tooltipTargetID = useMemo(
         () => _uniqueId('editable-list-') + '-tooltip-target',
@@ -61,7 +49,7 @@ export function EditableListWidget(
     )
 
     const _updateState = (selectedOptions: string) => {
-        let formatedValues: Array<ISelectedValues> = []
+        let formatedValues: SelectedValues[] = []
         if (selectedOptions.length)
             formatedValues = selectedOptions.split(',').map((k: string) => {
                 const val = k.trim()
@@ -75,7 +63,7 @@ export function EditableListWidget(
 
     const notEditable = useMemo(() => !!actionError || widgetIsEditing, [])
 
-    const _onTagsChange = (tags: Array<ISelectedValues>) => {
+    const _onTagsChange = (tags: SelectedValues[]) => {
         setSelectedValues(tags)
     }
     const _onFocus = () => {
@@ -94,13 +82,9 @@ export function EditableListWidget(
     }
     const _submitChanges = () => {
         let tagsListStr = ''
-        const iterablesValues: Array<ISelectedValues> = selectedValues
-        iterablesValues?.forEach(function (
-            selectedValue: ISelectedValues,
-            i: number
-        ) {
+        selectedValues.forEach((selectedValue, i) => {
             tagsListStr += selectedValue.value
-            if (i !== iterablesValues?.length - 1) tagsListStr += ', '
+            if (i !== selectedValues.length - 1) tagsListStr += ', '
         })
 
         if (!integrationId || syncedValues === tagsListStr) return
@@ -165,11 +149,5 @@ const connector = connect(
         executeAction,
     }
 )
-
-EditableListWidget.contextTypes = {
-    integrationId: PropTypes.number.isRequired,
-    data_source: PropTypes.string.isRequired,
-    widget_resource_ids: PropTypes.object.isRequired,
-}
 
 export default connector(EditableListWidget)

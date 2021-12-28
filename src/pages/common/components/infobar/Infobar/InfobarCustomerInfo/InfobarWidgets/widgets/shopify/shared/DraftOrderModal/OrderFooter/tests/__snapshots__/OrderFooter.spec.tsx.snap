@@ -1,245 +1,395 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<OrderFooterComponent/> render() should render 1`] = `
-<Container
-  className="container"
-  fluid={true}
-  tag="div"
->
-  <Row
-    tag="div"
-    widths={
-      Array [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
+<div>
+  <div
+    class="container container-fluid"
   >
-    <Col
-      lg={
-        Object {
-          "order": 1,
-          "size": 6,
-        }
-      }
-      tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
-      xs={
-        Object {
-          "order": 2,
-          "size": 12,
-        }
-      }
+    <div
+      class="row"
     >
       <div
-        className="mb-4"
+        class="col-12 order-2 col-lg-6 order-lg-1"
       >
-        <h4>
-          Notes
-        </h4>
-        <textarea
-          className="form-control"
-          onChange={[Function]}
-          placeholder="Add a note..."
-          rows={1}
-          value="ahahah??"
-        />
+        <div
+          class="mb-4"
+        >
+          <h4>
+            Notes
+          </h4>
+          <textarea
+            class="form-control"
+            placeholder="Add a note..."
+            rows="1"
+          >
+            ahahah??
+          </textarea>
+        </div>
+        <div>
+          <h4>
+            Tags
+          </h4>
+          <div
+            class="MultiSelectField tagsDropdown"
+          >
+            <div
+              class="container"
+            >
+              <div
+                class="inputContainer multiSelectOptionField-dropdown"
+              >
+                <div
+                  class="dropdown"
+                >
+                  <div
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class=""
+                    data-toggle="dropdown"
+                  >
+                    <input
+                      class="input"
+                      placeholder="Add tags..."
+                      value=""
+                    />
+                  </div>
+                  <div
+                    aria-hidden="true"
+                    class="options dropdown-menu"
+                    role="menu"
+                    tabindex="-1"
+                  >
+                    <h6
+                      class="dropdown-header"
+                      tabindex="-1"
+                    >
+                      No result
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div>
-        <h4>
-          Tags
-        </h4>
-        <MultiSelectOptionsField
-          allowCustomOptions={true}
-          className="tagsDropdown"
-          matchInput={true}
-          onChange={[Function]}
-          options={Array []}
-          plural="tags"
-          selectedOptions={Array []}
-          singular="tag"
-        />
+      <div
+        class="mb-xs-4 col-12 order-1 col-lg-6 order-lg-2"
+      >
+        <dl
+          class="row text-right mb-0"
+        >
+          <dt
+            class="col-9 mb-2"
+          >
+            <div>
+              <button
+                class="p-0 button focusable btn btn-link"
+                id="applied-discount"
+                tabindex="0"
+                type="button"
+              >
+                <strong>
+                  Add discount
+                </strong>
+              </button>
+            </div>
+          </dt>
+          <dd
+            class="col-3 mb-2"
+          >
+            —
+          </dd>
+          <dt
+            class="col-9 mb-2 grey"
+          >
+            Subtotal
+          </dt>
+          <dd
+            class="col-3 mb-2"
+          >
+            —
+          </dd>
+          <dt
+            class="col-9 mb-2"
+          >
+            <div>
+              <button
+                class="p-0 focusable btn btn-link"
+                id="shipping-lines"
+                tabindex="0"
+                type="button"
+              >
+                <strong>
+                  Add shipping
+                </strong>
+              </button>
+            </div>
+          </dt>
+          <dd
+            class="col-3 mb-2"
+          >
+            —
+          </dd>
+          <dt
+            class="col-9 mb-2"
+          >
+            <span
+              class="d-block"
+            >
+              <div>
+                <button
+                  class="p-0 focusable btn btn-link"
+                  id="taxes"
+                  tabindex="0"
+                  type="button"
+                >
+                  <strong>
+                    Taxes
+                  </strong>
+                </button>
+              </div>
+            </span>
+          </dt>
+          <dd
+            class="col-3 mb-2"
+          >
+            —
+          </dd>
+          <dt
+            class="col-9 mb-2"
+          >
+            Total
+          </dt>
+          <dd
+            class="col-3 mb-2"
+          >
+            <strong
+              class=""
+            >
+              —
+            </strong>
+          </dd>
+        </dl>
       </div>
-    </Col>
-    <Col
-      className="mb-xs-4"
-      lg={
-        Object {
-          "order": 2,
-          "size": 6,
-        }
-      }
-      tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
-      xs={
-        Object {
-          "order": 1,
-          "size": 12,
-        }
-      }
-    >
-      <Connect(OrderTotalsComponent)
-        actionName="shopifyDuplicateOrder"
-        currencyCode="USD"
-        editable={true}
-      />
-    </Col>
-  </Row>
-</Container>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<OrderFooterComponent/> render() should render with tags 1`] = `
-<Container
-  className="container"
-  fluid={true}
-  tag="div"
->
-  <Row
-    tag="div"
-    widths={
-      Array [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
+<div>
+  <div
+    class="container container-fluid"
   >
-    <Col
-      lg={
-        Object {
-          "order": 1,
-          "size": 6,
-        }
-      }
-      tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
-      xs={
-        Object {
-          "order": 2,
-          "size": 12,
-        }
-      }
+    <div
+      class="row"
     >
       <div
-        className="mb-4"
+        class="col-12 order-2 col-lg-6 order-lg-1"
       >
-        <h4>
-          Notes
-        </h4>
-        <textarea
-          className="form-control"
-          onChange={[Function]}
-          placeholder="Add a note..."
-          rows={1}
-          value="ahahah??"
-        />
+        <div
+          class="mb-4"
+        >
+          <h4>
+            Notes
+          </h4>
+          <textarea
+            class="form-control"
+            placeholder="Add a note..."
+            rows="1"
+          >
+            ahahah??
+          </textarea>
+        </div>
+        <div>
+          <h4>
+            Tags
+          </h4>
+          <div
+            class="MultiSelectField tagsDropdown"
+          >
+            <div
+              class="container"
+            >
+              <span
+                class="tag badge badge-secondary"
+              >
+                <span
+                  class="tagText"
+                >
+                  tag1
+                </span>
+                <i
+                  class="material-icons ml-1 closeIcon"
+                >
+                  close
+                </i>
+              </span>
+              <span
+                class="tag badge badge-secondary"
+              >
+                <span
+                  class="tagText"
+                >
+                  tag2
+                </span>
+                <i
+                  class="material-icons ml-1 closeIcon"
+                >
+                  close
+                </i>
+              </span>
+              <span
+                class="tag badge badge-secondary"
+              >
+                <span
+                  class="tagText"
+                >
+                  tag3
+                </span>
+                <i
+                  class="material-icons ml-1 closeIcon"
+                >
+                  close
+                </i>
+              </span>
+              <div
+                class="inputContainer multiSelectOptionField-dropdown"
+              >
+                <div
+                  class="dropdown"
+                >
+                  <div
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class=""
+                    data-toggle="dropdown"
+                  >
+                    <input
+                      class="input"
+                      placeholder="Add tags..."
+                      value=""
+                    />
+                  </div>
+                  <div
+                    aria-hidden="true"
+                    class="options dropdown-menu"
+                    role="menu"
+                    tabindex="-1"
+                  >
+                    <h6
+                      class="dropdown-header"
+                      tabindex="-1"
+                    >
+                      No result
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div>
-        <h4>
-          Tags
-        </h4>
-        <MultiSelectOptionsField
-          allowCustomOptions={true}
-          className="tagsDropdown"
-          matchInput={true}
-          onChange={[Function]}
-          options={
-            Array [
-              Object {
-                "label": "tag1",
-                "value": "tag1",
-              },
-              Object {
-                "label": "tag2",
-                "value": "tag2",
-              },
-              Object {
-                "label": "tag3",
-                "value": "tag3",
-              },
-            ]
-          }
-          plural="tags"
-          selectedOptions={
-            Array [
-              Object {
-                "label": "tag1",
-                "value": "tag1",
-              },
-              Object {
-                "label": "tag2",
-                "value": "tag2",
-              },
-              Object {
-                "label": "tag3",
-                "value": "tag3",
-              },
-            ]
-          }
-          singular="tag"
-        />
+      <div
+        class="mb-xs-4 col-12 order-1 col-lg-6 order-lg-2"
+      >
+        <dl
+          class="row text-right mb-0"
+        >
+          <dt
+            class="col-9 mb-2"
+          >
+            <div>
+              <button
+                class="p-0 button focusable btn btn-link"
+                id="applied-discount"
+                tabindex="0"
+                type="button"
+              >
+                <strong>
+                  Add discount
+                </strong>
+              </button>
+            </div>
+          </dt>
+          <dd
+            class="col-3 mb-2"
+          >
+            —
+          </dd>
+          <dt
+            class="col-9 mb-2 grey"
+          >
+            Subtotal
+          </dt>
+          <dd
+            class="col-3 mb-2"
+          >
+            —
+          </dd>
+          <dt
+            class="col-9 mb-2"
+          >
+            <div>
+              <button
+                class="p-0 focusable btn btn-link"
+                id="shipping-lines"
+                tabindex="0"
+                type="button"
+              >
+                <strong>
+                  Add shipping
+                </strong>
+              </button>
+            </div>
+          </dt>
+          <dd
+            class="col-3 mb-2"
+          >
+            —
+          </dd>
+          <dt
+            class="col-9 mb-2"
+          >
+            <span
+              class="d-block"
+            >
+              <div>
+                <button
+                  class="p-0 focusable btn btn-link"
+                  id="taxes"
+                  tabindex="0"
+                  type="button"
+                >
+                  <strong>
+                    Taxes
+                  </strong>
+                </button>
+              </div>
+            </span>
+          </dt>
+          <dd
+            class="col-3 mb-2"
+          >
+            —
+          </dd>
+          <dt
+            class="col-9 mb-2"
+          >
+            Total
+          </dt>
+          <dd
+            class="col-3 mb-2"
+          >
+            <strong
+              class=""
+            >
+              —
+            </strong>
+          </dd>
+        </dl>
       </div>
-    </Col>
-    <Col
-      className="mb-xs-4"
-      lg={
-        Object {
-          "order": 2,
-          "size": 6,
-        }
-      }
-      tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
-      xs={
-        Object {
-          "order": 1,
-          "size": 12,
-        }
-      }
-    >
-      <Connect(OrderTotalsComponent)
-        actionName="shopifyDuplicateOrder"
-        currencyCode="USD"
-        editable={true}
-      />
-    </Col>
-  </Row>
-</Container>
+    </div>
+  </div>
+</div>
 `;

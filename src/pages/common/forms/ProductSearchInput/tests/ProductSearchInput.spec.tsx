@@ -1,15 +1,22 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
+import {fromJS} from 'immutable'
 
+import {IntegrationContext} from '../../../components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
 import ProductSearchInput from '../ProductSearchInput'
 
 describe('<ProductSearchInput/>', () => {
     describe('render()', () => {
         it('should render', () => {
-            const context = {integrationId: 1}
-            const component = shallow(<ProductSearchInput />, {context})
+            const {container} = render(
+                <IntegrationContext.Provider
+                    value={{integration: fromJS({}), integrationId: 1}}
+                >
+                    <ProductSearchInput />
+                </IntegrationContext.Provider>
+            )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
     })
 })

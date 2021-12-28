@@ -1,11 +1,10 @@
-import React, {useMemo} from 'react'
+import React, {useContext, useMemo} from 'react'
 import {Map} from 'immutable'
-
-import PropTypes from 'prop-types'
 
 import ActionButtonsGroup from '../../ActionButtonsGroup'
 import {InfobarAction} from '../../types'
 import {ShopifyActionType} from '../types'
+import {WidgetContext} from '../../../WidgetContext'
 
 import EditOrderShippingAddressModal from './EditOrderShippingAddressModal/EditOrderShippingAddressModal'
 
@@ -15,26 +14,14 @@ export default function ShippingAddress() {
         editionHiddenFields: ['link'],
     }
 }
-type Context = {
-    integrationId: number
-    data_source: string
-    widget_resource_ids: IWidgetRessources
-}
-
-interface IWidgetRessources {
-    target_id: number
-    customer_id?: number
-}
 
 type AfterTitleProps = {
     isEditing: boolean
     source: Map<string, string | number | boolean>
 }
 
-export function AfterTitle(
-    {source}: AfterTitleProps,
-    {widget_resource_ids}: Context
-) {
+export function AfterTitle({source}: AfterTitleProps) {
+    const {widget_resource_ids} = useContext(WidgetContext)
     const payload = useMemo(() => {
         return {order_id: widget_resource_ids.target_id}
     }, [widget_resource_ids])
@@ -72,10 +59,4 @@ export function AfterTitle(
     }
 
     return <ActionButtonsGroup actions={_getActions()} payload={payload} />
-}
-
-AfterTitle.contextTypes = {
-    integrationId: PropTypes.number.isRequired,
-    data_source: PropTypes.string.isRequired,
-    widget_resource_ids: PropTypes.object.isRequired,
 }

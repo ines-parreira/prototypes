@@ -1,7 +1,11 @@
-import React, {ReactNode} from 'react'
+import React, {
+    ContextType,
+    ReactNode,
+    createContext,
+    useContext,
+    FunctionComponent,
+} from 'react'
 import {fromJS, Map, List} from 'immutable'
-import PropTypes from 'prop-types'
-import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect, ConnectedProps} from 'react-redux'
 import {Badge} from 'reactstrap'
 
@@ -18,12 +22,31 @@ import {RootState} from '../../../../../../../../../state/types'
 import ActionButtonsGroup from '../ActionButtonsGroup'
 import {CardHeaderDetails} from '../CardHeaderDetails'
 import {CardHeaderValue} from '../CardHeaderValue'
+import {IntegrationContext} from '../IntegrationContext'
+
+const OrderContext = createContext<{
+    order: Map<string, unknown> | null
+    orderId: number | null
+    isOrderCancelled: boolean | null
+    isOrderRefunded: boolean | null
+    isChargeRefundable: boolean | null
+    integrationId: number | null
+    integration: Map<string, unknown>
+}>({
+    order: null,
+    orderId: null,
+    isOrderCancelled: null,
+    isOrderRefunded: null,
+    isChargeRefundable: null,
+    integrationId: null,
+    integration: fromJS({}),
+})
 
 const makeGetIntegrationData = (state: RootState) => {
     return {
-        getIntegrationData: (integrationId: string, customerId: string) => {
+        getIntegrationData: (integrationId: number, customerId: string) => {
             const integrationData = isCurrentlyOnTicket()
-                ? getIntegrationDataByIntegrationId(integrationId as any)(state)
+                ? getIntegrationDataByIntegrationId(integrationId)(state)
                 : getActiveCustomerIntegrationDataByIntegrationId(
                       integrationId
                   )(state)
@@ -59,12 +82,8 @@ type AfterTitleProps = {
 } & ConnectedProps<typeof connectorAfterTitle>
 
 export class AfterTitle extends React.Component<AfterTitleProps> {
-    static contextTypes = {
-        integrationId: PropTypes.number,
-        isOrderCancelled: PropTypes.bool.isRequired,
-        isOrderRefunded: PropTypes.bool.isRequired,
-        isChargeRefundable: PropTypes.bool.isRequired,
-    }
+    static contextType = OrderContext
+    context!: ContextType<typeof OrderContext>
 
     _getActions = () => {
         const {source, getIntegrationData} = this.props
@@ -73,11 +92,6 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
             isOrderCancelled,
             isOrderRefunded,
             isChargeRefundable,
-        }: {
-            integrationId: number
-            isOrderCancelled: boolean
-            isOrderRefunded: boolean
-            isChargeRefundable: boolean
         } = this.context
 
         const orderTotalPrice: number = parseFloat(
@@ -153,7 +167,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
 
     render() {
         const {isEditing, source} = this.props
-        const {integrationId}: {integrationId: number} = this.context
+        const {integrationId} = this.context
 
         if (isEditing || !integrationId) {
             return null
@@ -213,15 +227,14 @@ type BeforeContentProps = {
 } & ConnectedProps<typeof connectorBeforeContent>
 
 export class BeforeContent extends React.Component<BeforeContentProps> {
-    static contextTypes = {
-        integrationId: ImmutablePropTypes.map.isRequired,
-    }
-
+    static contextType = OrderContext
+    context!: ContextType<typeof OrderContext>
     render() {
         const {source, getIntegrationData} = this.props
         const {integrationId} = this.context
+
         const charges = getIntegrationData(
-            integrationId,
+            integrationId!,
             source.get('customer_id')
         ).get('charges') as List<any>
         const associatedCharge = charges
@@ -256,16 +269,16 @@ type TitleWrapperProps = {
 } & ConnectedProps<typeof connectorTitleWrapper>
 
 export class TitleWrapper extends React.Component<TitleWrapperProps> {
-    static contextTypes = {
-        integration: ImmutablePropTypes.map.isRequired,
-    }
+    static contextType = OrderContext
+    context!: ContextType<typeof OrderContext>
 
     render() {
         const {children, source, getIntegrationData, template} = this.props
-        const {integration} = this.context as {integration: Map<any, any>}
+        const {integration, integrationId} = this.context
         const storeName = integration.getIn(['meta', 'store_name']) as string
+
         const customerHash = getIntegrationData(
-            integration.get('id'),
+            integrationId!,
             source.get('customer_id')
         ).getIn(['customer', 'hash']) as string
         const customerId = source.get('customer_id') as string
@@ -297,40 +310,31 @@ const connectorTitleWrapper = connect(makeGetIntegrationData)
 
 const ConnectedTitleWrapper = connectorTitleWrapper(TitleWrapper)
 
-type WrapperProps = {
-    children: ReactNode
-    source: Map<any, any>
-}
+export const Wrapper: FunctionComponent<{source: Map<string, any>}> = ({
+    source: order = fromJS({}) as Map<string, any>,
+    children,
+}) => {
+    const {integrationId, integration} = useContext(IntegrationContext)
 
-class Wrapper extends React.Component<WrapperProps> {
-    static childContextTypes = {
-        order: ImmutablePropTypes.map.isRequired,
-        orderId: PropTypes.number,
-        isOrderCancelled: PropTypes.bool.isRequired,
-        isOrderRefunded: PropTypes.bool.isRequired,
-        isChargeRefundable: PropTypes.bool.isRequired,
-    }
+    const isOrderRefunded = order.get('status') === 'refunded'
+    const isOrderCancelled = order.get('status') === 'cancelled'
 
-    getChildContext() {
-        const order = this.props.source || fromJS({})
-
-        const isOrderRefunded = order.get('status') === 'refunded'
-        const isOrderCancelled = order.get('status') === 'cancelled'
-
-        const isChargeRefundable = ['success', 'partially_refunded'].includes(
-            ((order.get('charge_status') as string) || '').toLowerCase()
-        )
-
-        return {
-            order,
-            orderId: order.get('id'),
-            isOrderCancelled,
-            isOrderRefunded,
-            isChargeRefundable,
-        }
-    }
-
-    render() {
-        return this.props.children
-    }
+    const isChargeRefundable = ['success', 'partially_refunded'].includes(
+        ((order.get('charge_status') as string) || '').toLowerCase()
+    )
+    return (
+        <OrderContext.Provider
+            value={{
+                order,
+                orderId: order.get('id'),
+                isOrderCancelled,
+                isOrderRefunded,
+                isChargeRefundable,
+                integrationId,
+                integration,
+            }}
+        >
+            {children}
+        </OrderContext.Provider>
+    )
 }

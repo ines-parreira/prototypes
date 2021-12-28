@@ -1,41 +1,67 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Customer TitleWrapper should custom link because it is set 1`] = `
-<Fragment>
-  <CardHeaderIcon
+exports[`Customer TitleWrapper should render custom link because it is set 1`] = `
+<div>
+  <img
     alt="Recharge"
+    class="container"
     src="test-file-stub"
   />
-  <CardHeaderTitle>
+  <span
+    class="container"
+  >
     Recharge
-  </CardHeaderTitle>
-  <CardHeaderSubtitle>
+  </span>
+  <span
+    class="container"
+  >
     <a
       href="https://gorgias.io/a8s4d86as54d/"
       rel="noopener noreferrer"
       target="_blank"
     />
-  </CardHeaderSubtitle>
-  <ExpandAllButton />
-</Fragment>
+  </span>
+  <span
+    class="container expand-all"
+  >
+    <img
+      alt="Expand all"
+      src="test-file-stub"
+    />
+  </span>
+   
+</div>
 `;
 
 exports[`Customer TitleWrapper should render default link because no custom link is set 1`] = `
-<Fragment>
-  <CardHeaderIcon
+<div>
+  <img
     alt="Recharge"
+    class="container"
     src="test-file-stub"
   />
-  <CardHeaderTitle>
+  <span
+    class="container"
+  >
     Recharge
-  </CardHeaderTitle>
-  <CardHeaderSubtitle>
+  </span>
+  <span
+    class="container"
+  >
     <a
       href="https://mystore-sp.admin.rechargeapps.com/admin/customers/a8s4d86as54d/subscriptions/"
       rel="noopener noreferrer"
       target="_blank"
     />
-  </CardHeaderSubtitle>
-  <ExpandAllButton />
-</Fragment>
+  </span>
+  <span
+    class="container expand-all"
+  >
+    <img
+      alt="Expand all"
+      src="test-file-stub"
+    />
+  </span>
+   
+</div>
 `;

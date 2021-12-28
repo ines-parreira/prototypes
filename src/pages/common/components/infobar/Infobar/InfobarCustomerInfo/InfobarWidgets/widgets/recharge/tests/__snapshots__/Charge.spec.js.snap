@@ -1,523 +1,356 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Charge AfterContent should aggregate line_items by subscriptions 1`] = `
-<div
-  className="mt-2"
->
+<div>
   <div
-    className="card"
-    key="1"
+    class="mt-2"
   >
-    <CardBody
-      className="header clearfix"
-      tag="div"
+    <div
+      class="card"
     >
-      <a
-        target="_blank"
+      <div
+        class="header clearfix card-body"
+      >
+        <a
+          target="_blank"
+        >
+          <span>
+            <span
+              aria-label="subscription emoji"
+              role="img"
+            >
+              🔄
+            </span>
+             
+            Subscription #
+            1
+          </span>
+        </a>
+      </div>
+      <div
+        class="content card-body"
       >
         <span>
-          <span
-            aria-label="subscription emoji"
-            role="img"
-          >
-            🔄
+          foo
+           (
+          7
+          )
+        </span>
+        <span>
+          bar
+           (
+          5
+          )
+        </span>
+      </div>
+    </div>
+    <div
+      class="card"
+    >
+      <div
+        class="header clearfix card-body"
+      >
+        <a
+          target="_blank"
+        >
+          <span>
+            <span
+              aria-label="subscription emoji"
+              role="img"
+            >
+              🔄
+            </span>
+             
+            Subscription #
+            2
           </span>
-           
-          Subscription #
+        </a>
+      </div>
+      <div
+        class="content card-body"
+      >
+        <span>
+          baz
+           (
           1
+          )
         </span>
-      </a>
-      <SubscriptionAfterTitle
-        isEditing={false}
-        source={
-          Immutable.Map {
-            "charge_id": undefined,
-            "subscription_id": "1",
-          }
-        }
-      />
-    </CardBody>
-    <CardBody
-      className="content"
-      tag="div"
-    >
-      <span
-        key="1-undefined"
-      >
-        foo
-         (
-        7
-        )
-      </span>
-      <span
-        key="1-undefined"
-      >
-        bar
-         (
-        5
-        )
-      </span>
-    </CardBody>
-  </div>
-  <div
-    className="card"
-    key="2"
-  >
-    <CardBody
-      className="header clearfix"
-      tag="div"
-    >
-      <a
-        target="_blank"
-      >
-        <span>
-          <span
-            aria-label="subscription emoji"
-            role="img"
-          >
-            🔄
-          </span>
-           
-          Subscription #
-          2
-        </span>
-      </a>
-      <SubscriptionAfterTitle
-        isEditing={false}
-        source={
-          Immutable.Map {
-            "charge_id": undefined,
-            "subscription_id": "2",
-          }
-        }
-      />
-    </CardBody>
-    <CardBody
-      className="content"
-      tag="div"
-    >
-      <span
-        key="2-undefined"
-      >
-        baz
-         (
-        1
-        )
-      </span>
-    </CardBody>
+      </div>
+    </div>
   </div>
 </div>
 `;
 
 exports[`Charge AfterTitle should display the refund action when the status is SUCCESS or PARTIALLY_REFUNDED 1`] = `
-<ActionButtonsGroup
-  actions={
-    Array [
-      Object {
-        "child": <React.Fragment>
-          <i
-            className="material-icons"
-          >
-            refresh
-          </i>
-           Refund
-        </React.Fragment>,
-        "key": "refund",
-        "options": Array [
-          Object {
-            "label": "Refund charge",
-            "parameters": Array [
-              Object {
-                "defaultValue": 18,
-                "max": 18,
-                "min": 0.01,
-                "name": "amount",
-                "placeholder": "Amount",
-                "required": true,
-                "step": 0.01,
-                "type": "number",
-              },
-            ],
-            "value": "rechargeRefundCharge",
-          },
-        ],
-        "popover": "This will refund the charge in Recharge with the amount specified below.",
-        "title": <div>
-          <i
-            className="material-icons mr-2"
-          >
-            refresh
-          </i>
-          Refund charge
-        </div>,
-      },
-    ]
-  }
-  payload={
-    Object {
-      "charge_id": undefined,
-    }
-  }
-/>
+<div>
+  <div
+    class="action-buttons btn-group"
+    role="group"
+  >
+    <button
+      class="button action-button btn btn-secondary btn-sm"
+      id="action-button-3"
+      type="button"
+    >
+      <span
+        id="action-button-3-tooltip-target"
+        style="position: absolute; height: 100%; width: 100%; top: 0px; left: 0px;"
+      />
+      <i
+        class="material-icons"
+      >
+        refresh
+      </i>
+       Refund
+    </button>
+  </div>
+</div>
 `;
 
 exports[`Charge AfterTitle should display the refund action when the status is SUCCESS or PARTIALLY_REFUNDED 2`] = `
-<ActionButtonsGroup
-  actions={
-    Array [
-      Object {
-        "child": <React.Fragment>
-          <i
-            className="material-icons"
-          >
-            refresh
-          </i>
-           Refund
-        </React.Fragment>,
-        "key": "refund",
-        "options": Array [
-          Object {
-            "label": "Refund charge",
-            "parameters": Array [
-              Object {
-                "defaultValue": 10,
-                "max": 10,
-                "min": 0.01,
-                "name": "amount",
-                "placeholder": "Amount",
-                "required": true,
-                "step": 0.01,
-                "type": "number",
-              },
-            ],
-            "value": "rechargeRefundCharge",
-          },
-        ],
-        "popover": "This will refund the charge in Recharge with the amount specified below.",
-        "title": <div>
-          <i
-            className="material-icons mr-2"
-          >
-            refresh
-          </i>
-          Refund charge
-        </div>,
-      },
-    ]
-  }
-  payload={
-    Object {
-      "charge_id": undefined,
-    }
-  }
-/>
+<div>
+  <div
+    class="action-buttons btn-group"
+    role="group"
+  >
+    <button
+      class="button action-button btn btn-secondary btn-sm"
+      id="action-button-4"
+      type="button"
+    >
+      <span
+        id="action-button-4-tooltip-target"
+        style="position: absolute; height: 100%; width: 100%; top: 0px; left: 0px;"
+      />
+      <i
+        class="material-icons"
+      >
+        refresh
+      </i>
+       Refund
+    </button>
+  </div>
+</div>
 `;
 
 exports[`Charge AfterTitle should handle correctly if total_price or total_refunds is not set 1`] = `
-<ActionButtonsGroup
-  actions={
-    Array [
-      Object {
-        "child": <React.Fragment>
-          <i
-            className="material-icons"
-          >
-            refresh
-          </i>
-           Refund
-        </React.Fragment>,
-        "key": "refund",
-        "options": Array [
-          Object {
-            "label": "Refund charge",
-            "parameters": Array [
-              Object {
-                "defaultValue": 0,
-                "max": 0,
-                "min": 0.01,
-                "name": "amount",
-                "placeholder": "Amount",
-                "required": true,
-                "step": 0.01,
-                "type": "number",
-              },
-            ],
-            "value": "rechargeRefundCharge",
-          },
-        ],
-        "popover": "This will refund the charge in Recharge with the amount specified below.",
-        "title": <div>
-          <i
-            className="material-icons mr-2"
-          >
-            refresh
-          </i>
-          Refund charge
-        </div>,
-      },
-    ]
-  }
-  payload={
-    Object {
-      "charge_id": undefined,
-    }
-  }
-/>
+<div>
+  <div
+    class="action-buttons btn-group"
+    role="group"
+  >
+    <button
+      class="button action-button btn btn-secondary btn-sm"
+      id="action-button-5"
+      type="button"
+    >
+      <span
+        id="action-button-5-tooltip-target"
+        style="position: absolute; height: 100%; width: 100%; top: 0px; left: 0px;"
+      />
+      <i
+        class="material-icons"
+      >
+        refresh
+      </i>
+       Refund
+    </button>
+  </div>
+</div>
 `;
 
 exports[`Charge AfterTitle should handle correctly if total_price or total_refunds is not set 2`] = `
-<ActionButtonsGroup
-  actions={
-    Array [
-      Object {
-        "child": <React.Fragment>
-          <i
-            className="material-icons"
-          >
-            refresh
-          </i>
-           Refund
-        </React.Fragment>,
-        "key": "refund",
-        "options": Array [
-          Object {
-            "label": "Refund charge",
-            "parameters": Array [
-              Object {
-                "defaultValue": 18,
-                "max": 18,
-                "min": 0.01,
-                "name": "amount",
-                "placeholder": "Amount",
-                "required": true,
-                "step": 0.01,
-                "type": "number",
-              },
-            ],
-            "value": "rechargeRefundCharge",
-          },
-        ],
-        "popover": "This will refund the charge in Recharge with the amount specified below.",
-        "title": <div>
-          <i
-            className="material-icons mr-2"
-          >
-            refresh
-          </i>
-          Refund charge
-        </div>,
-      },
-    ]
-  }
-  payload={
-    Object {
-      "charge_id": undefined,
-    }
-  }
-/>
+<div>
+  <div
+    class="action-buttons btn-group"
+    role="group"
+  >
+    <button
+      class="button action-button btn btn-secondary btn-sm"
+      id="action-button-6"
+      type="button"
+    >
+      <span
+        id="action-button-6-tooltip-target"
+        style="position: absolute; height: 100%; width: 100%; top: 0px; left: 0px;"
+      />
+      <i
+        class="material-icons"
+      >
+        refresh
+      </i>
+       Refund
+    </button>
+  </div>
+</div>
 `;
 
-exports[`Charge AfterTitle should not display the refund action when the status is not SUCCESS or PARTIALLY_REFUNDED 1`] = `
-<ActionButtonsGroup
-  actions={Array []}
-  payload={
-    Object {
-      "charge_id": undefined,
-    }
-  }
-/>
-`;
+exports[`Charge AfterTitle should not display the refund action when the status is not SUCCESS or PARTIALLY_REFUNDED 1`] = `<div />`;
 
-exports[`Charge AfterTitle should return null if we are in edition mode, or if there is no integrationId 1`] = `""`;
+exports[`Charge AfterTitle should return null if we are in edition mode, or if there is no integrationId 1`] = `<div />`;
 
-exports[`Charge AfterTitle should return null if we are in edition mode, or if there is no integrationId 2`] = `""`;
+exports[`Charge AfterTitle should return null if we are in edition mode, or if there is no integrationId 2`] = `<div />`;
 
 exports[`Charge BeforeContent should display default color if there's no matching status 1`] = `
 <div>
-  <div
-    className="simple-field"
-  >
-    <span
-      className="field-label"
+  <div>
+    <div
+      class="simple-field"
     >
-      Status:
-    </span>
-    <span
-      className="field-value"
-    >
-      <Badge
-        color="secondary"
-        pill={true}
-        tag="span"
+      <span
+        class="field-label"
       >
-        Foobar
-      </Badge>
-    </span>
+        Status:
+      </span>
+      <span
+        class="field-value"
+      >
+        <span
+          class="badge badge-secondary badge-pill"
+        >
+          Foobar
+        </span>
+      </span>
+    </div>
   </div>
 </div>
 `;
 
 exports[`Charge BeforeContent should display the appropriate color if there's a matching status 1`] = `
 <div>
-  <div
-    className="simple-field"
-  >
-    <span
-      className="field-label"
+  <div>
+    <div
+      class="simple-field"
     >
-      Status:
-    </span>
-    <span
-      className="field-value"
-    >
-      <Badge
-        color="danger"
-        pill={true}
-        tag="span"
+      <span
+        class="field-label"
       >
-        Error
-      </Badge>
-    </span>
+        Status:
+      </span>
+      <span
+        class="field-value"
+      >
+        <span
+          class="badge badge-danger badge-pill"
+        >
+          Error
+        </span>
+      </span>
+    </div>
   </div>
 </div>
 `;
 
 exports[`Charge SubscriptionAfterTitle should display the skipCharge action if the charge is queued 1`] = `
-<ActionButtonsGroup
-  actions={
-    Array [
-      Object {
-        "child": <React.Fragment>
-          <i
-            className="material-icons mr-1"
-          >
-            block
-          </i>
-           Skip
-        </React.Fragment>,
-        "key": "skip",
-        "options": Array [
-          Object {
-            "value": "rechargeSkipCharge",
-          },
-        ],
-        "popover": "Skip the charge for this subscription on Recharge. No order will be created and no item will be shipped.",
-        "title": <div>
-          <i
-            className="material-icons mr-1"
-          >
-            block
-          </i>
-          Skip charge on subscription
-        </div>,
-      },
-    ]
-  }
-  payload={
-    Object {
-      "charge_id": 2,
-      "subscription_id": 3,
-    }
-  }
-/>
+<div>
+  <div
+    class="action-buttons btn-group"
+    role="group"
+  >
+    <button
+      class="button action-button btn btn-secondary btn-sm"
+      id="action-button-1"
+      type="button"
+    >
+      <span
+        id="action-button-1-tooltip-target"
+        style="position: absolute; height: 100%; width: 100%; top: 0px; left: 0px;"
+      />
+      <i
+        class="material-icons mr-1"
+      >
+        block
+      </i>
+       Skip
+    </button>
+  </div>
+</div>
 `;
 
 exports[`Charge SubscriptionAfterTitle should display the unskipCharge action if the charge is skipped 1`] = `
-<ActionButtonsGroup
-  actions={
-    Array [
-      Object {
-        "child": <React.Fragment>
-          <i
-            className="material-icons mr-1"
-          >
-            autorenew
-          </i>
-           Unskip
-        </React.Fragment>,
-        "key": "unskip",
-        "options": Array [
-          Object {
-            "value": "rechargeUnskipCharge",
-          },
-        ],
-        "popover": "Unskip the charge for this subscription on Recharge.",
-        "title": <div>
-          <i
-            className="material-icons mr-1"
-          >
-            block
-          </i>
-          Unskip charge on subscription
-        </div>,
-      },
-    ]
-  }
-  payload={
-    Object {
-      "charge_id": 2,
-      "subscription_id": 3,
-    }
-  }
-/>
+<div>
+  <div
+    class="action-buttons btn-group"
+    role="group"
+  >
+    <button
+      class="button action-button btn btn-secondary btn-sm"
+      id="action-button-2"
+      type="button"
+    >
+      <span
+        id="action-button-2-tooltip-target"
+        style="position: absolute; height: 100%; width: 100%; top: 0px; left: 0px;"
+      />
+      <i
+        class="material-icons mr-1"
+      >
+        autorenew
+      </i>
+       Unskip
+    </button>
+  </div>
+</div>
 `;
 
-exports[`Charge SubscriptionAfterTitle should not display any action if the charge is nor queued nor skipped 1`] = `
-<ActionButtonsGroup
-  actions={Array []}
-  payload={
-    Object {
-      "charge_id": undefined,
-      "subscription_id": undefined,
-    }
-  }
-/>
-`;
+exports[`Charge SubscriptionAfterTitle should not display any action if the charge is nor queued nor skipped 1`] = `<div />`;
 
-exports[`Charge SubscriptionAfterTitle should return null if isEditing 1`] = `""`;
+exports[`Charge SubscriptionAfterTitle should return null if isEditing 1`] = `<div />`;
 
-exports[`Charge SubscriptionAfterTitle should return null if there's no integrationId 1`] = `""`;
+exports[`Charge SubscriptionAfterTitle should return null if there's no integrationId 1`] = `<div />`;
 
 exports[`Charge TitleWrapper customer context should not render any link because no custom link is set 1`] = `
-<a
-  rel="noopener noreferrer"
-  target="_blank"
-/>
+<div>
+  <a
+    rel="noopener noreferrer"
+    target="_blank"
+  />
+</div>
 `;
 
 exports[`Charge TitleWrapper customer context should render custom link because it is set 1`] = `
-<a
-  href="https://gorgias.io/asd1as2d3/"
-  rel="noopener noreferrer"
-  target="_blank"
-/>
+<div>
+  <a
+    href="https://gorgias.io/asd1as2d3/"
+    rel="noopener noreferrer"
+    target="_blank"
+  />
+</div>
 `;
 
 exports[`Charge TitleWrapper should not render any link because no customer hash is available 1`] = `
-<a
-  rel="noopener noreferrer"
-  target="_blank"
-/>
+<div>
+  <a
+    rel="noopener noreferrer"
+    target="_blank"
+  />
+</div>
 `;
 
 exports[`Charge TitleWrapper should not render any provided link when no customer hash is available 1`] = `
-<a
-  rel="noopener noreferrer"
-  target="_blank"
-/>
+<div>
+  <a
+    rel="noopener noreferrer"
+    target="_blank"
+  />
+</div>
 `;
 
 exports[`Charge TitleWrapper ticket context should not render any link because no custom link is set 1`] = `
-<a
-  rel="noopener noreferrer"
-  target="_blank"
-/>
+<div>
+  <a
+    rel="noopener noreferrer"
+    target="_blank"
+  />
+</div>
 `;
 
 exports[`Charge TitleWrapper ticket context should render custom link because it is set 1`] = `
-<a
-  href="https://gorgias.io/asd1as2d3/"
-  rel="noopener noreferrer"
-  target="_blank"
-/>
+<div>
+  <a
+    href="https://gorgias.io/asd1as2d3/"
+    rel="noopener noreferrer"
+    target="_blank"
+  />
+</div>
 `;

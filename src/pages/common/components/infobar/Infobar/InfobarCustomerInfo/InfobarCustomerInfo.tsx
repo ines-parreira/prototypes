@@ -21,11 +21,10 @@ import CustomerNote from './CustomerNote/CustomerNote'
 import InfobarWidgets from './InfobarWidgets/InfobarWidgets.js'
 import AddIntegrationSuggestion from './AddIntegrationSuggestion'
 
-interface ICustomerContext {
+export type CustomerContextType = {
     customerId: number | null
 }
-
-export const CustomerContext = createContext<ICustomerContext>({
+export const CustomerContext = createContext<CustomerContextType>({
     customerId: null,
 })
 

@@ -1,41 +1,10 @@
-import React, {Component, ComponentProps, ReactNode} from 'react'
+import React from 'react'
 import {fromJS, Map} from 'immutable'
 import {shallow} from 'enzyme'
 import {render, cleanup} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import ImmutablePropTypes from 'react-immutable-proptypes'
-import PropTypes from 'prop-types'
 
-import {CustomerContext} from '../../../InfobarCustomerInfo'
-import {
-    ActionButtonContainer,
-    ActionButtonContext,
-    withActionButtonContext,
-} from '../ActionButton'
-
-type Props = {
-    integration: Map<any, any>
-    integrationId: number
-    children: ReactNode
-}
-
-class ActionButtonContextProvider extends Component<Props> {
-    static childContextTypes = {
-        integration: ImmutablePropTypes.map.isRequired,
-        integrationId: PropTypes.number.isRequired,
-    }
-
-    getChildContext() {
-        return {
-            integration: this.props.integration,
-            integrationId: this.props.integrationId,
-        }
-    }
-
-    render() {
-        return this.props.children
-    }
-}
+import {ActionButtonContainer} from '../ActionButton'
 
 describe('ActionButton component', () => {
     const getPendingActionCallback = () => fromJS({}) as Map<any, any>
@@ -58,35 +27,17 @@ describe('ActionButton component', () => {
         ),
         options: [{value: 'myLittleAction', label: 'My little action'}],
         payload: {
-            little_id: 12,
-        } as ComponentProps<typeof ActionButtonContainer>['payload'],
-    }
-
-    const defaultContext = {
-        integration: fromJS({}),
+            order_id: '12',
+        },
+        actionError: null,
+        customerId: null,
         integrationId: 1,
     }
-
-    // TODO(context-migration): Should be removed.
-    const ActionButtonWithContext = (
-        props: Omit<ComponentProps<typeof ActionButtonContainer>, 'options'>
-    ) => (
-        <ActionButtonContextProvider {...defaultContext}>
-            <ActionButtonContainer options={[]} {...props} />
-        </ActionButtonContextProvider>
-    )
-
-    // TODO(context-migration): Should be removed.
-    const ActionButtonWithContextAdapter = withActionButtonContext(
-        ActionButtonWithContext
-    )
 
     afterEach(cleanup)
 
     it('should display a single option with no parameters', () => {
-        const component = shallow(<ActionButtonContainer {...minProps} />, {
-            context: defaultContext,
-        })
+        const component = shallow(<ActionButtonContainer {...minProps} />)
 
         expect(component).toMatchSnapshot()
     })
@@ -110,10 +61,7 @@ describe('ActionButton component', () => {
                         ],
                     },
                 ]}
-            />,
-            {
-                context: defaultContext,
-            }
+            />
         )
 
         expect(component).toMatchSnapshot()
@@ -141,10 +89,7 @@ describe('ActionButton component', () => {
                         ],
                     },
                 ]}
-            />,
-            {
-                context: defaultContext,
-            }
+            />
         )
 
         expect(component).toMatchSnapshot()
@@ -168,10 +113,7 @@ describe('ActionButton component', () => {
                         ],
                     },
                 ]}
-            />,
-            {
-                context: defaultContext,
-            }
+            />
         )
 
         expect(component).toMatchSnapshot()
@@ -199,10 +141,7 @@ describe('ActionButton component', () => {
                         ],
                     },
                 ]}
-            />,
-            {
-                context: defaultContext,
-            }
+            />
         )
 
         expect(component).toMatchSnapshot()
@@ -222,10 +161,7 @@ describe('ActionButton component', () => {
                         label: 'My big action',
                     },
                 ]}
-            />,
-            {
-                context: defaultContext,
-            }
+            />
         )
 
         expect(component).toMatchSnapshot()
@@ -263,10 +199,7 @@ describe('ActionButton component', () => {
                         ],
                     },
                 ]}
-            />,
-            {
-                context: defaultContext,
-            }
+            />
         )
 
         expect(component).toMatchSnapshot()
@@ -303,10 +236,7 @@ describe('ActionButton component', () => {
                         ],
                     },
                 ]}
-            />,
-            {
-                context: defaultContext,
-            }
+            />
         )
 
         expect(component).toMatchSnapshot()
@@ -314,19 +244,16 @@ describe('ActionButton component', () => {
 
     it('should display disabled button based on context', () => {
         const {getByRole} = render(
-            <ActionButtonContext.Provider
-                value={{actionError: 'Some error message'}}
-            >
-                <ActionButtonWithContextAdapter
-                    {...minProps}
-                    options={[
-                        {
-                            value: 'myLittleAction',
-                            label: 'My little action',
-                        },
-                    ]}
-                />
-            </ActionButtonContext.Provider>
+            <ActionButtonContainer
+                {...minProps}
+                actionError={'Some error message'}
+                options={[
+                    {
+                        value: 'myLittleAction',
+                        label: 'My little action',
+                    },
+                ]}
+            />
         )
 
         expect(getByRole('button').hasAttribute('disabled')).toBeTruthy()
@@ -334,17 +261,16 @@ describe('ActionButton component', () => {
 
     it('should display enabled button based on context', () => {
         const {getByRole} = render(
-            <ActionButtonContext.Provider value={{actionError: null}}>
-                <ActionButtonWithContextAdapter
-                    {...minProps}
-                    options={[
-                        {
-                            value: 'myLittleAction',
-                            label: 'My little action',
-                        },
-                    ]}
-                />
-            </ActionButtonContext.Provider>
+            <ActionButtonContainer
+                {...minProps}
+                actionError={null}
+                options={[
+                    {
+                        value: 'myLittleAction',
+                        label: 'My little action',
+                    },
+                ]}
+            />
         )
 
         expect(getByRole('button').hasAttribute('disabled')).toBeFalsy()
@@ -370,22 +296,19 @@ describe('ActionButton component', () => {
         const Modal = ({onSubmit}: any) => <div onClick={onSubmit}>Modal</div>
 
         const {getByText} = render(
-            <CustomerContext.Provider value={{customerId: 43}}>
-                <ActionButtonContext.Provider value={{actionError: null}}>
-                    <ActionButtonWithContextAdapter
-                        {...minProps}
-                        options={options}
-                        modal={Modal}
-                    />
-                </ActionButtonContext.Provider>
-            </CustomerContext.Provider>
+            <ActionButtonContainer
+                {...minProps}
+                customerId={customerId}
+                options={options}
+                modal={Modal}
+            />
         )
 
         userEvent.click(getByText('Modal'))
 
         expect(minProps.executeAction).toHaveBeenCalledWith(
             options[0].value,
-            defaultContext.integrationId,
+            minProps.integrationId,
             customerId.toString(),
             {
                 ...minProps.payload,

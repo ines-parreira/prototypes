@@ -1,5 +1,4 @@
-import React, {Component, ReactNode} from 'react'
-import PropTypes from 'prop-types'
+import React, {ReactNode} from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 import {fromJS, List, Map} from 'immutable'
 
@@ -10,13 +9,14 @@ import {
     shopifyCancelOrderPayloadFixture,
     shopifySuggestedRefundFixture,
 } from '../../../../../../../../../../../../fixtures/shopify'
-import {CancelOrderModalContainer} from '../CancelOrderModal'
-import {ShopifyActionType} from '../../../types'
 import {
     getFinalCancelOrderPayload,
     initRefundOrderLineItems,
     initCancelOrderPayload,
 } from '../../../../../../../../../../../../business/shopify/order'
+import {IntegrationContext} from '../../../../IntegrationContext'
+import {ShopifyActionType} from '../../../types'
+import {CancelOrderModalContainer} from '../CancelOrderModal'
 
 jest.mock('../../../../../../../../../../utils/labels', () => ({
     DatetimeLabel: ({dateTime}: {dateTime: string}) => (
@@ -47,28 +47,6 @@ jest.mock(
         }
 )
 
-class MockLegacyContextWrapper extends Component<{
-    children: ReactNode
-    value?: {integrationId?: number}
-}> {
-    static childContextTypes = {
-        integrationId: PropTypes.number.isRequired,
-    }
-
-    static defaultProps = {value: {}}
-
-    getChildContext() {
-        const {value} = this.props
-
-        return {integrationId: 1, ...value}
-    }
-
-    render() {
-        const {children} = this.props
-        return children
-    }
-}
-
 describe('<CancelOrderContainer />', () => {
     const order = fromJS(
         shopifyOrderFixture({shippingLines: [{price: '0.00'}]})
@@ -76,7 +54,7 @@ describe('<CancelOrderContainer />', () => {
     const payload = initCancelOrderPayload(order)
     const lineItems = initRefundOrderLineItems(order)
     const refund = fromJS(shopifySuggestedRefundFixture())
-
+    const integrationContextValue = {integration: fromJS({}), integrationId: 1}
     const minProps = {
         data: {
             actionName: ShopifyActionType.CancelOrder,
@@ -121,9 +99,9 @@ describe('<CancelOrderContainer />', () => {
 
     it('should not render when modal is closed', () => {
         const {container} = render(
-            <MockLegacyContextWrapper>
+            <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer {...minProps} isOpen={false} />
-            </MockLegacyContextWrapper>
+            </IntegrationContext.Provider>
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -131,9 +109,9 @@ describe('<CancelOrderContainer />', () => {
 
     it('should render a spinner when missing data', () => {
         const {container} = render(
-            <MockLegacyContextWrapper>
+            <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer {...minProps} loading />
-            </MockLegacyContextWrapper>
+            </IntegrationContext.Provider>
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -141,9 +119,9 @@ describe('<CancelOrderContainer />', () => {
 
     it('should render with an empty order table when data is empty', () => {
         const {container} = render(
-            <MockLegacyContextWrapper>
+            <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer {...minProps} payload={payload} />
-            </MockLegacyContextWrapper>
+            </IntegrationContext.Provider>
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -151,13 +129,13 @@ describe('<CancelOrderContainer />', () => {
 
     it('should render with a populated order table when data is populated', () => {
         const {container} = render(
-            <MockLegacyContextWrapper>
+            <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer
                     {...minProps}
                     payload={payload}
                     lineItems={lineItems}
                 />
-            </MockLegacyContextWrapper>
+            </IntegrationContext.Provider>
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -169,14 +147,14 @@ describe('<CancelOrderContainer />', () => {
         ]) as List<Map<any, any>>
 
         const {getByText} = render(
-            <MockLegacyContextWrapper>
+            <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer
                     {...minProps}
                     payload={fromJS(shopifyCancelOrderPayloadFixture())}
                     lineItems={lineItems}
                     refund={refund}
                 />
-            </MockLegacyContextWrapper>
+            </IntegrationContext.Provider>
         )
 
         fireEvent.click(getByText('▼'))
@@ -201,14 +179,14 @@ describe('<CancelOrderContainer />', () => {
         )
 
         const {getByLabelText} = render(
-            <MockLegacyContextWrapper>
+            <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer
                     {...minProps}
                     payload={payload}
                     lineItems={lineItems}
                     refund={refund}
                 />
-            </MockLegacyContextWrapper>
+            </IntegrationContext.Provider>
         )
         const newPayload = payload.setIn(
             ['refund', 'shipping', 'amount'],
@@ -230,14 +208,14 @@ describe('<CancelOrderContainer />', () => {
         )
 
         const {getByLabelText} = render(
-            <MockLegacyContextWrapper>
+            <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer
                     {...minProps}
                     payload={payload}
                     lineItems={lineItems}
                     refund={refund}
                 />
-            </MockLegacyContextWrapper>
+            </IntegrationContext.Provider>
         )
 
         const reason = 'fraud'
@@ -256,14 +234,14 @@ describe('<CancelOrderContainer />', () => {
         >
 
         const {getByLabelText} = render(
-            <MockLegacyContextWrapper>
+            <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer
                     {...minProps}
                     payload={payload}
                     lineItems={lineItems}
                     refund={refund}
                 />
-            </MockLegacyContextWrapper>
+            </IntegrationContext.Provider>
         )
         const newPayload = payload
             .setIn(['refund', 'notify'], false)
@@ -278,14 +256,14 @@ describe('<CancelOrderContainer />', () => {
         const payload = fromJS(shopifyCancelOrderPayloadFixture())
 
         const {getByText} = render(
-            <MockLegacyContextWrapper>
+            <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer
                     {...minProps}
                     lineItems={lineItems}
                     payload={payload}
                     refund={refund}
                 />
-            </MockLegacyContextWrapper>
+            </IntegrationContext.Provider>
         )
 
         fireEvent.click(getByText('Cancel order'))
@@ -303,14 +281,14 @@ describe('<CancelOrderContainer />', () => {
 
     it('should call onCancel() when clicking on Keep order button', () => {
         const {getByText} = render(
-            <MockLegacyContextWrapper>
+            <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer
                     {...minProps}
                     payload={fromJS(shopifyCancelOrderPayloadFixture())}
                     lineItems={lineItems}
                     refund={refund}
                 />
-            </MockLegacyContextWrapper>
+            </IntegrationContext.Provider>
         )
 
         fireEvent.click(getByText('Keep order'))
@@ -322,14 +300,14 @@ describe('<CancelOrderContainer />', () => {
 
     it('should call onCancel() when clicking on header button', () => {
         const {getByTestId} = render(
-            <MockLegacyContextWrapper>
+            <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer
                     {...minProps}
                     payload={fromJS(shopifyCancelOrderPayloadFixture())}
                     lineItems={lineItems}
                     refund={refund}
                 />
-            </MockLegacyContextWrapper>
+            </IntegrationContext.Provider>
         )
 
         fireEvent.click(getByTestId('Modal'))

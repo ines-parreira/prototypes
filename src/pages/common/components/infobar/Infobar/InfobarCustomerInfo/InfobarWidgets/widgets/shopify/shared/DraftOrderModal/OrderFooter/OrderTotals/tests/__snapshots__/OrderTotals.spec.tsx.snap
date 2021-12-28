@@ -1,433 +1,243 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<OrderTotalsComponent/> render() should render as loading 1`] = `
-<dl
-  className="row text-right mb-0"
->
-  <dt
-    className="col-9 mb-2"
+exports[`<OrderTotalsComponent/> render() should render 1`] = `
+<div>
+  <dl
+    class="row text-right mb-0"
   >
-    <DiscountPopover
-      actionName="shopifyDuplicateOrder"
-      currencyCode="USD"
-      editable={true}
-      id="applied-discount"
-      label="order"
-      max={5}
-      onChange={[Function]}
-      placement="bottom"
-      value={
-        Immutable.Map {
-          "title": "",
-          "value": "100.00",
-          "value_type": "percentage",
-          "amount": "5.00",
-        }
-      }
+    <dt
+      class="col-9 mb-2"
     >
-      Add discount
-    </DiscountPopover>
-  </dt>
-  <dd
-    className="col-3 mb-2"
-  >
-    <MoneyAmount
-      amount="5.00"
-      currencyCode="USD"
-      negative={true}
-      renderIfZero={false}
-    />
-  </dd>
-  <dt
-    className="col-9 mb-2 grey"
-  >
-    Subtotal
-  </dt>
-  <dd
-    className="col-3 mb-2"
-  >
-    <MoneyAmount
-      amount="0.00"
-      currencyCode="USD"
-      negative={false}
-      renderIfZero={true}
-    />
-  </dd>
-  <dt
-    className="col-9 mb-2"
-  >
-    <ShippingPopover
-      actionName="shopifyDuplicateOrder"
-      availableShippingRates={Immutable.List []}
-      currencyCode="USD"
-      editable={true}
-      id="shipping-lines"
-      onChange={[Function]}
-      placement="bottom"
-      value={null}
+      <div>
+        <button
+          class="p-0 button focusable btn btn-link"
+          id="applied-discount"
+          tabindex="0"
+          type="button"
+        >
+          <strong>
+            Add discount
+          </strong>
+        </button>
+      </div>
+    </dt>
+    <dd
+      class="col-3 mb-2"
     >
-      Add shipping
-    </ShippingPopover>
-  </dt>
-  <dd
-    className="col-3 mb-2"
-  >
-    <MoneyAmount
-      amount="0.00"
-      currencyCode="USD"
-      negative={false}
-      renderIfZero={false}
-    />
-  </dd>
-  <dt
-    className="col-9 mb-2"
-  >
-    <span
-      className="d-block"
+      <span>
+        -$5.00
+      </span>
+    </dd>
+    <dt
+      class="col-9 mb-2 grey"
     >
-      <TaxesPopover
-        actionName="shopifyDuplicateOrder"
-        editable={true}
-        id="taxes"
-        onChange={[Function]}
-        placement="bottom"
-        value={false}
+      Subtotal
+    </dt>
+    <dd
+      class="col-3 mb-2"
+    >
+      <span>
+        $0.00
+      </span>
+    </dd>
+    <dt
+      class="col-9 mb-2"
+    >
+      <div>
+        <button
+          class="p-0 focusable btn btn-link"
+          id="shipping-lines"
+          tabindex="0"
+          type="button"
+        >
+          <strong>
+            Add shipping
+          </strong>
+        </button>
+      </div>
+    </dt>
+    <dd
+      class="col-3 mb-2"
+    >
+      —
+    </dd>
+    <dt
+      class="col-9 mb-2"
+    >
+      <span
+        class="d-block"
       >
-        Taxes
-      </TaxesPopover>
-    </span>
-    <span
-      className="d-block grey"
-      key="50522d3345ccb602c279da5cfbe59a0f53b6e1d4"
-    >
-      TVA
-       
-      20
-      %
-    </span>
-  </dt>
-  <dd
-    className="col-3 mb-2"
-  >
-    <br />
-    <span
-      className="d-block text-muted"
-      key="50522d3345ccb602c279da5cfbe59a0f53b6e1d4"
-    >
-      <MoneyAmount
-        amount="0.00"
-        currencyCode="USD"
-        negative={false}
-        renderIfZero={true}
-      />
-    </span>
-  </dd>
-  <dt
-    className="col-9 mb-2"
-  >
-    Total
-  </dt>
-  <dd
-    className="col-3 mb-2"
-  >
-    <strong
-      className="text-muted"
-    >
-      <MoneyAmount
-        amount="0.00"
-        currencyCode="USD"
-        negative={false}
-        renderIfZero={true}
-      />
-    </strong>
-  </dd>
-</dl>
-`;
-
-exports[`<OrderTotalsComponent/> render() should render as not loading 1`] = `
-<dl
-  className="row text-right mb-0"
->
-  <dt
-    className="col-9 mb-2"
-  >
-    <DiscountPopover
-      actionName="shopifyDuplicateOrder"
-      currencyCode="USD"
-      editable={true}
-      id="applied-discount"
-      label="order"
-      max={5}
-      onChange={[Function]}
-      placement="bottom"
-      value={
-        Immutable.Map {
-          "title": "",
-          "value": "100.00",
-          "value_type": "percentage",
-          "amount": "5.00",
-        }
-      }
-    >
-      Add discount
-    </DiscountPopover>
-  </dt>
-  <dd
-    className="col-3 mb-2"
-  >
-    <MoneyAmount
-      amount="5.00"
-      currencyCode="USD"
-      negative={true}
-      renderIfZero={false}
-    />
-  </dd>
-  <dt
-    className="col-9 mb-2 grey"
-  >
-    Subtotal
-  </dt>
-  <dd
-    className="col-3 mb-2"
-  >
-    <MoneyAmount
-      amount="0.00"
-      currencyCode="USD"
-      negative={false}
-      renderIfZero={true}
-    />
-  </dd>
-  <dt
-    className="col-9 mb-2"
-  >
-    <ShippingPopover
-      actionName="shopifyDuplicateOrder"
-      availableShippingRates={Immutable.List []}
-      currencyCode="USD"
-      editable={true}
-      id="shipping-lines"
-      onChange={[Function]}
-      placement="bottom"
-      value={null}
-    >
-      Add shipping
-    </ShippingPopover>
-  </dt>
-  <dd
-    className="col-3 mb-2"
-  >
-    <MoneyAmount
-      amount="0.00"
-      currencyCode="USD"
-      negative={false}
-      renderIfZero={false}
-    />
-  </dd>
-  <dt
-    className="col-9 mb-2"
-  >
-    <span
-      className="d-block"
-    >
-      <TaxesPopover
-        actionName="shopifyDuplicateOrder"
-        editable={true}
-        id="taxes"
-        onChange={[Function]}
-        placement="bottom"
-        value={false}
+        <div>
+          <button
+            class="p-0 focusable btn btn-link"
+            id="taxes"
+            tabindex="0"
+            type="button"
+          >
+            <strong>
+              Taxes
+            </strong>
+          </button>
+        </div>
+      </span>
+      <span
+        class="d-block grey"
       >
-        Taxes
-      </TaxesPopover>
-    </span>
-    <span
-      className="d-block grey"
-      key="50522d3345ccb602c279da5cfbe59a0f53b6e1d4"
+        TVA
+         
+        20
+        %
+      </span>
+    </dt>
+    <dd
+      class="col-3 mb-2"
     >
-      TVA
-       
-      20
-      %
-    </span>
-  </dt>
-  <dd
-    className="col-3 mb-2"
-  >
-    <br />
-    <span
-      className="d-block"
-      key="50522d3345ccb602c279da5cfbe59a0f53b6e1d4"
+      <br />
+      <span
+        class="d-block"
+      >
+        <span>
+          $0.00
+        </span>
+      </span>
+    </dd>
+    <dt
+      class="col-9 mb-2"
     >
-      <MoneyAmount
-        amount="0.00"
-        currencyCode="USD"
-        negative={false}
-        renderIfZero={true}
-      />
-    </span>
-  </dd>
-  <dt
-    className="col-9 mb-2"
-  >
-    Total
-  </dt>
-  <dd
-    className="col-3 mb-2"
-  >
-    <strong
-      className=""
+      Total
+    </dt>
+    <dd
+      class="col-3 mb-2"
     >
-      <MoneyAmount
-        amount="0.00"
-        currencyCode="USD"
-        negative={false}
-        renderIfZero={true}
-      />
-    </strong>
-  </dd>
-</dl>
+      <strong
+        class=""
+      >
+        <span>
+          $0.00
+        </span>
+      </strong>
+    </dd>
+  </dl>
+</div>
 `;
 
 exports[`<OrderTotalsComponent/> render() should render with taxes included 1`] = `
-<dl
-  className="row text-right mb-0"
->
-  <dt
-    className="col-9 mb-2"
+<div>
+  <dl
+    class="row text-right mb-0"
   >
-    <DiscountPopover
-      actionName="shopifyDuplicateOrder"
-      currencyCode="USD"
-      editable={true}
-      id="applied-discount"
-      label="order"
-      max={5}
-      onChange={[Function]}
-      placement="bottom"
-      value={
-        Immutable.Map {
-          "title": "",
-          "value": "100.00",
-          "value_type": "percentage",
-          "amount": "5.00",
-        }
-      }
+    <dt
+      class="col-9 mb-2"
     >
-      Add discount
-    </DiscountPopover>
-  </dt>
-  <dd
-    className="col-3 mb-2"
-  >
-    <MoneyAmount
-      amount="5.00"
-      currencyCode="USD"
-      negative={true}
-      renderIfZero={false}
-    />
-  </dd>
-  <dt
-    className="col-9 mb-2 grey"
-  >
-    Subtotal
-  </dt>
-  <dd
-    className="col-3 mb-2"
-  >
-    <MoneyAmount
-      amount="0.00"
-      currencyCode="USD"
-      negative={false}
-      renderIfZero={true}
-    />
-  </dd>
-  <dt
-    className="col-9 mb-2"
-  >
-    <ShippingPopover
-      actionName="shopifyDuplicateOrder"
-      availableShippingRates={Immutable.List []}
-      currencyCode="USD"
-      editable={true}
-      id="shipping-lines"
-      onChange={[Function]}
-      placement="bottom"
-      value={null}
+      <div>
+        <button
+          class="p-0 button focusable btn btn-link"
+          id="applied-discount"
+          tabindex="0"
+          type="button"
+        >
+          <strong>
+            Add discount
+          </strong>
+        </button>
+      </div>
+    </dt>
+    <dd
+      class="col-3 mb-2"
     >
-      Add shipping
-    </ShippingPopover>
-  </dt>
-  <dd
-    className="col-3 mb-2"
-  >
-    <MoneyAmount
-      amount="0.00"
-      currencyCode="USD"
-      negative={false}
-      renderIfZero={false}
-    />
-  </dd>
-  <dt
-    className="col-9 mb-2"
-  >
-    <span
-      className="d-block"
+      <span>
+        -$5.00
+      </span>
+    </dd>
+    <dt
+      class="col-9 mb-2 grey"
     >
-      <TaxesPopover
-        actionName="shopifyDuplicateOrder"
-        editable={true}
-        id="taxes"
-        onChange={[Function]}
-        placement="bottom"
-        value={false}
+      Subtotal
+    </dt>
+    <dd
+      class="col-3 mb-2"
+    >
+      <span>
+        $0.00
+      </span>
+    </dd>
+    <dt
+      class="col-9 mb-2"
+    >
+      <div>
+        <button
+          class="p-0 focusable btn btn-link"
+          id="shipping-lines"
+          tabindex="0"
+          type="button"
+        >
+          <strong>
+            Add shipping
+          </strong>
+        </button>
+      </div>
+    </dt>
+    <dd
+      class="col-3 mb-2"
+    >
+      —
+    </dd>
+    <dt
+      class="col-9 mb-2"
+    >
+      <span
+        class="d-block"
       >
-        Taxes
-      </TaxesPopover>
-    </span>
-    <span
-      className="d-block grey"
-      key="50522d3345ccb602c279da5cfbe59a0f53b6e1d4"
+        <div>
+          <button
+            class="p-0 focusable btn btn-link"
+            id="taxes"
+            tabindex="0"
+            type="button"
+          >
+            <strong>
+              Taxes
+            </strong>
+          </button>
+        </div>
+      </span>
+      <span
+        class="d-block grey"
+      >
+        TVA
+         
+        20
+        %
+      </span>
+    </dt>
+    <dd
+      class="col-3 mb-2"
     >
-      TVA
-       
-      20
-      %
-    </span>
-  </dt>
-  <dd
-    className="col-3 mb-2"
-  >
-    <br />
-    <span
-      className="d-block text-muted"
-      key="50522d3345ccb602c279da5cfbe59a0f53b6e1d4"
+      <br />
+      <span
+        class="d-block text-muted"
+      >
+        <span>
+          $0.00
+        </span>
+      </span>
+    </dd>
+    <dt
+      class="col-9 mb-2"
     >
-      <MoneyAmount
-        amount="0.00"
-        currencyCode="USD"
-        negative={false}
-        renderIfZero={true}
-      />
-    </span>
-  </dd>
-  <dt
-    className="col-9 mb-2"
-  >
-    Total
-  </dt>
-  <dd
-    className="col-3 mb-2"
-  >
-    <strong
-      className="text-muted"
+      Total
+    </dt>
+    <dd
+      class="col-3 mb-2"
     >
-      <MoneyAmount
-        amount="9.99"
-        currencyCode="USD"
-        negative={false}
-        renderIfZero={true}
-      />
-    </strong>
-  </dd>
-</dl>
+      <strong
+        class="text-muted"
+      >
+        <span>
+          $9.99
+        </span>
+      </strong>
+    </dd>
+  </dl>
+</div>
 `;

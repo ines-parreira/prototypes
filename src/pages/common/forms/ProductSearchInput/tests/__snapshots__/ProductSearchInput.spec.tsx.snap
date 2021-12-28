@@ -1,18 +1,41 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ProductSearchInput/> render() should render 1`] = `
-<SearchInput
-  autoFocus={true}
-  endpoint="/api/integrations/1/product/"
-  onResultClicked={[Function]}
-  onSubResultClicked={[Function]}
-  placeholder="Search products..."
-  renderResult={[Function]}
-  renderSubResult={[Function]}
-  resultLabel="product"
-  resultLabelPlural="products"
-  searchOnFocus={false}
-  subResultLabel="variant"
-  subResultLabelPlural="variants"
-/>
+<div>
+  <div
+    class="dropdown"
+  >
+    <div
+      aria-expanded="false"
+      aria-haspopup="true"
+      class="input-icon input-icon-right"
+      data-toggle="dropdown"
+    >
+      <i
+        class="icon material-icons md-2"
+      >
+        search
+      </i>
+      <input
+        class="form-control"
+        placeholder="Search products..."
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      aria-hidden="true"
+      class="dropdown dropdown-menu"
+      role="menu"
+      tabindex="-1"
+    >
+      <h6
+        class="header dropdown-header"
+        tabindex="-1"
+      >
+        0 product
+      </h6>
+    </div>
+  </div>
+</div>
 `;

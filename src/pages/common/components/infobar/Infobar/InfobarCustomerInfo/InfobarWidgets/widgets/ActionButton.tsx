@@ -5,8 +5,6 @@ import React, {
     ComponentProps,
     FormEvent,
 } from 'react'
-import PropTypes from 'prop-types'
-import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
 import _isUndefined from 'lodash/isUndefined'
@@ -31,16 +29,21 @@ import {makeGetPendingActionCallbacks} from '../../../../../../../../state/infob
 import {actionButtonHashForData} from '../../../../../../../../state/infobar/utils'
 import {RootState} from '../../../../../../../../state/types'
 import Tooltip from '../../../../../Tooltip'
-import {CustomerContext} from '../../InfobarCustomerInfo'
+import {CustomerContext, CustomerContextType} from '../../InfobarCustomerInfo'
+
+import {IntegrationContext, IntegrationContextType} from './IntegrationContext'
 
 import css from './ActionButton.less'
 import {InfobarModalProps, Option, Parameter} from './types'
 
-export const ActionButtonContext = React.createContext<{
+type ActionButtonContextType = {
     actionError: string | null
-}>({
-    actionError: null,
-})
+}
+export const ActionButtonContext = React.createContext<ActionButtonContextType>(
+    {
+        actionError: null,
+    }
+)
 
 type Props = {
     options: Array<Option>
@@ -55,8 +58,9 @@ type Props = {
     tagOptions?: Record<string, unknown>
     popover?: string
     title: ReactNode
-    actionError?: string
-    customerId?: number
+    actionError: ActionButtonContextType['actionError']
+    customerId: CustomerContextType['customerId']
+    integrationId: IntegrationContextType['integrationId']
     setModalOpen?: (param: boolean) => void
 } & ConnectedProps<typeof connector>
 
@@ -82,11 +86,6 @@ export class ActionButtonContainer extends Component<Props, State> {
         tag: Button,
     }
 
-    static contextTypes = {
-        integration: ImmutablePropTypes.map.isRequired,
-        integrationId: PropTypes.number.isRequired,
-    }
-
     constructor(props: Props) {
         super(props)
         this.id = _uniqueId('action-button-')
@@ -95,7 +94,7 @@ export class ActionButtonContainer extends Component<Props, State> {
     componentDidMount() {
         const {options} = this.props
 
-        const actionId = this.generateActionId(this.props, this.context, {
+        const actionId = this.generateActionId(this.props, {
             actionName: this.props.options[0].value,
         } as any)
         this.setState({actionId})
@@ -126,11 +125,7 @@ export class ActionButtonContainer extends Component<Props, State> {
      * Everytime the action parameters are updated, update the actionId.
      */
     componentWillReceiveProps(nextProps: Props) {
-        const actionId = this.generateActionId(
-            nextProps,
-            this.context,
-            this.state
-        )
+        const actionId = this.generateActionId(nextProps, this.state)
         this.setState({
             isLoading: !!nextProps.getPendingActionCallback(actionId),
             actionId,
@@ -142,16 +137,12 @@ export class ActionButtonContainer extends Component<Props, State> {
      * of the action once it has been sent to the server, and to identify in a unique fashion the target of the popover,
      * displayed to customize the action's parameters.
      */
-    generateActionId = (
-        props: Props,
-        context: Record<string, unknown>,
-        state: State
-    ) => {
+    generateActionId = (props: Props, state: State) => {
         const data = {
             action_name: state.actionName,
             // TODO(customers-migration): update `user_id` when we update our REST API
-            user_id: this.props.customerId?.toString(),
-            integration_id: context.integrationId,
+            user_id: props.customerId?.toString(),
+            integration_id: props.integrationId,
             payload: {
                 ...props.payload,
                 ...state.parameters,
@@ -172,7 +163,7 @@ export class ActionButtonContainer extends Component<Props, State> {
 
         void this.props.executeAction(
             this.state.actionName,
-            (this.context as {integrationId: string}).integrationId,
+            this.props.integrationId as number,
             this.props.customerId?.toString(),
             payload as any
         )
@@ -360,7 +351,6 @@ export class ActionButtonContainer extends Component<Props, State> {
         const {isLoading} = this.state
         const hasError = !!actionError
         const tooltipTargetID = `${this.id}-tooltip-target`
-
         return (
             <>
                 <Tag
@@ -399,11 +389,13 @@ export const withActionButtonContext = (Component: any) => {
     return (props: any) => {
         const {actionError} = React.useContext(ActionButtonContext)
         const {customerId} = React.useContext(CustomerContext)
+        const {integrationId} = React.useContext(IntegrationContext)
 
         return (
             <Component
                 actionError={actionError}
                 customerId={customerId}
+                integrationId={integrationId}
                 {...props}
             />
         )

@@ -30,6 +30,7 @@ import smile from './widgets/smile'
 import smoochInside from './widgets/smoochInside'
 import yotpo from './widgets/yotpo'
 import klaviyo from './widgets/klaviyo'
+import {WidgetContext} from './WidgetContext.ts'
 import {infobarWidgetShouldRender} from './predicates.ts'
 
 export default class InfobarWidget extends React.Component {
@@ -47,48 +48,16 @@ export default class InfobarWidget extends React.Component {
         open: false,
     }
 
-    static childContextTypes = {
-        data_source: PropTypes.string,
-        widget_resource_ids: PropTypes.object,
-    }
-
-    getChildContext() {
-        const source = this.props.source || fromJS({})
-        let data_source = '' // type of object we are editing in widget, e.g. Customer | Order ...
-        let widget_resource_ids = {}
-
-        /*
-            Provide proper context to children
-            For Shopify widget :
-            - data_source is either Customer or Order
-            - widget_resource_ids always has shopify customer_id because we need it for tracking and
-            target_id is either a customer_id or an order_id depending of the Shopify card targeted
-            (an Order or a Customer). target_id maybe is equal to customer_id in Shopify customer card
-        */
-
-        const data_source_endpoint =
-            source && source.get && source.get('admin_graphql_api_id')
-        if (data_source_endpoint) {
-            const reg = new RegExp(/gid:\/\/shopify\/(?<type>\w+)\/[0-9]+/g)
-            const match = reg.exec(data_source_endpoint)
-
-            //extract the type Customer or Order from data_source_endpoint
-            if (match.length === 2) data_source = match[1]
-
-            widget_resource_ids = {
-                target_id: source.get('id'),
-                customer_id: source.getIn(['customer', 'id']),
-            }
-        }
-        return {
-            data_source: data_source,
-            widget_resource_ids: widget_resource_ids,
-        }
-    }
-
     render() {
-        const {parent, source, widget, template, editing, isEditing, open} =
-            this.props
+        const {
+            parent,
+            source = fromJS({}),
+            widget,
+            template,
+            editing,
+            isEditing,
+            open,
+        } = this.props
 
         if (!infobarWidgetShouldRender(source)) {
             return null
@@ -114,7 +83,7 @@ export default class InfobarWidget extends React.Component {
         const passedData = {
             template: updatedTemplate,
             isEditing,
-            source: data || fromJS({}),
+            source: data,
         }
 
         const extensionMethod = extensionMethodsByType[widget.get('type')]
@@ -125,10 +94,37 @@ export default class InfobarWidget extends React.Component {
             }
         }
 
+        // Setting context
+        let data_source = '' // type of object we are editing in widget, e.g. Customer | Order ...
+        let widget_resource_ids = {}
+        /*
+            Provide proper context to children
+            For Shopify widget :
+            - data_source is either Customer or Order
+            - widget_resource_ids always has shopify customer_id because we need it for tracking and
+            target_id is either a customer_id or an order_id depending of the Shopify card targeted
+            (an Order or a Customer). target_id maybe is equal to customer_id in Shopify customer card
+        */
+        const data_source_endpoint =
+            source && source.get && source.get('admin_graphql_api_id')
+        if (data_source_endpoint) {
+            const reg = new RegExp(/gid:\/\/shopify\/(?<type>\w+)\/[0-9]+/g)
+            const match = reg.exec(data_source_endpoint)
+
+            //extract the type Customer or Order from data_source_endpoint
+            if (match.length === 2) data_source = match[1]
+
+            widget_resource_ids = {
+                target_id: source.get('id'),
+                customer_id: source.getIn(['customer', 'id']),
+            }
+        }
+
         // DISPLAY
+        let component = null
         switch (type) {
             case 'wrapper': {
-                return (
+                component = (
                     <WrapperInfobarWidget
                         isEditing={isEditing}
                         source={data || fromJS({})}
@@ -137,9 +133,10 @@ export default class InfobarWidget extends React.Component {
                         editing={editing}
                     />
                 )
+                break
             }
             case 'list': {
-                return (
+                component = (
                     <ListInfobarWidget
                         isEditing={isEditing}
                         isParentList={isParentList}
@@ -150,6 +147,7 @@ export default class InfobarWidget extends React.Component {
                         open={open}
                     />
                 )
+                break
             }
             case 'card': {
                 data = fromJS(data || {})
@@ -159,7 +157,7 @@ export default class InfobarWidget extends React.Component {
                     return null
                 }
 
-                return (
+                component = (
                     <CardInfobarWidget
                         isEditing={isEditing}
                         isParentList={isParentList}
@@ -172,22 +170,35 @@ export default class InfobarWidget extends React.Component {
                         {...extension}
                     />
                 )
+                break
             }
             case 'divider': {
-                return <div className="divider" />
+                component = <div className="divider" />
+                break
             }
-            default:
+            default: {
+                component = (
+                    <FieldInfobarWidget
+                        isEditing={isEditing}
+                        isParentList={isParentList}
+                        value={guessFieldValueFromRawData(data, type)}
+                        widget={widget}
+                        template={updatedTemplate}
+                        editing={editing}
+                    />
+                )
+            }
         }
 
         return (
-            <FieldInfobarWidget
-                isEditing={isEditing}
-                isParentList={isParentList}
-                value={guessFieldValueFromRawData(data, type)}
-                widget={widget}
-                template={updatedTemplate}
-                editing={editing}
-            />
+            <WidgetContext.Provider
+                value={{
+                    data_source: data_source,
+                    widget_resource_ids: widget_resource_ids,
+                }}
+            >
+                {component}
+            </WidgetContext.Provider>
         )
     }
 }

@@ -1,8 +1,7 @@
-import React, {Component, ChangeEvent} from 'react'
+import React, {Component, ChangeEvent, ContextType} from 'react'
 import {Col, Container, Row} from 'reactstrap'
 import {Map} from 'immutable'
 import {connect} from 'react-redux'
-import PropTypes from 'prop-types'
 import _debounce from 'lodash/debounce'
 
 import {RootState} from '../../../../../../../../../../../../state/types'
@@ -15,6 +14,7 @@ import {
     SegmentEvent,
 } from '../../../../../../../../../../../../store/middlewares/segmentTracker'
 import {ShopifyActionType} from '../../../types'
+import {IntegrationContext} from '../../../../IntegrationContext'
 
 import OrderTotals from './OrderTotals/OrderTotals'
 import css from './OrderFooter.less'
@@ -36,10 +36,6 @@ type State = {
 }
 
 export class OrderFooterComponent extends Component<Props, State> {
-    static contextTypes = {
-        integrationId: PropTypes.number.isRequired,
-    }
-
     static tagsToOptions(tags = ''): Option[] {
         return tags
             .split(',')
@@ -54,6 +50,8 @@ export class OrderFooterComponent extends Component<Props, State> {
     state = {
         note: this.props.payload.get('note') || '',
     }
+    static contextType = IntegrationContext
+    context!: ContextType<typeof IntegrationContext>
 
     _defaultTags = this.props.payload.get('tags') || ''
 
@@ -75,9 +73,8 @@ export class OrderFooterComponent extends Component<Props, State> {
         const {onPayloadChange, payload} = this.props
         const {integrationId} = this.context
         const {note} = this.state
-
         const newPayload = payload.set('note', note)
-        onPayloadChange(integrationId, newPayload, false)
+        onPayloadChange(integrationId!, newPayload, false)
     }, 250)
 
     _trackNoteChanged = _debounce(() => {
@@ -93,11 +90,10 @@ export class OrderFooterComponent extends Component<Props, State> {
     _onTagsChange = (tags: Option[]) => {
         const {onPayloadChange, payload, actionName} = this.props
         const {integrationId} = this.context
-
         const newValue = tags.map((option) => option.value as string).join(',')
         const newPayload = payload.set('tags', newValue)
 
-        onPayloadChange(integrationId, newPayload, false)
+        onPayloadChange(integrationId!, newPayload, false)
         logEvent(
             actionName === ShopifyActionType.CreateOrder
                 ? SegmentEvent.ShopifyCreateOrderTagsChanged

@@ -1,5 +1,4 @@
-import React, {Component} from 'react'
-import PropTypes from 'prop-types'
+import React, {Component, ContextType} from 'react'
 import _noop from 'lodash/noop'
 
 import SearchInput from '../SearchInput/SearchInput'
@@ -11,6 +10,7 @@ import {
     Variant,
 } from '../../../../models/integration/types'
 import {Product as ShopifyProduct} from '../../../../constants/integrations/types/shopify'
+import {IntegrationContext} from '../../components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
 
 import ProductResult from './ProductResult'
 import VariantResult from './VariantResult'
@@ -32,9 +32,8 @@ export default class ProductSearchInput extends Component<Props> {
         onVariantClicked: _noop,
     }
 
-    static contextTypes = {
-        integrationId: PropTypes.number.isRequired,
-    }
+    static contextType = IntegrationContext
+    context!: ContextType<typeof IntegrationContext>
 
     static _variantsMapper = {
         [IntegrationType.Shopify]: (

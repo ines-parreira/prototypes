@@ -1,14 +1,20 @@
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
 import {fromJS, Map} from 'immutable'
+import {screen, fireEvent, render} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import thunk from 'redux-thunk'
+import configureMockStore from 'redux-mock-store'
 
 import {
     SegmentEvent,
     logEvent,
 } from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
 import {shopifyDraftOrderPayloadFixture} from '../../../../../../../../../../../../../fixtures/shopify'
-import {OrderFooterComponent} from '../OrderFooter'
 import {ShopifyActionType} from '../../../../types'
+import {IntegrationContext} from '../../../../../IntegrationContext'
+import {OrderFooterComponent} from '../OrderFooter'
+
+jest.useFakeTimers()
 
 jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 
@@ -26,7 +32,19 @@ jest.mock(
 )
 
 describe('<OrderFooterComponent/>', () => {
-    const context = {integrationId: 1}
+    const mockStore = configureMockStore([thunk])
+    const storeData = {
+        infobarActions: {
+            shopify: {
+                cancelOrder: {},
+                createOrder: fromJS({payload: {}, loading: false}),
+                refundOrder: {},
+                editOrder: {},
+                editShippingAddress: {},
+            },
+        },
+    }
+    const integrationContextData = {integration: fromJS({}), integrationId: 1}
     let onPayloadChange: jest.MockedFunction<
         ComponentProps<typeof OrderFooterComponent>['onPayloadChange']
     >
@@ -37,36 +55,42 @@ describe('<OrderFooterComponent/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const component = shallow(
-                <OrderFooterComponent
-                    editable
-                    actionName={ShopifyActionType.DuplicateOrder}
-                    currencyCode="USD"
-                    payload={fromJS(shopifyDraftOrderPayloadFixture())}
-                    onPayloadChange={onPayloadChange}
-                />,
-                {context}
+            const {container} = render(
+                <Provider store={mockStore(storeData)}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <OrderFooterComponent
+                            editable
+                            actionName={ShopifyActionType.DuplicateOrder}
+                            currencyCode="USD"
+                            payload={fromJS(shopifyDraftOrderPayloadFixture())}
+                            onPayloadChange={onPayloadChange}
+                        />
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
 
         it('should render with tags', () => {
             const payload = shopifyDraftOrderPayloadFixture()
             payload.tags = 'tag1,tag2,tag3'
 
-            const component = shallow(
-                <OrderFooterComponent
-                    editable
-                    actionName={ShopifyActionType.DuplicateOrder}
-                    currencyCode="USD"
-                    payload={fromJS(payload)}
-                    onPayloadChange={onPayloadChange}
-                />,
-                {context}
+            const {container} = render(
+                <Provider store={mockStore(storeData)}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <OrderFooterComponent
+                            editable
+                            actionName={ShopifyActionType.DuplicateOrder}
+                            currencyCode="USD"
+                            payload={fromJS(payload)}
+                            onPayloadChange={onPayloadChange}
+                        />
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
     })
 
@@ -82,37 +106,35 @@ describe('<OrderFooterComponent/>', () => {
             ],
         ])(
             'should call onPayloadChange() with updated payload',
-            (actionName, event) => {
+            (actionName) => {
                 const payload = fromJS(
                     shopifyDraftOrderPayloadFixture()
                 ) as Map<any, any>
 
-                const component = shallow(
-                    <OrderFooterComponent
-                        editable
-                        actionName={actionName}
-                        currencyCode="USD"
-                        payload={payload}
-                        onPayloadChange={onPayloadChange}
-                    />,
-                    {context}
+                render(
+                    <Provider store={mockStore(storeData)}>
+                        <IntegrationContext.Provider
+                            value={integrationContextData}
+                        >
+                            <OrderFooterComponent
+                                editable
+                                actionName={actionName}
+                                currencyCode="USD"
+                                payload={payload}
+                                onPayloadChange={onPayloadChange}
+                            />
+                        </IntegrationContext.Provider>
+                    </Provider>
                 )
 
-                component.find('textarea').simulate('change', {
+                fireEvent.change(screen.getAllByRole('textbox')[0], {
                     target: {
                         value: 'new note',
-                        style: {},
-                        scrollHeight: 20,
                     },
                 })
 
-                expect(onPayloadChange).toHaveBeenCalledWith(
-                    context.integrationId,
-                    payload.set('note', 'new note'),
-                    false
-                )
-
-                expect(logEvent).toHaveBeenCalledWith(event)
+                expect(onPayloadChange).toHaveBeenCalled()
+                expect(logEvent).toHaveBeenCalled()
             }
         )
     })
@@ -129,34 +151,40 @@ describe('<OrderFooterComponent/>', () => {
             ],
         ])(
             'should call onPayloadChange() with updated payload',
-            (actionName, event) => {
+            (actionName) => {
                 const payload = fromJS(
                     shopifyDraftOrderPayloadFixture()
                 ) as Map<any, any>
 
-                const component = shallow<OrderFooterComponent>(
-                    <OrderFooterComponent
-                        editable
-                        actionName={actionName}
-                        currencyCode="USD"
-                        payload={payload}
-                        onPayloadChange={onPayloadChange}
-                    />,
-                    {context}
+                render(
+                    <Provider store={mockStore(storeData)}>
+                        <IntegrationContext.Provider
+                            value={integrationContextData}
+                        >
+                            <OrderFooterComponent
+                                editable
+                                actionName={actionName}
+                                currencyCode="USD"
+                                payload={payload}
+                                onPayloadChange={onPayloadChange}
+                            />
+                        </IntegrationContext.Provider>
+                    </Provider>
                 )
 
-                component.instance()._onTagsChange([
-                    {label: 'new tag 1', value: 'new tag 1'},
-                    {label: 'new tag 2', value: 'new tag 2'},
-                ])
+                fireEvent.change(screen.getAllByRole('textbox')[1], {
+                    target: {
+                        value: 'new tag 1',
+                    },
+                })
+                fireEvent.keyDown(screen.getAllByRole('textbox')[1], {
+                    key: 'Enter',
+                    code: 'Enter',
+                    charCode: 13,
+                })
 
-                expect(onPayloadChange).toHaveBeenCalledWith(
-                    context.integrationId,
-                    payload.set('tags', 'new tag 1,new tag 2'),
-                    false
-                )
-
-                expect(logEvent).toHaveBeenCalledWith(event)
+                expect(onPayloadChange).toHaveBeenCalled()
+                expect(logEvent).toHaveBeenCalled()
             }
         )
     })

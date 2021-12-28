@@ -1,19 +1,32 @@
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
 import {fromJS, Map} from 'immutable'
+import {screen, fireEvent, render} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import thunk from 'redux-thunk'
+import configureMockStore from 'redux-mock-store'
 
 import {
     shopifyCalculatedDraftOrderFixture,
     shopifyDraftOrderPayloadFixture,
-    shopifyShippingLineFixture,
 } from '../../../../../../../../../../../../../../fixtures/shopify'
-import {OrderTotalsComponent} from '../OrderTotals'
 import {ShopifyActionType} from '../../../../../types'
-
-jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
+import {IntegrationContext} from '../../../../../../IntegrationContext'
+import {OrderTotalsComponent} from '../OrderTotals'
 
 describe('<OrderTotalsComponent/>', () => {
-    const context = {integrationId: 1}
+    const mockStore = configureMockStore([thunk])
+    const storeData = {
+        infobarActions: {
+            shopify: {
+                cancelOrder: {},
+                createOrder: fromJS({payload: {}, loading: false}),
+                refundOrder: {},
+                editOrder: {},
+                editShippingAddress: {},
+            },
+        },
+    }
+    const integrationContextData = {integration: fromJS({}), integrationId: 1}
     const payload = fromJS(shopifyDraftOrderPayloadFixture()) as Map<any, any>
     const calculatedDraftOrder = fromJS(
         shopifyCalculatedDraftOrderFixture()
@@ -27,38 +40,46 @@ describe('<OrderTotalsComponent/>', () => {
     })
 
     describe('render()', () => {
-        it('should render as loading', () => {
-            const component = shallow(
-                <OrderTotalsComponent
-                    editable
-                    actionName={ShopifyActionType.DuplicateOrder}
-                    currencyCode="USD"
-                    loading
-                    payload={payload}
-                    calculatedDraftOrder={calculatedDraftOrder}
-                    onPayloadChange={onPayloadChange}
-                />,
-                {context}
+        it('should render', () => {
+            const {container} = render(
+                <Provider store={mockStore(storeData)}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <OrderTotalsComponent
+                            editable
+                            actionName={ShopifyActionType.DuplicateOrder}
+                            currencyCode="USD"
+                            loading={false}
+                            payload={payload}
+                            calculatedDraftOrder={calculatedDraftOrder}
+                            onPayloadChange={onPayloadChange}
+                        />
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
 
-        it('should render as not loading', () => {
-            const component = shallow(
-                <OrderTotalsComponent
-                    editable
-                    actionName={ShopifyActionType.DuplicateOrder}
-                    currencyCode="USD"
-                    loading={false}
-                    payload={payload}
-                    calculatedDraftOrder={calculatedDraftOrder}
-                    onPayloadChange={onPayloadChange}
-                />,
-                {context}
+        it('should render as loading', () => {
+            const {container} = render(
+                <Provider store={mockStore(storeData)}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <OrderTotalsComponent
+                            editable
+                            actionName={ShopifyActionType.DuplicateOrder}
+                            currencyCode="USD"
+                            loading
+                            payload={payload}
+                            calculatedDraftOrder={calculatedDraftOrder}
+                            onPayloadChange={onPayloadChange}
+                        />
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.getElementsByClassName('text-muted').length).toBe(
+                2
+            )
         })
 
         it('should render with taxes included', () => {
@@ -67,43 +88,61 @@ describe('<OrderTotalsComponent/>', () => {
                 '9.99'
             )
 
-            const component = shallow(
-                <OrderTotalsComponent
-                    editable
-                    actionName={ShopifyActionType.DuplicateOrder}
-                    currencyCode="USD"
-                    loading
-                    payload={payload}
-                    calculatedDraftOrder={taxesIncludedDraftOrder}
-                    onPayloadChange={onPayloadChange}
-                />,
-                {context}
+            const {container} = render(
+                <Provider store={mockStore(storeData)}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <OrderTotalsComponent
+                            editable
+                            actionName={ShopifyActionType.DuplicateOrder}
+                            currencyCode="USD"
+                            loading
+                            payload={payload}
+                            calculatedDraftOrder={taxesIncludedDraftOrder}
+                            onPayloadChange={onPayloadChange}
+                        />
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
     })
 
     describe('_onDiscountCodesChange()', () => {
         it('should call onPayloadChange() with updated payload', () => {
-            const component = shallow<OrderTotalsComponent>(
-                <OrderTotalsComponent
-                    editable
-                    actionName={ShopifyActionType.DuplicateOrder}
-                    currencyCode="USD"
-                    loading={false}
-                    payload={payload}
-                    calculatedDraftOrder={calculatedDraftOrder}
-                    onPayloadChange={onPayloadChange}
-                />,
-                {context}
+            render(
+                <Provider store={mockStore(storeData)}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <OrderTotalsComponent
+                            editable
+                            actionName={ShopifyActionType.DuplicateOrder}
+                            currencyCode="USD"
+                            loading={false}
+                            payload={payload}
+                            calculatedDraftOrder={calculatedDraftOrder}
+                            onPayloadChange={onPayloadChange}
+                        />
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            component.instance()._onAppliedDiscountChange(null)
-
-            const newPayload = payload.set('applied_discount', null)
+            fireEvent.click(screen.getByText('Add discount'))
+            fireEvent.change(screen.getByRole('spinbutton'), {
+                target: {value: 0.1},
+            })
+            fireEvent.click(screen.getByText('Apply'))
+            const newPayload = payload.set(
+                'applied_discount',
+                fromJS({
+                    title: '',
+                    value: '0.10',
+                    value_type: 'percentage',
+                    amount: '0.00',
+                    currency_code: 'USD',
+                })
+            )
             expect(onPayloadChange).toHaveBeenCalledWith(
-                context.integrationId,
+                integrationContextData.integrationId,
                 newPayload
             )
         })
@@ -111,25 +150,37 @@ describe('<OrderTotalsComponent/>', () => {
 
     describe('_onShippingLineChange()', () => {
         it('should call onPayloadChange() with updated payload', () => {
-            const component = shallow<OrderTotalsComponent>(
-                <OrderTotalsComponent
-                    editable
-                    actionName={ShopifyActionType.DuplicateOrder}
-                    currencyCode="USD"
-                    loading={false}
-                    payload={payload}
-                    calculatedDraftOrder={calculatedDraftOrder}
-                    onPayloadChange={onPayloadChange}
-                />,
-                {context}
+            render(
+                <Provider store={mockStore(storeData)}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <OrderTotalsComponent
+                            editable
+                            actionName={ShopifyActionType.DuplicateOrder}
+                            currencyCode="USD"
+                            loading={false}
+                            payload={payload}
+                            calculatedDraftOrder={calculatedDraftOrder}
+                            onPayloadChange={onPayloadChange}
+                        />
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            const shippingLine = fromJS(shopifyShippingLineFixture())
-            component.instance()._onShippingLineChange(shippingLine)
+            fireEvent.click(screen.getByText('Add shipping'))
+            fireEvent.click(screen.getByText('Free shipping'))
+            fireEvent.click(screen.getByText('Apply'))
 
-            const newPayload = payload.set('shipping_line', shippingLine)
+            const newPayload = payload.set(
+                'shipping_line',
+                fromJS({
+                    custom: false,
+                    handle: null,
+                    price: null,
+                    title: null,
+                })
+            )
             expect(onPayloadChange).toHaveBeenCalledWith(
-                context.integrationId,
+                integrationContextData.integrationId,
                 newPayload
             )
         })
@@ -137,24 +188,29 @@ describe('<OrderTotalsComponent/>', () => {
 
     describe('_onTaxExemptChange()', () => {
         it('should call onPayloadChange() with updated payload', () => {
-            const component = shallow<OrderTotalsComponent>(
-                <OrderTotalsComponent
-                    editable
-                    actionName={ShopifyActionType.DuplicateOrder}
-                    currencyCode="USD"
-                    loading={false}
-                    payload={payload}
-                    calculatedDraftOrder={calculatedDraftOrder}
-                    onPayloadChange={onPayloadChange}
-                />,
-                {context}
+            render(
+                <Provider store={mockStore(storeData)}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <OrderTotalsComponent
+                            editable
+                            actionName={ShopifyActionType.DuplicateOrder}
+                            currencyCode="USD"
+                            loading={false}
+                            payload={payload}
+                            calculatedDraftOrder={calculatedDraftOrder}
+                            onPayloadChange={onPayloadChange}
+                        />
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            component.instance()._onTaxExemptChange(true)
+            fireEvent.click(screen.getByText('Taxes'))
+            fireEvent.click(screen.getByText('Charge taxes'))
+            fireEvent.click(screen.getByText('Apply'))
 
-            const newPayload = payload.set('tax_exempt', true)
+            const newPayload = payload.set('tax_exempt', false)
             expect(onPayloadChange).toHaveBeenCalledWith(
-                context.integrationId,
+                integrationContextData.integrationId,
                 newPayload
             )
         })

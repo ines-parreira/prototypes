@@ -1,6 +1,11 @@
-import React, {Component, ReactNode} from 'react'
-import PropTypes from 'prop-types'
-import ImmutablePropTypes from 'react-immutable-proptypes'
+import React, {
+    Component,
+    ContextType,
+    createContext,
+    FunctionComponent,
+    ReactNode,
+    useContext,
+} from 'react'
 import {fromJS, Map} from 'immutable'
 
 import {
@@ -13,6 +18,7 @@ import {CardHeaderDetails} from '../../CardHeaderDetails'
 import DraftOrderModal from '../shared/DraftOrderModal/DraftOrderModal'
 import {CardHeaderValue} from '../../CardHeaderValue'
 import {InfobarAction} from '../../types'
+import {IntegrationContext} from '../../IntegrationContext'
 import {ShopifyActionType} from '../types'
 import MoneyAmount from '../../MoneyAmount'
 
@@ -30,20 +36,36 @@ export default function OrderWidget() {
     }
 }
 
+export const OrderContext = createContext<{
+    order: Map<string, unknown>
+    orderId: number | null
+    isOrderCancelled: boolean | null
+    isOrderRefunded: boolean | null
+    isOrderFulfilled: boolean | null
+    isOrderPartiallyFulfilled: boolean | null
+    isOldOrder: boolean | null
+    integrationId: number | null
+    integration: Map<string, unknown>
+}>({
+    order: fromJS({}),
+    orderId: null,
+    isOrderCancelled: null,
+    isOrderRefunded: null,
+    isOrderFulfilled: null,
+    isOrderPartiallyFulfilled: null,
+    isOldOrder: null,
+    integrationId: null,
+    integration: fromJS({}),
+})
+
 type AfterTitleProps = {
     isEditing: boolean
     source: Map<string, string | number | boolean>
 }
 
 class AfterTitle extends Component<AfterTitleProps> {
-    static contextTypes = {
-        integrationId: PropTypes.number,
-        isOrderCancelled: PropTypes.bool.isRequired,
-        isOldOrder: PropTypes.bool.isRequired,
-        isOrderRefunded: PropTypes.bool.isRequired,
-        isOrderFulfilled: PropTypes.bool.isRequired,
-        isOrderPartiallyFulfilled: PropTypes.bool.isRequired,
-    }
+    static contextType = OrderContext
+    context!: ContextType<typeof OrderContext>
 
     _getActions = () => {
         const {source}: AfterTitleProps = this.props
@@ -219,7 +241,7 @@ class AfterTitle extends Component<AfterTitleProps> {
                     financialStatus={
                         source.get('financial_status') as FinancialStatus
                     }
-                    isCancelled={isOrderCancelled}
+                    isCancelled={!!isOrderCancelled}
                 />
                 <ActionButtonsGroup
                     actions={this._getActions()}
@@ -256,20 +278,15 @@ type TitleWrapperProps = {
     children?: ReactNode
     source: Map<any, any>
 }
-
 class TitleWrapper extends Component<TitleWrapperProps> {
-    // eslint-disable-line
-    static contextTypes = {
-        integration: ImmutablePropTypes.map.isRequired,
-    }
-
+    static contextType = OrderContext
+    context!: ContextType<typeof OrderContext>
     render() {
         const {children, source} = this.props
-        const shopName: string = (
-            this.context as {
-                integration: Map<any, any>
-            }
-        ).integration.getIn(['meta', 'shop_name']) as string
+        const shopName: string = this.context.integration.getIn([
+            'meta',
+            'shop_name',
+        ]) as string
 
         return (
             <a
@@ -285,45 +302,35 @@ class TitleWrapper extends Component<TitleWrapperProps> {
     }
 }
 
-type WrapperProps = {
-    children: ReactNode
-    source: Map<any, any>
-}
+const Wrapper: FunctionComponent<{source: Map<string, any>}> = ({
+    source: order = fromJS({}) as Map<string, any>,
+    children,
+}) => {
+    const {integration, integrationId} = useContext(IntegrationContext)
 
-class Wrapper extends React.Component<WrapperProps> {
-    static childContextTypes = {
-        order: ImmutablePropTypes.map.isRequired,
-        orderId: PropTypes.number,
-        isOrderCancelled: PropTypes.bool.isRequired,
-        isOrderRefunded: PropTypes.bool.isRequired,
-        isOrderFulfilled: PropTypes.bool.isRequired,
-        isOrderPartiallyFulfilled: PropTypes.bool.isRequired,
-        isOldOrder: PropTypes.bool.isRequired,
-    }
+    const isCancelled = !!order.get('cancelled_at')
+    const isRefunded = order.get('financial_status') === 'refunded'
+    const isFulfilled = order.get('fulfillment_status') === 'fulfilled'
+    const isPartiallyFulfilled = order.get('fulfillment_status') === 'partial'
 
-    getChildContext() {
-        const order = this.props.source || fromJS({})
-        const isCancelled = !!order.get('cancelled_at')
-        const isRefunded = order.get('financial_status') === 'refunded'
-        const isFulfilled = order.get('fulfillment_status') === 'fulfilled'
-        const isPartiallyFulfilled =
-            order.get('fulfillment_status') === 'partial'
-
-        const createdDate = order.get('created_at')
-        const orderAge = new Date().getTime() - new Date(createdDate).getTime()
-        const isOldOrder = Math.round(orderAge / (1000 * 3600 * 24)) >= 60
-        return {
-            order,
-            orderId: order.get('id'),
-            isOrderCancelled: isCancelled,
-            isOldOrder: isOldOrder,
-            isOrderRefunded: isRefunded,
-            isOrderFulfilled: isFulfilled,
-            isOrderPartiallyFulfilled: isPartiallyFulfilled,
-        }
-    }
-
-    render() {
-        return this.props.children
-    }
+    const createdDate = order.get('created_at')
+    const orderAge = new Date().getTime() - new Date(createdDate).getTime()
+    const isOldOrder = Math.round(orderAge / (1000 * 3600 * 24)) >= 60
+    return (
+        <OrderContext.Provider
+            value={{
+                order,
+                orderId: order.get('id'),
+                isOrderCancelled: isCancelled,
+                isOldOrder: isOldOrder,
+                isOrderRefunded: isRefunded,
+                isOrderFulfilled: isFulfilled,
+                isOrderPartiallyFulfilled: isPartiallyFulfilled,
+                integrationId,
+                integration,
+            }}
+        >
+            {children}
+        </OrderContext.Provider>
+    )
 }

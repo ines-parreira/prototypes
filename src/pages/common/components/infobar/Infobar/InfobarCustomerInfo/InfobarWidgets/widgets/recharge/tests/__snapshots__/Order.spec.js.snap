@@ -1,253 +1,207 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Order <AfterTitle/> should display the refund action 1`] = `
-<Fragment>
-  <ActionButtonsGroup
-    actions={
-      Array [
-        Object {
-          "child": <React.Fragment>
-            <i
-              className="material-icons"
-            >
-              refresh
-            </i>
-             Refund
-          </React.Fragment>,
-          "key": "refund",
-          "options": Array [
-            Object {
-              "parameters": Array [
-                Object {
-                  "defaultValue": 10,
-                  "label": "Amount",
-                  "max": 10,
-                  "min": 0.01,
-                  "name": "amount",
-                  "placeholder": "Amount",
-                  "required": true,
-                  "step": 0.01,
-                  "type": "number",
-                },
-              ],
-              "value": "rechargeRefundOrder",
-            },
-          ],
-          "popover": "This will refund the order in Recharge.",
-          "title": <div>
-            <i
-              className="material-icons mr-2"
-            >
-              refresh
-            </i>
-            Refund order
-          </div>,
-        },
-      ]
-    }
-    payload={
-      Object {
-        "order_id": 1,
-      }
-    }
-  />
-  <CardHeaderDetails>
-    <CardHeaderValue
-      label="Created"
+exports[`Order <AfterTitle/> should display the refund action (because total_price > total_refunds) 1`] = `
+<div>
+  <div
+    class="action-buttons btn-group"
+    role="group"
+  >
+    <button
+      class="button action-button btn btn-secondary btn-sm"
+      id="action-button-2"
+      type="button"
     >
-      <Connect(DatetimeLabelContainer)
-        key="created-at"
+      <span
+        id="action-button-2-tooltip-target"
+        style="position: absolute; height: 100%; width: 100%; top: 0px; left: 0px;"
       />
-    </CardHeaderValue>
-    <CardHeaderValue>
-      <Badge
-        color="secondary"
-        key="status"
-        pill={true}
-        tag="span"
-      />
-    </CardHeaderValue>
-  </CardHeaderDetails>
-</Fragment>
+      <i
+        class="material-icons"
+      >
+        refresh
+      </i>
+       Refund
+    </button>
+  </div>
+  <div
+    class="container"
+  >
+    <span
+      class="container"
+    >
+      <span
+        class="label"
+      >
+        Created
+        : 
+      </span>
+      <strong />
+    </span>
+    <span
+      class="container"
+    >
+      <strong>
+        <span
+          class="badge badge-secondary badge-pill"
+        />
+      </strong>
+    </span>
+  </div>
+</div>
 `;
 
-exports[`Order <AfterTitle/> should display the refund action with its max equal to the total price of the order minus what has already been refunded on the associated charge 1`] = `
-<Fragment>
-  <ActionButtonsGroup
-    actions={
-      Array [
-        Object {
-          "child": <React.Fragment>
-            <i
-              className="material-icons"
-            >
-              refresh
-            </i>
-             Refund
-          </React.Fragment>,
-          "key": "refund",
-          "options": Array [
-            Object {
-              "parameters": Array [
-                Object {
-                  "defaultValue": 6,
-                  "label": "Amount",
-                  "max": 6,
-                  "min": 0.01,
-                  "name": "amount",
-                  "placeholder": "Amount",
-                  "required": true,
-                  "step": 0.01,
-                  "type": "number",
-                },
-              ],
-              "value": "rechargeRefundOrder",
-            },
-          ],
-          "popover": "This will refund the order in Recharge.",
-          "title": <div>
-            <i
-              className="material-icons mr-2"
-            >
-              refresh
-            </i>
-            Refund order
-          </div>,
-        },
-      ]
-    }
-    payload={
-      Object {
-        "order_id": 1,
-      }
-    }
-  />
-  <CardHeaderDetails>
-    <CardHeaderValue
-      label="Created"
+exports[`Order <AfterTitle/> should display the refund action 1`] = `
+<div>
+  <div
+    class="action-buttons btn-group"
+    role="group"
+  >
+    <button
+      class="button action-button btn btn-secondary btn-sm"
+      id="action-button-1"
+      type="button"
     >
-      <Connect(DatetimeLabelContainer)
-        key="created-at"
+      <span
+        id="action-button-1-tooltip-target"
+        style="position: absolute; height: 100%; width: 100%; top: 0px; left: 0px;"
       />
-    </CardHeaderValue>
-    <CardHeaderValue>
-      <Badge
-        color="secondary"
-        key="status"
-        pill={true}
-        tag="span"
-      />
-    </CardHeaderValue>
-  </CardHeaderDetails>
-</Fragment>
+      <i
+        class="material-icons"
+      >
+        refresh
+      </i>
+       Refund
+    </button>
+  </div>
+  <div
+    class="container"
+  >
+    <span
+      class="container"
+    >
+      <span
+        class="label"
+      >
+        Created
+        : 
+      </span>
+      <strong />
+    </span>
+    <span
+      class="container"
+    >
+      <strong>
+        <span
+          class="badge badge-secondary badge-pill"
+        />
+      </strong>
+    </span>
+  </div>
+</div>
 `;
 
 exports[`Order <AfterTitle/> should not display the refund action because the charge is not refundable 1`] = `
-<Fragment>
-  <ActionButtonsGroup
-    actions={Array []}
-    payload={
-      Object {
-        "order_id": 1,
-      }
-    }
-  />
-  <CardHeaderDetails>
-    <CardHeaderValue
-      label="Created"
+<div>
+  <div
+    class="container"
+  >
+    <span
+      class="container"
     >
-      <Connect(DatetimeLabelContainer)
-        key="created-at"
-      />
-    </CardHeaderValue>
-    <CardHeaderValue>
-      <Badge
-        color="secondary"
-        key="status"
-        pill={true}
-        tag="span"
-      />
-    </CardHeaderValue>
-  </CardHeaderDetails>
-</Fragment>
+      <span
+        class="label"
+      >
+        Created
+        : 
+      </span>
+      <strong />
+    </span>
+    <span
+      class="container"
+    >
+      <strong>
+        <span
+          class="badge badge-secondary badge-pill"
+        />
+      </strong>
+    </span>
+  </div>
+</div>
 `;
 
 exports[`Order <AfterTitle/> should not display the refund action because the order was cancelled 1`] = `
-<Fragment>
-  <ActionButtonsGroup
-    actions={Array []}
-    payload={
-      Object {
-        "order_id": 1,
-      }
-    }
-  />
-  <CardHeaderDetails>
-    <CardHeaderValue
-      label="Created"
+<div>
+  <div
+    class="container"
+  >
+    <span
+      class="container"
     >
-      <Connect(DatetimeLabelContainer)
-        key="created-at"
-      />
-    </CardHeaderValue>
-    <CardHeaderValue>
-      <Badge
-        color="secondary"
-        key="status"
-        pill={true}
-        tag="span"
-      />
-    </CardHeaderValue>
-  </CardHeaderDetails>
-</Fragment>
+      <span
+        class="label"
+      >
+        Created
+        : 
+      </span>
+      <strong />
+    </span>
+    <span
+      class="container"
+    >
+      <strong>
+        <span
+          class="badge badge-secondary badge-pill"
+        />
+      </strong>
+    </span>
+  </div>
+</div>
 `;
 
 exports[`Order <AfterTitle/> should not display the refund action because the order was refunded 1`] = `
-<Fragment>
-  <ActionButtonsGroup
-    actions={Array []}
-    payload={
-      Object {
-        "order_id": 1,
-      }
-    }
-  />
-  <CardHeaderDetails>
-    <CardHeaderValue
-      label="Created"
+<div>
+  <div
+    class="container"
+  >
+    <span
+      class="container"
     >
-      <Connect(DatetimeLabelContainer)
-        key="created-at"
-      />
-    </CardHeaderValue>
-    <CardHeaderValue>
-      <Badge
-        color="secondary"
-        key="status"
-        pill={true}
-        tag="span"
-      />
-    </CardHeaderValue>
-  </CardHeaderDetails>
-</Fragment>
+      <span
+        class="label"
+      >
+        Created
+        : 
+      </span>
+      <strong />
+    </span>
+    <span
+      class="container"
+    >
+      <strong>
+        <span
+          class="badge badge-secondary badge-pill"
+        />
+      </strong>
+    </span>
+  </div>
+</div>
 `;
 
-exports[`Order <AfterTitle/> should not render because no integration id was provided 1`] = `""`;
+exports[`Order <AfterTitle/> should not render because no integration id was provided 1`] = `<div />`;
 
-exports[`Order <AfterTitle/> should not render because widgets are being edited 1`] = `""`;
+exports[`Order <AfterTitle/> should not render because widgets are being edited 1`] = `<div />`;
 
 exports[`Order <BeforeContent/> should render the total_refunds field to 0.00 because the value on the associated charge is null 1`] = `
 <div
-  className="simple-field"
-  key="charge-total-refunds"
+  class="simple-field"
 >
   <span
-    className="field-label"
+    class="field-label"
   >
     Total refunds on charge:
   </span>
   <span
-    className="field-value"
+    class="field-value"
   >
     $
     0.00
@@ -257,16 +211,15 @@ exports[`Order <BeforeContent/> should render the total_refunds field to 0.00 be
 
 exports[`Order <BeforeContent/> should render with the total_refunds field from the associated charge 1`] = `
 <div
-  className="simple-field"
-  key="charge-total-refunds"
+  class="simple-field"
 >
   <span
-    className="field-label"
+    class="field-label"
   >
     Total refunds on charge:
   </span>
   <span
-    className="field-value"
+    class="field-value"
   >
     $
     5.00

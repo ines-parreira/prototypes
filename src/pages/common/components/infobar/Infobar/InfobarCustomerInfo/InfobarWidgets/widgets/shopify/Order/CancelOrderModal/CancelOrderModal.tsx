@@ -1,5 +1,10 @@
-import React, {ChangeEvent, FormEvent, useCallback, useMemo} from 'react'
-import PropTypes from 'prop-types'
+import React, {
+    ChangeEvent,
+    FormEvent,
+    useCallback,
+    useContext,
+    useMemo,
+} from 'react'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {Button, Form, ModalFooter} from 'reactstrap'
@@ -14,15 +19,16 @@ import {
     onReset,
     setPayload,
 } from '../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/actions'
-import {IntegrationType} from '../../../../../../../../../../../models/integration/types'
 import {getCancelOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/selectors'
-import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
 import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
 import {RootState} from '../../../../../../../../../../../state/types'
+import {IntegrationType} from '../../../../../../../../../../../models/integration/types'
+import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
 import {getFinalCancelOrderPayload} from '../../../../../../../../../../../business/shopify/order'
 import Loader from '../../../../../../../../Loader/Loader'
-import {InfobarModalProps} from '../../../types'
 import Modal from '../../../../../../../../Modal'
+import {InfobarModalProps} from '../../../types'
+import {IntegrationContext} from '../../../IntegrationContext'
 import RefundOrderForm from '../RefundOrderForm/RefundOrderForm'
 
 import css from './CancelOrderModal.less'
@@ -34,32 +40,30 @@ type Props = Omit<InfobarModalProps, 'data'> & {
     }
 } & ConnectedProps<typeof connector>
 
-export const CancelOrderModalContainer = (
-    {
-        data = {
-            actionName: null,
-            order: fromJS({}),
-        },
-        header,
-        integrations,
-        isOpen,
-        loading,
-        loadingMessage,
-        lineItems,
-        onCancel,
-        onChange,
-        onClose,
-        onInit,
-        onLineItemChange,
-        onPayloadChange,
-        onReset,
-        onSubmit,
-        payload,
-        refund,
-        setPayload,
-    }: Props,
-    {integrationId}: {integrationId: number}
-) => {
+export const CancelOrderModalContainer = ({
+    data = {
+        actionName: null,
+        order: fromJS({}),
+    },
+    header,
+    integrations,
+    isOpen,
+    loading,
+    loadingMessage,
+    lineItems,
+    onCancel,
+    onChange,
+    onClose,
+    onInit,
+    onLineItemChange,
+    onPayloadChange,
+    onReset,
+    onSubmit,
+    payload,
+    refund,
+    setPayload,
+}: Props) => {
+    const {integrationId} = useContext(IntegrationContext)
     const previousIsOpen = usePrevious(isOpen)
 
     const integration = useMemo(
@@ -78,7 +82,7 @@ export const CancelOrderModalContainer = (
 
     useUpdateEffect(() => {
         if (!previousIsOpen && isOpen) {
-            void onInit(integrationId, data.order)
+            void onInit(integrationId!, data.order)
             onChange('order_id', data.order.get('id'))
             shortcutManager.pause()
         }
@@ -88,7 +92,7 @@ export const CancelOrderModalContainer = (
         const newPayload = payload?.set('refund', refundPayload)
 
         if (newPayload) {
-            void onPayloadChange(integrationId, newPayload)
+            void onPayloadChange(integrationId!, newPayload)
         }
     }
 
@@ -142,7 +146,7 @@ export const CancelOrderModalContainer = (
 
     const onLineChange = useCallback(
         (lineItem: Map<string, any>, index: number) => {
-            void onLineItemChange(integrationId, lineItem, index)
+            void onLineItemChange(integrationId!, lineItem, index)
         },
         [integrationId, onLineItemChange]
     )
@@ -211,10 +215,6 @@ export const CancelOrderModalContainer = (
             </Form>
         </Modal>
     ) : null
-}
-
-CancelOrderModalContainer.contextTypes = {
-    integrationId: PropTypes.number.isRequired,
 }
 
 const connector = connect(

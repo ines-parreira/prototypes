@@ -1,8 +1,7 @@
-import React, {useCallback, useMemo} from 'react'
+import React, {useCallback, useContext, useMemo} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Button, ModalFooter} from 'reactstrap'
 import {fromJS, List, Map} from 'immutable'
-import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {Link} from 'react-router-dom'
 import {useUpdateEffect, usePrevious} from 'react-use'
@@ -31,11 +30,11 @@ import {
 } from '../../../../../../../../../../../models/integration/types'
 import ProductSearchInput from '../../../../../../../../../forms/ProductSearchInput/ProductSearchInput'
 import Loader from '../../../../../../../../Loader/Loader'
-import {InfobarModalProps} from '../../../types'
 import Alert, {AlertType} from '../../../../../../../../Alert/Alert'
 import Modal from '../../../../../../../../Modal'
+import {InfobarModalProps} from '../../../types'
+import {IntegrationContext} from '../../../IntegrationContext'
 import {ShopifyActionType} from '../../types'
-
 import AddCustomItemPopover from '../../shared/DraftOrderModal/AddCustomItemPopover/AddCustomItemPopover'
 import EditOrderForm from '../EditOrderForm/EditOrderForm'
 import DraftOrderTable from '../../shared/DraftOrderModal//DraftOrderTable/DraftOrderTable'
@@ -52,35 +51,33 @@ type OwnProps = {
     defaultCurrency?: string
 }
 
-export function EditOrderModalContainer(
-    {
-        addCustomRow,
-        addRow,
-        onLineItemChange,
-        defaultCurrency = 'USD',
-        data = {actionName: null, order: null},
-        header,
-        integrations,
-        isOpen,
-        loading,
-        loadingMessage,
-        payload,
-        products,
-        calculatedEditOrder,
-        onInit,
-        onClose,
-        onChange,
-        onCancel,
-        onNotifyChange,
-        onNoteChange,
-        onBulkChange,
-        onSubmit,
-        onReset,
-    }: Omit<InfobarModalProps, 'data'> &
-        OwnProps &
-        ConnectedProps<typeof connector>,
-    {integrationId}: {integrationId: number}
-) {
+export function EditOrderModalContainer({
+    addCustomRow,
+    addRow,
+    onLineItemChange,
+    defaultCurrency = 'USD',
+    data = {actionName: null, order: null},
+    header,
+    integrations,
+    isOpen,
+    loading,
+    loadingMessage,
+    payload,
+    products,
+    calculatedEditOrder,
+    onInit,
+    onClose,
+    onChange,
+    onCancel,
+    onNotifyChange,
+    onNoteChange,
+    onBulkChange,
+    onSubmit,
+    onReset,
+}: Omit<InfobarModalProps, 'data'> &
+    OwnProps &
+    ConnectedProps<typeof connector>) {
+    const {integrationId} = useContext(IntegrationContext)
     const currentIntegration = useMemo(
         () =>
             integrations.find(
@@ -117,7 +114,7 @@ export function EditOrderModalContainer(
 
     const handleCancel = useCallback(
         (via: string) => () => {
-            onCancel(data.actionName!, integrationId, via)
+            onCancel(data.actionName!, integrationId!, via)
             onClose()
             handleReset()
         },
@@ -131,14 +128,14 @@ export function EditOrderModalContainer(
 
     const handleLineItemUpdate = useCallback(
         (newLineItem: Map<any, any>, index: number) => {
-            void onLineItemChange(integrationId, {newLineItem, index})
+            void onLineItemChange(integrationId!, {newLineItem, index})
         },
         [integrationId, onLineItemChange]
     )
 
     const handleLineItemDelete = useCallback(
         (index: number) => {
-            void onLineItemChange(integrationId, {remove: true, index})
+            void onLineItemChange(integrationId!, {remove: true, index})
         },
         [integrationId, onLineItemChange]
     )
@@ -169,7 +166,7 @@ export function EditOrderModalContainer(
         if (!previousIsOpen && isOpen) {
             if (hasScope) {
                 void onInit(
-                    integrationId,
+                    integrationId!,
                     data.order,
                     data.customer!,
                     currencyCode,
@@ -210,7 +207,7 @@ export function EditOrderModalContainer(
                     Missing Shopify permissions. To use this new feature, please
                     go to the{' '}
                     <Link
-                        to={`/app/settings/integrations/shopify/${integrationId}`}
+                        to={`/app/settings/integrations/shopify/${integrationId!}`}
                     >
                         settings page of your Shopify integration&nbsp;
                     </Link>
@@ -238,7 +235,7 @@ export function EditOrderModalContainer(
                     ) => {
                         void addRow(
                             data.actionName!,
-                            integrationId,
+                            integrationId!,
                             item.data,
                             variant
                         )
@@ -252,7 +249,7 @@ export function EditOrderModalContainer(
                     className={css.headerButton}
                     currencyCode={currencyCode}
                     onSubmit={(lineItem) => {
-                        void addCustomRow(integrationId, lineItem)
+                        void addCustomRow(integrationId!, lineItem)
                     }}
                 />
             </div>
@@ -327,10 +324,6 @@ export function EditOrderModalContainer(
             </ModalFooter>
         </Modal>
     )
-}
-
-EditOrderModalContainer.contextTypes = {
-    integrationId: PropTypes.number.isRequired,
 }
 
 const connector = connect(

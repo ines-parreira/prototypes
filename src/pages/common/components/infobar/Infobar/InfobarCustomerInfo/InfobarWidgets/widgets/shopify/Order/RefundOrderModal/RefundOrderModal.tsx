@@ -1,5 +1,4 @@
-import React, {ChangeEvent, useCallback, useMemo} from 'react'
-import PropTypes from 'prop-types'
+import React, {ChangeEvent, useCallback, useContext, useMemo} from 'react'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {Button, Form, ModalFooter} from 'reactstrap'
@@ -15,14 +14,15 @@ import {
     setPayload,
 } from '../../../../../../../../../../../state/infobarActions/shopify/refundOrder/actions'
 import {getRefundOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/refundOrder/selectors'
-import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
 import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
+import {RootState} from '../../../../../../../../../../../state/types'
+import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
 import {getFinalRefundOrderPayload} from '../../../../../../../../../../../business/shopify/order'
 import {IntegrationType} from '../../../../../../../../../../../models/integration/types'
-import {RootState} from '../../../../../../../../../../../state/types'
 import Loader from '../../../../../../../../Loader/Loader'
-import {InfobarModalProps} from '../../../types'
 import Modal from '../../../../../../../../Modal'
+import {InfobarModalProps} from '../../../types'
+import {IntegrationContext} from '../../../IntegrationContext'
 import RefundOrderForm from '../RefundOrderForm/RefundOrderForm'
 
 import css from './RefundOrderModal.less'
@@ -36,37 +36,34 @@ type OwnProps = Omit<InfobarModalProps, 'data'> & {
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
-export const RefundOrderModalContainer = (
-    {
-        data = {
-            actionName: null,
-            order: fromJS({}),
-        },
-        header,
-        integrations,
-        isOpen,
-        lineItems,
-        loading,
-        loadingMessage,
-        onCancel,
-        onChange,
-        onClose,
-        onInit,
-        onLineItemChange,
-        onPayloadChange,
-        onReset,
-        onSubmit,
-        payload,
-        refund,
-        setPayload,
-    }: Props,
-    {integrationId}: {integrationId: number}
-) => {
+export const RefundOrderModalContainer = ({
+    data = {
+        actionName: null,
+        order: fromJS({}),
+    },
+    header,
+    integrations,
+    isOpen,
+    lineItems,
+    loading,
+    loadingMessage,
+    onCancel,
+    onChange,
+    onClose,
+    onInit,
+    onLineItemChange,
+    onPayloadChange,
+    onReset,
+    onSubmit,
+    payload,
+    refund,
+    setPayload,
+}: Props) => {
     const previousIsOpen = usePrevious(isOpen)
-
+    const {integrationId} = useContext(IntegrationContext)
     useUpdateEffect(() => {
         if (!previousIsOpen && isOpen) {
-            void onInit(integrationId, data.order)
+            void onInit(integrationId!, data.order)
             onChange('order_id', data.order.get('id'))
             shortcutManager.pause()
         }
@@ -126,7 +123,7 @@ export const RefundOrderModalContainer = (
 
     const onLineChange = useCallback(
         (lineItem: Map<string, any>, index: number) => {
-            void onLineItemChange(integrationId, lineItem, index)
+            void onLineItemChange(integrationId!, lineItem, index)
         },
         [integrationId, onLineItemChange]
     )
@@ -157,7 +154,7 @@ export const RefundOrderModalContainer = (
                         lineItems={lineItems}
                         setPayload={setPayload}
                         onPayloadChange={(payload) => {
-                            void onPayloadChange(integrationId, payload)
+                            void onPayloadChange(integrationId!, payload)
                         }}
                         onLineItemChange={onLineChange}
                         onReasonChange={handleReasonChange}
@@ -197,10 +194,6 @@ export const RefundOrderModalContainer = (
             </Form>
         </Modal>
     ) : null
-}
-
-RefundOrderModalContainer.contextTypes = {
-    integrationId: PropTypes.number.isRequired,
 }
 
 const connector = connect(

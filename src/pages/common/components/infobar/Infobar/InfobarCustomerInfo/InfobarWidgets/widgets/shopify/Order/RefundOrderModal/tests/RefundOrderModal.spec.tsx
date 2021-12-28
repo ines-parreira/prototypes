@@ -1,5 +1,4 @@
-import React, {Component, ReactNode} from 'react'
-import PropTypes from 'prop-types'
+import React, {ReactNode} from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 import {fromJS, List, Map} from 'immutable'
 
@@ -15,6 +14,7 @@ import {
     initRefundOrderPayload,
 } from '../../../../../../../../../../../../business/shopify/order'
 import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
+import {IntegrationContext} from '../../../../IntegrationContext'
 import {ShopifyActionType} from '../../../types'
 import {RefundOrderModalContainer} from '../RefundOrderModal'
 
@@ -47,28 +47,6 @@ jest.mock(
         }
 )
 
-class MockLegacyContextWrapper extends Component<{
-    children: ReactNode
-    value?: {integrationId?: number}
-}> {
-    static childContextTypes = {
-        integrationId: PropTypes.number.isRequired,
-    }
-
-    static defaultProps = {value: {}}
-
-    getChildContext() {
-        const {value} = this.props
-
-        return {integrationId: 1, ...value}
-    }
-
-    render() {
-        const {children} = this.props
-        return children
-    }
-}
-
 describe('<RefundOrderModal />', () => {
     const order = fromJS(
         shopifyOrderFixture({shippingLines: [{price: '0.00'}]})
@@ -76,7 +54,7 @@ describe('<RefundOrderModal />', () => {
     const payload = initRefundOrderPayload(order)
     const lineItems = initRefundOrderLineItems(order)
     const refund = fromJS(shopifySuggestedRefundFixture())
-
+    const integrationContextValue = {integration: fromJS({}), integrationId: 1}
     const minProps = {
         data: {
             actionName: ShopifyActionType.RefundOrder,
@@ -121,9 +99,9 @@ describe('<RefundOrderModal />', () => {
 
     it('should not render when the modal is closed', () => {
         const {container} = render(
-            <MockLegacyContextWrapper>
+            <IntegrationContext.Provider value={integrationContextValue}>
                 <RefundOrderModalContainer {...minProps} isOpen={false} />
-            </MockLegacyContextWrapper>
+            </IntegrationContext.Provider>
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -131,9 +109,9 @@ describe('<RefundOrderModal />', () => {
 
     it('should render a spinner when missing data', () => {
         const {container} = render(
-            <MockLegacyContextWrapper>
+            <IntegrationContext.Provider value={integrationContextValue}>
                 <RefundOrderModalContainer {...minProps} loading />
-            </MockLegacyContextWrapper>
+            </IntegrationContext.Provider>
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -141,9 +119,9 @@ describe('<RefundOrderModal />', () => {
 
     it('should render with an empty order table when data is empty', () => {
         const {container} = render(
-            <MockLegacyContextWrapper>
+            <IntegrationContext.Provider value={integrationContextValue}>
                 <RefundOrderModalContainer {...minProps} payload={payload} />
-            </MockLegacyContextWrapper>
+            </IntegrationContext.Provider>
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -151,13 +129,13 @@ describe('<RefundOrderModal />', () => {
 
     it('should render with a populated order table when data is populated', () => {
         const {container} = render(
-            <MockLegacyContextWrapper>
+            <IntegrationContext.Provider value={integrationContextValue}>
                 <RefundOrderModalContainer
                     {...minProps}
                     payload={payload}
                     lineItems={lineItems}
                 />
-            </MockLegacyContextWrapper>
+            </IntegrationContext.Provider>
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -169,14 +147,14 @@ describe('<RefundOrderModal />', () => {
         )
 
         const {getByLabelText} = render(
-            <MockLegacyContextWrapper>
+            <IntegrationContext.Provider value={integrationContextValue}>
                 <RefundOrderModalContainer
                     {...minProps}
                     payload={payload}
                     lineItems={lineItems}
                     refund={refund}
                 />
-            </MockLegacyContextWrapper>
+            </IntegrationContext.Provider>
         )
         const newPayload = payload.setIn(['shipping', 'amount'], '1.00')
 
@@ -196,14 +174,14 @@ describe('<RefundOrderModal />', () => {
         const payload = fromJS(shopifyRefundOrderPayloadFixture())
 
         const {getByText} = render(
-            <MockLegacyContextWrapper>
+            <IntegrationContext.Provider value={integrationContextValue}>
                 <RefundOrderModalContainer
                     {...minProps}
                     payload={payload}
                     lineItems={lineItems}
                     refund={refund}
                 />
-            </MockLegacyContextWrapper>
+            </IntegrationContext.Provider>
         )
 
         fireEvent.click(getByText('▼'))
@@ -228,14 +206,14 @@ describe('<RefundOrderModal />', () => {
         )
 
         render(
-            <MockLegacyContextWrapper>
+            <IntegrationContext.Provider value={integrationContextValue}>
                 <RefundOrderModalContainer
                     {...minProps}
                     payload={payload}
                     lineItems={lineItems}
                     refund={refund}
                 />
-            </MockLegacyContextWrapper>
+            </IntegrationContext.Provider>
         )
 
         const value = "I don't like this product anymore"
@@ -256,14 +234,14 @@ describe('<RefundOrderModal />', () => {
         >
 
         const {getByLabelText} = render(
-            <MockLegacyContextWrapper>
+            <IntegrationContext.Provider value={integrationContextValue}>
                 <RefundOrderModalContainer
                     {...minProps}
                     payload={payload}
                     lineItems={lineItems}
                     refund={refund}
                 />
-            </MockLegacyContextWrapper>
+            </IntegrationContext.Provider>
         )
         const newPayload = payload.set('notify', false)
 
@@ -276,14 +254,14 @@ describe('<RefundOrderModal />', () => {
         const payload = fromJS(shopifyRefundOrderPayloadFixture())
 
         const {getByText} = render(
-            <MockLegacyContextWrapper>
+            <IntegrationContext.Provider value={integrationContextValue}>
                 <RefundOrderModalContainer
                     {...minProps}
                     payload={payload}
                     lineItems={lineItems}
                     refund={refund}
                 />
-            </MockLegacyContextWrapper>
+            </IntegrationContext.Provider>
         )
 
         fireEvent.click(getByText('Refund'))
@@ -301,14 +279,14 @@ describe('<RefundOrderModal />', () => {
 
     it('should call onCancel() when clicking on cancel button', () => {
         const {getByText} = render(
-            <MockLegacyContextWrapper>
+            <IntegrationContext.Provider value={integrationContextValue}>
                 <RefundOrderModalContainer
                     {...minProps}
                     payload={fromJS(shopifyRefundOrderPayloadFixture())}
                     lineItems={lineItems}
                     refund={refund}
                 />
-            </MockLegacyContextWrapper>
+            </IntegrationContext.Provider>
         )
 
         fireEvent.click(getByText('Cancel'))
@@ -320,14 +298,14 @@ describe('<RefundOrderModal />', () => {
 
     it('should call onCancel() when clicking on header button', () => {
         const {getByTestId} = render(
-            <MockLegacyContextWrapper>
+            <IntegrationContext.Provider value={integrationContextValue}>
                 <RefundOrderModalContainer
                     {...minProps}
                     payload={fromJS(shopifyRefundOrderPayloadFixture())}
                     lineItems={lineItems}
                     refund={refund}
                 />
-            </MockLegacyContextWrapper>
+            </IntegrationContext.Provider>
         )
 
         fireEvent.click(getByTestId('Modal'))

@@ -1,5 +1,4 @@
-import React, {ReactNode} from 'react'
-import ImmutablePropTypes from 'react-immutable-proptypes'
+import React, {ContextType, ReactNode} from 'react'
 import type {Map} from 'immutable'
 
 import logo from 'assets/img/infobar/yotpo.svg'
@@ -11,6 +10,7 @@ import ExpandAllButton from '../ExpandAllButton'
 import {CardHeaderBadge} from '../CardHeaderBadge'
 import {CardHeaderStatusLabel} from '../CardHeaderStatusLabel'
 import {CardHeaderValue} from '../CardHeaderValue'
+import {IntegrationContext} from '../IntegrationContext'
 
 import {CardHeaderYotpoRatingThumbs} from './custom/CardHeaderYotpoRatingThumbs'
 import css from './Customer.less'
@@ -60,10 +60,8 @@ type TitleWrapperProps = {
 }
 
 class TitleWrapper extends React.Component<TitleWrapperProps> {
-    static contextTypes = {
-        integration: ImmutablePropTypes.map.isRequired,
-    }
-
+    static contextType = IntegrationContext
+    context!: ContextType<typeof IntegrationContext>
     render() {
         const {source} = this.props
         const pointBalance = source.getIn([

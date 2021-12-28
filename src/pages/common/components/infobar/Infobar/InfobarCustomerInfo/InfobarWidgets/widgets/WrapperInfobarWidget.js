@@ -12,6 +12,7 @@ import DragWrapper from '../../../../../dragging/WidgetsDragWrapper'
 import {WIDGET_COLOR_SUPPORTED_TYPES} from '../constants'
 import InfobarWidget from '../InfobarWidget'
 
+import {IntegrationContext} from './IntegrationContext.ts'
 import cardCss from './CardInfobarWidget.less'
 import css from './WrapperInfobarWidget.less'
 
@@ -45,20 +46,6 @@ class WrapperInfobarWidget extends React.Component {
         open: PropTypes.bool,
     }
 
-    static childContextTypes = {
-        integration: ImmutablePropTypes.map.isRequired,
-        integrationId: PropTypes.number,
-    }
-
-    getChildContext() {
-        const integration = this.props.integration || fromJS({})
-
-        return {
-            integration,
-            integrationId: integration.get('id'),
-        }
-    }
-
     _deleteWrapper = (e) => {
         const {template, editing} = this.props
 
@@ -73,7 +60,7 @@ class WrapperInfobarWidget extends React.Component {
 
     render() {
         const {widget, template, isEditing, source, editing} = this.props
-
+        const integration = this.props.integration || fromJS({})
         const widgetType = widget.get('type')
         const colorClassNames = WIDGET_COLOR_SUPPORTED_TYPES.includes(
             widgetType
@@ -85,69 +72,80 @@ class WrapperInfobarWidget extends React.Component {
         const tp = template.get('templatePath')
 
         return (
-            <div
-                className={classnames(
-                    'infobar-wrapper draggable',
-                    ...colorClassNames
-                )}
+            <IntegrationContext.Provider
+                value={{
+                    integration,
+                    integrationId: integration.get('id'),
+                }}
             >
-                {!isEditing && <div id={widgetType} className={css.anchor} />}
-                <Card
+                <div
                     className={classnames(
-                        cardCss.component,
-                        'wrapper transparent'
+                        'infobar-wrapper draggable',
+                        ...colorClassNames
                     )}
                 >
-                    {isEditing && (
-                        <CardBody className="header clearfix">
-                            <span className="tools">
-                                <i
-                                    className="material-icons text-danger clickable"
-                                    onClick={this._deleteWrapper}
-                                >
-                                    close
-                                </i>
-                            </span>
-                        </CardBody>
+                    {!isEditing && (
+                        <div id={widgetType} className={css.anchor} />
                     )}
+                    <Card
+                        className={classnames(
+                            cardCss.component,
+                            'wrapper transparent'
+                        )}
+                    >
+                        {isEditing && (
+                            <CardBody className="header clearfix">
+                                <span className="tools">
+                                    <i
+                                        className="material-icons text-danger clickable"
+                                        onClick={this._deleteWrapper}
+                                    >
+                                        close
+                                    </i>
+                                </span>
+                            </CardBody>
+                        )}
 
-                    <CardBody className="content">
-                        <DragWrapper
-                            actions={editing && editing.actions}
-                            sort
-                            group={{
-                                name: ap.join('.'),
-                                pull: false,
-                                put: true,
-                            }}
-                            templatePath={tp}
-                            isEditing={isEditing}
-                            watchDrop
-                        >
-                            {template.get('widgets', fromJS([])).map((w, i) => {
-                                const passedTemplate = w.set(
-                                    'templatePath',
-                                    `${tp}.widgets.${i}`
-                                )
+                        <CardBody className="content">
+                            <DragWrapper
+                                actions={editing && editing.actions}
+                                sort
+                                group={{
+                                    name: ap.join('.'),
+                                    pull: false,
+                                    put: true,
+                                }}
+                                templatePath={tp}
+                                isEditing={isEditing}
+                                watchDrop
+                            >
+                                {template
+                                    .get('widgets', fromJS([]))
+                                    .map((w, i) => {
+                                        const passedTemplate = w.set(
+                                            'templatePath',
+                                            `${tp}.widgets.${i}`
+                                        )
 
-                                return (
-                                    <InfobarWidget
-                                        key={`${passedTemplate.get(
-                                            'path'
-                                        )}-${i}`}
-                                        source={source}
-                                        parent={template}
-                                        widget={widget}
-                                        template={passedTemplate}
-                                        editing={editing}
-                                        isEditing={isEditing}
-                                    />
-                                )
-                            })}
-                        </DragWrapper>
-                    </CardBody>
-                </Card>
-            </div>
+                                        return (
+                                            <InfobarWidget
+                                                key={`${passedTemplate.get(
+                                                    'path'
+                                                )}-${i}`}
+                                                source={source}
+                                                parent={template}
+                                                widget={widget}
+                                                template={passedTemplate}
+                                                editing={editing}
+                                                isEditing={isEditing}
+                                            />
+                                        )
+                                    })}
+                            </DragWrapper>
+                        </CardBody>
+                    </Card>
+                </div>
+            </IntegrationContext.Provider>
         )
     }
 }

@@ -1,5 +1,4 @@
-import React, {Component, ReactNode} from 'react'
-import ImmutablePropTypes from 'react-immutable-proptypes'
+import React, {Component, ContextType, ReactNode} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 import {Badge, CardBody} from 'reactstrap'
@@ -17,6 +16,8 @@ import {getTrackingUrl} from '../../../../../../../../../utils/delivery'
 import {DatetimeLabel} from '../../../../../../../utils/labels'
 import {displayLabel, guessFieldValueFromRawData} from '../../../../../utils'
 
+import {IntegrationContext} from '../IntegrationContext'
+
 export default function Order() {
     return {
         BeforeContent,
@@ -27,13 +28,12 @@ export default function Order() {
 
 function getIntegrationData(
     state: RootState,
-    integrationId: string,
+    integrationId: number,
     customerId: number
 ) {
     const integrationData = isCurrentlyOnTicket()
-        ? getIntegrationDataByIntegrationId(integrationId as any)(state)
+        ? getIntegrationDataByIntegrationId(integrationId)(state)
         : getActiveCustomerIntegrationDataByIntegrationId(integrationId)(state)
-
     if (integrationData.getIn(['customer', 'id']) !== customerId) {
         devLog(
             '[INFOBAR][magento2][order] Could not find integration data for customer.',
@@ -64,10 +64,8 @@ type BeforeContentProps = ConnectedProps<typeof connectorBeforeContent> & {
 }
 
 class BeforeContentContainer extends Component<BeforeContentProps> {
-    static contextTypes = {
-        integration: ImmutablePropTypes.map.isRequired,
-    }
-
+    static contextType = IntegrationContext
+    context!: ContextType<typeof IntegrationContext>
     render() {
         const {source, getIntegrationData} = this.props
 
@@ -75,10 +73,10 @@ class BeforeContentContainer extends Component<BeforeContentProps> {
             (source.get('state') as string) || ''
         ).toLowerCase() as keyof typeof statusColors
 
-        const {integration} = this.context as {integration: Map<any, any>}
+        const {integrationId} = this.context
 
         const customerIntegrationData = getIntegrationData(
-            integration.get('id'),
+            integrationId!,
             source.get('customer_id')
         )
 
@@ -118,7 +116,7 @@ class BeforeContentContainer extends Component<BeforeContentProps> {
 const connectorBeforeContent = connect((state: RootState) => {
     return {
         getIntegrationData: (
-            integrationId: string,
+            integrationId: number,
             customerId: number
         ): Map<any, any> => {
             return getIntegrationData(state, integrationId, customerId)
@@ -131,13 +129,11 @@ const BeforeContent = connectorBeforeContent(BeforeContentContainer)
 export class Shipments extends Component<{
     shipments: List<any>
 }> {
-    static contextTypes = {
-        integration: ImmutablePropTypes.map.isRequired,
-    }
-
+    static contextType = IntegrationContext
+    context!: ContextType<typeof IntegrationContext>
     render() {
         const {shipments} = this.props
-        const {integration} = this.context as {integration: Map<any, any>}
+        const {integration} = this.context
 
         const storeUrl = integration.getIn(['meta', 'store_url']) as string
         const adminUrlSuffix = integration.getIn([
@@ -244,13 +240,11 @@ export class Shipments extends Component<{
 export class CreditMemos extends Component<{
     creditMemos: List<any>
 }> {
-    static contextTypes = {
-        integration: ImmutablePropTypes.map.isRequired,
-    }
-
+    static contextType = IntegrationContext
+    context!: ContextType<typeof IntegrationContext>
     render() {
         const {creditMemos} = this.props
-        const {integration} = this.context as {integration: Map<any, any>}
+        const {integration} = this.context
 
         const storeUrl = integration.getIn(['meta', 'store_url']) as string
         const adminUrlSuffix: string = integration.getIn([
@@ -317,16 +311,14 @@ type AfterContentProps = ConnectedProps<typeof connectorAfterContent> & {
 }
 
 class AfterContentContainer extends Component<AfterContentProps> {
-    static contextTypes = {
-        integration: ImmutablePropTypes.map.isRequired,
-    }
-
+    static contextType = IntegrationContext
+    context!: ContextType<typeof IntegrationContext>
     render() {
         const {source, getIntegrationData} = this.props
-        const {integration} = this.context as {integration: Map<any, any>}
+        const {integrationId} = this.context
 
         const customerIntegrationData = getIntegrationData(
-            integration.get('id'),
+            integrationId!,
             source.get('customer_id')
         )
 
@@ -353,7 +345,7 @@ class AfterContentContainer extends Component<AfterContentProps> {
 
 const connectorAfterContent = connect((state: RootState) => {
     return {
-        getIntegrationData: (integrationId: string, customerId: number) => {
+        getIntegrationData: (integrationId: number, customerId: number) => {
             return getIntegrationData(state, integrationId, customerId)
         },
     }
@@ -367,13 +359,11 @@ type TitleWrapperProps = {
 }
 
 class TitleWrapper extends Component<TitleWrapperProps> {
-    static contextTypes = {
-        integration: ImmutablePropTypes.map.isRequired,
-    }
-
+    static contextType = IntegrationContext
+    context!: ContextType<typeof IntegrationContext>
     render() {
         const {children, source} = this.props
-        const {integration} = this.context as {integration: Map<any, any>}
+        const {integration} = this.context
 
         const storeUrl: string = integration.getIn(['meta', 'store_url'])
         const adminUrlSuffix: string = integration.getIn([

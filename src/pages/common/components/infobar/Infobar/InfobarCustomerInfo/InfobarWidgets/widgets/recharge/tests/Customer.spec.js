@@ -1,51 +1,47 @@
 import React from 'react'
-import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+import {render} from '@testing-library/react'
 
+import {IntegrationContext} from '../../IntegrationContext.ts'
 import {TitleWrapper} from '../Customer.tsx'
+
+const integrationContextData = {
+    integration: fromJS({meta: {store_name: 'mystore'}}),
+    integrationId: 1,
+}
 
 describe('Customer', () => {
     describe('TitleWrapper', () => {
         it('should render default link because no custom link is set', () => {
-            const component = shallow(
-                <TitleWrapper
-                    source={fromJS({
-                        hash: 'a8s4d86as54d',
-                    })}
-                    template={fromJS({})}
-                />,
-                {
-                    context: {
-                        integration: fromJS({
-                            meta: {store_name: 'mystore'},
-                        }),
-                    },
-                }
+            const {container} = render(
+                <IntegrationContext.Provider value={integrationContextData}>
+                    <TitleWrapper
+                        source={fromJS({
+                            hash: 'a8s4d86as54d',
+                        })}
+                        template={fromJS({})}
+                    />{' '}
+                </IntegrationContext.Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
 
-        it('should custom link because it is set', () => {
-            const component = shallow(
-                <TitleWrapper
-                    source={fromJS({
-                        hash: 'a8s4d86as54d',
-                    })}
-                    template={fromJS({
-                        meta: {link: 'https://gorgias.io/{{hash}}/'},
-                    })}
-                />,
-                {
-                    context: {
-                        integration: fromJS({
-                            meta: {store_name: 'mystore'},
-                        }),
-                    },
-                }
+        it('should render custom link because it is set', () => {
+            const {container} = render(
+                <IntegrationContext.Provider value={integrationContextData}>
+                    <TitleWrapper
+                        source={fromJS({
+                            hash: 'a8s4d86as54d',
+                        })}
+                        template={fromJS({
+                            meta: {link: 'https://gorgias.io/{{hash}}/'},
+                        })}
+                    />{' '}
+                </IntegrationContext.Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
     })
 })

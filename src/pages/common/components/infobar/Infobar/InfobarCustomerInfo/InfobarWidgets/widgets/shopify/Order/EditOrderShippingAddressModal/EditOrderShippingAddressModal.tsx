@@ -1,13 +1,13 @@
 import React, {
     MouseEvent,
     useCallback,
+    useContext,
     useMemo,
     useState,
     FormEvent,
 } from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
-import PropTypes from 'prop-types'
 import {useUpdateEffect, usePrevious} from 'react-use'
 import {
     Button,
@@ -23,36 +23,29 @@ import {
 
 import classnames from 'classnames'
 
-import {states} from '../../../../../../../../../../../fixtures/states'
-
-import {RootState} from '../../../../../../../../../../../state/types'
-import {InfobarModalProps} from '../../../types'
-import Modal from '../../../../../../../../Modal'
-import {ShopifyActionType} from '../../types'
-
-import InputField from '../../../../../../../../../forms/InputField'
-
-import {getShippingAddressState} from '../../../../../../../../../../../state/infobarActions/shopify/editShippingAddress/selectors'
-
 import {
     onInit,
     onReset,
 } from '../../../../../../../../../../../state/infobarActions/shopify/editShippingAddress/action'
-
+import {getShippingAddressState} from '../../../../../../../../../../../state/infobarActions/shopify/editShippingAddress/selectors'
 import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
+import {RootState} from '../../../../../../../../../../../state/types'
 import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
-import {IntegrationType} from '../../../../../../../../../../../models/integration/types'
-
-import SelectField from '../../../../../../../../../forms/SelectField/SelectField'
-
-import Loader from '../../../../../../../../Loader/Loader'
-
 import {getCurrentAccountState} from '../../../../../../../../../../../state/currentAccount/selectors'
 
 import {
     logEvent,
     SegmentEvent,
 } from '../../../../../../../../../../../store/middlewares/segmentTracker'
+import {IntegrationType} from '../../../../../../../../../../../models/integration/types'
+import {states} from '../../../../../../../../../../../fixtures/states'
+import SelectField from '../../../../../../../../../forms/SelectField/SelectField'
+import InputField from '../../../../../../../../../forms/InputField'
+import Loader from '../../../../../../../../Loader/Loader'
+import Modal from '../../../../../../../../Modal'
+import {IntegrationContext} from '../../../IntegrationContext'
+import {InfobarModalProps} from '../../../types'
+import {ShopifyActionType} from '../../types'
 
 import css from './EditOrderShippingAddressModal.less'
 
@@ -78,37 +71,35 @@ const defaultCurrentAddressState = fromJS({
     zip: '',
 }) as Map<any, any>
 
-export function EditOrderShippingAddressModal(
-    {
-        isOpen,
-        header,
-        data = {
-            actionName: null,
-            customer_id: '',
-            order_id: '',
-            current_shipping_address: fromJS({}),
-        },
-        onClose,
-        loading,
-        loadingMessage,
-        currentAccount,
-        shippingAddresses,
-        onInit,
-        onChange,
-        integrations,
-        onSubmit,
-        onReset,
-        onBulkChange,
-    }: Omit<InfobarModalProps, 'data'> &
-        OwnProps &
-        ConnectedProps<typeof connector>,
-    {integrationId}: {integrationId: number}
-) {
+export function EditOrderShippingAddressModal({
+    isOpen,
+    header,
+    data = {
+        actionName: null,
+        customer_id: '',
+        order_id: '',
+        current_shipping_address: fromJS({}),
+    },
+    onClose,
+    loading,
+    loadingMessage,
+    currentAccount,
+    shippingAddresses,
+    onInit,
+    onChange,
+    integrations,
+    onSubmit,
+    onReset,
+    onBulkChange,
+}: Omit<InfobarModalProps, 'data'> &
+    OwnProps &
+    ConnectedProps<typeof connector>) {
     const _getStatesList = (country: string) => {
         const stateObj = states.find((state) => state.name === country)
         if (stateObj && stateObj.provinces) return stateObj.provinces
         return []
     }
+    const {integrationId} = useContext(IntegrationContext)
 
     const [dropdownOpen, setOpen] = useState(false)
 
@@ -258,7 +249,7 @@ export function EditOrderShippingAddressModal(
                     account_id: currentAccount.get('domain'),
                     order_id: data.order_id,
                 })
-                void onInit(integrationId, data.customer_id, () => {
+                void onInit(integrationId!, data.customer_id, () => {
                     onClose()
                     handleReset()
                 })
@@ -578,10 +569,6 @@ export function EditOrderShippingAddressModal(
             </Form>
         </Modal>
     )
-}
-
-EditOrderShippingAddressModal.contextTypes = {
-    integrationId: PropTypes.number.isRequired,
 }
 
 const connector = connect(

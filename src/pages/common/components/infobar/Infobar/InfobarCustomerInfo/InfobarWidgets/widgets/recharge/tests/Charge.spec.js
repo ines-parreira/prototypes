@@ -1,7 +1,11 @@
 import React from 'react'
-import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+import {render} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import thunk from 'redux-thunk'
+import configureMockStore from 'redux-mock-store'
 
+import {IntegrationContext} from '../../IntegrationContext.ts'
 import index, {
     SubscriptionAfterTitle,
     AfterContent,
@@ -12,98 +16,98 @@ import index, {
 const BeforeContent = index().BeforeContent
 const Wrapper = index().Wrapper
 
+const mockStore = configureMockStore([thunk])
+const integrationContextData = {integration: fromJS({}), integrationId: 1}
+
 describe('Charge', () => {
     describe('SubscriptionAfterTitle', () => {
         it('should return null if isEditing', () => {
-            const component = shallow(
-                <SubscriptionAfterTitle isEditing={true} source={fromJS({})} />,
-                {
-                    context: {
-                        chargeStatus: '',
-                    },
-                }
+            const {container} = render(
+                <Provider store={mockStore({})}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <Wrapper source={fromJS({status: ''})}>
+                            <SubscriptionAfterTitle
+                                isEditing={true}
+                                source={fromJS({})}
+                            />
+                        </Wrapper>
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
 
         it("should return null if there's no integrationId", () => {
-            const component = shallow(
-                <SubscriptionAfterTitle
-                    isEditing={false}
-                    source={fromJS({})}
-                />,
-                {
-                    context: {
-                        chargeStatus: 'success',
-                    },
-                }
+            const {container} = render(
+                <Provider store={mockStore({})}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <Wrapper source={fromJS({status: 'success'})}>
+                            <SubscriptionAfterTitle source={fromJS({})} />
+                        </Wrapper>
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
 
         it('should not display any action if the charge is nor queued nor skipped', () => {
-            const component = shallow(
-                <SubscriptionAfterTitle
-                    isEditing={false}
-                    source={fromJS({})}
-                />,
-                {
-                    context: {
-                        integrationId: 1,
-                        chargeStatus: 'success',
-                    },
-                }
+            const {container} = render(
+                <Provider store={mockStore({})}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <Wrapper source={fromJS({status: 'success'})}>
+                            <SubscriptionAfterTitle source={fromJS({})} />
+                        </Wrapper>
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
 
         it('should display the skipCharge action if the charge is queued', () => {
-            const component = shallow(
-                <SubscriptionAfterTitle
-                    isEditing={false}
-                    source={fromJS({
-                        charge_id: 2,
-                        subscription_id: 3,
-                    })}
-                />,
-                {
-                    context: {
-                        integrationId: 1,
-                        chargeStatus: 'queued',
-                    },
-                }
+            const {container} = render(
+                <Provider store={mockStore({})}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <Wrapper source={fromJS({status: 'queued'})}>
+                            <SubscriptionAfterTitle
+                                source={fromJS({
+                                    charge_id: 2,
+                                    subscription_id: 3,
+                                })}
+                            />
+                        </Wrapper>
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
 
         it('should display the unskipCharge action if the charge is skipped', () => {
-            const component = shallow(
-                <SubscriptionAfterTitle
-                    isEditing={false}
-                    source={fromJS({
-                        charge_id: 2,
-                        subscription_id: 3,
-                    })}
-                />,
-                {
-                    context: {
-                        integrationId: 1,
-                        chargeStatus: 'skipped',
-                    },
-                }
+            const {container} = render(
+                <Provider store={mockStore({})}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <Wrapper source={fromJS({status: 'skipped'})}>
+                            <SubscriptionAfterTitle
+                                source={fromJS({
+                                    charge_id: 2,
+                                    subscription_id: 3,
+                                })}
+                            />
+                        </Wrapper>
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
     })
 
     describe('BeforeContent', () => {
         it("should display default color if there's no matching status", () => {
-            const component = shallow(
+            const {container} = render(
                 <BeforeContent
                     source={fromJS({
                         status: 'foobar',
@@ -111,11 +115,11 @@ describe('Charge', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
 
         it("should display the appropriate color if there's a matching status", () => {
-            const component = shallow(
+            const {container} = render(
                 <BeforeContent
                     source={fromJS({
                         status: 'error',
@@ -123,145 +127,178 @@ describe('Charge', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
     })
 
     describe('AfterContent', () => {
         it('should aggregate line_items by subscriptions', () => {
-            const component = shallow(
-                <AfterContent
-                    isEditing={false}
-                    source={fromJS({
-                        line_items: [
-                            {subscription_id: 1, title: 'foo', quantity: 7},
-                            {subscription_id: 1, title: 'bar', quantity: 5},
-                            {subscription_id: 2, title: 'baz', quantity: 1},
-                        ],
-                    })}
-                />
+            const {container} = render(
+                <Provider store={mockStore({})}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <Wrapper source={fromJS({})}>
+                            <AfterContent
+                                isEditing={false}
+                                source={fromJS({
+                                    line_items: [
+                                        {
+                                            subscription_id: 1,
+                                            title: 'foo',
+                                            quantity: 7,
+                                        },
+                                        {
+                                            subscription_id: 1,
+                                            title: 'bar',
+                                            quantity: 5,
+                                        },
+                                        {
+                                            subscription_id: 2,
+                                            title: 'baz',
+                                            quantity: 1,
+                                        },
+                                    ],
+                                })}
+                            />
+                        </Wrapper>
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
-        })
-    })
-
-    describe('Wrapper', () => {
-        it('should set the context correctly', () => {
-            const component = shallow(
-                <Wrapper
-                    source={fromJS({
-                        status: 'success',
-                    })}
-                >
-                    <div></div>
-                </Wrapper>
-            )
-
-            expect(component.instance().getChildContext().chargeStatus).toEqual(
-                'success'
-            )
+            expect(container).toMatchSnapshot()
         })
     })
 
     describe('AfterTitle', () => {
-        const options = {context: {integrationId: 1}}
-
         it('should return null if we are in edition mode, or if there is no integrationId', () => {
-            let component = shallow(
-                <AfterTitle isEditing={true} source={fromJS({})} />,
-                options
+            const {container: container1} = render(
+                <Provider store={mockStore({})}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <AfterTitle
+                            isEditing
+                            source={fromJS({
+                                id: 2,
+                            })}
+                        />
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container1).toMatchSnapshot()
 
-            component = shallow(
-                <AfterTitle isEditing={false} source={fromJS({})} />,
-                {context: {integrationId: null}}
+            const {container: container2} = render(
+                <Provider store={mockStore({})}>
+                    <IntegrationContext.Provider
+                        value={{
+                            integration: fromJS({}),
+                            integrationId: undefined,
+                        }}
+                    >
+                        <AfterTitle
+                            source={fromJS({
+                                id: 2,
+                            })}
+                        />
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container2).toMatchSnapshot()
         })
 
         it('should display the refund action when the status is SUCCESS or PARTIALLY_REFUNDED', () => {
-            let component = shallow(
-                <AfterTitle
-                    isEditing={false}
-                    source={fromJS({
-                        status: 'SUCCESS',
-                        total_price: '18.00',
-                        total_refunds: 0.0,
-                    })}
-                />,
-                options
+            const {container: container1} = render(
+                <Provider store={mockStore({})}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <AfterTitle
+                            source={fromJS({
+                                status: 'SUCCESS',
+                                total_price: '18.00',
+                                total_refunds: 0.0,
+                                id: 2,
+                            })}
+                        />
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container1).toMatchSnapshot()
 
-            component = shallow(
-                <AfterTitle
-                    isEditing={false}
-                    source={fromJS({
-                        status: 'PARTIALLY_REFUNDED',
-                        total_price: '18.00',
-                        total_refunds: 8.0,
-                    })}
-                />,
-                options
+            const {container: container2} = render(
+                <Provider store={mockStore({})}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <AfterTitle
+                            source={fromJS({
+                                status: 'PARTIALLY_REFUNDED',
+                                total_price: '18.00',
+                                total_refunds: 8.0,
+                                id: 2,
+                            })}
+                        />
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container2).toMatchSnapshot()
         })
 
         it('should handle correctly if total_price or total_refunds is not set', () => {
-            let component = shallow(
-                <AfterTitle
-                    isEditing={false}
-                    source={fromJS({
-                        status: 'SUCCESS',
-                        total_price: null,
-                        total_refunds: 0.0,
-                    })}
-                />,
-                options
+            const {container: container1} = render(
+                <Provider store={mockStore({})}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <AfterTitle
+                            source={fromJS({
+                                status: 'SUCCESS',
+                                total_price: null,
+                                total_refunds: 0.0,
+                                id: 2,
+                            })}
+                        />
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container1).toMatchSnapshot()
 
-            component = shallow(
-                <AfterTitle
-                    isEditing={false}
-                    source={fromJS({
-                        status: 'PARTIALLY_REFUNDED',
-                        total_price: '18.00',
-                        total_refunds: null,
-                    })}
-                />,
-                options
+            const {container: container2} = render(
+                <Provider store={mockStore({})}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <AfterTitle
+                            source={fromJS({
+                                status: 'PARTIALLY_REFUNDED',
+                                total_price: '18.00',
+                                total_refunds: null,
+                                id: 2,
+                            })}
+                        />
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container2).toMatchSnapshot()
         })
 
         it('should not display the refund action when the status is not SUCCESS or PARTIALLY_REFUNDED', () => {
-            const component = shallow(
-                <AfterTitle
-                    isEditing={false}
-                    source={fromJS({
-                        status: 'FAILURE',
-                        total_price: '18.00',
-                    })}
-                />,
-                options
+            const {container} = render(
+                <Provider store={mockStore({})}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <AfterTitle
+                            source={fromJS({
+                                status: 'FAILURE',
+                                total_price: '18.00',
+                                id: 2,
+                            })}
+                        />
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
     })
 
     describe('TitleWrapper', () => {
-        let integrationId = 12
-        let customerId = 456
+        const integrationId = 12
+        const customerId = 456
         const getIntegrationData = () =>
             fromJS({
                 customer: {
@@ -274,7 +311,8 @@ describe('Charge', () => {
             id: 789,
             customer_id: customerId,
         })
-        const context = {
+        const integrationContextData2 = {
+            integrationId,
             integration: fromJS({
                 id: integrationId,
                 meta: {store_name: 'mystore'},
@@ -284,38 +322,54 @@ describe('Charge', () => {
         it('should not render any link because no customer hash is available', () => {
             window.location.pathname = ''
 
-            let component = shallow(
-                <TitleWrapperContainer
-                    getIntegrationData={() =>
-                        fromJS({
-                            customer: {},
-                        })
-                    }
-                    source={chargeData}
-                    template={fromJS({})}
-                />,
-                {context}
+            const {container} = render(
+                <Provider store={mockStore({})}>
+                    <IntegrationContext.Provider
+                        value={integrationContextData2}
+                    >
+                        <Wrapper source={fromJS({})}>
+                            <TitleWrapperContainer
+                                getIntegrationData={() =>
+                                    fromJS({
+                                        customer: {},
+                                    })
+                                }
+                                source={chargeData}
+                                template={fromJS({})}
+                            />
+                        </Wrapper>
+                    </IntegrationContext.Provider>
+                </Provider>
             )
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
 
         it('should not render any provided link when no customer hash is available', () => {
-            const component = shallow(
-                <TitleWrapperContainer
-                    getIntegrationData={() =>
-                        fromJS({
-                            customer: {},
-                        })
-                    }
-                    source={chargeData}
-                    template={fromJS({
-                        meta: {link: 'https://gorgias.io/{{customerHash}}/'},
-                    })}
-                />,
-                {context}
+            const {container} = render(
+                <Provider store={mockStore({})}>
+                    <IntegrationContext.Provider
+                        value={integrationContextData2}
+                    >
+                        <Wrapper source={fromJS({})}>
+                            <TitleWrapperContainer
+                                getIntegrationData={() =>
+                                    fromJS({
+                                        customer: {},
+                                    })
+                                }
+                                source={chargeData}
+                                template={fromJS({
+                                    meta: {
+                                        link: 'https://gorgias.io/{{customerHash}}/',
+                                    },
+                                })}
+                            />
+                        </Wrapper>
+                    </IntegrationContext.Provider>
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
 
         describe('ticket context', () => {
@@ -324,33 +378,47 @@ describe('Charge', () => {
             })
 
             it('should not render any link because no custom link is set', () => {
-                const component = shallow(
-                    <TitleWrapperContainer
-                        getIntegrationData={getIntegrationData}
-                        source={chargeData}
-                        template={fromJS({})}
-                    />,
-                    {context}
+                const {container} = render(
+                    <Provider store={mockStore({})}>
+                        <IntegrationContext.Provider
+                            value={integrationContextData2}
+                        >
+                            <Wrapper source={fromJS({})}>
+                                <TitleWrapperContainer
+                                    getIntegrationData={getIntegrationData}
+                                    source={chargeData}
+                                    template={fromJS({})}
+                                />
+                            </Wrapper>
+                        </IntegrationContext.Provider>
+                    </Provider>
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container).toMatchSnapshot()
             })
 
             it('should render custom link because it is set', () => {
-                const component = shallow(
-                    <TitleWrapperContainer
-                        getIntegrationData={getIntegrationData}
-                        source={chargeData}
-                        template={fromJS({
-                            meta: {
-                                link: 'https://gorgias.io/{{customerHash}}/',
-                            },
-                        })}
-                    />,
-                    {context}
+                const {container} = render(
+                    <Provider store={mockStore({})}>
+                        <IntegrationContext.Provider
+                            value={integrationContextData2}
+                        >
+                            <Wrapper source={fromJS({})}>
+                                <TitleWrapperContainer
+                                    getIntegrationData={getIntegrationData}
+                                    source={chargeData}
+                                    template={fromJS({
+                                        meta: {
+                                            link: 'https://gorgias.io/{{customerHash}}/',
+                                        },
+                                    })}
+                                />
+                            </Wrapper>
+                        </IntegrationContext.Provider>
+                    </Provider>
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container).toMatchSnapshot()
             })
         })
 
@@ -360,33 +428,47 @@ describe('Charge', () => {
             })
 
             it('should not render any link because no custom link is set', () => {
-                const component = shallow(
-                    <TitleWrapperContainer
-                        getIntegrationData={getIntegrationData}
-                        source={chargeData}
-                        template={fromJS({})}
-                    />,
-                    {context}
+                const {container} = render(
+                    <Provider store={mockStore({})}>
+                        <IntegrationContext.Provider
+                            value={integrationContextData2}
+                        >
+                            <Wrapper source={fromJS({})}>
+                                <TitleWrapperContainer
+                                    getIntegrationData={getIntegrationData}
+                                    source={chargeData}
+                                    template={fromJS({})}
+                                />
+                            </Wrapper>
+                        </IntegrationContext.Provider>
+                    </Provider>
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container).toMatchSnapshot()
             })
 
             it('should render custom link because it is set', () => {
-                const component = shallow(
-                    <TitleWrapperContainer
-                        getIntegrationData={getIntegrationData}
-                        source={chargeData}
-                        template={fromJS({
-                            meta: {
-                                link: 'https://gorgias.io/{{customerHash}}/',
-                            },
-                        })}
-                    />,
-                    {context}
+                const {container} = render(
+                    <Provider store={mockStore({})}>
+                        <IntegrationContext.Provider
+                            value={integrationContextData2}
+                        >
+                            <Wrapper source={fromJS({})}>
+                                <TitleWrapperContainer
+                                    getIntegrationData={getIntegrationData}
+                                    source={chargeData}
+                                    template={fromJS({
+                                        meta: {
+                                            link: 'https://gorgias.io/{{customerHash}}/',
+                                        },
+                                    })}
+                                />
+                            </Wrapper>
+                        </IntegrationContext.Provider>
+                    </Provider>
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container).toMatchSnapshot()
             })
         })
     })

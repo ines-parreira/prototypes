@@ -1,6 +1,5 @@
-import React, {ReactNode} from 'react'
+import React, {ContextType, ReactNode} from 'react'
 import {Map} from 'immutable'
-import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import logo from 'assets/img/infobar/recharge.svg'
 
@@ -11,6 +10,7 @@ import {CardHeaderTitle} from '../CardHeaderTitle'
 import {CardHeaderIcon} from '../CardHeaderIcon'
 import ExpandAllButton from '../ExpandAllButton'
 import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
+import {IntegrationContext} from '../IntegrationContext'
 
 export default function Customer() {
     return {
@@ -42,13 +42,11 @@ type TitleWrapperProps = {
 }
 
 export class TitleWrapper extends React.Component<TitleWrapperProps> {
-    static contextTypes = {
-        integration: ImmutablePropTypes.map.isRequired,
-    }
-
+    static contextType = IntegrationContext
+    context!: ContextType<typeof IntegrationContext>
     render() {
         const {children, source, template} = this.props
-        const {integration} = this.context as {integration: Map<any, any>}
+        const {integration} = this.context
         const storeName = integration.getIn(['meta', 'store_name']) as string
         const customerHash = source.get('hash') as string
         const defaultLink = `https://${storeName}-sp.admin.rechargeapps.com/admin/customers/${customerHash}/subscriptions/`

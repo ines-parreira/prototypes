@@ -2,20 +2,27 @@
 
 exports[`<TitleWrapper/> render() should not render link because there is no admin url suffix 1`] = `
 <div>
-  foo bar
+  <div>
+    foo bar
+  </div>
 </div>
 `;
 
 exports[`<TitleWrapper/> render() should render link 1`] = `
-<Fragment>
-  <CardHeaderIcon
+<div>
+  <img
     alt="Magento"
+    class="container"
     src="test-file-stub"
   />
-  <CardHeaderTitle>
+  <span
+    class="container"
+  >
     Magento
-  </CardHeaderTitle>
-  <CardHeaderSubtitle>
+  </span>
+  <span
+    class="container"
+  >
     <a
       href="https://magento.gorgi.us/admin_12fg/customer/index/edit/id/1/"
       rel="noopener noreferrer"
@@ -25,7 +32,14 @@ exports[`<TitleWrapper/> render() should render link 1`] = `
         foo bar
       </div>
     </a>
-  </CardHeaderSubtitle>
-  <ExpandAllButton />
-</Fragment>
+  </span>
+  <span
+    class="container expand-all"
+  >
+    <img
+      alt="Expand all"
+      src="test-file-stub"
+    />
+  </span>
+</div>
 `;

@@ -1,5 +1,4 @@
-import React, {ReactNode} from 'react'
-import ImmutablePropTypes from 'react-immutable-proptypes'
+import React, {ContextType, ReactNode} from 'react'
 import type {Map} from 'immutable'
 
 import logo from 'assets/img/infobar/magento.svg'
@@ -11,6 +10,7 @@ import {CardHeaderTitle} from '../CardHeaderTitle'
 import {CardHeaderIcon} from '../CardHeaderIcon'
 import ExpandAllButton from '../ExpandAllButton'
 import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
+import {IntegrationContext} from '../IntegrationContext'
 
 export default function Customer() {
     return {
@@ -49,23 +49,19 @@ type TitleWrapperProps = {
 }
 
 class TitleWrapper extends React.Component<TitleWrapperProps> {
-    static contextTypes = {
-        integration: ImmutablePropTypes.map.isRequired,
-    }
-
+    static contextType = IntegrationContext
+    context!: ContextType<typeof IntegrationContext>
     render() {
         const {children, source} = this.props
 
-        const storeUrl: string = (
-            this.context as {
-                integration: Map<any, any>
-            }
-        ).integration.getIn(['meta', 'store_url']) as string
-        const adminUrlSuffix: string = (
-            this.context as {
-                integration: Map<any, any>
-            }
-        ).integration.getIn(['meta', 'admin_url_suffix']) as string
+        const storeUrl: string = this.context.integration.getIn([
+            'meta',
+            'store_url',
+        ]) as string
+        const adminUrlSuffix: string = this.context.integration.getIn([
+            'meta',
+            'admin_url_suffix',
+        ]) as string
         const customerId = ((source.get('id') as string) || '').toString()
 
         const link = `https://${storeUrl}/${adminUrlSuffix}/customer/index/edit/id/${customerId}/`

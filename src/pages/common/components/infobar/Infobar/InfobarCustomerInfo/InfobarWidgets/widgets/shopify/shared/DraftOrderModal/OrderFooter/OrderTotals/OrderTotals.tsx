@@ -1,8 +1,7 @@
-import React, {Component} from 'react'
+import React, {Component, ContextType} from 'react'
 import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
-import PropTypes from 'prop-types'
 import hash from 'object-hash'
 
 import {getCreateOrderState} from '../../../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors'
@@ -13,6 +12,7 @@ import {formatPrice} from '../../../../../../../../../../../../../business/shopi
 import DiscountPopover from '../../DiscountPopover/DiscountPopover'
 import ShippingPopover from '../../ShippingPopover/ShippingPopover'
 import MoneyAmount from '../../../../../MoneyAmount'
+import {IntegrationContext} from '../../../../../IntegrationContext'
 import TaxesPopover from '../../TaxesPopover/TaxesPopover'
 import {ShopifyActionType} from '../../../../types'
 
@@ -29,32 +29,27 @@ type Props = {
 }
 
 export class OrderTotalsComponent extends Component<Props> {
-    static contextTypes = {
-        integrationId: PropTypes.number.isRequired,
-    }
-
+    static contextType = IntegrationContext
+    context!: ContextType<typeof IntegrationContext>
     _onAppliedDiscountChange = (appliedDiscount: Map<any, any> | null) => {
         const {onPayloadChange, payload} = this.props
         const {integrationId} = this.context
         const newPayload = payload.set('applied_discount', appliedDiscount)
-
-        onPayloadChange(integrationId, newPayload)
+        onPayloadChange(integrationId!, newPayload)
     }
 
     _onShippingLineChange = (shippingLine: Map<any, any> | null) => {
         const {onPayloadChange, payload} = this.props
         const {integrationId} = this.context
         const newPayload = payload.set('shipping_line', shippingLine)
-
-        onPayloadChange(integrationId, newPayload)
+        onPayloadChange(integrationId!, newPayload)
     }
 
     _onTaxExemptChange = (taxExempt: boolean) => {
         const {onPayloadChange, payload} = this.props
         const {integrationId} = this.context
         const newPayload = payload.set('tax_exempt', taxExempt)
-
-        onPayloadChange(integrationId, newPayload)
+        onPayloadChange(integrationId!, newPayload)
     }
 
     render() {
