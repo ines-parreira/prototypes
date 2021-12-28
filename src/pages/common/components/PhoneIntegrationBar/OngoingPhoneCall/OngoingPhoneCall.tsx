@@ -1,11 +1,9 @@
 import React, {useCallback, useState, useEffect} from 'react'
 import {Call} from '@twilio/voice-sdk'
+import {Button} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 import {AxiosError} from 'axios'
 import classNames from 'classnames'
-
-import {ButtonIntent} from 'pages/common/components/button/Button'
-import IconButton from 'pages/common/components/button/IconButton'
 
 import PhoneIntegrationName from '../PhoneIntegrationName/PhoneIntegrationName'
 import PhoneInfobarWrapper from '../PhoneInfobarWrapper/PhoneInfobarWrapper'
@@ -76,34 +74,38 @@ export function OngoingPhoneCall({
                     phoneNumber={customerPhoneNumber}
                 />
                 <DialPad className={css.dialPad} call={call} />
-                <IconButton
-                    intent={ButtonIntent.Secondary}
+                <Button
                     data-testid="mute-call-button"
                     className={css.mute}
                     onClick={onToggleMute}
                 >
-                    {isMuted ? 'mic_off' : 'mic'}
-                </IconButton>
-                <IconButton
+                    <i className="material-icons">
+                        {isMuted ? 'mic_off' : 'mic'}
+                    </i>
+                </Button>
+                <Button
                     data-testid="record-call-button"
                     className={css.recording}
-                    intent={ButtonIntent.Secondary}
-                    isDisabled={isRequestPending}
+                    color="secondary"
+                    disabled={isRequestPending}
                     onClick={startRecording}
-                    iconClassName={classNames('text-danger', {
-                        'material-icons-outlined': isRecording,
-                        'material-icons': !isRecording,
-                    })}
                 >
-                    {isRecording ? 'stop_circle' : 'fiber_manual_record'}
-                </IconButton>
-                <IconButton
+                    <i
+                        className={classNames('text-danger', {
+                            'material-icons-outlined': isRecording,
+                            'material-icons': !isRecording,
+                        })}
+                    >
+                        {isRecording ? 'stop_circle' : 'fiber_manual_record'}
+                    </i>
+                </Button>
+                <Button
                     data-testid="end-call-button"
-                    intent={ButtonIntent.Destructive}
+                    color="danger"
                     onClick={onDisconnect}
                 >
-                    call_end
-                </IconButton>
+                    <i className="material-icons">call_end</i>
+                </Button>
             </div>
             <PhoneInfobarWrapper>
                 <span>Connected</span>

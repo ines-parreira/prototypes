@@ -1,9 +1,7 @@
 import React, {Component} from 'react'
 import {List} from 'immutable'
-import {Row, Col} from 'reactstrap'
+import {Row, Col, Button} from 'reactstrap'
 
-import {ButtonIntent} from 'pages/common/components/button/Button'
-import IconButton from 'pages/common/components/button/IconButton'
 import InputField from './InputField.js'
 
 type Props = {
@@ -60,23 +58,23 @@ export default class ListField extends Component<Props> {
                                 />
                             </Col>
                             <Col className="d-flex col-sm-auto">
-                                <IconButton
-                                    intent={ButtonIntent.Destructive}
+                                <Button
+                                    type="button"
+                                    size="sm"
                                     onClick={() => this.deleteRow(index!)}
                                 >
-                                    delete
-                                </IconButton>
+                                    <i className="material-icons md-2 text-danger">
+                                        delete
+                                    </i>
+                                </Button>
                             </Col>
                         </Row>
                     )
                 })}
                 {items.size < maxItems ? (
-                    <IconButton
-                        intent={ButtonIntent.Secondary}
-                        onClick={this.addRow}
-                    >
-                        add
-                    </IconButton>
+                    <Button size="sm" onClick={this.addRow}>
+                        <i className="material-icons md-2">add</i>
+                    </Button>
                 ) : null}
             </div>
         )

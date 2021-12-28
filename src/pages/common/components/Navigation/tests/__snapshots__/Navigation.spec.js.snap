@@ -10,24 +10,32 @@ exports[`Navigation component should render with (prev button disabled: false) a
     role="group"
     tag="div"
   >
-    <ForwardRef
-      className="previousButton"
+    <Button
+      color="secondary"
+      disabled={false}
       id="prev-btn"
-      intent="secondary"
-      isDisabled={false}
       onClick={[Function]}
+      tag="button"
     >
-      keyboard_arrow_left
-    </ForwardRef>
-    <ForwardRef
-      className="nextButton"
+      <i
+        className="material-icons md-2"
+      >
+        keyboard_arrow_left
+      </i>
+    </Button>
+    <Button
+      color="secondary"
+      disabled={false}
       id="next-btn"
-      intent="secondary"
-      isDisabled={false}
       onClick={[Function]}
+      tag="button"
     >
-      keyboard_arrow_right
-    </ForwardRef>
+      <i
+        className="material-icons md-2"
+      >
+        keyboard_arrow_right
+      </i>
+    </Button>
   </ButtonGroup>
 </div>
 `;
@@ -40,24 +48,32 @@ exports[`Navigation component should render with (prev button disabled: false) a
     role="group"
     tag="div"
   >
-    <ForwardRef
-      className="previousButton"
+    <Button
+      color="secondary"
+      disabled={false}
       id="prev-btn"
-      intent="secondary"
-      isDisabled={false}
       onClick={[Function]}
+      tag="button"
     >
-      keyboard_arrow_left
-    </ForwardRef>
-    <ForwardRef
-      className="nextButton"
+      <i
+        className="material-icons md-2"
+      >
+        keyboard_arrow_left
+      </i>
+    </Button>
+    <Button
+      color="secondary"
+      disabled={true}
       id="next-btn"
-      intent="secondary"
-      isDisabled={true}
       onClick={[Function]}
+      tag="button"
     >
-      keyboard_arrow_right
-    </ForwardRef>
+      <i
+        className="material-icons md-2"
+      >
+        keyboard_arrow_right
+      </i>
+    </Button>
   </ButtonGroup>
 </div>
 `;
@@ -70,24 +86,32 @@ exports[`Navigation component should render with (prev button disabled: true) an
     role="group"
     tag="div"
   >
-    <ForwardRef
-      className="previousButton"
+    <Button
+      color="secondary"
+      disabled={true}
       id="prev-btn"
-      intent="secondary"
-      isDisabled={true}
       onClick={[Function]}
+      tag="button"
     >
-      keyboard_arrow_left
-    </ForwardRef>
-    <ForwardRef
-      className="nextButton"
+      <i
+        className="material-icons md-2"
+      >
+        keyboard_arrow_left
+      </i>
+    </Button>
+    <Button
+      color="secondary"
+      disabled={false}
       id="next-btn"
-      intent="secondary"
-      isDisabled={false}
       onClick={[Function]}
+      tag="button"
     >
-      keyboard_arrow_right
-    </ForwardRef>
+      <i
+        className="material-icons md-2"
+      >
+        keyboard_arrow_right
+      </i>
+    </Button>
   </ButtonGroup>
 </div>
 `;

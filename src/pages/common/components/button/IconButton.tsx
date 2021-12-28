@@ -6,18 +6,11 @@ import css from './IconButton.less'
 
 type Props = {
     children: string
-    iconClassName?: string
 } & Omit<ComponentProps<typeof Button>, 'children'>
 
 const IconButton = forwardRef(
     (
-        {
-            children,
-            className,
-            iconClassName = 'material-icons',
-            size = ButtonSize.Medium,
-            ...others
-        }: Props,
+        {children, className, size = ButtonSize.Medium, ...others}: Props,
         ref: Ref<HTMLButtonElement> | null | undefined
     ) => {
         return (
@@ -27,7 +20,7 @@ const IconButton = forwardRef(
                 {...others}
                 ref={ref}
             >
-                <i className={classnames(iconClassName, css.icon)}>
+                <i className={classnames('material-icons', css.icon)}>
                     {children}
                 </i>
             </Button>

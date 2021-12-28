@@ -46,14 +46,18 @@ exports[`<SharedBody/> render() should render 1`] = `
       key="2"
       tag="li"
     >
-      <ForwardRef
+      <Button
         className="float-right text-danger"
-        intent="text"
+        color="link"
         onClick={[Function]}
-        size="small"
+        tag="button"
       >
-        close
-      </ForwardRef>
+        <i
+          className="material-icons"
+        >
+          close
+        </i>
+      </Button>
       <TeamLabel
         className=""
         name="Team 2"
@@ -66,14 +70,18 @@ exports[`<SharedBody/> render() should render 1`] = `
       key="3"
       tag="li"
     >
-      <ForwardRef
+      <Button
         className="float-right text-danger"
-        intent="text"
+        color="link"
         onClick={[Function]}
-        size="small"
+        tag="button"
       >
-        close
-      </ForwardRef>
+        <i
+          className="material-icons"
+        >
+          close
+        </i>
+      </Button>
       <TeamLabel
         className=""
         name="Team 3"
@@ -100,14 +108,18 @@ exports[`<SharedBody/> render() should render 1`] = `
       key="2"
       tag="li"
     >
-      <ForwardRef
+      <Button
         className="float-right text-danger"
-        intent="text"
+        color="link"
         onClick={[Function]}
-        size="small"
+        tag="button"
       >
-        close
-      </ForwardRef>
+        <i
+          className="material-icons"
+        >
+          close
+        </i>
+      </Button>
       <AgentLabel
         className=""
         name="User 2"
@@ -120,14 +132,18 @@ exports[`<SharedBody/> render() should render 1`] = `
       key="3"
       tag="li"
     >
-      <ForwardRef
+      <Button
         className="float-right text-danger"
-        intent="text"
+        color="link"
         onClick={[Function]}
-        size="small"
+        tag="button"
       >
-        close
-      </ForwardRef>
+        <i
+          className="material-icons"
+        >
+          close
+        </i>
+      </Button>
       <AgentLabel
         className=""
         name="User 3"

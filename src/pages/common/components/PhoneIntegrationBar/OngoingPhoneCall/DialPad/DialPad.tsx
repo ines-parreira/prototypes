@@ -1,9 +1,6 @@
 import React, {useCallback, useState} from 'react'
-import {Popover, PopoverBody} from 'reactstrap'
+import {Button, Popover, PopoverBody} from 'reactstrap'
 import {Call} from '@twilio/voice-sdk'
-
-import {ButtonIntent} from 'pages/common/components/button/Button'
-import IconButton from 'pages/common/components/button/IconButton'
 
 import css from './DialPad.less'
 
@@ -37,14 +34,14 @@ export default function DialPad({className, call}: Props): JSX.Element {
 
     return (
         <>
-            <IconButton
+            <Button
                 id="dial-pad-button"
                 data-testid="dial-pad-button"
+                type="button"
                 className={className}
-                intent={ButtonIntent.Secondary}
             >
-                dialpad
-            </IconButton>
+                <span className="material-icons">dialpad</span>
+            </Button>
             <Popover
                 placement="top"
                 isOpen={isOpen}

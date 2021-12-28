@@ -6,11 +6,12 @@ exports[`<AddProductLink/> should not render when the popover is closed 1`] = `
     class="popoverWrapper"
   >
     <button
-      class="wrapper button wrapper small secondary small"
+      class="button btn btn-secondary btn-transparent"
       title="Insert Shopify Product"
+      type="button"
     >
       <i
-        class="material-icons icon"
+        class="material-icons"
       >
         shopify
       </i>
@@ -28,11 +29,12 @@ exports[`<AddProductLink/> should render the product picker when the popover is 
     class="popoverWrapper"
   >
     <button
-      class="wrapper button wrapper small secondary small"
+      class="button btn btn-secondary btn-transparent"
       title="Insert Shopify Product"
+      type="button"
     >
       <i
-        class="material-icons icon"
+        class="material-icons"
       >
         shopify
       </i>
@@ -112,11 +114,12 @@ exports[`<AddProductLink/> should render the store picker because of multiple in
     class="popoverWrapper"
   >
     <button
-      class="wrapper button wrapper small secondary small"
+      class="button btn btn-secondary btn-transparent"
       title="Insert Shopify Product"
+      type="button"
     >
       <i
-        class="material-icons icon"
+        class="material-icons"
       >
         shopify
       </i>

@@ -103,31 +103,34 @@ exports[`<MacroButton /> should open the popover on hover 1`] = `
                                 class="actions"
                               >
                                 <button
-                                  class="wrapper button wrapper small secondary small"
+                                  class="button btn btn-secondary btn-transparent"
                                   title="Bold"
+                                  type="button"
                                 >
                                   <i
-                                    class="material-icons icon"
+                                    class="material-icons"
                                   >
                                     format_bold
                                   </i>
                                 </button>
                                 <button
-                                  class="wrapper button wrapper small secondary small"
+                                  class="button btn btn-secondary btn-transparent"
                                   title="Italic"
+                                  type="button"
                                 >
                                   <i
-                                    class="material-icons icon"
+                                    class="material-icons"
                                   >
                                     format_italic
                                   </i>
                                 </button>
                                 <button
-                                  class="wrapper button wrapper small secondary small"
+                                  class="button btn btn-secondary btn-transparent"
                                   title="Underline"
+                                  type="button"
                                 >
                                   <i
-                                    class="material-icons icon"
+                                    class="material-icons"
                                   >
                                     format_underline
                                   </i>
@@ -136,11 +139,12 @@ exports[`<MacroButton /> should open the popover on hover 1`] = `
                                   class="popoverWrapper"
                                 >
                                   <button
-                                    class="wrapper button wrapper small secondary small"
+                                    class="button btn btn-secondary btn-transparent"
                                     title="Insert link"
+                                    type="button"
                                   >
                                     <i
-                                      class="material-icons icon"
+                                      class="material-icons"
                                     >
                                       link
                                     </i>
@@ -153,11 +157,12 @@ exports[`<MacroButton /> should open the popover on hover 1`] = `
                                   class="popoverWrapper"
                                 >
                                   <button
-                                    class="wrapper button wrapper small secondary small"
+                                    class="button btn btn-secondary btn-transparent"
                                     title="Insert image"
+                                    type="button"
                                   >
                                     <i
-                                      class="material-icons icon"
+                                      class="material-icons"
                                     >
                                       insert_photo
                                     </i>
@@ -170,11 +175,12 @@ exports[`<MacroButton /> should open the popover on hover 1`] = `
                                   class="popoverWrapper"
                                 >
                                   <button
-                                    class="wrapper button wrapper small secondary small"
+                                    class="button btn btn-secondary btn-transparent"
                                     title="Insert emoji"
+                                    type="button"
                                   >
                                     <i
-                                      class="material-icons icon"
+                                      class="material-icons"
                                     >
                                       insert_emoticon
                                     </i>

@@ -31,42 +31,46 @@ exports[`<OngoingPhoneCall/> should render 1`] = `
       )
     </span>
     <button
-      class="wrapper dialPad wrapper medium secondary medium"
+      class="dialPad btn btn-secondary"
       data-testid="dial-pad-button"
       id="dial-pad-button"
+      type="button"
     >
-      <i
-        class="material-icons icon"
+      <span
+        class="material-icons"
       >
         dialpad
-      </i>
+      </span>
     </button>
     <button
-      class="wrapper mute wrapper medium secondary medium"
+      class="mute btn btn-secondary"
       data-testid="mute-call-button"
+      type="button"
     >
       <i
-        class="material-icons icon"
+        class="material-icons"
       >
         mic
       </i>
     </button>
     <button
-      class="wrapper recording wrapper medium secondary medium"
+      class="recording btn btn-secondary"
       data-testid="record-call-button"
+      type="button"
     >
       <i
-        class="text-danger material-icons icon"
+        class="text-danger material-icons"
       >
         fiber_manual_record
       </i>
     </button>
     <button
-      class="wrapper wrapper medium destructive medium"
+      class="btn btn-danger"
       data-testid="end-call-button"
+      type="button"
     >
       <i
-        class="material-icons icon"
+        class="material-icons"
       >
         call_end
       </i>

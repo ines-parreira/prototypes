@@ -494,28 +494,26 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                 <div
                                   className="d-flex col-sm-auto col"
                                 >
-                                  <ForwardRef
-                                    intent="destructive"
+                                  <Button
+                                    color="secondary"
                                     onClick={[Function]}
+                                    size="sm"
+                                    tag="button"
+                                    type="button"
                                   >
-                                    <ForwardRef
-                                      className="wrapper medium"
-                                      intent="destructive"
+                                    <button
+                                      aria-label={null}
+                                      className="btn btn-secondary btn-sm"
                                       onClick={[Function]}
-                                      size="medium"
+                                      type="button"
                                     >
-                                      <button
-                                        className="wrapper wrapper medium destructive medium"
-                                        onClick={[Function]}
+                                      <i
+                                        className="material-icons md-2 text-danger"
                                       >
-                                        <i
-                                          className="material-icons icon"
-                                        >
-                                          delete
-                                        </i>
-                                      </button>
-                                    </ForwardRef>
-                                  </ForwardRef>
+                                        delete
+                                      </i>
+                                    </button>
+                                  </Button>
                                 </div>
                               </Col>
                             </div>
@@ -617,54 +615,49 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                 <div
                                   className="d-flex col-sm-auto col"
                                 >
-                                  <ForwardRef
-                                    intent="destructive"
+                                  <Button
+                                    color="secondary"
                                     onClick={[Function]}
+                                    size="sm"
+                                    tag="button"
+                                    type="button"
                                   >
-                                    <ForwardRef
-                                      className="wrapper medium"
-                                      intent="destructive"
+                                    <button
+                                      aria-label={null}
+                                      className="btn btn-secondary btn-sm"
                                       onClick={[Function]}
-                                      size="medium"
+                                      type="button"
                                     >
-                                      <button
-                                        className="wrapper wrapper medium destructive medium"
-                                        onClick={[Function]}
+                                      <i
+                                        className="material-icons md-2 text-danger"
                                       >
-                                        <i
-                                          className="material-icons icon"
-                                        >
-                                          delete
-                                        </i>
-                                      </button>
-                                    </ForwardRef>
-                                  </ForwardRef>
+                                        delete
+                                      </i>
+                                    </button>
+                                  </Button>
                                 </div>
                               </Col>
                             </div>
                           </Row>
-                          <ForwardRef
-                            intent="secondary"
+                          <Button
+                            color="secondary"
                             onClick={[Function]}
+                            size="sm"
+                            tag="button"
                           >
-                            <ForwardRef
-                              className="wrapper medium"
-                              intent="secondary"
+                            <button
+                              aria-label={null}
+                              className="btn btn-secondary btn-sm"
                               onClick={[Function]}
-                              size="medium"
+                              type="button"
                             >
-                              <button
-                                className="wrapper wrapper medium secondary medium"
-                                onClick={[Function]}
+                              <i
+                                className="material-icons md-2"
                               >
-                                <i
-                                  className="material-icons icon"
-                                >
-                                  add
-                                </i>
-                              </button>
-                            </ForwardRef>
-                          </ForwardRef>
+                                add
+                              </i>
+                            </button>
+                          </Button>
                         </div>
                       </ListField>
                       <div>
@@ -1419,28 +1412,26 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                 <div
                                   className="d-flex col-sm-auto col"
                                 >
-                                  <ForwardRef
-                                    intent="destructive"
+                                  <Button
+                                    color="secondary"
                                     onClick={[Function]}
+                                    size="sm"
+                                    tag="button"
+                                    type="button"
                                   >
-                                    <ForwardRef
-                                      className="wrapper medium"
-                                      intent="destructive"
+                                    <button
+                                      aria-label={null}
+                                      className="btn btn-secondary btn-sm"
                                       onClick={[Function]}
-                                      size="medium"
+                                      type="button"
                                     >
-                                      <button
-                                        className="wrapper wrapper medium destructive medium"
-                                        onClick={[Function]}
+                                      <i
+                                        className="material-icons md-2 text-danger"
                                       >
-                                        <i
-                                          className="material-icons icon"
-                                        >
-                                          delete
-                                        </i>
-                                      </button>
-                                    </ForwardRef>
-                                  </ForwardRef>
+                                        delete
+                                      </i>
+                                    </button>
+                                  </Button>
                                 </div>
                               </Col>
                             </div>
@@ -1542,54 +1533,49 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                 <div
                                   className="d-flex col-sm-auto col"
                                 >
-                                  <ForwardRef
-                                    intent="destructive"
+                                  <Button
+                                    color="secondary"
                                     onClick={[Function]}
+                                    size="sm"
+                                    tag="button"
+                                    type="button"
                                   >
-                                    <ForwardRef
-                                      className="wrapper medium"
-                                      intent="destructive"
+                                    <button
+                                      aria-label={null}
+                                      className="btn btn-secondary btn-sm"
                                       onClick={[Function]}
-                                      size="medium"
+                                      type="button"
                                     >
-                                      <button
-                                        className="wrapper wrapper medium destructive medium"
-                                        onClick={[Function]}
+                                      <i
+                                        className="material-icons md-2 text-danger"
                                       >
-                                        <i
-                                          className="material-icons icon"
-                                        >
-                                          delete
-                                        </i>
-                                      </button>
-                                    </ForwardRef>
-                                  </ForwardRef>
+                                        delete
+                                      </i>
+                                    </button>
+                                  </Button>
                                 </div>
                               </Col>
                             </div>
                           </Row>
-                          <ForwardRef
-                            intent="secondary"
+                          <Button
+                            color="secondary"
                             onClick={[Function]}
+                            size="sm"
+                            tag="button"
                           >
-                            <ForwardRef
-                              className="wrapper medium"
-                              intent="secondary"
+                            <button
+                              aria-label={null}
+                              className="btn btn-secondary btn-sm"
                               onClick={[Function]}
-                              size="medium"
+                              type="button"
                             >
-                              <button
-                                className="wrapper wrapper medium secondary medium"
-                                onClick={[Function]}
+                              <i
+                                className="material-icons md-2"
                               >
-                                <i
-                                  className="material-icons icon"
-                                >
-                                  add
-                                </i>
-                              </button>
-                            </ForwardRef>
-                          </ForwardRef>
+                                add
+                              </i>
+                            </button>
+                          </Button>
                         </div>
                       </ListField>
                       <div>

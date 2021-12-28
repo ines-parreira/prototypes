@@ -215,11 +215,12 @@ exports[`<EditOrderModal/> should render with a default currency if missing from
               class="numberCol centered"
             >
               <button
-                class="wrapper delete wrapper medium text medium"
+                class="delete focusable btn btn-link"
                 tabindex="0"
+                type="button"
               >
                 <i
-                  class="material-icons icon"
+                  class="material-icons"
                 >
                   close
                 </i>
@@ -322,11 +323,12 @@ exports[`<EditOrderModal/> should render with a default currency if missing from
               class="numberCol centered"
             >
               <button
-                class="wrapper delete wrapper medium text medium"
+                class="delete focusable btn btn-link"
                 tabindex="0"
+                type="button"
               >
                 <i
-                  class="material-icons icon"
+                  class="material-icons"
                 >
                   close
                 </i>
@@ -636,11 +638,12 @@ exports[`<EditOrderModal/> should render with a populated order table when data 
               class="numberCol centered"
             >
               <button
-                class="wrapper delete wrapper medium text medium"
+                class="delete focusable btn btn-link"
                 tabindex="0"
+                type="button"
               >
                 <i
-                  class="material-icons icon"
+                  class="material-icons"
                 >
                   close
                 </i>
@@ -743,11 +746,12 @@ exports[`<EditOrderModal/> should render with a populated order table when data 
               class="numberCol centered"
             >
               <button
-                class="wrapper delete wrapper medium text medium"
+                class="delete focusable btn btn-link"
                 tabindex="0"
+                type="button"
               >
                 <i
-                  class="material-icons icon"
+                  class="material-icons"
                 >
                   close
                 </i>

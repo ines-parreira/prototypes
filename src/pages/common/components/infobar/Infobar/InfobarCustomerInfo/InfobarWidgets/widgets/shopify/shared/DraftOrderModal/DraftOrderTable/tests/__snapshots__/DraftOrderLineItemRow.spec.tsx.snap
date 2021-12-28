@@ -112,11 +112,12 @@ exports[`<DraftOrderLineItemRow/> render() should render with applied discount 1
         </span>
       </strong>
       <button
-        class="wrapper delete wrapper medium text medium"
+        class="delete focusable btn btn-link"
         tabindex="0"
+        type="button"
       >
         <i
-          class="material-icons icon"
+          class="material-icons"
         >
           close
         </i>
@@ -229,11 +230,12 @@ exports[`<DraftOrderLineItemRow/> render() should render with product image 1`] 
         </span>
       </strong>
       <button
-        class="wrapper delete wrapper medium text medium"
+        class="delete focusable btn btn-link"
         tabindex="0"
+        type="button"
       >
         <i
-          class="material-icons icon"
+          class="material-icons"
         >
           close
         </i>
@@ -454,11 +456,12 @@ exports[`<DraftOrderLineItemRow/> render() should render without product image 1
         </span>
       </strong>
       <button
-        class="wrapper delete wrapper medium text medium"
+        class="delete focusable btn btn-link"
         tabindex="0"
+        type="button"
       >
         <i
-          class="material-icons icon"
+          class="material-icons"
         >
           close
         </i>

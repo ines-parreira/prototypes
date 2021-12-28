@@ -3357,36 +3357,19 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                       name="Bold"
                                                                       onToggle={[Function]}
                                                                     >
-                                                                      <ForwardRef
-                                                                        className="button"
-                                                                        intent="secondary"
+                                                                      <button
+                                                                        className="button btn btn-secondary btn-transparent"
                                                                         onClick={[Function]}
                                                                         onMouseDown={[Function]}
-                                                                        size="small"
                                                                         title="Bold"
+                                                                        type="button"
                                                                       >
-                                                                        <ForwardRef
-                                                                          className="button wrapper small"
-                                                                          intent="secondary"
-                                                                          onClick={[Function]}
-                                                                          onMouseDown={[Function]}
-                                                                          size="small"
-                                                                          title="Bold"
+                                                                        <i
+                                                                          className="material-icons"
                                                                         >
-                                                                          <button
-                                                                            className="wrapper button wrapper small secondary small"
-                                                                            onClick={[Function]}
-                                                                            onMouseDown={[Function]}
-                                                                            title="Bold"
-                                                                          >
-                                                                            <i
-                                                                              className="material-icons icon"
-                                                                            >
-                                                                              format_bold
-                                                                            </i>
-                                                                          </button>
-                                                                        </ForwardRef>
-                                                                      </ForwardRef>
+                                                                          format_bold
+                                                                        </i>
+                                                                      </button>
                                                                     </Button>
                                                                   </InlineStyle>
                                                                 </Decorated(InlineStyle)>
@@ -3408,36 +3391,19 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                       name="Italic"
                                                                       onToggle={[Function]}
                                                                     >
-                                                                      <ForwardRef
-                                                                        className="button"
-                                                                        intent="secondary"
+                                                                      <button
+                                                                        className="button btn btn-secondary btn-transparent"
                                                                         onClick={[Function]}
                                                                         onMouseDown={[Function]}
-                                                                        size="small"
                                                                         title="Italic"
+                                                                        type="button"
                                                                       >
-                                                                        <ForwardRef
-                                                                          className="button wrapper small"
-                                                                          intent="secondary"
-                                                                          onClick={[Function]}
-                                                                          onMouseDown={[Function]}
-                                                                          size="small"
-                                                                          title="Italic"
+                                                                        <i
+                                                                          className="material-icons"
                                                                         >
-                                                                          <button
-                                                                            className="wrapper button wrapper small secondary small"
-                                                                            onClick={[Function]}
-                                                                            onMouseDown={[Function]}
-                                                                            title="Italic"
-                                                                          >
-                                                                            <i
-                                                                              className="material-icons icon"
-                                                                            >
-                                                                              format_italic
-                                                                            </i>
-                                                                          </button>
-                                                                        </ForwardRef>
-                                                                      </ForwardRef>
+                                                                          format_italic
+                                                                        </i>
+                                                                      </button>
                                                                     </Button>
                                                                   </InlineStyle>
                                                                 </Decorated(InlineStyle)>
@@ -3459,36 +3425,19 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                       name="Underline"
                                                                       onToggle={[Function]}
                                                                     >
-                                                                      <ForwardRef
-                                                                        className="button"
-                                                                        intent="secondary"
+                                                                      <button
+                                                                        className="button btn btn-secondary btn-transparent"
                                                                         onClick={[Function]}
                                                                         onMouseDown={[Function]}
-                                                                        size="small"
                                                                         title="Underline"
+                                                                        type="button"
                                                                       >
-                                                                        <ForwardRef
-                                                                          className="button wrapper small"
-                                                                          intent="secondary"
-                                                                          onClick={[Function]}
-                                                                          onMouseDown={[Function]}
-                                                                          size="small"
-                                                                          title="Underline"
+                                                                        <i
+                                                                          className="material-icons"
                                                                         >
-                                                                          <button
-                                                                            className="wrapper button wrapper small secondary small"
-                                                                            onClick={[Function]}
-                                                                            onMouseDown={[Function]}
-                                                                            title="Underline"
-                                                                          >
-                                                                            <i
-                                                                              className="material-icons icon"
-                                                                            >
-                                                                              format_underline
-                                                                            </i>
-                                                                          </button>
-                                                                        </ForwardRef>
-                                                                      </ForwardRef>
+                                                                          format_underline
+                                                                        </i>
+                                                                      </button>
                                                                     </Button>
                                                                   </InlineStyle>
                                                                 </Decorated(InlineStyle)>
@@ -3556,36 +3505,19 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                             name="Insert link"
                                                                             onToggle={[Function]}
                                                                           >
-                                                                            <ForwardRef
-                                                                              className="button"
-                                                                              intent="secondary"
+                                                                            <button
+                                                                              className="button btn btn-secondary btn-transparent"
                                                                               onClick={[Function]}
                                                                               onMouseDown={[Function]}
-                                                                              size="small"
                                                                               title="Insert link"
+                                                                              type="button"
                                                                             >
-                                                                              <ForwardRef
-                                                                                className="button wrapper small"
-                                                                                intent="secondary"
-                                                                                onClick={[Function]}
-                                                                                onMouseDown={[Function]}
-                                                                                size="small"
-                                                                                title="Insert link"
+                                                                              <i
+                                                                                className="material-icons"
                                                                               >
-                                                                                <button
-                                                                                  className="wrapper button wrapper small secondary small"
-                                                                                  onClick={[Function]}
-                                                                                  onMouseDown={[Function]}
-                                                                                  title="Insert link"
-                                                                                >
-                                                                                  <i
-                                                                                    className="material-icons icon"
-                                                                                  >
-                                                                                    link
-                                                                                  </i>
-                                                                                </button>
-                                                                              </ForwardRef>
-                                                                            </ForwardRef>
+                                                                                link
+                                                                              </i>
+                                                                            </button>
                                                                           </Button>
                                                                           <div
                                                                             className="popover top-left hidden"
@@ -3633,36 +3565,19 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                           name="Insert image"
                                                                           onToggle={[Function]}
                                                                         >
-                                                                          <ForwardRef
-                                                                            className="button"
-                                                                            intent="secondary"
+                                                                          <button
+                                                                            className="button btn btn-secondary btn-transparent"
                                                                             onClick={[Function]}
                                                                             onMouseDown={[Function]}
-                                                                            size="small"
                                                                             title="Insert image"
+                                                                            type="button"
                                                                           >
-                                                                            <ForwardRef
-                                                                              className="button wrapper small"
-                                                                              intent="secondary"
-                                                                              onClick={[Function]}
-                                                                              onMouseDown={[Function]}
-                                                                              size="small"
-                                                                              title="Insert image"
+                                                                            <i
+                                                                              className="material-icons"
                                                                             >
-                                                                              <button
-                                                                                className="wrapper button wrapper small secondary small"
-                                                                                onClick={[Function]}
-                                                                                onMouseDown={[Function]}
-                                                                                title="Insert image"
-                                                                              >
-                                                                                <i
-                                                                                  className="material-icons icon"
-                                                                                >
-                                                                                  insert_photo
-                                                                                </i>
-                                                                              </button>
-                                                                            </ForwardRef>
-                                                                          </ForwardRef>
+                                                                              insert_photo
+                                                                            </i>
+                                                                          </button>
                                                                         </Button>
                                                                         <div
                                                                           className="popover top-left hidden"
@@ -3706,36 +3621,19 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                           name="Insert emoji"
                                                                           onToggle={[Function]}
                                                                         >
-                                                                          <ForwardRef
-                                                                            className="button"
-                                                                            intent="secondary"
+                                                                          <button
+                                                                            className="button btn btn-secondary btn-transparent"
                                                                             onClick={[Function]}
                                                                             onMouseDown={[Function]}
-                                                                            size="small"
                                                                             title="Insert emoji"
+                                                                            type="button"
                                                                           >
-                                                                            <ForwardRef
-                                                                              className="button wrapper small"
-                                                                              intent="secondary"
-                                                                              onClick={[Function]}
-                                                                              onMouseDown={[Function]}
-                                                                              size="small"
-                                                                              title="Insert emoji"
+                                                                            <i
+                                                                              className="material-icons"
                                                                             >
-                                                                              <button
-                                                                                className="wrapper button wrapper small secondary small"
-                                                                                onClick={[Function]}
-                                                                                onMouseDown={[Function]}
-                                                                                title="Insert emoji"
-                                                                              >
-                                                                                <i
-                                                                                  className="material-icons icon"
-                                                                                >
-                                                                                  insert_emoticon
-                                                                                </i>
-                                                                              </button>
-                                                                            </ForwardRef>
-                                                                          </ForwardRef>
+                                                                              insert_emoticon
+                                                                            </i>
+                                                                          </button>
                                                                         </Button>
                                                                         <div
                                                                           className="p-0 d-flex popover top-left hidden"

@@ -1,10 +1,5 @@
 import React, {Component} from 'react'
-import {ButtonGroup} from 'reactstrap'
-
-import {ButtonIntent} from 'pages/common/components/button/Button'
-import IconButton from 'pages/common/components/button/IconButton'
-
-import css from './Navigation.less'
+import {Button, ButtonGroup} from 'reactstrap'
 
 type Props = {
     hasNextItems: boolean
@@ -25,24 +20,26 @@ export default class Navigation extends Component<Props> {
         return (
             <div className="pl-4 mb-4">
                 <ButtonGroup>
-                    <IconButton
-                        className={css.previousButton}
+                    <Button
                         id="prev-btn"
-                        intent={ButtonIntent.Secondary}
-                        isDisabled={!hasPrevItems}
+                        color="secondary"
+                        disabled={!hasPrevItems}
                         onClick={fetchPrevItems}
                     >
-                        keyboard_arrow_left
-                    </IconButton>
-                    <IconButton
-                        className={css.nextButton}
+                        <i className="material-icons md-2">
+                            keyboard_arrow_left
+                        </i>
+                    </Button>
+                    <Button
                         id="next-btn"
-                        intent={ButtonIntent.Secondary}
-                        isDisabled={!hasNextItems}
+                        color="secondary"
+                        disabled={!hasNextItems}
                         onClick={fetchNextItems}
                     >
-                        keyboard_arrow_right
-                    </IconButton>
+                        <i className="material-icons md-2">
+                            keyboard_arrow_right
+                        </i>
+                    </Button>
                 </ButtonGroup>
             </div>
         )

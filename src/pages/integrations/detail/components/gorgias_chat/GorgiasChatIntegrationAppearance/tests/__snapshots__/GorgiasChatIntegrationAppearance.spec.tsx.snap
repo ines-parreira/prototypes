@@ -275,8 +275,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="button btn btn-secondary"
                           id="color-picker-5"
+                          type="button"
                         >
                           <div
                             class="color"
@@ -303,8 +304,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="button btn btn-secondary"
                           id="color-picker-7"
+                          type="button"
                         >
                           <div
                             class="color"
@@ -963,8 +965,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="button btn btn-secondary"
                           id="color-picker-27"
+                          type="button"
                         >
                           <div
                             class="color"
@@ -991,8 +994,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="button btn btn-secondary"
                           id="color-picker-29"
+                          type="button"
                         >
                           <div
                             class="color"
@@ -1668,8 +1672,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="button btn btn-secondary"
                           id="color-picker-16"
+                          type="button"
                         >
                           <div
                             class="color"
@@ -1696,8 +1701,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="button btn btn-secondary"
                           id="color-picker-18"
+                          type="button"
                         >
                           <div
                             class="color"
@@ -2380,8 +2386,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="button btn btn-secondary"
                           id="color-picker-38"
+                          type="button"
                         >
                           <div
                             class="color"
@@ -2408,8 +2415,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="button btn btn-secondary"
                           id="color-picker-40"
+                          type="button"
                         >
                           <div
                             class="color"
@@ -3084,8 +3092,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="button btn btn-secondary"
                           id="color-picker-60"
+                          type="button"
                         >
                           <div
                             class="color"
@@ -3112,8 +3121,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="button btn btn-secondary"
                           id="color-picker-62"
+                          type="button"
                         >
                           <div
                             class="color"
@@ -3802,8 +3812,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="button btn btn-secondary"
                           id="color-picker-49"
+                          type="button"
                         >
                           <div
                             class="color"
@@ -3830,8 +3841,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="button btn btn-secondary"
                           id="color-picker-51"
+                          type="button"
                         >
                           <div
                             class="color"
@@ -4593,8 +4605,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="button btn btn-secondary"
                           id="color-picker-71"
+                          type="button"
                         >
                           <div
                             class="color"
@@ -4621,8 +4634,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="button btn btn-secondary"
                           id="color-picker-73"
+                          type="button"
                         >
                           <div
                             class="color"

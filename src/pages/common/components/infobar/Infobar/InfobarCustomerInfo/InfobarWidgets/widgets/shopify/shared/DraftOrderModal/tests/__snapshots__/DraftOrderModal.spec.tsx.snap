@@ -155,11 +155,12 @@ exports[`<DraftOrderModal/> should render a sent invoice 1`] = `
                   </span>
                 </strong>
                 <button
-                  class="wrapper delete wrapper medium text medium"
+                  class="delete focusable btn btn-link"
                   tabindex="0"
+                  type="button"
                 >
                   <i
-                    class="material-icons icon"
+                    class="material-icons"
                   >
                     close
                   </i>
@@ -269,11 +270,12 @@ exports[`<DraftOrderModal/> should render a sent invoice 1`] = `
                   </span>
                 </strong>
                 <button
-                  class="wrapper delete wrapper medium text medium"
+                  class="delete focusable btn btn-link"
                   tabindex="0"
+                  type="button"
                 >
                   <i
-                    class="material-icons icon"
+                    class="material-icons"
                   >
                     close
                   </i>
@@ -573,11 +575,12 @@ exports[`<DraftOrderModal/> should render with a default currency if missing fro
                   </span>
                 </strong>
                 <button
-                  class="wrapper delete wrapper medium text medium"
+                  class="delete focusable btn btn-link"
                   tabindex="0"
+                  type="button"
                 >
                   <i
-                    class="material-icons icon"
+                    class="material-icons"
                   >
                     close
                   </i>
@@ -687,11 +690,12 @@ exports[`<DraftOrderModal/> should render with a default currency if missing fro
                   </span>
                 </strong>
                 <button
-                  class="wrapper delete wrapper medium text medium"
+                  class="delete focusable btn btn-link"
                   tabindex="0"
+                  type="button"
                 >
                   <i
-                    class="material-icons icon"
+                    class="material-icons"
                   >
                     close
                   </i>
@@ -909,11 +913,12 @@ exports[`<DraftOrderModal/> should render with a populated order table when data
                   </span>
                 </strong>
                 <button
-                  class="wrapper delete wrapper medium text medium"
+                  class="delete focusable btn btn-link"
                   tabindex="0"
+                  type="button"
                 >
                   <i
-                    class="material-icons icon"
+                    class="material-icons"
                   >
                     close
                   </i>
@@ -1023,11 +1028,12 @@ exports[`<DraftOrderModal/> should render with a populated order table when data
                   </span>
                 </strong>
                 <button
-                  class="wrapper delete wrapper medium text medium"
+                  class="delete focusable btn btn-link"
                   tabindex="0"
+                  type="button"
                 >
                   <i
-                    class="material-icons icon"
+                    class="material-icons"
                   >
                     close
                   </i>
