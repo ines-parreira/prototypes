@@ -65,7 +65,6 @@ export class Toolbar extends Component<Props, State> {
                 key={index}
                 intent={ButtonIntent.Secondary}
                 size={ButtonSize.Small}
-                type="button"
             >
                 {button}
             </Button>
