@@ -99,3 +99,6 @@ v8-compile-cache-*
 
 # local eggs
 src/
+
+# Storybook
+build-storybook.log

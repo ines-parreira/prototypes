@@ -3,6 +3,7 @@ require('@storybook/addon-console')
 require('assets/css/main.less')
 
 export const parameters = {
+    chromatic: {disableSnapshot: true},
     options: {
         storySort: {
             order: [
