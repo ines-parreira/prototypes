@@ -2,32 +2,21 @@ import React from 'react'
 import {render, screen} from '@testing-library/react'
 
 import ArticleCategorySelect from '../ArticleCategorySelect'
+import useCategoriesOptions from '../hooks/useCategoriesOptions'
 
-import {useHelpCenterApi} from '../../../../hooks/useHelpCenterApi'
-
-jest.mock('../../../../hooks/useHelpCenterApi')
+jest.mock('../hooks/useCategoriesOptions')
 
 describe('<ArticleCategorySelect />', () => {
-    let listCategoriesMock: jest.Mock
-
     beforeEach(() => {
         jest.resetAllMocks()
-        listCategoriesMock = jest.fn().mockImplementation(() => ({
-            data: {
-                data: [
-                    {id: 1, translation: {title: 'Hello'}},
-                    {id: 2, translation: {title: 'Bar'}},
-                ],
-            },
-        }))
-        ;(useHelpCenterApi as jest.Mock).mockImplementation(() => ({
-            client: {
-                listCategories: listCategoriesMock,
-            },
-        }))
+        ;(useCategoriesOptions as jest.Mock).mockImplementation(() => [
+            {label: '- No category -', value: 'null'},
+            {label: 'Orders', value: 1},
+            {label: 'Pricing', value: 2},
+        ])
     })
 
-    it('should show selected option based on API response', async () => {
+    it('should display the category options on the screen', async () => {
         render(
             <ArticleCategorySelect
                 locale="en-US"
@@ -35,8 +24,9 @@ describe('<ArticleCategorySelect />', () => {
                 categoryId={1}
             />
         )
-
-        await screen.findByText('Hello')
+        await screen.findByText('- No category -')
+        await screen.findByText('Orders')
+        await screen.findByText('Pricing')
     })
 
     it('should show new options if locale changed', async () => {
@@ -47,19 +37,12 @@ describe('<ArticleCategorySelect />', () => {
                 categoryId={1}
             />
         )
-        await screen.findByText('Hello')
-        ;(useHelpCenterApi as jest.Mock).mockImplementation(() => ({
-            client: {
-                listCategories: () => ({
-                    data: {
-                        data: [
-                            {id: 1, translation: {title: 'Bonjour'}},
-                            {id: 2, translation: {title: 'Bar'}},
-                        ],
-                    },
-                }),
-            },
-        }))
+        await screen.findByText('Orders')
+        ;(useCategoriesOptions as jest.Mock).mockImplementation(() => [
+            {label: '- No category -', value: 'null'},
+            {label: 'Commandes', value: 1},
+            {label: 'Prix', value: 2},
+        ])
         rerender(
             <ArticleCategorySelect
                 locale="fr-FR"
@@ -67,6 +50,6 @@ describe('<ArticleCategorySelect />', () => {
                 categoryId={1}
             />
         )
-        await screen.findByText('Bonjour')
+        await screen.findByText('Commandes')
     })
 })

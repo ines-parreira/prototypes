@@ -9,6 +9,7 @@ import {getArticleUrl} from '../../../utils/helpCenter.utils'
 import HelpCenterEditModalHeader, {
     Props as HelpCenterEditModalHeaderProps,
 } from '../HelpCenterEditModalHeader'
+import useCategoriesOptions from '../ArticleCategorySelect/hooks/useCategoriesOptions'
 
 const windowOpenMock = jest.fn().mockReturnValue({
     focus: jest.fn(),
@@ -41,6 +42,13 @@ const mockedOnArticleLanguageSelectActionClick = jest.fn()
 
 jest.mock('../../../providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
+
+jest.mock('../ArticleCategorySelect/hooks/useCategoriesOptions')
+;(useCategoriesOptions as jest.Mock).mockImplementation(() => [
+    {label: '- No category -', value: 'null'},
+    {label: 'Orders', value: 1},
+    {label: 'Pricing', value: 2},
+])
 
 describe('<HelpCenterEditModalHeader />', () => {
     const props: HelpCenterEditModalHeaderProps = {

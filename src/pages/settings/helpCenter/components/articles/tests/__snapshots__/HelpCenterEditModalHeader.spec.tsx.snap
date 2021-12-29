@@ -77,10 +77,10 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
               class="select dropdown-toggle selectFullWidth"
             >
               <span
-                class="label placeholder"
+                class="label"
                 style="min-width: 10px; opacity: 1;"
               >
-                Select an option
+                - No category -
               </span>
               <input
                 autocomplete="chrome-off"
@@ -97,12 +97,27 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
             role="menu"
             tabindex="-1"
           >
-            <h6
-              class="dropdown-header"
-              tabindex="-1"
+            
+            <button
+              class="option option--focused dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
             >
-              No result
-            </h6>
+              <span>
+                Orders
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Pricing
+              </span>
+            </button>
           </div>
         </div>
       </div>
