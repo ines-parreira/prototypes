@@ -34,7 +34,6 @@ describe('<ViewSharingButton/>', () => {
             const component = shallow(
                 <ViewSharingButtonContainer
                     {...minProps}
-                    className="foo"
                     view={fromJS({visibility: ViewVisibility.Public})}
                 />
             )
@@ -46,7 +45,6 @@ describe('<ViewSharingButton/>', () => {
             const component = shallow(
                 <ViewSharingButtonContainer
                     {...minProps}
-                    className="foo"
                     view={fromJS({visibility: ViewVisibility.Shared})}
                 />
             )
@@ -58,7 +56,6 @@ describe('<ViewSharingButton/>', () => {
             const component = shallow(
                 <ViewSharingButtonContainer
                     {...minProps}
-                    className="foo"
                     view={fromJS({visibility: ViewVisibility.Private})}
                 />
             )
@@ -70,7 +67,6 @@ describe('<ViewSharingButton/>', () => {
             const component = shallow(
                 <ViewSharingButtonContainer
                     {...minProps}
-                    className="foo"
                     view={fromJS({
                         visibility: ViewVisibility.Public,
                         category: SYSTEM_VIEW_CATEGORY,
@@ -90,7 +86,6 @@ describe('<ViewSharingButton/>', () => {
                         'roles',
                         roles
                     )}
-                    className="foo"
                     view={fromJS({visibility: ViewVisibility.Public})}
                 />
             )

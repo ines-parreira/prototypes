@@ -122,6 +122,16 @@ class CallExpression extends React.Component<Props> {
 
         return (
             <div className="CallExpression">
+                {index > 0 && (
+                    <OperatorLabel
+                        operator={
+                            parentNode.operator as Exclude<
+                                LogicalOperator,
+                                '??'
+                            >
+                        }
+                    />
+                )}
                 <Left objectPath={objectPath} view={view} />
                 <Operator
                     operators={operators}
@@ -142,16 +152,6 @@ class CallExpression extends React.Component<Props> {
                     empty={Object.keys(UNARY_OPERATORS).includes(operator.name)}
                 />
                 {!field && <Badge color="danger">System condition</Badge>}
-                {parentNode && (
-                    <OperatorLabel
-                        operator={
-                            parentNode.operator as Exclude<
-                                LogicalOperator,
-                                '??'
-                            >
-                        }
-                    />
-                )}
                 <RemoveCallExpression onClick={removeCondition} index={index} />
             </div>
         )

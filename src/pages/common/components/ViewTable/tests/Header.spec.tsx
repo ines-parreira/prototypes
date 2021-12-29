@@ -25,6 +25,10 @@ jest.mock('../../../../history')
 
 describe('ViewTable::Header', () => {
     const fixtureView = viewsFixtures.view
+    const editModeActiveView = fromJS({
+        ...fixtureView,
+        editMode: true,
+    }) as Map<any, any>
 
     const minProps = {
         type: 'ticket',
@@ -36,6 +40,8 @@ describe('ViewTable::Header', () => {
         removeFieldFilter: jest.fn(),
         updateView: jest.fn(),
         setViewEditMode: jest.fn(),
+        fetchViewItems: jest.fn(),
+        resetView: jest.fn(),
     }
 
     const config = getConfigByName(minProps.type)
@@ -69,6 +75,30 @@ describe('ViewTable::Header', () => {
             />
         )
         expect(component).toMatchSnapshot()
+    })
+
+    it('should render when view is in edit mode', () => {
+        const component = shallow(
+            <HeaderContainer
+                {...minProps}
+                config={config}
+                activeView={editModeActiveView}
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should reset view and fetch tickets when clicking on the close flow icon in edit mode', () => {
+        const component = shallow(
+            <HeaderContainer
+                {...minProps}
+                config={config}
+                activeView={editModeActiveView}
+            />
+        )
+        component.find({alt: 'close-icon'}).simulate('click')
+        expect(minProps.resetView).toHaveBeenCalled()
+        expect(minProps.fetchViewItems).toHaveBeenCalled()
     })
 
     describe('default view', () => {
@@ -152,11 +182,6 @@ describe('ViewTable::Header', () => {
     })
 
     describe('emoji picker', () => {
-        const editModeActiveView = fromJS({
-            ...fixtureView,
-            editMode: true,
-        }) as Map<any, any>
-
         const emoji = '1'
 
         describe('.render()', () => {

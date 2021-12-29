@@ -1,9 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react'
-import {Map, List} from 'immutable'
+import {List, Map} from 'immutable'
 import {useSelector} from 'react-redux'
 import classnames from 'classnames'
 import {
-    Button,
     Card,
     CardBody,
     CardFooter,
@@ -13,15 +12,15 @@ import {
     Popover,
     PopoverBody,
     PopoverHeader,
-    UncontrolledButtonDropdown,
     UncontrolledDropdown,
+    ButtonDropdown,
 } from 'reactstrap'
 import {useAsyncFn, usePrevious, useUnmount, useUpdateEffect} from 'react-use'
 
 import {getConfigByName} from '../../../../config/views'
 import {SYSTEM_VIEW_CATEGORY} from '../../../../constants/view'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
-import {ViewVisibility, View} from '../../../../models/view/types'
+import {View, ViewVisibility} from '../../../../models/view/types'
 import {getCurrentUser} from '../../../../state/currentUser/selectors'
 import {
     viewCreated,
@@ -30,6 +29,7 @@ import {
 } from '../../../../state/entities/views/actions'
 import {
     addFieldFilter,
+    createJob,
     deleteView,
     fetchViewItems,
     resetView,
@@ -43,6 +43,7 @@ import {
 } from '../../../../state/views/selectors'
 import {getSchemas} from '../../../../state/schemas/selectors'
 import {GorgiasAction} from '../../../../state/types'
+import {getTickets} from '../../../../state/tickets/selectors'
 import {activeViewIdSet} from '../../../../state/ui/views/actions'
 import {
     SUBMIT_NEW_VIEW_ERROR,
@@ -60,7 +61,11 @@ import withCancellableRequest, {
 } from '../../utils/withCancellableRequest'
 import ConfirmButton from '../ConfirmButton'
 import ViewSharingButton from '../ViewSharing/ViewSharingButton'
+import Button, {ButtonIntent} from '../button/Button'
+import DropdownButton from '../button/DropdownButton'
+import ButtonIconLabel from '../button/ButtonIconLabel'
 
+import {JobType} from '../../../../models/job/types'
 import Filters from './Filters/ViewFilters'
 import css from './FilterTopbar.less'
 
@@ -85,6 +90,7 @@ export const FilterTopbar = ({
 
     const [askUpdateConfirmation, setAskUpdateConfirmation] = useState(false)
     const [showNoChangeFeedback, setShowNoChangeFeedback] = useState(false)
+    const [isDropdownOpen, toggleDropdownOpen] = useState<boolean>(false)
     const timeoutChangeFeedbackRef = useRef<Maybe<number>>(null)
 
     const activeView = useSelector(getActiveView)
@@ -95,6 +101,7 @@ export const FilterTopbar = ({
     const isViewDirty = useSelector(getIsViewDirty)
     const pristineActiveView = useSelector(getPristineActiveView)
     const schemas = useSelector(getSchemas)
+    const tickets = useSelector(getTickets)
 
     useEffect(
         () => () => {
@@ -248,6 +255,11 @@ export const FilterTopbar = ({
 
     useUnmount(cancelFetchViewItemsCancellable)
 
+    const [{loading: isLaunchingJob}, createExportTicketJob] =
+        useAsyncFn(async () => {
+            await dispatch(createJob(activeView, JobType.ExportTicket, {}))
+        }, [dispatch, activeView])
+
     if (!activeView.get('editMode') && !isSearch) {
         return null
     }
@@ -264,14 +276,24 @@ export const FilterTopbar = ({
         <Card className={css.component}>
             <CardBody className="filter-topbar-content">
                 {isUpdate && !isSearch && (
-                    <ViewSharingButton
-                        view={activeView}
-                        className="float-right"
-                    />
+                    <div className={css.cardActions}>
+                        {!tickets.isEmpty() && (
+                            <Button
+                                intent={ButtonIntent.Secondary}
+                                onClick={createExportTicketJob}
+                                isDisabled={isLaunchingJob}
+                                title="Export all view tickets"
+                            >
+                                <ButtonIconLabel icon="file_download">
+                                    Export tickets
+                                </ButtonIconLabel>
+                            </Button>
+                        )}
+                        <ViewSharingButton view={activeView} />
+                    </div>
                 )}
                 <p className={css.subtitle}>ADVANCED FILTERS</p>
                 <Filters />
-
                 <UncontrolledDropdown>
                     <DropdownToggle
                         caret
@@ -309,20 +331,26 @@ export const FilterTopbar = ({
                                     This view cannot be saved
                                 </span>
                             ) : isUpdate ? (
-                                <UncontrolledButtonDropdown>
-                                    <Button
+                                <ButtonDropdown
+                                    isOpen={isDropdownOpen}
+                                    toggle={() => {
+                                        toggleDropdownOpen(!isDropdownOpen)
+                                    }}
+                                >
+                                    <DropdownButton
                                         type="submit"
                                         id="update-view-button"
-                                        color="success"
-                                        className={classnames({
-                                            'btn-loading': isSubmitting,
-                                        })}
-                                        disabled={
+                                        isLoading={isSubmitting}
+                                        isDisabled={
                                             isSubmitting || !areFiltersValid
+                                        }
+                                        onToggleClick={() =>
+                                            toggleDropdownOpen(!isDropdownOpen)
                                         }
                                     >
                                         Update view
-                                    </Button>
+                                    </DropdownButton>
+                                    <DropdownToggle tag="span" />
                                     <Popover
                                         placement="bottom"
                                         isOpen={askUpdateConfirmation}
@@ -340,18 +368,13 @@ export const FilterTopbar = ({
                                             </p>
                                             <Button
                                                 type="submit"
-                                                color="success"
+                                                intent={ButtonIntent.Creation}
                                                 onClick={handleClickUpdate}
                                             >
                                                 Confirm
                                             </Button>
                                         </PopoverBody>
                                     </Popover>
-                                    <DropdownToggle
-                                        caret
-                                        type="button"
-                                        color="success"
-                                    />
                                     <DropdownMenu right>
                                         <DropdownItem
                                             key="open"
@@ -364,16 +387,16 @@ export const FilterTopbar = ({
                                             Save as new view
                                         </DropdownItem>
                                     </DropdownMenu>
-                                </UncontrolledButtonDropdown>
+                                </ButtonDropdown>
                             ) : (
                                 <Button
-                                    type="submit"
-                                    color="primary"
-                                    className={classnames({
-                                        'btn-loading': isSubmitting,
-                                    })}
-                                    disabled={isSubmitting || !areFiltersValid}
+                                    intent={ButtonIntent.Creation}
+                                    isLoading={isSubmitting}
+                                    isDisabled={
+                                        isSubmitting || !areFiltersValid
+                                    }
                                     onClick={createView}
+                                    type="submit"
                                 >
                                     Create view
                                 </Button>
@@ -381,9 +404,9 @@ export const FilterTopbar = ({
                             {!isSearch && (
                                 <Button
                                     type="submit"
-                                    color="secondary"
+                                    intent={ButtonIntent.Secondary}
                                     className="ml-2"
-                                    disabled={isSubmitting}
+                                    isDisabled={isSubmitting}
                                     onClick={cancel}
                                 >
                                     Cancel

@@ -36,6 +36,10 @@ export const TicketListContainer = ({
         () => !isCreationUrl(pathname, 'tickets'),
         [pathname]
     )
+    const isEditMode = useMemo(
+        () => activeView.get('editMode') as boolean,
+        [activeView]
+    )
 
     useEffect(() => {
         void fetchTags()
@@ -85,15 +89,17 @@ export const TicketListContainer = ({
                         openMacroModal: () => setIsMacroModalOpen(true),
                     })}
                     viewButtons={
-                        <div className="d-inline-flex align-items-center">
-                            <Button
-                                tag={Link}
-                                color="success"
-                                to="/app/ticket/new"
-                            >
-                                Create ticket
-                            </Button>
-                        </div>
+                        !isEditMode && (
+                            <div className="d-inline-flex align-items-center">
+                                <Button
+                                    tag={Link}
+                                    color="success"
+                                    to="/app/ticket/new"
+                                >
+                                    Create ticket
+                                </Button>
+                            </div>
+                        )
                     }
                 />
                 {isMacroModalOpen && (

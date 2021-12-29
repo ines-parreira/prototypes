@@ -162,13 +162,13 @@ exports[`<FilterTopbar /> render should not render delete button when creating n
         class="footer"
       >
         <button
-          class="btn btn-primary"
+          class="wrapper creation medium"
           type="submit"
         >
           Create view
         </button>
         <button
-          class="ml-2 btn btn-secondary"
+          class="wrapper ml-2 secondary medium"
           type="submit"
         >
           Cancel
@@ -346,6 +346,28 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
   <div
     class="filter-topbar-content card-body"
   >
+    <div
+      class="cardActions"
+    >
+      <button
+        class="wrapper secondary medium"
+        title="Export all view tickets"
+      >
+        <span
+          class="wrapper"
+        >
+          <i
+            class="material-icons icon isLeft medium"
+          >
+            file_download
+          </i>
+          Export tickets
+        </span>
+      </button>
+      <button>
+        View Sharing Button
+      </button>
+    </div>
     <p
       class="subtitle"
     >
@@ -503,25 +525,37 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
         <div
           class="btn-group"
         >
-          <button
-            class="btn btn-success"
-            id="update-view-button"
-            type="submit"
+          <div
+            class="wrapper"
           >
-            Update view
-          </button>
-          <button
+            <button
+              class="wrapper mainAction medium primary medium"
+              id="update-view-button"
+              type="submit"
+            >
+              Update view
+            </button>
+            <button
+              class="wrapper toggle medium wrapper medium primary medium"
+            >
+              <i
+                class="material-icons icon"
+              >
+                arrow_drop_down
+              </i>
+            </button>
+          </div>
+          <span
             aria-expanded="false"
             aria-haspopup="true"
-            class="dropdown-toggle btn btn-success"
-            type="button"
+            class=""
           >
             <span
               class="sr-only"
             >
               Toggle Dropdown
             </span>
-          </button>
+          </span>
           <div
             aria-hidden="true"
             class="dropdown-menu dropdown-menu-right"
@@ -539,7 +573,7 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
           </div>
         </div>
         <button
-          class="ml-2 btn btn-secondary"
+          class="wrapper ml-2 secondary medium"
           type="submit"
         >
           Cancel

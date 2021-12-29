@@ -2,26 +2,22 @@
 
 exports[`<ViewSharingButton/> render() should render as disabled because this is a system view 1`] = `
 <Fragment>
-  <Button
-    className="container foo"
-    color="secondary"
-    disabled={true}
-    href="#"
+  <ForwardRef
     id="view-sharing-button"
+    intent="secondary"
+    isDisabled={true}
     onClick={[Function]}
-    tag="button"
   >
-    <i
-      className="material-icons"
+    <ButtonIconLabel
+      className="label"
+      icon="person_add"
     >
-      person_add
-    </i>
-     Sharing:
-     
-    <b>
-      Public
-    </b>
-  </Button>
+      Sharing: 
+      <b>
+        Public
+      </b>
+    </ButtonIconLabel>
+  </ForwardRef>
   <ViewSharingButtonTooltip
     isAllowed={true}
     isSystem={true}
@@ -31,26 +27,22 @@ exports[`<ViewSharingButton/> render() should render as disabled because this is
 
 exports[`<ViewSharingButton/> render() should render as disabled because user is not allowed 1`] = `
 <Fragment>
-  <Button
-    className="container foo"
-    color="secondary"
-    disabled={true}
-    href="#"
+  <ForwardRef
     id="view-sharing-button"
+    intent="secondary"
+    isDisabled={true}
     onClick={[Function]}
-    tag="button"
   >
-    <i
-      className="material-icons"
+    <ButtonIconLabel
+      className="label"
+      icon="person_add"
     >
-      person_add
-    </i>
-     Sharing:
-     
-    <b>
-      Public
-    </b>
-  </Button>
+      Sharing: 
+      <b>
+        Public
+      </b>
+    </ButtonIconLabel>
+  </ForwardRef>
   <ViewSharingButtonTooltip
     isAllowed={false}
     isSystem={false}
@@ -60,26 +52,22 @@ exports[`<ViewSharingButton/> render() should render as disabled because user is
 
 exports[`<ViewSharingButton/> render() should render as private 1`] = `
 <Fragment>
-  <Button
-    className="container foo"
-    color="secondary"
-    disabled={false}
-    href="#"
+  <ForwardRef
     id="view-sharing-button"
+    intent="secondary"
+    isDisabled={false}
     onClick={[Function]}
-    tag="button"
   >
-    <i
-      className="material-icons"
+    <ButtonIconLabel
+      className="label"
+      icon="person_add"
     >
-      person_add
-    </i>
-     Sharing:
-     
-    <b>
-      Private
-    </b>
-  </Button>
+      Sharing: 
+      <b>
+        Private
+      </b>
+    </ButtonIconLabel>
+  </ForwardRef>
   <ViewSharingButtonTooltip
     isAllowed={true}
     isSystem={false}
@@ -89,26 +77,22 @@ exports[`<ViewSharingButton/> render() should render as private 1`] = `
 
 exports[`<ViewSharingButton/> render() should render as public 1`] = `
 <Fragment>
-  <Button
-    className="container foo"
-    color="secondary"
-    disabled={false}
-    href="#"
+  <ForwardRef
     id="view-sharing-button"
+    intent="secondary"
+    isDisabled={false}
     onClick={[Function]}
-    tag="button"
   >
-    <i
-      className="material-icons"
+    <ButtonIconLabel
+      className="label"
+      icon="person_add"
     >
-      person_add
-    </i>
-     Sharing:
-     
-    <b>
-      Public
-    </b>
-  </Button>
+      Sharing: 
+      <b>
+        Public
+      </b>
+    </ButtonIconLabel>
+  </ForwardRef>
   <ViewSharingButtonTooltip
     isAllowed={true}
     isSystem={false}
@@ -118,26 +102,22 @@ exports[`<ViewSharingButton/> render() should render as public 1`] = `
 
 exports[`<ViewSharingButton/> render() should render as shared 1`] = `
 <Fragment>
-  <Button
-    className="container foo"
-    color="secondary"
-    disabled={false}
-    href="#"
+  <ForwardRef
     id="view-sharing-button"
+    intent="secondary"
+    isDisabled={false}
     onClick={[Function]}
-    tag="button"
   >
-    <i
-      className="material-icons"
+    <ButtonIconLabel
+      className="label"
+      icon="person_add"
     >
-      person_add
-    </i>
-     Sharing:
-     
-    <b>
-      Shared
-    </b>
-  </Button>
+      Sharing: 
+      <b>
+        Shared
+      </b>
+    </ButtonIconLabel>
+  </ForwardRef>
   <ViewSharingButtonTooltip
     isAllowed={true}
     isSystem={false}

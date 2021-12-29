@@ -131,11 +131,12 @@
     }
 
     .spinner {
-        border: 2px solid fade(@classic-neutral-grey-3, 32%);
-        border-top-color: @classic-neutral-grey-0;
-        height: 16px;
+        // TEMP: write a more specific selector - in app vs storybook, bootstrap overrides these styles without !important
+        border: 2px solid fade(@classic-neutral-grey-3, 32%) !important;
+        border-top-color: @classic-neutral-grey-0 !important;
+        height: 16px !important;
         margin: 0 6px 0 2px;
-        width: 16px;
+        width: 16px !important;
     }
 
     .wrapper.small .spinner {

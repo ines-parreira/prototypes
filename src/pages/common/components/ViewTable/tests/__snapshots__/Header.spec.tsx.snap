@@ -8,7 +8,7 @@ exports[`ViewTable::Header default view displays 1`] = `
     className="d-flex flex-grow"
   >
     <div
-      className="d-flex flex-grow mr-2 titleWrapper"
+      className="flex-grow mr-2 titleWrapper"
     >
       <div
         className="title mr-2 h-100 cursor-pointer"
@@ -195,7 +195,7 @@ exports[`ViewTable::Header default view get search query from active view 1`] = 
     className="d-flex flex-grow"
   >
     <div
-      className="d-flex flex-grow mr-2 titleWrapper"
+      className="flex-grow mr-2 titleWrapper"
     >
       <div
         className="title mr-2 h-100 cursor-pointer"
@@ -382,7 +382,7 @@ exports[`ViewTable::Header emoji picker .render() should not render emoji if dec
     className="d-flex flex-grow"
   >
     <div
-      className="d-flex flex-grow mr-2 titleWrapper"
+      className="flex-grow mr-2 titleWrapper"
     >
       <div
         className="titleWrapper"
@@ -404,23 +404,13 @@ exports[`ViewTable::Header emoji picker .render() should not render emoji if dec
           title="New & Open Tickets"
           update={[Function]}
         />
+        <img
+          alt="close-icon"
+          className="closeEditIcon"
+          onClick={[Function]}
+          src="test-file-stub"
+        />
       </div>
-    </div>
-    <div
-      className="d-flex"
-    >
-      <Search
-        bindKey={true}
-        className="headerSearch mr-2"
-        disabled={false}
-        forcedQuery=""
-        location="7"
-        onChange={[Function]}
-        onFocus={[Function]}
-        placeholder="Search tickets..."
-        searchDebounceTime={1000}
-        style={Object {}}
-      />
     </div>
   </div>
 </div>
@@ -434,7 +424,7 @@ exports[`ViewTable::Header emoji picker .render() should not render emoji if dec
     className="d-flex flex-grow"
   >
     <div
-      className="d-flex flex-grow mr-2 titleWrapper"
+      className="flex-grow mr-2 titleWrapper"
     >
       <div
         className="titleWrapper"
@@ -456,23 +446,13 @@ exports[`ViewTable::Header emoji picker .render() should not render emoji if dec
           title="New & Open Tickets"
           update={[Function]}
         />
+        <img
+          alt="close-icon"
+          className="closeEditIcon"
+          onClick={[Function]}
+          src="test-file-stub"
+        />
       </div>
-    </div>
-    <div
-      className="d-flex"
-    >
-      <Search
-        bindKey={true}
-        className="headerSearch mr-2"
-        disabled={false}
-        forcedQuery=""
-        location="7"
-        onChange={[Function]}
-        onFocus={[Function]}
-        placeholder="Search tickets..."
-        searchDebounceTime={1000}
-        style={Object {}}
-      />
     </div>
   </div>
 </div>
@@ -486,7 +466,7 @@ exports[`ViewTable::Header emoji picker .render() should render emoji if decorat
     className="d-flex flex-grow"
   >
     <div
-      className="d-flex flex-grow mr-2 titleWrapper"
+      className="flex-grow mr-2 titleWrapper"
     >
       <div
         className="titleWrapper"
@@ -508,23 +488,13 @@ exports[`ViewTable::Header emoji picker .render() should render emoji if decorat
           title="New & Open Tickets"
           update={[Function]}
         />
+        <img
+          alt="close-icon"
+          className="closeEditIcon"
+          onClick={[Function]}
+          src="test-file-stub"
+        />
       </div>
-    </div>
-    <div
-      className="d-flex"
-    >
-      <Search
-        bindKey={true}
-        className="headerSearch mr-2"
-        disabled={false}
-        forcedQuery=""
-        location="7"
-        onChange={[Function]}
-        onFocus={[Function]}
-        placeholder="Search tickets..."
-        searchDebounceTime={1000}
-        style={Object {}}
-      />
     </div>
   </div>
 </div>
@@ -538,7 +508,7 @@ exports[`ViewTable::Header empty view 1`] = `
     className="d-flex flex-grow"
   >
     <div
-      className="d-flex flex-grow mr-2 titleWrapper"
+      className="flex-grow mr-2 titleWrapper"
     >
       <div
         className="title mr-2 h-100 cursor-pointer"
@@ -617,6 +587,48 @@ exports[`ViewTable::Header search view 1`] = `
            Leave search mode
         </Tooltip>
       </Link>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ViewTable::Header should render when view is in edit mode 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="d-flex flex-grow"
+  >
+    <div
+      className="flex-grow mr-2 titleWrapper"
+    >
+      <div
+        className="titleWrapper"
+      >
+        <EmojiSelect
+          className="emojiPicker"
+          emoji={null}
+          onEmojiClear={[Function]}
+          onEmojiSelect={[Function]}
+        />
+        <EditableTitle
+          className="title withEmojiPicker"
+          disabled={false}
+          forceEditMode={true}
+          placeholder="View name"
+          select={false}
+          size="xl"
+          style={Object {}}
+          title="New & Open Tickets"
+          update={[Function]}
+        />
+        <img
+          alt="close-icon"
+          className="closeEditIcon"
+          onClick={[Function]}
+          src="test-file-stub"
+        />
+      </div>
     </div>
   </div>
 </div>

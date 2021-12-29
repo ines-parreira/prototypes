@@ -11,13 +11,22 @@
     :global(.card-footer) {
         padding-left: 28px;
         padding-right: 28px;
-        background-color: @classic-neutral-grey-1;
+        background-color: @classic-neutral-grey-2;
     }
 
     :global(.card-footer) {
         border-width: 1px 0;
         border-style: solid;
         border-color: @classic-neutral-grey-3;
+    }
+
+    .cardActions {
+        display: flex;
+        float: right;
+
+        > :last-child {
+            margin-left: 16px;
+        }
     }
 
     .subtitle {
@@ -87,11 +96,4 @@
     > .view-filters-item
     .OperatorLabel {
     cursor: default !important;
-}
-
-.filter-topbar-content
-    > .view-filters-item
-    > .view-filters-item:last-child
-    .OperatorLabel {
-    display: none;
 }

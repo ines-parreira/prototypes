@@ -4,6 +4,8 @@ import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
 import classnames from 'classnames'
 
+import closeIcon from 'assets/img/icons/close.svg'
+
 import EditableTitle from '../EditableTitle'
 import Search from '../Search'
 import {slugify} from '../../../../utils'
@@ -114,6 +116,17 @@ export class HeaderContainer extends React.Component<Props, State> {
         }
     }
 
+    cancelEdit = () => {
+        const {isUpdate, resetView, fetchViewItems} = this.props
+
+        if (isUpdate) {
+            resetView()
+            void fetchViewItems()
+        } else {
+            history.push(this._goBackUrl())
+        }
+    }
+
     render() {
         const {activeView, config, isSearch, isUpdate, viewButtons} = this.props
 
@@ -126,7 +139,7 @@ export class HeaderContainer extends React.Component<Props, State> {
                     {!isSearch && (
                         <div
                             className={classnames(
-                                'd-flex flex-grow mr-2',
+                                'flex-grow mr-2',
                                 css.titleWrapper
                             )}
                         >
@@ -181,6 +194,12 @@ export class HeaderContainer extends React.Component<Props, State> {
                                                 }}
                                                 forceEditMode
                                             />
+                                            <img
+                                                src={closeIcon}
+                                                alt="close-icon"
+                                                onClick={this.cancelEdit}
+                                                className={css.closeEditIcon}
+                                            />
                                         </div>
                                     )
                                 })()
@@ -205,53 +224,59 @@ export class HeaderContainer extends React.Component<Props, State> {
                         </div>
                     )}
 
-                    <div
-                        className={classnames('d-flex', {
-                            'flex-grow': isSearch,
-                        })}
-                    >
-                        <Search
-                            bindKey
-                            onChange={this._search}
-                            placeholder={`Search ${
-                                config.get('plural') as string
-                            }...`}
-                            searchDebounceTime={1000}
-                            location={`${
-                                activeView.get('id') as unknown as string
-                            }${isSearch ? '(s)' : ''}`}
-                            forcedQuery={activeView.get('search') || ''}
-                            className={classnames(css.headerSearch, 'mr-2', {
-                                [css.isSearching]: isSearch,
+                    {(!isEditMode || (isEditMode && isSearch)) && (
+                        <div
+                            className={classnames('d-flex', {
                                 'flex-grow': isSearch,
                             })}
-                            onFocus={this.handleFocus}
-                        />
+                        >
+                            <Search
+                                bindKey
+                                onChange={this._search}
+                                placeholder={`Search ${
+                                    config.get('plural') as string
+                                }...`}
+                                searchDebounceTime={1000}
+                                location={`${
+                                    activeView.get('id') as unknown as string
+                                }${isSearch ? '(s)' : ''}`}
+                                forcedQuery={activeView.get('search') || ''}
+                                className={classnames(
+                                    css.headerSearch,
+                                    'mr-2',
+                                    {
+                                        [css.isSearching]: isSearch,
+                                        'flex-grow': isSearch,
+                                    }
+                                )}
+                                onFocus={this.handleFocus}
+                            />
 
-                        {isSearch ? (
-                            <Link to={this._goBackUrl()}>
-                                <i
-                                    className={classnames(
-                                        css.closeIcon,
-                                        'material-icons d-none d-md-inline-block'
-                                    )}
-                                    id="leave-search-mode"
-                                >
-                                    close
-                                </i>
-                                <Tooltip
-                                    //$TsFixMe: remove ignore once Tooltip is properly migrated
-                                    //@ts-ignore
-                                    placement="top"
-                                    target="leave-search-mode"
-                                >
-                                    <b>Esc</b> Leave search mode
-                                </Tooltip>
-                            </Link>
-                        ) : (
-                            viewButtons
-                        )}
-                    </div>
+                            {isSearch ? (
+                                <Link to={this._goBackUrl()}>
+                                    <i
+                                        className={classnames(
+                                            css.closeIcon,
+                                            'material-icons d-none d-md-inline-block'
+                                        )}
+                                        id="leave-search-mode"
+                                    >
+                                        close
+                                    </i>
+                                    <Tooltip
+                                        //$TsFixMe: remove ignore once Tooltip is properly migrated
+                                        //@ts-ignore
+                                        placement="top"
+                                        target="leave-search-mode"
+                                    >
+                                        <b>Esc</b> Leave search mode
+                                    </Tooltip>
+                                </Link>
+                            ) : (
+                                viewButtons
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
         )
@@ -269,6 +294,8 @@ const connector = connect(
         removeFieldFilter: viewsActions.removeFieldFilter,
         updateView: viewsActions.updateView,
         setViewEditMode: viewsActions.setViewEditMode,
+        resetView: viewsActions.resetView,
+        fetchViewItems: viewsActions.fetchViewItems,
     }
 )
 

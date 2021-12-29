@@ -1,7 +1,5 @@
 import React, {useState} from 'react'
-import {Button} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
-import classnames from 'classnames'
 import _capitalize from 'lodash/capitalize'
 import {Map} from 'immutable'
 
@@ -9,23 +7,20 @@ import {RootState} from '../../../../state/types'
 import {hasRole} from '../../../../utils'
 import {AGENT_ROLE} from '../../../../config/user'
 import {SYSTEM_VIEW_CATEGORY} from '../../../../constants/view'
+import Button, {ButtonIntent} from '../button/Button'
+import ButtonIconLabel from '../button/ButtonIconLabel'
 
 import ViewSharingButtonTooltip from './ViewSharingButtonTooltip'
 import ViewSharingModal from './ViewSharingModal/ViewSharingModal'
 import css from './ViewSharingButton.less'
 
 type OwnProps = {
-    className: string
     view: Map<any, any>
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
-export function ViewSharingButtonContainer({
-    currentUser,
-    view,
-    className,
-}: Props) {
+export function ViewSharingButtonContainer({currentUser, view}: Props) {
     const isSystem = view.get('category') === SYSTEM_VIEW_CATEGORY
     const label = _capitalize(view.get('visibility'))
     const [isOpen, setOpen] = useState(false)
@@ -37,14 +32,14 @@ export function ViewSharingButtonContainer({
     return (
         <>
             <Button
-                className={classnames(css.container, className)}
+                intent={ButtonIntent.Secondary}
                 onClick={toggle}
-                disabled={!isEditable}
+                isDisabled={!isEditable}
                 id="view-sharing-button"
-                href="#"
             >
-                <i className="material-icons">person_add</i> Sharing:{' '}
-                <b>{label}</b>
+                <ButtonIconLabel icon="person_add" className={css.label}>
+                    Sharing: <b>{label}</b>
+                </ButtonIconLabel>
             </Button>
             {isEditable && isOpen && (
                 <ViewSharingModal view={view} isOpen={isOpen} toggle={toggle} />

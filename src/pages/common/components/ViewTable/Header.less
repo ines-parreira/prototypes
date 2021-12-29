@@ -3,6 +3,8 @@
 :local .component {
     .titleWrapper {
         position: relative;
+        display: flex;
+        align-items: center;
     }
 
     .title {
@@ -61,6 +63,18 @@
 
         &:hover {
             color: @classic-neutral-grey-6;
+        }
+    }
+
+    .closeEditIcon {
+        width: 11px;
+        height: 11px;
+        margin-left: 26px;
+        cursor: pointer;
+        transition: opacity 0.3s;
+
+        &:hover {
+            opacity: 0.6;
         }
     }
 }

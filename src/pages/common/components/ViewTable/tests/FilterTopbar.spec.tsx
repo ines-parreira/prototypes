@@ -19,6 +19,7 @@ import {
 } from '../../../../../state/views/constants'
 import {
     addFieldFilter,
+    createJob,
     deleteView,
     fetchViewItems,
     resetView,
@@ -27,6 +28,7 @@ import {
 import * as viewSelectors from '../../../../../state/views/selectors'
 import ConfirmButton from '../../ConfirmButton'
 import {FilterTopbar} from '../FilterTopbar'
+import {JobType} from '../../../../../models/job/types'
 
 const ticketChannelEqualsEmailFilter = "eq('ticket.channel', 'email')"
 
@@ -52,6 +54,9 @@ const defaultState: Partial<RootState> = {
         active: createViewWithFilters(ticketChannelEqualsEmailFilter),
         items: [createViewWithFilters(ticketChannelEqualsEmailFilter)],
     }),
+    tickets: fromJS({
+        items: [{id: 1}],
+    }),
 }
 
 const submitViewMock: jest.SpyInstance = submitView as jest.MockedFunction<
@@ -63,11 +68,17 @@ const deleteViewMock: jest.SpyInstance = deleteView as jest.MockedFunction<
 const fetchViewItemsMock: jest.SpyInstance =
     fetchViewItems as jest.MockedFunction<typeof fetchViewItems>
 
+const createJobMock: jest.SpyInstance = createJob as jest.MockedFunction<
+    typeof createJob
+>
+
 jest.mock('../Filters/ViewFilters', () => {
     return () => <div>ViewFilters</div>
 })
 
-jest.mock('../../ViewSharing/ViewSharingButton', () => () => null)
+jest.mock('../../ViewSharing/ViewSharingButton', () => () => (
+    <button>View Sharing Button</button>
+))
 
 jest.mock(
     '../../ConfirmButton',
@@ -85,6 +96,7 @@ beforeEach(() => {
         () => () => fromJS({...viewFixture, id: 8}) as Map<any, any>
     )
     fetchViewItemsMock.mockImplementation(() => () => ({}))
+    createJobMock.mockImplementation(() => () => Promise.resolve())
 })
 
 afterEach(() => {
@@ -128,6 +140,56 @@ describe('<FilterTopbar />', () => {
                 </Provider>
             )
             expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render view sharing and export tickets buttons when is in update mode', () => {
+            const {queryByText, queryByTitle} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <FilterTopbar {...minProps} />
+                </Provider>
+            )
+            expect(queryByTitle('Export all view tickets')).toBeTruthy()
+            expect(queryByText('View Sharing Button')).toBeTruthy()
+        })
+
+        it('should not render export tickets buttons where there are no tickets available', () => {
+            const state = {
+                ...defaultState,
+                tickets: fromJS({
+                    items: [],
+                }),
+            }
+
+            const {queryByTitle} = render(
+                <Provider store={mockStore(state)}>
+                    <FilterTopbar {...minProps} />
+                </Provider>
+            )
+            expect(queryByTitle('Export all view tickets')).toBeNull()
+        })
+
+        it('should not render view sharing and export tickets buttons when is not in update mode', () => {
+            const {queryByText, queryByTitle} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <FilterTopbar {...minProps} isUpdate={false} />
+                </Provider>
+            )
+            expect(queryByTitle('Export all view tickets')).toBeNull()
+            expect(queryByText('View Sharing Button')).toBeNull()
+        })
+
+        it('not render view sharing and export tickets buttons when is in search mode', () => {
+            const {queryByText} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <FilterTopbar
+                        {...minProps}
+                        isUpdate={true}
+                        isSearch={true}
+                    />
+                </Provider>
+            )
+            expect(queryByText('Export all view tickets')).toBeNull()
+            expect(queryByText('View Sharing Button')).toBeNull()
         })
     })
 
@@ -352,6 +414,37 @@ describe('<FilterTopbar />', () => {
         expect(activeViewIdSetMock).not.toHaveBeenCalled()
     })
 
+    it('should toggle dropdown on update view button dropdown caret click', () => {
+        const isDirtyMock = jest.spyOn(viewSelectors, 'isDirty')
+        isDirtyMock.mockReturnValue(true)
+        const {getByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <FilterTopbar {...minProps} />
+            </Provider>
+        )
+        const toggle = getByText('arrow_drop_down')
+
+        expect(
+            getByText('Save as new view')
+                .closest('.dropdown-menu')!
+                .getAttribute('aria-hidden')
+        ).toBe('true')
+
+        fireEvent.click(toggle)
+        expect(
+            getByText('Save as new view')
+                .closest('.dropdown-menu')!
+                .getAttribute('aria-hidden')
+        ).toBe('false')
+
+        fireEvent.click(toggle)
+        expect(
+            getByText('Save as new view')
+                .closest('.dropdown-menu')!
+                .getAttribute('aria-hidden')
+        ).toBe('true')
+    })
+
     it('should close popover on view change', async () => {
         const isDirtyMock = jest.spyOn(viewSelectors, 'isDirty')
         isDirtyMock.mockReturnValue(true)
@@ -445,5 +538,36 @@ describe('<FilterTopbar />', () => {
         })
 
         jest.useRealTimers()
+    })
+
+    it('should call export ticket job on export tickets button click, and disable the button during the call', async () => {
+        const {getByTitle} = render(
+            <Provider store={mockStore(defaultState)}>
+                <FilterTopbar {...minProps} isUpdate={true} />
+            </Provider>
+        )
+
+        expect(
+            (getByTitle('Export all view tickets') as HTMLButtonElement)
+                .disabled
+        ).toBe(false)
+
+        fireEvent.click(getByTitle('Export all view tickets'))
+        expect(
+            (getByTitle('Export all view tickets') as HTMLButtonElement)
+                .disabled
+        ).toBe(true)
+
+        expect(createJobMock).toHaveBeenCalledWith(
+            createViewWithFilters(ticketChannelEqualsEmailFilter),
+            JobType.ExportTicket,
+            {}
+        )
+        await waitFor(() => {
+            expect(
+                (getByTitle('Export all view tickets') as HTMLButtonElement)
+                    .disabled
+            ).toBe(false)
+        })
     })
 })
