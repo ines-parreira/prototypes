@@ -16,7 +16,6 @@ export type PhoneCallingCodeOption = {
     label: JSX.Element
     text: string
     value: CountryCode
-    isDisabled: boolean
 }
 
 export const getCountryCountryCallingCodeSelectOptions = (
@@ -28,7 +27,9 @@ export const getCountryCountryCallingCodeSelectOptions = (
             .filter((country) => allowedCountryCodes.includes(country.value))
             .map(countryCountryCallingCodeToSelectOption)
     }
-    return supportedCountryCodes.map(countryCountryCallingCodeToSelectOption)
+    return supportedCountryCodes
+        .filter((country) => isSupportedCountry(country.value)) // Don't pass countries that aren't supported by libphonenumber-js as we will fail to format.
+        .map(countryCountryCallingCodeToSelectOption)
 }
 
 export const countryCountryCallingCodeToSelectOption = (
@@ -45,7 +46,6 @@ export const countryCountryCallingCodeToSelectOption = (
     ),
     text: country.label,
     value: country.value,
-    isDisabled: !isSupportedCountry(country.value), // Disable `libphonenumber-js` unsupported countries to prevent later issues.
 })
 
 // NOTE. This is a workaround to support some unhandled countries from `libphonenumber-js`.
