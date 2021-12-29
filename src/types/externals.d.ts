@@ -12,6 +12,4 @@ declare module '*.js'
 
 declare module '*.json'
 
-declare module 'reapop'
-
 declare module '*.png'

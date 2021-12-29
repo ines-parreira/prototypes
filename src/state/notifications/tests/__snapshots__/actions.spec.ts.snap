@@ -12,11 +12,11 @@ Array [
       "id": "99",
       "message": "new notification test",
       "onClick": [Function],
-      "position": "tc",
+      "position": "top-right",
       "status": "warning",
       "style": "banner",
     },
-    "type": "ADD_NOTIFICATION",
+    "type": "reapop/upsertNotification",
   },
 ]
 `;
@@ -24,8 +24,8 @@ Array [
 exports[`actions handleUsageBanner should hide and dispatch notify if there is a notification and status change 1`] = `
 Array [
   Object {
-    "payload": 99,
-    "type": "REMOVE_NOTIFICATION",
+    "payload": "99",
+    "type": "reapop/dismissNotification",
   },
   Object {
     "payload": Object {
@@ -37,11 +37,11 @@ Array [
       "id": "99",
       "message": "new notification test",
       "onClick": [Function],
-      "position": "tc",
+      "position": "top-right",
       "status": "warning",
       "style": "banner",
     },
-    "type": "ADD_NOTIFICATION",
+    "type": "reapop/upsertNotification",
   },
 ]
 `;
@@ -49,8 +49,8 @@ Array [
 exports[`actions handleUsageBanner should hide the banner if the status has changed 1`] = `
 Array [
   Object {
-    "payload": 99,
-    "type": "REMOVE_NOTIFICATION",
+    "payload": "99",
+    "type": "reapop/dismissNotification",
   },
 ]
 `;

@@ -1,4 +1,4 @@
-import {removeNotification} from 'reapop'
+import {dismissNotification} from 'reapop'
 import {EnhancedStore} from '@reduxjs/toolkit'
 
 import {store as reduxStore} from '../../init'
@@ -57,7 +57,7 @@ export class PendingMessageManager {
         this.skipExistingTimer()
         typeSafeReduxStore.dispatch(
             notify({
-                id: messageId as any,
+                id: String(messageId),
                 status: NotificationStatus.Success,
                 message: 'Message sent',
                 dismissAfter: pendingMessageDelay,
@@ -102,8 +102,7 @@ export class PendingMessageManager {
             logEvent(SegmentEvent.UndoSentMessage, {
                 bodyText: messageToSend.body_text,
             })
-            //eslint-disable-next-line @typescript-eslint/no-unsafe-call
-            typeSafeReduxStore.dispatch(removeNotification(messageId))
+            typeSafeReduxStore.dispatch(dismissNotification(String(messageId)))
             typeSafeReduxStore.dispatch(messageDeleted(messageId as any))
             history.push(`/app/ticket/${ticketId || ''}`)
             setTimeout(() => {
@@ -139,8 +138,7 @@ export class PendingMessageManager {
             const {messageId, messageToSend, action, resetMessage, ticketId} =
                 this.pendingSendMessagesArgs
 
-            //eslint-disable-next-line @typescript-eslint/no-unsafe-call
-            typeSafeReduxStore.dispatch(removeNotification(messageId))
+            typeSafeReduxStore.dispatch(dismissNotification(String(messageId)))
             //$TsFixMe remove casting on init.js migration
             typeSafeReduxStore.dispatch(
                 sendTicketMessage(

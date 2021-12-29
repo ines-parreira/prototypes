@@ -19,14 +19,8 @@ const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
     middlewares
 )
 
-// mock Date object
-const DATE_TO_USE = new Date('2017')
-global.Date = jest.fn(() => DATE_TO_USE) as unknown as DateConstructor
-;(
-    global.Date as typeof global.Date & {
-        toISOString: () => string
-    }
-).toISOString = (Date as unknown as {toISOString: () => string}).toISOString
+// mock Math.random used for `reapop` notifications
+global.Math.random = jest.fn(() => 0.123456789)
 
 describe('mergeTickets actions', () => {
     let store: MockStoreEnhanced<MockedRootState, StoreDispatch>

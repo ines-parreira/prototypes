@@ -1,7 +1,8 @@
 import {AxiosError} from 'axios'
 import _isUndefined from 'lodash/isUndefined'
 import {List} from 'immutable'
-import {updateNotification} from 'reapop'
+import {notify as updateNotification} from 'reapop'
+import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
 
 import * as viewsConfig from '../../config/views'
 
@@ -157,14 +158,14 @@ export function bulkDeleteCustomer(ids: List<any>) {
                 dismissAfter: 0,
                 message: `Deleting ${viewConfig.get('plural') as string}...`,
             })
-        ) as Promise<any> & {status: NotificationStatus; message: string}
+        ) as unknown as UpsertNotificationAction
 
         return client
             .delete(`/api/${viewConfig.get('api') as string}/`, {data: {ids}})
             .then(
                 () => {
-                    notification.status = NotificationStatus.Success
-                    notification.message = `${ids.size} ${
+                    notification.payload.status = NotificationStatus.Success
+                    notification.payload.message = `${ids.size} ${
                         viewConfig.get('plural') as string
                     } successfully deleted!`
                     dispatch({
@@ -172,17 +173,15 @@ export function bulkDeleteCustomer(ids: List<any>) {
                         viewType: activeViewType,
                         ids,
                     })
-                    //eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                    void dispatch(updateNotification(notification))
+                    void dispatch(updateNotification(notification.payload))
                 },
                 () => {
-                    notification.status = NotificationStatus.Error
-                    notification.message = `Couldn\'t delete selected ${
+                    notification.payload.status = NotificationStatus.Error
+                    notification.payload.message = `Couldn\'t delete selected ${
                         viewConfig.get('plural') as string
                     }`
                     dispatch({type: types.BULK_DELETE_ERROR})
-                    //eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                    void dispatch(updateNotification(notification))
+                    void dispatch(updateNotification(notification.payload))
                 }
             )
     }

@@ -152,7 +152,6 @@ exports[`<PhoneIntegrationList/> render() should render with a warning message 1
       >
         <img
           alt="icon"
-          class="icon"
           src="test-file-stub"
         />
       </div>
@@ -278,7 +277,6 @@ exports[`<PhoneIntegrationList/> render() should render with an error message an
       >
         <img
           alt="icon"
-          class="icon"
           src="test-file-stub"
         />
       </div>

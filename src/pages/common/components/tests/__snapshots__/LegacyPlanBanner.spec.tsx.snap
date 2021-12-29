@@ -10,7 +10,6 @@ exports[`<LegacyPlanBanner /> should render the legacy plan banner 1`] = `
     >
       <img
         alt="icon"
-        class="icon"
         src="test-file-stub"
       />
     </div>
@@ -48,7 +47,6 @@ exports[`<LegacyPlanBanner /> should render the legacy plan banner 2`] = `
     >
       <img
         alt="icon"
-        class="icon"
         src="test-file-stub"
       />
     </div>

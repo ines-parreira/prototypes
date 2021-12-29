@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NotificationIcon /> should render an icon for error notification type 1`] = `
+<img
+  alt="icon"
+  src="test-file-stub"
+/>
+`;
+
+exports[`<NotificationIcon /> should render an icon for info notification type 1`] = `
+<img
+  alt="icon"
+  src="test-file-stub"
+/>
+`;
+
+exports[`<NotificationIcon /> should render an icon for loading notification type 1`] = `
+<img
+  alt="icon"
+  src="test-file-stub"
+/>
+`;
+
+exports[`<NotificationIcon /> should render an icon for success notification type 1`] = `
+<img
+  alt="icon"
+  src="test-file-stub"
+/>
+`;
+
+exports[`<NotificationIcon /> should render an icon for warning notification type 1`] = `
+<img
+  alt="icon"
+  src="test-file-stub"
+/>
+`;
+
+exports[`<NotificationIcon /> should render with custom theme 1`] = `
+<img
+  alt="icon"
+  src="test-file-stub"
+  style="margin-left: 16px;"
+/>
+`;

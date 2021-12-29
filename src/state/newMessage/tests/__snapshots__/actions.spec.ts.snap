@@ -44,12 +44,12 @@ Array [
                         <li>You can only send images or videos.</li>
                     </ul>
                 ",
-      "position": "tc",
+      "position": "top-right",
       "status": "error",
       "style": "alert",
       "title": "We could not add all of your attachments !",
     },
-    "type": "ADD_NOTIFICATION",
+    "type": "reapop/upsertNotification",
   },
   Object {
     "type": "NEW_MESSAGE_ADD_ATTACHMENT_ERROR",
@@ -92,12 +92,12 @@ Array [
                         <li>You can only send images or videos.</li>
                     </ul>
                 ",
-      "position": "tc",
+      "position": "top-right",
       "status": "error",
       "style": "alert",
       "title": "We could not add all of your attachments !",
     },
-    "type": "ADD_NOTIFICATION",
+    "type": "reapop/upsertNotification",
   },
   Object {
     "type": "NEW_MESSAGE_ADD_ATTACHMENT_ERROR",

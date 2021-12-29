@@ -1,5 +1,5 @@
 import {fromJS} from 'immutable'
-import {removeNotification} from 'reapop'
+import {dismissNotification} from 'reapop'
 
 import {
     newMessageResetFromMessage,
@@ -98,7 +98,7 @@ describe('services', () => {
             pendingMessageManager.sendMessage(sendMessageArgs)
             pendingMessageManager.undoMessage()
 
-            expect(removeNotification).toHaveBeenNthCalledWith(1, 1)
+            expect(dismissNotification).toHaveBeenNthCalledWith(1, '1')
             expect(messageDeleted).toHaveBeenNthCalledWith(1, 1)
             expect(history.push).toHaveBeenNthCalledWith(1, '/app/ticket/1')
             jest.runAllTimers()

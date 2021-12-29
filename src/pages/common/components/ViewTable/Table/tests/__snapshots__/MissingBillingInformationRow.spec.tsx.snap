@@ -17,7 +17,6 @@ exports[`<MissingBillingInformationRow /> should render a row when conditions ar
         >
           <img
             alt="icon"
-            class="icon"
             src="test-file-stub"
           />
         </div>

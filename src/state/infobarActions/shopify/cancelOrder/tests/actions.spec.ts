@@ -47,7 +47,7 @@ describe('infobarActions.shopify.cancelOrder actions', () => {
 
     const getActions = () =>
         store.getActions().map((action: GorgiasAction) => {
-            if (action.type === 'ADD_NOTIFICATION') {
+            if (action.type === 'reapop/upsertNotification') {
                 ;(action.payload as Record<string, unknown>).id = 1
             }
 

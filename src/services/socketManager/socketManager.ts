@@ -1,7 +1,7 @@
 import _noop from 'lodash/noop'
 import _find from 'lodash/find'
 import _throttle from 'lodash/throttle'
-import {removeNotification} from 'reapop'
+import {dismissNotification} from 'reapop'
 import {EnhancedStore} from '@reduxjs/toolkit'
 
 import refreshIcon from 'assets/img/icons/refresh.svg'
@@ -155,8 +155,7 @@ export class SocketManager {
         this.isConnected = true
 
         this.dispatchReduxAction(
-            //eslint-disable-next-line @typescript-eslint/no-unsafe-call
-            removeNotification(this.disconnectedNotificationId)
+            dismissNotification(this.disconnectedNotificationId)
         )
 
         // join rooms that were active before being disconnected

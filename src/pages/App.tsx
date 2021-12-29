@@ -3,7 +3,10 @@ import React, {ComponentType, ReactNode} from 'react'
 import DocumentTitle from 'react-document-title'
 import {connect, ConnectedProps} from 'react-redux'
 import {Container} from 'reactstrap'
-import NotificationsSystem from 'reapop'
+import NotificationsSystem, {
+    dismissNotification,
+    Notification as ReapopNotification,
+} from 'reapop'
 import {RouteComponentProps} from 'react-router-dom'
 import {Map} from 'immutable'
 
@@ -21,7 +24,6 @@ import {identifyUser} from '../store/middlewares/segmentTracker'
 import {handleUsageBanner} from '../state/notifications/actions'
 import {hasIntegrationOfTypes} from '../state/integrations/selectors'
 import {IntegrationType} from '../models/integration/types'
-import {Notification} from '../state/notifications/types'
 
 import css from './App.less'
 import BannerNotifications from './common/components/BannerNotifications/BannerNotifications'
@@ -29,6 +31,7 @@ import FullPage from './common/components/FullPage'
 import KeyboardHelp from './common/components/KeyboardHelp/KeyboardHelp'
 import ModalNotification from './common/components/ModalNotification'
 import notificationsTheme from './common/components/Notifications'
+import {NotificationIcon as GorgiasNotificationIcon} from './common/components/NotificationIcon'
 import {ErrorBoundary} from './ErrorBoundary'
 import PhoneIntegrationBar from './common/components/PhoneIntegrationBar/PhoneIntegrationBar'
 import IconButton from './common/components/button/IconButton'
@@ -113,6 +116,7 @@ class App extends React.Component<Props> {
             infobar: Infobar,
             hasPhoneIntegration,
             children,
+            dismissNotification,
         } = this.props
         const bannerNotifications = notifications.filter(
             (notif) => notif.style === 'banner'
@@ -120,6 +124,10 @@ class App extends React.Component<Props> {
         const modalNotifications = notifications.filter(
             (notif) => notif.style === 'modal'
         )
+
+        const alertNotifications = notifications.filter(
+            (notif) => notif.style === 'alert'
+        ) as ReapopNotification[]
 
         const Wrapper = containerPadding ? FullPage : Container
         const wrapperProps = containerPadding
@@ -136,14 +144,12 @@ class App extends React.Component<Props> {
                         <BannerNotifications
                             notifications={bannerNotifications}
                         />
-
                         {modalNotifications.map((notification) => (
                             <ModalNotification
                                 key={notification.id}
                                 {...notification}
                             />
                         ))}
-
                         <div id="app-root" className={css.app}>
                             <Navbar />
 
@@ -217,12 +223,14 @@ class App extends React.Component<Props> {
                                 onClick={this.props.closePanels}
                             />
                         </div>
-
                         <KeyboardHelp />
-
                         <NotificationsSystem
                             theme={notificationsTheme}
-                            filter={(n: Notification) => n.style === 'alert'}
+                            notifications={alertNotifications}
+                            dismissNotification={dismissNotification}
+                            components={{
+                                NotificationIcon: GorgiasNotificationIcon,
+                            }}
                         />
                     </div>
                 </ErrorBoundary>
@@ -247,6 +255,7 @@ const connector = connect(
         closePanels: layoutActions.closePanels,
         gotoActiveView: viewsActions.gotoActiveView,
         handleUsageBanner: handleUsageBanner,
+        dismissNotification: dismissNotification,
     }
 )
 

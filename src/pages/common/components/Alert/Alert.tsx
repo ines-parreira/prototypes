@@ -56,11 +56,7 @@ const Alert = ({
                     {isValidElement(icon) ? (
                         icon
                     ) : (
-                        <img
-                            src={alertIcon[type]}
-                            alt="icon"
-                            className={css.icon}
-                        />
+                        <img src={alertIcon[type]} alt="icon" />
                     )}
                 </div>
             )}

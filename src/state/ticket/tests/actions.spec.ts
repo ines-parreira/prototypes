@@ -7,7 +7,7 @@ import MockAdapter from 'axios-mock-adapter'
 import thunk from 'redux-thunk'
 import {fromJS, Map} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
-import {removeNotification} from 'reapop'
+import {dismissNotification} from 'reapop'
 
 import * as actions from '../actions'
 import {initialState} from '../reducers'
@@ -43,17 +43,10 @@ const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
 )
 
 jest.mock('reapop', () => {
-    const reapop = jest.requireActual('reapop')
-
+    const reapop: Record<string, unknown> = jest.requireActual('reapop')
     return {
         ...reapop,
-        removeNotification: jest.fn(
-            () => (args: Record<string, unknown>) => args
-        ),
-    } as {
-        removeNotification: jest.MockedFunction<
-            typeof reapop.removeNotification
-        >
+        dismissNotification: jest.fn(() => (args: unknown) => args),
     }
 })
 jest.mock('push.js', () => {
@@ -228,7 +221,7 @@ describe('ticket actions', () => {
                     throw new Error('property buttons is undefined')
                 }
                 return button.onClick().then(() => {
-                    expect(removeNotification).toHaveBeenNthCalledWith(
+                    expect(dismissNotification).toHaveBeenNthCalledWith(
                         1,
                         'spam-1'
                     )
@@ -291,7 +284,7 @@ describe('ticket actions', () => {
                     throw new Error('property buttons is undefined')
                 }
                 return button.onClick().then(() => {
-                    expect(removeNotification).toHaveBeenNthCalledWith(
+                    expect(dismissNotification).toHaveBeenNthCalledWith(
                         1,
                         'trash-1'
                     )

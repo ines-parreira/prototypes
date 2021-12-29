@@ -1,6 +1,7 @@
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
 import {StoreDispatch} from '../../types'
 import {INITIAL_MESSAGE, notify, handleUsageBanner} from '../actions'
 import {Notification, NotificationStatus} from '../types'
@@ -10,8 +11,8 @@ const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
     middlewares
 )
 const types = {
-    addNotification: 'ADD_NOTIFICATION',
-    removeNotification: 'REMOVE_NOTIFICATION',
+    upsertNotification: 'reapop/upsertNotification',
+    dismissNotification: 'reapop/dismissNotification',
 }
 const initialState = {
     notifications: [],
@@ -48,7 +49,7 @@ describe('actions', () => {
 
             expect(expectedActions).toMatchObject([
                 {
-                    type: types.addNotification,
+                    type: types.upsertNotification,
                     payload: defaultMessage,
                 },
             ])
@@ -142,44 +143,44 @@ describe('actions', () => {
         })
 
         it('should not add duplicate notifications', async () => {
-            const notification = store.dispatch(
+            const notification = (await store.dispatch(
                 notify({
                     id: '12345',
                     message: 'Prosciutto e Funghi',
                     dismissAfter: 1,
                 })
-            ) as Notification
+            )) as UpsertNotificationAction
 
             store = mockStore({
-                notifications: [notification],
+                notifications: [notification.payload as Notification],
             })
 
-            await store.dispatch(notify(notification))
+            await store.dispatch(notify(notification.payload as Notification))
             const expectedActions = store.getActions()
 
             expect(expectedActions).toEqual([])
         })
 
         it('should close previous notifications with closeOnNext', async () => {
-            const notification = store.dispatch(
+            const notification = (await store.dispatch(
                 notify({
                     message: 'Prosciutto e Funghi',
                     dismissAfter: 1,
                     closeOnNext: true,
                 })
-            ) as Notification
+            )) as UpsertNotificationAction
 
             store = mockStore({
-                notifications: [notification],
+                notifications: [notification.payload as Notification],
             })
 
-            await store.dispatch(notify(notification))
+            await store.dispatch(notify(notification.payload as Notification))
             const expectedActions = store.getActions()
 
             expect(expectedActions).toMatchObject([
                 {
-                    type: types.removeNotification,
-                    payload: notification.id,
+                    type: types.dismissNotification,
+                    payload: notification.payload.id,
                 },
             ])
         })

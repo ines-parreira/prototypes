@@ -162,7 +162,6 @@ exports[`<TwitterIntegrationList/> render() should render with a warning message
       >
         <img
           alt="icon"
-          class="icon"
           src="test-file-stub"
         />
       </div>
@@ -284,7 +283,6 @@ exports[`<TwitterIntegrationList/> render() should render with an error message 
       >
         <img
           alt="icon"
-          class="icon"
           src="test-file-stub"
         />
       </div>

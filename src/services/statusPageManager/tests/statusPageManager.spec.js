@@ -1,4 +1,4 @@
-import {removeNotification} from 'reapop'
+import {dismissNotification} from 'reapop'
 import moment from 'moment'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
@@ -40,7 +40,7 @@ jest.mock('reapop', () => {
 
     return {
         ...reapop,
-        removeNotification: jest.fn(reapop.removeNotification),
+        dismissNotification: jest.fn(reapop.dismissNotification),
     }
 })
 
@@ -101,8 +101,8 @@ describe('statusPageManager', () => {
             statusPageManager.processIncidents(args)
             statusPageManager.processIncidents(args)
 
-            expect(removeNotification).toHaveBeenCalledTimes(1)
-            expect(removeNotification).toBeCalledWith(
+            expect(dismissNotification).toHaveBeenCalledTimes(1)
+            expect(dismissNotification).toBeCalledWith(
                 `${INCIDENTS_NOTIFICATION_ID}-incident-id`
             )
         })
@@ -549,8 +549,8 @@ describe('statusPageManager', () => {
                         },
                     ],
                 })
-                expect(removeNotification).toHaveBeenCalledTimes(1)
-                expect(removeNotification).toBeCalledWith(
+                expect(dismissNotification).toHaveBeenCalledTimes(1)
+                expect(dismissNotification).toBeCalledWith(
                     MAINTENANCE_NOTIFICATION_ID
                 )
                 expect(notify.mock.calls).toMatchSnapshot()

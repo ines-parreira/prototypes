@@ -51,7 +51,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
         store
             .getActions()
             .map((action: AnyAction & {payload: Record<string, unknown>}) => {
-                if (action.type === 'ADD_NOTIFICATION') {
+                if (action.type === 'reapop/upsertNotification') {
                     action.payload.id = 1
                 }
 

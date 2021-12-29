@@ -3,7 +3,8 @@ import {fromJS, List, Map} from 'immutable'
 import _chunk from 'lodash/chunk'
 import _max from 'lodash/max'
 import {Moment} from 'moment'
-import {updateNotification} from 'reapop'
+import {notify as updateNotification} from 'reapop'
+import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
 
 import * as viewsConfig from '../../config/views'
 import {BASE_VIEW_ID} from '../../constants/view'
@@ -563,15 +564,15 @@ export function createJob(
                 ),
                 buttons: [],
             })
-        ) as unknown as Notification
+        ) as unknown as UpsertNotificationAction
 
         return client
             .post<Job>('/api/jobs/', requestPayload)
             .then((json) => json?.data)
             .then(
                 (job) => {
-                    notification.status = NotificationStatus.Success
-                    notification.buttons = [
+                    notification.payload.status = NotificationStatus.Success
+                    notification.payload.buttons = [
                         {
                             name: 'Cancel',
                             primary: true,
@@ -579,17 +580,19 @@ export function createJob(
                                 return client
                                     .delete<void>(`/api/jobs/${job.id}`)
                                     .then((json) => {
-                                        notification.buttons = []
+                                        notification.payload.buttons = []
                                         return json.data
                                     })
                                     .then(
                                         () => {
-                                            notification.status =
+                                            notification.payload.status =
                                                 NotificationStatus.Success
-                                            notification.message =
+                                            notification.payload.message =
                                                 'The job has been canceled.'
                                             return dispatch(
-                                                notify(notification)
+                                                notify(
+                                                    notification.payload as Notification
+                                                )
                                             )
                                         },
                                         (
@@ -597,12 +600,14 @@ export function createJob(
                                                 error: {msg: string}
                                             }>
                                         ) => {
-                                            notification.status =
+                                            notification.payload.status =
                                                 NotificationStatus.Error
-                                            notification.message =
+                                            notification.payload.message =
                                                 error.response?.data.error.msg
                                             return dispatch(
-                                                notify(notification)
+                                                notify(
+                                                    notification.payload as Notification
+                                                )
                                             )
                                         }
                                     )
@@ -610,24 +615,23 @@ export function createJob(
                         },
                     ]
                     return dispatch(
-                        //eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                        updateNotification(notification)
-                    ) as Promise<ReturnType<StoreDispatch>>
+                        updateNotification(notification.payload)
+                    ) as unknown as Promise<ReturnType<StoreDispatch>>
                 },
                 (error: AxiosError<{error: {msg: string}}>) => {
-                    notification.status = NotificationStatus.Error
+                    notification.payload.status = NotificationStatus.Error
                     if (error.response?.status === 403) {
-                        notification.message = error.response.data.error.msg
+                        notification.payload.message =
+                            error.response.data.error.msg
                     } else {
-                        notification.message =
+                        notification.payload.message =
                             'Failed to apply action on ' +
                             (viewsConfig
                                 .getConfigByType(view.get('type'))
                                 .get('plural') as string) +
                             ' view. Please try again.'
                     }
-                    //eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                    dispatch(updateNotification(notification))
+                    dispatch(updateNotification(notification.payload))
                     throw error
                 }
             )

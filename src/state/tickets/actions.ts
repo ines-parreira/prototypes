@@ -1,6 +1,6 @@
 import {List} from 'immutable'
-import {updateNotification} from 'reapop'
-import {AnyAction} from 'redux'
+import {notify as updateNotification} from 'reapop'
+import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
 
 import client from '../../models/api/resources'
 import {notify} from '../notifications/actions'
@@ -46,40 +46,19 @@ export function createJob(
                     ids.size
                 ),
             })
-        ) as Promise<Notification> & {
-            status: NotificationStatus
-            message: string
-        }
+        ) as unknown as UpsertNotificationAction
 
         return client
             .post('/api/jobs/', requestPayload)
             .then(() => {
-                notification.status = NotificationStatus.Success
-                return dispatch(
-                    (
-                        updateNotification as (
-                            notification: Promise<Notification> & {
-                                status: NotificationStatus
-                                message: string
-                            }
-                        ) => AnyAction
-                    )(notification)
-                )
+                notification.payload.status = NotificationStatus.Success
+                return dispatch(updateNotification(notification.payload))
             })
             .catch((error) => {
-                notification.status = NotificationStatus.Error
-                notification.message =
+                notification.payload.status = NotificationStatus.Error
+                notification.payload.message =
                     'Failed to apply action on tickets. Please try again.'
-                dispatch(
-                    (
-                        updateNotification as (
-                            notification: Promise<Notification> & {
-                                status: NotificationStatus
-                                message: string
-                            }
-                        ) => AnyAction
-                    )(notification)
-                )
+                dispatch(updateNotification(notification.payload))
                 throw error
             })
     }

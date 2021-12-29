@@ -74,7 +74,6 @@ exports[`<Alert /> should render an alert with an icon when icon prop is passed 
   >
     <img
       alt="icon"
-      class="icon"
       src="test-file-stub"
     />
   </div>
@@ -122,7 +121,6 @@ exports[`<Alert /> should render icon for error alert type 1`] = `
   >
     <img
       alt="icon"
-      class="icon"
       src="test-file-stub"
     />
   </div>
@@ -147,7 +145,6 @@ exports[`<Alert /> should render icon for info alert type 1`] = `
   >
     <img
       alt="icon"
-      class="icon"
       src="test-file-stub"
     />
   </div>
@@ -172,7 +169,6 @@ exports[`<Alert /> should render icon for success alert type 1`] = `
   >
     <img
       alt="icon"
-      class="icon"
       src="test-file-stub"
     />
   </div>
@@ -197,7 +193,6 @@ exports[`<Alert /> should render icon for warning alert type 1`] = `
   >
     <img
       alt="icon"
-      class="icon"
       src="test-file-stub"
     />
   </div>

@@ -22,7 +22,7 @@ const api = new OpenAPIClientAxios({
     // than fetching it at runtime.
     // Reason: the OpenAPI spec may change and it may mess the client
     // at runtime.
-    definition: OpenAPIDoc as Document,
+    definition: OpenAPIDoc as unknown as Document,
     ...(getHelpCenterApiBaseUrl()
         ? {withServer: {url: getHelpCenterApiBaseUrl()}}
         : {}),

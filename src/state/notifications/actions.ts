@@ -5,9 +5,10 @@ import _omit from 'lodash/omit'
 import _functions from 'lodash/functions'
 
 import {
-    addNotification,
-    removeNotification,
-    removeNotification as hide,
+    notify as addNotification,
+    dismissNotification,
+    Notification as ReapopNotification,
+    POSITIONS,
 } from 'reapop'
 
 import history from '../../pages/history'
@@ -24,7 +25,7 @@ export const AUTHORIZED_NOTIFICATION_TYPES = [
 ]
 
 export const INITIAL_MESSAGE = {
-    position: 'tc',
+    position: POSITIONS.topRight,
     dismissAfter: 0,
     dismissible: true,
     buttons: [],
@@ -117,8 +118,7 @@ export const notify =
         notificationsState.forEach((notification: Notification) => {
             // close previous notifications that were closeOnNext = true
             if (notification.closeOnNext) {
-                //eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                dispatch(removeNotification(notification.id))
+                dispatch(dismissNotification(notification.id!))
             }
 
             // detect duplicate notification
@@ -132,10 +132,9 @@ export const notify =
         if (duplicate) {
             return Promise.resolve()
         }
-        //eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        return dispatch(addNotification(finalMessage)) as Promise<
-            ReturnType<StoreDispatch>
-        >
+        return dispatch(
+            addNotification(finalMessage as ReapopNotification)
+        ) as unknown as Promise<ReturnType<StoreDispatch>>
     }
 
 export const handleUsageBanner =
@@ -145,11 +144,10 @@ export const handleUsageBanner =
         currentAccountStatus,
     }: HandleUsageBanner) =>
     (dispatch: StoreDispatch) => {
-        const USAGE_NOTIFICATION_BANNER = 99
+        const USAGE_NOTIFICATION_BANNER = '99'
 
         if (currentAccountStatus !== newAccountStatus) {
-            //eslint-disable-next-line @typescript-eslint/no-unsafe-call
-            dispatch(hide(USAGE_NOTIFICATION_BANNER))
+            dispatch(dismissNotification(USAGE_NOTIFICATION_BANNER))
         }
 
         if (notification) {

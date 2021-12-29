@@ -9,13 +9,13 @@ Array [
       "closeButton": false,
       "dismissAfter": 3000,
       "dismissible": true,
-      "id": 1483228800000,
+      "id": "4fzzz",
       "message": "Tickets merged successfully",
-      "position": "tc",
+      "position": "top-right",
       "status": "success",
       "style": "alert",
     },
-    "type": "ADD_NOTIFICATION",
+    "type": "reapop/upsertNotification",
   },
 ]
 `;

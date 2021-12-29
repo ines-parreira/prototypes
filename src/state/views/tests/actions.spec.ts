@@ -4,7 +4,6 @@ import thunk from 'redux-thunk'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS, Map, List} from 'immutable'
-import _identity from 'lodash/identity'
 import _range from 'lodash/range'
 
 import * as actions from '../actions'
@@ -16,7 +15,6 @@ import * as socketConstants from '../../../config/socketConstants'
 import {RootState, StoreDispatch} from '../../types'
 import {ViewNavDirection} from '../types'
 import {JobType} from '../../../models/job/types'
-import {notify} from '../../notifications/actions'
 import {MoveIndexDirection} from '../../../pages/common/utils/keyboard'
 import {getAST} from '../../../utils'
 import * as viewsSelectors from '../selectors'
@@ -24,15 +22,17 @@ import client from '../../../models/api/resources'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('../../notifications/actions.ts')
+jest.mock('../../notifications/actions.ts', () => {
+    return {
+        notify: jest.fn((args: unknown) => () => ({payload: args})),
+    }
+})
 
 jest.mock('reapop', () => {
-    const reapop = jest.requireActual('reapop')
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    const reapop: Record<string, unknown> = require.requireActual('reapop')
     return {
         ...reapop,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-        updateNotification: jest.fn(() => (args: any) => args),
+        notify: jest.fn(() => (args: unknown) => args),
     }
 })
 
@@ -45,7 +45,6 @@ beforeEach(() => {
     store.clearActions()
     mockServer.reset()
     jest.clearAllMocks()
-    ;(notify as jest.Mock).mockReturnValue(_identity)
 })
 
 describe('actions', () => {

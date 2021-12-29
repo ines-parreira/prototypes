@@ -11,21 +11,6 @@ import {initialState} from '../reducers'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('../../notifications/actions', () => {
-    return {
-        notify: jest.fn(() => (args: Record<string, unknown>) => args),
-    }
-})
-jest.mock('reapop', () => {
-    const reapop: Record<string, unknown> = jest.requireActual('reapop')
-    return {
-        ...reapop,
-        updateNotification: jest.fn(
-            () => (args: Record<string, unknown>) => args
-        ),
-    }
-})
-
 describe('tickets actions', () => {
     let store: MockStoreEnhanced<Partial<RootState>, StoreDispatch>
     const mockServer = new MockAdapter(client)

@@ -128,11 +128,11 @@ Array [
       "dismissible": true,
       "id": 1,
       "message": "foo",
-      "position": "tc",
+      "position": "top-right",
       "status": "error",
       "style": "alert",
     },
-    "type": "ADD_NOTIFICATION",
+    "type": "reapop/upsertNotification",
   },
 ]
 `;

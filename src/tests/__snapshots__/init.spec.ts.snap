@@ -12,11 +12,11 @@ Array [
       "id": "account-not-verified-notification",
       "message": "Your email address is not verified. <span class=\\"text-primary\\">Click here to resend the verification email.</span>",
       "onClick": [Function],
-      "position": "tc",
+      "position": "top-right",
       "status": "warning",
       "style": "banner",
     },
-    "type": "ADD_NOTIFICATION",
+    "type": "reapop/upsertNotification",
   },
 ]
 `;
@@ -35,11 +35,11 @@ Array [
       "id": "deprecated-tld-notification",
       "message": "We're now a dot-com 🎉 please update your helpdesk links and bookmarks to <span class=\\"text-primary\\">https://acme.gorgias.com/</span>. This message will be hidden after you login there.",
       "onClick": [Function],
-      "position": "tc",
+      "position": "top-right",
       "status": "warning",
       "style": "banner",
     },
-    "type": "ADD_NOTIFICATION",
+    "type": "reapop/upsertNotification",
   },
 ]
 `;

@@ -14,7 +14,7 @@ const mockStore = configureMockStore(middlewares)
 
 jest.mock('../../notifications/actions.ts', () => {
     return {
-        notify: jest.fn(() => (args: unknown) => args),
+        notify: jest.fn((args: unknown) => () => ({payload: args})),
     }
 })
 jest.mock('reapop', () => {
@@ -22,7 +22,7 @@ jest.mock('reapop', () => {
 
     return {
         ...reapop,
-        updateNotification: jest.fn(() => (args: unknown) => args),
+        notify: jest.fn(() => (args: unknown) => args),
     }
 })
 

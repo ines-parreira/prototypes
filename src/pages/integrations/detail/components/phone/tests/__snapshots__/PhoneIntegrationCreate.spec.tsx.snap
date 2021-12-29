@@ -411,7 +411,6 @@ exports[`<PhoneIntegrationCreate/> render() should render address validation for
           >
             <img
               alt="icon"
-              class="icon"
               src="test-file-stub"
             />
           </div>

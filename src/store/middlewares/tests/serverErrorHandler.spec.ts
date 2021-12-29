@@ -8,8 +8,7 @@ const middlewares = [thunk, serverErrorHandler]
 const mockStore = configureMockStore(middlewares)
 
 const types = {
-    addNotification: 'ADD_NOTIFICATION',
-    removeNotification: 'REMOVE_NOTIFICATION',
+    upsertNotification: 'reapop/upsertNotification',
 }
 
 function removeWhitespace(str = '') {
@@ -37,7 +36,7 @@ describe('middlewares', () => {
                 payload: {
                     message: notificationTitle,
                 },
-                type: types.addNotification,
+                type: types.upsertNotification,
             })
         })
 
@@ -61,7 +60,7 @@ describe('middlewares', () => {
                 payload: {
                     message: notificationTitle,
                 },
-                type: types.addNotification,
+                type: types.upsertNotification,
             })
         })
 
@@ -89,7 +88,7 @@ describe('middlewares', () => {
                 payload: {
                     message: notificationTitle,
                 },
-                type: types.addNotification,
+                type: types.upsertNotification,
             })
         })
 
@@ -158,7 +157,7 @@ describe('middlewares', () => {
                 payload: {
                     message: `${notificationTitle} You will be redirected to the login page in a few seconds.`,
                 },
-                type: types.addNotification,
+                type: types.upsertNotification,
             })
         })
 
@@ -184,7 +183,7 @@ describe('middlewares', () => {
                 payload: {
                     message: notificationTitle,
                 },
-                type: types.addNotification,
+                type: types.upsertNotification,
             })
         })
     })

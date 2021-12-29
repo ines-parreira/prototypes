@@ -1,5 +1,5 @@
 import _find from 'lodash/find'
-import {removeNotification} from 'reapop'
+import {dismissNotification} from 'reapop'
 
 import * as socketConstants from '../../../config/socketConstants.ts'
 import * as socketEvents from '../../../config/socketEvents.ts'
@@ -23,7 +23,7 @@ jest.mock('reapop', () => {
 
     return {
         ...reapop,
-        removeNotification: jest.fn(reapop.removeNotification),
+        dismissNotification: jest.fn(reapop.dismissNotification),
     }
 })
 
@@ -143,7 +143,7 @@ describe('SocketManager', () => {
             socketManager.onConnect()
 
             expect(socketManager.isConnected).toEqual(true)
-            expect(removeNotification.mock.calls).toMatchSnapshot()
+            expect(dismissNotification.mock.calls).toMatchSnapshot()
         })
     })
 

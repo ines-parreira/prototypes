@@ -18,6 +18,7 @@
         "emitDecoratorMetadata": true,
         "baseUrl": "./g/static/private/js",
         "typeRoots": ["./g/static/private/js/types", "./node_modules/@types"],
+        "resolveJsonModule": true,
         "paths": {
             "react-chartjs-2": ["./types/react-chartjs-2.d.ts"]
         },

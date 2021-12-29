@@ -4,7 +4,7 @@ import _noop from 'lodash/noop'
 import _pick from 'lodash/pick'
 import {AxiosError} from 'axios'
 import {createAction} from '@reduxjs/toolkit'
-import {removeNotification} from 'reapop'
+import {dismissNotification} from 'reapop'
 import {Moment} from 'moment'
 import {compressToEncodedURIComponent} from 'lz-string'
 
@@ -245,8 +245,7 @@ export const setSpam =
                                     name: 'Undo',
                                     onClick: () => {
                                         void dispatch(
-                                            //eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                                            removeNotification(
+                                            dismissNotification(
                                                 `spam-${ticketId}`
                                             )
                                         )
@@ -307,8 +306,7 @@ export const setTrashed =
                                     name: 'Undo',
                                     onClick: () => {
                                         dispatch(
-                                            //eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                                            removeNotification(
+                                            dismissNotification(
                                                 `trash-${ticketId}`
                                             )
                                         )

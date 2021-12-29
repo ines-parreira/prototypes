@@ -49,7 +49,7 @@ const rootReducer = combineReducers<StoreState>({
     layout: layoutReducer,
     macros: macrosReducer,
     newMessage: newMessageReducer,
-    //eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    // @ts-ignore
     notifications: notificationsReducer(),
     schemas: schemasReducer,
     stats: statsReducer,

@@ -1,5 +1,5 @@
 import moment from 'moment'
-import {removeNotification} from 'reapop'
+import {dismissNotification} from 'reapop'
 import {EnhancedStore} from '@reduxjs/toolkit'
 import {Set as ImmutableSet, Map as ImmutableMap} from 'immutable'
 
@@ -198,8 +198,7 @@ export class StatusPageManager {
         // remove all previous notifications
         this.previousIncidentsIds.forEach((id) => {
             this.store.dispatch(
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                removeNotification(`${INCIDENTS_NOTIFICATION_ID}-${id}`)
+                dismissNotification(`${INCIDENTS_NOTIFICATION_ID}-${id}`)
             )
         })
         this.previousIncidentsIds = []
@@ -278,8 +277,7 @@ export class StatusPageManager {
         }
 
         // remove all previous maintenance notifications
-        //eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        this.store.dispatch(removeNotification(MAINTENANCE_NOTIFICATION_ID))
+        this.store.dispatch(dismissNotification(MAINTENANCE_NOTIFICATION_ID))
 
         for (const maintenance of data.scheduled_maintenances) {
             const clusters = maintenance.components.filter(

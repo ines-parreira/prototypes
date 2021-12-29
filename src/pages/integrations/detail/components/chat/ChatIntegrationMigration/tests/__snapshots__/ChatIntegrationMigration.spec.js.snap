@@ -98,7 +98,6 @@ exports[`ChatIntegrationMigration component should display the migration page 1`
         >
           <img
             alt="icon"
-            class="icon"
             src="test-file-stub"
           />
         </div>

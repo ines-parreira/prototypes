@@ -1,6 +1,6 @@
 import React, {ComponentProps} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {removeNotification as hide} from 'reapop'
+import {dismissNotification as hide} from 'reapop'
 
 import {Notification} from '../../../../state/notifications/types'
 
