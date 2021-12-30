@@ -136,7 +136,7 @@ describe('<SelfServiceView/>', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('should render a row for each shopify integration, 2 active and 1 inactive ssp services', () => {
+        it('should render a row for each shopify integration, 2 active and 1 inactive ssp services', async () => {
             const shopifyIntegrations = createShopifyIntegrationFixtures(3)
             const selfServiceConfigurations =
                 createSelfServiceConfigurationFixtures(3)
@@ -147,78 +147,79 @@ describe('<SelfServiceView/>', () => {
                 })
             })
 
-            act(() => {
-                const {container} = render(
-                    <Provider
-                        store={mockStore({
-                            ...defaultState,
-                            integrations: fromJS({
-                                integrations: shopifyIntegrations,
-                            }),
-                            entities: {
-                                ...defaultState.entities,
-                                selfServiceConfigurations:
-                                    selfServiceConfigurations.reduce(
-                                        (
-                                            configurations: SelfServiceConfigurationsState,
-                                            configuration: SelfServiceConfiguration
-                                        ) => ({
-                                            ...configurations,
-                                            [configuration.id]: configuration,
-                                        }),
-                                        {} as Partial<SelfServiceConfiguration>
-                                    ),
-                            },
-                        })}
-                    >
-                        <SelfServiceView />
-                    </Provider>
-                )
+            const {container, findByText} = render(
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        integrations: fromJS({
+                            integrations: shopifyIntegrations,
+                        }),
+                        entities: {
+                            ...defaultState.entities,
+                            selfServiceConfigurations:
+                                selfServiceConfigurations.reduce(
+                                    (
+                                        configurations: SelfServiceConfigurationsState,
+                                        configuration: SelfServiceConfiguration
+                                    ) => ({
+                                        ...configurations,
+                                        [configuration.id]: configuration,
+                                    }),
+                                    {} as Partial<SelfServiceConfiguration>
+                                ),
+                        },
+                    })}
+                >
+                    <SelfServiceView />
+                </Provider>
+            )
 
-                expect(container).toMatchSnapshot()
-            })
+            await findByText(/Self-service is only available/i)
+            expect(container).toMatchSnapshot()
         })
     })
 
     describe('ToggleButton.onChange()', () => {
-        it('should send an updateSelfServiceConfigurations action and the ssp for the store with id 1 will get deactivated', () => {
+        it('should send an updateSelfServiceConfigurations action and the ssp for the store with id 1 will get deactivated', async () => {
             const shopifyIntegrations = createShopifyIntegrationFixtures(4)
             const selfServiceConfigurations =
                 createSelfServiceConfigurationFixtures(4)
 
+            const {container, getAllByTestId, findByText} = render(
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        integrations: fromJS({
+                            integrations: shopifyIntegrations,
+                        }),
+                        entities: {
+                            ...defaultState.entities,
+                            selfServiceConfigurations:
+                                selfServiceConfigurations.reduce(
+                                    (
+                                        configurations: SelfServiceConfigurationsState,
+                                        configuration: SelfServiceConfiguration
+                                    ) => ({
+                                        ...configurations,
+                                        [configuration.id]: configuration,
+                                    }),
+                                    {} as Partial<SelfServiceConfiguration>
+                                ),
+                        },
+                    })}
+                >
+                    <SelfServiceView />
+                </Provider>
+            )
+
+            await findByText(/Self-service is only available/i)
+            expect(container).toMatchSnapshot()
+
             act(() => {
-                const {container, getAllByTestId} = render(
-                    <Provider
-                        store={mockStore({
-                            ...defaultState,
-                            integrations: fromJS({
-                                integrations: shopifyIntegrations,
-                            }),
-                            entities: {
-                                ...defaultState.entities,
-                                selfServiceConfigurations:
-                                    selfServiceConfigurations.reduce(
-                                        (
-                                            configurations: SelfServiceConfigurationsState,
-                                            configuration: SelfServiceConfiguration
-                                        ) => ({
-                                            ...configurations,
-                                            [configuration.id]: configuration,
-                                        }),
-                                        {} as Partial<SelfServiceConfiguration>
-                                    ),
-                            },
-                        })}
-                    >
-                        <SelfServiceView />
-                    </Provider>
-                )
-
-                expect(container).toMatchSnapshot()
-
                 fireEvent.click(getAllByTestId('toggle-button')[0]) // selecting the 1st store (id = 1)
-                expect(updateSelfServiceConfigurationMock.mock.calls[0])
-                    .toMatchInlineSnapshot(`
+            })
+            expect(updateSelfServiceConfigurationMock.mock.calls[0])
+                .toMatchInlineSnapshot(`
                     Array [
                       Object {
                         "cancel_order_policy": Object {
@@ -243,47 +244,48 @@ describe('<SelfServiceView/>', () => {
                       },
                     ]
                 `)
-            })
         })
 
-        it('should send an updateSelfServiceConfigurations action and the ssp for the store with id 2 will get activated', () => {
+        it('should send an updateSelfServiceConfigurations action and the ssp for the store with id 2 will get activated', async () => {
             const shopifyIntegrations = createShopifyIntegrationFixtures(4)
             const selfServiceConfigurations =
                 createSelfServiceConfigurationFixtures(4)
 
+            const {container, getAllByTestId, findByText} = render(
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        integrations: fromJS({
+                            integrations: shopifyIntegrations,
+                        }),
+                        entities: {
+                            ...defaultState.entities,
+                            selfServiceConfigurations:
+                                selfServiceConfigurations.reduce(
+                                    (
+                                        configurations: SelfServiceConfigurationsState,
+                                        configuration: SelfServiceConfiguration
+                                    ) => ({
+                                        ...configurations,
+                                        [configuration.id]: configuration,
+                                    }),
+                                    {} as Partial<SelfServiceConfiguration>
+                                ),
+                        },
+                    })}
+                >
+                    <SelfServiceView />
+                </Provider>
+            )
+
+            await findByText(/Self-service is only available/i)
+            expect(container).toMatchSnapshot()
+
             act(() => {
-                const {container, getAllByTestId} = render(
-                    <Provider
-                        store={mockStore({
-                            ...defaultState,
-                            integrations: fromJS({
-                                integrations: shopifyIntegrations,
-                            }),
-                            entities: {
-                                ...defaultState.entities,
-                                selfServiceConfigurations:
-                                    selfServiceConfigurations.reduce(
-                                        (
-                                            configurations: SelfServiceConfigurationsState,
-                                            configuration: SelfServiceConfiguration
-                                        ) => ({
-                                            ...configurations,
-                                            [configuration.id]: configuration,
-                                        }),
-                                        {} as Partial<SelfServiceConfiguration>
-                                    ),
-                            },
-                        })}
-                    >
-                        <SelfServiceView />
-                    </Provider>
-                )
-
-                expect(container).toMatchSnapshot()
-
                 fireEvent.click(getAllByTestId('toggle-button')[1]) // selecting the 2nd store (id = 2)
-                expect(updateSelfServiceConfigurationMock.mock.calls[0])
-                    .toMatchInlineSnapshot(`
+            })
+            expect(updateSelfServiceConfigurationMock.mock.calls[0])
+                .toMatchInlineSnapshot(`
                     Array [
                       Object {
                         "cancel_order_policy": Object {
@@ -308,7 +310,6 @@ describe('<SelfServiceView/>', () => {
                       },
                     ]
                 `)
-            })
         })
     })
 })

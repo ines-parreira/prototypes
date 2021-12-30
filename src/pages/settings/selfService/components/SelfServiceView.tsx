@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {useSelector} from 'react-redux'
 import {Col, Container, Row, Table} from 'reactstrap'
-import {Map} from 'immutable'
+import {List, Map} from 'immutable'
 
 import PageHeader from '../../../common/components/PageHeader'
 import Tooltip from '../../../common/components/Tooltip'
@@ -39,6 +39,18 @@ const _findConfiguration = (
     })
 }
 
+const _findSelfServiceIntegration = (
+    selfServiceIntegrations: List<Map<any, any>>,
+    shopifyIntegration: Map<any, any>
+): Map<any, any> | undefined => {
+    return selfServiceIntegrations.find((selfServiceIntegration) => {
+        return (
+            selfServiceIntegration?.getIn(['meta', 'shop_name']) ===
+            shopifyIntegration.getIn(['meta', 'shop_name'])
+        )
+    })
+}
+
 export const SelfServiceView = () => {
     const dispatch = useAppDispatch()
     const hasSelfServiceV1Features = useSelector(hasAutomationLegacyFeatures)
@@ -46,16 +58,20 @@ export const SelfServiceView = () => {
     const shopifyIntegrations = useSelector(
         getIntegrationsByTypes(IntegrationType.Shopify)
     )
+    const selfServiceIntegrations = useSelector(
+        getIntegrationsByTypes(IntegrationType.SelfService)
+    )
     const selfServiceConfigurations = useSelector(getSelfServiceConfigurations)
 
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         void (async () => {
-            setLoading(true)
             try {
-                const res = await fetchSelfServiceConfigurations()
-                void dispatch(selfServiceConfigurationsFetched(res.data))
+                const configResponse = await fetchSelfServiceConfigurations()
+                void dispatch(
+                    selfServiceConfigurationsFetched(configResponse.data)
+                )
             } catch (error) {
                 void dispatch(
                     notify({
@@ -131,21 +147,25 @@ export const SelfServiceView = () => {
                                                     .valueSeq()
                                                     .map(
                                                         (
-                                                            integration: Map<
+                                                            shopifyIntegration: Map<
                                                                 any,
                                                                 any
                                                             >
                                                         ) => (
                                                             <IntegrationRow
-                                                                key={integration.get(
+                                                                key={shopifyIntegration.get(
                                                                     'id'
                                                                 )}
-                                                                integration={
-                                                                    integration
+                                                                shopifyIntegration={
+                                                                    shopifyIntegration
                                                                 }
+                                                                selfServiceIntegration={_findSelfServiceIntegration(
+                                                                    selfServiceIntegrations,
+                                                                    shopifyIntegration
+                                                                )}
                                                                 configuration={_findConfiguration(
                                                                     selfServiceConfigurations,
-                                                                    integration
+                                                                    shopifyIntegration
                                                                 )}
                                                             />
                                                         )

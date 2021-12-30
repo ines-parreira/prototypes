@@ -19,7 +19,10 @@ import Tooltip from '../../../../common/components/Tooltip'
 import css from './ConnectToShopSection.less'
 
 interface Props {
-    onUpdate: (data: {shop_name: string | null}) => void
+    onUpdate: (data: {
+        shop_name: string | null
+        self_service_enabled?: boolean
+    }) => void
     helpCenter: HelpCenter
 }
 
@@ -209,7 +212,10 @@ export const ConnectToShopSection = ({
                         <Button
                             className="ml-3"
                             onClick={() => {
-                                onUpdate({shop_name: selectedShop})
+                                onUpdate({
+                                    shop_name: selectedShop,
+                                    self_service_enabled: hasAutomationAddOn,
+                                })
 
                                 setConnectModalOpen(false)
                             }}

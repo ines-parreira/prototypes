@@ -115,6 +115,9 @@ describe('<ConnectToShopSection />', () => {
             fireEvent.click(getAllByText('Connect')[1])
         })
 
-        expect(onUpdate).toBeCalledWith({shop_name: 'meow-shop'})
+        expect(onUpdate).toBeCalledWith({
+            shop_name: 'meow-shop',
+            self_service_enabled: false,
+        })
     })
 })

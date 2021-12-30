@@ -16,6 +16,7 @@ import type {YotpoIntegration} from './yotpo'
 import type {KlaviyoIntegration} from './klaviyo'
 import type {PhoneIntegration} from './phone'
 import type {TwitterIntegration} from './twitter'
+import {SelfServiceIntegration} from './selfService'
 
 export type {IntegrationDecoration} from './base'
 
@@ -45,6 +46,7 @@ export * from './yotpo'
 export * from './klaviyo'
 export * from './phone'
 export * from './twitter'
+export * from './selfService'
 
 export type Integration =
     | EmailIntegration
@@ -65,3 +67,4 @@ export type Integration =
     | KlaviyoIntegration
     | PhoneIntegration
     | TwitterIntegration
+    | SelfServiceIntegration

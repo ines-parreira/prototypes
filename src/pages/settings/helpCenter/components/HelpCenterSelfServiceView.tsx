@@ -7,7 +7,6 @@ import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {HelpCenter} from '../../../../models/helpCenter/types'
 import {IntegrationType} from '../../../../models/integration/constants'
 import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
-import {hasAutomationLegacyFeatures} from '../../../../state/currentAccount/selectors'
 import {helpCenterUpdated} from '../../../../state/entities/helpCenters/actions'
 import {fetchIntegrations} from '../../../../state/integrations/actions'
 import {getIntegrations} from '../../../../state/integrations/selectors'
@@ -22,7 +21,6 @@ import {SelfServiceSection} from './SelfServiceSection'
 
 export const HelpCenterSelfServiceView = (): JSX.Element | null => {
     const helpCenter = useCurrentHelpCenter()
-    const hasSelfServiceV1Features = useSelector(hasAutomationLegacyFeatures)
     const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
     const integrations = useSelector(getIntegrations)
     const {client} = useHelpCenterApi()
@@ -91,7 +89,7 @@ export const HelpCenterSelfServiceView = (): JSX.Element | null => {
             }
         )
 
-        if (hasSelfServiceV1Features || hasAutomationAddOn) {
+        if (hasAutomationAddOn) {
             return (
                 <SelfServiceSection
                     shopifyIntegration={shopifyIntegration}
@@ -109,10 +107,7 @@ export const HelpCenterSelfServiceView = (): JSX.Element | null => {
         <HelpCenterPageWrapper
             activeLabel="Self-service"
             helpCenter={helpCenter}
-            fluidContainer={
-                !isLoadingIntegrations &&
-                (hasSelfServiceV1Features || hasAutomationAddOn)
-            }
+            fluidContainer={!isLoadingIntegrations && hasAutomationAddOn}
         >
             {renderContent()}
         </HelpCenterPageWrapper>

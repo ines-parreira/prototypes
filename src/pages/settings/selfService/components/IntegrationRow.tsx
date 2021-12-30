@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom'
-import React, {useState} from 'react'
-import {Map} from 'immutable'
+import React, {useCallback, useEffect, useState} from 'react'
+import {fromJS, Map} from 'immutable'
 
 import ToggleButton from '../../../common/components/ToggleButton'
 import {getIconFromType} from '../../../../state/integrations/helpers'
@@ -18,19 +18,45 @@ import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 
+import {updateOrCreateIntegration} from '../../../../state/integrations/actions'
+
+import {IntegrationType} from '../../../../models/integration/constants'
+
 import css from './IntegrationRow.less'
 
 interface Props {
-    integration: Map<any, any>
+    shopifyIntegration: Map<any, any>
+    selfServiceIntegration?: Map<any, any>
     configuration?: SelfServiceConfiguration
 }
 
-export const IntegrationRow = ({integration, configuration}: Props) => {
+export const IntegrationRow = ({
+    shopifyIntegration,
+    selfServiceIntegration,
+    configuration,
+}: Props) => {
     const dispatch = useAppDispatch()
     const [loading, setLoading] = useState(false)
+    const shopName: string = shopifyIntegration.getIn(['meta', 'shop_name'])
+    const integrationType: ShopType = shopifyIntegration.get('type')
 
-    const shopName: string = integration.getIn(['meta', 'shop_name'])
-    const integrationType: ShopType = integration.get('type')
+    const selfServiceIntegrationData = {
+        name: `Self-service for ${shopName}`,
+        type: IntegrationType.SelfService,
+        meta: {shop_name: shopName},
+    }
+
+    const createSelfServiceIntegration = useCallback(async () => {
+        if (!selfServiceIntegration) {
+            await dispatch(
+                updateOrCreateIntegration(fromJS(selfServiceIntegrationData))
+            )
+        }
+    }, [selfServiceIntegration])
+
+    useEffect(() => {
+        void createSelfServiceIntegration()
+    }, [createSelfServiceIntegration])
 
     const _onChange = async (value: boolean) => {
         setLoading(true)
@@ -40,10 +66,23 @@ export const IntegrationRow = ({integration, configuration}: Props) => {
             configuration || generateConfiguration(0, integrationType, shopName)
 
         try {
-            const res = await updateSelfServiceConfiguration({
-                ...baseConfiguration,
-                deactivated_datetime,
-            })
+            const [res] = await Promise.all([
+                updateSelfServiceConfiguration({
+                    ...baseConfiguration,
+                    deactivated_datetime,
+                }),
+                selfServiceIntegration
+                    ? dispatch(
+                          updateOrCreateIntegration(
+                              selfServiceIntegration.set(
+                                  'deactivated_datetime',
+                                  deactivated_datetime
+                              )
+                          )
+                      )
+                    : null,
+            ])
+
             void dispatch(selfServiceConfigurationUpdated(res))
             void dispatch(
                 notify({
@@ -71,7 +110,7 @@ export const IntegrationRow = ({integration, configuration}: Props) => {
         : false
 
     return (
-        <tr key={integration.get('id')}>
+        <tr key={shopifyIntegration.get('id')}>
             <td className="smallest align-middle">
                 <ToggleButton
                     value={enabled}

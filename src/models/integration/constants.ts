@@ -17,6 +17,7 @@ export enum IntegrationType {
     Klaviyo = 'klaviyo',
     Phone = 'phone',
     Twitter = 'twitter',
+    SelfService = 'self_service',
 }
 
 export enum VoiceMessageType {
@@ -47,6 +48,7 @@ export const MESSAGING_INTEGRATION_TYPES = Object.freeze([
     IntegrationType.GorgiasChat,
     IntegrationType.Phone,
     IntegrationType.Twitter,
+    IntegrationType.SelfService,
 ])
 
 export const DEFAULT_VOICE_MESSAGE = {
