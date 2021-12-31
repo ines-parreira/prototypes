@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
+import React, {ReactNode, useMemo} from 'react'
 import {UncontrolledTooltip, UncontrolledTooltipProps} from 'reactstrap'
 
 import {isTouchDevice} from '../utils/mobile'
@@ -18,11 +18,23 @@ type Props = {
 export default function Tooltip({
     children,
     className,
-    // delay default fix tap-twice on buttons with tooltips bug, on iOS
-    delay = isTouchDevice() ? 200 : 0,
+    delay,
+    autohide,
     disabled = false,
     ...rest
 }: Props) {
+    const tooltipDelay = useMemo(() => {
+        if (delay) {
+            return delay
+        } else if (isTouchDevice()) {
+            // delay default fix tap-twice on buttons with tooltips bug, on iOS
+            return 200
+        } else if (autohide === false) {
+            return {show: 0, hide: 200}
+        }
+        return 0
+    }, [autohide, delay])
+
     if (disabled) {
         return null
     }
@@ -31,7 +43,8 @@ export default function Tooltip({
         <UncontrolledTooltip
             className={classnames(css.tooltip, className)}
             {...rest}
-            delay={delay}
+            autohide={autohide}
+            delay={tooltipDelay}
         >
             {children}
         </UncontrolledTooltip>

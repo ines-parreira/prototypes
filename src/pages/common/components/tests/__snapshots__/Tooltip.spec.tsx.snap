@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Tooltip /> render should not render the tooltip if disabled 1`] = `
+HTMLCollection [
+  <div
+    id="target"
+    title="target"
+  >
+    Hover me !
+  </div>,
+  <div />,
+]
+`;
+
+exports[`<Tooltip /> render should render the tooltip on hover 1`] = `
+HTMLCollection [
+  <div
+    id="target"
+    title="target"
+  >
+    Hover me !
+  </div>,
+  <div />,
+  <div>
+    <div
+      class="tooltip fade show"
+    >
+      <div
+        class="tooltip show bs-tooltip-auto"
+        style="position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
+      >
+        <div
+          class="tooltip-inner"
+          role="tooltip"
+        >
+          <span>
+            This is a tooltip.
+          </span>
+        </div>
+        <span
+          class="arrow"
+        />
+      </div>
+    </div>
+  </div>,
+]
+`;
+
+exports[`<Tooltip /> tooltipDelay should pass given delay to UncontrolledTooltip 1`] = `
+<div>
+  1000
+</div>
+`;
+
+exports[`<Tooltip /> tooltipDelay should render with a specific delay if on a touch device 1`] = `
+<div>
+  200
+</div>
+`;
+
+exports[`<Tooltip /> tooltipDelay should render with a specific delay when autohide is off 1`] = `
+<div>
+  {"show":0,"hide":200}
+</div>
+`;
+
+exports[`<Tooltip /> tooltipDelay should render with no delay by default 1`] = `
+<div>
+  0
+</div>
+`;
