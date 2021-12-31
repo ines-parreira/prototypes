@@ -18,6 +18,8 @@ import selfServiceConfigurations from './selfServiceConfigurations/reducer'
 import {SelfServiceConfigurationsState} from './selfServiceConfigurations/types'
 import rules from './rules/reducer'
 import {RulesState} from './rules/types'
+import phoneNumbers from './phoneNumbers/reducer'
+import {PhoneNumbersState} from './phoneNumbers/types'
 
 const entitiesReducers = combineReducers<{
     macros: MacrosState
@@ -29,6 +31,7 @@ const entitiesReducers = combineReducers<{
     helpCenters: HelpCentersState
     selfServiceConfigurations: SelfServiceConfigurationsState
     rules: RulesState
+    phoneNumbers: PhoneNumbersState
 }>({
     macros,
     rules,
@@ -39,6 +42,7 @@ const entitiesReducers = combineReducers<{
     viewsCount,
     helpCenters,
     selfServiceConfigurations,
+    phoneNumbers,
 })
 
 export default entitiesReducers

@@ -121,6 +121,7 @@ describe('<SelfServicePreferencesView/>', () => {
             helpCenters: {},
             helpCenterArticles: {},
             selfServiceConfigurations: {},
+            phoneNumbers: {},
         },
         integrations: fromJS({}),
     }

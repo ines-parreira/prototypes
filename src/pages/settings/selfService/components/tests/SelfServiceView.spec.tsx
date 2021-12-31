@@ -104,6 +104,7 @@ describe('<SelfServiceView/>', () => {
             helpCenters: {},
             helpCenterArticles: {},
             selfServiceConfigurations: {},
+            phoneNumbers: {},
         },
         integrations: fromJS({}),
     }

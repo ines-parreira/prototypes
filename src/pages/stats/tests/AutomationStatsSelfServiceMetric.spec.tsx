@@ -54,6 +54,7 @@ describe('<AutomationStatsSelfServiceMetric />', () => {
             viewsCount: {},
             helpCenters: {},
             selfServiceConfigurations: {},
+            phoneNumbers: {},
         },
     }
 

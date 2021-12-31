@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`phone numbers resources createPhoneNumber should resolve with a new PhoneNumber on success 1`] = `
+Object {
+  "created_datetime": "2021-12-01T18:00:00.000000+00:00",
+  "deleted_datetime": null,
+  "id": 1,
+  "meta": Object {
+    "area_code": 415,
+    "country": "US",
+    "emoji": "👍",
+    "friendly_name": "+1 415 111 2222",
+    "function": "standard",
+    "state": "CA",
+    "type": "Local",
+  },
+  "name": "A Phone Number",
+  "phone_number": "+14151112222",
+  "updated_datetime": "2021-12-01T18:00:00.000000+00:00",
+}
+`;
+
+exports[`phone numbers resources createPhoneNumber should resolve with a new PhoneNumber on success 2`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [
+    Object {
+      "data": "{\\"name\\":\\"A Phone Number\\"}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "post",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/integrations/phone/phone-numbers/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": Array [],
+}
+`;
+
+exports[`phone numbers resources fetchPhoneNumbers should resolve with a PhoneNumber list on success 1`] = `
+Object {
+  "data": Array [
+    Object {
+      "created_datetime": "2021-12-01T18:00:00.000000+00:00",
+      "deleted_datetime": null,
+      "id": 1,
+      "meta": Object {
+        "area_code": 415,
+        "country": "US",
+        "emoji": "👍",
+        "friendly_name": "+1 415 111 2222",
+        "function": "standard",
+        "state": "CA",
+        "type": "Local",
+      },
+      "name": "A Phone Number",
+      "phone_number": "+14151112222",
+      "updated_datetime": "2021-12-01T18:00:00.000000+00:00",
+    },
+    Object {
+      "created_datetime": "2021-12-01T18:00:00.000000+00:00",
+      "deleted_datetime": null,
+      "id": 2,
+      "meta": Object {
+        "area_code": 415,
+        "country": "US",
+        "emoji": "👍",
+        "friendly_name": "+1 415 111 2223",
+        "function": "standard",
+        "state": "CA",
+        "type": "Local",
+      },
+      "name": "Another Phone Number",
+      "phone_number": "+14151112223",
+      "updated_datetime": "2021-12-01T18:00:00.000000+00:00",
+    },
+  ],
+  "meta": Object {
+    "current_page": 2,
+  },
+}
+`;

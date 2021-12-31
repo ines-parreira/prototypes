@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`phoneNumbers reducer createPhoneNumber action should add a new phone number to the state 1`] = `
+Object {
+  "1": Object {
+    "created_datetime": "2021-12-01T18:00:00.000000+00:00",
+    "deleted_datetime": null,
+    "id": 1,
+    "meta": Object {
+      "area_code": 415,
+      "country": "US",
+      "emoji": "👍",
+      "friendly_name": "+1 415 111 2222",
+      "function": "standard",
+      "state": "CA",
+      "type": "Local",
+    },
+    "name": "A Phone Number",
+    "phone_number": "+14151112222",
+    "updated_datetime": "2021-12-01T18:00:00.000000+00:00",
+  },
+}
+`;
+
+exports[`phoneNumbers reducer fetchPhoneNumber action should add a new phone number to the state 1`] = `
+Object {
+  "1": Object {
+    "created_datetime": "2021-12-01T18:00:00.000000+00:00",
+    "deleted_datetime": null,
+    "id": 1,
+    "meta": Object {
+      "area_code": 415,
+      "country": "US",
+      "emoji": "👍",
+      "friendly_name": "+1 415 111 2222",
+      "function": "standard",
+      "state": "CA",
+      "type": "Local",
+    },
+    "name": "A Phone Number",
+    "phone_number": "+14151112222",
+    "updated_datetime": "2021-12-01T18:00:00.000000+00:00",
+  },
+}
+`;
+
+exports[`phoneNumbers reducer fetchPhoneNumbers action should add the phone numbers to the state 1`] = `
+Object {
+  "1": Object {
+    "created_datetime": "2021-12-01T18:00:00.000000+00:00",
+    "deleted_datetime": null,
+    "id": 1,
+    "meta": Object {
+      "area_code": 415,
+      "country": "US",
+      "emoji": "👍",
+      "friendly_name": "+1 415 111 2222",
+      "function": "standard",
+      "state": "CA",
+      "type": "Local",
+    },
+    "name": "A Phone Number",
+    "phone_number": "+14151112222",
+    "updated_datetime": "2021-12-01T18:00:00.000000+00:00",
+  },
+  "2": Object {
+    "created_datetime": "2021-12-01T18:00:00.000000+00:00",
+    "deleted_datetime": null,
+    "id": 2,
+    "meta": Object {
+      "area_code": 415,
+      "country": "US",
+      "emoji": "👍",
+      "friendly_name": "+1 415 111 2223",
+      "function": "standard",
+      "state": "CA",
+      "type": "Local",
+    },
+    "name": "Another Phone Number",
+    "phone_number": "+14151112223",
+    "updated_datetime": "2021-12-01T18:00:00.000000+00:00",
+  },
+}
+`;

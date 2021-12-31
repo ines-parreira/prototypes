@@ -82,6 +82,7 @@ describe('<GorgiasChatIntegrationSelfService/>', () => {
             helpCenters: {},
             helpCenterArticles: {},
             selfServiceConfigurations: {},
+            phoneNumbers: {},
         },
         integrations: fromJS({}),
     }

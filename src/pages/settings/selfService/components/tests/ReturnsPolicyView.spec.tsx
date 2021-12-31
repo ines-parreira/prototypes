@@ -89,6 +89,7 @@ describe('<ReturnsPolicyView />', () => {
             helpCenters: {},
             helpCenterArticles: {},
             selfServiceConfigurations: {},
+            phoneNumbers: {},
         },
         integrations: fromJS({}),
     }
