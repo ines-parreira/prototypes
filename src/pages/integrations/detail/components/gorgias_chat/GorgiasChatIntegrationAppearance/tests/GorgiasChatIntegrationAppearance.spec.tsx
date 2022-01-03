@@ -14,6 +14,8 @@ import {
 } from '../../../../../../../constants/integration'
 import {GorgiasChatIntegrationAppearanceComponent} from '../GorgiasChatIntegrationAppearance'
 
+jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
+
 jest.mock('../../../../../../common/forms/FileField', () => {
     type MockedProps = {
         required: boolean

@@ -1,11 +1,12 @@
-import React, {createRef, ReactChild, MouseEvent, CSSProperties} from 'react'
+import React, {ReactChild, MouseEvent, CSSProperties, useMemo} from 'react'
 import classNames from 'classnames'
+import _uniqueId from 'lodash/uniqueId'
 
-import Tooltip from '../Tooltip'
+import Tooltip from '../../../../../../common/components/Tooltip'
 
 import css from './StoreRadioButton.less'
 
-export type StoreRadioButtonProps = {
+type Props = {
     className?: string
     icon: ReactChild
     isSelected?: boolean
@@ -23,12 +24,13 @@ export const StoreRadioButton = ({
     tooltipText,
     style,
     onClick,
-}: StoreRadioButtonProps): JSX.Element => {
-    const ref = createRef<HTMLButtonElement>()
+}: Props) => {
+    const tooltipTargetId = useMemo(() => _uniqueId('store-radio-button-'), [])
+
     return (
         <>
             <button
-                ref={ref}
+                id={tooltipTargetId}
                 className={classNames(
                     {
                         [css.container]: true,
@@ -46,7 +48,7 @@ export const StoreRadioButton = ({
                 autohide
                 delay={{show: 200, hide: 0}}
                 placement="bottom"
-                target={ref}
+                target={tooltipTargetId}
                 style={{
                     textAlign: 'center',
                     width: 180,

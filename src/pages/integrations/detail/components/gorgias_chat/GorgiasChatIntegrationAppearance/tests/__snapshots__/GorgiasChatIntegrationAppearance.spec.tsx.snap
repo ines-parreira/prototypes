@@ -70,7 +70,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
             >
               <button
                 class="container selected"
-                id="store-type-radio-button-0"
+                id="store-radio-button-42"
               >
                 <div
                   class="iconContainer"
@@ -88,7 +88,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
               </button>
               <button
                 class="container"
-                id="store-type-radio-button-1"
+                id="store-radio-button-42"
               >
                 <div
                   class="iconContainer"
@@ -194,7 +194,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="control-label"
-                    for="id-input-1"
+                    for="id-input-42"
                   >
                     Chat title
                   </label>
@@ -203,7 +203,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <input
                       class="form-control"
-                      id="id-input-1"
+                      id="id-input-42"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -217,7 +217,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="control-label"
-                    for="id-input-2"
+                    for="id-input-42"
                   >
                     Introduction text during business hours
                   </label>
@@ -226,7 +226,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <input
                       class="form-control"
-                      id="id-input-2"
+                      id="id-input-42"
                       maxlength="50"
                       type="text"
                       value="How can we help?"
@@ -239,7 +239,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="control-label"
-                    for="id-input-3"
+                    for="id-input-42"
                   >
                     Introduction text outside business hours
                   </label>
@@ -248,7 +248,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <input
                       class="form-control"
-                      id="id-input-3"
+                      id="id-input-42"
                       maxlength="50"
                       type="text"
                       value="We'll be back tomorrow"
@@ -264,7 +264,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <label
                       class="control-label"
-                      for="id-input-4"
+                      for="id-input-42"
                     >
                       Main color
                     </label>
@@ -276,7 +276,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       >
                         <button
                           class="button btn btn-secondary"
-                          id="color-picker-5"
+                          id="color-picker-42"
                           type="button"
                         >
                           <div
@@ -293,7 +293,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <label
                       class="control-label"
-                      for="id-input-6"
+                      for="id-input-42"
                     >
                       Conversation color
                     </label>
@@ -305,7 +305,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       >
                         <button
                           class="button btn btn-secondary"
-                          id="color-picker-7"
+                          id="color-picker-42"
                           type="button"
                         >
                           <div
@@ -326,7 +326,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <label
                       class="control-label"
-                      for="id-input-8"
+                      for="id-input-42"
                     >
                       Chat position
                     </label>
@@ -335,7 +335,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <select
                         class="form-control"
-                        id="id-input-8"
+                        id="id-input-42"
                         options="[object Object],[object Object],[object Object],[object Object]"
                       >
                         <option
@@ -370,13 +370,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <label
                         class="control-label"
-                        for="id-input-9"
+                        for="id-input-42"
                       >
                         Move widget left / right
                       </label>
                       <i
                         class="material-icons-outlined tooltip"
-                        id="id-input-9-tooltip"
+                        id="id-input-42-tooltip"
                       >
                         info
                       </i>
@@ -386,7 +386,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <input
                         class="form-control"
-                        id="id-input-9"
+                        id="id-input-42"
                         max="200"
                         min="-20"
                         suffix="px"
@@ -418,13 +418,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <label
                         class="control-label"
-                        for="id-input-10"
+                        for="id-input-42"
                       >
                         Move widget up / down
                       </label>
                       <i
                         class="material-icons-outlined tooltip"
-                        id="id-input-10-tooltip"
+                        id="id-input-42-tooltip"
                       >
                         info
                       </i>
@@ -434,7 +434,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <input
                         class="form-control"
-                        id="id-input-10"
+                        id="id-input-42"
                         max="200"
                         min="-20"
                         suffix="px"
@@ -464,7 +464,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="control-label"
-                    for="id-input-11"
+                    for="id-input-42"
                   >
                     Language
                   </label>
@@ -473,7 +473,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <select
                       class="form-control"
-                      id="id-input-11"
+                      id="id-input-42"
                       options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
                     >
                       <option
@@ -843,7 +843,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="control-label"
-                    for="id-input-23"
+                    for="id-input-42"
                   >
                     Chat title
                   </label>
@@ -852,7 +852,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <input
                       class="form-control"
-                      id="id-input-23"
+                      id="id-input-42"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -866,7 +866,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="control-label"
-                    for="id-input-24"
+                    for="id-input-42"
                   >
                     Introduction text during business hours
                   </label>
@@ -875,7 +875,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <input
                       class="form-control"
-                      id="id-input-24"
+                      id="id-input-42"
                       maxlength="50"
                       type="text"
                       value="How can we help?"
@@ -888,7 +888,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="control-label"
-                    for="id-input-25"
+                    for="id-input-42"
                   >
                     Introduction text outside business hours
                   </label>
@@ -897,7 +897,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <input
                       class="form-control"
-                      id="id-input-25"
+                      id="id-input-42"
                       maxlength="50"
                       type="text"
                       value="We'll be back tomorrow"
@@ -954,7 +954,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <label
                       class="control-label"
-                      for="id-input-26"
+                      for="id-input-42"
                     >
                       Main color
                     </label>
@@ -966,7 +966,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       >
                         <button
                           class="button btn btn-secondary"
-                          id="color-picker-27"
+                          id="color-picker-42"
                           type="button"
                         >
                           <div
@@ -983,7 +983,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <label
                       class="control-label"
-                      for="id-input-28"
+                      for="id-input-42"
                     >
                       Conversation color
                     </label>
@@ -995,7 +995,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       >
                         <button
                           class="button btn btn-secondary"
-                          id="color-picker-29"
+                          id="color-picker-42"
                           type="button"
                         >
                           <div
@@ -1016,7 +1016,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <label
                       class="control-label"
-                      for="id-input-30"
+                      for="id-input-42"
                     >
                       Chat position
                     </label>
@@ -1025,7 +1025,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <select
                         class="form-control"
-                        id="id-input-30"
+                        id="id-input-42"
                         options="[object Object],[object Object],[object Object],[object Object]"
                       >
                         <option
@@ -1060,13 +1060,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <label
                         class="control-label"
-                        for="id-input-31"
+                        for="id-input-42"
                       >
                         Move widget left / right
                       </label>
                       <i
                         class="material-icons-outlined tooltip"
-                        id="id-input-31-tooltip"
+                        id="id-input-42-tooltip"
                       >
                         info
                       </i>
@@ -1076,7 +1076,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <input
                         class="form-control"
-                        id="id-input-31"
+                        id="id-input-42"
                         max="200"
                         min="-20"
                         suffix="px"
@@ -1108,13 +1108,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <label
                         class="control-label"
-                        for="id-input-32"
+                        for="id-input-42"
                       >
                         Move widget up / down
                       </label>
                       <i
                         class="material-icons-outlined tooltip"
-                        id="id-input-32-tooltip"
+                        id="id-input-42-tooltip"
                       >
                         info
                       </i>
@@ -1124,7 +1124,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <input
                         class="form-control"
-                        id="id-input-32"
+                        id="id-input-42"
                         max="200"
                         min="-20"
                         suffix="px"
@@ -1154,7 +1154,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="control-label"
-                    for="id-input-33"
+                    for="id-input-42"
                   >
                     Language
                   </label>
@@ -1163,7 +1163,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <select
                       class="form-control"
-                      id="id-input-33"
+                      id="id-input-42"
                       options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
                     >
                       <option
@@ -1550,7 +1550,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="control-label"
-                    for="id-input-12"
+                    for="id-input-42"
                   >
                     Chat title
                   </label>
@@ -1559,7 +1559,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <input
                       class="form-control"
-                      id="id-input-12"
+                      id="id-input-42"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -1573,7 +1573,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="control-label"
-                    for="id-input-13"
+                    for="id-input-42"
                   >
                     Introduction text during business hours
                   </label>
@@ -1582,7 +1582,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <input
                       class="form-control"
-                      id="id-input-13"
+                      id="id-input-42"
                       maxlength="50"
                       type="text"
                       value="How can we help?"
@@ -1595,7 +1595,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="control-label"
-                    for="id-input-14"
+                    for="id-input-42"
                   >
                     Introduction text outside business hours
                   </label>
@@ -1604,7 +1604,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <input
                       class="form-control"
-                      id="id-input-14"
+                      id="id-input-42"
                       maxlength="50"
                       type="text"
                       value="We'll be back tomorrow"
@@ -1661,7 +1661,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <label
                       class="control-label"
-                      for="id-input-15"
+                      for="id-input-42"
                     >
                       Main color
                     </label>
@@ -1673,7 +1673,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       >
                         <button
                           class="button btn btn-secondary"
-                          id="color-picker-16"
+                          id="color-picker-42"
                           type="button"
                         >
                           <div
@@ -1690,7 +1690,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <label
                       class="control-label"
-                      for="id-input-17"
+                      for="id-input-42"
                     >
                       Conversation color
                     </label>
@@ -1702,7 +1702,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       >
                         <button
                           class="button btn btn-secondary"
-                          id="color-picker-18"
+                          id="color-picker-42"
                           type="button"
                         >
                           <div
@@ -1723,7 +1723,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <label
                       class="control-label"
-                      for="id-input-19"
+                      for="id-input-42"
                     >
                       Chat position
                     </label>
@@ -1732,7 +1732,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <select
                         class="form-control"
-                        id="id-input-19"
+                        id="id-input-42"
                         options="[object Object],[object Object],[object Object],[object Object]"
                       >
                         <option
@@ -1767,13 +1767,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <label
                         class="control-label"
-                        for="id-input-20"
+                        for="id-input-42"
                       >
                         Move widget left / right
                       </label>
                       <i
                         class="material-icons-outlined tooltip"
-                        id="id-input-20-tooltip"
+                        id="id-input-42-tooltip"
                       >
                         info
                       </i>
@@ -1783,7 +1783,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <input
                         class="form-control"
-                        id="id-input-20"
+                        id="id-input-42"
                         max="200"
                         min="-20"
                         suffix="px"
@@ -1815,13 +1815,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <label
                         class="control-label"
-                        for="id-input-21"
+                        for="id-input-42"
                       >
                         Move widget up / down
                       </label>
                       <i
                         class="material-icons-outlined tooltip"
-                        id="id-input-21-tooltip"
+                        id="id-input-42-tooltip"
                       >
                         info
                       </i>
@@ -1831,7 +1831,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <input
                         class="form-control"
-                        id="id-input-21"
+                        id="id-input-42"
                         max="200"
                         min="-20"
                         suffix="px"
@@ -1861,7 +1861,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <label
                     class="control-label"
-                    for="id-input-22"
+                    for="id-input-42"
                   >
                     Language
                   </label>
@@ -1870,7 +1870,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <select
                       class="form-control"
-                      id="id-input-22"
+                      id="id-input-42"
                       options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
                     >
                       <option
@@ -2256,7 +2256,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                 >
                   <label
                     class="control-label"
-                    for="id-input-34"
+                    for="id-input-42"
                   >
                     Chat title
                   </label>
@@ -2265,7 +2265,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   >
                     <input
                       class="form-control"
-                      id="id-input-34"
+                      id="id-input-42"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -2279,7 +2279,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                 >
                   <label
                     class="control-label"
-                    for="id-input-35"
+                    for="id-input-42"
                   >
                     Introduction text during business hours
                   </label>
@@ -2288,7 +2288,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   >
                     <input
                       class="form-control"
-                      id="id-input-35"
+                      id="id-input-42"
                       maxlength="50"
                       type="text"
                       value="How can we help?"
@@ -2301,7 +2301,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                 >
                   <label
                     class="control-label"
-                    for="id-input-36"
+                    for="id-input-42"
                   >
                     Introduction text outside business hours
                   </label>
@@ -2310,7 +2310,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   >
                     <input
                       class="form-control"
-                      id="id-input-36"
+                      id="id-input-42"
                       maxlength="50"
                       type="text"
                       value="We'll be back tomorrow"
@@ -2375,7 +2375,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   >
                     <label
                       class="control-label"
-                      for="id-input-37"
+                      for="id-input-42"
                     >
                       Main color
                     </label>
@@ -2387,7 +2387,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       >
                         <button
                           class="button btn btn-secondary"
-                          id="color-picker-38"
+                          id="color-picker-42"
                           type="button"
                         >
                           <div
@@ -2404,7 +2404,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   >
                     <label
                       class="control-label"
-                      for="id-input-39"
+                      for="id-input-42"
                     >
                       Conversation color
                     </label>
@@ -2416,7 +2416,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       >
                         <button
                           class="button btn btn-secondary"
-                          id="color-picker-40"
+                          id="color-picker-42"
                           type="button"
                         >
                           <div
@@ -2437,7 +2437,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   >
                     <label
                       class="control-label"
-                      for="id-input-41"
+                      for="id-input-42"
                     >
                       Chat position
                     </label>
@@ -2446,7 +2446,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     >
                       <select
                         class="form-control"
-                        id="id-input-41"
+                        id="id-input-42"
                         options="[object Object],[object Object],[object Object],[object Object]"
                       >
                         <option
@@ -2529,13 +2529,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     >
                       <label
                         class="control-label"
-                        for="id-input-43"
+                        for="id-input-42"
                       >
                         Move widget up / down
                       </label>
                       <i
                         class="material-icons-outlined tooltip"
-                        id="id-input-43-tooltip"
+                        id="id-input-42-tooltip"
                       >
                         info
                       </i>
@@ -2545,7 +2545,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     >
                       <input
                         class="form-control"
-                        id="id-input-43"
+                        id="id-input-42"
                         max="200"
                         min="-20"
                         suffix="px"
@@ -2575,7 +2575,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                 >
                   <label
                     class="control-label"
-                    for="id-input-44"
+                    for="id-input-42"
                   >
                     Language
                   </label>
@@ -2584,7 +2584,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   >
                     <select
                       class="form-control"
-                      id="id-input-44"
+                      id="id-input-42"
                       options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
                     >
                       <option
@@ -2970,7 +2970,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 >
                   <label
                     class="control-label"
-                    for="id-input-56"
+                    for="id-input-42"
                   >
                     Chat title
                   </label>
@@ -2979,7 +2979,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   >
                     <input
                       class="form-control"
-                      id="id-input-56"
+                      id="id-input-42"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -2993,7 +2993,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 >
                   <label
                     class="control-label"
-                    for="id-input-57"
+                    for="id-input-42"
                   >
                     Introduction text during business hours
                   </label>
@@ -3002,7 +3002,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   >
                     <input
                       class="form-control"
-                      id="id-input-57"
+                      id="id-input-42"
                       maxlength="50"
                       type="text"
                       value="How can we help?"
@@ -3015,7 +3015,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 >
                   <label
                     class="control-label"
-                    for="id-input-58"
+                    for="id-input-42"
                   >
                     Introduction text outside business hours
                   </label>
@@ -3024,7 +3024,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   >
                     <input
                       class="form-control"
-                      id="id-input-58"
+                      id="id-input-42"
                       maxlength="50"
                       type="text"
                       value="We'll be back tomorrow"
@@ -3081,7 +3081,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   >
                     <label
                       class="control-label"
-                      for="id-input-59"
+                      for="id-input-42"
                     >
                       Main color
                     </label>
@@ -3093,7 +3093,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       >
                         <button
                           class="button btn btn-secondary"
-                          id="color-picker-60"
+                          id="color-picker-42"
                           type="button"
                         >
                           <div
@@ -3110,7 +3110,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   >
                     <label
                       class="control-label"
-                      for="id-input-61"
+                      for="id-input-42"
                     >
                       Conversation color
                     </label>
@@ -3122,7 +3122,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       >
                         <button
                           class="button btn btn-secondary"
-                          id="color-picker-62"
+                          id="color-picker-42"
                           type="button"
                         >
                           <div
@@ -3143,7 +3143,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   >
                     <label
                       class="control-label"
-                      for="id-input-63"
+                      for="id-input-42"
                     >
                       Chat position
                     </label>
@@ -3152,7 +3152,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <select
                         class="form-control"
-                        id="id-input-63"
+                        id="id-input-42"
                         options="[object Object],[object Object],[object Object],[object Object]"
                       >
                         <option
@@ -3187,13 +3187,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <label
                         class="control-label"
-                        for="id-input-64"
+                        for="id-input-42"
                       >
                         Move widget left / right
                       </label>
                       <i
                         class="material-icons-outlined tooltip"
-                        id="id-input-64-tooltip"
+                        id="id-input-42-tooltip"
                       >
                         info
                       </i>
@@ -3203,7 +3203,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <input
                         class="form-control"
-                        id="id-input-64"
+                        id="id-input-42"
                         max="200"
                         min="-20"
                         suffix="px"
@@ -3235,13 +3235,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <label
                         class="control-label"
-                        for="id-input-65"
+                        for="id-input-42"
                       >
                         Move widget up / down
                       </label>
                       <i
                         class="material-icons-outlined tooltip"
-                        id="id-input-65-tooltip"
+                        id="id-input-42-tooltip"
                       >
                         info
                       </i>
@@ -3251,7 +3251,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <input
                         class="form-control"
-                        id="id-input-65"
+                        id="id-input-42"
                         max="200"
                         min="-20"
                         suffix="px"
@@ -3281,7 +3281,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 >
                   <label
                     class="control-label"
-                    for="id-input-66"
+                    for="id-input-42"
                   >
                     Language
                   </label>
@@ -3290,7 +3290,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   >
                     <select
                       class="form-control"
-                      id="id-input-66"
+                      id="id-input-42"
                       options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
                     >
                       <option
@@ -3676,7 +3676,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 >
                   <label
                     class="control-label"
-                    for="id-input-45"
+                    for="id-input-42"
                   >
                     Chat title
                   </label>
@@ -3685,7 +3685,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   >
                     <input
                       class="form-control"
-                      id="id-input-45"
+                      id="id-input-42"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -3699,7 +3699,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 >
                   <label
                     class="control-label"
-                    for="id-input-46"
+                    for="id-input-42"
                   >
                     Introduction text during business hours
                   </label>
@@ -3708,7 +3708,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   >
                     <input
                       class="form-control"
-                      id="id-input-46"
+                      id="id-input-42"
                       maxlength="50"
                       type="text"
                       value="How can we help?"
@@ -3721,7 +3721,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 >
                   <label
                     class="control-label"
-                    for="id-input-47"
+                    for="id-input-42"
                   >
                     Introduction text outside business hours
                   </label>
@@ -3730,7 +3730,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   >
                     <input
                       class="form-control"
-                      id="id-input-47"
+                      id="id-input-42"
                       maxlength="50"
                       type="text"
                       value="We'll be back tomorrow"
@@ -3801,7 +3801,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   >
                     <label
                       class="control-label"
-                      for="id-input-48"
+                      for="id-input-42"
                     >
                       Main color
                     </label>
@@ -3813,7 +3813,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       >
                         <button
                           class="button btn btn-secondary"
-                          id="color-picker-49"
+                          id="color-picker-42"
                           type="button"
                         >
                           <div
@@ -3830,7 +3830,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   >
                     <label
                       class="control-label"
-                      for="id-input-50"
+                      for="id-input-42"
                     >
                       Conversation color
                     </label>
@@ -3842,7 +3842,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       >
                         <button
                           class="button btn btn-secondary"
-                          id="color-picker-51"
+                          id="color-picker-42"
                           type="button"
                         >
                           <div
@@ -3863,7 +3863,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   >
                     <label
                       class="control-label"
-                      for="id-input-52"
+                      for="id-input-42"
                     >
                       Chat position
                     </label>
@@ -3872,7 +3872,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <select
                         class="form-control"
-                        id="id-input-52"
+                        id="id-input-42"
                         options="[object Object],[object Object],[object Object],[object Object]"
                       >
                         <option
@@ -3907,13 +3907,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <label
                         class="control-label"
-                        for="id-input-53"
+                        for="id-input-42"
                       >
                         Move widget left / right
                       </label>
                       <i
                         class="material-icons-outlined tooltip"
-                        id="id-input-53-tooltip"
+                        id="id-input-42-tooltip"
                       >
                         info
                       </i>
@@ -3923,7 +3923,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <input
                         class="form-control"
-                        id="id-input-53"
+                        id="id-input-42"
                         max="200"
                         min="-20"
                         suffix="px"
@@ -3955,13 +3955,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <label
                         class="control-label"
-                        for="id-input-54"
+                        for="id-input-42"
                       >
                         Move widget up / down
                       </label>
                       <i
                         class="material-icons-outlined tooltip"
-                        id="id-input-54-tooltip"
+                        id="id-input-42-tooltip"
                       >
                         info
                       </i>
@@ -3971,7 +3971,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <input
                         class="form-control"
-                        id="id-input-54"
+                        id="id-input-42"
                         max="200"
                         min="-20"
                         suffix="px"
@@ -4001,7 +4001,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 >
                   <label
                     class="control-label"
-                    for="id-input-55"
+                    for="id-input-42"
                   >
                     Language
                   </label>
@@ -4010,7 +4010,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   >
                     <select
                       class="form-control"
-                      id="id-input-55"
+                      id="id-input-42"
                       options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
                     >
                       <option
@@ -4341,7 +4341,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
             >
               <button
                 class="container selected"
-                id="store-type-radio-button-0"
+                id="store-radio-button-42"
               >
                 <div
                   class="iconContainer"
@@ -4359,7 +4359,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
               </button>
               <button
                 class="container"
-                id="store-type-radio-button-1"
+                id="store-radio-button-42"
               >
                 <div
                   class="iconContainer"
@@ -4524,7 +4524,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 >
                   <label
                     class="control-label"
-                    for="id-input-67"
+                    for="id-input-42"
                   >
                     Chat title
                   </label>
@@ -4533,7 +4533,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   >
                     <input
                       class="form-control"
-                      id="id-input-67"
+                      id="id-input-42"
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
@@ -4547,7 +4547,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 >
                   <label
                     class="control-label"
-                    for="id-input-68"
+                    for="id-input-42"
                   >
                     Introduction text during business hours
                   </label>
@@ -4556,7 +4556,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   >
                     <input
                       class="form-control"
-                      id="id-input-68"
+                      id="id-input-42"
                       maxlength="50"
                       type="text"
                       value="How can we help?"
@@ -4569,7 +4569,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 >
                   <label
                     class="control-label"
-                    for="id-input-69"
+                    for="id-input-42"
                   >
                     Introduction text outside business hours
                   </label>
@@ -4578,7 +4578,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   >
                     <input
                       class="form-control"
-                      id="id-input-69"
+                      id="id-input-42"
                       maxlength="50"
                       type="text"
                       value="We'll be back tomorrow"
@@ -4594,7 +4594,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   >
                     <label
                       class="control-label"
-                      for="id-input-70"
+                      for="id-input-42"
                     >
                       Main color
                     </label>
@@ -4606,7 +4606,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       >
                         <button
                           class="button btn btn-secondary"
-                          id="color-picker-71"
+                          id="color-picker-42"
                           type="button"
                         >
                           <div
@@ -4623,7 +4623,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   >
                     <label
                       class="control-label"
-                      for="id-input-72"
+                      for="id-input-42"
                     >
                       Conversation color
                     </label>
@@ -4635,7 +4635,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       >
                         <button
                           class="button btn btn-secondary"
-                          id="color-picker-73"
+                          id="color-picker-42"
                           type="button"
                         >
                           <div
@@ -4656,7 +4656,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   >
                     <label
                       class="control-label"
-                      for="id-input-74"
+                      for="id-input-42"
                     >
                       Chat position
                     </label>
@@ -4665,7 +4665,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     >
                       <select
                         class="form-control"
-                        id="id-input-74"
+                        id="id-input-42"
                         options="[object Object],[object Object],[object Object],[object Object]"
                       >
                         <option
@@ -4700,13 +4700,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     >
                       <label
                         class="control-label"
-                        for="id-input-75"
+                        for="id-input-42"
                       >
                         Move widget left / right
                       </label>
                       <i
                         class="material-icons-outlined tooltip"
-                        id="id-input-75-tooltip"
+                        id="id-input-42-tooltip"
                       >
                         info
                       </i>
@@ -4716,7 +4716,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     >
                       <input
                         class="form-control"
-                        id="id-input-75"
+                        id="id-input-42"
                         max="200"
                         min="-20"
                         suffix="px"
@@ -4748,13 +4748,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     >
                       <label
                         class="control-label"
-                        for="id-input-76"
+                        for="id-input-42"
                       >
                         Move widget up / down
                       </label>
                       <i
                         class="material-icons-outlined tooltip"
-                        id="id-input-76-tooltip"
+                        id="id-input-42-tooltip"
                       >
                         info
                       </i>
@@ -4764,7 +4764,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     >
                       <input
                         class="form-control"
-                        id="id-input-76"
+                        id="id-input-42"
                         max="200"
                         min="-20"
                         suffix="px"
@@ -4794,7 +4794,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 >
                   <label
                     class="control-label"
-                    for="id-input-77"
+                    for="id-input-42"
                   >
                     Language
                   </label>
@@ -4803,7 +4803,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   >
                     <select
                       class="form-control"
-                      id="id-input-77"
+                      id="id-input-42"
                       options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
                     >
                       <option

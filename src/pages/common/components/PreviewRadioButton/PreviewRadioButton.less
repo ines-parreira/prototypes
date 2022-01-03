@@ -16,12 +16,16 @@
 
         &:focus,
         &:hover:not(.selected) {
-            background-color: @classic-main-primary-0;
+            box-shadow: inset 0px 0px 0px 1px @classic-neutral-grey-3;
         }
 
         &.selected {
-            border-color: @yotpoBlue;
-            box-shadow: inset 0px 0px 0px 1px @yotpoBlue;
+            border-color: @classic-main-primary;
+            box-shadow: inset 0px 0px 0px 1px @classic-main-primary;
+        }
+
+        &:focus {
+            outline: none;
         }
     }
 

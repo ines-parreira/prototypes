@@ -4,6 +4,7 @@ exports[`<StoreRadioButton /> matches snapshot 1`] = `
 <div>
   <button
     class="container"
+    id="store-radio-button-42"
   >
     <div
       class="iconContainer"

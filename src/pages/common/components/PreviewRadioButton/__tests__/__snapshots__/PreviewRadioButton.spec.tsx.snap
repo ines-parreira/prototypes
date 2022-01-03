@@ -1,19 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<PreviewRadioButton /> matches snapshot 1`] = `
+exports[`<PreviewRadioButton /> should match snapshot 1`] = `
 <div>
   <button
     aria-label="Light Theme"
     class="wrapper"
   >
-    <div
-      class="preview"
-    >
-      <img
-        alt="preview-light"
-        src="test-file-stub"
-      />
-    </div>
     <div
       class="label"
     >

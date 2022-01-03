@@ -61,7 +61,7 @@ import settingsCss from '../../../../../settings/settings.less'
 
 import css from './GorgiasChatIntegrationAppearance.less'
 import {StoreNameDropdown} from './StoreNameDropdown'
-import {GorgiasChatIntegrationStoreTypeRadioButton} from './GorgiasChatIntegrationStoreTypeRadioButton'
+import {StoreRadioButton} from './StoreRadioButton'
 
 export enum PositionAxis {
     AXIS_X = 'axis-x',
@@ -342,7 +342,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 })),
             tooltipText:
                 "By connecting your live chat to an online store, you can leverage all the store's information for automation such as self-service flows and help articles.",
-            selected: Boolean(state.showSelectStoreField),
+            isSelected: Boolean(state.showSelectStoreField),
         },
         {
             label: 'Any other website',
@@ -354,7 +354,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 })),
             tooltipText:
                 'By creating a custom live chat, you will not be able to leverage any online store information such as self-service flows or help articles.',
-            selected: !Boolean(state.showSelectStoreField),
+            isSelected: !Boolean(state.showSelectStoreField),
         },
     ]
 
@@ -418,15 +418,12 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                         </span>
                                     </Label>
                                     <div className={css.radioButtonGroup}>
-                                        {storeTypeRadioButtons.map(
-                                            (props, index) => (
-                                                <GorgiasChatIntegrationStoreTypeRadioButton
-                                                    {...props}
-                                                    key={props.label}
-                                                    id={`store-type-radio-button-${index}`}
-                                                />
-                                            )
-                                        )}
+                                        {storeTypeRadioButtons.map((props) => (
+                                            <StoreRadioButton
+                                                {...props}
+                                                key={props.label}
+                                            />
+                                        ))}
                                     </div>
                                 </div>
                             </>

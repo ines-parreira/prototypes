@@ -1,16 +1,15 @@
 import classNames from 'classnames'
-import React, {ReactChild, MouseEvent, CSSProperties} from 'react'
+import React, {ReactChild, MouseEvent} from 'react'
 
 import {Input} from 'reactstrap'
 
 import css from './PreviewRadioButton.less'
 
-export type PreviewRadioButtonProps = {
+type Props = {
     className?: string
     isSelected?: boolean
-    preview: ReactChild
+    preview?: ReactChild
     title: string
-    style?: CSSProperties
     onClick: (ev: MouseEvent<HTMLButtonElement>) => void
 }
 
@@ -19,9 +18,8 @@ export const PreviewRadioButton = ({
     preview,
     title,
     isSelected = false,
-    style,
     onClick,
-}: PreviewRadioButtonProps): JSX.Element => (
+}: Props) => (
     <button
         aria-label={title}
         className={classNames(
@@ -31,10 +29,9 @@ export const PreviewRadioButton = ({
             },
             className
         )}
-        style={style}
         onClick={onClick}
     >
-        <div className={css.preview}>{preview}</div>
+        {preview && <div className={css.preview}>{preview}</div>}
         <div className={css.label}>
             <Input readOnly tabIndex={-1} type="radio" checked={isSelected} />
             <span className={css.text}>{title}</span>

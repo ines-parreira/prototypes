@@ -16,6 +16,7 @@ export const parameters = {
                 'Feedback',
                 'Layout',
             ],
+            method: 'alphabetical',
         },
     },
     backgrounds: {

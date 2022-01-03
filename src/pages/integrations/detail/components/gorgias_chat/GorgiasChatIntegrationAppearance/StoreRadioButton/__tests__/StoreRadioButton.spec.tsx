@@ -3,11 +3,13 @@ import {fireEvent, render, waitFor} from '@testing-library/react'
 
 import storefront from 'assets/img/icons/storefront.svg'
 
-import {StoreRadioButton, StoreRadioButtonProps} from '../StoreRadioButton'
+import {StoreRadioButton} from '../StoreRadioButton'
 
 const onClickFn = jest.fn()
 
-const baseProps: StoreRadioButtonProps = {
+jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
+
+const baseProps = {
     icon: <img src={storefront} alt="storefront" />,
     label: 'Shopify Store',
     tooltipText:
