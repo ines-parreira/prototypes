@@ -10,7 +10,7 @@ import {fetchStat} from '../../../../models/stat/resources'
 import {
     Stat,
     TwoDimensionalChart,
-    StatCell,
+    NumericStateCell,
 } from '../../../../models/stat/types'
 
 import BlankState from './components/BlankState'
@@ -66,8 +66,9 @@ export class BlankStateContainer extends React.Component<Props, State> {
                 }
             )) as Stat<TwoDimensionalChart>
             this.setState({
-                closedTicketsCount: (stat.data.data.lines[0] as StatCell[])[1]
-                    .value as number,
+                closedTicketsCount: (
+                    stat.data.data.lines[0] as NumericStateCell[]
+                )[1].value,
             })
         } catch (error) {
             // Not important, we will try to fetch this stat next time.

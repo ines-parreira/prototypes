@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MultiResourceKeyMetricStat should render KeyMetricStat 1`] = `
+<div
+  class="metrics"
+>
+  <div
+    class="metric"
+  >
+    <div
+      class="label"
+    >
+      <span>
+        <i
+          class="material-icons ml-2 helpIcon info-icon"
+          id="title-foo-0"
+        >
+          info_outline
+        </i>
+      </span>
+    </div>
+    <div
+      class="mt-3 statsDisplay"
+    >
+      <div
+        class="container"
+      >
+        <div
+          class="inner"
+          style="min-height: 90px;"
+        >
+          <i
+            class="icon-custom icon-circle-o-notch md-spin"
+            style="font-size: 20px;"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="metric"
+  >
+    <div
+      class="label"
+    >
+      <span>
+        <i
+          class="material-icons ml-2 helpIcon info-icon"
+          id="title-bar-1"
+        >
+          info_outline
+        </i>
+      </span>
+    </div>
+    <div
+      class="mt-3 statsDisplay"
+    >
+      -
+    </div>
+  </div>
+</div>
+`;

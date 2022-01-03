@@ -16,3 +16,5 @@ export const STATS_MESSAGING_INTEGRATIONS_TYPES = [
     IntegrationType.Facebook,
     IntegrationType.Zendesk,
 ]
+
+export const STATS_STORE_INTEGRATION_TYPES = [IntegrationType.Shopify]

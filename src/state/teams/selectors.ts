@@ -2,7 +2,7 @@ import {fromJS, List, Map, Seq} from 'immutable'
 import {createSelector} from 'reselect'
 import _capitalize from 'lodash/capitalize'
 
-import {createImmutableSelector} from '../../utils'
+import {createImmutableSelector, makeGetPlainJS} from '../../utils'
 import {RootState} from '../types'
 
 import {TeamsState} from './types'
@@ -37,3 +37,8 @@ export const getLabelledTeams = createSelector<
         }))
         .toList()
 )
+
+export const getLabelledTeamsJS =
+    makeGetPlainJS<{id: number; label: string; members: string[]}[]>(
+        getLabelledTeams
+    )

@@ -1,5 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`IntegrationsStatsFilter should allow to select multiple items when isMultiple is set to true 1`] = `
+Array [
+  Object {
+    "filters": Immutable.Map {
+      "integrations": Immutable.List [
+        4,
+        5,
+      ],
+    },
+    "type": "MERGE_STATS_FILTERS",
+  },
+]
+`;
+
 exports[`IntegrationsStatsFilter should merge stats filters on item select 1`] = `
 Array [
   Object {
@@ -443,4 +457,17 @@ exports[`IntegrationsStatsFilter should render icon for zendesk integration 1`] 
   />
    zendesk integration
 </label>
+`;
+
+exports[`IntegrationsStatsFilter should replace the item when isMultiple is set to false 1`] = `
+Array [
+  Object {
+    "filters": Immutable.Map {
+      "integrations": Immutable.List [
+        5,
+      ],
+    },
+    "type": "MERGE_STATS_FILTERS",
+  },
+]
 `;

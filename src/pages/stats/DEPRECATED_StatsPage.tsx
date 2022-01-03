@@ -4,7 +4,7 @@ import {useParams} from 'react-router-dom'
 import {Map} from 'immutable'
 import classNames from 'classnames'
 
-import {STORE_INTEGRATION_TYPES, views} from '../../config/stats'
+import {DEPRECATED_STORE_INTEGRATION_TYPES, views} from '../../config/stats'
 import {getFilters} from '../../state/stats/selectors'
 import {AccountFeature} from '../../state/currentAccount/types'
 import {currentAccountHasFeature} from '../../state/currentAccount/selectors'
@@ -45,7 +45,9 @@ export default function DEPRECATED_StatsPage() {
     const integrations = useSelector(getIntegrations)
     const storeIntegrations = useMemo(() => {
         return integrations.filter((integration: Map<any, any>) => {
-            return STORE_INTEGRATION_TYPES.includes(integration.get('type'))
+            return DEPRECATED_STORE_INTEGRATION_TYPES.includes(
+                integration.get('type')
+            )
         })
     }, [integrations])
 

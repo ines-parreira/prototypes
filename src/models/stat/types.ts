@@ -5,6 +5,12 @@ export enum StatType {
     Percent = 'percent',
     Delta = 'delta',
     Duration = 'duration',
+    CustomerLink = 'customer-link',
+    Date = 'date',
+    SatisfactionScore = 'satisfaction-score',
+    SatisfactionSurveyLink = 'satisfaction-survey-link',
+    Currency = 'currency',
+    TicketLink = 'ticket-link',
 }
 
 export type Stat<T = StatData> = {
@@ -26,11 +32,12 @@ export type StatData =
 
 export type OneDimensionalChart = {
     data: {
-        delta: number
+        delta?: number
         name: string
         type: Exclude<StatType, StatType.String>
-        value: number
+        value: number | Record<string, number>
         more_is_better?: boolean
+        currency?: string
     }
 }
 
@@ -74,9 +81,41 @@ export type StatLine =
       }
     | StatCell[]
 
+export type NumericStateCell = {
+    type:
+        | StatType.Number
+        | StatType.Percent
+        | StatType.Duration
+        | StatType.Delta
+        | StatType.User
+    value: number
+}
+
 export type StatCell =
+    | NumericStateCell
     | {
           type: StatType.String
           value: string
       }
-    | {type: Exclude<StatType, StatType.String>; value: number}
+    | {type: StatType.Date; value: string}
+    | {
+          type: StatType.SatisfactionSurveyLink
+          ticket_id: number
+          comment: string
+      }
+    | {
+          type: StatType.CustomerLink
+          customer_id: number
+          customer_name: string | null
+      }
+    | {type: StatType.SatisfactionScore; value: number | null}
+    | {
+          type: StatType.Currency
+          value: number
+          currency: string
+      }
+    | {
+          type: StatType.TicketLink
+          ticket_id: number
+          subject: string
+      }

@@ -46,7 +46,7 @@ type Props = {
 export default function IntegrationsStatsFilter({
     value,
     integrations,
-    isMultiple = true,
+    isMultiple = false,
     isRequired = false,
 }: Props) {
     const dispatch = useAppDispatch()

@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`KeyMetricStatWrapper should render the key metric wrapper 1`] = `
+<div
+  class="wrapper"
+>
+  <div>
+    foo
+  </div>
+</div>
+`;

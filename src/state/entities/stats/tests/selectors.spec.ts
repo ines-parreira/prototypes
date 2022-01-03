@@ -1,7 +1,4 @@
-import {
-    firstResponseTimeStat,
-    totalMessagesSent,
-} from '../../../../fixtures/stats'
+import {firstResponseTime, totalMessagesSent} from '../../../../fixtures/stats'
 import {OVERVIEW, FIRST_RESPONSE_TIME} from '../../../../config/stats'
 import {RootState} from '../../../types'
 import {getStatDataByName} from '../selectors'
@@ -10,8 +7,7 @@ describe('stats selectors', () => {
     const state: RootState = {
         entities: {
             stats: {
-                'first-response-time/first-response-time':
-                    firstResponseTimeStat,
+                'first-response-time/first-response-time': firstResponseTime,
                 'overview/total-messages-sent': totalMessagesSent,
             },
         },

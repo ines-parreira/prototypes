@@ -13,7 +13,7 @@ import {StatsFilters, StatsFilterType} from '../../../state/stats/types'
 import {TicketChannel} from '../../../business/types/ticket'
 import client from '../../../models/api/resources'
 import {RootState} from '../../../state/types'
-import {firstResponseTimeStat} from '../../../fixtures/stats'
+import {firstResponseTime} from '../../../fixtures/stats'
 import {FIRST_RESPONSE_TIME} from '../../../config/stats'
 import {flushPromises} from '../../../utils/testing'
 
@@ -58,7 +58,7 @@ describe('useStatResource', () => {
         serverMock.reset()
         serverMock
             .onAny(`/api/stats/${FIRST_RESPONSE_TIME}/`)
-            .reply(200, firstResponseTimeStat)
+            .reply(200, firstResponseTime)
     })
 
     it('should not fetch the stat when statFilters are null', async () => {
@@ -137,11 +137,7 @@ describe('useStatResource', () => {
             undefined,
             null,
         ],
-        [
-            'return stat from the store',
-            firstResponseTimeStat,
-            firstResponseTimeStat,
-        ],
+        ['return stat from the store', firstResponseTime, firstResponseTime],
     ])('should %s', (testName, storeValue, expectedValue) => {
         const {result} = renderHook(
             () => {

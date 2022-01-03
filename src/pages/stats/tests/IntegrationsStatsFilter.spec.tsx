@@ -35,6 +35,7 @@ describe('IntegrationsStatsFilter', () => {
                     integrations={
                         integrationsState.integrations as Integration[]
                     }
+                    isMultiple
                 />
             </Provider>
         )
@@ -78,6 +79,44 @@ describe('IntegrationsStatsFilter', () => {
                     integrations={
                         integrationsState.integrations as Integration[]
                     }
+                />
+            </Provider>
+        )
+
+        fireEvent.click(getByLabelText(integrationsState.integrations[1].name))
+
+        expect(store.getActions()).toMatchSnapshot()
+    })
+
+    it('should replace the item when isMultiple is set to false', () => {
+        const store = mockStore(defaultState)
+        const {getByLabelText} = render(
+            <Provider store={store}>
+                <IntegrationsStatsFilter
+                    value={[integrationsState.integrations[0].id]}
+                    isMultiple={false}
+                    integrations={
+                        integrationsState.integrations as Integration[]
+                    }
+                />
+            </Provider>
+        )
+
+        fireEvent.click(getByLabelText(integrationsState.integrations[1].name))
+
+        expect(store.getActions()).toMatchSnapshot()
+    })
+
+    it('should allow to select multiple items when isMultiple is set to true', () => {
+        const store = mockStore(defaultState)
+        const {getByLabelText} = render(
+            <Provider store={store}>
+                <IntegrationsStatsFilter
+                    value={[integrationsState.integrations[0].id]}
+                    integrations={
+                        integrationsState.integrations as Integration[]
+                    }
+                    isMultiple
                 />
             </Provider>
         )

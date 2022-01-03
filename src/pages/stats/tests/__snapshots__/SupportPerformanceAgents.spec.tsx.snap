@@ -1,0 +1,1024 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SupportPerformanceAgents should not render the filters nor the stats when stats filters are not defined 1`] = `
+<div
+  class="full-width wrapper"
+>
+  <div
+    class="filtersWrapper"
+  >
+    <div
+      class="page-header pageHeader mb-0"
+    >
+      <h1
+        class="align-items-center"
+      >
+        <span>
+          Agents
+        </span>
+        <button
+          class="wrapper ml-3 btn btn-secondary"
+          type="button"
+        >
+          <div
+            class="content"
+          >
+            <i
+              class="icon material-icons"
+            >
+              info_outline
+            </i>
+            <span
+              class="label ml-1"
+            >
+              Learn
+            </span>
+          </div>
+        </button>
+      </h1>
+      <div>
+        <div
+          class="d-flex flex-wrap float-right"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    class="statsWrapper"
+  >
+    <div
+      class="statsContainer container-fluid"
+    />
+  </div>
+</div>
+`;
+
+exports[`SupportPerformanceAgents should render the filters and stats when stats filters are defined 1`] = `
+<div
+  class="full-width wrapper"
+>
+  <div
+    class="filtersWrapper"
+  >
+    <div
+      class="page-header pageHeader mb-0"
+    >
+      <h1
+        class="align-items-center"
+      >
+        <span>
+          Agents
+        </span>
+        <button
+          class="wrapper ml-3 btn btn-secondary"
+          type="button"
+        >
+          <div
+            class="content"
+          >
+            <i
+              class="icon material-icons"
+            >
+              info_outline
+            </i>
+            <span
+              class="label ml-1"
+            >
+              Learn
+            </span>
+          </div>
+        </button>
+      </h1>
+      <div>
+        <div
+          class="d-flex flex-wrap float-right"
+        >
+          <div
+            class="dropdown"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="mr-2 dropdown-toggle btn btn-secondary"
+              type="button"
+            >
+              <span>
+                All integrations
+              </span>
+            </button>
+            <div
+              aria-hidden="true"
+              class="dropdown dropdown-menu dropdown-menu-right"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-item-input dropdownItemInput dropdown-header"
+                tabindex="-1"
+              >
+                <input
+                  class="form-control"
+                  placeholder="Search integrations..."
+                  type="text"
+                  value=""
+                />
+              </h6>
+              <button
+                class="component quickSelectionOption dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  Select displayed
+                </span>
+                <div
+                  class="badge"
+                >
+                  0
+                </div>
+              </button>
+              <div
+                class="dropdownDivider dropdown-divider"
+                tabindex="-1"
+              />
+              <div
+                class="content"
+              />
+            </div>
+          </div>
+          <div
+            class="dropdown"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="mr-2 dropdown-toggle btn btn-secondary"
+              type="button"
+            >
+              <span>
+                1 channel
+              </span>
+            </button>
+            <div
+              aria-hidden="true"
+              class="dropdown dropdown-menu dropdown-menu-right"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-item-input dropdownItemInput dropdown-header"
+                tabindex="-1"
+              >
+                <input
+                  class="form-control"
+                  placeholder="Search channels..."
+                  type="text"
+                  value=""
+                />
+              </h6>
+              <button
+                class="component quickSelectionOption dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  Deselect
+                </span>
+                <div
+                  class="badge badge--unselect"
+                >
+                  1
+                </div>
+              </button>
+              <div
+                class="dropdownDivider dropdown-divider"
+                tabindex="-1"
+              />
+              <div
+                class="content"
+              >
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Aircall
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Api
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    checked=""
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Chat
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Email
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Facebook
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Facebook mention
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Facebook messenger
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Facebook recommendations
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Instagram ad comment
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Instagram comment
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Instagram mention
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Instagram direct message
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Phone
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Sms
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Twitter
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Twitter direct message
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Yotpo review
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="dropdown"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="mr-2 dropdown-toggle btn btn-secondary"
+              type="button"
+            >
+              <span>
+                1 agent
+              </span>
+            </button>
+            <div
+              aria-hidden="true"
+              class="dropdown dropdown-menu dropdown-menu-right"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-item-input dropdownItemInput dropdown-header"
+                tabindex="-1"
+              >
+                <input
+                  class="form-control"
+                  placeholder="Search agents..."
+                  type="text"
+                  value=""
+                />
+              </h6>
+              <button
+                class="component quickSelectionOption dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  Deselect
+                </span>
+                <div
+                  class="badge badge--unselect"
+                >
+                  1
+                </div>
+              </button>
+              <div
+                class="dropdownDivider dropdown-divider"
+                tabindex="-1"
+              />
+              <div
+                class="content"
+              >
+                <h6
+                  class="dropdownHeader dropdown-header"
+                  tabindex="-1"
+                >
+                  Teams
+                </h6>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Foo
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Phone team - +1 205-396-3441
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Test
+                </label>
+                <div
+                  class="dropdownDivider dropdown-divider"
+                  tabindex="-1"
+                />
+                <h6
+                  class="dropdownHeader dropdown-header"
+                  tabindex="-1"
+                >
+                  Users
+                </h6>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    checked=""
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Acme Support
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Bob Smith
+                </label>
+              </div>
+            </div>
+          </div>
+          <div>
+            <button
+              class="btn btn-secondary"
+              type="button"
+            >
+              <i
+                class="material-icons mr-2"
+              >
+                calendar_today
+              </i>
+              <span>
+                Feb 14, 2017
+              </span>
+              <i
+                class="material-icons md-2 strong ml-1"
+              >
+                arrow_drop_down
+              </i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="statsWrapper"
+  >
+    <div
+      class="statsContainer container-fluid"
+    >
+      <div
+        class="wrapper"
+      >
+        <div
+          class="mb-3 d-flex justify-content-between align-items-baseline"
+        >
+          <h5
+            class="mb-0 d-flex header"
+          >
+            Tickets closed per agent per day
+            <span>
+              <i
+                class="material-icons ml-2 helpIcon"
+                id="tooltip-tickets-closed-per-agent-per-day"
+              >
+                info_outline
+              </i>
+            </span>
+          </h5>
+          <button
+            class="csvButton btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons mr-1 csvButtonIcon"
+            >
+              file_download
+            </i>
+            CSV
+          </button>
+        </div>
+        <div>
+          <div
+            class="mb-4"
+          >
+            <div
+              class="legends"
+            >
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="circle mr-2"
+                  style="background: rgb(171, 209, 233);"
+                />
+                John D.
+              </span>
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="circle mr-2"
+                  style="background: rgb(255, 168, 217);"
+                />
+                Richard F.
+              </span>
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="circle mr-2"
+                  style="background: rgb(254, 193, 140);"
+                />
+                Alice Z.
+              </span>
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="circle mr-2"
+                  style="background: rgb(223, 238, 144);"
+                />
+                Regina P.
+              </span>
+            </div>
+          </div>
+          <div>
+            <canvas />
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="mb-3 d-flex justify-content-between align-items-baseline"
+        >
+          <h5
+            class="mb-0 d-flex header"
+          >
+            Tickets created per channel
+            <span>
+              <i
+                class="material-icons ml-2 helpIcon"
+                id="tooltip-tickets-closed-per-agent"
+              >
+                info_outline
+              </i>
+            </span>
+          </h5>
+          <button
+            class="csvButton btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons mr-1 csvButtonIcon"
+            >
+              file_download
+            </i>
+            CSV
+          </button>
+        </div>
+        <table
+          class="table table table-hover"
+        >
+          <thead>
+            <tr>
+              <th
+                class="string"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  CHANNEL
+                </span>
+              </th>
+              <th
+                class="number"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  TOTAL
+                </span>
+              </th>
+              <th
+                class="percent"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  PERCENTAGE
+                </span>
+              </th>
+              <th
+                class="delta"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  DELTA
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td
+                class="lineCell string"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  Chat
+                </span>
+              </td>
+              <td
+                class="lineCell number"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  1230
+                </span>
+              </td>
+              <td
+                class="lineCell percent"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  40%
+                </span>
+              </td>
+              <td
+                class="lineCell delta"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  <span>
+                    <span
+                      id="difference-0"
+                    >
+                      <span>
+                        <i
+                          class="material-icons mr-1 statsDifference"
+                        >
+                          arrow_downward
+                        </i>
+                        -2
+                        %
+                      </span>
+                    </span>
+                  </span>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td
+                class="lineCell string"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  Email
+                </span>
+              </td>
+              <td
+                class="lineCell number"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  1855
+                </span>
+              </td>
+              <td
+                class="lineCell percent"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  60%
+                </span>
+              </td>
+              <td
+                class="lineCell delta"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  <span>
+                    <span
+                      id="difference-1"
+                    >
+                      <span>
+                        <i
+                          class="material-icons mr-1 statsDifference"
+                        >
+                          arrow_upward
+                        </i>
+                        4
+                        %
+                      </span>
+                    </span>
+                  </span>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td
+                class="lineCell string"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  Facebook Mention
+                </span>
+              </td>
+              <td
+                class="lineCell number"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  7
+                </span>
+              </td>
+              <td
+                class="lineCell percent"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  0%
+                </span>
+              </td>
+              <td
+                class="lineCell delta"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  <span>
+                    <span
+                      id="difference-2"
+                    >
+                      <span>
+                        <i
+                          class="material-icons mr-1 statsDifference"
+                        >
+                          arrow_forward
+                        </i>
+                        0
+                        %
+                      </span>
+                    </span>
+                  </span>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td
+                class="lineCell string"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  Facebook Messenger
+                </span>
+              </td>
+              <td
+                class="lineCell number"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  1
+                </span>
+              </td>
+              <td
+                class="lineCell percent"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  0%
+                </span>
+              </td>
+              <td
+                class="lineCell delta"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  <span>
+                    <span
+                      id="difference-3"
+                    >
+                      <span>
+                        <i
+                          class="material-icons mr-1 statsDifference"
+                        >
+                          arrow_upward
+                        </i>
+                        100
+                        %
+                      </span>
+                    </span>
+                  </span>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td
+                class="lineCell string"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  Instagram Direct Message
+                </span>
+              </td>
+              <td
+                class="lineCell number"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  3
+                </span>
+              </td>
+              <td
+                class="lineCell percent"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  0%
+                </span>
+              </td>
+              <td
+                class="lineCell delta"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  <span>
+                    <span
+                      id="difference-4"
+                    >
+                      <span>
+                        <i
+                          class="material-icons mr-1 statsDifference"
+                        >
+                          arrow_upward
+                        </i>
+                        200
+                        %
+                      </span>
+                    </span>
+                  </span>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td
+                class="lineCell string"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  Instagram Mention
+                </span>
+              </td>
+              <td
+                class="lineCell number"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  5
+                </span>
+              </td>
+              <td
+                class="lineCell percent"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  0%
+                </span>
+              </td>
+              <td
+                class="lineCell delta"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  <span>
+                    <span
+                      id="difference-5"
+                    >
+                      <span>
+                        <i
+                          class="material-icons mr-1 statsDifference"
+                        >
+                          arrow_upward
+                        </i>
+                        150
+                        %
+                      </span>
+                    </span>
+                  </span>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;

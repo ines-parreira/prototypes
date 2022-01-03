@@ -1,4 +1,4 @@
-import {firstResponseTimeStat} from '../../../../fixtures/stats'
+import {firstResponseTime} from '../../../../fixtures/stats'
 import {statFetched} from '../actions'
 import reducer from '../reducer'
 
@@ -10,7 +10,7 @@ describe('stats reducer', () => {
                 statFetched({
                     statName: 'overview',
                     resourceName: 'total-tickets-replied',
-                    value: firstResponseTimeStat,
+                    value: firstResponseTime,
                 })
             )
 

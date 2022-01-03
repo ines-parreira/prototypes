@@ -28,10 +28,18 @@ import css from './stats.less'
 
 // Available Stats. These names should match names in `g/stats/config`
 export const OVERVIEW = 'overview'
+export const TOTAL_TICKETS_CREATED = 'total-tickets-created'
+export const TOTAL_TICKETS_REPLIED = 'total-tickets-replied'
+export const TOTAL_TICKETS_CLOSED = 'total-tickets-closed'
+export const TOTAL_MESSAGES_SENT = 'total-messages-sent'
+export const TOTAL_MESSAGES_RECEIVED = 'total-messages-received'
+export const MEDIAN_FIRST_RESPONSE_TIME = 'median-first-response-time'
+export const MEDIAN_RESOLUTION_TIME = 'median-resolution-time'
+export const TOTAL_ONE_TOUCH_TICKETS = 'total-one-touch-tickets'
 export const SUPPORT_VOLUME = 'support-volume'
 export const RESOLUTION_TIME = 'resolution-time'
 export const FIRST_RESPONSE_TIME = 'first-response-time'
-export const TICKET_CREATED_PER_HOUR_PER_WEEKDAY =
+export const TICKETS_CREATED_PER_HOUR_PER_WEEKDAY =
     'tickets-created-per-hour-per-weekday'
 export const TICKETS_PER_TAG = 'tickets-per-tag'
 export const TICKETS_CREATED_PER_CHANNEL = 'tickets-created-per-channel'
@@ -108,8 +116,9 @@ export const SATISFACTION_SURVEY_MAX_COMMENT_LENGTH = 80
 
 export const TICKET_MAX_SUBJECT_LENGTH = 100
 
-export const STORE_INTEGRATION_TYPES = [IntegrationType.Shopify]
-export const MESSAGE_INTEGRATION_TYPES = [
+// Deprecated: Use constants from state/states/constants
+export const DEPRECATED_STORE_INTEGRATION_TYPES = [IntegrationType.Shopify]
+export const DEPRECATED_MESSAGE_INTEGRATION_TYPES = [
     IntegrationType.Email,
     IntegrationType.Gmail,
     IntegrationType.Outlook,
@@ -971,52 +980,52 @@ export const stats = toImmutable<
         style: 'key-metrics',
         metrics: [
             {
-                api_resource_name: 'total-tickets-created',
+                api_resource_name: TOTAL_TICKETS_CREATED,
                 label: 'Tickets created',
                 name: 'total_new_tickets',
                 tooltip: 'Number of tickets created',
             },
             {
-                api_resource_name: 'total-tickets-replied',
+                api_resource_name: TOTAL_TICKETS_REPLIED,
                 label: 'Tickets replied',
                 name: 'total_replied_tickets',
                 tooltip: 'Number of tickets replied by agents',
             },
             {
-                api_resource_name: 'total-tickets-closed',
+                api_resource_name: TOTAL_TICKETS_CLOSED,
                 label: 'Tickets closed',
                 name: 'total_closed_tickets',
                 tooltip:
                     'Number of tickets closed (if a ticket was closed multiple times, we only count the last time). This metric can evolve over time if tickets are reopened and closed on the following days.',
             },
             {
-                api_resource_name: 'total-messages-sent',
+                api_resource_name: TOTAL_MESSAGES_SENT,
                 label: 'Messages sent',
                 name: 'total_messages_sent',
                 tooltip: 'Number of messages sent by agents and rules',
             },
             {
-                api_resource_name: 'total-messages-received',
+                api_resource_name: TOTAL_MESSAGES_RECEIVED,
                 label: 'Messages received',
                 name: 'total_messages_received',
                 tooltip: 'Number of messages received from customers',
             },
             {
-                api_resource_name: 'median-first-response-time',
+                api_resource_name: MEDIAN_FIRST_RESPONSE_TIME,
                 label: 'First response time',
                 name: 'median_first_response_time',
                 tooltip:
                     "Median time between the first message from a customer and the first response from an agent (messages sent by rules don't count)",
             },
             {
-                api_resource_name: 'median-resolution-time',
+                api_resource_name: MEDIAN_RESOLUTION_TIME,
                 label: 'Resolution time',
                 name: 'median_resolution_time',
                 tooltip:
                     'Median time between the first message from a customer and the moment a ticket with at least one response is closed by an agent or a rule',
             },
             {
-                api_resource_name: 'total-one-touch-tickets',
+                api_resource_name: TOTAL_ONE_TOUCH_TICKETS,
                 label: 'One-touch tickets',
                 name: 'total_one_touch_tickets',
                 tooltip:
@@ -1138,7 +1147,7 @@ export const stats = toImmutable<
             },
         }),
     },
-    [TICKET_CREATED_PER_HOUR_PER_WEEKDAY]: {
+    [TICKETS_CREATED_PER_HOUR_PER_WEEKDAY]: {
         helpText: 'Tickets created per hour per day of the week',
         style: 'per-hour-per-week-table',
         downloadable: true,
@@ -1720,7 +1729,7 @@ providing excellent customer support.`,
         filters: [
             {
                 type: 'integrations',
-                options: {allowedTypes: MESSAGE_INTEGRATION_TYPES},
+                options: {allowedTypes: DEPRECATED_MESSAGE_INTEGRATION_TYPES},
             },
             {type: 'channels'},
             {type: 'agents'},
@@ -1734,7 +1743,7 @@ providing excellent customer support.`,
             SUPPORT_VOLUME,
             RESOLUTION_TIME,
             FIRST_RESPONSE_TIME,
-            TICKET_CREATED_PER_HOUR_PER_WEEKDAY,
+            TICKETS_CREATED_PER_HOUR_PER_WEEKDAY,
         ],
     },
     tags: {
@@ -1745,7 +1754,7 @@ tag attached to them. `,
         filters: [
             {
                 type: 'integrations',
-                options: {allowedTypes: MESSAGE_INTEGRATION_TYPES},
+                options: {allowedTypes: DEPRECATED_MESSAGE_INTEGRATION_TYPES},
             },
             {type: 'channels'},
             {type: 'tags'},
@@ -1762,7 +1771,7 @@ channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...`,
         filters: [
             {
                 type: 'integrations',
-                options: {allowedTypes: MESSAGE_INTEGRATION_TYPES},
+                options: {allowedTypes: DEPRECATED_MESSAGE_INTEGRATION_TYPES},
             },
             {type: 'channels'},
             {type: 'period'},
@@ -1780,7 +1789,7 @@ channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...`,
         filters: [
             {
                 type: 'integrations',
-                options: {allowedTypes: MESSAGE_INTEGRATION_TYPES},
+                options: {allowedTypes: DEPRECATED_MESSAGE_INTEGRATION_TYPES},
             },
             {type: 'channels'},
             {type: 'agents'},
@@ -1797,7 +1806,7 @@ How many surveys have been sent, response rate, average scores and more. `,
         filters: [
             {
                 type: 'integrations',
-                options: {allowedTypes: MESSAGE_INTEGRATION_TYPES},
+                options: {allowedTypes: DEPRECATED_MESSAGE_INTEGRATION_TYPES},
             },
             {
                 type: 'channels',
@@ -1826,7 +1835,7 @@ helping customers through the purchasing journey.`,
             {
                 type: 'integrations',
                 options: {
-                    allowedTypes: STORE_INTEGRATION_TYPES,
+                    allowedTypes: DEPRECATED_STORE_INTEGRATION_TYPES,
                     isMultiple: false,
                     isRequired: true,
                 },
@@ -1857,7 +1866,7 @@ tool used to answer it.`,
         filters: [
             {
                 type: 'integrations',
-                options: {allowedTypes: MESSAGE_INTEGRATION_TYPES},
+                options: {allowedTypes: DEPRECATED_MESSAGE_INTEGRATION_TYPES},
             },
             {type: 'channels'},
             {type: 'period'},
@@ -1874,7 +1883,7 @@ to help reduce your support inquiries.`,
         filters: [
             {
                 type: 'integrations',
-                options: {allowedTypes: MESSAGE_INTEGRATION_TYPES},
+                options: {allowedTypes: DEPRECATED_MESSAGE_INTEGRATION_TYPES},
             },
             {type: 'channels'},
             {type: 'period'},

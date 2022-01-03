@@ -12,6 +12,8 @@ import {
     getMessagingIntegrationsStatsFilter,
     getStatsFiltersJS,
     getStatsMessagingIntegrations,
+    getStatsStoreIntegrations,
+    getStoreIntegrationsStatsFilter,
 } from '../selectors'
 import {StatsFilters, StatsFilterType} from '../types'
 import {TicketChannel} from '../../../business/types/ticket'
@@ -188,11 +190,53 @@ describe('selectors', () => {
             })
         })
 
-        describe('getMessageIntegrationsStatsFilter', () => {
+        describe.each([
+            [
+                'getStatsMessagingIntegrations',
+                'message',
+                getStatsMessagingIntegrations,
+            ],
+
+            ['getStatsStoreIntegrations', 'store', getStatsStoreIntegrations],
+        ])('%s', (testName, integrationType, selector) => {
+            it('should return an empty array when integrations are not set', () => {
+                expect(selector(defaultState)).toEqual([])
+            })
+
+            it(`should return only ${integrationType} integrations`, () => {
+                const state = {
+                    ...defaultState,
+                    integrations: fromJS({
+                        integrations: [
+                            {
+                                id: 1,
+                                type: IntegrationType.Gmail,
+                            },
+                            {
+                                id: 2,
+                                type: IntegrationType.Shopify,
+                            },
+                        ],
+                    }),
+                }
+                expect(selector(state)).toMatchSnapshot()
+            })
+        })
+
+        describe.each([
+            [
+                'getMessagingIntegrationsStatsFilter',
+                'message',
+                getMessagingIntegrationsStatsFilter,
+            ],
+            [
+                'getStoreIntegrationsStatsFilter',
+                'store',
+                getStoreIntegrationsStatsFilter,
+            ],
+        ])('%s', (testName, integrationType, selector) => {
             it('should return an empty array when the stat filters are not set', () => {
-                const integrationsStatFilter =
-                    getMessagingIntegrationsStatsFilter(defaultState)
-                expect(integrationsStatFilter).toEqual([])
+                expect(selector(defaultState)).toEqual([])
             })
 
             it('should return an empty array when the integrations stat filter is not set', () => {
@@ -206,10 +250,10 @@ describe('selectors', () => {
                         })
                     ),
                 }
-                expect(getMessagingIntegrationsStatsFilter(state)).toEqual([])
+                expect(selector(state)).toEqual([])
             })
 
-            it('should return only message integrations', () => {
+            it(`should return only ${integrationType} integrations`, () => {
                 const state = {
                     ...defaultState,
                     stats: defaultState.stats.set(
@@ -232,32 +276,7 @@ describe('selectors', () => {
                         ],
                     }),
                 }
-                expect(getMessagingIntegrationsStatsFilter(state)).toEqual([1])
-            })
-        })
-
-        describe('getStatsMessagingIntegrations', () => {
-            it('should return an empty array when integrations are not set', () => {
-                expect(getStatsMessagingIntegrations(defaultState)).toEqual([])
-            })
-
-            it('should return only message integrations', () => {
-                const state = {
-                    ...defaultState,
-                    integrations: fromJS({
-                        integrations: [
-                            {
-                                id: 1,
-                                type: IntegrationType.Gmail,
-                            },
-                            {
-                                id: 2,
-                                type: IntegrationType.Shopify,
-                            },
-                        ],
-                    }),
-                }
-                expect(getStatsMessagingIntegrations(state)).toMatchSnapshot()
+                expect(selector(state)).toMatchSnapshot()
             })
         })
     })

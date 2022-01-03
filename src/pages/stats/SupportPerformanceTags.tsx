@@ -71,6 +71,7 @@ tag attached to them."
                         <IntegrationsStatsFilter
                             value={integrationsStatsFilter}
                             integrations={messagingIntegrations}
+                            isMultiple
                         />
                         <ChannelsStatsFilter
                             value={pageStatsFilters[StatsFilterType.Channels]}

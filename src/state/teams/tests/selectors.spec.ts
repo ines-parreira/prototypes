@@ -39,4 +39,17 @@ describe('teams selectors', () => {
             fromJS([])
         )
     })
+
+    describe('getLabelledTeamsJS', () => {
+        it('should return labelled teams from the state', () => {
+            expect(selectors.getLabelledTeamsJS(state)).toEqual([
+                {id: 1, label: 'Team 1', members: []},
+                {id: 2, label: 'Team 2', members: []},
+            ])
+        })
+
+        it('should return an empty array when no teams in the state', () => {
+            expect(selectors.getLabelledTeamsJS({} as RootState)).toEqual([])
+        })
+    })
 })

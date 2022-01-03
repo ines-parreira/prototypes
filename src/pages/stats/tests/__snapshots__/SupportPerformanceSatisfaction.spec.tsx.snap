@@ -1,0 +1,1099 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SupportPerformanceSatisfaction should not render the filters nor the stats when stats filters are not defined 1`] = `
+<div
+  class="full-width wrapper"
+>
+  <div
+    class="filtersWrapper"
+  >
+    <div
+      class="page-header pageHeader mb-0"
+    >
+      <h1
+        class="align-items-center"
+      >
+        <span>
+          Satisfaction
+        </span>
+        <button
+          class="wrapper ml-3 btn btn-secondary"
+          type="button"
+        >
+          <div
+            class="content"
+          >
+            <i
+              class="icon material-icons"
+            >
+              info_outline
+            </i>
+            <span
+              class="label ml-1"
+            >
+              Learn
+            </span>
+          </div>
+        </button>
+      </h1>
+      <div>
+        <div
+          class="d-flex flex-wrap float-right"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    class="statsWrapper"
+  >
+    <div
+      class="statsContainer container-fluid"
+    />
+  </div>
+</div>
+`;
+
+exports[`SupportPerformanceSatisfaction should render the filters and stats when stats filters are defined 1`] = `
+<div
+  class="full-width wrapper"
+>
+  <div
+    class="filtersWrapper"
+  >
+    <div
+      class="page-header pageHeader mb-0"
+    >
+      <h1
+        class="align-items-center"
+      >
+        <span>
+          Satisfaction
+        </span>
+        <button
+          class="wrapper ml-3 btn btn-secondary"
+          type="button"
+        >
+          <div
+            class="content"
+          >
+            <i
+              class="icon material-icons"
+            >
+              info_outline
+            </i>
+            <span
+              class="label ml-1"
+            >
+              Learn
+            </span>
+          </div>
+        </button>
+      </h1>
+      <div>
+        <div
+          class="d-flex flex-wrap float-right"
+        >
+          <div
+            class="dropdown"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="mr-2 dropdown-toggle btn btn-secondary"
+              type="button"
+            >
+              <span>
+                All integrations
+              </span>
+            </button>
+            <div
+              aria-hidden="true"
+              class="dropdown dropdown-menu dropdown-menu-right"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-item-input dropdownItemInput dropdown-header"
+                tabindex="-1"
+              >
+                <input
+                  class="form-control"
+                  placeholder="Search integrations..."
+                  type="text"
+                  value=""
+                />
+              </h6>
+              <button
+                class="component quickSelectionOption dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  Select displayed
+                </span>
+                <div
+                  class="badge"
+                >
+                  0
+                </div>
+              </button>
+              <div
+                class="dropdownDivider dropdown-divider"
+                tabindex="-1"
+              />
+              <div
+                class="content"
+              />
+            </div>
+          </div>
+          <div
+            class="dropdown"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="mr-2 dropdown-toggle btn btn-secondary"
+              type="button"
+            >
+              <span>
+                1 channel
+              </span>
+            </button>
+            <div
+              aria-hidden="true"
+              class="dropdown dropdown-menu dropdown-menu-right"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-item-input dropdownItemInput dropdown-header"
+                tabindex="-1"
+              >
+                <input
+                  class="form-control"
+                  placeholder="Search channels..."
+                  type="text"
+                  value=""
+                />
+              </h6>
+              <button
+                class="component quickSelectionOption dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  Deselect
+                </span>
+                <div
+                  class="badge badge--unselect"
+                >
+                  1
+                </div>
+              </button>
+              <div
+                class="dropdownDivider dropdown-divider"
+                tabindex="-1"
+              />
+              <div
+                class="content"
+              >
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    checked=""
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Chat
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Email
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="dropdown"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="mr-2 dropdown-toggle btn btn-secondary"
+              type="button"
+            >
+              <span>
+                1 score
+              </span>
+            </button>
+            <div
+              aria-hidden="true"
+              class="dropdown dropdown-menu dropdown-menu-right"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-item-input dropdownItemInput dropdown-header"
+                tabindex="-1"
+              >
+                <input
+                  class="form-control"
+                  placeholder="Search scores..."
+                  type="text"
+                  value=""
+                />
+              </h6>
+              <button
+                class="component quickSelectionOption dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  Deselect
+                </span>
+                <div
+                  class="badge badge--unselect"
+                >
+                  1
+                </div>
+              </button>
+              <div
+                class="dropdownDivider dropdown-divider"
+                tabindex="-1"
+              />
+              <div
+                class="content"
+              >
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   ★★★★★
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   ★★★★☆
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   ★★★☆☆
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    checked=""
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   ★★☆☆☆
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   ★☆☆☆☆
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="dropdown"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="mr-2 dropdown-toggle btn btn-secondary"
+              type="button"
+            >
+              <span>
+                1 agent
+              </span>
+            </button>
+            <div
+              aria-hidden="true"
+              class="dropdown dropdown-menu dropdown-menu-right"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-item-input dropdownItemInput dropdown-header"
+                tabindex="-1"
+              >
+                <input
+                  class="form-control"
+                  placeholder="Search agents..."
+                  type="text"
+                  value=""
+                />
+              </h6>
+              <button
+                class="component quickSelectionOption dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  Deselect
+                </span>
+                <div
+                  class="badge badge--unselect"
+                >
+                  1
+                </div>
+              </button>
+              <div
+                class="dropdownDivider dropdown-divider"
+                tabindex="-1"
+              />
+              <div
+                class="content"
+              >
+                <h6
+                  class="dropdownHeader dropdown-header"
+                  tabindex="-1"
+                >
+                  Teams
+                </h6>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Foo
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Phone team - +1 205-396-3441
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Test
+                </label>
+                <div
+                  class="dropdownDivider dropdown-divider"
+                  tabindex="-1"
+                />
+                <h6
+                  class="dropdownHeader dropdown-header"
+                  tabindex="-1"
+                >
+                  Users
+                </h6>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    checked=""
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Acme Support
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Bob Smith
+                </label>
+              </div>
+            </div>
+          </div>
+          <div>
+            TagsStatsFilterMock, value: 
+            [1]
+          </div>
+          <div>
+            <button
+              class="btn btn-secondary"
+              type="button"
+            >
+              <i
+                class="material-icons mr-2"
+              >
+                calendar_today
+              </i>
+              <span>
+                Feb 14, 2017
+              </span>
+              <i
+                class="material-icons md-2 strong ml-1"
+              >
+                arrow_drop_down
+              </i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="statsWrapper"
+  >
+    <div
+      class="statsContainer container-fluid"
+    >
+      <div
+        class="wrapper"
+      >
+        <div
+          class="metrics"
+        >
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Survey sent
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-total_sent-0"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              <div>
+                <div
+                  class="value"
+                >
+                  1176
+                </div>
+                <span
+                  class="diff"
+                  id="value-total_sent-0"
+                >
+                  <span>
+                    <i
+                      class="material-icons mr-1 statsDifference negative"
+                    >
+                      arrow_downward
+                    </i>
+                    -3
+                    %
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Response rate
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-response_rate-1"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              <div
+                class="container"
+              >
+                <svg
+                  class="donut"
+                  viewBox="0 0 320 320"
+                >
+                  <path
+                    class="path-success"
+                    d="M159.99,8.00
+          A152.00,152.00 0 0 1 233.22,26.80A5.76,5.76 0 0 1 223.97,43.62A132.79,132.79 0 0 0 159.99,27.20A5.76,5.76 0 0 1 159.99,8.00"
+                  />
+                  <path
+                    class="path-empty"
+                    d="M233.22,26.80
+          A152.00,152.00 0 1 1 159.99,8.00A5.76,5.76 0 1 0 159.99,27.20A132.79,132.79 0 1 0 223.97,43.62A5.76,5.76 0 1 0 233.22,26.80"
+                  />
+                </svg>
+                <div
+                  class="difference"
+                >
+                  <div
+                    class="value"
+                  >
+                    8%
+                  </div>
+                  <div>
+                    <span
+                      class="diff"
+                      id="value-response_rate-1"
+                    >
+                      <span>
+                        <i
+                          class="material-icons mr-1 statsDifference negative"
+                        >
+                          arrow_downward
+                        </i>
+                        -12
+                        %
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Average rating
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-average_rating-2"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              <div
+                class="container"
+              >
+                <svg
+                  class="donut"
+                  viewBox="0 0 320 320"
+                >
+                  <path
+                    class="path-warning"
+                    d="M159.99,8.00
+          A152.00,152.00 0 1 1 64.59,41.67A5.76,5.76 0 1 1 76.64,56.62A132.79,132.79 0 1 0 159.99,27.20A5.76,5.76 0 1 1 159.99,8.00"
+                  />
+                  <path
+                    class="path-empty"
+                    d="M64.59,41.67
+          A152.00,152.00 0 0 1 159.99,8.00A5.76,5.76 0 0 0 159.99,27.20A132.79,132.79 0 0 0 76.64,56.62A5.76,5.76 0 0 0 64.59,41.67"
+                  />
+                </svg>
+                <div
+                  class="difference"
+                >
+                  <div
+                    class="value"
+                  >
+                    4.46
+                  </div>
+                  <div>
+                    <span
+                      class="diff"
+                      id="value-average_rating-2"
+                    >
+                      <span>
+                        <i
+                          class="material-icons mr-1 statsDifference negative"
+                        >
+                          arrow_downward
+                        </i>
+                        -2
+                        %
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Response Distribution
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-response_distribution-3"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              <div>
+                <div
+                  class="mb-1 row"
+                >
+                  <div
+                    class="col-md-6 ta-left"
+                  >
+                    <span
+                      class="distribution"
+                    >
+                      <img
+                        alt="filled star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                      <img
+                        alt="filled star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                      <img
+                        alt="filled star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                      <img
+                        alt="filled star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                      <img
+                        alt="filled star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                    </span>
+                  </div>
+                  <div
+                    class="value col-md-3 ta-right"
+                  >
+                    78.64%
+                  </div>
+                </div>
+                <div
+                  class="mb-1 row"
+                >
+                  <div
+                    class="col-md-6 ta-left"
+                  >
+                    <span
+                      class="distribution"
+                    >
+                      <img
+                        alt="filled star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                      <img
+                        alt="filled star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                      <img
+                        alt="filled star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                      <img
+                        alt="filled star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                      <img
+                        alt="empty star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                    </span>
+                  </div>
+                  <div
+                    class="value col-md-3 ta-right"
+                  >
+                    5.83%
+                  </div>
+                </div>
+                <div
+                  class="mb-1 row"
+                >
+                  <div
+                    class="col-md-6 ta-left"
+                  >
+                    <span
+                      class="distribution"
+                    >
+                      <img
+                        alt="filled star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                      <img
+                        alt="filled star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                      <img
+                        alt="filled star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                      <img
+                        alt="empty star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                      <img
+                        alt="empty star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                    </span>
+                  </div>
+                  <div
+                    class="value col-md-3 ta-right"
+                  >
+                    5.83%
+                  </div>
+                </div>
+                <div
+                  class="mb-1 row"
+                >
+                  <div
+                    class="col-md-6 ta-left"
+                  >
+                    <span
+                      class="distribution"
+                    >
+                      <img
+                        alt="filled star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                      <img
+                        alt="filled star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                      <img
+                        alt="empty star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                      <img
+                        alt="empty star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                      <img
+                        alt="empty star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                    </span>
+                  </div>
+                  <div
+                    class="value col-md-3 ta-right"
+                  >
+                    1.94%
+                  </div>
+                </div>
+                <div
+                  class="mb-1 row"
+                >
+                  <div
+                    class="col-md-6 ta-left"
+                  >
+                    <span
+                      class="distribution"
+                    >
+                      <img
+                        alt="filled star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                      <img
+                        alt="empty star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                      <img
+                        alt="empty star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                      <img
+                        alt="empty star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                      <img
+                        alt="empty star"
+                        class="star"
+                        src="test-file-stub"
+                      />
+                    </span>
+                  </div>
+                  <div
+                    class="value col-md-3 ta-right"
+                  >
+                    7.77%
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="mb-3 d-flex justify-content-between align-items-baseline"
+        >
+          <h5
+            class="mb-0 d-flex header"
+          >
+            Latest Surveys
+            <span>
+              <i
+                class="material-icons ml-2 helpIcon"
+                id="tooltip-latest-satisfaction-surveys"
+              >
+                info_outline
+              </i>
+            </span>
+          </h5>
+          <button
+            class="csvButton btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons mr-1 csvButtonIcon"
+            >
+              file_download
+            </i>
+            CSV
+          </button>
+        </div>
+        <table
+          class="table table table-hover"
+        >
+          <thead>
+            <tr>
+              <th
+                class="customer-link"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  CUSTOMER
+                </span>
+              </th>
+              <th
+                class="string"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  ASSIGNEE
+                </span>
+              </th>
+              <th
+                class="date"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  DATE
+                </span>
+              </th>
+              <th
+                class="satisfaction-score"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  SCORE
+                </span>
+              </th>
+              <th
+                class="satisfaction-survey-link"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  COMMENT
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td
+                class="lineCell customer-link"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  <a
+                    to="/app/customer/12345"
+                  >
+                    Go to customer
+                  </a>
+                </span>
+              </td>
+              <td
+                class="lineCell string"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  John D.
+                </span>
+              </td>
+              <td
+                class="lineCell date"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  <span>
+                    <span
+                      id="datetime-tooltip-"
+                    >
+                      12/13/2021
+                    </span>
+                  </span>
+                </span>
+              </td>
+              <td
+                class="lineCell satisfaction-score"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  <span
+                    class="distribution"
+                  >
+                    <img
+                      alt="filled star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                    <img
+                      alt="filled star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                    <img
+                      alt="filled star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                    <img
+                      alt="filled star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                    <img
+                      alt="filled star"
+                      class="star"
+                      src="test-file-stub"
+                    />
+                  </span>
+                </span>
+              </td>
+              <td
+                class="lineCell satisfaction-survey-link"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  <a
+                    to="/app/ticket/5243423#satisfactionSurvey"
+                  >
+                    Go to ticket
+                  </a>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SupportPerformanceSatisfaction should render the paywall when the current account has no satisfaction surveys feature 1`] = `
+<div>
+  Paywall for 
+  satisfaction_surveys
+</div>
+`;

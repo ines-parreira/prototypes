@@ -1,6 +1,6 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import {firstResponseTimeStat} from '../../../fixtures/stats'
+import {firstResponseTime} from '../../../fixtures/stats'
 import {FIRST_RESPONSE_TIME} from '../../../config/stats'
 import client from '../../api/resources'
 import {fetchStat, downloadStat} from '../resources'
@@ -16,7 +16,7 @@ describe('stat resources', () => {
         it('should resolve with a Stat on success', async () => {
             mockedServer
                 .onPost(`/api/stats/${FIRST_RESPONSE_TIME}/`)
-                .reply(200, firstResponseTimeStat)
+                .reply(200, firstResponseTime)
 
             const res = await fetchStat(FIRST_RESPONSE_TIME, {
                 filters: {
@@ -51,7 +51,7 @@ describe('stat resources', () => {
         it('should resolve with a Stat file on success', async () => {
             mockedServer
                 .onPost(`/api/stats/${FIRST_RESPONSE_TIME}/download`)
-                .reply(200, firstResponseTimeStat, {
+                .reply(200, firstResponseTime, {
                     'content-disposition': 'filename=test.json',
                 })
 

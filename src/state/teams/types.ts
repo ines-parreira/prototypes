@@ -16,7 +16,7 @@ type TeamDecoration = {
 export type Team = {
     created_datetime: string
     decoration: TeamDecoration
-    description: string
+    description: string | null
     id: number
     members: TeamUser[]
     name: string

@@ -1,5 +1,5 @@
 import {fromJS, List, Map} from 'immutable'
-import {createSelector} from 'reselect'
+import {createSelector, Selector} from 'reselect'
 import moment from 'moment-timezone'
 
 import {RootState} from '../types'
@@ -10,11 +10,14 @@ import {
     getIntegrationsByTypes,
 } from '../integrations/selectors'
 import {getTimezone} from '../currentUser/selectors'
-import {IntegrationType} from '../../models/integration/constants'
 import {Integration} from '../../models/integration/types'
+import {makeGetPlainJS} from '../../utils'
 
 import {StatsFilters, StatsState} from './types'
-import {STATS_MESSAGING_INTEGRATIONS_TYPES} from './constants'
+import {
+    STATS_MESSAGING_INTEGRATIONS_TYPES,
+    STATS_STORE_INTEGRATION_TYPES,
+} from './constants'
 
 export const getStatsState = (state: RootState): StatsState => state.stats
 
@@ -122,29 +125,34 @@ export const getLiveAgentsStatsFilters =
     DEPRECATED_makeStatsFiltersSelector('live-agents')
 
 const makeIntegrationsStatsFilterSelector = (
-    allowedTypes: IntegrationType[]
+    integrationsSelector: Selector<RootState, Integration[]>
 ) => {
-    const getAllowedTypesIntegrations = getIntegrationsByTypes(allowedTypes)
     return createSelector(
         getStatsFiltersJS,
-        getAllowedTypesIntegrations,
-        (statFilters, allowedIntegrations) => {
-            const allowedIntegrationIds = allowedIntegrations.map(
-                (integration: Map<string, unknown>) => integration.get('id')
+        integrationsSelector,
+        (statsFilters, integrations) => {
+            const integrationsIds = integrations.map(
+                (integration) => integration.id
             )
-            return statFilters?.integrations
-                ? statFilters.integrations.filter((integrationId: number) =>
-                      allowedIntegrationIds.includes(integrationId)
-                  )
-                : []
+            return (
+                statsFilters?.integrations?.filter((integrationId: number) =>
+                    integrationsIds.includes(integrationId)
+                ) || []
+            )
         }
     )
 }
 
-export const getMessagingIntegrationsStatsFilter =
-    makeIntegrationsStatsFilterSelector(STATS_MESSAGING_INTEGRATIONS_TYPES)
-
-export const getStatsMessagingIntegrations = createSelector(
-    getIntegrationsByTypes(STATS_MESSAGING_INTEGRATIONS_TYPES),
-    (integrations) => integrations.toJS() as Integration[]
+export const getStatsMessagingIntegrations = makeGetPlainJS<Integration[]>(
+    getIntegrationsByTypes(STATS_MESSAGING_INTEGRATIONS_TYPES)
 )
+
+export const getMessagingIntegrationsStatsFilter =
+    makeIntegrationsStatsFilterSelector(getStatsMessagingIntegrations)
+
+export const getStatsStoreIntegrations = makeGetPlainJS<Integration[]>(
+    getIntegrationsByTypes(STATS_STORE_INTEGRATION_TYPES)
+)
+
+export const getStoreIntegrationsStatsFilter =
+    makeIntegrationsStatsFilterSelector(getStatsStoreIntegrations)

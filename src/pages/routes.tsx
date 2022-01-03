@@ -77,6 +77,11 @@ import DefaultStatsFilters from './stats/DefaultStatsFilters'
 import HelpCenterPaywall from './settings/helpCenter/components/Paywalls/HelpCenterPaywall'
 import SupportPerformanceTags from './stats/SupportPerformanceTags'
 import ImportPhoneNumber from './tasks/detail/ImportPhoneNumber'
+import SupportPerformanceChannels from './stats/SupportPerformanceChannels'
+import SupportPerformanceAgents from './stats/SupportPerformanceAgents'
+import SupportPerformanceSatisfaction from './stats/SupportPerformanceSatisfaction'
+import SupportPerformanceRevenue from './stats/SupportPerformanceRevenue'
+import SupportPerformanceOverview from './stats/SupportPerformanceOverview'
 
 const assetsURL = window.GORGIAS_ASSETS_URL || ''
 
@@ -380,9 +385,49 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
                 />
                 <Route
                     exact
+                    path={`${path}/support-performance-overview`}
+                    render={appRender({
+                        content: SupportPerformanceOverview,
+                        navbar: StatsNavbarContainer,
+                    })}
+                />
+                <Route
+                    exact
                     path={`${path}/tags`}
                     render={appRender({
                         content: SupportPerformanceTags,
+                        navbar: StatsNavbarContainer,
+                    })}
+                />
+                <Route
+                    exact
+                    path={`${path}/channels`}
+                    render={appRender({
+                        content: SupportPerformanceChannels,
+                        navbar: StatsNavbarContainer,
+                    })}
+                />
+                <Route
+                    exact
+                    path={`${path}/support-performance-agents`}
+                    render={appRender({
+                        content: SupportPerformanceAgents,
+                        navbar: StatsNavbarContainer,
+                    })}
+                />
+                <Route
+                    exact
+                    path={`${path}/satisfaction`}
+                    render={appRender({
+                        content: SupportPerformanceSatisfaction,
+                        navbar: StatsNavbarContainer,
+                    })}
+                />
+                <Route
+                    exact
+                    path={`${path}/revenue`}
+                    render={appRender({
+                        content: SupportPerformanceRevenue,
                         navbar: StatsNavbarContainer,
                     })}
                 />

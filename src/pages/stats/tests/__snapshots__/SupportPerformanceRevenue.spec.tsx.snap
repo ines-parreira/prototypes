@@ -1,0 +1,1097 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SupportPerformanceRevenue should not render the filters nor the stats when stats filters are not defined 1`] = `
+<div
+  class="full-width wrapper"
+>
+  <div
+    class="filtersWrapper"
+  >
+    <div
+      class="page-header pageHeader mb-0"
+    >
+      <h1
+        class="align-items-center"
+      >
+        <span>
+          Revenue
+        </span>
+        <button
+          class="wrapper ml-3 btn btn-secondary"
+          type="button"
+        >
+          <div
+            class="content"
+          >
+            <i
+              class="icon material-icons"
+            >
+              info_outline
+            </i>
+            <span
+              class="label ml-1"
+            >
+              Learn
+            </span>
+          </div>
+        </button>
+      </h1>
+      <div>
+        <div
+          class="d-flex flex-wrap float-right"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    class="statsWrapper"
+  >
+    <div
+      class="statsContainer container-fluid"
+    />
+  </div>
+</div>
+`;
+
+exports[`SupportPerformanceRevenue should render the filters and stats when stats filters are defined 1`] = `
+<div
+  class="full-width wrapper"
+>
+  <div
+    class="filtersWrapper"
+  >
+    <div
+      class="page-header pageHeader mb-0"
+    >
+      <h1
+        class="align-items-center"
+      >
+        <span>
+          Revenue
+        </span>
+        <button
+          class="wrapper ml-3 btn btn-secondary"
+          type="button"
+        >
+          <div
+            class="content"
+          >
+            <i
+              class="icon material-icons"
+            >
+              info_outline
+            </i>
+            <span
+              class="label ml-1"
+            >
+              Learn
+            </span>
+          </div>
+        </button>
+      </h1>
+      <div>
+        <div
+          class="d-flex flex-wrap float-right"
+        >
+          <div
+            class="dropdown"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="mr-2 dropdown-toggle btn btn-secondary"
+              type="button"
+            >
+              <span>
+                My Shop
+              </span>
+            </button>
+            <div
+              aria-hidden="true"
+              class="dropdown dropdown-menu dropdown-menu-right"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-item-input dropdownItemInput dropdown-header"
+                tabindex="-1"
+              >
+                <input
+                  class="form-control"
+                  placeholder="Search integrations..."
+                  type="text"
+                  value=""
+                />
+              </h6>
+              <div
+                class="dropdownDivider dropdown-divider"
+                tabindex="-1"
+              />
+              <div
+                class="content"
+              >
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    checked=""
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                  <img
+                    alt="logo-shopify"
+                    class="integrationIcon"
+                    src="test-file-stub"
+                  />
+                   My Shop
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="dropdown"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="mr-2 dropdown-toggle btn btn-secondary"
+              type="button"
+            >
+              <span>
+                1 channel
+              </span>
+            </button>
+            <div
+              aria-hidden="true"
+              class="dropdown dropdown-menu dropdown-menu-right"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-item-input dropdownItemInput dropdown-header"
+                tabindex="-1"
+              >
+                <input
+                  class="form-control"
+                  placeholder="Search channels..."
+                  type="text"
+                  value=""
+                />
+              </h6>
+              <button
+                class="component quickSelectionOption dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  Deselect
+                </span>
+                <div
+                  class="badge badge--unselect"
+                >
+                  1
+                </div>
+              </button>
+              <div
+                class="dropdownDivider dropdown-divider"
+                tabindex="-1"
+              />
+              <div
+                class="content"
+              >
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Aircall
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Api
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    checked=""
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Chat
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Email
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Facebook
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Facebook mention
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Facebook messenger
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Facebook recommendations
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Instagram ad comment
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Instagram comment
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Instagram mention
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Instagram direct message
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Phone
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Sms
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Twitter
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Twitter direct message
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Yotpo review
+                </label>
+              </div>
+            </div>
+          </div>
+          <div>
+            TagsStatsFilterMock, value: 
+            [1]
+          </div>
+          <div>
+            <button
+              class="btn btn-secondary"
+              type="button"
+            >
+              <i
+                class="material-icons mr-2"
+              >
+                calendar_today
+              </i>
+              <span>
+                Feb 14, 2017
+              </span>
+              <i
+                class="material-icons md-2 strong ml-1"
+              >
+                arrow_drop_down
+              </i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="statsWrapper"
+  >
+    <div
+      class="statsContainer container-fluid"
+    >
+      <div
+        class="wrapper"
+      >
+        <div
+          class="metrics"
+        >
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Tickets created
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-tickets_created-0"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              <div>
+                <div
+                  class="value"
+                >
+                  13
+                </div>
+                <span
+                  class="diff"
+                  id="value-tickets_created-0"
+                >
+                  <span>
+                    <i
+                      class="material-icons mr-1 statsDifference positive"
+                    >
+                      arrow_upward
+                    </i>
+                    8
+                    %
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Tickets converted
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-tickets_converted-1"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              <div>
+                <div
+                  class="value"
+                >
+                  0
+                </div>
+                <span
+                  class="diff"
+                  id="value-tickets_converted-1"
+                >
+                  <span>
+                    <i
+                      class="material-icons mr-1 statsDifference neutral"
+                    >
+                      arrow_forward
+                    </i>
+                    0
+                    %
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Conversion ratio
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-conversion_ratio-2"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              <div>
+                <div
+                  class="value"
+                >
+                  0%
+                </div>
+                <span
+                  class="diff"
+                  id="value-conversion_ratio-2"
+                >
+                  <span>
+                    <i
+                      class="material-icons mr-1 statsDifference neutral"
+                    >
+                      arrow_forward
+                    </i>
+                    0
+                    %
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Total sales from support
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-total_sales_from_support-3"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              <div>
+                <div
+                  class="value"
+                >
+                  $0
+                </div>
+                <span
+                  class="diff"
+                  id="value-total_sales_from_support-3"
+                >
+                  <span>
+                    <i
+                      class="material-icons mr-1 statsDifference neutral"
+                    >
+                      arrow_forward
+                    </i>
+                    0
+                    %
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="mb-3 d-flex justify-content-between align-items-baseline"
+        >
+          <h5
+            class="mb-0 d-flex header"
+          >
+            Sales per day
+            <span>
+              <i
+                class="material-icons ml-2 helpIcon"
+                id="tooltip-revenue-per-day"
+              >
+                info_outline
+              </i>
+            </span>
+          </h5>
+          <button
+            class="csvButton btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons mr-1 csvButtonIcon"
+            >
+              file_download
+            </i>
+            CSV
+          </button>
+        </div>
+        <div>
+          <div
+            class="mb-4"
+          >
+            <div
+              class="legends"
+            >
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="circle mr-2"
+                  style="background: rgb(171, 209, 233);"
+                />
+                Tickets created
+              </span>
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="circle mr-2"
+                  style="background: rgb(255, 168, 217);"
+                />
+                Tickets converted
+              </span>
+            </div>
+          </div>
+          <div>
+            <canvas />
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="mb-3 d-flex justify-content-between align-items-baseline"
+        >
+          <h5
+            class="mb-0 d-flex header"
+          >
+            Sales per agent
+            <span>
+              <i
+                class="material-icons ml-2 helpIcon"
+                id="tooltip-revenue-per-agent"
+              >
+                info_outline
+              </i>
+            </span>
+          </h5>
+          <button
+            class="csvButton btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons mr-1 csvButtonIcon"
+            >
+              file_download
+            </i>
+            CSV
+          </button>
+        </div>
+        <table
+          class="table table table-hover"
+        >
+          <thead>
+            <tr>
+              <th
+                class="string"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  AGENT
+                </span>
+              </th>
+              <th
+                class="number"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  NEW TICKETS ASSIGNED
+                </span>
+              </th>
+              <th
+                class="string"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  TICKETS CONVERTED
+                </span>
+              </th>
+              <th
+                class="percent"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  CONVERSION RATIO
+                </span>
+              </th>
+              <th
+                class="currency"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  SALES
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td
+                class="lineCell string"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  Unassigned
+                </span>
+              </td>
+              <td
+                class="lineCell number"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  4
+                </span>
+              </td>
+              <td
+                class="lineCell string"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  0
+                </span>
+              </td>
+              <td
+                class="lineCell percent"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  0%
+                </span>
+              </td>
+              <td
+                class="lineCell currency"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  $0
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td
+                class="lineCell string"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  Acme Support
+                </span>
+              </td>
+              <td
+                class="lineCell number"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  9
+                </span>
+              </td>
+              <td
+                class="lineCell string"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  0
+                </span>
+              </td>
+              <td
+                class="lineCell percent"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  0%
+                </span>
+              </td>
+              <td
+                class="lineCell currency"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  $0
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="mb-3 d-flex justify-content-between align-items-baseline"
+        >
+          <h5
+            class="mb-0 d-flex header"
+          >
+            Tickets converted
+            <span>
+              <i
+                class="material-icons ml-2 helpIcon"
+                id="tooltip-revenue-per-ticket"
+              >
+                info_outline
+              </i>
+            </span>
+          </h5>
+          <button
+            class="csvButton btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons mr-1 csvButtonIcon"
+            >
+              file_download
+            </i>
+            CSV
+          </button>
+        </div>
+        <table
+          class="table table table-hover"
+        >
+          <thead>
+            <tr>
+              <th
+                class="ticket-link"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  TICKET
+                </span>
+              </th>
+              <th
+                class="currency"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  SALE VALUE
+                </span>
+              </th>
+              <th
+                class="date"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  SALE DATE
+                </span>
+              </th>
+              <th
+                class="date"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  TICKET CREATION DATE
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td
+                class="lineCell ticket-link"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  <a
+                    to="/app/ticket/13198875"
+                  >
+                    New customer message on December 16, 2021 at 1:33 pm
+                  </a>
+                </span>
+              </td>
+              <td
+                class="lineCell currency"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  $197.94
+                </span>
+              </td>
+              <td
+                class="lineCell date"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  <span>
+                    <span
+                      id="datetime-tooltip-"
+                    >
+                      12/16/2021
+                    </span>
+                  </span>
+                </span>
+              </td>
+              <td
+                class="lineCell date"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  <span>
+                    <span
+                      id="datetime-tooltip-"
+                    >
+                      12/16/2021
+                    </span>
+                  </span>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SupportPerformanceRevenue should render the paywall when the current account has no revenue statistics feature 1`] = `
+<div>
+  Paywall for 
+  revenue_statistics
+</div>
+`;
+
+exports[`SupportPerformanceRevenue should render the restricted feature page when where are no store integrations 1`] = `
+<div
+  class="col mt-2"
+>
+  <div
+    class="alert error my-3"
+  >
+    <div
+      class="content"
+    >
+      <span
+        class="label"
+      >
+        Your e-commerce store needs to be connected to Gorgias to use this feature.
+      </span>
+      <div
+        class="customActions"
+      >
+        <a
+          class="actionLink"
+          to="/app/settings/integrations/shopify/new"
+        >
+          Add one here
+        </a>
+      </div>
+    </div>
+  </div>
+  <p>
+    Assess how much sales your support team is influencing. Staff and reward your support team according to sales. Track and increase conversion, using Chat campaigns, for example.
+  </p>
+  <div
+    class="carouselContainer"
+  >
+    <div
+      class="slick-slider slick-initialized"
+    >
+      
+      <div
+        class="slick-list"
+      >
+        <div
+          class="slick-track"
+          style="opacity: 1; transform: translate3d(0px, 0px, 0px);"
+        >
+          <div
+            aria-hidden="false"
+            class="slick-slide slick-active slick-current"
+            data-index="0"
+            style="outline: none; width: 0px;"
+            tabindex="-1"
+          >
+            <div>
+              <div
+                class="carouselContent"
+                style="width: 100%; display: inline-block;"
+                tabindex="-1"
+              >
+                <a
+                  href="/static/private/img/presentationals/revenue-presentation.png"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <img
+                    alt="carousel content"
+                    src="/static/private/img/presentationals/revenue-presentation.png"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+          <div
+            aria-hidden="false"
+            class="slick-slide slick-active slick-cloned"
+            data-index="1"
+            style="width: 0px;"
+            tabindex="-1"
+          >
+            <div>
+              <div
+                class="carouselContent"
+                style="width: 100%; display: inline-block;"
+                tabindex="-1"
+              >
+                <a
+                  href="/static/private/img/presentationals/revenue-presentation.png"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <img
+                    alt="carousel content"
+                    src="/static/private/img/presentationals/revenue-presentation.png"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
+    </div>
+  </div>
+</div>
+`;

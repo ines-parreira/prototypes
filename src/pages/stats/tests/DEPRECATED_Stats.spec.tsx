@@ -6,7 +6,7 @@ import axios, {CancelTokenSource} from 'axios'
 
 import {StatsContainer} from '../DEPRECATED_Stats'
 import {views as statsViewsConfig} from '../../../config/stats'
-import {firstResponseTimeStat} from '../../../fixtures/stats'
+import {firstResponseTime} from '../../../fixtures/stats'
 import client from '../../../models/api/resources'
 
 const mockedCancelRequest = jest.fn()
@@ -45,7 +45,7 @@ describe('<Stats/>', () => {
 
     describe('componentDidMount()', () => {
         it('should fetch stats', (done) => {
-            apiMock.onAny().reply(200, firstResponseTimeStat)
+            apiMock.onAny().reply(200, firstResponseTime)
             shallow(
                 <StatsContainer
                     {...defaultProps}
@@ -96,7 +96,7 @@ describe('<Stats/>', () => {
 
     describe('componentDidUpdate', () => {
         it('should fetch stats when view parameter change', (done) => {
-            apiMock.onAny().reply(200, firstResponseTimeStat)
+            apiMock.onAny().reply(200, firstResponseTime)
             const componentWrapper = shallow(
                 <StatsContainer
                     {...defaultProps}
@@ -122,7 +122,7 @@ describe('<Stats/>', () => {
         })
 
         it('should fetch stats when filters change', (done) => {
-            apiMock.onAny().reply(200, firstResponseTimeStat)
+            apiMock.onAny().reply(200, firstResponseTime)
             const componentWrapper = shallow(
                 <StatsContainer
                     {...defaultProps}
@@ -146,7 +146,7 @@ describe('<Stats/>', () => {
         })
 
         it('should cancel pending fetch when updating', (done) => {
-            apiMock.onAny().reply(200, firstResponseTimeStat)
+            apiMock.onAny().reply(200, firstResponseTime)
             jest.spyOn(axios.CancelToken, 'source').mockImplementation(
                 () =>
                     ({

@@ -1,27 +1,27 @@
-import React, {ComponentProps} from 'react'
-import {fromJS} from 'immutable'
+import React from 'react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 
 import {RootState, StoreDispatch} from '../../../state/types'
-import SupportPerformanceTags from '../SupportPerformanceTags'
-import TagsStatsFilter from '../TagsStatsFilter'
-import {TicketChannel} from '../../../business/types/ticket'
-import {ticketsPerTagStat} from '../../../fixtures/stats'
 import useStatResource from '../useStatResource'
+import {TicketChannel} from '../../../business/types/ticket'
+import {
+    ticketsClosedPerAgentPerDay,
+    ticketsCreatedPerChannel,
+} from '../../../fixtures/stats'
 import {renderWithRouter} from '../../../utils/testing'
+import {TICKETS_CLOSED_PER_AGENT_PER_DAY} from '../../../config/stats'
 import {integrationsState} from '../../../fixtures/integrations'
 import {StatsFilterType} from '../../../state/stats/types'
+import {agents} from '../../../fixtures/agents'
+import {teams} from '../../../fixtures/teams'
+import SupportPerformanceAgents from '../SupportPerformanceAgents'
 
-jest.mock(
-    '../TagsStatsFilter',
-    () =>
-        ({value}: ComponentProps<typeof TagsStatsFilter>) =>
-            <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
-)
 jest.mock('../useStatResource')
+jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const useStatResourceMock = useStatResource as jest.MockedFunction<
@@ -29,12 +29,17 @@ const useStatResourceMock = useStatResource as jest.MockedFunction<
 >
 let dateNowSpy: jest.SpiedFunction<typeof Date.now>
 
-describe('SupportPerformanceTags', () => {
+describe('SupportPerformanceAgents', () => {
     const defaultState = {
         stats: fromJS({
             filters: null,
         }),
-        integrations: fromJS(integrationsState),
+        agents: fromJS({
+            all: agents,
+        }),
+        teams: fromJS({
+            all: teams,
+        }),
     } as RootState
 
     beforeEach(() => {
@@ -53,7 +58,7 @@ describe('SupportPerformanceTags', () => {
         const store = mockStore(defaultState)
         const {container} = render(
             <Provider store={store}>
-                <SupportPerformanceTags />
+                <SupportPerformanceAgents />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -69,18 +74,23 @@ describe('SupportPerformanceTags', () => {
                         end_time: '2021-02-03T23:59:59.999Z',
                     },
                     [StatsFilterType.Channels]: [TicketChannel.Chat],
-                    [StatsFilterType.Tags]: [1],
                     [StatsFilterType.Integrations]: [
                         integrationsState.integrations[0].id,
                     ],
+                    [StatsFilterType.Agents]: [agents[0].id],
                 },
             }),
         })
-        useStatResourceMock.mockReturnValue([ticketsPerTagStat, false])
+        useStatResourceMock.mockImplementation(({resourceName}) => {
+            if (resourceName === TICKETS_CLOSED_PER_AGENT_PER_DAY) {
+                return [ticketsClosedPerAgentPerDay, false]
+            }
+            return [ticketsCreatedPerChannel, false]
+        })
 
         const {container} = renderWithRouter(
             <Provider store={store}>
-                <SupportPerformanceTags />
+                <SupportPerformanceAgents />
             </Provider>
         )
 

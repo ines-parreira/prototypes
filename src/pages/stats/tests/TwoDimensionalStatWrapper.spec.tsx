@@ -7,7 +7,7 @@ import _noop from 'lodash/noop'
 import {fromJS} from 'immutable'
 
 import TwoDimensionalChartWrapper from '../TwoDimensionalStatWrapper'
-import {firstResponseTimeStat} from '../../../fixtures/stats'
+import {firstResponseTime} from '../../../fixtures/stats'
 import {FIRST_RESPONSE_TIME} from '../../../config/stats'
 import {StatsFilterType} from '../../../state/stats/types'
 import {saveFileAsDownloaded} from '../../../utils/file'
@@ -35,7 +35,7 @@ const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 describe('TwoDimensionalStatWrapper', () => {
     const minProps: ComponentProps<typeof TwoDimensionalChartWrapper> = {
-        stat: firstResponseTimeStat,
+        stat: firstResponseTime,
         isFetchingStat: false,
         resourceName: FIRST_RESPONSE_TIME,
         statsFilters: {

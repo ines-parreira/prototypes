@@ -108,7 +108,7 @@ export default function TwoDimensionalChartWrapper({
     }, [statsFilters, cancelDownloadStat])
 
     const immutableStat = useMemo(() => {
-        return fromJS(stat) as Map<any, any>
+        return fromJS(stat) as Map<any, any> | null
     }, [stat])
 
     return (
@@ -161,7 +161,7 @@ export default function TwoDimensionalChartWrapper({
             )}
             {isFetchingStat ? (
                 <Loader minHeight={loaderHeight} />
-            ) : stat ? (
+            ) : immutableStat ? (
                 children(immutableStat)
             ) : null}
         </div>

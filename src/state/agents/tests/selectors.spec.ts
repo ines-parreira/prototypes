@@ -252,4 +252,23 @@ describe('agents selectors', () => {
             fromJS([])
         )
     })
+
+    describe('getLabelledAgentsJS', () => {
+        it('should return labelled agents from the state', () => {
+            expect(selectors.getLabelledAgentsJS(state)).toEqual([
+                {
+                    id: 1,
+                    label: 'Customer #1',
+                },
+                {
+                    id: 2,
+                    label: 'Customer #2',
+                },
+            ])
+        })
+
+        it('should return an empty array when no agents in the state', () => {
+            expect(selectors.getLabelledAgentsJS({} as RootState)).toEqual([])
+        })
+    })
 })

@@ -9,7 +9,7 @@ import {
     RESOLUTION_TIME,
     LATEST_SATISFACTION_SURVEYS,
     REVENUE_OVERVIEW,
-    TICKET_CREATED_PER_HOUR_PER_WEEKDAY,
+    TICKETS_CREATED_PER_HOUR_PER_WEEKDAY,
     CURRENT_DATE,
 } from '../../../../../../config/stats'
 import client from '../../../../../../models/api/resources'
@@ -101,7 +101,7 @@ describe('Stat', () => {
         const {container} = render(
             <StatContainer
                 {...minProps}
-                name={TICKET_CREATED_PER_HOUR_PER_WEEKDAY}
+                name={TICKETS_CREATED_PER_HOUR_PER_WEEKDAY}
             />
         )
         expect(container.firstChild).toMatchSnapshot()
