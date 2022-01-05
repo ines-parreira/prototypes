@@ -1174,3 +1174,129 @@ export const supportVolumePerHour: Stat<TwoDimensionalChart> = {
         },
     },
 }
+
+export const userPerformanceOverview: Stat<TwoDimensionalChart> = {
+    meta: {
+        next_cursor: 'WyJuZXh0IiwgZmFsc2UsICJWaWN0b3IgdGVzdCIsIDM1Mjld',
+        previous_end_datetime: '2021-12-27T00:00:00+01:00',
+        previous_start_datetime: '2021-12-26T00:00:01+01:00',
+        start_datetime: '2021-12-27T00:00:00+01:00',
+        end_datetime: '2021-12-27T23:59:59+01:00',
+        prev_cursor: null,
+    },
+    data: {
+        data: {
+            axes: {
+                x: [
+                    {
+                        name: 'Agent',
+                        type: StatType.User,
+                    },
+                    {
+                        name: 'Agent timezone',
+                        type: StatType.Timezone,
+                    },
+                    {
+                        name: 'Online',
+                        type: StatType.Boolean,
+                    },
+                    {
+                        name: 'Online time',
+                        type: StatType.Duration,
+                    },
+                    {
+                        name: 'First Session',
+                        type: StatType.Date,
+                    },
+                    {
+                        name: 'Last Session',
+                        type: StatType.Date,
+                    },
+                    {
+                        name: 'Tickets closed',
+                        type: StatType.Number,
+                    },
+                    {
+                        name: 'Messages sent',
+                        type: StatType.Number,
+                    },
+                    {
+                        name: 'Open tickets',
+                        type: StatType.Number,
+                    },
+                    {
+                        name: 'Open tickets per channel',
+                        type: StatType.Object,
+                    },
+                ],
+            },
+            lines: [
+                [
+                    {
+                        type: StatType.User,
+                        value: {
+                            name: 'Acme Support',
+                            id: 1,
+                        },
+                    },
+                    {
+                        type: StatType.Timezone,
+                        value: 'Europe/Paris',
+                    },
+                    {
+                        type: StatType.Boolean,
+                        value: true,
+                    },
+                    {
+                        type: StatType.Duration,
+                        value: 27762,
+                    },
+                    {
+                        type: StatType.Date,
+                        value: '2021-12-27T08:26:30.298890+01:00',
+                    },
+                    {
+                        type: StatType.Date,
+                        value: null,
+                    },
+                    {
+                        type: StatType.Number,
+                        value: 0,
+                    },
+                    {
+                        type: StatType.Number,
+                        value: 0,
+                    },
+                    {
+                        type: StatType.Number,
+                        value: 134,
+                    },
+                    {
+                        type: StatType.Object,
+                        value: {
+                            aircall: 0,
+                            api: 0,
+                            chat: 102,
+                            email: 26,
+                            facebook: 1,
+                            'facebook-mention': 0,
+                            'facebook-messenger': 2,
+                            'facebook-recommendations': 0,
+                            'instagram-ad-comment': 0,
+                            'instagram-comment': 0,
+                            'instagram-mention': 0,
+                            'instagram-direct-message': 1,
+                            'internal-note': 0,
+                            phone: 2,
+                            sms: 0,
+                            twitter: 0,
+                            'twitter-direct-message': 0,
+                            'yotpo-review': 0,
+                        },
+                    },
+                ],
+            ],
+        },
+        label: 'Activity of the agents',
+    },
+}

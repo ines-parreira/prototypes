@@ -1,0 +1,761 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LiveAgents should not render the filters nor the stats when stats filters are not defined 1`] = `
+<div
+  class="full-width wrapper"
+>
+  <div
+    class="filtersWrapper"
+  >
+    <div
+      class="page-header pageHeader mb-0"
+    >
+      <h1
+        class="align-items-center"
+      >
+        <span>
+          Live agents
+        </span>
+        <button
+          class="wrapper ml-3 btn btn-secondary"
+          type="button"
+        >
+          <div
+            class="content"
+          >
+            <i
+              class="icon material-icons"
+            >
+              info_outline
+            </i>
+            <span
+              class="label ml-1"
+            >
+              Learn
+            </span>
+          </div>
+        </button>
+      </h1>
+      <div>
+        <div
+          class="d-flex flex-wrap float-right"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    class="statsWrapper"
+  >
+    <div
+      class="statsContainer container-fluid"
+    />
+  </div>
+</div>
+`;
+
+exports[`LiveAgents should render the filters and stats when stats filters are defined 1`] = `
+<div
+  class="full-width wrapper"
+>
+  <div
+    class="filtersWrapper"
+  >
+    <div
+      class="page-header pageHeader mb-0"
+    >
+      <h1
+        class="align-items-center"
+      >
+        <span>
+          Live agents
+        </span>
+        <button
+          class="wrapper ml-3 btn btn-secondary"
+          type="button"
+        >
+          <div
+            class="content"
+          >
+            <i
+              class="icon material-icons"
+            >
+              info_outline
+            </i>
+            <span
+              class="label ml-1"
+            >
+              Learn
+            </span>
+          </div>
+        </button>
+      </h1>
+      <div>
+        <div
+          class="d-flex flex-wrap float-right"
+        >
+          <div
+            class="dropdown"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="mr-2 dropdown-toggle btn btn-secondary"
+              type="button"
+            >
+              <span>
+                1 channel
+              </span>
+            </button>
+            <div
+              aria-hidden="true"
+              class="dropdown dropdown-menu dropdown-menu-right"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-item-input dropdownItemInput dropdown-header"
+                tabindex="-1"
+              >
+                <input
+                  class="form-control"
+                  placeholder="Search channels..."
+                  type="text"
+                  value=""
+                />
+              </h6>
+              <button
+                class="component quickSelectionOption dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  Deselect
+                </span>
+                <div
+                  class="badge badge--unselect"
+                >
+                  1
+                </div>
+              </button>
+              <div
+                class="dropdownDivider dropdown-divider"
+                tabindex="-1"
+              />
+              <div
+                class="content"
+              >
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Aircall
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Api
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    checked=""
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Chat
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Email
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Facebook
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Facebook mention
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Facebook messenger
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Facebook recommendations
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Instagram ad comment
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Instagram comment
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Instagram mention
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Instagram direct message
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Phone
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Sms
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Twitter
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Twitter direct message
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Yotpo review
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="dropdown"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="mr-2 dropdown-toggle btn btn-secondary"
+              type="button"
+            >
+              <span>
+                1 agent
+              </span>
+            </button>
+            <div
+              aria-hidden="true"
+              class="dropdown dropdown-menu dropdown-menu-right"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-item-input dropdownItemInput dropdown-header"
+                tabindex="-1"
+              >
+                <input
+                  class="form-control"
+                  placeholder="Search agents..."
+                  type="text"
+                  value=""
+                />
+              </h6>
+              <button
+                class="component quickSelectionOption dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  Deselect
+                </span>
+                <div
+                  class="badge badge--unselect"
+                >
+                  1
+                </div>
+              </button>
+              <div
+                class="dropdownDivider dropdown-divider"
+                tabindex="-1"
+              />
+              <div
+                class="content"
+              >
+                <h6
+                  class="dropdownHeader dropdown-header"
+                  tabindex="-1"
+                >
+                  Teams
+                </h6>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Foo
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Phone team - +1 205-396-3441
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Test
+                </label>
+                <div
+                  class="dropdownDivider dropdown-divider"
+                  tabindex="-1"
+                />
+                <h6
+                  class="dropdownHeader dropdown-header"
+                  tabindex="-1"
+                >
+                  Users
+                </h6>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    checked=""
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Acme Support
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Bob Smith
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="statsWrapper"
+  >
+    <div
+      class="statsContainer container-fluid"
+    >
+      <div
+        class="currentDate"
+      >
+        <div
+          class="wrapper"
+        >
+          <span
+            class="date"
+          >
+            Today, 
+            February 14th
+          </span>
+          <span
+            class="businessHours"
+          >
+            Business hours 
+            12:00 am - 01:00 am
+             
+            US/Pacific
+          </span>
+        </div>
+      </div>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="mb-3 d-flex justify-content-between align-items-baseline"
+        >
+          <h5
+            class="mb-0 d-flex header"
+          >
+            Activity of the agents
+          </h5>
+        </div>
+        <table
+          class="table table table-hover"
+        >
+          <thead>
+            <tr>
+              <th
+                class="user"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  AGENT
+                </span>
+              </th>
+              <th
+                class="online-time"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  ONLINE TIME
+                  <span
+                    class="axisHelperIcon"
+                  >
+                    <i
+                      class="material-icons ml-2 helpIcon"
+                      id="Online-time-tooltip"
+                    >
+                      info_outline
+                    </i>
+                  </span>
+                </span>
+              </th>
+              <th
+                class="number"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  TICKETS CLOSED
+                  <span
+                    class="axisHelperIcon"
+                  >
+                    <i
+                      class="material-icons ml-2 helpIcon"
+                      id="Tickets-closed-tooltip"
+                    >
+                      info_outline
+                    </i>
+                  </span>
+                </span>
+              </th>
+              <th
+                class="number"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  MESSAGES SENT
+                </span>
+              </th>
+              <th
+                class="ticket-details"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  OPEN TICKETS
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td
+                class="lineCell user"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  <div>
+                    <div
+                      class="userName"
+                    >
+                      Acme Support
+                    </div>
+                  </div>
+                </span>
+              </td>
+              <td
+                class="lineCell online-time"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  <div>
+                    <div
+                      class="statusDot isOnline"
+                      id="Online-time-0-tooltip"
+                    />
+                    <span>
+                      7h 42m 
+                    </span>
+                  </div>
+                </span>
+              </td>
+              <td
+                class="lineCell number"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  0
+                </span>
+              </td>
+              <td
+                class="lineCell number"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  0
+                </span>
+              </td>
+              <td
+                class="lineCell ticket-details"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  <div
+                    class="wrapper"
+                  >
+                    <div
+                      class="openTickets"
+                    >
+                      <a
+                        class="viewLink"
+                        to="[object Object]"
+                      >
+                        134
+                      </a>
+                    </div>
+                    <div
+                      class="separator"
+                    />
+                    <div
+                      class="channelsBreakdown"
+                    >
+                      <div
+                        class="channel"
+                      >
+                        <i
+                          class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                        />
+                        <a
+                          class="viewLink"
+                          to="[object Object]"
+                        >
+                          1
+                        </a>
+                      </div>
+                      <div
+                        class="channel"
+                      >
+                        <i
+                          class="icon d-inline-block icon-custom icon-facebook-messenger channelIcon"
+                        />
+                        <a
+                          class="viewLink"
+                          to="[object Object]"
+                        >
+                          2
+                        </a>
+                      </div>
+                      <div
+                        class="channel"
+                      >
+                        <i
+                          class="icon d-inline-block material-icons channelIcon"
+                        >
+                          phone
+                        </i>
+                        <a
+                          class="viewLink"
+                          to="[object Object]"
+                        >
+                          2
+                        </a>
+                      </div>
+                      <div
+                        class="channel"
+                      >
+                        <i
+                          class="icon d-inline-block material-icons channelIcon"
+                        >
+                          forum
+                        </i>
+                        <a
+                          class="viewLink"
+                          to="[object Object]"
+                        >
+                          102
+                        </a>
+                      </div>
+                      <div
+                        class="channel"
+                      >
+                        <i
+                          class="icon d-inline-block material-icons channelIcon"
+                        >
+                          email
+                        </i>
+                        <a
+                          class="viewLink"
+                          to="[object Object]"
+                        >
+                          26
+                        </a>
+                      </div>
+                      <div
+                        class="channel"
+                      >
+                        <i
+                          class="icon d-inline-block icon-custom icon-instagram-dm channelIcon"
+                        />
+                        <a
+                          class="viewLink"
+                          to="[object Object]"
+                        >
+                          1
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`LiveAgents should render the paywall when the current account has no user live statistics feature 1`] = `
+<div>
+  Paywall for 
+  users_live_statistics
+</div>
+`;

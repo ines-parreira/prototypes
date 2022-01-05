@@ -11,7 +11,11 @@ export enum StatType {
     SatisfactionSurveyLink = 'satisfaction-survey-link',
     Currency = 'currency',
     TicketLink = 'ticket-link',
+    OnlineTime = 'online-time',
+    TicketDetails = 'ticket-details',
+    Timezone = 'timezone',
     Boolean = 'bool',
+    Object = 'object',
 }
 
 export type Stat<T = StatData> = {
@@ -24,6 +28,8 @@ export type StatMeta = {
     previous_end_datetime?: string
     previous_start_datetime?: string
     start_datetime?: string
+    next_cursor?: string | null
+    prev_cursor?: string | null
 }
 
 export type StatData =
@@ -46,13 +52,17 @@ export type OneDimensionalUnionChart = {
     data: OneDimensionalChart['data'][]
 }
 
-export type TwoDimensionalChart = {
+export type TwoDimensionalChart<
+    X = AnyStatAxisValue,
+    L = AnyStatLine,
+    Y = AnyStatAxisValue
+> = {
     data: {
         axes: {
-            x: StatAxisValue[]
-            y?: StatAxisValue[]
+            x: X[]
+            y?: Y[]
         }
-        lines: StatLine[]
+        lines: L[]
     }
     label: string
     legend?: {
@@ -63,26 +73,32 @@ export type TwoDimensionalChart = {
     }
 }
 
-export type StatAxisValue =
-    | number
-    | {
-          name: string
-          type: Exclude<StatType, StatType.Number>
-      }
-    | {
-          name: string
-          type: StatType.Number
-          value?: number
-      }
+export type TextStatAxisValue = {
+    name: string
+    type: Exclude<StatType, StatType.Number>
+}
 
-export type StatLine =
-    | {
-          data: number[]
-          name: string
-      }
-    | StatCell[]
+export type NumericStatAxisValue = {
+    name: string
+    type: StatType.Number | StatType.OnlineTime | StatType.TicketDetails
+    value?: number
+}
 
-export type NumericStateCell = {
+export type AnyStatAxisValue = number | TextStatAxisValue | NumericStatAxisValue
+
+export type DataStatLine = {
+    data: number[]
+    name: string
+}
+
+export type AnyStatLine = DataStatLine | StatCell[]
+
+export type TextStatCell = {
+    type: StatType.String | StatType.Timezone
+    value: string
+}
+
+export type NumericStatCell = {
     type:
         | StatType.Number
         | StatType.Percent
@@ -91,13 +107,28 @@ export type NumericStateCell = {
     value: number
 }
 
+export type TicketDetailStatCell = {
+    type: StatType.TicketDetails
+    value: number
+    details: number
+}
+
+export type OnlineTimeDetailStatCell = {
+    type: StatType.OnlineTime
+    value: number
+    extra: Record<string, unknown>
+}
+
 export type StatCell =
-    | NumericStateCell
+    | TextStatCell
+    | NumericStatCell
+    | TicketDetailStatCell
+    | OnlineTimeDetailStatCell
     | {
-          type: StatType.String
-          value: string
+          type: StatType.User
+          value: {name: string; id: number}
       }
-    | {type: StatType.Date; value: string}
+    | {type: StatType.Date; value: string | null}
     | {
           type: StatType.SatisfactionSurveyLink
           ticket_id: number
@@ -127,3 +158,4 @@ export type StatCell =
               id: number
           }
       }
+    | {type: StatType.Object; value: Record<string, unknown>}
