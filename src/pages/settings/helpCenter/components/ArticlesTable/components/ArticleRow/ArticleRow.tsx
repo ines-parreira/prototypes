@@ -1,8 +1,10 @@
 import React, {useMemo} from 'react'
 import classNames from 'classnames'
 import _keyBy from 'lodash/keyBy'
+import Tooltip from 'pages/common/components/Tooltip'
 
 import {useLimitations} from '../../../../../../../hooks/helpCenter/useLimitations'
+import {useRatingScore} from '../../../../hooks/useRatingScore'
 import {Article} from '../../../../../../../models/helpCenter/types'
 import {LanguageList} from '../../../../../../common/components/LanguageBulletList'
 import BodyCell from '../../../../../../common/components/table/cells/BodyCell'
@@ -11,6 +13,10 @@ import {ARTICLE_ROW_ACTIONS} from '../../../../constants'
 import {useSupportedLocales} from '../../../../providers/SupportedLocales'
 import {Callbacks, useReorderDnD} from '../../../../hooks/useReorderDnD'
 import {TableActions} from '../../../TableActions'
+
+import up from '../../../../../../../../img/icons/rating-up-white.svg'
+import down from '../../../../../../../../img/icons/rating-down-white.svg'
+import star from '../../../../../../../../img/icons/rating-star.svg'
 
 import css from './ArticleRow.less'
 
@@ -66,6 +72,8 @@ export const ArticleRow = ({
         return [localesByCode[article.translation.locale]]
     }, [article, localesByCode])
 
+    const ratingScore = useRatingScore(article.rating)
+
     const handleOnActionsClick = (ev: React.MouseEvent, name: string) => {
         return onClickSettings(ev, name, article)
     }
@@ -108,6 +116,42 @@ export const ArticleRow = ({
                         }
                         languageList={languageList}
                     />
+                )}
+            </BodyCell>
+            <BodyCell width={130} className={css['nested-cell']}>
+                <div className={css.rating} id={`rating-${article.id}`}>
+                    <img alt="star" src={star} />
+                    <div className={css['rating-text']}>{ratingScore}%</div>
+                </div>
+                {article.rating && (
+                    <Tooltip
+                        delay={100}
+                        target={`rating-${article.id}`}
+                        placement="top"
+                        popperClassName={css.tooltip}
+                        innerClassName={css['tooltip-inner']}
+                        arrowClassName={css['tooltip-arrow']}
+                    >
+                        <div className={css.rating}>
+                            <div>
+                                <img
+                                    alt="up"
+                                    className={css['rating-icon']}
+                                    src={up}
+                                />
+                                {article.rating.up}
+                            </div>
+                            <div className={css['rating-separator']}>|</div>
+                            <div>
+                                <img
+                                    alt="down"
+                                    className={css['rating-icon']}
+                                    src={down}
+                                />
+                                {article.rating.down}
+                            </div>
+                        </div>
+                    </Tooltip>
                 )}
             </BodyCell>
             <BodyCell width={120} innerClassName={css.actions}>

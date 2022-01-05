@@ -338,6 +338,14 @@ describe('useArticlesActions()', () => {
                         },
                         created_datetime: '',
                         updated_datetime: '',
+                        rating: {
+                            up: 0,
+                            down: 0,
+                        },
+                    },
+                    rating: {
+                        up: 0,
+                        down: 0,
                     },
                 },
                 null

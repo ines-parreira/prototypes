@@ -1,13 +1,19 @@
 import React, {FormEvent, useState} from 'react'
 import {Button} from 'reactstrap'
 
+import {Rating} from 'models/helpCenter/types'
 import Tooltip from '../../../../common/components/Tooltip'
 import {articleRequiredFields} from '../../utils/helpCenter.utils'
 import {ConfirmationModal} from '../ConfirmationModal'
+import {useRatingScore} from '../../hooks/useRatingScore'
 
+import star from '../../../../../../img/icons/rating-star.svg'
+import up from '../../../../../../img/icons/rating-up.svg'
+import down from '../../../../../../img/icons/rating-down.svg'
 import css from './HelpCenterEditModalFooter.less'
 
 type Props = {
+    rating?: Rating
     canSave: boolean
     canDelete: boolean
     requiredFields: typeof articleRequiredFields
@@ -18,6 +24,7 @@ type Props = {
 }
 
 export const HelpCenterEditModalFooter: React.FC<Props> = ({
+    rating,
     canSave,
     canDelete,
     requiredFields,
@@ -37,6 +44,8 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
         onDelete()
         setPendingDeleteArticle(false)
     }
+
+    const ratingScore = useRatingScore(rating)
 
     return (
         <footer className={css.footer}>
@@ -80,6 +89,34 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                     </Button>
                 )}
             </div>
+
+            {rating && (
+                <div className={css.rating}>
+                    <div className={css['rating-text']}>Rating:</div>
+                    <img className={css['rating-star']} alt="star" src={star} />
+                    <div>{ratingScore}%</div>
+                    <div className={css['rating-separator']}>|</div>
+                    <div className={css['rating-thumbs']}>
+                        <div>
+                            <img
+                                alt="up"
+                                className={css['rating-icon']}
+                                src={up}
+                            />
+                            {rating.up}
+                        </div>
+                        <div>
+                            <img
+                                alt="down"
+                                className={css['rating-icon']}
+                                src={down}
+                            />
+                            {rating.down}
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {pendingDeleteArticle && (
                 <ConfirmationModal
                     isOpen={!!pendingDeleteArticle}

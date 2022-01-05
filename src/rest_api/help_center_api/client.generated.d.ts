@@ -96,14 +96,39 @@ declare namespace Components {
       content: string;
       slug: string;
     }
+    export interface ArticleTranslationRatingEntity {
+      created_datetime: string; // date-time
+      updated_datetime: string; // date-time
+      deleted_datetime?: string | null; // date-time
+      context: {
+      };
+      id: number;
+      rating: "1" | "-1";
+    }
     export interface ArticleTranslationSeoMeta {
       title: string | null;
       description: string | null;
     }
+    export interface ArticleTranslationWithRating {
+      created_datetime: string; // date-time
+      updated_datetime: string; // date-time
+      deleted_datetime?: string | null; // date-time
+      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      article_id: number;
+      seo_meta: {
+        title: string | null;
+        description: string | null;
+      };
+      rating: Rating;
+      title: string;
+      excerpt: string;
+      content: string;
+      slug: string;
+    }
     export interface ArticleTranslationsListPageDto {
       meta: PageMetaDto;
       object: "list";
-      data: ArticleTranslationEntity[];
+      data: ArticleTranslationWithRating[];
     }
     export interface ArticleWithLocalTranslation {
       created_datetime: string; // date-time
@@ -115,10 +140,49 @@ declare namespace Components {
       translation: LocalArticleTranslation;
       id: number;
     }
+    export interface ArticleWithLocalTranslationAndRating {
+      created_datetime: string; // date-time
+      updated_datetime: string; // date-time
+      deleted_datetime?: string | null; // date-time
+      category_id?: number | null;
+      help_center_id: number;
+      available_locales: ("en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE")[];
+      rating: {
+        up: number;
+        down: number;
+      };
+      translation: {
+        created_datetime: string; // date-time
+        updated_datetime: string; // date-time
+        deleted_datetime?: string | null; // date-time
+        locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+        article_id: number;
+        seo_meta: {
+          title: string | null;
+          description: string | null;
+        };
+        /**
+         * Gives details on how the translation fallback was chosen:
+         * - `undefined`: the translation is the requested one
+         * - `default`: the translation is in help center's default locale
+         * - `available`: the translation corresponds to the first available one
+         */
+        locale_fallback?: "default" | "available";
+        rating: {
+          up: number;
+          down: number;
+        };
+        title: string;
+        excerpt: string;
+        content: string;
+        slug: string;
+      };
+      id: number;
+    }
     export interface ArticlesListPageDto {
       meta: PageMetaDto;
       object: "list";
-      data: ArticleWithLocalTranslation[];
+      data: ArticleWithLocalTranslationAndRating[];
     }
     export interface CategoriesListPageDto {
       meta: PageMetaDto;
@@ -230,26 +294,12 @@ declare namespace Components {
       phone_number: string;
     }
     export interface CreateArticleDto {
-      category_id?: number | null;
       /**
        * A translation for the article.
        * 
        * When creating an article, a translation should be provided.
        */
       translation: {
-        /**
-         * The SEO meta attributes of the article in the `locale`'s translation.
-         */
-        seo_meta: {
-          /**
-           * The content of the `<title />` HTML tag for the article translation.
-           */
-          title: string | null;
-          /**
-           * The content of the `<meta name="description">` HTML tag for the article translation.
-           */
-          description: string | null;
-        };
         /**
          * The locale of the translation.
          * 
@@ -286,22 +336,23 @@ declare namespace Components {
          * cancel-an-order
          */
         slug: string;
+        /**
+         * The SEO meta attributes of the article in the `locale`'s translation.
+         */
+        seo_meta: {
+          /**
+           * The content of the `<title />` HTML tag for the article translation.
+           */
+          title: string | null;
+          /**
+           * The content of the `<meta name="description">` HTML tag for the article translation.
+           */
+          description: string | null;
+        };
       };
+      category_id?: number | null;
     }
     export interface CreateArticleTranslationDto {
-      /**
-       * The SEO meta attributes of the article in the `locale`'s translation.
-       */
-      seo_meta: {
-        /**
-         * The content of the `<title />` HTML tag for the article translation.
-         */
-        title: string | null;
-        /**
-         * The content of the `<meta name="description">` HTML tag for the article translation.
-         */
-        description: string | null;
-      };
       /**
        * The locale of the translation.
        * 
@@ -338,6 +389,29 @@ declare namespace Components {
        * cancel-an-order
        */
       slug: string;
+      /**
+       * The SEO meta attributes of the article in the `locale`'s translation.
+       */
+      seo_meta: {
+        /**
+         * The content of the `<title />` HTML tag for the article translation.
+         */
+        title: string | null;
+        /**
+         * The content of the `<meta name="description">` HTML tag for the article translation.
+         */
+        description: string | null;
+      };
+    }
+    export interface CreateArticleTranslationRatingDto {
+      /**
+       * The rating of the article translation.
+       * example:
+       * -1
+       */
+      rating: "1" | "-1";
+      context: {
+      };
     }
     export interface CreateArticleTranslationSeoMetaDto {
       /**
@@ -356,19 +430,6 @@ declare namespace Components {
        * When creating a category, a translation should be provided.
        */
       translation: {
-        /**
-         * The SEO meta attributes of the category in the `locale`'s translation.
-         */
-        seo_meta: {
-          /**
-           * The content of the `<title />` HTML tag for the category translation.
-           */
-          title: string | null;
-          /**
-           * The content of the `<meta name="description">` HTML tag for the category translation.
-           */
-          description: string | null;
-        };
         /**
          * The locale of the translation.
          * 
@@ -397,22 +458,22 @@ declare namespace Components {
          * orders
          */
         slug: string;
+        /**
+         * The SEO meta attributes of the category in the `locale`'s translation.
+         */
+        seo_meta: {
+          /**
+           * The content of the `<title />` HTML tag for the category translation.
+           */
+          title: string | null;
+          /**
+           * The content of the `<meta name="description">` HTML tag for the category translation.
+           */
+          description: string | null;
+        };
       };
     }
     export interface CreateCategoryTranslationDto {
-      /**
-       * The SEO meta attributes of the category in the `locale`'s translation.
-       */
-      seo_meta: {
-        /**
-         * The content of the `<title />` HTML tag for the category translation.
-         */
-        title: string | null;
-        /**
-         * The content of the `<meta name="description">` HTML tag for the category translation.
-         */
-        description: string | null;
-      };
       /**
        * The locale of the translation.
        * 
@@ -441,6 +502,19 @@ declare namespace Components {
        * orders
        */
       slug: string;
+      /**
+       * The SEO meta attributes of the category in the `locale`'s translation.
+       */
+      seo_meta: {
+        /**
+         * The content of the `<title />` HTML tag for the category translation.
+         */
+        title: string | null;
+        /**
+         * The content of the `<meta name="description">` HTML tag for the category translation.
+         */
+        description: string | null;
+      };
     }
     export interface CreateCategoryTranslationSeoMetaDto {
       /**
@@ -456,6 +530,25 @@ declare namespace Components {
       hostname: string;
     }
     export interface CreateHelpCenterDto {
+      /**
+       * example:
+       * My Help Center
+       */
+      name: string;
+      /**
+       * A valid subdomain for the Help center.
+       * 
+       * Should be:
+       * - length no greater than 63
+       * - must begin and end with an alpha-numeric
+       * - may contain hyphens (dashes)
+       * - may not begin or end with a hyphen
+       * 
+       * If not provided, a subdomain will be generated.
+       * example:
+       * mysubdomain
+       */
+      subdomain?: string;
       default_locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
       /**
        * Should be a valid URL.
@@ -484,27 +577,16 @@ declare namespace Components {
       } | null;
       shop_name?: string | null;
       self_service_enabled?: boolean;
-      /**
-       * example:
-       * My Help Center
-       */
-      name: string;
-      /**
-       * A valid subdomain for the Help center.
-       * 
-       * Should be:
-       * - length no greater than 63
-       * - must begin and end with an alpha-numeric
-       * - may contain hyphens (dashes)
-       * - may not begin or end with a hyphen
-       * 
-       * If not provided, a subdomain will be generated.
-       * example:
-       * mysubdomain
-       */
-      subdomain?: string;
     }
     export interface CreateHelpCenterTranslationDto {
+      /**
+       * The locale of the translation.
+       * 
+       * It should be in help center's supported locales.
+       * example:
+       * fr-FR
+       */
+      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
       /**
        * The SEO meta attributes of the help center in the `locale`'s translation.
        */
@@ -519,14 +601,6 @@ declare namespace Components {
         description: string | null;
       };
       chat_application_id?: number | null;
-      /**
-       * The locale of the translation.
-       * 
-       * It should be in help center's supported locales.
-       * example:
-       * fr-FR
-       */
-      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
     }
     export interface CreateHelpCenterTranslationSeoMetaDto {
       /**
@@ -717,6 +791,32 @@ declare namespace Components {
       content: string;
       slug: string;
     }
+    export interface LocalArticleTranslationAndRating {
+      created_datetime: string; // date-time
+      updated_datetime: string; // date-time
+      deleted_datetime?: string | null; // date-time
+      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      article_id: number;
+      seo_meta: {
+        title: string | null;
+        description: string | null;
+      };
+      /**
+       * Gives details on how the translation fallback was chosen:
+       * - `undefined`: the translation is the requested one
+       * - `default`: the translation is in help center's default locale
+       * - `available`: the translation corresponds to the first available one
+       */
+      locale_fallback?: "default" | "available";
+      rating: {
+        up: number;
+        down: number;
+      };
+      title: string;
+      excerpt: string;
+      content: string;
+      slug: string;
+    }
     export interface LocalCategoryTranslation {
       created_datetime: string; // date-time
       updated_datetime: string; // date-time
@@ -864,6 +964,10 @@ declare namespace Components {
       status: "SUCCESS";
       num_imported_csv_rows: number;
     }
+    export interface Rating {
+      up: number;
+      down: number;
+    }
     export interface RedirectEntity {
       created_datetime: string; // date-time
       updated_datetime: string; // date-time
@@ -877,19 +981,6 @@ declare namespace Components {
       category_id?: number | null;
     }
     export interface UpdateArticleTranslationDto {
-      /**
-       * The SEO meta attributes of the article in the `locale`'s translation.
-       */
-      seo_meta?: {
-        /**
-         * The content of the `<title />` HTML tag for the article translation.
-         */
-        title: string | null;
-        /**
-         * The content of the `<meta name="description">` HTML tag for the article translation.
-         */
-        description: string | null;
-      };
       /**
        * The title of the article in the `locale`'s translation.
        * example:
@@ -918,21 +1009,31 @@ declare namespace Components {
        * cancel-an-order
        */
       slug?: string;
-    }
-    export interface UpdateCategoryTranslationDto {
       /**
-       * The SEO meta attributes of the category in the `locale`'s translation.
+       * The SEO meta attributes of the article in the `locale`'s translation.
        */
       seo_meta?: {
         /**
-         * The content of the `<title />` HTML tag for the category translation.
+         * The content of the `<title />` HTML tag for the article translation.
          */
         title: string | null;
         /**
-         * The content of the `<meta name="description">` HTML tag for the category translation.
+         * The content of the `<meta name="description">` HTML tag for the article translation.
          */
         description: string | null;
       };
+    }
+    export interface UpdateArticleTranslationRatingDto {
+      /**
+       * The rating of the article translation.
+       * example:
+       * -1
+       */
+      rating: "1" | "-1";
+      context: {
+      };
+    }
+    export interface UpdateCategoryTranslationDto {
       /**
        * The title of the category in the `locale`'s translation.
        * example:
@@ -953,8 +1054,40 @@ declare namespace Components {
        * orders
        */
       slug?: string;
+      /**
+       * The SEO meta attributes of the category in the `locale`'s translation.
+       */
+      seo_meta?: {
+        /**
+         * The content of the `<title />` HTML tag for the category translation.
+         */
+        title: string | null;
+        /**
+         * The content of the `<meta name="description">` HTML tag for the category translation.
+         */
+        description: string | null;
+      };
     }
     export interface UpdateHelpCenterDto {
+      /**
+       * example:
+       * My Help Center
+       */
+      name?: string;
+      /**
+       * A valid subdomain for the Help center.
+       * 
+       * Should be:
+       * - length no greater than 63
+       * - must begin and end with an alpha-numeric
+       * - may contain hyphens (dashes)
+       * - may not begin or end with a hyphen
+       * 
+       * If not provided, a subdomain will be generated.
+       * example:
+       * mysubdomain
+       */
+      subdomain?: string;
       default_locale?: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
       /**
        * Should be a valid URL.
@@ -995,25 +1128,6 @@ declare namespace Components {
        * false
        */
       deactivated?: boolean;
-      /**
-       * example:
-       * My Help Center
-       */
-      name?: string;
-      /**
-       * A valid subdomain for the Help center.
-       * 
-       * Should be:
-       * - length no greater than 63
-       * - must begin and end with an alpha-numeric
-       * - may contain hyphens (dashes)
-       * - may not begin or end with a hyphen
-       * 
-       * If not provided, a subdomain will be generated.
-       * example:
-       * mysubdomain
-       */
-      subdomain?: string;
     }
     export interface UpdateHelpCenterTranslationDto {
       /**
@@ -1131,6 +1245,22 @@ declare namespace Paths {
       export type $201 = Components.Schemas.ArticleTranslationEntity;
     }
   }
+  namespace CreateArticleTranslationRating {
+    namespace Parameters {
+      export type ArticleId = number;
+      export type HelpCenterId = number;
+      export type Locale = string;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+      article_id: Parameters.ArticleId;
+      locale: Parameters.Locale;
+    }
+    export type RequestBody = Components.Schemas.CreateArticleTranslationRatingDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.ArticleTranslationRatingEntity;
+    }
+  }
   namespace CreateCategory {
     namespace Parameters {
       export type HelpCenterId = number;
@@ -1245,6 +1375,16 @@ declare namespace Paths {
       help_center_id: Parameters.HelpCenterId;
       article_id: Parameters.ArticleId;
       locale: Parameters.Locale;
+    }
+  }
+  namespace DeleteArticleTranslationRating {
+    namespace Parameters {
+      export type HelpCenterId = number;
+      export type RatingId = number;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+      ratingId: Parameters.RatingId;
     }
   }
   namespace DeleteCategory {
@@ -1800,6 +1940,24 @@ declare namespace Paths {
       export type $200 = Components.Schemas.ArticleTranslationEntity;
     }
   }
+  namespace UpdateArticleTranslationRating {
+    namespace Parameters {
+      export type ArticleId = number;
+      export type HelpCenterId = number;
+      export type Locale = string;
+      export type RatingId = number;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+      article_id: Parameters.ArticleId;
+      locale: Parameters.Locale;
+      ratingId: Parameters.RatingId;
+    }
+    export type RequestBody = Components.Schemas.UpdateArticleTranslationRatingDto;
+    namespace Responses {
+      export type $200 = Components.Schemas.ArticleTranslationRatingEntity;
+    }
+  }
   namespace UpdateCategoryTranslation {
     namespace Parameters {
       export type CategoryId = number;
@@ -2292,6 +2450,30 @@ export interface OperationMethods {
    */
   'deleteArticleTranslation'(
     parameters?: Parameters<Paths.DeleteArticleTranslation.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * createArticleTranslationRating - Create an article translation rating
+   */
+  'createArticleTranslationRating'(
+    parameters?: Parameters<Paths.CreateArticleTranslationRating.PathParameters> | null,
+    data?: Paths.CreateArticleTranslationRating.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.CreateArticleTranslationRating.Responses.$201>
+  /**
+   * updateArticleTranslationRating - Update an article translation rating
+   */
+  'updateArticleTranslationRating'(
+    parameters?: Parameters<Paths.UpdateArticleTranslationRating.PathParameters> | null,
+    data?: Paths.UpdateArticleTranslationRating.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.UpdateArticleTranslationRating.Responses.$200>
+  /**
+   * deleteArticleTranslationRating - Removes an article translation rating
+   */
+  'deleteArticleTranslationRating'(
+    parameters?: Parameters<Paths.DeleteArticleTranslationRating.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
@@ -2876,6 +3058,34 @@ export interface PathsDictionary {
      */
     'delete'(
       parameters?: Parameters<Paths.DeleteArticleTranslation.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/ratings']: {
+    /**
+     * createArticleTranslationRating - Create an article translation rating
+     */
+    'post'(
+      parameters?: Parameters<Paths.CreateArticleTranslationRating.PathParameters> | null,
+      data?: Paths.CreateArticleTranslationRating.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.CreateArticleTranslationRating.Responses.$201>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/ratings/{ratingId}']: {
+    /**
+     * updateArticleTranslationRating - Update an article translation rating
+     */
+    'put'(
+      parameters?: Parameters<Paths.UpdateArticleTranslationRating.PathParameters> | null,
+      data?: Paths.UpdateArticleTranslationRating.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.UpdateArticleTranslationRating.Responses.$200>
+    /**
+     * deleteArticleTranslationRating - Removes an article translation rating
+     */
+    'delete'(
+      parameters?: Parameters<Paths.DeleteArticleTranslationRating.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<any>

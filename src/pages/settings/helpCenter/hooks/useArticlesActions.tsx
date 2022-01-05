@@ -239,9 +239,12 @@ export const useArticlesActions = () => {
                         article.translation.locale
                     )
 
-                updatedArticle.translation = localeIsAvailable
-                    ? await this.updateArticleTranslation(updatedArticle)
-                    : await this.createArticleTranslation(updatedArticle)
+                updatedArticle.translation = {
+                    ...(localeIsAvailable
+                        ? await this.updateArticleTranslation(updatedArticle)
+                        : await this.createArticleTranslation(updatedArticle)),
+                    rating: article.translation.rating,
+                }
 
                 if (updatedArticle.translation.locale !== viewLanguage) {
                     const {

@@ -10,6 +10,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: null,
+            rating: {
+                up: 0,
+                down: 0,
+            },
             translation: {
                 article_id: 1,
                 locale: 'en-US',
@@ -24,6 +28,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                 created_datetime: '2021-05-17T18:21:42.022Z',
                 updated_datetime: '2021-05-17T18:21:42.022Z',
                 deleted_datetime: null,
+                rating: {
+                    up: 0,
+                    down: 0,
+                },
             },
         },
         {
@@ -34,6 +42,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: null,
+            rating: {
+                up: 0,
+                down: 0,
+            },
             translation: {
                 article_id: 2,
                 locale: 'en-US',
@@ -48,6 +60,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                 created_datetime: '2021-05-17T18:21:42.022Z',
                 updated_datetime: '2021-05-17T18:21:42.022Z',
                 deleted_datetime: null,
+                rating: {
+                    up: 0,
+                    down: 0,
+                },
             },
         },
         {
@@ -58,6 +74,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: null,
+            rating: {
+                up: 0,
+                down: 0,
+            },
             translation: {
                 article_id: 3,
                 locale: 'en-US',
@@ -72,6 +92,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                 created_datetime: '2021-05-17T18:21:42.022Z',
                 updated_datetime: '2021-05-17T18:21:42.022Z',
                 deleted_datetime: null,
+                rating: {
+                    up: 0,
+                    down: 0,
+                },
             },
         },
         {
@@ -82,6 +106,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: null,
+            rating: {
+                up: 0,
+                down: 0,
+            },
             translation: {
                 article_id: 4,
                 locale: 'en-US',
@@ -96,6 +124,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                 created_datetime: '2021-05-17T18:21:42.022Z',
                 updated_datetime: '2021-05-17T18:21:42.022Z',
                 deleted_datetime: null,
+                rating: {
+                    up: 0,
+                    down: 0,
+                },
             },
         },
         {
@@ -106,6 +138,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: null,
+            rating: {
+                up: 0,
+                down: 0,
+            },
             translation: {
                 article_id: 5,
                 locale: 'en-US',
@@ -120,6 +156,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                 created_datetime: '2021-05-17T18:21:42.022Z',
                 updated_datetime: '2021-05-17T18:21:42.022Z',
                 deleted_datetime: null,
+                rating: {
+                    up: 0,
+                    down: 0,
+                },
             },
         },
         {
@@ -130,6 +170,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: null,
+            rating: {
+                up: 0,
+                down: 0,
+            },
             translation: {
                 article_id: 10,
                 locale: 'en-US',
@@ -144,6 +188,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                 created_datetime: '2021-05-17T18:21:42.022Z',
                 updated_datetime: '2021-05-17T18:21:42.022Z',
                 deleted_datetime: null,
+                rating: {
+                    up: 0,
+                    down: 0,
+                },
             },
         },
         {
@@ -154,6 +202,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: null,
+            rating: {
+                up: 0,
+                down: 0,
+            },
             translation: {
                 article_id: 11,
                 locale: 'en-US',
@@ -168,6 +220,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                 created_datetime: '2021-05-17T18:21:42.022Z',
                 updated_datetime: '2021-05-17T18:21:42.022Z',
                 deleted_datetime: null,
+                rating: {
+                    up: 0,
+                    down: 0,
+                },
             },
         },
         {
@@ -178,6 +234,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: null,
+            rating: {
+                up: 0,
+                down: 0,
+            },
             translation: {
                 article_id: 12,
                 locale: 'en-US',
@@ -192,6 +252,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                 created_datetime: '2021-05-17T18:21:42.022Z',
                 updated_datetime: '2021-05-17T18:21:42.022Z',
                 deleted_datetime: null,
+                rating: {
+                    up: 0,
+                    down: 0,
+                },
             },
         },
         {
@@ -202,6 +266,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: null,
+            rating: {
+                up: 0,
+                down: 0,
+            },
             translation: {
                 article_id: 13,
                 locale: 'en-US',
@@ -216,6 +284,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                 created_datetime: '2021-05-17T18:21:42.022Z',
                 updated_datetime: '2021-05-17T18:21:42.022Z',
                 deleted_datetime: null,
+                rating: {
+                    up: 0,
+                    down: 0,
+                },
             },
         },
         {
@@ -226,6 +298,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: null,
+            rating: {
+                up: 0,
+                down: 0,
+            },
             translation: {
                 article_id: 14,
                 locale: 'en-US',
@@ -240,6 +316,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                 created_datetime: '2021-05-17T18:21:42.022Z',
                 updated_datetime: '2021-05-17T18:21:42.022Z',
                 deleted_datetime: null,
+                rating: {
+                    up: 0,
+                    down: 0,
+                },
             },
         },
         {
@@ -250,6 +330,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: null,
+            rating: {
+                up: 0,
+                down: 0,
+            },
             translation: {
                 article_id: 15,
                 locale: 'en-US',
@@ -264,6 +348,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                 created_datetime: '2021-05-17T18:21:42.022Z',
                 updated_datetime: '2021-05-17T18:21:42.022Z',
                 deleted_datetime: null,
+                rating: {
+                    up: 0,
+                    down: 0,
+                },
             },
         },
         {
@@ -274,6 +362,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: null,
+            rating: {
+                up: 0,
+                down: 0,
+            },
             translation: {
                 article_id: 16,
                 locale: 'en-US',
@@ -288,6 +380,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                 created_datetime: '2021-05-17T18:21:42.022Z',
                 updated_datetime: '2021-05-17T18:21:42.022Z',
                 deleted_datetime: null,
+                rating: {
+                    up: 0,
+                    down: 0,
+                },
             },
         },
         {
@@ -298,6 +394,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: null,
+            rating: {
+                up: 0,
+                down: 0,
+            },
             translation: {
                 article_id: 17,
                 locale: 'en-US',
@@ -312,6 +412,10 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                 created_datetime: '2021-05-17T18:21:42.022Z',
                 updated_datetime: '2021-05-17T18:21:42.022Z',
                 deleted_datetime: null,
+                rating: {
+                    up: 0,
+                    down: 0,
+                },
             },
         },
     ],
@@ -334,6 +438,10 @@ export const getSingleArticleEnglish: Article = {
     created_datetime: '2021-05-17T18:21:42.022Z',
     updated_datetime: '2021-05-17T18:21:42.022Z',
     deleted_datetime: null,
+    rating: {
+        up: 0,
+        down: 0,
+    },
     translation: {
         article_id: 1,
         locale: 'en-US',
@@ -348,5 +456,9 @@ export const getSingleArticleEnglish: Article = {
         created_datetime: '2021-05-17T18:21:42.022Z',
         updated_datetime: '2021-05-17T18:21:42.022Z',
         deleted_datetime: null,
+        rating: {
+            up: 0,
+            down: 0,
+        },
     },
 }

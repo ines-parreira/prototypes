@@ -9,6 +9,10 @@
         padding: 16px;
     }
 
+    .dropdownMenu {
+        margin-bottom: 7px;
+    }
+
     .buttonsWrapper {
         display: flex;
         align-items: center;
@@ -32,5 +36,28 @@
 
     .submitButton:disabled {
         pointer-events: none;
+    }
+    .rating {
+        display: flex;
+        align-items: center;
+        .rating-text {
+            margin-right: 10px;
+        }
+        .rating-separator {
+            margin: 0 8px;
+        }
+        .rating-star {
+            margin-right: 5px;
+        }
+        .rating-thumbs {
+            > div {
+                margin-right: 10px;
+            }
+            display: flex;
+            align-items: center;
+            .rating-icon {
+                margin-right: 5px;
+            }
+        }
     }
 }

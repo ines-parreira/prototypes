@@ -133,6 +133,11 @@ const HelpCenterArticleModalAdvancedViewContent = ({
                 domain={helpCenterDomain}
             />
             <HelpCenterEditModalFooter
+                rating={
+                    isExistingArticle(selectedArticle)
+                        ? selectedArticle.translation.rating
+                        : undefined
+                }
                 counters={counters}
                 canSave={canSaveArticle}
                 requiredFields={requiredFieldsArticle}

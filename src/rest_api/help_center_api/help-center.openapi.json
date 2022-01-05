@@ -1874,6 +1874,130 @@
                 "tags": ["article-translations"]
             }
         },
+        "/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/ratings": {
+            "post": {
+                "operationId": "createArticleTranslationRating",
+                "summary": "Create an article translation rating",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "article_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "locale",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateArticleTranslationRatingDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArticleTranslationRatingEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["article-translation-rating"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/ratings/{ratingId}": {
+            "put": {
+                "operationId": "updateArticleTranslationRating",
+                "summary": "Update an article translation rating",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "article_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "locale",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    },
+                    {
+                        "name": "ratingId",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateArticleTranslationRatingDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArticleTranslationRatingEntity"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["article-translation-rating"]
+            },
+            "delete": {
+                "operationId": "deleteArticleTranslationRating",
+                "summary": "Removes an article translation rating",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "ratingId",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {"200": {"description": ""}},
+                "tags": ["article-translation-rating"]
+            }
+        },
         "/api/help-center/auth": {
             "post": {
                 "operationId": "createAccessToken",
@@ -2626,6 +2750,16 @@
             "CreateHelpCenterDto": {
                 "type": "object",
                 "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "My Help Center",
+                        "minLength": 2
+                    },
+                    "subdomain": {
+                        "type": "string",
+                        "description": "A valid subdomain for the Help center.\n\nShould be:\n- length no greater than 63\n- must begin and end with an alpha-numeric\n- may contain hyphens (dashes)\n- may not begin or end with a hyphen\n\nIf not provided, a subdomain will be generated.",
+                        "example": "mysubdomain"
+                    },
                     "default_locale": {
                         "enum": [
                             "en-US",
@@ -2674,19 +2808,9 @@
                         "type": "object"
                     },
                     "shop_name": {"type": "string", "nullable": true},
-                    "self_service_enabled": {"type": "boolean"},
-                    "name": {
-                        "type": "string",
-                        "example": "My Help Center",
-                        "minLength": 2
-                    },
-                    "subdomain": {
-                        "type": "string",
-                        "description": "A valid subdomain for the Help center.\n\nShould be:\n- length no greater than 63\n- must begin and end with an alpha-numeric\n- may contain hyphens (dashes)\n- may not begin or end with a hyphen\n\nIf not provided, a subdomain will be generated.",
-                        "example": "mysubdomain"
-                    }
+                    "self_service_enabled": {"type": "boolean"}
                 },
-                "required": ["default_locale", "name"]
+                "required": ["name", "default_locale"]
             },
             "HelpCenterEntity": {
                 "type": "object",
@@ -2865,6 +2989,16 @@
             "UpdateHelpCenterDto": {
                 "type": "object",
                 "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "My Help Center",
+                        "minLength": 2
+                    },
+                    "subdomain": {
+                        "type": "string",
+                        "description": "A valid subdomain for the Help center.\n\nShould be:\n- length no greater than 63\n- must begin and end with an alpha-numeric\n- may contain hyphens (dashes)\n- may not begin or end with a hyphen\n\nIf not provided, a subdomain will be generated.",
+                        "example": "mysubdomain"
+                    },
                     "default_locale": {
                         "enum": [
                             "en-US",
@@ -2923,16 +3057,6 @@
                         "type": "boolean",
                         "description": "Boolean indicating if the help center is deactivated.",
                         "example": false
-                    },
-                    "name": {
-                        "type": "string",
-                        "example": "My Help Center",
-                        "minLength": 2
-                    },
-                    "subdomain": {
-                        "type": "string",
-                        "description": "A valid subdomain for the Help center.\n\nShould be:\n- length no greater than 63\n- must begin and end with an alpha-numeric\n- may contain hyphens (dashes)\n- may not begin or end with a hyphen\n\nIf not provided, a subdomain will be generated.",
-                        "example": "mysubdomain"
                     }
                 }
             },
@@ -3120,18 +3244,7 @@
             "CreateHelpCenterTranslationDto": {
                 "type": "object",
                 "properties": {
-                    "seo_meta": {
-                        "description": "The SEO meta attributes of the help center in the `locale`'s translation.",
-                        "default": {"title": null, "description": null},
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/CreateHelpCenterTranslationSeoMetaDto"
-                            }
-                        ]
-                    },
-                    "chat_application_id": {"type": "number", "nullable": true},
                     "locale": {
-                        "type": "string",
                         "description": "The locale of the translation.\n\nIt should be in help center's supported locales.",
                         "example": "fr-FR",
                         "enum": [
@@ -3146,10 +3259,21 @@
                             "no-NO",
                             "it-IT",
                             "sv-SE"
+                        ],
+                        "type": "string"
+                    },
+                    "seo_meta": {
+                        "description": "The SEO meta attributes of the help center in the `locale`'s translation.",
+                        "default": {"title": null, "description": null},
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CreateHelpCenterTranslationSeoMetaDto"
+                            }
                         ]
-                    }
+                    },
+                    "chat_application_id": {"type": "number", "nullable": true}
                 },
-                "required": ["seo_meta", "locale"]
+                "required": ["locale", "seo_meta"]
             },
             "EmailContactInfoDto": {
                 "type": "object",
@@ -3324,15 +3448,6 @@
             "CreateCategoryTranslationDto": {
                 "type": "object",
                 "properties": {
-                    "seo_meta": {
-                        "description": "The SEO meta attributes of the category in the `locale`'s translation.",
-                        "default": {"title": null, "description": null},
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/CreateCategoryTranslationSeoMetaDto"
-                            }
-                        ]
-                    },
                     "locale": {
                         "description": "The locale of the translation.\n\nIt should be in help center's supported locales.",
                         "example": "fr-FR",
@@ -3367,14 +3482,23 @@
                         "type": "string",
                         "description": "A slug for the category that'll be used to construct category's URLs.\n\nShould only contains alphanumeric values and hyphens.",
                         "example": "orders"
+                    },
+                    "seo_meta": {
+                        "description": "The SEO meta attributes of the category in the `locale`'s translation.",
+                        "default": {"title": null, "description": null},
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CreateCategoryTranslationSeoMetaDto"
+                            }
+                        ]
                     }
                 },
                 "required": [
-                    "seo_meta",
                     "locale",
                     "title",
                     "description",
-                    "slug"
+                    "slug",
+                    "seo_meta"
                 ]
             },
             "CreateCategoryDto": {
@@ -3603,15 +3727,6 @@
             "UpdateCategoryTranslationDto": {
                 "type": "object",
                 "properties": {
-                    "seo_meta": {
-                        "description": "The SEO meta attributes of the category in the `locale`'s translation.",
-                        "default": {"title": null, "description": null},
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/CreateCategoryTranslationSeoMetaDto"
-                            }
-                        ]
-                    },
                     "title": {
                         "type": "string",
                         "description": "The title of the category in the `locale`'s translation.",
@@ -3628,8 +3743,25 @@
                         "type": "string",
                         "description": "A slug for the category that'll be used to construct category's URLs.\n\nShould only contains alphanumeric values and hyphens.",
                         "example": "orders"
+                    },
+                    "seo_meta": {
+                        "description": "The SEO meta attributes of the category in the `locale`'s translation.",
+                        "default": {"title": null, "description": null},
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CreateCategoryTranslationSeoMetaDto"
+                            }
+                        ]
                     }
                 }
+            },
+            "Rating": {
+                "type": "object",
+                "properties": {
+                    "up": {"type": "number"},
+                    "down": {"type": "number"}
+                },
+                "required": ["up", "down"]
             },
             "ArticleTranslationSeoMeta": {
                 "type": "object",
@@ -3638,6 +3770,149 @@
                     "description": {"type": "string", "nullable": true}
                 },
                 "required": ["title", "description"]
+            },
+            "LocalArticleTranslationAndRating": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "locale": {
+                        "type": "string",
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ]
+                    },
+                    "article_id": {"type": "number"},
+                    "seo_meta": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ArticleTranslationSeoMeta"
+                            }
+                        ]
+                    },
+                    "locale_fallback": {
+                        "description": "Gives details on how the translation fallback was chosen:\n- `undefined`: the translation is the requested one\n- `default`: the translation is in help center's default locale\n- `available`: the translation corresponds to the first available one",
+                        "enum": ["default", "available"],
+                        "type": "string"
+                    },
+                    "rating": {
+                        "allOf": [{"$ref": "#/components/schemas/Rating"}]
+                    },
+                    "title": {"type": "string"},
+                    "excerpt": {"type": "string"},
+                    "content": {"type": "string"},
+                    "slug": {"type": "string"}
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "locale",
+                    "article_id",
+                    "seo_meta",
+                    "rating",
+                    "title",
+                    "excerpt",
+                    "content",
+                    "slug"
+                ]
+            },
+            "ArticleWithLocalTranslationAndRating": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "category_id": {"type": "number", "nullable": true},
+                    "help_center_id": {"type": "number"},
+                    "available_locales": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "en-US",
+                                "fr-FR",
+                                "fr-CA",
+                                "es-ES",
+                                "de-DE",
+                                "nl-NL",
+                                "cs-CZ",
+                                "da-DK",
+                                "no-NO",
+                                "it-IT",
+                                "sv-SE"
+                            ]
+                        }
+                    },
+                    "rating": {
+                        "allOf": [{"$ref": "#/components/schemas/Rating"}]
+                    },
+                    "translation": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/LocalArticleTranslationAndRating"
+                            }
+                        ]
+                    },
+                    "id": {"type": "number"}
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "help_center_id",
+                    "available_locales",
+                    "rating",
+                    "translation",
+                    "id"
+                ]
+            },
+            "ArticlesListPageDto": {
+                "type": "object",
+                "properties": {
+                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "object": {
+                        "type": "string",
+                        "default": "list",
+                        "enum": ["list"]
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ArticleWithLocalTranslationAndRating"
+                        }
+                    }
+                },
+                "required": ["meta", "object", "data"]
             },
             "LocalArticleTranslation": {
                 "type": "object",
@@ -3752,24 +4027,6 @@
                     "id"
                 ]
             },
-            "ArticlesListPageDto": {
-                "type": "object",
-                "properties": {
-                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
-                    "object": {
-                        "type": "string",
-                        "default": "list",
-                        "enum": ["list"]
-                    },
-                    "data": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/ArticleWithLocalTranslation"
-                        }
-                    }
-                },
-                "required": ["meta", "object", "data"]
-            },
             "UpdateArticleDto": {
                 "type": "object",
                 "properties": {
@@ -3842,15 +4099,6 @@
             "CreateArticleTranslationDto": {
                 "type": "object",
                 "properties": {
-                    "seo_meta": {
-                        "description": "The SEO meta attributes of the article in the `locale`'s translation.",
-                        "default": {"title": null, "description": null},
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/CreateArticleTranslationSeoMetaDto"
-                            }
-                        ]
-                    },
                     "locale": {
                         "description": "The locale of the translation.\n\nIt should be in help center's supported locales.",
                         "example": "fr-FR",
@@ -3890,21 +4138,29 @@
                         "type": "string",
                         "description": "A slug for the article that'll be used to construct article's URLs.\n\nShould only contains alphanumeric values and hyphens.",
                         "example": "cancel-an-order"
+                    },
+                    "seo_meta": {
+                        "description": "The SEO meta attributes of the article in the `locale`'s translation.",
+                        "default": {"title": null, "description": null},
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CreateArticleTranslationSeoMetaDto"
+                            }
+                        ]
                     }
                 },
                 "required": [
-                    "seo_meta",
                     "locale",
                     "title",
                     "excerpt",
                     "content",
-                    "slug"
+                    "slug",
+                    "seo_meta"
                 ]
             },
             "CreateArticleDto": {
                 "type": "object",
                 "properties": {
-                    "category_id": {"type": "number", "nullable": true},
                     "translation": {
                         "description": "A translation for the article.\n\nWhen creating an article, a translation should be provided.",
                         "allOf": [
@@ -3912,9 +4168,87 @@
                                 "$ref": "#/components/schemas/CreateArticleTranslationDto"
                             }
                         ]
-                    }
+                    },
+                    "category_id": {"type": "number", "nullable": true}
                 },
                 "required": ["translation"]
+            },
+            "ArticleTranslationWithRating": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "locale": {
+                        "type": "string",
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ]
+                    },
+                    "article_id": {"type": "number"},
+                    "seo_meta": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ArticleTranslationSeoMeta"
+                            }
+                        ]
+                    },
+                    "rating": {"$ref": "#/components/schemas/Rating"},
+                    "title": {"type": "string"},
+                    "excerpt": {"type": "string"},
+                    "content": {"type": "string"},
+                    "slug": {"type": "string"}
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "locale",
+                    "article_id",
+                    "seo_meta",
+                    "rating",
+                    "title",
+                    "excerpt",
+                    "content",
+                    "slug"
+                ]
+            },
+            "ArticleTranslationsListPageDto": {
+                "type": "object",
+                "properties": {
+                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "object": {
+                        "type": "string",
+                        "default": "list",
+                        "enum": ["list"]
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ArticleTranslationWithRating"
+                        }
+                    }
+                },
+                "required": ["meta", "object", "data"]
             },
             "ArticleTranslationEntity": {
                 "type": "object",
@@ -3973,36 +4307,9 @@
                     "slug"
                 ]
             },
-            "ArticleTranslationsListPageDto": {
-                "type": "object",
-                "properties": {
-                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
-                    "object": {
-                        "type": "string",
-                        "default": "list",
-                        "enum": ["list"]
-                    },
-                    "data": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/ArticleTranslationEntity"
-                        }
-                    }
-                },
-                "required": ["meta", "object", "data"]
-            },
             "UpdateArticleTranslationDto": {
                 "type": "object",
                 "properties": {
-                    "seo_meta": {
-                        "description": "The SEO meta attributes of the article in the `locale`'s translation.",
-                        "default": {"title": null, "description": null},
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/CreateArticleTranslationSeoMetaDto"
-                            }
-                        ]
-                    },
                     "title": {
                         "type": "string",
                         "description": "The title of the article in the `locale`'s translation.",
@@ -4024,8 +4331,71 @@
                         "type": "string",
                         "description": "A slug for the article that'll be used to construct article's URLs.\n\nShould only contains alphanumeric values and hyphens.",
                         "example": "cancel-an-order"
+                    },
+                    "seo_meta": {
+                        "description": "The SEO meta attributes of the article in the `locale`'s translation.",
+                        "default": {"title": null, "description": null},
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CreateArticleTranslationSeoMetaDto"
+                            }
+                        ]
                     }
                 }
+            },
+            "CreateArticleTranslationRatingDto": {
+                "type": "object",
+                "properties": {
+                    "rating": {
+                        "description": "The rating of the article translation.",
+                        "example": -1,
+                        "enum": ["1", "-1"],
+                        "type": "string"
+                    },
+                    "context": {"type": "object"}
+                },
+                "required": ["rating", "context"]
+            },
+            "ArticleTranslationRatingEntity": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "context": {"type": "object"},
+                    "id": {"type": "number"},
+                    "rating": {"enum": ["1", "-1"], "type": "string"}
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "context",
+                    "id",
+                    "rating"
+                ]
+            },
+            "UpdateArticleTranslationRatingDto": {
+                "type": "object",
+                "properties": {
+                    "rating": {
+                        "description": "The rating of the article translation.",
+                        "example": -1,
+                        "enum": ["1", "-1"],
+                        "type": "string"
+                    },
+                    "context": {"type": "object"}
+                },
+                "required": ["rating", "context"]
             },
             "AccessTokenDto": {
                 "type": "object",
@@ -4057,7 +4427,6 @@
                         "example": "https://gorgias.com/pricing"
                     },
                     "locale": {
-                        "type": "string",
                         "description": "The locale of the navigation link.\n\nIt should be in help center's supported locales.",
                         "example": "fr-FR",
                         "enum": [
@@ -4072,12 +4441,13 @@
                             "no-NO",
                             "it-IT",
                             "sv-SE"
-                        ]
+                        ],
+                        "type": "string"
                     },
                     "group": {
-                        "type": "string",
                         "description": "The group of the navigation link.",
-                        "enum": ["header", "footer"]
+                        "enum": ["header", "footer"],
+                        "type": "string"
                     },
                     "meta": {"$ref": "#/components/schemas/NavigationLinkMeta"}
                 },
@@ -4146,9 +4516,9 @@
                         "example": "https://gorgias.com/pricing"
                     },
                     "group": {
-                        "type": "string",
                         "description": "The group of the navigation link.",
-                        "enum": ["header", "footer"]
+                        "enum": ["header", "footer"],
+                        "type": "string"
                     },
                     "meta": {"$ref": "#/components/schemas/NavigationLinkMeta"}
                 }

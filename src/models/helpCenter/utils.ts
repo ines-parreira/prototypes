@@ -23,8 +23,13 @@ export function createArticleFromDto(
     position: number
 ): Article {
     return {
+        rating: {up: 0, down: 0},
         ...payload,
         position,
+        translation: {
+            rating: {up: 0, down: 0},
+            ...payload.translation,
+        },
     }
 }
 
