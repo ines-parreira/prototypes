@@ -46,9 +46,10 @@ export const useHelpCenterActions = () => {
                         help_center_id: helpCenter.id,
                     })
 
-                    const customDomain = customDomains.find(
+                    const activeCustomDomain = customDomains.find(
                         (domain) => domain.status === 'active'
                     )
+                    const customDomain = activeCustomDomain ?? customDomains[0]
 
                     dispatch(helpCenterUpdated({...helpCenter, customDomain}))
                 } catch (err) {
