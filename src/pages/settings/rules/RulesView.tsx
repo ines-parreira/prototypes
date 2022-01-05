@@ -219,35 +219,43 @@ export function RulesViewContainer() {
                             </p>
                         </>
                     )}
-                    {activeTab === RuleTabs.RuleLibrary &&
-                        (isSearching ? (
-                            <div className={css.libraryHeader}>
-                                <p className={css.searchHeader}>
-                                    Results for "
-                                    <span className={css.searchTerm}>
-                                        {searchTerm}
-                                    </span>
-                                    "
-                                </p>
-                            </div>
-                        ) : (
-                            <div className={css.libraryHeader}>
-                                <h1>Rule Library</h1>
-                                <p>
-                                    Below are some rule examples that you can
-                                    install in your account. Once installed you
-                                    can visit your rule setting page to adapt it
-                                    to your need.{' '}
-                                    <a
-                                        href="https://docs.gorgias.com/rules/rule-library-new"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        Learn more
-                                    </a>
-                                </p>
-                            </div>
-                        ))}
+                    {activeTab === RuleTabs.RuleLibrary && (
+                        <div
+                            className={classnames(css.libraryHeader, {
+                                [css.hasWarning]:
+                                    limitStatus !== RuleLimitStatus.NonReaching,
+                            })}
+                        >
+                            {isSearching ? (
+                                <>
+                                    <p className={css.searchHeader}>
+                                        Results for "
+                                        <span className={css.searchTerm}>
+                                            {searchTerm}
+                                        </span>
+                                        "
+                                    </p>
+                                </>
+                            ) : (
+                                <>
+                                    <h1>Rule Library</h1>
+                                    <p>
+                                        Below are some rule examples that you
+                                        can install in your account. Once
+                                        installed you can visit your rule
+                                        setting page to adapt it to your need.{' '}
+                                        <a
+                                            href="https://docs.gorgias.com/rules/rule-library-new"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Learn more
+                                        </a>
+                                    </p>
+                                </>
+                            )}
+                        </div>
+                    )}
                     {limitStatus === RuleLimitStatus.Reaching && (
                         <Alert
                             type={AlertType.Warning}
