@@ -47,7 +47,7 @@ import SatisfactionSurveyView from './settings/satisfactionSurveys/SatisfactionS
 import MacrosSettingsContent from './settings/macros/MacrosSettingsContent'
 import MacrosSettingsForm from './settings/macros/MacrosSettingsForm'
 import RulesView from './settings/rules/RulesView'
-import RulesSettingsForm from './settings/rules/RulesSettingsForm'
+import RulesSettingsForm from './settings/rules/accountRules/RuleDetailForm'
 // TODO(Nicolas): to enable once the self sign-up page is implemented (DR-175)
 // import Access from './settings/access/index.js'
 import TeamList from './settings/users/List'

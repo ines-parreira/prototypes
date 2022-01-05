@@ -1,20 +1,23 @@
-import React, {ComponentProps} from 'react'
+import React from 'react'
+import configureMockStore from 'redux-mock-store'
+import {Provider} from 'react-redux'
+import thunk from 'redux-thunk'
 import {render} from '@testing-library/react'
 
-import {RuleLimitStatus} from '../../../../state/rules/types'
-import {
-    RULE_MAX_NUMBER_WARNING,
-    RULE_MAX_NUMBER,
-} from '../../../../state/entities/rules/selectors'
-import {rulesFetched} from '../../../../state/entities/rules/actions'
+import {RulesState} from '../../../../state/entities/rules/types'
+import {RULE_MAX_NUMBER} from '../../../../state/entities/rules/selectors'
 import {fetchRules} from '../../../../models/rule/resources'
+import {fetchRuleRecipes} from '../../../../models/ruleRecipe/resources'
 import {emptyRule as ruleFixture} from '../../../../fixtures/rule'
+import {RootState, StoreDispatch} from '../../../../state/types'
 
 import {RulesViewContainer} from '../RulesView'
 
 jest.mock('../../../../models/rule/resources')
+jest.mock('../../../../models/ruleRecipe/resources')
 jest.mock('../../../../state/entities/rules/actions')
-jest.mock('../components/RulesTable', () => () => {
+jest.mock('../../../../state/entities/ruleRecipes/actions')
+jest.mock('../accountRules/RulesList', () => () => {
     return <div></div>
 })
 
@@ -22,60 +25,74 @@ const createRuleFixtures = (length: number) => {
     return Array.from({length}, (_, i) => ({
         ...ruleFixture,
         id: i + 1,
-    }))
+    })).reduce((acc, value) => {
+        acc[value.id.toString()] = value
+        return acc
+    }, {} as RulesState)
+}
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const populateStore = (length: number): RootState => {
+    const rules = createRuleFixtures(length)
+    const defaultState: RootState = {
+        entities: {
+            rules: rules,
+        },
+    } as any
+    return defaultState
 }
 
 describe('<RulesView/>', () => {
-    const rulesFetchedMock = rulesFetched as jest.MockedFunction<
-        typeof rulesFetched
-    >
     const fetchRulesMock = fetchRules as jest.MockedFunction<typeof fetchRules>
-
-    const notifyMock = jest.fn()
-
-    const minProps: ComponentProps<typeof RulesViewContainer> = {
-        limitStatus: RuleLimitStatus.NonReaching,
-        rulesFetched: rulesFetchedMock,
-        notify: notifyMock,
-        rules: [],
-    }
+    const fetchRuleRecipesMock = fetchRuleRecipes as jest.MockedFunction<
+        typeof fetchRuleRecipes
+    >
 
     beforeEach(() => {
         jest.clearAllMocks()
     })
+
     it('should render the rule views', () => {
-        const rules = createRuleFixtures(5)
         const {container} = render(
-            <RulesViewContainer {...minProps} rules={rules} />
+            <Provider store={mockStore(populateStore(5))}>
+                <RulesViewContainer />
+            </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should fetch rules', () => {
-        render(<RulesViewContainer {...minProps} />)
+        render(
+            <Provider store={mockStore(populateStore(1))}>
+                <RulesViewContainer />
+            </Provider>
+        )
         expect(fetchRulesMock).toHaveBeenCalled()
     })
 
+    it('should fetch rule recipes', () => {
+        render(
+            <Provider store={mockStore(populateStore(1))}>
+                <RulesViewContainer />
+            </Provider>
+        )
+        expect(fetchRuleRecipesMock).toHaveBeenCalled()
+    })
+
     it('should render a warning when reaching the rule limit', () => {
-        const rules = createRuleFixtures(RULE_MAX_NUMBER_WARNING)
         const {getByText} = render(
-            <RulesViewContainer
-                {...minProps}
-                rules={rules}
-                limitStatus={RuleLimitStatus.Reaching}
-            />
+            <Provider store={mockStore(populateStore(65))}>
+                <RulesViewContainer />
+            </Provider>
         )
         expect(getByText('65 rules of 70')).not.toBe(null)
     })
 
     it('should render an error when reached the rule limit', () => {
-        const rules = createRuleFixtures(RULE_MAX_NUMBER)
         const {getByText} = render(
-            <RulesViewContainer
-                {...minProps}
-                rules={rules}
-                limitStatus={RuleLimitStatus.Reached}
-            />
+            <Provider store={mockStore(populateStore(RULE_MAX_NUMBER))}>
+                <RulesViewContainer />
+            </Provider>
         )
         expect(getByText(/your account has reached the rule limit/i)).not.toBe(
             null

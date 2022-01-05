@@ -20,55 +20,43 @@ import {
     deleteRule,
     fetchRules,
     updateRule,
-} from '../../../models/rule/resources'
-import {getRulesLimitStatus} from '../../../state/entities/rules/selectors'
+} from '../../../../models/rule/resources'
+import {getRulesLimitStatus} from '../../../../state/entities/rules/selectors'
 import {
     ruleFetched,
     rulesFetched,
     ruleCreated,
     ruleDeleted,
     ruleUpdated,
-} from '../../../state/entities/rules/actions'
-import {notify} from '../../../state/notifications/actions'
-import {NotificationStatus} from '../../../state/notifications/types'
+} from '../../../../state/entities/rules/actions'
+import {notify} from '../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../state/notifications/types'
 import {
     Rule,
     RuleDraft,
     RuleLimitStatus,
     RuleOperation,
-} from '../../../state/rules/types'
-import {eventTypes as getEventTypes} from '../../../state/rules/helpers'
-import {getEmptyRule} from '../../../state/rules/utils'
-import history from '../../history'
+} from '../../../../state/rules/types'
+import {eventTypes as getEventTypes} from '../../../../state/rules/helpers'
+import {getEmptyRule} from '../../../../state/rules/utils'
+import history from '../../../history'
 
-import ToggleButton from '../../common/components/ToggleButton'
-import PageHeader from '../../common/components/PageHeader'
-import {RootState} from '../../../state/types'
-import {updateCodeAst} from '../../common/components/ast/utils.js'
-import {getSchemas} from '../../../state/schemas/selectors'
-import Loader from '../../common/components/Loader/Loader'
-import InputField from '../../common/forms/InputField'
-import Program from '../../common/components/ast/Program'
-import settingsCss from '../settings.less'
+import ToggleButton from '../../../common/components/ToggleButton'
+import PageHeader from '../../../common/components/PageHeader'
+import {RootState} from '../../../../state/types'
+import {updateCodeAst} from '../../../common/components/ast/utils.js'
+import {getSchemas} from '../../../../state/schemas/selectors'
+import Loader from '../../../common/components/Loader/Loader'
+import InputField from '../../../common/forms/InputField'
+import settingsCss from '../../settings.less'
 
-import {RulesTriggerSelect} from './components/RulesTriggerSelect'
-import RuleItemButtons from './components/RuleItemButtons'
+import {CodeASTType} from '../types'
+import RuleItemButtons from '../components/RuleItemButtons'
+import RuleEditor from '../components/RuleEditor'
 
-import css from './RulesSettingsForm.less'
+import css from './RuleDetailForm.less'
 
-export type CodeASTType = ReturnType<typeof esprima.parse>
-
-export type RuleItemActions = {
-    modifyCodeAST: (
-        path: List<any>,
-        node: Maybe<string | Record<string, unknown>>,
-        operation: RuleOperation,
-        code_ast?: ReturnType<typeof esprima.parse>
-    ) => CodeASTType
-    getCondition: (path: List<any>) => Map<any, any>
-}
-
-export function RulesSettingsFormContainer({
+export function RuleDetailForm({
     rules,
     ruleCreated,
     ruleDeleted,
@@ -397,25 +385,13 @@ export function RulesSettingsFormContainer({
                         <Label for="ruleContainer" className={css.label}>
                             Rule conditions
                         </Label>
-                        <FormGroup
-                            className={css.ruleContainer}
-                            id="ruleContainer"
-                        >
-                            <RulesTriggerSelect
-                                rule={ruleDraft}
-                                setEventTypes={(event_types) =>
-                                    setRuleDraft({...ruleDraft, event_types})
-                                }
-                            />
-                            <Program
-                                {...ruleDraft.code_ast}
-                                rule={fromJS(ruleDraft)}
-                                actions={{
-                                    modifyCodeAST,
-                                    getCondition,
-                                }}
-                            />
-                        </FormGroup>
+                        <RuleEditor
+                            ruleDraft={ruleDraft}
+                            actions={{modifyCodeAST, getCondition}}
+                            handleEventChanges={(event_types: string) =>
+                                setRuleDraft({...ruleDraft, event_types})
+                            }
+                        />
                         <div className={css.toggleButtonContainer}>
                             <span>
                                 <ToggleButton
@@ -469,4 +445,4 @@ const connector = connect(
     }
 )
 
-export default withRouter(connector(RulesSettingsFormContainer))
+export default withRouter(connector(RuleDetailForm))

@@ -3,7 +3,7 @@ import {Map, List} from 'immutable'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
-import {RuleItemActions} from '../../../../settings/rules/RulesSettingsForm'
+import {RuleItemActions} from '../../../../settings/rules/types'
 import Expression from '../expression/Expression'
 import DeleteBlockStatementItem from '../operations/DeleteBlockStatementItem'
 import Hoverable from '../../Hoverable'

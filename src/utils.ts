@@ -979,6 +979,25 @@ export const lightenDarkenColor = (color: string, amount: number): string => {
     )
 }
 
+/*
+ * get an RGBA triplet from a hexadecimal value
+ */
+export const toRGBA = (color: string, alpha = 1): string => {
+    let colorString = color
+
+    if (color[0] === '#') {
+        colorString = color.slice(1)
+    }
+
+    const colorHex = parseInt(colorString, 16)
+
+    const r = colorHex >> 16
+    const g = (colorHex >> 8) & 0x00ff
+    const b = colorHex & 0x0000ff
+
+    return `rgba(${r},${g},${b},${alpha})`
+}
+
 export const makeGetPlainJS = <T = unknown, S = RootState>(
     selector: Selector<S, Iterable<any, any>>
 ) =>

@@ -1,7 +1,7 @@
 import React from 'react'
 import {Map, List} from 'immutable'
 
-import {RuleItemActions} from '../../../../settings/rules/RulesSettingsForm'
+import {RuleItemActions} from '../../../../settings/rules/types'
 import {RuleOperation} from '../../../../../state/rules/types'
 import Tooltip from '../../Tooltip'
 

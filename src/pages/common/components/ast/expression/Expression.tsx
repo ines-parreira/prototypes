@@ -1,7 +1,7 @@
 import React, {ComponentType} from 'react'
 import {List, Map} from 'immutable'
 
-import {RuleItemActions} from '../../../../settings/rules/RulesSettingsForm'
+import {RuleItemActions} from '../../../../settings/rules/types'
 import Literal from '../Literal'
 import Identifier from '../Identifier'
 import UnknownSyntax from '../UnknownSyntax'

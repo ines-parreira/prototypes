@@ -2,7 +2,7 @@ import React, {ComponentProps} from 'react'
 import {Button} from 'reactstrap'
 import {Map, List} from 'immutable'
 
-import {RuleItemActions} from '../../../../settings/rules/RulesSettingsForm'
+import {RuleItemActions} from '../../../../settings/rules/types'
 import {getSyntaxTreeLeaves} from '../utils.js'
 
 import Expression from './Expression'

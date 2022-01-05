@@ -3,7 +3,7 @@ import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import ArrayExpression from '../ArrayExpression'
-import {RuleItemActions} from '../../../../../settings/rules/RulesSettingsForm'
+import {RuleItemActions} from '../../../../../settings/rules/types'
 
 describe('ast', () => {
     describe('expressions', () => {

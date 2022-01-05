@@ -4,7 +4,7 @@ import {List, Map} from 'immutable'
 import Errors from '../Errors'
 import Widget from '../Widget'
 
-import {RuleItemActions} from '../../../../settings/rules/RulesSettingsForm'
+import {RuleItemActions} from '../../../../settings/rules/types'
 
 type Props = {
     actions: RuleItemActions

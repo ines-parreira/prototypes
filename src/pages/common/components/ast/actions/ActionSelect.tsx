@@ -8,7 +8,7 @@ import {
 } from 'reactstrap'
 
 import {RuleOperation} from '../../../../../state/rules/types'
-import {RuleItemActions} from '../../../../settings/rules/RulesSettingsForm'
+import {RuleItemActions} from '../../../../settings/rules/types'
 
 import {actionsConfig} from './Action'
 

@@ -12,7 +12,7 @@ import {templateRegex} from '../../../utils/template'
 import Errors from '../Errors'
 
 import {isEmailList, findProperty} from '../../../../../utils'
-import {RuleItemActions} from '../../../../settings/rules/RulesSettingsForm'
+import {RuleItemActions} from '../../../../settings/rules/types'
 
 import ActionSelect from './ActionSelect'
 

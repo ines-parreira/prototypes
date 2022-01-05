@@ -6,7 +6,7 @@ import _isNumber from 'lodash/isNumber'
 
 import SelectField from '../../../forms/SelectField/SelectField'
 import {RenderLabel} from '../../../utils/labels'
-import {RuleItemActions} from '../../../../settings/rules/RulesSettingsForm'
+import {RuleItemActions} from '../../../../settings/rules/types'
 import {RootState} from '../../../../../state/types'
 import {getMessagingIntegrations} from '../../../../../state/integrations/selectors'
 import {fetchIntegrations} from '../../../../../state/integrations/actions'

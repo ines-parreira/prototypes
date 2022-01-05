@@ -4,7 +4,7 @@ import {List, Map} from 'immutable'
 import _upperFirst from 'lodash/upperFirst'
 
 import {ObjectExpressionPropertyKey} from '../../../../../state/rules/types'
-import {RuleItemActions} from '../../../../settings/rules/RulesSettingsForm'
+import {RuleItemActions} from '../../../../settings/rules/types'
 import Action, {actionsConfig} from '../actions/Action'
 import Hoverable from '../../Hoverable'
 import DeleteBinaryExpression from '../operations/DeleteBinaryExpression'

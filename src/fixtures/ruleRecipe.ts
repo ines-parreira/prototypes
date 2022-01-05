@@ -15,3 +15,11 @@ export const emptyRuleRecipeFixture: RuleRecipe = {
     tags: tags as TagDraft[],
     triggered_count: 0,
 }
+export const emptyRuleRecipeFixtureWithSections: RuleRecipe = {
+    slug: 'rule-recipe-fixture',
+    recipe_tag: RuleRecipeTag.AUTO_TAG,
+    rule: emptyRule as RuleDraft,
+    views_per_section: {fooSection: [view as ViewDraft]},
+    tags: tags as TagDraft[],
+    triggered_count: 0,
+}

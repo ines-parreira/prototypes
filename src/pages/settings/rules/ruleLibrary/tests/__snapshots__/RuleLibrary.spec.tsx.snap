@@ -1,0 +1,135 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RuleLibrary/> render should filter cards for the library 1`] = `
+<div
+  class="page-container container"
+>
+  <div
+    class="card"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="title"
+      >
+        my rule
+      </div>
+      <div
+        class="description"
+      >
+        foo
+      </div>
+    </div>
+    <div
+      class="footer"
+    >
+      <div
+        class="ticketCount"
+      >
+        0
+         tickets/month
+      </div>
+      <div
+        class="tags"
+      >
+        <div>
+          <span
+            class="badge badge-secondary"
+            style="color: rgb(32, 192, 140); background-color: rgba(32, 192, 140, 0.05);"
+          >
+            Auto Tag
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<RuleLibrary/> render should render cards for the library 1`] = `
+<div
+  class="page-container container"
+>
+  <div
+    class="card"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="title"
+      >
+        my rule
+      </div>
+      <div
+        class="description"
+      >
+        foo
+      </div>
+    </div>
+    <div
+      class="footer"
+    >
+      <div
+        class="ticketCount"
+      >
+        0
+         tickets/month
+      </div>
+      <div
+        class="tags"
+      >
+        <div>
+          <span
+            class="badge badge-secondary"
+            style="color: rgb(214, 56, 77); background-color: rgba(214, 56, 77, 0.05);"
+          >
+            Auto Close
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="card"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="title"
+      >
+        my rule
+      </div>
+      <div
+        class="description"
+      >
+        foo
+      </div>
+    </div>
+    <div
+      class="footer"
+    >
+      <div
+        class="ticketCount"
+      >
+        0
+         tickets/month
+      </div>
+      <div
+        class="tags"
+      >
+        <div>
+          <span
+            class="badge badge-secondary"
+            style="color: rgb(32, 192, 140); background-color: rgba(32, 192, 140, 0.05);"
+          >
+            Auto Tag
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

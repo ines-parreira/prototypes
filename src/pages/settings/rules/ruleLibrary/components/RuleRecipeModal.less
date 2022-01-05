@@ -1,0 +1,45 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .modalBody {
+        display: flex;
+        gap: 16px;
+        justify-content: space-between;
+        padding: 8px;
+        .modalDescription {
+            min-width: 70%;
+            max-width: 70%;
+            margin-bottom: 8px;
+        }
+        .targetTitle {
+            text-transform: uppercase;
+            font-size: 11px;
+            font-weight: 600;
+            color: @classic-neutral-grey-4;
+        }
+        .targetValue {
+            font-size: 20px;
+            .bold {
+                font-weight: 600;
+            }
+        }
+    }
+    .ruleEditorContainer {
+        height: 250px;
+        border: 1px solid @classic-neutral-grey-3;
+        border-radius: 4px;
+        background-color: @classic-neutral-grey-1;
+        overflow-y: scroll;
+        .ruleEditor {
+            border: none;
+            background-color: transparent;
+            pointer-events: none;
+        }
+    }
+    .modalFooter {
+        background-color: @classic-neutral-grey-2;
+    }
+    .modalContainer {
+        width: 800px;
+    }
+}

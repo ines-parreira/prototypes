@@ -10,7 +10,7 @@ import {
 } from 'reactstrap'
 
 import {RuleOperation} from '../../../../../state/rules/types'
-import {RuleItemActions} from '../../../../settings/rules/RulesSettingsForm'
+import {RuleItemActions} from '../../../../settings/rules/types'
 import Hoverable from '../../Hoverable'
 
 type Props = {

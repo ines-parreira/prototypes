@@ -13,22 +13,40 @@ exports[`<RulesView/> should render the rule views 1`] = `
       Rules
     </h1>
     <div>
-      <a
-        to="/app/settings/rules/new"
+      <div
+        class="headerContainer"
       >
-        <button
-          class="float-right btn btn-success"
+        <a
+          to="/app/settings/rules/new"
         >
-          Create new rule
-        </button>
-      </a>
+          <button
+            class="float-right btn btn-success"
+          >
+            Create new rule
+          </button>
+        </a>
+      </div>
     </div>
   </div>
+  <nav
+    class="navbar navbar"
+  >
+    <ul
+      class="item active nav"
+    >
+      My rules
+    </ul>
+    <ul
+      class="item nav"
+    >
+      Rule library
+    </ul>
+  </nav>
   <div
     class="description pageContainer container-fluid"
   >
     <div
-      class="mb-3 header"
+      class="header"
     >
       <p>
         Rules provide a way to automatically perform actions on tickets, like tagging, assigning or even responding. Hover a row to show the rule description. Learn more about how to setup rules
@@ -53,6 +71,16 @@ exports[`<RulesView/> should render the rule views 1`] = `
           Learn more about rules execution
         </a>
         .
+      </p>
+      <p>
+        If you need inspiration to automate your workflows don't hesitate to visit our
+         
+        <a
+          href="#"
+        >
+          rule library
+        </a>
+        !
       </p>
     </div>
     <div>

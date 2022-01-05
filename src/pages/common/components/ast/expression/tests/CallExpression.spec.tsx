@@ -4,7 +4,7 @@ import {shallow} from 'enzyme'
 
 import {WrappedCallExpression} from '../CallExpression'
 import {ObjectExpressionPropertyKey} from '../../../../../../state/rules/types'
-import {RuleItemActions} from '../../../../../settings/rules/RulesSettingsForm'
+import {RuleItemActions} from '../../../../../settings/rules/types'
 
 const commonProps = {
     rule: fromJS({foo: 'rule'}),

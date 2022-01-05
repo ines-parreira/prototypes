@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RuleGettingStarted /> should render with logo 1`] = `
+<div
+  class="container"
+>
+  <img
+    alt="Empty rules"
+    src="test-file-stub"
+  />
+  <div>
+    <h2>
+      Start by installing a template
+    </h2>
+    <p>
+      Automate your workflow with rules
+    </p>
+    <div
+      class="buttonWrapper"
+    >
+      <button
+        class="wrapper primary medium"
+      >
+        Visit rule library
+      </button>
+      <button
+        class="wrapper ml-2 secondary medium"
+      >
+        Create rule
+      </button>
+    </div>
+  </div>
+</div>
+`;

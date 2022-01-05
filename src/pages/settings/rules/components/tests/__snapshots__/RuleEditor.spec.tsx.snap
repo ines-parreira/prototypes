@@ -1,0 +1,155 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RuleEditor/> render should render the  editor 1`] = `
+<div
+  class="ruleContainer form-group"
+  id="ruleContainer"
+>
+  <div
+    class="container"
+  >
+    <div
+      class="whenBtn"
+    >
+      WHEN
+    </div>
+    <div
+      class="MultiSelectField whenEvents"
+    >
+      <div
+        class="container"
+      >
+        <span
+          class="tag badge badge-secondary"
+        >
+          <span
+            class="tagText"
+          >
+            ticket created
+          </span>
+          <i
+            class="material-icons ml-1 closeIcon"
+          >
+            close
+          </i>
+        </span>
+        <div
+          class="inputContainer multiSelectOptionField-dropdown"
+        >
+          <div
+            class="dropdown"
+          >
+            <div
+              aria-expanded="false"
+              aria-haspopup="true"
+              class=""
+              data-toggle="dropdown"
+            >
+              <input
+                class="input"
+                placeholder="Add events..."
+                value=""
+              />
+            </div>
+            <div
+              aria-hidden="true"
+              class="options dropdown-menu"
+              role="menu"
+              tabindex="-1"
+            >
+              <button
+                class="option option--focused dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  ticket updated
+                </span>
+              </button>
+              <button
+                class="option dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  ticket assigned to user
+                </span>
+              </button>
+              <button
+                class="option dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  ticket snooze delay ends
+                </span>
+              </button>
+              <button
+                class="option dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  new message in ticket
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="Program-wrapper"
+  >
+    <div
+      class="consequent"
+    >
+      <span
+        class=""
+      >
+        <div
+          class="btn-group"
+          style="padding-left: 0px;"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="ControlStructureButton dropdown-toggle btn btn-secondary"
+            type="button"
+          >
+            THEN
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Action
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              "IF" statement
+            </button>
+          </div>
+        </div>
+      </span>
+    </div>
+  </div>
+</div>
+`;

@@ -6,22 +6,25 @@ import {Badge, Button, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 
-import ToggleButton from '../../../common/components/ToggleButton'
-import type {Rule} from '../../../../state/rules/types'
+import ToggleButton from '../../../../common/components/ToggleButton'
+import type {Rule} from '../../../../../state/rules/types'
 import {
     activateRule,
     deactivateRule,
     createRule,
     deleteRule,
-} from '../../../../models/rule/resources'
+} from '../../../../../models/rule/resources'
 import {
     ruleCreated,
     ruleUpdated,
     ruleDeleted,
-} from '../../../../state/entities/rules/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
-import {notify} from '../../../../state/notifications/actions'
-import history from '../../../history'
+} from '../../../../../state/entities/rules/actions'
+import {RuleRecipe} from '../../../../../models/ruleRecipe/types'
+import {NotificationStatus} from '../../../../../state/notifications/types'
+import {notify} from '../../../../../state/notifications/actions'
+import {RootState} from '../../../../../state/types'
+import {ruleRecipes} from '../../../../../state/entities/ruleRecipes/selectors'
+import history from '../../../../history'
 
 import css from './RuleRow.less'
 
@@ -37,10 +40,23 @@ export function RuleRow({
     ruleCreated,
     ruleDeleted,
     ruleUpdated,
+    ruleRecipes,
 }: Props & ConnectedProps<typeof connector>) {
     const [isDescriptionOpen, setDescriptionOpen] = useState(false)
     const [showToggleConfirmation, setShowToggleConfirmation] = useState(false)
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
+    const isFromLibrary = useMemo(() => {
+        return !!Object.values(ruleRecipes).find((recipe: RuleRecipe) => {
+            const formattedName = recipe.recipe_tag
+                ? `[${recipe.recipe_tag}] ${recipe.rule.name}`
+                : `${recipe.rule.name}`
+            return (
+                formattedName === rule.name &&
+                recipe.rule.code === rule.code &&
+                rule.event_types === recipe.rule.event_types
+            )
+        })
+    }, [rule, ruleRecipes])
 
     const toggleShowToggleConfirmation = () => {
         setShowToggleConfirmation(!showToggleConfirmation)
@@ -202,6 +218,21 @@ export function RuleRow({
                                     SYSTEM
                                 </Badge>
                             )}
+                            {isFromLibrary && (
+                                <Badge
+                                    className={classnames(
+                                        'ml-2',
+                                        css.fromLibraryBadge
+                                    )}
+                                    pill
+                                    color="light"
+                                >
+                                    <i className="material-icons mr-1">
+                                        auto_fix_high
+                                    </i>
+                                    Rule Library
+                                </Badge>
+                            )}
                         </div>
                     </Link>
                 </td>
@@ -300,10 +331,15 @@ export function RuleRow({
         </>
     )
 }
-const connector = connect(null, {
-    ruleCreated,
-    ruleUpdated,
-    ruleDeleted,
-    notify,
-})
+const connector = connect(
+    (state: RootState) => ({
+        ruleRecipes: ruleRecipes(state),
+    }),
+    {
+        ruleCreated,
+        ruleUpdated,
+        ruleDeleted,
+        notify,
+    }
+)
 export default connector(RuleRow)

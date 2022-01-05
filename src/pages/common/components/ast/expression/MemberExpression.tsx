@@ -24,7 +24,7 @@ import {
     RuleOperation,
 } from '../../../../../state/rules/types'
 import {makeHasIntegrationOfTypes} from '../../../../../state/integrations/selectors'
-import {RuleItemActions} from '../../../../settings/rules/RulesSettingsForm'
+import {RuleItemActions} from '../../../../settings/rules/types'
 import RuleSelect from '../widget/RuleSelect'
 
 import css from './MemberExpression.less'

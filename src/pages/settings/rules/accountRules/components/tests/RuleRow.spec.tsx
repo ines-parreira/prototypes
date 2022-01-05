@@ -1,20 +1,21 @@
 import React, {ComponentProps} from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 
-import history from '../../../../history'
-import {emptyRule as ruleFixture} from '../../../../../fixtures/rule'
-import {createRule, deleteRule} from '../../../../../models/rule/resources'
+import history from '../../../../../history'
+import {emptyRule as ruleFixture} from '../../../../../../fixtures/rule'
+import {emptyRuleRecipeFixture as ruleRecipeFixture} from '../../../../../../fixtures/ruleRecipe'
+import {createRule, deleteRule} from '../../../../../../models/rule/resources'
 import {
     ruleCreated,
     ruleDeleted,
     ruleUpdated,
-} from '../../../../../state/entities/rules/actions'
+} from '../../../../../../state/entities/rules/actions'
 
 import {RuleRow} from '../RuleRow'
 
-jest.mock('../../../../../models/rule/resources')
-jest.mock('../../../../history')
-jest.mock('../../../../../state/entities/rules/actions')
+jest.mock('../../../../../../models/rule/resources')
+jest.mock('../../../../../history')
+jest.mock('../../../../../../state/entities/rules/actions')
 
 describe('<RuleRow />', () => {
     const notifyMock = jest.fn()
@@ -33,6 +34,7 @@ describe('<RuleRow />', () => {
 
     const minProps: ComponentProps<typeof RuleRow> = {
         rule: ruleFixture,
+        ruleRecipes: {},
         canDuplicate: true,
         ruleCreated: ruleCreatedMock,
         ruleDeleted: ruleDeletedMock,
@@ -107,5 +109,20 @@ describe('<RuleRow />', () => {
         await waitFor(() => {
             expect(ruleUpdatedMock).toHaveBeenCalled()
         })
+    })
+    it('should display a badge if the rule comes from the library', () => {
+        const rule = {
+            ...ruleFixture,
+            ...ruleRecipeFixture.rule,
+            name: `[${ruleRecipeFixture.recipe_tag}] ${ruleRecipeFixture.rule.name}`,
+        }
+        const {getByText} = render(
+            <RuleRow
+                {...minProps}
+                rule={rule}
+                ruleRecipes={{['1']: ruleRecipeFixture}}
+            />
+        )
+        expect(getByText(/rule library/gi)).toBeTruthy()
     })
 })

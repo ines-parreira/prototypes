@@ -2,7 +2,7 @@ import React from 'react'
 import _pick from 'lodash/pick'
 import {Map, List} from 'immutable'
 
-import {RuleItemActions} from '../../../../settings/rules/RulesSettingsForm'
+import {RuleItemActions} from '../../../../settings/rules/types'
 import Property from '../Property'
 import {ActionConfig} from '../actions/Action'
 

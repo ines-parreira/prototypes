@@ -27,7 +27,7 @@ import TimedeltaPicker from '../../forms/TimedeltaPicker'
 import RichFieldWithVariables from '../../forms/RichFieldWithVariables'
 import {makeHasIntegrationOfTypes} from '../../../../state/integrations/selectors'
 import {RuleOperation} from '../../../../state/rules/types'
-import {RuleItemActions} from '../../../settings/rules/RulesSettingsForm'
+import {RuleItemActions} from '../../../settings/rules/types'
 import {IntegrationType} from '../../../../models/integration/types'
 import {RootState} from '../../../../state/types'
 

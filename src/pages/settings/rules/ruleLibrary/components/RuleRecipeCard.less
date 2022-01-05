@@ -1,0 +1,62 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .card {
+        border: 1px solid @classic-neutral-grey-3;
+        border-radius: 4px;
+        width: 380px;
+        padding: 0px;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 16px;
+        cursor: pointer;
+        transition: ease-in-out 0.2s;
+
+        &:hover {
+            box-shadow: 0 2px 4px 0px rgba(22, 22, 22, 0.16);
+        }
+    }
+    .title {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .description {
+        color: @classic-neutral-grey-6;
+        max-height: 50px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        height: 42px;
+    }
+    .tags {
+        padding: 16px;
+    }
+    .ticketCount {
+        color: @classic-neutral-grey-4;
+        padding: 16px;
+        font-size: 12px;
+        line-height: 21px;
+    }
+
+    .footer {
+        border-top: 1px solid @classic-neutral-grey-3;
+        display: flex;
+        justify-content: space-between;
+    }
+    .content {
+        padding: 16px;
+    }
+    .badge {
+        border-radius: 3px;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 4px 8px;
+        margin-left: 8px;
+    }
+}
