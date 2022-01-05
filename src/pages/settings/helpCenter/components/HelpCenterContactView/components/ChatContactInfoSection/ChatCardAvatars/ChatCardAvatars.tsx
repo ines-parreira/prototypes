@@ -1,8 +1,8 @@
 import React from 'react'
 
-import avatar1 from './avatar-1.png'
-import avatar2 from './avatar-2.png'
-import avatar3 from './avatar-3.png'
+import avatar1 from './avatar-1.jpg'
+import avatar2 from './avatar-2.jpg'
+import avatar3 from './avatar-3.jpg'
 
 import css from './ChatCardAvatars.less'
 
