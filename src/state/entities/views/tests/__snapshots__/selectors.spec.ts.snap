@@ -24,3 +24,28 @@ Array [
   },
 ]
 `;
+
+exports[`selectors getTicketViews should return all ticket views 1`] = `
+Array [
+  Object {
+    "id": 1,
+    "type": "ticket-list",
+  },
+  Object {
+    "id": 2,
+    "type": "ticket-list",
+  },
+  Object {
+    "id": 4,
+    "type": "ticket-list",
+  },
+  Object {
+    "id": 10,
+    "type": "ticket-list",
+  },
+  Object {
+    "id": 123,
+    "type": "ticket-list",
+  },
+]
+`;

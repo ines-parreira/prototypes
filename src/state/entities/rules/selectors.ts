@@ -10,7 +10,7 @@ export const RULE_MAX_NUMBER_WARNING = 65
 export const RULE_MAX_NUMBER = 70
 
 export const rulesSelector = (state: RootState): RulesState =>
-    state.entities.rules
+    state.entities.rules || {}
 
 export const getSortedRules = createSelector<RootState, Rule[], RulesState>(
     rulesSelector,
@@ -21,11 +21,7 @@ export const getSortedRules = createSelector<RootState, Rule[], RulesState>(
             .filter((rule) => rule.type !== 'system')
 )
 
-export const getRulesLimitStatus = createSelector<
-    RootState,
-    RuleLimitStatus,
-    Rule[]
->(getSortedRules, (rules) => {
+export const getRulesLimitStatus = createSelector(getSortedRules, (rules) => {
     const numRules = rules.length
     if (numRules < RULE_MAX_NUMBER_WARNING) {
         return RuleLimitStatus.NonReaching

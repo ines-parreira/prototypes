@@ -96,6 +96,7 @@ describe('<SelfServiceView/>', () => {
         entities: {
             macros: {},
             rules: {},
+            ruleRecipes: {},
             sections: {},
             stats: {},
             tags: {},

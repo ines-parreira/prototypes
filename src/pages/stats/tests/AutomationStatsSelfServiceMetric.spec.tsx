@@ -47,6 +47,7 @@ describe('<AutomationStatsSelfServiceMetric />', () => {
         entities: {
             macros: {},
             rules: {},
+            ruleRecipes: {},
             sections: {},
             stats: {},
             tags: {},

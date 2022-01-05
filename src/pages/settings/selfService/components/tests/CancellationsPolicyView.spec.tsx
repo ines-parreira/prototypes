@@ -86,6 +86,7 @@ describe('<CancellationsPolicyView/>', () => {
         entities: {
             macros: {},
             rules: {},
+            ruleRecipes: {},
             sections: {},
             stats: {},
             tags: {},

@@ -113,6 +113,7 @@ describe('<SelfServicePreferencesView/>', () => {
         entities: {
             macros: {},
             rules: {},
+            ruleRecipes: {},
             sections: {},
             stats: {},
             tags: {},

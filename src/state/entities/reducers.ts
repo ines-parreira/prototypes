@@ -20,6 +20,8 @@ import rules from './rules/reducer'
 import {RulesState} from './rules/types'
 import phoneNumbers from './phoneNumbers/reducer'
 import {PhoneNumbersState} from './phoneNumbers/types'
+import ruleRecipes from './ruleRecipes/reducer'
+import {RuleRecipesState} from './ruleRecipes/types'
 
 const entitiesReducers = combineReducers<{
     macros: MacrosState
@@ -32,9 +34,11 @@ const entitiesReducers = combineReducers<{
     selfServiceConfigurations: SelfServiceConfigurationsState
     rules: RulesState
     phoneNumbers: PhoneNumbersState
+    ruleRecipes: RuleRecipesState
 }>({
     macros,
     rules,
+    ruleRecipes,
     sections,
     stats,
     tags,

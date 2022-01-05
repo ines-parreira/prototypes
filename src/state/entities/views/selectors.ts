@@ -7,6 +7,14 @@ import {RootState} from '../../types'
 
 import {ViewsState} from './types'
 
+export const getTicketViews = createSelector(
+    (state: RootState) => state.entities.views || {},
+    (viewsState) =>
+        Object.values(viewsState).filter(
+            (view) => view.type === ViewType.TicketList
+        )
+)
+
 export const getOrderedViewsByType = (type: ViewType) =>
     createSelector<RootState, View[], ViewsState, Map<any, any>>(
         (state: RootState) => state.entities.views,

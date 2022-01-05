@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`sections selectors getSectionIdByName should return a map with the name as key and id as value 1`] = `
+Object {
+  "bar": 2,
+  "baz": 3,
+  "foo": 1,
+}
+`;

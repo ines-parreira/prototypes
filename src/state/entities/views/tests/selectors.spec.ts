@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 import {user} from '../../../../fixtures/users'
 import {ViewType} from '../../../../models/view/types'
 import {RootState} from '../../../types'
-import {getOrderedViewsByType} from '../selectors'
+import {getOrderedViewsByType, getTicketViews} from '../selectors'
 
 describe('selectors', () => {
     const state: RootState = {
@@ -37,6 +37,12 @@ describe('selectors', () => {
         },
         currentUser: fromJS(user),
     } as any
+
+    describe('getTicketViews', () => {
+        it('should return all ticket views', () => {
+            expect(getTicketViews(state)).toMatchSnapshot()
+        })
+    })
 
     describe('getOrderedViewsByType', () => {
         it('should return the ordered list of views', () => {

@@ -81,6 +81,7 @@ describe('<ReturnsPolicyView />', () => {
         entities: {
             macros: {},
             rules: {},
+            ruleRecipes: {},
             sections: {},
             stats: {},
             tags: {},
