@@ -1054,3 +1054,123 @@ export const revenuePerTicket: Stat<TwoDimensionalChart> = {
         },
     },
 }
+
+export const usersStatuses: Stat<TwoDimensionalChart> = {
+    meta: {},
+    data: {
+        data: {
+            axes: {
+                x: [
+                    {
+                        name: 'User',
+                        type: StatType.User,
+                    },
+                    {
+                        name: 'Online',
+                        type: StatType.Boolean,
+                    },
+                ],
+            },
+            lines: [
+                [
+                    {
+                        type: StatType.User,
+                        value: {
+                            name: 'Acme Support',
+                            id: 1,
+                        },
+                    },
+                    {
+                        type: StatType.Boolean,
+                        value: true,
+                    },
+                ],
+                [
+                    {
+                        type: StatType.User,
+                        value: {
+                            name: 'John Smith',
+                            id: 2,
+                        },
+                    },
+                    {
+                        type: StatType.Boolean,
+                        value: true,
+                    },
+                ],
+            ],
+        },
+        label: 'Users statuses',
+    },
+}
+
+export const openTicketsAssignmentStatuses: Stat<OneDimensionalUnionChart> = {
+    meta: {},
+    data: {
+        data: [
+            {
+                name: 'Assigned open tickets',
+                type: StatType.Number,
+                value: 235,
+            },
+            {
+                name: 'Unassigned open tickets',
+                type: StatType.Number,
+                value: 2700,
+            },
+        ],
+    },
+}
+
+export const supportVolumePerHour: Stat<TwoDimensionalChart> = {
+    meta: {
+        previous_start_datetime: '2022-01-02T00:00:01+01:00',
+        start_datetime: '2022-01-03T00:00:00+01:00',
+        end_datetime: '2022-01-03T23:59:59+01:00',
+        previous_end_datetime: '2022-01-03T00:00:00+01:00',
+    },
+    data: {
+        label: 'Support Volume',
+        legend: {
+            axes: {
+                x: 'Hour of the day',
+                y: 'Number of tickets',
+            },
+        },
+        data: {
+            axes: {
+                x: [
+                    1641168000, 1641171600, 1641175200, 1641178800, 1641182400,
+                    1641186000, 1641189600, 1641193200, 1641196800, 1641200400,
+                    1641204000, 1641207600, 1641211200, 1641214800, 1641218400,
+                    1641222000, 1641225600, 1641229200, 1641232800, 1641236400,
+                    1641240000, 1641243600, 1641247200, 1641250800,
+                ],
+                y: [],
+            },
+            lines: [
+                {
+                    name: 'created',
+                    data: [
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 2, 0, 0, 0,
+                        0, 0, 0, 0, 0,
+                    ],
+                },
+                {
+                    name: 'replied',
+                    data: [
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0,
+                    ],
+                },
+                {
+                    name: 'closed',
+                    data: [
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0,
+                    ],
+                },
+            ],
+        },
+    },
+}

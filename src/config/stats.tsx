@@ -61,6 +61,9 @@ export const INTENTS_OCCURRENCE = 'intents-occurrence'
 export const CURRENT_DATE = 'current-date'
 export const USERS_PERFORMANCE_OVERVIEW = 'users-performance-overview'
 export const LIVE_OVERVIEW_METRICS = 'live-overview-metrics'
+export const USERS_STATUSES = 'users-statuses'
+export const OPEN_TICKETS_ASSIGNMENT_STATUSES =
+    'open-tickets-assignment-statuses'
 export const SUPPORT_VOLUME_PER_HOUR = 'support-volume-per-hour'
 export const AUTOMATION_OVERVIEW = 'automation-overview'
 export const AUTOMATION_FLOW = 'automation-flow'
@@ -332,7 +335,7 @@ export const stats = toImmutable<
         style: 'key-metrics',
         metrics: [
             {
-                api_resource_name: 'users-statuses',
+                api_resource_name: USERS_STATUSES,
                 label: 'Agents online',
                 formatData: (data: Map<any, any>) => {
                     return (data.get('lines') as List<any>)
@@ -381,7 +384,7 @@ export const stats = toImmutable<
                 },
             },
             {
-                api_resource_name: 'users-statuses',
+                api_resource_name: USERS_STATUSES,
                 label: 'Agents offline',
                 formatData: (data: Map<any, any>) => {
                     return (data.get('lines') as List<any>)
@@ -428,7 +431,7 @@ export const stats = toImmutable<
                 },
             },
             {
-                api_resource_name: 'open-tickets-assignment-statuses',
+                api_resource_name: OPEN_TICKETS_ASSIGNMENT_STATUSES,
                 label: 'Assigned open tickets',
                 tooltip: 'Total number of open tickets assigned to an agent',
                 formatData: (data: Map<any, any>) => {
@@ -436,7 +439,7 @@ export const stats = toImmutable<
                 },
             },
             {
-                api_resource_name: 'open-tickets-assignment-statuses',
+                api_resource_name: OPEN_TICKETS_ASSIGNMENT_STATUSES,
                 label: 'Unassigned open tickets',
                 tooltip:
                     'Total number of open tickets that are not assigned to an agent',

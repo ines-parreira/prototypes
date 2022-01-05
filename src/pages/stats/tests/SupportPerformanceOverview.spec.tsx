@@ -38,6 +38,10 @@ import TagsStatsFilter from '../TagsStatsFilter'
 import SupportPerformanceOverview from '../SupportPerformanceOverview'
 
 jest.mock('../useStatResource')
+jest.mock('react-chartjs-2', () => ({
+    Bar: () => <canvas />,
+    Line: () => <canvas />,
+}))
 jest.mock(
     '../TagsStatsFilter',
     () =>

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SupportPerformanceOverview should not render the filters nor the stats when stats filters are not defined 1`] = `
+exports[`LiveOverview should not render the filters nor the stats when stats filters are not defined 1`] = `
 <div
   class="full-width wrapper"
 >
@@ -14,7 +14,7 @@ exports[`SupportPerformanceOverview should not render the filters nor the stats 
         class="align-items-center"
       >
         <span>
-          Performance overview
+          Live overview
         </span>
         <button
           class="wrapper ml-3 btn btn-secondary"
@@ -53,7 +53,7 @@ exports[`SupportPerformanceOverview should not render the filters nor the stats 
 </div>
 `;
 
-exports[`SupportPerformanceOverview should render the filters and stats when stats filters are defined 1`] = `
+exports[`LiveOverview should render the filters and stats when stats filters are defined 1`] = `
 <div
   class="full-width wrapper"
 >
@@ -67,7 +67,7 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
         class="align-items-center"
       >
         <span>
-          Performance overview
+          Live overview
         </span>
         <button
           class="wrapper ml-3 btn btn-secondary"
@@ -93,141 +93,6 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
         <div
           class="d-flex flex-wrap float-right"
         >
-          <div
-            class="dropdown"
-          >
-            <button
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="mr-2 dropdown-toggle btn btn-secondary"
-              type="button"
-            >
-              <span>
-                All integrations
-              </span>
-            </button>
-            <div
-              aria-hidden="true"
-              class="dropdown dropdown-menu dropdown-menu-right"
-              role="menu"
-              tabindex="-1"
-            >
-              <h6
-                class="dropdown-item-input dropdownItemInput dropdown-header"
-                tabindex="-1"
-              >
-                <input
-                  class="form-control"
-                  placeholder="Search integrations..."
-                  type="text"
-                  value=""
-                />
-              </h6>
-              <button
-                class="component quickSelectionOption dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
-              >
-                <span>
-                  Select displayed
-                </span>
-                <div
-                  class="badge"
-                >
-                  5
-                </div>
-              </button>
-              <div
-                class="dropdownDivider dropdown-divider"
-                tabindex="-1"
-              />
-              <div
-                class="content"
-              >
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
-                >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
-                  />
-                  <img
-                    alt="logo-gmail"
-                    class="integrationIcon"
-                    src="test-file-stub"
-                  />
-                   Acme Billing
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
-                >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
-                  />
-                  <i
-                    class="icon material-icons icon"
-                  >
-                    email
-                  </i>
-                   Acme Support
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
-                >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
-                  />
-                  <i
-                    class="icon material-icons icon"
-                  >
-                    email
-                  </i>
-                   Acme Contact
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
-                >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
-                  />
-                  <i
-                    class="icon material-icons icon"
-                  >
-                    email
-                  </i>
-                   Acme Unverified
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
-                >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
-                  />
-                  <i
-                    class="icon material-icons icon"
-                  >
-                    chat
-                  </i>
-                   Chitty chatty
-                </label>
-              </div>
-            </div>
-          </div>
           <div
             class="dropdown"
           >
@@ -598,30 +463,6 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
               </div>
             </div>
           </div>
-          <div>
-            TagsStatsFilterMock, value: 
-            [1]
-          </div>
-          <div>
-            <button
-              class="btn btn-secondary"
-              type="button"
-            >
-              <i
-                class="material-icons mr-2"
-              >
-                calendar_today
-              </i>
-              <span>
-                Feb 14, 2017
-              </span>
-              <i
-                class="material-icons md-2 strong ml-1"
-              >
-                arrow_drop_down
-              </i>
-            </button>
-          </div>
         </div>
       </div>
     </div>
@@ -644,77 +485,11 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
             <div
               class="label"
             >
-              Tickets created
+              Agents online
               <span>
                 <i
                   class="material-icons ml-2 helpIcon info-icon"
-                  id="title-total-tickets-created-0"
-                >
-                  info_outline
-                </i>
-              </span>
-            </div>
-            <div
-              class="mt-3 statsDisplay"
-            >
-              -
-            </div>
-          </div>
-          <div
-            class="metric"
-          >
-            <div
-              class="label"
-            >
-              Tickets replied
-              <span>
-                <i
-                  class="material-icons ml-2 helpIcon info-icon"
-                  id="title-total-tickets-replied-1"
-                >
-                  info_outline
-                </i>
-              </span>
-            </div>
-            <div
-              class="mt-3 statsDisplay"
-            >
-              -
-            </div>
-          </div>
-          <div
-            class="metric"
-          >
-            <div
-              class="label"
-            >
-              Tickets closed
-              <span>
-                <i
-                  class="material-icons ml-2 helpIcon info-icon"
-                  id="title-total-tickets-closed-2"
-                >
-                  info_outline
-                </i>
-              </span>
-            </div>
-            <div
-              class="mt-3 statsDisplay"
-            >
-              -
-            </div>
-          </div>
-          <div
-            class="metric"
-          >
-            <div
-              class="label"
-            >
-              Messages sent
-              <span>
-                <i
-                  class="material-icons ml-2 helpIcon info-icon"
-                  id="title-total-messages-sent-3"
+                  id="title-users-statuses-0"
                 >
                   info_outline
                 </i>
@@ -727,22 +502,12 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                 <div
                   class="value"
                 >
-                  30
+                  2
                 </div>
                 <span
                   class="diff"
-                  id="value-total-messages-sent-3"
-                >
-                  <span>
-                    <i
-                      class="material-icons mr-1 statsDifference"
-                    >
-                      arrow_downward
-                    </i>
-                    -42
-                    %
-                  </span>
-                </span>
+                  id="value-users-statuses-0"
+                />
               </div>
             </div>
           </div>
@@ -752,11 +517,11 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
             <div
               class="label"
             >
-              Messages received
+              Agents offline
               <span>
                 <i
                   class="material-icons ml-2 helpIcon info-icon"
-                  id="title-total-messages-received-4"
+                  id="title-users-statuses-1"
                 >
                   info_outline
                 </i>
@@ -765,7 +530,17 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
             <div
               class="mt-3 statsDisplay"
             >
-              -
+              <div>
+                <div
+                  class="value"
+                >
+                  0
+                </div>
+                <span
+                  class="diff"
+                  id="value-users-statuses-1"
+                />
+              </div>
             </div>
           </div>
           <div
@@ -774,11 +549,11 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
             <div
               class="label"
             >
-              First response time
+              Assigned open tickets
               <span>
                 <i
                   class="material-icons ml-2 helpIcon info-icon"
-                  id="title-median-first-response-time-5"
+                  id="title-open-tickets-assignment-statuses-2"
                 >
                   info_outline
                 </i>
@@ -787,7 +562,17 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
             <div
               class="mt-3 statsDisplay"
             >
-              -
+              <div>
+                <div
+                  class="value"
+                >
+                  235
+                </div>
+                <span
+                  class="diff"
+                  id="value-open-tickets-assignment-statuses-2"
+                />
+              </div>
             </div>
           </div>
           <div
@@ -796,11 +581,11 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
             <div
               class="label"
             >
-              Resolution time
+              Unassigned open tickets
               <span>
                 <i
                   class="material-icons ml-2 helpIcon info-icon"
-                  id="title-median-resolution-time-6"
+                  id="title-open-tickets-assignment-statuses-3"
                 >
                   info_outline
                 </i>
@@ -809,31 +594,41 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
             <div
               class="mt-3 statsDisplay"
             >
-              -
+              <div>
+                <div
+                  class="value"
+                >
+                  2700
+                </div>
+                <span
+                  class="diff"
+                  id="value-open-tickets-assignment-statuses-3"
+                />
+              </div>
             </div>
           </div>
-          <div
-            class="metric"
+        </div>
+      </div>
+      <div
+        class="currentDate"
+      >
+        <div
+          class="wrapper"
+        >
+          <span
+            class="date"
           >
-            <div
-              class="label"
-            >
-              One-touch tickets
-              <span>
-                <i
-                  class="material-icons ml-2 helpIcon info-icon"
-                  id="title-total-one-touch-tickets-7"
-                >
-                  info_outline
-                </i>
-              </span>
-            </div>
-            <div
-              class="mt-3 statsDisplay"
-            >
-              -
-            </div>
-          </div>
+            Today, 
+            February 14th
+          </span>
+          <span
+            class="businessHours"
+          >
+            Business hours 
+            12:00 am - 01:00 am
+             
+            US/Pacific
+          </span>
         </div>
       </div>
       <div
@@ -845,27 +640,16 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
           <h5
             class="mb-0 d-flex header"
           >
-            Support volume
+            Support Volume
             <span>
               <i
                 class="material-icons ml-2 helpIcon"
-                id="tooltip-support-volume"
+                id="tooltip-support-volume-per-hour"
               >
                 info_outline
               </i>
             </span>
           </h5>
-          <button
-            class="csvButton btn btn-secondary"
-            type="button"
-          >
-            <i
-              class="material-icons mr-1 csvButtonIcon"
-            >
-              file_download
-            </i>
-            CSV
-          </button>
         </div>
         <div>
           <div
@@ -879,7 +663,7 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
               >
                 <span
                   class="circle mr-2"
-                  style="background: rgb(255, 181, 132);"
+                  style="background: rgb(136, 146, 242);"
                 />
                 Ticket created
               </span>
@@ -888,7 +672,7 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
               >
                 <span
                   class="circle mr-2"
-                  style="background: rgb(136, 146, 242);"
+                  style="background: rgb(255, 181, 132);"
                 />
                 Ticket replied
               </span>
@@ -908,310 +692,14 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
           </div>
         </div>
       </div>
-      <div
-        class="wrapper"
-      >
-        <div
-          class="mb-3 d-flex justify-content-between align-items-baseline"
-        >
-          <h5
-            class="mb-0 d-flex header"
-          >
-            Resolution time (percentiles)
-            <span>
-              <i
-                class="material-icons ml-2 helpIcon"
-                id="tooltip-resolution-time"
-              >
-                info_outline
-              </i>
-            </span>
-          </h5>
-          <button
-            class="csvButton btn btn-secondary"
-            type="button"
-          >
-            <i
-              class="material-icons mr-1 csvButtonIcon"
-            >
-              file_download
-            </i>
-            CSV
-          </button>
-        </div>
-        <div>
-          <div
-            class="mb-4"
-          >
-            <div
-              class="legends"
-            >
-              <span
-                class="label mr-4 mb-2"
-              >
-                <span
-                  class="circle mr-2"
-                  style="background: rgb(255, 181, 132);"
-                />
-                median
-              </span>
-              <span
-                class="label mr-4 mb-2"
-              >
-                <span
-                  class="circle mr-2"
-                  style="background: rgb(255, 107, 128);"
-                />
-                90%
-              </span>
-            </div>
-          </div>
-          <div>
-            <canvas />
-          </div>
-        </div>
-      </div>
-      <div
-        class="wrapper"
-      >
-        <div
-          class="mb-3 d-flex justify-content-between align-items-baseline"
-        >
-          <h5
-            class="mb-0 d-flex header"
-          >
-            First response time (percentiles)
-            <span>
-              <i
-                class="material-icons ml-2 helpIcon"
-                id="tooltip-first-response-time"
-              >
-                info_outline
-              </i>
-            </span>
-          </h5>
-          <button
-            class="csvButton btn btn-secondary"
-            type="button"
-          >
-            <i
-              class="material-icons mr-1 csvButtonIcon"
-            >
-              file_download
-            </i>
-            CSV
-          </button>
-        </div>
-        <div>
-          <div
-            class="mb-4"
-          >
-            <div
-              class="legends"
-            >
-              <span
-                class="label mr-4 mb-2"
-              >
-                <span
-                  class="circle mr-2"
-                  style="background: rgb(136, 146, 242);"
-                />
-                median
-              </span>
-              <span
-                class="label mr-4 mb-2"
-              >
-                <span
-                  class="circle mr-2"
-                  style="background: rgb(255, 107, 128);"
-                />
-                90%
-              </span>
-            </div>
-          </div>
-          <div>
-            <canvas />
-          </div>
-        </div>
-      </div>
-      <div
-        class="wrapper"
-      >
-        <div
-          class="mb-3 d-flex justify-content-between align-items-baseline"
-        >
-          <h5
-            class="mb-0 d-flex header"
-          >
-            Busiest time of the week
-            <span>
-              <i
-                class="material-icons ml-2 helpIcon"
-                id="tooltip-tickets-created-per-hour-per-weekday"
-              >
-                info_outline
-              </i>
-            </span>
-          </h5>
-          <button
-            class="csvButton btn btn-secondary"
-            type="button"
-          >
-            <i
-              class="material-icons mr-1 csvButtonIcon"
-            >
-              file_download
-            </i>
-            CSV
-          </button>
-        </div>
-        <div>
-          <div
-            class="mb-4"
-          >
-            <div
-              class="legends"
-            >
-              <span
-                class="label mr-4 mb-2"
-              >
-                <span
-                  class="square mr-2"
-                />
-                Business Hours
-              </span>
-            </div>
-          </div>
-          <table
-            class="hourlyTable table table-hover"
-          >
-            <thead>
-              <tr>
-                <th
-                  class="string"
-                >
-                  <span>
-                    HOUR
-                  </span>
-                </th>
-                <th
-                  class="number"
-                >
-                  <span>
-                    MONDAY
-                  </span>
-                </th>
-                <th
-                  class="number"
-                >
-                  <span>
-                    TUESDAY
-                  </span>
-                </th>
-                <th
-                  class="number"
-                >
-                  <span>
-                    WEDNESDAY
-                  </span>
-                </th>
-                <th
-                  class="number"
-                >
-                  <span>
-                    THURSDAY
-                  </span>
-                </th>
-                <th
-                  class="number"
-                >
-                  <span>
-                    FRIDAY
-                  </span>
-                </th>
-                <th
-                  class="number"
-                >
-                  <span>
-                    SATURDAY
-                  </span>
-                </th>
-                <th
-                  class="number"
-                >
-                  <span>
-                    SUNDAY
-                  </span>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td
-                  style="background-color: rgb(255, 255, 255);"
-                >
-                  <span>
-                    00:00
-                  </span>
-                </td>
-                <td
-                  style="background-color: rgb(255, 255, 255);"
-                >
-                  <div
-                    class="redTransparentStripes"
-                  />
-                  <span>
-                    0
-                  </span>
-                </td>
-                <td
-                  style="background-color: rgb(255, 255, 255);"
-                >
-                  <span>
-                    2
-                  </span>
-                </td>
-                <td
-                  style="background-color: rgb(255, 255, 255);"
-                >
-                  <span>
-                    0
-                  </span>
-                </td>
-                <td
-                  style="background-color: rgb(255, 255, 255);"
-                >
-                  <span>
-                    0
-                  </span>
-                </td>
-                <td
-                  style="background-color: rgb(255, 255, 255);"
-                >
-                  <span>
-                    0
-                  </span>
-                </td>
-                <td
-                  style="background-color: rgb(255, 255, 255);"
-                >
-                  <span>
-                    0
-                  </span>
-                </td>
-                <td
-                  style="background-color: rgb(255, 255, 255);"
-                >
-                  <span>
-                    0
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
   </div>
+</div>
+`;
+
+exports[`LiveOverview should render the paywall when the current account has no overview live statistics feature 1`] = `
+<div>
+  Paywall for 
+  overview_live_statistics
 </div>
 `;

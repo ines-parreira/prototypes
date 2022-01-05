@@ -11,6 +11,7 @@ export enum StatType {
     SatisfactionSurveyLink = 'satisfaction-survey-link',
     Currency = 'currency',
     TicketLink = 'ticket-link',
+    Boolean = 'bool',
 }
 
 export type Stat<T = StatData> = {
@@ -19,10 +20,10 @@ export type Stat<T = StatData> = {
 }
 
 export type StatMeta = {
-    end_datetime: string
-    previous_end_datetime: string
-    previous_start_datetime: string
-    start_datetime: string
+    end_datetime?: string
+    previous_end_datetime?: string
+    previous_start_datetime?: string
+    start_datetime?: string
 }
 
 export type StatData =
@@ -87,7 +88,6 @@ export type NumericStateCell = {
         | StatType.Percent
         | StatType.Duration
         | StatType.Delta
-        | StatType.User
     value: number
 }
 
@@ -118,4 +118,12 @@ export type StatCell =
           type: StatType.TicketLink
           ticket_id: number
           subject: string
+      }
+    | {type: StatType.Boolean; value: boolean}
+    | {
+          type: StatType.User
+          value: {
+              name: string
+              id: number
+          }
       }
