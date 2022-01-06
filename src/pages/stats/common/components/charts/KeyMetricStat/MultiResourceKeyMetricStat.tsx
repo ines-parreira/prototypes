@@ -25,8 +25,8 @@ export default function MultiResourceKeyMetricStat({
     }, [resourceStats])
 
     const meta = useMemo(() => {
-        const meta = resourceStats.find(({stat}) => stat?.meta) || {}
-        return fromJS(meta) as Map<any, any>
+        const metaResource = resourceStats.find(({stat}) => stat?.meta)
+        return fromJS(metaResource?.stat?.meta || {}) as Map<any, any>
     }, [resourceStats])
 
     const loading = useMemo(() => {
