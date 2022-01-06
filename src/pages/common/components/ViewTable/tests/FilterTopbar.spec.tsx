@@ -529,7 +529,9 @@ describe('<FilterTopbar />', () => {
                     'visible'
                 )
             ).toBe(true)
-            jest.runAllTimers()
+        })
+        jest.runOnlyPendingTimers()
+        await waitFor(() => {
             expect(
                 getByText(/No changes have been made/i).classList.contains(
                     'visible'
