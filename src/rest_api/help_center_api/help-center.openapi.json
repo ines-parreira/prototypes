@@ -2808,7 +2808,7 @@
                         "type": "object"
                     },
                     "shop_name": {"type": "string", "nullable": true},
-                    "self_service_enabled": {"type": "boolean"}
+                    "self_service_deactivated": {"type": "boolean"}
                 },
                 "required": ["name", "default_locale"]
             },
@@ -2891,7 +2891,11 @@
                     "primary_color": {"type": "string"},
                     "theme": {"type": "string"},
                     "shop_name": {"type": "string", "nullable": true},
-                    "self_service_enabled": {"type": "boolean"},
+                    "self_service_deactivated_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
                     "hotswap_session_token": {
                         "type": "string",
                         "nullable": true
@@ -2912,7 +2916,7 @@
                     "primary_color",
                     "theme",
                     "shop_name",
-                    "self_service_enabled",
+                    "self_service_deactivated_datetime",
                     "hotswap_session_token",
                     "subdomain",
                     "name"
@@ -3047,7 +3051,7 @@
                         "type": "object"
                     },
                     "shop_name": {"type": "string", "nullable": true},
-                    "self_service_enabled": {"type": "boolean"},
+                    "self_service_deactivated": {"type": "boolean"},
                     "powered_by_deactivated": {
                         "type": "boolean",
                         "description": "Boolean indicating if \"Powered By Gorgias\" will be displayed in this help center footer",

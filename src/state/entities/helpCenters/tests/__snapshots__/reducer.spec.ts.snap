@@ -14,7 +14,7 @@ Object {
     "powered_by_deactivated_datetime": null,
     "primary_color": "#4A8DF9",
     "search_deactivated_datetime": "2021-05-17T18:21:42.022Z",
-    "self_service_enabled": false,
+    "self_service_deactivated_datetime": "2021-05-17T18:21:42.022Z",
     "shop_name": null,
     "subdomain": "acme",
     "supported_locales": Array [
@@ -40,7 +40,7 @@ Object {
     "powered_by_deactivated_datetime": "2021-05-17T18:22:42.022Z",
     "primary_color": "#4A8DF9",
     "search_deactivated_datetime": null,
-    "self_service_enabled": false,
+    "self_service_deactivated_datetime": "2021-05-17T18:21:42.022Z",
     "shop_name": null,
     "subdomain": "acme2",
     "supported_locales": Array [
@@ -67,7 +67,7 @@ Object {
     "powered_by_deactivated_datetime": null,
     "primary_color": "#4A8DF9",
     "search_deactivated_datetime": "2021-05-17T18:21:42.022Z",
-    "self_service_enabled": false,
+    "self_service_deactivated_datetime": "2021-05-17T18:21:42.022Z",
     "shop_name": null,
     "subdomain": "acme",
     "supported_locales": Array [
@@ -93,7 +93,7 @@ Object {
     "powered_by_deactivated_datetime": null,
     "primary_color": "#4A8DF9",
     "search_deactivated_datetime": "2021-05-17T18:21:42.022Z",
-    "self_service_enabled": false,
+    "self_service_deactivated_datetime": "2021-05-17T18:21:42.022Z",
     "shop_name": null,
     "subdomain": "acme",
     "supported_locales": Array [
@@ -114,7 +114,7 @@ Object {
     "powered_by_deactivated_datetime": "2021-05-17T18:22:42.022Z",
     "primary_color": "#4A8DF9",
     "search_deactivated_datetime": null,
-    "self_service_enabled": false,
+    "self_service_deactivated_datetime": "2021-05-17T18:21:42.022Z",
     "shop_name": null,
     "subdomain": "acme2",
     "supported_locales": Array [
@@ -136,7 +136,7 @@ Object {
     "powered_by_deactivated_datetime": null,
     "primary_color": "#4A8DF9",
     "search_deactivated_datetime": null,
-    "self_service_enabled": false,
+    "self_service_deactivated_datetime": "2021-05-17T18:21:42.022Z",
     "shop_name": null,
     "subdomain": "acme3",
     "supported_locales": Array [
@@ -163,7 +163,7 @@ Object {
     "powered_by_deactivated_datetime": null,
     "primary_color": "#4A8DF9",
     "search_deactivated_datetime": "2021-05-17T18:21:42.022Z",
-    "self_service_enabled": false,
+    "self_service_deactivated_datetime": "2021-05-17T18:21:42.022Z",
     "shop_name": null,
     "subdomain": "acme",
     "supported_locales": Array [
@@ -184,7 +184,7 @@ Object {
     "powered_by_deactivated_datetime": "2021-05-17T18:22:42.022Z",
     "primary_color": "#4A8DF9",
     "search_deactivated_datetime": null,
-    "self_service_enabled": false,
+    "self_service_deactivated_datetime": "2021-05-17T18:21:42.022Z",
     "shop_name": null,
     "subdomain": "acme2",
     "supported_locales": Array [

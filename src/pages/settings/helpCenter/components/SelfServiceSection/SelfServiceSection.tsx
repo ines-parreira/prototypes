@@ -7,7 +7,10 @@ import {useAsyncFn} from 'react-use'
 
 import ToggleButton from '../../../../common/components/ToggleButton'
 
-import {HelpCenter} from '../../../../../models/helpCenter/types'
+import {
+    HelpCenter,
+    UpdateHelpCenterDto,
+} from '../../../../../models/helpCenter/types'
 
 import {fetchSelfServiceConfiguration} from '../../../../../models/selfServiceConfiguration/resources'
 
@@ -15,7 +18,7 @@ import css from './SelfServiceSection.less'
 
 interface Props {
     helpCenter: HelpCenter
-    updateHelpCenter: (payload: Partial<HelpCenter>) => Promise<void>
+    updateHelpCenter: (payload: Partial<UpdateHelpCenterDto>) => Promise<void>
     updating: boolean
     shopifyIntegration: Map<any, any> | undefined
 }
@@ -30,8 +33,8 @@ export const SelfServiceSection = ({
         !helpCenter.shop_name
     )
 
-    const [selfServiceEnabled, setSelfServiceEnabled] = useState(
-        helpCenter.self_service_enabled
+    const [selfServiceDeactivated, setSelfServiceDeactivated] = useState(
+        helpCenter.self_service_deactivated_datetime !== null
     )
 
     const [{loading}, fetchGlobalSsp] = useAsyncFn(async () => {
@@ -62,8 +65,10 @@ export const SelfServiceSection = ({
 
     const handleOnChangeSwitch = () => {
         if (helpCenter.shop_name && !sspForceDisabled) {
-            setSelfServiceEnabled(!selfServiceEnabled)
-            void updateHelpCenter({self_service_enabled: !selfServiceEnabled})
+            setSelfServiceDeactivated(!selfServiceDeactivated)
+            void updateHelpCenter({
+                self_service_deactivated: !selfServiceDeactivated,
+            })
         }
     }
 
@@ -86,7 +91,7 @@ export const SelfServiceSection = ({
 
             <div className="d-flex mt-4">
                 <ToggleButton
-                    value={selfServiceEnabled}
+                    value={!selfServiceDeactivated}
                     disabled={isSwitchDisabled}
                     onChange={handleOnChangeSwitch}
                 />

@@ -576,7 +576,7 @@ declare namespace Components {
       theme?: {
       } | null;
       shop_name?: string | null;
-      self_service_enabled?: boolean;
+      self_service_deactivated?: boolean;
     }
     export interface CreateHelpCenterTranslationDto {
       /**
@@ -701,7 +701,7 @@ declare namespace Components {
       primary_color: string;
       theme: string;
       shop_name: string | null;
-      self_service_enabled: boolean;
+      self_service_deactivated_datetime: string | null; // date-time
       hotswap_session_token: string | null;
       subdomain: string;
       name: string;
@@ -1115,7 +1115,7 @@ declare namespace Components {
       theme?: {
       } | null;
       shop_name?: string | null;
-      self_service_enabled?: boolean;
+      self_service_deactivated?: boolean;
       /**
        * Boolean indicating if "Powered By Gorgias" will be displayed in this help center footer
        * example:

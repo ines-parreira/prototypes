@@ -22,7 +22,7 @@ const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
 
 const helpCenter: HelpCenter = {
     ...getHelpCentersResponseFixture.data[0],
-    self_service_enabled: false,
+    self_service_deactivated_datetime: '2021-05-17T18:21:42.022Z',
     shop_name: 'my-shop',
 }
 
@@ -125,7 +125,7 @@ describe('<SelfServiceSection/>', () => {
         })
 
         expect(mockedUpdateHelpCenter).toHaveBeenLastCalledWith({
-            self_service_enabled: true,
+            self_service_deactivated: false,
         })
     })
 

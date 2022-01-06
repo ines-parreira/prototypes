@@ -4,7 +4,7 @@ import {useSelector} from 'react-redux'
 import {useAsyncFn} from 'react-use'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
-import {HelpCenter} from '../../../../models/helpCenter/types'
+import {UpdateHelpCenterDto} from '../../../../models/helpCenter/types'
 import {IntegrationType} from '../../../../models/integration/constants'
 import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
 import {helpCenterUpdated} from '../../../../state/entities/helpCenters/actions'
@@ -38,7 +38,7 @@ export const HelpCenterSelfServiceView = (): JSX.Element | null => {
     }, [])
 
     const [{loading: updatingHelpCenter}, updateHelpCenter] = useAsyncFn(
-        async (payload: Partial<HelpCenter>) => {
+        async (payload: Partial<UpdateHelpCenterDto>) => {
             if (client && helpCenter) {
                 try {
                     const {data} = await client.updateHelpCenter(

@@ -94,6 +94,7 @@ jest.mock('../../../hooks/useHelpCenterApi', () => {
                             primary_color: '#4A8DF9',
                             theme: 'light',
                             powered_by_deactivated_datetime: null,
+                            self_serve_deactivated_datetime: null,
                         },
                     })
                 ),
