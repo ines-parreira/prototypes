@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} from 'react'
+import React, {useCallback, useContext, useMemo} from 'react'
 import {ListGroupItem} from 'reactstrap'
 import {Map} from 'immutable'
 import {useSelector} from 'react-redux'
@@ -6,6 +6,12 @@ import {useSelector} from 'react-redux'
 import {renderTemplate} from '../../../../../../../../utils/template'
 import {getTicket} from '../../../../../../../../../../state/ticket/selectors'
 import {getActiveCustomer} from '../../../../../../../../../../state/customers/selectors'
+import {getCurrentAccountState} from '../../../../../../../../../../state/currentAccount/selectors'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../../../../../store/middlewares/segmentTracker'
+import {IntegrationContext} from '../../IntegrationContext'
 import {Link as LinkType, RemoveLink, SubmitLink} from '../types'
 
 import css from './Links.less'
@@ -32,6 +38,9 @@ export function Link(props: Props) {
         onSubmit,
     } = props
 
+    const currentAccount = useSelector(getCurrentAccountState)
+    const {integrationId} = useContext(IntegrationContext)
+
     const {url: linkUrl, label: linkLabel} = link
 
     const ticket = useSelector(getTicket)
@@ -49,6 +58,13 @@ export function Link(props: Props) {
         return renderTemplate(linkUrl, templateContext)
     }, [linkUrl, templateContext])
 
+    const handleClick = useCallback(() => {
+        logEvent(SegmentEvent.CustomActionLinksClicked, {
+            account_domain: currentAccount,
+            integration_id: integrationId,
+        })
+    }, [currentAccount, integrationId])
+
     return (
         <ListGroupItem className={css.groupItem}>
             <a
@@ -56,6 +72,7 @@ export function Link(props: Props) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={css.link}
+                onClick={handleClick}
             >
                 {renderTemplate(linkLabel, templateContext)}
                 <i className={`${css.linkIcon} material-icons`}>open_in_new</i>

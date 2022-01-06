@@ -17,7 +17,7 @@ describe('<Links/>', () => {
         templateAbsolutePath: 'templateAbsolutePath',
         source: fromJS({}),
         startWidgetEdition: jest.fn(),
-        updateEditedWidget: jest.fn(),
+        updateCustomActions: jest.fn(),
         removeEditedWidget: jest.fn(),
     }
 
@@ -138,7 +138,7 @@ describe('<Links/>', () => {
         fireEvent.click(screen.getAllByText('close')[0])
         expect(props.removeEditedWidget).toHaveBeenCalled()
         expect(props.startWidgetEdition).not.toHaveBeenCalled()
-        expect(props.updateEditedWidget).not.toHaveBeenCalled()
+        expect(props.updateCustomActions).not.toHaveBeenCalled()
     })
 
     it('should call all actions when removing a link', () => {
@@ -156,11 +156,9 @@ describe('<Links/>', () => {
         fireEvent.click(screen.getAllByText('close')[0])
         expect(props.removeEditedWidget).toHaveBeenCalled()
         expect(props.startWidgetEdition).toHaveBeenCalledWith(
-            `${props.templatePath}.meta.custom`
+            `${props.templatePath}.meta.custom.links`
         )
-        expect(props.updateEditedWidget).toHaveBeenCalledWith({
-            links: [links[1]],
-        })
+        expect(props.updateCustomActions).toHaveBeenCalledWith([links[1]])
     })
 
     it('should call widget actions when editing a link', async () => {
@@ -180,11 +178,9 @@ describe('<Links/>', () => {
 
         fireEvent.click(screen.getByText('Save'))
         expect(props.startWidgetEdition).toHaveBeenCalledWith(
-            `${props.templatePath}.meta.custom`
+            `${props.templatePath}.meta.custom.links`
         )
-        expect(props.updateEditedWidget).toHaveBeenCalledWith({
-            links: [links[0]],
-        })
+        expect(props.updateCustomActions).toHaveBeenCalledWith([links[0]])
     })
 
     it('should call actions when adding a link', async () => {
@@ -208,10 +204,10 @@ describe('<Links/>', () => {
         fireEvent.click(screen.getByText('Save'))
 
         expect(props.startWidgetEdition).toHaveBeenCalledWith(
-            `${props.templatePath}.meta.custom`
+            `${props.templatePath}.meta.custom.links`
         )
-        expect(props.updateEditedWidget).toHaveBeenCalledWith({
-            links: [{label: 'Gorgias', url: 'www.gorgias.com'}],
-        })
+        expect(props.updateCustomActions).toHaveBeenCalledWith([
+            {label: 'Gorgias', url: 'www.gorgias.com'},
+        ])
     })
 })

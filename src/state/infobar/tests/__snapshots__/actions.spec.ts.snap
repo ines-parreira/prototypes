@@ -12,27 +12,33 @@ Array [
   Object {
     "callback": [MockFunction],
     "data": Object {
+      "action_id": "shopifyRefundShippingCostOfOrder-34-5-f086fd149f679a11cf4d5378daa3a994cd70689a",
+      "action_label": undefined,
       "action_name": "shopifyRefundShippingCostOfOrder",
-      "integration_id": 5,
+      "integration_id": "5",
       "payload": Object {
         "order_id": 4194477515,
       },
-      "ticket_id": 1,
+      "ticket_id": "1",
       "user_id": "34",
     },
+    "id": "shopifyRefundShippingCostOfOrder-34-5-f086fd149f679a11cf4d5378daa3a994cd70689a",
     "type": "EXECUTE_ACTION_START",
   },
   Object {
     "data": Object {
+      "action_id": "shopifyRefundShippingCostOfOrder-34-5-f086fd149f679a11cf4d5378daa3a994cd70689a",
+      "action_label": undefined,
       "action_name": "shopifyRefundShippingCostOfOrder",
-      "integration_id": 5,
+      "integration_id": "5",
       "payload": Object {
         "order_id": 4194477515,
       },
-      "ticket_id": 1,
+      "ticket_id": "1",
       "user_id": "34",
     },
     "error": [Error: Request failed with status code 400],
+    "id": "shopifyRefundShippingCostOfOrder-34-5-f086fd149f679a11cf4d5378daa3a994cd70689a",
     "reason": "Failed to execute action shopifyRefundShippingCostOfOrder on customer #34 for integration 5",
     "type": "EXECUTE_ACTION_ERROR",
   },
@@ -51,14 +57,17 @@ Array [
   Object {
     "callback": [MockFunction],
     "data": Object {
+      "action_id": "shopifyRefundShippingCostOfOrder-34-5-f086fd149f679a11cf4d5378daa3a994cd70689a",
+      "action_label": undefined,
       "action_name": "shopifyRefundShippingCostOfOrder",
-      "integration_id": 5,
+      "integration_id": "5",
       "payload": Object {
         "order_id": 4194477515,
       },
-      "ticket_id": 1,
+      "ticket_id": "1",
       "user_id": "34",
     },
+    "id": "shopifyRefundShippingCostOfOrder-34-5-f086fd149f679a11cf4d5378daa3a994cd70689a",
     "type": "EXECUTE_ACTION_START",
   },
 ]
@@ -82,9 +91,12 @@ Array [
   },
   Object {
     "data": Object {
+      "action_id": "someId",
       "msg": "[SHOPIFY] [full-refund] No way",
+      "payload": Object {},
       "status": "error",
     },
+    "id": "someId",
     "type": "EXECUTE_ACTION_ERROR",
   },
 ]
@@ -93,7 +105,13 @@ Array [
 exports[`infobar actions handle executed action display error from ticket currently on 1`] = `
 Array [
   Object {
-    "buttons": Array [],
+    "buttons": Array [
+      Object {
+        "name": "Review",
+        "onClick": [Function],
+        "primary": true,
+      },
+    ],
     "dismissAfter": 0,
     "message": "No way",
     "status": "error",
@@ -102,10 +120,13 @@ Array [
   },
   Object {
     "data": Object {
+      "action_id": "someId",
       "msg": "[SHOPIFY] [full-refund] No way",
+      "payload": Object {},
       "status": "error",
-      "ticket_id": 1,
+      "ticket_id": "1",
     },
+    "id": "someId",
     "type": "EXECUTE_ACTION_ERROR",
   },
 ]
@@ -129,10 +150,13 @@ Array [
   },
   Object {
     "data": Object {
+      "action_id": "someId",
       "msg": "[SHOPIFY] [full-refund] No way",
+      "payload": Object {},
       "status": "error",
-      "ticket_id": 2,
+      "ticket_id": "2",
     },
+    "id": "someId",
     "type": "EXECUTE_ACTION_ERROR",
   },
 ]
@@ -147,8 +171,11 @@ Array [
   },
   Object {
     "data": Object {
+      "action_id": "someId",
+      "payload": Object {},
       "status": "success",
     },
+    "id": "someId",
     "type": "EXECUTE_ACTION_SUCCESS",
   },
 ]

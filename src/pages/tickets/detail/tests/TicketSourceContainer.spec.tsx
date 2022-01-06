@@ -40,6 +40,7 @@ describe('<TicketSourceContainer />', () => {
                 stopWidgetEdition: jest.fn(),
                 submitWidgets: jest.fn(),
                 updateEditedWidget: jest.fn(),
+                updateCustomActions: jest.fn(),
             },
         },
         sources: fromJS({

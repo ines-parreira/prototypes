@@ -38,6 +38,7 @@ describe('TicketInfobarContainer component', () => {
                 stopWidgetEdition: jest.fn(),
                 submitWidgets: jest.fn(),
                 updateEditedWidget: jest.fn(),
+                updateCustomActions: jest.fn(),
                 fetchWidgets: jest.fn(),
                 selectContext: jest.fn(),
             },

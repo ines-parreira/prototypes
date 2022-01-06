@@ -1,7 +1,20 @@
-import React, {FormEvent, useCallback, useState, useEffect} from 'react'
+import React, {
+    FormEvent,
+    useCallback,
+    useContext,
+    useState,
+    useEffect,
+} from 'react'
 import {Button, Form, Popover, PopoverBody} from 'reactstrap'
+import {useSelector} from 'react-redux'
 
 import InputField from '../../../../../../../../forms/InputField'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../../../../../store/middlewares/segmentTracker'
+import {getCurrentAccountState} from '../../../../../../../../../../state/currentAccount/selectors'
+import {IntegrationContext} from '../../IntegrationContext'
 import {Link, SubmitLink} from '../types'
 
 type Props = {
@@ -33,6 +46,9 @@ export default function Editor(props: Props) {
         index,
     } = props
 
+    const currentAccount = useSelector(getCurrentAccountState)
+    const {integrationId} = useContext(IntegrationContext)
+
     const [canSubmit, setCanSubmit] = useState(
         checkCanSubmit(link.url, link.label)
     )
@@ -50,8 +66,16 @@ export default function Editor(props: Props) {
     }, [link])
 
     const togglePopover = useCallback(() => {
-        setPopoverOpen((state) => !state)
-    }, [setPopoverOpen])
+        setPopoverOpen((state) => {
+            if (!state && typeof index !== 'number') {
+                logEvent(SegmentEvent.CustomActionLinksStart, {
+                    account_domain: currentAccount.get('domain'),
+                    integration_id: integrationId,
+                })
+            }
+            return !state
+        })
+    }, [index, currentAccount, integrationId, setPopoverOpen])
 
     const handleSubmit = useCallback(
         (evt: FormEvent<HTMLFormElement>) => {

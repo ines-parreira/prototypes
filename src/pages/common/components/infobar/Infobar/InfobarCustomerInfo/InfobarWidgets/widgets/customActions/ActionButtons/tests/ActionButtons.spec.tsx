@@ -5,19 +5,13 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 
-import {HttpMethod} from '../../../../../../../../../../../models/api/types'
+import {actionFixture} from '../../../../../../../../../../../fixtures/infobarCustomActions'
 import ActionButtons from '../ActionButtons'
 
 const mockStore = configureMockStore([thunk])
 
 describe('<ActionButtons/>', () => {
-    const action = {
-        method: HttpMethod.Get,
-        url: '',
-        headers: [],
-        params: [],
-        body: {},
-    }
+    const action = actionFixture()
 
     const props = {
         immutableButtons: fromJS([
@@ -31,7 +25,11 @@ describe('<ActionButtons/>', () => {
 
     it('should render the editor if isEditing is set to true ', () => {
         const {container} = render(
-            <Provider store={mockStore({})}>
+            <Provider
+                store={mockStore({
+                    customers: fromJS({active: {}}),
+                })}
+            >
                 <ActionButtons {...props} isEditing />
             </Provider>
         )

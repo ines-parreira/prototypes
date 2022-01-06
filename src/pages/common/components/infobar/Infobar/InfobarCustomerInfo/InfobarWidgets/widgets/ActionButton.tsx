@@ -25,7 +25,7 @@ import BooleanField from '../../../../../../forms/BooleanField.js'
 import InputField from '../../../../../../forms/InputField.js'
 
 import {executeAction} from '../../../../../../../../state/infobar/actions'
-import {makeGetPendingActionCallbacks} from '../../../../../../../../state/infobar/selectors'
+import {getPendingActionCallbacks} from '../../../../../../../../state/infobar/selectors'
 import {actionButtonHashForData} from '../../../../../../../../state/infobar/utils'
 import {RootState} from '../../../../../../../../state/types'
 import Tooltip from '../../../../../Tooltip'
@@ -161,12 +161,13 @@ export class ActionButtonContainer extends Component<Props, State> {
             ...this.state.parameters,
         }
 
-        void this.props.executeAction(
-            this.state.actionName,
-            this.props.integrationId as number,
-            this.props.customerId?.toString(),
-            payload as any
-        )
+        this.props.executeAction({
+            actionName: this.state.actionName,
+            integrationId: this.props.integrationId!,
+            customerId: this.props.customerId?.toString(),
+            payload: payload as any,
+        })
+
         this.toggleUi()
     }
 
@@ -404,7 +405,7 @@ export const withActionButtonContext = (Component: any) => {
 
 const connector = connect(
     (state: RootState) => ({
-        getPendingActionCallback: makeGetPendingActionCallbacks(state),
+        getPendingActionCallback: getPendingActionCallbacks(state),
     }),
     {
         executeAction,

@@ -1,5 +1,7 @@
 import {ShopifyActionType} from '../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
 
+export const INFOBAR_CUSTOM_BUTTON_ACTION_NAME = 'customHttpAction'
+
 export const actions = [
     {
         name: ShopifyActionType.RefundShippingCostOfOrder,
@@ -100,6 +102,11 @@ export const actions = [
         name: 'instagramPrivateReply',
         label: 'Replied via',
         objectType: 'message',
+    },
+    {
+        name: INFOBAR_CUSTOM_BUTTON_ACTION_NAME,
+        label: 'Custom HTTP Action',
+        objectType: 'http',
     },
 ]
 

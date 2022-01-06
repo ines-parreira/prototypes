@@ -74,7 +74,7 @@ exports[`<Action/> should render with a Body component 1`] = `
             pattern="*"
             required=""
             type="text"
-            value=""
+            value="www.someurl.com"
           />
         </div>
       </div>
@@ -277,7 +277,7 @@ exports[`<Action/> should render without a Body component 1`] = `
             pattern="*"
             required=""
             type="text"
-            value=""
+            value="www.someurl.com"
           />
         </div>
       </div>

@@ -1,19 +1,17 @@
 import React from 'react'
 import {fromJS} from 'immutable'
 import {render, fireEvent, screen} from '@testing-library/react'
+import configureMockStore from 'redux-mock-store'
+import {Provider} from 'react-redux'
+import thunk from 'redux-thunk'
 
-import {HttpMethod} from '../../../../../../../../../../../../models/api/types'
+import {actionFixture} from '../../../../../../../../../../../../fixtures/infobarCustomActions'
 import Button from '../Button'
 
-describe('<Button/>', () => {
-    const action = {
-        method: HttpMethod.Get,
-        url: '',
-        headers: [],
-        params: [],
-        body: {},
-    }
+const mockStore = configureMockStore([thunk])
 
+describe('<Button/>', () => {
+    const action = actionFixture()
     const props = {
         onRemove: jest.fn(),
         onOpenForm: jest.fn(),
@@ -27,13 +25,29 @@ describe('<Button/>', () => {
     })
 
     it('should render with correct label', () => {
-        const {container} = render(<Button {...props} />)
+        const {container} = render(
+            <Provider
+                store={mockStore({
+                    customers: fromJS({active: {}}),
+                })}
+            >
+                <Button {...props} />
+            </Provider>
+        )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should call the right callbacks with correct index when clicking on buttons', () => {
-        render(<Button {...props} />)
+        render(
+            <Provider
+                store={mockStore({
+                    customers: fromJS({active: {}}),
+                })}
+            >
+                <Button {...props} />
+            </Provider>
+        )
 
         fireEvent.click(screen.getByText('settings'))
         expect(props.onOpenForm).toHaveBeenCalledWith(props.index)

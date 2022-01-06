@@ -4,6 +4,7 @@ import {RecentChatTicket} from '../../business/types/recentChats'
 import {Ticket} from '../../models/ticket/types'
 import {View} from '../../models/view/types'
 import {Account} from '../../state/currentAccount/types'
+import {ActionData} from '../../state/infobar/utils'
 import {Section} from '../../models/section/types'
 
 export enum BroadcastChannelEvent {
@@ -114,13 +115,11 @@ export type TicketMessageFailedEvent = {
     ticket_id: number
 }
 
-export type ActionExecutedEvent = {
+export type ActionExecutedEvent = ActionData & {
     event: {
         type: 'action-executed'
     }
     status: string
-    user_id: string
-    ticket_id: string
     msg: string
 }
 

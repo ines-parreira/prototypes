@@ -2,14 +2,14 @@ import React, {memo} from 'react'
 import {FormGroup, Label} from 'reactstrap'
 
 import {ContentType} from '../../../../../../../../../../../../models/api/types'
-import BooleanField from '../../../../../../../../../../../common/forms/BooleanField.js'
-import JsonField from '../../../../../../../../../../../common/forms/JsonField'
-import {ActionType, OnChangeAction} from '../../../types'
+import BooleanField from '../../../../../../../../../../forms/BooleanField.js'
+import JsonField from '../../../../../../../../../../forms/JsonField'
+import {Action, OnChangeAction} from '../../../types'
 
 import Parameters from './Parameters'
 
 type Props = {
-    body: ActionType['body']
+    body: Action['body']
     onChange: OnChangeAction
 }
 
@@ -22,13 +22,13 @@ function Body({body, onChange}: Props) {
         />
     )
 
-    const isFormData = body.content_type === ContentType.Form
+    const isFormData = body.contentType === ContentType.Form
 
     if (isFormData) {
         field = (
             <Parameters
                 path={`body.${ContentType.Form}`}
-                value={body[ContentType.Form] || []}
+                value={body[ContentType.Form]}
                 onChange={onChange}
             />
         )
@@ -42,7 +42,7 @@ function Body({body, onChange}: Props) {
                     type="radio"
                     value={!isFormData}
                     onChange={() =>
-                        onChange('body.content_type', ContentType.Json)
+                        onChange('body.contentType', ContentType.Json)
                     }
                     label={ContentType.Json}
                 />
@@ -50,7 +50,7 @@ function Body({body, onChange}: Props) {
                     type="radio"
                     value={isFormData}
                     onChange={() =>
-                        onChange('body.content_type', ContentType.Form)
+                        onChange('body.contentType', ContentType.Form)
                     }
                     label={ContentType.Form}
                 />

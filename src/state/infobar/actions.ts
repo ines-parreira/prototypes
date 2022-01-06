@@ -4,6 +4,7 @@ import _noop from 'lodash/noop'
 import {notify} from '../notifications/actions'
 import {isCurrentlyOnTicket, stripErrorMessage} from '../../utils'
 
+import {ActionExecutedEvent} from '../../services/socketManager/types'
 import client from '../../models/api/resources'
 import {ApiListResponsePagination} from '../../models/api/types'
 import history from '../../pages/history'
@@ -12,6 +13,7 @@ import {NotificationStatus} from '../notifications/types'
 import {StoreDispatch, RootState} from '../types'
 import {onApiError} from '../utils'
 
+import * as utils from './utils'
 import * as constants from './constants'
 
 export const search =
@@ -126,40 +128,41 @@ export const fetchPreviewCustomer =
  * Send action from infobar button to server
  */
 export const executeAction =
-    (
-        actionName: string,
-        integrationId: string | number,
-        customerId?: string,
-        payload: {
-            order_id?: Maybe<number>
-            customer_id?: number
-            comment_id?: number | string
-            draft_order_id?: number
-            draft_order_name?: string
-            draft_order_invoice?: unknown
-            facebook_comment?: string
-            tags_list?: string
-            instagram_comment?: string
-            messenger_reply?: string
-            instagram_direct_message_reply?: string
-            from_ticket_message_id?: number
-        } = {},
-        callback: (response?: AxiosResponse) => void = _noop
-    ) =>
-    (
-        dispatch: StoreDispatch,
-        getState: () => RootState
-    ): Promise<ReturnType<StoreDispatch>> => {
+    ({
+        actionName,
+        actionLabel,
+        integrationId,
+        customerId,
+        payload = {},
+        callback = _noop,
+    }: {
+        actionName: string
+        actionLabel?: string
+        integrationId: string | number
+        customerId?: string
+        payload?: utils.ActionDataPayload
+        callback?: (response?: AxiosResponse) => void
+    }) =>
+    (dispatch: StoreDispatch, getState: () => RootState): string => {
         const state = getState()
         const {ticket} = state
 
-        const ticketId = ticket.get('id') as number
+        const ticketId = ticket.get('id') as number | undefined
 
-        const data = {
+        const actionId = utils.actionButtonHashForData({
             action_name: actionName,
-            user_id: customerId,
-            ticket_id: ticketId,
-            integration_id: integrationId,
+            user_id: customerId || '',
+            integration_id: integrationId.toString(),
+            payload,
+        })
+
+        const data: utils.ActionData = {
+            action_name: actionName,
+            action_label: actionLabel,
+            action_id: actionId,
+            user_id: customerId || '',
+            ticket_id: ticketId?.toString(),
+            integration_id: integrationId.toString(),
             payload,
         }
 
@@ -176,37 +179,35 @@ export const executeAction =
             type: constants.EXECUTE_ACTION_START,
             data,
             callback,
+            id: actionId,
         })
 
-        return client.post('/api/actions/execute/', data).then(
-            () => {
-                return Promise.resolve()
-            },
-            (error: AxiosError) => {
+        client
+            .post('/api/actions/execute/', data)
+            .catch((error: AxiosError) => {
                 return dispatch({
                     type: constants.EXECUTE_ACTION_ERROR,
                     data,
                     error,
+                    id: actionId,
                     reason:
                         `Failed to execute action ${actionName} on customer #${
                             customerId || ''
                         } ` + `for integration ${integrationId}`,
                 })
-            }
-        )
+            })
+
+        return actionId
     }
 
 /**
  * Handle asynchronous result from an executed action from server (returned by socket)
  */
 export const handleExecutedAction =
-    (response: {
-        status: string
-        user_id: string
-        ticket_id: string
-        msg: string
-    }) =>
+    (response: ActionExecutedEvent) =>
     (dispatch: StoreDispatch): ReturnType<StoreDispatch> => {
+        const actionId = response.action_id
+
         if (response.status === 'error') {
             let buttons = [
                 {
@@ -218,12 +219,13 @@ export const handleExecutedAction =
                 },
             ]
 
-            if (response.ticket_id) {
-                if (isCurrentlyOnTicket(response.ticket_id)) {
+            const ticketId = response.ticket_id
+            if (ticketId) {
+                if (isCurrentlyOnTicket(ticketId)) {
                     buttons = []
                 } else {
                     buttons[0].onClick = () => {
-                        history.push(`/app/ticket/${response.ticket_id}`)
+                        history.push(`/app/ticket/${ticketId}`)
                     }
                 }
             }
@@ -241,6 +243,7 @@ export const handleExecutedAction =
             return dispatch({
                 type: constants.EXECUTE_ACTION_ERROR,
                 data: response,
+                id: actionId,
             })
         }
 
@@ -254,5 +257,6 @@ export const handleExecutedAction =
         return dispatch({
             type: constants.EXECUTE_ACTION_SUCCESS,
             data: response,
+            id: actionId,
         })
     }

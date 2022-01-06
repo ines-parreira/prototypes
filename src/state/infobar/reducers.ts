@@ -3,7 +3,6 @@ import {fromJS, Map, List} from 'immutable'
 import {GorgiasAction} from '../types'
 
 import * as constants from './constants'
-import * as utils from './utils'
 import {InfobarState} from './types'
 
 export const initialState: InfobarState = fromJS({
@@ -23,20 +22,12 @@ export default function reducer(
 ): InfobarState {
     switch (action.type) {
         case constants.EXECUTE_ACTION_START: {
-            if (!action.callback) {
-                return state
-            }
-
-            const actionId = utils.actionButtonHashForData(
-                action.data as utils.ActionData
-            )
-
             return state.updateIn(
                 ['pendingActionsCallbacks'],
                 (list: List<any>) => {
                     return list.push(
                         fromJS({
-                            id: actionId,
+                            id: action.id,
                             callback: action.callback,
                         })
                     )
@@ -46,15 +37,11 @@ export default function reducer(
 
         case constants.EXECUTE_ACTION_ERROR:
         case constants.EXECUTE_ACTION_SUCCESS: {
-            const actionId = utils.actionButtonHashForData(
-                action.data as utils.ActionData
-            )
-
             const actionIndex = (
                 state.get('pendingActionsCallbacks') as List<any>
             ).findIndex(
                 (pendingAction: Map<any, any>) =>
-                    pendingAction.get('id') === actionId
+                    pendingAction.get('id') === action.id
             )
 
             if (!~actionIndex) {

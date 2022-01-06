@@ -6,10 +6,11 @@ import {
     validateWebhookURL,
     validateWebhookURLToPattern,
 } from '../../../../../../../../../../../../utils'
-import {HttpMethod} from '../../../../../../../../../../../../models/api/types'
-import InputField from '../../../../../../../../../../../common/forms/InputField'
 
-import {ActionType, OnChangeAction} from '../../../types'
+import InputField from '../../../../../../../../../../forms/InputField'
+
+import {Action as ActionType, OnChangeAction} from '../../../types'
+import {httpMethodsWithBody} from '../../httpMethodsWithBody'
 
 import css from '../../ActionButtons.less'
 
@@ -70,7 +71,7 @@ export default function Action({action, onChange}: Props) {
                     onChange={onChange}
                 />
             </FormGroup>
-            {action.method !== HttpMethod.Get && (
+            {httpMethodsWithBody.includes(action.method) && (
                 <Body body={action.body} onChange={onChange} />
             )}
         </div>

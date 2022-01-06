@@ -369,6 +369,8 @@ Array [
   Object {
     "callback": [Function],
     "data": Object {
+      "action_id": "shopifySendDraftOrderInvoice-789-1-ef990fcde14d08ea84a4dab72437ae3cbea2c819",
+      "action_label": undefined,
       "action_name": "shopifySendDraftOrderInvoice",
       "integration_id": "1",
       "payload": Object {
@@ -380,13 +382,16 @@ Array [
         "draft_order_name": "#D123",
         "order_id": 123,
       },
-      "ticket_id": 456,
+      "ticket_id": "456",
       "user_id": "789",
     },
+    "id": "shopifySendDraftOrderInvoice-789-1-ef990fcde14d08ea84a4dab72437ae3cbea2c819",
     "type": "EXECUTE_ACTION_START",
   },
   Object {
     "data": Object {
+      "action_id": "shopifySendDraftOrderInvoice-789-1-ef990fcde14d08ea84a4dab72437ae3cbea2c819",
+      "action_label": undefined,
       "action_name": "shopifySendDraftOrderInvoice",
       "integration_id": "1",
       "payload": Object {
@@ -398,10 +403,11 @@ Array [
         "draft_order_name": "#D123",
         "order_id": 123,
       },
-      "ticket_id": 456,
+      "ticket_id": "456",
       "user_id": "789",
     },
     "error": [Error: Request failed with status code 500],
+    "id": "shopifySendDraftOrderInvoice-789-1-ef990fcde14d08ea84a4dab72437ae3cbea2c819",
     "reason": "Failed to execute action shopifySendDraftOrderInvoice on customer #789 for integration 1",
     "type": "EXECUTE_ACTION_ERROR",
   },
@@ -449,6 +455,8 @@ Array [
   Object {
     "callback": [Function],
     "data": Object {
+      "action_id": "shopifySendDraftOrderInvoice-789-1-ef990fcde14d08ea84a4dab72437ae3cbea2c819",
+      "action_label": undefined,
       "action_name": "shopifySendDraftOrderInvoice",
       "integration_id": "1",
       "payload": Object {
@@ -460,9 +468,10 @@ Array [
         "draft_order_name": "#D123",
         "order_id": 123,
       },
-      "ticket_id": 456,
+      "ticket_id": "456",
       "user_id": "789",
     },
+    "id": "shopifySendDraftOrderInvoice-789-1-ef990fcde14d08ea84a4dab72437ae3cbea2c819",
     "type": "EXECUTE_ACTION_START",
   },
   Object {

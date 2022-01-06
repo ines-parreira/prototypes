@@ -1,0 +1,115 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ActionEditor/> should render with correct labels 1`] = `
+<div>
+  <div
+    class="modal-header"
+  >
+    <h5
+      class="modal-title"
+    >
+      Edit fields
+    </h5>
+    <button
+      aria-label="Close"
+      class="close"
+      type="button"
+    >
+      <span
+        aria-hidden="true"
+      >
+        ×
+      </span>
+    </button>
+  </div>
+  <form
+    class=""
+  >
+    <div
+      class="modal-body"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-somekey1"
+        >
+          ok1
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-somekey1"
+            required=""
+            type="text"
+            value="somevalue1"
+          />
+        </div>
+      </div>
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-somekey2"
+        >
+          somekey2
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-somekey2"
+            required=""
+            type="text"
+            value="somevalue2"
+          />
+        </div>
+      </div>
+      <div
+        class="InputField form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-somekey3"
+        >
+          somekey3
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-somekey3"
+            type="text"
+            value="somevalue3"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal-footer"
+    >
+      <button
+        class="mr-2 btn btn-secondary"
+        type="button"
+      >
+        Cancel
+      </button>
+      <button
+        class="btn btn-primary"
+        type="submit"
+      >
+        Execute
+      </button>
+    </div>
+  </form>
+</div>
+`;

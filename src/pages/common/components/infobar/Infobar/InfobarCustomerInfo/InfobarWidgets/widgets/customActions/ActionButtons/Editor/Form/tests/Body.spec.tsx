@@ -17,8 +17,9 @@ describe('<Body/>', () => {
             <Body
                 onChange={onChange}
                 body={{
-                    content_type: ContentType.Json,
-                    [ContentType.Json]: '',
+                    contentType: ContentType.Json,
+                    [ContentType.Form]: [],
+                    [ContentType.Json]: {},
                 }}
             />
         )
@@ -31,8 +32,9 @@ describe('<Body/>', () => {
             <Body
                 onChange={onChange}
                 body={{
-                    content_type: ContentType.Form,
+                    contentType: ContentType.Form,
                     [ContentType.Form]: [],
+                    [ContentType.Json]: {},
                 }}
             />
         )
@@ -45,8 +47,9 @@ describe('<Body/>', () => {
             <Body
                 onChange={onChange}
                 body={{
-                    content_type: ContentType.Json,
-                    [ContentType.Json]: '',
+                    contentType: ContentType.Json,
+                    [ContentType.Json]: {},
+                    [ContentType.Form]: [],
                 }}
             />
         )
@@ -57,7 +60,7 @@ describe('<Body/>', () => {
             })
         )
         expect(onChange).toHaveBeenCalledWith(
-            'body.content_type',
+            'body.contentType',
             ContentType.Form
         )
     })
@@ -67,8 +70,9 @@ describe('<Body/>', () => {
             <Body
                 onChange={onChange}
                 body={{
-                    content_type: ContentType.Json,
-                    [ContentType.Json]: '{}',
+                    contentType: ContentType.Json,
+                    [ContentType.Json]: {},
+                    [ContentType.Form]: [],
                 }}
             />
         )
@@ -84,8 +88,9 @@ describe('<Body/>', () => {
             <Body
                 onChange={onChange}
                 body={{
-                    content_type: ContentType.Form,
+                    contentType: ContentType.Form,
                     [ContentType.Form]: [],
+                    [ContentType.Json]: {},
                 }}
             />
         )

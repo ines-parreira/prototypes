@@ -1,16 +1,20 @@
-import React, {useCallback, useMemo, useState} from 'react'
-import {Button, ListGroup} from 'reactstrap'
+import React, {useCallback, useContext, useMemo, useState} from 'react'
+import {Button, ListGroup, Modal} from 'reactstrap'
 
 import {Map} from 'immutable'
-import {connect, ConnectedProps} from 'react-redux'
+import {connect, ConnectedProps, useSelector} from 'react-redux'
 
 import {
     removeEditedWidget,
     startWidgetEdition,
-    updateEditedWidget,
+    updateCustomActions,
 } from '../../../../../../../../../../../state/widgets/actions'
-import Modal from '../../../../../../../../Modal'
-
+import {getCurrentAccountState} from '../../../../../../../../../../../state/currentAccount/selectors'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../../../../../../store/middlewares/segmentTracker'
+import {IntegrationContext} from '../../../IntegrationContext'
 import {
     Button as ButtonType,
     OnSubmitButton,
@@ -36,9 +40,11 @@ export function Editor({
     source,
     buttons,
     startWidgetEdition,
-    updateEditedWidget,
+    updateCustomActions,
     removeEditedWidget,
 }: Props & ConnectedProps<typeof connector>) {
+    const currentAccount = useSelector(getCurrentAccountState)
+    const {integrationId} = useContext(IntegrationContext)
     const [isFormOpen, setFormOpen] = useState<boolean>(false)
     const [editorIndex, setFormIndex] = useState<number | null>(null)
     const handleRemove = useCallback<OnRemoveButton>(
@@ -52,11 +58,14 @@ export function Editor({
                 (_, currentIndex) => currentIndex !== index
             )
 
+            logEvent(SegmentEvent.CustomActionButtonsDeleted, {
+                account_domain: currentAccount.get('domain'),
+                integration_id: integrationId,
+            })
+
             if (buttons.length > 0) {
-                startWidgetEdition(`${templatePath}.meta.custom`)
-                updateEditedWidget({
-                    buttons: newButtons,
-                })
+                startWidgetEdition(`${templatePath}.meta.custom.buttons`)
+                updateCustomActions(newButtons)
             }
         },
         [
@@ -65,33 +74,60 @@ export function Editor({
             templatePath,
             removeEditedWidget,
             startWidgetEdition,
-            updateEditedWidget,
+            updateCustomActions,
+            currentAccount,
+            integrationId,
         ]
     )
 
     const handleSubmit = useCallback<OnSubmitButton>(
         (button, index) => {
-            startWidgetEdition(`${templatePath}.meta.custom`)
+            startWidgetEdition(`${templatePath}.meta.custom.buttons`)
 
             const newButtons = [...buttons]
 
             if (typeof index === 'number') {
+                logEvent(SegmentEvent.CustomActionButtonsEdited, {
+                    account_domain: currentAccount.get('domain'),
+                    integration_id: integrationId,
+                })
                 newButtons[index] = button
             } else {
+                logEvent(SegmentEvent.CustomActionButtonsAdded, {
+                    account_domain: currentAccount.get('domain'),
+                    integration_id: integrationId,
+                })
                 newButtons.push(button)
             }
 
-            updateEditedWidget({
-                buttons: newButtons,
-            })
+            updateCustomActions(newButtons)
         },
-        [buttons, templatePath, startWidgetEdition, updateEditedWidget]
+        [
+            buttons,
+            templatePath,
+            startWidgetEdition,
+            updateCustomActions,
+            currentAccount,
+            integrationId,
+        ]
     )
 
-    const handleOpenForm = useCallback<OnOpenForm>((index) => {
-        setFormIndex(typeof index === 'number' ? index : null)
-        setFormOpen(true)
-    }, [])
+    const handleOpenForm = useCallback<OnOpenForm>(
+        (index) => {
+            if (typeof index === 'number') {
+                setFormIndex(index)
+            } else {
+                setFormIndex(null)
+                logEvent(SegmentEvent.CustomActionButtonsStart, {
+                    account_domain: currentAccount.get('domain'),
+                    integration_id: integrationId,
+                })
+            }
+            setFormIndex(typeof index === 'number' ? index : null)
+            setFormOpen(true)
+        },
+        [currentAccount, integrationId]
+    )
     const handleCloseForm = useCallback(() => setFormOpen(false), [])
 
     const formProps = useMemo(
@@ -132,6 +168,7 @@ export function Editor({
                 isOpen={isFormOpen}
                 onClose={handleCloseForm}
                 backdrop="static"
+                size="lg"
                 // it has to be above popover which is currently set to 1560
                 zIndex={1561}
             >
@@ -142,7 +179,7 @@ export function Editor({
 }
 
 const connector = connect(null, {
-    updateEditedWidget,
+    updateCustomActions,
     startWidgetEdition,
     removeEditedWidget,
 })

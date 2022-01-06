@@ -5,7 +5,12 @@ Object {
   "_internal": Object {
     "loading": Object {},
   },
-  "pendingActionsCallbacks": Array [],
+  "pendingActionsCallbacks": Array [
+    Object {
+      "callback": undefined,
+      "id": "shopifyRefundShippingCostOfOrder-34-5-f086fd149f679a11cf4d5378daa3a994cd70689a",
+    },
+  ],
   "picture": Object {
     "email": null,
     "url": null,

@@ -107,12 +107,12 @@ export function EditableListWidget({
         }
 
         if (!action) return
-        void executeAction(
-            action,
-            integrationId?.toString(),
-            activeCustomerId?.toString(),
-            payload
-        )
+        executeAction({
+            actionName: action,
+            integrationId,
+            customerId: activeCustomerId?.toString(),
+            payload,
+        })
         setSyncedValues(tagsListStr)
     }
 

@@ -1,8 +1,11 @@
-import React, {memo, useCallback} from 'react'
+import React, {memo, useCallback, useMemo} from 'react'
 import {Button as BasicButton, ListGroupItem} from 'reactstrap'
 import {Map} from 'immutable'
+import {useSelector} from 'react-redux'
 
 import {renderTemplate} from '../../../../../../../../../utils/template'
+import {getTicket} from '../../../../../../../../../../../state/ticket/selectors'
+import {getActiveCustomer} from '../../../../../../../../../../../state/customers/selectors'
 import {Button as ButtonType, OnOpenForm, OnRemoveButton} from '../../types'
 
 import css from '../ActionButtons.less'
@@ -23,12 +26,24 @@ function Button(props: ButtonProps) {
         onRemove,
         onOpenForm,
     } = props
+
+    const ticket = useSelector(getTicket)
+    const user = useSelector(getActiveCustomer)
+    const templateContext = useMemo(() => {
+        return {
+            ...(source.toJS() as Record<string, unknown>),
+            ticket,
+            user,
+        }
+    }, [user, source, ticket])
+
     const handleRemove = useCallback(() => onRemove(index), [index, onRemove])
+
     return (
         <>
             <ListGroupItem className={css.editRow}>
                 <BasicButton type="button" onClick={() => onOpenForm(index)}>
-                    {renderTemplate(label, source.toJS())}
+                    {renderTemplate(label, templateContext)}
                 </BasicButton>
                 <span className={css.editIcons}>
                     <i

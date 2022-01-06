@@ -19,7 +19,7 @@ describe('infobar reducers', () => {
             action_name: 'shopifyRefundShippingCostOfOrder',
             integration_id: '5',
             user_id: '34',
-            ticket_id: 1,
+            ticket_id: '1',
             payload: {order_id: 4194477515},
             callback: jest.fn(),
         }
@@ -29,6 +29,8 @@ describe('infobar reducers', () => {
         expect(
             reducer(initialState, {
                 type: types.EXECUTE_ACTION_START,
+                data,
+                id: actionId,
             }).toJS()
         ).toMatchSnapshot()
 
@@ -38,6 +40,7 @@ describe('infobar reducers', () => {
                 type: types.EXECUTE_ACTION_START,
                 callback: data.callback,
                 data,
+                id: actionId,
             }).toJS()
         ).toMatchSnapshot()
 
@@ -58,6 +61,7 @@ describe('infobar reducers', () => {
                 {
                     type: types.EXECUTE_ACTION_SUCCESS,
                     data,
+                    id: actionId,
                 }
             ).toJS()
         ).toMatchSnapshot()
@@ -80,6 +84,7 @@ describe('infobar reducers', () => {
                 {
                     type: types.EXECUTE_ACTION_ERROR,
                     data,
+                    id: actionId,
                 }
             ).toJS()
         ).toMatchSnapshot()

@@ -3,8 +3,7 @@ import classnames from 'classnames'
 import {List, Map} from 'immutable'
 
 import Links from './Links'
-// todo @manuel : remove comments when the last PR about custom action buttons is merged
-// import ActionButtons from './ActionButtons'
+import ActionButtons from './ActionButtons'
 import css from './CustomActions.less'
 
 type Props = {
@@ -25,17 +24,19 @@ function CustomActions(props: Props) {
         ['meta', 'custom', 'buttons'],
         List<Map<string, unknown>>()
     ) as List<Map<string, unknown>>
+
     if (!isEditing && !immutableLinks.size && !immutableButtons.size)
         return null
+
     return (
         <div className={classnames(css.container)}>
-            {/* <ActionButtons
+            <ActionButtons
                 templatePath={templatePath}
                 templateAbsolutePath={templateAbsolutePath}
                 source={source}
                 immutableButtons={immutableButtons}
                 isEditing={isEditing}
-            /> */}
+            />
             <Links
                 templatePath={templatePath}
                 templateAbsolutePath={templateAbsolutePath}

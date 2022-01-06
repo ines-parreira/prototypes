@@ -356,6 +356,21 @@ export default function reducer(
                 .setIn(['_internal', 'isDirty'], true)
         }
 
+        case types.UPDATE_CUSTOM_ACTION: {
+            const editedActionsPath: string = state.getIn(
+                ['_internal', 'currentlyEditedWidgetPath'],
+                ''
+            )
+            return state
+                .setIn(
+                    ['_internal', 'editedItems'].concat(
+                        editedActionsPath.split('.')
+                    ),
+                    fromJS(action.data)
+                )
+                .setIn(['_internal', 'isDirty'], true)
+        }
+
         case types.SUBMIT_WIDGET_START: {
             return state.setIn(['_internal', 'loading', 'saving'], true)
         }

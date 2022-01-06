@@ -151,7 +151,8 @@ export class EventContainer extends React.Component<Props, State> {
 
         const hasIntegration = !integration.isEmpty()
 
-        let actionLabel = actionConfig.label
+        let actionLabel =
+            event.getIn(['data', 'action_label']) || actionConfig.label
         let objectLabel = ''
         let objectLink = ''
         const eventIcon = (

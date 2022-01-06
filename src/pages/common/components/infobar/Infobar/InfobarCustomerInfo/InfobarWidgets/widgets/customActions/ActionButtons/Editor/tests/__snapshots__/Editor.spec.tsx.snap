@@ -9,24 +9,26 @@ Array [
   ],
   Array [
     "startWidgetEdition",
-    "some.template.meta.custom",
+    "some.template.meta.custom.buttons",
   ],
   Array [
-    "updateEditedWidget",
-    Object {
-      "buttons": Array [
-        Object {
-          "action": Object {
-            "body": Object {},
-            "headers": Array [],
-            "method": "GET",
-            "params": Array [],
-            "url": "",
+    "updateCustomActions",
+    Array [
+      Object {
+        "action": Object {
+          "body": Object {
+            "application/json": Object {},
+            "application/x-www-form-urlencoded": Array [],
+            "contentType": "application/json",
           },
-          "label": "I am in snapshots",
+          "headers": Array [],
+          "method": "GET",
+          "params": Array [],
+          "url": "www.someurl.com",
         },
-      ],
-    },
+        "label": "I am in snapshots",
+      },
+    ],
   ],
 ]
 `;
@@ -35,34 +37,40 @@ exports[`<Editor/> should call the correct callbacks when submitting a edited bu
 Array [
   Array [
     "startWidgetEdition",
-    "some.template.meta.custom",
+    "some.template.meta.custom.buttons",
   ],
   Array [
-    "updateEditedWidget",
-    Object {
-      "buttons": Array [
-        Object {
-          "action": Object {
-            "body": Object {},
-            "headers": Array [],
-            "method": "GET",
-            "params": Array [],
-            "url": "",
+    "updateCustomActions",
+    Array [
+      Object {
+        "action": Object {
+          "body": Object {
+            "application/json": Object {},
+            "application/x-www-form-urlencoded": Array [],
+            "contentType": "application/json",
           },
-          "label": "I am in snapshots",
+          "headers": Array [],
+          "method": "GET",
+          "params": Array [],
+          "url": "www.someurl.com",
         },
-        Object {
-          "action": Object {
-            "body": Object {},
-            "headers": Array [],
-            "method": "GET",
-            "params": Array [],
-            "url": "",
+        "label": "I am in snapshots",
+      },
+      Object {
+        "action": Object {
+          "body": Object {
+            "application/json": Object {},
+            "application/x-www-form-urlencoded": Array [],
+            "contentType": "application/json",
           },
-          "label": "I am in snapshots too",
+          "headers": Array [],
+          "method": "GET",
+          "params": Array [],
+          "url": "www.someurl.com",
         },
-      ],
-    },
+        "label": "I am in snapshots too",
+      },
+    ],
   ],
 ]
 `;
@@ -71,49 +79,59 @@ exports[`<Editor/> should call the correct callbacks when submitting a new butto
 Array [
   Array [
     "startWidgetEdition",
-    "some.template.meta.custom",
+    "some.template.meta.custom.buttons",
   ],
   Array [
-    "updateEditedWidget",
-    Object {
-      "buttons": Array [
-        Object {
-          "action": Object {
-            "body": Object {},
-            "headers": Array [],
-            "method": "GET",
-            "params": Array [],
-            "url": "",
+    "updateCustomActions",
+    Array [
+      Object {
+        "action": Object {
+          "body": Object {
+            "application/json": Object {},
+            "application/x-www-form-urlencoded": Array [],
+            "contentType": "application/json",
           },
-          "label": "I am in snapshots",
+          "headers": Array [],
+          "method": "GET",
+          "params": Array [],
+          "url": "www.someurl.com",
         },
-        Object {
-          "action": Object {
-            "body": Object {},
-            "headers": Array [],
-            "method": "GET",
-            "params": Array [],
-            "url": "",
+        "label": "I am in snapshots",
+      },
+      Object {
+        "action": Object {
+          "body": Object {
+            "application/json": Object {},
+            "application/x-www-form-urlencoded": Array [],
+            "contentType": "application/json",
           },
-          "label": "I am in snapshots too",
+          "headers": Array [],
+          "method": "GET",
+          "params": Array [],
+          "url": "www.someurl.com",
         },
-        Object {
-          "action": Object {
-            "body": Object {},
-            "headers": Array [],
-            "method": "GET",
-            "params": Array [],
-            "url": "",
+        "label": "I am in snapshots too",
+      },
+      Object {
+        "action": Object {
+          "body": Object {
+            "application/json": Object {},
+            "application/x-www-form-urlencoded": Array [],
+            "contentType": "application/json",
           },
-          "label": "ok",
+          "headers": Array [],
+          "method": "GET",
+          "params": Array [],
+          "url": "",
         },
-      ],
-    },
+        "label": "ok",
+      },
+    ],
   ],
 ]
 `;
 
-exports[`<Editor/> should with buttons and "add button" button 1`] = `
+exports[`<Editor/> should render with buttons and "add button" button 1`] = `
 <div>
   <ul
     class="list-group list-group-flush"

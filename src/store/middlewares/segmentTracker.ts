@@ -138,6 +138,18 @@ export enum SegmentEvent {
     PaywallUpgradeButtonSelected = 'paywall-upgrade-button-selected',
     StatDownloadClicked = 'stat-download-clicked',
     StatViewLinkClicked = 'stat-view-link-clicked',
+    CustomActionLinksStart = 'widget/custom-link/start-creation',
+    CustomActionLinksAdded = 'widget/custom-link/link-added',
+    CustomActionLinksEdited = 'widget/custom-link/link-edited',
+    CustomActionLinksDeleted = 'widget/custom-link/link-deleted',
+    CustomActionLinksClicked = 'widget/custom-link/link-clicked',
+    CustomActionButtonsStart = 'widget/custom-button/start-creation',
+    CustomActionButtonsAdded = 'widget/custom-button/button-added',
+    CustomActionButtonsEdited = 'widget/custom-button/button-edited',
+    CustomActionButtonsDeleted = 'widget/custom-button/button-deleted',
+    CustomActionButtonsExecuted = 'widget/custom-button/button-executed',
+    CustomActionButtonsParamOpened = 'widget/custom-button/params-modal-opened',
+    CustomActionButtonsParamClosed = 'widget/custom-button/params-modal-closed',
 }
 
 export enum StatViewLinkClickedStat {

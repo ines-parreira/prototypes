@@ -2,6 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
+import {INFOBAR_CUSTOM_BUTTON_ACTION_NAME} from '../../../../../config/actions'
 import {EventContainer} from '../Event.tsx'
 
 describe('Event component', () => {
@@ -81,6 +82,29 @@ describe('Event component', () => {
     const getProps = (integrationId) => ({
         integrationData: fromJS(integrationsData[integrationId]),
         integration: fromJS(integrations[integrationId]),
+    })
+
+    it('should display the correct label for an action', () => {
+        const event = fromJS({
+            ...baseEventFixture,
+            data: {
+                action_name: INFOBAR_CUSTOM_BUTTON_ACTION_NAME,
+                action_label: 'You should see me in snaps',
+                integration_id: rechargeIntegrationId,
+                payload: {
+                    subscription_id: subscriptionId,
+                },
+                status: 'success',
+            },
+        })
+        const component = shallow(
+            <EventContainer
+                {...getProps(rechargeIntegrationId)}
+                event={event}
+                isLast={false}
+            />
+        )
+        expect(component).toMatchSnapshot()
     })
 
     it('should display correctly a successful event for a Recharge Subscription action', () => {

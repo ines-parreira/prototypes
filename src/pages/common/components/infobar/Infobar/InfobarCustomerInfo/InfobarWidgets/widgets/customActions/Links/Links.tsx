@@ -1,16 +1,29 @@
-import React, {useState, useMemo, memo, useCallback, useEffect} from 'react'
+import React, {
+    useContext,
+    useState,
+    useMemo,
+    memo,
+    useCallback,
+    useEffect,
+} from 'react'
 import {Button, Collapse, ListGroup} from 'reactstrap'
 import {List, Map} from 'immutable'
-import {connect, ConnectedProps} from 'react-redux'
+import {connect, ConnectedProps, useSelector} from 'react-redux'
 
 import expandUp from 'assets/img/infobar/expand-up-blue.svg'
 import expandDown from 'assets/img/infobar/expand-down.svg'
 
 import {
-    updateEditedWidget,
+    updateCustomActions,
     startWidgetEdition,
     removeEditedWidget,
 } from '../../../../../../../../../../state/widgets/actions'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../../../../../store/middlewares/segmentTracker'
+import {getCurrentAccountState} from '../../../../../../../../../../state/currentAccount/selectors'
+import {IntegrationContext} from '../../IntegrationContext'
 import {Link as LinkType, SubmitLink} from '../types'
 
 import Editor from './Editor'
@@ -35,9 +48,12 @@ export function Links(props: Props & ConnectedProps<typeof connector>) {
         immutableLinks,
         isEditing = false,
         startWidgetEdition,
-        updateEditedWidget,
+        updateCustomActions,
         removeEditedWidget,
     } = props
+
+    const currentAccount = useSelector(getCurrentAccountState)
+    const {integrationId} = useContext(IntegrationContext)
 
     const [links, setLinks] = useState<LinkType[]>([])
 
@@ -60,11 +76,14 @@ export function Links(props: Props & ConnectedProps<typeof connector>) {
             links.splice(index, 1)
 
             if (links.length > 0) {
-                startWidgetEdition(`${templatePath}.meta.custom`)
-                updateEditedWidget({
-                    links: links,
-                })
+                startWidgetEdition(`${templatePath}.meta.custom.links`)
+                updateCustomActions(links)
             }
+
+            logEvent(SegmentEvent.CustomActionLinksDeleted, {
+                account_domain: currentAccount.get('domain'),
+                integration_id: integrationId,
+            })
         },
         [
             links,
@@ -72,25 +91,40 @@ export function Links(props: Props & ConnectedProps<typeof connector>) {
             startWidgetEdition,
             templateAbsolutePath,
             templatePath,
-            updateEditedWidget,
+            updateCustomActions,
+            currentAccount,
+            integrationId,
         ]
     )
 
     const handleSubmit = useCallback<SubmitLink>(
         (link, index) => {
-            startWidgetEdition(`${templatePath}.meta.custom`)
+            startWidgetEdition(`${templatePath}.meta.custom.links`)
 
             if (typeof index === 'number') {
                 links[index] = link
+                logEvent(SegmentEvent.CustomActionLinksEdited, {
+                    account_domain: currentAccount.get('domain'),
+                    integration_id: integrationId,
+                })
             } else {
                 links.push(link)
+                logEvent(SegmentEvent.CustomActionLinksAdded, {
+                    account_domain: currentAccount.get('domain'),
+                    integration_id: integrationId,
+                })
             }
 
-            updateEditedWidget({
-                links: links,
-            })
+            updateCustomActions(links)
         },
-        [links, startWidgetEdition, templatePath, updateEditedWidget]
+        [
+            links,
+            startWidgetEdition,
+            templatePath,
+            updateCustomActions,
+            currentAccount,
+            integrationId,
+        ]
     )
 
     const targetId = `custom-action-link-${templatePath.replace(/\./g, '')}`
@@ -182,7 +216,7 @@ export function Links(props: Props & ConnectedProps<typeof connector>) {
 }
 
 const connector = connect(null, {
-    updateEditedWidget,
+    updateCustomActions,
     startWidgetEdition,
     removeEditedWidget,
 })

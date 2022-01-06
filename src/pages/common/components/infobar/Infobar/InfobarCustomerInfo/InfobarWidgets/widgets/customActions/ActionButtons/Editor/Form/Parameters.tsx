@@ -76,7 +76,7 @@ function Parameters({value, path, onChange}: Props) {
                         <div className={css.formParamCol}>
                             <InputField
                                 type="text"
-                                placeholder="Label"
+                                placeholder="Edit Label"
                                 value={field.label}
                                 onChange={(value) =>
                                     onChange(`${indexedPath}.label`, value)

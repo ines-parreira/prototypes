@@ -808,3 +808,101 @@ exports[`Event component should display correctly a successful event for a Shopi
   </Card>
 </div>
 `;
+
+exports[`Event component should display the correct label for an action 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon success"
+        title="Success"
+      >
+        <i
+          className="material-icons"
+        >
+          check
+        </i>
+      </div>
+      <span
+        className="actionName"
+      >
+        You should see me in snaps
+         
+      </span>
+      <span
+        className="equalFiller"
+      >
+        on
+      </span>
+      <span
+        className="actionName"
+      >
+        Recharge
+         
+        (
+        my-store
+        )
+      </span>
+      <span
+        className="filler"
+      >
+        by
+      </span>
+      <AgentLabel
+        className=""
+        name="Acme Support"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+      <Button
+        className="more"
+        color="link"
+        onClick={[Function]}
+        tag="button"
+        title="More details"
+      >
+        <i
+          className="material-icons md-2"
+        >
+          expand_more
+        </i>
+      </Button>
+    </div>
+    <Connect(DatetimeLabelContainer)
+      className="date text-faded"
+      dateTime="2017-12-07T01:01:34.502206+00:00"
+    />
+  </div>
+  <Card
+    className="details d-none"
+    tag="div"
+  >
+    <CardBody
+      tag="div"
+    >
+      <div
+        key="payload"
+      >
+        <div>
+          <div
+            key="subscription_id"
+          >
+            <b>
+              Subscription id
+            </b>
+            :
+             
+            6
+          </div>
+        </div>
+      </div>
+    </CardBody>
+  </Card>
+</div>
+`;

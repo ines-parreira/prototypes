@@ -15,8 +15,8 @@ import {StoreDispatch, RootState} from '../types'
 import client from '../../models/api/resources'
 
 import {
-    ButtonsWidget,
-    LinksWidget,
+    Button,
+    Link,
 } from '../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
 import * as types from './constants'
@@ -188,12 +188,17 @@ export function drop(
     }
 }
 
-export function updateEditedWidget(
-    data: WidgetTemplateWidget | LinksWidget | ButtonsWidget
-) {
+export function updateEditedWidget(data: WidgetTemplateWidget) {
     return {
         type: types.UPDATE_EDITED_WIDGET,
         item: data,
+    }
+}
+
+export function updateCustomActions(data: Link[] | Button[]) {
+    return {
+        type: types.UPDATE_CUSTOM_ACTION,
+        data,
     }
 }
 

@@ -404,14 +404,14 @@ export const sendInvoice =
                 }, 0)
             }
 
-            void dispatch(
-                executeAction(
-                    ShopifyActionType.SendDraftOrderInvoice,
-                    integrationId.toString(),
-                    customerId.toString(),
+            dispatch(
+                executeAction({
+                    actionName: ShopifyActionType.SendDraftOrderInvoice,
+                    integrationId: integrationId,
+                    customerId: customerId.toString(),
                     payload,
-                    callback as any
-                )
+                    callback: callback as any,
+                })
             )
         })
     }

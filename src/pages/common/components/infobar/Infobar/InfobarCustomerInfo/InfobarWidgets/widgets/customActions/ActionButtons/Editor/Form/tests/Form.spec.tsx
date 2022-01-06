@@ -1,7 +1,8 @@
 import React from 'react'
 import {render, fireEvent, screen} from '@testing-library/react'
 
-import {HttpMethod} from '../../../../../../../../../../../../../models/api/types'
+import {ContentType} from '../../../../../../../../../../../../../models/api/types'
+import {actionFixture} from '../../../../../../../../../../../../../fixtures/infobarCustomActions'
 
 import Form from '..'
 
@@ -10,13 +11,7 @@ describe('<Form/>', () => {
     const onSubmit = jest.fn()
     const button = {
         label: 'label',
-        action: {
-            method: HttpMethod.Get,
-            url: 'www.someurl.com',
-            headers: [],
-            params: [],
-            body: {},
-        },
+        action: actionFixture(),
     }
     const index = 2
 
@@ -29,7 +24,7 @@ describe('<Form/>', () => {
             <Form onClose={onClose} onSubmit={onSubmit} />
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(container).toMatchSnapshot()
     })
 
     it('should render with preloaded data', () => {
@@ -42,7 +37,7 @@ describe('<Form/>', () => {
             />
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(container).toMatchSnapshot()
     })
 
     it('should call onClose when clicking cancel button', () => {
@@ -110,6 +105,75 @@ describe('<Form/>', () => {
                         },
                     ],
                 },
+            },
+            2
+        )
+    })
+
+    it('should trim leftover body data', () => {
+        const action = actionFixture()
+        action.body[ContentType.Json] = {
+            ok: 'sure',
+        }
+        action.body[ContentType.Form] = [
+            {
+                key: 'value',
+                value: '',
+                label: '',
+                editable: false,
+                mandatory: false,
+            },
+        ]
+        const button = {
+            label: 'label',
+            action,
+        }
+        render(
+            <Form
+                index={2}
+                button={button}
+                onClose={onClose}
+                onSubmit={onSubmit}
+            />
+        )
+        fireEvent.click(screen.getByRole('button', {name: 'Save'}))
+        expect(onSubmit).toHaveBeenCalledWith(
+            {
+                ...button,
+                action: actionFixture(),
+            },
+            2
+        )
+    })
+
+    it('should trim leftover body form data', () => {
+        const action = actionFixture()
+        action.body[ContentType.Form] = [
+            {
+                key: 'value',
+                value: '',
+                label: '',
+                editable: false,
+                mandatory: false,
+            },
+        ]
+        const button = {
+            label: 'label',
+            action,
+        }
+        render(
+            <Form
+                index={2}
+                button={button}
+                onClose={onClose}
+                onSubmit={onSubmit}
+            />
+        )
+        fireEvent.click(screen.getByRole('button', {name: 'Save'}))
+        expect(onSubmit).toHaveBeenCalledWith(
+            {
+                ...button,
+                action: actionFixture(),
             },
             2
         )

@@ -189,21 +189,18 @@ function usePrivateReply(
 
     const sendPrivateReply = (sendAndClose: boolean) => {
         setIsSending(true)
-
         executePrivateReplyAction(
             actionName,
             integrationId,
             senderId,
             actionPayload
         )
-            .then(sendAndClose ? void setClosedStatus() : null)
-            .finally(() => {
-                setIsSending(false)
-                toggle()
-                if (sendAndClose) {
-                    void goToNextTicket()
-                }
-            })
+        setIsSending(false)
+        toggle()
+        if (sendAndClose) {
+            void setClosedStatus()
+            void goToNextTicket()
+        }
     }
 
     return {isSending, sendPrivateReply, inputOnChange, canSend}
@@ -219,12 +216,12 @@ const mapDispatchToProps = (dispatch: StoreDispatch, props: OwnProps) => ({
         actionPayload: any
     ) =>
         dispatch(
-            infobarActions.executeAction(
+            infobarActions.executeAction({
                 actionName,
-                integrationId.toString(),
-                senderId.toString(),
-                actionPayload
-            )
+                integrationId,
+                customerId: senderId.toString(),
+                payload: actionPayload,
+            })
         ),
 })
 

@@ -359,7 +359,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
                         const result = (
                             realImplementation as typeof executeAction
                         )(...args)(...reduxArgs)
-                        const callback = args[4]
+                        const callback = args[0].callback
                         callback!(response)
                         return result
                     }

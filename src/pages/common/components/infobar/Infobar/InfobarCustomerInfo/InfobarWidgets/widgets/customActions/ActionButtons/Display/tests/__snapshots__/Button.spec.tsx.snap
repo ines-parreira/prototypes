@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Button/> should render a basic button 1`] = `
+<button
+  class="actionButton btn btn-secondary"
+  type="button"
+>
+  something
+</button>
+`;
+
+exports[`<Button/> should render a dropdow button 1`] = `
+<button
+  class="dropdownItem dropdown-item"
+  role="menuitem"
+  tabindex="0"
+  type="button"
+>
+  something
+</button>
+`;

@@ -28,11 +28,15 @@ type Props = {
 } & ConnectedProps<typeof connector>
 
 export class SourceActionsHeader extends Component<Props> {
-    _executeAction = (name: string) => {
+    _executeAction = (actionName: string) => {
         const {integrationId, messageId, executeAction} = this.props
         if (integrationId) {
-            void executeAction(name, integrationId, undefined, {
-                comment_id: messageId,
+            executeAction({
+                actionName,
+                integrationId,
+                payload: {
+                    comment_id: messageId,
+                },
             })
         }
     }

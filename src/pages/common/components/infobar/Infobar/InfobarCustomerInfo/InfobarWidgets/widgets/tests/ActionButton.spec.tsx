@@ -306,15 +306,15 @@ describe('ActionButton component', () => {
 
         userEvent.click(getByText('Modal'))
 
-        expect(minProps.executeAction).toHaveBeenCalledWith(
-            options[0].value,
-            minProps.integrationId,
-            customerId.toString(),
-            {
+        expect(minProps.executeAction).toHaveBeenCalledWith({
+            actionName: options[0].value,
+            integrationId: minProps.integrationId,
+            customerId: customerId.toString(),
+            payload: {
                 ...minProps.payload,
                 [options[0].parameters[0].name]:
                     options[0].parameters[0].defaultValue,
-            }
-        )
+            },
+        })
     })
 })

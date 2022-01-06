@@ -4,7 +4,7 @@ import {List, Map} from 'immutable'
 import {Button as ButtonType} from '../types'
 
 import Editor from './Editor'
-import ButtonsGroup from './ButtonsGroup'
+import ButtonsGroup from './Display'
 
 type Props = {
     templatePath: string

@@ -49,11 +49,15 @@ export class SourceActionsFooter extends Component<Props> {
         [FacebookReactionType.Care]: careIcon,
     }
 
-    _executeAction = (name: string) => {
+    _executeAction = (actionName: string) => {
         const {integrationId, messageId, executeAction} = this.props
         if (integrationId) {
-            void executeAction(name, integrationId, undefined, {
-                comment_id: messageId,
+            executeAction({
+                actionName,
+                integrationId,
+                payload: {
+                    comment_id: messageId,
+                },
             })
         }
     }

@@ -193,9 +193,15 @@ export default class CardInfobarWidget extends React.Component {
             ['meta', 'custom', 'links'],
             fromJS({})
         )
+        const templateCustomButtons = template.getIn(
+            ['meta', 'custom', 'buttons'],
+            fromJS({})
+        )
 
         return (
-            ((templateTitle || templateCustomLinks.size > 0) &&
+            ((templateTitle ||
+                templateCustomLinks.size > 0 ||
+                templateCustomButtons.size > 0) &&
                 !isTransparent) ||
             isEditing
         )
@@ -286,6 +292,7 @@ export default class CardInfobarWidget extends React.Component {
                             )}
                         </span>
                         {this.renderPopover()}
+                        {!!AfterTitle && <AfterTitle {...this.props} />}
                         {this.isRootWidget(template.get('templatePath')) && (
                             <CustomActions
                                 template={template}
@@ -293,7 +300,6 @@ export default class CardInfobarWidget extends React.Component {
                                 isEditing={isEditing}
                             />
                         )}
-                        {!!AfterTitle && <AfterTitle {...this.props} />}
                     </CardBody>
                 )}
                 <CardBody

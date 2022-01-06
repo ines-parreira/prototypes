@@ -112,33 +112,34 @@ describe('infobar actions', () => {
         it('success', () => {
             mockServer.onPost('/api/actions/execute/').reply(200)
 
-            return store
-                .dispatch(
-                    actions.executeAction(
-                        actionName,
-                        integrationId,
-                        customerId,
-                        payload,
-                        callback
-                    )
-                )
-                .then(() => expect(store.getActions()).toMatchSnapshot())
+            store.dispatch(
+                actions.executeAction({
+                    actionName,
+                    integrationId,
+                    customerId,
+                    payload,
+                    callback,
+                })
+            )
+            expect(store.getActions()).toMatchSnapshot()
         })
 
-        it('fail', () => {
+        it('fail', (done) => {
             mockServer.onPost('/api/actions/execute/').reply(400)
 
-            return store
-                .dispatch(
-                    actions.executeAction(
-                        actionName,
-                        integrationId,
-                        customerId,
-                        payload,
-                        callback
-                    )
-                )
-                .then(() => expect(store.getActions()).toMatchSnapshot())
+            store.dispatch(
+                actions.executeAction({
+                    actionName,
+                    integrationId,
+                    customerId,
+                    payload,
+                    callback,
+                })
+            )
+            process.nextTick(() => {
+                expect(store.getActions()).toMatchSnapshot()
+                done()
+            })
         })
     })
 
@@ -150,7 +151,9 @@ describe('infobar actions', () => {
         it('success', () => {
             const response = {
                 status: 'success',
-            } as unknown as HandleExecutedActionArgumentType
+                action_id: 'someId',
+                payload: {},
+            } as HandleExecutedActionArgumentType
 
             store.dispatch(actions.handleExecutedAction(response))
             expect(store.getActions()).toMatchSnapshot()
@@ -159,7 +162,9 @@ describe('infobar actions', () => {
         it('display error', () => {
             const response = {
                 status: 'error',
+                action_id: 'someId',
                 msg: '[SHOPIFY] [full-refund] No way',
+                payload: {},
             } as HandleExecutedActionArgumentType
 
             store.dispatch(actions.handleExecutedAction(response))
@@ -169,9 +174,11 @@ describe('infobar actions', () => {
         it('display error from ticket currently on', () => {
             const response = {
                 status: 'error',
-                ticket_id: 1,
+                action_id: 'someId',
+                ticket_id: '1',
                 msg: '[SHOPIFY] [full-refund] No way',
-            } as unknown as HandleExecutedActionArgumentType
+                payload: {},
+            } as HandleExecutedActionArgumentType
 
             store.dispatch(actions.handleExecutedAction(response))
             expect(store.getActions()).toMatchSnapshot()
@@ -180,9 +187,11 @@ describe('infobar actions', () => {
         it('display error from ticket not currently on', () => {
             const response = {
                 status: 'error',
-                ticket_id: 2,
+                action_id: 'someId',
+                ticket_id: '2',
                 msg: '[SHOPIFY] [full-refund] No way',
-            } as unknown as HandleExecutedActionArgumentType
+                payload: {},
+            } as HandleExecutedActionArgumentType
 
             store.dispatch(actions.handleExecutedAction(response))
             expect(store.getActions()).toMatchSnapshot()

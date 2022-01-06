@@ -16,15 +16,15 @@ export const getPendingActionsCallbacks = createImmutableSelector<
     (state) => (state.get('pendingActionsCallbacks') as List<any>) || fromJS([])
 )
 
-export const getPendingActionCallbacks = (id: string) =>
-    createImmutableSelector<RootState, Map<any, any>, List<any>>(
-        getPendingActionsCallbacks,
-        (state) =>
-            state.find(
-                (action: Map<any, any>) => action.get('id') === id
-            ) as Map<any, any>
-    )
-
-export const makeGetPendingActionCallbacks =
-    (state: RootState) => (id: string) =>
-        getPendingActionCallbacks(id)(state)
+export const getPendingActionCallbacks = createImmutableSelector<
+    RootState,
+    (id: string) => Map<any, any>,
+    List<any>
+>(
+    getPendingActionsCallbacks,
+    (state) => (id: string) =>
+        state.find((action: Map<any, any>) => action.get('id') === id) as Map<
+            any,
+            any
+        >
+)

@@ -3241,6 +3241,124 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                   <div
                                                     className="container"
                                                   >
+                                                    <Memo(ActionButtons)
+                                                      immutableButtons={Immutable.List []}
+                                                      isEditing={true}
+                                                      source={
+                                                        Immutable.Map {
+                                                          "foo": "1",
+                                                        }
+                                                      }
+                                                      templateAbsolutePath={
+                                                        Array [
+                                                          "ticket",
+                                                          "customer",
+                                                          "integrations",
+                                                          "1",
+                                                        ]
+                                                      }
+                                                      templatePath="1.template.widgets.0"
+                                                    >
+                                                      <Connect(Editor)
+                                                        buttons={Array []}
+                                                        source={
+                                                          Immutable.Map {
+                                                            "foo": "1",
+                                                          }
+                                                        }
+                                                        templateAbsolutePath={
+                                                          Array [
+                                                            "ticket",
+                                                            "customer",
+                                                            "integrations",
+                                                            "1",
+                                                          ]
+                                                        }
+                                                        templatePath="1.template.widgets.0"
+                                                      >
+                                                        <Editor
+                                                          buttons={Array []}
+                                                          removeEditedWidget={[Function]}
+                                                          source={
+                                                            Immutable.Map {
+                                                              "foo": "1",
+                                                            }
+                                                          }
+                                                          startWidgetEdition={[Function]}
+                                                          templateAbsolutePath={
+                                                            Array [
+                                                              "ticket",
+                                                              "customer",
+                                                              "integrations",
+                                                              "1",
+                                                            ]
+                                                          }
+                                                          templatePath="1.template.widgets.0"
+                                                          updateCustomActions={[Function]}
+                                                        >
+                                                          <ListGroup
+                                                            flush={true}
+                                                            horizontal={false}
+                                                            tag="ul"
+                                                          >
+                                                            <ul
+                                                              className="list-group list-group-flush"
+                                                            />
+                                                          </ListGroup>
+                                                          <Button
+                                                            className="addButton"
+                                                            color="secondary"
+                                                            onClick={[Function]}
+                                                            tag="button"
+                                                            type="button"
+                                                          >
+                                                            <button
+                                                              aria-label={null}
+                                                              className="addButton btn btn-secondary"
+                                                              onClick={[Function]}
+                                                              type="button"
+                                                            >
+                                                              <i
+                                                                className="material-icons mr-2"
+                                                              >
+                                                                add
+                                                              </i>
+                                                              Add Button
+                                                            </button>
+                                                          </Button>
+                                                          <Modal
+                                                            autoFocus={true}
+                                                            backdrop="static"
+                                                            backdropTransition={
+                                                              Object {
+                                                                "mountOnEnter": true,
+                                                                "timeout": 150,
+                                                              }
+                                                            }
+                                                            centered={false}
+                                                            container="body"
+                                                            fade={true}
+                                                            isOpen={false}
+                                                            keyboard={true}
+                                                            modalTransition={
+                                                              Object {
+                                                                "timeout": 300,
+                                                              }
+                                                            }
+                                                            onClose={[Function]}
+                                                            onClosed={[Function]}
+                                                            onOpened={[Function]}
+                                                            returnFocusAfterClose={true}
+                                                            role="dialog"
+                                                            scrollable={false}
+                                                            size="lg"
+                                                            trapFocus={false}
+                                                            unmountOnClose={true}
+                                                            zIndex={1561}
+                                                          />
+                                                        </Editor>
+                                                      </Connect(Editor)>
+                                                    </Memo(ActionButtons)>
                                                     <Connect(Component)
                                                       immutableLinks={Immutable.List []}
                                                       isEditing={true}
@@ -3278,7 +3396,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                           ]
                                                         }
                                                         templatePath="1.template.widgets.0"
-                                                        updateEditedWidget={[Function]}
+                                                        updateCustomActions={[Function]}
                                                       >
                                                         <Button
                                                           className="addButton"
@@ -4283,6 +4401,124 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                   <div
                                                     className="container"
                                                   >
+                                                    <Memo(ActionButtons)
+                                                      immutableButtons={Immutable.List []}
+                                                      isEditing={true}
+                                                      source={
+                                                        Immutable.Map {
+                                                          "bar": "2",
+                                                        }
+                                                      }
+                                                      templateAbsolutePath={
+                                                        Array [
+                                                          "ticket",
+                                                          "customer",
+                                                          "integrations",
+                                                          "2",
+                                                        ]
+                                                      }
+                                                      templatePath="2.template.widgets.0"
+                                                    >
+                                                      <Connect(Editor)
+                                                        buttons={Array []}
+                                                        source={
+                                                          Immutable.Map {
+                                                            "bar": "2",
+                                                          }
+                                                        }
+                                                        templateAbsolutePath={
+                                                          Array [
+                                                            "ticket",
+                                                            "customer",
+                                                            "integrations",
+                                                            "2",
+                                                          ]
+                                                        }
+                                                        templatePath="2.template.widgets.0"
+                                                      >
+                                                        <Editor
+                                                          buttons={Array []}
+                                                          removeEditedWidget={[Function]}
+                                                          source={
+                                                            Immutable.Map {
+                                                              "bar": "2",
+                                                            }
+                                                          }
+                                                          startWidgetEdition={[Function]}
+                                                          templateAbsolutePath={
+                                                            Array [
+                                                              "ticket",
+                                                              "customer",
+                                                              "integrations",
+                                                              "2",
+                                                            ]
+                                                          }
+                                                          templatePath="2.template.widgets.0"
+                                                          updateCustomActions={[Function]}
+                                                        >
+                                                          <ListGroup
+                                                            flush={true}
+                                                            horizontal={false}
+                                                            tag="ul"
+                                                          >
+                                                            <ul
+                                                              className="list-group list-group-flush"
+                                                            />
+                                                          </ListGroup>
+                                                          <Button
+                                                            className="addButton"
+                                                            color="secondary"
+                                                            onClick={[Function]}
+                                                            tag="button"
+                                                            type="button"
+                                                          >
+                                                            <button
+                                                              aria-label={null}
+                                                              className="addButton btn btn-secondary"
+                                                              onClick={[Function]}
+                                                              type="button"
+                                                            >
+                                                              <i
+                                                                className="material-icons mr-2"
+                                                              >
+                                                                add
+                                                              </i>
+                                                              Add Button
+                                                            </button>
+                                                          </Button>
+                                                          <Modal
+                                                            autoFocus={true}
+                                                            backdrop="static"
+                                                            backdropTransition={
+                                                              Object {
+                                                                "mountOnEnter": true,
+                                                                "timeout": 150,
+                                                              }
+                                                            }
+                                                            centered={false}
+                                                            container="body"
+                                                            fade={true}
+                                                            isOpen={false}
+                                                            keyboard={true}
+                                                            modalTransition={
+                                                              Object {
+                                                                "timeout": 300,
+                                                              }
+                                                            }
+                                                            onClose={[Function]}
+                                                            onClosed={[Function]}
+                                                            onOpened={[Function]}
+                                                            returnFocusAfterClose={true}
+                                                            role="dialog"
+                                                            scrollable={false}
+                                                            size="lg"
+                                                            trapFocus={false}
+                                                            unmountOnClose={true}
+                                                            zIndex={1561}
+                                                          />
+                                                        </Editor>
+                                                      </Connect(Editor)>
+                                                    </Memo(ActionButtons)>
                                                     <Connect(Component)
                                                       immutableLinks={Immutable.List []}
                                                       isEditing={true}
@@ -4320,7 +4556,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                           ]
                                                         }
                                                         templatePath="2.template.widgets.0"
-                                                        updateEditedWidget={[Function]}
+                                                        updateCustomActions={[Function]}
                                                       >
                                                         <Button
                                                           className="addButton"

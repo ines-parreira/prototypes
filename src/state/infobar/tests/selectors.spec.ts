@@ -54,17 +54,17 @@ describe('infobar selectors', () => {
 
     it('getPendingActionCallbacks', () => {
         expect(
-            selectors.getPendingActionCallbacks(
+            selectors.getPendingActionCallbacks(state)(
                 'shopifyRefundShippingCostOfOrder-34-5-4194477515'
-            )(state)
+            )
         ).toEqualImmutable(
             (state.infobar.get('pendingActionsCallbacks') as List<any>).first()
         )
-        expect(selectors.getPendingActionCallbacks('unknown')(state)).toBe(
+        expect(selectors.getPendingActionCallbacks(state)('unknown')).toBe(
             undefined
         )
         expect(
-            selectors.getPendingActionCallbacks('unknown')({} as RootState)
+            selectors.getPendingActionCallbacks({} as RootState)('unknown')
         ).toBe(undefined)
     })
 })

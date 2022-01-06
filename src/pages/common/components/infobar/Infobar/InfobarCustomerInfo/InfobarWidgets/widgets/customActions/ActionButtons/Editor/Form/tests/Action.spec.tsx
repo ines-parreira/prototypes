@@ -2,18 +2,13 @@ import React from 'react'
 import {render, fireEvent, screen} from '@testing-library/react'
 
 import {HttpMethod} from '../../../../../../../../../../../../../models/api/types'
+import {actionFixture} from '../../../../../../../../../../../../../fixtures/infobarCustomActions'
 import Action from '../Action'
 
 describe('<Action/>', () => {
     const props = {
         onChange: jest.fn(),
-        action: {
-            method: HttpMethod.Get,
-            url: '',
-            headers: [],
-            params: [],
-            body: {},
-        },
+        action: actionFixture(),
     }
 
     beforeEach(() => {
@@ -25,17 +20,13 @@ describe('<Action/>', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
     it('should render with a Body component', () => {
+        const action = actionFixture()
+        action.method = HttpMethod.Put
         const {container} = render(
             <Action
                 {...{
                     ...props,
-                    action: {
-                        method: HttpMethod.Put,
-                        url: '',
-                        headers: [],
-                        params: [],
-                        body: {},
-                    },
+                    action,
                 }}
             />
         )
