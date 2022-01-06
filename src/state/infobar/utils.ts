@@ -23,7 +23,7 @@ export type ActionData = {
     action_name: string
     action_label?: string
     action_id: string
-    user_id: string
+    user_id?: string
     ticket_id?: string
     integration_id: string
     payload: ActionDataPayload

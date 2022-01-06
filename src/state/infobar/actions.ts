@@ -151,7 +151,7 @@ export const executeAction =
 
         const actionId = utils.actionButtonHashForData({
             action_name: actionName,
-            user_id: customerId || '',
+            user_id: customerId,
             integration_id: integrationId.toString(),
             payload,
         })
@@ -160,7 +160,7 @@ export const executeAction =
             action_name: actionName,
             action_label: actionLabel,
             action_id: actionId,
-            user_id: customerId || '',
+            user_id: customerId,
             ticket_id: ticketId?.toString(),
             integration_id: integrationId.toString(),
             payload,
@@ -214,7 +214,7 @@ export const handleExecutedAction =
                     primary: true,
                     name: 'Review',
                     onClick: () => {
-                        history.push(`/app/customer/${response.user_id}`)
+                        history.push(`/app/customer/${response.user_id || ''}`)
                     },
                 },
             ]
