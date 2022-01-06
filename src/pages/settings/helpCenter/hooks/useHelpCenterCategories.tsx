@@ -72,7 +72,13 @@ export const useHelpCenterCategories = (
                     )
                 )
 
-                dispatch(saveCategories([...categories, ...fetchedCategories]))
+                const shouldResetCategories = page === 0
+                dispatch(
+                    saveCategories([
+                        ...(shouldResetCategories ? [] : categories),
+                        ...fetchedCategories,
+                    ])
+                )
 
                 setPagination({page: meta.page, nbPages: meta.nb_pages})
             } catch (err) {
