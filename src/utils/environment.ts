@@ -33,16 +33,3 @@ export function getHelpCenterAuthApiBaseUrl(): string {
 
     return ''
 }
-
-// TODO: Remove this to release SSP in Help Center
-const SSP_HELP_CENTER_PRIVATE_LIST = [
-    'self-serve.gorgias.com',
-    'thisisatestforaustraliacluster.gorgias.com',
-]
-export function isSelfServeHelpCenterEnabled(): boolean {
-    if (isProduction()) {
-        return SSP_HELP_CENTER_PRIVATE_LIST.includes(location.host)
-    }
-
-    return true
-}

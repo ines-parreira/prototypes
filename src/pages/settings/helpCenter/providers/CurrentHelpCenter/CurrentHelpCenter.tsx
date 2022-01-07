@@ -22,7 +22,6 @@ import {
 } from 'state/helpCenter/ui'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {isSelfServeHelpCenterEnabled} from '../../../../../utils/environment'
 
 import settingsCss from '../../../settings.less'
 import HelpCenterAppearanceView from '../../components/HelpCenterAppearanceView'
@@ -143,16 +142,11 @@ export const CurrentHelpCenter: React.FC = () => {
                     path={`${path}/import/csv/column-matching`}
                     component={HelpCenterImportCsvColumnMatchingView}
                 />
-                {
-                    // TODO: Remove this to release SSP in Help Center
-                    isSelfServeHelpCenterEnabled() && (
-                        <Route
-                            path={`${path}/self-service`}
-                            exact
-                            component={HelpCenterSelfServiceView}
-                        />
-                    )
-                }
+                <Route
+                    path={`${path}/self-service`}
+                    exact
+                    component={HelpCenterSelfServiceView}
+                />
             </Switch>
         </CurrentHelpCenterContext.Provider>
     )

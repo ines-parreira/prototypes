@@ -1,8 +1,6 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom'
 
-import {isSelfServeHelpCenterEnabled} from '../../../../utils/environment'
-
 import SecondaryNavbar from '../../../common/components/SecondaryNavbar/SecondaryNavbar'
 
 type Props = {
@@ -27,14 +25,9 @@ export const HelpCenterNavigation: React.FC<Props> = ({
             <NavLink to={`${baseURL}/customization`} exact>
                 Customization
             </NavLink>
-            {
-                // TODO: Remove this to release SSP in Help Center
-                isSelfServeHelpCenterEnabled() && (
-                    <NavLink to={`${baseURL}/self-service`} exact>
-                        Self-service
-                    </NavLink>
-                )
-            }
+            <NavLink to={`${baseURL}/self-service`} exact>
+                Self-service
+            </NavLink>
             <NavLink to={`${baseURL}/installation`} exact>
                 Installation
             </NavLink>

@@ -6,7 +6,6 @@ import {Button} from 'reactstrap'
 
 import {Paths} from 'rest_api/help_center_api/client.generated'
 
-import {isSelfServeHelpCenterEnabled} from '../../../../utils/environment'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {
     helpCenterDeleted,
@@ -179,15 +178,10 @@ export const HelpCenterInstallationView: React.FC = () => {
             </SubdomainSection>
             <CustomDomain />
             <ImportSection />
-            {
-                // TODO: Remove this to release SSP in Help Center
-                isSelfServeHelpCenterEnabled() && (
-                    <ConnectToShopSection
-                        onUpdate={handleOnUpdateHelpCenter}
-                        helpCenter={helpCenter}
-                    />
-                )
-            }
+            <ConnectToShopSection
+                onUpdate={handleOnUpdateHelpCenter}
+                helpCenter={helpCenter}
+            />
             <section>
                 <ConfirmModalAction
                     actions={(onClose) => (
