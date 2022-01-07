@@ -13,6 +13,8 @@ import {
 import App from './App'
 import IntegrationDetailContainer from './integrations/detail/IntegrationDetailContainer'
 import IntegrationListContainer from './integrations/list/IntegrationListContainer'
+import PhoneNumbersListContainer from './phoneNumbers/PhoneNumbersListContainer'
+import PhoneNumberCreateContainer from './phoneNumbers/PhoneNumberCreateContainer'
 import TicketDetailContainer from './tickets/detail/TicketDetailContainer'
 import TicketInfobarContainer from './tickets/detail/TicketInfobarContainer'
 import TicketSourceContainer from './tickets/detail/TicketSourceContainer'
@@ -484,6 +486,10 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/integrations`}
                 render={IntegrationsSettingsRoutes}
             />
+            <Route
+                path={`${path}/phone-numbers`}
+                render={PhoneNumbersSettingsRoutes}
+            />
             {/* TODO: remove the condition once the production infrastructure is setup */}
             {window.location.hostname.indexOf('gorgias.help') === -1 && (
                 <Route
@@ -609,6 +615,37 @@ export function IntegrationsSettingsRoutes({
                 render={appRender({
                     content: withUserRoleRequired(
                         IntegrationDetailContainer,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+        </Switch>
+    )
+}
+
+export function PhoneNumbersSettingsRoutes({
+    match: {path},
+}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/`}
+                exact
+                render={appRender({
+                    content: withUserRoleRequired(
+                        PhoneNumbersListContainer,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/new`}
+                exact
+                render={appRender({
+                    content: withUserRoleRequired(
+                        PhoneNumberCreateContainer,
                         ADMIN_ROLE
                     ),
                     navbar: SettingsNavbarContainer,

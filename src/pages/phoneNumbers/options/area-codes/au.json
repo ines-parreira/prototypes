@@ -1,0 +1,218 @@
+[
+    {
+        "value": "adelaide-888",
+        "label": "Adelaide (888)"
+    },
+    {
+        "value": "adelaide-87",
+        "label": "Adelaide (87)"
+    },
+    {
+        "value": "adelaide-872",
+        "label": "Adelaide (872)"
+    },
+    {
+        "value": "albany-8",
+        "label": "Albany (8)"
+    },
+    {
+        "value": "albury-260",
+        "label": "Albury (260)"
+    },
+    {
+        "value": "alice-springs-889",
+        "label": "Alice Springs (889)"
+    },
+    {
+        "value": "armadale-861",
+        "label": "Armadale (861)"
+    },
+    {
+        "value": "avalon-beach-dural-terrey-hills-284",
+        "label": "Avalon Beach, Dural, Terrey Hills (284)"
+    },
+    {
+        "value": "ayr-7",
+        "label": "Ayr (7)"
+    },
+    {
+        "value": "bairnsdale-3",
+        "label": "Bairnsdale (3)"
+    },
+    {
+        "value": "ballarat-343",
+        "label": "Ballarat (343)"
+    },
+    {
+        "value": "bankstown-liverpool-281",
+        "label": "Bankstown, Liverpool (281)"
+    },
+    {
+        "value": "beenleigh-730",
+        "label": "Beenleigh (730)"
+    },
+    {
+        "value": "bendigo-344",
+        "label": "Bendigo (344)"
+    },
+    {
+        "value": "blacktown-parramatta-286",
+        "label": "Blacktown, Parramatta (286)"
+    },
+    {
+        "value": "brisbane-73",
+        "label": "Brisbane (73)"
+    },
+    {
+        "value": "bunbury-897",
+        "label": "Bunbury (897)"
+    },
+    {
+        "value": "bundaberg-743",
+        "label": "Bundaberg (743)"
+    },
+    {
+        "value": "carins-742",
+        "label": "Carins (742)"
+    },
+    {
+        "value": "caloundra-caboolture-753",
+        "label": "Caloundra (Caboolture) (753)"
+    },
+    {
+        "value": "canberra-251",
+        "label": "Canberra (251)"
+    },
+    {
+        "value": "clayton-385",
+        "label": "Clayton (385)"
+    },
+    {
+        "value": "craigieburn-point-cook-383",
+        "label": "Craigieburn, Point Cook (383)"
+    },
+    {
+        "value": "croydon-382",
+        "label": "Croydon (382)"
+    },
+    {
+        "value": "dandenong-387",
+        "label": "Dandenong (387)"
+    },
+    {
+        "value": "darwin-879",
+        "label": "Darwin (879)"
+    },
+    {
+        "value": "dubbo-258",
+        "label": "Dubbo (258)"
+    },
+    {
+        "value": "eltham-384",
+        "label": "Eltham (384)"
+    },
+    {
+        "value": "engadine-sutherland-285",
+        "label": "Engadine, Sutherland (285)"
+    },
+    {
+        "value": "geelon-342",
+        "label": "Geelon (342)"
+    },
+    {
+        "value": "gosford-243",
+        "label": "Gosford (243)"
+    },
+    {
+        "value": "hobart-361",
+        "label": "Hobart (361)"
+    },
+    {
+        "value": "kalkallo-whittlesea-381",
+        "label": "Kalkallo, Whittlesea (381)"
+    },
+    {
+        "value": "launceston-363",
+        "label": "Launceston (363)"
+    },
+    {
+        "value": "mandurah-pinjarra-895",
+        "label": "Mandurah (Pinjarra) (895)"
+    },
+    {
+        "value": "melbourne-39",
+        "label": "Melbourne (39)"
+    },
+    {
+        "value": "mildura-340",
+        "label": "Mildura (340)"
+    },
+    {
+        "value": "newcastle-240",
+        "label": "Newcastle (240)"
+    },
+    {
+        "value": "orange-253",
+        "label": "Orange (253)"
+    },
+    {
+        "value": "perth-862",
+        "label": "Perth (862)"
+    },
+    {
+        "value": "perth-86",
+        "label": "Perth (86)"
+    },
+    {
+        "value": "port-macquarie-wauchope-255",
+        "label": "Port Macquarie (Wauchope) (255)"
+    },
+    {
+        "value": "ringwood-388",
+        "label": "Ringwood (388)"
+    },
+    {
+        "value": "rockhampton-748",
+        "label": "Rockhampton (748)"
+    },
+    {
+        "value": "sandgate-731",
+        "label": "Sandgate (731)"
+    },
+    {
+        "value": "sheppaton-358",
+        "label": "Sheppaton (358)"
+    },
+    {
+        "value": "sunbury-werribee-380",
+        "label": "Sunbury, Werribee (380)"
+    },
+    {
+        "value": "sydney-27",
+        "label": "Sydney (27)"
+    },
+    {
+        "value": "tamworth-257",
+        "label": "Tamworth (257)"
+    },
+    {
+        "value": "toowoomba-745",
+        "label": "Toowoomba (745)"
+    },
+    {
+        "value": "townsville-744",
+        "label": "Townsville (744)"
+    },
+    {
+        "value": "tweed-heads-beaudesert-756",
+        "label": "Tweed Heads (Beaudesert) (756)"
+    },
+    {
+        "value": "wagga-wagga-259",
+        "label": "Wagga Wagga (259)"
+    },
+    {
+        "value": "wollongong-242",
+        "label": "Wollongong  (242)"
+    }
+]

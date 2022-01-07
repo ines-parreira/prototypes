@@ -1,0 +1,10 @@
+[
+    {
+        "value": "standard",
+        "label": "Standard number"
+    },
+    {
+        "value": "ivr",
+        "label": "Interactive Voice Response (IVR)"
+    }
+]

@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PhoneNumberCreateForm/> render() should render 1`] = `
+<div
+  class="row"
+>
+  <div
+    class="col-lg-6"
+  >
+    <p>
+      Create a new phone number in Gorgias or forward calls from an existing number to a Gorgias internal number. To learn more about forwarding existing calls, check out
+       
+      <a
+        href="https://docs.gorgias.com/voice-and-phone/gorgias-phone-integration"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        our phone docs
+      </a>
+      .
+    </p>
+  </div>
+</div>
+`;
+
+exports[`<PhoneNumberCreateForm/> render() should render address validation form for Australia or United Kingdom 1`] = `
+<div
+  class="row"
+>
+  <div
+    class="col-lg-6"
+  >
+    <p>
+      Create a new phone number in Gorgias or forward calls from an existing number to a Gorgias internal number. To learn more about forwarding existing calls, check out
+       
+      <a
+        href="https://docs.gorgias.com/voice-and-phone/gorgias-phone-integration"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        our phone docs
+      </a>
+      .
+    </p>
+  </div>
+</div>
+`;
+
+exports[`<PhoneNumberCreateForm/> render() should render when a country and a state are selected 1`] = `
+<div
+  class="row"
+>
+  <div
+    class="col-lg-6"
+  >
+    <p>
+      Create a new phone number in Gorgias or forward calls from an existing number to a Gorgias internal number. To learn more about forwarding existing calls, check out
+       
+      <a
+        href="https://docs.gorgias.com/voice-and-phone/gorgias-phone-integration"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        our phone docs
+      </a>
+      .
+    </p>
+  </div>
+</div>
+`;
+
+exports[`<PhoneNumberCreateForm/> render() should render when type "Toll-free" is selected 1`] = `
+<div
+  class="row"
+>
+  <div
+    class="col-lg-6"
+  >
+    <p>
+      Create a new phone number in Gorgias or forward calls from an existing number to a Gorgias internal number. To learn more about forwarding existing calls, check out
+       
+      <a
+        href="https://docs.gorgias.com/voice-and-phone/gorgias-phone-integration"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        our phone docs
+      </a>
+      .
+    </p>
+  </div>
+</div>
+`;
