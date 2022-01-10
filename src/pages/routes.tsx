@@ -50,8 +50,7 @@ import MacrosSettingsContent from './settings/macros/MacrosSettingsContent'
 import MacrosSettingsForm from './settings/macros/MacrosSettingsForm'
 import RulesView from './settings/rules/RulesView'
 import RulesSettingsForm from './settings/rules/accountRules/RuleDetailForm'
-// TODO(Nicolas): to enable once the self sign-up page is implemented (DR-175)
-// import Access from './settings/access/index.js'
+import Access from './settings/access/index.js'
 import TeamList from './settings/users/List'
 import TeamForm from './settings/users/Form'
 import TeamsList from './settings/teams/List'
@@ -550,17 +549,14 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 })}
             />
             <Route path={`${path}/import-data`} render={ImportSettingsRoutes} />
-            {/*
-                TODO(Nicolas): to enable once the self sign-up page is implemented (DR-175)
-                <Route
-                    path={`${path}/access`}
-                    render={appRender({
-                        content: withUserRoleRequired(Access, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer,
-                    })}
-                    exact
-                />
-            */}
+            <Route
+                path={`${path}/access`}
+                render={appRender({
+                    content: withUserRoleRequired(Access, ADMIN_ROLE),
+                    navbar: SettingsNavbarContainer,
+                })}
+                exact
+            />
             <Route
                 path={`${path}/satisfaction-surveys`}
                 exact

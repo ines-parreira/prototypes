@@ -1,7 +1,7 @@
 import React, {FormEvent, useCallback, useEffect, useState} from 'react'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
-import {Button, Col, Container, Form, Row} from 'reactstrap'
+import {Button, Container, Form} from 'reactstrap'
 
 import {RootState} from '../../../state/types'
 import {submitSetting} from '../../../state/currentAccount/actions'
@@ -14,6 +14,7 @@ import {
 import PageHeader from '../../common/components/PageHeader'
 import RadioField from '../../common/forms/RadioField'
 import InputField from '../../common/forms/InputField'
+import css from '../settings.less'
 
 type Props = ConnectedProps<typeof connector>
 
@@ -82,61 +83,59 @@ export const AccessContainer = (props: Props) => {
         <div className="full-width">
             <PageHeader title="Access management" />
 
-            <Container fluid className="page-container">
-                <Form onSubmit={handleSubmit}>
-                    <Row className="mb-2">
-                        <Col md="6">
-                            <h4 className="mb-2">
-                                <i className="material-icons mr-1">mail</i>
-                                Joining the helpdesk
-                            </h4>
-                            <p>
-                                If you allow people to join automatically,
-                                anyone with an approved email address can use
-                                this link to confirm their email and sign up:{' '}
-                                <a href={signupLink}>{signupLink}</a>
-                            </p>
-                            <RadioField
-                                onChange={setSignupMode}
-                                value={signupMode}
-                                options={[
-                                    {
-                                        value: SignupMode.Invite,
-                                        label: 'Invite people manually',
-                                    },
-                                    {
-                                        value: SignupMode.AllowedDomains,
-                                        label: 'Let people sign up automatically, and only accept email addresses from specific domains',
-                                    },
-                                ]}
+            <Container fluid className={css.pageContainer}>
+                <div className={css.contentWrapper}>
+                    <Form onSubmit={handleSubmit}>
+                        <h4 className="mb-2">
+                            <i className="material-icons mr-1">mail</i>
+                            Joining the helpdesk
+                        </h4>
+                        <p>
+                            If you allow people to join automatically, anyone
+                            with an approved email address can use this link to
+                            confirm their email and sign up:{' '}
+                            <a href={signupLink}>{signupLink}</a>
+                        </p>
+                        <RadioField
+                            onChange={setSignupMode}
+                            value={signupMode}
+                            options={[
+                                {
+                                    value: SignupMode.Invite,
+                                    label: 'Invite people manually',
+                                },
+                                {
+                                    value: SignupMode.AllowedDomains,
+                                    label: 'Let people sign up automatically, and only accept email addresses from specific domains',
+                                },
+                            ]}
+                        />
+                        {signupMode === SignupMode.AllowedDomains && (
+                            <InputField
+                                error={domainError}
+                                type="textarea"
+                                help="Ex: domain.com, *.domain.com. Wildcards allowed. Use separate lines for multiple entries."
+                                value={allowedDomains}
+                                onChange={setAllowedDomains}
                             />
-                            {signupMode === SignupMode.AllowedDomains && (
-                                <InputField
-                                    error={domainError}
-                                    type="textarea"
-                                    help="Ex: domain.com, *.domain.com. Wildcards allowed. Use separate lines for multiple entries."
-                                    value={allowedDomains}
-                                    onChange={setAllowedDomains}
-                                />
-                            )}
-                        </Col>
-                    </Row>
+                        )}
 
-                    <Button
-                        type="submit"
-                        color="primary"
-                        className={classnames({
-                            'btn-loading': isLoading,
-                        })}
-                        disabled={
-                            isLoading ||
-                            (signupMode === SignupMode.AllowedDomains &&
-                                !!domainError)
-                        }
-                    >
-                        Save changes
-                    </Button>
-                </Form>
+                        <Button
+                            type="submit"
+                            color="primary"
+                            className={classnames({
+                                'btn-loading': isLoading,
+                            })}
+                            disabled={
+                                isLoading ||
+                                (signupMode === SignupMode.AllowedDomains &&
+                                    !!domainError)
+                            }
+                        >
+                            Save changes
+                        </Button>
+                    </Form>
+                </div>
             </Container>
         </div>
     )
