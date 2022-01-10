@@ -20,7 +20,7 @@ import TagsStatsFilter from './TagsStatsFilter'
 import PeriodStatsFilter from './PeriodStatsFilter'
 import useStatResource from './useStatResource'
 import TableStat from './common/components/charts/TableStat/TableStat'
-import TwoDimensionalChartWrapper from './TwoDimensionalStatWrapper'
+import StatWrapper from './StatWrapper'
 
 const SUPPORT_PERFORMANCE_TAGS_STAT_NAME = 'support-performance-tags'
 
@@ -88,7 +88,7 @@ tag attached to them."
             }
         >
             {pageStatsFilters && (
-                <TwoDimensionalChartWrapper
+                <StatWrapper
                     stat={ticketsPerTag}
                     isFetchingStat={isFetchingTicketsPerTag}
                     resourceName={TICKETS_PER_TAG}
@@ -104,7 +104,7 @@ tag attached to them."
                             meta={stat.get('meta')}
                         />
                     )}
-                </TwoDimensionalChartWrapper>
+                </StatWrapper>
             )}
         </StatsPage>
     )

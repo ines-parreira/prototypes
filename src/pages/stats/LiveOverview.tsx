@@ -23,7 +23,7 @@ import StatsPage from './StatsPage'
 import useStatResource from './useStatResource'
 import KeyMetricStatWrapper from './KeyMetricStatWrapper'
 import MultiResourceKeyMetricStat from './common/components/charts/KeyMetricStat/MultiResourceKeyMetricStat'
-import TwoDimensionalStatWrapper from './TwoDimensionalStatWrapper'
+import StatWrapper from './StatWrapper'
 import LineStat from './common/components/charts/LineStat'
 import StatCurrentDate from './common/components/StatCurrentDate'
 import css from './LiveOverview.less'
@@ -133,7 +133,7 @@ function LiveOverview() {
                     <div className={css.currentDate}>
                         <StatCurrentDate />
                     </div>
-                    <TwoDimensionalStatWrapper
+                    <StatWrapper
                         helpText="Number of tickets created, replied by agents and closed today per hour"
                         resourceName={SUPPORT_VOLUME_PER_HOUR}
                         statsFilters={pageStatsFilters}
@@ -152,7 +152,7 @@ function LiveOverview() {
                                 />
                             )
                         }}
-                    </TwoDimensionalStatWrapper>
+                    </StatWrapper>
                 </>
             )}
         </StatsPage>

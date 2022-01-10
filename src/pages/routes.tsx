@@ -85,6 +85,7 @@ import SupportPerformanceRevenue from './stats/SupportPerformanceRevenue'
 import SupportPerformanceOverview from './stats/SupportPerformanceOverview'
 import LiveOverview from './stats/LiveOverview'
 import LiveAgents from './stats/LiveAgents'
+import AutomationOverview from './stats/AutomationOverview'
 
 const assetsURL = window.GORGIAS_ASSETS_URL || ''
 
@@ -447,6 +448,14 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
                     path={`${path}/revenue`}
                     render={appRender({
                         content: SupportPerformanceRevenue,
+                        navbar: StatsNavbarContainer,
+                    })}
+                />
+                <Route
+                    exact
+                    path={`${path}/automation`}
+                    render={appRender({
+                        content: AutomationOverview,
                         navbar: StatsNavbarContainer,
                     })}
                 />

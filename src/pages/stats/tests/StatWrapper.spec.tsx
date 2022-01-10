@@ -6,22 +6,23 @@ import thunk from 'redux-thunk'
 import _noop from 'lodash/noop'
 import {fromJS} from 'immutable'
 
-import TwoDimensionalChartWrapper from '../TwoDimensionalStatWrapper'
-import {firstResponseTime} from '../../../fixtures/stats'
-import {FIRST_RESPONSE_TIME} from '../../../config/stats'
-import {StatsFilterType} from '../../../state/stats/types'
-import {saveFileAsDownloaded} from '../../../utils/file'
-import {notify} from '../../../state/notifications/actions'
-import {downloadStat} from '../../../models/stat/resources'
-import {logEvent} from '../../../store/middlewares/segmentTracker'
-import {RootState} from '../../../state/types'
-import {user} from '../../../fixtures/users'
-import {account} from '../../../fixtures/account'
+import {firstResponseTime} from 'fixtures/stats'
+import {FIRST_RESPONSE_TIME} from 'config/stats'
+import {StatsFilterType} from 'state/stats/types'
+import {saveFileAsDownloaded} from 'utils/file'
+import {notify} from 'state/notifications/actions'
+import {downloadStat} from 'models/stat/resources'
+import {logEvent} from 'store/middlewares/segmentTracker'
+import {RootState} from 'state/types'
+import {user} from 'fixtures/users'
+import {account} from 'fixtures/account'
 
-jest.mock('../../../utils/file')
-jest.mock('../../../state/notifications/actions')
-jest.mock('../../../models/stat/resources')
-jest.mock('../../../store/middlewares/segmentTracker')
+import StatWrapper from '../StatWrapper'
+
+jest.mock('utils/file')
+jest.mock('state/notifications/actions')
+jest.mock('models/stat/resources')
+jest.mock('store/middlewares/segmentTracker')
 
 const mockStore = configureMockStore([thunk])
 const saveFileAsDownloadedMock = saveFileAsDownloaded as jest.MockedFunction<
@@ -33,8 +34,8 @@ const downloadStatMock = downloadStat as jest.MockedFunction<
 const notifyMock = notify as jest.MockedFunction<typeof notify>
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
-describe('TwoDimensionalStatWrapper', () => {
-    const minProps: ComponentProps<typeof TwoDimensionalChartWrapper> = {
+describe('StatWrapper', () => {
+    const minProps: ComponentProps<typeof StatWrapper> = {
         stat: firstResponseTime,
         isFetchingStat: false,
         resourceName: FIRST_RESPONSE_TIME,
@@ -72,9 +73,9 @@ describe('TwoDimensionalStatWrapper', () => {
     it('should pass stat to children function', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
-                <TwoDimensionalChartWrapper {...minProps}>
+                <StatWrapper {...minProps}>
                     {(stat) => JSON.stringify(stat.toJS(), null, 2)}
-                </TwoDimensionalChartWrapper>
+                </StatWrapper>
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -83,7 +84,7 @@ describe('TwoDimensionalStatWrapper', () => {
     it('should render the loader when stat is fetching', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
-                <TwoDimensionalChartWrapper {...minProps} isFetchingStat />
+                <StatWrapper {...minProps} isFetchingStat />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -92,7 +93,7 @@ describe('TwoDimensionalStatWrapper', () => {
     it('should not render the children nor the title when stat is null', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
-                <TwoDimensionalChartWrapper {...minProps} stat={null} />
+                <StatWrapper {...minProps} stat={null} />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -101,10 +102,7 @@ describe('TwoDimensionalStatWrapper', () => {
     it('should render the help icon when help text prop is defined', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
-                <TwoDimensionalChartWrapper
-                    {...minProps}
-                    helpText="Foo help text"
-                />
+                <StatWrapper {...minProps} helpText="Foo help text" />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -113,7 +111,7 @@ describe('TwoDimensionalStatWrapper', () => {
     it('should render the download button when isDownloadable is set to true', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
-                <TwoDimensionalChartWrapper {...minProps} isDownloadable />
+                <StatWrapper {...minProps} isDownloadable />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -122,7 +120,7 @@ describe('TwoDimensionalStatWrapper', () => {
     it('should download stat on download button click', async () => {
         const {getByText} = render(
             <Provider store={mockStore(defaultState)}>
-                <TwoDimensionalChartWrapper {...minProps} isDownloadable />
+                <StatWrapper {...minProps} isDownloadable />
             </Provider>
         )
         fireEvent.click(getByText('file_download'))
@@ -140,7 +138,7 @@ describe('TwoDimensionalStatWrapper', () => {
 
         const {getByText} = render(
             <Provider store={mockStore(defaultState)}>
-                <TwoDimensionalChartWrapper {...minProps} isDownloadable />
+                <StatWrapper {...minProps} isDownloadable />
             </Provider>
         )
         fireEvent.click(getByText('file_download'))
@@ -156,7 +154,7 @@ describe('TwoDimensionalStatWrapper', () => {
 
         const {container, getByText} = render(
             <Provider store={mockStore(defaultState)}>
-                <TwoDimensionalChartWrapper {...minProps} isDownloadable />
+                <StatWrapper {...minProps} isDownloadable />
             </Provider>
         )
         fireEvent.click(getByText('file_download'))
@@ -169,7 +167,7 @@ describe('TwoDimensionalStatWrapper', () => {
 
         const {getByText} = render(
             <Provider store={mockStore(defaultState)}>
-                <TwoDimensionalChartWrapper {...minProps} isDownloadable />
+                <StatWrapper {...minProps} isDownloadable />
             </Provider>
         )
         fireEvent.click(getByText('file_download'))

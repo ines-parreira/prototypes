@@ -32,7 +32,7 @@ import {ScoreStatsFilter} from './ScoreStatsFilter'
 import AgentsStatsFilter from './AgentsStatsFilter'
 import TagsStatsFilter from './TagsStatsFilter'
 import KeyMetricStat from './common/components/charts/KeyMetricStat/KeyMetricStat'
-import TwoDimensionalChartWrapper from './TwoDimensionalStatWrapper'
+import StatWrapper from './StatWrapper'
 import TableStat from './common/components/charts/TableStat/TableStat'
 import KeyMetricStatWrapper from './KeyMetricStatWrapper'
 
@@ -133,7 +133,7 @@ How many surveys have been sent, response rate, average scores and more."
                             config={statsConfig.get(SATISFACTION_SURVEYS)}
                         />
                     </KeyMetricStatWrapper>
-                    <TwoDimensionalChartWrapper
+                    <StatWrapper
                         stat={latestSatisfactionSurveys}
                         isFetchingStat={isFetchingLatestSatisfactionSurveys}
                         resourceName={LATEST_SATISFACTION_SURVEYS}
@@ -151,7 +151,7 @@ How many surveys have been sent, response rate, average scores and more."
                                 )}
                             />
                         )}
-                    </TwoDimensionalChartWrapper>
+                    </StatWrapper>
                 </>
             )}
         </StatsPage>

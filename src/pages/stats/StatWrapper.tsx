@@ -13,7 +13,7 @@ import {fromJS, Map} from 'immutable'
 import {useSelector} from 'react-redux'
 
 import Loader from '../common/components/Loader/Loader'
-import {Stat, TwoDimensionalChart} from '../../models/stat/types'
+import {SankeyDiagram, Stat, TwoDimensionalChart} from '../../models/stat/types'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import {downloadStat} from '../../models/stat/resources'
 import {saveFileAsDownloaded} from '../../utils/file'
@@ -27,10 +27,10 @@ import {getCurrentUser} from '../../state/currentUser/selectors'
 import {getCurrentAccountState} from '../../state/currentAccount/selectors'
 
 import StatsHelpIcon from './common/components/StatsHelpIcon'
-import css from './TwoDimensionalStatWrapper.less'
+import css from './StatWrapper.less'
 
 type Props = {
-    stat: Stat<TwoDimensionalChart> | null
+    stat: Stat<TwoDimensionalChart | SankeyDiagram> | null
     isFetchingStat: boolean
     resourceName: string
     statsFilters: StatsFilters
@@ -40,7 +40,7 @@ type Props = {
     children: (stat: Map<any, any>) => ReactNode
 } & HTMLAttributes<HTMLDivElement>
 
-export default function TwoDimensionalChartWrapper({
+export default function StatWrapper({
     stat,
     isFetchingStat,
     helpText,

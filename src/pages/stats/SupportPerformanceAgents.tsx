@@ -19,7 +19,7 @@ import {TicketChannel} from '../../business/types/ticket'
 import IntegrationsStatsFilter from './IntegrationsStatsFilter'
 import ChannelsStatsFilter from './ChannelsStatsFilter'
 import PeriodStatsFilter from './PeriodStatsFilter'
-import TwoDimensionalChartWrapper from './TwoDimensionalStatWrapper'
+import StatWrapper from './StatWrapper'
 import useStatResource from './useStatResource'
 import BarStat from './common/components/charts/BarStat'
 import TableStat from './common/components/charts/TableStat/TableStat'
@@ -92,7 +92,7 @@ export default function SupportPerformanceAgents() {
         >
             {pageStatsFilters && (
                 <>
-                    <TwoDimensionalChartWrapper
+                    <StatWrapper
                         stat={ticketsClosedPerAgentPerDay}
                         isFetchingStat={isFetchingTicketsClosedPerAgentPerDay}
                         resourceName={TICKETS_CLOSED_PER_AGENT_PER_DAY}
@@ -109,8 +109,8 @@ export default function SupportPerformanceAgents() {
                                 )}
                             />
                         )}
-                    </TwoDimensionalChartWrapper>
-                    <TwoDimensionalChartWrapper
+                    </StatWrapper>
+                    <StatWrapper
                         stat={ticketsClosedPerAgent}
                         isFetchingStat={isFetchingTicketsClosedPerAgent}
                         resourceName={TICKETS_CLOSED_PER_AGENT}
@@ -128,7 +128,7 @@ export default function SupportPerformanceAgents() {
                                 )}
                             />
                         )}
-                    </TwoDimensionalChartWrapper>
+                    </StatWrapper>
                 </>
             )}
         </StatsPage>

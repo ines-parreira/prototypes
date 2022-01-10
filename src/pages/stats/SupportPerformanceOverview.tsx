@@ -34,7 +34,7 @@ import TagsStatsFilter from './TagsStatsFilter'
 import useStatResource from './useStatResource'
 import AgentsStatsFilter from './AgentsStatsFilter'
 import MultiResourceKeyMetricStat from './common/components/charts/KeyMetricStat/MultiResourceKeyMetricStat'
-import TwoDimensionalChartWrapper from './TwoDimensionalStatWrapper'
+import StatWrapper from './StatWrapper'
 import {BarStat} from './common/components/charts/BarStat'
 import LineStat from './common/components/charts/LineStat'
 import PerHourPerWeekTableStat from './common/components/charts/PerHourPerWeekTableStat/PerHourPerWeekTableStat'
@@ -255,7 +255,7 @@ providing excellent customer support."
                             config={statsConfig.get(OVERVIEW)}
                         />
                     </KeyMetricStatWrapper>
-                    <TwoDimensionalChartWrapper
+                    <StatWrapper
                         stat={supportVolume}
                         isFetchingStat={isFetchingSupportVolume}
                         resourceName={SUPPORT_VOLUME}
@@ -270,8 +270,8 @@ providing excellent customer support."
                                 config={statsConfig.get(SUPPORT_VOLUME)}
                             />
                         )}
-                    </TwoDimensionalChartWrapper>
-                    <TwoDimensionalChartWrapper
+                    </StatWrapper>
+                    <StatWrapper
                         stat={resolutionTime}
                         isFetchingStat={isFetchingResolutionTime}
                         resourceName={RESOLUTION_TIME}
@@ -287,8 +287,8 @@ providing excellent customer support."
                                 config={statsConfig.get(RESOLUTION_TIME)}
                             />
                         )}
-                    </TwoDimensionalChartWrapper>
-                    <TwoDimensionalChartWrapper
+                    </StatWrapper>
+                    <StatWrapper
                         stat={firstResponseTime}
                         isFetchingStat={isFetchingFirstResponseTime}
                         resourceName={FIRST_RESPONSE_TIME}
@@ -304,8 +304,8 @@ providing excellent customer support."
                                 config={statsConfig.get(FIRST_RESPONSE_TIME)}
                             />
                         )}
-                    </TwoDimensionalChartWrapper>
-                    <TwoDimensionalChartWrapper
+                    </StatWrapper>
+                    <StatWrapper
                         stat={ticketsCreatedPerHourPerWeekday}
                         isFetchingStat={
                             isFetchingTicketsCreatedPerHourPerWeekday
@@ -322,7 +322,7 @@ providing excellent customer support."
                                 config={statsConfig.get(FIRST_RESPONSE_TIME)}
                             />
                         )}
-                    </TwoDimensionalChartWrapper>
+                    </StatWrapper>
                 </>
             )}
         </StatsPage>

@@ -30,7 +30,7 @@ import StatsPage from './StatsPage'
 import TagsStatsFilter from './TagsStatsFilter'
 import useStatResource from './useStatResource'
 import KeyMetricStat from './common/components/charts/KeyMetricStat/KeyMetricStat'
-import TwoDimensionalChartWrapper from './TwoDimensionalStatWrapper'
+import StatWrapper from './StatWrapper'
 import {BarStat} from './common/components/charts/BarStat'
 import TableStat from './common/components/charts/TableStat/TableStat'
 import RevenueStatsRestrictedFeature from './RevenueStatsRestrictedFeature'
@@ -132,7 +132,7 @@ helping customers through the purchasing journey."
                             config={statsConfig.get(REVENUE_OVERVIEW)}
                         />
                     </KeyMetricStatWrapper>
-                    <TwoDimensionalChartWrapper
+                    <StatWrapper
                         stat={revenuePerDay}
                         isFetchingStat={isFetchingRevenuePerDay}
                         resourceName={REVENUE_PER_DAY}
@@ -147,8 +147,8 @@ helping customers through the purchasing journey."
                                 config={statsConfig.get(REVENUE_PER_DAY)}
                             />
                         )}
-                    </TwoDimensionalChartWrapper>
-                    <TwoDimensionalChartWrapper
+                    </StatWrapper>
+                    <StatWrapper
                         stat={revenuePerAgent}
                         isFetchingStat={isFetchingRevenuePerAgent}
                         resourceName={REVENUE_PER_AGENT}
@@ -164,8 +164,8 @@ helping customers through the purchasing journey."
                                 config={statsConfig.get(REVENUE_PER_AGENT)}
                             />
                         )}
-                    </TwoDimensionalChartWrapper>
-                    <TwoDimensionalChartWrapper
+                    </StatWrapper>
+                    <StatWrapper
                         stat={revenuePerTicket}
                         isFetchingStat={isFetchingRevenuePerTicket}
                         resourceName={REVENUE_PER_TICKET}
@@ -181,7 +181,7 @@ helping customers through the purchasing journey."
                                 config={statsConfig.get(REVENUE_PER_TICKET)}
                             />
                         )}
-                    </TwoDimensionalChartWrapper>
+                    </StatWrapper>
                 </>
             )}
         </StatsPage>

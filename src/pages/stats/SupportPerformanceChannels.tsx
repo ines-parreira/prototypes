@@ -19,7 +19,7 @@ import {TicketChannel} from '../../business/types/ticket'
 import IntegrationsStatsFilter from './IntegrationsStatsFilter'
 import ChannelsStatsFilter from './ChannelsStatsFilter'
 import PeriodStatsFilter from './PeriodStatsFilter'
-import TwoDimensionalChartWrapper from './TwoDimensionalStatWrapper'
+import StatWrapper from './StatWrapper'
 import useStatResource from './useStatResource'
 import BarStat from './common/components/charts/BarStat'
 import TableStat from './common/components/charts/TableStat/TableStat'
@@ -89,7 +89,7 @@ channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc..."
         >
             {pageStatsFilters && (
                 <>
-                    <TwoDimensionalChartWrapper
+                    <StatWrapper
                         stat={ticketsCreatedPerChannelPerDay}
                         isFetchingStat={
                             isFetchingTicketsCreatedPerChannelPerDay
@@ -108,8 +108,8 @@ channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc..."
                                 )}
                             />
                         )}
-                    </TwoDimensionalChartWrapper>
-                    <TwoDimensionalChartWrapper
+                    </StatWrapper>
+                    <StatWrapper
                         stat={ticketsCreatedPerChannel}
                         isFetchingStat={isFetchingTicketsCreatedPerChannel}
                         resourceName={TICKETS_CREATED_PER_CHANNEL}
@@ -127,7 +127,7 @@ channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc..."
                                 meta={stat.get('meta')}
                             />
                         )}
-                    </TwoDimensionalChartWrapper>
+                    </StatWrapper>
                 </>
             )}
         </StatsPage>

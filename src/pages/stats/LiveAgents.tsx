@@ -25,7 +25,7 @@ import ChannelsStatsFilter from './ChannelsStatsFilter'
 import AgentsStatsFilter from './AgentsStatsFilter'
 import StatCurrentDate from './common/components/StatCurrentDate'
 import css from './LiveAgents.less'
-import TwoDimensionalChartWrapper from './TwoDimensionalStatWrapper'
+import StatWrapper from './StatWrapper'
 import useStatResource from './useStatResource'
 import TableStat from './common/components/charts/TableStat/TableStat'
 
@@ -87,7 +87,7 @@ function LiveAgents() {
                     <div className={css.currentDate}>
                         <StatCurrentDate />
                     </div>
-                    <TwoDimensionalChartWrapper
+                    <StatWrapper
                         resourceName={USERS_PERFORMANCE_OVERVIEW}
                         stat={formattedUserPerformance}
                         isFetchingStat={isFetchingUserPerformance}
@@ -104,7 +104,7 @@ function LiveAgents() {
                                 )}
                             />
                         )}
-                    </TwoDimensionalChartWrapper>
+                    </StatWrapper>
                 </>
             )}
         </StatsPage>

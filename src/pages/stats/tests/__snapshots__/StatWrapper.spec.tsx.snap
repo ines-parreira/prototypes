@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TwoDimensionalStatWrapper should display download error 1`] = `
+exports[`StatWrapper should display download error 1`] = `
 Array [
   Array [
     Object {
@@ -11,7 +11,7 @@ Array [
 ]
 `;
 
-exports[`TwoDimensionalStatWrapper should display spinner while downloading the stat 1`] = `
+exports[`StatWrapper should display spinner while downloading the stat 1`] = `
 <div
   class="wrapper"
 >
@@ -48,7 +48,7 @@ exports[`TwoDimensionalStatWrapper should display spinner while downloading the 
 </div>
 `;
 
-exports[`TwoDimensionalStatWrapper should download stat on download button click 1`] = `
+exports[`StatWrapper should download stat on download button click 1`] = `
 Array [
   Array [
     "foo.txt",
@@ -58,7 +58,7 @@ Array [
 ]
 `;
 
-exports[`TwoDimensionalStatWrapper should log event on download button click 1`] = `
+exports[`StatWrapper should log event on download button click 1`] = `
 Array [
   Array [
     "stat-download-clicked",
@@ -71,13 +71,13 @@ Array [
 ]
 `;
 
-exports[`TwoDimensionalStatWrapper should not render the children nor the title when stat is null 1`] = `
+exports[`StatWrapper should not render the children nor the title when stat is null 1`] = `
 <div
   class="wrapper"
 />
 `;
 
-exports[`TwoDimensionalStatWrapper should pass stat to children function 1`] = `
+exports[`StatWrapper should pass stat to children function 1`] = `
 <div
   class="wrapper"
 >
@@ -150,7 +150,7 @@ exports[`TwoDimensionalStatWrapper should pass stat to children function 1`] = `
 </div>
 `;
 
-exports[`TwoDimensionalStatWrapper should render the download button when isDownloadable is set to true 1`] = `
+exports[`StatWrapper should render the download button when isDownloadable is set to true 1`] = `
 <div
   class="wrapper"
 >
@@ -178,7 +178,7 @@ exports[`TwoDimensionalStatWrapper should render the download button when isDown
 </div>
 `;
 
-exports[`TwoDimensionalStatWrapper should render the help icon when help text prop is defined 1`] = `
+exports[`StatWrapper should render the help icon when help text prop is defined 1`] = `
 <div
   class="wrapper"
 >
@@ -203,7 +203,7 @@ exports[`TwoDimensionalStatWrapper should render the help icon when help text pr
 </div>
 `;
 
-exports[`TwoDimensionalStatWrapper should render the loader when stat is fetching 1`] = `
+exports[`StatWrapper should render the loader when stat is fetching 1`] = `
 <div
   class="wrapper"
 >

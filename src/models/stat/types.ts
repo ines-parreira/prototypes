@@ -36,6 +36,7 @@ export type StatData =
     | OneDimensionalChart
     | OneDimensionalUnionChart
     | TwoDimensionalChart
+    | SankeyDiagram
 
 export type OneDimensionalChart = {
     data: {
@@ -78,13 +79,43 @@ export type TextStatAxisValue = {
     type: Exclude<StatType, StatType.Number>
 }
 
+export type SankeyDiagram = {
+    data: {
+        from: string
+        to: string
+        flow: number
+    }[]
+    label: string
+    legend: {
+        labels: Record<string, string>
+        states: string[]
+    }
+}
+
+export type StatAxisValue =
+    | number
+    | string
+    | {
+          name: string
+          type: Exclude<StatType, StatType.Number>
+      }
+    | {
+          name: string
+          type: StatType.Number
+          value?: number
+      }
+
 export type NumericStatAxisValue = {
     name: string
     type: StatType.Number | StatType.OnlineTime | StatType.TicketDetails
     value?: number
 }
 
-export type AnyStatAxisValue = number | TextStatAxisValue | NumericStatAxisValue
+export type AnyStatAxisValue =
+    | number
+    | string
+    | TextStatAxisValue
+    | NumericStatAxisValue
 
 export type DataStatLine = {
     data: number[]

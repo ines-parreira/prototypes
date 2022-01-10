@@ -1,4 +1,5 @@
 import {
+    SankeyDiagram,
     OneDimensionalChart,
     OneDimensionalUnionChart,
     Stat,
@@ -1298,5 +1299,140 @@ export const userPerformanceOverview: Stat<TwoDimensionalChart> = {
             ],
         },
         label: 'Activity of the agents',
+    },
+}
+
+export const automationOverview: Stat<OneDimensionalUnionChart> = {
+    data: {
+        data: [
+            {
+                name: 'overall_automation',
+                type: StatType.Percent,
+                value: 0,
+                delta: 0,
+                more_is_better: true,
+            },
+            {
+                name: 'automated_via_rules',
+                type: StatType.Percent,
+                value: 0,
+                delta: 0,
+                more_is_better: true,
+            },
+            {
+                name: 'automated_via_selfservice',
+                type: StatType.Percent,
+                value: 0,
+                delta: 0,
+                more_is_better: true,
+            },
+        ],
+    },
+    meta: {
+        end_datetime: '2022-01-04T23:59:59+01:00',
+        start_datetime: '2021-12-29T00:00:00+01:00',
+        previous_start_datetime: '2021-12-22T00:00:01+01:00',
+        previous_end_datetime: '2021-12-29T00:00:00+01:00',
+    },
+}
+
+export const automationFlow: Stat<SankeyDiagram> = {
+    meta: {
+        start_datetime: '2021-11-06T00:00:00+01:00',
+        previous_start_datetime: '2021-09-07T00:00:01+01:00',
+        end_datetime: '2022-01-04T23:59:59+01:00',
+        previous_end_datetime: '2021-11-06T00:00:00+01:00',
+    },
+    data: {
+        data: [
+            {
+                from: 'total',
+                to: 'chat',
+                flow: 13,
+            },
+            {
+                from: 'chat',
+                to: 'not_automated',
+                flow: 4,
+            },
+            {
+                from: 'chat',
+                to: 'self_service',
+                flow: 9,
+            },
+            {
+                from: 'self_service',
+                to: 'not_automated',
+                flow: 1,
+            },
+            {
+                from: 'self_service',
+                to: 'automated',
+                flow: 8,
+            },
+        ],
+        legend: {
+            labels: {
+                total: 'Total',
+                email: 'Email',
+                phone: 'Phone',
+                chat: 'Chat',
+                social: 'Social',
+                rules: 'Rules',
+                self_service: 'Self service',
+                not_automated: 'Not automated',
+                automated: 'Automated',
+            },
+            states: [
+                'total',
+                'email',
+                'phone',
+                'chat',
+                'social',
+                'rules',
+                'self_service',
+                'not_automated',
+                'automated',
+            ],
+        },
+        label: 'Customer interaction automation flow',
+    },
+}
+
+export const automationPerChannel: Stat<TwoDimensionalChart> = {
+    data: {
+        label: 'Customer interaction automation per channel',
+        legend: {
+            axes: {
+                x: '',
+                y: 'Number of tickets',
+            },
+        },
+        data: {
+            axes: {
+                x: ['chat'],
+                y: [],
+            },
+            lines: [
+                {
+                    name: 'automated',
+                    data: [0],
+                },
+                {
+                    name: 'automated_selfserve',
+                    data: [8],
+                },
+                {
+                    name: 'not_automated',
+                    data: [5],
+                },
+            ],
+        },
+    },
+    meta: {
+        end_datetime: '2022-01-04T23:59:59+01:00',
+        previous_end_datetime: '2021-11-06T00:00:00+01:00',
+        start_datetime: '2021-11-06T00:00:00+01:00',
+        previous_start_datetime: '2021-09-07T00:00:01+01:00',
     },
 }

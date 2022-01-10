@@ -1,0 +1,683 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AutomationOverview should not render the filters nor the stats when stats filters are not defined 1`] = `
+<div
+  class="full-width wrapper"
+>
+  <div
+    class="filtersWrapper"
+  >
+    <div
+      class="page-header pageHeader mb-0"
+    >
+      <h1
+        class="align-items-center"
+      >
+        <span>
+          Automation Overview
+        </span>
+        <button
+          class="wrapper ml-3 btn btn-secondary"
+          type="button"
+        >
+          <div
+            class="content"
+          >
+            <i
+              class="icon material-icons"
+            >
+              info_outline
+            </i>
+            <span
+              class="label ml-1"
+            >
+              Learn
+            </span>
+          </div>
+        </button>
+      </h1>
+      <div>
+        <div
+          class="d-flex flex-wrap float-right"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    class="statsWrapper"
+  >
+    <div
+      class="statsContainer container-fluid"
+    />
+  </div>
+</div>
+`;
+
+exports[`AutomationOverview should render the filters and stats when stats filters are defined 1`] = `
+<div
+  class="full-width wrapper"
+>
+  <div
+    class="filtersWrapper"
+  >
+    <div
+      class="page-header pageHeader mb-0"
+    >
+      <h1
+        class="align-items-center"
+      >
+        <span>
+          Automation Overview
+        </span>
+        <button
+          class="wrapper ml-3 btn btn-secondary"
+          type="button"
+        >
+          <div
+            class="content"
+          >
+            <i
+              class="icon material-icons"
+            >
+              info_outline
+            </i>
+            <span
+              class="label ml-1"
+            >
+              Learn
+            </span>
+          </div>
+        </button>
+      </h1>
+      <div>
+        <div
+          class="d-flex flex-wrap float-right"
+        >
+          <div
+            class="dropdown"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="mr-2 dropdown-toggle btn btn-secondary"
+              type="button"
+            >
+              <span>
+                All integrations
+              </span>
+            </button>
+            <div
+              aria-hidden="true"
+              class="dropdown dropdown-menu dropdown-menu-right"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-item-input dropdownItemInput dropdown-header"
+                tabindex="-1"
+              >
+                <input
+                  class="form-control"
+                  placeholder="Search integrations..."
+                  type="text"
+                  value=""
+                />
+              </h6>
+              <button
+                class="component quickSelectionOption dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  Select displayed
+                </span>
+                <div
+                  class="badge"
+                >
+                  0
+                </div>
+              </button>
+              <div
+                class="dropdownDivider dropdown-divider"
+                tabindex="-1"
+              />
+              <div
+                class="content"
+              />
+            </div>
+          </div>
+          <div
+            class="dropdown"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="mr-2 dropdown-toggle btn btn-secondary"
+              type="button"
+            >
+              <span>
+                1 channel
+              </span>
+            </button>
+            <div
+              aria-hidden="true"
+              class="dropdown dropdown-menu dropdown-menu-right"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-item-input dropdownItemInput dropdown-header"
+                tabindex="-1"
+              >
+                <input
+                  class="form-control"
+                  placeholder="Search channels..."
+                  type="text"
+                  value=""
+                />
+              </h6>
+              <button
+                class="component quickSelectionOption dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  Deselect
+                </span>
+                <div
+                  class="badge badge--unselect"
+                >
+                  1
+                </div>
+              </button>
+              <div
+                class="dropdownDivider dropdown-divider"
+                tabindex="-1"
+              />
+              <div
+                class="content"
+              >
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Aircall
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Api
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    checked=""
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Chat
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Email
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Facebook
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Facebook mention
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Facebook messenger
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Facebook recommendations
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Instagram ad comment
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Instagram comment
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Instagram mention
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Instagram direct message
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Phone
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Sms
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Twitter
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Twitter direct message
+                </label>
+                <label
+                  class="item dropdown-item form-check-label"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <input
+                    class="mr-2 checkbox"
+                    type="checkbox"
+                  />
+                   Yotpo review
+                </label>
+              </div>
+            </div>
+          </div>
+          <div>
+            <button
+              class="btn btn-secondary"
+              type="button"
+            >
+              <i
+                class="material-icons mr-2"
+              >
+                calendar_today
+              </i>
+              <span>
+                Feb 14, 2017
+              </span>
+              <i
+                class="material-icons md-2 strong ml-1"
+              >
+                arrow_drop_down
+              </i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="statsWrapper"
+  >
+    <div
+      class="statsContainer container-fluid"
+    >
+      <div
+        class="wrapper"
+      >
+        <div
+          class="metrics"
+        >
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Overall automation rate
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-overall_automation-0"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              <div>
+                <div
+                  class="value"
+                >
+                  0%
+                </div>
+                <span
+                  class="diff"
+                  id="value-overall_automation-0"
+                >
+                  <span>
+                    <i
+                      class="material-icons mr-1 statsDifference neutral"
+                    >
+                      arrow_forward
+                    </i>
+                    0
+                    %
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Automated via rules
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-automated_via_rules-1"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              <div>
+                <div
+                  class="value"
+                >
+                  0%
+                </div>
+                <span
+                  class="diff"
+                  id="value-automated_via_rules-1"
+                >
+                  <span>
+                    <i
+                      class="material-icons mr-1 statsDifference neutral"
+                    >
+                      arrow_forward
+                    </i>
+                    0
+                    %
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Automated via self-service
+            </div>
+            <div
+              class="container"
+            >
+              <div
+                class="inner"
+                style="min-height: 90px;"
+              >
+                <i
+                  class="icon-custom icon-circle-o-notch md-spin"
+                  style="font-size: 20px;"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Get access to more automations
+            </div>
+            <div
+              class="mt-3 button"
+            >
+              <div
+                class=""
+              >
+                <div
+                  class="d-flex align-items-center upgradeLink"
+                >
+                  <button
+                    class="upgradeButton btn btn-outline-warning"
+                    type="button"
+                  >
+                    <span
+                      class="mr-2 upgradeLabel"
+                    >
+                      Get Automation Features
+                    </span>
+                    <img
+                      alt="upgrade-icon"
+                      class="upgradeIcon"
+                      src="test-file-stub"
+                    />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="mb-3 d-flex justify-content-between align-items-baseline"
+        >
+          <h5
+            class="mb-0 d-flex header"
+          >
+            Customer interaction automation flow
+            <span>
+              <i
+                class="material-icons ml-2 helpIcon"
+                id="tooltip-automation-flow"
+              >
+                info_outline
+              </i>
+            </span>
+          </h5>
+          <button
+            class="csvButton btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons mr-1 csvButtonIcon"
+            >
+              file_download
+            </i>
+            CSV
+          </button>
+        </div>
+        <div>
+          <canvas />
+        </div>
+      </div>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="mb-3 d-flex justify-content-between align-items-baseline"
+        >
+          <h5
+            class="mb-0 d-flex header"
+          >
+            Customer interaction automation per channel
+            <span>
+              <i
+                class="material-icons ml-2 helpIcon"
+                id="tooltip-automation-per-channel"
+              >
+                info_outline
+              </i>
+            </span>
+          </h5>
+          <button
+            class="csvButton btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons mr-1 csvButtonIcon"
+            >
+              file_download
+            </i>
+            CSV
+          </button>
+        </div>
+        <div>
+          <div
+            class="mb-4"
+          >
+            <div
+              class="legends"
+            >
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="circle mr-2"
+                  style="background: rgb(36, 214, 157);"
+                />
+                Automated via rule
+              </span>
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="circle mr-2"
+                  style="background: rgb(128, 136, 214);"
+                />
+                Automated via Self-Service
+              </span>
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="circle mr-2"
+                  style="background: rgb(210, 215, 222);"
+                />
+                Not automated
+              </span>
+            </div>
+          </div>
+          <div>
+            <canvas />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
