@@ -93,6 +93,7 @@ export const ConnectToShopSection = ({
                 return {
                     value: shopName,
                     label: optionLabel(shopName, connectedChats),
+                    text: shopName,
                 }
             })
             .toArray()
