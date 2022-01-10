@@ -21,7 +21,7 @@ import css from './ConnectToShopSection.less'
 interface Props {
     onUpdate: (data: {
         shop_name: string | null
-        self_service_enabled?: boolean
+        self_service_deactivated?: boolean
     }) => void
     helpCenter: HelpCenter
 }
@@ -214,7 +214,8 @@ export const ConnectToShopSection = ({
                             onClick={() => {
                                 onUpdate({
                                     shop_name: selectedShop,
-                                    self_service_enabled: hasAutomationAddOn,
+                                    self_service_deactivated:
+                                        !hasAutomationAddOn,
                                 })
 
                                 setConnectModalOpen(false)

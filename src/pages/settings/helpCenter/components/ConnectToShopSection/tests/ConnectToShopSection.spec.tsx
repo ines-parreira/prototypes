@@ -117,7 +117,7 @@ describe('<ConnectToShopSection />', () => {
 
         expect(onUpdate).toBeCalledWith({
             shop_name: 'meow-shop',
-            self_service_enabled: false,
+            self_service_deactivated: true,
         })
     })
 })
