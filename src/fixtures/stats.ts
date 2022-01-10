@@ -1436,3 +1436,75 @@ export const automationPerChannel: Stat<TwoDimensionalChart> = {
         previous_start_datetime: '2021-09-07T00:00:01+01:00',
     },
 }
+
+export const messagesSentPerMacro: Stat<TwoDimensionalChart> = {
+    data: {
+        label: 'Messages sent per macro',
+        data: {
+            axes: {
+                x: [
+                    {
+                        name: 'Macro',
+                        type: StatType.String,
+                    },
+                    {
+                        name: 'Total',
+                        type: StatType.Number,
+                    },
+                    {
+                        name: 'Percentage',
+                        type: StatType.Percent,
+                    },
+                    {
+                        name: 'Delta',
+                        type: StatType.Delta,
+                    },
+                ],
+            },
+            lines: [
+                [
+                    {
+                        type: StatType.String,
+                        value: 'Without macro',
+                    },
+                    {
+                        type: StatType.Number,
+                        value: 17,
+                    },
+                    {
+                        type: StatType.Percent,
+                        value: 94,
+                    },
+                    {
+                        type: StatType.Delta,
+                        value: -32,
+                    },
+                ],
+                [
+                    {
+                        type: StatType.String,
+                        value: 'Hello',
+                    },
+                    {
+                        type: StatType.Number,
+                        value: 1,
+                    },
+                    {
+                        type: StatType.Percent,
+                        value: 6,
+                    },
+                    {
+                        type: StatType.Delta,
+                        value: 100,
+                    },
+                ],
+            ],
+        },
+    },
+    meta: {
+        previous_start_datetime: '2021-12-24T00:00:01+01:00',
+        start_datetime: '2021-12-31T00:00:00+01:00',
+        previous_end_datetime: '2021-12-31T00:00:00+01:00',
+        end_datetime: '2022-01-06T23:59:59+01:00',
+    },
+}
