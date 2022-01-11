@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react'
+
 import {Container} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 
@@ -12,6 +13,8 @@ import history from 'pages/history'
 import useAppDispatch from 'hooks/useAppDispatch'
 
 import css from 'pages/settings/settings.less'
+
+import PhoneNumbersTable from './PhoneNumbersTable'
 
 export function PhoneNumbersListContainer() {
     const dispatch = useAppDispatch()
@@ -48,7 +51,10 @@ export function PhoneNumbersListContainer() {
                     Create Phone Number
                 </Button>
             </PageHeader>
-            <Container fluid className={css.pageContainer}></Container>
+            <Container fluid className={css.pageContainer}>
+                Chat with your customers over the phone from Gorgias.
+            </Container>
+            <PhoneNumbersTable />
         </div>
     )
 }

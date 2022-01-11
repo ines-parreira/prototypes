@@ -1,5 +1,5 @@
-import {PhoneType, PhoneCountry, PhoneFunction} from 'models/phoneNumber/types'
-export const phoneNumbers = [
+import {PhoneNumber, PhoneType, PhoneCountry} from 'models/phoneNumber/types'
+export const phoneNumbers: PhoneNumber[] = [
     {
         id: 1,
         name: 'A Phone Number',
@@ -9,7 +9,6 @@ export const phoneNumbers = [
         deleted_datetime: null,
         meta: {
             type: PhoneType.Local,
-            function: PhoneFunction.Standard,
             emoji: '👍',
             friendly_name: '+1 415 111 2222',
             state: 'CA',
@@ -25,13 +24,11 @@ export const phoneNumbers = [
         updated_datetime: '2021-12-01T18:00:00.000000+00:00',
         deleted_datetime: null,
         meta: {
-            type: PhoneType.Local,
-            function: PhoneFunction.Standard,
+            type: PhoneType.Mobile,
             emoji: '👍',
-            friendly_name: '+1 415 111 2223',
-            state: 'CA',
-            country: PhoneCountry.US,
-            area_code: 415,
+            friendly_name: '+1 813 111 2223',
+            country: PhoneCountry.CA,
+            area_code: 813,
         },
     },
 ]

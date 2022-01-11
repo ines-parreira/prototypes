@@ -13,7 +13,6 @@ export type PhoneNumber = {
 
 export type PhoneNumberMeta = {
     emoji?: Maybe<string>
-    function: PhoneFunction
     country: PhoneCountry
     friendly_name: string
     type: PhoneType
