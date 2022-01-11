@@ -15,6 +15,7 @@ import IntegrationDetailContainer from './integrations/detail/IntegrationDetailC
 import IntegrationListContainer from './integrations/list/IntegrationListContainer'
 import PhoneNumbersListContainer from './phoneNumbers/PhoneNumbersListContainer'
 import PhoneNumberCreateContainer from './phoneNumbers/PhoneNumberCreateContainer'
+import PhoneNumberDetailContainer from './phoneNumbers/PhoneNumberDetailContainer'
 import TicketDetailContainer from './tickets/detail/TicketDetailContainer'
 import TicketInfobarContainer from './tickets/detail/TicketInfobarContainer'
 import TicketSourceContainer from './tickets/detail/TicketSourceContainer'
@@ -660,6 +661,17 @@ export function PhoneNumbersSettingsRoutes({
                 render={appRender({
                     content: withUserRoleRequired(
                         PhoneNumberCreateContainer,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/:phoneNumberId`}
+                exact
+                render={appRender({
+                    content: withUserRoleRequired(
+                        PhoneNumberDetailContainer,
                         ADMIN_ROLE
                     ),
                     navbar: SettingsNavbarContainer,

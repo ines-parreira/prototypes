@@ -47,10 +47,14 @@ describe('<PhoneNumbersTable/>', () => {
 
             const rowsBeforeSorting = getRows()
             expect(rowsBeforeSorting[1].slice(0, 2)).toEqual([
-                '🇨🇦 Another Phone Number +1 813 111 2223',
+                '🇬🇧 Intl. Phone Number +44 7123 456789',
                 'Mobile',
             ])
             expect(rowsBeforeSorting[2].slice(0, 2)).toEqual([
+                '🇨🇦 Another Phone Number +1 813 111 2223',
+                'Toll Free',
+            ])
+            expect(rowsBeforeSorting[3].slice(0, 2)).toEqual([
                 '🇺🇸 A Phone Number +1 415 111 2222',
                 'Local',
             ])
@@ -64,6 +68,10 @@ describe('<PhoneNumbersTable/>', () => {
             ])
             expect(rowsAfterSorting[2].slice(0, 2)).toEqual([
                 '🇨🇦 Another Phone Number +1 813 111 2223',
+                'Toll Free',
+            ])
+            expect(rowsAfterSorting[3].slice(0, 2)).toEqual([
+                '🇬🇧 Intl. Phone Number +44 7123 456789',
                 'Mobile',
             ])
 

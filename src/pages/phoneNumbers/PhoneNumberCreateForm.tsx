@@ -185,7 +185,7 @@ export default function PhoneIntegrationCreate(): JSX.Element {
                         status: NotificationStatus.Success,
                     })
                 )
-                history.push('/app/settings/phone-numbers')
+                history.push(`/app/settings/phone-numbers/${phoneNumber.id}`)
             } catch (error) {
                 void dispatch(
                     notify({

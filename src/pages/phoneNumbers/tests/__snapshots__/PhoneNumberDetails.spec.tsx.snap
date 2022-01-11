@@ -1,0 +1,145 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PhoneNumberDetails/> render() should render with a local US number 1`] = `
+<div
+  class="row"
+>
+  <div
+    class="pr-lg-0 pr-md-3 col-lg-6"
+  >
+    <div
+      class="form-group"
+    >
+      <label
+        class="control-label"
+        for="phone-number"
+      >
+        Phone number
+      </label>
+      <div
+        class="input-group"
+      >
+        <input
+          class="form-control"
+          id="phone-number"
+          readonly=""
+          type="text"
+          value="+1 415 111 2222"
+        />
+        <div
+          class="input-group-append"
+        >
+          <button
+            class="copy-phone-number-button btn btn-secondary"
+            data-clipboard-target="#phone-number"
+            type="button"
+          >
+            <i
+              class="material-icons mr-2"
+            >
+              file_copy
+            </i>
+            Copy
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`] = `
+<div
+  class="row"
+>
+  <div
+    class="pr-lg-0 pr-md-3 col-lg-6"
+  >
+    <div
+      class="form-group"
+    >
+      <label
+        class="control-label"
+        for="phone-number"
+      >
+        Phone number
+      </label>
+      <div
+        class="input-group"
+      >
+        <input
+          class="form-control"
+          id="phone-number"
+          readonly=""
+          type="text"
+          value="+44 7123 456789"
+        />
+        <div
+          class="input-group-append"
+        >
+          <button
+            class="copy-phone-number-button btn btn-secondary"
+            data-clipboard-target="#phone-number"
+            type="button"
+          >
+            <i
+              class="material-icons mr-2"
+            >
+              file_copy
+            </i>
+            Copy
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneNumberDetails/> render() should render with a toll-free CA number 1`] = `
+<div
+  class="row"
+>
+  <div
+    class="pr-lg-0 pr-md-3 col-lg-6"
+  >
+    <div
+      class="form-group"
+    >
+      <label
+        class="control-label"
+        for="phone-number"
+      >
+        Phone number
+      </label>
+      <div
+        class="input-group"
+      >
+        <input
+          class="form-control"
+          id="phone-number"
+          readonly=""
+          type="text"
+          value="+1 813 111 2223"
+        />
+        <div
+          class="input-group-append"
+        >
+          <button
+            class="copy-phone-number-button btn btn-secondary"
+            data-clipboard-target="#phone-number"
+            type="button"
+          >
+            <i
+              class="material-icons mr-2"
+            >
+              file_copy
+            </i>
+            Copy
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

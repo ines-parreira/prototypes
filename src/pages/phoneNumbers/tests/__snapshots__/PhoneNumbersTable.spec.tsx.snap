@@ -166,7 +166,7 @@ exports[`<PhoneNumbersTable/> render() should allow sorting by column header 1`]
             class="badge-tag badge badge-secondary"
             style="color: rgb(128, 136, 214);"
           >
-            Mobile
+            Toll Free
           </span>
         </div>
       </td>
@@ -187,6 +187,74 @@ exports[`<PhoneNumbersTable/> render() should allow sorting by column header 1`]
         >
           <a
             to="/app/settings/phone-numbers/2"
+          >
+            <i
+              class="material-icons md-2 align-middle icon-go-forward"
+            >
+              keyboard_arrow_right
+            </i>
+          </a>
+        </div>
+      </td>
+    </tr>
+    <tr
+      class="row row isClickable"
+    >
+      <td>
+        <div
+          class="cellContent"
+        >
+          <div
+            class="wrapper"
+          >
+            <span
+              role="img"
+              style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
+            >
+              🇬🇧
+            </span>
+          </div>
+           
+          <strong
+            class="mr-3"
+          >
+            Intl. Phone Number
+          </strong>
+           
+          <span>
+            +44 7123 456789
+          </span>
+        </div>
+      </td>
+      <td>
+        <div
+          class="cellContent"
+        >
+          <span
+            class="badge-tag badge badge-secondary"
+            style="color: rgb(128, 136, 214);"
+          >
+            Mobile
+          </span>
+        </div>
+      </td>
+      <td>
+        <div
+          class="cellContent"
+        >
+          <div
+            style="width: 400px;"
+          />
+        </div>
+      </td>
+      <td
+        class="smallest"
+      >
+        <div
+          class="cellContent"
+        >
+          <a
+            to="/app/settings/phone-numbers/3"
           >
             <i
               class="material-icons md-2 align-middle icon-go-forward"
@@ -276,6 +344,74 @@ exports[`<PhoneNumbersTable/> render() should render 1`] = `
               role="img"
               style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
             >
+              🇬🇧
+            </span>
+          </div>
+           
+          <strong
+            class="mr-3"
+          >
+            Intl. Phone Number
+          </strong>
+           
+          <span>
+            +44 7123 456789
+          </span>
+        </div>
+      </td>
+      <td>
+        <div
+          class="cellContent"
+        >
+          <span
+            class="badge-tag badge badge-secondary"
+            style="color: rgb(128, 136, 214);"
+          >
+            Mobile
+          </span>
+        </div>
+      </td>
+      <td>
+        <div
+          class="cellContent"
+        >
+          <div
+            style="width: 400px;"
+          />
+        </div>
+      </td>
+      <td
+        class="smallest"
+      >
+        <div
+          class="cellContent"
+        >
+          <a
+            to="/app/settings/phone-numbers/3"
+          >
+            <i
+              class="material-icons md-2 align-middle icon-go-forward"
+            >
+              keyboard_arrow_right
+            </i>
+          </a>
+        </div>
+      </td>
+    </tr>
+    <tr
+      class="row row isClickable"
+    >
+      <td>
+        <div
+          class="cellContent"
+        >
+          <div
+            class="wrapper"
+          >
+            <span
+              role="img"
+              style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
+            >
               🇨🇦
             </span>
           </div>
@@ -299,7 +435,7 @@ exports[`<PhoneNumbersTable/> render() should render 1`] = `
             class="badge-tag badge badge-secondary"
             style="color: rgb(128, 136, 214);"
           >
-            Mobile
+            Toll Free
           </span>
         </div>
       </td>
