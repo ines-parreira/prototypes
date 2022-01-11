@@ -7,6 +7,11 @@ const outputPath = path.join(
     'g/static/private/js/assets/css/new/'
 )
 
+const tokenTypes = {
+    colors: 'colors',
+    typography: 'typography',
+}
+
 const StyleDictionary = require('style-dictionary').extend({
     source: [
         `${path.join(
@@ -22,6 +27,22 @@ const StyleDictionary = require('style-dictionary').extend({
                 {
                     destination: 'colorTokens.less',
                     format: 'less/variables',
+                    filter: (token) => {
+                        return (
+                            path.parse(token.filePath).name ===
+                            tokenTypes.colors
+                        )
+                    },
+                },
+                {
+                    destination: 'typographyTokens.less',
+                    format: 'less/variables',
+                    filter: (token) => {
+                        return (
+                            path.parse(token.filePath).name ===
+                            tokenTypes.typography
+                        )
+                    },
                 },
             ],
         },
@@ -31,13 +52,27 @@ const StyleDictionary = require('style-dictionary').extend({
 StyleDictionary.registerTransform({
     name: 'name/cti/kebab',
     type: 'name',
-    transformer: (prop) =>
-        _.kebabCase(
+    transformer: (prop) => {
+        const tokenType = path.parse(prop.filePath).name
+
+        if (tokenType === tokenTypes.typography) {
+            return _.kebabCase(
+                escapeEmoji(
+                    prop.attributes.subitem === prop.name
+                        ? `${prop.attributes.type}-${prop.attributes.item}-${prop.attributes.subitem}`
+                        : `${prop.attributes.type}-${prop.attributes.item}-${prop.attributes.subitem}-${prop.name}`
+                )
+            )
+        }
+
+        return _.kebabCase(
             escapeEmoji(
                 `${prop.attributes.category}-${prop.attributes.type}-${prop.name}`
             )
-        ),
+        )
+    },
 })
+
 StyleDictionary.buildAllPlatforms()
 
 function escapeEmoji(value) {

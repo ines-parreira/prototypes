@@ -1,0 +1,192 @@
+{
+    "💬 Help Desk": {
+        "Body": {
+            "Italic": {
+                "font-family": {"value": "'Inter', 'Inter-Italic'"},
+                "font-size": {"value": "14px"},
+                "letter-spacing": {"value": "-0.1px"},
+                "line-height": {"value": "20px"},
+                "font-weight": {"value": "400"},
+                "font-style": {"value": " italic"},
+                "color": {"value": "black"}
+            },
+            "Italic Semibold": {
+                "font-family": {"value": "'Inter', 'Inter-SemiBoldItalic'"},
+                "font-size": {"value": "14px"},
+                "letter-spacing": {"value": "-0.1px"},
+                "line-height": {"value": "20px"},
+                "font-weight": {"value": "600"},
+                "font-style": {"value": " italic"},
+                "color": {"value": "black"}
+            },
+            "Link": {
+                "font-family": {"value": "'Inter', 'Inter-SemiBold'"},
+                "font-size": {"value": "14px"},
+                "letter-spacing": {"value": "-0.1px"},
+                "line-height": {"value": "20px"},
+                "font-weight": {"value": "600"},
+                "text-decoration": {"value": " underline"},
+                "color": {"value": "black"}
+            },
+            "Medium": {
+                "font-family": {"value": "'Inter', 'Inter-Medium'"},
+                "font-size": {"value": "14px"},
+                "letter-spacing": {"value": "-0.1px"},
+                "line-height": {"value": "20px"},
+                "font-weight": {"value": "500"},
+                "color": {"value": "black"}
+            },
+            "Regular": {
+                "font-family": {"value": "'Inter', 'Inter-Regular'"},
+                "font-size": {"value": "14px"},
+                "letter-spacing": {"value": "-0.1px"},
+                "line-height": {"value": "20px"},
+                "font-weight": {"value": "400"},
+                "color": {"value": "black"}
+            },
+            "Semibold": {
+                "font-family": {"value": "'Inter', 'Inter-SemiBold'"},
+                "font-size": {"value": "14px"},
+                "letter-spacing": {"value": "-0.1px"},
+                "line-height": {"value": "20px"},
+                "font-weight": {"value": "600"},
+                "color": {"value": "black"}
+            },
+            "Tabular": {
+                "font-family": {"value": "'Inter', 'Inter-Regular'"},
+                "font-size": {"value": "14px"},
+                "letter-spacing": {"value": "-0.1px"},
+                "line-height": {"value": "20px"},
+                "font-weight": {"value": "400"},
+                "color": {"value": "black"}
+            }
+        },
+        "Caption": {
+            "All Caps": {
+                "font-family": {"value": "'Inter', 'Inter-SemiBold'"},
+                "font-size": {"value": "11px"},
+                "letter-spacing": {"value": "0.6px"},
+                "line-height": {"value": "14px"},
+                "font-weight": {"value": "600"},
+                "text-transform": {"value": " uppercase"},
+                "color": {"value": "black"}
+            },
+            "Regular": {
+                "font-family": {"value": "'Inter', 'Inter-Regular'"},
+                "font-size": {"value": "12px"},
+                "letter-spacing": {"value": "0px"},
+                "line-height": {"value": "16px"},
+                "font-weight": {"value": "400"},
+                "color": {"value": "black"}
+            },
+            "Semibold": {
+                "font-family": {"value": "'Inter', 'Inter-SemiBold'"},
+                "font-size": {"value": "12px"},
+                "letter-spacing": {"value": "0px"},
+                "line-height": {"value": "16px"},
+                "font-weight": {"value": "600"},
+                "color": {"value": "black"}
+            }
+        },
+        "Component": {
+            "Badge & Tag": {
+                "Regular": {
+                    "font-family": {"value": "'Inter', 'Inter-Regular'"},
+                    "font-size": {"value": "12px"},
+                    "letter-spacing": {"value": "0px"},
+                    "line-height": {"value": "16px"},
+                    "font-weight": {"value": "400"},
+                    "text-transform": {"value": " capitalize"},
+                    "color": {"value": "black"}
+                },
+                "Semibold": {
+                    "font-family": {"value": "'Inter', 'Inter-SemiBold'"},
+                    "font-size": {"value": "12px"},
+                    "letter-spacing": {"value": "0px"},
+                    "line-height": {"value": "16px"},
+                    "font-weight": {"value": "600"},
+                    "text-transform": {"value": " capitalize"},
+                    "color": {"value": "black"}
+                }
+            },
+            "Button": {
+                "Medium": {
+                    "font-family": {"value": "'Inter', 'Inter-Medium'"},
+                    "font-size": {"value": "14px"},
+                    "letter-spacing": {"value": "0px"},
+                    "line-height": {"value": "20px"},
+                    "font-weight": {"value": "500"},
+                    "text-transform": {"value": " capitalize"},
+                    "color": {"value": "black"}
+                },
+                "Small": {
+                    "font-family": {"value": "'Inter', 'Inter-Medium'"},
+                    "font-size": {"value": "12px"},
+                    "letter-spacing": {"value": "0px"},
+                    "line-height": {"value": "20px"},
+                    "font-weight": {"value": "500"},
+                    "text-transform": {"value": " capitalize"},
+                    "color": {"value": "black"}
+                }
+            }
+        },
+        "Heading": {
+            "Page | Regular": {
+                "font-family": {"value": "'Inter', 'Inter-Regular'"},
+                "font-size": {"value": "24px"},
+                "letter-spacing": {"value": "-0.2px"},
+                "line-height": {"value": "32px"},
+                "font-weight": {"value": "400"},
+                "color": {"value": "black"}
+            },
+            "Page | Semibold": {
+                "font-family": {"value": "'Inter', 'Inter-SemiBold'"},
+                "font-size": {"value": "24px"},
+                "letter-spacing": {"value": "-0.2px"},
+                "line-height": {"value": "32px"},
+                "font-weight": {"value": "600"},
+                "color": {"value": "black"}
+            },
+            "Section | Medium": {
+                "font-family": {"value": "'Inter', 'Inter-Medium'"},
+                "font-size": {"value": "20px"},
+                "letter-spacing": {"value": "-0.4px"},
+                "line-height": {"value": "28px"},
+                "font-weight": {"value": "500"},
+                "color": {"value": "black"}
+            },
+            "Section | Regular": {
+                "font-family": {"value": "'Inter', 'Inter-Regular'"},
+                "font-size": {"value": "20px"},
+                "letter-spacing": {"value": "-0.4px"},
+                "line-height": {"value": "28px"},
+                "font-weight": {"value": "400"},
+                "color": {"value": "black"}
+            },
+            "Section | Semibold": {
+                "font-family": {"value": "'Inter', 'Inter-SemiBold'"},
+                "font-size": {"value": "20px"},
+                "letter-spacing": {"value": "-0.4px"},
+                "line-height": {"value": "28px"},
+                "font-weight": {"value": "600"},
+                "color": {"value": "black"}
+            },
+            "Sub-section | Regular": {
+                "font-family": {"value": "'Inter', 'Inter-Regular'"},
+                "font-size": {"value": "16px"},
+                "letter-spacing": {"value": "0px"},
+                "line-height": {"value": "24px"},
+                "font-weight": {"value": "400"},
+                "color": {"value": "black"}
+            },
+            "Sub-section | Semibold": {
+                "font-family": {"value": "'Inter', 'Inter-SemiBold'"},
+                "font-size": {"value": "16px"},
+                "letter-spacing": {"value": "0px"},
+                "line-height": {"value": "24px"},
+                "font-weight": {"value": "600"},
+                "color": {"value": "black"}
+            }
+        }
+    }
+}
