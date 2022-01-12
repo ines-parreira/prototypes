@@ -8,12 +8,13 @@ import React, {
 import {Button, Form, Popover, PopoverBody} from 'reactstrap'
 import {useSelector} from 'react-redux'
 
-import InputField from '../../../../../../../../forms/InputField'
 import {
     logEvent,
     SegmentEvent,
 } from '../../../../../../../../../../store/middlewares/segmentTracker'
 import {getCurrentAccountState} from '../../../../../../../../../../state/currentAccount/selectors'
+import {ensureHTTPS} from '../../../../../../../../../../utils/url'
+import InputField from '../../../../../../../../forms/InputField'
 import {IntegrationContext} from '../../IntegrationContext'
 import {Link, SubmitLink} from '../types'
 
@@ -96,6 +97,10 @@ export default function Editor(props: Props) {
         [index, onSubmit, isEditing, redirectionLinkTitle, redirectionLinkUrl]
     )
 
+    const handleBlur = useCallback(() => {
+        setRedirectionLinkUrl((currentUrl) => ensureHTTPS(currentUrl))
+    }, [])
+
     const handleCancel = useCallback(() => {
         setRedirectionLinkTitle(link.label)
         setRedirectionLinkUrl(link.url)
@@ -122,9 +127,10 @@ export default function Editor(props: Props) {
                     <InputField
                         type="text"
                         name="redirectionLink.url"
-                        defaultValue={redirectionLinkUrl}
+                        value={redirectionLinkUrl}
                         label="Link"
                         onChange={(value) => setRedirectionLinkUrl(value)}
+                        onBlur={handleBlur}
                     />
                     <div>
                         <Button

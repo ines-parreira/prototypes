@@ -78,6 +78,27 @@ describe('<Editor/>', () => {
         })
     })
 
+    it('should edit the link on blur to add the https protocol if missing', async () => {
+        render(
+            <Provider store={mockStore({})}>
+                <button id={props.target}>Click</button>
+                <Editor {...props} />
+            </Provider>
+        )
+        const url = 'httpbin.org'
+        fireEvent.click(screen.getByRole('button', {name: 'Click'}))
+        await waitFor(() => {
+            fireEvent.change(screen.getAllByRole('textbox')[1], {
+                target: {value: url},
+            })
+            fireEvent.blur(screen.getAllByRole('textbox')[1])
+
+            expect(
+                (screen.getAllByRole('textbox')[1] as HTMLInputElement).value
+            ).toBe('https://httpbin.org')
+        })
+    })
+
     it('should call onSubmit without an index when submitting', async () => {
         render(
             <Provider store={mockStore({})}>
