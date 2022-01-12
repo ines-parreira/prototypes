@@ -139,25 +139,21 @@ export class Toolbar extends Component<Props, State> {
                         {this._isDisplayedAction(ActionName.Emoji) && (
                             <AddEmoji {...actionsProps} />
                         )}
-                    </div>
-                    {buttons.map(this._renderButton)}
-
-                    <div className={css.hoverOverlay}>
-                        Add files as attachments
-                    </div>
-
-                    {this._isDisplayedAction(ActionName.ProductPicker) &&
-                        integrations.size > 0 && (
-                            <div className={css.separatorContainer}>
-                                <div className={css.verticalSeparator}></div>
+                        {this._isDisplayedAction(ActionName.ProductPicker) &&
+                            integrations.size > 0 && (
                                 <AddProductLink
                                     getEditorState={actionsProps.getEditorState}
                                     setEditorState={actionsProps.setEditorState}
                                     integrations={integrations}
                                     productCardsEnabled={productCardsEnabled}
                                 />
-                            </div>
-                        )}
+                            )}
+                    </div>
+                    {buttons.map(this._renderButton)}
+
+                    <div className={css.hoverOverlay}>
+                        Add files as attachments
+                    </div>
                 </div>
             </div>
         )
