@@ -44,7 +44,9 @@ export const IntegrationRow = ({
         name: `Self-service for ${shopName}`,
         type: IntegrationType.SelfService,
         meta: {shop_name: shopName},
-        deactivated_datetime: configuration?.deactivated_datetime,
+        deactivated_datetime: configuration
+            ? configuration.deactivated_datetime
+            : new Date().toISOString(),
     }
 
     const createSelfServiceIntegration = useCallback(async () => {
