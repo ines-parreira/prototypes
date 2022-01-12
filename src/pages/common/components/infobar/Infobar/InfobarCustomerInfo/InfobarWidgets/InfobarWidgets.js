@@ -59,7 +59,7 @@ class InfobarWidgets extends React.Component {
                         selectedIntegrations = integrations.filter(
                             (i) =>
                                 i.get('id').toString() ===
-                                widget.get('integration_id').toString()
+                                widget.get('integration_id', '').toString()
                         )
                     }
 
