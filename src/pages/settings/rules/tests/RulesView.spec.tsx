@@ -1,4 +1,5 @@
 import React from 'react'
+import {RouteComponentProps} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
@@ -42,6 +43,12 @@ const populateStore = (length: number): RootState => {
     return defaultState
 }
 
+const minProps = {
+    location: {
+        hash: '#',
+    },
+} as unknown as RouteComponentProps
+
 describe('<RulesView/>', () => {
     const fetchRulesMock = fetchRules as jest.MockedFunction<typeof fetchRules>
     const fetchRuleRecipesMock = fetchRuleRecipes as jest.MockedFunction<
@@ -55,7 +62,21 @@ describe('<RulesView/>', () => {
     it('should render the rule views', () => {
         const {container} = render(
             <Provider store={mockStore(populateStore(5))}>
-                <RulesViewContainer />
+                <RulesViewContainer {...minProps} />
+            </Provider>
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render the rule library view', () => {
+        const props = {
+            location: {
+                hash: '#rule-library',
+            },
+        } as unknown as RouteComponentProps
+        const {container} = render(
+            <Provider store={mockStore(populateStore(5))}>
+                <RulesViewContainer {...props} />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -64,7 +85,7 @@ describe('<RulesView/>', () => {
     it('should fetch rules', () => {
         render(
             <Provider store={mockStore(populateStore(1))}>
-                <RulesViewContainer />
+                <RulesViewContainer {...minProps} />
             </Provider>
         )
         expect(fetchRulesMock).toHaveBeenCalled()
@@ -73,7 +94,7 @@ describe('<RulesView/>', () => {
     it('should fetch rule recipes', () => {
         render(
             <Provider store={mockStore(populateStore(1))}>
-                <RulesViewContainer />
+                <RulesViewContainer {...minProps} />
             </Provider>
         )
         expect(fetchRuleRecipesMock).toHaveBeenCalled()
@@ -82,7 +103,7 @@ describe('<RulesView/>', () => {
     it('should render a warning when reaching the rule limit', () => {
         const {getByText} = render(
             <Provider store={mockStore(populateStore(65))}>
-                <RulesViewContainer />
+                <RulesViewContainer {...minProps} />
             </Provider>
         )
         expect(getByText('65 rules of 70')).not.toBe(null)
@@ -91,7 +112,7 @@ describe('<RulesView/>', () => {
     it('should render an error when reached the rule limit', () => {
         const {getByText} = render(
             <Provider store={mockStore(populateStore(RULE_MAX_NUMBER))}>
-                <RulesViewContainer />
+                <RulesViewContainer {...minProps} />
             </Provider>
         )
         expect(getByText(/your account has reached the rule limit/i)).not.toBe(

@@ -3,7 +3,8 @@ import {useDebounce, useAsyncFn} from 'react-use'
 import classnames from 'classnames'
 import {Button, Container} from 'reactstrap'
 import {useSelector} from 'react-redux'
-import {Link, withRouter} from 'react-router-dom'
+import {Link, withRouter, RouteComponentProps} from 'react-router-dom'
+import history from 'pages/history'
 
 import PageHeader from '../../common/components/PageHeader'
 import Video from '../../common/components/Video/Video'
@@ -44,7 +45,9 @@ export enum RuleTabs {
     RuleLibrary = 'rule-library',
 }
 
-export function RulesViewContainer() {
+export function RulesViewContainer({
+    location,
+}: Pick<RouteComponentProps, 'location'>) {
     const dispatch = useAppDispatch()
     const rules = useSelector(getSortedRules)
     const ruleRecipes = useSelector(getSortedRuleRecipes)
@@ -92,13 +95,20 @@ export function RulesViewContainer() {
 
     const segmentEventProps = {account_id: currentAccount.get('domain')}
 
+    useEffect(() => {
+        const hash = location.hash.substring(1) as RuleTabs
+        if (Object.values(RuleTabs).includes(hash)) {
+            setActiveTab(hash)
+        }
+    }, [location])
+
     const goToLibrary = () => {
-        setActiveTab(RuleTabs.RuleLibrary)
+        history.push(`#${RuleTabs.RuleLibrary}`)
         logEvent(SegmentEvent.RuleLibraryVisited, segmentEventProps)
     }
 
     const handleTabChange = (tab: RuleTabs) => {
-        setActiveTab(tab)
+        history.push(`#${tab}`)
         if (tab === RuleTabs.RuleLibrary) {
             logEvent(SegmentEvent.RuleLibraryVisited, segmentEventProps)
         }
