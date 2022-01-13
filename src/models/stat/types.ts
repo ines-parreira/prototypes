@@ -42,8 +42,8 @@ export type OneDimensionalChart = {
     data: {
         delta?: number
         name: string
-        type: Exclude<StatType, StatType.String>
-        value: number | Record<string, number>
+        type: StatType
+        value: number | Record<string, number> | string
         more_is_better?: boolean
         currency?: string
     }

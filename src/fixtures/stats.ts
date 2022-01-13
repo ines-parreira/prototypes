@@ -1508,3 +1508,113 @@ export const messagesSentPerMacro: Stat<TwoDimensionalChart> = {
         end_datetime: '2022-01-06T23:59:59+01:00',
     },
 }
+
+export const intentsOverview: Stat<OneDimensionalUnionChart> = {
+    data: {
+        data: [
+            {
+                name: 'most_frequent_intent',
+                type: StatType.String,
+                value: 'other/question',
+            },
+            {
+                name: 'percentage_message_with_feedback',
+                type: StatType.Percent,
+                value: 0,
+            },
+        ],
+    },
+    meta: {
+        start_datetime: '2022-01-04T00:00:00+01:00',
+        previous_end_datetime: '2022-01-04T00:00:00+01:00',
+        end_datetime: '2022-01-10T23:59:59+01:00',
+        previous_start_datetime: '2021-12-28T00:00:01+01:00',
+    },
+}
+
+export const intentsBreakdownPerDay: Stat<TwoDimensionalChart> = {
+    data: {
+        label: 'Breakdown of top ten intents per day',
+        legend: {
+            axes: {
+                x: 'Message date',
+                y: 'Number of messages',
+            },
+        },
+        data: {
+            axes: {
+                x: [
+                    1641250800, 1641337200, 1641423600, 1641510000, 1641596400,
+                    1641682800, 1641769200,
+                ],
+                y: [],
+            },
+            lines: [
+                {
+                    name: 'other/question',
+                    data: [2, 0, 0, 0, 0, 0, 0],
+                },
+            ],
+        },
+    },
+    meta: {
+        start_datetime: '2022-01-04T00:00:00+01:00',
+        previous_end_datetime: '2022-01-04T00:00:00+01:00',
+        end_datetime: '2022-01-10T23:59:59+01:00',
+        previous_start_datetime: '2021-12-28T00:00:01+01:00',
+    },
+}
+
+export const intentsOccurrence: Stat<TwoDimensionalChart> = {
+    data: {
+        label: 'Breakdown of intent occurrence',
+        data: {
+            axes: {
+                x: [
+                    {
+                        name: 'Intent',
+                        type: StatType.String,
+                    },
+                    {
+                        name: 'Total',
+                        type: StatType.Number,
+                    },
+                    {
+                        name: 'Ticket percentage',
+                        type: StatType.Percent,
+                    },
+                    {
+                        name: 'Delta',
+                        type: StatType.Delta,
+                    },
+                ],
+            },
+            lines: [
+                [
+                    {
+                        type: StatType.String,
+                        value: 'other/question',
+                    },
+                    {
+                        type: StatType.Number,
+                        value: 2,
+                    },
+                    {
+                        type: StatType.Percent,
+                        value: 15,
+                    },
+                    {
+                        type: StatType.Delta,
+                        value: -34,
+                    },
+                ],
+            ],
+        },
+    },
+    meta: {
+        start_datetime: '2022-01-04T00:00:00+01:00',
+        previous_end_datetime: '2022-01-04T00:00:00+01:00',
+        end_datetime: '2022-01-10T23:59:59+01:00',
+        previous_start_datetime: '2021-12-28T00:00:01+01:00',
+    },
+}

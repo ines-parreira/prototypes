@@ -88,6 +88,7 @@ import LiveOverview from './stats/LiveOverview'
 import LiveAgents from './stats/LiveAgents'
 import AutomationOverview from './stats/AutomationOverview'
 import AutomationMacros from './stats/AutomationMacros'
+import AutomationIntents from './stats/AutomationIntents'
 
 const assetsURL = window.GORGIAS_ASSETS_URL || ''
 
@@ -466,6 +467,14 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
                     path={`${path}/macros`}
                     render={appRender({
                         content: AutomationMacros,
+                        navbar: StatsNavbarContainer,
+                    })}
+                />
+                <Route
+                    exact
+                    path={`${path}/intents`}
+                    render={appRender({
+                        content: AutomationIntents,
                         navbar: StatsNavbarContainer,
                     })}
                 />
