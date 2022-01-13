@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useMemo} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Label} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import classNames from 'classnames'
@@ -29,16 +29,16 @@ export const SelfServiceSection = ({
     updating,
     shopifyIntegration,
 }: Props): JSX.Element | null => {
-    const [sspForceDisabled, setSspForceDisabled] = useState(
-        !helpCenter.shop_name
-    )
+    const [sspShopState, setSspShopState] = useState<
+        'no_shop_integration' | 'shop_ssp_disabled' | 'shop_ssp_enabled'
+    >(helpCenter.shop_name ? 'shop_ssp_enabled' : 'no_shop_integration')
 
     const [selfServiceDeactivated, setSelfServiceDeactivated] = useState(
         helpCenter.self_service_deactivated_datetime !== null
     )
 
     const [{loading}, fetchGlobalSsp] = useAsyncFn(async () => {
-        if (shopifyIntegration !== undefined && helpCenter.shop_name) {
+        if (shopifyIntegration && helpCenter.shop_name) {
             try {
                 const shopifyIntegrationId: number =
                     shopifyIntegration.get('id')
@@ -48,12 +48,10 @@ export const SelfServiceSection = ({
                         `${shopifyIntegrationId}`
                     )
 
-                const sspGloballyDeactivated =
-                    deactivated_datetime !== null &&
-                    deactivated_datetime !== undefined
-
-                setSspForceDisabled(
-                    sspGloballyDeactivated || !helpCenter.shop_name
+                setSspShopState(
+                    deactivated_datetime
+                        ? 'shop_ssp_disabled'
+                        : 'shop_ssp_enabled'
                 )
             } catch (e) {
                 console.error(e)
@@ -64,7 +62,7 @@ export const SelfServiceSection = ({
     useEffect(() => void fetchGlobalSsp(), [fetchGlobalSsp])
 
     const handleOnChangeSwitch = () => {
-        if (helpCenter.shop_name && !sspForceDisabled) {
+        if (sspShopState === 'shop_ssp_enabled') {
             setSelfServiceDeactivated(!selfServiceDeactivated)
             void updateHelpCenter({
                 self_service_deactivated: !selfServiceDeactivated,
@@ -72,9 +70,8 @@ export const SelfServiceSection = ({
         }
     }
 
-    const isSwitchDisabled = useMemo(() => {
-        return updating || loading || sspForceDisabled
-    }, [updating, loading, sspForceDisabled])
+    const isSwitchDisabled =
+        updating || loading || sspShopState !== 'shop_ssp_enabled'
 
     return (
         <section>
@@ -102,18 +99,33 @@ export const SelfServiceSection = ({
                     <p
                         className={classNames(
                             css['enable-self-service-label'],
-                            sspForceDisabled ? css['force-disabled'] : undefined
+                            sspShopState === 'shop_ssp_enabled'
+                                ? undefined
+                                : css['force-disabled']
                         )}
                     >
                         Enable self-service for this Help Center
                     </p>
-                    {helpCenter.shop_name ? null : (
+
+                    {sspShopState === 'shop_ssp_disabled' && (
                         <p
                             className={classNames(
                                 css['connect-shopify-shop-hint'],
-                                sspForceDisabled
-                                    ? css['force-disabled']
-                                    : undefined
+                                css['force-disabled']
+                            )}
+                        >
+                            <Link to={'/app/settings/self-service'}>
+                                Enable Self-service
+                            </Link>{' '}
+                            at the store level to enable self-service for the
+                            Help Center.
+                        </p>
+                    )}
+
+                    {sspShopState === 'no_shop_integration' && (
+                        <p
+                            className={classNames(
+                                css['connect-shopify-shop-hint']
                             )}
                         >
                             <Link
