@@ -2665,19 +2665,19 @@ exports[`YourProfileView render should render current user profile form 1`] = `
           className="inputField mb32 body-regular"
           tag="div"
         >
-          <BooleanField
-            label="Display macros by default on emails"
+          <CheckBox
             name="show_macros"
             onChange={[Function]}
-            type="checkbox"
-          />
-          <BooleanField
-            label="Display macros suggestions in message editor"
+          >
+            Display macros by default on emails
+          </CheckBox>
+          <CheckBox
+            isChecked={true}
             name="show_macros_suggestions"
             onChange={[Function]}
-            type="checkbox"
-            value={true}
-          />
+          >
+            Display macros suggestions in message editor
+          </CheckBox>
         </FormGroup>
         <FormGroup
           className="inputField mb40"

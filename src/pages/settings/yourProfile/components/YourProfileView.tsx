@@ -8,7 +8,7 @@ import {Button, Container, Form, FormGroup, FormText, Label} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
 
-import BooleanField from '../../../common/forms/BooleanField.js'
+import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from '../../../common/forms/InputField.js'
 import Avatar from '../../../common/components/Avatar/Avatar'
 import FileField from '../../../common/forms/FileField'
@@ -371,13 +371,13 @@ export default class YourProfileView extends Component<Props, State> {
                                     css['body-regular']
                                 )}
                             >
-                                <BooleanField
+                                <CheckBox
                                     name="show_macros"
-                                    type="checkbox"
-                                    label="Display macros by default on emails"
-                                    value={this.state.preferences.get(
-                                        'show_macros'
-                                    )}
+                                    isChecked={
+                                        this.state.preferences.get(
+                                            'show_macros'
+                                        ) as boolean
+                                    }
                                     onChange={(value: boolean) =>
                                         this.setState({
                                             preferences:
@@ -387,15 +387,17 @@ export default class YourProfileView extends Component<Props, State> {
                                                 ),
                                         })
                                     }
-                                />
-                                <BooleanField
+                                >
+                                    Display macros by default on emails
+                                </CheckBox>
+                                <CheckBox
                                     name="show_macros_suggestions"
-                                    type="checkbox"
-                                    label="Display macros suggestions in message editor"
-                                    value={this.state.preferences.get(
-                                        'show_macros_suggestions',
-                                        true
-                                    )}
+                                    isChecked={
+                                        this.state.preferences.get(
+                                            'show_macros_suggestions',
+                                            true
+                                        ) as boolean
+                                    }
                                     onChange={(value: boolean) =>
                                         this.setState({
                                             preferences:
@@ -405,7 +407,9 @@ export default class YourProfileView extends Component<Props, State> {
                                                 ),
                                         })
                                     }
-                                />
+                                >
+                                    Display macros suggestions in message editor
+                                </CheckBox>
                             </FormGroup>
                             <FormGroup
                                 className={classnames(css.inputField, css.mb40)}
