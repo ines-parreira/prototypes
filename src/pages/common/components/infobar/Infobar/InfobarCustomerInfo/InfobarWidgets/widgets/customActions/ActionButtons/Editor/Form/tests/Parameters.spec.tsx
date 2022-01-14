@@ -3,6 +3,11 @@ import {render, fireEvent, screen} from '@testing-library/react'
 
 import Parameters from '../Parameters'
 
+jest.mock('lodash/debounce', () => (fn: Record<string, unknown>) => {
+    fn.cancel = jest.fn()
+    return fn
+})
+
 describe('<Parameters/>', () => {
     const props = {
         onChange: jest.fn(),
@@ -33,6 +38,16 @@ describe('<Parameters/>', () => {
         expect(props.onChange).toHaveBeenCalledWith(props.path, [
             {key: '', value: '', label: '', editable: false, mandatory: false},
         ])
+    })
+
+    it('should display an error message when having duplicate keys', () => {
+        render(
+            <Parameters
+                {...{...props, value: [props.value[0], props.value[0]]}}
+            />
+        )
+
+        expect(screen.getByText(/you have duplicate keys/))
     })
 
     it.each(['key', 'value', 'label'])(

@@ -6,6 +6,11 @@ import {actionFixture} from '../../../../../../../../../../../../../fixtures/inf
 
 import Form from '..'
 
+jest.mock('lodash/debounce', () => (fn: Record<string, unknown>) => {
+    fn.cancel = jest.fn()
+    return fn
+})
+
 describe('<Form/>', () => {
     const onClose = jest.fn()
     const onSubmit = jest.fn()
@@ -110,7 +115,32 @@ describe('<Form/>', () => {
         )
     })
 
-    it('should trim leftover body data', () => {
+    it('should remove duplicates on submit', () => {
+        const action = actionFixture({edit: true})
+        action.params.push(action.params[0])
+        const button = {
+            label: 'label',
+            action,
+        }
+        render(
+            <Form
+                index={2}
+                button={button}
+                onClose={onClose}
+                onSubmit={onSubmit}
+            />
+        )
+        fireEvent.click(screen.getByRole('button', {name: 'Save'}))
+        expect(onSubmit).toHaveBeenCalledWith(
+            {
+                ...button,
+                action: actionFixture({edit: true}),
+            },
+            2
+        )
+    })
+
+    it('should trim leftover body data on submit', () => {
         const action = actionFixture()
         action.body[ContentType.Json] = {
             ok: 'sure',
@@ -146,7 +176,7 @@ describe('<Form/>', () => {
         )
     })
 
-    it('should trim leftover body form data', () => {
+    it('should trim leftover body form data on submit', () => {
         const action = actionFixture()
         action.body[ContentType.Form] = [
             {

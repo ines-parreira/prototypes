@@ -6,7 +6,7 @@ import {
     ModalFooter,
     ModalHeader,
 } from 'reactstrap'
-import produce, {setAutoFreeze} from 'immer'
+import produce from 'immer'
 import {set as _set} from 'lodash'
 
 import InputField from '../../../../../../../../../../forms/InputField'
@@ -15,15 +15,10 @@ import {
     HttpMethod,
 } from '../../../../../../../../../../../../models/api/types'
 
-import {Button as ButtonType, OnSubmitButton} from '../../../types'
+import {Button as ButtonType, OnSubmitButton, Parameter} from '../../../types'
 import {httpMethodsWithBody} from '../../httpMethodsWithBody'
 
 import Action from './Action'
-
-// We never want the autofreeze feature from immer
-// because we do modifiy the object afterwards with
-// the trimLeftoverData function
-setAutoFreeze(false)
 
 type Props = {
     button?: ButtonType
@@ -117,17 +112,30 @@ function Form({button = initialState, onSubmit, index, onClose}: Props) {
 export default memo(Form)
 
 function trimLeftoverData(button: ButtonType): ButtonType {
-    const action = button.action
-    if (httpMethodsWithBody.includes(action.method)) {
-        if (action.body.contentType === ContentType.Json) {
-            action.body[ContentType.Form] =
-                initialState.action.body[ContentType.Form]
+    return produce(button, ({action}: ButtonType) => {
+        if (httpMethodsWithBody.includes(action.method)) {
+            if (action.body.contentType === ContentType.Json) {
+                action.body[ContentType.Form] =
+                    initialState.action.body[ContentType.Form]
+            } else {
+                action.body[ContentType.Form] = removeDuplicates(
+                    action.body[ContentType.Form]
+                )
+                action.body[ContentType.Json] =
+                    initialState.action.body[ContentType.Json]
+            }
         } else {
-            action.body[ContentType.Json] =
-                initialState.action.body[ContentType.Json]
+            action.body = initialState.action.body
         }
-    } else {
-        action.body = initialState.action.body
-    }
-    return button
+        action.headers = removeDuplicates(action.headers)
+        action.params = removeDuplicates(action.params)
+    })
+}
+
+function removeDuplicates(params: Parameter[]): Parameter[] {
+    return params.filter(
+        (paramA, index) =>
+            // findIndex only returns the first match so others are filtered out
+            params.findIndex((paramB) => paramA.key === paramB.key) === index
+    )
 }

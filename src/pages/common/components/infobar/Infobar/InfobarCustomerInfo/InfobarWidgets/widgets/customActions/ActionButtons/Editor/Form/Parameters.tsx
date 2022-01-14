@@ -1,8 +1,10 @@
-import React, {memo, useCallback} from 'react'
+import React, {memo, useEffect, useState} from 'react'
 import {Button} from 'reactstrap'
+import debounce from 'lodash/debounce'
 
 import Tooltip from '../../../../../../../../../Tooltip'
 import InputField from '../../../../../../../../../../forms/InputField.js'
+import Errors from '../../../../../../../../../../forms/Errors.js'
 import {MAX_HEADER_LENGTH} from '../../../../../../../../../../../../config'
 import {hasUnicodeChars} from '../../../../../../../../../../../../utils'
 
@@ -16,18 +18,25 @@ type Props = {
     onChange: OnChangeAction
 }
 
+const DEBOUNCE_DURATION = 200
+
 const generateBaseId = (path: string, index: number) =>
     `action-button-${path.replace(/[./]/g, '-')}-${index}`
 
 function Parameters({value, path, onChange}: Props) {
-    const validateHeaderName = useCallback(
-        (value: string): string | undefined => {
-            if (path.includes('headers') && hasUnicodeChars(value)) {
-                return "Header's name can't contain unicode characters."
-            }
-        },
-        [path]
+    const [hasDuplicates, setDuplicates] = useState<boolean>(
+        checkDuplicates(value)
     )
+    useEffect(() => {
+        setDuplicates(checkDuplicates(value))
+    }, [value])
+
+    const [debouncedOnChange, setDebouncedOnchange] = useState<OnChangeAction>(
+        () => debounce(onChange, DEBOUNCE_DURATION)
+    )
+    useEffect(() => {
+        setDebouncedOnchange(() => debounce(onChange, DEBOUNCE_DURATION))
+    }, [onChange])
 
     const onDelete = (index: number) => {
         onChange(path, [...value.slice(0, index), ...value.slice(index + 1)])
@@ -49,43 +58,50 @@ function Parameters({value, path, onChange}: Props) {
                         key={index}
                         className={`${css.formParamRow} ${css.squash}`}
                     >
-                        <div className={css.formParamCol}>
+                        <div>
                             <InputField
                                 type="text"
                                 placeholder="Key"
-                                value={field.key}
-                                error={validateHeaderName(field.key)}
+                                defaultValue={field.key}
+                                error={validateHeaderName(field.key, path)}
                                 required
                                 maxLength={MAX_HEADER_LENGTH}
                                 onChange={(value) =>
-                                    onChange(`${indexedPath}.key`, value)
+                                    debouncedOnChange(
+                                        `${indexedPath}.key`,
+                                        value
+                                    )
                                 }
                             />
                         </div>
-                        <div className={css.formParamCol}>
+                        <div>
                             <InputField
                                 type="text"
                                 placeholder="Value"
-                                value={field.value}
+                                defaultValue={field.value}
                                 required={path.includes('headers')}
                                 onChange={(value) =>
-                                    onChange(`${indexedPath}.value`, value)
+                                    debouncedOnChange(
+                                        `${indexedPath}.value`,
+                                        value
+                                    )
                                 }
                             />
                         </div>
-                        <div className={css.formParamCol}>
+                        <div>
                             <InputField
                                 type="text"
                                 placeholder="Edit Label"
-                                value={field.label}
+                                defaultValue={field.label}
                                 onChange={(value) =>
-                                    onChange(`${indexedPath}.label`, value)
+                                    debouncedOnChange(
+                                        `${indexedPath}.label`,
+                                        value
+                                    )
                                 }
                             />
                         </div>
-                        <div
-                            className={`${css.formParamCol} ${css.formParamGroupIcon}`}
-                        >
+                        <div className={css.formParamGroupIcon}>
                             <Button
                                 type="button"
                                 size="sm"
@@ -169,6 +185,11 @@ function Parameters({value, path, onChange}: Props) {
                     </div>
                 )
             })}
+            {hasDuplicates && (
+                <Errors className={css.formParamError}>
+                    Beware, you have duplicate keys, only one will be kept.
+                </Errors>
+            )}
             <Button size="sm" onClick={onAdd}>
                 <i className={`material-icons ${css.formParamIcon}`}>add</i>
             </Button>
@@ -177,3 +198,18 @@ function Parameters({value, path, onChange}: Props) {
 }
 
 export default memo(Parameters)
+
+function validateHeaderName(value: string, path: string): string | undefined {
+    if (path.includes('headers') && hasUnicodeChars(value)) {
+        return "Header's name can't contain unicode characters."
+    }
+}
+
+function checkDuplicates(params: Parameter[]): boolean {
+    return params.some((paramA, indexA) =>
+        params.some(
+            (paramB, indexB) =>
+                paramA.key && indexA !== indexB && paramA.key === paramB.key
+        )
+    )
+}
