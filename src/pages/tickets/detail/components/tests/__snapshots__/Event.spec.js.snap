@@ -58,19 +58,14 @@ exports[`Event component should display correctly a failed event for a Recharge 
         profilePictureUrl=""
         shouldDisplayAvatar={false}
       />
-      <Button
-        className="more"
-        color="link"
+      <ForwardRef
+        intent="text"
         onClick={[Function]}
-        tag="button"
         title="More details"
+        type="button"
       >
-        <i
-          className="material-icons md-2"
-        >
-          expand_more
-        </i>
-      </Button>
+        expand_more
+      </ForwardRef>
     </div>
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
@@ -184,19 +179,14 @@ exports[`Event component should display correctly a failed event for a Recharge 
         profilePictureUrl=""
         shouldDisplayAvatar={false}
       />
-      <Button
-        className="more"
-        color="link"
+      <ForwardRef
+        intent="text"
         onClick={[Function]}
-        tag="button"
         title="More details"
+        type="button"
       >
-        <i
-          className="material-icons md-2"
-        >
-          expand_more
-        </i>
-      </Button>
+        expand_more
+      </ForwardRef>
     </div>
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
@@ -300,19 +290,14 @@ exports[`Event component should display correctly a failed event for a Shopify O
         profilePictureUrl=""
         shouldDisplayAvatar={false}
       />
-      <Button
-        className="more"
-        color="link"
+      <ForwardRef
+        intent="text"
         onClick={[Function]}
-        tag="button"
         title="More details"
+        type="button"
       >
-        <i
-          className="material-icons md-2"
-        >
-          expand_more
-        </i>
-      </Button>
+        expand_more
+      </ForwardRef>
     </div>
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
@@ -416,19 +401,14 @@ exports[`Event component should display correctly a successful event for a Recha
         profilePictureUrl=""
         shouldDisplayAvatar={false}
       />
-      <Button
-        className="more"
-        color="link"
+      <ForwardRef
+        intent="text"
         onClick={[Function]}
-        tag="button"
         title="More details"
+        type="button"
       >
-        <i
-          className="material-icons md-2"
-        >
-          expand_more
-        </i>
-      </Button>
+        expand_more
+      </ForwardRef>
     </div>
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
@@ -531,19 +511,14 @@ exports[`Event component should display correctly a successful event for a Recha
         profilePictureUrl=""
         shouldDisplayAvatar={false}
       />
-      <Button
-        className="more"
-        color="link"
+      <ForwardRef
+        intent="text"
         onClick={[Function]}
-        tag="button"
         title="More details"
+        type="button"
       >
-        <i
-          className="material-icons md-2"
-        >
-          expand_more
-        </i>
-      </Button>
+        expand_more
+      </ForwardRef>
     </div>
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
@@ -636,19 +611,14 @@ exports[`Event component should display correctly a successful event for a Shopi
         profilePictureUrl=""
         shouldDisplayAvatar={false}
       />
-      <Button
-        className="more"
-        color="link"
+      <ForwardRef
+        intent="text"
         onClick={[Function]}
-        tag="button"
         title="More details"
+        type="button"
       >
-        <i
-          className="material-icons md-2"
-        >
-          expand_more
-        </i>
-      </Button>
+        expand_more
+      </ForwardRef>
     </div>
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
@@ -741,19 +711,14 @@ exports[`Event component should display correctly a successful event for a Shopi
         profilePictureUrl=""
         shouldDisplayAvatar={false}
       />
-      <Button
-        className="more"
-        color="link"
+      <ForwardRef
+        intent="text"
         onClick={[Function]}
-        tag="button"
         title="More details"
+        type="button"
       >
-        <i
-          className="material-icons md-2"
-        >
-          expand_more
-        </i>
-      </Button>
+        expand_more
+      </ForwardRef>
     </div>
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
@@ -860,19 +825,14 @@ exports[`Event component should display the correct label for an action 1`] = `
         profilePictureUrl=""
         shouldDisplayAvatar={false}
       />
-      <Button
-        className="more"
-        color="link"
+      <ForwardRef
+        intent="text"
         onClick={[Function]}
-        tag="button"
         title="More details"
+        type="button"
       >
-        <i
-          className="material-icons md-2"
-        >
-          expand_more
-        </i>
-      </Button>
+        expand_more
+      </ForwardRef>
     </div>
     <Connect(DatetimeLabelContainer)
       className="date text-faded"

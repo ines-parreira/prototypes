@@ -1,14 +1,13 @@
 import React, {Component} from 'react'
 import {Map, List} from 'immutable'
-import classnames from 'classnames'
-import {Row, Col, Button} from 'reactstrap'
+import {Row, Col} from 'reactstrap'
 
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
 import Tooltip from '../../../../common/components/Tooltip'
 import InputField from '../../../../common/forms/InputField.js'
 import {MAX_HEADER_LENGTH} from '../../../../../config'
 import {hasUnicodeChars} from '../../../../../utils'
-
-import css from './ParametersEditor.less'
 
 type Props = {
     list: List<any>
@@ -50,19 +49,9 @@ export default class ParametersEditor extends Component<Props> {
         return (
             <div>
                 {list.map((dict: Map<any, any>, index) => {
-                    const requiredClassName = classnames('btn btn-sm mr-2', {
-                        'btn-secondary': !dict.get('required'),
-                        'btn-primary': dict.get('required'),
-                    })
-
                     const requiredTitle = dict.get('required')
                         ? 'Click to make this field not required'
                         : 'Click to make this field required'
-
-                    const editableClassName = classnames('btn btn-sm mr-2', {
-                        'btn-secondary': !dict.get('editable'),
-                        'btn-primary': dict.get('editable'),
-                    })
 
                     const editableTitle = dict.get('editable')
                         ? 'Click to make this field not editable'
@@ -100,10 +89,16 @@ export default class ParametersEditor extends Component<Props> {
                                 />
                             </Col>
                             <Col className="d-flex col-sm-auto">
-                                <button
+                                <IconButton
+                                    intent={
+                                        dict.get('required')
+                                            ? ButtonIntent.Primary
+                                            : ButtonIntent.Secondary
+                                    }
                                     type="button"
                                     id={`parameter-required-${name}-${index!}`}
-                                    className={requiredClassName}
+                                    className="mr-2"
+                                    iconClassName="icon-custom icon-asterisk"
                                     onClick={() =>
                                         this.changeValue(
                                             'required',
@@ -111,23 +106,22 @@ export default class ParametersEditor extends Component<Props> {
                                             !dict.get('required')
                                         )
                                     }
-                                >
-                                    <span
-                                        className={classnames(css.asteriskWrap)}
-                                    >
-                                        <i className="icon-custom icon-asterisk" />
-                                    </span>
-                                </button>
+                                />
                                 <Tooltip
                                     placement="top"
                                     target={`parameter-required-${name}-${index!}`}
                                 >
                                     {requiredTitle}
                                 </Tooltip>
-                                <button
+                                <IconButton
+                                    className="mr-2"
                                     type="button"
                                     id={`parameter-editable-${name}-${index!}`}
-                                    className={editableClassName}
+                                    intent={
+                                        dict.get('editable')
+                                            ? ButtonIntent.Primary
+                                            : ButtonIntent.Secondary
+                                    }
                                     onClick={() =>
                                         this.changeValue(
                                             'editable',
@@ -136,31 +130,33 @@ export default class ParametersEditor extends Component<Props> {
                                         )
                                     }
                                 >
-                                    <i className="material-icons md-2">edit</i>
-                                </button>
+                                    edit
+                                </IconButton>
                                 <Tooltip
                                     placement="top"
                                     target={`parameter-editable-${name}-${index!}`}
                                 >
                                     {editableTitle}
                                 </Tooltip>
-                                <Button
+                                <IconButton
+                                    intent={ButtonIntent.Destructive}
                                     type="button"
-                                    size="sm"
                                     id={`parameter-editable-${name}-${index!}`}
                                     onClick={() => this.deleteRow(index!)}
                                 >
-                                    <i className="material-icons md-2 text-danger">
-                                        delete
-                                    </i>
-                                </Button>
+                                    delete
+                                </IconButton>
                             </Col>
                         </Row>
                     )
                 })}
-                <Button size="sm" onClick={this.addRow}>
-                    <i className="material-icons md-2">add</i>
-                </Button>
+                <IconButton
+                    intent={ButtonIntent.Secondary}
+                    onClick={this.addRow}
+                    type="button"
+                >
+                    add
+                </IconButton>
             </div>
         )
     }

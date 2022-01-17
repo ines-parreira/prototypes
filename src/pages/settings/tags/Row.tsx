@@ -4,6 +4,8 @@ import {fromJS, Map} from 'immutable'
 import {Button, Form, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import classNames from 'classnames'
 
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
 import InputField from '../../common/forms/InputField.js'
 import ColorPicker from '../../common/components/ColorPicker'
 import {TagLabel} from '../../common/utils/labels'
@@ -219,25 +221,27 @@ export class Row extends Component<Props, State> {
 
                 <td className="smallest">
                     <div className={classNames('cell-wrapper', css.actions)}>
-                        <Button
+                        <IconButton
+                            intent={ButtonIntent.Text}
                             type="button"
                             onClick={this._onEdit}
-                            className={classNames('mr-1', 'btn-transparent')}
+                            className={classNames(css.actionButton, 'mr-1')}
                         >
-                            <i className="material-icons">edit</i>
-                        </Button>
+                            edit
+                        </IconButton>
 
-                        <Button
+                        <IconButton
                             id={`remove-button-${row.get('id') as number}`}
+                            intent={ButtonIntent.Text}
                             type="button"
                             onClick={this._toggleRemoveConfirmation}
                             className={classNames(
-                                'btn-transparent',
-                                css.deleteButton
+                                css.actionButton,
+                                css.deleteActionButton
                             )}
                         >
-                            <i className="material-icons">delete</i>
-                        </Button>
+                            delete
+                        </IconButton>
                         <Popover
                             placement="left"
                             isOpen={this.state.askRemoveConfirmation}

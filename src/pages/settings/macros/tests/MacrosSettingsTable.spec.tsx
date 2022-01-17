@@ -2,6 +2,7 @@ import {shallow} from 'enzyme'
 import React, {ComponentProps} from 'react'
 import {Button} from 'reactstrap'
 
+import IconButton from '../../../common/components/button/IconButton'
 import {createMacro, deleteMacro} from '../../../../models/macro/resources'
 import {Macro} from '../../../../models/macro/types'
 import {macros as macrosFixtures} from '../../../../fixtures/macro'
@@ -106,7 +107,7 @@ describe('<MacrosSettingsTable/>', () => {
             />
         )
 
-        component.find(Button).at(0).simulate('click', mockClickEvent)
+        component.find(IconButton).at(0).simulate('click', mockClickEvent)
         const {actions, name} = macrosState['1']
         expect(mockCreateMacro).toHaveBeenNthCalledWith(1, {
             actions,
@@ -135,7 +136,7 @@ describe('<MacrosSettingsTable/>', () => {
             />
         )
 
-        component.find(Button).at(0).simulate('click', mockClickEvent)
+        component.find(IconButton).at(0).simulate('click', mockClickEvent)
         setImmediate(() => {
             expect(mockNotify).toHaveBeenNthCalledWith(1, {
                 message: 'Failed to duplicate macro',
@@ -154,7 +155,7 @@ describe('<MacrosSettingsTable/>', () => {
             />
         )
 
-        component.find(Button).at(1).simulate('click', mockClickEvent)
+        component.find(IconButton).at(1).simulate('click', mockClickEvent)
         component.find({type: 'submit'}).at(0).simulate('click')
         setImmediate(() => {
             expect(mockMacroDeleted).toHaveBeenNthCalledWith(1, 1)

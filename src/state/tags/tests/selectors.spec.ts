@@ -87,6 +87,23 @@ describe('tags selectors', () => {
         expect(selectors.getSelectAll({} as RootState)).toBe(false)
     })
 
+    describe('getIsCreating', () => {
+        it.each([undefined, true, false])(
+            'should return the proper value',
+            (value) => {
+                expect(
+                    selectors.getIsCreating({
+                        ...state,
+                        tags: state.tags.setIn(
+                            ['_internal', 'creating'],
+                            value
+                        ),
+                    })
+                ).toBe(!!value)
+            }
+        )
+    })
+
     it('getMeta', () => {
         expect(selectors.getMeta(state)).toBe(state.tags.get('meta'))
         expect(selectors.getMeta({} as RootState)).toBe(fromJS({}))

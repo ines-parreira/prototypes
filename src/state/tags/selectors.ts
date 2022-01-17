@@ -33,6 +33,11 @@ export const getSelectAll = createSelector<RootState, boolean, Map<any, any>>(
     (state) => (state.get('selectAll') as boolean) || false
 )
 
+export const getIsCreating = createSelector<RootState, boolean, Map<any, any>>(
+    getInternal,
+    (state) => !!state.get('creating')
+)
+
 export const getMeta = createSelector<RootState, Map<any, any>, TagsState>(
     getTagsState,
     (state) => (state.get('meta') || fromJS({})) as Map<any, any>

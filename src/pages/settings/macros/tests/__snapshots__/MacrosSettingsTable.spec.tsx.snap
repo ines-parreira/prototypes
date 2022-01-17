@@ -47,35 +47,25 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
       <ForwardRef
         className="smallest actions"
       >
-        <Button
-          className="mr-1 btn-transparent"
-          color="secondary"
+        <ForwardRef
+          className="mr-1"
+          intent="text"
           onClick={[Function]}
-          tag="button"
           title="Duplicate macro"
           type="button"
         >
-          <i
-            className="material-icons"
-          >
-            file_copy
-          </i>
-        </Button>
-        <Button
-          className="mr-1 btn-transparent deleteButton"
-          color="secondary"
+          file_copy
+        </ForwardRef>
+        <ForwardRef
+          className="mr-1 deleteButton"
           id="delete-button-1"
+          intent="text"
           onClick={[Function]}
-          tag="button"
           title="Delete macro"
           type="button"
         >
-          <i
-            className="material-icons"
-          >
-            delete
-          </i>
-        </Button>
+          delete
+        </ForwardRef>
       </ForwardRef>
     </ForwardRef(TableBodyRow)>
     <Popover
@@ -133,35 +123,25 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
       <ForwardRef
         className="smallest actions"
       >
-        <Button
-          className="mr-1 btn-transparent"
-          color="secondary"
+        <ForwardRef
+          className="mr-1"
+          intent="text"
           onClick={[Function]}
-          tag="button"
           title="Duplicate macro"
           type="button"
         >
-          <i
-            className="material-icons"
-          >
-            file_copy
-          </i>
-        </Button>
-        <Button
-          className="mr-1 btn-transparent deleteButton"
-          color="secondary"
+          file_copy
+        </ForwardRef>
+        <ForwardRef
+          className="mr-1 deleteButton"
           id="delete-button-2"
+          intent="text"
           onClick={[Function]}
-          tag="button"
           title="Delete macro"
           type="button"
         >
-          <i
-            className="material-icons"
-          >
-            delete
-          </i>
-        </Button>
+          delete
+        </ForwardRef>
       </ForwardRef>
     </ForwardRef(TableBodyRow)>
     <Popover

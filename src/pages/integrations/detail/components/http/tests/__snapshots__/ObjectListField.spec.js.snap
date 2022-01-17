@@ -106,20 +106,14 @@ exports[`ObjectListField component should display the field with items 1`] = `
       }
       xs="auto"
     >
-      <Button
+      <ForwardRef
         className="float-right"
-        color="secondary"
+        intent="destructive"
         onClick={[Function]}
-        tag="button"
         title="Remove field"
-        type="button"
       >
-        <i
-          className="material-icons md-2 text-danger"
-        >
-          delete
-        </i>
-      </Button>
+        delete
+      </ForwardRef>
     </Col>
   </Row>
   <Button

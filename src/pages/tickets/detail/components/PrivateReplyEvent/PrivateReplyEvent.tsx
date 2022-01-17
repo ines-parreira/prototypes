@@ -1,12 +1,14 @@
 import React, {useState} from 'react'
 import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
-import {Button, Card, CardBody} from 'reactstrap'
+import {Card, CardBody} from 'reactstrap'
 
 import facebookIcon from 'assets/img/integrations/facebook-dark-icon.svg'
 import facebookMessengerIcon from 'assets/img/integrations/facebook-messenger-dark-event-icon.svg'
 import InstagramDirectMessageIcon from 'assets/img/integrations/Instagram-direct-message-blue.svg'
 import InstagramIcon from 'assets/img/integrations/instagram-icon-blue.svg'
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
 
 import {Actor, Meta, Source} from '../../../../../models/ticket/types'
 import TicketMessageEmbeddedCard from '../../../../common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
@@ -166,16 +168,13 @@ export default function PrivateReplyEvent({event, isLast}: Props): JSX.Element {
         )
 
         expandButton = (
-            <Button
-                color="link"
-                className={css.more}
+            <IconButton
+                intent={ButtonIntent.Text}
                 onClick={() => setDisplayErrorDetails(!displayErrorDetails)}
                 title="More details"
             >
-                <i className="material-icons md-2">
-                    {displayErrorDetails ? 'expand_less' : 'expand_more'}
-                </i>
-            </Button>
+                {displayErrorDetails ? 'expand_less' : 'expand_more'}
+            </IconButton>
         )
 
         errorDetails = (

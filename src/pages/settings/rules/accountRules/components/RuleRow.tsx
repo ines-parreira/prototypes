@@ -6,8 +6,10 @@ import {Badge, Button, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 
-import ToggleButton from '../../../../common/components/ToggleButton'
-import type {Rule} from '../../../../../state/rules/types'
+import ToggleButton from 'pages/common/components/ToggleButton'
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
+import {Rule} from 'state/rules/types'
 import {
     activateRule,
     deactivateRule,
@@ -246,31 +248,36 @@ export function RuleRow({
                 <td
                     className={classnames('align-middle smallest', css.actions)}
                 >
-                    <Button
-                        className={classnames('mr-1 btn-transparent')}
+                    <IconButton
+                        className={classnames(css.actionButton, 'mr-1')}
+                        intent={ButtonIntent.Text}
                         onClick={(e) => {
                             e.stopPropagation()
                             void handleDuplicate()
                         }}
                         title="Duplicate rule"
+                        type="button"
                     >
-                        <i className="material-icons">file_copy</i>
-                    </Button>
-                    <Button
+                        file_copy
+                    </IconButton>
+                    <IconButton
                         className={classnames(
-                            css.deleteButton,
-                            'mr-1 btn-transparent',
-                            {['btn-loading']: isDeleting}
+                            css.actionButton,
+                            css.deleteActionButton,
+                            'mr-1'
                         )}
                         onClick={(e) => {
                             e.stopPropagation()
                             toggleShowDeleteConfirmation()
                         }}
+                        intent={ButtonIntent.Text}
+                        isLoading={isDeleting}
                         title="Delete rule"
+                        type="button"
                         id={`delete-rule-${rule.id}`}
                     >
-                        <i className="material-icons">delete</i>
-                    </Button>
+                        delete
+                    </IconButton>
                 </td>
                 {rule.description ? (
                     <Popover

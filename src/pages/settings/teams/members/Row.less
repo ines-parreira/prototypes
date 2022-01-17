@@ -46,28 +46,17 @@
 
     .delete {
         margin-left: auto;
+    }
 
-        :global .btn {
-            box-shadow: none;
+    .deleteButton {
+        color: @classic-feedback-error-2 !important;
 
-            .material-icons,
-            .material-icons-outlined {
-                transition: 0.2s all;
-                opacity: 0.3;
+        &:hover {
+            color: @classic-feedback-error-1 !important;
+        }
 
-                color: @classic-neutral-grey-6;
-            }
-
-            &:hover .material-icons {
-                opacity: 1;
-
-                color: @classic-feedback-error-2;
-            }
-
-            /* hide icon while loading */
-            &.btn-loading .material-icons {
-                opacity: 0;
-            }
+        &:active {
+            color: @classic-feedback-error-3 !important;
         }
     }
 }

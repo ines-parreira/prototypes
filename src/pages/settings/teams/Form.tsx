@@ -18,6 +18,8 @@ import {
 import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom'
 import classnames from 'classnames'
 
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
 import {
     createTeam,
     deleteTeam,
@@ -212,9 +214,12 @@ export class FormContainer extends Component<Props, State> {
                                                 )}
                                             </Button>
                                             {emoji && (
-                                                <Button
+                                                <IconButton
+                                                    className={css.removeEmoji}
                                                     type="button"
-                                                    color="secondary"
+                                                    intent={
+                                                        ButtonIntent.Secondary
+                                                    }
                                                     onClick={() =>
                                                         this.setState({
                                                             team: team.setIn(
@@ -227,10 +232,8 @@ export class FormContainer extends Component<Props, State> {
                                                         })
                                                     }
                                                 >
-                                                    <i className="material-icons">
-                                                        close
-                                                    </i>
-                                                </Button>
+                                                    close
+                                                </IconButton>
                                             )}
                                         </ButtonGroup>
                                         <Popover

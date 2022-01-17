@@ -50,7 +50,15 @@
         }
     }
 
-    .deleteButton:hover :global(.material-icons) {
+    .deleteButton :global(.material-icons) {
         color: @classic-feedback-error-2;
+
+        &:hover {
+            color: @classic-feedback-error-1;
+        }
+
+        &:active {
+            color: @classic-feedback-error-3;
+        }
     }
 }

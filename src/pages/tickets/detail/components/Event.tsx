@@ -2,11 +2,13 @@ import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
-import {Button, Card, CardBody} from 'reactstrap'
+import {Card, CardBody} from 'reactstrap'
 import _capitalize from 'lodash/capitalize'
 import _isObject from 'lodash/isObject'
 import JSONPretty from 'react-json-pretty'
 
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
 import {IntegrationType} from '../../../../models/integration/types'
 import {RootState} from '../../../../state/types'
 import {getActionByName} from '../../../../config/actions'
@@ -274,22 +276,20 @@ export class EventContainer extends React.Component<Props, State> {
 
                         <AgentLabel name={user.get('name') as string} />
 
-                        <Button
-                            color="link"
-                            className={css.more}
+                        <IconButton
+                            intent={ButtonIntent.Text}
                             onClick={() =>
                                 this.setState({
                                     showDetails: !this.state.showDetails,
                                 })
                             }
+                            type="button"
                             title="More details"
                         >
-                            <i className="material-icons md-2">
-                                {this.state.showDetails
-                                    ? 'expand_less'
-                                    : 'expand_more'}
-                            </i>
-                        </Button>
+                            {this.state.showDetails
+                                ? 'expand_less'
+                                : 'expand_more'}
+                        </IconButton>
                     </div>
 
                     <DatetimeLabel

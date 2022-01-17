@@ -95,11 +95,11 @@ exports[`<IvrMenuActionsFieldArray /> should render 1`] = `
         class="smallColumn pl-0 col"
       >
         <button
-          class="deleteButton btn btn-link"
+          class="wrapper deleteButton wrapper medium text medium"
           type="button"
         >
           <i
-            class="material-icons mr-2"
+            class="material-icons icon"
           >
             close
           </i>

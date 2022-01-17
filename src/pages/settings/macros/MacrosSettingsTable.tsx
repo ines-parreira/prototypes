@@ -4,6 +4,8 @@ import React, {useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Button, Popover, PopoverHeader, PopoverBody} from 'reactstrap'
 
+import IconButton from 'pages/common/components/button/IconButton'
+import {ButtonIntent} from 'pages/common/components/button/Button'
 import {
     OrderDirection,
     MetaSortOptions,
@@ -197,8 +199,9 @@ export function MacrosSettingsTableContainer({
                                             css.actions
                                         )}
                                     >
-                                        <Button
-                                            className="mr-1 btn-transparent"
+                                        <IconButton
+                                            className="mr-1"
+                                            intent={ButtonIntent.Text}
                                             onClick={(e) => {
                                                 e.stopPropagation()
                                                 void handleMacroDuplicate(
@@ -208,16 +211,15 @@ export function MacrosSettingsTableContainer({
                                             title="Duplicate macro"
                                             type="button"
                                         >
-                                            <i className="material-icons">
-                                                file_copy
-                                            </i>
-                                        </Button>
-                                        <Button
+                                            file_copy
+                                        </IconButton>
+                                        <IconButton
                                             className={classnames(
-                                                'mr-1 btn-transparent',
+                                                'mr-1',
                                                 css.deleteButton
                                             )}
                                             id={deleteButtonId}
+                                            intent={ButtonIntent.Text}
                                             onClick={(e) => {
                                                 e.stopPropagation()
                                                 toggleVisiblePopover(
@@ -227,10 +229,8 @@ export function MacrosSettingsTableContainer({
                                             title="Delete macro"
                                             type="button"
                                         >
-                                            <i className="material-icons">
-                                                delete
-                                            </i>
-                                        </Button>
+                                            delete
+                                        </IconButton>
                                     </BodyCell>
                                 </TableBodyRow>
                                 <Popover

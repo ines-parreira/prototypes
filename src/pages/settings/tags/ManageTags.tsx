@@ -12,6 +12,7 @@ import {
 } from 'reactstrap'
 import {Map} from 'immutable'
 
+import IconButton from 'pages/common/components/button/IconButton'
 import InputField from '../../common/forms/InputField.js'
 import Pagination from '../../common/components/Pagination'
 import Loader from '../../common/components/Loader/Loader'
@@ -28,10 +29,10 @@ import {
     bulkDelete,
 } from '../../../state/tags/actions'
 import {
-    getTags,
     getMeta,
     getCurrentPage,
     getNumberPages,
+    getIsCreating,
 } from '../../../state/tags/selectors'
 import {RootState} from '../../../state/types'
 import {TagSortableProperty} from '../../../state/tags/types'
@@ -188,7 +189,8 @@ export class ManageTagsContainer extends Component<Props, State> {
     }
 
     render() {
-        const {tags, currentPage, numberPages, selectAll, meta} = this.props
+        const {currentPage, numberPages, selectAll, meta, isCreating} =
+            this.props
         const {sort, reverse, isFetching} = this.state
 
         if (isFetching) {
@@ -252,20 +254,9 @@ export class ManageTagsContainer extends Component<Props, State> {
                                                     inline
                                                 />
                                             </div>
-                                            <Button
-                                                color="success"
-                                                type="submit"
-                                                className={classnames({
-                                                    'btn-loading': tags.getIn([
-                                                        '_internal',
-                                                        'creating',
-                                                    ]),
-                                                })}
-                                            >
-                                                <i className="material-icons">
-                                                    check
-                                                </i>
-                                            </Button>
+                                            <IconButton isDisabled={isCreating}>
+                                                check
+                                            </IconButton>
                                         </div>
                                     </Form>
                                 </PopoverBody>
@@ -322,7 +313,7 @@ export class ManageTagsContainer extends Component<Props, State> {
 const connector = connect(
     (state: RootState) => {
         return {
-            tags: getTags(state),
+            isCreating: getIsCreating(state),
             meta: getMeta(state),
             currentPage: getCurrentPage(state),
             numberPages: getNumberPages(state),

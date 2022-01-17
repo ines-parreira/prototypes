@@ -12,6 +12,8 @@ import {
 import {DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Drawer} from 'pages/common/components/Drawer'
+import IconButton from 'pages/common/components/button/IconButton'
+import {ButtonIntent} from 'pages/common/components/button/Button'
 
 import VoiceMessageField from './VoiceMessageField'
 import IvrPhoneNumberSelectField from './IvrPhoneNumberSelectField'
@@ -121,15 +123,14 @@ const IvrMenuActionField = ({
                             <Drawer.Header>
                                 <h3>Add message</h3>
                                 <Drawer.HeaderActions>
-                                    <Button
-                                        color="link"
+                                    <IconButton
+                                        intent={ButtonIntent.Text}
                                         onClick={() => setDrawerOpen(false)}
+                                        type="button"
                                         className={css.closeDrawerButton}
                                     >
-                                        <i className="material-icons">
-                                            keyboard_tab
-                                        </i>
-                                    </Button>
+                                        keyboard_tab
+                                    </IconButton>
                                 </Drawer.HeaderActions>
                             </Drawer.Header>
                             <Drawer.Content className={css.drawerContent}>
@@ -190,13 +191,14 @@ const IvrMenuActionField = ({
                 )}
             </Col>
             <Col className={classNames(css.smallColumn, 'pl-0')}>
-                <Button
+                <IconButton
+                    type="button"
+                    intent={ButtonIntent.Text}
                     onClick={onRemove}
                     className={css.deleteButton}
-                    color="link"
                 >
-                    <i className="material-icons mr-2">close</i>
-                </Button>
+                    close
+                </IconButton>
             </Col>
         </Row>
     )

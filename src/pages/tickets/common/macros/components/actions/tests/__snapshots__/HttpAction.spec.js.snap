@@ -121,11 +121,11 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
     </label>
     <div>
       <button
-        class="btn btn-secondary btn-sm"
+        class="wrapper wrapper medium secondary medium"
         type="button"
       >
         <i
-          class="material-icons md-2"
+          class="material-icons icon"
         >
           add
         </i>
@@ -142,11 +142,11 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
     </label>
     <div>
       <button
-        class="btn btn-secondary btn-sm"
+        class="wrapper wrapper medium secondary medium"
         type="button"
       >
         <i
-          class="material-icons md-2"
+          class="material-icons icon"
         >
           add
         </i>

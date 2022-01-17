@@ -1,9 +1,11 @@
 import React, {Component, SyntheticEvent} from 'react'
-import {Badge, Button} from 'reactstrap'
+import {Badge} from 'reactstrap'
 import classnames from 'classnames'
 import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
 
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
 import {RoleLabel} from '../../../common/utils/labels'
 import Avatar from '../../../common/components/Avatar/Avatar'
 
@@ -69,15 +71,15 @@ export default class Row extends Component<Props, State> {
                         )}
                     </span>
                     <span className={css.delete}>
-                        <Button
+                        <IconButton
+                            className={css.deleteButton}
+                            intent={ButtonIntent.Text}
                             onClick={this._deleteTeamMember}
-                            className={classnames('btn-transparent', {
-                                'btn-loading': isDeleting,
-                            })}
-                            disabled={isDeleting}
+                            isLoading={isDeleting}
+                            type="button"
                         >
-                            <i className="material-icons md-2">delete</i>
-                        </Button>
+                            delete
+                        </IconButton>
                     </span>
                 </span>
             </Link>

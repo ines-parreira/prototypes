@@ -69,18 +69,9 @@ exports[`ManageTags component mounts correctly 1`] = `
                     value=""
                   />
                 </div>
-                <Button
-                  className=""
-                  color="success"
-                  tag="button"
-                  type="submit"
-                >
-                  <i
-                    className="material-icons"
-                  >
-                    check
-                  </i>
-                </Button>
+                <ForwardRef>
+                  check
+                </ForwardRef>
               </div>
             </Form>
           </PopoverBody>
