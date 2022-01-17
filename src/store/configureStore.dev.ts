@@ -1,4 +1,5 @@
-import {createStore, compose, applyMiddleware} from 'redux'
+import {createStore, applyMiddleware} from 'redux'
+import {composeWithDevTools} from '@redux-devtools/extension'
 import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 
@@ -10,19 +11,17 @@ import serverErrorHandler from './middlewares/serverErrorHandler'
 export default function configureStore(
     initialState: InitialRootState = {} as InitialRootState
 ) {
-    let middlewares = applyMiddleware(
+    const middlewares = applyMiddleware(
         thunk,
         serverErrorHandler,
         createLogger({collapsed: true})
     )
 
-    // check if Redux devTools Chrome extension is installed
-    // to apply it as a middleware
-    if (window.devToolsExtension) {
-        middlewares = compose(middlewares, window.devToolsExtension())
-    }
-
-    const store = createStore(rootReducer, initialState, middlewares)
+    const store = createStore(
+        rootReducer,
+        initialState,
+        composeWithDevTools(middlewares)
+    )
 
     if (module.hot) {
         module.hot.accept('../state/reducers', () => {
