@@ -161,7 +161,6 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         type: IntegrationType.Phone,
         title: 'Phone',
         description: 'Chat with your customers over the phone from Gorgias.',
-        image: 'integrations/phone.png',
         requiredFeature: AccountFeature.PhoneIntegration,
     },
     {
