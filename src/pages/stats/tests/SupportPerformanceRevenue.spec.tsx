@@ -4,6 +4,7 @@ import thunk from 'redux-thunk'
 import {fromJS, Map} from 'immutable'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
+import _noop from 'lodash/noop'
 
 import {RootState, StoreDispatch} from '../../../state/types'
 import useStatResource from '../useStatResource'
@@ -70,7 +71,7 @@ describe('SupportPerformanceRevenue', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        useStatResourceMock.mockReturnValue([null, true])
+        useStatResourceMock.mockReturnValue([null, true, _noop])
         dateNowSpy = jest
             .spyOn(Date, 'now')
             .mockImplementation(() => 1487076708000)
@@ -118,13 +119,13 @@ describe('SupportPerformanceRevenue', () => {
         useStatResourceMock.mockImplementation(({resourceName}) => {
             switch (resourceName) {
                 case REVENUE_OVERVIEW:
-                    return [revenueOverview, false]
+                    return [revenueOverview, false, _noop]
                 case REVENUE_PER_DAY:
-                    return [revenuePerDay, false]
+                    return [revenuePerDay, false, _noop]
                 case REVENUE_PER_AGENT:
-                    return [revenuePerAgent, false]
+                    return [revenuePerAgent, false, _noop]
                 default:
-                    return [revenuePerTicket, false]
+                    return [revenuePerTicket, false, _noop]
             }
         })
 

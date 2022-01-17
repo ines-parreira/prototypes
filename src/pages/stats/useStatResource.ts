@@ -30,7 +30,7 @@ export default function useStatResource<T>({
     resourceName,
     statsFilters,
     fetchDebounceDelay = 1000,
-}: Params): [Stat<T> | null, boolean] {
+}: Params): [Stat<T> | null, boolean, (cursor: string) => void] {
     const dispatch = useAppDispatch()
     const statsState = useSelector<RootState, StatsState>(
         (state) => state.entities.stats
@@ -40,26 +40,23 @@ export default function useStatResource<T>({
         StatsUIState['fetchingMap']
     >((state) => state.ui.stats.fetchingMap)
     const statKey = `${statName}/${resourceName}`
-    const [debouncedStatsFilters, setDebouncedStatsFilters] =
-        useState(statsFilters)
+    const [fetchParams, setFetchParams] = useState<{
+        filters: StatsFilters
+        cursor?: string
+    } | null>(statsFilters ? {filters: statsFilters} : null)
 
     const createFetchStat = useCallback(
         (cancelToken: CancelToken) => {
             return async () => {
-                if (!debouncedStatsFilters) {
+                if (!fetchParams) {
                     return
                 }
 
                 dispatch(fetchStatStarted({statName, resourceName}))
-
                 try {
-                    const stat = await fetchStat(
-                        resourceName,
-                        {
-                            filters: debouncedStatsFilters,
-                        },
-                        {cancelToken}
-                    )
+                    const stat = await fetchStat(resourceName, fetchParams, {
+                        cancelToken,
+                    })
                     dispatch(
                         statFetched({
                             resourceName,
@@ -93,7 +90,7 @@ export default function useStatResource<T>({
                 }
             }
         },
-        [dispatch, resourceName, debouncedStatsFilters, statName]
+        [dispatch, resourceName, statName, fetchParams]
     )
 
     const [handleFetchStat] = useCancellableRequest(createFetchStat)
@@ -104,22 +101,27 @@ export default function useStatResource<T>({
 
     useDebounce(
         () => {
-            if (!_isEqual(statsFilters, debouncedStatsFilters)) {
-                setDebouncedStatsFilters(statsFilters)
+            if (statsFilters && !_isEqual(statsFilters, fetchParams?.filters)) {
+                setFetchParams({filters: statsFilters})
             }
         },
         fetchDebounceDelay,
-        [statsFilters]
+        [statsFilters, fetchParams]
     )
 
     useEffect(() => {
-        if (statsFilters && !debouncedStatsFilters) {
-            setDebouncedStatsFilters(statsFilters)
+        if (statsFilters && !fetchParams) {
+            setFetchParams({filters: statsFilters})
         }
-    }, [statsFilters, debouncedStatsFilters])
+    }, [statsFilters, fetchParams])
+
+    const fetchPage = useCallback((cursor: string) => {
+        setFetchParams((params) => params && {...params, cursor})
+    }, [])
 
     return [
         (statsState[statKey] as Stat<T> | undefined) || null,
         statsFetchingState[statKey] ?? true,
+        fetchPage,
     ]
 }

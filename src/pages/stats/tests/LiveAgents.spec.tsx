@@ -2,8 +2,9 @@ import React, {ComponentProps} from 'react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
-import {render} from '@testing-library/react'
+import {render, fireEvent} from '@testing-library/react'
 import {Provider} from 'react-redux'
+import _noop from 'lodash/noop'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
@@ -58,7 +59,7 @@ describe('LiveAgents', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        useStatResourceMock.mockReturnValue([null, true])
+        useStatResourceMock.mockReturnValue([null, true, _noop])
     })
 
     it('should not render the filters nor the stats when stats filters are not defined', () => {
@@ -86,7 +87,7 @@ describe('LiveAgents', () => {
             }),
         })
         useStatResourceMock.mockImplementation(() => {
-            return [userPerformanceOverview, false]
+            return [userPerformanceOverview, false, _noop]
         })
 
         const {container} = renderWithRouter(
@@ -112,5 +113,44 @@ describe('LiveAgents', () => {
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should fetch prev and next page when navigation buttons are clicked', () => {
+        const store = mockStore({
+            ...defaultState,
+            stats: fromJS({
+                filters: {
+                    [StatsFilterType.Period]: {
+                        start_time: '2021-02-03T00:00:00.000Z',
+                        end_time: '2021-02-03T23:59:59.999Z',
+                    },
+                },
+            }),
+        })
+        const fetchPage = jest.fn()
+        useStatResourceMock.mockImplementation(() => {
+            return [
+                {
+                    ...userPerformanceOverview,
+                    meta: {
+                        ...userPerformanceOverview.meta,
+                        prev_cursor: 'prev-cursor',
+                        next_cursor: 'next-cursor',
+                    },
+                },
+                false,
+                fetchPage,
+            ]
+        })
+
+        const {getByText} = renderWithRouter(
+            <Provider store={store}>
+                <LiveAgents />
+            </Provider>
+        )
+        fireEvent.click(getByText('keyboard_arrow_left'))
+        fireEvent.click(getByText('keyboard_arrow_right'))
+
+        expect(fetchPage.mock.calls).toMatchSnapshot()
     })
 })

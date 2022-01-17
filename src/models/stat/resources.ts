@@ -7,10 +7,10 @@ import {Stat} from './types'
 
 export async function fetchStat(
     name: string,
-    filters: {filters: StatsFilters},
+    data: {filters: StatsFilters; cursor?: string},
     {timeout = 180000, ...config}: AxiosRequestConfig = {}
 ) {
-    const resp = await client.post<Stat>(`/api/stats/${name}/`, filters, {
+    const resp = await client.post<Stat>(`/api/stats/${name}/`, data, {
         timeout,
         ...config,
     })

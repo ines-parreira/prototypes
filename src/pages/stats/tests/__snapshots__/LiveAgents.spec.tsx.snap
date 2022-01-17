@@ -1,5 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`LiveAgents should fetch prev and next page when navigation buttons are clicked 1`] = `
+Array [
+  Array [
+    "prev-cursor",
+  ],
+  Array [
+    "next-cursor",
+  ],
+]
+`;
+
 exports[`LiveAgents should not render the filters nor the stats when stats filters are not defined 1`] = `
 <div
   class="full-width wrapper"
@@ -747,6 +758,38 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
             </tr>
           </tbody>
         </table>
+        <div
+          class="navigationWrapper"
+        >
+          <div
+            class="btn-group"
+            role="group"
+          >
+            <button
+              class="btn btn-secondary disabled"
+              disabled=""
+              id="prev-btn"
+              type="button"
+            >
+              <i
+                class="material-icons md-2"
+              >
+                keyboard_arrow_left
+              </i>
+            </button>
+            <button
+              class="btn btn-secondary"
+              id="next-btn"
+              type="button"
+            >
+              <i
+                class="material-icons md-2"
+              >
+                keyboard_arrow_right
+              </i>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -223,16 +223,18 @@ const TableContainer = ({
                         ) : null
                     }
                 />
-                <Navigation
-                    hasNextItems={!!navigation.get('next_items')}
-                    hasPrevItems={!!navigation.get('prev_items')}
-                    fetchNextItems={() =>
-                        fetchViewItems(ViewNavDirection.NextView)
-                    }
-                    fetchPrevItems={() =>
-                        fetchViewItems(ViewNavDirection.PrevView)
-                    }
-                />
+                <div className="pl-4 mb-4">
+                    <Navigation
+                        hasNextItems={!!navigation.get('next_items')}
+                        hasPrevItems={!!navigation.get('prev_items')}
+                        fetchNextItems={() =>
+                            fetchViewItems(ViewNavDirection.NextView)
+                        }
+                        fetchPrevItems={() =>
+                            fetchViewItems(ViewNavDirection.PrevView)
+                        }
+                    />
+                </div>
             </div>
         )
     }

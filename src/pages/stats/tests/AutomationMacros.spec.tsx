@@ -4,6 +4,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
+import _noop from 'lodash/noop'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
@@ -33,7 +34,7 @@ describe('AutomationMacros', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        useStatResourceMock.mockReturnValue([null, true])
+        useStatResourceMock.mockReturnValue([null, true, _noop])
     })
 
     it('should not render the filters nor the stats when stats filters are not defined', () => {
@@ -62,7 +63,11 @@ describe('AutomationMacros', () => {
                 },
             }),
         })
-        useStatResourceMock.mockReturnValue([messagesSentPerMacro, false])
+        useStatResourceMock.mockReturnValue([
+            messagesSentPerMacro,
+            false,
+            _noop,
+        ])
 
         const {container} = renderWithRouter(
             <Provider store={store}>

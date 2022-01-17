@@ -4,8 +4,9 @@ import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
-import {OPEN_TICKETS_ASSIGNMENT_STATUSES, USERS_STATUSES} from 'config/stats'
+import _noop from 'lodash/noop'
 
+import {OPEN_TICKETS_ASSIGNMENT_STATUSES, USERS_STATUSES} from 'config/stats'
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
 import {
@@ -56,7 +57,7 @@ describe('LiveOverview', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        useStatResourceMock.mockReturnValue([null, true])
+        useStatResourceMock.mockReturnValue([null, true, _noop])
     })
 
     it('should not render the filters nor the stats when stats filters are not defined', () => {
@@ -85,11 +86,11 @@ describe('LiveOverview', () => {
         })
         useStatResourceMock.mockImplementation(({resourceName}) => {
             if (resourceName === USERS_STATUSES) {
-                return [usersStatuses, false]
+                return [usersStatuses, false, _noop]
             } else if (resourceName === OPEN_TICKETS_ASSIGNMENT_STATUSES) {
-                return [openTicketsAssignmentStatuses, false]
+                return [openTicketsAssignmentStatuses, false, _noop]
             }
-            return [supportVolumePerHour, false]
+            return [supportVolumePerHour, false, _noop]
         })
 
         const {container} = renderWithRouter(

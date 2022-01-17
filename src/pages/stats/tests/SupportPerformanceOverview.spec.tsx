@@ -4,6 +4,7 @@ import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
+import _noop from 'lodash/noop'
 
 import {RootState, StoreDispatch} from '../../../state/types'
 import useStatResource from '../useStatResource'
@@ -73,7 +74,7 @@ describe('SupportPerformanceOverview', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        useStatResourceMock.mockReturnValue([null, true])
+        useStatResourceMock.mockReturnValue([null, true, _noop])
         dateNowSpy = jest
             .spyOn(Date, 'now')
             .mockImplementation(() => 1487076708000)
@@ -123,15 +124,15 @@ describe('SupportPerformanceOverview', () => {
                 case MEDIAN_FIRST_RESPONSE_TIME:
                 case MEDIAN_RESOLUTION_TIME:
                 case TOTAL_ONE_TOUCH_TICKETS:
-                    return [totalMessagesSent, false]
+                    return [totalMessagesSent, false, _noop]
                 case SUPPORT_VOLUME:
-                    return [supportVolume, false]
+                    return [supportVolume, false, _noop]
                 case RESOLUTION_TIME:
-                    return [resolutionTime, false]
+                    return [resolutionTime, false, _noop]
                 case FIRST_RESPONSE_TIME:
-                    return [firstResponseTime, false]
+                    return [firstResponseTime, false, _noop]
                 default:
-                    return [ticketsCreatedPerHourPerWeekday, false]
+                    return [ticketsCreatedPerHourPerWeekday, false, _noop]
             }
         })
 

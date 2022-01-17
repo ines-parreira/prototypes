@@ -49,6 +49,9 @@ exports[`<Table /> should display a default view with no items 1`] = `
     BlankState
     <div />
   </div>
+  <div
+    class="pl-4 mb-4"
+  />
 </div>
 `;
 

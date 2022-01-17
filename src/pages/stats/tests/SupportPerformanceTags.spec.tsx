@@ -4,6 +4,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
+import _noop from 'lodash/noop'
 
 import {RootState, StoreDispatch} from '../../../state/types'
 import SupportPerformanceTags from '../SupportPerformanceTags'
@@ -39,7 +40,7 @@ describe('SupportPerformanceTags', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        useStatResourceMock.mockReturnValue([null, true])
+        useStatResourceMock.mockReturnValue([null, true, _noop])
         dateNowSpy = jest
             .spyOn(Date, 'now')
             .mockImplementation(() => 1487076708000)
@@ -76,7 +77,7 @@ describe('SupportPerformanceTags', () => {
                 },
             }),
         })
-        useStatResourceMock.mockReturnValue([ticketsPerTagStat, false])
+        useStatResourceMock.mockReturnValue([ticketsPerTagStat, false, _noop])
 
         const {container} = renderWithRouter(
             <Provider store={store}>

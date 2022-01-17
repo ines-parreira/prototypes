@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react'
+import React, {useMemo, useCallback} from 'react'
 import {useSelector} from 'react-redux'
 import moment from 'moment-timezone'
 import produce from 'immer'
@@ -19,6 +19,7 @@ import {
     OnlineTimeDetailStatCell,
     TicketDetailStatCell,
 } from 'models/stat/types'
+import Navigation from 'pages/common/components/Navigation/Navigation'
 
 import StatsPage from './StatsPage'
 import ChannelsStatsFilter from './ChannelsStatsFilter'
@@ -51,13 +52,27 @@ function LiveAgents() {
         )
     }, [statsFilters, userTimezone])
 
-    const [userPerformance, isFetchingUserPerformance] = useStatResource<
+    const [
+        userPerformance,
+        isFetchingUserPerformance,
+        fetchUserPerformancePage,
+    ] = useStatResource<
         TwoDimensionalChart<NumericStatAxisValue, NumericStatCell[]>
     >({
         statName: LIVE_AGENTS_STAT_NAME,
         resourceName: USERS_PERFORMANCE_OVERVIEW,
         statsFilters: pageStatsFilters,
     })
+
+    const fetchNextUserPerformancePage = useCallback(() => {
+        userPerformance?.meta.next_cursor &&
+            fetchUserPerformancePage(userPerformance?.meta.next_cursor)
+    }, [fetchUserPerformancePage, userPerformance])
+
+    const fetchPrevUserPerformancePage = useCallback(() => {
+        userPerformance?.meta.prev_cursor &&
+            fetchUserPerformancePage(userPerformance?.meta.prev_cursor)
+    }, [fetchUserPerformancePage, userPerformance])
 
     const formattedUserPerformance = useMemo(() => {
         return userPerformance && formatUserPerformanceData(userPerformance)
@@ -94,15 +109,33 @@ function LiveAgents() {
                         statsFilters={pageStatsFilters}
                     >
                         {(stat) => (
-                            <TableStat
-                                name={LIVE_AGENTS_STAT_NAME}
-                                context={{tagColors: null}}
-                                data={stat.getIn(['data', 'data'])}
-                                meta={stat.get('meta')}
-                                config={statsConfig.get(
-                                    USERS_PERFORMANCE_OVERVIEW
-                                )}
-                            />
+                            <>
+                                <TableStat
+                                    name={LIVE_AGENTS_STAT_NAME}
+                                    context={{tagColors: null}}
+                                    data={stat.getIn(['data', 'data'])}
+                                    meta={stat.get('meta')}
+                                    config={statsConfig.get(
+                                        USERS_PERFORMANCE_OVERVIEW
+                                    )}
+                                />
+                                <div className={css.navigationWrapper}>
+                                    <Navigation
+                                        hasNextItems={
+                                            !!userPerformance?.meta.next_cursor
+                                        }
+                                        hasPrevItems={
+                                            !!userPerformance?.meta.prev_cursor
+                                        }
+                                        fetchNextItems={
+                                            fetchNextUserPerformancePage
+                                        }
+                                        fetchPrevItems={
+                                            fetchPrevUserPerformancePage
+                                        }
+                                    />
+                                </div>
+                            </>
                         )}
                     </StatWrapper>
                 </>

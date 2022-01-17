@@ -4,6 +4,7 @@ import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
+import _noop from 'lodash/noop'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
@@ -37,7 +38,7 @@ describe('AutomationIntents', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        useStatResourceMock.mockReturnValue([null, true])
+        useStatResourceMock.mockReturnValue([null, true, _noop])
     })
 
     it('should not render the filters nor the stats when stats filters are not defined', () => {
@@ -65,11 +66,11 @@ describe('AutomationIntents', () => {
         })
         useStatResourceMock.mockImplementation(({resourceName}) => {
             if (resourceName === INTENTS_OVERVIEW) {
-                return [intentsOverview, false]
+                return [intentsOverview, false, _noop]
             } else if (resourceName === INTENTS_BREAKDOWN_PER_DAY) {
-                return [intentsBreakdownPerDay, false]
+                return [intentsBreakdownPerDay, false, _noop]
             }
-            return [intentsOccurrence, false]
+            return [intentsOccurrence, false, _noop]
         })
 
         const {container} = renderWithRouter(

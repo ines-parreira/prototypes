@@ -4,6 +4,7 @@ import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
+import _noop from 'lodash/noop'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
@@ -53,7 +54,7 @@ describe('AutomationOverview', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        useStatResourceMock.mockReturnValue([null, true])
+        useStatResourceMock.mockReturnValue([null, true, _noop])
     })
 
     it('should not render the filters nor the stats when stats filters are not defined', () => {
@@ -84,11 +85,11 @@ describe('AutomationOverview', () => {
         })
         useStatResourceMock.mockImplementation(({resourceName}) => {
             if (resourceName === AUTOMATION_OVERVIEW) {
-                return [automationOverview, false]
+                return [automationOverview, false, _noop]
             } else if (resourceName === AUTOMATION_FLOW) {
-                return [automationFlow, false]
+                return [automationFlow, false, _noop]
             }
-            return [automationPerChannel, false]
+            return [automationPerChannel, false, _noop]
         })
 
         const {container} = renderWithRouter(

@@ -203,6 +203,35 @@ describe('useStatResource', () => {
         expect(result.current[1]).toBe(expectedResult)
     })
 
+    it('should fetch the page with cursor when fetchPage is called', async () => {
+        const store = mockStore(defaultState)
+        const {result, rerender} = renderHook(
+            () => {
+                return useStatResource<TwoDimensionalChart>({
+                    statName: 'stat',
+                    resourceName: FIRST_RESPONSE_TIME,
+                    statsFilters: defaultStatsFilters,
+                })
+            },
+            {
+                wrapper: createStoreWrapper(store),
+            }
+        )
+        await flushPromises()
+        serverMock.resetHistory()
+        store.clearActions()
+
+        const [, , fetchPage] = result.current
+        act(() => {
+            fetchPage('foo-cursor')
+        })
+        rerender()
+        await flushPromises()
+
+        expect(serverMock.history).toMatchSnapshot()
+        expect(store.getActions()).toMatchSnapshot()
+    })
+
     describe('debouncing fetch requests', () => {
         // Using testing-library/react to test debounce because
         // react-hooks-testing-library doesn't play well with fake timers
