@@ -442,7 +442,6 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                   class="form-check-label"
                 >
                   <input
-                    checked=""
                     class="form-check-input"
                     type="checkbox"
                   />
@@ -726,7 +725,6 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
                   class="form-check-label"
                 >
                   <input
-                    checked=""
                     class="form-check-input"
                     type="checkbox"
                   />

@@ -198,7 +198,7 @@ export default class OrderFooter extends React.PureComponent<Props> {
                                             type="checkbox"
                                             checked={payload.get(
                                                 'restock',
-                                                true
+                                                false
                                             )}
                                             disabled={totalQuantities === 0}
                                             onChange={

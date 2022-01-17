@@ -14,7 +14,7 @@ Array [
   Object {
     "payload": Immutable.Map {
       "currency": "USD",
-      "restock": true,
+      "restock": false,
       "notify": true,
       "refund_line_items": Immutable.List [
         Immutable.Map {
@@ -151,7 +151,7 @@ Array [
   Object {
     "payload": Immutable.Map {
       "currency": "USD",
-      "restock": true,
+      "restock": false,
       "notify": true,
       "refund_line_items": Immutable.List [
         Immutable.Map {
@@ -317,7 +317,7 @@ Array [
   Object {
     "payload": Immutable.Map {
       "currency": "USD",
-      "restock": true,
+      "restock": false,
       "notify": true,
       "refund_line_items": Immutable.List [
         Immutable.Map {
@@ -461,10 +461,6 @@ Array [
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/refundOrder/SET_LOADING",
-  },
-  Object {
-    "restock": true,
-    "type": "infobarActions/shopify/refundOrder/SET_RESTOCK",
   },
 ]
 `;
@@ -685,7 +681,7 @@ Array [
   Object {
     "payload": Immutable.Map {
       "currency": "USD",
-      "restock": true,
+      "restock": false,
       "notify": true,
       "refund_line_items": Immutable.List [
         Immutable.Map {

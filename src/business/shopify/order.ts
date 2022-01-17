@@ -23,7 +23,7 @@ export function initRefundOrderPayload(
 
     return fromJS({
         currency,
-        restock: true,
+        restock: false,
         notify,
         refund_line_items: (order.get('line_items', []) as List<any>).map(
             (lineItem: Map<any, any>) =>

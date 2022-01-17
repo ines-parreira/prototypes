@@ -198,7 +198,7 @@ Immutable.Map {
   "email": true,
   "refund": Immutable.Map {
     "currency": "USD",
-    "restock": true,
+    "restock": false,
     "notify": false,
     "refund_line_items": Immutable.List [
       Immutable.Map {

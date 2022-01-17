@@ -461,7 +461,6 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                   class="form-check-label"
                 >
                   <input
-                    checked=""
                     class="form-check-input"
                     type="checkbox"
                   />
@@ -764,7 +763,6 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
                   class="form-check-label"
                 >
                   <input
-                    checked=""
                     class="form-check-input"
                     type="checkbox"
                   />

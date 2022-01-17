@@ -222,12 +222,9 @@ export const calculateRefund = _debounce(
                 dispatch(setLoading(false)),
             ]
 
-            // Check or uncheck the "Restock" checkbox
             const totalQuantities = getTotalQuantities(payload, suggestedRefund)
-            const restock = totalQuantities > 0
-
-            if (restock !== payload.get('restock')) {
-                promises.push(dispatch(setRestock(restock) as any))
+            if (!totalQuantities && payload.get('restock')) {
+                promises.push(dispatch(setRestock(false) as any))
             }
 
             return Promise.all(promises)
