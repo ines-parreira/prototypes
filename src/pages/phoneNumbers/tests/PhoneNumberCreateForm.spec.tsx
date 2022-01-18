@@ -4,15 +4,25 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {RootState, StoreDispatch} from 'state/types'
 
+import {phoneNumbers} from 'fixtures/phoneNumber'
+
 import PhoneNumberCreateForm from '../PhoneNumberCreateForm'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+const store = mockStore({
+    entities: {
+        phoneNumbers: phoneNumbers.reduce(
+            (acc, number) => ({...acc, [number.id]: number}),
+            {}
+        ),
+    },
+} as RootState)
 
 describe('<PhoneNumberCreateForm/>', () => {
     describe('render()', () => {
         it('should render', () => {
             const {container} = render(
-                <Provider store={mockStore({})}>
+                <Provider store={store}>
                     <PhoneNumberCreateForm />
                 </Provider>
             )
@@ -22,7 +32,7 @@ describe('<PhoneNumberCreateForm/>', () => {
 
         it('should render when a country and a state are selected', () => {
             const {container, getByText} = render(
-                <Provider store={mockStore({})}>
+                <Provider store={store}>
                     <PhoneNumberCreateForm />
                 </Provider>
             )
@@ -36,7 +46,7 @@ describe('<PhoneNumberCreateForm/>', () => {
 
         it('should render when type "Toll-free" is selected', () => {
             const {container, getByText} = render(
-                <Provider store={mockStore({})}>
+                <Provider store={store}>
                     <PhoneNumberCreateForm />
                 </Provider>
             )
@@ -49,7 +59,7 @@ describe('<PhoneNumberCreateForm/>', () => {
 
         it('should render address validation form for Australia or United Kingdom', () => {
             const {container, getByText, queryByText} = render(
-                <Provider store={mockStore({})}>
+                <Provider store={store}>
                     <PhoneNumberCreateForm />
                 </Provider>
             )

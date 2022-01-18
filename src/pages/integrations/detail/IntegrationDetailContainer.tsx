@@ -5,6 +5,8 @@ import {bindActionCreators} from 'redux'
 import {fromJS, List, Map} from 'immutable'
 import {useUpdateEffect} from 'react-use'
 
+import useSearch from 'hooks/useSearch'
+
 import * as IntegrationsActions from '../../../state/integrations/actions'
 import {IntegrationType} from '../../../models/integration/types'
 import {RootState} from '../../../state/types'
@@ -84,6 +86,7 @@ import HTTPIntegrationLayout from './components/http/HTTPIntegrationLayout/HTTPI
 
 import PhoneIntegrationList from './components/phone/PhoneIntegrationList'
 import PhoneIntegrationCreate from './components/phone/PhoneIntegrationCreate'
+import PhoneIntegrationCreateWithNumber from './components/phone/PhoneIntegrationCreateWithNumber'
 import PhoneIntegrationPreferences from './components/phone/PhoneIntegrationPreferences'
 import PhoneIntegrationVoicemail from './components/phone/PhoneIntegrationVoicemail'
 import PhoneIntegrationGreetingMessage from './components/phone/PhoneIntegrationGreetingMessage'
@@ -123,6 +126,10 @@ export const IntegrationDetailContainer = ({
         integrationId: string
         integrationType: IntegrationType
         subId: string
+    }>()
+
+    const {phoneNumberId} = useSearch<{
+        phoneNumberId: string
     }>()
 
     const isUpdate = useMemo(
@@ -432,6 +439,13 @@ export const IntegrationDetailContainer = ({
         case IntegrationType.Phone:
             if (!!integrationId) {
                 if (!isUpdate) {
+                    if (phoneNumberId) {
+                        return (
+                            <PhoneIntegrationCreateWithNumber
+                                selectedPhoneNumberId={parseInt(phoneNumberId)}
+                            />
+                        )
+                    }
                     return <PhoneIntegrationCreate actions={actions} />
                 }
 
