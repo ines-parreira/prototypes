@@ -91,7 +91,10 @@ class AfterTitleContainer extends Component<
                     <CardHeaderValue label="Total spent">
                         <MoneyAmount
                             amount={source.get('total_spent')}
-                            currencyCode={source.get('currency')}
+                            currencyCode={this.context.integration.getIn([
+                                'meta',
+                                'currency',
+                            ])}
                         />
                     </CardHeaderValue>
                     <CardHeaderValue label="Orders">
