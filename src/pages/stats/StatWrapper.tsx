@@ -34,7 +34,8 @@ type Props = {
     isFetchingStat: boolean
     resourceName: string
     statsFilters: StatsFilters
-    helpText?: string
+    helpText?: ReactNode
+    helpAutoHide?: boolean
     isDownloadable?: boolean
     loaderHeight?: string
     children: (stat: Map<any, any>) => ReactNode
@@ -50,6 +51,7 @@ export default function StatWrapper({
     loaderHeight = '400px',
     children,
     className,
+    helpAutoHide,
     ...wrapperProps
 }: Props) {
     const dispatch = useAppDispatch()
@@ -123,6 +125,7 @@ export default function StatWrapper({
                                 <Tooltip
                                     placement="top"
                                     target={`tooltip-${resourceName}`}
+                                    autohide={helpAutoHide}
                                 >
                                     {helpText}
                                 </Tooltip>

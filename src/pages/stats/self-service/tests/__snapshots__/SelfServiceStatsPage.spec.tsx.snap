@@ -18,6 +18,59 @@ exports[`<SelfServiceStatsPage /> should display the loader on loading 1`] = `
 </div>
 `;
 
+exports[`<SelfServiceStatsPage /> should not render the filters nor the stats when stats filters are not defined 1`] = `
+<div
+  class="full-width wrapper"
+>
+  <div
+    class="header"
+  >
+    <div
+      class="page-header pageHeader mb-0"
+    >
+      <h1
+        class="align-items-center"
+      >
+        <span>
+          Self-service
+        </span>
+        <button
+          class="wrapper ml-3 btn btn-secondary"
+          type="button"
+        >
+          <div
+            class="content"
+          >
+            <i
+              class="icon material-icons"
+            >
+              info_outline
+            </i>
+            <span
+              class="label ml-1"
+            >
+              Learn
+            </span>
+          </div>
+        </button>
+      </h1>
+      <div>
+        <div
+          class="d-flex flex-wrap float-right"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    class="statsWrapper"
+  >
+    <div
+      class="statsContainer container-fluid"
+    />
+  </div>
+</div>
+`;
+
 exports[`<SelfServiceStatsPage /> should render the automation add-on upgrade paywall if the current account doesnt have the feature 1`] = `
 <div>
   <div
@@ -134,6 +187,923 @@ exports[`<SelfServiceStatsPage /> should render the automation add-on upgrade pa
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SelfServiceStatsPage /> should render the filters and stats when stats filters are defined 1`] = `
+<div
+  class="full-width wrapper"
+>
+  <div
+    class="header"
+  >
+    <div
+      class="page-header pageHeader mb-0"
+    >
+      <h1
+        class="align-items-center"
+      >
+        <span>
+          Self-service
+        </span>
+        <button
+          class="wrapper ml-3 btn btn-secondary"
+          type="button"
+        >
+          <div
+            class="content"
+          >
+            <i
+              class="icon material-icons"
+            >
+              info_outline
+            </i>
+            <span
+              class="label ml-1"
+            >
+              Learn
+            </span>
+          </div>
+        </button>
+      </h1>
+      <div>
+        <div
+          class="d-flex flex-wrap float-right"
+        >
+          <div
+            class="dropdown"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="mr-2 dropdown-toggle btn btn-secondary"
+              type="button"
+            >
+              <span>
+                1 store
+              </span>
+            </button>
+            <div
+              aria-hidden="true"
+              class="dropdown dropdown-menu dropdown-menu-right"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-item-input dropdownItemInput dropdown-header"
+                tabindex="-1"
+              >
+                <input
+                  class="form-control"
+                  placeholder="Search stores..."
+                  type="text"
+                  value=""
+                />
+              </h6>
+              <button
+                class="component quickSelectionOption dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  Deselect
+                </span>
+                <div
+                  class="badge badge--unselect"
+                >
+                  1
+                </div>
+              </button>
+              <div
+                class="dropdownDivider dropdown-divider"
+                tabindex="-1"
+              />
+              <div
+                class="content"
+              />
+            </div>
+          </div>
+          <div>
+            <button
+              class="btn btn-secondary"
+              type="button"
+            >
+              <i
+                class="material-icons mr-2"
+              >
+                calendar_today
+              </i>
+              <span>
+                Feb 14, 2017
+              </span>
+              <i
+                class="material-icons md-2 strong ml-1"
+              >
+                arrow_drop_down
+              </i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="statsWrapper"
+  >
+    <div
+      class="statsContainer container-fluid"
+    >
+      <div
+        class="wrapper"
+      >
+        <div
+          class="metrics"
+        >
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Self-service usage over chat
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-self-service_usage-0"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              <div>
+                <div
+                  class="value"
+                >
+                  60%
+                </div>
+                <span
+                  class="diff"
+                  id="value-self-service_usage-0"
+                >
+                  <span>
+                    <i
+                      class="material-icons mr-1 statsDifference positive"
+                    >
+                      arrow_upward
+                    </i>
+                    100
+                    %
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Self-service interactions
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-total_interactions-1"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              <div>
+                <div
+                  class="value"
+                >
+                  3
+                </div>
+                <span
+                  class="diff"
+                  id="value-total_interactions-1"
+                >
+                  <span>
+                    <i
+                      class="material-icons mr-1 statsDifference positive"
+                    >
+                      arrow_upward
+                    </i>
+                    100
+                    %
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Automated interactions
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-tickets_deflected-2"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              <div>
+                <div
+                  class="value"
+                >
+                  100%
+                </div>
+                <span
+                  class="diff"
+                  id="value-tickets_deflected-2"
+                >
+                  <span>
+                    <i
+                      class="material-icons mr-1 statsDifference positive"
+                    >
+                      arrow_upward
+                    </i>
+                    100
+                    %
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Tickets created
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-tickets_created-3"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              <div>
+                <div
+                  class="value"
+                >
+                  0
+                </div>
+                <span
+                  class="diff"
+                  id="value-tickets_created-3"
+                >
+                  <span>
+                    <i
+                      class="material-icons mr-1 statsDifference neutral"
+                    >
+                      arrow_forward
+                    </i>
+                    0
+                    %
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Unique customers
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-total_unique_customers-4"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              <div>
+                <div
+                  class="value"
+                >
+                  2
+                </div>
+                <span
+                  class="diff"
+                  id="value-total_unique_customers-4"
+                >
+                  <span>
+                    <i
+                      class="material-icons mr-1 statsDifference positive"
+                    >
+                      arrow_upward
+                    </i>
+                    100
+                    %
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="mb-3 d-flex justify-content-between align-items-baseline"
+        >
+          <h5
+            class="mb-0 d-flex header"
+          >
+            Self-service flows distribution
+          </h5>
+          <button
+            class="csvButton btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons mr-1 csvButtonIcon"
+            >
+              file_download
+            </i>
+            CSV
+          </button>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="mb-4 legend-wrapper col"
+          >
+            <div
+              class="legends"
+            >
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="circle mr-2"
+                  style="background: rgb(74, 141, 249);"
+                />
+                Track (automated)
+              </span>
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="circle mr-2"
+                  style="background: rgb(36, 214, 157);"
+                />
+                Report issue
+              </span>
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="circle mr-2"
+                  style="background: rgb(128, 136, 214);"
+                />
+                Return
+              </span>
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="circle mr-2"
+                  style="background: rgb(253, 155, 90);"
+                />
+                Cancel
+              </span>
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="circle mr-2"
+                  style="background: rgb(210, 215, 222);"
+                />
+                Live chat tickets
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col-sm-12 col-md-8 col-lg-9"
+          >
+            <div>
+              <canvas
+                height="360"
+                role="img"
+                width="300"
+              />
+            </div>
+          </div>
+          <div
+            class="col-sm-12 col-md-4 col-lg-3"
+          >
+            <div
+              class="bar-total-wrapper"
+            >
+              <div
+                class="bar-total-title-wrapper"
+              >
+                <h5>
+                  Total interactions
+                </h5>
+                <span>
+                  <i
+                    class="material-icons ml-2 helpIcon"
+                    id="normalized-bar-title-tooltip"
+                  >
+                    info_outline
+                  </i>
+                </span>
+              </div>
+              <div
+                class="bar-total-dates"
+              >
+                Jan 5th -
+                                  Jan 11th
+              </div>
+              <div
+                class="bar-total-data-wrapper"
+              >
+                <div
+                  class="label mr-4 mb-2"
+                >
+                  <span
+                    class="circle mr-2"
+                    style="background: rgb(74, 141, 249);"
+                  />
+                  Track (automated)
+                </div>
+                <div
+                  class="data"
+                >
+                  3
+                   (
+                  60
+                  %)
+                </div>
+              </div>
+              <div
+                class="bar-total-data-wrapper"
+              >
+                <div
+                  class="label mr-4 mb-2"
+                >
+                  <span
+                    class="circle mr-2"
+                    style="background: rgb(36, 214, 157);"
+                  />
+                  Report issue
+                </div>
+                <div
+                  class="data"
+                >
+                  0
+                   (
+                  0
+                  %)
+                </div>
+              </div>
+              <div
+                class="bar-total-data-wrapper"
+              >
+                <div
+                  class="label mr-4 mb-2"
+                >
+                  <span
+                    class="circle mr-2"
+                    style="background: rgb(128, 136, 214);"
+                  />
+                  Return
+                </div>
+                <div
+                  class="data"
+                >
+                  0
+                   (
+                  0
+                  %)
+                </div>
+              </div>
+              <div
+                class="bar-total-data-wrapper"
+              >
+                <div
+                  class="label mr-4 mb-2"
+                >
+                  <span
+                    class="circle mr-2"
+                    style="background: rgb(253, 155, 90);"
+                  />
+                  Cancel
+                </div>
+                <div
+                  class="data"
+                >
+                  0
+                   (
+                  0
+                  %)
+                </div>
+              </div>
+              <div
+                class="bar-total-data-wrapper"
+              >
+                <div
+                  class="label mr-4 mb-2"
+                >
+                  <span
+                    class="circle mr-2"
+                    style="background: rgb(210, 215, 222);"
+                  />
+                  Live chat tickets
+                </div>
+                <div
+                  class="data"
+                >
+                  2
+                   (
+                  40
+                  %)
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h3
+        class="section"
+      >
+        Report issues flow
+      </h3>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="mb-3 d-flex justify-content-between align-items-baseline"
+        >
+          <h5
+            class="mb-0 d-flex header"
+          >
+            Products with most issues
+          </h5>
+          <button
+            class="csvButton btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons mr-1 csvButtonIcon"
+            >
+              file_download
+            </i>
+            CSV
+          </button>
+        </div>
+        <table
+          class="table table table-hover"
+        >
+          <thead>
+            <tr>
+              <th
+                class="product"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  PRODUCT
+                </span>
+              </th>
+              <th
+                class="number"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  TOTAL ISSUES REPORTED
+                </span>
+              </th>
+              <th
+                class="string"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  ISSUE
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td
+                class="lineCell product"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  <div
+                    class="container"
+                  >
+                    <div
+                      class="product-image"
+                      style="background-image: url(https://cdn.shopify.com/s/files/1/0518/0525/7901/products/ezgif-1-5cb6817b37ad_100x100.jpg?v=1607704148);"
+                    />
+                    <h5
+                      class="product-name"
+                    >
+                      Hoodie - M
+                    </h5>
+                  </div>
+                </span>
+              </td>
+              <td
+                class="lineCell number"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  2
+                </span>
+              </td>
+              <td
+                class="lineCell string"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  I'm past my expected delivery date
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="mb-3 d-flex justify-content-between align-items-baseline"
+        >
+          <h5
+            class="mb-0 d-flex header"
+          >
+            Top issues reported
+            <span>
+              <i
+                class="material-icons ml-2 helpIcon"
+                id="tooltip-self-service-top-reported-issues"
+              >
+                info_outline
+              </i>
+            </span>
+          </h5>
+          <button
+            class="csvButton btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons mr-1 csvButtonIcon"
+            >
+              file_download
+            </i>
+            CSV
+          </button>
+        </div>
+        <table
+          class="table table table-hover"
+        >
+          <thead>
+            <tr>
+              <th
+                class="issue-reason"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  REASON
+                </span>
+              </th>
+              <th
+                class="number"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  TICKETS CREATED
+                </span>
+              </th>
+              <th
+                class="percent"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  PERCENTAGE OF TICKETS
+                  <span
+                    class="axisHelperIcon"
+                  >
+                    <i
+                      class="material-icons ml-2 helpIcon"
+                      id="Percentage-of-tickets-tooltip"
+                    >
+                      info_outline
+                    </i>
+                  </span>
+                </span>
+              </th>
+              <th
+                class="delta"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  DELTA
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td
+                class="lineCell issue-reason"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  <h5
+                    style="margin: 16px;"
+                  >
+                    I'm past my expected delivery date
+                  </h5>
+                </span>
+              </td>
+              <td
+                class="lineCell number"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  3
+                </span>
+              </td>
+              <td
+                class="lineCell percent"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  30%
+                </span>
+              </td>
+              <td
+                class="lineCell delta"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  <span>
+                    <span
+                      id="difference-0"
+                    >
+                      <span>
+                        <i
+                          class="material-icons mr-1 statsDifference"
+                        >
+                          arrow_upward
+                        </i>
+                        200
+                        %
+                      </span>
+                    </span>
+                  </span>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3
+        class="section"
+      >
+        Returns flow
+      </h3>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="mb-3 d-flex justify-content-between align-items-baseline"
+        >
+          <h5
+            class="mb-0 d-flex header"
+          >
+            Products with most return requests
+          </h5>
+          <button
+            class="csvButton btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons mr-1 csvButtonIcon"
+            >
+              file_download
+            </i>
+            CSV
+          </button>
+        </div>
+        <table
+          class="table table table-hover"
+        >
+          <thead>
+            <tr>
+              <th
+                class="product"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  PRODUCT
+                </span>
+              </th>
+              <th
+                class="number"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  RETURN REQUESTS
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td
+                class="lineCell product"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  <div
+                    class="container"
+                  >
+                    <div
+                      class="product-image"
+                      style="background-image: url(https://cdn.shopify.com/s/files/1/0518/0525/7901/products/RadHat_100x100.png?v=1608219661);"
+                    />
+                    <h5
+                      class="product-name"
+                    >
+                      Hat
+                    </h5>
+                  </div>
+                </span>
+              </td>
+              <td
+                class="lineCell number"
+              >
+                <span
+                  class="cell-wrapper"
+                >
+                  6
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

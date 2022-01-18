@@ -178,7 +178,7 @@ exports[`StatWrapper should render the download button when isDownloadable is se
 </div>
 `;
 
-exports[`StatWrapper should render the help icon when help text prop is defined 1`] = `
+exports[`StatWrapper should render the help icon and help tooltip when help text prop is defined 1`] = `
 <div
   class="wrapper"
 >
@@ -196,6 +196,24 @@ exports[`StatWrapper should render the help icon when help text prop is defined 
         >
           info_outline
         </i>
+        <div
+          aria-label="tooltip mock"
+        >
+          <div
+            aria-label="children"
+          >
+            Foo help text
+          </div>
+          <div
+            aria-label="other props"
+          >
+            {
+  "placement": "top",
+  "target": "tooltip-first-response-time",
+  "autohide": false
+}
+          </div>
+        </div>
       </span>
     </h5>
   </div>

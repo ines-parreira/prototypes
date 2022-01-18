@@ -5,7 +5,7 @@ exports[`StatsPage should render the title, children and filters 1`] = `
   class="full-width wrapper"
 >
   <div
-    class="filtersWrapper"
+    class="header"
   >
     <div
       class="page-header pageHeader mb-0"

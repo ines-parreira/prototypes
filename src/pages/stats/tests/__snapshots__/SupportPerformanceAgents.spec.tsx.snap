@@ -5,7 +5,7 @@ exports[`SupportPerformanceAgents should not render the filters nor the stats wh
   class="full-width wrapper"
 >
   <div
-    class="filtersWrapper"
+    class="header"
   >
     <div
       class="page-header pageHeader mb-0"
@@ -58,7 +58,7 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
   class="full-width wrapper"
 >
   <div
-    class="filtersWrapper"
+    class="header"
   >
     <div
       class="page-header pageHeader mb-0"

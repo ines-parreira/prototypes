@@ -3,19 +3,20 @@ import {useSelector} from 'react-redux'
 import {Map} from 'immutable'
 
 import shopify from 'assets/img/integrations/shopify.png'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {IntegrationType} from 'models/integration/constants'
+import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
+import {Value} from 'pages/common/forms/SelectField/types'
+import {IntegrationsStatsFilterValue} from 'state/stats/types'
 
-import {getIntegrationsByTypes} from '../../../state/integrations/selectors'
-import {IntegrationType} from '../../../models/integration/constants'
-import {getSelfServiceConfigurations} from '../../../state/entities/selfServiceConfigurations/selectors'
-import {Value} from '../../common/forms/SelectField/types'
 import SelectFilter from '../common/SelectFilter'
 
 import css from './SelfServiceIntegrationsFilter.less'
 import {hasShopifyIntegrationSSPEnabled} from './self-service-stats.utils'
 
 type Props = {
-    value: Value[]
-    onChange: (value: Value[]) => void
+    value: IntegrationsStatsFilterValue
+    onChange: (value: IntegrationsStatsFilterValue) => void
 }
 
 const SelfServiceIntegrationsFilter = ({value, onChange}: Props) => {
@@ -28,7 +29,7 @@ const SelfServiceIntegrationsFilter = ({value, onChange}: Props) => {
         <SelectFilter
             plural="stores"
             singular="store"
-            onChange={onChange}
+            onChange={onChange as (value: Value[]) => void}
             value={value}
         >
             {shopifyIntegrations.map((shopifyIntegration: Map<any, any>) => {

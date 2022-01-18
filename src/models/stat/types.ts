@@ -1,3 +1,5 @@
+import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
+
 export enum StatType {
     User = 'user',
     Number = 'number',
@@ -16,6 +18,8 @@ export enum StatType {
     Timezone = 'timezone',
     Boolean = 'bool',
     Object = 'object',
+    Product = 'product',
+    IssueReason = 'issue-reason',
 }
 
 export type Stat<T = StatData> = {
@@ -190,3 +194,14 @@ export type StatCell =
           }
       }
     | {type: StatType.Object; value: Record<string, unknown>}
+    | {
+          type: StatType.Product
+          value: {
+              image_url: string
+              name: string
+          }
+      }
+    | {
+          type: StatType.IssueReason
+          value: ReportIssueReasons
+      }

@@ -16,7 +16,7 @@ exports[`LiveAgents should not render the filters nor the stats when stats filte
   class="full-width wrapper"
 >
   <div
-    class="filtersWrapper"
+    class="header"
   >
     <div
       class="page-header pageHeader mb-0"
@@ -69,7 +69,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
   class="full-width wrapper"
 >
   <div
-    class="filtersWrapper"
+    class="header"
   >
     <div
       class="page-header pageHeader mb-0"

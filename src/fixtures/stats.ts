@@ -1,3 +1,4 @@
+import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
 import {
     SankeyDiagram,
     OneDimensionalChart,
@@ -5,7 +6,7 @@ import {
     Stat,
     StatType,
     TwoDimensionalChart,
-} from '../models/stat/types'
+} from 'models/stat/types'
 
 export const totalMessagesSent: Stat<OneDimensionalChart> = {
     data: {
@@ -1616,5 +1617,248 @@ export const intentsOccurrence: Stat<TwoDimensionalChart> = {
         previous_end_datetime: '2022-01-04T00:00:00+01:00',
         end_datetime: '2022-01-10T23:59:59+01:00',
         previous_start_datetime: '2021-12-28T00:00:01+01:00',
+    },
+}
+
+export const selfServiceOverview: Stat<OneDimensionalUnionChart> = {
+    meta: {
+        end_datetime: '2022-01-12T23:59:59+01:00',
+        previous_end_datetime: '2022-01-06T00:00:00+01:00',
+        previous_start_datetime: '2021-12-30T00:00:01+01:00',
+        start_datetime: '2022-01-06T00:00:00+01:00',
+    },
+    data: {
+        data: [
+            {
+                name: 'total_interactions',
+                type: StatType.Number,
+                more_is_better: true,
+                value: 3,
+                delta: 100,
+            },
+            {
+                name: 'total_unique_customers',
+                type: StatType.Number,
+                more_is_better: true,
+                value: 2,
+                delta: 100,
+            },
+            {
+                name: 'tickets_deflected',
+                type: StatType.Percent,
+                more_is_better: true,
+                value: 100,
+                delta: 100,
+            },
+            {
+                name: 'tickets_created',
+                type: StatType.Number,
+                more_is_better: true,
+                value: 0,
+                delta: 0,
+            },
+            {
+                name: 'self-service_usage',
+                type: StatType.Percent,
+                more_is_better: true,
+                value: 60,
+                delta: 100,
+            },
+        ],
+    },
+}
+
+export const selfServiceFlowsDistribution: Stat<TwoDimensionalChart> = {
+    meta: {
+        end_datetime: '2022-01-12T23:59:59+01:00',
+        previous_end_datetime: '2022-01-06T00:00:00+01:00',
+        previous_start_datetime: '2021-12-30T00:00:01+01:00',
+        start_datetime: '2022-01-06T00:00:00+01:00',
+    },
+    data: {
+        label: 'Self-service flows distribution',
+        legend: {
+            axes: {
+                x: 'Interaction date',
+                y: 'Flow usage',
+            },
+        },
+        data: {
+            axes: {
+                x: [
+                    1641423600, 1641510000, 1641596400, 1641682800, 1641769200,
+                    1641855600, 1641942000,
+                ],
+                y: [],
+            },
+            lines: [
+                {
+                    name: 'track',
+                    data: [0, 0, 0, 0, 0, 3, 0],
+                },
+                {
+                    name: 'report_issues',
+                    data: [0, 0, 0, 0, 0, 0, 0],
+                },
+                {
+                    name: 'returns',
+                    data: [0, 0, 0, 0, 0, 0, 0],
+                },
+                {
+                    name: 'cancellations',
+                    data: [0, 0, 0, 0, 0, 0, 0],
+                },
+                {
+                    name: 'other_tickets',
+                    data: [1, 0, 0, 0, 1, 0, 0],
+                },
+            ],
+        },
+    },
+}
+
+export const selfServiceProductsWithMostIssues: Stat<TwoDimensionalChart> = {
+    meta: {
+        end_datetime: '2022-01-12T23:59:59+01:00',
+        previous_end_datetime: '2021-12-14T00:00:00+01:00',
+        previous_start_datetime: '2021-11-14T00:00:01+01:00',
+        start_datetime: '2021-12-14T00:00:00+01:00',
+    },
+    data: {
+        label: 'Products with most issues',
+        data: {
+            axes: {
+                x: [
+                    {
+                        name: 'Product',
+                        type: StatType.Product,
+                    },
+                    {
+                        name: 'Total issues reported',
+                        type: StatType.Number,
+                    },
+                    {
+                        name: 'Issue',
+                        type: StatType.String,
+                    },
+                ],
+            },
+            lines: [
+                [
+                    {
+                        type: StatType.Product,
+                        value: {
+                            image_url:
+                                'https://cdn.shopify.com/s/files/1/0518/0525/7901/products/ezgif-1-5cb6817b37ad_100x100.jpg?v=1607704148',
+                            name: 'Hoodie - M',
+                        },
+                    },
+                    {
+                        type: StatType.Number,
+                        value: 2,
+                    },
+                    {
+                        type: StatType.String,
+                        value: 'reasonPastExpectedDeliveryDate',
+                    },
+                ],
+            ],
+        },
+    },
+}
+
+export const selfServiceTopReportedIssues: Stat<TwoDimensionalChart> = {
+    meta: {
+        end_datetime: '2022-01-12T23:59:59+01:00',
+        previous_end_datetime: '2021-11-14T00:00:00+01:00',
+        previous_start_datetime: '2021-09-15T00:00:01+01:00',
+        start_datetime: '2021-11-14T00:00:00+01:00',
+    },
+    data: {
+        label: 'Top issues reported',
+        data: {
+            axes: {
+                x: [
+                    {
+                        name: 'Reason',
+                        type: StatType.IssueReason,
+                    },
+                    {
+                        name: 'Tickets created',
+                        type: StatType.Number,
+                    },
+                    {
+                        name: 'Percentage of tickets',
+                        type: StatType.Percent,
+                    },
+                    {
+                        name: 'Delta',
+                        type: StatType.Delta,
+                    },
+                ],
+            },
+            lines: [
+                [
+                    {
+                        type: StatType.IssueReason,
+                        value: ReportIssueReasons.REASON_PAST_EXPECTED_DELIVERY_DATE,
+                    },
+                    {
+                        type: StatType.Number,
+                        value: 3,
+                    },
+                    {
+                        type: StatType.Percent,
+                        value: 30,
+                    },
+                    {
+                        type: StatType.Delta,
+                        value: 200,
+                    },
+                ],
+            ],
+        },
+    },
+}
+
+export const selfServiceMostReturnedProducts: Stat<TwoDimensionalChart> = {
+    meta: {
+        end_datetime: '2022-01-12T23:59:59+01:00',
+        previous_end_datetime: '2021-11-14T00:00:00+01:00',
+        previous_start_datetime: '2021-09-15T00:00:01+01:00',
+        start_datetime: '2021-11-14T00:00:00+01:00',
+    },
+    data: {
+        label: 'Products with most return requests',
+        data: {
+            axes: {
+                x: [
+                    {
+                        name: 'Product',
+                        type: StatType.Product,
+                    },
+                    {
+                        name: 'Return requests',
+                        type: StatType.Number,
+                    },
+                ],
+            },
+            lines: [
+                [
+                    {
+                        type: StatType.Product,
+                        value: {
+                            image_url:
+                                'https://cdn.shopify.com/s/files/1/0518/0525/7901/products/RadHat_100x100.png?v=1608219661',
+                            name: 'Hat',
+                        },
+                    },
+                    {
+                        type: StatType.Number,
+                        value: 6,
+                    },
+                ],
+            ],
+        },
     },
 }

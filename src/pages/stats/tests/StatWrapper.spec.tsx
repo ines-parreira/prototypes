@@ -16,6 +16,7 @@ import {logEvent} from 'store/middlewares/segmentTracker'
 import {RootState} from 'state/types'
 import {user} from 'fixtures/users'
 import {account} from 'fixtures/account'
+import Tooltip from 'pages/common/components/Tooltip'
 
 import StatWrapper from '../StatWrapper'
 
@@ -23,6 +24,20 @@ jest.mock('utils/file')
 jest.mock('state/notifications/actions')
 jest.mock('models/stat/resources')
 jest.mock('store/middlewares/segmentTracker')
+jest.mock(
+    'pages/common/components/Tooltip',
+    () =>
+        ({children, ...otherProps}: ComponentProps<typeof Tooltip>) => {
+            return (
+                <div aria-label="tooltip mock">
+                    <div aria-label="children">{children}</div>
+                    <div aria-label="other props">
+                        {JSON.stringify(otherProps, null, 2)}
+                    </div>
+                </div>
+            )
+        }
+)
 
 const mockStore = configureMockStore([thunk])
 const saveFileAsDownloadedMock = saveFileAsDownloaded as jest.MockedFunction<
@@ -99,10 +114,14 @@ describe('StatWrapper', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should render the help icon when help text prop is defined', () => {
+    it('should render the help icon and help tooltip when help text prop is defined', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
-                <StatWrapper {...minProps} helpText="Foo help text" />
+                <StatWrapper
+                    {...minProps}
+                    helpText="Foo help text"
+                    helpAutoHide={false}
+                />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()

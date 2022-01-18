@@ -51,7 +51,7 @@ import {Value} from '../common/forms/SelectField/types'
 import PeriodPicker from './common/PeriodPicker'
 import SelectFilter from './common/SelectFilter'
 import css from './DEPRECATED_StatsFilters.less'
-import StatsTitleWithPopOver from './common/components/StatsTitleWithPopOver'
+import DEPRECATED_StatsTitleWithPopOver from './common/components/DEPRECATED_StatsTitleWithPopOver'
 
 const TagDropdownMenuWrapper = (
     props: ComponentProps<typeof TagDropdownMenu>
@@ -444,7 +444,7 @@ export const StatsFiltersContainer = ({
     const pageTitle = useMemo(
         () =>
             config.get('description') ? (
-                <StatsTitleWithPopOver config={config} />
+                <DEPRECATED_StatsTitleWithPopOver config={config} />
             ) : (
                 ((config.get('title') ?? config.get('name')) as string)
             ),

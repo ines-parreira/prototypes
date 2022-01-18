@@ -1,57 +1,27 @@
-import React, {ReactNode} from 'react'
+import React, {ComponentProps, ReactNode} from 'react'
 import classNames from 'classnames'
-import {Button, Container} from 'reactstrap'
+import {Container} from 'reactstrap'
 
 import PageHeader from '../common/components/PageHeader'
-import PopoverModal from '../common/components/PopoverModal'
 
 import css from './StatsPage.less'
+import StatsPageTitle from './StatsPageTitle'
 
 type Props = {
     children: ReactNode
-    title: string
-    description: string
-    helpUrl: string
     filters: ReactNode
-}
+} & ComponentProps<typeof StatsPageTitle>
 
 export default function StatsPage({
     children,
-    title,
-    description,
-    helpUrl,
     filters,
+    ...statsPageTitleProps
 }: Props) {
     return (
         <div className={classNames('full-width', css.wrapper)}>
-            <div className={css.filtersWrapper}>
+            <div className={css.header}>
                 <PageHeader
-                    title={
-                        <h1 className="align-items-center">
-                            <span>{title}</span>
-                            <PopoverModal
-                                className="ml-3"
-                                placement="bottom-start"
-                            >
-                                <p className={css.learnMoreContent}>
-                                    {description}
-                                </p>
-                                <Button
-                                    className={css.titleTooltipButton}
-                                    color="secondary"
-                                    type="button"
-                                    onClick={() => {
-                                        window.open(helpUrl, '_blank')!.focus()
-                                    }}
-                                >
-                                    Learn More{' '}
-                                    <i className="material-icons">
-                                        arrow_forward
-                                    </i>
-                                </Button>
-                            </PopoverModal>
-                        </h1>
-                    }
+                    title={<StatsPageTitle {...statsPageTitleProps} />}
                     className="mb-0"
                 >
                     <div className="d-flex flex-wrap float-right">

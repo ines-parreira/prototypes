@@ -4,25 +4,56 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import _noop from 'lodash/noop'
 
-import {RootState, StoreDispatch} from '../../../../state/types'
+import {RootState, StoreDispatch} from 'state/types'
+import {proPlan} from 'fixtures/subscriptionPlan'
+import {flushPromises, renderWithRouter} from 'utils/testing'
+import {AccountFeature} from 'state/currentAccount/types'
+import {StatsFilterType} from 'state/stats/types'
+import {integrationsState} from 'fixtures/integrations'
+import {
+    SELF_SERVICE_FLOWS_DISTRIBUTION,
+    SELF_SERVICE_OVERVIEW,
+    SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES,
+    SELF_SERVICE_TOP_REPORTED_ISSUES,
+} from 'config/stats'
+import {
+    selfServiceFlowsDistribution,
+    selfServiceMostReturnedProducts,
+    selfServiceOverview,
+    selfServiceProductsWithMostIssues,
+    selfServiceTopReportedIssues,
+} from 'fixtures/stats'
+
+import useStatResource from '../../useStatResource'
 import SelfServiceStatsPage from '../SelfServiceStatsPage'
-import {proPlan} from '../../../../fixtures/subscriptionPlan'
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-
-jest.mock('../../../../models/selfServiceConfiguration/resources', () => ({
+jest.mock('../../useStatResource')
+jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
+jest.mock('models/selfServiceConfiguration/resources', () => ({
     fetchSelfServiceConfigurations: jest.fn(() => Promise.resolve([])),
 }))
 
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const useStatResourceMock = useStatResource as jest.MockedFunction<
+    typeof useStatResource
+>
+
 describe('<SelfServiceStatsPage />', () => {
     const defaultState = {
+        stats: fromJS({
+            filters: null,
+        }),
         currentAccount: fromJS({
             features: {
-                automation_return_flow: {enabled: true},
-                automation_cancellations_flow: {enabled: true},
-                automation_track_order_flow: {enabled: true},
-                automation_report_issue_flow: {enabled: true},
+                [AccountFeature.AutomationReturnFlow]: {enabled: true},
+                [AccountFeature.AutomationCancellationsFlow]: {enabled: true},
+                [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
+                [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
+                [AccountFeature.AutomationSelfServiceStatistics]: {
+                    enabled: true,
+                },
             },
             created_datetime: '2021-08-01T00:00:00Z',
         }),
@@ -39,9 +70,14 @@ describe('<SelfServiceStatsPage />', () => {
             helpCenterArticles: {},
             selfServiceConfigurations: {},
             phoneNumbers: {},
-        },
+        } as RootState['entities'],
         integrations: fromJS({}),
-    }
+    } as RootState
+
+    beforeEach(() => {
+        useStatResourceMock.mockReturnValue([null, true, _noop])
+    })
+
     afterEach(() => {
         jest.clearAllMocks()
     })
@@ -88,5 +124,58 @@ describe('<SelfServiceStatsPage />', () => {
             )
             expect(container).toMatchSnapshot()
         })
+    })
+
+    it('should not render the filters nor the stats when stats filters are not defined', async () => {
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <SelfServiceStatsPage />
+            </Provider>
+        )
+
+        await flushPromises()
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render the filters and stats when stats filters are defined', async () => {
+        const store = mockStore({
+            ...defaultState,
+            stats: fromJS({
+                filters: {
+                    [StatsFilterType.Period]: {
+                        start_time: '2021-02-03T00:00:00.000Z',
+                        end_time: '2021-02-03T23:59:59.999Z',
+                    },
+                    [StatsFilterType.Integrations]: [
+                        integrationsState.integrations[0].id,
+                    ],
+                },
+            }),
+        })
+        useStatResourceMock.mockImplementation(({resourceName}) => {
+            if (resourceName === SELF_SERVICE_OVERVIEW) {
+                return [selfServiceOverview, false, _noop]
+            } else if (resourceName === SELF_SERVICE_FLOWS_DISTRIBUTION) {
+                return [selfServiceFlowsDistribution, false, _noop]
+            } else if (
+                resourceName === SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES
+            ) {
+                return [selfServiceProductsWithMostIssues, false, _noop]
+            } else if (resourceName === SELF_SERVICE_TOP_REPORTED_ISSUES) {
+                return [selfServiceTopReportedIssues, false, _noop]
+            }
+            return [selfServiceMostReturnedProducts, false, _noop]
+        })
+
+        const {container} = renderWithRouter(
+            <Provider store={store}>
+                <SelfServiceStatsPage />
+            </Provider>
+        )
+
+        await flushPromises()
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

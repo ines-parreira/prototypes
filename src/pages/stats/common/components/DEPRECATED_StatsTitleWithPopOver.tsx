@@ -4,7 +4,7 @@ import {Map} from 'immutable'
 
 import PopoverModal from '../../../common/components/PopoverModal'
 
-import css from './StatsTitleWithPopOver.less'
+import css from './DEPRECATED_StatsTitleWithPopOver.less'
 
 type Props = {
     config: Map<any, any>
