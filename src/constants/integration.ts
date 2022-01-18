@@ -77,3 +77,5 @@ export const INTEGRATION_DATA_ITEM_TYPES_MAP = Object.freeze({
 export const INTEGRATION_DATA_ITEM_TYPES = Object.freeze(
     Object.values(INTEGRATION_DATA_ITEM_TYPES_MAP)
 )
+
+export const PRODUCTS_PER_PAGE = 30

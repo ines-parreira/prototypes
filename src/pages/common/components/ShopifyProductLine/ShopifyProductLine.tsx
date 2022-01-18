@@ -9,7 +9,10 @@ import classnames from 'classnames'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 
 import GorgiasApi from '../../../../services/gorgiasApi'
-import {INTEGRATION_DATA_ITEM_TYPE_PRODUCT} from '../../../../constants/integration'
+import {
+    INTEGRATION_DATA_ITEM_TYPE_PRODUCT,
+    PRODUCTS_PER_PAGE,
+} from '../../../../constants/integration'
 
 import ProductResult from '../../forms/ProductSearchInput/ProductResult'
 import VariantResult from '../../forms/ProductSearchInput/VariantResult'
@@ -252,7 +255,11 @@ export default function ShopifyProductLine({
                         </span>
                     ) : (
                         <span className={css.resultTotal}>
-                            {shopifyProducts.length} PRODUCTS
+                            {shopifyProducts.length}
+                            {shopifyProducts.length >= PRODUCTS_PER_PAGE
+                                ? '+'
+                                : ''}
+                            {' PRODUCTS'}
                         </span>
                     )}
                 </div>

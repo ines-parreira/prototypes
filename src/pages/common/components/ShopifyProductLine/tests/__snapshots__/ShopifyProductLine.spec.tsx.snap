@@ -1,5 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<ShopifyProductLine/> should render "{PRODUCTS_PER_PAGE}+ PRODUCTS" count in the variants picker of a product 1`] = `
+<div>
+  <span
+    class="resultTotal"
+  >
+    30
+    +
+     PRODUCTS
+  </span>
+</div>
+`;
+
 exports[`<ShopifyProductLine/> should render the product picker 1`] = `
 <div>
   <div
@@ -45,6 +57,7 @@ exports[`<ShopifyProductLine/> should render the product picker 1`] = `
           class="resultTotal"
         >
           0
+          
            PRODUCTS
         </span>
       </div>
@@ -111,6 +124,7 @@ exports[`<ShopifyProductLine/> should render the product picker with products 1`
           class="resultTotal"
         >
           2
+          
            PRODUCTS
         </span>
       </div>

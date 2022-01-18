@@ -10,6 +10,8 @@ import {Provider} from 'react-redux'
 import ShopifyProductLine from '../ShopifyProductLine'
 import {shopifyProductResult} from '../../../../../fixtures/shopify'
 import client from '../../../../../models/api/resources'
+import {PRODUCTS_PER_PAGE} from '../../../../../constants/integration'
+import css from '../ShopifyProductLine.less'
 
 const minProps = {
     shopifyIntegration: fromJS({
@@ -77,6 +79,30 @@ describe('<ShopifyProductLine/>', () => {
             expect(container).toMatchSnapshot()
             fireEvent.click(getByText(/781A899/i))
             expect(minProps.productClicked).toHaveBeenCalled()
+        })
+    })
+
+    it('should render "{PRODUCTS_PER_PAGE}+ PRODUCTS" count in the variants picker of a product', async () => {
+        const shopifyProducts = Array(PRODUCTS_PER_PAGE).fill(
+            shopifyProductResult()[0]
+        )
+        mockServer.onGet('/api/integrations/1/product/').reply(200, {
+            data: shopifyProducts,
+        })
+
+        const {container, getByText} = render(
+            <span className={css.resultTotal}>
+                {shopifyProducts.length}
+                {shopifyProducts.length >= PRODUCTS_PER_PAGE ? '+' : ''}
+                {' PRODUCTS'}
+            </span>
+        )
+
+        await waitFor(() => {
+            expect(
+                getByText(PRODUCTS_PER_PAGE.toString() + '+ PRODUCTS')
+            ).toBeDefined()
+            expect(container).toMatchSnapshot()
         })
     })
 })
