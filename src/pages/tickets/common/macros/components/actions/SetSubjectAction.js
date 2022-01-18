@@ -6,7 +6,7 @@ import {Input} from 'reactstrap'
 export default class SetSubjectAction extends React.Component {
     componentDidMount() {
         if (!this.props.action.getIn(['arguments', 'subject'])) {
-            this.props.updateActionArgs(this.props.index, '')
+            this.props.updateActionArgs(this.props.index, {})
         }
     }
 

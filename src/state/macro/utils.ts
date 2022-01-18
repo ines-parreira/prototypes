@@ -64,23 +64,18 @@ export function getDefaultMacro() {
 }
 
 export function getErrorReason(error: MacroApiError) {
-    const errorsPerAction = Object.values(
-        error.response.data.error.data?.actions || {}
-    )
-
-    let errorText = ''
-    errorsPerAction.forEach((action) => {
-        Object.values(action).forEach((argumentsValue) => {
-            argumentsValue.forEach((fieldType) => {
-                Object.values(fieldType).forEach(
-                    (message) =>
-                        (errorText += `${
-                            errorText === '' ? '' : ', '
-                        }${message}`)
-                )
+    return Object.values(error.response.data.error.data?.actions || {})
+        .reduce((errors: string[], action) => {
+            Object.values(action).forEach((argumentsValue) => {
+                argumentsValue.forEach((reason) => {
+                    errors.push(
+                        ...(typeof reason === 'string'
+                            ? [reason]
+                            : Object.values(reason))
+                    )
+                })
             })
-        })
-    })
-
-    return errorText
+            return errors
+        }, [])
+        .join(', ')
 }
