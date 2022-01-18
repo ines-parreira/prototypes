@@ -6,6 +6,11 @@ export enum NotificationStatus {
     Loading = 'loading',
 }
 
+export enum NotificationStyle {
+    Alert = 'alert',
+    Banner = 'banner',
+}
+
 export type Notification = {
     status?: NotificationStatus
     message?: string
@@ -17,7 +22,7 @@ export type Notification = {
     allowHTML?: boolean
     actionHTML?: string
     dismissible?: boolean
-    style?: string
+    style?: NotificationStyle
     type?: NotificationStatus
     onClick?: () => void
     noAutoDismiss?: boolean

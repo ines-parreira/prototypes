@@ -10,7 +10,10 @@ import * as socketEvents from '../../config/socketEvents'
 import {notify} from '../../state/notifications/actions'
 import {store} from '../../init'
 import {devLog} from '../../utils'
-import {NotificationStatus} from '../../state/notifications/types'
+import {
+    NotificationStatus,
+    NotificationStyle,
+} from '../../state/notifications/types'
 import {StoreDispatch} from '../../state/types'
 
 import {BROADCAST_CHANNEL_NAME} from './constants.js'
@@ -135,7 +138,7 @@ export class SocketManager {
         this.dispatchReduxAction(
             notify({
                 id: this.disconnectedNotificationId,
-                style: 'banner',
+                style: NotificationStyle.Banner,
                 status: NotificationStatus.Error,
                 dismissible: false,
                 message: 'You are not connected to live ticket updates.',

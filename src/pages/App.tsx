@@ -29,7 +29,6 @@ import css from './App.less'
 import BannerNotifications from './common/components/BannerNotifications/BannerNotifications'
 import FullPage from './common/components/FullPage'
 import KeyboardHelp from './common/components/KeyboardHelp/KeyboardHelp'
-import ModalNotification from './common/components/ModalNotification'
 import notificationsTheme from './common/components/Notifications'
 import {NotificationIcon as GorgiasNotificationIcon} from './common/components/NotificationIcon'
 import {ErrorBoundary} from './ErrorBoundary'
@@ -121,9 +120,6 @@ class App extends React.Component<Props> {
         const bannerNotifications = notifications.filter(
             (notif) => notif.style === 'banner'
         )
-        const modalNotifications = notifications.filter(
-            (notif) => notif.style === 'modal'
-        )
 
         const alertNotifications = notifications.filter(
             (notif) => notif.style === 'alert'
@@ -144,12 +140,7 @@ class App extends React.Component<Props> {
                         <BannerNotifications
                             notifications={bannerNotifications}
                         />
-                        {modalNotifications.map((notification) => (
-                            <ModalNotification
-                                key={notification.id}
-                                {...notification}
-                            />
-                        ))}
+
                         <div id="app-root" className={css.app}>
                             <Navbar />
 

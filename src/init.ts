@@ -17,7 +17,10 @@ import {notify} from './state/notifications/actions'
 import configureStore from './store/configureStore'
 import {logEvent, SegmentEvent} from './store/middlewares/segmentTracker'
 import {transformSystemMessagesToNotifications} from './utils'
-import {NotificationStatus} from './state/notifications/types'
+import {
+    NotificationStatus,
+    NotificationStyle,
+} from './state/notifications/types'
 import {GorgiasInitialState, InitialRootState} from './types'
 import {initDatadogLogger} from './utils/datadog'
 import {initializeNewReleaseHandler} from './models/api/resources'
@@ -120,7 +123,7 @@ export const notifyDeprecatedTld = (url: string, reduxStore: Store) => {
         reduxStore.dispatch(
             notify({
                 id: 'deprecated-tld-notification',
-                style: 'banner',
+                style: NotificationStyle.Banner,
                 status: NotificationStatus.Warning,
                 dismissible: false,
                 allowHTML: true,
@@ -145,7 +148,7 @@ export const notifyAccountNotVerified = (reduxStore: Store) => {
             notify({
                 allowHTML: true,
                 id: 'account-not-verified-notification',
-                style: 'banner',
+                style: NotificationStyle.Banner,
                 status: NotificationStatus.Warning,
                 dismissible: false,
                 message:
@@ -170,7 +173,7 @@ export const notifyChatIntegrationDeprecated = (reduxStore: Store) => {
             notify({
                 allowHTML: true,
                 id: 'has-deprecated-chat-integrations',
-                style: 'banner',
+                style: NotificationStyle.Banner,
                 status: NotificationStatus.Warning,
                 dismissible: false,
                 onClick: () =>

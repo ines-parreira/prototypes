@@ -14,7 +14,12 @@ import {
 import history from '../../pages/history'
 import {StoreDispatch, RootState} from '../types'
 
-import {Notification, HandleUsageBanner, NotificationStatus} from './types'
+import {
+    Notification,
+    HandleUsageBanner,
+    NotificationStatus,
+    NotificationStyle,
+} from './types'
 
 export const AUTHORIZED_NOTIFICATION_TYPES = [
     'success',
@@ -31,8 +36,7 @@ export const INITIAL_MESSAGE = {
     buttons: [],
     allowHTML: false,
     closeButton: false,
-    // styles available: alert, banner, modal
-    style: 'alert',
+    style: NotificationStyle.Alert,
 }
 
 // clean-up notification for comparison
@@ -154,7 +158,7 @@ export const handleUsageBanner =
             void dispatch(
                 notify({
                     id: USAGE_NOTIFICATION_BANNER.toString(),
-                    style: 'banner',
+                    style: NotificationStyle.Banner,
                     status: notification.type || NotificationStatus.Warning,
                     dismissible: false,
                     message: notification.message,

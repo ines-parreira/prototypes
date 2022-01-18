@@ -5,7 +5,10 @@ import {Set as ImmutableSet, Map as ImmutableMap} from 'immutable'
 
 import {store as reduxStore} from '../../init'
 import {notify} from '../../state/notifications/actions'
-import {NotificationStatus} from '../../state/notifications/types'
+import {
+    NotificationStatus,
+    NotificationStyle,
+} from '../../state/notifications/types'
 import {getActiveIntegrations} from '../../state/integrations/selectors'
 import {IntegrationType} from '../../models/integration/types'
 import {tryLocalStorage} from '../common/utils'
@@ -254,7 +257,7 @@ export class StatusPageManager {
                     notify({
                         id: `${INCIDENTS_NOTIFICATION_ID}-${incident.id}`,
                         status: notification.status,
-                        style: 'banner',
+                        style: NotificationStyle.Banner,
                         message,
                         allowHTML: true,
                         dismissible: false,
@@ -348,7 +351,7 @@ Find out more on our <a href="${
                         maintenance.status === MaintenanceStatus.Scheduled
                             ? NotificationStatus.Info
                             : NotificationStatus.Warning,
-                    style: 'banner',
+                    style: NotificationStyle.Banner,
                     message: message,
                     allowHTML: true,
                     dismissible: false,

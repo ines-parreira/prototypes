@@ -2,7 +2,7 @@ import axios, {AxiosResponse} from 'axios'
 import rateLimit from 'axios-rate-limit'
 import {Store} from 'redux'
 
-import {NotificationStatus} from 'state/notifications/types'
+import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {StoreDispatch} from 'state/types'
 import refreshIcon from 'assets/img/icons/refresh.svg'
 
@@ -44,7 +44,7 @@ export function handleNewRelease(store: Store) {
             setTimeout(() => {
                 void dispatch(
                     notify({
-                        style: 'banner',
+                        style: NotificationStyle.Banner,
                         status: NotificationStatus.Info,
                         dismissible: false,
                         onClick: () => {
