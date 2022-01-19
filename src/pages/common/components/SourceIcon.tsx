@@ -97,6 +97,7 @@ const sourceTypeToIcon = (
             icon.custom = true
             icon.name = 'instagram-dm'
             break
+        case IntegrationType.Yotpo:
         case TicketMessageSourceType.YotpoReview:
             icon.custom = true
             icon.name = 'yotpo-review'
