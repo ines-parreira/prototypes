@@ -1,24 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<StoreRadioButton /> matches snapshot 1`] = `
+exports[`<StoreRadioButton /> should match snapshot 1`] = `
 <div>
-  <button
-    class="container"
+  <div
+    class="wrapper radioButton"
     id="store-radio-button-42"
   >
-    <div
-      class="iconContainer"
-    >
-      <img
-        alt="storefront"
-        src="test-file-stub"
-      />
+    <div>
+      <label
+        class="label"
+      >
+        <input
+          class="input"
+          type="radio"
+        />
+        Shopify Store
+      </label>
     </div>
-    <span
-      class="label"
-    >
-      Shopify Store
-    </span>
-  </button>
+  </div>
 </div>
 `;

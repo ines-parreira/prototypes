@@ -2,25 +2,31 @@
 
 exports[`<PreviewRadioButton /> should match snapshot 1`] = `
 <div>
-  <button
-    aria-label="Light Theme"
+  <div
     class="wrapper"
   >
     <div
-      class="label"
+      class="preview"
     >
-      <input
-        class="form-check-input"
-        readonly=""
-        tabindex="-1"
-        type="radio"
+      <img
+        alt="preview-light"
+        src="test-file-stub"
       />
-      <span
-        class="text"
-      >
-        Light Theme
-      </span>
     </div>
-  </button>
+    <div>
+      <label
+        class="label"
+        for="light"
+      >
+        <input
+          class="input"
+          id="light"
+          name="light"
+          type="radio"
+        />
+        Light Theme
+      </label>
+    </div>
+  </div>
 </div>
 `;

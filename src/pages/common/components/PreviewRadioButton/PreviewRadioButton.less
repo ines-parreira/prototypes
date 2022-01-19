@@ -2,17 +2,14 @@
 
 :local {
     .wrapper {
-        padding: 16px;
+        color: @classic-neutral-grey-6;
+        cursor: pointer;
         border: 1px solid @classic-neutral-grey-3;
         border-radius: 4px;
-
-        background-color: @classic-neutral-grey-1;
-
-        color: @classic-neutral-grey-6;
-        text-align: left;
         box-sizing: border-box;
-
-        transition: background-color 350ms ease;
+        padding: 16px;
+        text-align: left;
+        transition: border-color 0.2s linear;
 
         &:focus,
         &:hover:not(.selected) {
@@ -31,23 +28,5 @@
 
     .preview {
         margin-bottom: 8px;
-    }
-
-    .label {
-        position: relative;
-        display: flex;
-        align-items: center;
-
-        margin-left: 18px;
-
-        font-weight: 600;
-    }
-
-    .text {
-        margin-left: 4px;
-
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
     }
 }

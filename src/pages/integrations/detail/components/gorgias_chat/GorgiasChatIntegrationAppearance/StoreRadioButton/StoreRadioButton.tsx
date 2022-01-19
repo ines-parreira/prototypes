@@ -1,49 +1,36 @@
-import React, {ReactChild, MouseEvent, CSSProperties, useMemo} from 'react'
-import classNames from 'classnames'
+import React, {MouseEvent, CSSProperties, useMemo} from 'react'
 import _uniqueId from 'lodash/uniqueId'
 
+import {PreviewRadioButton} from '../../../../../../common/components/PreviewRadioButton'
 import Tooltip from '../../../../../../common/components/Tooltip'
 
 import css from './StoreRadioButton.less'
 
 type Props = {
-    className?: string
-    icon: ReactChild
     isSelected?: boolean
     label: string
     tooltipText: string
     style?: CSSProperties
-    onClick: (ev: MouseEvent<HTMLButtonElement>) => void
+    onClick: (ev: MouseEvent<HTMLDivElement>) => void
 }
 
 export const StoreRadioButton = ({
-    className,
-    icon,
     isSelected = false,
     label,
     tooltipText,
-    style,
     onClick,
 }: Props) => {
     const tooltipTargetId = useMemo(() => _uniqueId('store-radio-button-'), [])
 
     return (
         <>
-            <button
+            <PreviewRadioButton
+                className={css.radioButton}
                 id={tooltipTargetId}
-                className={classNames(
-                    {
-                        [css.container]: true,
-                        [css.selected]: isSelected,
-                    },
-                    className
-                )}
-                style={style}
+                isSelected={isSelected}
+                label={label}
                 onClick={onClick}
-            >
-                <div className={css.iconContainer}>{icon}</div>
-                <span className={css.label}>{label}</span>
-            </button>
+            />
             <Tooltip
                 autohide
                 delay={{show: 200, hide: 0}}

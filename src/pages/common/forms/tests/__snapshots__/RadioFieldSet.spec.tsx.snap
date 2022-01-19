@@ -1,0 +1,179 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RadioFieldSet /> render() should render a Radio field with label 1`] = `
+<fieldset
+  name="radio-field-2"
+>
+  <div
+    class="label"
+  >
+    I am labelled
+  </div>
+  <div
+    class="option"
+  >
+    <label
+      class="label"
+      for="japanese"
+    >
+      <input
+        checked=""
+        class="input"
+        id="japanese"
+        name="japanese"
+        type="radio"
+      />
+      sushis and sashimis
+    </label>
+  </div>
+  <div
+    class="option"
+  >
+    <label
+      class="label"
+      for="mexican"
+    >
+      <input
+        class="input"
+        id="mexican"
+        name="mexican"
+        type="radio"
+      />
+      tacos and nachos
+    </label>
+  </div>
+</fieldset>
+`;
+
+exports[`<RadioFieldSet /> render() should render a disabled RadioField 1`] = `
+<fieldset
+  disabled=""
+  name="radio-field-3"
+>
+  <div
+    class="option"
+  >
+    <label
+      class="label disabledLabel"
+      for="japanese"
+    >
+      <input
+        checked=""
+        class="input"
+        disabled=""
+        id="japanese"
+        name="japanese"
+        type="radio"
+      />
+      sushis and sashimis
+    </label>
+  </div>
+  <div
+    class="option"
+  >
+    <label
+      class="label disabledLabel"
+      for="mexican"
+    >
+      <input
+        class="input"
+        disabled=""
+        id="mexican"
+        name="mexican"
+        type="radio"
+      />
+      tacos and nachos
+    </label>
+  </div>
+</fieldset>
+`;
+
+exports[`<RadioFieldSet /> render() should render an enabled Radio field 1`] = `
+<fieldset
+  name="radio-field-1"
+>
+  <div
+    class="option"
+  >
+    <label
+      class="label"
+      for="japanese"
+    >
+      <input
+        checked=""
+        class="input"
+        id="japanese"
+        name="japanese"
+        type="radio"
+      />
+      sushis and sashimis
+    </label>
+  </div>
+  <div
+    class="option"
+  >
+    <label
+      class="label"
+      for="mexican"
+    >
+      <input
+        class="input"
+        id="mexican"
+        name="mexican"
+        type="radio"
+      />
+      tacos and nachos
+    </label>
+  </div>
+</fieldset>
+`;
+
+exports[`<RadioFieldSet /> render() should render captions under radio buttons 1`] = `
+<fieldset
+  name="radio-field-4"
+>
+  <div
+    class="option"
+  >
+    <label
+      class="label labelWithCaption"
+      for="japanese"
+    >
+      <input
+        checked=""
+        class="input"
+        id="japanese"
+        name="japanese"
+        type="radio"
+      />
+      sushis and sashimis
+    </label>
+    <div
+      class="caption"
+    >
+      japanese food
+    </div>
+  </div>
+  <div
+    class="option"
+  >
+    <label
+      class="label labelWithCaption"
+      for="mexican"
+    >
+      <input
+        class="input"
+        id="mexican"
+        name="mexican"
+        type="radio"
+      />
+      tacos and nachos
+    </label>
+    <div
+      class="caption"
+    >
+      mexican food
+    </div>
+  </div>
+</fieldset>
+`;

@@ -351,8 +351,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
           <div
             class="list"
           >
-            <button
-              aria-label="Light Theme"
+            <div
               class="wrapper selected"
             >
               <div
@@ -363,25 +362,23 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                   src="test-file-stub"
                 />
               </div>
-              <div
-                class="label"
-              >
-                <input
-                  checked=""
-                  class="form-check-input"
-                  readonly=""
-                  tabindex="-1"
-                  type="radio"
-                />
-                <span
-                  class="text"
+              <div>
+                <label
+                  class="label"
+                  for="light"
                 >
+                  <input
+                    checked=""
+                    class="input"
+                    id="light"
+                    name="light"
+                    type="radio"
+                  />
                   Light Theme
-                </span>
+                </label>
               </div>
-            </button>
-            <button
-              aria-label="Dark Theme"
+            </div>
+            <div
               class="wrapper"
             >
               <div
@@ -392,22 +389,21 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                   src="test-file-stub"
                 />
               </div>
-              <div
-                class="label"
-              >
-                <input
-                  class="form-check-input"
-                  readonly=""
-                  tabindex="-1"
-                  type="radio"
-                />
-                <span
-                  class="text"
+              <div>
+                <label
+                  class="label"
+                  for="dark"
                 >
+                  <input
+                    class="input"
+                    id="dark"
+                    name="dark"
+                    type="radio"
+                  />
                   Dark Theme
-                </span>
+                </label>
               </div>
-            </button>
+            </div>
           </div>
           <div
             class="InputField form-group"

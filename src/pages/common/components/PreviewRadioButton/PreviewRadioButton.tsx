@@ -1,40 +1,41 @@
 import classNames from 'classnames'
 import React, {ReactChild, MouseEvent} from 'react'
 
-import {Input} from 'reactstrap'
+import RadioButton from '../RadioButton'
 
 import css from './PreviewRadioButton.less'
 
 type Props = {
     className?: string
+    id?: string
     isSelected?: boolean
     preview?: ReactChild
-    title: string
-    onClick: (ev: MouseEvent<HTMLButtonElement>) => void
+    value?: string
+    label: string
+    onClick: (ev: MouseEvent<HTMLDivElement>) => void
 }
 
 export const PreviewRadioButton = ({
     className,
-    preview,
-    title,
+    id,
     isSelected = false,
+    label,
+    preview,
+    value,
     onClick,
 }: Props) => (
-    <button
-        aria-label={title}
+    <div
         className={classNames(
+            css.wrapper,
             {
-                [css.wrapper]: true,
                 [css.selected]: isSelected,
             },
             className
         )}
+        id={id}
         onClick={onClick}
     >
         {preview && <div className={css.preview}>{preview}</div>}
-        <div className={css.label}>
-            <Input readOnly tabIndex={-1} type="radio" checked={isSelected} />
-            <span className={css.text}>{title}</span>
-        </div>
-    </button>
+        <RadioButton value={value} label={label} isSelected={isSelected} />
+    </div>
 )

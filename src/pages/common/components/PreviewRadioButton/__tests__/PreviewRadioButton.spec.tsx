@@ -8,7 +8,9 @@ import {PreviewRadioButton} from '../PreviewRadioButton'
 const onClickFn = jest.fn()
 
 const baseProps = {
-    title: 'Light Theme',
+    preview: <img src={previewLight} alt="preview-light" />,
+    label: 'Light Theme',
+    value: 'light',
     onClick: onClickFn,
 }
 
@@ -19,10 +21,12 @@ describe('<PreviewRadioButton />', () => {
     })
 
     it('should have the selected className if isSelected is true', () => {
-        const {getByRole} = render(
+        const {container} = render(
             <PreviewRadioButton {...baseProps} isSelected />
         )
-        expect(getByRole('button').className.includes('selected')).toBeTruthy()
+        expect(
+            (container.firstChild as HTMLElement).className.includes('selected')
+        ).toBeTruthy()
     })
 
     it('should render the proper preview', () => {
@@ -36,8 +40,8 @@ describe('<PreviewRadioButton />', () => {
     })
 
     it('should have the onClick event listener', () => {
-        const {getByRole} = render(<PreviewRadioButton {...baseProps} />)
-        fireEvent.click(getByRole('button'))
+        const {container} = render(<PreviewRadioButton {...baseProps} />)
+        fireEvent.click(container.firstChild as HTMLElement)
         expect(onClickFn).toHaveBeenCalled()
     })
 })

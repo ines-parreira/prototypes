@@ -68,42 +68,39 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
             <div
               class="radioButtonGroup"
             >
-              <button
-                class="container selected"
+              <div
+                class="wrapper selected radioButton"
                 id="store-radio-button-42"
               >
-                <div
-                  class="iconContainer"
-                >
-                  <img
-                    alt="storefront"
-                    src="test-file-stub"
-                  />
+                <div>
+                  <label
+                    class="label"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      type="radio"
+                    />
+                    Shopify store
+                  </label>
                 </div>
-                <span
-                  class="label"
-                >
-                  Shopify store
-                </span>
-              </button>
-              <button
-                class="container"
+              </div>
+              <div
+                class="wrapper radioButton"
                 id="store-radio-button-42"
               >
-                <div
-                  class="iconContainer"
-                >
-                  <img
-                    alt="wrench"
-                    src="test-file-stub"
-                  />
+                <div>
+                  <label
+                    class="label"
+                  >
+                    <input
+                      class="input"
+                      type="radio"
+                    />
+                    Any other website
+                  </label>
                 </div>
-                <span
-                  class="label"
-                >
-                  Any other website
-                </span>
-              </button>
+              </div>
             </div>
           </div>
           <form
@@ -4339,42 +4336,39 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
             <div
               class="radioButtonGroup"
             >
-              <button
-                class="container selected"
+              <div
+                class="wrapper selected radioButton"
                 id="store-radio-button-42"
               >
-                <div
-                  class="iconContainer"
-                >
-                  <img
-                    alt="storefront"
-                    src="test-file-stub"
-                  />
+                <div>
+                  <label
+                    class="label"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      type="radio"
+                    />
+                    Shopify store
+                  </label>
                 </div>
-                <span
-                  class="label"
-                >
-                  Shopify store
-                </span>
-              </button>
-              <button
-                class="container"
+              </div>
+              <div
+                class="wrapper radioButton"
                 id="store-radio-button-42"
               >
-                <div
-                  class="iconContainer"
-                >
-                  <img
-                    alt="wrench"
-                    src="test-file-stub"
-                  />
+                <div>
+                  <label
+                    class="label"
+                  >
+                    <input
+                      class="input"
+                      type="radio"
+                    />
+                    Any other website
+                  </label>
                 </div>
-                <span
-                  class="label"
-                >
-                  Any other website
-                </span>
-              </button>
+              </div>
             </div>
           </div>
           <form

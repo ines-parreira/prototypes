@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RadioButton /> should render a disabled RadioField 1`] = `
+<div>
+  <label
+    class="label disabledLabel"
+    for="japanese"
+  >
+    <input
+      class="input"
+      disabled=""
+      id="japanese"
+      name="japanese"
+      type="radio"
+    />
+    sushis and sashimis
+  </label>
+</div>
+`;
+
+exports[`<RadioButton /> should render an enabled Radio field 1`] = `
+<div>
+  <label
+    class="label"
+    for="japanese"
+  >
+    <input
+      class="input"
+      id="japanese"
+      name="japanese"
+      type="radio"
+    />
+    sushis and sashimis
+  </label>
+</div>
+`;
+
+exports[`<RadioButton /> should render captions under radio button 1`] = `
+<div>
+  <label
+    class="label labelWithCaption"
+    for="japanese"
+  >
+    <input
+      class="input"
+      id="japanese"
+      name="japanese"
+      type="radio"
+    />
+    sushis and sashimis
+  </label>
+  <div
+    class="caption"
+  >
+    delicious
+  </div>
+</div>
+`;
