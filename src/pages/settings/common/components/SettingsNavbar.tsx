@@ -102,12 +102,6 @@ export default class SettingsNavbar extends Component<Props> {
                         text: 'Import data',
                         className: 'd-none d-md-block',
                     },
-                    {
-                        requiredRole: ADMIN_ROLE,
-                        to: 'access',
-                        text: 'Access management',
-                        className: 'd-none d-md-block',
-                    },
                 ],
             },
             {
@@ -154,6 +148,12 @@ export default class SettingsNavbar extends Component<Props> {
                         requiredRole: ADMIN_ROLE,
                         to: 'audit',
                         text: 'Audit logs',
+                        className: 'd-none d-md-block',
+                    },
+                    {
+                        requiredRole: ADMIN_ROLE,
+                        to: 'access',
+                        text: 'Access management',
                         className: 'd-none d-md-block',
                     },
                 ],
