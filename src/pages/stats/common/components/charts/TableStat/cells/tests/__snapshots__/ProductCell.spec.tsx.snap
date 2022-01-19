@@ -10,6 +10,7 @@ exports[`ProductCell should render a product cell tickets with image placeholder
     <img
       alt="Placeholder"
       class="placeholder"
+      data-testid="placeholder"
       src="test-file-stub"
     />
   </div>
