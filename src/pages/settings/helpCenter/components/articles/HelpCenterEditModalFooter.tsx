@@ -72,6 +72,37 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                 <Button name="discard" onClick={onDiscard}>
                     Discard changes
                 </Button>
+
+                {rating && (
+                    <div className={css.rating}>
+                        <div className={css['rating-text']}>Rating:</div>
+                        <img
+                            className={css['rating-star']}
+                            alt="star"
+                            src={star}
+                        />
+                        <div>{ratingScore}%</div>
+                        <div className={css['rating-separator']}>|</div>
+                        <div className={css['rating-thumbs']}>
+                            <div>
+                                <img
+                                    alt="up"
+                                    className={css['rating-icon']}
+                                    src={up}
+                                />
+                                {rating.up}
+                            </div>
+                            <div>
+                                <img
+                                    alt="down"
+                                    className={css['rating-icon']}
+                                    src={down}
+                                />
+                                {rating.down}
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
             <div className={css.buttonsWrapper}>
                 {counters && (
@@ -89,33 +120,6 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                     </Button>
                 )}
             </div>
-
-            {rating && (
-                <div className={css.rating}>
-                    <div className={css['rating-text']}>Rating:</div>
-                    <img className={css['rating-star']} alt="star" src={star} />
-                    <div>{ratingScore}%</div>
-                    <div className={css['rating-separator']}>|</div>
-                    <div className={css['rating-thumbs']}>
-                        <div>
-                            <img
-                                alt="up"
-                                className={css['rating-icon']}
-                                src={up}
-                            />
-                            {rating.up}
-                        </div>
-                        <div>
-                            <img
-                                alt="down"
-                                className={css['rating-icon']}
-                                src={down}
-                            />
-                            {rating.down}
-                        </div>
-                    </div>
-                </div>
-            )}
 
             {pendingDeleteArticle && (
                 <ConfirmationModal
