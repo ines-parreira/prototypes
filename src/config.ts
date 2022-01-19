@@ -303,7 +303,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         title: 'Ottspott',
         description: 'Create tickets from phone conversations',
         url: 'https://docs.gorgias.com/voice-and-phone/ottspott',
-        image: 'integrations/ottspott.png',
+        image: 'integrations/ottspott.jpeg',
     },
     {
         type: 'smooch',
@@ -342,13 +342,13 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         title: 'Attentive',
         description: 'Seamless two-way support via SMS',
         url: 'https://docs.gorgias.com/sms-integration/attentive-mobile',
-        image: 'integrations/attentive.png',
+        image: 'integrations/attentive.jpeg',
     },
     {
         title: 'Reviews.io',
         description: 'Trigger and respond to review within Gorgias admin',
         url: 'https://docs.gorgias.com/reward-and-loyalty/reviews-io',
-        image: 'integrations/reviews.io.png',
+        image: 'integrations/reviews.png',
     },
     {
         title: 'Glew.io',
@@ -377,11 +377,11 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/stellaconnect.png',
     },
     {
-        title: 'Voicefront',
+        title: 'Rep (formerly Voicefront)',
         description:
-            'Allows Voicefront to create tickets from customers talking to your Alexa skill inside Gorgias',
+            'Allows Rep to create tickets from customers talking to your Alexa skill inside Gorgias',
         url: 'https://docs.gorgias.com/voice-and-phone/voicefront-ai',
-        image: 'integrations/voicefront.jpg',
+        image: 'integrations/rep.svg',
     },
     {
         title: 'Klausapp',
@@ -399,9 +399,9 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     },
     {
         title: 'Chatdesk',
-        description: 'Manage your repetitive tickets and free up your time\n',
+        description: 'Manage your repetitive tickets and free up your time',
         url: 'https://docs.gorgias.com/other-integrations/chatdesk-teams',
-        image: 'integrations/chatdesk.png',
+        image: 'integrations/chatdesk.jpeg',
     },
     {
         title: 'Retention Rocket',
@@ -446,7 +446,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         description:
             'Real-time visibility on shipping status so you can be proactive with your customers',
         url: 'https://docs.gorgias.com/shipping/late-shipment',
-        image: 'integrations/lateshipment.png',
+        image: 'integrations/lateshipment.jpeg',
     },
     {
         title: 'JustCall',
@@ -479,13 +479,13 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         title: 'Daasity',
         description: 'DTC eCommerce Analytics Made Easy',
         url: 'https://docs.gorgias.com/business-intelligence/daasity',
-        image: 'integrations/daasity.png',
+        image: 'integrations/daasity.jpeg',
     },
     {
         title: 'Stonly',
         description: 'Interactive step-by-step guides & troubleshooting',
         url: 'https://stonly.com/kb/guide/en/how-to-launch-gorgias-chat-from-the-stonly-widget-aV3pDkR0KE/Steps/335165,335168',
-        image: 'integrations/stonly.png',
+        image: 'integrations/stonly.jpeg',
     },
     {
         title: 'Wonderment',
@@ -558,6 +558,67 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         description: 'Grow revenue with the fastest 2-way SMS experience',
         url: 'http://help.tonemessaging.com/knowledge/tone-x-gorgias-integration-setup',
         image: 'integrations/tone.jpeg',
+    },
+    {
+        title: 'CallHippo',
+        description: 'Virtual phone system for all businesses',
+        url: 'https://support.callhippo.com/support/solutions/articles/10000062437',
+        image: 'integrations/callhippo.png',
+    },
+    {
+        title: 'Checkout Champ',
+        description:
+            'E-commerce checkout and upsell billing management platform',
+        url: 'https://docs.gorgias.com/ecommerce-integrations/checkout-champ',
+        image: 'integrations/checkoutchamp.png',
+    },
+    {
+        title: 'Konnektive',
+        description:
+            'Display customers and their order information next to tickets and update information tied to a customer and their orders using macros',
+        url: 'https://konnektive.atlassian.net/wiki/spaces/KCKB/pages/1971847173/Gorgias',
+        image: 'integrations/konnektive.jpeg',
+    },
+    {
+        title: 'Stateset',
+        description: 'Unify and automate your eCommerce operations',
+        url: 'https://docs.gorgias.com/other-integrations/stateset-ai-responder',
+        image: 'integrations/stateset.jpeg',
+    },
+    {
+        title: 'ShipUp',
+        description:
+            'Enables e-merchants to offer their clients the delivery that suits them best',
+        url: 'https://shipup.elevio.help/en/articles/38',
+        image: 'integrations/shipup.png',
+    },
+    {
+        title: 'Tolstoy',
+        description:
+            'A new ticket is created in Gorgias after user intraction in the Tolstoy interactive video player',
+        url: 'https://docs.gorgias.com/other-integrations/tolstoy',
+        image: 'integrations/tolstoy.jpeg',
+    },
+    {
+        title: 'Cartloop',
+        description:
+            'Cartloop is a conversational SMS marketing platform for Shopify brands',
+        url: 'https://intercom.help/cartloop/en/articles/5106599-how-to-integrate-gorgias',
+        image: 'integrations/cartloop.png',
+    },
+    {
+        title: 'Sentisum',
+        description:
+            'Automated ticket tagging engine, powered by natural language processing technology',
+        url: 'https://docs.gorgias.com/statistics/senti-sum',
+        image: 'integrations/sentisum.jpeg',
+    },
+    {
+        title: 'Autopilot',
+        description:
+            'Create dashboards and set goals for your team that extend beyond typical support metrics',
+        url: 'https://docs.gorgias.com/messenger-bot-integrations/autopilot',
+        image: 'integrations/autopilot.png',
     },
 ]
 
