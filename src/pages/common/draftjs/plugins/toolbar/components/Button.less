@@ -1,0 +1,16 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .button:not(:hover):not(:active) {
+        background: none;
+        border-color: transparent;
+    }
+
+    .button {
+        color: @classic-neutral-grey-5 !important;
+
+        &.isActive {
+            color: @classic-neutral-grey-6 !important;
+        }
+    }
+}

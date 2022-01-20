@@ -766,24 +766,22 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
             role="group"
           >
             <button
-              class="btn btn-secondary disabled"
+              class="wrapper previousButton wrapper medium secondary medium isDisabled"
               disabled=""
               id="prev-btn"
-              type="button"
             >
               <i
-                class="material-icons md-2"
+                class="material-icons icon"
               >
                 keyboard_arrow_left
               </i>
             </button>
             <button
-              class="btn btn-secondary"
+              class="wrapper nextButton wrapper medium secondary medium"
               id="next-btn"
-              type="button"
             >
               <i
-                class="material-icons md-2"
+                class="material-icons icon"
               >
                 keyboard_arrow_right
               </i>

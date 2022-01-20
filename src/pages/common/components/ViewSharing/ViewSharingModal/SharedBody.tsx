@@ -1,7 +1,10 @@
 import React from 'react'
 import {List, Map} from 'immutable'
-import {Button, ListGroup, ListGroupItem} from 'reactstrap'
+import {ListGroup, ListGroupItem} from 'reactstrap'
 import classnames from 'classnames'
+
+import {ButtonIntent, ButtonSize} from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
 
 import UncontrolledPeopleSearchInput from '../../../forms/PeopleSearchInput/UncontrolledPeopleSearchInput'
 import {AgentLabel, TeamLabel} from '../../../utils/labels'
@@ -55,13 +58,14 @@ export default function SharedBody({
                             key={team.get('id')}
                             className={css.listGroupItem}
                         >
-                            <Button
-                                color="link"
+                            <IconButton
                                 className="float-right text-danger"
+                                intent={ButtonIntent.Text}
                                 onClick={() => onRemoveTeam(team)}
+                                size={ButtonSize.Small}
                             >
-                                <i className="material-icons">close</i>
-                            </Button>
+                                close
+                            </IconButton>
                             <TeamLabel
                                 name={team.get('name')}
                                 emoji={team.getIn(['decoration', 'emoji'])}
@@ -93,13 +97,14 @@ export default function SharedBody({
                                 css.userListGroupItem
                             )}
                         >
-                            <Button
-                                color="link"
+                            <IconButton
                                 className="float-right text-danger"
+                                intent={ButtonIntent.Text}
                                 onClick={() => onRemoveUser(user)}
+                                size={ButtonSize.Small}
                             >
-                                <i className="material-icons">close</i>
-                            </Button>
+                                close
+                            </IconButton>
                             <AgentLabel
                                 name={user.get('name') || user.get('email')}
                                 profilePictureUrl={user.getIn([

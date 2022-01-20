@@ -26,26 +26,6 @@
     left: 0;
     padding: 2px 7px 5px;
 
-    .button {
-        padding: 0.2em 0.4em;
-        opacity: 0.6;
-        transition: all 0.1s linear;
-
-        &:hover {
-            cursor: pointer;
-            opacity: 0.9;
-        }
-
-        &.active {
-            opacity: 1;
-        }
-
-        &.disabled {
-            opacity: 0.2;
-            cursor: not-allowed;
-        }
-    }
-
     .actionsWrapper {
         display: flex;
         flex-direction: row;
@@ -54,9 +34,19 @@
     .actions {
         display: flex;
         flex-direction: row;
+        align-items: center;
 
         @media @mobiles {
             display: none !important;
+        }
+    }
+
+    .button {
+        padding: 0 5px;
+
+        &:not(:hover):not(:active) {
+            background: none;
+            border-color: transparent;
         }
     }
 

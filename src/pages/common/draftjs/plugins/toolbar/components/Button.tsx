@@ -1,7 +1,10 @@
 import React, {MouseEvent} from 'react'
 import classnames from 'classnames'
 
-import css from '../Toolbar.less'
+import {ButtonIntent, ButtonSize} from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
+
+import css from './Button.less'
 
 type Props = {
     name: string
@@ -12,12 +15,12 @@ type Props = {
 }
 
 const Button = (props: Props) => (
-    <button
+    <IconButton
         type="button"
-        className={classnames(css.button, 'btn btn-secondary btn-transparent', {
-            [css.active]: props.isActive,
-            [css.disabled]: props.isDisabled,
+        className={classnames(css.button, {
+            [css.isActive]: props.isActive,
         })}
+        intent={ButtonIntent.Secondary}
         onClick={(e: MouseEvent) => {
             e.preventDefault()
             if (!props.isDisabled) {
@@ -25,10 +28,11 @@ const Button = (props: Props) => (
             }
         }}
         onMouseDown={(e: MouseEvent) => e.preventDefault()}
+        size={ButtonSize.Small}
         title={props.name}
     >
-        <i className="material-icons">{props.icon}</i>
-    </button>
+        {props.icon}
+    </IconButton>
 )
 
 export default Button

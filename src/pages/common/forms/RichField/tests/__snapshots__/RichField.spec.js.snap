@@ -2663,19 +2663,39 @@ exports[`RichField should render default content state 1`] = `
                                             name="Bold"
                                             onToggle={[Function]}
                                           >
-                                            <button
-                                              className="button btn btn-secondary btn-transparent"
+                                            <ForwardRef
+                                              className="button"
+                                              intent="secondary"
                                               onClick={[Function]}
                                               onMouseDown={[Function]}
+                                              size="small"
                                               title="Bold"
                                               type="button"
                                             >
-                                              <i
-                                                className="material-icons"
+                                              <ForwardRef
+                                                className="button wrapper small"
+                                                intent="secondary"
+                                                onClick={[Function]}
+                                                onMouseDown={[Function]}
+                                                size="small"
+                                                title="Bold"
+                                                type="button"
                                               >
-                                                format_bold
-                                              </i>
-                                            </button>
+                                                <button
+                                                  className="wrapper button wrapper small secondary small"
+                                                  onClick={[Function]}
+                                                  onMouseDown={[Function]}
+                                                  title="Bold"
+                                                  type="button"
+                                                >
+                                                  <i
+                                                    className="material-icons icon"
+                                                  >
+                                                    format_bold
+                                                  </i>
+                                                </button>
+                                              </ForwardRef>
+                                            </ForwardRef>
                                           </Button>
                                         </InlineStyle>
                                       </Decorated(InlineStyle)>
@@ -2697,19 +2717,39 @@ exports[`RichField should render default content state 1`] = `
                                             name="Italic"
                                             onToggle={[Function]}
                                           >
-                                            <button
-                                              className="button btn btn-secondary btn-transparent"
+                                            <ForwardRef
+                                              className="button"
+                                              intent="secondary"
                                               onClick={[Function]}
                                               onMouseDown={[Function]}
+                                              size="small"
                                               title="Italic"
                                               type="button"
                                             >
-                                              <i
-                                                className="material-icons"
+                                              <ForwardRef
+                                                className="button wrapper small"
+                                                intent="secondary"
+                                                onClick={[Function]}
+                                                onMouseDown={[Function]}
+                                                size="small"
+                                                title="Italic"
+                                                type="button"
                                               >
-                                                format_italic
-                                              </i>
-                                            </button>
+                                                <button
+                                                  className="wrapper button wrapper small secondary small"
+                                                  onClick={[Function]}
+                                                  onMouseDown={[Function]}
+                                                  title="Italic"
+                                                  type="button"
+                                                >
+                                                  <i
+                                                    className="material-icons icon"
+                                                  >
+                                                    format_italic
+                                                  </i>
+                                                </button>
+                                              </ForwardRef>
+                                            </ForwardRef>
                                           </Button>
                                         </InlineStyle>
                                       </Decorated(InlineStyle)>
@@ -2731,19 +2771,39 @@ exports[`RichField should render default content state 1`] = `
                                             name="Underline"
                                             onToggle={[Function]}
                                           >
-                                            <button
-                                              className="button btn btn-secondary btn-transparent"
+                                            <ForwardRef
+                                              className="button"
+                                              intent="secondary"
                                               onClick={[Function]}
                                               onMouseDown={[Function]}
+                                              size="small"
                                               title="Underline"
                                               type="button"
                                             >
-                                              <i
-                                                className="material-icons"
+                                              <ForwardRef
+                                                className="button wrapper small"
+                                                intent="secondary"
+                                                onClick={[Function]}
+                                                onMouseDown={[Function]}
+                                                size="small"
+                                                title="Underline"
+                                                type="button"
                                               >
-                                                format_underline
-                                              </i>
-                                            </button>
+                                                <button
+                                                  className="wrapper button wrapper small secondary small"
+                                                  onClick={[Function]}
+                                                  onMouseDown={[Function]}
+                                                  title="Underline"
+                                                  type="button"
+                                                >
+                                                  <i
+                                                    className="material-icons icon"
+                                                  >
+                                                    format_underline
+                                                  </i>
+                                                </button>
+                                              </ForwardRef>
+                                            </ForwardRef>
                                           </Button>
                                         </InlineStyle>
                                       </Decorated(InlineStyle)>
@@ -2811,19 +2871,39 @@ exports[`RichField should render default content state 1`] = `
                                                   name="Insert link"
                                                   onToggle={[Function]}
                                                 >
-                                                  <button
-                                                    className="button btn btn-secondary btn-transparent"
+                                                  <ForwardRef
+                                                    className="button"
+                                                    intent="secondary"
                                                     onClick={[Function]}
                                                     onMouseDown={[Function]}
+                                                    size="small"
                                                     title="Insert link"
                                                     type="button"
                                                   >
-                                                    <i
-                                                      className="material-icons"
+                                                    <ForwardRef
+                                                      className="button wrapper small"
+                                                      intent="secondary"
+                                                      onClick={[Function]}
+                                                      onMouseDown={[Function]}
+                                                      size="small"
+                                                      title="Insert link"
+                                                      type="button"
                                                     >
-                                                      link
-                                                    </i>
-                                                  </button>
+                                                      <button
+                                                        className="wrapper button wrapper small secondary small"
+                                                        onClick={[Function]}
+                                                        onMouseDown={[Function]}
+                                                        title="Insert link"
+                                                        type="button"
+                                                      >
+                                                        <i
+                                                          className="material-icons icon"
+                                                        >
+                                                          link
+                                                        </i>
+                                                      </button>
+                                                    </ForwardRef>
+                                                  </ForwardRef>
                                                 </Button>
                                                 <div
                                                   className="popover top-left hidden"
@@ -2871,19 +2951,39 @@ exports[`RichField should render default content state 1`] = `
                                                 name="Insert image"
                                                 onToggle={[Function]}
                                               >
-                                                <button
-                                                  className="button btn btn-secondary btn-transparent"
+                                                <ForwardRef
+                                                  className="button"
+                                                  intent="secondary"
                                                   onClick={[Function]}
                                                   onMouseDown={[Function]}
+                                                  size="small"
                                                   title="Insert image"
                                                   type="button"
                                                 >
-                                                  <i
-                                                    className="material-icons"
+                                                  <ForwardRef
+                                                    className="button wrapper small"
+                                                    intent="secondary"
+                                                    onClick={[Function]}
+                                                    onMouseDown={[Function]}
+                                                    size="small"
+                                                    title="Insert image"
+                                                    type="button"
                                                   >
-                                                    insert_photo
-                                                  </i>
-                                                </button>
+                                                    <button
+                                                      className="wrapper button wrapper small secondary small"
+                                                      onClick={[Function]}
+                                                      onMouseDown={[Function]}
+                                                      title="Insert image"
+                                                      type="button"
+                                                    >
+                                                      <i
+                                                        className="material-icons icon"
+                                                      >
+                                                        insert_photo
+                                                      </i>
+                                                    </button>
+                                                  </ForwardRef>
+                                                </ForwardRef>
                                               </Button>
                                               <div
                                                 className="popover top-left hidden"
@@ -2927,19 +3027,39 @@ exports[`RichField should render default content state 1`] = `
                                                 name="Insert emoji"
                                                 onToggle={[Function]}
                                               >
-                                                <button
-                                                  className="button btn btn-secondary btn-transparent"
+                                                <ForwardRef
+                                                  className="button"
+                                                  intent="secondary"
                                                   onClick={[Function]}
                                                   onMouseDown={[Function]}
+                                                  size="small"
                                                   title="Insert emoji"
                                                   type="button"
                                                 >
-                                                  <i
-                                                    className="material-icons"
+                                                  <ForwardRef
+                                                    className="button wrapper small"
+                                                    intent="secondary"
+                                                    onClick={[Function]}
+                                                    onMouseDown={[Function]}
+                                                    size="small"
+                                                    title="Insert emoji"
+                                                    type="button"
                                                   >
-                                                    insert_emoticon
-                                                  </i>
-                                                </button>
+                                                    <button
+                                                      className="wrapper button wrapper small secondary small"
+                                                      onClick={[Function]}
+                                                      onMouseDown={[Function]}
+                                                      title="Insert emoji"
+                                                      type="button"
+                                                    >
+                                                      <i
+                                                        className="material-icons icon"
+                                                      >
+                                                        insert_emoticon
+                                                      </i>
+                                                    </button>
+                                                  </ForwardRef>
+                                                </ForwardRef>
                                               </Button>
                                               <div
                                                 className="p-0 d-flex popover top-left hidden"
@@ -8279,19 +8399,39 @@ exports[`RichField should render immutable variable 1`] = `
                                             name="Bold"
                                             onToggle={[Function]}
                                           >
-                                            <button
-                                              className="button btn btn-secondary btn-transparent"
+                                            <ForwardRef
+                                              className="button"
+                                              intent="secondary"
                                               onClick={[Function]}
                                               onMouseDown={[Function]}
+                                              size="small"
                                               title="Bold"
                                               type="button"
                                             >
-                                              <i
-                                                className="material-icons"
+                                              <ForwardRef
+                                                className="button wrapper small"
+                                                intent="secondary"
+                                                onClick={[Function]}
+                                                onMouseDown={[Function]}
+                                                size="small"
+                                                title="Bold"
+                                                type="button"
                                               >
-                                                format_bold
-                                              </i>
-                                            </button>
+                                                <button
+                                                  className="wrapper button wrapper small secondary small"
+                                                  onClick={[Function]}
+                                                  onMouseDown={[Function]}
+                                                  title="Bold"
+                                                  type="button"
+                                                >
+                                                  <i
+                                                    className="material-icons icon"
+                                                  >
+                                                    format_bold
+                                                  </i>
+                                                </button>
+                                              </ForwardRef>
+                                            </ForwardRef>
                                           </Button>
                                         </InlineStyle>
                                       </Decorated(InlineStyle)>
@@ -8313,19 +8453,39 @@ exports[`RichField should render immutable variable 1`] = `
                                             name="Italic"
                                             onToggle={[Function]}
                                           >
-                                            <button
-                                              className="button btn btn-secondary btn-transparent"
+                                            <ForwardRef
+                                              className="button"
+                                              intent="secondary"
                                               onClick={[Function]}
                                               onMouseDown={[Function]}
+                                              size="small"
                                               title="Italic"
                                               type="button"
                                             >
-                                              <i
-                                                className="material-icons"
+                                              <ForwardRef
+                                                className="button wrapper small"
+                                                intent="secondary"
+                                                onClick={[Function]}
+                                                onMouseDown={[Function]}
+                                                size="small"
+                                                title="Italic"
+                                                type="button"
                                               >
-                                                format_italic
-                                              </i>
-                                            </button>
+                                                <button
+                                                  className="wrapper button wrapper small secondary small"
+                                                  onClick={[Function]}
+                                                  onMouseDown={[Function]}
+                                                  title="Italic"
+                                                  type="button"
+                                                >
+                                                  <i
+                                                    className="material-icons icon"
+                                                  >
+                                                    format_italic
+                                                  </i>
+                                                </button>
+                                              </ForwardRef>
+                                            </ForwardRef>
                                           </Button>
                                         </InlineStyle>
                                       </Decorated(InlineStyle)>
@@ -8347,19 +8507,39 @@ exports[`RichField should render immutable variable 1`] = `
                                             name="Underline"
                                             onToggle={[Function]}
                                           >
-                                            <button
-                                              className="button btn btn-secondary btn-transparent"
+                                            <ForwardRef
+                                              className="button"
+                                              intent="secondary"
                                               onClick={[Function]}
                                               onMouseDown={[Function]}
+                                              size="small"
                                               title="Underline"
                                               type="button"
                                             >
-                                              <i
-                                                className="material-icons"
+                                              <ForwardRef
+                                                className="button wrapper small"
+                                                intent="secondary"
+                                                onClick={[Function]}
+                                                onMouseDown={[Function]}
+                                                size="small"
+                                                title="Underline"
+                                                type="button"
                                               >
-                                                format_underline
-                                              </i>
-                                            </button>
+                                                <button
+                                                  className="wrapper button wrapper small secondary small"
+                                                  onClick={[Function]}
+                                                  onMouseDown={[Function]}
+                                                  title="Underline"
+                                                  type="button"
+                                                >
+                                                  <i
+                                                    className="material-icons icon"
+                                                  >
+                                                    format_underline
+                                                  </i>
+                                                </button>
+                                              </ForwardRef>
+                                            </ForwardRef>
                                           </Button>
                                         </InlineStyle>
                                       </Decorated(InlineStyle)>
@@ -8427,19 +8607,39 @@ exports[`RichField should render immutable variable 1`] = `
                                                   name="Insert link"
                                                   onToggle={[Function]}
                                                 >
-                                                  <button
-                                                    className="button btn btn-secondary btn-transparent"
+                                                  <ForwardRef
+                                                    className="button"
+                                                    intent="secondary"
                                                     onClick={[Function]}
                                                     onMouseDown={[Function]}
+                                                    size="small"
                                                     title="Insert link"
                                                     type="button"
                                                   >
-                                                    <i
-                                                      className="material-icons"
+                                                    <ForwardRef
+                                                      className="button wrapper small"
+                                                      intent="secondary"
+                                                      onClick={[Function]}
+                                                      onMouseDown={[Function]}
+                                                      size="small"
+                                                      title="Insert link"
+                                                      type="button"
                                                     >
-                                                      link
-                                                    </i>
-                                                  </button>
+                                                      <button
+                                                        className="wrapper button wrapper small secondary small"
+                                                        onClick={[Function]}
+                                                        onMouseDown={[Function]}
+                                                        title="Insert link"
+                                                        type="button"
+                                                      >
+                                                        <i
+                                                          className="material-icons icon"
+                                                        >
+                                                          link
+                                                        </i>
+                                                      </button>
+                                                    </ForwardRef>
+                                                  </ForwardRef>
                                                 </Button>
                                                 <div
                                                   className="popover top-left hidden"
@@ -8487,19 +8687,39 @@ exports[`RichField should render immutable variable 1`] = `
                                                 name="Insert image"
                                                 onToggle={[Function]}
                                               >
-                                                <button
-                                                  className="button btn btn-secondary btn-transparent"
+                                                <ForwardRef
+                                                  className="button"
+                                                  intent="secondary"
                                                   onClick={[Function]}
                                                   onMouseDown={[Function]}
+                                                  size="small"
                                                   title="Insert image"
                                                   type="button"
                                                 >
-                                                  <i
-                                                    className="material-icons"
+                                                  <ForwardRef
+                                                    className="button wrapper small"
+                                                    intent="secondary"
+                                                    onClick={[Function]}
+                                                    onMouseDown={[Function]}
+                                                    size="small"
+                                                    title="Insert image"
+                                                    type="button"
                                                   >
-                                                    insert_photo
-                                                  </i>
-                                                </button>
+                                                    <button
+                                                      className="wrapper button wrapper small secondary small"
+                                                      onClick={[Function]}
+                                                      onMouseDown={[Function]}
+                                                      title="Insert image"
+                                                      type="button"
+                                                    >
+                                                      <i
+                                                        className="material-icons icon"
+                                                      >
+                                                        insert_photo
+                                                      </i>
+                                                    </button>
+                                                  </ForwardRef>
+                                                </ForwardRef>
                                               </Button>
                                               <div
                                                 className="popover top-left hidden"
@@ -8543,19 +8763,39 @@ exports[`RichField should render immutable variable 1`] = `
                                                 name="Insert emoji"
                                                 onToggle={[Function]}
                                               >
-                                                <button
-                                                  className="button btn btn-secondary btn-transparent"
+                                                <ForwardRef
+                                                  className="button"
+                                                  intent="secondary"
                                                   onClick={[Function]}
                                                   onMouseDown={[Function]}
+                                                  size="small"
                                                   title="Insert emoji"
                                                   type="button"
                                                 >
-                                                  <i
-                                                    className="material-icons"
+                                                  <ForwardRef
+                                                    className="button wrapper small"
+                                                    intent="secondary"
+                                                    onClick={[Function]}
+                                                    onMouseDown={[Function]}
+                                                    size="small"
+                                                    title="Insert emoji"
+                                                    type="button"
                                                   >
-                                                    insert_emoticon
-                                                  </i>
-                                                </button>
+                                                    <button
+                                                      className="wrapper button wrapper small secondary small"
+                                                      onClick={[Function]}
+                                                      onMouseDown={[Function]}
+                                                      title="Insert emoji"
+                                                      type="button"
+                                                    >
+                                                      <i
+                                                        className="material-icons icon"
+                                                      >
+                                                        insert_emoticon
+                                                      </i>
+                                                    </button>
+                                                  </ForwardRef>
+                                                </ForwardRef>
                                               </Button>
                                               <div
                                                 className="p-0 d-flex popover top-left hidden"
@@ -11133,19 +11373,39 @@ exports[`RichField should render mutable variable 1`] = `
                                             name="Bold"
                                             onToggle={[Function]}
                                           >
-                                            <button
-                                              className="button btn btn-secondary btn-transparent"
+                                            <ForwardRef
+                                              className="button"
+                                              intent="secondary"
                                               onClick={[Function]}
                                               onMouseDown={[Function]}
+                                              size="small"
                                               title="Bold"
                                               type="button"
                                             >
-                                              <i
-                                                className="material-icons"
+                                              <ForwardRef
+                                                className="button wrapper small"
+                                                intent="secondary"
+                                                onClick={[Function]}
+                                                onMouseDown={[Function]}
+                                                size="small"
+                                                title="Bold"
+                                                type="button"
                                               >
-                                                format_bold
-                                              </i>
-                                            </button>
+                                                <button
+                                                  className="wrapper button wrapper small secondary small"
+                                                  onClick={[Function]}
+                                                  onMouseDown={[Function]}
+                                                  title="Bold"
+                                                  type="button"
+                                                >
+                                                  <i
+                                                    className="material-icons icon"
+                                                  >
+                                                    format_bold
+                                                  </i>
+                                                </button>
+                                              </ForwardRef>
+                                            </ForwardRef>
                                           </Button>
                                         </InlineStyle>
                                       </Decorated(InlineStyle)>
@@ -11167,19 +11427,39 @@ exports[`RichField should render mutable variable 1`] = `
                                             name="Italic"
                                             onToggle={[Function]}
                                           >
-                                            <button
-                                              className="button btn btn-secondary btn-transparent"
+                                            <ForwardRef
+                                              className="button"
+                                              intent="secondary"
                                               onClick={[Function]}
                                               onMouseDown={[Function]}
+                                              size="small"
                                               title="Italic"
                                               type="button"
                                             >
-                                              <i
-                                                className="material-icons"
+                                              <ForwardRef
+                                                className="button wrapper small"
+                                                intent="secondary"
+                                                onClick={[Function]}
+                                                onMouseDown={[Function]}
+                                                size="small"
+                                                title="Italic"
+                                                type="button"
                                               >
-                                                format_italic
-                                              </i>
-                                            </button>
+                                                <button
+                                                  className="wrapper button wrapper small secondary small"
+                                                  onClick={[Function]}
+                                                  onMouseDown={[Function]}
+                                                  title="Italic"
+                                                  type="button"
+                                                >
+                                                  <i
+                                                    className="material-icons icon"
+                                                  >
+                                                    format_italic
+                                                  </i>
+                                                </button>
+                                              </ForwardRef>
+                                            </ForwardRef>
                                           </Button>
                                         </InlineStyle>
                                       </Decorated(InlineStyle)>
@@ -11201,19 +11481,39 @@ exports[`RichField should render mutable variable 1`] = `
                                             name="Underline"
                                             onToggle={[Function]}
                                           >
-                                            <button
-                                              className="button btn btn-secondary btn-transparent"
+                                            <ForwardRef
+                                              className="button"
+                                              intent="secondary"
                                               onClick={[Function]}
                                               onMouseDown={[Function]}
+                                              size="small"
                                               title="Underline"
                                               type="button"
                                             >
-                                              <i
-                                                className="material-icons"
+                                              <ForwardRef
+                                                className="button wrapper small"
+                                                intent="secondary"
+                                                onClick={[Function]}
+                                                onMouseDown={[Function]}
+                                                size="small"
+                                                title="Underline"
+                                                type="button"
                                               >
-                                                format_underline
-                                              </i>
-                                            </button>
+                                                <button
+                                                  className="wrapper button wrapper small secondary small"
+                                                  onClick={[Function]}
+                                                  onMouseDown={[Function]}
+                                                  title="Underline"
+                                                  type="button"
+                                                >
+                                                  <i
+                                                    className="material-icons icon"
+                                                  >
+                                                    format_underline
+                                                  </i>
+                                                </button>
+                                              </ForwardRef>
+                                            </ForwardRef>
                                           </Button>
                                         </InlineStyle>
                                       </Decorated(InlineStyle)>
@@ -11281,19 +11581,39 @@ exports[`RichField should render mutable variable 1`] = `
                                                   name="Insert link"
                                                   onToggle={[Function]}
                                                 >
-                                                  <button
-                                                    className="button btn btn-secondary btn-transparent"
+                                                  <ForwardRef
+                                                    className="button"
+                                                    intent="secondary"
                                                     onClick={[Function]}
                                                     onMouseDown={[Function]}
+                                                    size="small"
                                                     title="Insert link"
                                                     type="button"
                                                   >
-                                                    <i
-                                                      className="material-icons"
+                                                    <ForwardRef
+                                                      className="button wrapper small"
+                                                      intent="secondary"
+                                                      onClick={[Function]}
+                                                      onMouseDown={[Function]}
+                                                      size="small"
+                                                      title="Insert link"
+                                                      type="button"
                                                     >
-                                                      link
-                                                    </i>
-                                                  </button>
+                                                      <button
+                                                        className="wrapper button wrapper small secondary small"
+                                                        onClick={[Function]}
+                                                        onMouseDown={[Function]}
+                                                        title="Insert link"
+                                                        type="button"
+                                                      >
+                                                        <i
+                                                          className="material-icons icon"
+                                                        >
+                                                          link
+                                                        </i>
+                                                      </button>
+                                                    </ForwardRef>
+                                                  </ForwardRef>
                                                 </Button>
                                                 <div
                                                   className="popover top-left hidden"
@@ -11341,19 +11661,39 @@ exports[`RichField should render mutable variable 1`] = `
                                                 name="Insert image"
                                                 onToggle={[Function]}
                                               >
-                                                <button
-                                                  className="button btn btn-secondary btn-transparent"
+                                                <ForwardRef
+                                                  className="button"
+                                                  intent="secondary"
                                                   onClick={[Function]}
                                                   onMouseDown={[Function]}
+                                                  size="small"
                                                   title="Insert image"
                                                   type="button"
                                                 >
-                                                  <i
-                                                    className="material-icons"
+                                                  <ForwardRef
+                                                    className="button wrapper small"
+                                                    intent="secondary"
+                                                    onClick={[Function]}
+                                                    onMouseDown={[Function]}
+                                                    size="small"
+                                                    title="Insert image"
+                                                    type="button"
                                                   >
-                                                    insert_photo
-                                                  </i>
-                                                </button>
+                                                    <button
+                                                      className="wrapper button wrapper small secondary small"
+                                                      onClick={[Function]}
+                                                      onMouseDown={[Function]}
+                                                      title="Insert image"
+                                                      type="button"
+                                                    >
+                                                      <i
+                                                        className="material-icons icon"
+                                                      >
+                                                        insert_photo
+                                                      </i>
+                                                    </button>
+                                                  </ForwardRef>
+                                                </ForwardRef>
                                               </Button>
                                               <div
                                                 className="popover top-left hidden"
@@ -11397,19 +11737,39 @@ exports[`RichField should render mutable variable 1`] = `
                                                 name="Insert emoji"
                                                 onToggle={[Function]}
                                               >
-                                                <button
-                                                  className="button btn btn-secondary btn-transparent"
+                                                <ForwardRef
+                                                  className="button"
+                                                  intent="secondary"
                                                   onClick={[Function]}
                                                   onMouseDown={[Function]}
+                                                  size="small"
                                                   title="Insert emoji"
                                                   type="button"
                                                 >
-                                                  <i
-                                                    className="material-icons"
+                                                  <ForwardRef
+                                                    className="button wrapper small"
+                                                    intent="secondary"
+                                                    onClick={[Function]}
+                                                    onMouseDown={[Function]}
+                                                    size="small"
+                                                    title="Insert emoji"
+                                                    type="button"
                                                   >
-                                                    insert_emoticon
-                                                  </i>
-                                                </button>
+                                                    <button
+                                                      className="wrapper button wrapper small secondary small"
+                                                      onClick={[Function]}
+                                                      onMouseDown={[Function]}
+                                                      title="Insert emoji"
+                                                      type="button"
+                                                    >
+                                                      <i
+                                                        className="material-icons icon"
+                                                      >
+                                                        insert_emoticon
+                                                      </i>
+                                                    </button>
+                                                  </ForwardRef>
+                                                </ForwardRef>
                                               </Button>
                                               <div
                                                 className="p-0 d-flex popover top-left hidden"

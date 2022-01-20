@@ -272,7 +272,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="d-inline-block"
                       >
                         <button
-                          class="button btn btn-secondary"
+                          class="wrapper secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -301,7 +301,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="d-inline-block"
                       >
                         <button
-                          class="button btn btn-secondary"
+                          class="wrapper secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -962,7 +962,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="d-inline-block"
                       >
                         <button
-                          class="button btn btn-secondary"
+                          class="wrapper secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -991,7 +991,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="d-inline-block"
                       >
                         <button
-                          class="button btn btn-secondary"
+                          class="wrapper secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -1669,7 +1669,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="d-inline-block"
                       >
                         <button
-                          class="button btn btn-secondary"
+                          class="wrapper secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -1698,7 +1698,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="d-inline-block"
                       >
                         <button
-                          class="button btn btn-secondary"
+                          class="wrapper secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -2383,7 +2383,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         class="d-inline-block"
                       >
                         <button
-                          class="button btn btn-secondary"
+                          class="wrapper secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -2412,7 +2412,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         class="d-inline-block"
                       >
                         <button
-                          class="button btn btn-secondary"
+                          class="wrapper secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -3089,7 +3089,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         class="d-inline-block"
                       >
                         <button
-                          class="button btn btn-secondary"
+                          class="wrapper secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -3118,7 +3118,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         class="d-inline-block"
                       >
                         <button
-                          class="button btn btn-secondary"
+                          class="wrapper secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -3809,7 +3809,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         class="d-inline-block"
                       >
                         <button
-                          class="button btn btn-secondary"
+                          class="wrapper secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -3838,7 +3838,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         class="d-inline-block"
                       >
                         <button
-                          class="button btn btn-secondary"
+                          class="wrapper secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -4599,7 +4599,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         class="d-inline-block"
                       >
                         <button
-                          class="button btn btn-secondary"
+                          class="wrapper secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -4628,7 +4628,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         class="d-inline-block"
                       >
                         <button
-                          class="button btn btn-secondary"
+                          class="wrapper secondary medium"
                           id="color-picker-42"
                           type="button"
                         >

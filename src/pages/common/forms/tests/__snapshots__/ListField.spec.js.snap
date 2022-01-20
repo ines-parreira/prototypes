@@ -2,18 +2,12 @@
 
 exports[`ListField component should render with no items and an "add" button 1`] = `
 <div>
-  <Button
-    color="secondary"
+  <ForwardRef
+    intent="secondary"
     onClick={[Function]}
-    size="sm"
-    tag="button"
   >
-    <i
-      className="material-icons md-2"
-    >
-      add
-    </i>
-  </Button>
+    add
+  </ForwardRef>
 </div>
 `;
 
@@ -69,19 +63,13 @@ exports[`ListField component should render with some items and an "add" button 1
         ]
       }
     >
-      <Button
-        color="secondary"
+      <ForwardRef
+        intent="destructive"
         onClick={[Function]}
-        size="sm"
-        tag="button"
         type="button"
       >
-        <i
-          className="material-icons md-2 text-danger"
-        >
-          delete
-        </i>
-      </Button>
+        delete
+      </ForwardRef>
     </Col>
   </Row>
   <Row
@@ -134,33 +122,21 @@ exports[`ListField component should render with some items and an "add" button 1
         ]
       }
     >
-      <Button
-        color="secondary"
+      <ForwardRef
+        intent="destructive"
         onClick={[Function]}
-        size="sm"
-        tag="button"
         type="button"
       >
-        <i
-          className="material-icons md-2 text-danger"
-        >
-          delete
-        </i>
-      </Button>
+        delete
+      </ForwardRef>
     </Col>
   </Row>
-  <Button
-    color="secondary"
+  <ForwardRef
+    intent="secondary"
     onClick={[Function]}
-    size="sm"
-    tag="button"
   >
-    <i
-      className="material-icons md-2"
-    >
-      add
-    </i>
-  </Button>
+    add
+  </ForwardRef>
 </div>
 `;
 
@@ -216,19 +192,13 @@ exports[`ListField component should render with the max number of items and no "
         ]
       }
     >
-      <Button
-        color="secondary"
+      <ForwardRef
+        intent="destructive"
         onClick={[Function]}
-        size="sm"
-        tag="button"
         type="button"
       >
-        <i
-          className="material-icons md-2 text-danger"
-        >
-          delete
-        </i>
-      </Button>
+        delete
+      </ForwardRef>
     </Col>
   </Row>
   <Row
@@ -281,19 +251,13 @@ exports[`ListField component should render with the max number of items and no "
         ]
       }
     >
-      <Button
-        color="secondary"
+      <ForwardRef
+        intent="destructive"
         onClick={[Function]}
-        size="sm"
-        tag="button"
         type="button"
       >
-        <i
-          className="material-icons md-2 text-danger"
-        >
-          delete
-        </i>
-      </Button>
+        delete
+      </ForwardRef>
     </Col>
   </Row>
 </div>

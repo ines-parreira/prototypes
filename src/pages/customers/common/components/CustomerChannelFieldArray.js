@@ -5,6 +5,9 @@ import {FormGroup, Label, Row, Col, Button} from 'reactstrap'
 
 import InputField from '../../../common/forms/InputField'
 
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
+
 class CustomerChannelFieldArray extends React.Component {
     _add = () => {
         return this.props.onChange(
@@ -51,15 +54,13 @@ class CustomerChannelFieldArray extends React.Component {
                             />
                         </Col>
                         <Col md="2" xs="3">
-                            <Button
-                                color="danger"
+                            <IconButton
+                                intent={ButtonIntent.Destructive}
                                 type="button"
                                 onClick={() => this._remove(index)}
                             >
-                                <i className="material-icons md-2">
-                                    delete_outline
-                                </i>
-                            </Button>
+                                delete
+                            </IconButton>
                         </Col>
                     </Row>
                 ))}

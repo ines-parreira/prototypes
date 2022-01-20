@@ -126,12 +126,12 @@ exports[`<DraftOrderTable/> should render 1`] = `
             </span>
           </strong>
           <button
-            class="delete focusable btn btn-link"
+            class="wrapper delete wrapper medium text medium"
             tabindex="0"
             type="button"
           >
             <i
-              class="material-icons"
+              class="material-icons icon"
             >
               close
             </i>
@@ -241,12 +241,12 @@ exports[`<DraftOrderTable/> should render 1`] = `
             </span>
           </strong>
           <button
-            class="delete focusable btn btn-link"
+            class="wrapper delete wrapper medium text medium"
             tabindex="0"
             type="button"
           >
             <i
-              class="material-icons"
+              class="material-icons icon"
             >
               close
             </i>
@@ -423,12 +423,12 @@ exports[`<DraftOrderTable/> should render without products 1`] = `
             </span>
           </strong>
           <button
-            class="delete focusable btn btn-link"
+            class="wrapper delete wrapper medium text medium"
             tabindex="0"
             type="button"
           >
             <i
-              class="material-icons"
+              class="material-icons icon"
             >
               close
             </i>
@@ -539,12 +539,12 @@ exports[`<DraftOrderTable/> should render without products 1`] = `
             </span>
           </strong>
           <button
-            class="delete focusable btn btn-link"
+            class="wrapper delete wrapper medium text medium"
             tabindex="0"
             type="button"
           >
             <i
-              class="material-icons"
+              class="material-icons icon"
             >
               close
             </i>

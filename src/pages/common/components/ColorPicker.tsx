@@ -1,6 +1,8 @@
 import React, {ChangeEvent, Component} from 'react'
 import _uniqueId from 'lodash/uniqueId'
-import {Button, Popover, PopoverBody, Input} from 'reactstrap'
+import {Popover, PopoverBody, Input} from 'reactstrap'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import {DEFAULT_TAG_COLOR} from '../../../config'
 
@@ -71,8 +73,7 @@ export default class ColorPicker extends Component<Props, State> {
                 <Button
                     id={this.uniqueId}
                     type="button"
-                    color="secondary"
-                    className={css.button}
+                    intent={ButtonIntent.Secondary}
                     onClick={this._togglePopup}
                 >
                     <div

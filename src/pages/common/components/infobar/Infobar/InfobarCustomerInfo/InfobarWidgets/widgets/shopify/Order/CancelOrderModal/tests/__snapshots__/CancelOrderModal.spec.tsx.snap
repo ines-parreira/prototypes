@@ -164,7 +164,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                 class="quantityButtonsContainer input-group-append"
               >
                 <button
-                  class="focusable quantityBtn quantityBtnUp btn btn-secondary disabled"
+                  class="wrapper focusable quantityBtn quantityBtnUp secondary medium isDisabled"
                   disabled=""
                   tabindex="0"
                   type="button"
@@ -172,7 +172,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                   ▲
                 </button>
                 <button
-                  class="focusable quantityBtn quantityBtnDown btn btn-secondary"
+                  class="wrapper focusable quantityBtn quantityBtnDown secondary medium"
                   tabindex="0"
                   type="button"
                 >
@@ -282,7 +282,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                 class="quantityButtonsContainer input-group-append"
               >
                 <button
-                  class="focusable quantityBtn quantityBtnUp btn btn-secondary disabled"
+                  class="wrapper focusable quantityBtn quantityBtnUp secondary medium isDisabled"
                   disabled=""
                   tabindex="0"
                   type="button"
@@ -290,7 +290,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                   ▲
                 </button>
                 <button
-                  class="focusable quantityBtn quantityBtnDown btn btn-secondary"
+                  class="wrapper focusable quantityBtn quantityBtnDown secondary medium"
                   tabindex="0"
                   type="button"
                 >

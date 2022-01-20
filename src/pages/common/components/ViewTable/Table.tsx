@@ -225,6 +225,7 @@ const TableContainer = ({
                 />
                 <div className="pl-4 mb-4">
                     <Navigation
+                        className={css.navigation}
                         hasNextItems={!!navigation.get('next_items')}
                         hasPrevItems={!!navigation.get('prev_items')}
                         fetchNextItems={() =>
@@ -315,6 +316,7 @@ const TableContainer = ({
             </table>
 
             <Navigation
+                className={css.navigation}
                 hasNextItems={!!navigation.get('next_items')}
                 hasPrevItems={!!navigation.get('prev_items')}
                 fetchNextItems={() => fetchViewItems(ViewNavDirection.NextView)}

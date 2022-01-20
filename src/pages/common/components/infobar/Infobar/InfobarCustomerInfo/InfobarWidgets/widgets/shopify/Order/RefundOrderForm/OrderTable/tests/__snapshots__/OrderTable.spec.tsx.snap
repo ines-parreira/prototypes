@@ -106,7 +106,7 @@ exports[`<OrderTable/> should render 1`] = `
             class="quantityButtonsContainer input-group-append"
           >
             <button
-              class="focusable quantityBtn quantityBtnUp btn btn-secondary disabled"
+              class="wrapper focusable quantityBtn quantityBtnUp secondary medium isDisabled"
               disabled=""
               tabindex="0"
               type="button"
@@ -114,7 +114,7 @@ exports[`<OrderTable/> should render 1`] = `
               ▲
             </button>
             <button
-              class="focusable quantityBtn quantityBtnDown btn btn-secondary"
+              class="wrapper focusable quantityBtn quantityBtnDown secondary medium"
               tabindex="0"
               type="button"
             >
@@ -224,7 +224,7 @@ exports[`<OrderTable/> should render 1`] = `
             class="quantityButtonsContainer input-group-append"
           >
             <button
-              class="focusable quantityBtn quantityBtnUp btn btn-secondary disabled"
+              class="wrapper focusable quantityBtn quantityBtnUp secondary medium isDisabled"
               disabled=""
               tabindex="0"
               type="button"
@@ -232,7 +232,7 @@ exports[`<OrderTable/> should render 1`] = `
               ▲
             </button>
             <button
-              class="focusable quantityBtn quantityBtnDown btn btn-secondary"
+              class="wrapper focusable quantityBtn quantityBtnDown secondary medium"
               tabindex="0"
               type="button"
             >
@@ -367,7 +367,7 @@ exports[`<OrderTable/> should render for multi-currency order 1`] = `
             class="quantityButtonsContainer input-group-append"
           >
             <button
-              class="focusable quantityBtn quantityBtnUp btn btn-secondary disabled"
+              class="wrapper focusable quantityBtn quantityBtnUp secondary medium isDisabled"
               disabled=""
               tabindex="0"
               type="button"
@@ -375,7 +375,7 @@ exports[`<OrderTable/> should render for multi-currency order 1`] = `
               ▲
             </button>
             <button
-              class="focusable quantityBtn quantityBtnDown btn btn-secondary"
+              class="wrapper focusable quantityBtn quantityBtnDown secondary medium"
               tabindex="0"
               type="button"
             >
@@ -485,7 +485,7 @@ exports[`<OrderTable/> should render for multi-currency order 1`] = `
             class="quantityButtonsContainer input-group-append"
           >
             <button
-              class="focusable quantityBtn quantityBtnUp btn btn-secondary disabled"
+              class="wrapper focusable quantityBtn quantityBtnUp secondary medium isDisabled"
               disabled=""
               tabindex="0"
               type="button"
@@ -493,7 +493,7 @@ exports[`<OrderTable/> should render for multi-currency order 1`] = `
               ▲
             </button>
             <button
-              class="focusable quantityBtn quantityBtnDown btn btn-secondary"
+              class="wrapper focusable quantityBtn quantityBtnDown secondary medium"
               tabindex="0"
               type="button"
             >
