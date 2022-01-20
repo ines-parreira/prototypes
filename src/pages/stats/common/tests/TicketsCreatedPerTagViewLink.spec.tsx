@@ -7,16 +7,17 @@ import {fireEvent, render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import _keyBy from 'lodash/keyBy'
 
-import {RootState, StoreDispatch} from '../../../../state/types'
-import {TicketChannels} from '../../../../business/ticket'
-import {integrationsState} from '../../../../fixtures/integrations'
-import {logEvent} from '../../../../store/middlewares/segmentTracker'
+import {RootState, StoreDispatch} from 'state/types'
+import {TicketChannels} from 'business/ticket'
+import {integrationsState} from 'fixtures/integrations'
+import {logEvent} from 'store/middlewares/segmentTracker'
+import {tags} from 'fixtures/tag'
+
 import TicketsCreatedPerTagViewLink from '../TicketsCreatedPerTagViewLink'
-import {tags} from '../../../../fixtures/tag'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('../../../../store/middlewares/segmentTracker')
+jest.mock('store/middlewares/segmentTracker')
 jest.mock('../ViewLink', () => (props: LinkProps) => (
     <div>
         ViewLink Mock
@@ -27,7 +28,7 @@ jest.mock('../ViewLink', () => (props: LinkProps) => (
 const logEventMock = logEvent as jest.Mock
 
 describe('TicketsCreatedPerTagViewLink', () => {
-    const defaultState: Partial<RootState> = {
+    const defaultState = {
         stats: fromJS({
             filters: {
                 period: {
@@ -36,14 +37,14 @@ describe('TicketsCreatedPerTagViewLink', () => {
                 },
                 channels: [TicketChannels.EMAIL],
                 integrations: [1],
-                tags: [1],
+                tags: [],
             },
         }),
         integrations: fromJS(integrationsState),
         entities: {
             tags: _keyBy(tags, 'id'),
-        } as RootState['entities'],
-    }
+        },
+    } as RootState
 
     it('should render a tag link', () => {
         const {container} = render(
@@ -63,6 +64,46 @@ describe('TicketsCreatedPerTagViewLink', () => {
                     tagName="fooTag"
                     untaggedName="fooTag"
                 >
+                    click me!
+                </TicketsCreatedPerTagViewLink>
+            </Provider>
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render a tag link with tag stats filter values', () => {
+        const {tags} = defaultState.entities
+        const {container} = render(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    stats: defaultState.stats?.setIn(
+                        ['filters', 'tags'],
+                        [tags['1'].id, tags['2'].id, tags['3'].id]
+                    ),
+                })}
+            >
+                <TicketsCreatedPerTagViewLink tagName={tags['2'].name}>
+                    click me!
+                </TicketsCreatedPerTagViewLink>
+            </Provider>
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render a tag link without tag stats filter value if it is the same value as the tag name', () => {
+        const {tags} = defaultState.entities
+        const {container} = render(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    stats: defaultState.stats?.setIn(
+                        ['filters', 'tags'],
+                        [tags['2'].id]
+                    ),
+                })}
+            >
+                <TicketsCreatedPerTagViewLink tagName={tags['2'].name}>
                     click me!
                 </TicketsCreatedPerTagViewLink>
             </Provider>

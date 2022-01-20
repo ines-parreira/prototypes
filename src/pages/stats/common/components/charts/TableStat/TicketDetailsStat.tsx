@@ -13,7 +13,7 @@ import {
     getTicketViewFieldPath,
 } from '../../../../../../config/views'
 import {ViewField} from '../../../../../../models/view/types'
-import {getStatsViewFilters} from '../../../utils'
+import {useStatsViewFilters} from '../../../utils'
 import {
     logEvent,
     SegmentEvent,
@@ -50,7 +50,11 @@ export default function TicketDetailsStat({
     openTickets,
     channelsBreakdown,
 }: Props) {
+    const periodFilterLeft = getTicketViewFieldPath(
+        getTicketViewField(ViewField.Closed)
+    )
     const statsFilters = useSelector(getLiveAgentsStatsFilters)
+    const statsViewFilters = useStatsViewFilters(periodFilterLeft, statsFilters)
 
     const assigneeFilter = useMemo<ViewFilter>(
         () => ({
@@ -62,15 +66,12 @@ export default function TicketDetailsStat({
     )
 
     const baseFilters = useMemo<ViewFilter[]>(() => {
-        const periodFilterLeft = getTicketViewFieldPath(
-            getTicketViewField(ViewField.Closed)
-        )
-        return getStatsViewFilters(periodFilterLeft, statsFilters).filter(
+        return statsViewFilters.filter(
             (filter) =>
                 filter.left !== periodFilterLeft &&
                 filter.left !== ASSIGNEE_FILTER_LEFT
         )
-    }, [statsFilters])
+    }, [statsViewFilters])
 
     const openTicketsFilters = useMemo<ViewFilter[]>(
         () => [assigneeFilter, STATUS_FILTER, ...baseFilters],

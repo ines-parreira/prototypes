@@ -41,6 +41,9 @@ describe('SupportPerformanceAgents', () => {
         teams: fromJS({
             all: teams,
         }),
+        entities: {
+            tags: {},
+        },
     } as RootState
 
     beforeEach(() => {

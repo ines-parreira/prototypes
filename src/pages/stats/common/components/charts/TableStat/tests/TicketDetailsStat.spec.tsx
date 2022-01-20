@@ -37,7 +37,7 @@ jest.mock(
 )
 
 describe('TicketDetailsStat', () => {
-    const defaultState: Partial<RootState> = {
+    const defaultState = {
         stats: fromJS({
             filters: {
                 period: {
@@ -49,7 +49,10 @@ describe('TicketDetailsStat', () => {
             },
         }),
         integrations: fromJS(integrationsState),
-    }
+        entities: {
+            tags: {},
+        },
+    } as RootState
 
     const minProps: ComponentProps<typeof TicketDetailsStat> = {
         agentId: 1,

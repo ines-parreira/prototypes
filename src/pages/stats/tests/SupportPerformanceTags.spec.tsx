@@ -36,6 +36,9 @@ describe('SupportPerformanceTags', () => {
             filters: null,
         }),
         integrations: fromJS(integrationsState),
+        entities: {
+            tags: {},
+        },
     } as RootState
 
     beforeEach(() => {

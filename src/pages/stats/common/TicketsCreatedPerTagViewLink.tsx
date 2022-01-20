@@ -1,18 +1,19 @@
 import React, {ReactNode, useMemo} from 'react'
 import {useSelector} from 'react-redux'
+import _isEqual from 'lodash/isEqual'
 
-import {getTagsStatsFilters} from '../../../state/stats/selectors'
-import {getTicketViewField, getTicketViewFieldPath} from '../../../config/views'
-import {ViewField} from '../../../models/view/types'
+import {getTagsStatsFilters} from 'state/stats/selectors'
+import {getTicketViewField, getTicketViewFieldPath} from 'config/views'
+import {ViewField} from 'models/view/types'
 import {
     logEvent,
     SegmentEvent,
     StatViewLinkClickedStat,
-} from '../../../store/middlewares/segmentTracker'
-import {ViewFilter} from '../../../state/views/types'
-import {CollectionOperator} from '../../../state/rules/types'
+} from 'store/middlewares/segmentTracker'
+import {ViewFilter} from 'state/views/types'
+import {CollectionOperator} from 'state/rules/types'
 
-import {getStatsViewFilters} from './utils'
+import {useStatsViewFilters} from './utils'
 import ViewLink from './ViewLink'
 
 type Props = {
@@ -27,6 +28,11 @@ export default function TicketsCreatedPerTagViewLink({
     untaggedName = 'Untagged',
 }: Props) {
     const statsFilters = useSelector(getTagsStatsFilters)
+    const statsViewFilters = useStatsViewFilters(
+        getTicketViewFieldPath(getTicketViewField(ViewField.Created)),
+        statsFilters
+    )
+
     const filters = useMemo(() => {
         const tagFilterLeft = getTicketViewFieldPath(
             getTicketViewField(ViewField.Tags)
@@ -42,12 +48,13 @@ export default function TicketsCreatedPerTagViewLink({
                       operator: CollectionOperator.ContainsAny,
                       right: JSON.stringify([tagName]),
                   }
-        const statsViewFilters = getStatsViewFilters(
-            getTicketViewFieldPath(getTicketViewField(ViewField.Created)),
-            statsFilters
-        )
-        return [tagFilter].concat(statsViewFilters)
-    }, [statsFilters, tagName, untaggedName])
+        return [
+            tagFilter,
+            ...statsViewFilters.filter(
+                (filter) => !_isEqual(filter, tagFilter)
+            ),
+        ]
+    }, [statsViewFilters, tagName, untaggedName])
 
     return (
         <span

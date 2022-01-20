@@ -27,7 +27,7 @@ jest.mock('../ViewLink', () => (props: LinkProps) => (
 const logEventMock = logEvent as jest.Mock
 
 describe('TicketsCreatedPerChannelViewLink', () => {
-    const defaultState: Partial<RootState> = {
+    const defaultState = {
         stats: fromJS({
             filters: {
                 period: {
@@ -39,7 +39,10 @@ describe('TicketsCreatedPerChannelViewLink', () => {
             },
         }),
         integrations: fromJS(integrationsState),
-    }
+        entities: {
+            tags: {},
+        },
+    } as RootState
 
     it('should render a link for a channel', () => {
         const {container} = render(

@@ -32,6 +32,9 @@ describe('SupportPerformanceChannels', () => {
         stats: fromJS({
             filters: null,
         }),
+        entities: {
+            tags: {},
+        },
     } as RootState
 
     beforeEach(() => {

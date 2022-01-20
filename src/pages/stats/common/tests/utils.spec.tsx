@@ -1,10 +1,31 @@
+import React, {ReactNode} from 'react'
 import {fromJS, Map} from 'immutable'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import _keyBy from 'lodash/keyBy'
+import {renderHook} from 'react-hooks-testing-library'
 
-import {TicketChannels} from '../../../../business/ticket'
-import {formatDuration, getStatsViewFilters} from '../utils'
+import {TicketChannels} from 'business/ticket'
+import {tags} from 'fixtures/tag'
+import {RootState} from 'state/types'
+
+import {formatDuration, useStatsViewFilters} from '../utils'
+
+const mockStore = configureMockStore([thunk])
 
 describe('stats components utils', () => {
-    describe('getStatsViewFilters', () => {
+    describe('useStatsViewFilters', () => {
+        const defaultState = {
+            entities: {
+                tags: _keyBy(tags, 'id'),
+            },
+        } as RootState
+
+        const DefaultStateWrapper = ({children}: {children?: ReactNode}) => (
+            <Provider store={mockStore(defaultState)}>{children}</Provider>
+        )
+
         it.each<[string, Map<any, any>]>([
             [
                 'period',
@@ -46,12 +67,42 @@ describe('stats components utils', () => {
                     agents: [1, 2, 3],
                 }),
             ],
+            [
+                'tags',
+                fromJS({
+                    tags: [tags[0].id],
+                }),
+            ],
         ])('should return view filters for %s', (testName, statsFilters) => {
-            const viewFilters = getStatsViewFilters(
-                'ticket.created_datetime',
-                statsFilters
+            const {result} = renderHook(
+                () => {
+                    return useStatsViewFilters(
+                        'ticket.created_datetime',
+                        statsFilters
+                    )
+                },
+                {
+                    wrapper: DefaultStateWrapper,
+                }
             )
-            expect(viewFilters).toMatchSnapshot()
+            expect(result.current).toMatchSnapshot()
+        })
+
+        it("should not include tags that don't exist in the store", () => {
+            const {result} = renderHook(
+                () => {
+                    return useStatsViewFilters(
+                        'ticket.created_datetime',
+                        fromJS({
+                            tags: [999999],
+                        })
+                    )
+                },
+                {
+                    wrapper: DefaultStateWrapper,
+                }
+            )
+            expect(result.current).toEqual([])
         })
     })
     describe('formatDuration', () => {

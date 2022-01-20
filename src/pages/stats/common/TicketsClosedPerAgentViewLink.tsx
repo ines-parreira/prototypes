@@ -14,7 +14,7 @@ import {getAgents} from '../../../state/agents/selectors'
 import {ViewFilter} from '../../../state/views/types'
 import {CollectionOperator, EqualityOperator} from '../../../state/rules/types'
 
-import {getStatsViewFilters} from './utils'
+import {useStatsViewFilters} from './utils'
 import ViewLink from './ViewLink'
 
 type Props = {
@@ -33,6 +33,10 @@ export default function TicketsClosedPerAgentViewLink({
         (agent) => (agent!.get('name') as string) === agentName
     )
     const statsFilters = useSelector(getSupportPerformanceAgentsStatsFilters)
+    const statsViewFilters = useStatsViewFilters(
+        getTicketViewFieldPath(getTicketViewField(ViewField.Closed)),
+        statsFilters
+    )
     const filters = useMemo<ViewFilter[]>(() => {
         const assigneeLeft = getTicketViewFieldPath(
             getTicketViewField(ViewField.Assignee)
@@ -47,12 +51,14 @@ export default function TicketsClosedPerAgentViewLink({
                   left: assigneeLeft,
                   operator: CollectionOperator.IsEmpty,
               }
-        const statsViewFilters = getStatsViewFilters(
-            getTicketViewFieldPath(getTicketViewField(ViewField.Closed)),
-            statsFilters
-        ).filter((filter) => filter.left !== assigneeLeft)
-        return [assigneeFilter, ...statsViewFilters]
-    }, [agent, statsFilters])
+
+        return [
+            assigneeFilter,
+            ...statsViewFilters.filter(
+                (filter) => filter.left !== assigneeLeft
+            ),
+        ]
+    }, [agent, statsViewFilters])
 
     if (!agent && agentName !== unassignedName) {
         return <>{children}</>

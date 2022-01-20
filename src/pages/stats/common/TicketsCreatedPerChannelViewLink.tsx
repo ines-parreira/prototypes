@@ -16,7 +16,7 @@ import {
 import {TICKET_CHANNEL_NAMES} from '../../../state/ticket/constants'
 
 import ViewLink from './ViewLink'
-import {getStatsViewFilters} from './utils'
+import {useStatsViewFilters} from './utils'
 
 type Props = {
     children: ReactNode
@@ -32,6 +32,10 @@ export default function TicketsCreatedPerChannelViewLink({
         (name) => name === channelName
     )
     const statsFilters = useSelector(getChannelsStatsFilters)
+    const statsViewFilters = useStatsViewFilters(
+        getTicketViewFieldPath(getTicketViewField(ViewField.Created)),
+        statsFilters
+    )
     const filters = useMemo(() => {
         const channelFilterLeft = getTicketViewFieldPath(
             getTicketViewField(ViewField.Channel)
@@ -41,12 +45,13 @@ export default function TicketsCreatedPerChannelViewLink({
             operator: EqualityOperator.Eq,
             right: JSON.stringify(channel),
         }
-        const statsViewFilters = getStatsViewFilters(
-            getTicketViewFieldPath(getTicketViewField(ViewField.Created)),
-            statsFilters
-        ).filter((filter) => filter.left !== channelFilterLeft)
-        return [channelFilter].concat(statsViewFilters)
-    }, [channel, statsFilters])
+        return [
+            channelFilter,
+            ...statsViewFilters.filter(
+                (filter) => filter.left !== channelFilterLeft
+            ),
+        ]
+    }, [channel, statsViewFilters])
 
     if (!channel) {
         reportError(new Error(`Channel not found for the name: ${channelName}`))

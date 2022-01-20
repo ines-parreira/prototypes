@@ -26,7 +26,7 @@ jest.mock('../ViewLink', () => (props: LinkProps) => (
 const logEventMock = logEvent as jest.Mock
 
 describe('TicketsClosedPerAgentViewLink', () => {
-    const defaultState: Partial<RootState> = {
+    const defaultState = {
         stats: fromJS({
             filters: {
                 period: {
@@ -40,7 +40,10 @@ describe('TicketsClosedPerAgentViewLink', () => {
         }),
         agents: fromJS({all: agentsFixtures}),
         integrations: fromJS(integrationsState),
-    }
+        entities: {
+            tags: {},
+        },
+    } as RootState
 
     it('should render an assignee link', () => {
         const {container} = render(

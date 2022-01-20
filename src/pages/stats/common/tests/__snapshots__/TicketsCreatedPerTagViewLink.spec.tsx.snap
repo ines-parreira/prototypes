@@ -50,6 +50,89 @@ exports[`TicketsCreatedPerTagViewLink should render a tag link 1`] = `
 </span>
 `;
 
+exports[`TicketsCreatedPerTagViewLink should render a tag link with tag stats filter values 1`] = `
+<span>
+  <div>
+    ViewLink Mock
+    {
+  "viewName": "Tagged with: billing",
+  "filters": [
+    {
+      "left": "ticket.tags.name",
+      "operator": "containsAny",
+      "right": "[\\"billing\\"]"
+    },
+    {
+      "left": "ticket.created_datetime",
+      "operator": "gte",
+      "right": "'2021-05-28T22:00:00Z'"
+    },
+    {
+      "left": "ticket.created_datetime",
+      "operator": "lte",
+      "right": "'2021-06-04T21:59:59Z'"
+    },
+    {
+      "left": "ticket.channel",
+      "operator": "eq",
+      "right": "\\"email\\""
+    },
+    {
+      "left": "ticket.messages.integration_id",
+      "operator": "eq",
+      "right": "1"
+    },
+    {
+      "left": "ticket.tags.name",
+      "operator": "containsAny",
+      "right": "[\\"refund\\",\\"billing\\",\\"rejected\\"]"
+    }
+  ],
+  "children": "click me!"
+}
+  </div>
+</span>
+`;
+
+exports[`TicketsCreatedPerTagViewLink should render a tag link without tag stats filter value if it is the same value as the tag name 1`] = `
+<span>
+  <div>
+    ViewLink Mock
+    {
+  "viewName": "Tagged with: billing",
+  "filters": [
+    {
+      "left": "ticket.tags.name",
+      "operator": "containsAny",
+      "right": "[\\"billing\\"]"
+    },
+    {
+      "left": "ticket.created_datetime",
+      "operator": "gte",
+      "right": "'2021-05-28T22:00:00Z'"
+    },
+    {
+      "left": "ticket.created_datetime",
+      "operator": "lte",
+      "right": "'2021-06-04T21:59:59Z'"
+    },
+    {
+      "left": "ticket.channel",
+      "operator": "eq",
+      "right": "\\"email\\""
+    },
+    {
+      "left": "ticket.messages.integration_id",
+      "operator": "eq",
+      "right": "1"
+    }
+  ],
+  "children": "click me!"
+}
+  </div>
+</span>
+`;
+
 exports[`TicketsCreatedPerTagViewLink should render the "untagged" link 1`] = `
 <span>
   <div>
