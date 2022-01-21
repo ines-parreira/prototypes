@@ -107,6 +107,22 @@ const ImportPhoneNumber = ({notify}: Props) => {
                     </FormGroup>
                     <FormGroup>
                         <div>
+                            <Label htmlFor="state" className="control-label">
+                                State
+                            </Label>
+                        </div>
+                        <Input
+                            id="state"
+                            value={formData.get('state') || ''}
+                            onChange={(e) =>
+                                setFormData(
+                                    formData.set('state', e.target.value)
+                                )
+                            }
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <div>
                             <Label htmlFor="type" className="control-label">
                                 Type
                             </Label>
