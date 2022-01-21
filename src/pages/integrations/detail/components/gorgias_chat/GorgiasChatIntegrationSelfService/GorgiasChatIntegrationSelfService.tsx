@@ -71,7 +71,8 @@ export function GorgiasChatIntegrationSelfServiceComponent({
         (shopifyIntegration: Map<any, any>) => {
             return (
                 shopifyIntegration.get('type') === IntegrationType.Shopify &&
-                shopName === shopifyIntegration.getIn(['meta', 'shop_name'])
+                shopName ===
+                    shopifyIntegration.getIn(['meta', 'shop_name'], null)
             )
         }
     )

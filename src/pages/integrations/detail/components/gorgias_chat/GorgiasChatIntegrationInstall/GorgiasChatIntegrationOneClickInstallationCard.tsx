@@ -114,7 +114,7 @@ export function GorgiasChatIntegrationOneClickInstallationCard({
             (value) => value === targetIntegrationId
         )
         const updatedMeta = meta
-            .set('shop_name', meta.get('shop_name'))
+            .set('shop_name', meta.get('shop_name', null))
             .deleteIn(['shopify_integration_ids', indexToDelete])
         const form = {
             id: integration.get('id'),

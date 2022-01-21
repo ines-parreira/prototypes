@@ -152,7 +152,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
     )
 
     const [storeName, setStoreName] = useState(
-        integration.getIn(['meta', 'shop_name'])
+        integration.getIn(['meta', 'shop_name'], null)
     )
 
     const [storeIntegrationId, setStoreIntegrationId] = useState(0)

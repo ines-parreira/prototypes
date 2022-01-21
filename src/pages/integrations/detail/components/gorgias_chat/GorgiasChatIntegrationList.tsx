@@ -76,10 +76,10 @@ function GorgiasChatIntegrationList({
         const editLink = `/app/settings/integrations/${IntegrationType.GorgiasChat}/${integrationId}/campaigns`
         const isEnabled = !chat.get('deactivated_datetime')
         const isLoading = loading.get('updateIntegration') === integrationId
-        const shopifyStoreName: string | null = chat.getIn([
-            'meta',
-            'shop_name',
-        ])
+        const shopifyStoreName: string | null = chat.getIn(
+            ['meta', 'shop_name'],
+            null
+        )
         const shopifyStore: Map<any, any> = integrations.find(
             (_integration) =>
                 _integration?.get('name') === shopifyStoreName &&
