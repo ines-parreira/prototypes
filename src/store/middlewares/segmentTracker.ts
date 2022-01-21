@@ -5,30 +5,28 @@ import {devLog} from '../../utils'
 import {isDevelopment} from '../../utils/environment'
 import {User} from '../../config/types/user'
 
-const analytics = window.analytics
-
 export const logEvent = (event: SegmentEvent, props = {}) => {
     devLog('Track Segment', event, props)
 
     if (
         window.USER_IMPERSONATED ||
-        _isUndefined(analytics) ||
+        _isUndefined(window.analytics) ||
         isDevelopment()
     ) {
         return
     }
 
-    analytics.track(event, props)
+    window.analytics.track(event, props)
 }
 
 export const identifyUser = (user: User) => {
-    if (window.USER_IMPERSONATED || _isUndefined(analytics)) {
+    if (window.USER_IMPERSONATED || _isUndefined(window.analytics)) {
         return
     }
 
     const domain = window.location.hostname.split('.')[0]
 
-    analytics.identify(window.SEGMENT_ANALYTICS_USER_ID, {
+    window.analytics.identify(window.SEGMENT_ANALYTICS_USER_ID, {
         gorgias_subdomain: domain,
         name: user.name,
         email: user.email,
@@ -36,6 +34,18 @@ export const identifyUser = (user: User) => {
         role: user.roles[0].name,
         created_at: user.created_datetime,
     })
+}
+
+export const logPageChange = () => {
+    if (
+        window.USER_IMPERSONATED ||
+        _isUndefined(window.analytics) ||
+        isDevelopment()
+    ) {
+        return
+    }
+
+    window.analytics.page()
 }
 
 export enum SegmentEvent {

@@ -1,10 +1,18 @@
 import React, {ComponentType} from 'react'
-import {Route, Switch, Redirect, RouteComponentProps} from 'react-router-dom'
+import {
+    Route,
+    Switch,
+    Redirect,
+    RouteComponentProps,
+    useLocation,
+} from 'react-router-dom'
 import {useSelector} from 'react-redux'
+import {useUpdateEffect} from 'react-use'
 
 import {ADMIN_ROLE, AGENT_ROLE} from '../config/user'
 import {currentAccountHasFeature} from '../state/currentAccount/selectors'
 import {AccountFeature} from '../state/currentAccount/types'
+import {logPageChange} from '../store/middlewares/segmentTracker'
 import {
     PaywallConfig,
     paywallConfigs as defaultPaywallConfigs,
@@ -108,11 +116,13 @@ const appRender =
     }
 
 export default function Routes() {
-    return (
-        <Switch>
-            <Route path="/app" component={AppRoutes} />
-        </Switch>
-    )
+    const location = useLocation()
+
+    useUpdateEffect(() => {
+        logPageChange()
+    }, [location.pathname])
+
+    return <Route path="/app" component={AppRoutes} />
 }
 
 export function AppRoutes({match: {path}}: RouteComponentProps) {
