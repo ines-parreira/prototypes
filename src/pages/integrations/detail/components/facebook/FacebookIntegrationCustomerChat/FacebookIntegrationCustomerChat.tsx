@@ -130,7 +130,7 @@ class FacebookIntegrationCustomerChat extends Component<Props, State> {
                                     className={css.image}
                                     src={`${
                                         window.GORGIAS_ASSETS_URL || ''
-                                    }/static/private/img/presentationals/messenger-preview.png`}
+                                    }/static/private/js/assets/img/presentationals/messenger-preview.png`}
                                 />
                             </div>
                         </Col>

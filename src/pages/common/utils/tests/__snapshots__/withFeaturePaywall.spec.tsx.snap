@@ -30,7 +30,7 @@ exports[`withFeaturePaywall should not render the passed component when the feat
               <img
                 alt="Feature preview"
                 class="img-fluid"
-                src="/static/private/img/paywalls/screens/revenue-statistics.png"
+                src="/static/private/js/assets/img/paywalls/screens/revenue-statistics.png"
               />
             </div>
           </div>
@@ -75,7 +75,7 @@ exports[`withFeaturePaywall should not render the passed component when the feat
                   <img
                     alt="avatar"
                     class="mr-3 avatar"
-                    src="/static/private/img/paywalls/avatars/cody-szymanski.png"
+                    src="/static/private/js/assets/img/paywalls/avatars/cody-szymanski.png"
                   />
                   <div>
                     <p
@@ -179,7 +179,7 @@ exports[`withFeaturePaywall should pass custom paywall configuration props 1`] =
               <img
                 alt="Feature preview"
                 class="img-fluid"
-                src="/static/private/img/paywalls/screens/revenue-statistics.png"
+                src="/static/private/js/assets/img/paywalls/screens/revenue-statistics.png"
               />
             </div>
           </div>
@@ -224,7 +224,7 @@ exports[`withFeaturePaywall should pass custom paywall configuration props 1`] =
                   <img
                     alt="avatar"
                     class="mr-3 avatar"
-                    src="/static/private/img/paywalls/avatars/cody-szymanski.png"
+                    src="/static/private/js/assets/img/paywalls/avatars/cody-szymanski.png"
                   />
                   <div>
                     <p

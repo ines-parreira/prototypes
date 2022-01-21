@@ -5,7 +5,7 @@ import RestrictedFeature from '../common/components/RestrictedFeature'
 const RevenueStatsRestrictedFeature = () => {
     const assetsURL = window.GORGIAS_ASSETS_URL || ''
     const imagesURL = [
-        `${assetsURL}/static/private/img/presentationals/revenue-presentation.png`,
+        `${assetsURL}/static/private/js/assets/img/presentationals/revenue-presentation.png`,
     ]
 
     return (

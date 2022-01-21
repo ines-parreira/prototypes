@@ -169,7 +169,7 @@ export const ImportZendeskDataList = (
 const mapStateToProps = (state: RootState) => ({
     img: `${
         window.GORGIAS_ASSETS_URL || ''
-    }/static/private/img/integrations/zendesk.png`,
+    }/static/private/js/assets/img/integrations/zendesk.png`,
     zendeskImports: getIntegrationsByTypes(IntegrationType.Zendesk)(state),
     timezone: getTimezone(state),
 })

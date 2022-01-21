@@ -504,7 +504,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
     const satisfactionPaywallConfig = {
         [AccountFeature.SatisfactionSurveys]: {
             ...defaultPaywallConfigs[AccountFeature.SatisfactionSurveys],
-            preview: `${assetsURL}/static/private/img/paywalls/screens/satisfaction-surveys-settings.png`,
+            preview: `${assetsURL}/static/private/js/assets/img/paywalls/screens/satisfaction-surveys-settings.png`,
         } as PaywallConfig,
     }
 

@@ -52,10 +52,10 @@ export default class SmileIntegrationList extends React.Component<
         const imagesUrl = [
             `${
                 window.GORGIAS_ASSETS_URL || ''
-            }/static/private/img/presentationals/smile-carousel_1.jpg`,
+            }/static/private/js/assets/img/presentationals/smile-carousel_1.jpg`,
             `${
                 window.GORGIAS_ASSETS_URL || ''
-            }/static/private/img/presentationals/smile-carousel_2.jpg`,
+            }/static/private/js/assets/img/presentationals/smile-carousel_2.jpg`,
         ]
 
         const longTypeDescription = (

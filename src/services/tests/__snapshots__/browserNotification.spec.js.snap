@@ -4,7 +4,7 @@ exports[`services browserNotification newMessage() should create a browser notif
 Array [
   Object {
     "body": "body",
-    "icon": "/static/private/img/icons/logo.png",
+    "icon": "/static/private/js/assets/img/icons/logo.png",
     "onClick": [Function],
     "timeout": 5000,
     "title": "title",
@@ -16,7 +16,7 @@ exports[`services browserNotification newMessage() should create a browser notif
 Array [
   Object {
     "body": "You received an answer",
-    "icon": "/static/private/img/icons/logo.png",
+    "icon": "/static/private/js/assets/img/icons/logo.png",
     "onClick": [Function],
     "timeout": 5000,
     "title": "Gorgias",
@@ -28,7 +28,7 @@ exports[`services browserNotification newMessage() should create a browser notif
 Array [
   Object {
     "body": "You received an answer",
-    "icon": "/static/private/img/icons/logo.png",
+    "icon": "/static/private/js/assets/img/icons/logo.png",
     "onClick": [Function],
     "timeout": 5000,
     "title": "Gorgias",
@@ -40,7 +40,7 @@ exports[`services browserNotification newMessage() should create a browser notif
 Array [
   Object {
     "body": "You received an answer",
-    "icon": "/static/private/img/icons/logo.png",
+    "icon": "/static/private/js/assets/img/icons/logo.png",
     "onClick": [Function],
     "timeout": 5000,
     "title": "Gorgias",
@@ -52,7 +52,7 @@ exports[`services browserNotification newMessage() should create a browser notif
 Array [
   Object {
     "body": "You received an answer",
-    "icon": "/static/private/img/icons/logo.png",
+    "icon": "/static/private/js/assets/img/icons/logo.png",
     "onClick": [Function],
     "timeout": 5000,
     "title": "Gorgias",
@@ -64,7 +64,7 @@ exports[`services browserNotification newMessage() should not throw unhandled pr
 Array [
   Object {
     "body": "body",
-    "icon": "/static/private/img/icons/logo.png",
+    "icon": "/static/private/js/assets/img/icons/logo.png",
     "onClick": [Function],
     "timeout": 5000,
     "title": "title",

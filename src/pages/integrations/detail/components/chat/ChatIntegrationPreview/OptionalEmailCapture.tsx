@@ -37,7 +37,7 @@ export default class OptionalEmailCapture extends Component<Props> {
                             alt="robot icon"
                             src={`${
                                 window.GORGIAS_ASSETS_URL || ''
-                            }/static/private/img/icons/robot-icon.svg`}
+                            }/static/private/js/assets/img/icons/robot-icon.svg`}
                         />
                     </div>
                     <div>

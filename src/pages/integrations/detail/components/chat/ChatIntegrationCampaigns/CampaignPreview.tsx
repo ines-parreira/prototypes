@@ -61,7 +61,7 @@ export default class CampaignPreview extends Component<Props> {
                         className={css.icon}
                         src={`${
                             window.GORGIAS_ASSETS_URL || ''
-                        }/static/private/img/icons/DefaultCloseIcon.svg`}
+                        }/static/private/js/assets/img/icons/DefaultCloseIcon.svg`}
                     />
                 </div>
             </div>

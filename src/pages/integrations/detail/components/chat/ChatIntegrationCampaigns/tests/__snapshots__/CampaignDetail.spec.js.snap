@@ -661,7 +661,7 @@ exports[`CampaignDetail component should display default value when it's a new c
               <img
                 alt="close icon"
                 class="icon"
-                src="/static/private/img/icons/DefaultCloseIcon.svg"
+                src="/static/private/js/assets/img/icons/DefaultCloseIcon.svg"
               />
             </div>
           </div>
@@ -1437,7 +1437,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
               <img
                 alt="close icon"
                 class="icon"
-                src="/static/private/img/icons/DefaultCloseIcon.svg"
+                src="/static/private/js/assets/img/icons/DefaultCloseIcon.svg"
               />
             </div>
           </div>
@@ -2213,7 +2213,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
               <img
                 alt="close icon"
                 class="icon"
-                src="/static/private/img/icons/DefaultCloseIcon.svg"
+                src="/static/private/js/assets/img/icons/DefaultCloseIcon.svg"
               />
             </div>
           </div>

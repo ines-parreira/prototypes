@@ -64,7 +64,7 @@ export default class CustomInstallationCard extends Component<Props, State> {
                                 alt="javascript-logo"
                                 src={`${
                                     window.GORGIAS_ASSETS_URL || ''
-                                }/static/private/img/integrations/javascript.png`}
+                                }/static/private/js/assets/img/integrations/javascript.png`}
                             />
                         </div>
                         <div>

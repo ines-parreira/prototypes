@@ -7,7 +7,7 @@ import history from '../pages/history'
 
 const icon = `${
     window.GORGIAS_ASSETS_URL || ''
-}/static/private/img/icons/logo.png`
+}/static/private/js/assets/img/icons/logo.png`
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const sound = new Audio(require('assets/audio/notification.mp3'))

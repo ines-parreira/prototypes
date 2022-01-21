@@ -170,13 +170,13 @@ exports[`StatsPage should restrict feature when on revenue statistics page and i
                 tabindex="-1"
               >
                 <a
-                  href="/static/private/img/presentationals/revenue-presentation.png"
+                  href="/static/private/js/assets/img/presentationals/revenue-presentation.png"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
                   <img
                     alt="carousel content"
-                    src="/static/private/img/presentationals/revenue-presentation.png"
+                    src="/static/private/js/assets/img/presentationals/revenue-presentation.png"
                   />
                 </a>
               </div>
@@ -196,13 +196,13 @@ exports[`StatsPage should restrict feature when on revenue statistics page and i
                 tabindex="-1"
               >
                 <a
-                  href="/static/private/img/presentationals/revenue-presentation.png"
+                  href="/static/private/js/assets/img/presentationals/revenue-presentation.png"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
                   <img
                     alt="carousel content"
-                    src="/static/private/img/presentationals/revenue-presentation.png"
+                    src="/static/private/js/assets/img/presentationals/revenue-presentation.png"
                   />
                 </a>
               </div>

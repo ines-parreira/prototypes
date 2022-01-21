@@ -22,7 +22,7 @@ exports[`<CirclePaywall /> should match the snapshot for the provided feature co
           <img
             alt="Feature preview"
             class="img-fluid previewImage"
-            src="/static/private/img/paywalls/screens/self-service-statistics.png"
+            src="/static/private/js/assets/img/paywalls/screens/self-service-statistics.png"
           />
         </div>
         <div

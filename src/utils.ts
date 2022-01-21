@@ -649,21 +649,6 @@ export function toQueryParams(obj: Record<string, unknown>): string {
         .join('&')
 }
 
-/**
- * Convert emoji chars to <img/> tags using Twitter Emoji (twemoji).
- */
-export function emoji(
-    emojiContainer: string | HTMLElement
-): string | HTMLElement {
-    if (typeof window.twemoji === 'undefined') {
-        return emojiContainer
-    }
-
-    return window.twemoji.parse(emojiContainer, {
-        base: `${window.GORGIAS_ASSETS_URL as string}/static/emoji/`,
-    })
-}
-
 export function getActionTemplate(actionName: string) {
     return ACTION_TEMPLATES.find(
         (template) => template.name === actionName

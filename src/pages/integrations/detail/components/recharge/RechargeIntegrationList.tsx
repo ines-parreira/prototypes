@@ -57,10 +57,10 @@ export class RechargeIntegrationList extends React.Component<Props, State> {
         const imagesUrl = [
             `${
                 window.GORGIAS_ASSETS_URL || ''
-            }/static/private/img/presentationals/recharge-carousel_1.jpg`,
+            }/static/private/js/assets/img/presentationals/recharge-carousel_1.jpg`,
             `${
                 window.GORGIAS_ASSETS_URL || ''
-            }/static/private/img/presentationals/recharge-carousel_2.jpg`,
+            }/static/private/js/assets/img/presentationals/recharge-carousel_2.jpg`,
         ]
 
         const longTypeDescription = (

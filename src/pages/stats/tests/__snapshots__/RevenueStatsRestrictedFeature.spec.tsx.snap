@@ -58,13 +58,13 @@ exports[`<RevenueStatsRestrictedFeature /> should render the restricted feature 
                 tabindex="-1"
               >
                 <a
-                  href="/static/private/img/presentationals/revenue-presentation.png"
+                  href="/static/private/js/assets/img/presentationals/revenue-presentation.png"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
                   <img
                     alt="carousel content"
-                    src="/static/private/img/presentationals/revenue-presentation.png"
+                    src="/static/private/js/assets/img/presentationals/revenue-presentation.png"
                   />
                 </a>
               </div>
@@ -84,13 +84,13 @@ exports[`<RevenueStatsRestrictedFeature /> should render the restricted feature 
                 tabindex="-1"
               >
                 <a
-                  href="/static/private/img/presentationals/revenue-presentation.png"
+                  href="/static/private/js/assets/img/presentationals/revenue-presentation.png"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
                   <img
                     alt="carousel content"
-                    src="/static/private/img/presentationals/revenue-presentation.png"
+                    src="/static/private/js/assets/img/presentationals/revenue-presentation.png"
                   />
                 </a>
               </div>
