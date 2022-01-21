@@ -2,19 +2,27 @@
 
 exports[`ListField component should render with no items and an "add" button 1`] = `
 <div>
-  <ForwardRef
-    intent="secondary"
+  <Button
+    className="d-flex align-items-center"
+    color="secondary"
+    disabled={false}
     onClick={[Function]}
+    size="sm"
+    tag="button"
   >
-    add
-  </ForwardRef>
+    <i
+      className="material-icons md-2"
+    >
+      add
+    </i>
+  </Button>
 </div>
 `;
 
 exports[`ListField component should render with some items and an "add" button 1`] = `
 <div>
   <Row
-    className="mb-3 form-row"
+    className="row"
     key="0"
     tag="div"
     widths={
@@ -28,7 +36,7 @@ exports[`ListField component should render with some items and an "add" button 1
     }
   >
     <Col
-      className="flex-grow"
+      className="flex-grow pr-0"
       tag="div"
       widths={
         Array [
@@ -41,17 +49,20 @@ exports[`ListField component should render with some items and an "add" button 1
       }
     >
       <InputField
+        className="my-0"
         maxLength={100}
         name="item-0"
         onChange={[Function]}
         placeholder="Type something (limited to 100 characters)"
         required={true}
+        size={300}
         type="text"
         value="foo"
       />
     </Col>
     <Col
-      className="d-flex col-sm-auto"
+      className="d-flex col-sm-auto delete"
+      onClick={[Function]}
       tag="div"
       widths={
         Array [
@@ -63,17 +74,15 @@ exports[`ListField component should render with some items and an "add" button 1
         ]
       }
     >
-      <ForwardRef
-        intent="destructive"
-        onClick={[Function]}
-        type="button"
+      <i
+        className="material-icons md-2 text-danger"
       >
-        delete
-      </ForwardRef>
+        clear
+      </i>
     </Col>
   </Row>
   <Row
-    className="mb-3 form-row"
+    className="row"
     key="1"
     tag="div"
     widths={
@@ -87,7 +96,7 @@ exports[`ListField component should render with some items and an "add" button 1
     }
   >
     <Col
-      className="flex-grow"
+      className="flex-grow pr-0"
       tag="div"
       widths={
         Array [
@@ -100,17 +109,20 @@ exports[`ListField component should render with some items and an "add" button 1
       }
     >
       <InputField
+        className="my-0"
         maxLength={100}
         name="item-1"
         onChange={[Function]}
         placeholder="Type something (limited to 100 characters)"
         required={true}
+        size={300}
         type="text"
         value="bar"
       />
     </Col>
     <Col
-      className="d-flex col-sm-auto"
+      className="d-flex col-sm-auto delete"
+      onClick={[Function]}
       tag="div"
       widths={
         Array [
@@ -122,28 +134,34 @@ exports[`ListField component should render with some items and an "add" button 1
         ]
       }
     >
-      <ForwardRef
-        intent="destructive"
-        onClick={[Function]}
-        type="button"
+      <i
+        className="material-icons md-2 text-danger"
       >
-        delete
-      </ForwardRef>
+        clear
+      </i>
     </Col>
   </Row>
-  <ForwardRef
-    intent="secondary"
+  <Button
+    className="d-flex align-items-center"
+    color="secondary"
+    disabled={false}
     onClick={[Function]}
+    size="sm"
+    tag="button"
   >
-    add
-  </ForwardRef>
+    <i
+      className="material-icons md-2"
+    >
+      add
+    </i>
+  </Button>
 </div>
 `;
 
 exports[`ListField component should render with the max number of items and no "add" button 1`] = `
 <div>
   <Row
-    className="mb-3 form-row"
+    className="row"
     key="0"
     tag="div"
     widths={
@@ -157,7 +175,7 @@ exports[`ListField component should render with the max number of items and no "
     }
   >
     <Col
-      className="flex-grow"
+      className="flex-grow pr-0"
       tag="div"
       widths={
         Array [
@@ -170,17 +188,20 @@ exports[`ListField component should render with the max number of items and no "
       }
     >
       <InputField
+        className="my-0"
         maxLength={100}
         name="item-0"
         onChange={[Function]}
         placeholder="Type something (limited to 100 characters)"
         required={true}
+        size={300}
         type="text"
         value="foo"
       />
     </Col>
     <Col
-      className="d-flex col-sm-auto"
+      className="d-flex col-sm-auto delete"
+      onClick={[Function]}
       tag="div"
       widths={
         Array [
@@ -192,17 +213,15 @@ exports[`ListField component should render with the max number of items and no "
         ]
       }
     >
-      <ForwardRef
-        intent="destructive"
-        onClick={[Function]}
-        type="button"
+      <i
+        className="material-icons md-2 text-danger"
       >
-        delete
-      </ForwardRef>
+        clear
+      </i>
     </Col>
   </Row>
   <Row
-    className="mb-3 form-row"
+    className="row"
     key="1"
     tag="div"
     widths={
@@ -216,7 +235,7 @@ exports[`ListField component should render with the max number of items and no "
     }
   >
     <Col
-      className="flex-grow"
+      className="flex-grow pr-0"
       tag="div"
       widths={
         Array [
@@ -229,17 +248,20 @@ exports[`ListField component should render with the max number of items and no "
       }
     >
       <InputField
+        className="my-0"
         maxLength={100}
         name="item-1"
         onChange={[Function]}
         placeholder="Type something (limited to 100 characters)"
         required={true}
+        size={300}
         type="text"
         value="bar"
       />
     </Col>
     <Col
-      className="d-flex col-sm-auto"
+      className="d-flex col-sm-auto delete"
+      onClick={[Function]}
       tag="div"
       widths={
         Array [
@@ -251,14 +273,26 @@ exports[`ListField component should render with the max number of items and no "
         ]
       }
     >
-      <ForwardRef
-        intent="destructive"
-        onClick={[Function]}
-        type="button"
+      <i
+        className="material-icons md-2 text-danger"
       >
-        delete
-      </ForwardRef>
+        clear
+      </i>
     </Col>
   </Row>
+  <Button
+    className="d-flex align-items-center"
+    color="secondary"
+    disabled={true}
+    onClick={[Function]}
+    size="sm"
+    tag="button"
+  >
+    <i
+      className="material-icons md-2"
+    >
+      add
+    </i>
+  </Button>
 </div>
 `;

@@ -20,7 +20,9 @@ export function GorgiasChatIntegrationOneClickInstallationCard({
     shopifyIntegrations,
     hasAutomationAddOn,
 }: Props) {
-    const [loading, setLoading] = useState<{[key: string]: boolean}>({})
+    const [loading, setLoading] = useState<{
+        [key: string]: {installation?: boolean; disconnection?: boolean} | null
+    }>({})
     const shopifyIntegrationIds: List<number> = integration.getIn(
         ['meta', 'shopify_integration_ids'],
         fromJS([])
@@ -77,7 +79,7 @@ export function GorgiasChatIntegrationOneClickInstallationCard({
     )
 
     const onInstall = async (targetIntegrationId: number) => {
-        setLoading({...loading, [targetIntegrationId]: true})
+        setLoading({...loading, [targetIntegrationId]: {installation: true}})
 
         let targetIntegrationIdsList: List<number> = integration.getIn(
             ['meta', 'shopify_integration_ids'],
@@ -102,48 +104,18 @@ export function GorgiasChatIntegrationOneClickInstallationCard({
 
         await updateOrCreateIntegration(fromJS(form))
 
-        setLoading({...loading, [targetIntegrationId]: false})
+        setLoading({...loading, [targetIntegrationId]: null})
     }
 
-    const onUninstallAndOrRemove = async (
-        targetIntegrationId: number,
-        withUninstall: boolean,
-        withRemove: boolean
-    ) => {
-        setLoading({...loading, [targetIntegrationId]: true})
-
+    const onUninstall = async (targetIntegrationId: number) => {
+        setLoading({...loading, [targetIntegrationId]: {installation: true}})
         const meta: Map<any, any> = integration.get('meta')
-        let updatedMeta: Map<any, any> = meta.set(
-            'shop_name',
-            meta.get('shop_name')
+        const indexToDelete: number = shopifyIntegrationIds.findIndex(
+            (value) => value === targetIntegrationId
         )
-
-        if (withUninstall) {
-            const indexToDelete: number = shopifyIntegrationIds.findIndex(
-                (value) => value === targetIntegrationId
-            )
-            updatedMeta = updatedMeta.deleteIn([
-                'shopify_integration_ids',
-                indexToDelete,
-            ])
-        }
-
-        if (
-            withUninstall &&
-            withRemove &&
-            targetIntegrationId === meta.get('shop_integration_id')
-        ) {
-            // when disconnecting the store this integration was originally connected to
-            // uninstall it from all other possibly remaining stores
-            updatedMeta = updatedMeta.set('shopify_integration_ids', [])
-        }
-
-        if (withRemove) {
-            updatedMeta = updatedMeta.set('shop_name', null)
-            updatedMeta = updatedMeta.set('shop_type', null)
-            updatedMeta = updatedMeta.set('shop_integration_id', null)
-        }
-
+        const updatedMeta = meta
+            .set('shop_name', meta.get('shop_name'))
+            .deleteIn(['shopify_integration_ids', indexToDelete])
         const form = {
             id: integration.get('id'),
             type: integration.get('type'),
@@ -152,7 +124,26 @@ export function GorgiasChatIntegrationOneClickInstallationCard({
 
         await updateOrCreateIntegration(fromJS(form))
 
-        setLoading({...loading, [targetIntegrationId]: false})
+        setLoading({...loading, [targetIntegrationId]: null})
+    }
+
+    const onDisconnect = async (targetIntegrationId: number) => {
+        setLoading({...loading, [targetIntegrationId]: {disconnection: true}})
+        const meta: Map<any, any> = integration.get('meta')
+        const updatedMeta: Map<any, any> = meta
+            .set('shop_name', null)
+            .set('shop_type', null)
+            .set('shop_integration_id', null)
+            .set('shopify_integration_ids', [])
+        const form = {
+            id: integration.get('id'),
+            type: integration.get('type'),
+            meta: updatedMeta,
+        }
+
+        await updateOrCreateIntegration(fromJS(form))
+
+        setLoading({...loading, [targetIntegrationId]: null})
     }
 
     return (
@@ -190,7 +181,8 @@ export function GorgiasChatIntegrationOneClickInstallationCard({
                         isLegacyInstallation={false}
                         isIntegrationDeactivated={true}
                         onInstall={onInstall}
-                        onUninstallAndOrRemove={onUninstallAndOrRemove}
+                        onUninstall={onUninstall}
+                        onDisconnect={onDisconnect}
                         loading={loading}
                     />
                 ) : null}
@@ -206,6 +198,10 @@ export function GorgiasChatIntegrationOneClickInstallationCard({
                     const isLegacyInstallation: boolean =
                         targetIntegrationId !== associatedShopifyStoreId
 
+                    const hasLegacyInstallations =
+                        !isLegacyInstallation &&
+                        filteredShopifyIntegrations.size > 1
+
                     const isIntegrationDeactivated = Boolean(
                         targetIntegration?.get('deactivated_datetime')
                     )
@@ -217,9 +213,11 @@ export function GorgiasChatIntegrationOneClickInstallationCard({
                             targetIntegrationId={targetIntegrationId}
                             targetIntegrationName={targetIntegrationName}
                             isLegacyInstallation={isLegacyInstallation}
+                            hasLegacyInstallations={hasLegacyInstallations}
                             isIntegrationDeactivated={isIntegrationDeactivated}
                             onInstall={onInstall}
-                            onUninstallAndOrRemove={onUninstallAndOrRemove}
+                            onUninstall={onUninstall}
+                            onDisconnect={onDisconnect}
                             loading={loading}
                         />
                     )

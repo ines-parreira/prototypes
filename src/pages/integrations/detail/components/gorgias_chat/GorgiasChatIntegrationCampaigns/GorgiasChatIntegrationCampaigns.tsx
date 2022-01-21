@@ -4,13 +4,15 @@ import {Map, fromJS, List} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 import moment from 'moment'
 import {Breadcrumb, BreadcrumbItem, Button, Container, Table} from 'reactstrap'
+import classnames from 'classnames'
 
 import {updateCampaign} from '../../../../../../state/campaigns/actions'
 import ToggleButton from '../../../../../common/components/ToggleButton'
 import PageHeader from '../../../../../common/components/PageHeader'
 import ForwardIcon from '../../ForwardIcon'
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
-import css from '../../../../../settings/settings.less'
+
+import css from './GorgiasChatIntegrationCampaigns.less'
 
 type Props = {
     integration: Map<any, any>
@@ -90,7 +92,14 @@ export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
                 </Container>
 
                 {!campaigns.isEmpty() && (
-                    <Table className="table-integrations mt-3" hover>
+                    <Table
+                        className={classnames(
+                            'table-integrations',
+                            'mt-3',
+                            css.campaignsTable
+                        )}
+                        hover
+                    >
                         <tbody>
                             {campaigns.map((campaign: Map<any, any>) => {
                                 const editLink =

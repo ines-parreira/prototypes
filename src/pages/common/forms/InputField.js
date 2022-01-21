@@ -24,6 +24,7 @@ export default class InputField extends FormField {
             rightAddon: PropTypes.string,
             caseInsensitive: PropTypes.bool,
             tooltip: PropTypes.string,
+            tooltipIcon: PropTypes.node,
         },
         FormField.propTypes
     )
@@ -98,6 +99,7 @@ export default class InputField extends FormField {
             rightAddon,
             help,
             tooltip,
+            tooltipIcon,
             className,
             suffix,
         } = this.props
@@ -127,15 +129,21 @@ export default class InputField extends FormField {
                         <Label htmlFor={this.id} className="control-label">
                             {label}
                         </Label>
-                        <i
-                            id={`${this.id}-tooltip`}
-                            className={classnames(
-                                'material-icons-outlined',
-                                css.tooltip
+                        <span id={`${this.id}-tooltip`}>
+                            {tooltipIcon ? (
+                                tooltipIcon
+                            ) : (
+                                <i
+                                    className={classnames(
+                                        'material-icons-outlined',
+                                        css.tooltip
+                                    )}
+                                >
+                                    info
+                                </i>
                             )}
-                        >
-                            info
-                        </i>
+                        </span>
+
                         <Tooltip
                             target={`${this.id}-tooltip`}
                             style={{textAlign: 'left'}}

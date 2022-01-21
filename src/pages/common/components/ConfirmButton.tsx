@@ -1,4 +1,4 @@
-import React, {MouseEvent, useMemo, useRef, useState} from 'react'
+import React, {MouseEvent, useMemo, useRef, useState, useEffect} from 'react'
 import classnames from 'classnames'
 import {
     Button,
@@ -22,8 +22,10 @@ type Props = {
     className?: string
     color?: string
     onToggle?: (e: MouseEvent) => void
+    onToggleConfirmation?: (confirmationDisplayed: boolean) => void
     confirm?: () => void | Promise<any>
     confirmColor?: string
+    confirmText?: string
     containerElement?: string | HTMLElement | React.RefObject<HTMLElement>
     content?: ReactNode
     disabled?: boolean
@@ -34,6 +36,7 @@ type Props = {
     type?: 'button' | 'submit'
     skip?: boolean
     buttonTitle?: string
+    popOverButtonTitle?: string
 } & Pick<ButtonProps, KnownKeys<ButtonProps>>
 
 const ConfirmButton = ({
@@ -43,6 +46,7 @@ const ConfirmButton = ({
     children = null,
     confirm = _noop,
     confirmColor = 'success',
+    confirmText = 'Confirm',
     containerElement,
     content = null,
     disabled = false,
@@ -52,6 +56,7 @@ const ConfirmButton = ({
     skip = false,
     title = 'Are you sure?',
     type = 'button',
+    onToggleConfirmation,
     ...buttonProps
 }: Props) => {
     const ref = useRef<HTMLDivElement>(null)
@@ -69,6 +74,12 @@ const ConfirmButton = ({
 
         return 'body'
     }, [containerElement, ref.current, type])
+
+    useEffect(() => {
+        if (onToggleConfirmation) {
+            onToggleConfirmation(isConfirmationDisplayed)
+        }
+    }, [onToggleConfirmation, isConfirmationDisplayed])
 
     const showConfirmation = (e: MouseEvent) => {
         if (type === 'submit') {
@@ -143,7 +154,7 @@ const ConfirmButton = ({
                         color={confirmColor}
                         onClick={confirmAction}
                     >
-                        Confirm
+                        {confirmText}
                     </Button>
                 </PopoverBody>
             </Popover>

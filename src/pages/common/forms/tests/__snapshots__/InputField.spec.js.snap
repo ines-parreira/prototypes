@@ -312,12 +312,15 @@ exports[`InputField should render a tooltip next to the label 1`] = `
     >
       Label
     </Label>
-    <i
-      className="material-icons-outlined tooltip"
+    <span
       id="id-input-6-tooltip"
     >
-      info
-    </i>
+      <i
+        className="material-icons-outlined tooltip"
+      >
+        info
+      </i>
+    </span>
     <Tooltip
       style={
         Object {

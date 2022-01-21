@@ -73,6 +73,8 @@ describe('<GorgiasChatIntegrationInstall/>', () => {
     }
 
     it('should display the associated Shopify store when shop_name and shop_type are defined and installed in shopify_integration_ids', () => {
+        const div = document.createElement('div')
+        document.body.appendChild(div)
         const component = mount(
             <GorgiasChatIntegrationInstall
                 {...minProps}
@@ -87,7 +89,8 @@ describe('<GorgiasChatIntegrationInstall/>', () => {
                         script_url: 'config.gorgias.io/foo/chat/bar',
                     },
                 })}
-            />
+            />,
+            {attachTo: div}
         )
 
         expect(component).toMatchSnapshot()
@@ -116,6 +119,8 @@ describe('<GorgiasChatIntegrationInstall/>', () => {
     })
 
     it('should display the Custom installation block if shop_name & shop_type are not set and there is no shopify_integration_ids', () => {
+        const div = document.createElement('div')
+        document.body.appendChild(div)
         const component = mount(
             <GorgiasChatIntegrationInstall
                 {...minProps}
@@ -128,7 +133,8 @@ describe('<GorgiasChatIntegrationInstall/>', () => {
                         script_url: 'config.gorgias.io/foo/chat/bar',
                     },
                 })}
-            />
+            />,
+            {attachTo: div}
         )
 
         expect(component).toMatchSnapshot()

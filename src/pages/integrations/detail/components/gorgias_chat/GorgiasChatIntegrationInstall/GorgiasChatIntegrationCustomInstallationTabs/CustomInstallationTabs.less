@@ -2,32 +2,36 @@
 
 :local {
     .wrapper {
-        div,
-        p,
-        h4 {
+        > div,
+        > p,
+        > h4 {
             margin-bottom: 24px;
         }
-        div:last-child {
+        > div:last-child {
             margin-bottom: 0px;
         }
     }
 
     .instruction {
         display: flex;
-        align-items: flex-start;
+        align-items: center;
 
         .instruction-number {
             display: block;
             width: 24px;
-            height: 24px;
             font-weight: bold;
             color: @classic-neutral-grey-0;
             border-radius: 50%;
             background-color: @classic-neutral-grey-6;
             margin-right: 15px;
+            margin-bottom: 0;
             text-align: center;
             font-size: 14px;
             padding: 2px;
+        }
+
+        .instruction-text {
+            // height: 24px;
         }
     }
 }

@@ -45,91 +45,85 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
       class="pageContainer container-fluid"
     >
       <div
-        class="row"
+        class="row row"
       >
         <div
-          class="col"
+          class="content col"
         >
-          <div
-            class="selectStoreTypeContainer"
-          >
-            <label
-              class=""
-              style="font-weight: bold;"
-            >
-              Where will you use this chat?
-               
-              <span
-                class="redStar"
-              >
-                *
-              </span>
-            </label>
-            <div
-              class="radioButtonGroup"
-            >
-              <div
-                class="wrapper selected radioButton"
-                id="store-radio-button-42"
-              >
-                <div>
-                  <label
-                    class="label"
-                  >
-                    <input
-                      checked=""
-                      class="input"
-                      type="radio"
-                    />
-                    Shopify store
-                  </label>
-                </div>
-              </div>
-              <div
-                class="wrapper radioButton"
-                id="store-radio-button-42"
-              >
-                <div>
-                  <label
-                    class="label"
-                  >
-                    <input
-                      class="input"
-                      type="radio"
-                    />
-                    Any other website
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
           <form
             class=""
           >
             <div
+              class="selectStoreTypeContainer"
+            >
+              <label
+                class="bold"
+              >
+                Where will you use this chat?
+                <span
+                  class="redStar"
+                >
+                  *
+                </span>
+              </label>
+              <div
+                class="radioButtonGroup"
+              >
+                <div
+                  class="wrapper selected radioButton"
+                  id="store-radio-button-42"
+                >
+                  <div>
+                    <label
+                      class="label"
+                    >
+                      <input
+                        checked=""
+                        class="input"
+                        type="radio"
+                      />
+                      Shopify store
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="wrapper radioButton"
+                  id="store-radio-button-42"
+                >
+                  <div>
+                    <label
+                      class="label"
+                    >
+                      <input
+                        class="input"
+                        type="radio"
+                      />
+                      Any other website
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
               class="form"
             >
               <div
-                class="fieldset"
+                class="fieldset formGroup"
               >
                 <label
-                  class=""
-                  style="font-weight: bold;"
+                  class="bold"
                 >
                   Select a store
-                   
                   <span
-                    style="color: rgb(242, 79, 102);"
+                    class="error"
                   >
                     *
                   </span>
-                   
                   <span
                     id="select-store"
                   >
                     <i
-                      class="material-icons"
-                      style="color: rgb(153, 165, 182);"
+                      class="material-icons neutral"
                     >
                       info_outline
                     </i>
@@ -151,6 +145,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       <span
                         class="dropdownPlaceholder"
                       >
+                        <img
+                          alt="shopifyStore"
+                          src="test-file-stub"
+                          style="margin-right: 16px;"
+                        />
                         Select a store
                       </span>
                     </button>
@@ -186,7 +185,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
                 <div
-                  class="InputField required form-group"
+                  class="InputField formGroup required form-group"
                   color=""
                 >
                   <label
@@ -209,7 +208,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
+                  class="InputField formGroup form-group"
                   color=""
                 >
                   <label
@@ -231,7 +230,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
+                  class="InputField formGroup form-group"
                   color=""
                 >
                   <label
@@ -253,7 +252,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
                 <div
-                  class="colorPickersWrapper"
+                  class="colorPickersWrapper formGroup"
                 >
                   <div
                     class="InputField form-group"
@@ -315,10 +314,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
                 <div
-                  class="positionInputsWrapper"
+                  class="positionWrapper"
                 >
                   <div
-                    class="InputField form-group"
+                    class="InputField formGroup form-group"
                     color=""
                   >
                     <label
@@ -359,104 +358,116 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     </div>
                   </div>
                   <div
-                    class="InputField form-group"
-                    color=""
+                    class="positionInputsWrapper"
                   >
                     <div
-                      class="label-wrapper"
+                      class="InputField formGroup form-group"
+                      color=""
                     >
-                      <label
-                        class="control-label"
-                        for="id-input-42"
-                      >
-                        Move widget left / right
-                      </label>
-                      <i
-                        class="material-icons-outlined tooltip"
-                        id="id-input-42-tooltip"
-                      >
-                        info
-                      </i>
-                    </div>
-                    <div
-                      class="with-suffix"
-                    >
-                      <input
-                        class="form-control"
-                        id="id-input-42"
-                        max="200"
-                        min="-20"
-                        suffix="px"
-                        type="number"
-                        value="0"
-                      />
                       <div
-                        class="input-suffix-wrapper"
+                        class="label-wrapper"
                       >
-                        <div
-                          class="spacer"
+                        <label
+                          class="control-label"
+                          for="id-input-42"
                         >
-                          0
-                        </div>
-                        <div
-                          class="suffix"
+                          Move widget left / right
+                        </label>
+                        <span
+                          id="id-input-42-tooltip"
                         >
-                          px
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </div>
+                      <div
+                        class="with-suffix"
+                      >
+                        <input
+                          class="form-control"
+                          id="id-input-42"
+                          max="200"
+                          min="-20"
+                          suffix="px"
+                          tooltipicon="[object Object]"
+                          type="number"
+                          value="0"
+                        />
+                        <div
+                          class="input-suffix-wrapper"
+                        >
+                          <div
+                            class="spacer"
+                          >
+                            0
+                          </div>
+                          <div
+                            class="suffix"
+                          >
+                            px
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="InputField form-group"
-                    color=""
-                  >
                     <div
-                      class="label-wrapper"
+                      class="InputField formGroup form-group"
+                      color=""
                     >
-                      <label
-                        class="control-label"
-                        for="id-input-42"
-                      >
-                        Move widget up / down
-                      </label>
-                      <i
-                        class="material-icons-outlined tooltip"
-                        id="id-input-42-tooltip"
-                      >
-                        info
-                      </i>
-                    </div>
-                    <div
-                      class="with-suffix"
-                    >
-                      <input
-                        class="form-control"
-                        id="id-input-42"
-                        max="200"
-                        min="-20"
-                        suffix="px"
-                        type="number"
-                        value="0"
-                      />
                       <div
-                        class="input-suffix-wrapper"
+                        class="label-wrapper"
                       >
-                        <div
-                          class="spacer"
+                        <label
+                          class="control-label"
+                          for="id-input-42"
                         >
-                          0
-                        </div>
-                        <div
-                          class="suffix"
+                          Move widget up / down
+                        </label>
+                        <span
+                          id="id-input-42-tooltip"
                         >
-                          px
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </div>
+                      <div
+                        class="with-suffix"
+                      >
+                        <input
+                          class="form-control"
+                          id="id-input-42"
+                          max="200"
+                          min="-20"
+                          suffix="px"
+                          tooltipicon="[object Object]"
+                          type="number"
+                          value="0"
+                        />
+                        <div
+                          class="input-suffix-wrapper"
+                        >
+                          <div
+                            class="spacer"
+                          >
+                            0
+                          </div>
+                          <div
+                            class="suffix"
+                          >
+                            px
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
+                  class="InputField formGroup form-group"
                   color=""
                 >
                   <label
@@ -532,40 +543,37 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
               </div>
+              <div>
+                <button
+                  class="btn btn-success disabled"
+                  disabled=""
+                  type="submit"
+                >
+                  Add new chat
+                </button>
+              </div>
             </div>
-            <button
-              class="btn btn-success disabled"
-              disabled=""
-              type="submit"
-            >
-              Add new chat
-            </button>
           </form>
         </div>
         <div
-          class="offsetChatPreview p-0 col"
+          class="column preview col"
         >
           <div
-            class="d-flex justify-content-center align-items-center"
-            style="width: 30em;"
+            class="mb-3 btn-group"
+            role="group"
           >
-            <div
-              class="mb-3 btn-group"
-              role="group"
+            <button
+              class="btn btn-info"
+              type="button"
             >
-              <button
-                class="btn btn-info"
-                type="button"
-              >
-                During business hours
-              </button>
-              <button
-                class="btn btn-secondary"
-                type="button"
-              >
-                Outside business hours
-              </button>
-            </div>
+              During business hours
+            </button>
+            <button
+              class="btn btn-secondary"
+              type="button"
+            >
+              Outside business hours
+            </button>
           </div>
           <div
             class="preview"
@@ -696,9 +704,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 </div>
               </div>
               <div
-                class="poweredby"
+                class="poweredBy"
               >
-                Powered by Gorgias
+                <div>
+                  <span>
+                    Powered by
+                  </span>
+                  <img
+                    alt="powered-by"
+                    src="test-file-stub"
+                  />
+                </div>
               </div>
               <div
                 class="footer"
@@ -783,23 +799,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/appearance"
+        to="/app/settings/integrations/gorgias_chat/2/campaigns"
       >
-        Appearance
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/2/installation"
-      >
-        Installation
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/2/preferences"
-      >
-        Preferences
+        Campaigns
       </a>
       <a
         activeclassname="active"
@@ -811,19 +813,33 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/campaigns"
+        to="/app/settings/integrations/gorgias_chat/2/appearance"
       >
-        Campaigns
+        Appearance
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/2/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/2/installation"
+      >
+        Installation
       </a>
     </nav>
     <div
       class="pageContainer container-fluid"
     >
       <div
-        class="row"
+        class="row row"
       >
         <div
-          class="col"
+          class="content col"
         >
           <form
             class=""
@@ -832,10 +848,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
               class="form"
             >
               <div
-                class="fieldset"
+                class="fieldset formGroup"
               >
                 <div
-                  class="InputField required form-group"
+                  class="InputField formGroup required form-group"
                   color=""
                 >
                   <label
@@ -858,7 +874,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
+                  class="InputField formGroup form-group"
                   color=""
                 >
                   <label
@@ -880,7 +896,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
+                  class="InputField formGroup form-group"
                   color=""
                 >
                   <label
@@ -910,7 +926,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     Avatar
                   </label>
                   <div
-                    class="mb-2 form-check"
+                    class="formGroup form-check"
                   >
                     <input
                       checked=""
@@ -924,7 +940,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     </label>
                   </div>
                   <div
-                    class="mb-2 form-check"
+                    class="formGroup form-check"
                   >
                     <input
                       class="form-check-input"
@@ -934,16 +950,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="control-label ml-2 form-check-label"
                     >
                       Use a single image for the whole team
-                      <small
-                        class="description form-text text-muted"
-                      >
-                        For example, use your company's logo. The image needs to be a square of 500kb maximum.
-                      </small>
                     </label>
+                    <small
+                      class="description form-text text-muted"
+                    >
+                      For example, use your company's logo. The image needs to be a square of 500kb maximum.
+                    </small>
                   </div>
                 </fieldset>
                 <div
-                  class="colorPickersWrapper"
+                  class="colorPickersWrapper formGroup"
                 >
                   <div
                     class="InputField form-group"
@@ -1005,10 +1021,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
                 <div
-                  class="positionInputsWrapper"
+                  class="positionWrapper"
                 >
                   <div
-                    class="InputField form-group"
+                    class="InputField formGroup form-group"
                     color=""
                   >
                     <label
@@ -1049,104 +1065,116 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     </div>
                   </div>
                   <div
-                    class="InputField form-group"
-                    color=""
+                    class="positionInputsWrapper"
                   >
                     <div
-                      class="label-wrapper"
+                      class="InputField formGroup form-group"
+                      color=""
                     >
-                      <label
-                        class="control-label"
-                        for="id-input-42"
-                      >
-                        Move widget left / right
-                      </label>
-                      <i
-                        class="material-icons-outlined tooltip"
-                        id="id-input-42-tooltip"
-                      >
-                        info
-                      </i>
-                    </div>
-                    <div
-                      class="with-suffix"
-                    >
-                      <input
-                        class="form-control"
-                        id="id-input-42"
-                        max="200"
-                        min="-20"
-                        suffix="px"
-                        type="number"
-                        value="0"
-                      />
                       <div
-                        class="input-suffix-wrapper"
+                        class="label-wrapper"
                       >
-                        <div
-                          class="spacer"
+                        <label
+                          class="control-label"
+                          for="id-input-42"
                         >
-                          0
-                        </div>
-                        <div
-                          class="suffix"
+                          Move widget left / right
+                        </label>
+                        <span
+                          id="id-input-42-tooltip"
                         >
-                          px
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </div>
+                      <div
+                        class="with-suffix"
+                      >
+                        <input
+                          class="form-control"
+                          id="id-input-42"
+                          max="200"
+                          min="-20"
+                          suffix="px"
+                          tooltipicon="[object Object]"
+                          type="number"
+                          value="0"
+                        />
+                        <div
+                          class="input-suffix-wrapper"
+                        >
+                          <div
+                            class="spacer"
+                          >
+                            0
+                          </div>
+                          <div
+                            class="suffix"
+                          >
+                            px
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="InputField form-group"
-                    color=""
-                  >
                     <div
-                      class="label-wrapper"
+                      class="InputField formGroup form-group"
+                      color=""
                     >
-                      <label
-                        class="control-label"
-                        for="id-input-42"
-                      >
-                        Move widget up / down
-                      </label>
-                      <i
-                        class="material-icons-outlined tooltip"
-                        id="id-input-42-tooltip"
-                      >
-                        info
-                      </i>
-                    </div>
-                    <div
-                      class="with-suffix"
-                    >
-                      <input
-                        class="form-control"
-                        id="id-input-42"
-                        max="200"
-                        min="-20"
-                        suffix="px"
-                        type="number"
-                        value="0"
-                      />
                       <div
-                        class="input-suffix-wrapper"
+                        class="label-wrapper"
                       >
-                        <div
-                          class="spacer"
+                        <label
+                          class="control-label"
+                          for="id-input-42"
                         >
-                          0
-                        </div>
-                        <div
-                          class="suffix"
+                          Move widget up / down
+                        </label>
+                        <span
+                          id="id-input-42-tooltip"
                         >
-                          px
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </div>
+                      <div
+                        class="with-suffix"
+                      >
+                        <input
+                          class="form-control"
+                          id="id-input-42"
+                          max="200"
+                          min="-20"
+                          suffix="px"
+                          tooltipicon="[object Object]"
+                          type="number"
+                          value="0"
+                        />
+                        <div
+                          class="input-suffix-wrapper"
+                        >
+                          <div
+                            class="spacer"
+                          >
+                            0
+                          </div>
+                          <div
+                            class="suffix"
+                          >
+                            px
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
+                  class="InputField formGroup form-group"
                   color=""
                 >
                   <label
@@ -1222,57 +1250,54 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
               </div>
-            </div>
-            <button
-              class="btn-loading btn btn-success disabled"
-              disabled=""
-              type="submit"
-            >
-              Save changes
-            </button>
-            <div
-              class="component d-inline-block float-right"
-              id=""
-            >
-              <button
-                class="btn btn-secondary"
-                id="confirm-button-1561334400000"
-                type="button"
-              >
-                <i
-                  class="material-icons mr-1 text-danger"
+              <div>
+                <button
+                  class="btn-loading btn btn-success disabled"
+                  disabled=""
+                  type="submit"
                 >
-                  delete
-                </i>
-                Delete chat
-              </button>
+                  Save changes
+                </button>
+                <div
+                  class="component d-inline-block float-right"
+                  id=""
+                >
+                  <button
+                    class="btn btn-secondary"
+                    id="confirm-button-1561334400000"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons mr-1 text-danger"
+                    >
+                      delete
+                    </i>
+                    Delete chat
+                  </button>
+                </div>
+              </div>
             </div>
           </form>
         </div>
         <div
-          class="offsetChatPreview p-0 col"
+          class="column preview col"
         >
           <div
-            class="d-flex justify-content-center align-items-center"
-            style="width: 30em;"
+            class="mb-3 btn-group"
+            role="group"
           >
-            <div
-              class="mb-3 btn-group"
-              role="group"
+            <button
+              class="btn btn-info"
+              type="button"
             >
-              <button
-                class="btn btn-info"
-                type="button"
-              >
-                During business hours
-              </button>
-              <button
-                class="btn btn-secondary"
-                type="button"
-              >
-                Outside business hours
-              </button>
-            </div>
+              During business hours
+            </button>
+            <button
+              class="btn btn-secondary"
+              type="button"
+            >
+              Outside business hours
+            </button>
           </div>
           <div
             class="preview"
@@ -1403,9 +1428,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 </div>
               </div>
               <div
-                class="poweredby"
+                class="poweredBy"
               >
-                Powered by Gorgias
+                <div>
+                  <span>
+                    Powered by
+                  </span>
+                  <img
+                    alt="powered-by"
+                    src="test-file-stub"
+                  />
+                </div>
               </div>
               <div
                 class="footer"
@@ -1490,23 +1523,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/appearance"
+        to="/app/settings/integrations/gorgias_chat/2/campaigns"
       >
-        Appearance
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/2/installation"
-      >
-        Installation
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/2/preferences"
-      >
-        Preferences
+        Campaigns
       </a>
       <a
         activeclassname="active"
@@ -1518,19 +1537,33 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/campaigns"
+        to="/app/settings/integrations/gorgias_chat/2/appearance"
       >
-        Campaigns
+        Appearance
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/2/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/2/installation"
+      >
+        Installation
       </a>
     </nav>
     <div
       class="pageContainer container-fluid"
     >
       <div
-        class="row"
+        class="row row"
       >
         <div
-          class="col"
+          class="content col"
         >
           <form
             class=""
@@ -1539,10 +1572,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
               class="form"
             >
               <div
-                class="fieldset"
+                class="fieldset formGroup"
               >
                 <div
-                  class="InputField required form-group"
+                  class="InputField formGroup required form-group"
                   color=""
                 >
                   <label
@@ -1565,7 +1598,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
+                  class="InputField formGroup form-group"
                   color=""
                 >
                   <label
@@ -1587,7 +1620,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
+                  class="InputField formGroup form-group"
                   color=""
                 >
                   <label
@@ -1617,7 +1650,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     Avatar
                   </label>
                   <div
-                    class="mb-2 form-check"
+                    class="formGroup form-check"
                   >
                     <input
                       checked=""
@@ -1631,7 +1664,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     </label>
                   </div>
                   <div
-                    class="mb-2 form-check"
+                    class="formGroup form-check"
                   >
                     <input
                       class="form-check-input"
@@ -1641,16 +1674,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="control-label ml-2 form-check-label"
                     >
                       Use a single image for the whole team
-                      <small
-                        class="description form-text text-muted"
-                      >
-                        For example, use your company's logo. The image needs to be a square of 500kb maximum.
-                      </small>
                     </label>
+                    <small
+                      class="description form-text text-muted"
+                    >
+                      For example, use your company's logo. The image needs to be a square of 500kb maximum.
+                    </small>
                   </div>
                 </fieldset>
                 <div
-                  class="colorPickersWrapper"
+                  class="colorPickersWrapper formGroup"
                 >
                   <div
                     class="InputField form-group"
@@ -1712,10 +1745,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
                 <div
-                  class="positionInputsWrapper"
+                  class="positionWrapper"
                 >
                   <div
-                    class="InputField form-group"
+                    class="InputField formGroup form-group"
                     color=""
                   >
                     <label
@@ -1756,104 +1789,116 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     </div>
                   </div>
                   <div
-                    class="InputField form-group"
-                    color=""
+                    class="positionInputsWrapper"
                   >
                     <div
-                      class="label-wrapper"
+                      class="InputField formGroup form-group"
+                      color=""
                     >
-                      <label
-                        class="control-label"
-                        for="id-input-42"
-                      >
-                        Move widget left / right
-                      </label>
-                      <i
-                        class="material-icons-outlined tooltip"
-                        id="id-input-42-tooltip"
-                      >
-                        info
-                      </i>
-                    </div>
-                    <div
-                      class="with-suffix"
-                    >
-                      <input
-                        class="form-control"
-                        id="id-input-42"
-                        max="200"
-                        min="-20"
-                        suffix="px"
-                        type="number"
-                        value="0"
-                      />
                       <div
-                        class="input-suffix-wrapper"
+                        class="label-wrapper"
                       >
-                        <div
-                          class="spacer"
+                        <label
+                          class="control-label"
+                          for="id-input-42"
                         >
-                          0
-                        </div>
-                        <div
-                          class="suffix"
+                          Move widget left / right
+                        </label>
+                        <span
+                          id="id-input-42-tooltip"
                         >
-                          px
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </div>
+                      <div
+                        class="with-suffix"
+                      >
+                        <input
+                          class="form-control"
+                          id="id-input-42"
+                          max="200"
+                          min="-20"
+                          suffix="px"
+                          tooltipicon="[object Object]"
+                          type="number"
+                          value="0"
+                        />
+                        <div
+                          class="input-suffix-wrapper"
+                        >
+                          <div
+                            class="spacer"
+                          >
+                            0
+                          </div>
+                          <div
+                            class="suffix"
+                          >
+                            px
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="InputField form-group"
-                    color=""
-                  >
                     <div
-                      class="label-wrapper"
+                      class="InputField formGroup form-group"
+                      color=""
                     >
-                      <label
-                        class="control-label"
-                        for="id-input-42"
-                      >
-                        Move widget up / down
-                      </label>
-                      <i
-                        class="material-icons-outlined tooltip"
-                        id="id-input-42-tooltip"
-                      >
-                        info
-                      </i>
-                    </div>
-                    <div
-                      class="with-suffix"
-                    >
-                      <input
-                        class="form-control"
-                        id="id-input-42"
-                        max="200"
-                        min="-20"
-                        suffix="px"
-                        type="number"
-                        value="0"
-                      />
                       <div
-                        class="input-suffix-wrapper"
+                        class="label-wrapper"
                       >
-                        <div
-                          class="spacer"
+                        <label
+                          class="control-label"
+                          for="id-input-42"
                         >
-                          0
-                        </div>
-                        <div
-                          class="suffix"
+                          Move widget up / down
+                        </label>
+                        <span
+                          id="id-input-42-tooltip"
                         >
-                          px
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </div>
+                      <div
+                        class="with-suffix"
+                      >
+                        <input
+                          class="form-control"
+                          id="id-input-42"
+                          max="200"
+                          min="-20"
+                          suffix="px"
+                          tooltipicon="[object Object]"
+                          type="number"
+                          value="0"
+                        />
+                        <div
+                          class="input-suffix-wrapper"
+                        >
+                          <div
+                            class="spacer"
+                          >
+                            0
+                          </div>
+                          <div
+                            class="suffix"
+                          >
+                            px
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
+                  class="InputField formGroup form-group"
                   color=""
                 >
                   <label
@@ -1929,56 +1974,53 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
               </div>
-            </div>
-            <button
-              class="btn btn-success"
-              type="submit"
-            >
-              Save changes
-            </button>
-            <div
-              class="component d-inline-block float-right"
-              id=""
-            >
-              <button
-                class="btn btn-secondary"
-                id="confirm-button-1561334400000"
-                type="button"
-              >
-                <i
-                  class="material-icons mr-1 text-danger"
+              <div>
+                <button
+                  class="btn btn-success"
+                  type="submit"
                 >
-                  delete
-                </i>
-                Delete chat
-              </button>
+                  Save changes
+                </button>
+                <div
+                  class="component d-inline-block float-right"
+                  id=""
+                >
+                  <button
+                    class="btn btn-secondary"
+                    id="confirm-button-1561334400000"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons mr-1 text-danger"
+                    >
+                      delete
+                    </i>
+                    Delete chat
+                  </button>
+                </div>
+              </div>
             </div>
           </form>
         </div>
         <div
-          class="offsetChatPreview p-0 col"
+          class="column preview col"
         >
           <div
-            class="d-flex justify-content-center align-items-center"
-            style="width: 30em;"
+            class="mb-3 btn-group"
+            role="group"
           >
-            <div
-              class="mb-3 btn-group"
-              role="group"
+            <button
+              class="btn btn-info"
+              type="button"
             >
-              <button
-                class="btn btn-info"
-                type="button"
-              >
-                During business hours
-              </button>
-              <button
-                class="btn btn-secondary"
-                type="button"
-              >
-                Outside business hours
-              </button>
-            </div>
+              During business hours
+            </button>
+            <button
+              class="btn btn-secondary"
+              type="button"
+            >
+              Outside business hours
+            </button>
           </div>
           <div
             class="preview"
@@ -2109,9 +2151,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 </div>
               </div>
               <div
-                class="poweredby"
+                class="poweredBy"
               >
-                Powered by Gorgias
+                <div>
+                  <span>
+                    Powered by
+                  </span>
+                  <img
+                    alt="powered-by"
+                    src="test-file-stub"
+                  />
+                </div>
               </div>
               <div
                 class="footer"
@@ -2196,23 +2246,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/appearance"
+        to="/app/settings/integrations/gorgias_chat/2/campaigns"
       >
-        Appearance
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/2/installation"
-      >
-        Installation
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/2/preferences"
-      >
-        Preferences
+        Campaigns
       </a>
       <a
         activeclassname="active"
@@ -2224,19 +2260,33 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/campaigns"
+        to="/app/settings/integrations/gorgias_chat/2/appearance"
       >
-        Campaigns
+        Appearance
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/2/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/2/installation"
+      >
+        Installation
       </a>
     </nav>
     <div
       class="pageContainer container-fluid"
     >
       <div
-        class="row"
+        class="row row"
       >
         <div
-          class="col"
+          class="content col"
         >
           <form
             class=""
@@ -2245,10 +2295,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
               class="form"
             >
               <div
-                class="fieldset"
+                class="fieldset formGroup"
               >
                 <div
-                  class="InputField required form-group"
+                  class="InputField formGroup required form-group"
                   color=""
                 >
                   <label
@@ -2271,7 +2321,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
+                  class="InputField formGroup form-group"
                   color=""
                 >
                   <label
@@ -2293,7 +2343,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
+                  class="InputField formGroup form-group"
                   color=""
                 >
                   <label
@@ -2323,7 +2373,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     Avatar
                   </label>
                   <div
-                    class="mb-2 form-check"
+                    class="formGroup form-check"
                   >
                     <input
                       checked=""
@@ -2337,7 +2387,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     </label>
                   </div>
                   <div
-                    class="mb-2 form-check"
+                    class="formGroup form-check"
                   >
                     <input
                       class="form-check-input"
@@ -2347,12 +2397,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class="control-label ml-2 form-check-label"
                     >
                       Use a single image for the whole team
-                      <small
-                        class="description form-text text-muted"
-                      >
-                        For example, use your company's logo. The image needs to be a square of 500kb maximum.
-                      </small>
                     </label>
+                    <small
+                      class="description form-text text-muted"
+                    >
+                      For example, use your company's logo. The image needs to be a square of 500kb maximum.
+                    </small>
                   </div>
                 </fieldset>
                 <div
@@ -2364,7 +2414,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   </div>
                 </div>
                 <div
-                  class="colorPickersWrapper"
+                  class="colorPickersWrapper formGroup"
                 >
                   <div
                     class="InputField form-group"
@@ -2426,10 +2476,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   </div>
                 </div>
                 <div
-                  class="positionInputsWrapper"
+                  class="positionWrapper"
                 >
                   <div
-                    class="InputField form-group"
+                    class="InputField formGroup form-group"
                     color=""
                   >
                     <label
@@ -2470,104 +2520,116 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     </div>
                   </div>
                   <div
-                    class="InputField form-group"
-                    color=""
+                    class="positionInputsWrapper"
                   >
                     <div
-                      class="label-wrapper"
+                      class="InputField formGroup form-group"
+                      color=""
                     >
-                      <label
-                        class="control-label"
-                        for="id-input-42"
-                      >
-                        Move widget left / right
-                      </label>
-                      <i
-                        class="material-icons-outlined tooltip"
-                        id="id-input-42-tooltip"
-                      >
-                        info
-                      </i>
-                    </div>
-                    <div
-                      class="with-suffix"
-                    >
-                      <input
-                        class="form-control"
-                        id="id-input-42"
-                        max="200"
-                        min="-20"
-                        suffix="px"
-                        type="number"
-                        value="0"
-                      />
                       <div
-                        class="input-suffix-wrapper"
+                        class="label-wrapper"
                       >
-                        <div
-                          class="spacer"
+                        <label
+                          class="control-label"
+                          for="id-input-42"
                         >
-                          0
-                        </div>
-                        <div
-                          class="suffix"
+                          Move widget left / right
+                        </label>
+                        <span
+                          id="id-input-42-tooltip"
                         >
-                          px
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </div>
+                      <div
+                        class="with-suffix"
+                      >
+                        <input
+                          class="form-control"
+                          id="id-input-42"
+                          max="200"
+                          min="-20"
+                          suffix="px"
+                          tooltipicon="[object Object]"
+                          type="number"
+                          value="0"
+                        />
+                        <div
+                          class="input-suffix-wrapper"
+                        >
+                          <div
+                            class="spacer"
+                          >
+                            0
+                          </div>
+                          <div
+                            class="suffix"
+                          >
+                            px
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="InputField form-group"
-                    color=""
-                  >
                     <div
-                      class="label-wrapper"
+                      class="InputField formGroup form-group"
+                      color=""
                     >
-                      <label
-                        class="control-label"
-                        for="id-input-42"
-                      >
-                        Move widget up / down
-                      </label>
-                      <i
-                        class="material-icons-outlined tooltip"
-                        id="id-input-42-tooltip"
-                      >
-                        info
-                      </i>
-                    </div>
-                    <div
-                      class="with-suffix"
-                    >
-                      <input
-                        class="form-control"
-                        id="id-input-42"
-                        max="200"
-                        min="-20"
-                        suffix="px"
-                        type="number"
-                        value="0"
-                      />
                       <div
-                        class="input-suffix-wrapper"
+                        class="label-wrapper"
                       >
-                        <div
-                          class="spacer"
+                        <label
+                          class="control-label"
+                          for="id-input-42"
                         >
-                          0
-                        </div>
-                        <div
-                          class="suffix"
+                          Move widget up / down
+                        </label>
+                        <span
+                          id="id-input-42-tooltip"
                         >
-                          px
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </div>
+                      <div
+                        class="with-suffix"
+                      >
+                        <input
+                          class="form-control"
+                          id="id-input-42"
+                          max="200"
+                          min="-20"
+                          suffix="px"
+                          tooltipicon="[object Object]"
+                          type="number"
+                          value="0"
+                        />
+                        <div
+                          class="input-suffix-wrapper"
+                        >
+                          <div
+                            class="spacer"
+                          >
+                            0
+                          </div>
+                          <div
+                            class="suffix"
+                          >
+                            px
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
+                  class="InputField formGroup form-group"
                   color=""
                 >
                   <label
@@ -2643,56 +2705,53 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   </div>
                 </div>
               </div>
-            </div>
-            <button
-              class="btn btn-success"
-              type="submit"
-            >
-              Save changes
-            </button>
-            <div
-              class="component d-inline-block float-right"
-              id=""
-            >
-              <button
-                class="btn btn-secondary"
-                id="confirm-button-1561334400000"
-                type="button"
-              >
-                <i
-                  class="material-icons mr-1 text-danger"
+              <div>
+                <button
+                  class="btn btn-success"
+                  type="submit"
                 >
-                  delete
-                </i>
-                Delete chat
-              </button>
+                  Save changes
+                </button>
+                <div
+                  class="component d-inline-block float-right"
+                  id=""
+                >
+                  <button
+                    class="btn btn-secondary"
+                    id="confirm-button-1561334400000"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons mr-1 text-danger"
+                    >
+                      delete
+                    </i>
+                    Delete chat
+                  </button>
+                </div>
+              </div>
             </div>
           </form>
         </div>
         <div
-          class="offsetChatPreview p-0 col"
+          class="column preview col"
         >
           <div
-            class="d-flex justify-content-center align-items-center"
-            style="width: 30em;"
+            class="mb-3 btn-group"
+            role="group"
           >
-            <div
-              class="mb-3 btn-group"
-              role="group"
+            <button
+              class="btn btn-info"
+              type="button"
             >
-              <button
-                class="btn btn-info"
-                type="button"
-              >
-                During business hours
-              </button>
-              <button
-                class="btn btn-secondary"
-                type="button"
-              >
-                Outside business hours
-              </button>
-            </div>
+              During business hours
+            </button>
+            <button
+              class="btn btn-secondary"
+              type="button"
+            >
+              Outside business hours
+            </button>
           </div>
           <div
             class="preview"
@@ -2823,9 +2882,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                 </div>
               </div>
               <div
-                class="poweredby"
+                class="poweredBy"
               >
-                Powered by Gorgias
+                <div>
+                  <span>
+                    Powered by
+                  </span>
+                  <img
+                    alt="powered-by"
+                    src="test-file-stub"
+                  />
+                </div>
               </div>
               <div
                 class="footer"
@@ -2910,23 +2977,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/appearance"
+        to="/app/settings/integrations/gorgias_chat/2/campaigns"
       >
-        Appearance
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/2/installation"
-      >
-        Installation
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/2/preferences"
-      >
-        Preferences
+        Campaigns
       </a>
       <a
         activeclassname="active"
@@ -2938,19 +2991,33 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/campaigns"
+        to="/app/settings/integrations/gorgias_chat/2/appearance"
       >
-        Campaigns
+        Appearance
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/2/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/2/installation"
+      >
+        Installation
       </a>
     </nav>
     <div
       class="pageContainer container-fluid"
     >
       <div
-        class="row"
+        class="row row"
       >
         <div
-          class="col"
+          class="content col"
         >
           <form
             class=""
@@ -2959,10 +3026,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
               class="form"
             >
               <div
-                class="fieldset"
+                class="fieldset formGroup"
               >
                 <div
-                  class="InputField required form-group"
+                  class="InputField formGroup required form-group"
                   color=""
                 >
                   <label
@@ -2985,7 +3052,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
+                  class="InputField formGroup form-group"
                   color=""
                 >
                   <label
@@ -3007,7 +3074,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
+                  class="InputField formGroup form-group"
                   color=""
                 >
                   <label
@@ -3037,7 +3104,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     Avatar
                   </label>
                   <div
-                    class="mb-2 form-check"
+                    class="formGroup form-check"
                   >
                     <input
                       checked=""
@@ -3051,7 +3118,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     </label>
                   </div>
                   <div
-                    class="mb-2 form-check"
+                    class="formGroup form-check"
                   >
                     <input
                       class="form-check-input"
@@ -3061,16 +3128,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="control-label ml-2 form-check-label"
                     >
                       Use a single image for the whole team
-                      <small
-                        class="description form-text text-muted"
-                      >
-                        For example, use your company's logo. The image needs to be a square of 500kb maximum.
-                      </small>
                     </label>
+                    <small
+                      class="description form-text text-muted"
+                    >
+                      For example, use your company's logo. The image needs to be a square of 500kb maximum.
+                    </small>
                   </div>
                 </fieldset>
                 <div
-                  class="colorPickersWrapper"
+                  class="colorPickersWrapper formGroup"
                 >
                   <div
                     class="InputField form-group"
@@ -3132,10 +3199,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   </div>
                 </div>
                 <div
-                  class="positionInputsWrapper"
+                  class="positionWrapper"
                 >
                   <div
-                    class="InputField form-group"
+                    class="InputField formGroup form-group"
                     color=""
                   >
                     <label
@@ -3176,104 +3243,116 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     </div>
                   </div>
                   <div
-                    class="InputField form-group"
-                    color=""
+                    class="positionInputsWrapper"
                   >
                     <div
-                      class="label-wrapper"
+                      class="InputField formGroup form-group"
+                      color=""
                     >
-                      <label
-                        class="control-label"
-                        for="id-input-42"
-                      >
-                        Move widget left / right
-                      </label>
-                      <i
-                        class="material-icons-outlined tooltip"
-                        id="id-input-42-tooltip"
-                      >
-                        info
-                      </i>
-                    </div>
-                    <div
-                      class="with-suffix"
-                    >
-                      <input
-                        class="form-control"
-                        id="id-input-42"
-                        max="200"
-                        min="-20"
-                        suffix="px"
-                        type="number"
-                        value="0"
-                      />
                       <div
-                        class="input-suffix-wrapper"
+                        class="label-wrapper"
                       >
-                        <div
-                          class="spacer"
+                        <label
+                          class="control-label"
+                          for="id-input-42"
                         >
-                          0
-                        </div>
-                        <div
-                          class="suffix"
+                          Move widget left / right
+                        </label>
+                        <span
+                          id="id-input-42-tooltip"
                         >
-                          px
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </div>
+                      <div
+                        class="with-suffix"
+                      >
+                        <input
+                          class="form-control"
+                          id="id-input-42"
+                          max="200"
+                          min="-20"
+                          suffix="px"
+                          tooltipicon="[object Object]"
+                          type="number"
+                          value="0"
+                        />
+                        <div
+                          class="input-suffix-wrapper"
+                        >
+                          <div
+                            class="spacer"
+                          >
+                            0
+                          </div>
+                          <div
+                            class="suffix"
+                          >
+                            px
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="InputField form-group"
-                    color=""
-                  >
                     <div
-                      class="label-wrapper"
+                      class="InputField formGroup form-group"
+                      color=""
                     >
-                      <label
-                        class="control-label"
-                        for="id-input-42"
-                      >
-                        Move widget up / down
-                      </label>
-                      <i
-                        class="material-icons-outlined tooltip"
-                        id="id-input-42-tooltip"
-                      >
-                        info
-                      </i>
-                    </div>
-                    <div
-                      class="with-suffix"
-                    >
-                      <input
-                        class="form-control"
-                        id="id-input-42"
-                        max="200"
-                        min="-20"
-                        suffix="px"
-                        type="number"
-                        value="0"
-                      />
                       <div
-                        class="input-suffix-wrapper"
+                        class="label-wrapper"
                       >
-                        <div
-                          class="spacer"
+                        <label
+                          class="control-label"
+                          for="id-input-42"
                         >
-                          0
-                        </div>
-                        <div
-                          class="suffix"
+                          Move widget up / down
+                        </label>
+                        <span
+                          id="id-input-42-tooltip"
                         >
-                          px
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </div>
+                      <div
+                        class="with-suffix"
+                      >
+                        <input
+                          class="form-control"
+                          id="id-input-42"
+                          max="200"
+                          min="-20"
+                          suffix="px"
+                          tooltipicon="[object Object]"
+                          type="number"
+                          value="0"
+                        />
+                        <div
+                          class="input-suffix-wrapper"
+                        >
+                          <div
+                            class="spacer"
+                          >
+                            0
+                          </div>
+                          <div
+                            class="suffix"
+                          >
+                            px
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
+                  class="InputField formGroup form-group"
                   color=""
                 >
                   <label
@@ -3349,56 +3428,53 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   </div>
                 </div>
               </div>
-            </div>
-            <button
-              class="btn btn-success"
-              type="submit"
-            >
-              Save changes
-            </button>
-            <div
-              class="component d-inline-block float-right"
-              id=""
-            >
-              <button
-                class="btn btn-secondary"
-                id="confirm-button-1561334400000"
-                type="button"
-              >
-                <i
-                  class="material-icons mr-1 text-danger"
+              <div>
+                <button
+                  class="btn btn-success"
+                  type="submit"
                 >
-                  delete
-                </i>
-                Delete chat
-              </button>
+                  Save changes
+                </button>
+                <div
+                  class="component d-inline-block float-right"
+                  id=""
+                >
+                  <button
+                    class="btn btn-secondary"
+                    id="confirm-button-1561334400000"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons mr-1 text-danger"
+                    >
+                      delete
+                    </i>
+                    Delete chat
+                  </button>
+                </div>
+              </div>
             </div>
           </form>
         </div>
         <div
-          class="offsetChatPreview p-0 col"
+          class="column preview col"
         >
           <div
-            class="d-flex justify-content-center align-items-center"
-            style="width: 30em;"
+            class="mb-3 btn-group"
+            role="group"
           >
-            <div
-              class="mb-3 btn-group"
-              role="group"
+            <button
+              class="btn btn-info"
+              type="button"
             >
-              <button
-                class="btn btn-info"
-                type="button"
-              >
-                During business hours
-              </button>
-              <button
-                class="btn btn-secondary"
-                type="button"
-              >
-                Outside business hours
-              </button>
-            </div>
+              During business hours
+            </button>
+            <button
+              class="btn btn-secondary"
+              type="button"
+            >
+              Outside business hours
+            </button>
           </div>
           <div
             class="preview"
@@ -3529,9 +3605,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 </div>
               </div>
               <div
-                class="poweredby"
+                class="poweredBy"
               >
-                Powered by Gorgias
+                <div>
+                  <span>
+                    Powered by
+                  </span>
+                  <img
+                    alt="powered-by"
+                    src="test-file-stub"
+                  />
+                </div>
               </div>
               <div
                 class="footer"
@@ -3616,23 +3700,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/appearance"
+        to="/app/settings/integrations/gorgias_chat/2/campaigns"
       >
-        Appearance
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/2/installation"
-      >
-        Installation
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/2/preferences"
-      >
-        Preferences
+        Campaigns
       </a>
       <a
         activeclassname="active"
@@ -3644,19 +3714,33 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/campaigns"
+        to="/app/settings/integrations/gorgias_chat/2/appearance"
       >
-        Campaigns
+        Appearance
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/2/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/2/installation"
+      >
+        Installation
       </a>
     </nav>
     <div
       class="pageContainer container-fluid"
     >
       <div
-        class="row"
+        class="row row"
       >
         <div
-          class="col"
+          class="content col"
         >
           <form
             class=""
@@ -3665,10 +3749,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
               class="form"
             >
               <div
-                class="fieldset"
+                class="fieldset formGroup"
               >
                 <div
-                  class="InputField required form-group"
+                  class="InputField formGroup required form-group"
                   color=""
                 >
                   <label
@@ -3691,7 +3775,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
+                  class="InputField formGroup form-group"
                   color=""
                 >
                   <label
@@ -3713,7 +3797,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
+                  class="InputField formGroup form-group"
                   color=""
                 >
                   <label
@@ -3743,7 +3827,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     Avatar
                   </label>
                   <div
-                    class="mb-2 form-check"
+                    class="formGroup form-check"
                   >
                     <input
                       checked=""
@@ -3757,7 +3841,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     </label>
                   </div>
                   <div
-                    class="mb-2 form-check"
+                    class="formGroup form-check"
                   >
                     <input
                       class="form-check-input"
@@ -3767,12 +3851,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="control-label ml-2 form-check-label"
                     >
                       Use a single image for the whole team
-                      <small
-                        class="description form-text text-muted"
-                      >
-                        For example, use your company's logo. The image needs to be a square of 500kb maximum.
-                      </small>
                     </label>
+                    <small
+                      class="description form-text text-muted"
+                    >
+                      For example, use your company's logo. The image needs to be a square of 500kb maximum.
+                    </small>
                   </div>
                 </fieldset>
                 <div
@@ -3790,7 +3874,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   </div>
                 </div>
                 <div
-                  class="colorPickersWrapper"
+                  class="colorPickersWrapper formGroup"
                 >
                   <div
                     class="InputField form-group"
@@ -3852,10 +3936,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   </div>
                 </div>
                 <div
-                  class="positionInputsWrapper"
+                  class="positionWrapper"
                 >
                   <div
-                    class="InputField form-group"
+                    class="InputField formGroup form-group"
                     color=""
                   >
                     <label
@@ -3896,104 +3980,116 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     </div>
                   </div>
                   <div
-                    class="InputField form-group"
-                    color=""
+                    class="positionInputsWrapper"
                   >
                     <div
-                      class="label-wrapper"
+                      class="InputField formGroup form-group"
+                      color=""
                     >
-                      <label
-                        class="control-label"
-                        for="id-input-42"
-                      >
-                        Move widget left / right
-                      </label>
-                      <i
-                        class="material-icons-outlined tooltip"
-                        id="id-input-42-tooltip"
-                      >
-                        info
-                      </i>
-                    </div>
-                    <div
-                      class="with-suffix"
-                    >
-                      <input
-                        class="form-control"
-                        id="id-input-42"
-                        max="200"
-                        min="-20"
-                        suffix="px"
-                        type="number"
-                        value="0"
-                      />
                       <div
-                        class="input-suffix-wrapper"
+                        class="label-wrapper"
                       >
-                        <div
-                          class="spacer"
+                        <label
+                          class="control-label"
+                          for="id-input-42"
                         >
-                          0
-                        </div>
-                        <div
-                          class="suffix"
+                          Move widget left / right
+                        </label>
+                        <span
+                          id="id-input-42-tooltip"
                         >
-                          px
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </div>
+                      <div
+                        class="with-suffix"
+                      >
+                        <input
+                          class="form-control"
+                          id="id-input-42"
+                          max="200"
+                          min="-20"
+                          suffix="px"
+                          tooltipicon="[object Object]"
+                          type="number"
+                          value="0"
+                        />
+                        <div
+                          class="input-suffix-wrapper"
+                        >
+                          <div
+                            class="spacer"
+                          >
+                            0
+                          </div>
+                          <div
+                            class="suffix"
+                          >
+                            px
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="InputField form-group"
-                    color=""
-                  >
                     <div
-                      class="label-wrapper"
+                      class="InputField formGroup form-group"
+                      color=""
                     >
-                      <label
-                        class="control-label"
-                        for="id-input-42"
-                      >
-                        Move widget up / down
-                      </label>
-                      <i
-                        class="material-icons-outlined tooltip"
-                        id="id-input-42-tooltip"
-                      >
-                        info
-                      </i>
-                    </div>
-                    <div
-                      class="with-suffix"
-                    >
-                      <input
-                        class="form-control"
-                        id="id-input-42"
-                        max="200"
-                        min="-20"
-                        suffix="px"
-                        type="number"
-                        value="0"
-                      />
                       <div
-                        class="input-suffix-wrapper"
+                        class="label-wrapper"
                       >
-                        <div
-                          class="spacer"
+                        <label
+                          class="control-label"
+                          for="id-input-42"
                         >
-                          0
-                        </div>
-                        <div
-                          class="suffix"
+                          Move widget up / down
+                        </label>
+                        <span
+                          id="id-input-42-tooltip"
                         >
-                          px
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </div>
+                      <div
+                        class="with-suffix"
+                      >
+                        <input
+                          class="form-control"
+                          id="id-input-42"
+                          max="200"
+                          min="-20"
+                          suffix="px"
+                          tooltipicon="[object Object]"
+                          type="number"
+                          value="0"
+                        />
+                        <div
+                          class="input-suffix-wrapper"
+                        >
+                          <div
+                            class="spacer"
+                          >
+                            0
+                          </div>
+                          <div
+                            class="suffix"
+                          >
+                            px
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
+                  class="InputField formGroup form-group"
                   color=""
                 >
                   <label
@@ -4069,56 +4165,53 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   </div>
                 </div>
               </div>
-            </div>
-            <button
-              class="btn btn-success"
-              type="submit"
-            >
-              Save changes
-            </button>
-            <div
-              class="component d-inline-block float-right"
-              id=""
-            >
-              <button
-                class="btn btn-secondary"
-                id="confirm-button-1561334400000"
-                type="button"
-              >
-                <i
-                  class="material-icons mr-1 text-danger"
+              <div>
+                <button
+                  class="btn btn-success"
+                  type="submit"
                 >
-                  delete
-                </i>
-                Delete chat
-              </button>
+                  Save changes
+                </button>
+                <div
+                  class="component d-inline-block float-right"
+                  id=""
+                >
+                  <button
+                    class="btn btn-secondary"
+                    id="confirm-button-1561334400000"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons mr-1 text-danger"
+                    >
+                      delete
+                    </i>
+                    Delete chat
+                  </button>
+                </div>
+              </div>
             </div>
           </form>
         </div>
         <div
-          class="offsetChatPreview p-0 col"
+          class="column preview col"
         >
           <div
-            class="d-flex justify-content-center align-items-center"
-            style="width: 30em;"
+            class="mb-3 btn-group"
+            role="group"
           >
-            <div
-              class="mb-3 btn-group"
-              role="group"
+            <button
+              class="btn btn-info"
+              type="button"
             >
-              <button
-                class="btn btn-info"
-                type="button"
-              >
-                During business hours
-              </button>
-              <button
-                class="btn btn-secondary"
-                type="button"
-              >
-                Outside business hours
-              </button>
-            </div>
+              During business hours
+            </button>
+            <button
+              class="btn btn-secondary"
+              type="button"
+            >
+              Outside business hours
+            </button>
           </div>
           <div
             class="preview"
@@ -4228,9 +4321,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 </div>
               </div>
               <div
-                class="poweredby"
+                class="poweredBy"
               >
-                Powered by Gorgias
+                <div>
+                  <span>
+                    Powered by
+                  </span>
+                  <img
+                    alt="powered-by"
+                    src="test-file-stub"
+                  />
+                </div>
               </div>
               <div
                 class="footer"
@@ -4313,91 +4414,85 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
       class="pageContainer container-fluid"
     >
       <div
-        class="row"
+        class="row row"
       >
         <div
-          class="col"
+          class="content col"
         >
-          <div
-            class="selectStoreTypeContainer"
-          >
-            <label
-              class=""
-              style="font-weight: bold;"
-            >
-              Where will you use this chat?
-               
-              <span
-                class="redStar"
-              >
-                *
-              </span>
-            </label>
-            <div
-              class="radioButtonGroup"
-            >
-              <div
-                class="wrapper selected radioButton"
-                id="store-radio-button-42"
-              >
-                <div>
-                  <label
-                    class="label"
-                  >
-                    <input
-                      checked=""
-                      class="input"
-                      type="radio"
-                    />
-                    Shopify store
-                  </label>
-                </div>
-              </div>
-              <div
-                class="wrapper radioButton"
-                id="store-radio-button-42"
-              >
-                <div>
-                  <label
-                    class="label"
-                  >
-                    <input
-                      class="input"
-                      type="radio"
-                    />
-                    Any other website
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
           <form
             class=""
           >
             <div
+              class="selectStoreTypeContainer"
+            >
+              <label
+                class="bold"
+              >
+                Where will you use this chat?
+                <span
+                  class="redStar"
+                >
+                  *
+                </span>
+              </label>
+              <div
+                class="radioButtonGroup"
+              >
+                <div
+                  class="wrapper selected radioButton"
+                  id="store-radio-button-42"
+                >
+                  <div>
+                    <label
+                      class="label"
+                    >
+                      <input
+                        checked=""
+                        class="input"
+                        type="radio"
+                      />
+                      Shopify store
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="wrapper radioButton"
+                  id="store-radio-button-42"
+                >
+                  <div>
+                    <label
+                      class="label"
+                    >
+                      <input
+                        class="input"
+                        type="radio"
+                      />
+                      Any other website
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
               class="form"
             >
               <div
-                class="fieldset"
+                class="fieldset formGroup"
               >
                 <label
-                  class=""
-                  style="font-weight: bold;"
+                  class="bold"
                 >
                   Select a store
-                   
                   <span
-                    style="color: rgb(242, 79, 102);"
+                    class="error"
                   >
                     *
                   </span>
-                   
                   <span
                     id="select-store"
                   >
                     <i
-                      class="material-icons"
-                      style="color: rgb(153, 165, 182);"
+                      class="material-icons neutral"
                     >
                       info_outline
                     </i>
@@ -4419,6 +4514,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       <span
                         class="dropdownPlaceholder"
                       >
+                        <img
+                          alt="shopifyStore"
+                          src="test-file-stub"
+                          style="margin-right: 16px;"
+                        />
                         Select a store
                       </span>
                     </button>
@@ -4513,7 +4613,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   </div>
                 </div>
                 <div
-                  class="InputField required form-group"
+                  class="InputField formGroup required form-group"
                   color=""
                 >
                   <label
@@ -4536,7 +4636,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
+                  class="InputField formGroup form-group"
                   color=""
                 >
                   <label
@@ -4558,7 +4658,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
+                  class="InputField formGroup form-group"
                   color=""
                 >
                   <label
@@ -4580,7 +4680,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   </div>
                 </div>
                 <div
-                  class="colorPickersWrapper"
+                  class="colorPickersWrapper formGroup"
                 >
                   <div
                     class="InputField form-group"
@@ -4642,10 +4742,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   </div>
                 </div>
                 <div
-                  class="positionInputsWrapper"
+                  class="positionWrapper"
                 >
                   <div
-                    class="InputField form-group"
+                    class="InputField formGroup form-group"
                     color=""
                   >
                     <label
@@ -4686,104 +4786,116 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     </div>
                   </div>
                   <div
-                    class="InputField form-group"
-                    color=""
+                    class="positionInputsWrapper"
                   >
                     <div
-                      class="label-wrapper"
+                      class="InputField formGroup form-group"
+                      color=""
                     >
-                      <label
-                        class="control-label"
-                        for="id-input-42"
-                      >
-                        Move widget left / right
-                      </label>
-                      <i
-                        class="material-icons-outlined tooltip"
-                        id="id-input-42-tooltip"
-                      >
-                        info
-                      </i>
-                    </div>
-                    <div
-                      class="with-suffix"
-                    >
-                      <input
-                        class="form-control"
-                        id="id-input-42"
-                        max="200"
-                        min="-20"
-                        suffix="px"
-                        type="number"
-                        value="0"
-                      />
                       <div
-                        class="input-suffix-wrapper"
+                        class="label-wrapper"
                       >
-                        <div
-                          class="spacer"
+                        <label
+                          class="control-label"
+                          for="id-input-42"
                         >
-                          0
-                        </div>
-                        <div
-                          class="suffix"
+                          Move widget left / right
+                        </label>
+                        <span
+                          id="id-input-42-tooltip"
                         >
-                          px
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </div>
+                      <div
+                        class="with-suffix"
+                      >
+                        <input
+                          class="form-control"
+                          id="id-input-42"
+                          max="200"
+                          min="-20"
+                          suffix="px"
+                          tooltipicon="[object Object]"
+                          type="number"
+                          value="0"
+                        />
+                        <div
+                          class="input-suffix-wrapper"
+                        >
+                          <div
+                            class="spacer"
+                          >
+                            0
+                          </div>
+                          <div
+                            class="suffix"
+                          >
+                            px
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    class="InputField form-group"
-                    color=""
-                  >
                     <div
-                      class="label-wrapper"
+                      class="InputField formGroup form-group"
+                      color=""
                     >
-                      <label
-                        class="control-label"
-                        for="id-input-42"
-                      >
-                        Move widget up / down
-                      </label>
-                      <i
-                        class="material-icons-outlined tooltip"
-                        id="id-input-42-tooltip"
-                      >
-                        info
-                      </i>
-                    </div>
-                    <div
-                      class="with-suffix"
-                    >
-                      <input
-                        class="form-control"
-                        id="id-input-42"
-                        max="200"
-                        min="-20"
-                        suffix="px"
-                        type="number"
-                        value="0"
-                      />
                       <div
-                        class="input-suffix-wrapper"
+                        class="label-wrapper"
                       >
-                        <div
-                          class="spacer"
+                        <label
+                          class="control-label"
+                          for="id-input-42"
                         >
-                          0
-                        </div>
-                        <div
-                          class="suffix"
+                          Move widget up / down
+                        </label>
+                        <span
+                          id="id-input-42-tooltip"
                         >
-                          px
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </div>
+                      <div
+                        class="with-suffix"
+                      >
+                        <input
+                          class="form-control"
+                          id="id-input-42"
+                          max="200"
+                          min="-20"
+                          suffix="px"
+                          tooltipicon="[object Object]"
+                          type="number"
+                          value="0"
+                        />
+                        <div
+                          class="input-suffix-wrapper"
+                        >
+                          <div
+                            class="spacer"
+                          >
+                            0
+                          </div>
+                          <div
+                            class="suffix"
+                          >
+                            px
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div
-                  class="InputField form-group"
+                  class="InputField formGroup form-group"
                   color=""
                 >
                   <label
@@ -4859,40 +4971,37 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   </div>
                 </div>
               </div>
+              <div>
+                <button
+                  class="btn btn-success disabled"
+                  disabled=""
+                  type="submit"
+                >
+                  Add new chat
+                </button>
+              </div>
             </div>
-            <button
-              class="btn btn-success disabled"
-              disabled=""
-              type="submit"
-            >
-              Add new chat
-            </button>
           </form>
         </div>
         <div
-          class="offsetChatPreview p-0 col"
+          class="column preview col"
         >
           <div
-            class="d-flex justify-content-center align-items-center"
-            style="width: 30em;"
+            class="mb-3 btn-group"
+            role="group"
           >
-            <div
-              class="mb-3 btn-group"
-              role="group"
+            <button
+              class="btn btn-info"
+              type="button"
             >
-              <button
-                class="btn btn-info"
-                type="button"
-              >
-                During business hours
-              </button>
-              <button
-                class="btn btn-secondary"
-                type="button"
-              >
-                Outside business hours
-              </button>
-            </div>
+              During business hours
+            </button>
+            <button
+              class="btn btn-secondary"
+              type="button"
+            >
+              Outside business hours
+            </button>
           </div>
           <div
             class="preview"
@@ -5023,9 +5132,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 </div>
               </div>
               <div
-                class="poweredby"
+                class="poweredBy"
               >
-                Powered by Gorgias
+                <div>
+                  <span>
+                    Powered by
+                  </span>
+                  <img
+                    alt="powered-by"
+                    src="test-file-stub"
+                  />
+                </div>
               </div>
               <div
                 class="footer"

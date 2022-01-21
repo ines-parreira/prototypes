@@ -22,26 +22,26 @@ export default class GorgiasChatIntegrationNavigation extends Component<Props> {
 
         return (
             <SecondaryNavbar>
-                <NavLink to={`${baseURL}/appearance`} exact>
-                    Appearance
-                </NavLink>
-                <NavLink to={`${baseURL}/installation`} exact>
-                    Installation
-                </NavLink>
-                <NavLink to={`${baseURL}/preferences`} exact>
-                    Preferences
+                <NavLink to={`${baseURL}/campaigns`} exact>
+                    Campaigns
                 </NavLink>
                 <NavLink to={`${baseURL}/quick_replies`} exact>
                     Quick replies
                 </NavLink>
-                <NavLink to={`${baseURL}/campaigns`} exact>
-                    Campaigns
+                <NavLink to={`${baseURL}/appearance`} exact>
+                    Appearance
+                </NavLink>
+                <NavLink to={`${baseURL}/preferences`} exact>
+                    Preferences
                 </NavLink>
                 {shopName ? (
                     <NavLink to={`${baseURL}/self_service`} exact>
                         Self-service
                     </NavLink>
                 ) : null}
+                <NavLink to={`${baseURL}/installation`} exact>
+                    Installation
+                </NavLink>
             </SecondaryNavbar>
         )
     }

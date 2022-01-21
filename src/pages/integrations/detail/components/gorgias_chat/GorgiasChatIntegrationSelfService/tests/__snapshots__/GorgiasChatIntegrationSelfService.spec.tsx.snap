@@ -46,23 +46,9 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the self se
     <a
       activeclassname="active"
       class="link"
-      to="/app/settings/integrations/gorgias_chat/7/appearance"
+      to="/app/settings/integrations/gorgias_chat/7/campaigns"
     >
-      Appearance
-    </a>
-    <a
-      activeclassname="active"
-      class="link"
-      to="/app/settings/integrations/gorgias_chat/7/installation"
-    >
-      Installation
-    </a>
-    <a
-      activeclassname="active"
-      class="link"
-      to="/app/settings/integrations/gorgias_chat/7/preferences"
-    >
-      Preferences
+      Campaigns
     </a>
     <a
       activeclassname="active"
@@ -74,9 +60,16 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the self se
     <a
       activeclassname="active"
       class="link"
-      to="/app/settings/integrations/gorgias_chat/7/campaigns"
+      to="/app/settings/integrations/gorgias_chat/7/appearance"
     >
-      Campaigns
+      Appearance
+    </a>
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/gorgias_chat/7/preferences"
+    >
+      Preferences
     </a>
     <a
       activeclassname="active"
@@ -84,6 +77,13 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the self se
       to="/app/settings/integrations/gorgias_chat/7/self_service"
     >
       Self-service
+    </a>
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/gorgias_chat/7/installation"
+    >
+      Installation
     </a>
   </nav>
   <div

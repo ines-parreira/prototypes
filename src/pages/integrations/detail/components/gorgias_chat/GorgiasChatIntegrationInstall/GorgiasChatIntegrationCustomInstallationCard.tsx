@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {
     Card,
     CardBody,
@@ -40,6 +40,15 @@ export function GorgiasChatIntegrationCustomInstallationCard({
             ? CustomInstallationTab.SHOPIFY
             : CustomInstallationTab.OTHER_WEBSITE
     )
+
+    useEffect(() => {
+        setIsOpen(!isShopifyChat)
+        setActiveTab(
+            isShopifyChat
+                ? CustomInstallationTab.SHOPIFY
+                : CustomInstallationTab.OTHER_WEBSITE
+        )
+    }, [isShopifyChat])
 
     const toggleIsOpen = () => setIsOpen(!isOpen)
     const toggleActiveTab = (activeTab: CustomInstallationTab) =>

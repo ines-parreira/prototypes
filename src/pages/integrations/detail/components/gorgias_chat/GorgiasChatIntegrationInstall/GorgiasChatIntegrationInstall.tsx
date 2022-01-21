@@ -15,13 +15,13 @@ import {RootState} from '../../../../../../state/types'
 import {IntegrationType} from '../../../../../../models/integration/types'
 import PageHeader from '../../../../../common/components/PageHeader'
 
-import css from '../../../../../settings/settings.less'
-
 import {renderChatCodeSnippet} from '../renderChatCodeSnippet.js'
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
 
 import GorgiasChatIntegrationOneClickInstallationCard from './GorgiasChatIntegrationOneClickInstallationCard'
 import GorgiasChatIntegrationCustomInstallationCard from './GorgiasChatIntegrationCustomInstallationCard'
+import {GorgiasChatIntegrationConnectToStoreCard} from './GorgiasChatIntegrationConnectToStoreCard'
+import css from './GorgiasChatIntegrationInstall.less'
 
 type OwnProps = {
     integration: Map<any, any>
@@ -73,6 +73,10 @@ function GorgiasChatIntegrationInstall({
         SHOPIFY_INTEGRATION_TYPE as IntegrationType
     )
 
+    const gorgiasChatIntegrations = getIntegrationsByTypes(
+        GORGIAS_CHAT_INTEGRATION_TYPE as IntegrationType
+    )
+
     const isShopifyChat = isAssociatedToShopifyStore || hasShopifyInstallation
 
     return (
@@ -103,8 +107,8 @@ function GorgiasChatIntegrationInstall({
 
             <Container fluid className={css.pageContainer}>
                 <Row>
-                    <Col md="8">
-                        {isShopifyChat && (
+                    <Col className={css.pageColumn} md="8">
+                        {isShopifyChat ? (
                             <GorgiasChatIntegrationOneClickInstallationCard
                                 integration={integration}
                                 updateOrCreateIntegration={
@@ -112,6 +116,17 @@ function GorgiasChatIntegrationInstall({
                                 }
                                 shopifyIntegrations={shopifyIntegrations}
                                 hasAutomationAddOn={hasAutomationAddOn}
+                            />
+                        ) : (
+                            <GorgiasChatIntegrationConnectToStoreCard
+                                integration={integration}
+                                updateOrCreateIntegration={
+                                    actions.updateOrCreateIntegration
+                                }
+                                shopifyIntegrations={shopifyIntegrations}
+                                gorgiasChatIntegrations={
+                                    gorgiasChatIntegrations
+                                }
                             />
                         )}
 

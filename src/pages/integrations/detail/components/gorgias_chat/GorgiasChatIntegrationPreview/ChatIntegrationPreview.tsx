@@ -23,6 +23,7 @@ import {PositionAxis} from '../GorgiasChatIntegrationAppearance/GorgiasChatInteg
 
 import ChatIntegrationAvatar from './ChatIntegrationAvatar'
 import css from './ChatIntegrationPreview.less'
+import GorgiasChatPoweredBy from './GorgiasChatPoweredBy'
 
 type Props = {
     name: string
@@ -214,9 +215,7 @@ const ChatIntegrationPreview = (props: Props) => {
 
                 {children}
 
-                <div className={css.poweredby}>
-                    {translatedTexts.poweredByGorgias}
-                </div>
+                <GorgiasChatPoweredBy translatedTexts={translatedTexts} />
 
                 {renderFooter && (
                     <div className={css.footer}>

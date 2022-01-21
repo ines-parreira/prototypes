@@ -45,11 +45,57 @@ exports[`<ChatIntegrationPreview/> render() should display auto responder 1`] = 
       language="en-US"
       name="My little chat integration"
     />
-    <div
-      className="poweredby"
-    >
-      Powered by Gorgias
-    </div>
+    <PoweredByGorgias
+      translatedTexts={
+        Object {
+          "actionPostbackError": "An error occurred while processing your action. Please try again.",
+          "backLabelBackAt": "Back online at {time}",
+          "backLabelBackInAMinute": "Back in 1 minute",
+          "backLabelBackInAnHour": "Back in 1 hour",
+          "backLabelBackInDays": "Back in {value} days",
+          "backLabelBackInHours": "Back in {value} hours",
+          "backLabelBackInMinutes": "Back in {value} minutes",
+          "backLabelBackTomorrow": "Back tomorrow",
+          "campaignClickToReply": "Click to reply",
+          "clickToRetry": "Message not delivered. Click to retry.",
+          "conversationTimestampHeaderFormat": "MMMM D",
+          "emailCaptureInputLabel": "Get notified by email",
+          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+          "emailCaptureOnlineTriggerText": "What's a good email to reach you?",
+          "emailCapturePlaceholder": "your@email.com",
+          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+          "emailCaptureRequiredMessagePlaceholder": "Write your message",
+          "fetchHistory": "Load more",
+          "fetchingHistory": "Retrieving history...",
+          "headerText": "Gorgias Team",
+          "inputPlaceholder": "Type a message...",
+          "introductionText": "How can we help?",
+          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+          "messageDelivered": "Delivered",
+          "messageError": "An error occurred while sending your message. Please try again.",
+          "messageIndicatorTitlePlural": "({count}) New messages",
+          "messageIndicatorTitleSingular": "({count}) New message",
+          "messageRelativeTimeDay": "{value}d ago",
+          "messageRelativeTimeHour": "{value}h ago",
+          "messageRelativeTimeJustNow": "Just now",
+          "messageRelativeTimeMinute": "{value}m ago",
+          "messageSending": "Sending...",
+          "messageTimestampFormat": "h:mm A",
+          "offlineIntroductionText": "We'll be back tomorrow",
+          "poweredBy": "Powered by",
+          "poweredByGorgias": "Powered by Gorgias",
+          "send": "Send",
+          "tapToRetry": "Message not delivered. Tap to retry.",
+          "unsupportedActionType": "Unsupported action type.",
+          "unsupportedMessageType": "Unsupported message type.",
+          "usualReplyTimeDay": "Typically replies within a day",
+          "usualReplyTimeHours": "Typically replies in a few hours",
+          "usualReplyTimeMinutes": "Typically replies in a few minutes",
+        }
+      }
+    />
   </div>
   <div
     className="button bottom-right"
@@ -125,11 +171,57 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
         }
       }
     />
-    <div
-      className="poweredby"
-    >
-      Powered by Gorgias
-    </div>
+    <PoweredByGorgias
+      translatedTexts={
+        Object {
+          "actionPostbackError": "An error occurred while processing your action. Please try again.",
+          "backLabelBackAt": "Back online at {time}",
+          "backLabelBackInAMinute": "Back in 1 minute",
+          "backLabelBackInAnHour": "Back in 1 hour",
+          "backLabelBackInDays": "Back in {value} days",
+          "backLabelBackInHours": "Back in {value} hours",
+          "backLabelBackInMinutes": "Back in {value} minutes",
+          "backLabelBackTomorrow": "Back tomorrow",
+          "campaignClickToReply": "Click to reply",
+          "clickToRetry": "Message not delivered. Click to retry.",
+          "conversationTimestampHeaderFormat": "MMMM D",
+          "emailCaptureInputLabel": "Get notified by email",
+          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+          "emailCaptureOnlineTriggerText": "What's a good email to reach you?",
+          "emailCapturePlaceholder": "your@email.com",
+          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+          "emailCaptureRequiredMessagePlaceholder": "Write your message",
+          "fetchHistory": "Load more",
+          "fetchingHistory": "Retrieving history...",
+          "headerText": "Gorgias Team",
+          "inputPlaceholder": "Type a message...",
+          "introductionText": "How can we help?",
+          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+          "messageDelivered": "Delivered",
+          "messageError": "An error occurred while sending your message. Please try again.",
+          "messageIndicatorTitlePlural": "({count}) New messages",
+          "messageIndicatorTitleSingular": "({count}) New message",
+          "messageRelativeTimeDay": "{value}d ago",
+          "messageRelativeTimeHour": "{value}h ago",
+          "messageRelativeTimeJustNow": "Just now",
+          "messageRelativeTimeMinute": "{value}m ago",
+          "messageSending": "Sending...",
+          "messageTimestampFormat": "h:mm A",
+          "offlineIntroductionText": "We'll be back tomorrow",
+          "poweredBy": "Powered by",
+          "poweredByGorgias": "Powered by Gorgias",
+          "send": "Send",
+          "tapToRetry": "Message not delivered. Tap to retry.",
+          "unsupportedActionType": "Unsupported action type.",
+          "unsupportedMessageType": "Unsupported message type.",
+          "usualReplyTimeDay": "Typically replies within a day",
+          "usualReplyTimeHours": "Typically replies in a few hours",
+          "usualReplyTimeMinutes": "Typically replies in a few minutes",
+        }
+      }
+    />
   </div>
   <div
     className="button bottom-right"
@@ -218,11 +310,57 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
         }
       }
     />
-    <div
-      className="poweredby"
-    >
-      Powered by Gorgias
-    </div>
+    <PoweredByGorgias
+      translatedTexts={
+        Object {
+          "actionPostbackError": "An error occurred while processing your action. Please try again.",
+          "backLabelBackAt": "Back online at {time}",
+          "backLabelBackInAMinute": "Back in 1 minute",
+          "backLabelBackInAnHour": "Back in 1 hour",
+          "backLabelBackInDays": "Back in {value} days",
+          "backLabelBackInHours": "Back in {value} hours",
+          "backLabelBackInMinutes": "Back in {value} minutes",
+          "backLabelBackTomorrow": "Back tomorrow",
+          "campaignClickToReply": "Click to reply",
+          "clickToRetry": "Message not delivered. Click to retry.",
+          "conversationTimestampHeaderFormat": "MMMM D",
+          "emailCaptureInputLabel": "Get notified by email",
+          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+          "emailCaptureOnlineTriggerText": "What's a good email to reach you?",
+          "emailCapturePlaceholder": "your@email.com",
+          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+          "emailCaptureRequiredMessagePlaceholder": "Write your message",
+          "fetchHistory": "Load more",
+          "fetchingHistory": "Retrieving history...",
+          "headerText": "Gorgias Team",
+          "inputPlaceholder": "Type a message...",
+          "introductionText": "How can we help?",
+          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+          "messageDelivered": "Delivered",
+          "messageError": "An error occurred while sending your message. Please try again.",
+          "messageIndicatorTitlePlural": "({count}) New messages",
+          "messageIndicatorTitleSingular": "({count}) New message",
+          "messageRelativeTimeDay": "{value}d ago",
+          "messageRelativeTimeHour": "{value}h ago",
+          "messageRelativeTimeJustNow": "Just now",
+          "messageRelativeTimeMinute": "{value}m ago",
+          "messageSending": "Sending...",
+          "messageTimestampFormat": "h:mm A",
+          "offlineIntroductionText": "We'll be back tomorrow",
+          "poweredBy": "Powered by",
+          "poweredByGorgias": "Powered by Gorgias",
+          "send": "Send",
+          "tapToRetry": "Message not delivered. Tap to retry.",
+          "unsupportedActionType": "Unsupported action type.",
+          "unsupportedMessageType": "Unsupported message type.",
+          "usualReplyTimeDay": "Typically replies within a day",
+          "usualReplyTimeHours": "Typically replies in a few hours",
+          "usualReplyTimeMinutes": "Typically replies in a few minutes",
+        }
+      }
+    />
   </div>
   <div
     className="button bottom-right"
@@ -302,11 +440,57 @@ exports[`<ChatIntegrationPreview/> render() should display optional email captur
       language="en-US"
       name="My little chat integration"
     />
-    <div
-      className="poweredby"
-    >
-      Powered by Gorgias
-    </div>
+    <PoweredByGorgias
+      translatedTexts={
+        Object {
+          "actionPostbackError": "An error occurred while processing your action. Please try again.",
+          "backLabelBackAt": "Back online at {time}",
+          "backLabelBackInAMinute": "Back in 1 minute",
+          "backLabelBackInAnHour": "Back in 1 hour",
+          "backLabelBackInDays": "Back in {value} days",
+          "backLabelBackInHours": "Back in {value} hours",
+          "backLabelBackInMinutes": "Back in {value} minutes",
+          "backLabelBackTomorrow": "Back tomorrow",
+          "campaignClickToReply": "Click to reply",
+          "clickToRetry": "Message not delivered. Click to retry.",
+          "conversationTimestampHeaderFormat": "MMMM D",
+          "emailCaptureInputLabel": "Get notified by email",
+          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+          "emailCaptureOnlineTriggerText": "What's a good email to reach you?",
+          "emailCapturePlaceholder": "your@email.com",
+          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+          "emailCaptureRequiredMessagePlaceholder": "Write your message",
+          "fetchHistory": "Load more",
+          "fetchingHistory": "Retrieving history...",
+          "headerText": "Gorgias Team",
+          "inputPlaceholder": "Type a message...",
+          "introductionText": "How can we help?",
+          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+          "messageDelivered": "Delivered",
+          "messageError": "An error occurred while sending your message. Please try again.",
+          "messageIndicatorTitlePlural": "({count}) New messages",
+          "messageIndicatorTitleSingular": "({count}) New message",
+          "messageRelativeTimeDay": "{value}d ago",
+          "messageRelativeTimeHour": "{value}h ago",
+          "messageRelativeTimeJustNow": "Just now",
+          "messageRelativeTimeMinute": "{value}m ago",
+          "messageSending": "Sending...",
+          "messageTimestampFormat": "h:mm A",
+          "offlineIntroductionText": "We'll be back tomorrow",
+          "poweredBy": "Powered by",
+          "poweredByGorgias": "Powered by Gorgias",
+          "send": "Send",
+          "tapToRetry": "Message not delivered. Tap to retry.",
+          "unsupportedActionType": "Unsupported action type.",
+          "unsupportedMessageType": "Unsupported message type.",
+          "usualReplyTimeDay": "Typically replies within a day",
+          "usualReplyTimeHours": "Typically replies in a few hours",
+          "usualReplyTimeMinutes": "Typically replies in a few minutes",
+        }
+      }
+    />
     <div
       className="footer"
     >
@@ -385,11 +569,57 @@ exports[`<ChatIntegrationPreview/> render() should display required email captur
       conversationColor="#456789"
       language="en-US"
     />
-    <div
-      className="poweredby"
-    >
-      Powered by Gorgias
-    </div>
+    <PoweredByGorgias
+      translatedTexts={
+        Object {
+          "actionPostbackError": "An error occurred while processing your action. Please try again.",
+          "backLabelBackAt": "Back online at {time}",
+          "backLabelBackInAMinute": "Back in 1 minute",
+          "backLabelBackInAnHour": "Back in 1 hour",
+          "backLabelBackInDays": "Back in {value} days",
+          "backLabelBackInHours": "Back in {value} hours",
+          "backLabelBackInMinutes": "Back in {value} minutes",
+          "backLabelBackTomorrow": "Back tomorrow",
+          "campaignClickToReply": "Click to reply",
+          "clickToRetry": "Message not delivered. Click to retry.",
+          "conversationTimestampHeaderFormat": "MMMM D",
+          "emailCaptureInputLabel": "Get notified by email",
+          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+          "emailCaptureOnlineTriggerText": "What's a good email to reach you?",
+          "emailCapturePlaceholder": "your@email.com",
+          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+          "emailCaptureRequiredMessagePlaceholder": "Write your message",
+          "fetchHistory": "Load more",
+          "fetchingHistory": "Retrieving history...",
+          "headerText": "Gorgias Team",
+          "inputPlaceholder": "Type a message...",
+          "introductionText": "How can we help?",
+          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+          "messageDelivered": "Delivered",
+          "messageError": "An error occurred while sending your message. Please try again.",
+          "messageIndicatorTitlePlural": "({count}) New messages",
+          "messageIndicatorTitleSingular": "({count}) New message",
+          "messageRelativeTimeDay": "{value}d ago",
+          "messageRelativeTimeHour": "{value}h ago",
+          "messageRelativeTimeJustNow": "Just now",
+          "messageRelativeTimeMinute": "{value}m ago",
+          "messageSending": "Sending...",
+          "messageTimestampFormat": "h:mm A",
+          "offlineIntroductionText": "We'll be back tomorrow",
+          "poweredBy": "Powered by",
+          "poweredByGorgias": "Powered by Gorgias",
+          "send": "Send",
+          "tapToRetry": "Message not delivered. Tap to retry.",
+          "unsupportedActionType": "Unsupported action type.",
+          "unsupportedMessageType": "Unsupported message type.",
+          "usualReplyTimeDay": "Typically replies within a day",
+          "usualReplyTimeHours": "Typically replies in a few hours",
+          "usualReplyTimeMinutes": "Typically replies in a few minutes",
+        }
+      }
+    />
   </div>
   <div
     className="button bottom-right"
@@ -462,11 +692,57 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
         }
       }
     />
-    <div
-      className="poweredby"
-    >
-      Powered by Gorgias
-    </div>
+    <PoweredByGorgias
+      translatedTexts={
+        Object {
+          "actionPostbackError": "An error occurred while processing your action. Please try again.",
+          "backLabelBackAt": "Back online at {time}",
+          "backLabelBackInAMinute": "Back in 1 minute",
+          "backLabelBackInAnHour": "Back in 1 hour",
+          "backLabelBackInDays": "Back in {value} days",
+          "backLabelBackInHours": "Back in {value} hours",
+          "backLabelBackInMinutes": "Back in {value} minutes",
+          "backLabelBackTomorrow": "Back tomorrow",
+          "campaignClickToReply": "Click to reply",
+          "clickToRetry": "Message not delivered. Click to retry.",
+          "conversationTimestampHeaderFormat": "MMMM D",
+          "emailCaptureInputLabel": "Get notified by email",
+          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+          "emailCaptureOnlineTriggerText": "What's a good email to reach you?",
+          "emailCapturePlaceholder": "your@email.com",
+          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+          "emailCaptureRequiredMessagePlaceholder": "Write your message",
+          "fetchHistory": "Load more",
+          "fetchingHistory": "Retrieving history...",
+          "headerText": "Gorgias Team",
+          "inputPlaceholder": "Type a message...",
+          "introductionText": "How can we help?",
+          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+          "messageDelivered": "Delivered",
+          "messageError": "An error occurred while sending your message. Please try again.",
+          "messageIndicatorTitlePlural": "({count}) New messages",
+          "messageIndicatorTitleSingular": "({count}) New message",
+          "messageRelativeTimeDay": "{value}d ago",
+          "messageRelativeTimeHour": "{value}h ago",
+          "messageRelativeTimeJustNow": "Just now",
+          "messageRelativeTimeMinute": "{value}m ago",
+          "messageSending": "Sending...",
+          "messageTimestampFormat": "h:mm A",
+          "offlineIntroductionText": "We'll be back tomorrow",
+          "poweredBy": "Powered by",
+          "poweredByGorgias": "Powered by Gorgias",
+          "send": "Send",
+          "tapToRetry": "Message not delivered. Tap to retry.",
+          "unsupportedActionType": "Unsupported action type.",
+          "unsupportedMessageType": "Unsupported message type.",
+          "usualReplyTimeDay": "Typically replies within a day",
+          "usualReplyTimeHours": "Typically replies in a few hours",
+          "usualReplyTimeMinutes": "Typically replies in a few minutes",
+        }
+      }
+    />
     <div
       className="footer"
     >
@@ -558,11 +834,57 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
         }
       }
     />
-    <div
-      className="poweredby"
-    >
-      Powered by Gorgias
-    </div>
+    <PoweredByGorgias
+      translatedTexts={
+        Object {
+          "actionPostbackError": "An error occurred while processing your action. Please try again.",
+          "backLabelBackAt": "Back online at {time}",
+          "backLabelBackInAMinute": "Back in 1 minute",
+          "backLabelBackInAnHour": "Back in 1 hour",
+          "backLabelBackInDays": "Back in {value} days",
+          "backLabelBackInHours": "Back in {value} hours",
+          "backLabelBackInMinutes": "Back in {value} minutes",
+          "backLabelBackTomorrow": "Back tomorrow",
+          "campaignClickToReply": "Click to reply",
+          "clickToRetry": "Message not delivered. Click to retry.",
+          "conversationTimestampHeaderFormat": "MMMM D",
+          "emailCaptureInputLabel": "Get notified by email",
+          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+          "emailCaptureOnlineTriggerText": "What's a good email to reach you?",
+          "emailCapturePlaceholder": "your@email.com",
+          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+          "emailCaptureRequiredMessagePlaceholder": "Write your message",
+          "fetchHistory": "Load more",
+          "fetchingHistory": "Retrieving history...",
+          "headerText": "Gorgias Team",
+          "inputPlaceholder": "Type a message...",
+          "introductionText": "How can we help?",
+          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+          "messageDelivered": "Delivered",
+          "messageError": "An error occurred while sending your message. Please try again.",
+          "messageIndicatorTitlePlural": "({count}) New messages",
+          "messageIndicatorTitleSingular": "({count}) New message",
+          "messageRelativeTimeDay": "{value}d ago",
+          "messageRelativeTimeHour": "{value}h ago",
+          "messageRelativeTimeJustNow": "Just now",
+          "messageRelativeTimeMinute": "{value}m ago",
+          "messageSending": "Sending...",
+          "messageTimestampFormat": "h:mm A",
+          "offlineIntroductionText": "We'll be back tomorrow",
+          "poweredBy": "Powered by",
+          "poweredByGorgias": "Powered by Gorgias",
+          "send": "Send",
+          "tapToRetry": "Message not delivered. Tap to retry.",
+          "unsupportedActionType": "Unsupported action type.",
+          "unsupportedMessageType": "Unsupported message type.",
+          "usualReplyTimeDay": "Typically replies within a day",
+          "usualReplyTimeHours": "Typically replies in a few hours",
+          "usualReplyTimeMinutes": "Typically replies in a few minutes",
+        }
+      }
+    />
     <div
       className="footer"
     >
@@ -645,11 +967,57 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
         }
       }
     />
-    <div
-      className="poweredby"
-    >
-      Powered by Gorgias
-    </div>
+    <PoweredByGorgias
+      translatedTexts={
+        Object {
+          "actionPostbackError": "An error occurred while processing your action. Please try again.",
+          "backLabelBackAt": "Back online at {time}",
+          "backLabelBackInAMinute": "Back in 1 minute",
+          "backLabelBackInAnHour": "Back in 1 hour",
+          "backLabelBackInDays": "Back in {value} days",
+          "backLabelBackInHours": "Back in {value} hours",
+          "backLabelBackInMinutes": "Back in {value} minutes",
+          "backLabelBackTomorrow": "Back tomorrow",
+          "campaignClickToReply": "Click to reply",
+          "clickToRetry": "Message not delivered. Click to retry.",
+          "conversationTimestampHeaderFormat": "MMMM D",
+          "emailCaptureInputLabel": "Get notified by email",
+          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+          "emailCaptureOnlineTriggerText": "What's a good email to reach you?",
+          "emailCapturePlaceholder": "your@email.com",
+          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+          "emailCaptureRequiredMessagePlaceholder": "Write your message",
+          "fetchHistory": "Load more",
+          "fetchingHistory": "Retrieving history...",
+          "headerText": "Gorgias Team",
+          "inputPlaceholder": "Type a message...",
+          "introductionText": "How can we help?",
+          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+          "messageDelivered": "Delivered",
+          "messageError": "An error occurred while sending your message. Please try again.",
+          "messageIndicatorTitlePlural": "({count}) New messages",
+          "messageIndicatorTitleSingular": "({count}) New message",
+          "messageRelativeTimeDay": "{value}d ago",
+          "messageRelativeTimeHour": "{value}h ago",
+          "messageRelativeTimeJustNow": "Just now",
+          "messageRelativeTimeMinute": "{value}m ago",
+          "messageSending": "Sending...",
+          "messageTimestampFormat": "h:mm A",
+          "offlineIntroductionText": "We'll be back tomorrow",
+          "poweredBy": "Powered by",
+          "poweredByGorgias": "Powered by Gorgias",
+          "send": "Send",
+          "tapToRetry": "Message not delivered. Tap to retry.",
+          "unsupportedActionType": "Unsupported action type.",
+          "unsupportedMessageType": "Unsupported message type.",
+          "usualReplyTimeDay": "Typically replies within a day",
+          "usualReplyTimeHours": "Typically replies in a few hours",
+          "usualReplyTimeMinutes": "Typically replies in a few minutes",
+        }
+      }
+    />
     <div
       className="footer"
     >
@@ -732,11 +1100,57 @@ exports[`<ChatIntegrationPreview/> render() should display the sliders when edit
         }
       }
     />
-    <div
-      className="poweredby"
-    >
-      Powered by Gorgias
-    </div>
+    <PoweredByGorgias
+      translatedTexts={
+        Object {
+          "actionPostbackError": "An error occurred while processing your action. Please try again.",
+          "backLabelBackAt": "Back online at {time}",
+          "backLabelBackInAMinute": "Back in 1 minute",
+          "backLabelBackInAnHour": "Back in 1 hour",
+          "backLabelBackInDays": "Back in {value} days",
+          "backLabelBackInHours": "Back in {value} hours",
+          "backLabelBackInMinutes": "Back in {value} minutes",
+          "backLabelBackTomorrow": "Back tomorrow",
+          "campaignClickToReply": "Click to reply",
+          "clickToRetry": "Message not delivered. Click to retry.",
+          "conversationTimestampHeaderFormat": "MMMM D",
+          "emailCaptureInputLabel": "Get notified by email",
+          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+          "emailCaptureOnlineTriggerText": "What's a good email to reach you?",
+          "emailCapturePlaceholder": "your@email.com",
+          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+          "emailCaptureRequiredMessagePlaceholder": "Write your message",
+          "fetchHistory": "Load more",
+          "fetchingHistory": "Retrieving history...",
+          "headerText": "Gorgias Team",
+          "inputPlaceholder": "Type a message...",
+          "introductionText": "How can we help?",
+          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+          "messageDelivered": "Delivered",
+          "messageError": "An error occurred while sending your message. Please try again.",
+          "messageIndicatorTitlePlural": "({count}) New messages",
+          "messageIndicatorTitleSingular": "({count}) New message",
+          "messageRelativeTimeDay": "{value}d ago",
+          "messageRelativeTimeHour": "{value}h ago",
+          "messageRelativeTimeJustNow": "Just now",
+          "messageRelativeTimeMinute": "{value}m ago",
+          "messageSending": "Sending...",
+          "messageTimestampFormat": "h:mm A",
+          "offlineIntroductionText": "We'll be back tomorrow",
+          "poweredBy": "Powered by",
+          "poweredByGorgias": "Powered by Gorgias",
+          "send": "Send",
+          "tapToRetry": "Message not delivered. Tap to retry.",
+          "unsupportedActionType": "Unsupported action type.",
+          "unsupportedMessageType": "Unsupported message type.",
+          "usualReplyTimeDay": "Typically replies within a day",
+          "usualReplyTimeHours": "Typically replies in a few hours",
+          "usualReplyTimeMinutes": "Typically replies in a few minutes",
+        }
+      }
+    />
     <div
       className="footer"
     >
@@ -828,11 +1242,57 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
         }
       }
     />
-    <div
-      className="poweredby"
-    >
-      Powered by Gorgias
-    </div>
+    <PoweredByGorgias
+      translatedTexts={
+        Object {
+          "actionPostbackError": "An error occurred while processing your action. Please try again.",
+          "backLabelBackAt": "Back online at {time}",
+          "backLabelBackInAMinute": "Back in 1 minute",
+          "backLabelBackInAnHour": "Back in 1 hour",
+          "backLabelBackInDays": "Back in {value} days",
+          "backLabelBackInHours": "Back in {value} hours",
+          "backLabelBackInMinutes": "Back in {value} minutes",
+          "backLabelBackTomorrow": "Back tomorrow",
+          "campaignClickToReply": "Click to reply",
+          "clickToRetry": "Message not delivered. Click to retry.",
+          "conversationTimestampHeaderFormat": "MMMM D",
+          "emailCaptureInputLabel": "Get notified by email",
+          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+          "emailCaptureOnlineTriggerText": "What's a good email to reach you?",
+          "emailCapturePlaceholder": "your@email.com",
+          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+          "emailCaptureRequiredMessagePlaceholder": "Write your message",
+          "fetchHistory": "Load more",
+          "fetchingHistory": "Retrieving history...",
+          "headerText": "Gorgias Team",
+          "inputPlaceholder": "Type a message...",
+          "introductionText": "How can we help?",
+          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+          "messageDelivered": "Delivered",
+          "messageError": "An error occurred while sending your message. Please try again.",
+          "messageIndicatorTitlePlural": "({count}) New messages",
+          "messageIndicatorTitleSingular": "({count}) New message",
+          "messageRelativeTimeDay": "{value}d ago",
+          "messageRelativeTimeHour": "{value}h ago",
+          "messageRelativeTimeJustNow": "Just now",
+          "messageRelativeTimeMinute": "{value}m ago",
+          "messageSending": "Sending...",
+          "messageTimestampFormat": "h:mm A",
+          "offlineIntroductionText": "We'll be back tomorrow",
+          "poweredBy": "Powered by",
+          "poweredByGorgias": "Powered by Gorgias",
+          "send": "Send",
+          "tapToRetry": "Message not delivered. Tap to retry.",
+          "unsupportedActionType": "Unsupported action type.",
+          "unsupportedMessageType": "Unsupported message type.",
+          "usualReplyTimeDay": "Typically replies within a day",
+          "usualReplyTimeHours": "Typically replies in a few hours",
+          "usualReplyTimeMinutes": "Typically replies in a few minutes",
+        }
+      }
+    />
   </div>
   <div
     className="button bottom-right"
@@ -924,11 +1384,57 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
         }
       }
     />
-    <div
-      className="poweredby"
-    >
-      Powered by Gorgias
-    </div>
+    <PoweredByGorgias
+      translatedTexts={
+        Object {
+          "actionPostbackError": "An error occurred while processing your action. Please try again.",
+          "backLabelBackAt": "Back online at {time}",
+          "backLabelBackInAMinute": "Back in 1 minute",
+          "backLabelBackInAnHour": "Back in 1 hour",
+          "backLabelBackInDays": "Back in {value} days",
+          "backLabelBackInHours": "Back in {value} hours",
+          "backLabelBackInMinutes": "Back in {value} minutes",
+          "backLabelBackTomorrow": "Back tomorrow",
+          "campaignClickToReply": "Click to reply",
+          "clickToRetry": "Message not delivered. Click to retry.",
+          "conversationTimestampHeaderFormat": "MMMM D",
+          "emailCaptureInputLabel": "Get notified by email",
+          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+          "emailCaptureOnlineTriggerText": "What's a good email to reach you?",
+          "emailCapturePlaceholder": "your@email.com",
+          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+          "emailCaptureRequiredMessagePlaceholder": "Write your message",
+          "fetchHistory": "Load more",
+          "fetchingHistory": "Retrieving history...",
+          "headerText": "Gorgias Team",
+          "inputPlaceholder": "Type a message...",
+          "introductionText": "How can we help?",
+          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+          "messageDelivered": "Delivered",
+          "messageError": "An error occurred while sending your message. Please try again.",
+          "messageIndicatorTitlePlural": "({count}) New messages",
+          "messageIndicatorTitleSingular": "({count}) New message",
+          "messageRelativeTimeDay": "{value}d ago",
+          "messageRelativeTimeHour": "{value}h ago",
+          "messageRelativeTimeJustNow": "Just now",
+          "messageRelativeTimeMinute": "{value}m ago",
+          "messageSending": "Sending...",
+          "messageTimestampFormat": "h:mm A",
+          "offlineIntroductionText": "We'll be back tomorrow",
+          "poweredBy": "Powered by",
+          "poweredByGorgias": "Powered by Gorgias",
+          "send": "Send",
+          "tapToRetry": "Message not delivered. Tap to retry.",
+          "unsupportedActionType": "Unsupported action type.",
+          "unsupportedMessageType": "Unsupported message type.",
+          "usualReplyTimeDay": "Typically replies within a day",
+          "usualReplyTimeHours": "Typically replies in a few hours",
+          "usualReplyTimeMinutes": "Typically replies in a few minutes",
+        }
+      }
+    />
   </div>
   <div
     className="button bottom-right"
@@ -1020,11 +1526,57 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
         }
       }
     />
-    <div
-      className="poweredby"
-    >
-      Powered by Gorgias
-    </div>
+    <PoweredByGorgias
+      translatedTexts={
+        Object {
+          "actionPostbackError": "An error occurred while processing your action. Please try again.",
+          "backLabelBackAt": "Back online at {time}",
+          "backLabelBackInAMinute": "Back in 1 minute",
+          "backLabelBackInAnHour": "Back in 1 hour",
+          "backLabelBackInDays": "Back in {value} days",
+          "backLabelBackInHours": "Back in {value} hours",
+          "backLabelBackInMinutes": "Back in {value} minutes",
+          "backLabelBackTomorrow": "Back tomorrow",
+          "campaignClickToReply": "Click to reply",
+          "clickToRetry": "Message not delivered. Click to retry.",
+          "conversationTimestampHeaderFormat": "MMMM D",
+          "emailCaptureInputLabel": "Get notified by email",
+          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+          "emailCaptureOnlineTriggerText": "What's a good email to reach you?",
+          "emailCapturePlaceholder": "your@email.com",
+          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+          "emailCaptureRequiredMessagePlaceholder": "Write your message",
+          "fetchHistory": "Load more",
+          "fetchingHistory": "Retrieving history...",
+          "headerText": "Gorgias Team",
+          "inputPlaceholder": "Type a message...",
+          "introductionText": "How can we help?",
+          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+          "messageDelivered": "Delivered",
+          "messageError": "An error occurred while sending your message. Please try again.",
+          "messageIndicatorTitlePlural": "({count}) New messages",
+          "messageIndicatorTitleSingular": "({count}) New message",
+          "messageRelativeTimeDay": "{value}d ago",
+          "messageRelativeTimeHour": "{value}h ago",
+          "messageRelativeTimeJustNow": "Just now",
+          "messageRelativeTimeMinute": "{value}m ago",
+          "messageSending": "Sending...",
+          "messageTimestampFormat": "h:mm A",
+          "offlineIntroductionText": "We'll be back tomorrow",
+          "poweredBy": "Powered by",
+          "poweredByGorgias": "Powered by Gorgias",
+          "send": "Send",
+          "tapToRetry": "Message not delivered. Tap to retry.",
+          "unsupportedActionType": "Unsupported action type.",
+          "unsupportedMessageType": "Unsupported message type.",
+          "usualReplyTimeDay": "Typically replies within a day",
+          "usualReplyTimeHours": "Typically replies in a few hours",
+          "usualReplyTimeMinutes": "Typically replies in a few minutes",
+        }
+      }
+    />
   </div>
   <div
     className="button bottom-right"
@@ -1116,11 +1668,57 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
         }
       }
     />
-    <div
-      className="poweredby"
-    >
-      Powered by Gorgias
-    </div>
+    <PoweredByGorgias
+      translatedTexts={
+        Object {
+          "actionPostbackError": "An error occurred while processing your action. Please try again.",
+          "backLabelBackAt": "Back online at {time}",
+          "backLabelBackInAMinute": "Back in 1 minute",
+          "backLabelBackInAnHour": "Back in 1 hour",
+          "backLabelBackInDays": "Back in {value} days",
+          "backLabelBackInHours": "Back in {value} hours",
+          "backLabelBackInMinutes": "Back in {value} minutes",
+          "backLabelBackTomorrow": "Back tomorrow",
+          "campaignClickToReply": "Click to reply",
+          "clickToRetry": "Message not delivered. Click to retry.",
+          "conversationTimestampHeaderFormat": "MMMM D",
+          "emailCaptureInputLabel": "Get notified by email",
+          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+          "emailCaptureOnlineTriggerText": "What's a good email to reach you?",
+          "emailCapturePlaceholder": "your@email.com",
+          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+          "emailCaptureRequiredMessagePlaceholder": "Write your message",
+          "fetchHistory": "Load more",
+          "fetchingHistory": "Retrieving history...",
+          "headerText": "Gorgias Team",
+          "inputPlaceholder": "Type a message...",
+          "introductionText": "How can we help?",
+          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+          "messageDelivered": "Delivered",
+          "messageError": "An error occurred while sending your message. Please try again.",
+          "messageIndicatorTitlePlural": "({count}) New messages",
+          "messageIndicatorTitleSingular": "({count}) New message",
+          "messageRelativeTimeDay": "{value}d ago",
+          "messageRelativeTimeHour": "{value}h ago",
+          "messageRelativeTimeJustNow": "Just now",
+          "messageRelativeTimeMinute": "{value}m ago",
+          "messageSending": "Sending...",
+          "messageTimestampFormat": "h:mm A",
+          "offlineIntroductionText": "We'll be back tomorrow",
+          "poweredBy": "Powered by",
+          "poweredByGorgias": "Powered by Gorgias",
+          "send": "Send",
+          "tapToRetry": "Message not delivered. Tap to retry.",
+          "unsupportedActionType": "Unsupported action type.",
+          "unsupportedMessageType": "Unsupported message type.",
+          "usualReplyTimeDay": "Typically replies within a day",
+          "usualReplyTimeHours": "Typically replies in a few hours",
+          "usualReplyTimeMinutes": "Typically replies in a few minutes",
+        }
+      }
+    />
   </div>
   <div
     className="button bottom-right"

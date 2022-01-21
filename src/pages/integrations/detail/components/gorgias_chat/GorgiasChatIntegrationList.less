@@ -1,7 +1,41 @@
 @import '~css/new/colorTokens';
 
 :local {
-    .create-integration-btn {
+    .forwardIcon {
+        color: @classic-neutral-grey-3;
+        font-size: 22px;
+        margin-left: 25px;
+    }
+
+    .tableHead td {
+        &:first-child {
+            padding-left: 30px;
+        }
+
+        &:last-child {
+            padding-right: 30px;
+        }
+    }
+    .tableBodyRow td {
+        &:first-child {
+            padding-left: 12px;
+        }
+
+        &:last-child {
+            padding-right: 12px;
+        }
+    }
+
+    .chatName {
+        font-weight: bold;
+        width: max-content;
+    }
+
+    .chatNameHeader {
+        width: max-content;
+    }
+
+    .createIntegrationBtn {
         display: flex;
         align-items: center;
         i {
@@ -9,26 +43,28 @@
         }
     }
 
-    .integration-link-inner {
+    .shopifyStoreDiv {
         display: flex;
         align-items: center;
-        .warning-icon {
+
+        .warningIcon {
             height: 16px;
             width: 16px;
-            margin-left: 10px;
         }
 
-        .shopify-store-name {
-            margin-left: 18px;
+        .shopifyStoreName {
             img {
                 width: 14px;
                 height: 16px;
             }
             span {
                 margin-left: 8px;
-                color: @classic-neutral-grey-4;
                 font-size: 14px;
             }
         }
+    }
+
+    .noStore {
+        color: @classic-neutral-grey-4;
     }
 }

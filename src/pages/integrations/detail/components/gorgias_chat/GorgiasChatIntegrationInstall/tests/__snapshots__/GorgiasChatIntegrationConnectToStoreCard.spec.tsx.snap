@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<GorgiasChatIntegrationConnectToStoreCard/> should render the component correctly 1`] = `
+<div>
+  <div
+    class="card card"
+  >
+    <div
+      class="card-body card-body"
+    >
+      <div>
+        <h3>
+          Connect to store
+        </h3>
+        <p>
+          By connecting your live chat to an online store, you can leverage all the store's information for automation such as self-service flows and help articles.
+        </p>
+      </div>
+      <div
+        class="connect-button-wrapper"
+      >
+        <button
+          class="btn btn-primary"
+          type="button"
+        >
+          Connect
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -201,15 +201,15 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                 className="link"
                 exact={true}
                 key=".0"
-                to="/app/settings/integrations/gorgias_chat/2/appearance"
+                to="/app/settings/integrations/gorgias_chat/2/campaigns"
               >
                 <a
                   activeClassName="active"
                   className="link"
                   exact={true}
-                  to="/app/settings/integrations/gorgias_chat/2/appearance"
+                  to="/app/settings/integrations/gorgias_chat/2/campaigns"
                 >
-                  Appearance
+                  Campaigns
                 </a>
               </NavLink>
               <NavLink
@@ -217,38 +217,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                 className="link"
                 exact={true}
                 key=".1"
-                to="/app/settings/integrations/gorgias_chat/2/installation"
-              >
-                <a
-                  activeClassName="active"
-                  className="link"
-                  exact={true}
-                  to="/app/settings/integrations/gorgias_chat/2/installation"
-                >
-                  Installation
-                </a>
-              </NavLink>
-              <NavLink
-                activeClassName="active"
-                className="link"
-                exact={true}
-                key=".2"
-                to="/app/settings/integrations/gorgias_chat/2/preferences"
-              >
-                <a
-                  activeClassName="active"
-                  className="link"
-                  exact={true}
-                  to="/app/settings/integrations/gorgias_chat/2/preferences"
-                >
-                  Preferences
-                </a>
-              </NavLink>
-              <NavLink
-                activeClassName="active"
-                className="link"
-                exact={true}
-                key=".3"
                 to="/app/settings/integrations/gorgias_chat/2/quick_replies"
               >
                 <a
@@ -264,16 +232,48 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                 activeClassName="active"
                 className="link"
                 exact={true}
-                key=".4"
-                to="/app/settings/integrations/gorgias_chat/2/campaigns"
+                key=".2"
+                to="/app/settings/integrations/gorgias_chat/2/appearance"
               >
                 <a
                   activeClassName="active"
                   className="link"
                   exact={true}
-                  to="/app/settings/integrations/gorgias_chat/2/campaigns"
+                  to="/app/settings/integrations/gorgias_chat/2/appearance"
                 >
-                  Campaigns
+                  Appearance
+                </a>
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
+                key=".3"
+                to="/app/settings/integrations/gorgias_chat/2/preferences"
+              >
+                <a
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  to="/app/settings/integrations/gorgias_chat/2/preferences"
+                >
+                  Preferences
+                </a>
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
+                key=".5"
+                to="/app/settings/integrations/gorgias_chat/2/installation"
+              >
+                <a
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  to="/app/settings/integrations/gorgias_chat/2/installation"
+                >
+                  Installation
                 </a>
               </NavLink>
             </nav>
@@ -304,6 +304,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
               className="row"
             >
               <Col
+                className="pageColumn"
                 md="8"
                 tag="div"
                 widths={
@@ -317,7 +318,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                 }
               >
                 <div
-                  className="col-md-8"
+                  className="pageColumn col-md-8"
                 >
                   <GorgiasChatIntegrationOneClickInstallationCard
                     hasAutomationAddOn={false}
@@ -394,8 +395,9 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                               isIntegrationDeactivated={true}
                               isLegacyInstallation={false}
                               loading={Object {}}
+                              onDisconnect={[Function]}
                               onInstall={[Function]}
-                              onUninstallAndOrRemove={[Function]}
+                              onUninstall={[Function]}
                             >
                               <div
                                 className="one-click-installation"
@@ -460,31 +462,164 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                     Disconnected store
                                   </span>
                                 </div>
-                                <Button
-                                  className="chat-toggle-install"
-                                  color="danger"
-                                  onClick={[Function]}
-                                  tag="button"
+                                <div
+                                  className="actions-wrapper"
                                 >
-                                  <button
-                                    aria-label={null}
-                                    className="chat-toggle-install btn btn-danger"
+                                  <Button
+                                    className=""
+                                    color="primary"
+                                    disabled={false}
                                     onClick={[Function]}
-                                    type="button"
+                                    tag="button"
                                   >
-                                    Disconnect
-                                  </button>
-                                </Button>
+                                    <button
+                                      aria-label={null}
+                                      className="btn btn-primary"
+                                      disabled={false}
+                                      onClick={[Function]}
+                                      type="button"
+                                    >
+                                      Install
+                                    </button>
+                                  </Button>
+                                  <ConfirmButton
+                                    className="disconnect-button"
+                                    confirm={[Function]}
+                                    confirmColor="danger"
+                                    confirmText="Disconnect"
+                                    content={
+                                      <React.Fragment>
+                                        <p>
+                                          If this
+                                           
+                                          <b>
+                                            chat was manually connected to a store
+                                          </b>
+                                          , you will need to uninstall it to remove the chat completely.
+                                        </p>
+                                        <p>
+                                          Are you sure you want to disconnect this Shopify store from the chat integration?
+                                        </p>
+                                      </React.Fragment>
+                                    }
+                                    disabled={false}
+                                    id="disconnect-button-undefined"
+                                    onToggleConfirmation={[Function]}
+                                    placement="top"
+                                  >
+                                    <div
+                                      className="component d-inline-block disconnect-button"
+                                      id="disconnect-button-undefined"
+                                    >
+                                      <Button
+                                        className=""
+                                        color="secondary"
+                                        disabled={false}
+                                        id="confirm-button-disconnect-button-undefined"
+                                        onClick={[Function]}
+                                        tag="button"
+                                        type="button"
+                                      >
+                                        <button
+                                          aria-label={null}
+                                          className="btn btn-secondary"
+                                          disabled={false}
+                                          id="confirm-button-disconnect-button-undefined"
+                                          onClick={[Function]}
+                                          type="button"
+                                        >
+                                          <i
+                                            className="material-icons"
+                                          >
+                                            delete
+                                          </i>
+                                        </button>
+                                      </Button>
+                                      <Popover
+                                        container="body"
+                                        isOpen={false}
+                                        placement="top"
+                                        placementPrefix="bs-popover"
+                                        target="confirm-button-disconnect-button-undefined"
+                                        toggle={[Function]}
+                                        trigger="legacy"
+                                      >
+                                        <TooltipPopoverWrapper
+                                          autohide={false}
+                                          container="body"
+                                          delay={
+                                            Object {
+                                              "hide": 50,
+                                              "show": 0,
+                                            }
+                                          }
+                                          fade={true}
+                                          hideArrow={false}
+                                          innerClassName="popover-inner"
+                                          isOpen={false}
+                                          placement="top"
+                                          placementPrefix="bs-popover"
+                                          popperClassName="popover show"
+                                          target="confirm-button-disconnect-button-undefined"
+                                          toggle={[Function]}
+                                          trigger="legacy"
+                                        />
+                                      </Popover>
+                                    </div>
+                                  </ConfirmButton>
+                                  <Tooltip
+                                    disabled={false}
+                                    placement="top"
+                                    target="disconnect-button-undefined"
+                                  >
+                                    <UncontrolledTooltip
+                                      className="tooltip"
+                                      delay={0}
+                                      placement="top"
+                                      target="disconnect-button-undefined"
+                                    >
+                                      <Tooltip
+                                        autohide={true}
+                                        className="tooltip"
+                                        delay={0}
+                                        isOpen={false}
+                                        placement="top"
+                                        placementPrefix="bs-tooltip"
+                                        target="disconnect-button-undefined"
+                                        toggle={[Function]}
+                                        trigger="hover focus"
+                                      >
+                                        <TooltipPopoverWrapper
+                                          autohide={true}
+                                          className="tooltip"
+                                          delay={0}
+                                          fade={true}
+                                          hideArrow={false}
+                                          innerClassName="tooltip-inner"
+                                          isOpen={false}
+                                          placement="top"
+                                          placementPrefix="bs-tooltip"
+                                          popperClassName="tooltip show"
+                                          target="disconnect-button-undefined"
+                                          toggle={[Function]}
+                                          trigger="hover focus"
+                                        />
+                                      </Tooltip>
+                                    </UncontrolledTooltip>
+                                  </Tooltip>
+                                </div>
                               </div>
                             </OneClickInstallationCardStoreRow>
                             <OneClickInstallationCardStoreRow
+                              hasLegacyInstallations={false}
                               isChatInstalled={true}
                               isIntegrationDeactivated={false}
                               isLegacyInstallation={true}
                               key="2"
                               loading={Object {}}
+                              onDisconnect={[Function]}
                               onInstall={[Function]}
-                              onUninstallAndOrRemove={[Function]}
+                              onUninstall={[Function]}
                               targetIntegrationId={2}
                               targetIntegrationName="mylittleintegration2"
                             >
@@ -548,31 +683,156 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                     </UncontrolledTooltip>
                                   </Tooltip>
                                 </div>
-                                <Button
-                                  className="chat-toggle-install"
-                                  color="danger"
-                                  onClick={[Function]}
-                                  tag="button"
+                                <div
+                                  className="actions-wrapper"
                                 >
-                                  <button
-                                    aria-label={null}
-                                    className="chat-toggle-install btn btn-danger"
+                                  <Button
+                                    className=""
+                                    color="secondary"
+                                    disabled={false}
                                     onClick={[Function]}
-                                    type="button"
+                                    tag="button"
                                   >
-                                    Uninstall
-                                  </button>
-                                </Button>
+                                    <button
+                                      aria-label={null}
+                                      className="btn btn-secondary"
+                                      disabled={false}
+                                      onClick={[Function]}
+                                      type="button"
+                                    >
+                                      Uninstall
+                                    </button>
+                                  </Button>
+                                  <ConfirmButton
+                                    className="disconnect-button"
+                                    confirm={[Function]}
+                                    confirmColor="danger"
+                                    confirmText="Disconnect"
+                                    content={
+                                      <React.Fragment>
+                                        <p>
+                                          Are you sure you want to disconnect this Shopify store for the chat integration?
+                                        </p>
+                                      </React.Fragment>
+                                    }
+                                    disabled={false}
+                                    id="disconnect-button-2"
+                                    onToggleConfirmation={[Function]}
+                                    placement="top"
+                                  >
+                                    <div
+                                      className="component d-inline-block disconnect-button"
+                                      id="disconnect-button-2"
+                                    >
+                                      <Button
+                                        className=""
+                                        color="secondary"
+                                        disabled={false}
+                                        id="confirm-button-disconnect-button-2"
+                                        onClick={[Function]}
+                                        tag="button"
+                                        type="button"
+                                      >
+                                        <button
+                                          aria-label={null}
+                                          className="btn btn-secondary"
+                                          disabled={false}
+                                          id="confirm-button-disconnect-button-2"
+                                          onClick={[Function]}
+                                          type="button"
+                                        >
+                                          <i
+                                            className="material-icons"
+                                          >
+                                            delete
+                                          </i>
+                                        </button>
+                                      </Button>
+                                      <Popover
+                                        container="body"
+                                        isOpen={false}
+                                        placement="top"
+                                        placementPrefix="bs-popover"
+                                        target="confirm-button-disconnect-button-2"
+                                        toggle={[Function]}
+                                        trigger="legacy"
+                                      >
+                                        <TooltipPopoverWrapper
+                                          autohide={false}
+                                          container="body"
+                                          delay={
+                                            Object {
+                                              "hide": 50,
+                                              "show": 0,
+                                            }
+                                          }
+                                          fade={true}
+                                          hideArrow={false}
+                                          innerClassName="popover-inner"
+                                          isOpen={false}
+                                          placement="top"
+                                          placementPrefix="bs-popover"
+                                          popperClassName="popover show"
+                                          target="confirm-button-disconnect-button-2"
+                                          toggle={[Function]}
+                                          trigger="legacy"
+                                        />
+                                      </Popover>
+                                    </div>
+                                  </ConfirmButton>
+                                  <Tooltip
+                                    disabled={false}
+                                    placement="top"
+                                    target="disconnect-button-2"
+                                  >
+                                    <UncontrolledTooltip
+                                      className="tooltip"
+                                      delay={0}
+                                      placement="top"
+                                      target="disconnect-button-2"
+                                    >
+                                      <Tooltip
+                                        autohide={true}
+                                        className="tooltip"
+                                        delay={0}
+                                        isOpen={false}
+                                        placement="top"
+                                        placementPrefix="bs-tooltip"
+                                        target="disconnect-button-2"
+                                        toggle={[Function]}
+                                        trigger="hover focus"
+                                      >
+                                        <TooltipPopoverWrapper
+                                          autohide={true}
+                                          className="tooltip"
+                                          delay={0}
+                                          fade={true}
+                                          hideArrow={false}
+                                          innerClassName="tooltip-inner"
+                                          isOpen={false}
+                                          placement="top"
+                                          placementPrefix="bs-tooltip"
+                                          popperClassName="tooltip show"
+                                          target="disconnect-button-2"
+                                          toggle={[Function]}
+                                          trigger="hover focus"
+                                        />
+                                      </Tooltip>
+                                    </UncontrolledTooltip>
+                                  </Tooltip>
+                                </div>
                               </div>
                             </OneClickInstallationCardStoreRow>
                             <OneClickInstallationCardStoreRow
+                              hasLegacyInstallations={false}
                               isChatInstalled={true}
                               isIntegrationDeactivated={false}
                               isLegacyInstallation={true}
                               key="3"
                               loading={Object {}}
+                              onDisconnect={[Function]}
                               onInstall={[Function]}
-                              onUninstallAndOrRemove={[Function]}
+                              onUninstall={[Function]}
                               targetIntegrationId={3}
                               targetIntegrationName="mylittleintegration3"
                             >
@@ -636,31 +896,156 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                     </UncontrolledTooltip>
                                   </Tooltip>
                                 </div>
-                                <Button
-                                  className="chat-toggle-install"
-                                  color="danger"
-                                  onClick={[Function]}
-                                  tag="button"
+                                <div
+                                  className="actions-wrapper"
                                 >
-                                  <button
-                                    aria-label={null}
-                                    className="chat-toggle-install btn btn-danger"
+                                  <Button
+                                    className=""
+                                    color="secondary"
+                                    disabled={false}
                                     onClick={[Function]}
-                                    type="button"
+                                    tag="button"
                                   >
-                                    Uninstall
-                                  </button>
-                                </Button>
+                                    <button
+                                      aria-label={null}
+                                      className="btn btn-secondary"
+                                      disabled={false}
+                                      onClick={[Function]}
+                                      type="button"
+                                    >
+                                      Uninstall
+                                    </button>
+                                  </Button>
+                                  <ConfirmButton
+                                    className="disconnect-button"
+                                    confirm={[Function]}
+                                    confirmColor="danger"
+                                    confirmText="Disconnect"
+                                    content={
+                                      <React.Fragment>
+                                        <p>
+                                          Are you sure you want to disconnect this Shopify store for the chat integration?
+                                        </p>
+                                      </React.Fragment>
+                                    }
+                                    disabled={false}
+                                    id="disconnect-button-3"
+                                    onToggleConfirmation={[Function]}
+                                    placement="top"
+                                  >
+                                    <div
+                                      className="component d-inline-block disconnect-button"
+                                      id="disconnect-button-3"
+                                    >
+                                      <Button
+                                        className=""
+                                        color="secondary"
+                                        disabled={false}
+                                        id="confirm-button-disconnect-button-3"
+                                        onClick={[Function]}
+                                        tag="button"
+                                        type="button"
+                                      >
+                                        <button
+                                          aria-label={null}
+                                          className="btn btn-secondary"
+                                          disabled={false}
+                                          id="confirm-button-disconnect-button-3"
+                                          onClick={[Function]}
+                                          type="button"
+                                        >
+                                          <i
+                                            className="material-icons"
+                                          >
+                                            delete
+                                          </i>
+                                        </button>
+                                      </Button>
+                                      <Popover
+                                        container="body"
+                                        isOpen={false}
+                                        placement="top"
+                                        placementPrefix="bs-popover"
+                                        target="confirm-button-disconnect-button-3"
+                                        toggle={[Function]}
+                                        trigger="legacy"
+                                      >
+                                        <TooltipPopoverWrapper
+                                          autohide={false}
+                                          container="body"
+                                          delay={
+                                            Object {
+                                              "hide": 50,
+                                              "show": 0,
+                                            }
+                                          }
+                                          fade={true}
+                                          hideArrow={false}
+                                          innerClassName="popover-inner"
+                                          isOpen={false}
+                                          placement="top"
+                                          placementPrefix="bs-popover"
+                                          popperClassName="popover show"
+                                          target="confirm-button-disconnect-button-3"
+                                          toggle={[Function]}
+                                          trigger="legacy"
+                                        />
+                                      </Popover>
+                                    </div>
+                                  </ConfirmButton>
+                                  <Tooltip
+                                    disabled={false}
+                                    placement="top"
+                                    target="disconnect-button-3"
+                                  >
+                                    <UncontrolledTooltip
+                                      className="tooltip"
+                                      delay={0}
+                                      placement="top"
+                                      target="disconnect-button-3"
+                                    >
+                                      <Tooltip
+                                        autohide={true}
+                                        className="tooltip"
+                                        delay={0}
+                                        isOpen={false}
+                                        placement="top"
+                                        placementPrefix="bs-tooltip"
+                                        target="disconnect-button-3"
+                                        toggle={[Function]}
+                                        trigger="hover focus"
+                                      >
+                                        <TooltipPopoverWrapper
+                                          autohide={true}
+                                          className="tooltip"
+                                          delay={0}
+                                          fade={true}
+                                          hideArrow={false}
+                                          innerClassName="tooltip-inner"
+                                          isOpen={false}
+                                          placement="top"
+                                          placementPrefix="bs-tooltip"
+                                          popperClassName="tooltip show"
+                                          target="disconnect-button-3"
+                                          toggle={[Function]}
+                                          trigger="hover focus"
+                                        />
+                                      </Tooltip>
+                                    </UncontrolledTooltip>
+                                  </Tooltip>
+                                </div>
                               </div>
                             </OneClickInstallationCardStoreRow>
                             <OneClickInstallationCardStoreRow
+                              hasLegacyInstallations={false}
                               isChatInstalled={true}
                               isIntegrationDeactivated={false}
                               isLegacyInstallation={true}
                               key="1"
                               loading={Object {}}
+                              onDisconnect={[Function]}
                               onInstall={[Function]}
-                              onUninstallAndOrRemove={[Function]}
+                              onUninstall={[Function]}
                               targetIntegrationId={1}
                               targetIntegrationName="mylittleintegration"
                             >
@@ -724,21 +1109,144 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                     </UncontrolledTooltip>
                                   </Tooltip>
                                 </div>
-                                <Button
-                                  className="chat-toggle-install"
-                                  color="danger"
-                                  onClick={[Function]}
-                                  tag="button"
+                                <div
+                                  className="actions-wrapper"
                                 >
-                                  <button
-                                    aria-label={null}
-                                    className="chat-toggle-install btn btn-danger"
+                                  <Button
+                                    className=""
+                                    color="secondary"
+                                    disabled={false}
                                     onClick={[Function]}
-                                    type="button"
+                                    tag="button"
                                   >
-                                    Uninstall
-                                  </button>
-                                </Button>
+                                    <button
+                                      aria-label={null}
+                                      className="btn btn-secondary"
+                                      disabled={false}
+                                      onClick={[Function]}
+                                      type="button"
+                                    >
+                                      Uninstall
+                                    </button>
+                                  </Button>
+                                  <ConfirmButton
+                                    className="disconnect-button"
+                                    confirm={[Function]}
+                                    confirmColor="danger"
+                                    confirmText="Disconnect"
+                                    content={
+                                      <React.Fragment>
+                                        <p>
+                                          Are you sure you want to disconnect this Shopify store for the chat integration?
+                                        </p>
+                                      </React.Fragment>
+                                    }
+                                    disabled={false}
+                                    id="disconnect-button-1"
+                                    onToggleConfirmation={[Function]}
+                                    placement="top"
+                                  >
+                                    <div
+                                      className="component d-inline-block disconnect-button"
+                                      id="disconnect-button-1"
+                                    >
+                                      <Button
+                                        className=""
+                                        color="secondary"
+                                        disabled={false}
+                                        id="confirm-button-disconnect-button-1"
+                                        onClick={[Function]}
+                                        tag="button"
+                                        type="button"
+                                      >
+                                        <button
+                                          aria-label={null}
+                                          className="btn btn-secondary"
+                                          disabled={false}
+                                          id="confirm-button-disconnect-button-1"
+                                          onClick={[Function]}
+                                          type="button"
+                                        >
+                                          <i
+                                            className="material-icons"
+                                          >
+                                            delete
+                                          </i>
+                                        </button>
+                                      </Button>
+                                      <Popover
+                                        container="body"
+                                        isOpen={false}
+                                        placement="top"
+                                        placementPrefix="bs-popover"
+                                        target="confirm-button-disconnect-button-1"
+                                        toggle={[Function]}
+                                        trigger="legacy"
+                                      >
+                                        <TooltipPopoverWrapper
+                                          autohide={false}
+                                          container="body"
+                                          delay={
+                                            Object {
+                                              "hide": 50,
+                                              "show": 0,
+                                            }
+                                          }
+                                          fade={true}
+                                          hideArrow={false}
+                                          innerClassName="popover-inner"
+                                          isOpen={false}
+                                          placement="top"
+                                          placementPrefix="bs-popover"
+                                          popperClassName="popover show"
+                                          target="confirm-button-disconnect-button-1"
+                                          toggle={[Function]}
+                                          trigger="legacy"
+                                        />
+                                      </Popover>
+                                    </div>
+                                  </ConfirmButton>
+                                  <Tooltip
+                                    disabled={false}
+                                    placement="top"
+                                    target="disconnect-button-1"
+                                  >
+                                    <UncontrolledTooltip
+                                      className="tooltip"
+                                      delay={0}
+                                      placement="top"
+                                      target="disconnect-button-1"
+                                    >
+                                      <Tooltip
+                                        autohide={true}
+                                        className="tooltip"
+                                        delay={0}
+                                        isOpen={false}
+                                        placement="top"
+                                        placementPrefix="bs-tooltip"
+                                        target="disconnect-button-1"
+                                        toggle={[Function]}
+                                        trigger="hover focus"
+                                      >
+                                        <TooltipPopoverWrapper
+                                          autohide={true}
+                                          className="tooltip"
+                                          delay={0}
+                                          fade={true}
+                                          hideArrow={false}
+                                          innerClassName="tooltip-inner"
+                                          isOpen={false}
+                                          placement="top"
+                                          placementPrefix="bs-tooltip"
+                                          popperClassName="tooltip show"
+                                          target="disconnect-button-1"
+                                          toggle={[Function]}
+                                          trigger="hover focus"
+                                        />
+                                      </Tooltip>
+                                    </UncontrolledTooltip>
+                                  </Tooltip>
+                                </div>
                               </div>
                             </OneClickInstallationCardStoreRow>
                           </div>
@@ -1647,15 +2155,15 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                 className="link"
                 exact={true}
                 key=".0"
-                to="/app/settings/integrations/gorgias_chat/2/appearance"
+                to="/app/settings/integrations/gorgias_chat/2/campaigns"
               >
                 <a
                   activeClassName="active"
                   className="link"
                   exact={true}
-                  to="/app/settings/integrations/gorgias_chat/2/appearance"
+                  to="/app/settings/integrations/gorgias_chat/2/campaigns"
                 >
-                  Appearance
+                  Campaigns
                 </a>
               </NavLink>
               <NavLink
@@ -1663,38 +2171,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                 className="link"
                 exact={true}
                 key=".1"
-                to="/app/settings/integrations/gorgias_chat/2/installation"
-              >
-                <a
-                  activeClassName="active"
-                  className="link"
-                  exact={true}
-                  to="/app/settings/integrations/gorgias_chat/2/installation"
-                >
-                  Installation
-                </a>
-              </NavLink>
-              <NavLink
-                activeClassName="active"
-                className="link"
-                exact={true}
-                key=".2"
-                to="/app/settings/integrations/gorgias_chat/2/preferences"
-              >
-                <a
-                  activeClassName="active"
-                  className="link"
-                  exact={true}
-                  to="/app/settings/integrations/gorgias_chat/2/preferences"
-                >
-                  Preferences
-                </a>
-              </NavLink>
-              <NavLink
-                activeClassName="active"
-                className="link"
-                exact={true}
-                key=".3"
                 to="/app/settings/integrations/gorgias_chat/2/quick_replies"
               >
                 <a
@@ -1710,16 +2186,48 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                 activeClassName="active"
                 className="link"
                 exact={true}
-                key=".4"
-                to="/app/settings/integrations/gorgias_chat/2/campaigns"
+                key=".2"
+                to="/app/settings/integrations/gorgias_chat/2/appearance"
               >
                 <a
                   activeClassName="active"
                   className="link"
                   exact={true}
-                  to="/app/settings/integrations/gorgias_chat/2/campaigns"
+                  to="/app/settings/integrations/gorgias_chat/2/appearance"
                 >
-                  Campaigns
+                  Appearance
+                </a>
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
+                key=".3"
+                to="/app/settings/integrations/gorgias_chat/2/preferences"
+              >
+                <a
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  to="/app/settings/integrations/gorgias_chat/2/preferences"
+                >
+                  Preferences
+                </a>
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
+                key=".5"
+                to="/app/settings/integrations/gorgias_chat/2/installation"
+              >
+                <a
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  to="/app/settings/integrations/gorgias_chat/2/installation"
+                >
+                  Installation
                 </a>
               </NavLink>
             </nav>
@@ -1750,6 +2258,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
               className="row"
             >
               <Col
+                className="pageColumn"
                 md="8"
                 tag="div"
                 widths={
@@ -1763,8 +2272,159 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                 }
               >
                 <div
-                  className="col-md-8"
+                  className="pageColumn col-md-8"
                 >
+                  <GorgiasChatIntegrationConnectToStoreCard
+                    gorgiasChatIntegrations={Immutable.List []}
+                    integration={
+                      Immutable.Map {
+                        "id": 2,
+                        "name": "mychat",
+                        "type": "gorgias_chat",
+                        "meta": Immutable.Map {
+                          "shopify_integration_ids": Immutable.List [],
+                          "script_url": "config.gorgias.io/foo/chat/bar",
+                        },
+                      }
+                    }
+                    shopifyIntegrations={
+                      Immutable.List [
+                        Immutable.Map {
+                          "id": 1,
+                          "name": "mylittleintegration",
+                          "type": "shopify",
+                          "created_datetime": "2018-01-01 00:00:00",
+                        },
+                        Immutable.Map {
+                          "id": 2,
+                          "name": "mylittleintegration2",
+                          "type": "shopify",
+                          "created_datetime": "2019-01-01 00:00:00",
+                        },
+                        Immutable.Map {
+                          "id": 3,
+                          "name": "mylittleintegration3",
+                          "type": "shopify",
+                          "created_datetime": "2019-01-01 00:00:00",
+                        },
+                      ]
+                    }
+                    updateOrCreateIntegration={[MockFunction]}
+                  >
+                    <Card
+                      className="card"
+                      tag="div"
+                    >
+                      <div
+                        className="card card"
+                      >
+                        <CardBody
+                          className="card-body"
+                          tag="div"
+                        >
+                          <div
+                            className="card-body card-body"
+                          >
+                            <div>
+                              <h3>
+                                Connect to store
+                              </h3>
+                              <p>
+                                By connecting your live chat to an online store, you can leverage all the store's information for automation such as self-service flows and help articles.
+                              </p>
+                            </div>
+                            <div
+                              className="connect-button-wrapper"
+                            >
+                              <Button
+                                color="primary"
+                                onClick={[Function]}
+                                tag="button"
+                              >
+                                <button
+                                  aria-label={null}
+                                  className="btn btn-primary"
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  Connect
+                                </button>
+                              </Button>
+                            </div>
+                          </div>
+                        </CardBody>
+                      </div>
+                    </Card>
+                    <Modal
+                      bodyClassName="modal-body"
+                      dismissible={true}
+                      footer={
+                        <React.Fragment>
+                          <Button
+                            color="secondary"
+                            onClick={[Function]}
+                            tag="button"
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            className=""
+                            color="primary"
+                            disabled={true}
+                            onClick={[Function]}
+                            tag="button"
+                          >
+                            Connect & install
+                          </Button>
+                        </React.Fragment>
+                      }
+                      footerClassName="modal-footer"
+                      header="Connect a Shopify store"
+                      isOpen={false}
+                      onClose={[Function]}
+                      style={
+                        Object {
+                          "maxWidth": "600px",
+                        }
+                      }
+                    >
+                      <Modal
+                        autoFocus={true}
+                        backdrop={true}
+                        backdropTransition={
+                          Object {
+                            "mountOnEnter": true,
+                            "timeout": 150,
+                          }
+                        }
+                        centered={false}
+                        container="body"
+                        fade={false}
+                        isOpen={false}
+                        keyboard={true}
+                        modalTransition={
+                          Object {
+                            "timeout": 300,
+                          }
+                        }
+                        onClose={[Function]}
+                        onClosed={[Function]}
+                        onOpened={[Function]}
+                        returnFocusAfterClose={true}
+                        role="dialog"
+                        scrollable={false}
+                        style={
+                          Object {
+                            "maxWidth": "600px",
+                          }
+                        }
+                        toggle={[Function]}
+                        trapFocus={false}
+                        unmountOnClose={true}
+                        zIndex={1050}
+                      />
+                    </Modal>
+                  </GorgiasChatIntegrationConnectToStoreCard>
                   <GorgiasChatIntegrationCustomInstallationCard
                     code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
                     integrationId={2}
@@ -2437,70 +3097,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                 className="link"
                 exact={true}
                 key=".0"
-                to="/app/settings/integrations/gorgias_chat/2/appearance"
-              >
-                <a
-                  activeClassName="active"
-                  className="link"
-                  exact={true}
-                  to="/app/settings/integrations/gorgias_chat/2/appearance"
-                >
-                  Appearance
-                </a>
-              </NavLink>
-              <NavLink
-                activeClassName="active"
-                className="link"
-                exact={true}
-                key=".1"
-                to="/app/settings/integrations/gorgias_chat/2/installation"
-              >
-                <a
-                  activeClassName="active"
-                  className="link"
-                  exact={true}
-                  to="/app/settings/integrations/gorgias_chat/2/installation"
-                >
-                  Installation
-                </a>
-              </NavLink>
-              <NavLink
-                activeClassName="active"
-                className="link"
-                exact={true}
-                key=".2"
-                to="/app/settings/integrations/gorgias_chat/2/preferences"
-              >
-                <a
-                  activeClassName="active"
-                  className="link"
-                  exact={true}
-                  to="/app/settings/integrations/gorgias_chat/2/preferences"
-                >
-                  Preferences
-                </a>
-              </NavLink>
-              <NavLink
-                activeClassName="active"
-                className="link"
-                exact={true}
-                key=".3"
-                to="/app/settings/integrations/gorgias_chat/2/quick_replies"
-              >
-                <a
-                  activeClassName="active"
-                  className="link"
-                  exact={true}
-                  to="/app/settings/integrations/gorgias_chat/2/quick_replies"
-                >
-                  Quick replies
-                </a>
-              </NavLink>
-              <NavLink
-                activeClassName="active"
-                className="link"
-                exact={true}
-                key=".4"
                 to="/app/settings/integrations/gorgias_chat/2/campaigns"
               >
                 <a
@@ -2516,7 +3112,55 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                 activeClassName="active"
                 className="link"
                 exact={true}
-                key=".5"
+                key=".1"
+                to="/app/settings/integrations/gorgias_chat/2/quick_replies"
+              >
+                <a
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  to="/app/settings/integrations/gorgias_chat/2/quick_replies"
+                >
+                  Quick replies
+                </a>
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
+                key=".2"
+                to="/app/settings/integrations/gorgias_chat/2/appearance"
+              >
+                <a
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  to="/app/settings/integrations/gorgias_chat/2/appearance"
+                >
+                  Appearance
+                </a>
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
+                key=".3"
+                to="/app/settings/integrations/gorgias_chat/2/preferences"
+              >
+                <a
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  to="/app/settings/integrations/gorgias_chat/2/preferences"
+                >
+                  Preferences
+                </a>
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
+                key=".4"
                 to="/app/settings/integrations/gorgias_chat/2/self_service"
               >
                 <a
@@ -2526,6 +3170,22 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                   to="/app/settings/integrations/gorgias_chat/2/self_service"
                 >
                   Self-service
+                </a>
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
+                key=".5"
+                to="/app/settings/integrations/gorgias_chat/2/installation"
+              >
+                <a
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  to="/app/settings/integrations/gorgias_chat/2/installation"
+                >
+                  Installation
                 </a>
               </NavLink>
             </nav>
@@ -2556,6 +3216,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
               className="row"
             >
               <Col
+                className="pageColumn"
                 md="8"
                 tag="div"
                 widths={
@@ -2569,7 +3230,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                 }
               >
                 <div
-                  className="col-md-8"
+                  className="pageColumn col-md-8"
                 >
                   <GorgiasChatIntegrationOneClickInstallationCard
                     hasAutomationAddOn={false}
@@ -2642,13 +3303,15 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                               Activate the customer chat widget on your Shopify store in one click.
                             </p>
                             <OneClickInstallationCardStoreRow
+                              hasLegacyInstallations={false}
                               isChatInstalled={true}
                               isIntegrationDeactivated={false}
                               isLegacyInstallation={false}
                               key="3"
                               loading={Object {}}
+                              onDisconnect={[Function]}
                               onInstall={[Function]}
-                              onUninstallAndOrRemove={[Function]}
+                              onUninstall={[Function]}
                               targetIntegrationId={3}
                               targetIntegrationName="mylittleintegration3"
                             >
@@ -2667,21 +3330,150 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                     mylittleintegration3
                                   </b>
                                 </div>
-                                <Button
-                                  className="chat-toggle-install"
-                                  color="danger"
-                                  onClick={[Function]}
-                                  tag="button"
+                                <div
+                                  className="actions-wrapper"
                                 >
-                                  <button
-                                    aria-label={null}
-                                    className="chat-toggle-install btn btn-danger"
+                                  <Button
+                                    className=""
+                                    color="secondary"
+                                    disabled={false}
                                     onClick={[Function]}
-                                    type="button"
+                                    tag="button"
                                   >
-                                    Uninstall
-                                  </button>
-                                </Button>
+                                    <button
+                                      aria-label={null}
+                                      className="btn btn-secondary"
+                                      disabled={false}
+                                      onClick={[Function]}
+                                      type="button"
+                                    >
+                                      Uninstall
+                                    </button>
+                                  </Button>
+                                  <ConfirmButton
+                                    className="disconnect-button"
+                                    confirm={[Function]}
+                                    confirmColor="danger"
+                                    confirmText="Disconnect"
+                                    content={
+                                      <React.Fragment>
+                                        <p>
+                                          <b>
+                                            Disconnecting this chat from the store will also uninstall it
+                                          </b>
+                                          , removing chat from all pages.
+                                        </p>
+                                        <p>
+                                          Are you sure you want to disconnect this Shopify store from the chat integration?
+                                        </p>
+                                      </React.Fragment>
+                                    }
+                                    disabled={false}
+                                    id="disconnect-button-3"
+                                    onToggleConfirmation={[Function]}
+                                    placement="top"
+                                  >
+                                    <div
+                                      className="component d-inline-block disconnect-button"
+                                      id="disconnect-button-3"
+                                    >
+                                      <Button
+                                        className=""
+                                        color="secondary"
+                                        disabled={false}
+                                        id="confirm-button-disconnect-button-3"
+                                        onClick={[Function]}
+                                        tag="button"
+                                        type="button"
+                                      >
+                                        <button
+                                          aria-label={null}
+                                          className="btn btn-secondary"
+                                          disabled={false}
+                                          id="confirm-button-disconnect-button-3"
+                                          onClick={[Function]}
+                                          type="button"
+                                        >
+                                          <i
+                                            className="material-icons"
+                                          >
+                                            delete
+                                          </i>
+                                        </button>
+                                      </Button>
+                                      <Popover
+                                        container="body"
+                                        isOpen={false}
+                                        placement="top"
+                                        placementPrefix="bs-popover"
+                                        target="confirm-button-disconnect-button-3"
+                                        toggle={[Function]}
+                                        trigger="legacy"
+                                      >
+                                        <TooltipPopoverWrapper
+                                          autohide={false}
+                                          container="body"
+                                          delay={
+                                            Object {
+                                              "hide": 50,
+                                              "show": 0,
+                                            }
+                                          }
+                                          fade={true}
+                                          hideArrow={false}
+                                          innerClassName="popover-inner"
+                                          isOpen={false}
+                                          placement="top"
+                                          placementPrefix="bs-popover"
+                                          popperClassName="popover show"
+                                          target="confirm-button-disconnect-button-3"
+                                          toggle={[Function]}
+                                          trigger="legacy"
+                                        />
+                                      </Popover>
+                                    </div>
+                                  </ConfirmButton>
+                                  <Tooltip
+                                    disabled={false}
+                                    placement="top"
+                                    target="disconnect-button-3"
+                                  >
+                                    <UncontrolledTooltip
+                                      className="tooltip"
+                                      delay={0}
+                                      placement="top"
+                                      target="disconnect-button-3"
+                                    >
+                                      <Tooltip
+                                        autohide={true}
+                                        className="tooltip"
+                                        delay={0}
+                                        isOpen={false}
+                                        placement="top"
+                                        placementPrefix="bs-tooltip"
+                                        target="disconnect-button-3"
+                                        toggle={[Function]}
+                                        trigger="hover focus"
+                                      >
+                                        <TooltipPopoverWrapper
+                                          autohide={true}
+                                          className="tooltip"
+                                          delay={0}
+                                          fade={true}
+                                          hideArrow={false}
+                                          innerClassName="tooltip-inner"
+                                          isOpen={false}
+                                          placement="top"
+                                          placementPrefix="bs-tooltip"
+                                          popperClassName="tooltip show"
+                                          target="disconnect-button-3"
+                                          toggle={[Function]}
+                                          trigger="hover focus"
+                                        />
+                                      </Tooltip>
+                                    </UncontrolledTooltip>
+                                  </Tooltip>
+                                </div>
                               </div>
                             </OneClickInstallationCardStoreRow>
                           </div>

@@ -33,12 +33,32 @@ exports[`<GorgiasChatIntegrationOneClickInstallationCard/> should NOT display th
             mylittleintegration3
           </b>
         </div>
-        <button
-          class="chat-toggle-install btn btn-primary"
-          type="button"
+        <div
+          class="actions-wrapper"
         >
-          Install
-        </button>
+          <button
+            class="btn btn-primary"
+            type="button"
+          >
+            Install
+          </button>
+          <div
+            class="component d-inline-block disconnect-button"
+            id="disconnect-button-3"
+          >
+            <button
+              class="btn btn-secondary"
+              id="confirm-button-disconnect-button-3"
+              type="button"
+            >
+              <i
+                class="material-icons"
+              >
+                delete
+              </i>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -89,12 +109,32 @@ exports[`<GorgiasChatIntegrationOneClickInstallationCard/> should display one sh
             mylittleintegration3
           </b>
         </div>
-        <button
-          class="chat-toggle-install btn btn-primary"
-          type="button"
+        <div
+          class="actions-wrapper"
         >
-          Install
-        </button>
+          <button
+            class="btn btn-primary"
+            type="button"
+          >
+            Install
+          </button>
+          <div
+            class="component d-inline-block disconnect-button"
+            id="disconnect-button-3"
+          >
+            <button
+              class="btn btn-secondary"
+              id="confirm-button-disconnect-button-3"
+              type="button"
+            >
+              <i
+                class="material-icons"
+              >
+                delete
+              </i>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -145,12 +185,32 @@ exports[`<GorgiasChatIntegrationOneClickInstallationCard/> should display one sh
             mylittleintegration3
           </b>
         </div>
-        <button
-          class="chat-toggle-install btn btn-danger"
-          type="button"
+        <div
+          class="actions-wrapper"
         >
-          Uninstall
-        </button>
+          <button
+            class="btn btn-secondary"
+            type="button"
+          >
+            Uninstall
+          </button>
+          <div
+            class="component d-inline-block disconnect-button"
+            id="disconnect-button-3"
+          >
+            <button
+              class="btn btn-secondary"
+              id="confirm-button-disconnect-button-3"
+              type="button"
+            >
+              <i
+                class="material-icons"
+              >
+                delete
+              </i>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -201,12 +261,32 @@ exports[`<GorgiasChatIntegrationOneClickInstallationCard/> should display the me
             mylittleintegration3
           </b>
         </div>
-        <button
-          class="chat-toggle-install btn btn-primary"
-          type="button"
+        <div
+          class="actions-wrapper"
         >
-          Install
-        </button>
+          <button
+            class="btn btn-primary"
+            type="button"
+          >
+            Install
+          </button>
+          <div
+            class="component d-inline-block disconnect-button"
+            id="disconnect-button-3"
+          >
+            <button
+              class="btn btn-secondary"
+              id="confirm-button-disconnect-button-3"
+              type="button"
+            >
+              <i
+                class="material-icons"
+              >
+                delete
+              </i>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

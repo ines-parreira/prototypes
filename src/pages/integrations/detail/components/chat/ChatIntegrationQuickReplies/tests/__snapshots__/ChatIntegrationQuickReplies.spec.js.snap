@@ -414,7 +414,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                           className="mb-5"
                         >
                           <Row
-                            className="mb-3 form-row"
+                            className="row"
                             key="0"
                             tag="div"
                             widths={
@@ -428,10 +428,10 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                             }
                           >
                             <div
-                              className="mb-3 form-row row"
+                              className="row row"
                             >
                               <Col
-                                className="flex-grow"
+                                className="flex-grow pr-0"
                                 tag="div"
                                 widths={
                                   Array [
@@ -444,24 +444,26 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                                 }
                               >
                                 <div
-                                  className="flex-grow col"
+                                  className="flex-grow pr-0 col"
                                 >
                                   <InputField
+                                    className="my-0"
                                     maxLength={20}
                                     name="item-0"
                                     onChange={[Function]}
                                     placeholder="Type something (limited to 20 characters)"
                                     required={true}
+                                    size={300}
                                     type="text"
                                     value="Get order status"
                                   >
                                     <FormGroup
-                                      className="InputField required"
+                                      className="InputField my-0 required"
                                       color=""
                                       tag="div"
                                     >
                                       <div
-                                        className="InputField required form-group"
+                                        className="InputField my-0 required form-group"
                                         color=""
                                       >
                                         <div
@@ -474,6 +476,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                                             onChange={[Function]}
                                             placeholder="Type something (limited to 20 characters)"
                                             required={true}
+                                            size={300}
                                             type="text"
                                             value="Get order status"
                                           >
@@ -484,6 +487,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                                               onChange={[Function]}
                                               placeholder="Type something (limited to 20 characters)"
                                               required={true}
+                                              size={300}
                                               type="text"
                                               value="Get order status"
                                             />
@@ -495,7 +499,8 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                                 </div>
                               </Col>
                               <Col
-                                className="d-flex col-sm-auto"
+                                className="d-flex col-sm-auto delete"
+                                onClick={[Function]}
                                 tag="div"
                                 widths={
                                   Array [
@@ -508,39 +513,20 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                                 }
                               >
                                 <div
-                                  className="d-flex col-sm-auto col"
+                                  className="d-flex col-sm-auto delete col"
+                                  onClick={[Function]}
                                 >
-                                  <ForwardRef
-                                    intent="destructive"
-                                    onClick={[Function]}
-                                    type="button"
+                                  <i
+                                    className="material-icons md-2 text-danger"
                                   >
-                                    <ForwardRef
-                                      className="wrapper medium"
-                                      intent="destructive"
-                                      onClick={[Function]}
-                                      size="medium"
-                                      type="button"
-                                    >
-                                      <button
-                                        className="wrapper wrapper medium destructive medium"
-                                        onClick={[Function]}
-                                        type="button"
-                                      >
-                                        <i
-                                          className="material-icons icon"
-                                        >
-                                          delete
-                                        </i>
-                                      </button>
-                                    </ForwardRef>
-                                  </ForwardRef>
+                                    clear
+                                  </i>
                                 </div>
                               </Col>
                             </div>
                           </Row>
                           <Row
-                            className="mb-3 form-row"
+                            className="row"
                             key="1"
                             tag="div"
                             widths={
@@ -554,10 +540,10 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                             }
                           >
                             <div
-                              className="mb-3 form-row row"
+                              className="row row"
                             >
                               <Col
-                                className="flex-grow"
+                                className="flex-grow pr-0"
                                 tag="div"
                                 widths={
                                   Array [
@@ -570,24 +556,26 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                                 }
                               >
                                 <div
-                                  className="flex-grow col"
+                                  className="flex-grow pr-0 col"
                                 >
                                   <InputField
+                                    className="my-0"
                                     maxLength={20}
                                     name="item-1"
                                     onChange={[Function]}
                                     placeholder="Type something (limited to 20 characters)"
                                     required={true}
+                                    size={300}
                                     type="text"
                                     value="Apply promo code"
                                   >
                                     <FormGroup
-                                      className="InputField required"
+                                      className="InputField my-0 required"
                                       color=""
                                       tag="div"
                                     >
                                       <div
-                                        className="InputField required form-group"
+                                        className="InputField my-0 required form-group"
                                         color=""
                                       >
                                         <div
@@ -600,6 +588,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                                             onChange={[Function]}
                                             placeholder="Type something (limited to 20 characters)"
                                             required={true}
+                                            size={300}
                                             type="text"
                                             value="Apply promo code"
                                           >
@@ -610,6 +599,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                                               onChange={[Function]}
                                               placeholder="Type something (limited to 20 characters)"
                                               required={true}
+                                              size={300}
                                               type="text"
                                               value="Apply promo code"
                                             />
@@ -621,7 +611,8 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                                 </div>
                               </Col>
                               <Col
-                                className="d-flex col-sm-auto"
+                                className="d-flex col-sm-auto delete"
+                                onClick={[Function]}
                                 tag="div"
                                 widths={
                                   Array [
@@ -634,59 +625,40 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                                 }
                               >
                                 <div
-                                  className="d-flex col-sm-auto col"
+                                  className="d-flex col-sm-auto delete col"
+                                  onClick={[Function]}
                                 >
-                                  <ForwardRef
-                                    intent="destructive"
-                                    onClick={[Function]}
-                                    type="button"
+                                  <i
+                                    className="material-icons md-2 text-danger"
                                   >
-                                    <ForwardRef
-                                      className="wrapper medium"
-                                      intent="destructive"
-                                      onClick={[Function]}
-                                      size="medium"
-                                      type="button"
-                                    >
-                                      <button
-                                        className="wrapper wrapper medium destructive medium"
-                                        onClick={[Function]}
-                                        type="button"
-                                      >
-                                        <i
-                                          className="material-icons icon"
-                                        >
-                                          delete
-                                        </i>
-                                      </button>
-                                    </ForwardRef>
-                                  </ForwardRef>
+                                    clear
+                                  </i>
                                 </div>
                               </Col>
                             </div>
                           </Row>
-                          <ForwardRef
-                            intent="secondary"
+                          <Button
+                            className="d-flex align-items-center"
+                            color="secondary"
+                            disabled={false}
                             onClick={[Function]}
+                            size="sm"
+                            tag="button"
                           >
-                            <ForwardRef
-                              className="wrapper medium"
-                              intent="secondary"
+                            <button
+                              aria-label={null}
+                              className="d-flex align-items-center btn btn-secondary btn-sm"
+                              disabled={false}
                               onClick={[Function]}
-                              size="medium"
+                              type="button"
                             >
-                              <button
-                                className="wrapper wrapper medium secondary medium"
-                                onClick={[Function]}
+                              <i
+                                className="material-icons md-2"
                               >
-                                <i
-                                  className="material-icons icon"
-                                >
-                                  add
-                                </i>
-                              </button>
-                            </ForwardRef>
-                          </ForwardRef>
+                                add
+                              </i>
+                            </button>
+                          </Button>
                         </div>
                       </ListField>
                       <div>
@@ -1361,7 +1333,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                           className="mb-5"
                         >
                           <Row
-                            className="mb-3 form-row"
+                            className="row"
                             key="0"
                             tag="div"
                             widths={
@@ -1375,10 +1347,10 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                             }
                           >
                             <div
-                              className="mb-3 form-row row"
+                              className="row row"
                             >
                               <Col
-                                className="flex-grow"
+                                className="flex-grow pr-0"
                                 tag="div"
                                 widths={
                                   Array [
@@ -1391,24 +1363,26 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                                 }
                               >
                                 <div
-                                  className="flex-grow col"
+                                  className="flex-grow pr-0 col"
                                 >
                                   <InputField
+                                    className="my-0"
                                     maxLength={20}
                                     name="item-0"
                                     onChange={[Function]}
                                     placeholder="Type something (limited to 20 characters)"
                                     required={true}
+                                    size={300}
                                     type="text"
                                     value="foo"
                                   >
                                     <FormGroup
-                                      className="InputField required"
+                                      className="InputField my-0 required"
                                       color=""
                                       tag="div"
                                     >
                                       <div
-                                        className="InputField required form-group"
+                                        className="InputField my-0 required form-group"
                                         color=""
                                       >
                                         <div
@@ -1421,6 +1395,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                                             onChange={[Function]}
                                             placeholder="Type something (limited to 20 characters)"
                                             required={true}
+                                            size={300}
                                             type="text"
                                             value="foo"
                                           >
@@ -1431,6 +1406,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                                               onChange={[Function]}
                                               placeholder="Type something (limited to 20 characters)"
                                               required={true}
+                                              size={300}
                                               type="text"
                                               value="foo"
                                             />
@@ -1442,7 +1418,8 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                                 </div>
                               </Col>
                               <Col
-                                className="d-flex col-sm-auto"
+                                className="d-flex col-sm-auto delete"
+                                onClick={[Function]}
                                 tag="div"
                                 widths={
                                   Array [
@@ -1455,39 +1432,20 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                                 }
                               >
                                 <div
-                                  className="d-flex col-sm-auto col"
+                                  className="d-flex col-sm-auto delete col"
+                                  onClick={[Function]}
                                 >
-                                  <ForwardRef
-                                    intent="destructive"
-                                    onClick={[Function]}
-                                    type="button"
+                                  <i
+                                    className="material-icons md-2 text-danger"
                                   >
-                                    <ForwardRef
-                                      className="wrapper medium"
-                                      intent="destructive"
-                                      onClick={[Function]}
-                                      size="medium"
-                                      type="button"
-                                    >
-                                      <button
-                                        className="wrapper wrapper medium destructive medium"
-                                        onClick={[Function]}
-                                        type="button"
-                                      >
-                                        <i
-                                          className="material-icons icon"
-                                        >
-                                          delete
-                                        </i>
-                                      </button>
-                                    </ForwardRef>
-                                  </ForwardRef>
+                                    clear
+                                  </i>
                                 </div>
                               </Col>
                             </div>
                           </Row>
                           <Row
-                            className="mb-3 form-row"
+                            className="row"
                             key="1"
                             tag="div"
                             widths={
@@ -1501,10 +1459,10 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                             }
                           >
                             <div
-                              className="mb-3 form-row row"
+                              className="row row"
                             >
                               <Col
-                                className="flex-grow"
+                                className="flex-grow pr-0"
                                 tag="div"
                                 widths={
                                   Array [
@@ -1517,24 +1475,26 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                                 }
                               >
                                 <div
-                                  className="flex-grow col"
+                                  className="flex-grow pr-0 col"
                                 >
                                   <InputField
+                                    className="my-0"
                                     maxLength={20}
                                     name="item-1"
                                     onChange={[Function]}
                                     placeholder="Type something (limited to 20 characters)"
                                     required={true}
+                                    size={300}
                                     type="text"
                                     value="bar"
                                   >
                                     <FormGroup
-                                      className="InputField required"
+                                      className="InputField my-0 required"
                                       color=""
                                       tag="div"
                                     >
                                       <div
-                                        className="InputField required form-group"
+                                        className="InputField my-0 required form-group"
                                         color=""
                                       >
                                         <div
@@ -1547,6 +1507,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                                             onChange={[Function]}
                                             placeholder="Type something (limited to 20 characters)"
                                             required={true}
+                                            size={300}
                                             type="text"
                                             value="bar"
                                           >
@@ -1557,6 +1518,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                                               onChange={[Function]}
                                               placeholder="Type something (limited to 20 characters)"
                                               required={true}
+                                              size={300}
                                               type="text"
                                               value="bar"
                                             />
@@ -1568,7 +1530,8 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                                 </div>
                               </Col>
                               <Col
-                                className="d-flex col-sm-auto"
+                                className="d-flex col-sm-auto delete"
+                                onClick={[Function]}
                                 tag="div"
                                 widths={
                                   Array [
@@ -1581,59 +1544,40 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                                 }
                               >
                                 <div
-                                  className="d-flex col-sm-auto col"
+                                  className="d-flex col-sm-auto delete col"
+                                  onClick={[Function]}
                                 >
-                                  <ForwardRef
-                                    intent="destructive"
-                                    onClick={[Function]}
-                                    type="button"
+                                  <i
+                                    className="material-icons md-2 text-danger"
                                   >
-                                    <ForwardRef
-                                      className="wrapper medium"
-                                      intent="destructive"
-                                      onClick={[Function]}
-                                      size="medium"
-                                      type="button"
-                                    >
-                                      <button
-                                        className="wrapper wrapper medium destructive medium"
-                                        onClick={[Function]}
-                                        type="button"
-                                      >
-                                        <i
-                                          className="material-icons icon"
-                                        >
-                                          delete
-                                        </i>
-                                      </button>
-                                    </ForwardRef>
-                                  </ForwardRef>
+                                    clear
+                                  </i>
                                 </div>
                               </Col>
                             </div>
                           </Row>
-                          <ForwardRef
-                            intent="secondary"
+                          <Button
+                            className="d-flex align-items-center"
+                            color="secondary"
+                            disabled={false}
                             onClick={[Function]}
+                            size="sm"
+                            tag="button"
                           >
-                            <ForwardRef
-                              className="wrapper medium"
-                              intent="secondary"
+                            <button
+                              aria-label={null}
+                              className="d-flex align-items-center btn btn-secondary btn-sm"
+                              disabled={false}
                               onClick={[Function]}
-                              size="medium"
+                              type="button"
                             >
-                              <button
-                                className="wrapper wrapper medium secondary medium"
-                                onClick={[Function]}
+                              <i
+                                className="material-icons md-2"
                               >
-                                <i
-                                  className="material-icons icon"
-                                >
-                                  add
-                                </i>
-                              </button>
-                            </ForwardRef>
-                          </ForwardRef>
+                                add
+                              </i>
+                            </button>
+                          </Button>
                         </div>
                       </ListField>
                       <div>

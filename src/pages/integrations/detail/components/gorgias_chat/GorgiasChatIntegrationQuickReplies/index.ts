@@ -1,0 +1,3 @@
+import GorgiasChatIntegrationQuickReplies from './GorgiasChatIntegrationQuickReplies'
+
+export default GorgiasChatIntegrationQuickReplies

@@ -55,23 +55,9 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/118/appearance"
+        to="/app/settings/integrations/gorgias_chat/118/campaigns"
       >
-        Appearance
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/118/installation"
-      >
-        Installation
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/118/preferences"
-      >
-        Preferences
+        Campaigns
       </a>
       <a
         activeclassname="active"
@@ -83,9 +69,23 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/118/campaigns"
+        to="/app/settings/integrations/gorgias_chat/118/appearance"
       >
-        Campaigns
+        Appearance
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/118/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/118/installation"
+      >
+        Installation
       </a>
     </nav>
     <div
@@ -157,23 +157,9 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/118/appearance"
+        to="/app/settings/integrations/gorgias_chat/118/campaigns"
       >
-        Appearance
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/118/installation"
-      >
-        Installation
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/118/preferences"
-      >
-        Preferences
+        Campaigns
       </a>
       <a
         activeclassname="active"
@@ -185,9 +171,23 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/118/campaigns"
+        to="/app/settings/integrations/gorgias_chat/118/appearance"
       >
-        Campaigns
+        Appearance
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/118/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/118/installation"
+      >
+        Installation
       </a>
     </nav>
     <div
@@ -198,7 +198,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
       </p>
     </div>
     <table
-      class="table-integrations mt-3 table table-hover"
+      class="table-integrations mt-3 campaignsTable table table-hover"
     >
       <tbody>
         <tr>

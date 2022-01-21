@@ -91,6 +91,11 @@ export const StoreNameDropdown = ({
                         </span>
                     ) : (
                         <span className={css.dropdownPlaceholder}>
+                            <img
+                                src={shopifyStore}
+                                alt="shopifyStore"
+                                style={{marginRight: 16}}
+                            />
                             {placeholder}
                         </span>
                     )}

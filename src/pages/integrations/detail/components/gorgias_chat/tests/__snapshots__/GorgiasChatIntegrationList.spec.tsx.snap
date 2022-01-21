@@ -1,48 +1,145 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<GorgiasChatIntegrationList/> should display correcty the list of chat integrations 1`] = `
-<withRouter(Connect(IntegrationList))
-  createIntegration={[Function]}
-  createIntegrationButtonContent={
-    <div
-      className="create-integration-btn"
-    >
-      <i
-        className="material-icons mr-2"
+<div
+  className="w-100"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
-        add
-      </i>
-      Add New
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          Chat
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  >
+    <Button
+      color="success"
+      onClick={[Function]}
+      tag="button"
+      type="submit"
+    >
+      <div
+        className="createIntegrationBtn"
+      >
+        <i
+          className="material-icons mr-2"
+        >
+          add
+        </i>
+        Add New
+      </div>
+    </Button>
+  </PageHeader>
+  <Container
+    className="pageContainer pb0"
+    fluid={true}
+    tag="div"
+  >
+    <div
+      className="mb-3"
+    >
+      <div>
+        Live chat with your customers by adding our Chat widget on your website. Every time a customer starts a conversation on your website, it opens a ticket in Gorgias.
+      </div>
     </div>
-  }
-  integrationToItemDisplay={[Function]}
-  integrationType="gorgias_chat"
-  integrations={
-    Immutable.List [
-      Immutable.Map {
-        "id": 1,
-        "name": "my chat enabled",
-        "type": "gorgias_chat",
-        "meta": Immutable.Map {
-          "self_service": Immutable.Map {
-            "enabled": false,
-          },
-          "shop_name": "my associated Shopify store",
-          "shop_type": "shopify",
-        },
-        "decoration": Immutable.Map {
-          "introduction_text": "this is an intro",
-          "input_placeholder": "type something please",
-          "main_color": "#123456",
-        },
-      },
-    ]
-  }
-  loading={Immutable.Map {}}
-  longTypeDescription={
-    <div>
-      Live chat with your customers by adding our Chat widget on your website. Every time a customer starts a conversation on your website, it opens a ticket in Gorgias.
-    </div>
-  }
-/>
+  </Container>
+  <TableWrapper>
+    <TableHead
+      className="tableHead"
+    >
+      <HeaderCell
+        className="smallest"
+      />
+      <HeaderCellProperty
+        className="chatNameHeader"
+        title="Chat name"
+      />
+      <HeaderCellProperty
+        title="Store"
+      />
+      <HeaderCellProperty
+        title="Language"
+      />
+      <HeaderCell />
+    </TableHead>
+    <ForwardRef(TableBody)>
+      <ForwardRef(TableBodyRow)
+        className="tableBodyRow"
+        onClick={[Function]}
+      >
+        <ForwardRef
+          className="smallest"
+        >
+          <ToggleButton
+            disabled={false}
+            loading={false}
+            onChange={[Function]}
+            value={true}
+          />
+        </ForwardRef>
+        <ForwardRef
+          innerClassName="chatName"
+        >
+          my chat enabled
+        </ForwardRef>
+        <ForwardRef>
+          <div
+            className="shopifyStoreDiv"
+          >
+            <span
+              className="shopifyStoreName"
+            >
+              <img
+                alt="logo Shopify"
+                src="test-file-stub"
+              />
+              <span>
+                my associated Shopify store
+              </span>
+            </span>
+            <img
+              alt="warning icon"
+              className="material-icons warningIcon"
+              id="store-disconnected-1"
+              src="test-file-stub"
+            />
+            <Tooltip
+              placement="top"
+              target="store-disconnected-1"
+            >
+              This store is currently disconnected
+            </Tooltip>
+          </div>
+        </ForwardRef>
+        <ForwardRef>
+          <LanguageBullet />
+        </ForwardRef>
+        <ForwardRef
+          className="smallest"
+        >
+          <ForwardIcon
+            href="/app/settings/integrations/gorgias_chat/1/campaigns"
+          />
+        </ForwardRef>
+      </ForwardRef(TableBodyRow)>
+    </ForwardRef(TableBody)>
+  </TableWrapper>
+</div>
 `;

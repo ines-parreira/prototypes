@@ -46,7 +46,7 @@ exports[`<Access/> should render properly 1`] = `
             class="form-group"
           >
             <div
-              class="mb-2 form-check"
+              class="formGroup form-check"
             >
               <input
                 checked=""
@@ -60,7 +60,7 @@ exports[`<Access/> should render properly 1`] = `
               </label>
             </div>
             <div
-              class="mb-2 form-check"
+              class="formGroup form-check"
             >
               <input
                 class="form-check-input"
@@ -132,7 +132,7 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
             class="form-group"
           >
             <div
-              class="mb-2 form-check"
+              class="formGroup form-check"
             >
               <input
                 class="form-check-input"
@@ -145,7 +145,7 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
               </label>
             </div>
             <div
-              class="mb-2 form-check"
+              class="formGroup form-check"
             >
               <input
                 checked=""
@@ -240,7 +240,7 @@ exports[`<Access/> should show an error and block submit when using a generic do
             class="form-group"
           >
             <div
-              class="mb-2 form-check"
+              class="formGroup form-check"
             >
               <input
                 class="form-check-input"
@@ -253,7 +253,7 @@ exports[`<Access/> should show an error and block submit when using a generic do
               </label>
             </div>
             <div
-              class="mb-2 form-check"
+              class="formGroup form-check"
             >
               <input
                 checked=""

@@ -1,0 +1,821 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() should update the linked email integration in the state. 1`] = `
+Object {
+  "autoResponderEnabled": false,
+  "autoResponderReply": "reply-shortly",
+  "emailCaptureEnforcement": "optional",
+  "hideOnMobile": false,
+  "hideOutsideBusinessHours": false,
+  "isInitialized": false,
+  "isUpdating": false,
+  "linkedEmailIntegration": null,
+  "preview": "email-capture",
+}
+`;
+
+exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() should update the linked email integration in the state. 2`] = `
+Object {
+  "autoResponderEnabled": false,
+  "autoResponderReply": "reply-shortly",
+  "emailCaptureEnforcement": "optional",
+  "hideOnMobile": false,
+  "hideOutsideBusinessHours": false,
+  "isInitialized": false,
+  "isUpdating": false,
+  "linkedEmailIntegration": 234,
+  "preview": "email-capture",
+}
+`;
+
+exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit the form with defaults 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Immutable.Map {
+        "id": undefined,
+        "meta": Immutable.Map {
+          "language": "en-US",
+          "preferences": Immutable.Map {
+            "auto_responder": Immutable.Map {
+              "enabled": false,
+              "reply": "reply-shortly",
+            },
+            "email_capture_enforcement": "optional",
+            "linked_email_integration": null,
+            "hide_on_mobile": false,
+            "hide_outside_business_hours": false,
+          },
+        },
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit the form with loaded values 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Immutable.Map {
+        "id": 1,
+        "meta": Immutable.Map {
+          "preferences": Immutable.Map {
+            "auto_responder": Immutable.Map {
+              "enabled": false,
+              "reply": "reply-in-minutes",
+            },
+            "email_capture_enforcement": "optional",
+            "linked_email_integration": null,
+            "hide_on_mobile": false,
+            "hide_outside_business_hours": false,
+          },
+          "language": "en-US",
+        },
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`<GorgiasChatIntegrationPreferences/> componentDidMount() should initialize the state using the integration passed 1`] = `
+Object {
+  "autoResponderEnabled": true,
+  "autoResponderReply": "reply-in-minutes",
+  "emailCaptureEnforcement": "always-required",
+  "hideOnMobile": false,
+  "hideOutsideBusinessHours": false,
+  "isInitialized": true,
+  "isUpdating": false,
+  "linkedEmailIntegration": null,
+  "preview": "email-capture",
+}
+`;
+
+exports[`<GorgiasChatIntegrationPreferences/> componentDidUpdate() should initialize the state using the integration passed because the state was not initialized yet and the integration passed is not empty 1`] = `
+Object {
+  "autoResponderEnabled": true,
+  "autoResponderReply": "reply-in-minutes",
+  "emailCaptureEnforcement": "always-required",
+  "hideOnMobile": false,
+  "hideOutsideBusinessHours": false,
+  "isInitialized": true,
+  "isUpdating": false,
+  "linkedEmailIntegration": null,
+  "preview": "email-capture",
+}
+`;
+
+exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in loading state because preferences are being submitted 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            to="/app/settings/integrations/gorgias_chat"
+          >
+            Chat
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        />
+      </Breadcrumb>
+    }
+  />
+  <GorgiasChatIntegrationNavigation
+    integration={
+      Immutable.Map {
+        "id": 2,
+        "type": "gorgias_chat",
+        "meta": Immutable.Map {
+          "language": "en-US",
+        },
+        "decoration": Immutable.Map {
+          "main_color": "#789c5d",
+          "conversation_color": "#08d123",
+        },
+      }
+    }
+  />
+  <GorgiasChatIntegrationPreviewContainer
+    preview={
+      <ChatIntegrationPreview
+        autoResponderEnabled={false}
+        autoResponderReply="reply-shortly"
+        isOnline={true}
+        language="en-US"
+        mainColor="#789c5d"
+        position={
+          Object {
+            "alignment": "bottom-right",
+            "offsetX": 0,
+            "offsetY": 0,
+          }
+        }
+        renderFooter={true}
+      >
+        <OptionalEmailCapture
+          conversationColor="#08d123"
+          language="en-US"
+        />
+      </ChatIntegrationPreview>
+    }
+  >
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <div>
+        <div
+          className="formSection"
+        >
+          <h4>
+            Email capture
+            <i
+              className="material-icons-outlined tooltipIcon"
+              id="email-capture-help"
+            >
+              info
+            </i>
+            <Tooltip
+              arrowClassName="tooltip-arrow"
+              autohide={false}
+              delay={100}
+              innerClassName="tooltip-inner"
+              placement="top-start"
+              popperClassName="tooltip"
+              target="email-capture-help"
+            >
+              You can change the email capture message by adjusting the chat default text values.
+               
+              <a
+                href="https://docs.gorgias.com/video-tutorials/change-email-capture-message-on-chat"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Read more
+              </a>
+            </Tooltip>
+          </h4>
+          <p
+            className="mb16"
+          >
+            Ask your customers to leave their email before starting a chat
+          </p>
+          <RadioField
+            disabled={false}
+            onChange={[Function]}
+            options={
+              Array [
+                Object {
+                  "description": "Leaving your email is optional, everyone can start a conversation. Maximise conversation volume",
+                  "label": "Optional",
+                  "value": "optional",
+                },
+                Object {
+                  "description": "Reduces conversation volume by around 5%",
+                  "label": "Required only outside business hours",
+                  "value": "required-outside-business-hours",
+                },
+                Object {
+                  "description": "Recommended if you can't provide instant replies. Reduces conversation volume by around 30%",
+                  "label": "Always required",
+                  "value": "always-required",
+                },
+              ]
+            }
+            value="optional"
+          />
+        </div>
+        <div
+          className="formSection"
+        >
+          <h4
+            className="title"
+          >
+            Hide chat
+          </h4>
+          <div
+            className="formGroup d-flex"
+          >
+            <ToggleButton
+              onChange={[Function]}
+              value={false}
+            />
+            <div
+              className="ml-2"
+            >
+              <b>
+                Hide chat outside of business hours
+              </b>
+              <i
+                className="material-icons-outlined tooltipIcon"
+                id="hide-outside-business-hours-help"
+              >
+                info
+              </i>
+              <Tooltip
+                arrowClassName="tooltip-arrow"
+                innerClassName="tooltip-inner"
+                placement="top-start"
+                popperClassName="tooltip"
+                target="hide-outside-business-hours-help"
+              >
+                Your customers will be notified in the chat 30 min before the end of your business hours. For customers with no active conversations, the chat will be hidden immediately. For customers with an active conversation, the chat icon will be hidden 5 min after being closed.
+              </Tooltip>
+              <div
+                className="form-text text-muted"
+              >
+                Chat will be removed from your website after business hours
+              </div>
+            </div>
+          </div>
+          <div
+            className="formGroup d-flex"
+          >
+            <ToggleButton
+              onChange={[Function]}
+              value={false}
+            />
+            <div
+              className="ml-2"
+            >
+              <b>
+                Hide chat on mobile
+              </b>
+              <div
+                className="form-text text-muted"
+              >
+                Remove chat from your website when customers access via mobile devices
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="formSection"
+        >
+          <h4
+            className="title"
+          >
+            Auto-responder
+          </h4>
+          <div
+            className="mb-3 d-flex align-items-center"
+          >
+            <ToggleButton
+              onChange={[Function]}
+              value={false}
+            />
+            <div
+              className="ml-2"
+            >
+              <b>
+                Enable auto-responder
+              </b>
+            </div>
+          </div>
+          <div
+            className="mb-3"
+          >
+            <p
+              className="text-faded"
+            >
+              <b>
+                During
+                 
+                <Link
+                  to="/app/settings/business-hours"
+                >
+                  Business hours
+                </Link>
+              </b>
+              , tell customers how fast they can expect a response with an auto-responder:
+            </p>
+            <RadioField
+              disabled={true}
+              onChange={[Function]}
+              options={
+                Array [
+                  Object {
+                    "label": "\\"Leave us your email and we'll get back to you shortly.\\"",
+                    "value": "reply-shortly",
+                  },
+                  Object {
+                    "label": "\\"Leave us your email and we'll get back to you. We typically reply in a few minutes.\\"",
+                    "value": "reply-in-minutes",
+                  },
+                  Object {
+                    "label": "\\"Leave us your email and we'll get back to you. We typically reply in a few hours.\\"",
+                    "value": "reply-in-hours",
+                  },
+                  Object {
+                    "label": "\\"Leave us your email and we'll get back to you. We typically reply in a day.\\"",
+                    "value": "reply-in-day",
+                  },
+                ]
+              }
+              value="reply-shortly"
+            />
+            <p
+              className="text-faded tinyText"
+            >
+              This message will be sent in new chat tickets after 30 seconds without replies from an agent.
+            </p>
+            <p
+              className="text-faded"
+            >
+              <b>
+                Outside
+                 
+                <Link
+                  to="/app/settings/business-hours"
+                >
+                  Business hours
+                </Link>
+              </b>
+              , Gorgias will automatically tell customers when they can expect a response.
+            </p>
+          </div>
+        </div>
+        <h4
+          className="title"
+        >
+          Associated email integration
+        </h4>
+        <div
+          className="formSection"
+        >
+          <p
+            className="mb-3"
+          >
+            If a customer doesn't see your responses on a chat for 1 hour, Gorgias will automatically deliver these messages via email.
+            <br />
+            Satisfaction surveys for chat tickets are also sent over email.
+          </p>
+          <Label
+            className="control-label"
+            for="linkedEmailIntegration"
+            tag="label"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            Email integration used to send these emails
+          </Label>
+          <SelectField
+            allowCustomValue={false}
+            fixedWidth={false}
+            fullWidth={true}
+            id={null}
+            onChange={[Function]}
+            onSearchChange={[Function]}
+            options={Array []}
+            placeholder="Select an email integration"
+            required={false}
+            singular="option"
+            style={Object {}}
+            value={null}
+          />
+        </div>
+      </div>
+      <Button
+        className="btn-loading"
+        color="success"
+        disabled={true}
+        tag="button"
+        type="submit"
+      >
+        Save changes
+      </Button>
+    </Form>
+  </GorgiasChatIntegrationPreviewContainer>
+</div>
+`;
+
+exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat preferences 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            to="/app/settings/integrations/gorgias_chat"
+          >
+            Chat
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        />
+      </Breadcrumb>
+    }
+  />
+  <GorgiasChatIntegrationNavigation
+    integration={
+      Immutable.Map {
+        "id": 2,
+        "type": "gorgias_chat",
+        "meta": Immutable.Map {
+          "language": "en-US",
+        },
+        "decoration": Immutable.Map {
+          "main_color": "#789c5d",
+          "conversation_color": "#08d123",
+        },
+      }
+    }
+  />
+  <GorgiasChatIntegrationPreviewContainer
+    preview={
+      <ChatIntegrationPreview
+        autoResponderEnabled={false}
+        autoResponderReply="reply-shortly"
+        isOnline={true}
+        language="en-US"
+        mainColor="#789c5d"
+        position={
+          Object {
+            "alignment": "bottom-right",
+            "offsetX": 0,
+            "offsetY": 0,
+          }
+        }
+        renderFooter={true}
+      >
+        <OptionalEmailCapture
+          conversationColor="#08d123"
+          language="en-US"
+        />
+      </ChatIntegrationPreview>
+    }
+  >
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <div>
+        <div
+          className="formSection"
+        >
+          <h4>
+            Email capture
+            <i
+              className="material-icons-outlined tooltipIcon"
+              id="email-capture-help"
+            >
+              info
+            </i>
+            <Tooltip
+              arrowClassName="tooltip-arrow"
+              autohide={false}
+              delay={100}
+              innerClassName="tooltip-inner"
+              placement="top-start"
+              popperClassName="tooltip"
+              target="email-capture-help"
+            >
+              You can change the email capture message by adjusting the chat default text values.
+               
+              <a
+                href="https://docs.gorgias.com/video-tutorials/change-email-capture-message-on-chat"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Read more
+              </a>
+            </Tooltip>
+          </h4>
+          <p
+            className="mb16"
+          >
+            Ask your customers to leave their email before starting a chat
+          </p>
+          <RadioField
+            disabled={false}
+            onChange={[Function]}
+            options={
+              Array [
+                Object {
+                  "description": "Leaving your email is optional, everyone can start a conversation. Maximise conversation volume",
+                  "label": "Optional",
+                  "value": "optional",
+                },
+                Object {
+                  "description": "Reduces conversation volume by around 5%",
+                  "label": "Required only outside business hours",
+                  "value": "required-outside-business-hours",
+                },
+                Object {
+                  "description": "Recommended if you can't provide instant replies. Reduces conversation volume by around 30%",
+                  "label": "Always required",
+                  "value": "always-required",
+                },
+              ]
+            }
+            value="optional"
+          />
+        </div>
+        <div
+          className="formSection"
+        >
+          <h4
+            className="title"
+          >
+            Hide chat
+          </h4>
+          <div
+            className="formGroup d-flex"
+          >
+            <ToggleButton
+              onChange={[Function]}
+              value={false}
+            />
+            <div
+              className="ml-2"
+            >
+              <b>
+                Hide chat outside of business hours
+              </b>
+              <i
+                className="material-icons-outlined tooltipIcon"
+                id="hide-outside-business-hours-help"
+              >
+                info
+              </i>
+              <Tooltip
+                arrowClassName="tooltip-arrow"
+                innerClassName="tooltip-inner"
+                placement="top-start"
+                popperClassName="tooltip"
+                target="hide-outside-business-hours-help"
+              >
+                Your customers will be notified in the chat 30 min before the end of your business hours. For customers with no active conversations, the chat will be hidden immediately. For customers with an active conversation, the chat icon will be hidden 5 min after being closed.
+              </Tooltip>
+              <div
+                className="form-text text-muted"
+              >
+                Chat will be removed from your website after business hours
+              </div>
+            </div>
+          </div>
+          <div
+            className="formGroup d-flex"
+          >
+            <ToggleButton
+              onChange={[Function]}
+              value={false}
+            />
+            <div
+              className="ml-2"
+            >
+              <b>
+                Hide chat on mobile
+              </b>
+              <div
+                className="form-text text-muted"
+              >
+                Remove chat from your website when customers access via mobile devices
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="formSection"
+        >
+          <h4
+            className="title"
+          >
+            Auto-responder
+          </h4>
+          <div
+            className="mb-3 d-flex align-items-center"
+          >
+            <ToggleButton
+              onChange={[Function]}
+              value={false}
+            />
+            <div
+              className="ml-2"
+            >
+              <b>
+                Enable auto-responder
+              </b>
+            </div>
+          </div>
+          <div
+            className="mb-3"
+          >
+            <p
+              className="text-faded"
+            >
+              <b>
+                During
+                 
+                <Link
+                  to="/app/settings/business-hours"
+                >
+                  Business hours
+                </Link>
+              </b>
+              , tell customers how fast they can expect a response with an auto-responder:
+            </p>
+            <RadioField
+              disabled={true}
+              onChange={[Function]}
+              options={
+                Array [
+                  Object {
+                    "label": "\\"Leave us your email and we'll get back to you shortly.\\"",
+                    "value": "reply-shortly",
+                  },
+                  Object {
+                    "label": "\\"Leave us your email and we'll get back to you. We typically reply in a few minutes.\\"",
+                    "value": "reply-in-minutes",
+                  },
+                  Object {
+                    "label": "\\"Leave us your email and we'll get back to you. We typically reply in a few hours.\\"",
+                    "value": "reply-in-hours",
+                  },
+                  Object {
+                    "label": "\\"Leave us your email and we'll get back to you. We typically reply in a day.\\"",
+                    "value": "reply-in-day",
+                  },
+                ]
+              }
+              value="reply-shortly"
+            />
+            <p
+              className="text-faded tinyText"
+            >
+              This message will be sent in new chat tickets after 30 seconds without replies from an agent.
+            </p>
+            <p
+              className="text-faded"
+            >
+              <b>
+                Outside
+                 
+                <Link
+                  to="/app/settings/business-hours"
+                >
+                  Business hours
+                </Link>
+              </b>
+              , Gorgias will automatically tell customers when they can expect a response.
+            </p>
+          </div>
+        </div>
+        <h4
+          className="title"
+        >
+          Associated email integration
+        </h4>
+        <div
+          className="formSection"
+        >
+          <p
+            className="mb-3"
+          >
+            If a customer doesn't see your responses on a chat for 1 hour, Gorgias will automatically deliver these messages via email.
+            <br />
+            Satisfaction surveys for chat tickets are also sent over email.
+          </p>
+          <Label
+            className="control-label"
+            for="linkedEmailIntegration"
+            tag="label"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            Email integration used to send these emails
+          </Label>
+          <SelectField
+            allowCustomValue={false}
+            fixedWidth={false}
+            fullWidth={true}
+            id={null}
+            onChange={[Function]}
+            onSearchChange={[Function]}
+            options={Array []}
+            placeholder="Select an email integration"
+            required={false}
+            singular="option"
+            style={Object {}}
+            value={null}
+          />
+        </div>
+      </div>
+      <Button
+        className=""
+        color="success"
+        disabled={false}
+        tag="button"
+        type="submit"
+      >
+        Save changes
+      </Button>
+    </Form>
+  </GorgiasChatIntegrationPreviewContainer>
+</div>
+`;

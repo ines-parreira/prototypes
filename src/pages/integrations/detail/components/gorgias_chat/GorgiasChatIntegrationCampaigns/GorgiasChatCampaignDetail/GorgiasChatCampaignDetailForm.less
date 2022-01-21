@@ -1,0 +1,54 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .authorWrapper {
+        display: flex;
+        align-items: center;
+
+        & > span {
+            margin-right: 6px;
+        }
+
+        :global .dropdown-toggle {
+            color: @classic-main-primary;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 20px;
+            border: none;
+        }
+    }
+
+    .formWrapper {
+        max-width: 680px;
+
+        .section {
+            margin-top: 32px;
+        }
+
+        .addTriggerButton {
+            margin-top: 14px;
+        }
+    }
+
+    .backWrapper {
+        padding: 24px;
+        padding-bottom: 0;
+
+        a {
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 20px;
+            color: @classic-neutral-grey-5;
+
+            img {
+                margin-right: 5px;
+            }
+        }
+        margin-bottom: 8px;
+    }
+
+    .authorInput div {
+        /* needed to align it centrally by overriding the display: inline-flex from SelectField */
+        display: block;
+    }
+}

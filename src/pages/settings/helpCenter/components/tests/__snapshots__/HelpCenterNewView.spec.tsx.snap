@@ -55,12 +55,15 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
               >
                 Help Center name
               </label>
-              <i
-                class="material-icons-outlined tooltip"
+              <span
                 id="id-name-tooltip"
               >
-                info
-              </i>
+                <i
+                  class="material-icons-outlined tooltip"
+                >
+                  info
+                </i>
+              </span>
             </div>
             <div
               class=""
@@ -88,12 +91,15 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
               >
                 Subdomain
               </label>
-              <i
-                class="material-icons-outlined tooltip"
+              <span
                 id="id-subdomain-tooltip"
               >
-                info
-              </i>
+                <i
+                  class="material-icons-outlined tooltip"
+                >
+                  info
+                </i>
+              </span>
             </div>
             <div
               class="input-group"

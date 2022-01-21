@@ -178,15 +178,15 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                 className="link"
                 exact={true}
                 key=".0"
-                to="/app/settings/integrations/gorgias_chat/7/appearance"
+                to="/app/settings/integrations/gorgias_chat/7/campaigns"
               >
                 <a
                   activeClassName="active"
                   className="link"
                   exact={true}
-                  to="/app/settings/integrations/gorgias_chat/7/appearance"
+                  to="/app/settings/integrations/gorgias_chat/7/campaigns"
                 >
-                  Appearance
+                  Campaigns
                 </a>
               </NavLink>
               <NavLink
@@ -194,38 +194,6 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                 className="link"
                 exact={true}
                 key=".1"
-                to="/app/settings/integrations/gorgias_chat/7/installation"
-              >
-                <a
-                  activeClassName="active"
-                  className="link"
-                  exact={true}
-                  to="/app/settings/integrations/gorgias_chat/7/installation"
-                >
-                  Installation
-                </a>
-              </NavLink>
-              <NavLink
-                activeClassName="active"
-                className="link"
-                exact={true}
-                key=".2"
-                to="/app/settings/integrations/gorgias_chat/7/preferences"
-              >
-                <a
-                  activeClassName="active"
-                  className="link"
-                  exact={true}
-                  to="/app/settings/integrations/gorgias_chat/7/preferences"
-                >
-                  Preferences
-                </a>
-              </NavLink>
-              <NavLink
-                activeClassName="active"
-                className="link"
-                exact={true}
-                key=".3"
                 to="/app/settings/integrations/gorgias_chat/7/quick_replies"
               >
                 <a
@@ -241,102 +209,207 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                 activeClassName="active"
                 className="link"
                 exact={true}
-                key=".4"
-                to="/app/settings/integrations/gorgias_chat/7/campaigns"
+                key=".2"
+                to="/app/settings/integrations/gorgias_chat/7/appearance"
               >
                 <a
                   activeClassName="active"
                   className="link"
                   exact={true}
-                  to="/app/settings/integrations/gorgias_chat/7/campaigns"
+                  to="/app/settings/integrations/gorgias_chat/7/appearance"
                 >
-                  Campaigns
+                  Appearance
+                </a>
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
+                key=".3"
+                to="/app/settings/integrations/gorgias_chat/7/preferences"
+              >
+                <a
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  to="/app/settings/integrations/gorgias_chat/7/preferences"
+                >
+                  Preferences
+                </a>
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
+                key=".5"
+                to="/app/settings/integrations/gorgias_chat/7/installation"
+              >
+                <a
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  to="/app/settings/integrations/gorgias_chat/7/installation"
+                >
+                  Installation
                 </a>
               </NavLink>
             </nav>
           </Navbar>
         </SecondaryNavbar>
       </GorgiasChatIntegrationNavigation>
-      <Container
-        className="pageContainer"
-        fluid={true}
-        tag="div"
-      >
-        <div
-          className="pageContainer container-fluid"
-        >
-          <Row
-            tag="div"
-            widths={
-              Array [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
+      <GorgiasChatIntegrationPreviewContainer
+        preview={
+          <ChatIntegrationPreview
+            introductionText="this is an intro"
+            isOnline={true}
+            mainColor="#123456"
+            name="my chat integration"
+            position={
+              Object {
+                "alignment": "bottom-right",
+                "offsetX": 0,
+                "offsetY": 0,
+              }
             }
           >
-            <div
+            <QuickReplies
+              mainColor="#123456"
+              quickReplies={
+                Array [
+                  "Get order status",
+                  "Apply promo code",
+                ]
+              }
+            />
+          </ChatIntegrationPreview>
+        }
+      >
+        <Container
+          className="pageContainer"
+          fluid={true}
+          tag="div"
+        >
+          <div
+            className="pageContainer container-fluid"
+          >
+            <Row
               className="row"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
             >
-              <Col
-                tag="div"
-                widths={
-                  Array [
-                    "xs",
-                    "sm",
-                    "md",
-                    "lg",
-                    "xl",
-                  ]
-                }
+              <div
+                className="row row"
               >
-                <div
-                  className="col"
+                <Col
+                  className="content"
+                  tag="div"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
                 >
-                  <Form
-                    onSubmit={[Function]}
-                    tag="form"
+                  <div
+                    className="content col"
                   >
-                    <form
-                      className=""
+                    <Form
                       onSubmit={[Function]}
+                      tag="form"
                     >
-                      <div
-                        className="mb-4"
+                      <form
+                        className=""
+                        onSubmit={[Function]}
                       >
-                        <h4>
-                          Quick replies
-                        </h4>
-                        <p>
-                          When a customer opens the chat, select the quick replies the customer can click on.
-                        </p>
                         <div
-                          className="mb-3"
+                          className="mb-4"
                         >
-                          <BooleanField
-                            label="Enable quick replies"
-                            name="quickRepliesEnabled"
-                            onChange={[Function]}
-                            type="checkbox"
-                            value={false}
+                          <h4>
+                            Quick replies
+                          </h4>
+                          <p
+                            className="mb16"
                           >
-                            <FormGroup
-                              check={true}
-                              className=""
-                              color=""
+                            When a customer opens the chat, select the quick replies the customer can click on.
+                          </p>
+                          <div
+                            className="d-flex align-items-center mb16"
+                          >
+                            <ToggleButton
+                              onChange={[Function]}
+                              value={false}
+                            >
+                              <label
+                                className="switch toggle-switch"
+                                onClick={[Function]}
+                              >
+                                <input
+                                  checked={false}
+                                  readOnly={true}
+                                  type="checkbox"
+                                />
+                                <div
+                                  className="slider"
+                                />
+                              </label>
+                            </ToggleButton>
+                            <div
+                              className="ml-2"
+                            >
+                              <b>
+                                Enable quick replies
+                              </b>
+                            </div>
+                          </div>
+                        </div>
+                        <ListField
+                          addLabel="Add Quick Reply"
+                          className="container"
+                          disabled={true}
+                          items={
+                            Immutable.List [
+                              "Get order status",
+                              "Apply promo code",
+                            ]
+                          }
+                          maxItems={3}
+                          maxLength={20}
+                          onChange={[Function]}
+                        >
+                          <div
+                            className="container"
+                          >
+                            <Row
+                              className="row"
+                              key="0"
                               tag="div"
+                              widths={
+                                Array [
+                                  "xs",
+                                  "sm",
+                                  "md",
+                                  "lg",
+                                  "xl",
+                                ]
+                              }
                             >
                               <div
-                                className="form-check"
-                                color=""
+                                className="row row"
                               >
-                                <Label
-                                  check={true}
-                                  className="control-label"
-                                  htmlFor="id-quickRepliesEnabled"
-                                  tag="label"
+                                <Col
+                                  className="flex-grow pr-0"
+                                  tag="div"
                                   widths={
                                     Array [
                                       "xs",
@@ -347,561 +420,526 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                     ]
                                   }
                                 >
-                                  <label
-                                    className="control-label form-check-label"
-                                    htmlFor="id-quickRepliesEnabled"
+                                  <div
+                                    className="flex-grow pr-0 col"
                                   >
-                                    <Input
-                                      checked={false}
-                                      className="form-check-input"
-                                      id="id-quickRepliesEnabled"
+                                    <InputField
+                                      className="my-0"
+                                      disabled={true}
+                                      maxLength={20}
+                                      name="item-0"
                                       onChange={[Function]}
-                                      type="checkbox"
+                                      placeholder="Type something (limited to 20 characters)"
+                                      required={true}
+                                      size={300}
+                                      type="text"
+                                      value="Get order status"
                                     >
-                                      <input
-                                        checked={false}
-                                        className="form-check-input form-check-input"
-                                        id="id-quickRepliesEnabled"
-                                        onChange={[Function]}
-                                        type="checkbox"
-                                      />
-                                    </Input>
-                                    <span
-                                      style={
-                                        Object {
-                                          "verticalAlign": "middle",
-                                        }
-                                      }
-                                    >
-                                      Enable quick replies
-                                    </span>
-                                  </label>
-                                </Label>
-                              </div>
-                            </FormGroup>
-                          </BooleanField>
-                        </div>
-                      </div>
-                      <ListField
-                        className="mb-5"
-                        items={
-                          Immutable.List [
-                            "Get order status",
-                            "Apply promo code",
-                          ]
-                        }
-                        maxItems={3}
-                        maxLength={20}
-                        onChange={[Function]}
-                      >
-                        <div
-                          className="mb-5"
-                        >
-                          <Row
-                            className="mb-3 form-row"
-                            key="0"
-                            tag="div"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            <div
-                              className="mb-3 form-row row"
-                            >
-                              <Col
-                                className="flex-grow"
-                                tag="div"
-                                widths={
-                                  Array [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
-                              >
-                                <div
-                                  className="flex-grow col"
-                                >
-                                  <InputField
-                                    maxLength={20}
-                                    name="item-0"
-                                    onChange={[Function]}
-                                    placeholder="Type something (limited to 20 characters)"
-                                    required={true}
-                                    type="text"
-                                    value="Get order status"
-                                  >
-                                    <FormGroup
-                                      className="InputField required"
-                                      color=""
-                                      tag="div"
-                                    >
-                                      <div
-                                        className="InputField required form-group"
+                                      <FormGroup
+                                        className="InputField my-0 required"
                                         color=""
+                                        tag="div"
                                       >
                                         <div
-                                          className=""
+                                          className="InputField my-0 required form-group"
+                                          color=""
                                         >
-                                          <Input
+                                          <div
                                             className=""
-                                            id="id-item-0"
-                                            maxLength={20}
-                                            onChange={[Function]}
-                                            placeholder="Type something (limited to 20 characters)"
-                                            required={true}
-                                            type="text"
-                                            value="Get order status"
                                           >
-                                            <input
-                                              className="form-control"
+                                            <Input
+                                              className=""
+                                              disabled={true}
                                               id="id-item-0"
                                               maxLength={20}
                                               onChange={[Function]}
                                               placeholder="Type something (limited to 20 characters)"
                                               required={true}
+                                              size={300}
                                               type="text"
                                               value="Get order status"
-                                            />
-                                          </Input>
+                                            >
+                                              <input
+                                                className="form-control"
+                                                disabled={true}
+                                                id="id-item-0"
+                                                maxLength={20}
+                                                onChange={[Function]}
+                                                placeholder="Type something (limited to 20 characters)"
+                                                required={true}
+                                                size={300}
+                                                type="text"
+                                                value="Get order status"
+                                              />
+                                            </Input>
+                                          </div>
                                         </div>
-                                      </div>
-                                    </FormGroup>
-                                  </InputField>
-                                </div>
-                              </Col>
-                              <Col
-                                className="d-flex col-sm-auto"
-                                tag="div"
-                                widths={
-                                  Array [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
-                              >
-                                <div
-                                  className="d-flex col-sm-auto col"
+                                      </FormGroup>
+                                    </InputField>
+                                  </div>
+                                </Col>
+                                <Col
+                                  className="d-flex col-sm-auto delete"
+                                  onClick={[Function]}
+                                  tag="div"
+                                  widths={
+                                    Array [
+                                      "xs",
+                                      "sm",
+                                      "md",
+                                      "lg",
+                                      "xl",
+                                    ]
+                                  }
                                 >
-                                  <ForwardRef
-                                    intent="destructive"
+                                  <div
+                                    className="d-flex col-sm-auto delete col"
                                     onClick={[Function]}
-                                    type="button"
                                   >
-                                    <ForwardRef
-                                      className="wrapper medium"
-                                      intent="destructive"
-                                      onClick={[Function]}
-                                      size="medium"
-                                      type="button"
+                                    <i
+                                      className="material-icons md-2 text-muted"
                                     >
-                                      <button
-                                        className="wrapper wrapper medium destructive medium"
-                                        onClick={[Function]}
-                                        type="button"
-                                      >
-                                        <i
-                                          className="material-icons icon"
-                                        >
-                                          delete
-                                        </i>
-                                      </button>
-                                    </ForwardRef>
-                                  </ForwardRef>
-                                </div>
-                              </Col>
-                            </div>
-                          </Row>
-                          <Row
-                            className="mb-3 form-row"
-                            key="1"
-                            tag="div"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            <div
-                              className="mb-3 form-row row"
+                                      clear
+                                    </i>
+                                  </div>
+                                </Col>
+                              </div>
+                            </Row>
+                            <Row
+                              className="row"
+                              key="1"
+                              tag="div"
+                              widths={
+                                Array [
+                                  "xs",
+                                  "sm",
+                                  "md",
+                                  "lg",
+                                  "xl",
+                                ]
+                              }
                             >
-                              <Col
-                                className="flex-grow"
-                                tag="div"
-                                widths={
-                                  Array [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
+                              <div
+                                className="row row"
                               >
-                                <div
-                                  className="flex-grow col"
+                                <Col
+                                  className="flex-grow pr-0"
+                                  tag="div"
+                                  widths={
+                                    Array [
+                                      "xs",
+                                      "sm",
+                                      "md",
+                                      "lg",
+                                      "xl",
+                                    ]
+                                  }
                                 >
-                                  <InputField
-                                    maxLength={20}
-                                    name="item-1"
-                                    onChange={[Function]}
-                                    placeholder="Type something (limited to 20 characters)"
-                                    required={true}
-                                    type="text"
-                                    value="Apply promo code"
+                                  <div
+                                    className="flex-grow pr-0 col"
                                   >
-                                    <FormGroup
-                                      className="InputField required"
-                                      color=""
-                                      tag="div"
+                                    <InputField
+                                      className="my-0"
+                                      disabled={true}
+                                      maxLength={20}
+                                      name="item-1"
+                                      onChange={[Function]}
+                                      placeholder="Type something (limited to 20 characters)"
+                                      required={true}
+                                      size={300}
+                                      type="text"
+                                      value="Apply promo code"
                                     >
-                                      <div
-                                        className="InputField required form-group"
+                                      <FormGroup
+                                        className="InputField my-0 required"
                                         color=""
+                                        tag="div"
                                       >
                                         <div
-                                          className=""
+                                          className="InputField my-0 required form-group"
+                                          color=""
                                         >
-                                          <Input
+                                          <div
                                             className=""
-                                            id="id-item-1"
-                                            maxLength={20}
-                                            onChange={[Function]}
-                                            placeholder="Type something (limited to 20 characters)"
-                                            required={true}
-                                            type="text"
-                                            value="Apply promo code"
                                           >
-                                            <input
-                                              className="form-control"
+                                            <Input
+                                              className=""
+                                              disabled={true}
                                               id="id-item-1"
                                               maxLength={20}
                                               onChange={[Function]}
                                               placeholder="Type something (limited to 20 characters)"
                                               required={true}
+                                              size={300}
                                               type="text"
                                               value="Apply promo code"
-                                            />
-                                          </Input>
+                                            >
+                                              <input
+                                                className="form-control"
+                                                disabled={true}
+                                                id="id-item-1"
+                                                maxLength={20}
+                                                onChange={[Function]}
+                                                placeholder="Type something (limited to 20 characters)"
+                                                required={true}
+                                                size={300}
+                                                type="text"
+                                                value="Apply promo code"
+                                              />
+                                            </Input>
+                                          </div>
                                         </div>
-                                      </div>
-                                    </FormGroup>
-                                  </InputField>
-                                </div>
-                              </Col>
-                              <Col
-                                className="d-flex col-sm-auto"
-                                tag="div"
-                                widths={
-                                  Array [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
-                              >
-                                <div
-                                  className="d-flex col-sm-auto col"
+                                      </FormGroup>
+                                    </InputField>
+                                  </div>
+                                </Col>
+                                <Col
+                                  className="d-flex col-sm-auto delete"
+                                  onClick={[Function]}
+                                  tag="div"
+                                  widths={
+                                    Array [
+                                      "xs",
+                                      "sm",
+                                      "md",
+                                      "lg",
+                                      "xl",
+                                    ]
+                                  }
                                 >
-                                  <ForwardRef
-                                    intent="destructive"
+                                  <div
+                                    className="d-flex col-sm-auto delete col"
                                     onClick={[Function]}
-                                    type="button"
                                   >
-                                    <ForwardRef
-                                      className="wrapper medium"
-                                      intent="destructive"
-                                      onClick={[Function]}
-                                      size="medium"
-                                      type="button"
+                                    <i
+                                      className="material-icons md-2 text-muted"
                                     >
-                                      <button
-                                        className="wrapper wrapper medium destructive medium"
-                                        onClick={[Function]}
-                                        type="button"
-                                      >
-                                        <i
-                                          className="material-icons icon"
-                                        >
-                                          delete
-                                        </i>
-                                      </button>
-                                    </ForwardRef>
-                                  </ForwardRef>
-                                </div>
-                              </Col>
-                            </div>
-                          </Row>
-                          <ForwardRef
-                            intent="secondary"
-                            onClick={[Function]}
-                          >
-                            <ForwardRef
-                              className="wrapper medium"
-                              intent="secondary"
+                                      clear
+                                    </i>
+                                  </div>
+                                </Col>
+                              </div>
+                            </Row>
+                            <Button
+                              className="d-flex align-items-center"
+                              color="secondary"
+                              disabled={true}
                               onClick={[Function]}
-                              size="medium"
+                              size="sm"
+                              tag="button"
                             >
                               <button
-                                className="wrapper wrapper medium secondary medium"
+                                aria-label={null}
+                                className="d-flex align-items-center btn btn-secondary btn-sm disabled"
+                                disabled={true}
                                 onClick={[Function]}
+                                type="button"
                               >
                                 <i
-                                  className="material-icons icon"
+                                  className="material-icons md-2"
                                 >
                                   add
                                 </i>
+                                <span
+                                  className="ml-2"
+                                >
+                                  Add Quick Reply
+                                </span>
                               </button>
-                            </ForwardRef>
-                          </ForwardRef>
-                        </div>
-                      </ListField>
-                      <div>
-                        <Button
-                          className=""
-                          color="success"
-                          disabled={false}
-                          tag="button"
-                          type="submit"
-                        >
-                          <button
-                            aria-label={null}
-                            className="btn btn-success"
+                            </Button>
+                          </div>
+                        </ListField>
+                        <div>
+                          <Button
+                            className=""
+                            color="success"
                             disabled={false}
-                            onClick={[Function]}
+                            tag="button"
                             type="submit"
                           >
-                            Save changes
-                          </button>
-                        </Button>
-                      </div>
-                    </form>
-                  </Form>
-                </div>
-              </Col>
-              <Col
-                tag="div"
-                widths={
-                  Array [
-                    "xs",
-                    "sm",
-                    "md",
-                    "lg",
-                    "xl",
-                  ]
-                }
-              >
-                <div
-                  className="col"
+                            <button
+                              aria-label={null}
+                              className="btn btn-success"
+                              disabled={false}
+                              onClick={[Function]}
+                              type="submit"
+                            >
+                              Save changes
+                            </button>
+                          </Button>
+                        </div>
+                      </form>
+                    </Form>
+                  </div>
+                </Col>
+                <Col
+                  className="column preview"
+                  tag="div"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
                 >
-                  <ChatIntegrationPreview
-                    introductionText="this is an intro"
-                    isOnline={true}
-                    mainColor="#123456"
-                    name="my chat integration"
-                    position={
-                      Object {
-                        "alignment": "bottom-right",
-                        "offsetX": 0,
-                        "offsetY": 0,
-                      }
-                    }
+                  <div
+                    className="column preview col"
                   >
-                    <div
-                      className="preview"
-                      style={Object {}}
+                    <ChatIntegrationPreview
+                      introductionText="this is an intro"
+                      isOnline={true}
+                      mainColor="#123456"
+                      name="my chat integration"
+                      position={
+                        Object {
+                          "alignment": "bottom-right",
+                          "offsetX": 0,
+                          "offsetY": 0,
+                        }
+                      }
                     >
                       <div
-                        className="titlebar"
-                      />
-                      <div
-                        className="dialog"
+                        className="preview"
+                        style={Object {}}
                       >
                         <div
-                          className="header"
+                          className="titlebar"
+                        />
+                        <div
+                          className="dialog"
+                        >
+                          <div
+                            className="header"
+                            style={
+                              Object {
+                                "backgroundColor": "#123456",
+                              }
+                            }
+                          >
+                            <ChatIntegrationAvatar
+                              isOnline={true}
+                              mainColor="#123456"
+                              offlineColor="#A1A9B6"
+                            >
+                              <div
+                                className="agents"
+                              >
+                                <div
+                                  className="agent first"
+                                  key="first"
+                                  style={
+                                    Object {
+                                      "borderColor": "#123456",
+                                    }
+                                  }
+                                >
+                                  <i
+                                    className="material-icons"
+                                  >
+                                    person
+                                  </i>
+                                </div>
+                                <div
+                                  className="agent middle"
+                                  key="middle"
+                                  style={
+                                    Object {
+                                      "borderColor": "#123456",
+                                    }
+                                  }
+                                >
+                                  <i
+                                    className="material-icons"
+                                  >
+                                    person
+                                  </i>
+                                  <div
+                                    className="onlineMarker"
+                                  />
+                                </div>
+                                <div
+                                  className="agent last"
+                                  key="last"
+                                  style={
+                                    Object {
+                                      "borderColor": "#123456",
+                                    }
+                                  }
+                                >
+                                  <i
+                                    className="material-icons"
+                                  >
+                                    person
+                                  </i>
+                                </div>
+                              </div>
+                            </ChatIntegrationAvatar>
+                            <div
+                              className="details"
+                            >
+                              <div
+                                className="appName"
+                              >
+                                my chat integration
+                              </div>
+                              <div
+                                className="introductionText"
+                              >
+                                this is an intro
+                              </div>
+                            </div>
+                          </div>
+                          <QuickReplies
+                            mainColor="#123456"
+                            quickReplies={
+                              Array [
+                                "Get order status",
+                                "Apply promo code",
+                              ]
+                            }
+                          >
+                            <div
+                              className="content quick-replies-content"
+                            >
+                              <div
+                                className="quick-replies-wrapper"
+                              >
+                                <button
+                                  className="btn btn-reply-action reply"
+                                  key="Get order status-0"
+                                  style={
+                                    Object {
+                                      "borderColor": "#123456",
+                                      "color": "#123456",
+                                    }
+                                  }
+                                >
+                                  Get order status
+                                </button>
+                                <button
+                                  className="btn btn-reply-action reply"
+                                  key="Apply promo code-1"
+                                  style={
+                                    Object {
+                                      "borderColor": "#123456",
+                                      "color": "#123456",
+                                    }
+                                  }
+                                >
+                                  Apply promo code
+                                </button>
+                              </div>
+                            </div>
+                          </QuickReplies>
+                          <PoweredByGorgias
+                            translatedTexts={
+                              Object {
+                                "actionPostbackError": "An error occurred while processing your action. Please try again.",
+                                "backLabelBackAt": "Back online at {time}",
+                                "backLabelBackInAMinute": "Back in 1 minute",
+                                "backLabelBackInAnHour": "Back in 1 hour",
+                                "backLabelBackInDays": "Back in {value} days",
+                                "backLabelBackInHours": "Back in {value} hours",
+                                "backLabelBackInMinutes": "Back in {value} minutes",
+                                "backLabelBackTomorrow": "Back tomorrow",
+                                "campaignClickToReply": "Click to reply",
+                                "clickToRetry": "Message not delivered. Click to retry.",
+                                "conversationTimestampHeaderFormat": "MMMM D",
+                                "emailCaptureInputLabel": "Get notified by email",
+                                "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+                                "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+                                "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+                                "emailCaptureOnlineTriggerText": "What's a good email to reach you?",
+                                "emailCapturePlaceholder": "your@email.com",
+                                "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+                                "emailCaptureRequiredMessagePlaceholder": "Write your message",
+                                "fetchHistory": "Load more",
+                                "fetchingHistory": "Retrieving history...",
+                                "headerText": "Gorgias Team",
+                                "inputPlaceholder": "Type a message...",
+                                "introductionText": "How can we help?",
+                                "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+                                "messageDelivered": "Delivered",
+                                "messageError": "An error occurred while sending your message. Please try again.",
+                                "messageIndicatorTitlePlural": "({count}) New messages",
+                                "messageIndicatorTitleSingular": "({count}) New message",
+                                "messageRelativeTimeDay": "{value}d ago",
+                                "messageRelativeTimeHour": "{value}h ago",
+                                "messageRelativeTimeJustNow": "Just now",
+                                "messageRelativeTimeMinute": "{value}m ago",
+                                "messageSending": "Sending...",
+                                "messageTimestampFormat": "h:mm A",
+                                "offlineIntroductionText": "We'll be back tomorrow",
+                                "poweredBy": "Powered by",
+                                "poweredByGorgias": "Powered by Gorgias",
+                                "send": "Send",
+                                "tapToRetry": "Message not delivered. Tap to retry.",
+                                "unsupportedActionType": "Unsupported action type.",
+                                "unsupportedMessageType": "Unsupported message type.",
+                                "usualReplyTimeDay": "Typically replies within a day",
+                                "usualReplyTimeHours": "Typically replies in a few hours",
+                                "usualReplyTimeMinutes": "Typically replies in a few minutes",
+                              }
+                            }
+                          >
+                            <div
+                              className="poweredBy"
+                            >
+                              <div>
+                                <span>
+                                  Powered by
+                                </span>
+                                <img
+                                  alt="powered-by"
+                                  src="test-file-stub"
+                                />
+                              </div>
+                            </div>
+                          </PoweredByGorgias>
+                          <div
+                            className="footer"
+                          >
+                            <div
+                              className="placeholder"
+                            >
+                              Type a message...
+                            </div>
+                            <i
+                              className="icon camera"
+                            />
+                          </div>
+                        </div>
+                        <div
+                          className="button bottom-right"
                           style={
                             Object {
                               "backgroundColor": "#123456",
                             }
                           }
                         >
-                          <ChatIntegrationAvatar
-                            isOnline={true}
-                            mainColor="#123456"
-                            offlineColor="#A1A9B6"
-                          >
-                            <div
-                              className="agents"
-                            >
-                              <div
-                                className="agent first"
-                                key="first"
-                                style={
-                                  Object {
-                                    "borderColor": "#123456",
-                                  }
-                                }
-                              >
-                                <i
-                                  className="material-icons"
-                                >
-                                  person
-                                </i>
-                              </div>
-                              <div
-                                className="agent middle"
-                                key="middle"
-                                style={
-                                  Object {
-                                    "borderColor": "#123456",
-                                  }
-                                }
-                              >
-                                <i
-                                  className="material-icons"
-                                >
-                                  person
-                                </i>
-                                <div
-                                  className="onlineMarker"
-                                />
-                              </div>
-                              <div
-                                className="agent last"
-                                key="last"
-                                style={
-                                  Object {
-                                    "borderColor": "#123456",
-                                  }
-                                }
-                              >
-                                <i
-                                  className="material-icons"
-                                >
-                                  person
-                                </i>
-                              </div>
-                            </div>
-                          </ChatIntegrationAvatar>
                           <div
-                            className="details"
+                            className="iconWrapper"
                           >
+                            <i
+                              className="icon"
+                            />
                             <div
-                              className="appName"
-                            >
-                              my chat integration
-                            </div>
-                            <div
-                              className="introductionText"
-                            >
-                              this is an intro
-                            </div>
+                              className="shadow"
+                            />
                           </div>
-                        </div>
-                        <QuickReplies
-                          mainColor="#123456"
-                          quickReplies={
-                            Array [
-                              "Get order status",
-                              "Apply promo code",
-                            ]
-                          }
-                        >
-                          <div
-                            className="content quick-replies-content"
-                          >
-                            <div
-                              className="quick-replies-wrapper"
-                            >
-                              <button
-                                className="btn btn-reply-action reply"
-                                key="Get order status-0"
-                                style={
-                                  Object {
-                                    "borderColor": "#123456",
-                                    "color": "#123456",
-                                  }
-                                }
-                              >
-                                Get order status
-                              </button>
-                              <button
-                                className="btn btn-reply-action reply"
-                                key="Apply promo code-1"
-                                style={
-                                  Object {
-                                    "borderColor": "#123456",
-                                    "color": "#123456",
-                                  }
-                                }
-                              >
-                                Apply promo code
-                              </button>
-                            </div>
-                          </div>
-                        </QuickReplies>
-                        <div
-                          className="poweredby"
-                        >
-                          Powered by Gorgias
-                        </div>
-                        <div
-                          className="footer"
-                        >
-                          <div
-                            className="placeholder"
-                          >
-                            Type a message...
-                          </div>
-                          <i
-                            className="icon camera"
-                          />
                         </div>
                       </div>
-                      <div
-                        className="button bottom-right"
-                        style={
-                          Object {
-                            "backgroundColor": "#123456",
-                          }
-                        }
-                      >
-                        <div
-                          className="iconWrapper"
-                        >
-                          <i
-                            className="icon"
-                          />
-                          <div
-                            className="shadow"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </ChatIntegrationPreview>
-                </div>
-              </Col>
-            </div>
-          </Row>
-        </div>
-      </Container>
+                    </ChatIntegrationPreview>
+                  </div>
+                </Col>
+              </div>
+            </Row>
+          </div>
+        </Container>
+      </GorgiasChatIntegrationPreviewContainer>
     </div>
   </GorgiasChatIntegrationQuickRepliesComponent>
 </Connect(GorgiasChatIntegrationQuickRepliesComponent)>
@@ -1109,15 +1147,15 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                 className="link"
                 exact={true}
                 key=".0"
-                to="/app/settings/integrations/gorgias_chat/7/appearance"
+                to="/app/settings/integrations/gorgias_chat/7/campaigns"
               >
                 <a
                   activeClassName="active"
                   className="link"
                   exact={true}
-                  to="/app/settings/integrations/gorgias_chat/7/appearance"
+                  to="/app/settings/integrations/gorgias_chat/7/campaigns"
                 >
-                  Appearance
+                  Campaigns
                 </a>
               </NavLink>
               <NavLink
@@ -1125,38 +1163,6 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                 className="link"
                 exact={true}
                 key=".1"
-                to="/app/settings/integrations/gorgias_chat/7/installation"
-              >
-                <a
-                  activeClassName="active"
-                  className="link"
-                  exact={true}
-                  to="/app/settings/integrations/gorgias_chat/7/installation"
-                >
-                  Installation
-                </a>
-              </NavLink>
-              <NavLink
-                activeClassName="active"
-                className="link"
-                exact={true}
-                key=".2"
-                to="/app/settings/integrations/gorgias_chat/7/preferences"
-              >
-                <a
-                  activeClassName="active"
-                  className="link"
-                  exact={true}
-                  to="/app/settings/integrations/gorgias_chat/7/preferences"
-                >
-                  Preferences
-                </a>
-              </NavLink>
-              <NavLink
-                activeClassName="active"
-                className="link"
-                exact={true}
-                key=".3"
                 to="/app/settings/integrations/gorgias_chat/7/quick_replies"
               >
                 <a
@@ -1172,102 +1178,207 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                 activeClassName="active"
                 className="link"
                 exact={true}
-                key=".4"
-                to="/app/settings/integrations/gorgias_chat/7/campaigns"
+                key=".2"
+                to="/app/settings/integrations/gorgias_chat/7/appearance"
               >
                 <a
                   activeClassName="active"
                   className="link"
                   exact={true}
-                  to="/app/settings/integrations/gorgias_chat/7/campaigns"
+                  to="/app/settings/integrations/gorgias_chat/7/appearance"
                 >
-                  Campaigns
+                  Appearance
+                </a>
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
+                key=".3"
+                to="/app/settings/integrations/gorgias_chat/7/preferences"
+              >
+                <a
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  to="/app/settings/integrations/gorgias_chat/7/preferences"
+                >
+                  Preferences
+                </a>
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
+                key=".5"
+                to="/app/settings/integrations/gorgias_chat/7/installation"
+              >
+                <a
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  to="/app/settings/integrations/gorgias_chat/7/installation"
+                >
+                  Installation
                 </a>
               </NavLink>
             </nav>
           </Navbar>
         </SecondaryNavbar>
       </GorgiasChatIntegrationNavigation>
-      <Container
-        className="pageContainer"
-        fluid={true}
-        tag="div"
-      >
-        <div
-          className="pageContainer container-fluid"
-        >
-          <Row
-            tag="div"
-            widths={
-              Array [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
+      <GorgiasChatIntegrationPreviewContainer
+        preview={
+          <ChatIntegrationPreview
+            introductionText="this is an intro"
+            isOnline={true}
+            mainColor="#123456"
+            name="my chat integration"
+            position={
+              Object {
+                "alignment": "bottom-right",
+                "offsetX": 0,
+                "offsetY": 0,
+              }
             }
           >
-            <div
+            <QuickReplies
+              mainColor="#123456"
+              quickReplies={
+                Array [
+                  "foo",
+                  "bar",
+                ]
+              }
+            />
+          </ChatIntegrationPreview>
+        }
+      >
+        <Container
+          className="pageContainer"
+          fluid={true}
+          tag="div"
+        >
+          <div
+            className="pageContainer container-fluid"
+          >
+            <Row
               className="row"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
             >
-              <Col
-                tag="div"
-                widths={
-                  Array [
-                    "xs",
-                    "sm",
-                    "md",
-                    "lg",
-                    "xl",
-                  ]
-                }
+              <div
+                className="row row"
               >
-                <div
-                  className="col"
+                <Col
+                  className="content"
+                  tag="div"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
                 >
-                  <Form
-                    onSubmit={[Function]}
-                    tag="form"
+                  <div
+                    className="content col"
                   >
-                    <form
-                      className=""
+                    <Form
                       onSubmit={[Function]}
+                      tag="form"
                     >
-                      <div
-                        className="mb-4"
+                      <form
+                        className=""
+                        onSubmit={[Function]}
                       >
-                        <h4>
-                          Quick replies
-                        </h4>
-                        <p>
-                          When a customer opens the chat, select the quick replies the customer can click on.
-                        </p>
                         <div
-                          className="mb-3"
+                          className="mb-4"
                         >
-                          <BooleanField
-                            label="Enable quick replies"
-                            name="quickRepliesEnabled"
-                            onChange={[Function]}
-                            type="checkbox"
-                            value={true}
+                          <h4>
+                            Quick replies
+                          </h4>
+                          <p
+                            className="mb16"
                           >
-                            <FormGroup
-                              check={true}
-                              className=""
-                              color=""
+                            When a customer opens the chat, select the quick replies the customer can click on.
+                          </p>
+                          <div
+                            className="d-flex align-items-center mb16"
+                          >
+                            <ToggleButton
+                              onChange={[Function]}
+                              value={true}
+                            >
+                              <label
+                                className="switch toggle-switch"
+                                onClick={[Function]}
+                              >
+                                <input
+                                  checked={true}
+                                  readOnly={true}
+                                  type="checkbox"
+                                />
+                                <div
+                                  className="slider"
+                                />
+                              </label>
+                            </ToggleButton>
+                            <div
+                              className="ml-2"
+                            >
+                              <b>
+                                Enable quick replies
+                              </b>
+                            </div>
+                          </div>
+                        </div>
+                        <ListField
+                          addLabel="Add Quick Reply"
+                          className="container"
+                          disabled={false}
+                          items={
+                            Immutable.List [
+                              "foo",
+                              "bar",
+                            ]
+                          }
+                          maxItems={3}
+                          maxLength={20}
+                          onChange={[Function]}
+                        >
+                          <div
+                            className="container"
+                          >
+                            <Row
+                              className="row"
+                              key="0"
                               tag="div"
+                              widths={
+                                Array [
+                                  "xs",
+                                  "sm",
+                                  "md",
+                                  "lg",
+                                  "xl",
+                                ]
+                              }
                             >
                               <div
-                                className="form-check"
-                                color=""
+                                className="row row"
                               >
-                                <Label
-                                  check={true}
-                                  className="control-label"
-                                  htmlFor="id-quickRepliesEnabled"
-                                  tag="label"
+                                <Col
+                                  className="flex-grow pr-0"
+                                  tag="div"
                                   widths={
                                     Array [
                                       "xs",
@@ -1278,561 +1389,526 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                     ]
                                   }
                                 >
-                                  <label
-                                    className="control-label form-check-label"
-                                    htmlFor="id-quickRepliesEnabled"
+                                  <div
+                                    className="flex-grow pr-0 col"
                                   >
-                                    <Input
-                                      checked={true}
-                                      className="form-check-input"
-                                      id="id-quickRepliesEnabled"
+                                    <InputField
+                                      className="my-0"
+                                      disabled={false}
+                                      maxLength={20}
+                                      name="item-0"
                                       onChange={[Function]}
-                                      type="checkbox"
+                                      placeholder="Type something (limited to 20 characters)"
+                                      required={true}
+                                      size={300}
+                                      type="text"
+                                      value="foo"
                                     >
-                                      <input
-                                        checked={true}
-                                        className="form-check-input form-check-input"
-                                        id="id-quickRepliesEnabled"
-                                        onChange={[Function]}
-                                        type="checkbox"
-                                      />
-                                    </Input>
-                                    <span
-                                      style={
-                                        Object {
-                                          "verticalAlign": "middle",
-                                        }
-                                      }
-                                    >
-                                      Enable quick replies
-                                    </span>
-                                  </label>
-                                </Label>
-                              </div>
-                            </FormGroup>
-                          </BooleanField>
-                        </div>
-                      </div>
-                      <ListField
-                        className="mb-5"
-                        items={
-                          Immutable.List [
-                            "foo",
-                            "bar",
-                          ]
-                        }
-                        maxItems={3}
-                        maxLength={20}
-                        onChange={[Function]}
-                      >
-                        <div
-                          className="mb-5"
-                        >
-                          <Row
-                            className="mb-3 form-row"
-                            key="0"
-                            tag="div"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            <div
-                              className="mb-3 form-row row"
-                            >
-                              <Col
-                                className="flex-grow"
-                                tag="div"
-                                widths={
-                                  Array [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
-                              >
-                                <div
-                                  className="flex-grow col"
-                                >
-                                  <InputField
-                                    maxLength={20}
-                                    name="item-0"
-                                    onChange={[Function]}
-                                    placeholder="Type something (limited to 20 characters)"
-                                    required={true}
-                                    type="text"
-                                    value="foo"
-                                  >
-                                    <FormGroup
-                                      className="InputField required"
-                                      color=""
-                                      tag="div"
-                                    >
-                                      <div
-                                        className="InputField required form-group"
+                                      <FormGroup
+                                        className="InputField my-0 required"
                                         color=""
+                                        tag="div"
                                       >
                                         <div
-                                          className=""
+                                          className="InputField my-0 required form-group"
+                                          color=""
                                         >
-                                          <Input
+                                          <div
                                             className=""
-                                            id="id-item-0"
-                                            maxLength={20}
-                                            onChange={[Function]}
-                                            placeholder="Type something (limited to 20 characters)"
-                                            required={true}
-                                            type="text"
-                                            value="foo"
                                           >
-                                            <input
-                                              className="form-control"
+                                            <Input
+                                              className=""
+                                              disabled={false}
                                               id="id-item-0"
                                               maxLength={20}
                                               onChange={[Function]}
                                               placeholder="Type something (limited to 20 characters)"
                                               required={true}
+                                              size={300}
                                               type="text"
                                               value="foo"
-                                            />
-                                          </Input>
+                                            >
+                                              <input
+                                                className="form-control"
+                                                disabled={false}
+                                                id="id-item-0"
+                                                maxLength={20}
+                                                onChange={[Function]}
+                                                placeholder="Type something (limited to 20 characters)"
+                                                required={true}
+                                                size={300}
+                                                type="text"
+                                                value="foo"
+                                              />
+                                            </Input>
+                                          </div>
                                         </div>
-                                      </div>
-                                    </FormGroup>
-                                  </InputField>
-                                </div>
-                              </Col>
-                              <Col
-                                className="d-flex col-sm-auto"
-                                tag="div"
-                                widths={
-                                  Array [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
-                              >
-                                <div
-                                  className="d-flex col-sm-auto col"
+                                      </FormGroup>
+                                    </InputField>
+                                  </div>
+                                </Col>
+                                <Col
+                                  className="d-flex col-sm-auto delete"
+                                  onClick={[Function]}
+                                  tag="div"
+                                  widths={
+                                    Array [
+                                      "xs",
+                                      "sm",
+                                      "md",
+                                      "lg",
+                                      "xl",
+                                    ]
+                                  }
                                 >
-                                  <ForwardRef
-                                    intent="destructive"
+                                  <div
+                                    className="d-flex col-sm-auto delete col"
                                     onClick={[Function]}
-                                    type="button"
                                   >
-                                    <ForwardRef
-                                      className="wrapper medium"
-                                      intent="destructive"
-                                      onClick={[Function]}
-                                      size="medium"
-                                      type="button"
+                                    <i
+                                      className="material-icons md-2 text-danger"
                                     >
-                                      <button
-                                        className="wrapper wrapper medium destructive medium"
-                                        onClick={[Function]}
-                                        type="button"
-                                      >
-                                        <i
-                                          className="material-icons icon"
-                                        >
-                                          delete
-                                        </i>
-                                      </button>
-                                    </ForwardRef>
-                                  </ForwardRef>
-                                </div>
-                              </Col>
-                            </div>
-                          </Row>
-                          <Row
-                            className="mb-3 form-row"
-                            key="1"
-                            tag="div"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            <div
-                              className="mb-3 form-row row"
+                                      clear
+                                    </i>
+                                  </div>
+                                </Col>
+                              </div>
+                            </Row>
+                            <Row
+                              className="row"
+                              key="1"
+                              tag="div"
+                              widths={
+                                Array [
+                                  "xs",
+                                  "sm",
+                                  "md",
+                                  "lg",
+                                  "xl",
+                                ]
+                              }
                             >
-                              <Col
-                                className="flex-grow"
-                                tag="div"
-                                widths={
-                                  Array [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
+                              <div
+                                className="row row"
                               >
-                                <div
-                                  className="flex-grow col"
+                                <Col
+                                  className="flex-grow pr-0"
+                                  tag="div"
+                                  widths={
+                                    Array [
+                                      "xs",
+                                      "sm",
+                                      "md",
+                                      "lg",
+                                      "xl",
+                                    ]
+                                  }
                                 >
-                                  <InputField
-                                    maxLength={20}
-                                    name="item-1"
-                                    onChange={[Function]}
-                                    placeholder="Type something (limited to 20 characters)"
-                                    required={true}
-                                    type="text"
-                                    value="bar"
+                                  <div
+                                    className="flex-grow pr-0 col"
                                   >
-                                    <FormGroup
-                                      className="InputField required"
-                                      color=""
-                                      tag="div"
+                                    <InputField
+                                      className="my-0"
+                                      disabled={false}
+                                      maxLength={20}
+                                      name="item-1"
+                                      onChange={[Function]}
+                                      placeholder="Type something (limited to 20 characters)"
+                                      required={true}
+                                      size={300}
+                                      type="text"
+                                      value="bar"
                                     >
-                                      <div
-                                        className="InputField required form-group"
+                                      <FormGroup
+                                        className="InputField my-0 required"
                                         color=""
+                                        tag="div"
                                       >
                                         <div
-                                          className=""
+                                          className="InputField my-0 required form-group"
+                                          color=""
                                         >
-                                          <Input
+                                          <div
                                             className=""
-                                            id="id-item-1"
-                                            maxLength={20}
-                                            onChange={[Function]}
-                                            placeholder="Type something (limited to 20 characters)"
-                                            required={true}
-                                            type="text"
-                                            value="bar"
                                           >
-                                            <input
-                                              className="form-control"
+                                            <Input
+                                              className=""
+                                              disabled={false}
                                               id="id-item-1"
                                               maxLength={20}
                                               onChange={[Function]}
                                               placeholder="Type something (limited to 20 characters)"
                                               required={true}
+                                              size={300}
                                               type="text"
                                               value="bar"
-                                            />
-                                          </Input>
+                                            >
+                                              <input
+                                                className="form-control"
+                                                disabled={false}
+                                                id="id-item-1"
+                                                maxLength={20}
+                                                onChange={[Function]}
+                                                placeholder="Type something (limited to 20 characters)"
+                                                required={true}
+                                                size={300}
+                                                type="text"
+                                                value="bar"
+                                              />
+                                            </Input>
+                                          </div>
                                         </div>
-                                      </div>
-                                    </FormGroup>
-                                  </InputField>
-                                </div>
-                              </Col>
-                              <Col
-                                className="d-flex col-sm-auto"
-                                tag="div"
-                                widths={
-                                  Array [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
-                              >
-                                <div
-                                  className="d-flex col-sm-auto col"
+                                      </FormGroup>
+                                    </InputField>
+                                  </div>
+                                </Col>
+                                <Col
+                                  className="d-flex col-sm-auto delete"
+                                  onClick={[Function]}
+                                  tag="div"
+                                  widths={
+                                    Array [
+                                      "xs",
+                                      "sm",
+                                      "md",
+                                      "lg",
+                                      "xl",
+                                    ]
+                                  }
                                 >
-                                  <ForwardRef
-                                    intent="destructive"
+                                  <div
+                                    className="d-flex col-sm-auto delete col"
                                     onClick={[Function]}
-                                    type="button"
                                   >
-                                    <ForwardRef
-                                      className="wrapper medium"
-                                      intent="destructive"
-                                      onClick={[Function]}
-                                      size="medium"
-                                      type="button"
+                                    <i
+                                      className="material-icons md-2 text-danger"
                                     >
-                                      <button
-                                        className="wrapper wrapper medium destructive medium"
-                                        onClick={[Function]}
-                                        type="button"
-                                      >
-                                        <i
-                                          className="material-icons icon"
-                                        >
-                                          delete
-                                        </i>
-                                      </button>
-                                    </ForwardRef>
-                                  </ForwardRef>
-                                </div>
-                              </Col>
-                            </div>
-                          </Row>
-                          <ForwardRef
-                            intent="secondary"
-                            onClick={[Function]}
-                          >
-                            <ForwardRef
-                              className="wrapper medium"
-                              intent="secondary"
+                                      clear
+                                    </i>
+                                  </div>
+                                </Col>
+                              </div>
+                            </Row>
+                            <Button
+                              className="d-flex align-items-center"
+                              color="secondary"
+                              disabled={false}
                               onClick={[Function]}
-                              size="medium"
+                              size="sm"
+                              tag="button"
                             >
                               <button
-                                className="wrapper wrapper medium secondary medium"
+                                aria-label={null}
+                                className="d-flex align-items-center btn btn-secondary btn-sm"
+                                disabled={false}
                                 onClick={[Function]}
+                                type="button"
                               >
                                 <i
-                                  className="material-icons icon"
+                                  className="material-icons md-2"
                                 >
                                   add
                                 </i>
+                                <span
+                                  className="ml-2"
+                                >
+                                  Add Quick Reply
+                                </span>
                               </button>
-                            </ForwardRef>
-                          </ForwardRef>
-                        </div>
-                      </ListField>
-                      <div>
-                        <Button
-                          className=""
-                          color="success"
-                          disabled={false}
-                          tag="button"
-                          type="submit"
-                        >
-                          <button
-                            aria-label={null}
-                            className="btn btn-success"
+                            </Button>
+                          </div>
+                        </ListField>
+                        <div>
+                          <Button
+                            className=""
+                            color="success"
                             disabled={false}
-                            onClick={[Function]}
+                            tag="button"
                             type="submit"
                           >
-                            Save changes
-                          </button>
-                        </Button>
-                      </div>
-                    </form>
-                  </Form>
-                </div>
-              </Col>
-              <Col
-                tag="div"
-                widths={
-                  Array [
-                    "xs",
-                    "sm",
-                    "md",
-                    "lg",
-                    "xl",
-                  ]
-                }
-              >
-                <div
-                  className="col"
+                            <button
+                              aria-label={null}
+                              className="btn btn-success"
+                              disabled={false}
+                              onClick={[Function]}
+                              type="submit"
+                            >
+                              Save changes
+                            </button>
+                          </Button>
+                        </div>
+                      </form>
+                    </Form>
+                  </div>
+                </Col>
+                <Col
+                  className="column preview"
+                  tag="div"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
                 >
-                  <ChatIntegrationPreview
-                    introductionText="this is an intro"
-                    isOnline={true}
-                    mainColor="#123456"
-                    name="my chat integration"
-                    position={
-                      Object {
-                        "alignment": "bottom-right",
-                        "offsetX": 0,
-                        "offsetY": 0,
-                      }
-                    }
+                  <div
+                    className="column preview col"
                   >
-                    <div
-                      className="preview"
-                      style={Object {}}
+                    <ChatIntegrationPreview
+                      introductionText="this is an intro"
+                      isOnline={true}
+                      mainColor="#123456"
+                      name="my chat integration"
+                      position={
+                        Object {
+                          "alignment": "bottom-right",
+                          "offsetX": 0,
+                          "offsetY": 0,
+                        }
+                      }
                     >
                       <div
-                        className="titlebar"
-                      />
-                      <div
-                        className="dialog"
+                        className="preview"
+                        style={Object {}}
                       >
                         <div
-                          className="header"
+                          className="titlebar"
+                        />
+                        <div
+                          className="dialog"
+                        >
+                          <div
+                            className="header"
+                            style={
+                              Object {
+                                "backgroundColor": "#123456",
+                              }
+                            }
+                          >
+                            <ChatIntegrationAvatar
+                              isOnline={true}
+                              mainColor="#123456"
+                              offlineColor="#A1A9B6"
+                            >
+                              <div
+                                className="agents"
+                              >
+                                <div
+                                  className="agent first"
+                                  key="first"
+                                  style={
+                                    Object {
+                                      "borderColor": "#123456",
+                                    }
+                                  }
+                                >
+                                  <i
+                                    className="material-icons"
+                                  >
+                                    person
+                                  </i>
+                                </div>
+                                <div
+                                  className="agent middle"
+                                  key="middle"
+                                  style={
+                                    Object {
+                                      "borderColor": "#123456",
+                                    }
+                                  }
+                                >
+                                  <i
+                                    className="material-icons"
+                                  >
+                                    person
+                                  </i>
+                                  <div
+                                    className="onlineMarker"
+                                  />
+                                </div>
+                                <div
+                                  className="agent last"
+                                  key="last"
+                                  style={
+                                    Object {
+                                      "borderColor": "#123456",
+                                    }
+                                  }
+                                >
+                                  <i
+                                    className="material-icons"
+                                  >
+                                    person
+                                  </i>
+                                </div>
+                              </div>
+                            </ChatIntegrationAvatar>
+                            <div
+                              className="details"
+                            >
+                              <div
+                                className="appName"
+                              >
+                                my chat integration
+                              </div>
+                              <div
+                                className="introductionText"
+                              >
+                                this is an intro
+                              </div>
+                            </div>
+                          </div>
+                          <QuickReplies
+                            mainColor="#123456"
+                            quickReplies={
+                              Array [
+                                "foo",
+                                "bar",
+                              ]
+                            }
+                          >
+                            <div
+                              className="content quick-replies-content"
+                            >
+                              <div
+                                className="quick-replies-wrapper"
+                              >
+                                <button
+                                  className="btn btn-reply-action reply"
+                                  key="foo-0"
+                                  style={
+                                    Object {
+                                      "borderColor": "#123456",
+                                      "color": "#123456",
+                                    }
+                                  }
+                                >
+                                  foo
+                                </button>
+                                <button
+                                  className="btn btn-reply-action reply"
+                                  key="bar-1"
+                                  style={
+                                    Object {
+                                      "borderColor": "#123456",
+                                      "color": "#123456",
+                                    }
+                                  }
+                                >
+                                  bar
+                                </button>
+                              </div>
+                            </div>
+                          </QuickReplies>
+                          <PoweredByGorgias
+                            translatedTexts={
+                              Object {
+                                "actionPostbackError": "An error occurred while processing your action. Please try again.",
+                                "backLabelBackAt": "Back online at {time}",
+                                "backLabelBackInAMinute": "Back in 1 minute",
+                                "backLabelBackInAnHour": "Back in 1 hour",
+                                "backLabelBackInDays": "Back in {value} days",
+                                "backLabelBackInHours": "Back in {value} hours",
+                                "backLabelBackInMinutes": "Back in {value} minutes",
+                                "backLabelBackTomorrow": "Back tomorrow",
+                                "campaignClickToReply": "Click to reply",
+                                "clickToRetry": "Message not delivered. Click to retry.",
+                                "conversationTimestampHeaderFormat": "MMMM D",
+                                "emailCaptureInputLabel": "Get notified by email",
+                                "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+                                "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+                                "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+                                "emailCaptureOnlineTriggerText": "What's a good email to reach you?",
+                                "emailCapturePlaceholder": "your@email.com",
+                                "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+                                "emailCaptureRequiredMessagePlaceholder": "Write your message",
+                                "fetchHistory": "Load more",
+                                "fetchingHistory": "Retrieving history...",
+                                "headerText": "Gorgias Team",
+                                "inputPlaceholder": "Type a message...",
+                                "introductionText": "How can we help?",
+                                "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+                                "messageDelivered": "Delivered",
+                                "messageError": "An error occurred while sending your message. Please try again.",
+                                "messageIndicatorTitlePlural": "({count}) New messages",
+                                "messageIndicatorTitleSingular": "({count}) New message",
+                                "messageRelativeTimeDay": "{value}d ago",
+                                "messageRelativeTimeHour": "{value}h ago",
+                                "messageRelativeTimeJustNow": "Just now",
+                                "messageRelativeTimeMinute": "{value}m ago",
+                                "messageSending": "Sending...",
+                                "messageTimestampFormat": "h:mm A",
+                                "offlineIntroductionText": "We'll be back tomorrow",
+                                "poweredBy": "Powered by",
+                                "poweredByGorgias": "Powered by Gorgias",
+                                "send": "Send",
+                                "tapToRetry": "Message not delivered. Tap to retry.",
+                                "unsupportedActionType": "Unsupported action type.",
+                                "unsupportedMessageType": "Unsupported message type.",
+                                "usualReplyTimeDay": "Typically replies within a day",
+                                "usualReplyTimeHours": "Typically replies in a few hours",
+                                "usualReplyTimeMinutes": "Typically replies in a few minutes",
+                              }
+                            }
+                          >
+                            <div
+                              className="poweredBy"
+                            >
+                              <div>
+                                <span>
+                                  Powered by
+                                </span>
+                                <img
+                                  alt="powered-by"
+                                  src="test-file-stub"
+                                />
+                              </div>
+                            </div>
+                          </PoweredByGorgias>
+                          <div
+                            className="footer"
+                          >
+                            <div
+                              className="placeholder"
+                            >
+                              Type a message...
+                            </div>
+                            <i
+                              className="icon camera"
+                            />
+                          </div>
+                        </div>
+                        <div
+                          className="button bottom-right"
                           style={
                             Object {
                               "backgroundColor": "#123456",
                             }
                           }
                         >
-                          <ChatIntegrationAvatar
-                            isOnline={true}
-                            mainColor="#123456"
-                            offlineColor="#A1A9B6"
-                          >
-                            <div
-                              className="agents"
-                            >
-                              <div
-                                className="agent first"
-                                key="first"
-                                style={
-                                  Object {
-                                    "borderColor": "#123456",
-                                  }
-                                }
-                              >
-                                <i
-                                  className="material-icons"
-                                >
-                                  person
-                                </i>
-                              </div>
-                              <div
-                                className="agent middle"
-                                key="middle"
-                                style={
-                                  Object {
-                                    "borderColor": "#123456",
-                                  }
-                                }
-                              >
-                                <i
-                                  className="material-icons"
-                                >
-                                  person
-                                </i>
-                                <div
-                                  className="onlineMarker"
-                                />
-                              </div>
-                              <div
-                                className="agent last"
-                                key="last"
-                                style={
-                                  Object {
-                                    "borderColor": "#123456",
-                                  }
-                                }
-                              >
-                                <i
-                                  className="material-icons"
-                                >
-                                  person
-                                </i>
-                              </div>
-                            </div>
-                          </ChatIntegrationAvatar>
                           <div
-                            className="details"
+                            className="iconWrapper"
                           >
+                            <i
+                              className="icon"
+                            />
                             <div
-                              className="appName"
-                            >
-                              my chat integration
-                            </div>
-                            <div
-                              className="introductionText"
-                            >
-                              this is an intro
-                            </div>
+                              className="shadow"
+                            />
                           </div>
-                        </div>
-                        <QuickReplies
-                          mainColor="#123456"
-                          quickReplies={
-                            Array [
-                              "foo",
-                              "bar",
-                            ]
-                          }
-                        >
-                          <div
-                            className="content quick-replies-content"
-                          >
-                            <div
-                              className="quick-replies-wrapper"
-                            >
-                              <button
-                                className="btn btn-reply-action reply"
-                                key="foo-0"
-                                style={
-                                  Object {
-                                    "borderColor": "#123456",
-                                    "color": "#123456",
-                                  }
-                                }
-                              >
-                                foo
-                              </button>
-                              <button
-                                className="btn btn-reply-action reply"
-                                key="bar-1"
-                                style={
-                                  Object {
-                                    "borderColor": "#123456",
-                                    "color": "#123456",
-                                  }
-                                }
-                              >
-                                bar
-                              </button>
-                            </div>
-                          </div>
-                        </QuickReplies>
-                        <div
-                          className="poweredby"
-                        >
-                          Powered by Gorgias
-                        </div>
-                        <div
-                          className="footer"
-                        >
-                          <div
-                            className="placeholder"
-                          >
-                            Type a message...
-                          </div>
-                          <i
-                            className="icon camera"
-                          />
                         </div>
                       </div>
-                      <div
-                        className="button bottom-right"
-                        style={
-                          Object {
-                            "backgroundColor": "#123456",
-                          }
-                        }
-                      >
-                        <div
-                          className="iconWrapper"
-                        >
-                          <i
-                            className="icon"
-                          />
-                          <div
-                            className="shadow"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </ChatIntegrationPreview>
-                </div>
-              </Col>
-            </div>
-          </Row>
-        </div>
-      </Container>
+                    </ChatIntegrationPreview>
+                  </div>
+                </Col>
+              </div>
+            </Row>
+          </div>
+        </Container>
+      </GorgiasChatIntegrationPreviewContainer>
     </div>
   </GorgiasChatIntegrationQuickRepliesComponent>
 </Connect(GorgiasChatIntegrationQuickRepliesComponent)>

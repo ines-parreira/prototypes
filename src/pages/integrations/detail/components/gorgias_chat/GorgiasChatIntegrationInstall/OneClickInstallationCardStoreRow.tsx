@@ -1,27 +1,28 @@
+import React, {useState} from 'react'
 import {Button} from 'reactstrap'
 import classnames from 'classnames'
-import React from 'react'
 
 import shopifyLogo from 'assets/img/integrations/shopify.png'
 import warningIcon from 'assets/img/icons/warning.svg'
 
 import Tooltip from '../../../../../common/components/Tooltip'
+import ConfirmButton from '../../../../../common/components/ConfirmButton'
 
-import css from './GorgiasChatIntegrationOneClickInstallationCard.less'
+import css from './OneClickInstallationCardStoreRow.less'
 
 interface Props {
     isChatInstalled: boolean
     targetIntegrationId: number
     targetIntegrationName: string
     isLegacyInstallation: boolean
+    hasLegacyInstallations?: boolean
     isIntegrationDeactivated: boolean
     onInstall: (targetIntegrationId: number) => void
-    onUninstallAndOrRemove: (
-        targetIntegrationId: number,
-        withUninstall: boolean,
-        withRemove: boolean
-    ) => void
-    loading: {[key: string]: boolean}
+    onUninstall: (targetIntegrationId: number) => void
+    onDisconnect: (targetIntegrationId: number) => void
+    loading: {
+        [key: string]: {installation?: boolean; disconnection?: boolean} | null
+    }
 }
 
 export const OneClickInstallationCardStoreRow = ({
@@ -29,11 +30,14 @@ export const OneClickInstallationCardStoreRow = ({
     targetIntegrationId,
     targetIntegrationName,
     isLegacyInstallation,
+    hasLegacyInstallations,
     isIntegrationDeactivated,
     onInstall,
-    onUninstallAndOrRemove,
+    onUninstall,
+    onDisconnect,
     loading,
 }: Props) => {
+    const [showTooltip, setShowTooltip] = useState(true)
     const getWarnings = (
         targetIntegrationId: number,
         {
@@ -87,6 +91,16 @@ export const OneClickInstallationCardStoreRow = ({
         return null
     }
 
+    const isInstallationLoading = Boolean(
+        loading[targetIntegrationId] &&
+            loading[targetIntegrationId]?.installation
+    )
+
+    const isDisconnectionLoading = Boolean(
+        loading[targetIntegrationId] &&
+            loading[targetIntegrationId]?.disconnection
+    )
+
     return (
         <div className={css['one-click-installation']}>
             <div className={css['one-click-installation-inner']}>
@@ -101,89 +115,124 @@ export const OneClickInstallationCardStoreRow = ({
                     isIntegrationDeactivated,
                 })}
             </div>
-            {isChatInstalled ? (
+            <div className={css['actions-wrapper']}>
+                {isChatInstalled ? (
+                    <Button
+                        onClick={() => {
+                            onUninstall(targetIntegrationId)
+                        }}
+                        className={classnames({
+                            'btn-loading': isInstallationLoading,
+                        })}
+                        disabled={
+                            isDisconnectionLoading || isInstallationLoading
+                        }
+                    >
+                        {isInstallationLoading ? 'Uninstalling' : 'Uninstall'}
+                    </Button>
+                ) : (
+                    <Button
+                        onClick={() => onInstall(targetIntegrationId)}
+                        className={classnames({
+                            'btn-loading': isInstallationLoading,
+                        })}
+                        disabled={
+                            isDisconnectionLoading || isInstallationLoading
+                        }
+                        color="primary"
+                    >
+                        {isInstallationLoading ? 'Installing' : 'Install'}
+                    </Button>
+                )}
                 <>
-                    {isIntegrationDeactivated ? (
-                        <Button
-                            onClick={() =>
-                                onUninstallAndOrRemove(
-                                    targetIntegrationId,
-                                    true,
-                                    true
-                                )
-                            }
-                            className={classnames({
-                                'chat-toggle-install': true,
-                                'btn-loading': loading[targetIntegrationId],
-                            })}
-                            disabled={loading[targetIntegrationId]}
-                            color="danger"
-                        >
-                            {loading[targetIntegrationId]
-                                ? 'Disconnecting'
-                                : 'Disconnect'}
-                        </Button>
-                    ) : (
-                        <Button
-                            onClick={() => {
-                                onUninstallAndOrRemove(
-                                    targetIntegrationId,
-                                    true,
-                                    false
-                                )
-                            }}
-                            className={classnames({
-                                'chat-toggle-install': true,
-                                'btn-loading': loading[targetIntegrationId],
-                            })}
-                            disabled={loading[targetIntegrationId]}
-                            color="danger"
-                        >
-                            {loading[targetIntegrationId]
-                                ? 'Uninstalling'
-                                : 'Uninstall'}
-                        </Button>
-                    )}
+                    <ConfirmButton
+                        placement="top"
+                        onToggleConfirmation={(confimationDisplayed) => {
+                            setShowTooltip(!confimationDisplayed)
+                        }}
+                        confirm={() =>
+                            isLegacyInstallation
+                                ? onUninstall(targetIntegrationId)
+                                : onDisconnect(targetIntegrationId)
+                        }
+                        confirmText="Disconnect"
+                        confirmColor="danger"
+                        disabled={
+                            isDisconnectionLoading || isInstallationLoading
+                        }
+                        content={
+                            hasLegacyInstallations ? (
+                                <>
+                                    <p>
+                                        Disconnecting this store from the chat
+                                        integration will also{' '}
+                                        <b>disconnect all other stores.</b>
+                                    </p>
+                                    <p>
+                                        Are you sure you want to disconnect this
+                                        Shopify store for the chat integration?
+                                    </p>
+                                </>
+                            ) : isLegacyInstallation ? (
+                                <>
+                                    <p>
+                                        Are you sure you want to disconnect this
+                                        Shopify store for the chat integration?
+                                    </p>
+                                </>
+                            ) : isChatInstalled ? (
+                                <>
+                                    <p>
+                                        <b>
+                                            Disconnecting this chat from the
+                                            store will also uninstall it
+                                        </b>
+                                        , removing chat from all pages.
+                                    </p>
+                                    <p>
+                                        Are you sure you want to disconnect this
+                                        Shopify store from the chat integration?
+                                    </p>
+                                </>
+                            ) : (
+                                <>
+                                    <p>
+                                        If this{' '}
+                                        <b>
+                                            chat was manually connected to a
+                                            store
+                                        </b>
+                                        , you will need to uninstall it to
+                                        remove the chat completely.
+                                    </p>
+                                    <p>
+                                        Are you sure you want to disconnect this
+                                        Shopify store from the chat integration?
+                                    </p>
+                                </>
+                            )
+                        }
+                        className={classnames({
+                            [css['disconnect-button']]: true,
+                            'btn-loading': isDisconnectionLoading,
+                        })}
+                        id={`disconnect-button-${targetIntegrationId}`}
+                    >
+                        <i className="material-icons">delete</i>
+                    </ConfirmButton>
+                    <Tooltip
+                        target={`disconnect-button-${targetIntegrationId}`}
+                        placement="top"
+                        disabled={!showTooltip}
+                    >
+                        {hasLegacyInstallations
+                            ? 'Disconnecting this store from the chat integration will disconnect all other stores'
+                            : isLegacyInstallation
+                            ? 'Disconnecting this store from the chat integration will only disconnect this store'
+                            : 'Disconnect this store from chat integration'}
+                    </Tooltip>
                 </>
-            ) : (
-                <>
-                    {isIntegrationDeactivated ? (
-                        <Button
-                            onClick={() =>
-                                onUninstallAndOrRemove(
-                                    targetIntegrationId,
-                                    false,
-                                    true
-                                )
-                            }
-                            className={classnames({
-                                'chat-toggle-install': true,
-                                'btn-loading': loading[targetIntegrationId],
-                            })}
-                            disabled={loading[targetIntegrationId]}
-                            color="danger"
-                        >
-                            {loading[targetIntegrationId]
-                                ? 'Disconnecting'
-                                : 'Disconnect'}
-                        </Button>
-                    ) : (
-                        <Button
-                            onClick={() => onInstall(targetIntegrationId)}
-                            className={classnames({
-                                'chat-toggle-install': true,
-                                'btn-loading': loading[targetIntegrationId],
-                            })}
-                            disabled={loading[targetIntegrationId]}
-                            color="primary"
-                        >
-                            {loading[targetIntegrationId]
-                                ? 'Installing'
-                                : 'Install'}
-                        </Button>
-                    )}
-                </>
-            )}
+            </div>
         </div>
     )
 }

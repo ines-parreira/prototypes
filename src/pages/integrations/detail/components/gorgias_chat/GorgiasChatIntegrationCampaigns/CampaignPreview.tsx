@@ -6,6 +6,8 @@ import {
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
 } from '../../../../../../models/integration/types'
+import CloseIcon from '../../../../../../../js/assets/img/icons/DefaultCloseIcon.svg'
+import GorgiasChatPoweredBy from '../GorgiasChatIntegrationPreview/GorgiasChatPoweredBy'
 
 import css from './CampaignPreview.less'
 
@@ -76,9 +78,7 @@ export default class CampaignPreview extends Component<Props> {
                         </div>
                     </div>
 
-                    <div className={css.poweredby}>
-                        {translatedTexts.poweredByGorgias}
-                    </div>
+                    <GorgiasChatPoweredBy translatedTexts={translatedTexts} />
 
                     <div className={css.footer}>
                         {translatedTexts.campaignClickToReply}
@@ -94,9 +94,7 @@ export default class CampaignPreview extends Component<Props> {
                     >
                         <img
                             className={css.icon}
-                            src={`${
-                                window.GORGIAS_ASSETS_URL || ''
-                            }/static/private/img/icons/DefaultCloseIcon.svg`}
+                            src={CloseIcon}
                             alt="Close icon"
                         />
                     </div>

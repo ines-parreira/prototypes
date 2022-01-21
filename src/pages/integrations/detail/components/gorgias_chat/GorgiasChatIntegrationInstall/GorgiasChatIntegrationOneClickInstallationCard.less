@@ -2,57 +2,29 @@
 
 :local {
     .card {
-        margin-bottom: 10px;
+        margin-bottom: 32px;
+        padding: 16px;
+
+        h3 {
+            margin: 0;
+        }
     }
     .card-header {
+        padding: 0;
         display: flex;
         align-items: center;
         justify-content: space-between;
         background-color: @classic-neutral-grey-0;
         border-bottom: none;
-        height: 68px;
-        h3 {
-            margin: 0;
-        }
     }
 
     .card-body {
-        padding: 0 20px 20px 20px;
+        margin-top: 8px;
+        padding: 0;
+
         h4,
         p {
             margin-bottom: 24px;
-        }
-        .one-click-installation {
-            background-color: @classic-neutral-grey-2;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 8px;
-
-            &:not(:last-of-type) {
-                margin-bottom: 24px;
-            }
-
-            .one-click-installation-inner {
-                display: flex;
-                align-items: center;
-            }
-            .shopify-logo {
-                width: 17px;
-                height: 20px;
-                margin: 0 20px 0 10px;
-            }
-            .warning-icon {
-                height: 14px;
-                width: 13px;
-                margin-left: 18px;
-            }
-            .disconnected-store {
-                color: @classic-feedback-warning;
-                margin-left: 16px;
-                font-size: 12px;
-            }
         }
     }
 }

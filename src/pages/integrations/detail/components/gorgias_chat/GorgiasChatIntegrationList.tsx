@@ -1,16 +1,32 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import {List, Map} from 'immutable'
+import classnames from 'classnames'
+import {Breadcrumb, BreadcrumbItem, Button, Container} from 'reactstrap'
 
 import shopifyLogo from 'assets/img/integrations/shopify.png'
 import warningIcon from 'assets/img/icons/warning.svg'
 
+import {getIntegrationConfig} from 'state/integrations/helpers'
+
 import ToggleButton from '../../../../common/components/ToggleButton'
-import history from '../../../../history'
 import ForwardIcon from '../ForwardIcon'
-import IntegrationList from '../IntegrationList'
 import Tooltip from '../../../../common/components/Tooltip'
 import {IntegrationType} from '../../../../../models/integration/types'
+
+import BodyCell from '../../../../common/components/table/cells/BodyCell'
+import HeaderCell from '../../../../common/components/table/cells/HeaderCell'
+import HeaderCellProperty from '../../../../common/components/table/cells/HeaderCellProperty'
+import TableBody from '../../../../common/components/table/TableBody'
+import TableBodyRow from '../../../../common/components/table/TableBodyRow'
+import TableHead from '../../../../common/components/table/TableHead'
+import TableWrapper from '../../../../common/components/table/TableWrapper'
+import {LanguageBullet} from '../../../../common/components/LanguageBulletList'
+import PageHeader from '../../../../common/components/PageHeader'
+import history from '../../../../history'
+import settingsCss from '../../../../settings/settings.less'
+
+import NoIntegration from '../NoIntegration.js'
 
 import css from './GorgiasChatIntegrationList.less'
 
@@ -36,22 +52,31 @@ function GorgiasChatIntegrationList({
         </div>
     )
 
-    const integrationToItemDisplay = (integration: Map<any, any>) => {
-        const integrationId: number = integration.get('id')
-        const toggleIntegration = (value: boolean) => {
-            value
+    const chats = useMemo(
+        () =>
+            integrations.filter(
+                (integration) =>
+                    integration?.get('type') === IntegrationType.GorgiasChat
+            ) as List<Map<any, any>>,
+        [integrations]
+    )
+
+    const chatToRow = (chat: Map<any, any>) => {
+        const integrationId: number = chat.get('id')
+        const toggleIntegration = (
+            isToggled: boolean,
+            event?: React.MouseEvent<Element, MouseEvent>
+        ) => {
+            event?.stopPropagation()
+            isToggled
                 ? activateIntegration(integrationId)
                 : deactivateIntegration(integrationId)
-
-            return null
         }
 
-        const editLink = `/app/settings/integrations/${
-            IntegrationType.GorgiasChat
-        }/${integration.get('id') as string}/appearance`
-        const isDisabled = integration.get('deactivated_datetime')
+        const editLink = `/app/settings/integrations/${IntegrationType.GorgiasChat}/${integrationId}/campaigns`
+        const isEnabled = !chat.get('deactivated_datetime')
         const isLoading = loading.get('updateIntegration') === integrationId
-        const shopifyStoreName: string = integration.getIn([
+        const shopifyStoreName: string | null = chat.getIn([
             'meta',
             'shop_name',
         ])
@@ -63,83 +88,138 @@ function GorgiasChatIntegrationList({
         const isStoreDisconnected =
             !shopifyStore || shopifyStore.get('deactivated_datetime')
 
+        const language: string = chat.getIn(['meta', 'language'])
+
+        const goToChat = () => history.push(editLink)
+
         return (
-            <tr key={integrationId}>
-                <td className="smallest align-middle">
+            <TableBodyRow className={css.tableBodyRow} onClick={goToChat}>
+                <BodyCell className="smallest">
                     <ToggleButton
-                        value={!isDisabled}
+                        value={isEnabled}
                         onChange={toggleIntegration}
                         loading={isLoading}
                         disabled={!!loading.get('updateIntegration')}
                     />
-                </td>
-
-                <td className="link-full-td">
-                    <Link to={editLink}>
-                        <div className={css['integration-link-inner']}>
-                            <b>{integration.get('name')}</b>
-                            {shopifyStoreName && (
+                </BodyCell>
+                <BodyCell innerClassName={css.chatName}>
+                    {chat.get('name')}
+                </BodyCell>
+                <BodyCell>
+                    {shopifyStoreName !== null ? (
+                        <div className={css.shopifyStoreDiv}>
+                            <span className={css.shopifyStoreName}>
+                                <img src={shopifyLogo} alt="logo Shopify" />
+                                <span>{shopifyStoreName}</span>
+                            </span>
+                            {isStoreDisconnected && (
                                 <>
-                                    <span className={css['shopify-store-name']}>
-                                        <img
-                                            src={shopifyLogo}
-                                            alt="logo Shopify"
-                                        />
-                                        <span>{shopifyStoreName}</span>
-                                    </span>
-                                    {isStoreDisconnected && (
-                                        <>
-                                            <img
-                                                src={warningIcon}
-                                                alt="warning icon"
-                                                id={`store-disconnected-${integrationId}`}
-                                                className={`material-icons ${css['warning-icon']}`}
-                                            />
-                                            <Tooltip
-                                                target={`store-disconnected-${integrationId}`}
-                                                placement="top"
-                                            >
-                                                This store is currently
-                                                disconnected
-                                            </Tooltip>
-                                        </>
-                                    )}
+                                    <img
+                                        src={warningIcon}
+                                        alt="warning icon"
+                                        id={`store-disconnected-${integrationId}`}
+                                        className={`material-icons ${css.warningIcon}`}
+                                    />
+                                    <Tooltip
+                                        target={`store-disconnected-${integrationId}`}
+                                        placement="top"
+                                    >
+                                        This store is currently disconnected
+                                    </Tooltip>
                                 </>
                             )}
                         </div>
-                    </Link>
-                </td>
-
-                <td className="smallest align-middle">
+                    ) : (
+                        <div className={css.noStore}>No store connected</div>
+                    )}
+                </BodyCell>
+                <BodyCell>
+                    <LanguageBullet code={language} />
+                </BodyCell>
+                <BodyCell className="smallest">
                     <ForwardIcon href={editLink} />
-                </td>
-            </tr>
+                </BodyCell>
+            </TableBodyRow>
         )
     }
 
+    const integrationTitle = getIntegrationConfig(
+        IntegrationType.GorgiasChat
+    )!.title
+
     return (
-        <IntegrationList
-            integrationType={IntegrationType.GorgiasChat}
-            longTypeDescription={longTypeDescription}
-            integrations={
-                integrations.filter(
-                    (integration) =>
-                        integration?.get('type') === IntegrationType.GorgiasChat
-                ) as List<Map<any, any>>
-            }
-            createIntegration={() =>
-                history.push(
-                    `/app/settings/integrations/${IntegrationType.GorgiasChat}/new`
-                )
-            }
-            createIntegrationButtonContent={
-                <div className={css['create-integration-btn']}>
-                    <i className="material-icons mr-2">add</i>Add New
-                </div>
-            }
-            integrationToItemDisplay={integrationToItemDisplay}
-            loading={loading}
-        />
+        <div className="w-100">
+            <PageHeader
+                title={
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/integrations">
+                                Integrations
+                            </Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>
+                            {integrationTitle}
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                }
+            >
+                <Button
+                    type="submit"
+                    color="success"
+                    onClick={() =>
+                        history.push(
+                            `/app/settings/integrations/${IntegrationType.GorgiasChat}/new`
+                        )
+                    }
+                >
+                    <div className={css.createIntegrationBtn}>
+                        <i className="material-icons mr-2">add</i>Add New
+                    </div>
+                </Button>
+            </PageHeader>
+
+            <Container
+                fluid
+                className={classnames(
+                    settingsCss.pageContainer,
+                    settingsCss.pb0
+                )}
+            >
+                <div className="mb-3">{longTypeDescription}</div>
+
+                {integrations.isEmpty() && (
+                    <div className="mt-3">
+                        <NoIntegration
+                            type={IntegrationType.GorgiasChat}
+                            loading={loading.get('integrations', false)}
+                        />
+                    </div>
+                )}
+            </Container>
+
+            {!chats.isEmpty() && (
+                <TableWrapper>
+                    <TableHead className={css.tableHead}>
+                        <HeaderCell className="smallest" />
+                        <HeaderCellProperty
+                            className={css.chatNameHeader}
+                            title="Chat name"
+                        />
+                        <HeaderCellProperty title="Store" />
+                        <HeaderCellProperty title="Language" />
+                        <HeaderCell />
+                    </TableHead>
+                    <TableBody>
+                        {chats.map(
+                            (value) =>
+                                chatToRow(
+                                    value!
+                                ) /* using ! because Immutable typing expects Map | undefined while it should be Map */
+                        )}
+                    </TableBody>
+                </TableWrapper>
+            )}
+        </div>
     )
 }
 

@@ -2,32 +2,26 @@ import React, {Component, FormEvent} from 'react'
 import {Link} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Button,
-    Col,
-    Container,
-    Form,
-    Row,
-} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Button, Form} from 'reactstrap'
 import classnames from 'classnames'
 
-import PageHeader from '../../../../common/components/PageHeader'
-import BooleanField from '../../../../common/forms/BooleanField.js'
-import ListField from '../../../../common/forms/ListField'
-import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
+import PageHeader from '../../../../../common/components/PageHeader'
+import ListField from '../../../../../common/forms/ListField'
+import ToggleButton from '../../../../../common/components/ToggleButton'
+import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import {
     QUICK_REPLIES_DEFAULTS,
     QUICK_REPLIES_MAX_ITEM_LENGTH,
     QUICK_REPLIES_MAX_ITEMS,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
-} from '../../../../../config/integrations/gorgias_chat'
-import css from '../../../../settings/settings.less'
+} from '../../../../../../config/integrations/gorgias_chat'
 
-import ChatIntegrationNavigation from './GorgiasChatIntegrationNavigation'
-import ChatIntegrationPreview from './GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-import QuickRepliesPreview from './GorgiasChatIntegrationPreview/QuickReplies'
+import ChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
+import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import QuickRepliesPreview from '../GorgiasChatIntegrationPreview/QuickReplies'
+import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
+
+import css from './GorgiasChatIntegrationQuickReplies.less'
 
 type Props = {
     integration: Map<any, any>
@@ -145,6 +139,31 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
             'reply',
         ])
 
+        const chatPreview = (
+            <ChatIntegrationPreview
+                name={integration.get('name')}
+                introductionText={integration.getIn([
+                    'decoration',
+                    'introduction_text',
+                ])}
+                mainColor={integration.getIn(['decoration', 'main_color'])}
+                language={integration.getIn(['meta', 'language'])}
+                isOnline
+                position={position}
+                autoResponderEnabled={autoResponderEnabled}
+                autoResponderReply={autoResponderReply}
+            >
+                <QuickRepliesPreview
+                    quickReplies={this.state.quickReplies
+                        .filter(
+                            (s: string | undefined) => s?.trim().length !== 0
+                        )
+                        .toJS()}
+                    mainColor={integration.getIn(['decoration', 'main_color'])}
+                />
+            </ChatIntegrationPreview>
+        )
+
         return (
             <div className="full-width">
                 <PageHeader
@@ -173,91 +192,64 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
 
                 <ChatIntegrationNavigation integration={integration} />
 
-                <Container fluid className={css.pageContainer}>
-                    <Row>
-                        <Col>
-                            <Form onSubmit={this._submit}>
-                                <div className="mb-4">
-                                    <h4>Quick replies</h4>
-                                    <p>
-                                        When a customer opens the chat, select
-                                        the quick replies the customer can click
-                                        on.
-                                    </p>
+                <GorgiasChatIntegrationPreviewContainer preview={chatPreview}>
+                    <Form onSubmit={this._submit}>
+                        <div className="mb-4">
+                            <h4>Quick replies</h4>
+                            <p className={css.mb16}>
+                                When a customer opens the chat, select the quick
+                                replies the customer can click on.
+                            </p>
 
-                                    <div className="mb-3">
-                                        <BooleanField
-                                            name="quickRepliesEnabled"
-                                            type="checkbox"
-                                            label="Enable quick replies"
-                                            value={quickRepliesEnabled}
-                                            onChange={(
-                                                quickRepliesEnabled: boolean
-                                            ) =>
-                                                this.setState({
-                                                    quickRepliesEnabled,
-                                                })
-                                            }
-                                        />
-                                    </div>
-                                </div>
-
-                                <ListField
-                                    className="mb-5"
-                                    items={this.state.quickReplies}
-                                    onChange={(quickReplies) =>
-                                        this.setState({quickReplies})
-                                    }
-                                    maxLength={QUICK_REPLIES_MAX_ITEM_LENGTH}
-                                    maxItems={QUICK_REPLIES_MAX_ITEMS}
-                                />
-
-                                <div>
-                                    <Button
-                                        type="submit"
-                                        color="success"
-                                        className={classnames({
-                                            'btn-loading': isUpdating,
-                                        })}
-                                        disabled={isUpdating}
-                                    >
-                                        Save changes
-                                    </Button>
-                                </div>
-                            </Form>
-                        </Col>
-
-                        <Col>
-                            <ChatIntegrationPreview
-                                name={integration.get('name')}
-                                introductionText={integration.getIn([
-                                    'decoration',
-                                    'introduction_text',
-                                ])}
-                                mainColor={integration.getIn([
-                                    'decoration',
-                                    'main_color',
-                                ])}
-                                language={integration.getIn([
-                                    'meta',
-                                    'language',
-                                ])}
-                                isOnline
-                                position={position}
-                                autoResponderEnabled={autoResponderEnabled}
-                                autoResponderReply={autoResponderReply}
+                            <div
+                                className={classnames(
+                                    'd-flex',
+                                    'align-items-center',
+                                    css.mb16
+                                )}
                             >
-                                <QuickRepliesPreview
-                                    quickReplies={this.state.quickReplies.toJS()}
-                                    mainColor={integration.getIn([
-                                        'decoration',
-                                        'main_color',
-                                    ])}
+                                <ToggleButton
+                                    value={quickRepliesEnabled}
+                                    onChange={() =>
+                                        this.setState({
+                                            quickRepliesEnabled:
+                                                !quickRepliesEnabled,
+                                        })
+                                    }
                                 />
-                            </ChatIntegrationPreview>
-                        </Col>
-                    </Row>
-                </Container>
+
+                                <div className="ml-2">
+                                    <b>Enable quick replies</b>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ListField
+                            className={css.container}
+                            items={this.state.quickReplies}
+                            onChange={(quickReplies) =>
+                                this.setState({quickReplies})
+                            }
+                            maxLength={QUICK_REPLIES_MAX_ITEM_LENGTH}
+                            maxItems={QUICK_REPLIES_MAX_ITEMS}
+                            addLabel="Add Quick Reply"
+                            disabled={!quickRepliesEnabled}
+                        />
+
+                        <div>
+                            <Button
+                                type="submit"
+                                color="success"
+                                className={classnames({
+                                    'btn-loading': isUpdating,
+                                })}
+                                disabled={isUpdating}
+                            >
+                                Save changes
+                            </Button>
+                        </div>
+                    </Form>
+                </GorgiasChatIntegrationPreviewContainer>
             </div>
         )
     }

@@ -6,7 +6,7 @@ exports[`<RadioField/> render() should render an enabled Radio field 1`] = `
 >
   <FormGroup
     check={true}
-    className="mb-2"
+    className="formGroup"
     key="1"
     tag="div"
   >
@@ -32,18 +32,18 @@ exports[`<RadioField/> render() should render an enabled Radio field 1`] = `
       }
     >
       foo
-      <FormText
-        className="description"
-        color="muted"
-        tag="small"
-      >
-        one of the options
-      </FormText>
     </Label>
+    <FormText
+      className="description"
+      color="muted"
+      tag="small"
+    >
+      one of the options
+    </FormText>
   </FormGroup>
   <FormGroup
     check={true}
-    className="mb-2"
+    className="formGroup"
     key="2"
     tag="div"
   >
@@ -69,18 +69,18 @@ exports[`<RadioField/> render() should render an enabled Radio field 1`] = `
       }
     >
       bar
-      <FormText
-        className="description"
-        color="muted"
-        tag="small"
-      >
-        another option
-      </FormText>
     </Label>
+    <FormText
+      className="description"
+      color="muted"
+      tag="small"
+    >
+      another option
+    </FormText>
   </FormGroup>
   <FormGroup
     check={true}
-    className="mb-2"
+    className="formGroup"
     key="3"
     tag="div"
   >
@@ -117,7 +117,7 @@ exports[`<RadioField/> should render a disabled Radio field 1`] = `
 >
   <FormGroup
     check={true}
-    className="mb-2"
+    className="formGroup"
     key="1"
     tag="div"
   >
@@ -141,18 +141,18 @@ exports[`<RadioField/> should render a disabled Radio field 1`] = `
       }
     >
       foo
-      <FormText
-        className="description"
-        color="muted"
-        tag="small"
-      >
-        one of the options
-      </FormText>
     </Label>
+    <FormText
+      className="description"
+      color="muted"
+      tag="small"
+    >
+      one of the options
+    </FormText>
   </FormGroup>
   <FormGroup
     check={true}
-    className="mb-2"
+    className="formGroup"
     key="2"
     tag="div"
   >
@@ -176,18 +176,18 @@ exports[`<RadioField/> should render a disabled Radio field 1`] = `
       }
     >
       bar
-      <FormText
-        className="description"
-        color="muted"
-        tag="small"
-      >
-        another option
-      </FormText>
     </Label>
+    <FormText
+      className="description"
+      color="muted"
+      tag="small"
+    >
+      another option
+    </FormText>
   </FormGroup>
   <FormGroup
     check={true}
-    className="mb-2"
+    className="formGroup"
     key="3"
     tag="div"
   >

@@ -3,23 +3,25 @@ import {mount, shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import {
+    GorgiasChatIntegrationPreferencesComponent,
+    PREVIEW_AUTO_RESPONDER,
+    PREVIEW_EMAIL_CAPTURE,
+} from '../GorgiasChatIntegrationPreferences.tsx'
+
+import {
     CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
     CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
-} from '../../../../../../config/integrations/index.ts'
+} from '../../../../../../../config/integrations/index.ts'
 
 import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-} from '../../../../../../config/integrations/gorgias_chat.ts'
+} from '../../../../../../../config/integrations/gorgias_chat.ts'
 
-import {GORGIAS_CHAT_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
-import {SPANISH_LANGUAGE} from '../../../../../../constants/languages.ts'
-import {
-    GorgiasChatIntegrationPreferencesComponent,
-    PREVIEW_AUTO_RESPONDER,
-    PREVIEW_EMAIL_CAPTURE,
-} from '../GorgiasChatIntegrationPreferences.tsx'
+import {GORGIAS_CHAT_INTEGRATION_TYPE} from '../../../../../../../constants/integration.ts'
+
+import {SPANISH_LANGUAGE} from '../../../../../../../constants/languages.ts'
 
 describe('<GorgiasChatIntegrationPreferences/>', () => {
     describe('componentDidMount()', () => {

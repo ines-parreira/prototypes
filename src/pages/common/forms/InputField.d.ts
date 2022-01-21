@@ -17,6 +17,7 @@ interface OwnProps extends InputProps {
     rightAddon?: string
     caseInsensitive?: boolean
     tooltip?: string
+    tooltipIcon?: ReactNode
     suffix?: string
 }
 

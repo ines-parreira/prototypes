@@ -531,7 +531,7 @@ export const getChatIntegrationCampaigns = (id: number) =>
 
 export const getChatIntegrationCampaignById = (
     id: number,
-    campaignId: number
+    campaignId: number | string
 ) =>
     createSelector<RootState, Map<any, any>, List<any>>(
         getChatIntegrationCampaigns(id),

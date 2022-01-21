@@ -31,7 +31,11 @@ export default class RadioField extends Component<Props> {
             <FormGroup tag="fieldset">
                 {!!label && <Label className="control-label">{label}</Label>}
                 {options.map((option) => (
-                    <FormGroup key={option.value} className="mb-2" check>
+                    <FormGroup
+                        key={option.value}
+                        className={css.formGroup}
+                        check
+                    >
                         <Input
                             type="radio"
                             checked={selectedValue === option.value}
@@ -52,15 +56,12 @@ export default class RadioField extends Component<Props> {
                             check
                         >
                             {option.label}
-                            {option.description && (
-                                <FormText
-                                    className={css.description}
-                                    color="muted"
-                                >
-                                    {option.description}
-                                </FormText>
-                            )}
                         </Label>
+                        {option.description && (
+                            <FormText className={css.description} color="muted">
+                                {option.description}
+                            </FormText>
+                        )}
                     </FormGroup>
                 ))}
             </FormGroup>
