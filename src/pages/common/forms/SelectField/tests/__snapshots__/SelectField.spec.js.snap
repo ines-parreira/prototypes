@@ -75,6 +75,21 @@ Object {
 }
 `;
 
+exports[`SelectField should filter when rerendered 1`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "label": "Hello",
+      "value": "hello",
+    },
+  ],
+  "input": "hello",
+  "isFocused": false,
+  "optionsOpen": false,
+  "selectedOptionIndex": -1,
+}
+`;
+
 exports[`SelectField should handle key down event Enter/Tab (existing value) 1`] = `
 Object {
   "filteredOptions": Array [
@@ -120,7 +135,7 @@ Object {
 exports[`SelectField should handle key down event Enter/tab (custom value) 1`] = `
 Object {
   "filteredOptions": Array [],
-  "input": "custom value",
+  "input": "",
   "isFocused": false,
   "optionsOpen": true,
   "selectedOptionIndex": -1,
@@ -130,7 +145,7 @@ Object {
 exports[`SelectField should handle key down event Enter/tab (custom value) 2`] = `
 Object {
   "filteredOptions": Array [],
-  "input": "custom value",
+  "input": "",
   "isFocused": false,
   "optionsOpen": true,
   "selectedOptionIndex": -1,

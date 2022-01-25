@@ -132,6 +132,21 @@ describe('SelectField', () => {
         expect(wrapper.state()).toMatchSnapshot()
     })
 
+    it('should filter when rerendered', () => {
+        const props = {
+            ...minProps,
+            options: [
+                {value: 'hello', label: 'Hello'},
+                {value: 'world', label: 'World'},
+            ],
+        }
+
+        const wrapper = shallow(<SelectField {...props} allowCustomValue />)
+        wrapper.instance()._onSearchChange({currentTarget: {value: 'hello'}})
+        wrapper.setProps(props)
+        expect(wrapper.state()).toMatchSnapshot()
+    })
+
     it('should handle search on mixed label type options', () => {
         const options = [
             {

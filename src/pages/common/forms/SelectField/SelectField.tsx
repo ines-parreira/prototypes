@@ -103,21 +103,21 @@ export default class SelectField extends Component<Props, State> {
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        const hasNewOptions =
-            this.props.options.length !== nextProps.options.length ||
-            !!nextProps.options.filter(
-                (option) => !this.props.options.includes(option)
-            )
+        const hasNewOptions = !_isEqual(this.props.options, nextProps.options)
 
         if (this.props.value !== nextProps.value || hasNewOptions) {
             this.setState({
                 filteredOptions: this._filterOptions(
                     nextProps.options,
-                    '',
+                    this.state.input,
                     nextProps.value
                 ),
             })
         }
+    }
+
+    _onChange = (value: Value) => {
+        this.setState({input: ''}, () => this.props.onChange(value))
     }
 
     _filterOptions = (
@@ -197,7 +197,7 @@ export default class SelectField extends Component<Props, State> {
     }
 
     _onSearchKeyDown = (event: KeyboardEvent) => {
-        const {allowCustomValue, onChange} = this.props
+        const {allowCustomValue} = this.props
         const {input, filteredOptions, selectedOptionIndex} = this.state
         const key = event.key
         const killedEventsKeys = ['ArrowUp', 'ArrowDown', 'Enter', 'Tab']
@@ -237,9 +237,9 @@ export default class SelectField extends Component<Props, State> {
                         break
                     }
 
-                    onChange(selectedOption.value)
+                    this._onChange(selectedOption.value)
                 } else if (allowCustomValue && input) {
-                    onChange(input)
+                    this._onChange(input)
                 }
 
                 this._toggleDropdown()
@@ -297,7 +297,7 @@ export default class SelectField extends Component<Props, State> {
 
     _onOptionClick = (event: MouseEvent, value: Value) => {
         this._stopPropagation(event)
-        this.props.onChange(value)
+        this._onChange(value)
         this._toggleDropdown()
     }
 
