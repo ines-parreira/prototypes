@@ -8,6 +8,7 @@ import {
     DropdownItem,
 } from 'reactstrap'
 
+import Errors from '../Errors'
 import {RuleOperation} from '../../../../../state/rules/types'
 import {RuleItemActions} from '../../../../settings/rules/types'
 import Hoverable from '../../Hoverable'
@@ -21,6 +22,7 @@ type Props = {
     depth: number
     removable: boolean
     hoverableClassName?: string
+    empty?: boolean
 }
 
 export class AddActionOrIfStatement extends Component<Props> {
@@ -116,11 +118,12 @@ export class AddActionOrIfStatement extends Component<Props> {
     }
 
     render() {
-        const {title, depth, removable} = this.props
+        const {title, depth, removable, empty} = this.props
 
         return (
             <UncontrolledButtonDropdown
                 style={{paddingLeft: computeLeftPadding(depth)}}
+                className="AddActionOrIfStatement"
             >
                 <DropdownToggle
                     className="ControlStructureButton"
@@ -129,6 +132,7 @@ export class AddActionOrIfStatement extends Component<Props> {
                 >
                     {title}
                 </DropdownToggle>
+                {empty && <Errors inline>{title} cannot be empty</Errors>}
                 <DropdownMenu>
                     <DropdownItem
                         type="button"

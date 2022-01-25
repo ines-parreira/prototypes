@@ -1,5 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<ConsequentStatement/> component should render 1`] = `
+<div
+  className="consequent"
+>
+  <Foldable
+    label={
+      <_class
+        empty={false}
+        hoverableClassName="d-inline-flex"
+        parent={
+          Immutable.List [
+            "consequent",
+          ]
+        }
+        title="THEN"
+      />
+    }
+  >
+    <Connect(Statement)
+      depth={NaN}
+      parent={
+        Immutable.List [
+          "consequent",
+        ]
+      }
+    />
+  </Foldable>
+</div>
+`;
+
 exports[`IfStatement component should not render alternate because there is none 1`] = `
 <div
   className="IfStatement"

@@ -2,6 +2,7 @@
 
 exports[`AddActionOrIfStatement component should render 1`] = `
 <UncontrolledButtonDropdown
+  className="AddActionOrIfStatement"
   style={
     Object {
       "paddingLeft": "18px",
@@ -15,7 +16,7 @@ exports[`AddActionOrIfStatement component should render 1`] = `
     color="secondary"
     type="button"
   >
-    IF
+    THEN
   </DropdownToggle>
   <DropdownMenu
     flip={true}
@@ -43,6 +44,7 @@ exports[`AddActionOrIfStatement component should render 1`] = `
 
 exports[`AddActionOrIfStatement component should render a button to delete the block when it is allowed to delete itself 1`] = `
 <UncontrolledButtonDropdown
+  className="AddActionOrIfStatement"
   style={
     Object {
       "paddingLeft": "18px",
@@ -56,7 +58,7 @@ exports[`AddActionOrIfStatement component should render a button to delete the b
     color="secondary"
     type="button"
   >
-    IF
+    THEN
   </DropdownToggle>
   <DropdownMenu
     flip={true}
@@ -90,6 +92,54 @@ exports[`AddActionOrIfStatement component should render a button to delete the b
         delete
       </i>
       Delete node
+    </DropdownItem>
+  </DropdownMenu>
+</UncontrolledButtonDropdown>
+`;
+
+exports[`AddActionOrIfStatement component should render with error 1`] = `
+<UncontrolledButtonDropdown
+  className="AddActionOrIfStatement"
+  style={
+    Object {
+      "paddingLeft": "18px",
+    }
+  }
+>
+  <DropdownToggle
+    aria-haspopup={true}
+    caret={true}
+    className="ControlStructureButton"
+    color="secondary"
+    type="button"
+  >
+    THEN
+  </DropdownToggle>
+  <Errors
+    inline={true}
+  >
+    THEN
+     cannot be empty
+  </Errors>
+  <DropdownMenu
+    flip={true}
+    tag="div"
+  >
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Action
+    </DropdownItem>
+    <DropdownItem
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      "IF" statement
     </DropdownItem>
   </DropdownMenu>
 </UncontrolledButtonDropdown>

@@ -11,7 +11,7 @@ describe('AddActionOrIfStatement component', () => {
         actions: {} as RuleItemActions,
         parent: fromJS([]),
         depth: 1,
-        title: 'IF',
+        title: 'THEN',
     }
 
     it('should render', () => {
@@ -23,6 +23,14 @@ describe('AddActionOrIfStatement component', () => {
     it('should render a button to delete the block when it is allowed to delete itself', () => {
         const component = shallow(
             <AddActionOrIfStatement {...commonProps} removable />
+        )
+
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should render with error', () => {
+        const component = shallow(
+            <AddActionOrIfStatement {...commonProps} empty />
         )
 
         expect(component).toMatchSnapshot()

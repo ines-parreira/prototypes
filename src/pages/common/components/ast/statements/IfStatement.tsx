@@ -11,6 +11,7 @@ import Expression from '../expression/Expression'
 import {computeLeftPadding} from '../utils.js'
 import Foldable from '../Foldable/Foldable'
 
+import BlockStatement from './BlockStatement'
 import Statement from './Statement'
 
 class TestExpression extends React.Component<TestExpressionProps> {
@@ -76,13 +77,13 @@ type TestExpressionProps = {
 type ConsequentStatementProps = {
     rule: Map<any, any>
     actions: RuleItemActions
-    consequent: Partial<ComponentProps<typeof Statement>>
+    consequent: Partial<ComponentProps<typeof BlockStatement>>
     parent: List<any>
     schemas: Map<any, any>
     depth: number
 }
 
-class ConsequentStatement extends React.Component<ConsequentStatementProps> {
+export class ConsequentStatement extends React.Component<ConsequentStatementProps> {
     render() {
         const {actions, consequent, rule, parent, schemas, depth} = this.props
 
@@ -97,6 +98,7 @@ class ConsequentStatement extends React.Component<ConsequentStatementProps> {
                             title="THEN"
                             hoverableClassName="d-inline-flex"
                             depth={depth}
+                            empty={consequent.body?.length === 0}
                         />
                     }
                 >
@@ -134,6 +136,7 @@ class AlternateStatement extends React.Component<AlternateStatementProps> {
                             hoverableClassName="d-inline-flex"
                             depth={depth}
                             removable
+                            empty={alternate.body?.length === 0}
                         />
                     }
                 >
@@ -154,7 +157,7 @@ class AlternateStatement extends React.Component<AlternateStatementProps> {
 type AlternateStatementProps = {
     rule: Map<any, any>
     actions: RuleItemActions
-    alternate: Partial<ComponentProps<typeof Statement>>
+    alternate: Partial<ComponentProps<typeof BlockStatement>>
     parent: List<any>
     schemas: Map<any, any>
     depth: number

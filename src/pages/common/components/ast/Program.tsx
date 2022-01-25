@@ -25,6 +25,7 @@ export default class Program extends React.Component<Props> {
                         parent={List([])}
                         title="THEN"
                         depth={0}
+                        empty={!body || body.length === 0}
                     />
                     {!!body && body.length > 0 && (
                         <div className="Program">

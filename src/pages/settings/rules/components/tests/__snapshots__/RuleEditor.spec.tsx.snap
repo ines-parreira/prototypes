@@ -113,7 +113,7 @@ exports[`<RuleEditor/> render should render the  editor 1`] = `
         class=""
       >
         <div
-          class="btn-group"
+          class="AddActionOrIfStatement btn-group"
           style="padding-left: 0px;"
         >
           <button
@@ -124,6 +124,12 @@ exports[`<RuleEditor/> render should render the  editor 1`] = `
           >
             THEN
           </button>
+          <div
+            class="d-inline-block text-danger ml-2"
+          >
+            THEN
+             cannot be empty
+          </div>
           <div
             aria-hidden="true"
             class="dropdown-menu"
