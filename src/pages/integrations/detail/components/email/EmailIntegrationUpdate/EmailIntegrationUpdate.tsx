@@ -41,7 +41,7 @@ import {
     GMAIL_IMPORTED_EMAILS_FOR_YEARS,
     OUTLOOK_IMPORTED_EMAILS_FOR_YEARS,
 } from '../../../../../../config'
-import ConfirmButton from '../../../../../common/components/ConfirmButton'
+import DEPRECATED_ConfirmButton from '../../../../../common/components/DEPRECATED_ConfirmButton'
 import Alert from '../../../../../common/components/Alert/Alert'
 
 import InputField from '../../../../../common/forms/InputField.js'
@@ -249,14 +249,14 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                     )}
                 </p>
                 {!importActivated && (
-                    <ConfirmButton
+                    <DEPRECATED_ConfirmButton
                         color="primary"
                         loading={isLoading}
                         confirm={importMethod}
                         content="Are you sure you want to import emails?"
                     >
                         Import emails
-                    </ConfirmButton>
+                    </DEPRECATED_ConfirmButton>
                 )}
             </div>
         )
@@ -566,7 +566,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                             </Button>
                         )}
 
-                        <ConfirmButton
+                        <DEPRECATED_ConfirmButton
                             className="float-right"
                             color="secondary"
                             confirm={() => deleteIntegration(integration)}
@@ -576,7 +576,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                                 delete
                             </i>
                             Delete email address
-                        </ConfirmButton>
+                        </DEPRECATED_ConfirmButton>
                     </div>
                 </Form>
             </div>

@@ -568,7 +568,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
           >
             Save changes
           </Button>
-          <ConfirmButton
+          <DEPRECATED_ConfirmButton
             className="float-right"
             color="secondary"
             confirm={[Function]}
@@ -580,7 +580,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
               delete
             </i>
             Delete chat
-          </ConfirmButton>
+          </DEPRECATED_ConfirmButton>
         </Form>
       </Col>
       <Col
@@ -915,7 +915,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
           >
             Save changes
           </Button>
-          <ConfirmButton
+          <DEPRECATED_ConfirmButton
             className="float-right"
             color="secondary"
             confirm={[Function]}
@@ -927,7 +927,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
               delete
             </i>
             Delete chat
-          </ConfirmButton>
+          </DEPRECATED_ConfirmButton>
         </Form>
       </Col>
       <Col
@@ -1284,7 +1284,7 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
           >
             Save changes
           </Button>
-          <ConfirmButton
+          <DEPRECATED_ConfirmButton
             className="float-right"
             color="secondary"
             confirm={[Function]}
@@ -1296,7 +1296,7 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
               delete
             </i>
             Delete chat
-          </ConfirmButton>
+          </DEPRECATED_ConfirmButton>
         </Form>
       </Col>
       <Col
@@ -1635,7 +1635,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
           >
             Save changes
           </Button>
-          <ConfirmButton
+          <DEPRECATED_ConfirmButton
             className="float-right"
             color="secondary"
             confirm={[Function]}
@@ -1647,7 +1647,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
               delete
             </i>
             Delete chat
-          </ConfirmButton>
+          </DEPRECATED_ConfirmButton>
         </Form>
       </Col>
       <Col
@@ -2014,7 +2014,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
           >
             Save changes
           </Button>
-          <ConfirmButton
+          <DEPRECATED_ConfirmButton
             className="float-right"
             color="secondary"
             confirm={[Function]}
@@ -2026,7 +2026,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
               delete
             </i>
             Delete chat
-          </ConfirmButton>
+          </DEPRECATED_ConfirmButton>
         </Form>
       </Col>
       <Col

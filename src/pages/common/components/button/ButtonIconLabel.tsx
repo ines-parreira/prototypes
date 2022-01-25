@@ -10,7 +10,7 @@ export enum ButtonIconPosition {
 }
 
 type Props = {
-    children: ReactNode
+    children?: ReactNode
     className?: string
     icon: string
     iconClassName?: string

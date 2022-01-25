@@ -19,7 +19,7 @@ import {
 } from '../../../../../state/integrations/actions'
 import PageHeader from '../../../../common/components/PageHeader'
 import BooleanField from '../../../../common/forms/BooleanField.js'
-import ConfirmButton from '../../../../common/components/ConfirmButton'
+import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'
 import {IntegrationType} from '../../../../../models/integration/types'
 import css from '../../../../settings/settings.less'
 
@@ -243,7 +243,7 @@ export default function TwitterIntegrationDetail({
                                         Reconnect
                                     </Button>
 
-                                    <ConfirmButton
+                                    <DEPRECATED_ConfirmButton
                                         className="float-right"
                                         color="secondary"
                                         confirm={onDelete}
@@ -254,7 +254,7 @@ export default function TwitterIntegrationDetail({
                                             delete
                                         </i>
                                         Remove Twitter Account
-                                    </ConfirmButton>
+                                    </DEPRECATED_ConfirmButton>
                                 </div>
                             </Col>
                         </Row>

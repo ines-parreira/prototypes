@@ -5,6 +5,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {view as viewFixture} from '../../../../../fixtures/views'
 import {RootState, StoreDispatch} from '../../../../../state/types'
 import * as utils from '../../../../../utils'
@@ -26,7 +27,6 @@ import {
     submitView,
 } from '../../../../../state/views/actions'
 import * as viewSelectors from '../../../../../state/views/selectors'
-import ConfirmButton from '../../ConfirmButton'
 import {FilterTopbar} from '../FilterTopbar'
 import {JobType} from '../../../../../models/job/types'
 
@@ -81,10 +81,10 @@ jest.mock('../../ViewSharing/ViewSharingButton', () => () => (
 ))
 
 jest.mock(
-    '../../ConfirmButton',
+    'pages/common/components/button/ConfirmButton',
     () =>
-        ({confirm}: ComponentProps<typeof ConfirmButton>) =>
-            <div onClick={confirm} />
+        ({onConfirm}: ComponentProps<typeof ConfirmButton>) =>
+            <div onClick={onConfirm} />
 )
 
 beforeEach(() => {

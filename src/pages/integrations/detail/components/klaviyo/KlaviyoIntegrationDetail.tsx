@@ -15,10 +15,12 @@ import {Link} from 'react-router-dom'
 import classNames from 'classnames'
 import type {Map} from 'immutable'
 
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import {ButtonIntent} from 'pages/common/components/button/Button'
 import PageHeader from '../../../../common/components/PageHeader'
 import InputField from '../../../../common/forms/InputField.js'
 import BooleanField from '../../../../common/forms/BooleanField.js'
-import ConfirmButton from '../../../../common/components/ConfirmButton'
 import Alert from '../../../../common/components/Alert/Alert'
 
 import {KLAVIYO_INTEGRATION_TYPE} from '../../../../../constants/integration'
@@ -265,10 +267,10 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                                                 Gorgias to Klaviyo.
                                             </p>
                                             <ConfirmButton
-                                                color="primary"
-                                                loading={isLoading}
-                                                confirm={this._syncHistorical}
-                                                content="Are you sure you want to sync historical data?"
+                                                type="button"
+                                                isLoading={isLoading}
+                                                onConfirm={this._syncHistorical}
+                                                confirmationContent="Are you sure you want to sync historical data?"
                                             >
                                                 {isSyncing ===
                                                 KLAVIYO_INITIAL_SYNC_SYNCED
@@ -498,21 +500,23 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                                         {isUpdate && (
                                             <ConfirmButton
                                                 className="float-right"
-                                                color="secondary"
-                                                confirm={
+                                                type="button"
+                                                onConfirm={
                                                     this._deleteIntegration
                                                 }
-                                                disabled={
+                                                isDisabled={
                                                     isActivating ||
                                                     isSubmitting ||
                                                     isDeleting
                                                 }
-                                                content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                                confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                                intent={
+                                                    ButtonIntent.Destructive
+                                                }
                                             >
-                                                <i className="material-icons mr-1 text-danger">
-                                                    delete
-                                                </i>
-                                                Delete integration
+                                                <ButtonIconLabel icon="delete">
+                                                    Delete integration
+                                                </ButtonIconLabel>
                                             </ConfirmButton>
                                         )}
                                     </div>

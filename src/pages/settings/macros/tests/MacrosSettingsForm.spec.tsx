@@ -3,6 +3,7 @@ import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
 import {Button} from 'reactstrap'
 
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {macros as macrosFixtures} from '../../../../fixtures/macro'
 import {
     createMacro,
@@ -11,7 +12,6 @@ import {
     updateMacro,
 } from '../../../../models/macro/resources'
 import {getDefaultMacro} from '../../../../state/macro/utils'
-import ConfirmButton from '../../../common/components/ConfirmButton'
 import {MacrosSettingsFormContainer} from '../MacrosSettingsForm'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import history from '../../../history'
@@ -19,10 +19,10 @@ import history from '../../../history'
 jest.mock('../../../history')
 jest.mock('../../../../models/macro/resources')
 jest.mock(
-    '../../../common/components/ConfirmButton',
+    'pages/common/components/button/ConfirmButton',
     () =>
-        ({children, confirm}: ComponentProps<typeof ConfirmButton>) =>
-            <div onClick={confirm}>{children}</div>
+        ({children, onConfirm}: ComponentProps<typeof ConfirmButton>) =>
+            <div onClick={onConfirm}>{children}</div>
 )
 jest.mock(
     '../../../tickets/common/macros/components/MacroEdit',

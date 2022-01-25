@@ -5,10 +5,12 @@ import classnames from 'classnames'
 import {Button, Container, Row, Col} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from '../../../../common/components/Loader/Loader'
 import Modal from '../../../../common/components/Modal'
 import {DEFAULT_ACTIONS} from '../../../../../config'
-import ConfirmButton from '../../../../common/components/ConfirmButton'
 import {
     logEvent,
     SegmentEvent,
@@ -356,21 +358,23 @@ export class MacroModalContainer extends Component<Props, State> {
                                             <div className="d-inline-block float-right">
                                                 {!isCreatingMacro && (
                                                     <ConfirmButton
-                                                        color="secondary"
-                                                        confirm={
+                                                        intent={
+                                                            ButtonIntent.Destructive
+                                                        }
+                                                        onConfirm={
                                                             this._deleteMacro
                                                         }
-                                                        content={`Do you really want to delete the macro ${
+                                                        confirmationContent={`Do you really want to delete the macro ${
                                                             this.props.currentMacro.get(
                                                                 'name',
                                                                 ''
                                                             ) as string
                                                         }?`}
+                                                        type="button"
                                                     >
-                                                        <i className="material-icons md-2 text-danger mr-2">
-                                                            delete
-                                                        </i>
-                                                        Delete macro
+                                                        <ButtonIconLabel icon="delete">
+                                                            Delete macro
+                                                        </ButtonIconLabel>
                                                     </ConfirmButton>
                                                 )}
                                             </div>

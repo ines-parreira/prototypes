@@ -1,10 +1,12 @@
 import React from 'react'
 import {fromJS, List, Set, Map} from 'immutable'
-import {Button, Form} from 'reactstrap'
+import {Form} from 'reactstrap'
 import _clone from 'lodash/clone'
 import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
 
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {isCustomerDataPresent, isCustomerDataValid} from '../infobar/utils'
 import {
     logEvent,
@@ -13,7 +15,6 @@ import {
 
 import SourceIcon from '../SourceIcon'
 import Modal from '../Modal'
-import ConfirmButton from '../ConfirmButton'
 import Tooltip from '../Tooltip'
 import {JSONTree} from '../JSONTree'
 import BinaryChoiceField from '../BinaryChoiceField'
@@ -380,7 +381,7 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
                         ref={this.buttonsRef}
                     >
                         <Button
-                            color="secondary"
+                            intent={ButtonIntent.Secondary}
                             type="button"
                             className="mr-2"
                             onClick={this._toggle}
@@ -389,11 +390,8 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
                         </Button>
 
                         <ConfirmButton
-                            color="success"
-                            type="submit"
-                            loading={isLoading}
-                            content="This action is irreversible. Are you sure you want to merge these customers?"
-                            containerElement={this.buttonsRef}
+                            isLoading={isLoading}
+                            confirmationContent="This action is irreversible. Are you sure you want to merge these customers?"
                         >
                             Merge customers
                         </ConfirmButton>

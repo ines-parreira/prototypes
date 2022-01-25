@@ -148,7 +148,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should not render anything 
           >
             Reconnect integration
           </Button>
-          <ConfirmButton
+          <DEPRECATED_ConfirmButton
             className="float-right"
             color="secondary"
             confirm={[Function]}
@@ -161,7 +161,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should not render anything 
               delete
             </i>
             Delete
-          </ConfirmButton>
+          </DEPRECATED_ConfirmButton>
         </div>
       </Col>
     </Row>
@@ -283,7 +283,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render a small parag
           >
             Reconnect integration
           </Button>
-          <ConfirmButton
+          <DEPRECATED_ConfirmButton
             className="float-right"
             color="secondary"
             confirm={[Function]}
@@ -296,7 +296,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render a small parag
               delete
             </i>
             Delete
-          </ConfirmButton>
+          </DEPRECATED_ConfirmButton>
         </div>
       </Col>
     </Row>
@@ -410,7 +410,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render an alert beca
           >
             Reconnect integration
           </Button>
-          <ConfirmButton
+          <DEPRECATED_ConfirmButton
             className="float-right"
             color="secondary"
             confirm={[Function]}
@@ -423,7 +423,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render an alert beca
               delete
             </i>
             Delete
-          </ConfirmButton>
+          </DEPRECATED_ConfirmButton>
         </div>
       </Col>
     </Row>
@@ -537,7 +537,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render buttons loadi
           >
             Reconnect integration
           </Button>
-          <ConfirmButton
+          <DEPRECATED_ConfirmButton
             className="float-right"
             color="secondary"
             confirm={[Function]}
@@ -550,7 +550,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render buttons loadi
               delete
             </i>
             Delete
-          </ConfirmButton>
+          </DEPRECATED_ConfirmButton>
         </div>
       </Col>
     </Row>
@@ -664,7 +664,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render not render de
           >
             Reconnect integration
           </Button>
-          <ConfirmButton
+          <DEPRECATED_ConfirmButton
             className="float-right"
             color="secondary"
             confirm={[Function]}
@@ -677,7 +677,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render not render de
               delete
             </i>
             Delete
-          </ConfirmButton>
+          </DEPRECATED_ConfirmButton>
         </div>
       </Col>
     </Row>

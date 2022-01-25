@@ -16,9 +16,11 @@ import {
 } from 'reactstrap'
 import {AxiosError} from 'axios'
 
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {toJS} from '../../../utils'
 import Loader from '../../common/components/Loader/Loader'
-import ConfirmButton from '../../common/components/ConfirmButton'
 import RichDropdown from '../../common/components/RichDropdown/RichDropdown'
 import {Option} from '../../common/components/RichDropdown/types'
 import {ORDERED_ROLES_META_BY_USER_ROLE} from '../../../config/user'
@@ -44,7 +46,6 @@ import history from '../../history'
 import {RootState} from '../../../state/types'
 import settingsCss from '../settings.less'
 
-import DeleteUser from './DeleteUser'
 import css from './Form.less'
 
 type OwnProps = {
@@ -300,30 +301,42 @@ export class FormContainer extends Component<Props, State> {
                                         !isAgentAccountOwner && (
                                             <ConfirmButton
                                                 type="button"
-                                                color="danger"
+                                                intent={
+                                                    ButtonIntent.Destructive
+                                                }
                                                 id="set-owner"
-                                                outline
                                                 className={'ml-2'}
-                                                confirm={() =>
+                                                onConfirm={() =>
                                                     this.props.updateAccountOwner(
                                                         this.props.agentId
                                                     )
                                                 }
-                                                content={`Are you sure you want transfer ownership of this Gorgias account to ${this.state.name}?`}
+                                                confirmationContent={`Are you sure you want transfer ownership of this Gorgias account to ${this.state.name}?`}
                                             >
                                                 Set as account owner
                                             </ConfirmButton>
                                         )}
-                                    <DeleteUser
-                                        action={this._delete}
+                                    <ConfirmButton
                                         className="float-right"
-                                        color="danger"
+                                        confirmationContent={
+                                            <span>
+                                                You are about to <b>delete</b>{' '}
+                                                this user. This action is{' '}
+                                                <b>irreversible</b>. This will
+                                                unassign this user from all
+                                                their tickets, open or closed,
+                                                and delete their statistics.
+                                            </span>
+                                        }
                                         id="delete-user"
-                                        outline
+                                        intent={ButtonIntent.Destructive}
+                                        onConfirm={this._delete}
+                                        type="button"
                                     >
-                                        <i className="material-icons">delete</i>{' '}
-                                        Delete user
-                                    </DeleteUser>
+                                        <ButtonIconLabel icon="delete">
+                                            Delete user
+                                        </ButtonIconLabel>
+                                    </ConfirmButton>
                                 </>
                             )}
                         </FormGroup>

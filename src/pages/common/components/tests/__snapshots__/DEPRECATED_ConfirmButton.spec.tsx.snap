@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ConfirmButton /> should have loading state 1`] = `
+exports[`<DEPRECATED_ConfirmButton /> should have loading state 1`] = `
 <div
   class="component d-inline-block"
   id="1"
@@ -14,7 +14,7 @@ exports[`<ConfirmButton /> should have loading state 1`] = `
 </div>
 `;
 
-exports[`<ConfirmButton /> should match snapshot 1`] = `
+exports[`<DEPRECATED_ConfirmButton /> should match snapshot 1`] = `
 <div
   class="component d-inline-block"
   id="1"

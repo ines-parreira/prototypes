@@ -21,7 +21,7 @@ import {
 import InputField from '../../../../../common/forms/InputField'
 import SelectField from '../../../../../common/forms/SelectField/SelectField.tsx'
 import RichField from '../../../../../common/forms/RichField'
-import ConfirmButton from '../../../../../common/components/ConfirmButton.tsx'
+import DEPRECATED_ConfirmButton from '../../../../../common/components/DEPRECATED_ConfirmButton.tsx'
 import PageHeader from '../../../../../common/components/PageHeader.tsx'
 import {AgentLabel} from '../../../../../common/utils/labels.tsx'
 
@@ -586,7 +586,7 @@ export class CampaignForm extends React.Component {
                             </Button>
 
                             {isUpdate && (
-                                <ConfirmButton
+                                <DEPRECATED_ConfirmButton
                                     id="delete-campaign-button"
                                     className="float-right"
                                     placement="bottom right"
@@ -598,7 +598,7 @@ export class CampaignForm extends React.Component {
                                         delete
                                     </i>
                                     Delete campaign
-                                </ConfirmButton>
+                                </DEPRECATED_ConfirmButton>
                             )}
                         </Form>
                     </Col>

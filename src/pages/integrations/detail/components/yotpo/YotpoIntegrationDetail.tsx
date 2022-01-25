@@ -14,7 +14,7 @@ import {fromJS, Map} from 'immutable'
 
 import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration'
 import Loader from '../../../../common/components/Loader/Loader'
-import ConfirmButton from '../../../../common/components/ConfirmButton'
+import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'
 import InputField from '../../../../common/forms/InputField.js'
 import PageHeader from '../../../../common/components/PageHeader'
 import BooleanField from '../../../../common/forms/BooleanField.js'
@@ -201,7 +201,7 @@ export class YotpoIntegrationDetailComponent extends React.Component<Props> {
                                 >
                                     Reconnect integration
                                 </Button>
-                                <ConfirmButton
+                                <DEPRECATED_ConfirmButton
                                     className="float-right"
                                     color="secondary"
                                     confirm={() =>
@@ -216,7 +216,7 @@ export class YotpoIntegrationDetailComponent extends React.Component<Props> {
                                         delete
                                     </i>
                                     Delete
-                                </ConfirmButton>
+                                </DEPRECATED_ConfirmButton>
                             </div>
                         </Col>
                     </Row>

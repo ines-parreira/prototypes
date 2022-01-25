@@ -5,11 +5,13 @@ import {Badge} from 'reactstrap'
 import {Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {RoleLabel} from '../../common/utils/labels'
 import Avatar from '../../common/components/Avatar/Avatar'
 import {fetchPagination, deleteAgent} from '../../../state/agents/actions'
 
-import DeleteUser from './DeleteUser'
 import css from './Row.less'
 
 type Props = {
@@ -62,12 +64,23 @@ export class RowContainer extends Component<Props> {
                         )}
                     </span>
                     <span className={css.delete}>
-                        <DeleteUser
-                            action={this._deleteAgent}
-                            buttonClassName="btn-transparent"
+                        <ConfirmButton
+                            className={css.deleteButton}
+                            confirmationContent={
+                                <span>
+                                    You are about to <b>delete</b> this user.
+                                    This action is <b>irreversible</b>. This
+                                    will unassign this user from all their
+                                    tickets, open or closed, and delete their
+                                    statistics.
+                                </span>
+                            }
+                            onConfirm={this._deleteAgent}
+                            intent={ButtonIntent.Text}
+                            type="button"
                         >
-                            <i className="material-icons md-2">delete</i>
-                        </DeleteUser>
+                            <ButtonIconLabel icon="delete" />
+                        </ConfirmButton>
                     </span>
                 </span>
             </Link>

@@ -6,23 +6,25 @@ import {
     waitForElementToBeRemoved,
 } from '@testing-library/react'
 
-import ConfirmButton from '../ConfirmButton'
+import DEPRECATED_ConfirmButton from '../DEPRECATED_ConfirmButton'
 
 const minProps = {
     id: '1',
     confirm: jest.fn(),
 }
 
-describe('<ConfirmButton />', () => {
+describe('<DEPRECATED_ConfirmButton />', () => {
     it('should match snapshot', () => {
-        const {container} = render(<ConfirmButton {...minProps} />)
+        const {container} = render(<DEPRECATED_ConfirmButton {...minProps} />)
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should show popover on click', () => {
         const {getByText} = render(
-            <ConfirmButton {...minProps}>Submit</ConfirmButton>
+            <DEPRECATED_ConfirmButton {...minProps}>
+                Submit
+            </DEPRECATED_ConfirmButton>
         )
 
         fireEvent.click(getByText('Submit'))
@@ -32,7 +34,9 @@ describe('<ConfirmButton />', () => {
 
     it('should hide popover on confirm', async () => {
         const {getByText} = render(
-            <ConfirmButton {...minProps}>Submit</ConfirmButton>
+            <DEPRECATED_ConfirmButton {...minProps}>
+                Submit
+            </DEPRECATED_ConfirmButton>
         )
 
         fireEvent.click(getByText('Submit'))
@@ -44,9 +48,13 @@ describe('<ConfirmButton />', () => {
         const submit = jest.fn()
         const {getByText} = render(
             <form onSubmit={submit}>
-                <ConfirmButton {...minProps} type="submit" skip={true}>
+                <DEPRECATED_ConfirmButton
+                    {...minProps}
+                    type="submit"
+                    skip={true}
+                >
                     Submit
-                </ConfirmButton>
+                </DEPRECATED_ConfirmButton>
             </form>
         )
 
@@ -55,7 +63,9 @@ describe('<ConfirmButton />', () => {
     })
 
     it('should have loading state', () => {
-        const {container} = render(<ConfirmButton {...minProps} loading />)
+        const {container} = render(
+            <DEPRECATED_ConfirmButton {...minProps} loading />
+        )
         expect(container.firstChild).toMatchSnapshot()
     })
 
@@ -64,7 +74,9 @@ describe('<ConfirmButton />', () => {
             () => new Promise((resolve) => setTimeout(resolve, 10))
         )
         const {getByText} = render(
-            <ConfirmButton {...minProps}>Submit</ConfirmButton>
+            <DEPRECATED_ConfirmButton {...minProps}>
+                Submit
+            </DEPRECATED_ConfirmButton>
         )
         fireEvent.click(getByText('Submit'))
         fireEvent.click(getByText('Confirm'))
@@ -76,7 +88,9 @@ describe('<ConfirmButton />', () => {
 
     it('should not have loading state on confirm done', async () => {
         const {getByText} = render(
-            <ConfirmButton {...minProps}>Submit</ConfirmButton>
+            <DEPRECATED_ConfirmButton {...minProps}>
+                Submit
+            </DEPRECATED_ConfirmButton>
         )
         const submitNode = getByText('Submit')
         fireEvent.click(submitNode)

@@ -34,7 +34,7 @@ import {
 
 import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integrations/index'
 import {getIntegrationsByTypes} from '../../../../../../state/integrations/selectors'
-import ConfirmButton from '../../../../../common/components/ConfirmButton'
+import DEPRECATED_ConfirmButton from '../../../../../common/components/DEPRECATED_ConfirmButton'
 import ColorField from '../../../../../common/forms/ColorField.js'
 import FileField from '../../../../../common/forms/FileField'
 import InputField from '../../../../../common/forms/InputField.js'
@@ -466,7 +466,7 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                                 </Button>
 
                                 {isUpdate && (
-                                    <ConfirmButton
+                                    <DEPRECATED_ConfirmButton
                                         className="float-right"
                                         color="secondary"
                                         confirm={() =>
@@ -478,7 +478,7 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                                             delete
                                         </i>
                                         Delete chat
-                                    </ConfirmButton>
+                                    </DEPRECATED_ConfirmButton>
                                 )}
                             </Form>
                         </Col>

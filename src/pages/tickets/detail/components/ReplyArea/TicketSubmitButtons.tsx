@@ -4,6 +4,8 @@ import _sample from 'lodash/sample'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {RootState} from '../../../../../state/types'
 import shortcutManager from '../../../../../services/shortcutManager'
 import keymap from '../../../../../config/shortcuts'
@@ -15,7 +17,6 @@ import {
 } from '../../../../../state/currentUser/selectors'
 import {isReady} from '../../../../../state/newMessage/selectors'
 import Tooltip from '../../../../common/components/Tooltip'
-import ConfirmButton from '../../../../common/components/ConfirmButton'
 import {SubmitArgs} from '../../TicketDetailContainer'
 
 import css from './TicketSubmitButtons.less'
@@ -109,20 +110,30 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                 )}
             >
                 <div>
-                    <ConfirmButton
-                        id="submit-button"
-                        type="submit"
-                        className="mr-2"
-                        color="success"
-                        disabled={disabled}
-                        tabIndex={5}
-                        skip={hasTitle || isUpdating}
-                        confirm={() => this.submit()}
-                        content={titleConfirmation}
-                        loading={loading}
-                    >
-                        Send
-                    </ConfirmButton>
+                    {hasTitle || isUpdating ? (
+                        <Button
+                            id="submit-button"
+                            className="mr-2"
+                            isDisabled={disabled}
+                            tabIndex={5}
+                            onClick={() => this.submit()}
+                            isLoading={loading}
+                        >
+                            Send
+                        </Button>
+                    ) : (
+                        <ConfirmButton
+                            id="submit-button"
+                            confirmationContent={titleConfirmation}
+                            className="mr-2"
+                            isDisabled={disabled}
+                            tabIndex={5}
+                            onConfirm={() => this.submit()}
+                            isLoading={loading}
+                        >
+                            Send
+                        </ConfirmButton>
+                    )}
                     {!disabled && (
                         <Tooltip
                             placement="top"
@@ -135,18 +146,28 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                             )}
                         </Tooltip>
                     )}
-                    <ConfirmButton
-                        id="submit-and-close-button"
-                        type="submit"
-                        color="secondary"
-                        disabled={disabled}
-                        skip={hasTitle || isUpdating}
-                        confirm={() => this.submit('closed', true)}
-                        content={titleConfirmation}
-                        loading={loading}
-                    >
-                        Send &amp; Close
-                    </ConfirmButton>
+                    {hasTitle || isUpdating ? (
+                        <Button
+                            id="submit-and-close-button"
+                            intent={ButtonIntent.Secondary}
+                            isDisabled={disabled}
+                            onClick={() => this.submit('closed', true)}
+                            isLoading={loading}
+                        >
+                            Send &amp; Close
+                        </Button>
+                    ) : (
+                        <ConfirmButton
+                            id="submit-and-close-button"
+                            confirmationContent={titleConfirmation}
+                            intent={ButtonIntent.Secondary}
+                            isDisabled={disabled}
+                            onConfirm={() => this.submit('closed', true)}
+                            isLoading={loading}
+                        >
+                            Send &amp; Close
+                        </ConfirmButton>
+                    )}
                     {!disabled && (
                         <Tooltip
                             placement="top"

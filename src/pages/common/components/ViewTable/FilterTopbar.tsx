@@ -17,6 +17,8 @@ import {
 } from 'reactstrap'
 import {useAsyncFn, usePrevious, useUnmount, useUpdateEffect} from 'react-use'
 
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {getConfigByName} from '../../../../config/views'
 import {SYSTEM_VIEW_CATEGORY} from '../../../../constants/view'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
@@ -59,11 +61,9 @@ import history from '../../../history'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from '../../utils/withCancellableRequest'
-import ConfirmButton from '../ConfirmButton'
 import ViewSharingButton from '../ViewSharing/ViewSharingButton'
 import Button, {ButtonIntent} from '../button/Button'
 import DropdownButton from '../button/DropdownButton'
-import ButtonIconLabel from '../button/ButtonIconLabel'
 
 import {JobType} from '../../../../models/job/types'
 import Filters from './Filters/ViewFilters'
@@ -423,13 +423,14 @@ export const FilterTopbar = ({
                         {!isSearch && !isSystemView && isUpdate && (
                             <ConfirmButton
                                 id="delete-view"
-                                content={
+                                intent={ButtonIntent.Destructive}
+                                confirmationContent={
                                     <span>
                                         You are about to <b>delete</b> this view
                                         for <b>all users</b>.
                                     </span>
                                 }
-                                confirm={async () => {
+                                onConfirm={async () => {
                                     const destinationView = await dispatch(
                                         deleteView(activeView)
                                     )
@@ -442,11 +443,11 @@ export const FilterTopbar = ({
                                         )
                                     )
                                 }}
+                                type="button"
                             >
-                                <i className="material-icons md-2 mr-2 text-danger">
-                                    delete
-                                </i>
-                                Delete view
+                                <ButtonIconLabel icon="delete">
+                                    Delete view
+                                </ButtonIconLabel>
                             </ConfirmButton>
                         )}
                     </div>

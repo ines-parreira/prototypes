@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import {Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
-import ConfirmButton from '../../../../common/components/ConfirmButton'
+import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'
 import {deleteIntegration} from '../../../../../state/integrations/actions'
 
 type Props = {
@@ -54,7 +54,7 @@ export const Magento2IntegrationActionButtons = ({
                 {isUpdate ? 'Update integration' : 'Add integration'}
             </Button>
             {isUpdate && !isActive && !isManual ? (
-                <ConfirmButton
+                <DEPRECATED_ConfirmButton
                     color="success"
                     loading={isSubmitting}
                     content="You first need to delete the integration on your Magento2 store so that you can re-add it using this button"
@@ -63,7 +63,7 @@ export const Magento2IntegrationActionButtons = ({
                     }
                 >
                     Reconnect
-                </ConfirmButton>
+                </DEPRECATED_ConfirmButton>
             ) : null}
             {isUpdate && !isActive && isManual ? (
                 <Button
@@ -78,7 +78,7 @@ export const Magento2IntegrationActionButtons = ({
                 </Button>
             ) : null}
             {isUpdate ? (
-                <ConfirmButton
+                <DEPRECATED_ConfirmButton
                     className="float-right"
                     color="secondary"
                     confirm={() => deleteIntegration(integration)}
@@ -86,7 +86,7 @@ export const Magento2IntegrationActionButtons = ({
                 >
                     <i className="material-icons mr-1 text-danger">delete</i>
                     Delete integration
-                </ConfirmButton>
+                </DEPRECATED_ConfirmButton>
             ) : null}
         </div>
     )

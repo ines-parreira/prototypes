@@ -19,6 +19,8 @@ import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom'
 import classnames from 'classnames'
 
 import {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import IconButton from 'pages/common/components/button/IconButton'
 import {
     createTeam,
@@ -30,7 +32,6 @@ import Loader from '../../common/components/Loader/Loader'
 import PageHeader from '../../common/components/PageHeader'
 import InputField from '../../common/forms/InputField.js'
 import SecondaryNavbar from '../../common/components/SecondaryNavbar/SecondaryNavbar'
-import ConfirmButton from '../../common/components/ConfirmButton'
 import EmojiPicker from '../../common/components/EmojiPicker/EmojiPicker'
 import history from '../../history'
 import settingsCss from '../settings.less'
@@ -298,7 +299,7 @@ export class FormContainer extends Component<Props, State> {
                                     </Button>
                                     {isUpdate && (
                                         <ConfirmButton
-                                            content={
+                                            confirmationContent={
                                                 <span>
                                                     You are about to{' '}
                                                     <b>delete</b> this team.
@@ -309,15 +310,14 @@ export class FormContainer extends Component<Props, State> {
                                                     closed.
                                                 </span>
                                             }
-                                            confirm={this._delete}
+                                            intent={ButtonIntent.Destructive}
+                                            onConfirm={this._delete}
                                             className="float-right"
-                                            color="danger"
-                                            outline
+                                            type="button"
                                         >
-                                            <i className="material-icons">
-                                                delete
-                                            </i>{' '}
-                                            Delete team
+                                            <ButtonIconLabel icon="delete">
+                                                Delete team
+                                            </ButtonIconLabel>
                                         </ConfirmButton>
                                     )}
                                 </FormGroup>

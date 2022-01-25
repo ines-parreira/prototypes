@@ -49,11 +49,10 @@ exports[`MergeTicketsContainer component should render the build component if th
       <div
         className="float-left buttons-bar"
       >
-        <Button
+        <ForwardRef
           color="secondary"
-          disabled={false}
+          isDisabled={false}
           onClick={[Function]}
-          tag="button"
           type="button"
         >
           <i
@@ -62,32 +61,23 @@ exports[`MergeTicketsContainer component should render the build component if th
             arrow_back
           </i>
           Back
-        </Button>
+        </ForwardRef>
       </div>
       <div
         className="float-right buttons-bar"
       >
-        <Button
+        <ForwardRef
           className="mr-2"
-          color="secondary"
-          disabled={false}
+          intent="secondary"
+          isDisabled={false}
           onClick={[Function]}
-          tag="button"
           type="button"
         >
           Cancel
-        </Button>
+        </ForwardRef>
         <ConfirmButton
-          color="success"
-          containerElement={
-            Object {
-              "current": null,
-            }
-          }
-          content="This action is irreversible. Are you sure you want to merge these tickets?"
-          disabled={false}
-          loading={false}
-          type="submit"
+          confirmationContent="This action is irreversible. Are you sure you want to merge these tickets?"
+          isLoading={false}
         >
           Merge tickets
         </ConfirmButton>

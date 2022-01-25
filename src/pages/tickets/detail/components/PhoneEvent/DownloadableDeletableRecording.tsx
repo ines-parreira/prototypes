@@ -7,7 +7,7 @@ import {connect} from 'react-redux'
 import {uniqueId} from 'lodash'
 import {Map} from 'immutable'
 
-import ConfirmButton from '../../../../common/components/ConfirmButton'
+import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'
 import Hoverable from '../../../../common/components/Hoverable'
 import {
     Notification,
@@ -132,7 +132,7 @@ const DeleteButton = ({hovered, url}: ButtonProps) => {
 
     return (
         <>
-            <ConfirmButton
+            <DEPRECATED_ConfirmButton
                 id={tooltipTargetID}
                 className="float-right"
                 color={hovered ? 'secondary' : 'default'}
@@ -148,7 +148,7 @@ const DeleteButton = ({hovered, url}: ButtonProps) => {
                 >
                     delete
                 </i>
-            </ConfirmButton>
+            </DEPRECATED_ConfirmButton>
             <span>
                 <Tooltip target={tooltipTargetID}>Delete recording</Tooltip>
             </span>

@@ -255,25 +255,17 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
     <div
       className="float-right buttons-bar"
     >
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="secondary"
+        intent="secondary"
         onClick={[Function]}
-        tag="button"
         type="button"
       >
         Cancel
-      </Button>
+      </ForwardRef>
       <ConfirmButton
-        color="success"
-        containerElement={
-          Object {
-            "current": null,
-          }
-        }
-        content="This action is irreversible. Are you sure you want to merge these customers?"
-        loading={false}
-        type="submit"
+        confirmationContent="This action is irreversible. Are you sure you want to merge these customers?"
+        isLoading={false}
       >
         Merge customers
       </ConfirmButton>

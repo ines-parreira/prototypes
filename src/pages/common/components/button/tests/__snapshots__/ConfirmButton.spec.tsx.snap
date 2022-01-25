@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ConfirmButton /> should render 1`] = `
+<button
+  class="wrapper primary medium"
+  id="foo"
+  type="button"
+>
+  Click me!
+</button>
+`;

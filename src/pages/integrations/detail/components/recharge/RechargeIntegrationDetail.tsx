@@ -16,7 +16,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import * as integrationHelpers from '../../../../../state/integrations/helpers'
 import {deleteIntegration} from '../../../../../state/integrations/actions'
 import Loader from '../../../../common/components/Loader/Loader'
-import ConfirmButton from '../../../../common/components/ConfirmButton'
+import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'
 import InputField from '../../../../common/forms/InputField'
 import PageHeader from '../../../../common/components/PageHeader'
 import LinkAlert from '../../../../common/components/Alert/LinkAlert'
@@ -241,7 +241,7 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
                                     </Button>
                                 )}
                                 {isUpdate && (
-                                    <ConfirmButton
+                                    <DEPRECATED_ConfirmButton
                                         className="float-right"
                                         color="secondary"
                                         id={integration.get('id')}
@@ -254,7 +254,7 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
                                             delete
                                         </i>
                                         Delete
-                                    </ConfirmButton>
+                                    </DEPRECATED_ConfirmButton>
                                 )}
                             </div>
                         </Col>

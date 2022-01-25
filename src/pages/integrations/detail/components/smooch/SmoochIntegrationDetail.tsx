@@ -25,7 +25,7 @@ import {
     triggerCreateSuccess,
     updateOrCreateIntegration,
 } from '../../../../../state/integrations/actions'
-import ConfirmButton from '../../../../common/components/ConfirmButton'
+import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'
 import InputField from '../../../../common/forms/InputField'
 import Loader from '../../../../common/components/Loader/Loader'
 import PageHeader from '../../../../common/components/PageHeader'
@@ -235,7 +235,7 @@ export class SmoochIntegrationDetail extends Component<Props, State> {
                                         </Button>
                                     )}
 
-                                    <ConfirmButton
+                                    <DEPRECATED_ConfirmButton
                                         className="float-right"
                                         color="secondary"
                                         confirm={() =>
@@ -247,7 +247,7 @@ export class SmoochIntegrationDetail extends Component<Props, State> {
                                             delete
                                         </i>
                                         Delete integration
-                                    </ConfirmButton>
+                                    </DEPRECATED_ConfirmButton>
                                 </div>
                             </Form>
                         </Col>

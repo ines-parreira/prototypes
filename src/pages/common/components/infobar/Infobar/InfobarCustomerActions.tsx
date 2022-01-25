@@ -1,9 +1,9 @@
 import React from 'react'
 import {fromJS, Map} from 'immutable'
-import {Button} from 'reactstrap'
 
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {isCurrentlyOnTicket} from '../../../../../utils'
-import ConfirmButton from '../../ConfirmButton'
 
 import {
     logEvent,
@@ -56,16 +56,18 @@ export default class InfobarCustomerActions extends React.Component<Props> {
                 {canSetAsCustomer ? ( // do not display on customer profile
                     <ConfirmButton
                         className="mr-2"
-                        title="Change ticket customer"
-                        content={message}
-                        confirm={setCustomer}
+                        confirmationTitle="Change ticket customer"
+                        confirmationContent={message}
+                        intent={ButtonIntent.Secondary}
+                        onConfirm={setCustomer}
+                        type="button"
                     >
                         Set as customer
                     </ConfirmButton>
                 ) : null}
                 {isDifferentCustomer ? (
                     <Button
-                        type="submit"
+                        intent={ButtonIntent.Secondary}
                         onClick={() => {
                             toggleMergeCustomerModal(true)
                             // TODO(customers-migration): ask confirmation to update this event

@@ -17,7 +17,7 @@ import {
 import {parse} from 'query-string'
 
 import Loader from '../../../../common/components/Loader/Loader'
-import ConfirmButton from '../../../../common/components/ConfirmButton'
+import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'
 import BooleanField from '../../../../common/forms/BooleanField.js'
 import InputField from '../../../../common/forms/InputField'
 import PageHeader from '../../../../common/components/PageHeader'
@@ -414,7 +414,7 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                         </Button>
                                     ) : null}
                                     {isUpdate ? (
-                                        <ConfirmButton
+                                        <DEPRECATED_ConfirmButton
                                             className="float-right"
                                             color="secondary"
                                             confirm={() =>
@@ -428,7 +428,7 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                                 delete
                                             </i>
                                             Delete integration
-                                        </ConfirmButton>
+                                        </DEPRECATED_ConfirmButton>
                                     ) : null}
                                 </div>
                             </Form>

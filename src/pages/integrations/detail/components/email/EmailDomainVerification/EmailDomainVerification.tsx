@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {Map} from 'immutable'
 import {Button, Container, FormGroup, Label} from 'reactstrap'
 
-import ConfirmButton from '../../../../../common/components/ConfirmButton'
+import DEPRECATED_ConfirmButton from '../../../../../common/components/DEPRECATED_ConfirmButton'
 import Loader from '../../../../../common/components/Loader/Loader'
 import SelectField from '../../../../../common/forms/SelectField/SelectField'
 import Alert, {AlertType} from '../../../../../common/components/Alert/Alert'
@@ -96,7 +96,7 @@ export const EmailDomainVerificationContainer = (props: Props) => {
                     />
 
                     {hasRole(currentUser, UserRole.Admin) && (
-                        <ConfirmButton
+                        <DEPRECATED_ConfirmButton
                             id="delete-email-domain"
                             color="secondary"
                             confirm={() => actions.deleteEmailDomain(domain)}
@@ -106,7 +106,7 @@ export const EmailDomainVerificationContainer = (props: Props) => {
                                 delete
                             </i>
                             Delete
-                        </ConfirmButton>
+                        </DEPRECATED_ConfirmButton>
                     )}
                 </>
             )}

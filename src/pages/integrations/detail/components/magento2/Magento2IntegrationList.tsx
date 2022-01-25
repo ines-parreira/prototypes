@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom'
 import {Button} from 'reactstrap'
 
 import {IntegrationType} from '../../../../../models/integration/types'
-import ConfirmButton from '../../../../common/components/ConfirmButton'
+import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'
 import history from '../../../../history'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
@@ -81,7 +81,7 @@ export class Magento2IntegrationList extends Component<Props> {
                     </td>
                     {isDisabled && !isManual ? (
                         <td className="smallest align-middle">
-                            <ConfirmButton
+                            <DEPRECATED_ConfirmButton
                                 color="success"
                                 loading={isSubmitting}
                                 content="You first need to delete the integration on your Magento2 store so that you can re-add it using this button"
@@ -93,7 +93,7 @@ export class Magento2IntegrationList extends Component<Props> {
                                 }
                             >
                                 Reconnect
-                            </ConfirmButton>
+                            </DEPRECATED_ConfirmButton>
                         </td>
                     ) : null}
                     {isDisabled && isManual ? (

@@ -218,7 +218,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an active integration
             >
               Deactivate
             </Button>
-            <ConfirmButton
+            <DEPRECATED_ConfirmButton
               className="float-right"
               color="secondary"
               confirm={[Function]}
@@ -230,7 +230,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an active integration
                 delete
               </i>
               Delete integration
-            </ConfirmButton>
+            </DEPRECATED_ConfirmButton>
           </div>
         </Form>
       </Col>
@@ -456,7 +456,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an inactive integrati
             >
               Re-activate
             </Button>
-            <ConfirmButton
+            <DEPRECATED_ConfirmButton
               className="float-right"
               color="secondary"
               confirm={[Function]}
@@ -468,7 +468,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an inactive integrati
                 delete
               </i>
               Delete integration
-            </ConfirmButton>
+            </DEPRECATED_ConfirmButton>
           </div>
         </Form>
       </Col>
@@ -695,7 +695,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an integration which 
             >
               Deactivate
             </Button>
-            <ConfirmButton
+            <DEPRECATED_ConfirmButton
               className="float-right"
               color="secondary"
               confirm={[Function]}
@@ -707,7 +707,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an integration which 
                 delete
               </i>
               Delete integration
-            </ConfirmButton>
+            </DEPRECATED_ConfirmButton>
           </div>
         </Form>
       </Col>

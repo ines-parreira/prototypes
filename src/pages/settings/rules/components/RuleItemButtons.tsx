@@ -1,8 +1,9 @@
 import React from 'react'
 import {Button} from 'reactstrap'
-import classnames from 'classnames'
 
-import ConfirmButton from '../../../common/components/ConfirmButton'
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
 import css from './RuleItemButtons.less'
 
@@ -54,15 +55,15 @@ export const RuleItemButtons = ({
                 <div>
                     <ConfirmButton
                         id={`rule-item-delete`}
-                        color="secondary"
-                        className={classnames('ml-2', css['delete-button'])}
-                        loading={isDeleting}
-                        confirm={onDelete}
-                        confirmColor="danger"
-                        content={'Are you sure you want to delete this rule?'}
+                        intent={ButtonIntent.Destructive}
+                        isLoading={isDeleting}
+                        onConfirm={onDelete}
+                        confirmationContent="Are you sure you want to delete this rule?"
+                        type="button"
                     >
-                        <i className="material-icons">delete</i>
-                        Delete rule
+                        <ButtonIconLabel icon="delete">
+                            Delete rule
+                        </ButtonIconLabel>
                     </ConfirmButton>
                 </div>
             )}

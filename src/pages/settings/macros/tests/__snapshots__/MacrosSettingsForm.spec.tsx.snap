@@ -689,22 +689,33 @@ Sincerely,
                 </Button>
                 <Component
                   className="float-right"
-                  color="secondary"
-                  confirm={[Function]}
-                  confirmColor="danger"
-                  content="You are about to delete this macro."
-                  loading={false}
+                  confirmationContent="You are about to delete this macro."
+                  intent="destructive"
+                  isLoading={false}
+                  onConfirm={[Function]}
                   type="button"
                 >
                   <div
                     onClick={[Function]}
                   >
-                    <i
-                      className="material-icons mr-2 deleteIcon"
+                    <ButtonIconLabel
+                      icon="delete"
                     >
-                      delete
-                    </i>
-                    Delete macro
+                      <span
+                        className="wrapper"
+                      >
+                        <Icon
+                          className="icon isLeft"
+                        >
+                          <i
+                            className="material-icons icon isLeft medium"
+                          >
+                            delete
+                          </i>
+                        </Icon>
+                        Delete macro
+                      </span>
+                    </ButtonIconLabel>
                   </div>
                 </Component>
               </div>

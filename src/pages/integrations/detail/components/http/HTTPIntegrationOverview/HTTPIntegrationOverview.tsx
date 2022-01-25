@@ -25,7 +25,7 @@ import {
 
 import Loader from '../../../../../common/components/Loader/Loader'
 import ObjectListField, {Field} from '../ObjectListField'
-import ConfirmButton from '../../../../../common/components/ConfirmButton'
+import DEPRECATED_ConfirmButton from '../../../../../common/components/DEPRECATED_ConfirmButton'
 import InputField from '../../../../../common/forms/InputField'
 import BooleanField from '../../../../../common/forms/BooleanField.js'
 import {ContentType, HttpMethod} from '../../../../../../models/api/types'
@@ -544,7 +544,7 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                                 </Button>
                             )}
                             {isUpdate && (
-                                <ConfirmButton
+                                <DEPRECATED_ConfirmButton
                                     className="float-right"
                                     color="secondary"
                                     confirm={() =>
@@ -556,7 +556,7 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                                         delete
                                     </i>
                                     Delete integration
-                                </ConfirmButton>
+                                </DEPRECATED_ConfirmButton>
                             )}
                         </div>
                     </Form>

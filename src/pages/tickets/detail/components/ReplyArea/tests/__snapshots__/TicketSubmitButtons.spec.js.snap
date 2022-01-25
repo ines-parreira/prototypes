@@ -7,27 +7,22 @@ exports[`TicketSubmitButtons component empty ticket 1`] = `
   <div>
     <ConfirmButton
       className="mr-2"
-      color="success"
-      confirm={[Function]}
-      content="Are you sure you want to create a ticket with no subject?"
-      disabled={true}
+      confirmationContent="Are you sure you want to create a ticket with no subject?"
       id="submit-button"
-      loading={false}
-      skip={false}
+      isDisabled={true}
+      isLoading={false}
+      onConfirm={[Function]}
       tabIndex={5}
-      type="submit"
     >
       Send
     </ConfirmButton>
     <ConfirmButton
-      color="secondary"
-      confirm={[Function]}
-      content="Are you sure you want to create a ticket with no subject?"
-      disabled={true}
+      confirmationContent="Are you sure you want to create a ticket with no subject?"
       id="submit-and-close-button"
-      loading={false}
-      skip={false}
-      type="submit"
+      intent="secondary"
+      isDisabled={true}
+      isLoading={false}
+      onConfirm={[Function]}
     >
       Send & Close
     </ConfirmButton>

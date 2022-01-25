@@ -4,7 +4,9 @@ import {fromJS, Map} from 'immutable'
 
 import {RowContainer} from '../Row'
 
-jest.mock('../DeleteUser', () => () => <div>delete</div>)
+jest.mock('pages/common/components/button/ConfirmButton', () => () => (
+    <div>delete</div>
+))
 
 const minProps = {
     agent: fromJS({

@@ -43,7 +43,7 @@ import {
     IntegrationType,
 } from '../../../../../../models/integration/types'
 import {RootState} from '../../../../../../state/types'
-import ConfirmButton from '../../../../../common/components/ConfirmButton'
+import DEPRECATED_ConfirmButton from '../../../../../common/components/DEPRECATED_ConfirmButton'
 import ColorField from '../../../../../common/forms/ColorField.js'
 import FileField from '../../../../../common/forms/FileField'
 import InputField from '../../../../../common/forms/InputField.js'
@@ -835,7 +835,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             </Button>
 
                             {isUpdate && (
-                                <ConfirmButton
+                                <DEPRECATED_ConfirmButton
                                     className="float-right"
                                     color="secondary"
                                     confirm={() =>
@@ -851,7 +851,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                         delete
                                     </i>
                                     Delete chat
-                                </ConfirmButton>
+                                </DEPRECATED_ConfirmButton>
                             )}
                         </div>
                     </div>

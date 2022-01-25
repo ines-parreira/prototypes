@@ -181,7 +181,7 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
         </i>
          Re-send verification email
       </Button>
-      <ConfirmButton
+      <DEPRECATED_ConfirmButton
         className="float-right"
         color="secondary"
         confirm={[Function]}
@@ -194,7 +194,7 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
           delete
         </i>
         Delete email address
-      </ConfirmButton>
+      </DEPRECATED_ConfirmButton>
     </div>
   </Container>
 </div>

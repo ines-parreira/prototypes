@@ -12,6 +12,7 @@ import classnames from 'classnames'
 import {EditorState} from 'draft-js'
 import {Link} from 'react-router-dom'
 
+import ConfirmButton from 'pages/common/components/DEPRECATED_ConfirmButton'
 import {
     CAMPAIGNS_TRIGGER_KEYS,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
@@ -21,7 +22,6 @@ import {
 import RichField from '../../../../../../common/forms/RichField/RichField'
 import InputField from '../../../../../../common/forms/InputField.js'
 import CampaignPreview from '../CampaignPreview'
-import ConfirmButton from '../../../../../../common/components/ConfirmButton'
 import SelectField from '../../../../../../common/forms/SelectField/SelectField'
 import {Value} from '../../../../../../common/forms/SelectField/types'
 import {AgentLabel} from '../../../../../../common/utils/labels'

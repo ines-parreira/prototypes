@@ -127,7 +127,7 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
           >
             Reconnect
           </Button>
-          <ConfirmButton
+          <DEPRECATED_ConfirmButton
             className="float-right"
             color="secondary"
             confirm={[Function]}
@@ -139,7 +139,7 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
               delete
             </i>
             Delete
-          </ConfirmButton>
+          </DEPRECATED_ConfirmButton>
         </div>
       </Col>
     </Row>
@@ -246,7 +246,7 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
           >
             Update integration
           </Button>
-          <ConfirmButton
+          <DEPRECATED_ConfirmButton
             className="float-right"
             color="secondary"
             confirm={[Function]}
@@ -258,7 +258,7 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
               delete
             </i>
             Delete
-          </ConfirmButton>
+          </DEPRECATED_ConfirmButton>
         </div>
       </Col>
     </Row>
@@ -369,7 +369,7 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
           >
             Update integration
           </Button>
-          <ConfirmButton
+          <DEPRECATED_ConfirmButton
             className="float-right"
             color="secondary"
             confirm={[Function]}
@@ -381,7 +381,7 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
               delete
             </i>
             Delete
-          </ConfirmButton>
+          </DEPRECATED_ConfirmButton>
         </div>
       </Col>
     </Row>
@@ -493,7 +493,7 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
           >
             Update integration
           </Button>
-          <ConfirmButton
+          <DEPRECATED_ConfirmButton
             className="float-right"
             color="secondary"
             confirm={[Function]}
@@ -506,7 +506,7 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
               delete
             </i>
             Delete
-          </ConfirmButton>
+          </DEPRECATED_ConfirmButton>
         </div>
       </Col>
     </Row>
@@ -617,7 +617,7 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
           >
             Update integration
           </Button>
-          <ConfirmButton
+          <DEPRECATED_ConfirmButton
             className="float-right"
             color="secondary"
             confirm={[Function]}
@@ -629,7 +629,7 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
               delete
             </i>
             Delete
-          </ConfirmButton>
+          </DEPRECATED_ConfirmButton>
         </div>
       </Col>
     </Row>

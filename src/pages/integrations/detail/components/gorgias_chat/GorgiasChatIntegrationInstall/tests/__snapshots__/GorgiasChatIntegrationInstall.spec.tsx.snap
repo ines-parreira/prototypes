@@ -482,7 +482,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                       Install
                                     </button>
                                   </Button>
-                                  <ConfirmButton
+                                  <DEPRECATED_ConfirmButton
                                     className="disconnect-button"
                                     confirm={[Function]}
                                     confirmColor="danger"
@@ -566,7 +566,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                         />
                                       </Popover>
                                     </div>
-                                  </ConfirmButton>
+                                  </DEPRECATED_ConfirmButton>
                                   <Tooltip
                                     disabled={false}
                                     placement="top"
@@ -703,7 +703,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                       Uninstall
                                     </button>
                                   </Button>
-                                  <ConfirmButton
+                                  <DEPRECATED_ConfirmButton
                                     className="disconnect-button"
                                     confirm={[Function]}
                                     confirmColor="danger"
@@ -779,7 +779,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                         />
                                       </Popover>
                                     </div>
-                                  </ConfirmButton>
+                                  </DEPRECATED_ConfirmButton>
                                   <Tooltip
                                     disabled={false}
                                     placement="top"
@@ -916,7 +916,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                       Uninstall
                                     </button>
                                   </Button>
-                                  <ConfirmButton
+                                  <DEPRECATED_ConfirmButton
                                     className="disconnect-button"
                                     confirm={[Function]}
                                     confirmColor="danger"
@@ -992,7 +992,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                         />
                                       </Popover>
                                     </div>
-                                  </ConfirmButton>
+                                  </DEPRECATED_ConfirmButton>
                                   <Tooltip
                                     disabled={false}
                                     placement="top"
@@ -1129,7 +1129,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                       Uninstall
                                     </button>
                                   </Button>
-                                  <ConfirmButton
+                                  <DEPRECATED_ConfirmButton
                                     className="disconnect-button"
                                     confirm={[Function]}
                                     confirmColor="danger"
@@ -1205,7 +1205,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                         />
                                       </Popover>
                                     </div>
-                                  </ConfirmButton>
+                                  </DEPRECATED_ConfirmButton>
                                   <Tooltip
                                     disabled={false}
                                     placement="top"
@@ -3350,7 +3350,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                       Uninstall
                                     </button>
                                   </Button>
-                                  <ConfirmButton
+                                  <DEPRECATED_ConfirmButton
                                     className="disconnect-button"
                                     confirm={[Function]}
                                     confirmColor="danger"
@@ -3432,7 +3432,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                         />
                                       </Popover>
                                     </div>
-                                  </ConfirmButton>
+                                  </DEPRECATED_ConfirmButton>
                                   <Tooltip
                                     disabled={false}
                                     placement="top"

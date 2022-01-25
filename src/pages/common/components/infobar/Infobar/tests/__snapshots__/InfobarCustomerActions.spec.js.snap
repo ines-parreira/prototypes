@@ -6,9 +6,11 @@ exports[`InfobarCustomerActions component should not render "merge" button becau
 >
   <ConfirmButton
     className="mr-2"
-    confirm={[Function]}
-    content="Are you sure you want to set  as customer?"
-    title="Change ticket customer"
+    confirmationContent="Are you sure you want to set  as customer?"
+    confirmationTitle="Change ticket customer"
+    intent="secondary"
+    onConfirm={[Function]}
+    type="button"
   >
     Set as customer
   </ConfirmButton>
@@ -19,14 +21,12 @@ exports[`InfobarCustomerActions component should not render "set as customer" bu
 <div
   className="float-right d-none d-md-block"
 >
-  <Button
-    color="secondary"
+  <ForwardRef
+    intent="secondary"
     onClick={[Function]}
-    tag="button"
-    type="submit"
   >
     Merge
-  </Button>
+  </ForwardRef>
 </div>
 `;
 
@@ -42,19 +42,19 @@ exports[`InfobarCustomerActions component should render "set as customer" and "m
 >
   <ConfirmButton
     className="mr-2"
-    confirm={[Function]}
-    content="Are you sure you want to set  as customer?"
-    title="Change ticket customer"
+    confirmationContent="Are you sure you want to set  as customer?"
+    confirmationTitle="Change ticket customer"
+    intent="secondary"
+    onConfirm={[Function]}
+    type="button"
   >
     Set as customer
   </ConfirmButton>
-  <Button
-    color="secondary"
+  <ForwardRef
+    intent="secondary"
     onClick={[Function]}
-    tag="button"
-    type="submit"
   >
     Merge
-  </Button>
+  </ForwardRef>
 </div>
 `;

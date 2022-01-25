@@ -427,8 +427,7 @@ exports[`<Infobar/> should render selected customer 1`] = `
             class="float-right d-none d-md-block"
           >
             <button
-              class="btn btn-secondary"
-              type="submit"
+              class="wrapper secondary medium"
             >
               Merge
             </button>

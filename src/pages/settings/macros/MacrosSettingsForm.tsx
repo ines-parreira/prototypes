@@ -14,6 +14,9 @@ import {
     FormGroup,
 } from 'reactstrap'
 
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {DEFAULT_ACTIONS} from '../../../config'
 import {
     createMacro,
@@ -33,7 +36,6 @@ import {getDefaultMacro, getErrorReason} from '../../../state/macro/utils'
 import {notify} from '../../../state/notifications/actions'
 import {NotificationStatus} from '../../../state/notifications/types'
 import {RootState} from '../../../state/types'
-import ConfirmButton from '../../common/components/ConfirmButton'
 import Loader from '../../common/components/Loader/Loader'
 import PageHeader from '../../common/components/PageHeader'
 import MacroEdit from '../../tickets/common/macros/components/MacroEdit'
@@ -265,22 +267,15 @@ export function MacrosSettingsFormContainer({
                             {macroId && (
                                 <ConfirmButton
                                     className="float-right"
-                                    color="secondary"
-                                    content="You are about to delete this macro."
-                                    confirm={handleDelete}
-                                    confirmColor="danger"
-                                    loading={isDeletePending}
+                                    intent={ButtonIntent.Destructive}
+                                    confirmationContent="You are about to delete this macro."
+                                    onConfirm={handleDelete}
+                                    isLoading={isDeletePending}
                                     type="button"
                                 >
-                                    <i
-                                        className={classnames(
-                                            'material-icons mr-2',
-                                            css.deleteIcon
-                                        )}
-                                    >
-                                        delete
-                                    </i>
-                                    Delete macro
+                                    <ButtonIconLabel icon="delete">
+                                        Delete macro
+                                    </ButtonIconLabel>
                                 </ConfirmButton>
                             )}
                         </FormGroup>

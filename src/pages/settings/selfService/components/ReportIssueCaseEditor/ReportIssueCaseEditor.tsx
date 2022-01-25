@@ -21,7 +21,7 @@ import produce from 'immer'
 
 import PageHeader from '../../../../common/components/PageHeader'
 import InputField from '../../../../common/forms/InputField'
-import ConfirmButton from '../../../../common/components/ConfirmButton'
+import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'
 import {
     ReportIssueRulesLogic,
     SelfServiceReportIssueCase,
@@ -391,7 +391,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
                                 </Button>
 
                                 {!isFallbackCase && caseIndex !== 'new' && (
-                                    <ConfirmButton
+                                    <DEPRECATED_ConfirmButton
                                         content={
                                             <span>
                                                 You are about to delete this
@@ -412,7 +412,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
                                             delete
                                         </i>{' '}
                                         Delete case
-                                    </ConfirmButton>
+                                    </DEPRECATED_ConfirmButton>
                                 )}
                             </div>
                         </Form>

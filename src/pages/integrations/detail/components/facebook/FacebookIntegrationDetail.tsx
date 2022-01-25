@@ -23,7 +23,7 @@ import InputField from '../../../../common/forms/InputField.js'
 import BooleanField from '../../../../common/forms/BooleanField.js'
 import Loader from '../../../../common/components/Loader/Loader'
 import PageHeader from '../../../../common/components/PageHeader'
-import ConfirmButton from '../../../../common/components/ConfirmButton'
+import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'
 import Alert, {AlertType} from '../../../../common/components/Alert/Alert'
 import * as billingSelectors from '../../../../../state/billing/selectors'
 import {AccountFeature} from '../../../../../state/currentAccount/types'
@@ -613,7 +613,7 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
                             Save changes
                         </Button>
                         <FacebookLoginButton reconnect />
-                        <ConfirmButton
+                        <DEPRECATED_ConfirmButton
                             color="secondary"
                             className="float-right"
                             content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
@@ -624,7 +624,7 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
                                 delete
                             </i>
                             Delete this page
-                        </ConfirmButton>
+                        </DEPRECATED_ConfirmButton>
                     </div>
                 </Container>
             </div>

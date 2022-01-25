@@ -1,19 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<RuleItemButtons /> rendering should handle deleting state 1`] = `
-<button
-  class="loading btn-loading btn btn-secondary disabled"
-  disabled=""
-  id="confirm-button-rule-item-delete"
-  type="button"
+<span
+  class="wrapper"
 >
   <i
-    class="material-icons"
+    class="material-icons icon isLeft medium"
   >
     delete
   </i>
   Delete rule
-</button>
+</span>
 `;
 
 exports[`<RuleItemButtons /> rendering should handle disabled duplicate 1`] = `
@@ -99,23 +96,22 @@ exports[`<RuleItemButtons /> rendering should render the default buttons for upd
     </button>
   </div>
   <div>
-    <div
-      class="component d-inline-block ml-2 delete-button"
+    <button
+      class="wrapper destructive medium"
       id="rule-item-delete"
+      type="button"
     >
-      <button
-        class="btn btn-secondary"
-        id="confirm-button-rule-item-delete"
-        type="button"
+      <span
+        class="wrapper"
       >
         <i
-          class="material-icons"
+          class="material-icons icon isLeft medium"
         >
           delete
         </i>
         Delete rule
-      </button>
-    </div>
+      </span>
+    </button>
   </div>
 </div>
 `;

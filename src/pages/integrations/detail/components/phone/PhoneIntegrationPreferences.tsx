@@ -23,7 +23,7 @@ import {PhoneFunction} from '../../../../../business/twilio'
 import PageHeader from '../../../../common/components/PageHeader'
 import {IntegrationType} from '../../../../../models/integration/types'
 import EmojiTextInput from '../../../../common/forms/EmojiTextInput/EmojiTextInput'
-import ConfirmButton from '../../../../common/components/ConfirmButton'
+import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'
 import BooleanField from '../../../../common/forms/BooleanField.js'
 import Alert, {AlertType} from '../../../../common/components/Alert/Alert'
 import {
@@ -330,7 +330,7 @@ export default function PhoneIntegrationPreferences({
                                 >
                                     Save changes
                                 </Button>
-                                <ConfirmButton
+                                <DEPRECATED_ConfirmButton
                                     className="float-right"
                                     color="secondary"
                                     disabled={!isInitialized || isLoading}
@@ -341,7 +341,7 @@ export default function PhoneIntegrationPreferences({
                                         delete
                                     </i>
                                     Delete phone number
-                                </ConfirmButton>
+                                </DEPRECATED_ConfirmButton>
                             </div>
                         </Form>
                     </Col>

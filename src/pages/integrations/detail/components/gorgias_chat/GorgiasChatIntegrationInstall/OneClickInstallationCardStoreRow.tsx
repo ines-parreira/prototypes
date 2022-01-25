@@ -4,9 +4,9 @@ import classnames from 'classnames'
 
 import shopifyLogo from 'assets/img/integrations/shopify.png'
 import warningIcon from 'assets/img/icons/warning.svg'
+import ConfirmButton from 'pages/common/components/DEPRECATED_ConfirmButton'
 
 import Tooltip from '../../../../../common/components/Tooltip'
-import ConfirmButton from '../../../../../common/components/ConfirmButton'
 
 import css from './OneClickInstallationCardStoreRow.less'
 

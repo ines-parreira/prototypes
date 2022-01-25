@@ -5,7 +5,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import classNames from 'classnames'
 import {Map} from 'immutable'
 
-import ConfirmButton from '../../../../../common/components/ConfirmButton'
+import DEPRECATED_ConfirmButton from '../../../../../common/components/DEPRECATED_ConfirmButton'
 import PageHeader from '../../../../../common/components/PageHeader'
 import Alert, {AlertType} from '../../../../../common/components/Alert/Alert'
 import socketManager from '../../../../../../services/socketManager/socketManager'
@@ -189,7 +189,7 @@ export class EmailIntegrationCreateVerification extends Component<
                     <i className="material-icons">mail</i> Re-send verification
                     email
                 </Button>
-                <ConfirmButton
+                <DEPRECATED_ConfirmButton
                     className="float-right"
                     color="secondary"
                     disabled={this.state.isDisabled}
@@ -198,7 +198,7 @@ export class EmailIntegrationCreateVerification extends Component<
                 >
                     <i className="material-icons mr-1 text-danger">delete</i>
                     Delete email address
-                </ConfirmButton>
+                </DEPRECATED_ConfirmButton>
             </div>
         )
     }

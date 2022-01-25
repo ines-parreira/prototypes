@@ -172,7 +172,7 @@ exports[`ShopifyIntegrationDetail should render the page for a deactivated integ
             >
               Reactivate integration
             </Button>
-            <ConfirmButton
+            <DEPRECATED_ConfirmButton
               className="float-right"
               color="secondary"
               confirm={[Function]}
@@ -184,7 +184,7 @@ exports[`ShopifyIntegrationDetail should render the page for a deactivated integ
                 delete
               </i>
               Delete integration
-            </ConfirmButton>
+            </DEPRECATED_ConfirmButton>
           </div>
         </Form>
       </Col>
@@ -464,7 +464,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
             >
               Update integration
             </Button>
-            <ConfirmButton
+            <DEPRECATED_ConfirmButton
               className="float-right"
               color="secondary"
               confirm={[Function]}
@@ -476,7 +476,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
                 delete
               </i>
               Delete integration
-            </ConfirmButton>
+            </DEPRECATED_ConfirmButton>
           </div>
         </Form>
       </Col>
@@ -659,7 +659,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
             >
               Update integration
             </Button>
-            <ConfirmButton
+            <DEPRECATED_ConfirmButton
               className="float-right"
               color="secondary"
               confirm={[Function]}
@@ -671,7 +671,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
                 delete
               </i>
               Delete integration
-            </ConfirmButton>
+            </DEPRECATED_ConfirmButton>
           </div>
         </Form>
       </Col>
@@ -842,7 +842,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
             >
               Update integration
             </Button>
-            <ConfirmButton
+            <DEPRECATED_ConfirmButton
               className="float-right"
               color="secondary"
               confirm={[Function]}
@@ -854,7 +854,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
                 delete
               </i>
               Delete integration
-            </ConfirmButton>
+            </DEPRECATED_ConfirmButton>
           </div>
         </Form>
       </Col>
@@ -1035,7 +1035,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
             >
               Update integration
             </Button>
-            <ConfirmButton
+            <DEPRECATED_ConfirmButton
               className="float-right"
               color="secondary"
               confirm={[Function]}
@@ -1047,7 +1047,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
                 delete
               </i>
               Delete integration
-            </ConfirmButton>
+            </DEPRECATED_ConfirmButton>
           </div>
         </Form>
       </Col>
@@ -1327,7 +1327,7 @@ exports[`ShopifyIntegrationDetail should render the page to update an existing i
             >
               Update integration
             </Button>
-            <ConfirmButton
+            <DEPRECATED_ConfirmButton
               className="float-right"
               color="secondary"
               confirm={[Function]}
@@ -1339,7 +1339,7 @@ exports[`ShopifyIntegrationDetail should render the page to update an existing i
                 delete
               </i>
               Delete integration
-            </ConfirmButton>
+            </DEPRECATED_ConfirmButton>
           </div>
         </Form>
       </Col>

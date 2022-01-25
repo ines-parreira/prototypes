@@ -14,7 +14,7 @@ import {useMountedState} from 'react-use'
 
 import type {ReactNode} from 'react'
 
-import css from './ConfirmButton.less'
+import css from './DEPRECATED_ConfirmButton.less'
 
 type Props = {
     buttonClassName?: string
@@ -39,7 +39,7 @@ type Props = {
     popOverButtonTitle?: string
 } & Pick<ButtonProps, KnownKeys<ButtonProps>>
 
-const ConfirmButton = ({
+const DEPRECATED_ConfirmButton = ({
     buttonClassName,
     className = '',
     buttonTitle,
@@ -162,4 +162,4 @@ const ConfirmButton = ({
     )
 }
 
-export default ConfirmButton
+export default DEPRECATED_ConfirmButton

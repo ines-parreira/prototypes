@@ -1,10 +1,11 @@
 import React, {FormEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
-import {Button, Form} from 'reactstrap'
+import {Form} from 'reactstrap'
 
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Modal from '../Modal'
-import ConfirmButton from '../ConfirmButton'
 import {mergeTickets} from '../../../../state/mergeTickets/actions'
 import shortcutManager from '../../../../services/shortcutManager/shortcutManager'
 import {
@@ -151,7 +152,7 @@ class MergeTicketsContainer extends React.Component<Props, State> {
                                     onClick={() =>
                                         this.setState({targetTicket: null})
                                     }
-                                    disabled={isLoading}
+                                    isDisabled={isLoading}
                                 >
                                     <i className="material-icons mr-2">
                                         arrow_back
@@ -164,21 +165,17 @@ class MergeTicketsContainer extends React.Component<Props, State> {
                                 ref={this.buttonsRef}
                             >
                                 <Button
-                                    color="secondary"
+                                    intent={ButtonIntent.Secondary}
                                     type="button"
                                     className="mr-2"
                                     onClick={this.props.toggleModal}
-                                    disabled={isLoading}
+                                    isDisabled={isLoading}
                                 >
                                     Cancel
                                 </Button>
                                 <ConfirmButton
-                                    color="success"
-                                    type="submit"
-                                    content="This action is irreversible. Are you sure you want to merge these tickets?"
-                                    loading={isLoading}
-                                    disabled={isLoading}
-                                    containerElement={this.buttonsRef}
+                                    confirmationContent="This action is irreversible. Are you sure you want to merge these tickets?"
+                                    isLoading={isLoading}
                                 >
                                     Merge tickets
                                 </ConfirmButton>
