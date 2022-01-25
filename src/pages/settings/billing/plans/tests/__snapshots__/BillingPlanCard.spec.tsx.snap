@@ -706,12 +706,12 @@ exports[`<BillingPlanCard /> should render plan card for the Custom plan 1`] = `
           <i
             class="icon material-icons"
           >
-            directions_bike
+            directions_car
           </i>
         </span>
         <span>
           <b>
-            Lite
+            Full
           </b>
            onboarding
         </span>

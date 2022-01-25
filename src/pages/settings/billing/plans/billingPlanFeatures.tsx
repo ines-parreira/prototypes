@@ -84,7 +84,7 @@ const getCommonPlanCardFeatures = ({
             icon: <PlanFeatureMaterialIcon icon="web_asset" />,
             isDisabled: !enabledFeatures.includes(AccountFeature.HelpCenter),
         },
-        planId === 'enterprise' || planName === 'Advanced'
+        planId === 'enterprise' || planName === 'Advanced' || isCustom
             ? {
                   label: (
                       <>

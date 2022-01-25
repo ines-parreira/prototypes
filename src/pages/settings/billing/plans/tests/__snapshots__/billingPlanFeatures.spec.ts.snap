@@ -860,11 +860,11 @@ Array [
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
-      icon="directions_bike"
+      icon="directions_car"
     />,
     "label": <React.Fragment>
       <b>
-        Lite
+        Full
       </b>
        onboarding
     </React.Fragment>,

@@ -1155,12 +1155,12 @@ exports[`<BillingComparisonPlanCard /> should render custom plan 1`] = `
           <i
             class="icon material-icons"
           >
-            directions_bike
+            directions_car
           </i>
         </span>
         <span>
           <b>
-            Lite
+            Full
           </b>
            onboarding
         </span>
@@ -1454,12 +1454,12 @@ exports[`<BillingComparisonPlanCard /> should render customLegacyPlan plan 1`] =
           <i
             class="icon material-icons"
           >
-            directions_bike
+            directions_car
           </i>
         </span>
         <span>
           <b>
-            Lite
+            Full
           </b>
            onboarding
         </span>
