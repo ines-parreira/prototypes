@@ -6,12 +6,14 @@ import {Map} from 'immutable'
 
 import css from 'assets/css/navbar.less'
 
-import {hasRole} from '../../../../utils'
-import {ADMIN_ROLE, AGENT_ROLE} from '../../../../config/user'
-import {UserRole} from '../../../../config/types/user'
+import {hasRole} from 'utils'
+import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
+import {UserRole} from 'config/types/user'
+import {PHONE_NUMBER_MANAGEMENT_PREVIEW_ACCOUNTS} from 'models/phoneNumber/constants'
 
 type Props = {
     currentUser: Map<any, any>
+    currentAccount: Map<any, any>
 } & RouteComponentProps
 
 type CategoryLink = {
@@ -37,6 +39,7 @@ export default class SettingsNavbar extends Component<Props> {
     render() {
         const {
             currentUser,
+            currentAccount,
             location: {pathname},
         } = this.props
 
@@ -71,6 +74,14 @@ export default class SettingsNavbar extends Component<Props> {
                         text: 'Integrations',
                         className: 'd-none d-md-block',
                     },
+                    PHONE_NUMBER_MANAGEMENT_PREVIEW_ACCOUNTS.includes(
+                        currentAccount.get('domain')
+                    ) && {
+                        requiredRole: ADMIN_ROLE,
+                        to: 'phone-numbers',
+                        text: 'Phone numbers',
+                        className: 'd-none d-md-block',
+                    },
                     {
                         requiredRole: ADMIN_ROLE,
                         to: 'help-center',
@@ -83,7 +94,6 @@ export default class SettingsNavbar extends Component<Props> {
                         text: 'Tags',
                         className: 'd-none d-md-block',
                     },
-
                     {
                         requiredRole: ADMIN_ROLE,
                         to: 'satisfaction-surveys',
@@ -102,7 +112,7 @@ export default class SettingsNavbar extends Component<Props> {
                         text: 'Import data',
                         className: 'd-none d-md-block',
                     },
-                ],
+                ].filter((i) => i) as CategoryLink[],
             },
             {
                 name: 'Automation',
