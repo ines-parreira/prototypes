@@ -26,7 +26,7 @@ export default function Action({action, onChange}: Props) {
     return (
         <div className="http">
             <div className={css.formParamRow}>
-                <div className={css.formParamCol}>
+                <div>
                     <InputField
                         type="select"
                         name="method"
@@ -42,7 +42,7 @@ export default function Action({action, onChange}: Props) {
                         ))}
                     </InputField>
                 </div>
-                <div className={css.formParamCol}>
+                <div className={css.formParamLargeCol}>
                     <InputField
                         type="text"
                         name="url"

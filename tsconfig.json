@@ -22,7 +22,7 @@
         "paths": {
             "react-chartjs-2": ["./types/react-chartjs-2.d.ts"]
         },
-        "types": ["stripe-v2", "webpack-env"]
+        "types": ["stripe-v2", "webpack-env", "@types/resize-observer-browser"]
     },
     "include": ["**/*.ts", "**/*.d.ts", "**/*.tsx"]
 }

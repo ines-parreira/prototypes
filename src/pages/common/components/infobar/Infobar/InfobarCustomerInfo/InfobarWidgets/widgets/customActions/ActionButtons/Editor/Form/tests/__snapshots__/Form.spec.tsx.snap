@@ -56,9 +56,7 @@ exports[`<Form/> should render with preloaded data 1`] = `
         <div
           class="formParamRow"
         >
-          <div
-            class="formParamCol"
-          >
+          <div>
             <div
               class="InputField required form-group"
               color=""
@@ -102,7 +100,7 @@ exports[`<Form/> should render with preloaded data 1`] = `
             </div>
           </div>
           <div
-            class="formParamCol"
+            class="formParamLargeCol"
           >
             <div
               class="InputField required form-group"
@@ -249,9 +247,7 @@ exports[`<Form/> should render without any data 1`] = `
         <div
           class="formParamRow"
         >
-          <div
-            class="formParamCol"
-          >
+          <div>
             <div
               class="InputField required form-group"
               color=""
@@ -295,7 +291,7 @@ exports[`<Form/> should render without any data 1`] = `
             </div>
           </div>
           <div
-            class="formParamCol"
+            class="formParamLargeCol"
           >
             <div
               class="InputField required form-group"

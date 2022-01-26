@@ -7,9 +7,7 @@ exports[`<Action/> should render with a Body component 1`] = `
   <div
     class="formParamRow"
   >
-    <div
-      class="formParamCol"
-    >
+    <div>
       <div
         class="InputField required form-group"
         color=""
@@ -53,7 +51,7 @@ exports[`<Action/> should render with a Body component 1`] = `
       </div>
     </div>
     <div
-      class="formParamCol"
+      class="formParamLargeCol"
     >
       <div
         class="InputField required form-group"
@@ -210,9 +208,7 @@ exports[`<Action/> should render without a Body component 1`] = `
   <div
     class="formParamRow"
   >
-    <div
-      class="formParamCol"
-    >
+    <div>
       <div
         class="InputField required form-group"
         color=""
@@ -256,7 +252,7 @@ exports[`<Action/> should render without a Body component 1`] = `
       </div>
     </div>
     <div
-      class="formParamCol"
+      class="formParamLargeCol"
     >
       <div
         class="InputField required form-group"

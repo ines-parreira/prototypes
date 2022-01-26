@@ -1,21 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ButtonsGroup/> should render with correct label and without a dropdown  1`] = `
-<div
-  class="actionButtons btn-group"
-  role="group"
->
-  <button
-    class="actionButton btn btn-secondary"
-    type="button"
+<div>
+  <div
+    class="actionButtons btn-group"
+    role="group"
   >
-    renders
-  </button>
-  <button
-    class="actionButton btn btn-secondary"
-    type="button"
-  >
-    ok 1234 Johanna
-  </button>
+    <button
+      class="actionButton btn btn-secondary"
+      type="button"
+    >
+      renders
+    </button>
+    <button
+      class="actionButton btn btn-secondary"
+      type="button"
+    >
+      ok 1234 Johanna
+    </button>
+  </div>
 </div>
 `;

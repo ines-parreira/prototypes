@@ -95,6 +95,50 @@ describe('<ButtonsGroup/>', () => {
         expect(screen.queryByText(_source.label_1)).toBeTruthy()
     })
 
+    it('should render 5 buttons without a dropdown', () => {
+        render(
+            <Provider
+                store={mockStore({
+                    customers: fromJS({active: {}}),
+                })}
+            >
+                <ButtonsGroup
+                    buttons={[
+                        {label: 'WW', action},
+                        {label: 'WW', action},
+                        {label: 'WW', action},
+                        {label: 'WW', action},
+                        {label: 'WW', action},
+                    ]}
+                    source={source}
+                />
+            </Provider>
+        )
+        expect(screen.queryAllByText('WW').length).toBe(5)
+    })
+
+    it('should render 3 buttons with a dropdown', () => {
+        render(
+            <Provider
+                store={mockStore({
+                    customers: fromJS({active: {}}),
+                })}
+            >
+                <ButtonsGroup
+                    buttons={[
+                        {label: 'WWWW', action},
+                        {label: 'WWWW', action},
+                        {label: 'WWWW', action},
+                        {label: 'WW', action},
+                    ]}
+                    source={source}
+                />
+            </Provider>
+        )
+        expect(screen.queryAllByText('WWWW').length).toBe(3)
+        expect(screen.queryByText('more_horiz')).toBeTruthy()
+    })
+
     it('should display param editor on button click if some fields are editable', () => {
         render(
             <Provider

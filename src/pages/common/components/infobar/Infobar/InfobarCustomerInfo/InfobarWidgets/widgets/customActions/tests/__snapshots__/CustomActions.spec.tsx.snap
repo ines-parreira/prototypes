@@ -4,22 +4,24 @@ exports[`<ActionButtons/> should render links and buttons  1`] = `
 <div
   class="container"
 >
-  <div
-    class="actionButtons btn-group"
-    role="group"
-  >
-    <button
-      class="actionButton btn btn-secondary"
-      type="button"
+  <div>
+    <div
+      class="actionButtons btn-group"
+      role="group"
     >
-      button - I am in snapshots
-    </button>
-    <button
-      class="actionButton btn btn-secondary"
-      type="button"
-    >
-      button - I am in snapshots too
-    </button>
+      <button
+        class="actionButton btn btn-secondary"
+        type="button"
+      >
+        button - I am in snapshots
+      </button>
+      <button
+        class="actionButton btn btn-secondary"
+        type="button"
+      >
+        button - I am in snapshots too
+      </button>
+    </div>
   </div>
   <ul
     class="listGroup list-group list-group-flush"

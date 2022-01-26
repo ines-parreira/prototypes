@@ -1,22 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ActionButtons/> should render the action buttons if isEditing is set to false 1`] = `
-<div
-  class="actionButtons btn-group"
-  role="group"
->
-  <button
-    class="actionButton btn btn-secondary"
-    type="button"
+<div>
+  <div
+    class="actionButtons btn-group"
+    role="group"
   >
-    I am in snapshots
-  </button>
-  <button
-    class="actionButton btn btn-secondary"
-    type="button"
-  >
-    I am in snapshots too
-  </button>
+    <button
+      class="actionButton btn btn-secondary"
+      type="button"
+    >
+      I am in snapshots
+    </button>
+    <button
+      class="actionButton btn btn-secondary"
+      type="button"
+    >
+      I am in snapshots too
+    </button>
+  </div>
 </div>
 `;
 

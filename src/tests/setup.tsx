@@ -14,6 +14,15 @@ Enzyme.configure({adapter: new Adapter()})
 const moment = jest.requireActual('moment-timezone')
 ;(moment as {tz: MomentTimezone}).tz.setDefault('America/Creston')
 
+Object.defineProperty(window, 'ResizeObserver', {
+    value: function () {
+        return {
+            observe: () => null,
+            disconnect: () => null,
+        }
+    },
+})
+
 // jsdom does not support matchMedia
 Object.defineProperty(window, 'matchMedia', {
     value: jest.fn(() => {
