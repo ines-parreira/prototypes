@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, {useEffect, useMemo, useRef, useState} from 'react'
 import axios from 'axios'
 import copy from 'copy-to-clipboard'
 import _isEqual from 'lodash/isEqual'
@@ -41,6 +41,7 @@ import {useEditionManager} from '../providers/EditionManagerContext'
 
 import {ActionType, OptionItem} from './articles/ArticleLanguageSelect'
 import {CloseArticleModal} from './articles/CloseArticleModal'
+import {DiscardChangesModal} from './articles/DiscardChangesModal'
 import HelpCenterEditModal from './articles/HelpCenterEditModal'
 import {ArticlesTable} from './ArticlesTable'
 import {CategoryDrawer} from './CategoryDrawer'
@@ -92,6 +93,8 @@ export const HelpCenterArticlesView: React.FC = () => {
     const [pendingDeleteLocaleOptionItem, setPendingDeleteLocaleOptionItem] =
         useState<OptionItem>()
     const [isPendingCloseArticle, setIsPendingCloseArticle] = useState(false)
+    const [isPendingDiscardChanges, setIsPendingDiscardChanges] =
+        useState(false)
 
     // article states
     const [selectedArticleTranslations, setSelectedArticleTranslations] =
@@ -187,16 +190,23 @@ export const HelpCenterArticlesView: React.FC = () => {
     /**
      * Handlers
      */
-
     const onArticleModalClose = () => {
         articleModal.closeModal()
         setSelectedArticleLanguage(viewLanguage)
         setPendingDeleteLocaleOptionItem(undefined)
+        closeModal()
+    }
+
+    const closeModal = () => {
         setEditModal((prevState) => ({
             ...prevState,
             isOpened: false,
         }))
+        // close modal to reset its parameters (category_id)
+        articleModal.closeModal()
     }
+
+    const nextAction = useRef(closeModal)
 
     const onArticleCreate = () => {
         // FIXME: creating a template of an article should not select any article
@@ -274,15 +284,6 @@ export const HelpCenterArticlesView: React.FC = () => {
                     status: NotificationStatus.Success,
                 })
             )
-
-            setSelectedArticle(null)
-            setEditModal((prevState) => ({
-                ...prevState,
-                isOpened: false,
-            }))
-
-            // close modal to reset its parameters (category_id)
-            articleModal.closeModal()
         } catch (err) {
             const errorMessage =
                 axios.isAxiosError(err) && err.response?.status === 400
@@ -323,10 +324,7 @@ export const HelpCenterArticlesView: React.FC = () => {
         } finally {
             setSelectedExistingArticleTranslation(null)
             setSelectedArticle(null)
-            setEditModal((prevState) => ({
-                ...prevState,
-                isOpened: false,
-            }))
+            closeModal()
         }
     }
 
@@ -402,23 +400,16 @@ export const HelpCenterArticlesView: React.FC = () => {
         }
     }
 
-    const onArticleLanguageSelect = (localeCode: LocaleCode) => {
+    const onArticleLanguageSelect = (
+        localeCode: LocaleCode,
+        translation: ArticleTranslation
+    ) => {
         if (!selectedArticle) {
             return
         }
-
-        const translation =
-            selectedArticleTranslations?.find(
-                ({locale: translationLocale}) =>
-                    translationLocale === localeCode
-            ) || getNewArticleTranslation(localeCode)
-
         if ('article_id' in translation) {
-            setSelectedExistingArticleTranslation(
-                translation as ArticleTranslation
-            )
+            setSelectedExistingArticleTranslation(translation)
         }
-
         setSelectedArticle((prevSelectedArticle) =>
             prevSelectedArticle
                 ? {...prevSelectedArticle, translation}
@@ -434,7 +425,7 @@ export const HelpCenterArticlesView: React.FC = () => {
         if (action === 'delete') {
             setPendingDeleteLocaleOptionItem(option)
         } else {
-            onArticleLanguageSelect(option.value)
+            onArticleLanguageSelectAttempt(option.value)
         }
     }
 
@@ -451,25 +442,95 @@ export const HelpCenterArticlesView: React.FC = () => {
         onArticleModalClose()
     }
 
-    const onCloseArticleModalDiscardChanges = () => {
-        setEditModal((prevState) => ({
-            ...prevState,
-            isOpened: false,
-        }))
-        setIsPendingCloseArticle(false)
+    const onArticleLanguageSelectAttempt = (localeCode: LocaleCode) => {
+        if (canSaveArticle || isEditorCodeViewActive) {
+            setIsPendingCloseArticle(true)
+            nextAction.current = async () => {
+                if (
+                    client &&
+                    selectedArticle &&
+                    isExistingArticle(selectedArticle)
+                ) {
+                    const {
+                        data: {data: translations},
+                    } = await client.listArticleTranslations({
+                        help_center_id: helpCenter.id,
+                        article_id: selectedArticle.id,
+                    })
+                    const translation =
+                        translations.find(
+                            ({locale}) => locale === localeCode
+                        ) ||
+                        (getNewArticleTranslation(
+                            localeCode
+                        ) as ArticleTranslation)
+                    onArticleLanguageSelect(localeCode, translation)
+                    setSelectedArticleTranslations(translations)
+                }
+            }
+        } else {
+            const translation =
+                selectedArticleTranslations?.find(
+                    ({locale: translationLocale}) =>
+                        translationLocale === localeCode
+                ) ||
+                (getNewArticleTranslation(localeCode) as ArticleTranslation)
+            if (translation) onArticleLanguageSelect(localeCode, translation)
+        }
     }
 
-    const onCloseArticleModalResume = () => {
-        setIsPendingCloseArticle(false)
+    const onDiscardChangesAttempt = () => {
+        if (canSaveArticle || isEditorCodeViewActive) {
+            setIsPendingDiscardChanges(true)
+            nextAction.current = closeModal
+        } else {
+            closeModal()
+        }
     }
 
-    const onCloseArticleModalSave = async () => {
+    const onCloseModalAttempt = () => {
+        if (canSaveArticle || isEditorCodeViewActive) {
+            setIsPendingCloseArticle(true)
+            nextAction.current = closeModal
+        } else {
+            closeModal()
+        }
+    }
+
+    const onConfirmDiscardChanges = () => {
+        setIsPendingCloseArticle(false)
+        setIsPendingDiscardChanges(false)
+        nextAction.current()
+    }
+
+    const onConfirmEditing = () => {
+        setIsPendingCloseArticle(false)
+        setIsPendingDiscardChanges(false)
+    }
+
+    const onConfirmSaveArticle = async () => {
+        if (isExistingArticle(selectedArticle)) {
+            setSelectedArticle({
+                ...selectedArticle,
+                available_locales: selectedArticle.available_locales.includes(
+                    selectedArticleLanguage
+                )
+                    ? selectedArticle.available_locales
+                    : [
+                          ...selectedArticle.available_locales,
+                          selectedArticleLanguage,
+                      ],
+            })
+        }
         await onArticleSave()
-        setEditModal((prevState) => ({
-            ...prevState,
-            isOpened: false,
-        }))
         setIsPendingCloseArticle(false)
+        if (isExistingArticle(selectedArticle)) nextAction.current()
+        else closeModal()
+    }
+
+    const onDirectSaveArticle = async () => {
+        await onArticleSave()
+        closeModal()
     }
 
     const renderArticleEditModalContent = () => {
@@ -488,13 +549,13 @@ export const HelpCenterArticlesView: React.FC = () => {
                         counters={counters}
                         onArticleChange={onArticleChange}
                         onArticleDelete={onArticleDelete}
-                        onArticleLanguageSelect={onArticleLanguageSelect}
+                        onArticleLanguageSelect={onArticleLanguageSelectAttempt}
                         onArticleLanguageSelectActionClick={
                             onArticleLanguageSelectActionClick
                         }
-                        onArticleModalClose={onArticleModalClose}
-                        onArticleSave={onArticleSave}
-                        onChangesDiscard={onCloseArticleModalDiscardChanges}
+                        onArticleSave={onDirectSaveArticle}
+                        onArticleModalClose={onCloseModalAttempt}
+                        onChangesDiscard={onDiscardChangesAttempt}
                         requiredFieldsArticle={requiredFieldsArticle}
                         autoFocus={autoFocus}
                     />
@@ -502,8 +563,8 @@ export const HelpCenterArticlesView: React.FC = () => {
             case HelpCenterArticleModalView.ADVANCED:
                 return (
                     <HelpCenterArticleModalAdvancedViewContent
-                        onArticleLanguageSelect={onArticleLanguageSelect}
-                        onArticleModalClose={onArticleModalClose}
+                        onArticleLanguageSelect={onArticleLanguageSelectAttempt}
+                        onArticleModalClose={onCloseModalAttempt}
                         onArticleLanguageSelectActionClick={
                             onArticleLanguageSelectActionClick
                         }
@@ -511,7 +572,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                         requiredFieldsArticle={requiredFieldsArticle}
                         onArticleSave={onArticleSave}
                         onArticleDelete={onArticleDelete}
-                        onChangesDiscard={onCloseArticleModalDiscardChanges}
+                        onChangesDiscard={onDiscardChangesAttempt}
                         autoFocus={autoFocus}
                     />
                 )
@@ -618,25 +679,16 @@ export const HelpCenterArticlesView: React.FC = () => {
                     />
                 )}
             />
-
             <CategoryDrawer helpCenter={helpCenter} />
             <HelpCenterEditModal
                 isLoading={isFetchingArticleTranslations}
                 portalRootId="app-root"
-                onBackdropClick={() => {
-                    if (canSaveArticle || isEditorCodeViewActive) {
-                        setIsPendingCloseArticle(true)
-                    } else {
-                        setEditModal((prevState) => ({
-                            ...prevState,
-                            isOpened: false,
-                        }))
-                    }
-                }}
+                onBackdropClick={onCloseModalAttempt}
                 transitionDurationMs={DRAWER_TRANSITION_DURATION_MS}
             >
                 {renderArticleEditModalContent()}
             </HelpCenterEditModal>
+
             {isPendingCloseArticle && (
                 <CloseArticleModal
                     isOpen={
@@ -645,11 +697,9 @@ export const HelpCenterArticlesView: React.FC = () => {
                     }
                     title={<span>Are you sure?</span>}
                     style={{width: '100%', maxWidth: 500}}
-                    onDiscard={onCloseArticleModalDiscardChanges}
-                    onContinueEditing={onCloseArticleModalResume}
-                    {...(canSaveArticle && {
-                        onSave: onCloseArticleModalSave,
-                    })}
+                    onDiscard={onConfirmDiscardChanges}
+                    onContinueEditing={onConfirmEditing}
+                    onSave={onConfirmSaveArticle}
                 >
                     <span>
                         If you close this article, you'll lose all changes made.{' '}
@@ -659,9 +709,21 @@ export const HelpCenterArticlesView: React.FC = () => {
                     </span>
                 </CloseArticleModal>
             )}
+
+            {isPendingDiscardChanges && (
+                <DiscardChangesModal
+                    title="Quit without Saving?"
+                    onDiscard={onConfirmDiscardChanges}
+                    onContinueEditing={onConfirmEditing}
+                >
+                    By discarding changes you will lose all progress you made
+                    editing. Are you sure you want to proceed?
+                </DiscardChangesModal>
+            )}
+
             {pendingDeleteLocaleOptionItem && (
                 <ConfirmationModal
-                    isOpen={!!pendingDeleteLocaleOptionItem}
+                    isOpen={true}
                     confirmText={`Delete ${pendingDeleteLocaleOptionItem?.text}`}
                     title={
                         <span>
