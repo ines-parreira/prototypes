@@ -1,5 +1,38 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<BackActionPreview /> should render both internal note actions 1`] = `
+<div>
+  <div
+    class="wrapper"
+  >
+    <div
+      class="actionName"
+    >
+      Internal note actions
+    </div>
+    <div
+      class="propsColumnWrapper"
+    >
+      <span
+        class="integration addInternalNote badge badge-secondary"
+      >
+        <span>
+          <img
+            alt="addInternalNote logo"
+            class="logo mr-2"
+            role="presentation"
+            src="test-file-stub"
+          />
+        </span>
+        <span>
+          Add internal note
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<BackActionPreview /> should render both shopify actions and http actions 1`] = `
 <div>
   <div
@@ -8,7 +41,7 @@ exports[`<BackActionPreview /> should render both shopify actions and http actio
     <div
       class="actionName"
     >
-      shopify actions
+      Shopify actions
     </div>
     <div
       class="propsColumnWrapper"
@@ -36,7 +69,7 @@ exports[`<BackActionPreview /> should render both shopify actions and http actio
     <div
       class="actionName"
     >
-      http actions
+      Http actions
     </div>
     <div
       class="propsColumnWrapper"
@@ -68,7 +101,7 @@ exports[`<BackActionPreview /> should render http actions 1`] = `
   <div
     class="actionName"
   >
-    http actions
+    Http actions
   </div>
   <div
     class="propsColumnWrapper"
@@ -99,7 +132,7 @@ exports[`<BackActionPreview /> should render shopify actions 1`] = `
   <div
     class="actionName"
   >
-    shopify actions
+    Shopify actions
   </div>
   <div
     class="propsColumnWrapper"

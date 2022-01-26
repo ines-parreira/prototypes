@@ -723,6 +723,22 @@ export const ACTION_TEMPLATES = [
     },
     {
         execution: ActionTemplateExecution.Back,
+        name: MacroActionName.AddInternalNote,
+        title: 'Add internal note',
+        arguments: {
+            body_text: {
+                type: 'string',
+                default: '',
+            },
+            body_html: {
+                type: 'string',
+                format: 'html',
+                default: '',
+            },
+        },
+    },
+    {
+        execution: ActionTemplateExecution.Back,
         name: MacroActionName.Http,
         title: 'HTTP hook',
         arguments: {

@@ -5,7 +5,7 @@ import {EditorState, Modifier} from 'draft-js'
 import escodegen from 'escodegen'
 import esprima from 'esprima'
 import htmlparser from 'htmlparser2'
-import Immutable, {fromJS, Iterable, Map, List} from 'immutable'
+import Immutable, {fromJS, Iterable, List, Map} from 'immutable'
 import _filter from 'lodash/filter'
 import _find from 'lodash/find'
 import _get from 'lodash/get'
@@ -34,7 +34,7 @@ import TICKET_LANGUAGES from './config/ticketLanguages'
 import {AUTHORIZED_NOTIFICATION_TYPES} from './state/notifications/actions'
 import {Notification, NotificationStatus} from './state/notifications/types'
 import {ViewsState} from './state/views/types'
-import {ActionTemplate, Schemas, Attachment} from './types'
+import {ActionTemplate, Attachment, Schemas} from './types'
 import {USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user'
 import {UserRole} from './config/types/user'
 import {getHighestRole} from './state/agents/helpers'
@@ -999,4 +999,9 @@ export function createTypeGuard<
     return (value: Input, ...args: Args): value is Output => {
         return f(value, ...args) !== undefined
     }
+}
+
+export const getIconFromUrl = (url: string): string => {
+    //eslint-disable-next-line  @typescript-eslint/no-var-requires
+    return url ? (require(`assets/img/${url}`) as string) : ''
 }

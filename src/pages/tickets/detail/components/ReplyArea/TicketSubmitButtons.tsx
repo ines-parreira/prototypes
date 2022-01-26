@@ -187,7 +187,7 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                         {this.tip}
                         <i
                             id="hide-helpers-button"
-                            className="material-icons md-1 cursor-pointer ml-1"
+                            className="material-icons md-1 cursor-pointer ml-1 mr-1"
                             onClick={this.hideTips}
                         >
                             close

@@ -31,6 +31,7 @@ import AddTagsAction from './actions/AddTagsAction.js'
 import HttpAction from './actions/HttpAction.js'
 import AddAttachmentsAction from './actions/AddAttachmentsAction.js'
 import IntegrationAction from './actions/IntegrationAction.js'
+import AddInternalNoteAction from './actions/AddInternalNoteAction'
 import SnoozeTicketAction from './actions/SnoozeTicketAction'
 
 import css from './MacroEdit.less'
@@ -93,7 +94,11 @@ export class MacroEdit extends Component<
     renderNewActionMenu = () => {
         // front actions executed on client
         const ticketActions = typeSafeActionTemplates
-            .filter((template) => template.execution === 'front')
+            .filter(
+                (template) =>
+                    template.execution === 'front' ||
+                    template.name === MacroActionName.AddInternalNote
+            )
             // remove actions that have already been used
             .filter(
                 (action) =>
@@ -105,7 +110,9 @@ export class MacroEdit extends Component<
 
         // external actions executed on server
         const externalActions = typeSafeActionTemplates.filter(
-            (template) => template.execution === 'back'
+            (template) =>
+                template.execution === 'back' &&
+                template.name !== MacroActionName.AddInternalNote
         )
         // external actions without externalType, list of names
         const nonIntegrationActions = externalActions.filter(
@@ -227,6 +234,20 @@ export class MacroEdit extends Component<
                                         title: 'Set response text',
                                         content: (
                                             <SetResponseTextAction
+                                                index={index}
+                                                action={action}
+                                                updateActionArgs={
+                                                    this._updateActionArguments
+                                                }
+                                            />
+                                        ),
+                                    }
+                                    break
+                                case ticketTypes.ADD_INTERNAL_NOTE:
+                                    config = {
+                                        title: 'Add internal note',
+                                        content: (
+                                            <AddInternalNoteAction
                                                 index={index}
                                                 action={action}
                                                 updateActionArgs={

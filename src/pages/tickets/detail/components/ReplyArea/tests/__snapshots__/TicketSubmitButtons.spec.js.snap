@@ -43,7 +43,7 @@ exports[`TicketSubmitButtons component empty ticket 1`] = `
        (right arrow) to go to next ticket
     </span>
     <i
-      className="material-icons md-1 cursor-pointer ml-1"
+      className="material-icons md-1 cursor-pointer ml-1 mr-1"
       id="hide-helpers-button"
       onClick={[Function]}
     >

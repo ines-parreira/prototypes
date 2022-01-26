@@ -2,7 +2,6 @@ import {Badge, Col, Container, Row} from 'reactstrap'
 import React, {useState} from 'react'
 import {useSelector} from 'react-redux'
 
-import {getIconFromUrl} from '../../../../../state/integrations/helpers'
 import AutomationSubscriptionModal from '../../../../settings/billing/automation/AutomationSubscriptionModal'
 import UpgradeButton from '../../../../common/components/UpgradeButton'
 import {SegmentEvent} from '../../../../../store/middlewares/segmentTracker'
@@ -10,6 +9,7 @@ import {RootState} from '../../../../../state/types'
 import {CurrentAccountState} from '../../../../../state/currentAccount/types'
 import {getCurrentAccountState} from '../../../../../state/currentAccount/selectors'
 import {getCurrentPlan} from '../../../../../state/billing/selectors'
+import {getIconFromUrl} from '../../../../../utils'
 
 import css from './GorgiasChatIntegrationSelfServicePaywall.less'
 

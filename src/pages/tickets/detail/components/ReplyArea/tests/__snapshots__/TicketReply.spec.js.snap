@@ -8,6 +8,7 @@ exports[`<TicketReply/> should render the editor 1`] = `
     richAreaRef={[MockFunction]}
     ticket={
       Immutable.Map {
+        "id": 1,
         "reply_options": Immutable.Map {
           "email": Immutable.Map {
             "answerable": true,
@@ -28,6 +29,66 @@ exports[`<TicketReply/> should render the editor 1`] = `
     className="p-2 d-flex flex-wrap"
     deleteAttachment={[MockFunction]}
     removable={true}
+  />
+</div>
+`;
+
+exports[`<TicketReply/> should render the editor with the applied macro actions 1`] = `
+<div
+  className="component"
+>
+  <Connect(TicketReplyEditorContainer)
+    richAreaRef={[MockFunction]}
+    ticket={
+      Immutable.Map {
+        "id": 1,
+        "reply_options": Immutable.Map {
+          "email": Immutable.Map {
+            "answerable": true,
+          },
+          "chat": Immutable.Map {
+            "answerable": false,
+            "reason": "You cannot respond.",
+          },
+          "facebook-messenger": Immutable.Map {
+            "answerable": true,
+          },
+        },
+      }
+    }
+  />
+  <TicketAttachments
+    attachments={Immutable.List []}
+    className="p-2 d-flex flex-wrap"
+    deleteAttachment={[MockFunction]}
+    removable={true}
+  />
+  <TicketReplyActions
+    appliedMacro={
+      Immutable.Map {
+        "actions": Immutable.List [
+          Immutable.Map {
+            "execution": "back",
+            "name": "addInternalNote",
+            "title": "Add internal note",
+            "arguments": Immutable.Map {
+              "body_text": Immutable.Map {
+                "type": "string",
+                "default": "",
+              },
+              "body_html": Immutable.Map {
+                "type": "string",
+                "format": "html",
+                "default": "",
+              },
+            },
+          },
+        ],
+      }
+    }
+    onDelete={[MockFunction]}
+    onUpdate={[MockFunction]}
+    ticketId={1}
   />
 </div>
 `;

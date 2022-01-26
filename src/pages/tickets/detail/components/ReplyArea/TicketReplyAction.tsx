@@ -3,15 +3,14 @@ import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
 
 import {FORM_CONTENT_TYPE} from '../../../../../config'
-import {
-    getIconUrl,
-    getIconFromUrl,
-} from '../../../../../state/integrations/helpers'
 import {updateActionArgsOnApplied} from '../../../../../state/ticket/actions'
 import {getActionTemplate} from '../../../../../utils'
 import InputField from '../../../../common/forms/InputField.js'
 import BooleanField from '../../../../common/forms/BooleanField.js'
 import SelectField from '../../../../common/forms/SelectField/SelectField'
+import {MacroActionName} from '../../../../../models/macroAction/types'
+import {getIconFromActionType} from '../../../../../models/macroAction/helpers'
+import AddInternalNoteAction from '../../../common/macros/components/actions/AddInternalNoteAction'
 
 import css from './TicketReplyAction.less'
 
@@ -40,6 +39,11 @@ export default class TicketReplyAction extends Component<Props> {
         if (~index) {
             this.props.update(this.props.index, newValue, this.props.ticketId)
         }
+    }
+
+    setArguments = (index: number, args = fromJS({})) => {
+        this.props.action.setIn(['arguments'], args)
+        this.props.update(index, args, this.props.ticketId)
     }
 
     setValue(key: string, value: number | string | boolean) {
@@ -142,11 +146,11 @@ export default class TicketReplyAction extends Component<Props> {
             type = template.integrationType
         }
 
-        const icon = getIconFromUrl(getIconUrl(type))
+        const icon = getIconFromActionType(type)
 
         let argsComponent = null
 
-        if (type === 'http') {
+        if (type === MacroActionName.Http) {
             const headersArgs = (
                 action.getIn(['arguments', 'headers'], fromJS([])) as List<any>
             ).filter(
@@ -195,6 +199,17 @@ export default class TicketReplyAction extends Component<Props> {
                     </div>
                 )
             }
+        } else if (type === MacroActionName.AddInternalNote) {
+            argsComponent = (
+                <div className={classnames(css.argsWrapper)}>
+                    <AddInternalNoteAction
+                        index={this.props.index}
+                        action={action}
+                        updateActionArgs={this.setArguments}
+                        renderVariables={false}
+                    />
+                </div>
+            )
         } else {
             const args = action.get('arguments') as Map<any, any>
 
@@ -223,10 +238,7 @@ export default class TicketReplyAction extends Component<Props> {
                     <span>{action.get('title')}</span>
                 </div>
                 <i
-                    className={classnames(
-                        css.closeIcon,
-                        'material-icons text-danger'
-                    )}
+                    className={classnames(css.closeIcon, 'material-icons')}
                     onClick={() => remove(this.props.index, ticketId)}
                 >
                     close

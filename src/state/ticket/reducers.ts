@@ -309,18 +309,20 @@ export default function reducer(
         }
 
         case types.UPDATE_ACTION_ARGS_ON_APPLIED: {
-            const updatedCache = ticketReplyCache
-                .get(action.ticketId as string)
-                .setIn(
-                    [
-                        'macro',
-                        'actions',
-                        String(action.actionIndex),
-                        'arguments',
-                    ],
-                    action.value
-                )
-            ticketReplyCache.set(action.ticketId as string, updatedCache)
+            if (action.ticketId) {
+                const updatedCache = ticketReplyCache
+                    .get(action.ticketId as string)
+                    .setIn(
+                        [
+                            'macro',
+                            'actions',
+                            String(action.actionIndex),
+                            'arguments',
+                        ],
+                        action.value
+                    )
+                ticketReplyCache.set(action.ticketId as string, updatedCache)
+            }
             return state.setIn(
                 [
                     'state',

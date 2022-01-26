@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import _capitalize from 'lodash/capitalize'
 import classnames from 'classnames'
 import {Badge} from 'reactstrap'
 
@@ -20,8 +19,9 @@ import RichField from '../../../common/forms/RichField'
 import {isRichType} from '../../../../config/ticket.ts'
 import {sanitizeHtmlForFacebookMessenger} from '../../../../utils/html.ts'
 import {TicketMessageSourceType} from '../../../../business/types/ticket.ts'
+import {actionTypeToName} from '../../../../models/macroAction/types'
+import {getIconFromActionType} from '../../../../models/macroAction/helpers'
 
-import {getIconFromType} from './../../../../state/integrations/helpers.ts'
 import {getActionTemplate} from './../../../../utils.ts'
 
 import css from './Preview.less'
@@ -222,7 +222,7 @@ class Preview extends React.Component {
                 className={classnames(css.macroData, css.integrationActions)}
             >
                 <strong className="text-muted mr-2">
-                    {_capitalize(integrationType)} actions:
+                    {actionTypeToName[integrationType]} actions:
                 </strong>
                 {integrationActions
                     .map((action, idx) => (
@@ -232,7 +232,7 @@ class Preview extends React.Component {
                         >
                             <img
                                 alt={`${integrationType} logo`}
-                                src={getIconFromType(integrationType)}
+                                src={getIconFromActionType(integrationType)}
                                 role="presentation"
                                 className={css.logo}
                             />

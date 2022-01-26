@@ -4,7 +4,7 @@ import {Container, Collapse, Badge, Row, Col} from 'reactstrap'
 import ReactStars from 'react-rating-stars-component'
 
 import {ProductDetails} from '../../../../models/ticket/types'
-import {getIconFromUrl} from '../../../../state/integrations/helpers'
+import {getIconFromUrl} from '../../../../utils'
 
 import GenericCard from '../GenericCard/GenericCard'
 

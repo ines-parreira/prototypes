@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import classNames from 'classnames'
-import {fromJS, List, Map} from 'immutable'
+import {List, Map} from 'immutable'
 
 import {RootState} from '../../../../../state/types'
 import {canReply} from '../../../../../business/ticket'
@@ -11,13 +11,12 @@ import {
 } from '../../../../../state/ticket/actions'
 import {deleteAttachment} from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
-import {getActionTemplate} from '../../../../../utils'
 import RichField from '../../../../common/forms/RichField/RichField'
 
 import TicketAttachments from './TicketAttachments'
 import css from './TicketReply.less'
-import TicketReplyAction from './TicketReplyAction'
 import TicketReplyEditor from './TicketReplyEditor'
+import TicketReplyActions from './TicketReplyActions'
 
 type Props = {
     appliedMacro?: Map<any, any>
@@ -43,53 +42,10 @@ export class TicketReplyContainer extends Component<Props> {
         )
     }
 
-    renderActions = () => {
-        const {
-            ticket,
-            appliedMacro,
-            deleteActionOnApplied,
-            updateActionArgsOnApplied,
-        } = this.props
-
-        const backendActions = appliedMacro
-            ? ((appliedMacro.get('actions') as List<any>).filter(
-                  (action: Map<any, any>) => {
-                      const actionTemplate = getActionTemplate(
-                          action.get('name')
-                      )
-                      return (
-                          !!actionTemplate &&
-                          actionTemplate.execution === 'back'
-                      )
-                  }
-              ) as List<any>)
-            : (fromJS([]) as List<any>)
-
-        if (!appliedMacro || !backendActions) {
-            return null
-        }
-
-        return (
-            <div>
-                {backendActions.map((action: Map<any, any>, key) => (
-                    <TicketReplyAction
-                        key={key}
-                        index={(
-                            appliedMacro.get('actions') as List<any>
-                        ).indexOf(action)}
-                        action={action}
-                        update={updateActionArgsOnApplied}
-                        remove={deleteActionOnApplied}
-                        ticketId={ticket.get('id')}
-                    />
-                ))}
-            </div>
-        )
-    }
-
     render() {
         const {
             ticket,
+            appliedMacro,
             isNewMessagePublic,
             richAreaRef,
             className: passedClassName,
@@ -98,6 +54,8 @@ export class TicketReplyContainer extends Component<Props> {
             macros,
             applyMacro,
             shouldDisplayQuickReply,
+            deleteActionOnApplied,
+            updateActionArgsOnApplied,
         } = this.props
 
         const canReplyResult = canReply(
@@ -125,7 +83,14 @@ export class TicketReplyContainer extends Component<Props> {
                     />
                 )}
                 {this.renderAttachments()}
-                {this.renderActions()}
+                {appliedMacro ? (
+                    <TicketReplyActions
+                        ticketId={ticket.get('id')}
+                        appliedMacro={appliedMacro}
+                        onDelete={deleteActionOnApplied}
+                        onUpdate={updateActionArgsOnApplied}
+                    />
+                ) : null}
             </div>
         )
     }

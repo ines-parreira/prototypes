@@ -27,10 +27,8 @@ import {
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 
-import {
-    getIconFromUrl,
-    getIconFromType,
-} from '../../../../state/integrations/helpers'
+import {getIconFromType} from '../../../../state/integrations/helpers'
+import {getIconFromUrl} from '../../../../utils'
 
 import css from './ShopifyProductLine.less'
 

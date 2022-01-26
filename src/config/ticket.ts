@@ -448,7 +448,7 @@ export function canLeaveInternalNote(
 /**
  * Return variables config
  */
-export function getVariables(types: Array<string>): Array<Variable> {
+export function getVariables(types: Array<string> | null): Array<Variable> {
     if (!types) {
         return VARIABLES.filter((variable) => !variable.explicit)
     }

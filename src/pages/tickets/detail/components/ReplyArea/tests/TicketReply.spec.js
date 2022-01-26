@@ -4,6 +4,8 @@ import {shallow} from 'enzyme'
 
 import {TicketMessageSourceTypes} from '../../../../../../business/ticket.ts'
 import {TicketReplyContainer} from '../TicketReply.tsx'
+import {MacroActionName} from '../../../../../../models/macroAction/types'
+import {ACTION_TEMPLATES} from '../../../../../../config'
 
 jest.unmock('../../../../../../business/ticket.ts')
 
@@ -16,6 +18,7 @@ describe('<TicketReply/>', () => {
         deleteAttachment: jest.fn(),
         richAreaRef: jest.fn(),
         ticket: fromJS({
+            id: 1,
             reply_options: {
                 [answerableSourceType]: {answerable: true},
                 [nonAnswerableSourceType]: {
@@ -34,6 +37,27 @@ describe('<TicketReply/>', () => {
         const component = shallow(
             <TicketReplyContainer
                 {...minProps}
+                isNewMessagePublic={true}
+                newMessageType={answerableSourceType}
+                newMessageAttachments={fromJS([])}
+            />
+        )
+
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should render the editor with the applied macro actions', () => {
+        const component = shallow(
+            <TicketReplyContainer
+                {...minProps}
+                appliedMacro={fromJS({
+                    actions: [
+                        ACTION_TEMPLATES.find(
+                            (action) =>
+                                action.name === MacroActionName.AddInternalNote
+                        ),
+                    ],
+                })}
                 isNewMessagePublic={true}
                 newMessageType={answerableSourceType}
                 newMessageAttachments={fromJS([])}

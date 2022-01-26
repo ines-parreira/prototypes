@@ -18,7 +18,6 @@ import {
     generateExpression,
 } from '../../../../../models/rule/utils'
 import {RootState} from '../../../../../state/types'
-import {getIconFromUrl} from '../../../../../state/integrations/helpers'
 import {
     ObjectExpressionPropertyKey,
     RuleOperation,
@@ -26,6 +25,7 @@ import {
 import {makeHasIntegrationOfTypes} from '../../../../../state/integrations/selectors'
 import {RuleItemActions} from '../../../../settings/rules/types'
 import RuleSelect from '../widget/RuleSelect'
+import {getIconFromUrl} from '../../../../../utils'
 
 import css from './MemberExpression.less'
 

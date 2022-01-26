@@ -2,7 +2,11 @@ import React from 'react'
 import {render} from '@testing-library/react'
 
 import {BackendActionPreview} from '../BackendActionPreview'
-import {httpAction, shopifyAction} from '../../../../../../../../fixtures/macro'
+import {
+    httpAction,
+    shopifyAction,
+    addInternalNoteAction,
+} from '../../../../../../../../fixtures/macro'
 
 describe('<BackActionPreview />', () => {
     it('should render http actions', () => {
@@ -22,6 +26,13 @@ describe('<BackActionPreview />', () => {
     it('should render both shopify actions and http actions', () => {
         const {container} = render(
             <BackendActionPreview actions={[shopifyAction, httpAction]} />
+        )
+        expect(container).toMatchSnapshot()
+    })
+
+    it('should render both internal note actions', () => {
+        const {container} = render(
+            <BackendActionPreview actions={[addInternalNoteAction]} />
         )
         expect(container).toMatchSnapshot()
     })

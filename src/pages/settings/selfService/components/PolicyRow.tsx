@@ -17,10 +17,10 @@ import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {selfServiceConfigurationUpdated} from '../../../../state/entities/selfServiceConfigurations/actions'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
-import {getIconFromUrl} from '../../../../state/integrations/helpers'
 import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
 import AutomationSubscriptionModal from '../../billing/automation/AutomationSubscriptionModal'
 import UpgradeButton from '../../../common/components/UpgradeButton'
+import {getIconFromUrl} from '../../../../utils'
 
 import css from './PreferencesView.less'
 

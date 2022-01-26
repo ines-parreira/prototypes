@@ -1,0 +1,486 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TicketReplyActions/> should render the ticket reply macro actions 1`] = `
+<div>
+  <div
+    class="actions"
+  >
+    <i
+      class="actionIcon material-icons mr-2"
+    >
+      bolt
+    </i>
+    <span
+      class="badge mr-2 badge badge-primary badge-pill"
+    >
+      1
+    </span>
+    <span
+      class="title"
+    >
+      Actions performed on send
+    </span>
+    <i
+      class="collapseIcon material-icons"
+      id="show-actions"
+    >
+      keyboard_arrow_up
+    </i>
+  </div>
+  <div
+    class="collapse show"
+    style=""
+  >
+    <div
+      class="component"
+    >
+      <div
+        class="title"
+      >
+        <img
+          alt="Add internal note icon"
+          class="actionLogo"
+          role="presentation"
+          src="test-file-stub"
+        />
+        <span>
+          Add internal note
+        </span>
+      </div>
+      <i
+        class="closeIcon material-icons"
+      >
+        close
+      </i>
+      <div
+        class="argsWrapper"
+      >
+        <div
+          class="field"
+        >
+          <div
+            class="InputField form-group"
+            color=""
+          >
+            <div
+              class=""
+            >
+              <div
+                class="InputField form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <div
+                    class="rich-textarea-wrapper"
+                  >
+                    <div
+                      class="editor-wrapper"
+                    >
+                      <div
+                        class="withMinHeight"
+                      >
+                        <div
+                          class="DraftEditor-root"
+                        >
+                          <div
+                            class="DraftEditor-editorContainer"
+                          >
+                            <div
+                              aria-autocomplete="list"
+                              aria-describedby="placeholder-888"
+                              aria-expanded="true"
+                              class="notranslate public-DraftEditor-content"
+                              contenteditable="true"
+                              role="combobox"
+                              spellcheck="true"
+                              style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                            >
+                              <div
+                                data-contents="true"
+                              >
+                                <div
+                                  class=""
+                                  data-block="true"
+                                  data-editor="888"
+                                  data-offset-key="888-0-0"
+                                >
+                                  <div
+                                    class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                    data-offset-key="888-0-0"
+                                  >
+                                    <span
+                                      data-offset-key="888-0-0"
+                                    >
+                                      <span
+                                        data-text="true"
+                                      >
+                                        Map { "type": "string", "format": "html", "default": "" }
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="editor-toolbar page"
+                    >
+                      <div
+                        class="actionsWrapper"
+                      >
+                        <div
+                          class="actions"
+                        >
+                          <button
+                            class="button btn btn-secondary btn-transparent"
+                            title="Bold"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons"
+                            >
+                              format_bold
+                            </i>
+                          </button>
+                          <button
+                            class="button btn btn-secondary btn-transparent"
+                            title="Italic"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons"
+                            >
+                              format_italic
+                            </i>
+                          </button>
+                          <button
+                            class="button btn btn-secondary btn-transparent"
+                            title="Underline"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons"
+                            >
+                              format_underline
+                            </i>
+                          </button>
+                          <span
+                            class="popoverWrapper"
+                          >
+                            <button
+                              class="button btn btn-secondary btn-transparent"
+                              title="Insert link"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons"
+                              >
+                                link
+                              </i>
+                            </button>
+                            <div
+                              class="popover top-left hidden"
+                            />
+                          </span>
+                          <span
+                            class="popoverWrapper"
+                          >
+                            <button
+                              class="button btn btn-secondary btn-transparent"
+                              title="Insert image"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons"
+                              >
+                                insert_photo
+                              </i>
+                            </button>
+                            <div
+                              class="popover top-left hidden"
+                            />
+                          </span>
+                          <span
+                            class="popoverWrapper"
+                          >
+                            <button
+                              class="button btn btn-secondary btn-transparent"
+                              title="Insert emoji"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons"
+                              >
+                                insert_emoticon
+                              </i>
+                            </button>
+                            <div
+                              class="p-0 d-flex popover top-left hidden"
+                            />
+                          </span>
+                        </div>
+                        <div
+                          class="hoverOverlay"
+                        >
+                          Add files as attachments
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<TicketReplyActions/> should render the ticket reply macro actions collapsed 1`] = `
+<div>
+  <div
+    class="actions"
+  >
+    <i
+      class="actionIcon material-icons mr-2"
+    >
+      bolt
+    </i>
+    <span
+      class="badge mr-2 badge badge-primary badge-pill"
+    >
+      1
+    </span>
+    <span
+      class="title"
+    >
+      Actions performed on send
+    </span>
+    <i
+      class="collapseIcon material-icons"
+      id="show-actions"
+    >
+      keyboard_arrow_down
+    </i>
+  </div>
+  <div
+    class="collapse"
+  >
+    <div
+      class="component"
+    >
+      <div
+        class="title"
+      >
+        <img
+          alt="Add internal note icon"
+          class="actionLogo"
+          role="presentation"
+          src="test-file-stub"
+        />
+        <span>
+          Add internal note
+        </span>
+      </div>
+      <i
+        class="closeIcon material-icons"
+      >
+        close
+      </i>
+      <div
+        class="argsWrapper"
+      >
+        <div
+          class="field"
+        >
+          <div
+            class="InputField form-group"
+            color=""
+          >
+            <div
+              class=""
+            >
+              <div
+                class="InputField form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <div
+                    class="rich-textarea-wrapper"
+                  >
+                    <div
+                      class="editor-wrapper"
+                    >
+                      <div
+                        class="withMinHeight"
+                      >
+                        <div
+                          class="DraftEditor-root"
+                        >
+                          <div
+                            class="DraftEditor-editorContainer"
+                          >
+                            <div
+                              aria-autocomplete="list"
+                              aria-describedby="placeholder-888"
+                              aria-expanded="true"
+                              class="notranslate public-DraftEditor-content"
+                              contenteditable="true"
+                              role="combobox"
+                              spellcheck="true"
+                              style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                            >
+                              <div
+                                data-contents="true"
+                              >
+                                <div
+                                  class=""
+                                  data-block="true"
+                                  data-editor="888"
+                                  data-offset-key="888-0-0"
+                                >
+                                  <div
+                                    class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                    data-offset-key="888-0-0"
+                                  >
+                                    <span
+                                      data-offset-key="888-0-0"
+                                    >
+                                      <span
+                                        data-text="true"
+                                      >
+                                        Map { "type": "string", "format": "html", "default": "" }
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="editor-toolbar page"
+                    >
+                      <div
+                        class="actionsWrapper"
+                      >
+                        <div
+                          class="actions"
+                        >
+                          <button
+                            class="button btn btn-secondary btn-transparent"
+                            title="Bold"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons"
+                            >
+                              format_bold
+                            </i>
+                          </button>
+                          <button
+                            class="button btn btn-secondary btn-transparent"
+                            title="Italic"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons"
+                            >
+                              format_italic
+                            </i>
+                          </button>
+                          <button
+                            class="button btn btn-secondary btn-transparent"
+                            title="Underline"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons"
+                            >
+                              format_underline
+                            </i>
+                          </button>
+                          <span
+                            class="popoverWrapper"
+                          >
+                            <button
+                              class="button btn btn-secondary btn-transparent"
+                              title="Insert link"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons"
+                              >
+                                link
+                              </i>
+                            </button>
+                            <div
+                              class="popover top-left hidden"
+                            />
+                          </span>
+                          <span
+                            class="popoverWrapper"
+                          >
+                            <button
+                              class="button btn btn-secondary btn-transparent"
+                              title="Insert image"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons"
+                              >
+                                insert_photo
+                              </i>
+                            </button>
+                            <div
+                              class="popover top-left hidden"
+                            />
+                          </span>
+                          <span
+                            class="popoverWrapper"
+                          >
+                            <button
+                              class="button btn btn-secondary btn-transparent"
+                              title="Insert emoji"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons"
+                              >
+                                insert_emoticon
+                              </i>
+                            </button>
+                            <div
+                              class="p-0 d-flex popover top-left hidden"
+                            />
+                          </span>
+                        </div>
+                        <div
+                          class="hoverOverlay"
+                        >
+                          Add files as attachments
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

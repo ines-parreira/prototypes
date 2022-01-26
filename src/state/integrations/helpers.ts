@@ -2,6 +2,7 @@ import {fromJS, List, Map} from 'immutable'
 import _find from 'lodash/find'
 
 import {INTEGRATION_TYPE_DESCRIPTIONS} from '../../config'
+import {getIconFromUrl} from '../../utils'
 
 export const getIntegrationsByTypes = (
     integrations: List<any> = fromJS([]),
@@ -20,11 +21,6 @@ export const getIconUrl = (type: string): string => {
     return config && typeof config === 'object' && config.image
         ? config.image
         : ''
-}
-
-export const getIconFromUrl = (url: string): string => {
-    //eslint-disable-next-line  @typescript-eslint/no-var-requires
-    return url ? (require(`assets/img/${url}`) as string) : ''
 }
 
 export const getIconFromType = (type: string): string => {

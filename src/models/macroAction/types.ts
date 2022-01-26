@@ -4,6 +4,7 @@ import type {Team} from '../../state/teams/types'
 
 export enum MacroActionName {
     AddAttachments = 'addAttachments',
+    AddInternalNote = 'addInternalNote',
     AddTags = 'addTags',
     Http = 'http',
     RechargeActivateLastSubscription = 'rechargeActivateLastSubscription',
@@ -58,4 +59,9 @@ export type MacroActionAttachment = {
     content_type?: string
     name?: string
     size?: number
+}
+export const actionTypeToName: {[key: string]: string} = {
+    http: 'Http',
+    shopify: 'Shopify',
+    addInternalNote: 'Internal note',
 }

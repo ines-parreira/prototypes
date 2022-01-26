@@ -1,6 +1,7 @@
 // $TsFixMe: remove on ts migration end
 export const MACRO_ACTION_NAME = Object.freeze({
     ADD_ATTACHMENTS: 'addAttachments',
+    ADD_INTERNAL_NOTE: 'addInternalNote',
     SET_RESPONSE_TEXT: 'setResponseText',
     ADD_TAGS: 'addTags',
     SET_STATUS: 'setStatus',

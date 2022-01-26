@@ -224,6 +224,16 @@ export const addAttachmentsAction: MacroAction = {
     },
 }
 
+export const addInternalNoteAction: MacroAction = {
+    name: MacroActionName.AddInternalNote,
+    type: MacroActionType.User,
+    title: 'Add internal note',
+    arguments: {
+        body_text: 'Hello',
+        body_html: '<div>Hello</div>',
+    },
+}
+
 export const macroFixture = {
     category: null,
     usage: 0,

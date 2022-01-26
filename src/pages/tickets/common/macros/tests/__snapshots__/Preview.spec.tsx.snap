@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Preview /> should multiple actions preview 1`] = `
+<div
+  class="component"
+>
+  <div
+    class="macroData addTagWrapper"
+  >
+    <strong
+      class="text-muted mr-2"
+    >
+      Add tags:
+    </strong>
+    <span
+      class="badge-tag badge badge-secondary"
+      style="color: rgb(128, 136, 214);"
+    >
+      refund
+    </span>
+    <span
+      class="badge-tag badge badge-secondary"
+      style="color: rgb(128, 136, 214);"
+    >
+      billing
+    </span>
+    <span
+      class="badge-tag badge badge-secondary"
+      style="color: rgb(128, 136, 214);"
+    >
+      refund accepted
+    </span>
+  </div>
+  <div
+    class="macroData integrationActions"
+  >
+    <strong
+      class="text-muted mr-2"
+    >
+      Internal note
+       actions:
+    </strong>
+    <div
+      class="integrationAction"
+    >
+      <img
+        alt="addInternalNote logo"
+        class="logo"
+        role="presentation"
+        src="test-file-stub"
+      />
+      Add internal note
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Preview /> should render backend action preview 1`] = `
+<div
+  class="component"
+>
+  <div
+    class="macroData integrationActions"
+  >
+    <strong
+      class="text-muted mr-2"
+    >
+      Internal note
+       actions:
+    </strong>
+    <div
+      class="integrationAction"
+    >
+      <img
+        alt="addInternalNote logo"
+        class="logo"
+        role="presentation"
+        src="test-file-stub"
+      />
+      Add internal note
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Preview /> should render simple action preview 1`] = `
+<div
+  class="component"
+>
+  <div
+    class="macroData addTagWrapper"
+  >
+    <strong
+      class="text-muted mr-2"
+    >
+      Add tags:
+    </strong>
+    <span
+      class="badge-tag badge badge-secondary"
+      style="color: rgb(128, 136, 214);"
+    >
+      refund
+    </span>
+    <span
+      class="badge-tag badge badge-secondary"
+      style="color: rgb(128, 136, 214);"
+    >
+      billing
+    </span>
+    <span
+      class="badge-tag badge badge-secondary"
+      style="color: rgb(128, 136, 214);"
+    >
+      refund accepted
+    </span>
+  </div>
+</div>
+`;

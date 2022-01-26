@@ -385,7 +385,7 @@ export class TicketReplyArea extends Component<Props, State> {
                             'material-icons md-2 text-info'
                         )}
                     >
-                        flash_on
+                        bolt
                     </i>
                     <Input
                         innerRef={(macroInput) =>

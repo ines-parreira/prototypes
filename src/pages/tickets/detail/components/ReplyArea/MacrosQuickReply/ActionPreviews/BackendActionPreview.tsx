@@ -6,13 +6,16 @@ import classnames from 'classnames'
 
 import {Badge} from 'reactstrap'
 
-import {MacroAction} from '../../../../../../../models/macroAction/types'
+import {
+    actionTypeToName,
+    MacroAction,
+} from '../../../../../../../models/macroAction/types'
 import {getSortedIntegrationActions} from '../../../../../common/utils.js'
-import {getIconFromType} from '../../../../../../../state/integrations/helpers'
-
-import css from './BackendActionPreview.less'
+import {getIconFromActionType} from '../../../../../../../models/macroAction/helpers'
 
 import {BaseActionPreview} from './BaseActionPreview'
+
+import css from './BackendActionPreview.less'
 
 type Props = {
     actions: MacroAction[]
@@ -29,7 +32,7 @@ export const BackendActionPreview = ({actions}: Props) => {
                 const actions = sortedActions[actionType]
                 return (
                     <BaseActionPreview
-                        actionName={`${actionType} actions`}
+                        actionName={`${actionTypeToName[actionType]} actions`}
                         columns
                         key={actionType}
                     >
@@ -44,7 +47,7 @@ export const BackendActionPreview = ({actions}: Props) => {
                                 <span>
                                     <img
                                         alt={`${actionType} logo`}
-                                        src={getIconFromType(actionType)}
+                                        src={getIconFromActionType(actionType)}
                                         role="presentation"
                                         className={classnames(css.logo, 'mr-2')}
                                     />

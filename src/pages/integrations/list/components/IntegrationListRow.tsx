@@ -7,9 +7,9 @@ import {
     logEvent,
     SegmentEvent,
 } from '../../../../store/middlewares/segmentTracker'
-import {getIconFromUrl} from '../../../../state/integrations/helpers'
 import SourceIcon from '../../../common/components/SourceIcon'
 import UpgradeButton from '../../../common/components/UpgradeButton'
+import {getIconFromUrl} from '../../../../utils'
 
 import css from './IntegrationListRow.less'
 

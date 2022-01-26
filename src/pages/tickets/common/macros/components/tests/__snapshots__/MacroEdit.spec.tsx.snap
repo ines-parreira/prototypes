@@ -298,6 +298,23 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                         </button>
                       </DropdownItem>
                       <DropdownItem
+                        key="addInternalNote"
+                        onClick={[Function]}
+                        tag="button"
+                        toggle={true}
+                        type="button"
+                      >
+                        <button
+                          className="dropdown-item"
+                          onClick={[Function]}
+                          role="menuitem"
+                          tabIndex="0"
+                          type="button"
+                        >
+                          Add internal note
+                        </button>
+                      </DropdownItem>
+                      <DropdownItem
                         divider={true}
                         tag="button"
                         toggle={true}

@@ -42,6 +42,8 @@ export const SET_AGENT = 'setAssignee'
 export const SET_TEAM = 'setTeamAssignee'
 export const SET_SUBJECT = 'setSubject'
 export const SNOOZE_TICKET = 'snoozeTicket'
+export const ADD_INTERNAL_NOTE = 'addInternalNote'
+export const SEND_EMAIL = 'sendEmail'
 
 export const SET_CUSTOMER = 'setCustomer'
 
