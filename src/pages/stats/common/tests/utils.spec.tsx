@@ -1,14 +1,15 @@
-import React, {ReactNode} from 'react'
-import {fromJS, Map} from 'immutable'
+import React, {ComponentType} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import _keyBy from 'lodash/keyBy'
 import {renderHook} from 'react-hooks-testing-library'
 
-import {TicketChannels} from 'business/ticket'
 import {tags} from 'fixtures/tag'
 import {RootState} from 'state/types'
+import {StatsFilters} from 'state/stats/types'
+import {TicketChannel} from 'business/types/ticket'
+import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
 
 import {formatDuration, useStatsViewFilters} from '../utils'
 
@@ -21,90 +22,136 @@ describe('stats components utils', () => {
                 tags: _keyBy(tags, 'id'),
             },
         } as RootState
+        const defaultStatsFilters: StatsFilters = {
+            period: {
+                start_datetime: '2021-05-29T00:00:00+02:00',
+                end_datetime: '2021-06-04T23:59:59+04:00',
+            },
+        }
 
-        const DefaultStateWrapper = ({children}: {children?: ReactNode}) => (
-            <Provider store={mockStore(defaultState)}>{children}</Provider>
-        )
-
-        it.each<[string, Map<any, any>]>([
+        it.each<[string, StatsFilters]>([
+            ['period', defaultStatsFilters],
             [
-                'period',
-                fromJS({
-                    period: {
-                        start_datetime: '2021-05-29T00:00:00+02:00',
-                        end_datetime: '2021-06-04T23:59:59+04:00',
-                    },
-                }),
+                'single channel',
+                {
+                    ...defaultStatsFilters,
+                    channels: [TicketChannel.Email],
+                },
             ],
-            ['single channel', fromJS({channels: [TicketChannels.EMAIL]})],
             [
                 'multiple channels',
-                fromJS({
-                    channels: [TicketChannels.EMAIL, TicketChannels.CHAT],
-                }),
+                {
+                    ...defaultStatsFilters,
+                    channels: [TicketChannel.Email, TicketChannel.Chat],
+                },
             ],
             [
                 'single integration',
-                fromJS({
+                {
+                    ...defaultStatsFilters,
                     integrations: [1],
-                }),
+                },
             ],
             [
                 'multiple integrations',
-                fromJS({
+                {
+                    ...defaultStatsFilters,
                     integrations: [1, 5],
-                }),
+                },
             ],
             [
                 'single agent',
-                fromJS({
+                {
+                    ...defaultStatsFilters,
                     agents: [1],
-                }),
+                },
             ],
             [
                 'multiple agents',
-                fromJS({
+                {
+                    ...defaultStatsFilters,
                     agents: [1, 2, 3],
-                }),
+                },
             ],
             [
                 'tags',
-                fromJS({
+                {
+                    ...defaultStatsFilters,
                     tags: [tags[0].id],
-                }),
+                },
             ],
         ])('should return view filters for %s', (testName, statsFilters) => {
+            const wrapper: ComponentType = ({children}) => (
+                <Provider store={mockStore(defaultState)}>
+                    <StatsFiltersContext.Provider value={statsFilters}>
+                        {children}
+                    </StatsFiltersContext.Provider>
+                </Provider>
+            )
+
             const {result} = renderHook(
                 () => {
-                    return useStatsViewFilters(
-                        'ticket.created_datetime',
-                        statsFilters
-                    )
+                    return useStatsViewFilters('ticket.created_datetime')
                 },
-                {
-                    wrapper: DefaultStateWrapper,
-                }
+                {wrapper}
             )
+
+            expect(result.current).toMatchSnapshot()
+        })
+
+        it('should not include a view filter if the corresponding stat filter is an empty array', () => {
+            const wrapper: ComponentType = ({children}) => (
+                <Provider store={mockStore(defaultState)}>
+                    <StatsFiltersContext.Provider
+                        value={{
+                            ...defaultStatsFilters,
+                            integrations: [],
+                            agents: [],
+                            channels: [],
+                            tags: [],
+                            score: [],
+                        }}
+                    >
+                        {children}
+                    </StatsFiltersContext.Provider>
+                </Provider>
+            )
+
+            const {result} = renderHook(
+                () => {
+                    return useStatsViewFilters('ticket.created_datetime')
+                },
+                {wrapper}
+            )
+
             expect(result.current).toMatchSnapshot()
         })
 
         it("should not include tags that don't exist in the store", () => {
+            const wrapper: ComponentType = ({children}) => (
+                <Provider store={mockStore(defaultState)}>
+                    <StatsFiltersContext.Provider
+                        value={{
+                            ...defaultStatsFilters,
+                            tags: [99999],
+                        }}
+                    >
+                        {children}
+                    </StatsFiltersContext.Provider>
+                </Provider>
+            )
+
             const {result} = renderHook(
                 () => {
-                    return useStatsViewFilters(
-                        'ticket.created_datetime',
-                        fromJS({
-                            tags: [999999],
-                        })
-                    )
+                    return useStatsViewFilters('ticket.created_datetime')
                 },
-                {
-                    wrapper: DefaultStateWrapper,
-                }
+                {wrapper}
             )
-            expect(result.current).toEqual([])
+
+            expect(result.current).toMatchSnapshot()
         })
     })
+
     describe('formatDuration', () => {
         it.each<[string, number, string]>([
             ['second', 1, '1s'],

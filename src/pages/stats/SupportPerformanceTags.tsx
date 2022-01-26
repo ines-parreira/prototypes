@@ -21,6 +21,7 @@ import PeriodStatsFilter from './PeriodStatsFilter'
 import useStatResource from './useStatResource'
 import TableStat from './common/components/charts/TableStat/TableStat'
 import StatWrapper from './StatWrapper'
+import StatsFiltersContext from './StatsFiltersContext'
 
 const SUPPORT_PERFORMANCE_TAGS_STAT_NAME = 'support-performance-tags'
 
@@ -60,52 +61,56 @@ export default function SupportPerformanceTags() {
     }, [tags])
 
     return (
-        <StatsPage
-            title="Tags"
-            description="Tags statistics will show you how many tickets were created during this time period and have a
+        <StatsFiltersContext.Provider value={pageStatsFilters}>
+            <StatsPage
+                title="Tags"
+                description="Tags statistics will show you how many tickets were created during this time period and have a
 tag attached to them."
-            helpUrl="https://docs.gorgias.com/statistics/statistics#tags"
-            filters={
-                pageStatsFilters && (
-                    <>
-                        <IntegrationsStatsFilter
-                            value={integrationsStatsFilter}
-                            integrations={messagingIntegrations}
-                            isMultiple
-                        />
-                        <ChannelsStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Channels]}
-                            channels={Object.values(TicketChannel)}
-                        />
-                        <TagsStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Tags]}
-                        />
-                        <PeriodStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Period]}
-                        />
-                    </>
-                )
-            }
-        >
-            {pageStatsFilters && (
-                <StatWrapper
-                    stat={ticketsPerTag}
-                    isFetchingStat={isFetchingTicketsPerTag}
-                    resourceName={TICKETS_PER_TAG}
-                    statsFilters={pageStatsFilters}
-                    helpText="Number of tickets created per channel"
-                    isDownloadable
-                >
-                    {(stat) => (
-                        <TableStat
-                            context={{tagColors}}
-                            data={stat.getIn(['data', 'data'])}
-                            config={statsConfig.get(TICKETS_PER_TAG)}
-                            meta={stat.get('meta')}
-                        />
-                    )}
-                </StatWrapper>
-            )}
-        </StatsPage>
+                helpUrl="https://docs.gorgias.com/statistics/statistics#tags"
+                filters={
+                    pageStatsFilters && (
+                        <>
+                            <IntegrationsStatsFilter
+                                value={integrationsStatsFilter}
+                                integrations={messagingIntegrations}
+                                isMultiple
+                            />
+                            <ChannelsStatsFilter
+                                value={
+                                    pageStatsFilters[StatsFilterType.Channels]
+                                }
+                                channels={Object.values(TicketChannel)}
+                            />
+                            <TagsStatsFilter
+                                value={pageStatsFilters[StatsFilterType.Tags]}
+                            />
+                            <PeriodStatsFilter
+                                value={pageStatsFilters[StatsFilterType.Period]}
+                            />
+                        </>
+                    )
+                }
+            >
+                {pageStatsFilters && (
+                    <StatWrapper
+                        stat={ticketsPerTag}
+                        isFetchingStat={isFetchingTicketsPerTag}
+                        resourceName={TICKETS_PER_TAG}
+                        statsFilters={pageStatsFilters}
+                        helpText="Number of tickets created per channel"
+                        isDownloadable
+                    >
+                        {(stat) => (
+                            <TableStat
+                                context={{tagColors}}
+                                data={stat.getIn(['data', 'data'])}
+                                config={statsConfig.get(TICKETS_PER_TAG)}
+                                meta={stat.get('meta')}
+                            />
+                        )}
+                    </StatWrapper>
+                )}
+            </StatsPage>
+        </StatsFiltersContext.Provider>
     )
 }

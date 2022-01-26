@@ -29,6 +29,7 @@ import css from './LiveAgents.less'
 import StatWrapper from './StatWrapper'
 import useStatResource from './useStatResource'
 import TableStat from './common/components/charts/TableStat/TableStat'
+import StatsFiltersContext from './StatsFiltersContext'
 
 const LIVE_AGENTS_STAT_NAME = 'live-agents-stat'
 
@@ -79,68 +80,74 @@ function LiveAgents() {
     }, [userPerformance])
 
     return (
-        <StatsPage
-            title="Live agents"
-            description="Live Agents will show you the work agents have accomplished over the day."
-            helpUrl="https://docs.gorgias.com/statistics/statistics#data_sets"
-            filters={
-                pageStatsFilters && (
+        <StatsFiltersContext.Provider value={pageStatsFilters}>
+            <StatsPage
+                title="Live agents"
+                description="Live Agents will show you the work agents have accomplished over the day."
+                helpUrl="https://docs.gorgias.com/statistics/statistics#data_sets"
+                filters={
+                    pageStatsFilters && (
+                        <>
+                            <ChannelsStatsFilter
+                                value={
+                                    pageStatsFilters[StatsFilterType.Channels]
+                                }
+                                channels={Object.values(TicketChannel)}
+                            />
+                            <AgentsStatsFilter
+                                value={pageStatsFilters[StatsFilterType.Agents]}
+                            />
+                        </>
+                    )
+                }
+            >
+                {pageStatsFilters && (
                     <>
-                        <ChannelsStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Channels]}
-                            channels={Object.values(TicketChannel)}
-                        />
-                        <AgentsStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Agents]}
-                        />
-                    </>
-                )
-            }
-        >
-            {pageStatsFilters && (
-                <>
-                    <div className={css.currentDate}>
-                        <StatCurrentDate />
-                    </div>
-                    <StatWrapper
-                        resourceName={USERS_PERFORMANCE_OVERVIEW}
-                        stat={formattedUserPerformance}
-                        isFetchingStat={isFetchingUserPerformance}
-                        statsFilters={pageStatsFilters}
-                    >
-                        {(stat) => (
-                            <>
-                                <TableStat
-                                    name={LIVE_AGENTS_STAT_NAME}
-                                    context={{tagColors: null}}
-                                    data={stat.getIn(['data', 'data'])}
-                                    meta={stat.get('meta')}
-                                    config={statsConfig.get(
-                                        USERS_PERFORMANCE_OVERVIEW
-                                    )}
-                                />
-                                <div className={css.navigationWrapper}>
-                                    <Navigation
-                                        hasNextItems={
-                                            !!userPerformance?.meta.next_cursor
-                                        }
-                                        hasPrevItems={
-                                            !!userPerformance?.meta.prev_cursor
-                                        }
-                                        fetchNextItems={
-                                            fetchNextUserPerformancePage
-                                        }
-                                        fetchPrevItems={
-                                            fetchPrevUserPerformancePage
-                                        }
+                        <div className={css.currentDate}>
+                            <StatCurrentDate />
+                        </div>
+                        <StatWrapper
+                            resourceName={USERS_PERFORMANCE_OVERVIEW}
+                            stat={formattedUserPerformance}
+                            isFetchingStat={isFetchingUserPerformance}
+                            statsFilters={pageStatsFilters}
+                        >
+                            {(stat) => (
+                                <>
+                                    <TableStat
+                                        name={LIVE_AGENTS_STAT_NAME}
+                                        context={{tagColors: null}}
+                                        data={stat.getIn(['data', 'data'])}
+                                        meta={stat.get('meta')}
+                                        config={statsConfig.get(
+                                            USERS_PERFORMANCE_OVERVIEW
+                                        )}
                                     />
-                                </div>
-                            </>
-                        )}
-                    </StatWrapper>
-                </>
-            )}
-        </StatsPage>
+                                    <div className={css.navigationWrapper}>
+                                        <Navigation
+                                            hasNextItems={
+                                                !!userPerformance?.meta
+                                                    .next_cursor
+                                            }
+                                            hasPrevItems={
+                                                !!userPerformance?.meta
+                                                    .prev_cursor
+                                            }
+                                            fetchNextItems={
+                                                fetchNextUserPerformancePage
+                                            }
+                                            fetchPrevItems={
+                                                fetchPrevUserPerformancePage
+                                            }
+                                        />
+                                    </div>
+                                </>
+                            )}
+                        </StatWrapper>
+                    </>
+                )}
+            </StatsPage>
+        </StatsFiltersContext.Provider>
     )
 }
 

@@ -25,6 +25,7 @@ import BarStat from './common/components/charts/BarStat'
 import TableStat from './common/components/charts/TableStat/TableStat'
 import StatsPage from './StatsPage'
 import AgentsStatsFilter from './AgentsStatsFilter'
+import StatsFiltersContext from './StatsFiltersContext'
 
 const SUPPORT_PERFORMANCE_AGENTS_STAT_NAME = 'support-performance-agents'
 
@@ -64,73 +65,82 @@ export default function SupportPerformanceAgents() {
         })
 
     return (
-        <StatsPage
-            title="Agents"
-            description="Agents statistics will show you how many tickets were closed by each agent during this period."
-            helpUrl="https://docs.gorgias.com/statistics/statistics#agents"
-            filters={
-                pageStatsFilters && (
+        <StatsFiltersContext.Provider value={pageStatsFilters}>
+            <StatsPage
+                title="Agents"
+                description="Agents statistics will show you how many tickets were closed by each agent during this period."
+                helpUrl="https://docs.gorgias.com/statistics/statistics#agents"
+                filters={
+                    pageStatsFilters && (
+                        <>
+                            <IntegrationsStatsFilter
+                                value={integrationsStatsFilter}
+                                integrations={messagingIntegrations}
+                                isMultiple
+                            />
+                            <ChannelsStatsFilter
+                                value={
+                                    pageStatsFilters[StatsFilterType.Channels]
+                                }
+                                channels={Object.values(TicketChannel)}
+                            />
+                            <AgentsStatsFilter
+                                value={pageStatsFilters[StatsFilterType.Agents]}
+                            />
+                            <PeriodStatsFilter
+                                value={pageStatsFilters[StatsFilterType.Period]}
+                            />
+                        </>
+                    )
+                }
+            >
+                {pageStatsFilters && (
                     <>
-                        <IntegrationsStatsFilter
-                            value={integrationsStatsFilter}
-                            integrations={messagingIntegrations}
-                            isMultiple
-                        />
-                        <ChannelsStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Channels]}
-                            channels={Object.values(TicketChannel)}
-                        />
-                        <AgentsStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Agents]}
-                        />
-                        <PeriodStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Period]}
-                        />
+                        <StatWrapper
+                            stat={ticketsClosedPerAgentPerDay}
+                            isFetchingStat={
+                                isFetchingTicketsClosedPerAgentPerDay
+                            }
+                            resourceName={TICKETS_CLOSED_PER_AGENT_PER_DAY}
+                            statsFilters={pageStatsFilters}
+                            helpText="Number of tickets closed per assigned agent, per day"
+                            isDownloadable
+                        >
+                            {(stat) => (
+                                <BarStat
+                                    data={stat.getIn(['data', 'data'])}
+                                    legend={stat.getIn(
+                                        ['data', 'legend'],
+                                        null
+                                    )}
+                                    config={statsConfig.get(
+                                        TICKETS_CLOSED_PER_AGENT_PER_DAY
+                                    )}
+                                />
+                            )}
+                        </StatWrapper>
+                        <StatWrapper
+                            stat={ticketsClosedPerAgent}
+                            isFetchingStat={isFetchingTicketsClosedPerAgent}
+                            resourceName={TICKETS_CLOSED_PER_AGENT}
+                            statsFilters={pageStatsFilters}
+                            helpText="Number of tickets closed per assigned agent"
+                            isDownloadable
+                        >
+                            {(stat) => (
+                                <TableStat
+                                    context={{tagColors: null}}
+                                    data={stat.getIn(['data', 'data'])}
+                                    meta={stat.get('meta')}
+                                    config={statsConfig.get(
+                                        TICKETS_CLOSED_PER_AGENT
+                                    )}
+                                />
+                            )}
+                        </StatWrapper>
                     </>
-                )
-            }
-        >
-            {pageStatsFilters && (
-                <>
-                    <StatWrapper
-                        stat={ticketsClosedPerAgentPerDay}
-                        isFetchingStat={isFetchingTicketsClosedPerAgentPerDay}
-                        resourceName={TICKETS_CLOSED_PER_AGENT_PER_DAY}
-                        statsFilters={pageStatsFilters}
-                        helpText="Number of tickets closed per assigned agent, per day"
-                        isDownloadable
-                    >
-                        {(stat) => (
-                            <BarStat
-                                data={stat.getIn(['data', 'data'])}
-                                legend={stat.getIn(['data', 'legend'], null)}
-                                config={statsConfig.get(
-                                    TICKETS_CLOSED_PER_AGENT_PER_DAY
-                                )}
-                            />
-                        )}
-                    </StatWrapper>
-                    <StatWrapper
-                        stat={ticketsClosedPerAgent}
-                        isFetchingStat={isFetchingTicketsClosedPerAgent}
-                        resourceName={TICKETS_CLOSED_PER_AGENT}
-                        statsFilters={pageStatsFilters}
-                        helpText="Number of tickets closed per assigned agent"
-                        isDownloadable
-                    >
-                        {(stat) => (
-                            <TableStat
-                                context={{tagColors: null}}
-                                data={stat.getIn(['data', 'data'])}
-                                meta={stat.get('meta')}
-                                config={statsConfig.get(
-                                    TICKETS_CLOSED_PER_AGENT
-                                )}
-                            />
-                        )}
-                    </StatWrapper>
-                </>
-            )}
-        </StatsPage>
+                )}
+            </StatsPage>
+        </StatsFiltersContext.Provider>
     )
 }

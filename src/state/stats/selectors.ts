@@ -113,17 +113,6 @@ export const DEPRECATED_makeStatsFiltersSelector = (viewName: string) =>
         }
     )
 
-export const getSupportPerformanceAgentsStatsFilters =
-    DEPRECATED_makeStatsFiltersSelector('support-performance-agents')
-
-export const getTagsStatsFilters = DEPRECATED_makeStatsFiltersSelector('tags')
-
-export const getChannelsStatsFilters =
-    DEPRECATED_makeStatsFiltersSelector('channels')
-
-export const getLiveAgentsStatsFilters =
-    DEPRECATED_makeStatsFiltersSelector('live-agents')
-
 const makeIntegrationsStatsFilterSelector = (
     integrationsSelector: Selector<RootState, Integration[]>
 ) => {

@@ -1,7 +1,6 @@
-import {useMemo} from 'react'
+import {useContext, useMemo} from 'react'
 import moment, {Moment} from 'moment'
 import _isNumber from 'lodash/isNumber'
-import {List, Map} from 'immutable'
 import {useSelector} from 'react-redux'
 
 import {ViewFilter} from 'state/views/types'
@@ -12,8 +11,9 @@ import {
     DatetimeOperator,
     EqualityOperator,
 } from 'state/rules/types'
-import {StatsFilterType} from 'state/stats/types'
 import {RootState} from 'state/types'
+
+import StatsFiltersContext from '../StatsFiltersContext'
 
 export const comparedPeriodString = (
     previousStartDatetime: Moment,
@@ -106,106 +106,78 @@ export const formatDuration = (value: number, precision = 9) => {
     return response
 }
 
-export const useStatsViewFilters = (
-    periodFilterLeft: string,
-    statsFilters: Maybe<Map<any, any>>
-): ViewFilter[] => {
-    const tags = useSelector((state: RootState) => state.entities.tags)
+export const useStatsViewFilters = (periodFilterLeft: string): ViewFilter[] => {
+    const statsFilters = useContext(StatsFiltersContext)
+    const tagsState = useSelector((state: RootState) => state.entities.tags)
     return useMemo(() => {
         if (!statsFilters) {
             return []
         }
 
         const filters: ViewFilter[] = []
-        if (statsFilters.has(StatsFilterType.Period)) {
-            filters.push({
-                left: periodFilterLeft,
-                operator: DatetimeOperator.GTE,
-                // TODO: remove .utc() after https://linear.app/gorgias/issue/COR-529/display-view-date-filters-in-the-user-timezone
-                right: `'${moment(
-                    statsFilters.getIn([
-                        StatsFilterType.Period,
-                        'start_datetime',
-                    ])
-                )
-                    .utc()
-                    .format()}'`,
-            })
-            filters.push({
-                left: periodFilterLeft,
-                operator: DatetimeOperator.LTE,
-                // TODO: remove .utc() after https://linear.app/gorgias/issue/COR-529/display-view-date-filters-in-the-user-timezone
-                right: `'${moment(
-                    statsFilters.getIn([StatsFilterType.Period, 'end_datetime'])
-                )
-                    .utc()
-                    .format()}'`,
-            })
-        }
+        const {period, channels, integrations, agents, tags} = statsFilters
 
-        if (statsFilters.has(StatsFilterType.Channels)) {
-            const channels = statsFilters?.get(
-                StatsFilterType.Channels
-            ) as List<any>
+        filters.push({
+            left: periodFilterLeft,
+            operator: DatetimeOperator.GTE,
+            // TODO: remove .utc() after https://linear.app/gorgias/issue/COR-529/display-view-date-filters-in-the-user-timezone
+            right: `'${moment(period.start_datetime).utc().format()}'`,
+        })
+
+        filters.push({
+            left: periodFilterLeft,
+            operator: DatetimeOperator.LTE,
+            // TODO: remove .utc() after https://linear.app/gorgias/issue/COR-529/display-view-date-filters-in-the-user-timezone
+            right: `'${moment(period.end_datetime).utc().format()}'`,
+        })
+
+        if (channels?.length) {
             filters.push({
                 left: getTicketViewFieldPath(
                     getTicketViewField(ViewField.Channel)
                 ),
                 operator:
-                    channels.size > 1
+                    channels.length > 1
                         ? CollectionOperator.ContainsAny
                         : EqualityOperator.Eq,
                 right: JSON.stringify(
-                    channels.size > 1 ? channels.toJS() : channels.first()
+                    channels.length > 1 ? channels : channels[0]
                 ),
             })
         }
 
-        if (statsFilters.has(StatsFilterType.Integrations)) {
-            const integrations = statsFilters?.get(
-                StatsFilterType.Integrations
-            ) as List<any>
+        if (integrations?.length) {
             filters.push({
                 left: getTicketViewFieldPath(
                     getTicketViewField(ViewField.Integrations)
                 ),
                 operator:
-                    integrations.size > 1
+                    integrations.length > 1
                         ? CollectionOperator.ContainsAny
                         : EqualityOperator.Eq,
                 right: JSON.stringify(
-                    integrations.size > 1
-                        ? integrations.toJS()
-                        : integrations.first()
+                    integrations.length > 1 ? integrations : integrations[0]
                 ),
             })
         }
 
-        if (statsFilters.has(StatsFilterType.Agents)) {
-            const agents = statsFilters?.get(
-                StatsFilterType.Agents
-            ) as List<number>
+        if (agents?.length) {
             filters.push({
                 left: getTicketViewFieldPath(
                     getTicketViewField(ViewField.Assignee)
                 ),
                 operator:
-                    agents.size > 1
+                    agents.length > 1
                         ? CollectionOperator.ContainsAny
                         : EqualityOperator.Eq,
-                right: JSON.stringify(
-                    agents.size > 1 ? agents.toJS() : agents.first()
-                ),
+                right: JSON.stringify(agents.length > 1 ? agents : agents[0]),
             })
         }
 
-        if (statsFilters.has(StatsFilterType.Tags)) {
+        if (tags?.length) {
             const tagNames = []
-            const ids = (
-                statsFilters.get(StatsFilterType.Tags) as List<any>
-            ).toJS() as number[]
-            for (const id of ids) {
-                const tag = tags[id]
+            for (const tagId of tags) {
+                const tag = tagsState[tagId]
                 if (tag) {
                     tagNames.push(tag.name)
                 }
@@ -222,5 +194,5 @@ export const useStatsViewFilters = (
         }
 
         return filters
-    }, [periodFilterLeft, tags, statsFilters])
+    }, [periodFilterLeft, tagsState, statsFilters])
 }

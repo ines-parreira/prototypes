@@ -1,8 +1,6 @@
 import React, {ReactNode, useMemo} from 'react'
-import {useSelector} from 'react-redux'
 import _isEqual from 'lodash/isEqual'
 
-import {getTagsStatsFilters} from 'state/stats/selectors'
 import {getTicketViewField, getTicketViewFieldPath} from 'config/views'
 import {ViewField} from 'models/view/types'
 import {
@@ -27,10 +25,8 @@ export default function TicketsCreatedPerTagViewLink({
     children,
     untaggedName = 'Untagged',
 }: Props) {
-    const statsFilters = useSelector(getTagsStatsFilters)
     const statsViewFilters = useStatsViewFilters(
-        getTicketViewFieldPath(getTicketViewField(ViewField.Created)),
-        statsFilters
+        getTicketViewFieldPath(getTicketViewField(ViewField.Created))
     )
 
     const filters = useMemo(() => {

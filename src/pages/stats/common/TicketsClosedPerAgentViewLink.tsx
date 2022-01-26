@@ -2,7 +2,6 @@ import React, {ReactNode, useMemo} from 'react'
 import {useSelector} from 'react-redux'
 import {List, Map} from 'immutable'
 
-import {getSupportPerformanceAgentsStatsFilters} from '../../../state/stats/selectors'
 import {getTicketViewField, getTicketViewFieldPath} from '../../../config/views'
 import {ViewField} from '../../../models/view/types'
 import {
@@ -32,10 +31,8 @@ export default function TicketsClosedPerAgentViewLink({
     const agent = agents.find(
         (agent) => (agent!.get('name') as string) === agentName
     )
-    const statsFilters = useSelector(getSupportPerformanceAgentsStatsFilters)
     const statsViewFilters = useStatsViewFilters(
-        getTicketViewFieldPath(getTicketViewField(ViewField.Closed)),
-        statsFilters
+        getTicketViewFieldPath(getTicketViewField(ViewField.Closed))
     )
     const filters = useMemo<ViewFilter[]>(() => {
         const assigneeLeft = getTicketViewFieldPath(

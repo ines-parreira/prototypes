@@ -1,8 +1,6 @@
 import React, {ReactNode, useMemo} from 'react'
-import {useSelector} from 'react-redux'
 import _findKey from 'lodash/findKey'
 
-import {getChannelsStatsFilters} from '../../../state/stats/selectors'
 import {getTicketViewField, getTicketViewFieldPath} from '../../../config/views'
 import {ViewField} from '../../../models/view/types'
 import {ViewFilter} from '../../../state/views/types'
@@ -31,10 +29,8 @@ export default function TicketsCreatedPerChannelViewLink({
         TICKET_CHANNEL_NAMES,
         (name) => name === channelName
     )
-    const statsFilters = useSelector(getChannelsStatsFilters)
     const statsViewFilters = useStatsViewFilters(
-        getTicketViewFieldPath(getTicketViewField(ViewField.Created)),
-        statsFilters
+        getTicketViewFieldPath(getTicketViewField(ViewField.Created))
     )
     const filters = useMemo(() => {
         const channelFilterLeft = getTicketViewFieldPath(

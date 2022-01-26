@@ -5,17 +5,20 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import TicketDetailsStat from '../TicketDetailsStat'
-import {TicketChannel} from '../../../../../../../business/types/ticket'
-import {RootState, StoreDispatch} from '../../../../../../../state/types'
-import {integrationsState} from '../../../../../../../fixtures/integrations'
-import {logEvent} from '../../../../../../../store/middlewares/segmentTracker'
+import {TicketChannel} from 'business/types/ticket'
+import {RootState, StoreDispatch} from 'state/types'
+import {integrationsState} from 'fixtures/integrations'
+import {logEvent} from 'store/middlewares/segmentTracker'
+import {StatsFilters} from 'state/stats/types'
+import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
+
 import ViewLink from '../../../../ViewLink'
+import TicketDetailsStat from '../TicketDetailsStat'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const logEventMock = logEvent as jest.Mock
 
-jest.mock('../../../../../../../store/middlewares/segmentTracker')
+jest.mock('store/middlewares/segmentTracker')
 jest.mock(
     '../../../../ViewLink',
     () =>
@@ -37,23 +40,20 @@ jest.mock(
 )
 
 describe('TicketDetailsStat', () => {
+    const defaultStatsFilters: StatsFilters = {
+        period: {
+            start_datetime: '2021-05-29T00:00:00+02:00',
+            end_datetime: '2021-06-04T23:59:59+02:00',
+        },
+        channels: [TicketChannel.Email],
+        agents: [1, 2],
+    }
     const defaultState = {
-        stats: fromJS({
-            filters: {
-                period: {
-                    start_datetime: '2021-05-29T00:00:00+02:00',
-                    end_datetime: '2021-06-04T23:59:59+02:00',
-                },
-                channels: [TicketChannel.Email],
-                agents: [1, 2],
-            },
-        }),
         integrations: fromJS(integrationsState),
         entities: {
             tags: {},
         },
     } as RootState
-
     const minProps: ComponentProps<typeof TicketDetailsStat> = {
         agentId: 1,
         agentName: 'John Doe',
@@ -74,7 +74,9 @@ describe('TicketDetailsStat', () => {
     it('should render a message when no assigned tickets', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
-                <TicketDetailsStat {...minProps} />
+                <StatsFiltersContext.Provider value={defaultStatsFilters}>
+                    <TicketDetailsStat {...minProps} />
+                </StatsFiltersContext.Provider>
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -83,15 +85,17 @@ describe('TicketDetailsStat', () => {
     it('should render open tickets and channels breakdown', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
-                <TicketDetailsStat
-                    {...minProps}
-                    openTickets={21}
-                    channelsBreakdown={{
-                        ...minProps.channelsBreakdown,
-                        [TicketChannel.Chat]: 2,
-                        [TicketChannel.Email]: 19,
-                    }}
-                />
+                <StatsFiltersContext.Provider value={defaultStatsFilters}>
+                    <TicketDetailsStat
+                        {...minProps}
+                        openTickets={21}
+                        channelsBreakdown={{
+                            ...minProps.channelsBreakdown,
+                            [TicketChannel.Chat]: 2,
+                            [TicketChannel.Email]: 19,
+                        }}
+                    />
+                </StatsFiltersContext.Provider>
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -100,15 +104,17 @@ describe('TicketDetailsStat', () => {
     it('should log event on view link click', () => {
         const {getAllByTestId} = render(
             <Provider store={mockStore(defaultState)}>
-                <TicketDetailsStat
-                    {...minProps}
-                    openTickets={21}
-                    channelsBreakdown={{
-                        ...minProps.channelsBreakdown,
-                        [TicketChannel.Chat]: 2,
-                        [TicketChannel.Email]: 19,
-                    }}
-                />
+                <StatsFiltersContext.Provider value={defaultStatsFilters}>
+                    <TicketDetailsStat
+                        {...minProps}
+                        openTickets={21}
+                        channelsBreakdown={{
+                            ...minProps.channelsBreakdown,
+                            [TicketChannel.Chat]: 2,
+                            [TicketChannel.Email]: 19,
+                        }}
+                    />
+                </StatsFiltersContext.Provider>
             </Provider>
         )
 

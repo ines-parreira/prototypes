@@ -1,12 +1,10 @@
 import React, {useMemo} from 'react'
-import {useSelector} from 'react-redux'
 
 import {
     TicketChannel,
     TicketStatus,
 } from '../../../../../../business/types/ticket'
 import SourceIcon from '../../../../../common/components/SourceIcon'
-import {getLiveAgentsStatsFilters} from '../../../../../../state/stats/selectors'
 import {ViewFilter} from '../../../../../../state/views/types'
 import {
     getTicketViewField,
@@ -53,8 +51,7 @@ export default function TicketDetailsStat({
     const periodFilterLeft = getTicketViewFieldPath(
         getTicketViewField(ViewField.Closed)
     )
-    const statsFilters = useSelector(getLiveAgentsStatsFilters)
-    const statsViewFilters = useStatsViewFilters(periodFilterLeft, statsFilters)
+    const statsViewFilters = useStatsViewFilters(periodFilterLeft)
 
     const assigneeFilter = useMemo<ViewFilter>(
         () => ({
