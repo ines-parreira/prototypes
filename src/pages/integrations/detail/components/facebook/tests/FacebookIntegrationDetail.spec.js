@@ -55,11 +55,11 @@ const defaultProps = {
 }
 
 const defaultFacebookIntegrationSettings = {
-    posts_enabled: true,
-    mentions_enabled: true,
-    recommendations_enabled: true,
-    messenger_enabled: true,
-    import_history_enabled: true,
+    posts_enabled: false,
+    mentions_enabled: false,
+    recommendations_enabled: false,
+    messenger_enabled: false,
+    import_history_enabled: false,
     instagram_comments_enabled: false,
     instagram_direct_message_enabled: false,
     instagram_mentions_enabled: false,

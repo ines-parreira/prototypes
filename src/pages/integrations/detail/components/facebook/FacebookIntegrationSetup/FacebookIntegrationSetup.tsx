@@ -195,8 +195,10 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                 integration.setIn(['meta', 'settings'], fromJS(settings))
             )
         } else {
-            selectedIntegrations = selectedIntegrations.filter(
-                (value) => value!.get('id') === id
+            // There are undefined values because of the `selectedIntegrations.set`
+            // above.
+            selectedIntegrations = selectedIntegrations.filter((value) =>
+                value ? !(value.get('id') === id) : false
             ) as List<Map<any, any>>
         }
 
