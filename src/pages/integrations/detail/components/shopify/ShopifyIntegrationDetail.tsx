@@ -16,8 +16,10 @@ import {
 } from 'reactstrap'
 import {parse} from 'query-string'
 
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Loader from '../../../../common/components/Loader/Loader'
-import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'
 import BooleanField from '../../../../common/forms/BooleanField.js'
 import InputField from '../../../../common/forms/InputField'
 import PageHeader from '../../../../common/components/PageHeader'
@@ -414,21 +416,21 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                         </Button>
                                     ) : null}
                                     {isUpdate ? (
-                                        <DEPRECATED_ConfirmButton
+                                        <ConfirmButton
                                             className="float-right"
-                                            color="secondary"
-                                            confirm={() =>
+                                            type="button"
+                                            onConfirm={() =>
                                                 deleteIntegration(
                                                     integration
                                                 ) as unknown as Promise<void>
                                             }
-                                            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                            intent={ButtonIntent.Destructive}
                                         >
-                                            <i className="material-icons mr-1 text-danger">
-                                                delete
-                                            </i>
-                                            Delete integration
-                                        </DEPRECATED_ConfirmButton>
+                                            <ButtonIconLabel icon="delete">
+                                                Delete integration
+                                            </ButtonIconLabel>
+                                        </ConfirmButton>
                                     ) : null}
                                 </div>
                             </Form>

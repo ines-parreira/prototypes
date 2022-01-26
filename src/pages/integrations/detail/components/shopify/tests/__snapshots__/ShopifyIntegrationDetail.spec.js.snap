@@ -172,19 +172,19 @@ exports[`ShopifyIntegrationDetail should render the page for a deactivated integ
             >
               Reactivate integration
             </Button>
-            <DEPRECATED_ConfirmButton
+            <ConfirmButton
               className="float-right"
-              color="secondary"
-              confirm={[Function]}
-              content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+              confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+              intent="destructive"
+              onConfirm={[Function]}
+              type="button"
             >
-              <i
-                className="material-icons mr-1 text-danger"
+              <ButtonIconLabel
+                icon="delete"
               >
-                delete
-              </i>
-              Delete integration
-            </DEPRECATED_ConfirmButton>
+                Delete integration
+              </ButtonIconLabel>
+            </ConfirmButton>
           </div>
         </Form>
       </Col>
@@ -464,19 +464,19 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
             >
               Update integration
             </Button>
-            <DEPRECATED_ConfirmButton
+            <ConfirmButton
               className="float-right"
-              color="secondary"
-              confirm={[Function]}
-              content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+              confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+              intent="destructive"
+              onConfirm={[Function]}
+              type="button"
             >
-              <i
-                className="material-icons mr-1 text-danger"
+              <ButtonIconLabel
+                icon="delete"
               >
-                delete
-              </i>
-              Delete integration
-            </DEPRECATED_ConfirmButton>
+                Delete integration
+              </ButtonIconLabel>
+            </ConfirmButton>
           </div>
         </Form>
       </Col>
@@ -659,19 +659,19 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
             >
               Update integration
             </Button>
-            <DEPRECATED_ConfirmButton
+            <ConfirmButton
               className="float-right"
-              color="secondary"
-              confirm={[Function]}
-              content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+              confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+              intent="destructive"
+              onConfirm={[Function]}
+              type="button"
             >
-              <i
-                className="material-icons mr-1 text-danger"
+              <ButtonIconLabel
+                icon="delete"
               >
-                delete
-              </i>
-              Delete integration
-            </DEPRECATED_ConfirmButton>
+                Delete integration
+              </ButtonIconLabel>
+            </ConfirmButton>
           </div>
         </Form>
       </Col>
@@ -842,19 +842,19 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
             >
               Update integration
             </Button>
-            <DEPRECATED_ConfirmButton
+            <ConfirmButton
               className="float-right"
-              color="secondary"
-              confirm={[Function]}
-              content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+              confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+              intent="destructive"
+              onConfirm={[Function]}
+              type="button"
             >
-              <i
-                className="material-icons mr-1 text-danger"
+              <ButtonIconLabel
+                icon="delete"
               >
-                delete
-              </i>
-              Delete integration
-            </DEPRECATED_ConfirmButton>
+                Delete integration
+              </ButtonIconLabel>
+            </ConfirmButton>
           </div>
         </Form>
       </Col>
@@ -1035,19 +1035,19 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
             >
               Update integration
             </Button>
-            <DEPRECATED_ConfirmButton
+            <ConfirmButton
               className="float-right"
-              color="secondary"
-              confirm={[Function]}
-              content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+              confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+              intent="destructive"
+              onConfirm={[Function]}
+              type="button"
             >
-              <i
-                className="material-icons mr-1 text-danger"
+              <ButtonIconLabel
+                icon="delete"
               >
-                delete
-              </i>
-              Delete integration
-            </DEPRECATED_ConfirmButton>
+                Delete integration
+              </ButtonIconLabel>
+            </ConfirmButton>
           </div>
         </Form>
       </Col>
@@ -1327,19 +1327,19 @@ exports[`ShopifyIntegrationDetail should render the page to update an existing i
             >
               Update integration
             </Button>
-            <DEPRECATED_ConfirmButton
+            <ConfirmButton
               className="float-right"
-              color="secondary"
-              confirm={[Function]}
-              content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+              confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+              intent="destructive"
+              onConfirm={[Function]}
+              type="button"
             >
-              <i
-                className="material-icons mr-1 text-danger"
+              <ButtonIconLabel
+                icon="delete"
               >
-                delete
-              </i>
-              Delete integration
-            </DEPRECATED_ConfirmButton>
+                Delete integration
+              </ButtonIconLabel>
+            </ConfirmButton>
           </div>
         </Form>
       </Col>
