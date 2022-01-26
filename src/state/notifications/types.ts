@@ -29,6 +29,7 @@ export type Notification = {
     isTicketMessageFailedEvent?: boolean
     showIcon?: boolean
     closable?: boolean
+    onClose?: () => void
     // TODO(@nikolam): separate strictly reapop notifications from the Gorgias type
     showDismissButton?: boolean
 }

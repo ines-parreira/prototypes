@@ -16,7 +16,7 @@ import {recentViewsStorage} from './state/views/utils'
 import {notify} from './state/notifications/actions'
 import configureStore from './store/configureStore'
 import {logEvent, SegmentEvent} from './store/middlewares/segmentTracker'
-import {transformSystemMessagesToNotifications} from './utils'
+import {isAdmin, transformSystemMessagesToNotifications} from './utils'
 import {
     NotificationStatus,
     NotificationStyle,
@@ -28,6 +28,9 @@ import {Tag} from './models/tag/types'
 import {View} from './models/view/types'
 import {SMOOCH_INSIDE_INTEGRATION_TYPE} from './constants/integration'
 import {isProduction, isStaging} from './utils/environment'
+import {getCurrentAccountState} from './state/currentAccount/selectors'
+import {isAccountAffectedByApiBreakingChange} from './utils/account'
+import {getCurrentUserState} from './state/currentUser/selectors'
 
 const initMoment = (currentUser: EditableUserProfile) => {
     // set default locale and timezone
@@ -189,6 +192,42 @@ export const notifyChatIntegrationDeprecated = (reduxStore: Store) => {
 }
 
 notifyChatIntegrationDeprecated(store)
+
+export const notifyAdminsAboutApiBreakingChange = (reduxStore: Store) => {
+    const account = getCurrentAccountState(reduxStore.getState())
+    const user = getCurrentUserState(reduxStore.getState())
+    const notificationId = 'helpdesk-api-breaking-changes-user-passwords'
+    const notificationVisibilityKey = `notification:${notificationId}:hidden`
+    const isNotificationHidden = localStorage.getItem(notificationVisibilityKey)
+    const notification = {
+        allowHTML: true,
+        id: notificationId,
+        style: NotificationStyle.Banner,
+        status: NotificationStatus.Error,
+        dismissible: false,
+        onClick: () =>
+            window.open(
+                'https://developers.gorgias.com/changelog/users-passwords-will-not-be-accepted-anymore-to-authenticate-requests'
+            ),
+        message:
+            '[ACTION REQUIRED] Your third-party app(s) using the Gorgias API will be affected by a breaking change on Feb 2. ' +
+            'Click here for more information.',
+        closable: true,
+        onClose: () => {
+            localStorage.setItem(notificationVisibilityKey, 'true')
+        },
+    }
+
+    if (
+        isAccountAffectedByApiBreakingChange(account.get('domain')) &&
+        isAdmin(user) &&
+        !isNotificationHidden
+    ) {
+        reduxStore.dispatch(notify(notification) as any)
+    }
+}
+
+notifyAdminsAboutApiBreakingChange(store)
 
 // Dispatch system messages as notifications
 transformSystemMessagesToNotifications(window.SYSTEM_MESSAGES || []).forEach(
