@@ -127,19 +127,19 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
           >
             Reconnect
           </Button>
-          <DEPRECATED_ConfirmButton
+          <ConfirmButton
             className="float-right"
-            color="secondary"
-            confirm={[Function]}
-            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            intent="destructive"
+            onConfirm={[Function]}
+            type="button"
           >
-            <i
-              className="material-icons mr-1 text-danger"
+            <ButtonIconLabel
+              icon="delete"
             >
-              delete
-            </i>
-            Delete
-          </DEPRECATED_ConfirmButton>
+              Delete integration
+            </ButtonIconLabel>
+          </ConfirmButton>
         </div>
       </Col>
     </Row>
@@ -246,19 +246,19 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
           >
             Update integration
           </Button>
-          <DEPRECATED_ConfirmButton
+          <ConfirmButton
             className="float-right"
-            color="secondary"
-            confirm={[Function]}
-            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            intent="destructive"
+            onConfirm={[Function]}
+            type="button"
           >
-            <i
-              className="material-icons mr-1 text-danger"
+            <ButtonIconLabel
+              icon="delete"
             >
-              delete
-            </i>
-            Delete
-          </DEPRECATED_ConfirmButton>
+              Delete integration
+            </ButtonIconLabel>
+          </ConfirmButton>
         </div>
       </Col>
     </Row>
@@ -369,19 +369,19 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
           >
             Update integration
           </Button>
-          <DEPRECATED_ConfirmButton
+          <ConfirmButton
             className="float-right"
-            color="secondary"
-            confirm={[Function]}
-            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            intent="destructive"
+            onConfirm={[Function]}
+            type="button"
           >
-            <i
-              className="material-icons mr-1 text-danger"
+            <ButtonIconLabel
+              icon="delete"
             >
-              delete
-            </i>
-            Delete
-          </DEPRECATED_ConfirmButton>
+              Delete integration
+            </ButtonIconLabel>
+          </ConfirmButton>
         </div>
       </Col>
     </Row>
@@ -493,20 +493,20 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
           >
             Update integration
           </Button>
-          <DEPRECATED_ConfirmButton
+          <ConfirmButton
             className="float-right"
-            color="secondary"
-            confirm={[Function]}
-            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-            disabled={true}
+            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            intent="destructive"
+            isDisabled={true}
+            onConfirm={[Function]}
+            type="button"
           >
-            <i
-              className="material-icons mr-1 text-danger"
+            <ButtonIconLabel
+              icon="delete"
             >
-              delete
-            </i>
-            Delete
-          </DEPRECATED_ConfirmButton>
+              Delete integration
+            </ButtonIconLabel>
+          </ConfirmButton>
         </div>
       </Col>
     </Row>
@@ -617,19 +617,19 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
           >
             Update integration
           </Button>
-          <DEPRECATED_ConfirmButton
+          <ConfirmButton
             className="float-right"
-            color="secondary"
-            confirm={[Function]}
-            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            intent="destructive"
+            onConfirm={[Function]}
+            type="button"
           >
-            <i
-              className="material-icons mr-1 text-danger"
+            <ButtonIconLabel
+              icon="delete"
             >
-              delete
-            </i>
-            Delete
-          </DEPRECATED_ConfirmButton>
+              Delete integration
+            </ButtonIconLabel>
+          </ConfirmButton>
         </div>
       </Col>
     </Row>

@@ -13,9 +13,11 @@ import {
 import {parse} from 'query-string'
 import {connect, ConnectedProps} from 'react-redux'
 
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {ButtonIntent} from 'pages/common/components/button/Button'
 import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration'
 import Loader from '../../../../common/components/Loader/Loader'
-import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'
 import InputField from '../../../../common/forms/InputField'
 import PageHeader from '../../../../common/components/PageHeader'
 import LinkAlert from '../../../../common/components/Alert/LinkAlert'
@@ -203,20 +205,20 @@ export class SmileIntegrationDetailComponent extends Component<Props, State> {
                                         Reconnect
                                     </Button>
                                 )}
-                                <DEPRECATED_ConfirmButton
+                                <ConfirmButton
                                     className="float-right"
-                                    color="secondary"
-                                    confirm={() =>
+                                    type="button"
+                                    onConfirm={() =>
                                         deleteIntegration(integration)
                                     }
-                                    content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-                                    disabled={isSubmitting}
+                                    confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                    isDisabled={isSubmitting}
+                                    intent={ButtonIntent.Destructive}
                                 >
-                                    <i className="material-icons mr-1 text-danger">
-                                        delete
-                                    </i>
-                                    Delete
-                                </DEPRECATED_ConfirmButton>
+                                    <ButtonIconLabel icon="delete">
+                                        Delete integration
+                                    </ButtonIconLabel>
+                                </ConfirmButton>
                             </div>
                         </Col>
                     </Row>
