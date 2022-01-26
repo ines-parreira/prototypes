@@ -6,6 +6,10 @@ import _isEmpty from 'lodash/isEmpty'
 import {Button, Container, Form, FormGroup, FormText, Label} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+
 import {
     TICKET_CREATED,
     TICKET_MESSAGE_CREATED,
@@ -25,7 +29,6 @@ import {
 
 import Loader from '../../../../../common/components/Loader/Loader'
 import ObjectListField, {Field} from '../ObjectListField'
-import DEPRECATED_ConfirmButton from '../../../../../common/components/DEPRECATED_ConfirmButton'
 import InputField from '../../../../../common/forms/InputField'
 import BooleanField from '../../../../../common/forms/BooleanField.js'
 import {ContentType, HttpMethod} from '../../../../../../models/api/types'
@@ -544,19 +547,19 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                                 </Button>
                             )}
                             {isUpdate && (
-                                <DEPRECATED_ConfirmButton
+                                <ConfirmButton
                                     className="float-right"
-                                    color="secondary"
-                                    confirm={() =>
+                                    type="button"
+                                    onConfirm={() =>
                                         deleteIntegration(integration)
                                     }
-                                    content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                    confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                    intent={ButtonIntent.Destructive}
                                 >
-                                    <i className="material-icons mr-1 text-danger">
-                                        delete
-                                    </i>
-                                    Delete integration
-                                </DEPRECATED_ConfirmButton>
+                                    <ButtonIconLabel icon="delete">
+                                        Delete integration
+                                    </ButtonIconLabel>
+                                </ConfirmButton>
                             )}
                         </div>
                     </Form>
