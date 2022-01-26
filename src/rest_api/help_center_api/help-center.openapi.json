@@ -1789,7 +1789,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ArticleTranslationEntity"
+                                    "$ref": "#/components/schemas/ArticleTranslationDto"
                                 }
                             }
                         }
@@ -1838,7 +1838,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ArticleTranslationEntity"
+                                    "$ref": "#/components/schemas/ArticleTranslationDto"
                                 }
                             }
                         }
@@ -2808,7 +2808,11 @@
                         "type": "object"
                     },
                     "shop_name": {"type": "string", "nullable": true},
-                    "self_service_deactivated": {"type": "boolean"}
+                    "self_service_deactivated": {
+                        "type": "boolean",
+                        "description": "Boolean indicating if self service is deactivated for this Help center.",
+                        "example": false
+                    }
                 },
                 "required": ["name", "default_locale"]
             },
@@ -3051,7 +3055,11 @@
                         "type": "object"
                     },
                     "shop_name": {"type": "string", "nullable": true},
-                    "self_service_deactivated": {"type": "boolean"},
+                    "self_service_deactivated": {
+                        "type": "boolean",
+                        "description": "Boolean indicating if self service is deactivated for this Help center.",
+                        "example": false
+                    },
                     "powered_by_deactivated": {
                         "type": "boolean",
                         "description": "Boolean indicating if \"Powered By Gorgias\" will be displayed in this help center footer",
@@ -4193,8 +4201,11 @@
                         "type": "string",
                         "nullable": true
                     },
+                    "title": {"type": "string"},
+                    "excerpt": {"type": "string"},
+                    "content": {"type": "string"},
+                    "slug": {"type": "string"},
                     "locale": {
-                        "type": "string",
                         "enum": [
                             "en-US",
                             "fr-FR",
@@ -4207,7 +4218,8 @@
                             "no-NO",
                             "it-IT",
                             "sv-SE"
-                        ]
+                        ],
+                        "type": "string"
                     },
                     "article_id": {"type": "number"},
                     "seo_meta": {
@@ -4217,23 +4229,19 @@
                             }
                         ]
                     },
-                    "rating": {"$ref": "#/components/schemas/Rating"},
-                    "title": {"type": "string"},
-                    "excerpt": {"type": "string"},
-                    "content": {"type": "string"},
-                    "slug": {"type": "string"}
+                    "rating": {"$ref": "#/components/schemas/Rating"}
                 },
                 "required": [
                     "created_datetime",
                     "updated_datetime",
-                    "locale",
-                    "article_id",
-                    "seo_meta",
-                    "rating",
                     "title",
                     "excerpt",
                     "content",
-                    "slug"
+                    "slug",
+                    "locale",
+                    "article_id",
+                    "seo_meta",
+                    "rating"
                 ]
             },
             "ArticleTranslationsListPageDto": {
@@ -4254,7 +4262,7 @@
                 },
                 "required": ["meta", "object", "data"]
             },
-            "ArticleTranslationEntity": {
+            "ArticleTranslationDto": {
                 "type": "object",
                 "properties": {
                     "created_datetime": {
@@ -4270,8 +4278,11 @@
                         "type": "string",
                         "nullable": true
                     },
+                    "title": {"type": "string"},
+                    "excerpt": {"type": "string"},
+                    "content": {"type": "string"},
+                    "slug": {"type": "string"},
                     "locale": {
-                        "type": "string",
                         "enum": [
                             "en-US",
                             "fr-FR",
@@ -4284,7 +4295,8 @@
                             "no-NO",
                             "it-IT",
                             "sv-SE"
-                        ]
+                        ],
+                        "type": "string"
                     },
                     "article_id": {"type": "number"},
                     "seo_meta": {
@@ -4293,22 +4305,18 @@
                                 "$ref": "#/components/schemas/ArticleTranslationSeoMeta"
                             }
                         ]
-                    },
-                    "title": {"type": "string"},
-                    "excerpt": {"type": "string"},
-                    "content": {"type": "string"},
-                    "slug": {"type": "string"}
+                    }
                 },
                 "required": [
                     "created_datetime",
                     "updated_datetime",
-                    "locale",
-                    "article_id",
-                    "seo_meta",
                     "title",
                     "excerpt",
                     "content",
-                    "slug"
+                    "slug",
+                    "locale",
+                    "article_id",
+                    "seo_meta"
                 ]
             },
             "UpdateArticleTranslationDto": {

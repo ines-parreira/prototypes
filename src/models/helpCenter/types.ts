@@ -74,7 +74,7 @@ export type ArticleWithLocalTranslation =
     Components.Schemas.ArticleWithLocalTranslation
 export type Rating = Components.Schemas.Rating
 
-export type ArticleTranslation = Components.Schemas.ArticleTranslationEntity
+export type ArticleTranslation = Components.Schemas.ArticleTranslationDto
 export type ArticleTranslationSeoMeta =
     Components.Schemas.ArticleTranslationSeoMeta
 export type LocalArticleTranslation = Components.Schemas.LocalArticleTranslation
