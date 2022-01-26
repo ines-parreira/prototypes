@@ -148,20 +148,20 @@ exports[`<YotpoIntegrationDetailComponent/> render() should not render anything 
           >
             Reconnect integration
           </Button>
-          <DEPRECATED_ConfirmButton
+          <ConfirmButton
             className="float-right"
-            color="secondary"
-            confirm={[Function]}
-            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-            disabled={false}
+            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            intent="destructive"
+            isDisabled={false}
+            onConfirm={[Function]}
+            type="button"
           >
-            <i
-              className="material-icons mr-1 text-danger"
+            <ButtonIconLabel
+              icon="delete"
             >
-              delete
-            </i>
-            Delete
-          </DEPRECATED_ConfirmButton>
+              Delete integration
+            </ButtonIconLabel>
+          </ConfirmButton>
         </div>
       </Col>
     </Row>
@@ -283,20 +283,20 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render a small parag
           >
             Reconnect integration
           </Button>
-          <DEPRECATED_ConfirmButton
+          <ConfirmButton
             className="float-right"
-            color="secondary"
-            confirm={[Function]}
-            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-            disabled={false}
+            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            intent="destructive"
+            isDisabled={false}
+            onConfirm={[Function]}
+            type="button"
           >
-            <i
-              className="material-icons mr-1 text-danger"
+            <ButtonIconLabel
+              icon="delete"
             >
-              delete
-            </i>
-            Delete
-          </DEPRECATED_ConfirmButton>
+              Delete integration
+            </ButtonIconLabel>
+          </ConfirmButton>
         </div>
       </Col>
     </Row>
@@ -410,20 +410,20 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render an alert beca
           >
             Reconnect integration
           </Button>
-          <DEPRECATED_ConfirmButton
+          <ConfirmButton
             className="float-right"
-            color="secondary"
-            confirm={[Function]}
-            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-            disabled={false}
+            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            intent="destructive"
+            isDisabled={false}
+            onConfirm={[Function]}
+            type="button"
           >
-            <i
-              className="material-icons mr-1 text-danger"
+            <ButtonIconLabel
+              icon="delete"
             >
-              delete
-            </i>
-            Delete
-          </DEPRECATED_ConfirmButton>
+              Delete integration
+            </ButtonIconLabel>
+          </ConfirmButton>
         </div>
       </Col>
     </Row>
@@ -537,20 +537,20 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render buttons loadi
           >
             Reconnect integration
           </Button>
-          <DEPRECATED_ConfirmButton
+          <ConfirmButton
             className="float-right"
-            color="secondary"
-            confirm={[Function]}
-            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-            disabled={true}
+            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            intent="destructive"
+            isDisabled={true}
+            onConfirm={[Function]}
+            type="button"
           >
-            <i
-              className="material-icons mr-1 text-danger"
+            <ButtonIconLabel
+              icon="delete"
             >
-              delete
-            </i>
-            Delete
-          </DEPRECATED_ConfirmButton>
+              Delete integration
+            </ButtonIconLabel>
+          </ConfirmButton>
         </div>
       </Col>
     </Row>
@@ -664,20 +664,20 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render not render de
           >
             Reconnect integration
           </Button>
-          <DEPRECATED_ConfirmButton
+          <ConfirmButton
             className="float-right"
-            color="secondary"
-            confirm={[Function]}
-            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-            disabled={false}
+            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            intent="destructive"
+            isDisabled={false}
+            onConfirm={[Function]}
+            type="button"
           >
-            <i
-              className="material-icons mr-1 text-danger"
+            <ButtonIconLabel
+              icon="delete"
             >
-              delete
-            </i>
-            Delete
-          </DEPRECATED_ConfirmButton>
+              Delete integration
+            </ButtonIconLabel>
+          </ConfirmButton>
         </div>
       </Col>
     </Row>
