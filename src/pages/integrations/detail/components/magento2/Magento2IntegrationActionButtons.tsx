@@ -4,7 +4,9 @@ import classNames from 'classnames'
 import {Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
-import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {deleteIntegration} from '../../../../../state/integrations/actions'
 
 type Props = {
@@ -54,16 +56,16 @@ export const Magento2IntegrationActionButtons = ({
                 {isUpdate ? 'Update integration' : 'Add integration'}
             </Button>
             {isUpdate && !isActive && !isManual ? (
-                <DEPRECATED_ConfirmButton
-                    color="success"
-                    loading={isSubmitting}
-                    content="You first need to delete the integration on your Magento2 store so that you can re-add it using this button"
-                    confirm={() =>
+                <ConfirmButton
+                    type="button"
+                    isLoading={isSubmitting}
+                    onConfirm={() =>
                         _onReactivateOneClick(integration, redirectUri)
                     }
+                    confirmationContent="You first need to delete the integration on your Magento2 store so that you can re-add it using this button"
                 >
                     Reconnect
-                </DEPRECATED_ConfirmButton>
+                </ConfirmButton>
             ) : null}
             {isUpdate && !isActive && isManual ? (
                 <Button
@@ -78,15 +80,17 @@ export const Magento2IntegrationActionButtons = ({
                 </Button>
             ) : null}
             {isUpdate ? (
-                <DEPRECATED_ConfirmButton
+                <ConfirmButton
                     className="float-right"
-                    color="secondary"
-                    confirm={() => deleteIntegration(integration)}
-                    content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                    type="button"
+                    onConfirm={() => deleteIntegration(integration)}
+                    confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                    intent={ButtonIntent.Destructive}
                 >
-                    <i className="material-icons mr-1 text-danger">delete</i>
-                    Delete integration
-                </DEPRECATED_ConfirmButton>
+                    <ButtonIconLabel icon="delete">
+                        Delete integration
+                    </ButtonIconLabel>
+                </ConfirmButton>
             ) : null}
         </div>
     )
