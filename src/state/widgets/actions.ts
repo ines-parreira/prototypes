@@ -35,8 +35,8 @@ export function fetchWidgets() {
 
         return client
             .get<{data: Widget[]}>('/api/widgets/', {
-                data: {
-                    type: 'ticket-list',
+                params: {
+                    order_by: 'order:asc',
                 },
             })
             .then((json) => json?.data)
