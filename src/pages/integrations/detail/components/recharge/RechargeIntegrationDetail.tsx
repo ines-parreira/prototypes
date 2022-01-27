@@ -13,10 +13,12 @@ import {
 } from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import * as integrationHelpers from '../../../../../state/integrations/helpers'
 import {deleteIntegration} from '../../../../../state/integrations/actions'
 import Loader from '../../../../common/components/Loader/Loader'
-import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'
 import InputField from '../../../../common/forms/InputField'
 import PageHeader from '../../../../common/components/PageHeader'
 import LinkAlert from '../../../../common/components/Alert/LinkAlert'
@@ -241,20 +243,22 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
                                     </Button>
                                 )}
                                 {isUpdate && (
-                                    <DEPRECATED_ConfirmButton
+                                    <ConfirmButton
+                                        id={`confirm-button-${String(
+                                            integration.get('id') || 'delete'
+                                        )}`}
                                         className="float-right"
-                                        color="secondary"
-                                        id={integration.get('id')}
-                                        confirm={() =>
+                                        type="button"
+                                        onConfirm={() =>
                                             deleteIntegration(integration)
                                         }
-                                        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                        confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                        intent={ButtonIntent.Destructive}
                                     >
-                                        <i className="material-icons mr-1 text-danger">
-                                            delete
-                                        </i>
-                                        Delete
-                                    </DEPRECATED_ConfirmButton>
+                                        <ButtonIconLabel icon="delete">
+                                            Delete integration
+                                        </ButtonIconLabel>
+                                    </ConfirmButton>
                                 )}
                             </div>
                         </Col>

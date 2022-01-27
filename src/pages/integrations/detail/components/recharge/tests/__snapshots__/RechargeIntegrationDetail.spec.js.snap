@@ -126,23 +126,22 @@ exports[`<RechargeIntegrationDetail/> render() should not render anything about 
             >
               Reconnect
             </button>
-            <div
-              class="component d-inline-block float-right"
-              id="1"
+            <button
+              class="wrapper float-right destructive medium"
+              id="confirm-button-1"
+              type="button"
             >
-              <button
-                class="btn btn-secondary"
-                id="confirm-button-1"
-                type="button"
+              <span
+                class="wrapper"
               >
                 <i
-                  class="material-icons mr-1 text-danger"
+                  class="material-icons icon isLeft medium"
                 >
                   delete
                 </i>
-                Delete
-              </button>
-            </div>
+                Delete integration
+              </span>
+            </button>
           </div>
         </div>
       </div>
@@ -261,23 +260,22 @@ exports[`<RechargeIntegrationDetail/> render() should render a small paragraph b
             </div>
           </div>
           <div>
-            <div
-              class="component d-inline-block float-right"
-              id="1"
+            <button
+              class="wrapper float-right destructive medium"
+              id="confirm-button-1"
+              type="button"
             >
-              <button
-                class="btn btn-secondary"
-                id="confirm-button-1"
-                type="button"
+              <span
+                class="wrapper"
               >
                 <i
-                  class="material-icons mr-1 text-danger"
+                  class="material-icons icon isLeft medium"
                 >
                   delete
                 </i>
-                Delete
-              </button>
-            </div>
+                Delete integration
+              </span>
+            </button>
           </div>
         </div>
       </div>
@@ -406,23 +404,22 @@ exports[`<RechargeIntegrationDetail/> render() should render an alert because th
             </div>
           </div>
           <div>
-            <div
-              class="component d-inline-block float-right"
-              id="1"
+            <button
+              class="wrapper float-right destructive medium"
+              id="confirm-button-1"
+              type="button"
             >
-              <button
-                class="btn btn-secondary"
-                id="confirm-button-1"
-                type="button"
+              <span
+                class="wrapper"
               >
                 <i
-                  class="material-icons mr-1 text-danger"
+                  class="material-icons icon isLeft medium"
                 >
                   delete
                 </i>
-                Delete
-              </button>
-            </div>
+                Delete integration
+              </span>
+            </button>
           </div>
         </div>
       </div>
@@ -551,23 +548,22 @@ exports[`<RechargeIntegrationDetail/> render() should render buttons loading and
             </div>
           </div>
           <div>
-            <div
-              class="component d-inline-block float-right"
-              id="1"
+            <button
+              class="wrapper float-right destructive medium"
+              id="confirm-button-1"
+              type="button"
             >
-              <button
-                class="btn btn-secondary"
-                id="confirm-button-1"
-                type="button"
+              <span
+                class="wrapper"
               >
                 <i
-                  class="material-icons mr-1 text-danger"
+                  class="material-icons icon isLeft medium"
                 >
                   delete
                 </i>
-                Delete
-              </button>
-            </div>
+                Delete integration
+              </span>
+            </button>
           </div>
         </div>
       </div>
@@ -696,23 +692,22 @@ exports[`<RechargeIntegrationDetail/> render() should render not render deactiva
             </div>
           </div>
           <div>
-            <div
-              class="component d-inline-block float-right"
-              id="1"
+            <button
+              class="wrapper float-right destructive medium"
+              id="confirm-button-1"
+              type="button"
             >
-              <button
-                class="btn btn-secondary"
-                id="confirm-button-1"
-                type="button"
+              <span
+                class="wrapper"
               >
                 <i
-                  class="material-icons mr-1 text-danger"
+                  class="material-icons icon isLeft medium"
                 >
                   delete
                 </i>
-                Delete
-              </button>
-            </div>
+                Delete integration
+              </span>
+            </button>
           </div>
         </div>
       </div>
