@@ -838,40 +838,45 @@ export const validateWebhookURLToPattern = (val: string) => {
 export const validateWebhookURL = (val: string): Maybe<string> => {
     const rules = [
         {
-            test: /^((?!(\..)).)*$/,
-            message: 'Invalid URL',
-        },
-        {
             test: /^(?!https:).*:/,
             message: 'Only https protocol is allowed',
+        },
+        {
+            /**
+             * Looking for the lack of a ".", except if preceeded by [] which implies an IPv6 address
+             * match: https://something
+             * no match: https://something.else.com, https://[fe00:4860:4860::8888], https://82.127.10.1
+             *  */
+            test: /^((?!(\..)|(\[.*?\])).)*$/,
+            message: 'Invalid url',
+        },
+        {
+            /**
+             * Looking for ":" plus a decimal, except if inside [] which is the IPv6 address notation
+             * match: https://something.com:3000, https://[fe00:4860:4860::8888]:3000
+             * no match: https://something.else.com, https://[fe00:4860:4860::8888]
+             *  */
+            test: /(:\d)(?![^\[]*\])/,
+            message: 'No port specifications allowed',
         },
         {
             test: /(\.internal(\/.*)?|\.local(\/.*)?)$/,
             message: 'Invalid top level domain',
         },
         {
-            test: /:\d/,
-            message: 'No port specifications allowed',
+            test: /^https:\/\/((10\.)|(127\.)|(172\.1[6-9]\.)|(172\.2[0-9]\.)|(172\.3[0-1]\.)|(192\.168\.)|(\[f[cd]))/,
+            message: 'You must not specify a private / local address',
         },
     ]
 
-    const errors: string[] = []
+    let error
 
     if (val) {
-        const url = val.toLowerCase()
-
-        rules.forEach((rule) => {
-            if (rule.test.test(url)) {
-                errors.push(rule.message)
-            }
-        })
+        const url = val.toLowerCase().split('?')[0] // query could create false positive in regexp
+        error = rules.find((rule) => rule.test.test(url))?.message
     }
 
-    if (errors.length === 0) {
-        return null
-    }
-
-    return errors.join(' + ')
+    return error || null
 }
 
 /**

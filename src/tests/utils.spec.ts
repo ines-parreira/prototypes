@@ -552,32 +552,45 @@ describe('global utils', () => {
     describe('validateWebhookURL', () => {
         it('should not allow http protocol', () => {
             const url = 'http://foobar.com'
-            expect(utils.validateWebhookURL(url)).not.toEqual('')
+            expect(utils.validateWebhookURL(url)).not.toBe(null)
         })
 
         it('should not allow port specifications', () => {
             const url = 'https://foobar.com:8080'
-            expect(utils.validateWebhookURL(url)).not.toEqual('')
+            expect(utils.validateWebhookURL(url)).not.toBe(null)
         })
 
         it('should require a TLD', () => {
             const url = 'https://rmq0'
-            expect(utils.validateWebhookURL(url)).not.toEqual('')
+            expect(utils.validateWebhookURL(url)).not.toBe(null)
+        })
+
+        it('should require a TLD except if the url is made with an IPv6 address', () => {
+            const url = 'https://[fe00:4860:4860::8888]'
+            expect(utils.validateWebhookURL(url)).toBe(null)
         })
 
         it('should not allow .local TLD', () => {
             const url = 'https://foobar.local/'
-            expect(utils.validateWebhookURL(url)).not.toEqual('')
+            expect(utils.validateWebhookURL(url)).not.toBe(null)
         })
 
         it('should not allow .internal TLD', () => {
             const url = 'https://foobar.internal/'
-            expect(utils.validateWebhookURL(url)).not.toEqual('')
+            expect(utils.validateWebhookURL(url)).not.toBe(null)
         })
 
-        it('should render multiple errors for each error in url', () => {
-            const url = 'http://foobar.local'
-            expect(utils.validateWebhookURL(url)).toContain('+')
+        it('should not allow private address', () => {
+            let url = 'https://[fd00:4860:4860::8888]'
+            expect(utils.validateWebhookURL(url)).not.toBe(null)
+            url = 'https://10.3.2.1'
+            expect(utils.validateWebhookURL(url)).not.toBe(null)
+            url = 'https://127.0.0.1'
+            expect(utils.validateWebhookURL(url)).not.toBe(null)
+            url = 'https://172.21.1.0'
+            expect(utils.validateWebhookURL(url)).not.toBe(null)
+            url = 'https://192.168.2.1'
+            expect(utils.validateWebhookURL(url)).not.toBe(null)
         })
     })
 
