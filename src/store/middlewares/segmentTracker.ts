@@ -60,6 +60,8 @@ export enum SegmentEvent {
     IntentFeedbackDropdownOpen = 'intent-feedback-dropdown-open',
     ModalToggled = 'modal-toggled',
     MacroAppliedSearchbar = 'macro-applied-searchbar',
+    MacrosExportClicked = 'macros-export-clicked',
+    MacrosImportClicked = 'macros-import-clicked',
     MacrosQuickReplyTooltip = 'macros-quick-reply-tooltip',
     MacrosQuickReplyGetDetails = 'macros-quick-reply-get-details',
     MacrosQuickReplySent = 'macros-quick-reply-sent',

@@ -1,0 +1,164 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MacrosCSVImportPopover/> should render 1`] = `
+<body>
+  <div />
+</body>
+`;
+
+exports[`<MacrosCSVImportPopover/> should render 2`] = `
+<body
+  class="modal-open"
+>
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal fade"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog modal-lg modal-dialog-centered"
+          role="document"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Import macros from CSV
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="modal-body"
+            >
+              <div>
+                <p>
+                  You can import your macros into gorgias using a CSV. More information on macros variables
+                   
+                  <a
+                    href="https://docs.gorgias.com/macros/macro-variables"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    here.
+                  </a>
+                </p>
+                <p>
+                  You can
+                   
+                  <a
+                    to="#"
+                  >
+                    download this CSV template
+                  </a>
+                   
+                  with the proper column names.
+                </p>
+                <div
+                  class="alert warning"
+                >
+                  <div
+                    class="iconContainer"
+                  >
+                    <img
+                      alt="icon"
+                      src="test-file-stub"
+                    />
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <span
+                      class="label"
+                    >
+                      This process will update your macro if we find a macro in the CSV with the same ID as an existing macro in your account. If no ID is provided we will create a new macro.
+                    </span>
+                  </div>
+                </div>
+                <br />
+                <div
+                  class="alert warning"
+                >
+                  <div
+                    class="iconContainer"
+                  >
+                    <img
+                      alt="icon"
+                      src="test-file-stub"
+                    />
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <span
+                      class="label"
+                    >
+                      Text formatting will be lost when updating an existing macro.
+                    </span>
+                  </div>
+                </div>
+                <br />
+                <input
+                  accept=".csv"
+                  style="display: none;"
+                  type="file"
+                />
+                <div
+                  class="dropAreasContainer"
+                >
+                  <div
+                    class="fileDropArea"
+                  >
+                    <i
+                      class="material-icons modalCloudIcon"
+                    >
+                      cloud_upload
+                    </i>
+                    <b
+                      class="dropAreaText"
+                    >
+                      Drop your CSV here, or
+                       
+                      <a
+                        href=""
+                      >
+                        browse
+                      </a>
+                    </b>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop fade"
+      />
+    </div>
+  </div>
+</body>
+`;

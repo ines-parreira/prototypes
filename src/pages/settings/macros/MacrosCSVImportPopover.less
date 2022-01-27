@@ -1,0 +1,62 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .modalFooter {
+        background-color: @classic-neutral-grey-2;
+    }
+
+    .modalCloudIcon {
+        font-size: 32px;
+        color: @classic-neutral-grey-4;
+        display: block;
+    }
+
+    .fileDropArea {
+        border: 2px dashed @classic-neutral-grey-3;
+        background: @classic-neutral-grey-2;
+        padding: 14px;
+        cursor: pointer;
+        text-align: center;
+        border-radius: 10px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        &:first-child {
+            margin-right: 8px;
+        }
+
+        &:last-child {
+            margin-left: 8px;
+        }
+    }
+
+    .fileSelectedArea {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 24px;
+        display: flex;
+        flex-grow: 1;
+        justify-content: space-between;
+        margin: 0 5px;
+
+        & > div {
+            align-self: center;
+        }
+
+        & i {
+            color: @classic-neutral-grey-6;
+        }
+    }
+
+    .dropAreasContainer {
+        display: flex;
+    }
+
+    .dropAreaText {
+        font-weight: 600;
+        font-size: 16px;
+    }
+}

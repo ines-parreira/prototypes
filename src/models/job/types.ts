@@ -1,4 +1,4 @@
-enum JobStatus {
+export enum JobStatus {
     CancelRequested = 'cancel_requested',
     Canceled = 'canceled',
     Done = 'done',
@@ -18,6 +18,8 @@ export enum JobType {
     ApplyMacro = 'applyMacro',
     DeleteTicket = 'deleteTicket',
     ExportTicket = 'exportTicket',
+    ExportMacro = 'exportMacro',
+    ImportMacro = 'importMacro',
     UpdateTicket = 'updateTicket',
 }
 
@@ -32,6 +34,7 @@ export type JobParams = {
     }
     macro_id?: number
     apply_and_close?: boolean
+    url?: string
 }
 
 export type Job = {
@@ -51,4 +54,9 @@ export type Job = {
     type: JobType
     user_id: number
     uri: string
+}
+
+export type JobRequestPayload = {
+    type: JobType
+    params: JobParams
 }

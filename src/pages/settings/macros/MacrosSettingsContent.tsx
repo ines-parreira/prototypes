@@ -26,6 +26,7 @@ import settingsCss from '../settings.less'
 
 import css from './MacrosSettingsContent.less'
 import MacrosSettingsTable from './MacrosSettingsTable'
+import {MacrosManageDropdown} from './MacrosManageDropdown'
 
 type PaginationState = {
     page: number
@@ -106,6 +107,7 @@ export function MacrosSettingsContentContainer({
                         placeholder="Search macros..."
                         searchDebounceTime={300}
                     />
+                    <MacrosManageDropdown />
                     <Button
                         color="success"
                         onClick={() => {

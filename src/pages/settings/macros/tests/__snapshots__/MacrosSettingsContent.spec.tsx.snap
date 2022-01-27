@@ -18,6 +18,7 @@ exports[`<MacrosSettingsContent/> should match snapshot 1`] = `
         placeholder="Search macros..."
         searchDebounceTime={300}
       />
+      <MacrosManageDropdown />
       <Button
         color="success"
         onClick={[Function]}

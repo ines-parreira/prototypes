@@ -11,6 +11,7 @@ import Search from '../../../common/components/Search'
 import {MacrosSettingsContentContainer} from '../MacrosSettingsContent'
 import MacroSettingsTable from '../MacrosSettingsTable'
 import history from '../../../history'
+// import {MacrosManageDropdown} from '../MacrosManageDropdown'
 
 jest.mock('../../../../models/macro/resources')
 jest.mock(
@@ -58,6 +59,10 @@ jest.mock(
             )
         }
 )
+
+jest.mock('../MacrosManageDropdown', () => ({
+    MacrosManageDropdown: () => <div />,
+}))
 
 const mockToken = axios.CancelToken.source().token
 
