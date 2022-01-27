@@ -290,7 +290,7 @@ export function RulesViewContainer({
                     )}
                 </div>
                 {activeTab === RuleTabs.AccountRules && (
-                    <Video videoId="0fIboyInGDg" legend="Working with rules" />
+                    <Video videoId="zo2Ui0RPscU" legend="Working with rules" />
                 )}
             </Container>
             {activeTab === RuleTabs.AccountRules ? (
