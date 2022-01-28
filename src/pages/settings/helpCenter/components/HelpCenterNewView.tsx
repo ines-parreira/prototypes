@@ -114,6 +114,9 @@ export const HelpCenterNewView = ({
     const navigateToStartView = () =>
         history.push(location.pathname.split('/new')[0])
 
+    const navigateToHelpCenterArticles = (id: number) =>
+        history.push(`${location.pathname.split('/new')[0]}/${id}/articles`)
+
     const handleSubmit = async () => {
         if (!client) {
             return
@@ -132,7 +135,11 @@ export const HelpCenterNewView = ({
             )
 
             helpCenterCreated(createdHelpCenter)
-            navigateToStartView()
+            if (isNaN(createdHelpCenter.id)) {
+                navigateToStartView()
+            } else {
+                navigateToHelpCenterArticles(createdHelpCenter.id)
+            }
 
             void notify({
                 message: 'Help Center created with success',
