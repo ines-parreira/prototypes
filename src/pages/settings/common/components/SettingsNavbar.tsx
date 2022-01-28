@@ -55,6 +55,7 @@ export default class SettingsNavbar extends Component<Props> {
                     {
                         to: 'change-password',
                         text: 'Change password',
+                        isHidden: !currentUser.get('has_password'),
                     },
                     {
                         requiredRole: ADMIN_ROLE,

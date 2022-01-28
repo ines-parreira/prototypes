@@ -7,6 +7,7 @@ import {RootState} from '../../../state/types'
 import {submitSetting} from '../../../state/currentAccount/actions'
 import {getAccessSettings} from '../../../state/currentAccount/selectors'
 import {
+    AccountSettingAccess,
     AccountSettingAccessSignupMode as SignupMode,
     AccountSettingType,
 } from '../../../state/currentAccount/types'
@@ -14,9 +15,16 @@ import {
 import PageHeader from '../../common/components/PageHeader'
 import RadioField from '../../common/forms/RadioField'
 import InputField from '../../common/forms/InputField'
+import googleLogo from '../../../assets/img/integrations/google.svg'
 import css from '../settings.less'
+import SsoToggleButton from './SsoToggleButton'
 
 type Props = ConnectedProps<typeof connector>
+
+enum LoadingKey {
+    Settings = 'settings',
+    SSO = 'sso',
+}
 
 const FORBIDDEN_DOMAINS = ['gmail.com', 'outlook.com']
 
@@ -46,8 +54,12 @@ export const AccessContainer = (props: Props) => {
         accessSettings.getIn(['data', 'allowed_domains']) || []
     const signupModeSetting: SignupMode =
         accessSettings.getIn(['data', 'signup_mode']) || SignupMode.Invite
+    const googleSsoEnabled: boolean = accessSettings.getIn(
+        ['data', 'google_sso_enabled'],
+        false
+    )
 
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState<LoadingKey>()
     const [signupMode, setSignupMode] = useState(signupModeSetting)
     const [allowedDomains, setAllowedDomains] = useState(
         allowedDomainsSetting.join('\n')
@@ -61,22 +73,57 @@ export const AccessContainer = (props: Props) => {
 
     const signupLink = `https://${accountDomain}.gorgias.com/signup`
 
-    const handleSubmit = useCallback(
-        async (evt: FormEvent) => {
-            evt.preventDefault()
+    const saveSettings = useCallback(
+        async (
+            loadingKey: LoadingKey,
+            overrides?: Partial<AccountSettingAccess['data']>,
+            notification?: string
+        ) => {
+            const data = {
+                signup_mode: signupMode,
+                allowed_domains: splitDomains(allowedDomains),
+                google_sso_enabled: googleSsoEnabled,
+            }
 
-            setIsLoading(true)
-            await submitSetting({
-                id: accessSettings.get('id'),
-                type: AccountSettingType.Access,
-                data: {
-                    signup_mode: signupMode,
-                    allowed_domains: splitDomains(allowedDomains),
+            setIsLoading(loadingKey)
+            await submitSetting(
+                {
+                    id: accessSettings.get('id'),
+                    type: AccountSettingType.Access,
+                    data: {...data, ...overrides},
                 },
-            })
-            setIsLoading(false)
+                notification
+            )
+            setIsLoading(undefined)
         },
-        [allowedDomains, signupMode, submitSetting, accessSettings]
+        [
+            allowedDomains,
+            signupMode,
+            submitSetting,
+            accessSettings,
+            googleSsoEnabled,
+        ]
+    )
+
+    const toggleSso = useCallback(
+        (val: boolean) => {
+            return saveSettings(
+                LoadingKey.SSO,
+                {google_sso_enabled: val},
+                `Google Single Sign-On successfully ${
+                    val ? 'activated' : 'deactivated'
+                }`
+            )
+        },
+        [saveSettings]
+    )
+
+    const handleSubmit = useCallback(
+        (evt: FormEvent) => {
+            evt.preventDefault()
+            return saveSettings(LoadingKey.Settings)
+        },
+        [saveSettings]
     )
 
     return (
@@ -87,6 +134,28 @@ export const AccessContainer = (props: Props) => {
                 <div className={css.contentWrapper}>
                     <Form onSubmit={handleSubmit}>
                         <h4 className="mb-2">
+                            <i className="material-icons mr-1">vpn_key</i>
+                            Single Sign-On
+                        </h4>
+                        <p>
+                            Social and business single sign-on allows agents to
+                            access Gorgias using their Google accounts. When you
+                            enable the SSO methods, a sign-in button is added to
+                            the log-in page.
+                        </p>
+                        <SsoToggleButton
+                            id="google"
+                            name="Google"
+                            logo={googleLogo}
+                            value={googleSsoEnabled}
+                            loading={isLoading === LoadingKey.SSO}
+                            disabled={
+                                !!isLoading && isLoading !== LoadingKey.SSO
+                            }
+                            setValue={toggleSso}
+                        />
+
+                        <h4 className="mt-5 mb-2">
                             <i className="material-icons mr-1">mail</i>
                             Joining the helpdesk
                         </h4>
@@ -124,10 +193,11 @@ export const AccessContainer = (props: Props) => {
                             type="submit"
                             color="primary"
                             className={classnames({
-                                'btn-loading': isLoading,
+                                'btn-loading':
+                                    isLoading === LoadingKey.Settings,
                             })}
                             disabled={
-                                isLoading ||
+                                !!isLoading ||
                                 (signupMode === SignupMode.AllowedDomains &&
                                     !!domainError)
                             }

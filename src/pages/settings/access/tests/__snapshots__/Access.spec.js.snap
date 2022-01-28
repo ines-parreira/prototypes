@@ -29,6 +29,45 @@ exports[`<Access/> should render properly 1`] = `
             <i
               class="material-icons mr-1"
             >
+              vpn_key
+            </i>
+            Single Sign-On
+          </h4>
+          <p>
+            Social and business single sign-on allows agents to access Gorgias using their Google accounts. When you enable the SSO methods, a sign-in button is added to the log-in page.
+          </p>
+          <div
+            class="mb-2 d-flex align-items-center"
+          >
+            <label
+              class="switch toggle-switch"
+            >
+              <input
+                readonly=""
+                type="checkbox"
+              />
+              <div
+                class="slider"
+              />
+            </label>
+            <img
+              alt="Google logo"
+              class="ml-3 mr-2"
+              src="test-file-stub"
+              style="height: 1.4em;"
+            />
+            <b>
+              Enable 
+              Google
+               Single Sign-On
+            </b>
+          </div>
+          <h4
+            class="mt-5 mb-2"
+          >
+            <i
+              class="material-icons mr-1"
+            >
               mail
             </i>
             Joining the helpdesk
@@ -111,6 +150,45 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
         >
           <h4
             class="mb-2"
+          >
+            <i
+              class="material-icons mr-1"
+            >
+              vpn_key
+            </i>
+            Single Sign-On
+          </h4>
+          <p>
+            Social and business single sign-on allows agents to access Gorgias using their Google accounts. When you enable the SSO methods, a sign-in button is added to the log-in page.
+          </p>
+          <div
+            class="mb-2 d-flex align-items-center"
+          >
+            <label
+              class="switch toggle-switch"
+            >
+              <input
+                readonly=""
+                type="checkbox"
+              />
+              <div
+                class="slider"
+              />
+            </label>
+            <img
+              alt="Google logo"
+              class="ml-3 mr-2"
+              src="test-file-stub"
+              style="height: 1.4em;"
+            />
+            <b>
+              Enable 
+              Google
+               Single Sign-On
+            </b>
+          </div>
+          <h4
+            class="mt-5 mb-2"
           >
             <i
               class="material-icons mr-1"
@@ -219,6 +297,45 @@ exports[`<Access/> should show an error and block submit when using a generic do
         >
           <h4
             class="mb-2"
+          >
+            <i
+              class="material-icons mr-1"
+            >
+              vpn_key
+            </i>
+            Single Sign-On
+          </h4>
+          <p>
+            Social and business single sign-on allows agents to access Gorgias using their Google accounts. When you enable the SSO methods, a sign-in button is added to the log-in page.
+          </p>
+          <div
+            class="mb-2 d-flex align-items-center"
+          >
+            <label
+              class="switch toggle-switch"
+            >
+              <input
+                readonly=""
+                type="checkbox"
+              />
+              <div
+                class="slider"
+              />
+            </label>
+            <img
+              alt="Google logo"
+              class="ml-3 mr-2"
+              src="test-file-stub"
+              style="height: 1.4em;"
+            />
+            <b>
+              Enable 
+              Google
+               Single Sign-On
+            </b>
+          </div>
+          <h4
+            class="mt-5 mb-2"
           >
             <i
               class="material-icons mr-1"

@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SsoToggleButton/> should render properly 1`] = `
+<div>
+  <div
+    class="mb-2 d-flex align-items-center"
+  >
+    <label
+      class="switch toggle-switch"
+    >
+      <input
+        readonly=""
+        type="checkbox"
+      />
+      <div
+        class="slider"
+      />
+    </label>
+    <img
+      alt="Google logo"
+      class="ml-3 mr-2"
+      style="height: 1.4em;"
+    />
+    <b>
+      Enable 
+      Google
+       Single Sign-On
+    </b>
+  </div>
+</div>
+`;

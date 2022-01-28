@@ -99,6 +99,7 @@ export type AccountSettingAccess = {
     data: {
         signup_mode: AccountSettingAccessSignupMode
         allowed_domains: string[]
+        google_sso_enabled: boolean
     }
 }
 export enum AccountSettingAccessSignupMode {

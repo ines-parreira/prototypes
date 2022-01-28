@@ -54,7 +54,7 @@ export function submitSettingSuccess(
     }
 }
 
-export function submitSetting(setting: AccountSetting) {
+export function submitSetting(setting: AccountSetting, notification?: string) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         const isUpdate = !!setting.id
         const promise = isUpdate
@@ -71,9 +71,9 @@ export function submitSetting(setting: AccountSetting) {
                     void dispatch(
                         notify({
                             status: NotificationStatus.Success,
-                            message: `${_capitalize(
-                                setting.type
-                            )} settings saved`,
+                            message:
+                                notification ??
+                                `${_capitalize(setting.type)} settings saved`,
                         })
                     )
 
