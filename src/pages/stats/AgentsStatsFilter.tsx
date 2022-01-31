@@ -10,7 +10,7 @@ import {getLabelledTeamsJS} from '../../state/teams/selectors'
 import {getLabelledAgentsJS} from '../../state/agents/selectors'
 
 import SelectFilter from './common/SelectFilter'
-import css from './DEPRECATED_StatsFilters.less'
+import css from './AgentsStatsFilter.less'
 
 type Props = {
     value: AgentsStatsFilterValue

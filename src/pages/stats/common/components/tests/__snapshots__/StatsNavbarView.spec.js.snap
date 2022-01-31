@@ -13,7 +13,6 @@ exports[`StatsNavbarView should render 1`] = `
         activeClassName="active"
         className="link"
         exact={true}
-        key="Overview"
         to="/app/stats/live-overview"
       >
         Overview
@@ -22,7 +21,6 @@ exports[`StatsNavbarView should render 1`] = `
         activeClassName="active"
         className="link"
         exact={true}
-        key="Agents"
         to="/app/stats/live-agents"
       >
         Agents
@@ -40,7 +38,6 @@ exports[`StatsNavbarView should render 1`] = `
         activeClassName="active"
         className="link"
         exact={true}
-        key="Overview"
         to="/app/stats/support-performance-overview"
       >
         Overview
@@ -49,7 +46,6 @@ exports[`StatsNavbarView should render 1`] = `
         activeClassName="active"
         className="link"
         exact={true}
-        key="Tags"
         to="/app/stats/tags"
       >
         Tags
@@ -58,7 +54,6 @@ exports[`StatsNavbarView should render 1`] = `
         activeClassName="active"
         className="link"
         exact={true}
-        key="Channels"
         to="/app/stats/channels"
       >
         Channels
@@ -67,7 +62,6 @@ exports[`StatsNavbarView should render 1`] = `
         activeClassName="active"
         className="link"
         exact={true}
-        key="Agents"
         to="/app/stats/support-performance-agents"
       >
         Agents
@@ -76,7 +70,6 @@ exports[`StatsNavbarView should render 1`] = `
         activeClassName="active"
         className="link"
         exact={true}
-        key="Satisfaction"
         to="/app/stats/satisfaction"
       >
         Satisfaction
@@ -85,7 +78,6 @@ exports[`StatsNavbarView should render 1`] = `
         activeClassName="active"
         className="link"
         exact={true}
-        key="Revenue"
         to="/app/stats/revenue"
       >
         Revenue
@@ -103,7 +95,6 @@ exports[`StatsNavbarView should render 1`] = `
         activeClassName="active"
         className="link"
         exact={true}
-        key="Overview"
         to="/app/stats/automation"
       >
         Overview
@@ -112,7 +103,6 @@ exports[`StatsNavbarView should render 1`] = `
         activeClassName="active"
         className="link"
         exact={true}
-        key="Macros"
         to="/app/stats/macros"
       >
         Macros
@@ -121,7 +111,6 @@ exports[`StatsNavbarView should render 1`] = `
         activeClassName="active"
         className="link"
         exact={true}
-        key="Intents"
         to="/app/stats/intents"
       >
         Intents
@@ -130,7 +119,6 @@ exports[`StatsNavbarView should render 1`] = `
         activeClassName="active"
         className="link"
         exact={true}
-        key="Self-service"
         to="/app/stats/self-service"
       >
         Self-service

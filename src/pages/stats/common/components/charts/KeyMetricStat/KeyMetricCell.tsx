@@ -4,15 +4,16 @@ import {Map, List, fromJS} from 'immutable'
 import classnames from 'classnames'
 import _isObject from 'lodash/isObject'
 
+import Tooltip from 'pages/common/components/Tooltip'
+import Loader from 'pages/common/components/Loader/Loader'
+import {StatConfigMetric} from 'config/stats'
+
 import {
     comparedPeriodString,
     formatCurrency,
     formatDuration,
     formatPercent,
 } from '../../../utils'
-import Tooltip from '../../../../../common/components/Tooltip'
-import Loader from '../../../../../common/components/Loader/Loader'
-import {StatConfig} from '../../../../../../config/stats'
 import StatPercentageDiff from '../../StatPercentageDiff'
 
 import DistributionKeyMetricStat from './DistributionKeyMetricStat'
@@ -99,9 +100,9 @@ export const KeyMetricCell = ({
 
         if (config.get('formatData')) {
             return defaultWrapper(
-                (config.get('formatData') as StatConfig['formatData'])!(
+                (config.get('formatData') as StatConfigMetric['formatData'])!(
                     metric
-                ) as any,
+                )!,
                 metric,
                 valueTooltipId,
                 tooltipDelta

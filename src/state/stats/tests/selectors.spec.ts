@@ -1,10 +1,5 @@
 import {fromJS} from 'immutable'
 
-import {EMAIL_CHANNEL} from '../../../config/ticket'
-import {
-    GMAIL_INTEGRATION_TYPE,
-    SHOPIFY_INTEGRATION_TYPE,
-} from '../../../constants/integration'
 import {RootState} from '../../types'
 import {initialState} from '../reducers'
 import * as selectors from '../selectors'
@@ -55,117 +50,6 @@ describe('selectors', () => {
 
                 defaultState.stats = defaultState.stats.set('filters', null)
                 expect(selectors.getFilters(defaultState)).toEqual(null)
-            })
-        })
-
-        describe('getViewfilters()', () => {
-            it('should return no filter for the given view because there is no filter', () => {
-                defaultState.stats = defaultState.stats.set('filters', null)
-                expect(
-                    selectors.DEPRECATED_makeStatsFiltersSelector(
-                        'support-performance-overview'
-                    )(defaultState)
-                ).toEqual(null)
-            })
-
-            it('should return filters for the given view', () => {
-                const filters = fromJS({
-                    tags: [1, 2],
-                    agents: [234, 654],
-                    score: '4',
-                    channels: [EMAIL_CHANNEL],
-                    period: {
-                        start_datetime: '2019-03-09',
-                        end_datetime: '2019-03-10',
-                    },
-                })
-                defaultState.stats = defaultState.stats.set('filters', filters)
-                expect(
-                    selectors.DEPRECATED_makeStatsFiltersSelector(
-                        'support-performance-overview'
-                    )(defaultState)
-                ).toMatchSnapshot()
-                expect(
-                    selectors.DEPRECATED_makeStatsFiltersSelector(
-                        'satisfaction'
-                    )(defaultState)
-                ).toMatchSnapshot()
-            })
-
-            it('should remove integrations when they are not allowed in filters', () => {
-                defaultState.stats = defaultState.stats.set(
-                    'filters',
-                    fromJS({
-                        integrations: [1, 2],
-                        period: {
-                            start_datetime: '2019-03-09',
-                            end_datetime: '2019-03-10',
-                        },
-                    })
-                )
-                defaultState.integrations = defaultState.stats.set(
-                    'integrations',
-                    fromJS([
-                        {
-                            id: 1,
-                            type: SHOPIFY_INTEGRATION_TYPE,
-                        },
-                        {
-                            id: 2,
-                            type: GMAIL_INTEGRATION_TYPE,
-                        },
-                    ])
-                )
-
-                expect(
-                    selectors.DEPRECATED_makeStatsFiltersSelector('revenue')(
-                        defaultState
-                    )
-                ).toMatchSnapshot()
-            })
-
-            it("should add an integration in the filters because it's a required field", () => {
-                defaultState.stats = defaultState.stats.set(
-                    'filters',
-                    fromJS({
-                        integrations: [],
-                        period: {
-                            start_datetime: '2019-03-09',
-                            end_datetime: '2019-03-10',
-                        },
-                    })
-                )
-                defaultState.integrations = defaultState.stats.set(
-                    'integrations',
-                    fromJS([
-                        {
-                            id: 1,
-                            type: GMAIL_INTEGRATION_TYPE,
-                        },
-                        {
-                            id: 2,
-                            type: SHOPIFY_INTEGRATION_TYPE,
-                        },
-                    ])
-                )
-
-                expect(
-                    selectors.DEPRECATED_makeStatsFiltersSelector('revenue')(
-                        defaultState
-                    )
-                ).toMatchSnapshot()
-            })
-
-            it('should return a default period if missing from the filters', () => {
-                defaultState.stats = defaultState.stats.set(
-                    'filters',
-                    fromJS({})
-                )
-                expect(
-                    selectors.DEPRECATED_makeStatsFiltersSelector(
-                        'live-agents'
-                    )(defaultState)
-                ).toMatchSnapshot()
             })
         })
 

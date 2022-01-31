@@ -1,5 +1,5 @@
 import React, {ComponentType, ReactElement, ReactNode, ReactText} from 'react'
-import {fromJS, Map, List} from 'immutable'
+import {Map, List} from 'immutable'
 import {Link} from 'react-router-dom'
 import moment from 'moment'
 import _merge from 'lodash/merge'
@@ -8,10 +8,8 @@ import _isString from 'lodash/isString'
 import {ChartType, Scale, TooltipItem} from 'chart.js'
 import {defaults} from 'react-chartjs-2'
 
-import {TicketChannel} from '../business/types/ticket'
 import {formatDuration} from '../pages/stats/common/utils'
 import {TagLabel} from '../pages/common/utils/labels'
-import {IntegrationType} from '../models/integration/types'
 import {IntentName} from '../models/intent/types'
 import {humanizeString, lightenDarkenColor, toImmutable} from '../utils'
 import StatCurrentDate from '../pages/stats/common/components/StatCurrentDate'
@@ -22,7 +20,6 @@ import {REASONS_DROPDOWN_OPTIONS} from '../pages/settings/selfService/components
 import {AutomationStatsSelfServiceMetric} from '../pages/stats/AutomationStatsSelfServiceMetric'
 import {SelectableOption} from '../pages/common/forms/SelectField/types'
 import {ReportIssueReasons} from '../models/selfServiceConfiguration/types'
-import SelfServiceIntegrationsFilter from '../pages/stats/self-service/SelfServiceIntegrationsFilter'
 
 import css from './stats.less'
 
@@ -118,20 +115,6 @@ export const SATISFACTION_SURVEY_MAX_SCORE = 5
 export const SATISFACTION_SURVEY_MAX_COMMENT_LENGTH = 80
 
 export const TICKET_MAX_SUBJECT_LENGTH = 100
-
-// Deprecated: Use constants from state/states/constants
-export const DEPRECATED_STORE_INTEGRATION_TYPES = [IntegrationType.Shopify]
-export const DEPRECATED_MESSAGE_INTEGRATION_TYPES = [
-    IntegrationType.Email,
-    IntegrationType.Gmail,
-    IntegrationType.Outlook,
-    IntegrationType.Aircall,
-    IntegrationType.GorgiasChat,
-    IntegrationType.Smooch,
-    IntegrationType.SmoochInside,
-    IntegrationType.Facebook,
-    IntegrationType.Zendesk,
-]
 
 type IntentOption = {color: string; label: string}
 
@@ -288,6 +271,20 @@ export type StatConfigCallbacks<T extends ReactNode = ReactNode> = {
     ) => T
 }
 
+export type StatConfigMetric = {
+    api_resource_name?: string
+    label: string
+    tooltip?: string | ((data?: Map<any, any>) => ReactNode)
+    name?: string
+    formatData?: (data: Map<any, any>) => string | number | null
+    type?: string
+    fill?: string
+    minValue?: number
+    maxValue?: number
+    variant?: string
+    component?: ReactNode
+}
+
 export type StatConfig = {
     helpText?: string
     helpTextLink?: ComponentType
@@ -297,21 +294,8 @@ export type StatConfig = {
     callbacks?: StatConfigCallbacks
     lines?: Record<string, unknown>
     options?: (value: any) => Record<string, unknown>
-    metrics?: {
-        api_resource_name?: string
-        label: string
-        tooltip?: string | ((data?: Map<any, any>) => ReactNode)
-        name?: string
-        formatData?: (data: Map<any, any>) => string | number | null
-        type?: string
-        fill?: string
-        minValue?: number
-        maxValue?: number
-        variant?: string
-        component?: ReactNode
-    }[]
+    metrics?: StatConfigMetric[]
     api_resource_name?: string
-    formatData?: (stat?: Map<any, any>) => Map<any, any> | undefined
     axisHelpers?: Record<string, string>
     component?: ComponentType
     hasBusinessHoursHighlight?: boolean
@@ -711,112 +695,6 @@ export const stats = toImmutable<
             'Online time':
                 'Current agent online status and total amount of online time today calculated in your local timezone.',
             'Tickets closed': 'Number of tickets closed per assigned agents',
-        },
-        formatData: (data?: Map<any, any>) => {
-            if (!data) {
-                return data
-            }
-            const openTicketsIndex = (
-                data.getIn(['axes', 'x']) as List<any>
-            ).findIndex((x: Map<any, any>) => x.get('name') === 'Open tickets')
-            const ticketsDetailsIndex = (
-                data.getIn(['axes', 'x']) as List<any>
-            ).findIndex(
-                (x: Map<any, any>) =>
-                    x.get('name') === 'Open tickets per channel'
-            )
-            const onlineTimeIndex = (
-                data.getIn(['axes', 'x']) as List<any>
-            ).findIndex((x: Map<any, any>) => x.get('name') === 'Online time')
-            const agentTimezoneIndex = (
-                data.getIn(['axes', 'x']) as List<any>
-            ).findIndex(
-                (x: Map<any, any>) => x.get('name') === 'Agent timezone'
-            )
-            const onlineIndex = (
-                data.getIn(['axes', 'x']) as List<any>
-            ).findIndex((x: Map<any, any>) => x.get('name') === 'Online')
-            const firstSessionIndex = (
-                data.getIn(['axes', 'x']) as List<any>
-            ).findIndex((x: Map<any, any>) => x.get('name') === 'First Session')
-            const lastSessionIndex = (
-                data.getIn(['axes', 'x']) as List<any>
-            ).findIndex((x: Map<any, any>) => x.get('name') === 'Last Session')
-
-            return data
-                .setIn(
-                    ['axes', 'x', onlineTimeIndex, 'type'],
-                    StatValueType.OnlineTime
-                )
-                .setIn(
-                    ['axes', 'x', openTicketsIndex, 'type'],
-                    StatValueType.TicketDetails
-                )
-                .deleteIn(['axes', 'x', ticketsDetailsIndex])
-                .deleteIn(['axes', 'x', lastSessionIndex])
-                .deleteIn(['axes', 'x', firstSessionIndex])
-                .deleteIn(['axes', 'x', onlineIndex])
-                .deleteIn(['axes', 'x', agentTimezoneIndex])
-                .update('lines', (lines: List<any>) =>
-                    lines.map((line: List<any>) =>
-                        line.reduce(
-                            (
-                                acc?: List<any> | undefined,
-                                value?: Map<any, any>,
-                                index?: number
-                            ) => {
-                                if (!acc || !value) {
-                                    return acc!
-                                }
-
-                                return index === openTicketsIndex
-                                    ? acc.push(
-                                          value.set(
-                                              'details',
-                                              line.getIn([
-                                                  ticketsDetailsIndex,
-                                                  'value',
-                                              ])
-                                          )
-                                      )
-                                    : index === onlineTimeIndex
-                                    ? acc.push(
-                                          value.set(
-                                              'extra',
-                                              fromJS({
-                                                  timezone: line.getIn([
-                                                      agentTimezoneIndex,
-                                                      'value',
-                                                  ]),
-                                                  isOnline: line.getIn([
-                                                      onlineIndex,
-                                                      'value',
-                                                  ]),
-                                                  firstSession: line.getIn([
-                                                      firstSessionIndex,
-                                                      'value',
-                                                  ]),
-                                                  lastSession: line.getIn([
-                                                      lastSessionIndex,
-                                                      'value',
-                                                  ]),
-                                              })
-                                          )
-                                      )
-                                    : [
-                                          ticketsDetailsIndex,
-                                          agentTimezoneIndex,
-                                          onlineIndex,
-                                          firstSessionIndex,
-                                          lastSessionIndex,
-                                      ].includes(index!)
-                                    ? acc
-                                    : acc.push(value)
-                            },
-                            fromJS([])
-                        )
-                    )
-                )
         },
     },
     [TICKETS_CLOSED_PER_AGENT]: {
@@ -1691,270 +1569,3 @@ const formatDurationTooltipCb = (ctx: TooltipItem<ChartType>) => {
 function formatNumber(this: Scale<any>, value: number) {
     return humanizeString(this.getLabelForValue(value))
 }
-
-/**
- *  A view is a statistics page with a bunch of statistics (table and/or charts)
- * name: the name of the view
- * filters: filters available on the view applied on statistics
- * stats: statistics displayed on the view
- */
-export const liveViews: Map<any, any> = fromJS({
-    'live-overview': {
-        name: 'Overview',
-        title: 'Live overview',
-        description:
-            'Get a live overview of the current activity of your support team, including agent status, open tickets, and volume of tickets you are handling throughout the day.',
-        url: 'https://docs.gorgias.com/statistics/statistics#data_sets',
-        filters: [{type: 'channels'}, {type: 'agents'}],
-        link: 'live-overview',
-        stats: [LIVE_OVERVIEW_METRICS, CURRENT_DATE, SUPPORT_VOLUME_PER_HOUR],
-    },
-    'live-agents': {
-        name: 'Agents',
-        title: 'Live agents',
-        description:
-            'Live Agents will show you the work agents have accomplished over the day.',
-        url: 'https://docs.gorgias.com/statistics/statistics#data_sets',
-        filters: [{type: 'channels'}, {type: 'agents'}],
-        link: 'live-agents',
-        stats: [CURRENT_DATE, USERS_PERFORMANCE_OVERVIEW],
-    },
-})
-
-export const supportPerformanceViews: Map<any, any> = fromJS({
-    'support-performance-overview': {
-        name: 'Overview',
-        title: 'Performance overview',
-        description: `Get an overview of the most important statistics about your customer service.
-Metrics such as volume of tickets, first response time and resolution time are key when it comes to
-providing excellent customer support.`,
-        url: 'https://docs.gorgias.com/statistics/statistics#overview',
-        filters: [
-            {
-                type: 'integrations',
-                options: {allowedTypes: DEPRECATED_MESSAGE_INTEGRATION_TYPES},
-            },
-            {type: 'channels'},
-            {type: 'agents'},
-            {type: 'tags'},
-            {type: 'period'},
-        ],
-        // default view available at `app/stats/`
-        link: 'support-performance-overview',
-        stats: [
-            OVERVIEW,
-            SUPPORT_VOLUME,
-            RESOLUTION_TIME,
-            FIRST_RESPONSE_TIME,
-            TICKETS_CREATED_PER_HOUR_PER_WEEKDAY,
-        ],
-    },
-    tags: {
-        name: 'Tags',
-        description: `Tags statistics will show you how many tickets were created during this time period and have a
-tag attached to them. `,
-        url: 'https://docs.gorgias.com/statistics/statistics#tags',
-        filters: [
-            {
-                type: 'integrations',
-                options: {allowedTypes: DEPRECATED_MESSAGE_INTEGRATION_TYPES},
-            },
-            {type: 'channels'},
-            {type: 'tags'},
-            {type: 'period'},
-        ],
-        link: 'tags',
-        stats: [TICKETS_PER_TAG],
-    },
-    channels: {
-        name: 'Channels',
-        description: `Channel statistics to get a clear view of your ticket volume based on the different communication
-channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...`,
-        url: 'https://docs.gorgias.com/statistics/statistics#channels',
-        filters: [
-            {
-                type: 'integrations',
-                options: {allowedTypes: DEPRECATED_MESSAGE_INTEGRATION_TYPES},
-            },
-            {type: 'channels'},
-            {type: 'period'},
-        ],
-        link: 'channels',
-        stats: [
-            TICKETS_CREATED_PER_CHANNEL_PER_DAY,
-            TICKETS_CREATED_PER_CHANNEL,
-        ],
-    },
-    'support-performance-agents': {
-        name: 'Agents',
-        description: `Agents statistics will show you how many tickets were closed by each agent during this period.`,
-        url: 'https://docs.gorgias.com/statistics/statistics#agents',
-        filters: [
-            {
-                type: 'integrations',
-                options: {allowedTypes: DEPRECATED_MESSAGE_INTEGRATION_TYPES},
-            },
-            {type: 'channels'},
-            {type: 'agents'},
-            {type: 'period'},
-        ],
-        link: 'support-performance-agents',
-        stats: [TICKETS_CLOSED_PER_AGENT_PER_DAY, TICKETS_CLOSED_PER_AGENT],
-    },
-    satisfaction: {
-        name: 'Satisfaction',
-        description: `Satisfaction survey statistics allow you to measure how good is the support your team is providing over time.
-How many surveys have been sent, response rate, average scores and more. `,
-        url: 'https://docs.gorgias.com/statistics/statistics#satisfaction',
-        filters: [
-            {
-                type: 'integrations',
-                options: {allowedTypes: DEPRECATED_MESSAGE_INTEGRATION_TYPES},
-            },
-            {
-                type: 'channels',
-                options: [TicketChannel.Email, TicketChannel.Chat],
-            },
-            {
-                type: 'score',
-                minValue: SATISFACTION_SURVEY_MIN_SCORE,
-                maxValue: SATISFACTION_SURVEY_MAX_SCORE,
-                variant: 'star',
-                reverse: true,
-            },
-            {type: 'agents'},
-            {type: 'tags'},
-            {type: 'period'},
-        ],
-        link: 'satisfaction',
-        stats: [SATISFACTION_SURVEYS, LATEST_SATISFACTION_SURVEYS],
-    },
-    revenue: {
-        name: 'Revenue',
-        description: `Revenue statistics allow you to measure how much money your support team is generating by
-helping customers through the purchasing journey.`,
-        url: 'https://docs.gorgias.com/statistics/revenue-statistics',
-        filters: [
-            {
-                type: 'integrations',
-                options: {
-                    allowedTypes: DEPRECATED_STORE_INTEGRATION_TYPES,
-                    isMultiple: false,
-                    isRequired: true,
-                },
-            },
-            {type: 'channels'},
-            {type: 'tags'},
-            {type: 'period'},
-        ],
-        link: 'revenue',
-        stats: [
-            REVENUE_OVERVIEW,
-            REVENUE_PER_DAY,
-            REVENUE_PER_AGENT,
-            REVENUE_PER_TICKET,
-        ],
-    },
-})
-
-export const automationViews: Map<any, any> = fromJS({
-    automation: {
-        name: 'Overview',
-        title: 'Automation Overview',
-        description: `The automation overview records how many customer interactions are automated
-(answered and closed without agent intervention) thanks to Gorgias automation rules.
-You can see at a glance how many interactions are automated depending on its source and the automation
-tool used to answer it.`,
-        url: 'https://docs.gorgias.com/statistics/automation-statistics',
-        filters: [
-            {
-                type: 'integrations',
-                options: {allowedTypes: DEPRECATED_MESSAGE_INTEGRATION_TYPES},
-            },
-            {type: 'channels'},
-            {type: 'period'},
-        ],
-        link: 'automation',
-        stats: [AUTOMATION_OVERVIEW, AUTOMATION_FLOW, AUTOMATION_PER_CHANNEL],
-    },
-    macros: {
-        name: 'Macros',
-        description: `Macro statistics is an excellent way to ensure your agents are very efficient by using macros.
-It also shows what macros are being used the most often so you can you can provide this information elsewhere in order
-to help reduce your support inquiries.`,
-        url: 'https://docs.gorgias.com/statistics/statistics#macros',
-        filters: [
-            {
-                type: 'integrations',
-                options: {allowedTypes: DEPRECATED_MESSAGE_INTEGRATION_TYPES},
-            },
-            {type: 'channels'},
-            {type: 'period'},
-        ],
-        link: 'macros',
-        stats: [MESSAGES_SENT_PER_MACRO],
-    },
-    intents: {
-        name: 'Intents',
-        description: `Intents statistics on ticket messages give you an overview of the most reccurrent issues your customers face.
-Intents can be used in rules and macros to automate your ticket-reply workflow.`,
-        url: 'https://docs.gorgias.com/intents-sentiments/customer-intents',
-        filters: [
-            {
-                type: 'channels',
-                options: [
-                    TicketChannel.Api,
-                    TicketChannel.Chat,
-                    TicketChannel.Email,
-                    TicketChannel.Facebook,
-                    TicketChannel.FacebookMention,
-                    TicketChannel.FacebookMessenger,
-                    TicketChannel.InstagramAdComment,
-                    TicketChannel.InstagramComment,
-                    TicketChannel.Phone,
-                    TicketChannel.Sms,
-                ],
-            },
-            {type: 'period'},
-        ],
-        link: 'intents',
-        stats: [
-            INTENTS_OVERVIEW,
-            INTENTS_BREAKDOWN_PER_DAY,
-            INTENTS_OCCURRENCE,
-        ],
-    },
-    'self-service': {
-        name: 'Self-service',
-        description: () => (
-            <div>
-                Self-service statistics give you an overview of the performance
-                of your self-service features which can automate tickets and
-                save you time. This view shows data from the{' '}
-                <b>Chat channels and the Help centers combined</b>.
-            </div>
-        ),
-        url: 'https://docs.gorgias.com/statistics/self-service-statistics',
-        filters: [
-            {
-                type: 'integrations',
-                options: {
-                    customFilter: SelfServiceIntegrationsFilter,
-                },
-            },
-            {type: 'period'},
-        ],
-        link: 'self-service',
-        stats: [
-            SELF_SERVICE_OVERVIEW,
-            SELF_SERVICE_FLOWS_DISTRIBUTION,
-            SELF_SERVICE_SECTION_REPORT_ISSUE,
-            SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES,
-            SELF_SERVICE_TOP_REPORTED_ISSUES,
-            SELF_SERVICE_SECTION_RETURN,
-            SELF_SERVICE_MOST_RETURNED_PRODUCTS,
-        ],
-    },
-})
-
-export const views = liveViews.merge(supportPerformanceViews, automationViews)

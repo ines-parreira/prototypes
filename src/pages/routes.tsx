@@ -35,7 +35,6 @@ import CustomerNavbarContainer from './customers/common/CustomerNavbarContainer'
 import CustomerDetailContainer from './customers/detail/CustomerDetailContainer'
 import CustomerSourceContainer from './customers/detail/CustomerSourceContainer'
 import CustomerInfobarContainer from './customers/detail/CustomerInfobarContainer'
-import DEPRECATED_StatsPage from './stats/DEPRECATED_StatsPage'
 
 import YourProfileContainer from './settings/yourProfile/YourProfileContainer.js'
 import ChangePassword from './settings/yourProfile/ChangePassword'
@@ -494,14 +493,6 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
                     path={`${path}/self-service`}
                     render={appRender({
                         content: SelfServiceStatsPage,
-                        navbar: StatsNavbarContainer,
-                    })}
-                />
-                <Route
-                    path={`${path}/:view`}
-                    exact
-                    render={appRender({
-                        content: DEPRECATED_StatsPage,
                         navbar: StatsNavbarContainer,
                     })}
                 />
