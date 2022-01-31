@@ -37,7 +37,7 @@ export const RuleRecipeModal = ({
     onToggle,
     shouldInstall,
 }: Props) => {
-    const {rule, triggered_count} = recipe
+    const {rule, triggered_count, views_per_section} = recipe
     const [shouldCreateviews, setShouldCreateViews] = useState(true)
 
     return (
@@ -76,22 +76,24 @@ export const RuleRecipeModal = ({
                         className={css.ruleEditor}
                     />
                 </div>
-                <FormGroup check className="mb-1 mt-3">
-                    <Label check>
-                        <Input
-                            type="checkbox"
-                            checked={shouldCreateviews}
-                            onChange={(e) =>
-                                setShouldCreateViews(e.target.checked)
-                            }
-                        />
-                        <span className="ml-1">
-                            <strong>
-                                Create the views related to this rule.
-                            </strong>
-                        </span>
-                    </Label>
-                </FormGroup>
+                {!!views_per_section && (
+                    <FormGroup check className="mb-1 mt-3">
+                        <Label check>
+                            <Input
+                                type="checkbox"
+                                checked={shouldCreateviews}
+                                onChange={(e) =>
+                                    setShouldCreateViews(e.target.checked)
+                                }
+                            />
+                            <span className="ml-1">
+                                <strong>
+                                    Create the views related to this rule.
+                                </strong>
+                            </span>
+                        </Label>
+                    </FormGroup>
+                )}
             </ModalBody>
             <ModalFooter className={css.modalFooter}>
                 <Button onClick={onToggle}>Cancel</Button>
