@@ -6,7 +6,15 @@ exports[`ast widgets <AssigneeTeamSelect/> render() should render a dropdown wit
   options={
     Array [
       Object {
-        "label": "Unassigned",
+        "label": <React.Fragment>
+          <i
+            className="material-icons"
+          >
+            group_remove
+          </i>
+           
+          Clear assignee
+        </React.Fragment>,
         "value": null,
       },
       Object {
@@ -23,6 +31,7 @@ exports[`ast widgets <AssigneeTeamSelect/> render() should render a dropdown wit
       },
     ]
   }
+  sortOptions={false}
   value={1}
 />
 `;
@@ -46,6 +55,7 @@ exports[`ast widgets <AssigneeTeamSelect/> render() should render a dropdown wit
       },
     ]
   }
+  sortOptions={false}
   value={1}
 />
 `;
@@ -56,7 +66,15 @@ exports[`ast widgets <AssigneeTeamSelect/> render() should render a dropdown wit
   options={
     Array [
       Object {
-        "label": "Unassigned",
+        "label": <React.Fragment>
+          <i
+            className="material-icons"
+          >
+            group_remove
+          </i>
+           
+          Clear assignee
+        </React.Fragment>,
         "value": null,
       },
       Object {
@@ -73,5 +91,6 @@ exports[`ast widgets <AssigneeTeamSelect/> render() should render a dropdown wit
       },
     ]
   }
+  sortOptions={false}
 />
 `;

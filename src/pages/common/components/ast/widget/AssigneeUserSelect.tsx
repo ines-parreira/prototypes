@@ -31,7 +31,21 @@ export class AssigneeUserSelectContainer extends React.Component<
     render() {
         const {value, onChange, agents, className, allowUnassign} = this.props
         let options: List<any> = fromJS(
-            allowUnassign ? [{value: null, label: 'Unassigned'}] : []
+            allowUnassign
+                ? [
+                      {
+                          value: null,
+                          label: (
+                              <>
+                                  <i className="material-icons">
+                                      person_remove
+                                  </i>{' '}
+                                  Clear assignee
+                              </>
+                          ),
+                      },
+                  ]
+                : []
         )
 
         if (agents.isEmpty()) {
@@ -63,6 +77,7 @@ export class AssigneeUserSelectContainer extends React.Component<
                 }
                 onChange={onChange}
                 options={options.toJS() || []}
+                sortOptions={false}
             />
         )
     }

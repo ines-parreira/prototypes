@@ -21,17 +21,19 @@ type Props = {
     focusedPlaceholder?: string
     hiddenOptions?: string[]
     deprecatedOptions?: string[]
+    sortOptions?: boolean
 }
 
 type Option = SelectOption | SelectValue
 
 export default class Select extends Component<Props> {
-    static defaultProps: Pick<Props, 'onSearchChange'> = {
+    static defaultProps = {
         onSearchChange: _noop,
+        sortOptions: true,
     }
 
     _getOptions = () => {
-        const {options, hiddenOptions} = this.props
+        const {options, hiddenOptions, sortOptions} = this.props
         let formattedOptions: SelectOption[] = []
 
         if (options) {
@@ -64,13 +66,17 @@ export default class Select extends Component<Props> {
             formattedOptions = formattedOptions.filter(
                 (option) => !hiddenOptions.includes(option.value.toString())
             )
-        // order alphabetically
-        return sortBy<SelectOption>(
-            //@ts-ignore is used before being declared
-            formattedOptions,
-            (option: SelectOption) =>
-                typeof option.label === 'string' && option.label.toLowerCase()
-        )
+
+        if (sortOptions) {
+            // order alphabetically
+            return sortBy<SelectOption>(
+                formattedOptions,
+                (option: SelectOption) =>
+                    typeof option.label === 'string' &&
+                    option.label.toLowerCase()
+            )
+        }
+        return formattedOptions
     }
 
     _onChange = (value: SelectValue) => {

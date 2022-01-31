@@ -19,6 +19,7 @@ exports[`ast widgets <AssigneeUserSelect/> render() should render a dropdown wit
       },
     ]
   }
+  sortOptions={false}
   value={1}
 />
 `;
@@ -42,6 +43,7 @@ exports[`ast widgets <AssigneeUserSelect/> render() should render a dropdown wit
       },
     ]
   }
+  sortOptions={false}
   value={1}
 />
 `;
@@ -65,6 +67,7 @@ exports[`ast widgets <AssigneeUserSelect/> render() should render a dropdown wit
       },
     ]
   }
+  sortOptions={false}
 />
 `;
 

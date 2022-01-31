@@ -24,7 +24,19 @@ export class AssigneeTeamSelectContainer extends Component<Props> {
     render() {
         const {teams, value, onChange, className, allowUnassign} = this.props
         let options: List<any> = fromJS(
-            allowUnassign ? [{value: null, label: 'Unassigned'}] : []
+            allowUnassign
+                ? [
+                      {
+                          value: null,
+                          label: (
+                              <>
+                                  <i className="material-icons">group_remove</i>{' '}
+                                  Clear assignee
+                              </>
+                          ),
+                      },
+                  ]
+                : []
         )
 
         teams.forEach((team) => {
@@ -40,6 +52,7 @@ export class AssigneeTeamSelectContainer extends Component<Props> {
                 value={value}
                 onChange={onChange}
                 options={options.toJS() || []}
+                sortOptions={false}
             />
         )
     }
