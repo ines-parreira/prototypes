@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow, mount} from 'enzyme'
 import _noop from 'lodash/noop'
 import _omit from 'lodash/omit'
@@ -6,11 +6,11 @@ import _omit from 'lodash/omit'
 import BooleanField from '../BooleanField'
 
 describe('BooleanField', () => {
-    const minProps = {
+    const minProps: ComponentProps<typeof BooleanField> = {
         name: 'mybooleanfield',
         type: 'text',
         label: 'label',
-        value: 'value',
+        value: false,
         onChange: _noop,
         placeholder: 'placeholder',
     }

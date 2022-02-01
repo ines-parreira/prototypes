@@ -20,7 +20,7 @@ import {
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
 } from '../../../../../../../config/integrations/gorgias_chat'
 import RichField from '../../../../../../common/forms/RichField/RichField'
-import InputField from '../../../../../../common/forms/InputField.js'
+import InputField from '../../../../../../common/forms/InputField'
 import CampaignPreview from '../CampaignPreview'
 import SelectField from '../../../../../../common/forms/SelectField/SelectField'
 import {Value} from '../../../../../../common/forms/SelectField/types'
@@ -413,7 +413,9 @@ export const GorgiasChatCampaignDetailForm = ({
                                 <RichField
                                     type="text"
                                     rows="8"
-                                    value={{html: message.get('html')}}
+                                    value={{
+                                        html: message.get('html'),
+                                    }}
                                     onChange={(value: EditorState) => {
                                         const content =
                                             value.getCurrentContent()

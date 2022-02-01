@@ -16,12 +16,12 @@ import {
 import pageIconDefault from 'assets/img/integrations/facebook-page.png'
 import warningIcon from 'assets/img/icons/warning2.svg'
 
+import BooleanField from 'pages/common/forms/BooleanField'
 import history from '../../../../../history'
 import Loader from '../../../../../common/components/Loader/Loader'
 import ToggleButton from '../../../../../common/components/ToggleButton'
 import PageHeader from '../../../../../common/components/PageHeader'
 import Pagination from '../../../../../common/components/Pagination'
-import BooleanField from '../../../../../common/forms/BooleanField.js'
 import Alert, {AlertType} from '../../../../../common/components/Alert/Alert'
 import {
     getOnboardingMeta,

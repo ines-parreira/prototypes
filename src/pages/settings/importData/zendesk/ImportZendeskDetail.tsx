@@ -14,6 +14,7 @@ import {
     Table,
 } from 'reactstrap'
 
+import InputField from 'pages/common/forms/InputField'
 import {
     fetchIntegration,
     updateOrCreateIntegration,
@@ -22,7 +23,6 @@ import {getTimezone} from '../../../../state/currentUser/selectors'
 import {RootState, StoreDispatch} from '../../../../state/types'
 import {ZENDESK_INTEGRATION_TYPE} from '../../../../constants/integration'
 import PageHeader from '../../../common/components/PageHeader'
-import InputField from '../../../common/forms/InputField.js'
 import Loader from '../../../common/components/Loader/Loader'
 import Tooltip from '../../../common/components/Tooltip'
 import css from '../../settings.less'

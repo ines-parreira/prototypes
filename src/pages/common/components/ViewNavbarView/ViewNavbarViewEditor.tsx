@@ -7,8 +7,7 @@ import _pick from 'lodash/pick'
 import _merge from 'lodash/merge'
 import _isUndefined from 'lodash/isUndefined'
 
-import BooleanField from '../../forms/BooleanField.js'
-
+import BooleanField from 'pages/common/forms/BooleanField'
 import {
     logEvent,
     SegmentEvent,

@@ -1,4 +1,4 @@
-import React, {ComponentProps} from 'react'
+import React from 'react'
 import {fromJS, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 import {Button, Input} from 'reactstrap'
@@ -13,29 +13,28 @@ import {getFileTooLargeError} from '../../../utils/file'
 import {notify} from '../../../state/notifications/actions'
 import {NotificationStatus} from '../../../state/notifications/types'
 
-import InputField from './InputField'
+import InputField, {InputFieldProps} from './InputField'
 import css from './FileField.less'
 
 const DEFAULT_ERROR = 'Failed to upload files. Please try again later.'
 
-type Props = {
-    className?: string
-    noPreview: boolean
-    returnFiles: boolean
+export type Props = {
+    noPreview?: boolean
+    returnFiles?: boolean
     uploadType?: string
     maxSize?: number
     params?: Record<string, unknown>
-    type: InputType
+    type?: InputType
     accept?: string
     onClick?: () => void
 } & ConnectedProps<typeof connector> &
-    ComponentProps<typeof InputField>
+    InputFieldProps<string | string[]>
 
 type State = {
     isUploading: boolean
 }
 
-export class FileFieldContainer extends InputField<Props, State> {
+export class FileFieldContainer extends InputField<Props> {
     static defaultProps: Pick<
         Props,
         'noPreview' | 'placeholder' | 'returnFiles' | 'type' | 'maxSize'
@@ -47,7 +46,7 @@ export class FileFieldContainer extends InputField<Props, State> {
         maxSize: 0,
     }
 
-    state = {
+    state: State = {
         isUploading: false,
     }
 
@@ -57,7 +56,7 @@ export class FileFieldContainer extends InputField<Props, State> {
         return files.reduce((sum, file) => sum + (file.size || 0), 0)
     }
 
-    _onChange = (event: {
+    handleOnChange = (event: {
         target: {
             files: FileList
         }
@@ -102,8 +101,8 @@ export class FileFieldContainer extends InputField<Props, State> {
                 this.setState({isUploading: false})
 
                 // if we want to return files, return them otherwise return urls only
-                if (this.props.returnFiles) {
-                    return this.props.onChange!(files)
+                if (this.props.returnFiles && this.props.onChange) {
+                    return this.props.onChange(files as unknown as string[])
                 }
 
                 if (files.length < 1) {
@@ -120,8 +119,9 @@ export class FileFieldContainer extends InputField<Props, State> {
                 if (files.length > 1) {
                     result = files.map((file) => file.url)
                 }
-
-                this.props.onChange!(result)
+                if (this.props.onChange) {
+                    this.props.onChange(result)
+                }
             },
             (error) => {
                 this.setState({isUploading: false})
@@ -180,7 +180,7 @@ export class FileFieldContainer extends InputField<Props, State> {
                     )}
                     <Input
                         id={this.id}
-                        onChange={this._onChange as any}
+                        onChange={this.handleOnChange as any}
                         disabled={disabled}
                         className={classnames(css.input, className)}
                         {..._omit(this.props, [

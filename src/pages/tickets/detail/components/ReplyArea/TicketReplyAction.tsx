@@ -2,11 +2,12 @@ import React, {Component} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
 
+import InputField from 'pages/common/forms/InputField'
+import BooleanField from 'pages/common/forms/BooleanField'
+
 import {FORM_CONTENT_TYPE} from '../../../../../config'
 import {updateActionArgsOnApplied} from '../../../../../state/ticket/actions'
 import {getActionTemplate} from '../../../../../utils'
-import InputField from '../../../../common/forms/InputField.js'
-import BooleanField from '../../../../common/forms/BooleanField.js'
 import SelectField from '../../../../common/forms/SelectField/SelectField'
 import {MacroActionName} from '../../../../../models/macroAction/types'
 import {getIconFromActionType} from '../../../../../models/macroAction/helpers'
@@ -101,7 +102,7 @@ export default class TicketReplyAction extends Component<Props> {
 
                         let Tag:
                             | typeof InputField
-                            | typeof BooleanField
+                            | BooleanField
                             | typeof SelectField = InputField
 
                         if (inputConfig && inputConfig.type === 'checkbox') {

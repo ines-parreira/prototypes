@@ -1,11 +1,11 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow, mount} from 'enzyme'
 import _noop from 'lodash/noop'
 
 import InputField from '../InputField'
 
 describe('InputField', () => {
-    const minProps = {
+    const minProps: ComponentProps<typeof InputField> = {
         value: 'value',
         onChange: _noop,
     }

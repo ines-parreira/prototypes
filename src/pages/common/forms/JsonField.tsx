@@ -1,14 +1,14 @@
 import React, {ChangeEvent} from 'react'
 import {Input, FormGroup} from 'reactstrap'
+import _omit from 'lodash/omit'
 
-import {HTTPForm} from '../../integrations/detail/components/http/HTTPIntegrationOverview/HTTPIntegrationOverview'
+import {HTTPForm} from 'pages/integrations/detail/components/http/HTTPIntegrationOverview/HTTPIntegrationOverview'
+import {JSONValue} from '../components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
-import InputField from './InputField.js'
-import Errors from './Errors.js'
+import Errors from './Errors'
+import InputField, {InputFieldProps} from './InputField'
 
-type Props = {
-    value: HTTPForm
-}
+type Props = InputFieldProps<HTTPForm | JSONValue>
 
 type State = {
     isJsonValid: boolean
@@ -18,7 +18,7 @@ type State = {
 export default class JsonField extends InputField<Props, State> {
     defaultValue = '{}'
 
-    state = {
+    state: State = {
         isJsonValid: true,
         value: this.defaultValue,
     }
@@ -55,8 +55,8 @@ export default class JsonField extends InputField<Props, State> {
             }
         }
 
-        if (isJsonValid) {
-            this.props.onChange!(parsedValue)
+        if (isJsonValid && this.props.onChange) {
+            this.props.onChange(parsedValue)
         }
 
         this.setState({
@@ -66,18 +66,16 @@ export default class JsonField extends InputField<Props, State> {
     }
 
     _getField = () => {
-        const {
-            children,
-            error, // eslint-disable-line
-            type, // eslint-disable-line
-            help, // eslint-disable-line
-            inline, // eslint-disable-line
-            label, // eslint-disable-line
-            name, // eslint-disable-line
-            onChange, // eslint-disable-line
-            value, // eslint-disable-line
-            ...rest
-        } = this.props
+        const {children, ...rest} = _omit(this.props, [
+            'error',
+            'type',
+            'help',
+            'inline',
+            'label',
+            'name',
+            'onChange',
+            'value',
+        ])
 
         const isInvalid = !this.state.isJsonValid
 

@@ -1,4 +1,11 @@
-import React, {MouseEvent, useMemo, useRef, useState, useEffect} from 'react'
+import React, {
+    MouseEvent,
+    useMemo,
+    useRef,
+    useState,
+    useEffect,
+    ReactNode,
+} from 'react'
 import classnames from 'classnames'
 import {
     Button,
@@ -11,8 +18,6 @@ import _get from 'lodash/get'
 import _noop from 'lodash/noop'
 import {Placement} from 'popper.js'
 import {useMountedState} from 'react-use'
-
-import type {ReactNode} from 'react'
 
 import css from './DEPRECATED_ConfirmButton.less'
 

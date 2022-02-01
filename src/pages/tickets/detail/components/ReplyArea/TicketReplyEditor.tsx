@@ -383,11 +383,11 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                         'contentState',
                     ])}
                     value={{
-                        text: newMessage.getIn(['newMessage', 'body_text']),
                         html: newMessage.getIn(['newMessage', 'body_html']),
+                        text: newMessage.getIn(['newMessage', 'body_text']),
                     }}
                     onChange={this.onEditorChange}
-                    attachFiles={(files) =>
+                    attachFiles={(files: File[] | FileList) =>
                         this.handleFiles(files, attachmentsMask)
                     }
                     tabIndex={4}

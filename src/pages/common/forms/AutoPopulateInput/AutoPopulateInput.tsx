@@ -1,7 +1,7 @@
 import React, {ComponentProps, useEffect, useState} from 'react'
 
-import BooleanField from '../BooleanField.js'
-import InputField from '../InputField.js'
+import BooleanField from '../BooleanField'
+import InputField, {InputFieldProps} from '../InputField'
 
 import css from './AutoPopulateInput.less'
 
@@ -10,7 +10,7 @@ type Props = Omit<InputProps, 'value' | 'onChange'> & {
     onChange: (value: string | null) => void
     populateLabel: string
     populateValue: string
-}
+} & InputFieldProps<string | null>
 
 type InputProps = ComponentProps<typeof InputField>
 

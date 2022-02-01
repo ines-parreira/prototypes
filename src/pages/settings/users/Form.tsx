@@ -19,6 +19,7 @@ import {AxiosError} from 'axios'
 import {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import InputField from 'pages/common/forms/InputField'
 import {toJS} from '../../../utils'
 import Loader from '../../common/components/Loader/Loader'
 import RichDropdown from '../../common/components/RichDropdown/RichDropdown'
@@ -30,7 +31,6 @@ import {
     UserDraft,
     UserRole,
 } from '../../../config/types/user'
-import InputField from '../../common/forms/InputField.js'
 import {
     updateAgent,
     inviteAgent,

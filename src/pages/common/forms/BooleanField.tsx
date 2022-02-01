@@ -1,46 +1,37 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import classnames from 'classnames'
+import _omit from 'lodash/omit'
 import {FormGroup, Label, Input as BootstrapInput, FormText} from 'reactstrap'
 
-import {defined} from '../../../utils.ts'
-
+import {defined} from 'utils'
 import Errors from './Errors'
-
-import InputField from './InputField'
-
+import InputField, {InputFieldProps} from './InputField'
 import css from './InputField.less'
 
-export default class BooleanField extends InputField {
-    static propTypes = Object.assign(
-        {
-            inline: PropTypes.bool,
-        },
-        InputField.propTypes
-    )
+type Props = InputFieldProps<boolean>
 
+export default class BooleanField extends InputField<Props> {
     static defaultProps = {
         type: 'checkbox',
     }
 
     _onChange = () => {
         const value = !this.props.value
-        this.props.onChange(value)
+        const {onChange} = this.props
+        if (onChange) {
+            onChange(value)
+        }
     }
 
     _getField = () => {
-        const {
-            children,
-            error,
-            help, // eslint-disable-line
-            inline, // eslint-disable-line
-            label, // eslint-disable-line
-            name, // eslint-disable-line
-            onChange, // eslint-disable-line
-            value,
-            className, // eslint-disable-line
-            ...rest
-        } = this.props
+        const {children, error, value, ...rest} = _omit(this.props, [
+            'help',
+            'inline',
+            'label',
+            'name',
+            'onChange',
+            'className',
+        ])
 
         return (
             <BootstrapInput

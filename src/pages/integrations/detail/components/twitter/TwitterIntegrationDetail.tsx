@@ -13,12 +13,12 @@ import {
     Row,
 } from 'reactstrap'
 
+import BooleanField from 'pages/common/forms/BooleanField'
 import {
     deleteIntegration,
     updateOrCreateIntegration,
 } from '../../../../../state/integrations/actions'
 import PageHeader from '../../../../common/components/PageHeader'
-import BooleanField from '../../../../common/forms/BooleanField.js'
 import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'
 import {IntegrationType} from '../../../../../models/integration/types'
 import css from '../../../../settings/settings.less'

@@ -1,7 +1,8 @@
 import React from 'react'
 import {mount, shallow} from 'enzyme'
+import _noop from 'lodash/noop'
 
-import RadioField from '../RadioField.tsx'
+import RadioField from '../RadioField'
 
 describe('<RadioField/>', () => {
     describe('_onChange()', () => {
@@ -10,7 +11,7 @@ describe('<RadioField/>', () => {
             const oldValue = 1
             const newValue = 2
 
-            const component = mount(
+            const component = mount<RadioField>(
                 <RadioField
                     options={[
                         {
@@ -26,7 +27,7 @@ describe('<RadioField/>', () => {
                         {value: 3, label: 'baz'},
                     ]}
                     value={oldValue}
-                    onChange={() => {}}
+                    onChange={_noop}
                 />
             )
 
@@ -42,7 +43,7 @@ describe('<RadioField/>', () => {
             const oldValue = 1
             const newValue = 2
 
-            const component = mount(
+            const component = mount<RadioField>(
                 <RadioField
                     options={[
                         {
@@ -58,7 +59,7 @@ describe('<RadioField/>', () => {
                         {value: 3, label: 'baz'},
                     ]}
                     value={oldValue}
-                    onChange={() => {}}
+                    onChange={_noop}
                 />
             )
 
@@ -74,7 +75,7 @@ describe('<RadioField/>', () => {
             const oldValue = 1
             const newValue = 2
 
-            const component = mount(
+            const component = mount<RadioField>(
                 <RadioField
                     options={[
                         {
@@ -90,7 +91,7 @@ describe('<RadioField/>', () => {
                         {value: 3, label: 'baz'},
                     ]}
                     value={oldValue}
-                    onChange={() => {}}
+                    onChange={_noop}
                     disabled
                 />
             )
@@ -107,7 +108,7 @@ describe('<RadioField/>', () => {
             const oldValue = 1
             const newValue = 2
 
-            const component = mount(
+            const component = mount<RadioField>(
                 <RadioField
                     options={[
                         {

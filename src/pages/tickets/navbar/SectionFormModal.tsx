@@ -2,10 +2,10 @@ import classnames from 'classnames'
 import React from 'react'
 import {Form, Button} from 'reactstrap'
 
+import InputField from 'pages/common/forms/InputField'
 import {SectionDraft} from '../../../models/section/types'
 import Modal from '../../common/components/Modal'
 import EmojiSelect from '../../common/components/ViewTable/EmojiSelect/EmojiSelect'
-import InputField from '../../common/forms/InputField.js'
 
 import css from './SectionFormModal.less'
 

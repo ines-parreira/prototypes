@@ -19,12 +19,12 @@ import {
 } from 'reactstrap'
 import classnames from 'classnames'
 
+import BooleanField from 'pages/common/forms/BooleanField'
 import {PhoneFunction} from '../../../../../business/twilio'
 import PageHeader from '../../../../common/components/PageHeader'
 import {IntegrationType} from '../../../../../models/integration/types'
 import EmojiTextInput from '../../../../common/forms/EmojiTextInput/EmojiTextInput'
 import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'
-import BooleanField from '../../../../common/forms/BooleanField.js'
 import Alert, {AlertType} from '../../../../common/components/Alert/Alert'
 import {
     deleteIntegration,

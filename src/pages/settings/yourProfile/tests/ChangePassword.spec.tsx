@@ -2,7 +2,8 @@ import React from 'react'
 import {mount, ReactWrapper} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import InputField from '../../../common/forms/InputField.js'
+import InputField from '../../../common/forms/InputField'
+
 import {ChangePasswordContainer} from '../ChangePassword'
 
 type fillInFormTypes = {

@@ -1,7 +1,7 @@
 import React from 'react'
 import {List, Map, fromJS} from 'immutable'
 
-import InputField from '../../../forms/InputField.js'
+import InputField from '../../../forms/InputField'
 import {SelectableOption as SelectOption} from '../../../forms/SelectField/types'
 
 type Props = {

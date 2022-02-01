@@ -2,9 +2,9 @@ import React, {memo, useEffect, useState} from 'react'
 import {Button} from 'reactstrap'
 import debounce from 'lodash/debounce'
 
+import InputField from 'pages/common/forms/InputField'
 import Tooltip from '../../../../../../../../../Tooltip'
-import InputField from '../../../../../../../../../../forms/InputField.js'
-import Errors from '../../../../../../../../../../forms/Errors.js'
+import Errors from '../../../../../../../../../../forms/Errors'
 import {MAX_HEADER_LENGTH} from '../../../../../../../../../../../../config'
 import {hasUnicodeChars} from '../../../../../../../../../../../../utils'
 

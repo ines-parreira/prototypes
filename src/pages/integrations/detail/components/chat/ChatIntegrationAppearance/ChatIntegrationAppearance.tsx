@@ -18,6 +18,8 @@ import {
     Row,
 } from 'reactstrap'
 
+import InputField from 'pages/common/forms/InputField'
+import ColorField from 'pages/common/forms/ColorField'
 import {
     SMOOCH_INSIDE_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
     SMOOCH_INSIDE_AUTO_RESPONDER_ENABLED_DEFAULT,
@@ -35,9 +37,7 @@ import {
 import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integrations/index'
 import {getIntegrationsByTypes} from '../../../../../../state/integrations/selectors'
 import DEPRECATED_ConfirmButton from '../../../../../common/components/DEPRECATED_ConfirmButton'
-import ColorField from '../../../../../common/forms/ColorField.js'
 import FileField from '../../../../../common/forms/FileField'
-import InputField from '../../../../../common/forms/InputField.js'
 import Loader from '../../../../../common/components/Loader/Loader'
 import PageHeader from '../../../../../common/components/PageHeader'
 import RadioField from '../../../../../common/forms/RadioField'

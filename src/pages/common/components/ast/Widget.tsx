@@ -9,8 +9,8 @@ import {EditorState} from 'draft-js'
 import {Input} from 'reactstrap'
 import {InputType} from 'reactstrap/lib/Input'
 
+import InputField from 'pages/common/forms/InputField'
 import DatePicker from '../../../common/forms/DatePicker'
-import InputField from '../../forms/InputField.js'
 
 import {humanizeString} from '../../../../utils'
 import {stringToDatetime} from '../../../../utils/date'

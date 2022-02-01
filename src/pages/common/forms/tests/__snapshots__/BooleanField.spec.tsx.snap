@@ -23,7 +23,7 @@ exports[`BooleanField should render a basic boolean input 1`] = `
     }
   >
     <Input
-      checked="value"
+      checked={false}
       className="form-check-input"
       id="id-mybooleanfield"
       onChange={[Function]}
@@ -66,7 +66,7 @@ exports[`BooleanField should render a help text 1`] = `
     }
   >
     <Input
-      checked="value"
+      checked={false}
       className="form-check-input"
       id="id-mybooleanfield"
       onChange={[Function]}
@@ -115,7 +115,7 @@ exports[`BooleanField should render a required input 1`] = `
     }
   >
     <Input
-      checked="value"
+      checked={false}
       className="form-check-input"
       id="id-mybooleanfield"
       onChange={[Function]}
@@ -159,7 +159,7 @@ exports[`BooleanField should render inline 1`] = `
     }
   >
     <Input
-      checked="value"
+      checked={false}
       className="form-check-input"
       id="id-mybooleanfield"
       onChange={[Function]}
@@ -202,7 +202,7 @@ exports[`BooleanField should render the input with an error 1`] = `
     }
   >
     <Input
-      checked="value"
+      checked={false}
       className="form-check-input form-control-danger"
       id="id-mybooleanfield"
       onChange={[Function]}
@@ -219,9 +219,7 @@ exports[`BooleanField should render the input with an error 1`] = `
       label
     </span>
   </Label>
-  <Errors
-    tag={[Function]}
-  >
+  <Errors>
     the value is wrong
   </Errors>
 </FormGroup>
@@ -234,6 +232,6 @@ Object {
   "onChange": [Function],
   "placeholder": "placeholder",
   "type": "checkbox",
-  "value": "value",
+  "value": false,
 }
 `;

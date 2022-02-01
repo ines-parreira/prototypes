@@ -20,9 +20,9 @@ import {
     PopoverHeader,
 } from 'reactstrap'
 
+import BooleanField from 'pages/common/forms/BooleanField'
+import InputField from 'pages/common/forms/InputField'
 import SelectField from '../../../../../../forms/SelectField/SelectField'
-import BooleanField from '../../../../../../forms/BooleanField.js'
-import InputField from '../../../../../../forms/InputField.js'
 
 import {executeAction} from '../../../../../../../../state/infobar/actions'
 import {getPendingActionCallbacks} from '../../../../../../../../state/infobar/selectors'

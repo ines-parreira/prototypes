@@ -5,7 +5,7 @@ import _some from 'lodash/some'
 import {fromJS, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
-import InputField from '../../../../common/forms/InputField.js'
+import InputField from 'pages/common/forms/InputField'
 import {MAGENTO2_INTEGRATION_TYPE} from '../../../../../constants/integration'
 import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
 

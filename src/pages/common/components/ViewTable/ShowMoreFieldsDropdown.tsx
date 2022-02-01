@@ -9,6 +9,7 @@ import {
 } from 'reactstrap'
 import {Map, List} from 'immutable'
 
+import BooleanField from 'pages/common/forms/BooleanField'
 import {GorgiasThunkDispatch} from 'types/redux-thunk'
 import {setFieldVisibility} from '../../../../state/views/actions'
 import {
@@ -17,7 +18,6 @@ import {
 } from '../../../../store/middlewares/segmentTracker'
 import {notify} from '../../../../state/notifications/actions'
 
-import BooleanField from '../../forms/BooleanField.js'
 import {NotificationStatus} from '../../../../state/notifications/types'
 
 type OwnProps = {

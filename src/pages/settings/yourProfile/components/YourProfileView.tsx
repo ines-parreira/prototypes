@@ -9,7 +9,7 @@ import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
 
 import CheckBox from 'pages/common/forms/CheckBox'
-import InputField from '../../../common/forms/InputField.js'
+import InputField from 'pages/common/forms/InputField'
 import Avatar from '../../../common/components/Avatar/Avatar'
 import FileField from '../../../common/forms/FileField'
 import SelectField from '../../../common/forms/SelectField/SelectField'

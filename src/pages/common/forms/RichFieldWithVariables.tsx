@@ -18,7 +18,10 @@ import RichField from './RichField/RichField'
 type Props = {
     label?: string
     name?: string
-    value: Record<string, unknown>
+    value: {
+        html?: string
+        text: string
+    }
     allowExternalChanges?: boolean
     variableTypes: Array<string>
     onChange: (editorState: EditorState) => void

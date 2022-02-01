@@ -1,61 +1,57 @@
-import React from 'react'
+import React, {ChangeEvent, ReactNode} from 'react'
 import classnames from 'classnames'
 import _omit from 'lodash/omit'
 import _uniqueId from 'lodash/uniqueId'
-import PropTypes from 'prop-types'
 import {FormGroup, FormText, Input as BootstrapInput, Label} from 'reactstrap'
+import {InputProps} from 'reactstrap/lib/Input'
 
-import {defined} from '../../../utils.ts'
-import Tooltip from '../components/Tooltip.tsx'
+import {defined} from 'utils'
+import Tooltip from '../components/Tooltip'
 
 import Errors from './Errors'
-import FormField from './FormField'
-
 import css from './InputField.less'
 
-export default class InputField extends FormField {
-    static propTypes = Object.assign(
-        {
-            children: PropTypes.node,
-            inline: PropTypes.bool,
-            placeholder: PropTypes.node,
-            type: PropTypes.string.isRequired,
-            leftAddon: PropTypes.string,
-            rightAddon: PropTypes.string,
-            caseInsensitive: PropTypes.bool,
-            tooltip: PropTypes.string,
-            tooltipIcon: PropTypes.node,
-        },
-        FormField.propTypes
-    )
+export type InputFieldProps<T = any> = {
+    onChange?: (value: T) => void
+    value?: T
+    tooltipIcon?: ReactNode
+} & Omit<InputProps, 'onChange' | 'value'>
 
-    static defaultProps = {
+export type InputFieldState = Record<string, unknown>
+export default class InputField<
+    T extends InputFieldProps = InputFieldProps,
+    U extends InputFieldState = InputFieldState
+> extends React.Component<T, U> {
+    static defaultProps: Pick<InputFieldProps, 'type'> = {
         type: 'text',
     }
+
+    id?: string
 
     componentWillMount() {
         this.id = this._getId()
     }
 
-    _onChange = (e) => {
+    _onChange = (e: ChangeEvent<HTMLInputElement>) => {
         const {type, onChange, caseInsensitive} = this.props
-        let value = e.target.value
+        let value: string | number = e.target.value
 
         if (type === 'number') {
-            let numberValue = parseFloat(value)
+            const numberValue = parseFloat(value)
 
             if (!isNaN(numberValue)) {
                 value = numberValue
             }
         } else if (type === 'text' && caseInsensitive) {
-            value = value.toLowerCase()
+            value = value.toString().toLowerCase()
         }
-
-        onChange(value)
+        if (onChange) {
+            onChange(value)
+        }
     }
 
     _getId = () => {
-        const name = this.props.name || _uniqueId('input-')
+        const name: string = this.props.name ?? _uniqueId('input-')
         return `id-${name}`
     }
 
@@ -103,17 +99,17 @@ export default class InputField extends FormField {
             className,
             suffix,
         } = this.props
+        const id = this.id
 
         const color = error ? 'danger' : ''
 
         if (type === 'hidden') {
-            const {
-                leftAddon, // eslint-disable-line
-                rightAddon, // eslint-disable-line
-                ...rest
-            } = this.props
+            const hiddenInputProps = _omit(this.props, [
+                'leftAddon',
+                'rightAddon',
+            ])
 
-            return <input {...rest} />
+            return <input {...hiddenInputProps} />
         }
 
         return (
@@ -126,10 +122,10 @@ export default class InputField extends FormField {
             >
                 {label && tooltip && (
                     <div className={css['label-wrapper']}>
-                        <Label htmlFor={this.id} className="control-label">
+                        <Label htmlFor={id} className="control-label">
                             {label}
                         </Label>
-                        <span id={`${this.id}-tooltip`}>
+                        <span id={`${id!}-tooltip`}>
                             {tooltipIcon ? (
                                 tooltipIcon
                             ) : (
@@ -145,7 +141,7 @@ export default class InputField extends FormField {
                         </span>
 
                         <Tooltip
-                            target={`${this.id}-tooltip`}
+                            target={`${id as string}-tooltip`}
                             style={{textAlign: 'left'}}
                         >
                             {tooltip}
@@ -153,7 +149,7 @@ export default class InputField extends FormField {
                     </div>
                 )}
                 {label && !tooltip && (
-                    <Label htmlFor={this.id} className="control-label">
+                    <Label htmlFor={id} className="control-label">
                         {label}
                     </Label>
                 )}

@@ -18,6 +18,7 @@ import {
 import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom'
 import classnames from 'classnames'
 
+import InputField from 'pages/common/forms/InputField'
 import {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -30,7 +31,6 @@ import {
 } from '../../../state/teams/actions'
 import Loader from '../../common/components/Loader/Loader'
 import PageHeader from '../../common/components/PageHeader'
-import InputField from '../../common/forms/InputField.js'
 import SecondaryNavbar from '../../common/components/SecondaryNavbar/SecondaryNavbar'
 import EmojiPicker from '../../common/components/EmojiPicker/EmojiPicker'
 import history from '../../history'

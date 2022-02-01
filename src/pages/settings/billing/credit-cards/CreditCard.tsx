@@ -17,6 +17,7 @@ import {fromJS, Map} from 'immutable'
 import {AxiosError} from 'axios'
 import {AnyAction} from 'redux'
 
+import Errors from 'pages/common/forms/Errors'
 import {
     fetchContact,
     setCreditCard,
@@ -33,7 +34,6 @@ import {
 } from '../../../../state/billing/selectors'
 import Loader from '../../../common/components/Loader/Loader'
 import {loadScript} from '../../../../utils'
-import Errors from '../../../common/forms/Errors.js'
 import InputField from '../../../common/forms/InputField'
 import {
     logEvent,

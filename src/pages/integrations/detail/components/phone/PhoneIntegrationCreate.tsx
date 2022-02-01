@@ -14,6 +14,7 @@ import {
     Row,
 } from 'reactstrap'
 
+import InputField from 'pages/common/forms/InputField'
 import {
     DEFAULT_IVR_SETTINGS,
     DEFAULT_VOICE_MESSAGE,
@@ -29,7 +30,6 @@ import {
 } from '../../../../../models/integration/types'
 import EmojiTextInput from '../../../../common/forms/EmojiTextInput/EmojiTextInput'
 import SelectField from '../../../../common/forms/SelectField/SelectField'
-import InputField from '../../../../common/forms/InputField.js'
 import type {SelectableOption} from '../../../../common/forms/SelectField/types'
 import {
     PhoneCountry,

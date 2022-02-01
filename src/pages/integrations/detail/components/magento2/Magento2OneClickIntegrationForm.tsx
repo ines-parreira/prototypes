@@ -3,11 +3,10 @@ import {Form} from 'reactstrap'
 import {fromJS, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
+import InputField from 'pages/common/forms/InputField'
 import {makeGetMagento2IntegrationByStoreUrl} from '../../../../../state/integrations/selectors'
 import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
 import {RootState} from '../../../../../state/types'
-
-import InputField from '../../../../common/forms/InputField.js'
 
 import Magento2IntegrationActionButtons from './Magento2IntegrationActionButtons'
 

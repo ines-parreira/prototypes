@@ -6,7 +6,7 @@ import {Breadcrumb, BreadcrumbItem, Button, Container, Form} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import {bindActionCreators} from 'redux'
 
-import InputField from '../../../common/forms/InputField.js'
+import InputField from 'pages/common/forms/InputField'
 import PageHeader from '../../../common/components/PageHeader'
 import {ZENDESK_IMPORTED_TICKETS_FOR_YEARS} from '../../../../config'
 import {createImportIntegration} from '../../../../state/integrations/actions'

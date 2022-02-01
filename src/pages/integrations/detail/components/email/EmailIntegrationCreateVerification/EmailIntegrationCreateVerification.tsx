@@ -5,6 +5,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import classNames from 'classnames'
 import {Map} from 'immutable'
 
+import InputField from 'pages/common/forms/InputField'
 import DEPRECATED_ConfirmButton from '../../../../../common/components/DEPRECATED_ConfirmButton'
 import PageHeader from '../../../../../common/components/PageHeader'
 import Alert, {AlertType} from '../../../../../common/components/Alert/Alert'
@@ -20,7 +21,6 @@ import {
     getForwardingEmailAddress,
     getEmailForwardingActivated,
 } from '../../../../../../state/integrations/selectors'
-import InputField from '../../../../../common/forms/InputField.js'
 import history from '../../../../../history'
 import {RootState} from '../../../../../../state/types'
 import {JoinEventType} from '../../../../../../services/socketManager/types'

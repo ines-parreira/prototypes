@@ -9,13 +9,13 @@ import {
     DropdownItem,
 } from 'reactstrap'
 
+import InputField from 'pages/common/forms/InputField'
 import {generateDefaultAction} from '../../../../../state/macro/utils'
 
 import * as ticketTypes from '../../../../../state/ticket/constants'
 import * as newMessageTypes from '../../../../../state/newMessage/constants'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 import {ACTION_TEMPLATES} from '../../../../../config'
-import InputField from '../../../../common/forms/InputField.js'
 import {getSortedIntegrationActionsNames} from '../../utils.js'
 import {Attachment, ActionTemplate} from '../../../../../types'
 import {getActionTemplate, humanizeString} from '../../../../../utils'

@@ -1,28 +1,30 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {mount} from 'enzyme'
 import _noop from 'lodash/noop'
 
-import MultiSelectField from '../MultiSelectField.tsx'
-import MultiSelectOptionsField from '../MultiSelectOptionsField/MultiSelectOptionsField.tsx'
+import MultiSelectField from '../MultiSelectField'
+import MultiSelectOptionsField from '../MultiSelectOptionsField/MultiSelectOptionsField'
 
 describe('MultiSelectField', () => {
-    const options = [
-        {
-            value: 1,
-            label: 'First',
-        },
-        {
-            value: 2,
-            label: 'Second',
-        },
-        {
-            value: 3,
-            label: 'Third',
-        },
-    ]
+    const minProps: Pick<ComponentProps<typeof MultiSelectField>, 'options'> = {
+        options: [
+            {
+                value: 1,
+                label: 'First',
+            },
+            {
+                value: 2,
+                label: 'Second',
+            },
+            {
+                value: 3,
+                label: 'Third',
+            },
+        ],
+    }
 
-    const props = {
-        options,
+    const props: ComponentProps<typeof MultiSelectField> = {
+        options: minProps.options,
         values: [1, 3],
         onChange: _noop,
         plural: 'tags',
@@ -37,8 +39,8 @@ describe('MultiSelectField', () => {
         expect(
             component.find(MultiSelectOptionsField).prop('selectedOptions')
         ).toEqual([
-            options[0],
-            options[2],
+            minProps.options[0],
+            minProps.options[2],
             {
                 value: 'foo',
                 label: 'foo',

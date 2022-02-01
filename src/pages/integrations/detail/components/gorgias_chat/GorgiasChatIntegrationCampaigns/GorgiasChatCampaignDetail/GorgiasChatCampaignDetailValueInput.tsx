@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {FocusEvent} from 'react'
 import {Map} from 'immutable'
 import classNames from 'classnames'
 
@@ -41,7 +41,7 @@ export const GorgiasChatCampaignDetailValueInput = ({
                     onChange={(value) => {
                         onChange(value < 0 ? 0 : value)
                     }}
-                    onBlur={(event) => {
+                    onBlur={(event: FocusEvent<HTMLInputElement>) => {
                         if (event.target.value === '') {
                             onChange(0)
                         }

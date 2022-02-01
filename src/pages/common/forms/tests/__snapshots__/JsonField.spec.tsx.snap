@@ -23,9 +23,7 @@ exports[`JsonField display invalid message 1`] = `
           type="textarea"
           value="\\"value\\""
         />
-        <Errors
-          tag={[Function]}
-        >
+        <Errors>
           Invalid JSON : changes will not be saved until the JSON is fixed
         </Errors>
       </div>

@@ -15,12 +15,13 @@ import {connect, ConnectedProps} from 'react-redux'
 import warningIcon from 'assets/img/icons/warning2.svg'
 import pageIconDefault from 'assets/img/integrations/facebook-page.png'
 
+import BooleanField from 'pages/common/forms/BooleanField'
+import InputField from 'pages/common/forms/InputField'
 import {
     FACEBOOK_LANGUAGE_OPTIONS,
     FACEBOOK_LANGUAGE_DEFAULT,
 } from '../../../../../config/integrations/facebook'
-import InputField from '../../../../common/forms/InputField.js'
-import BooleanField from '../../../../common/forms/BooleanField.js'
+
 import Loader from '../../../../common/components/Loader/Loader'
 import PageHeader from '../../../../common/components/PageHeader'
 import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'

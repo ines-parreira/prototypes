@@ -3,7 +3,7 @@ import React, {Component, KeyboardEvent} from 'react'
 import {Button} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 
-import InputField from '../../../../forms/InputField.js'
+import InputField from 'pages/common/forms/InputField'
 import {removeLink} from '../../utils'
 import {
     getEntitySelectionState,

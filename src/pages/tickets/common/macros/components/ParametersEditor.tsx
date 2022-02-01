@@ -2,10 +2,10 @@ import React, {Component} from 'react'
 import {Map, List} from 'immutable'
 import {Row, Col} from 'reactstrap'
 
+import InputField from 'pages/common/forms/InputField'
 import {ButtonIntent} from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Tooltip from '../../../../common/components/Tooltip'
-import InputField from '../../../../common/forms/InputField.js'
 import {MAX_HEADER_LENGTH} from '../../../../../config'
 import {hasUnicodeChars} from '../../../../../utils'
 

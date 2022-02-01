@@ -403,9 +403,7 @@ exports[`InputField should render the input with an error 1`] = `
       type="text"
       value="value"
     />
-    <Errors
-      tag={[Function]}
-    >
+    <Errors>
       the value is wrong
     </Errors>
   </div>

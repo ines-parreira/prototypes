@@ -1,9 +1,10 @@
 import React, {memo} from 'react'
+
 import {FormGroup, Label} from 'reactstrap'
 
-import {ContentType} from '../../../../../../../../../../../../models/api/types'
-import BooleanField from '../../../../../../../../../../forms/BooleanField.js'
+import BooleanField from 'pages/common/forms/BooleanField'
 import JsonField from '../../../../../../../../../../forms/JsonField'
+import {ContentType} from '../../../../../../../../../../../../models/api/types'
 import {Action, OnChangeAction} from '../../../types'
 
 import Parameters from './Parameters'

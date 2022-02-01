@@ -3,8 +3,7 @@ import {List} from 'immutable'
 import {Row, Col, Button} from 'reactstrap'
 import classNames from 'classnames'
 
-import InputField from './InputField.js'
-
+import InputField from './InputField'
 import css from './ListField.less'
 
 type Props = {

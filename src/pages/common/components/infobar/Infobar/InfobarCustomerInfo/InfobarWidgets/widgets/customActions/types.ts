@@ -3,7 +3,7 @@ import {
     HttpMethod,
 } from '../../../../../../../../../models/api/types'
 
-type JSONValue =
+export type JSONValue =
     | string
     | number
     | boolean

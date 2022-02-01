@@ -1,11 +1,11 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow, mount} from 'enzyme'
 import _noop from 'lodash/noop'
 
-import JsonField from '../JsonField.tsx'
+import JsonField from '../JsonField'
 
 describe('JsonField', () => {
-    const minProps = {
+    const minProps: ComponentProps<typeof JsonField> = {
         value: 'value',
         onChange: _noop,
     }

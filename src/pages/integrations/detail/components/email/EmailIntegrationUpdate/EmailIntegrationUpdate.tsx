@@ -16,6 +16,8 @@ import {
     FormGroup,
 } from 'reactstrap'
 
+import InputField from 'pages/common/forms/InputField'
+import BooleanField from 'pages/common/forms/BooleanField'
 import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from '../../../../../../constants/integration'
 
 import {
@@ -44,8 +46,6 @@ import {
 import DEPRECATED_ConfirmButton from '../../../../../common/components/DEPRECATED_ConfirmButton'
 import Alert from '../../../../../common/components/Alert/Alert'
 
-import InputField from '../../../../../common/forms/InputField.js'
-import BooleanField from '../../../../../common/forms/BooleanField.js'
 import RichFieldWithVariables from '../../../../../common/forms/RichFieldWithVariables'
 import {RootState} from '../../../../../../state/types'
 import {IntegrationType} from '../../../../../../models/integration/types'

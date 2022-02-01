@@ -13,8 +13,8 @@ import {
 } from 'reactstrap'
 import classnames from 'classnames'
 
+import BooleanField from 'pages/common/forms/BooleanField'
 import PageHeader from '../../../../../common/components/PageHeader'
-import BooleanField from '../../../../../common/forms/BooleanField.js'
 import ListField from '../../../../../common/forms/ListField'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import {

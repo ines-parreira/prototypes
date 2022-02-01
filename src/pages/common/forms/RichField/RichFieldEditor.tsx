@@ -27,9 +27,8 @@ import createVariablesPlugin from '../../draftjs/plugins/variables/index.js'
 import createPredictionPlugin from '../../draftjs/plugins/prediction'
 import {createQuotesPlugin} from '../../draftjs/plugins/quotes/quotesPlugin'
 
-import InputField from '../InputField.js'
 import {ActionName} from '../../draftjs/plugins/toolbar/types'
-import {Plugin} from '../../draftjs/plugins/types'
+import {ImagePluginConfig, Plugin} from '../../draftjs/plugins/types'
 import {
     contentStateFromTextOrHTML,
     isValidSelectionKey,
@@ -37,6 +36,7 @@ import {
     removeMentions,
 } from '../../../../utils/editor'
 
+import InputField, {InputFieldProps, InputFieldState} from '../InputField'
 import EmailExtraButton from './EmailExtraButton'
 import provideToolbarPlugin, {
     InjectedProps as ToolbarPluginProps,
@@ -57,18 +57,15 @@ export type Props = {
     quickReply?: ReactNode
     editorState: EditorState
     onChange: (editorState: EditorState) => void
-    required: boolean
-    displayOnly: boolean
-    emailExtraEnabled: boolean
-    productCardsEnabled: boolean
-    isFocused: boolean
+    displayOnly?: boolean
+    emailExtraEnabled?: boolean
+    productCardsEnabled?: boolean
     onFocus: (event: MouseEvent<HTMLDivElement>) => void
     onBlur: () => void
-    placeholder: string
-    notify: ConnectedAction<typeof notify>
-    attachFiles: (T: File[]) => void
-    canDropFiles: boolean
-    canInsertInlineImages: boolean
+    notify?: ConnectedAction<typeof notify>
+    attachFiles?: (T: File[]) => void
+    canDropFiles?: boolean
+    canInsertInlineImages?: boolean
     mentionSuggestions?: suggestionsType
     canAddMention?: canAddMentionType
     buttons?: ReactNode[]
@@ -78,16 +75,17 @@ export type Props = {
     tabIndex?: number
     readOnly?: boolean
     spellCheck?: boolean
-    predictionContext: Map<any, any>
-    ticket: any
+    predictionContext?: Map<any, any>
+    ticket?: any
 } & ToolbarPluginProps &
     MentionFilteredSuggestionsProps &
-    GrammarlyUsageTrackingProps
+    GrammarlyUsageTrackingProps &
+    InputFieldProps
 
 type State = {
     isDragging: boolean
     wasEverFocused: boolean
-}
+} & InputFieldState
 
 export class RichFieldEditor extends InputField<Props, State> {
     static defaultProps: Pick<
@@ -100,7 +98,7 @@ export class RichFieldEditor extends InputField<Props, State> {
         | 'canInsertInlineImages'
         | 'isFocused'
     > &
-        Pick<ComponentProps<typeof InputField>, 'type'> = {
+        Pick<InputFieldProps, 'type' | 'onChange'> = {
         emailExtraEnabled: false,
         productCardsEnabled: true,
         type: 'text',
@@ -129,6 +127,7 @@ export class RichFieldEditor extends InputField<Props, State> {
     state: State = {
         isDragging: false,
         wasEverFocused: false,
+        id: '',
     }
 
     constructor(props: Props) {
@@ -144,8 +143,12 @@ export class RichFieldEditor extends InputField<Props, State> {
             getCanInsertInlineImages: this._getCanInsertInlineImages,
         }
 
-        this.dndPlugin = createDndUploadPlugin(imagePluginProps)
-        this.pasteImage = createPasteImagePlugin(imagePluginProps)
+        this.dndPlugin = createDndUploadPlugin(
+            imagePluginProps as ImagePluginConfig
+        )
+        this.pasteImage = createPasteImagePlugin(
+            imagePluginProps as ImagePluginConfig
+        )
         this.blockBreakoutPlugin = createBlockBreakoutPlugin()
         this.resizeablePlugin = createResizeablePlugin({
             horizontal: 'absolute',
@@ -200,7 +203,7 @@ export class RichFieldEditor extends InputField<Props, State> {
         }
 
         if (editorState !== this.props.editorState) {
-            this._onChange(editorState)
+            this.handleChildChange(editorState)
         }
 
         if (!prevProps.isFocused && this.props.isFocused) {
@@ -233,7 +236,7 @@ export class RichFieldEditor extends InputField<Props, State> {
 
         if (!wasEverFocused) {
             this.setState({wasEverFocused: true})
-            this._onChange(EditorState.moveFocusToEnd(editorState))
+            this.handleChildChange(EditorState.moveFocusToEnd(editorState))
         }
         setTimeout(() => {
             if (this.editor) {
@@ -288,7 +291,7 @@ export class RichFieldEditor extends InputField<Props, State> {
                 contentState: ContentState
             ) => EditorState
         )(editorState, contentState)
-        this._onChange(newEditorState)
+        this.handleChildChange(newEditorState)
 
         // draft-js-plugins-editor requires `handled`, instead of `true` like the native draft-js instance,
         // to prevent the default behavior.
@@ -313,7 +316,7 @@ export class RichFieldEditor extends InputField<Props, State> {
         return nextEditorState
     }
 
-    _onChange = (editorState: EditorState) => {
+    handleChildChange = (editorState: EditorState) => {
         // run plugins
         this.props.onChange(this._runPlugins(editorState))
     }
@@ -372,7 +375,7 @@ export class RichFieldEditor extends InputField<Props, State> {
                     >
                         <Editor
                             editorState={this.props.editorState}
-                            onChange={this._onChange}
+                            onChange={this.handleChildChange}
                             onFocus={this._onEditorFocus}
                             onBlur={this.props.onBlur}
                             plugins={this.plugins}
@@ -425,9 +428,9 @@ export class RichFieldEditor extends InputField<Props, State> {
                     {...(this.props as unknown as ComponentProps<
                         typeof Toolbar
                     >)}
-                    canDropFiles={this._getCanDropFiles()}
+                    canDropFiles={!!this.props.canDropFiles}
                     pluginMethods={this.editor?.getPluginMethods()}
-                    productCardsEnabled={productCardsEnabled}
+                    productCardsEnabled={!!productCardsEnabled}
                 />
             </div>
         )

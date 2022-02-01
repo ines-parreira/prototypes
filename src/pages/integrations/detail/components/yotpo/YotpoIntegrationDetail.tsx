@@ -12,14 +12,14 @@ import {
 import {parse} from 'query-string'
 import {fromJS, Map} from 'immutable'
 
+import BooleanField from 'pages/common/forms/BooleanField'
+import InputField from 'pages/common/forms/InputField'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration'
 import Loader from '../../../../common/components/Loader/Loader'
-import InputField from '../../../../common/forms/InputField.js'
 import PageHeader from '../../../../common/components/PageHeader'
-import BooleanField from '../../../../common/forms/BooleanField.js'
 import {
     deleteIntegration,
     fetchIntegration,

@@ -3,6 +3,7 @@ import {fromJS} from 'immutable'
 import {Button, Col, Container, Form, Row} from 'reactstrap'
 import classnames from 'classnames'
 
+import BooleanField from 'pages/common/forms/BooleanField'
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
 import PageHeader from '../../../../common/components/PageHeader'
 import {
@@ -11,7 +12,6 @@ import {
     isPhoneIntegration,
 } from '../../../../../models/integration/types'
 import {DEFAULT_VOICE_MESSAGE} from '../../../../../models/integration/constants'
-import BooleanField from '../../../../common/forms/BooleanField.js'
 import settingsCss from '../../../../settings/settings.less'
 
 import {updatePhoneVoicemailConfiguration} from './actions'

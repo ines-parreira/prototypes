@@ -5,7 +5,7 @@ import {Row, Col, Button} from 'reactstrap'
 
 import {ButtonIntent} from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
-import InputField from '../../../../common/forms/InputField.js'
+import InputField from 'pages/common/forms/InputField'
 
 export type Field = {key: any; value: any}
 

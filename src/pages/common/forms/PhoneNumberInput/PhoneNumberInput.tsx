@@ -17,7 +17,7 @@ import countries from '../../../../config/countries.json'
 import {useOnClickOutside} from '../../../common/hooks/useOnClickOutside'
 import SelectField from '../../../common/forms/SelectField/SelectField'
 import {reportError} from '../../../../utils/errors'
-import Errors from '../Errors.js'
+import Errors from '../Errors'
 
 import {
     getCountryFromPhoneNumber,

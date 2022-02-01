@@ -1,6 +1,7 @@
 import React from 'react'
 import copy from 'copy-to-clipboard'
 
+import InputField from 'pages/common/forms/InputField'
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
 import {
     ArticleTranslationSeoMeta,
@@ -10,7 +11,6 @@ import {
 import {notify} from '../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import AutoPopulateInput from '../../../../common/forms/AutoPopulateInput/AutoPopulateInput'
-import InputField from '../../../../common/forms/InputField.js'
 import {HELP_CENTER_TITLE_MAX_LENGTH} from '../../constants'
 import {
     getAbsoluteUrl,

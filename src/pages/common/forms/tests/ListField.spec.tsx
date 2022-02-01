@@ -1,13 +1,14 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+import _noop from 'lodash/noop'
 
-import ListField from '../ListField.tsx'
+import ListField from '../ListField'
 
 describe('ListField component', () => {
     it('should render with no items and an "add" button', () => {
         const component = shallow(
-            <ListField onChange={() => {}} items={fromJS([])} />
+            <ListField onChange={_noop} items={fromJS([])} />
         )
 
         expect(component).toMatchSnapshot()
@@ -15,7 +16,7 @@ describe('ListField component', () => {
 
     it('should render with some items and an "add" button', () => {
         const component = shallow(
-            <ListField onChange={() => {}} items={fromJS(['foo', 'bar'])} />
+            <ListField onChange={_noop} items={fromJS(['foo', 'bar'])} />
         )
 
         expect(component).toMatchSnapshot()
@@ -24,7 +25,7 @@ describe('ListField component', () => {
     it('should render with the max number of items and no "add" button', () => {
         const component = shallow(
             <ListField
-                onChange={() => {}}
+                onChange={_noop}
                 items={fromJS(['foo', 'bar'])}
                 maxItems={2}
             />

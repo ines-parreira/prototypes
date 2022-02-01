@@ -13,7 +13,7 @@ import {
 import {Map} from 'immutable'
 
 import IconButton from 'pages/common/components/button/IconButton'
-import InputField from '../../common/forms/InputField.js'
+import InputField from 'pages/common/forms/InputField'
 import Pagination from '../../common/components/Pagination'
 import Loader from '../../common/components/Loader/Loader'
 import PageHeader from '../../common/components/PageHeader'

@@ -5,8 +5,9 @@ import classnames from 'classnames'
 import {Form, Button, Container} from 'reactstrap'
 import {AxiosError} from 'axios'
 
+import InputField from 'pages/common/forms/InputField'
+
 import {changePassword} from '../../../state/currentUser/actions'
-import InputField from '../../common/forms/InputField.js'
 import PageHeader from '../../common/components/PageHeader'
 import {RootState} from '../../../state/types'
 import css from '../settings.less'

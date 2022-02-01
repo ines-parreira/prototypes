@@ -10,6 +10,7 @@ import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
+import BooleanField from 'pages/common/forms/BooleanField'
 import {
     TICKET_CREATED,
     TICKET_MESSAGE_CREATED,
@@ -30,7 +31,6 @@ import {
 import Loader from '../../../../../common/components/Loader/Loader'
 import ObjectListField, {Field} from '../ObjectListField'
 import InputField from '../../../../../common/forms/InputField'
-import BooleanField from '../../../../../common/forms/BooleanField.js'
 import {ContentType, HttpMethod} from '../../../../../../models/api/types'
 import css from '../../../../../settings/settings.less'
 

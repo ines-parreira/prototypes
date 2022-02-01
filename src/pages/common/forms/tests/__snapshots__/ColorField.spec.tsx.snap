@@ -28,7 +28,6 @@ exports[`ColorField should render a basic color input 1`] = `
           "#767676",
         ]
       }
-      id="id-input-1"
       onChange={[Function]}
       type="text"
       value="value"

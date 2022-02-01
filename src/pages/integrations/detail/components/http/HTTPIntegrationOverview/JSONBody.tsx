@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import _isEqual from 'lodash/isEqual'
 import _some from 'lodash/some'
 import {FormGroup, FormText, Label} from 'reactstrap'
@@ -97,7 +97,11 @@ export default class JSONBody extends React.Component<Props, State> {
                             name="http.form"
                             rows="8"
                             value={form || DEFAULT_FORM}
-                            onChange={this._onJSONChange}
+                            onChange={
+                                this._onJSONChange as ComponentProps<
+                                    typeof JsonField
+                                >['onChange']
+                            }
                         />
                         <FormText color="muted">
                             See full list of variables{' '}

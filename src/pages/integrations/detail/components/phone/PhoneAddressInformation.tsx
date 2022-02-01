@@ -1,7 +1,8 @@
 import React, {useCallback, useState, useEffect} from 'react'
 import {Col, Row, Input, Label} from 'reactstrap'
-import {noop, isEmpty} from 'lodash'
+import {isEmpty} from 'lodash'
 
+import InputField from 'pages/common/forms/InputField'
 import {
     AddressType,
     AddressInformation,
@@ -9,7 +10,6 @@ import {
 import {PhoneCountry} from '../../../../../business/twilio'
 
 import {SelectableOption} from '../../../../common/forms/SelectField/types'
-import InputField from '../../../../common/forms/InputField.js'
 
 import rawCountries from './options/countries.json'
 
@@ -153,8 +153,7 @@ export default function PhoneAddressInformation({
                     <InputField
                         label="Country"
                         required
-                        value={countryName}
-                        onChange={noop}
+                        value={countryName as string}
                         disabled
                     />
                 </Col>

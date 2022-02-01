@@ -1,11 +1,11 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import CheckBox from '../CheckBox'
 
 describe('<CheckBox />', () => {
-    const minProps = {
+    const minProps: Omit<ComponentProps<typeof CheckBox>, 'children'> = {
         isChecked: false,
         onChange: jest.fn(),
     }

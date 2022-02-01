@@ -1,20 +1,24 @@
 import {mount, render} from 'enzyme'
 import _noop from 'lodash/noop'
-import React, {ReactElement} from 'react'
+import React, {ComponentProps, ReactElement} from 'react'
 
 import TagDropdownMenu from '../../../components/TagDropdownMenu/TagDropdownMenu'
 
 import Dropdown from '../Dropdown'
 import MultiSelectField from '../MultiSelectOptionsField'
 import OptionTag from '../Tag'
-import {Option} from '../types'
+
+type OptionProps = ComponentProps<typeof MultiSelectField>['options']
 
 describe('MultiSelectField', () => {
-    const minProps = {
+    const minProps: Pick<
+        ComponentProps<typeof MultiSelectField>,
+        'onChange'
+    > = {
         onChange: _noop,
     }
 
-    const options: Option[] = [
+    const options: OptionProps = [
         {
             value: 'first',
             label: 'First',
@@ -29,7 +33,10 @@ describe('MultiSelectField', () => {
         },
     ]
 
-    const props = {
+    const props: Omit<
+        ComponentProps<typeof MultiSelectField>,
+        'allowCustomOptions' | 'matchInput' | 'tagColor'
+    > = {
         onChange: _noop,
         selectedOptions: [],
         options: options,
@@ -60,7 +67,7 @@ describe('MultiSelectField', () => {
     })
 
     it('should update state when search changes (custom values allowed)', () => {
-        const options = [
+        const options: OptionProps = [
             {
                 value: 'hello',
                 label: 'Hello',
@@ -88,7 +95,7 @@ describe('MultiSelectField', () => {
     })
 
     it('should update state when search changes (custom values NOT allowed)', () => {
-        const options = [
+        const options: OptionProps = [
             {
                 value: 'hello',
                 label: 'Hello',

@@ -1,8 +1,8 @@
 import React, {useMemo} from 'react'
 import classNames from 'classnames'
 
+import InputField from 'pages/common/forms/InputField'
 import Tooltip from '../../../../../../common/components/Tooltip'
-import InputField from '../../../../../../common/forms/InputField.js'
 import {HELP_CENTER_DOMAIN} from '../../../../constants'
 import {isValidSubdomain} from '../../../../utils/validations'
 

@@ -181,9 +181,7 @@ exports[`CreditCard component should display credit card form 1`] = `
               color="danger"
               tag="div"
             >
-              <Errors
-                tag={[Function]}
-              />
+              <Errors />
             </FormGroup>
             <Button
               className=""
@@ -404,9 +402,7 @@ exports[`CreditCard component should not render the billing address form when a 
               color="danger"
               tag="div"
             >
-              <Errors
-                tag={[Function]}
-              />
+              <Errors />
             </FormGroup>
             <Button
               className=""
@@ -606,9 +602,7 @@ exports[`CreditCard component should render billing plan card with automation fo
               color="danger"
               tag="div"
             >
-              <Errors
-                tag={[Function]}
-              />
+              <Errors />
             </FormGroup>
             <Button
               className=""
@@ -850,9 +844,7 @@ exports[`CreditCard component should render nothing if loaded, but no current su
               color="danger"
               tag="div"
             >
-              <Errors
-                tag={[Function]}
-              />
+              <Errors />
             </FormGroup>
             <Button
               className=""
@@ -1052,9 +1044,7 @@ exports[`CreditCard component should render the billing address form when accoun
               color="danger"
               tag="div"
             >
-              <Errors
-                tag={[Function]}
-              />
+              <Errors />
             </FormGroup>
             <Button
               className=""
