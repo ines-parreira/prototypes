@@ -95,7 +95,7 @@ export function DraftOrderModalContainer({
         () =>
             !!(
                 currentIntegration?.getIn(['meta', 'oauth', 'scope']) as string
-            ).includes('write_draft_orders'),
+            )?.includes('write_draft_orders'),
         [currentIntegration]
     )
     const currencyCode = useMemo(
