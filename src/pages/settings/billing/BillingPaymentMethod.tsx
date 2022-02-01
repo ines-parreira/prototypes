@@ -4,7 +4,10 @@ import {Link} from 'react-router-dom'
 import {Button, Card, CardBody, Col, Row, UncontrolledTooltip} from 'reactstrap'
 import classnames from 'classnames'
 
-import {creditCard, getCurrentPlan} from '../../../state/billing/selectors'
+import {
+    creditCard,
+    DEPRECATED_getCurrentPlan,
+} from '../../../state/billing/selectors'
 import {
     getCurrentSubscription,
     paymentMethod,
@@ -251,7 +254,7 @@ const connector = connect(
             currentAccountDomain: state.currentAccount.get('domain'),
             creditCard: creditCard(state),
             subscription: getCurrentSubscription(state),
-            currentPlan: getCurrentPlan(state),
+            currentPlan: DEPRECATED_getCurrentPlan(state),
             paymentMethod: paymentMethod(state),
             shopifyBillingStatus: getShopifyBillingStatus(state),
         }

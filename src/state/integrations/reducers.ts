@@ -6,9 +6,9 @@ import {IntegrationType} from '../../models/integration/types'
 import {GorgiasAction} from '../types'
 
 import * as constants from './constants'
-import {IntegrationsState} from './types'
+import {IntegrationsImmutableState} from './types'
 
-export const initialState: IntegrationsState = fromJS({
+export const initialState: IntegrationsImmutableState = fromJS({
     integrations: [],
     integration: {},
     emailDomain: {},
@@ -47,9 +47,9 @@ export const initialState: IntegrationsState = fromJS({
  * to be fetched.
  */
 export default function reducer(
-    state: IntegrationsState = initialState,
+    state: IntegrationsImmutableState = initialState,
     action: GorgiasAction
-): IntegrationsState {
+): IntegrationsImmutableState {
     switch (action.type) {
         case constants.FETCH_INTEGRATION_START:
             return state.setIn(['state', 'loading', 'integration'], true)

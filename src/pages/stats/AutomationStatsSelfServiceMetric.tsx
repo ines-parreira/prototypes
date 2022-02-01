@@ -5,7 +5,7 @@ import {useAsyncFn} from 'react-use'
 
 import {getSelfServiceConfigurations} from '../../state/entities/selfServiceConfigurations/selectors'
 import {
-    getCurrentPlan,
+    DEPRECATED_getCurrentPlan,
     getHasAutomationAddOn,
 } from '../../state/billing/selectors'
 import {
@@ -39,7 +39,7 @@ export const AutomationStatsSelfServiceMetric = ({
     const hasAccessToSelfService = hasAutomationLegacy || hasAutomationAddOn
 
     const account = useSelector(getCurrentAccountState)
-    const currentPlan = useSelector(getCurrentPlan)
+    const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
 
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)

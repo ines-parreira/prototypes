@@ -8,7 +8,7 @@ import {SegmentEvent} from '../../../../../store/middlewares/segmentTracker'
 import {RootState} from '../../../../../state/types'
 import {CurrentAccountState} from '../../../../../state/currentAccount/types'
 import {getCurrentAccountState} from '../../../../../state/currentAccount/selectors'
-import {getCurrentPlan} from '../../../../../state/billing/selectors'
+import {DEPRECATED_getCurrentPlan} from '../../../../../state/billing/selectors'
 import {getIconFromUrl} from '../../../../../utils'
 
 import css from './GorgiasChatIntegrationSelfServicePaywall.less'
@@ -23,7 +23,7 @@ export const GorgiasChatIntegrationSelfServicePaywall = () => {
     const account = useSelector<RootState, CurrentAccountState>(
         getCurrentAccountState
     )
-    const currentPlan = useSelector(getCurrentPlan)
+    const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
 
     const segmentEventToSend = {
         name: SegmentEvent.PaywallUpgradeButtonSelected,

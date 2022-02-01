@@ -84,6 +84,7 @@ const createSelfServiceConfigurationFixtures = (length: number) => {
 
 describe('<SelfServiceView/>', () => {
     const defaultState = {
+        billing: fromJS({plans: []}),
         currentAccount: fromJS({
             features: {
                 automation_return_flow: {enabled: true},

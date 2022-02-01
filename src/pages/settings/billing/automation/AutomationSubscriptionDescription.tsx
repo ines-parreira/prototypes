@@ -9,7 +9,7 @@ import {
 } from '../../../../state/currentAccount/selectors'
 import {
     getAddOnAutomationAmountCurrentPlan,
-    getCurrentPlan,
+    DEPRECATED_getCurrentPlan,
     getHasAutomationAddOn,
 } from '../../../../state/billing/selectors'
 import SubscriptionAmount from '../../common/SubscriptionAmount'
@@ -20,7 +20,7 @@ import css from './AutomationSubscriptionDescription.less'
 const AutomationSubscriptionDescription = () => {
     const currentSubscription = useSelector(getCurrentSubscription)
     const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
-    const currentPlan = useSelector(getCurrentPlan)
+    const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
     const currentSubscriptionStart = currentSubscription.get('start_datetime')
     const isSelfServeLegacy = useSelector(hasAutomationLegacyFeatures)
     const addOnAmount = useSelector(getAddOnAutomationAmountCurrentPlan)

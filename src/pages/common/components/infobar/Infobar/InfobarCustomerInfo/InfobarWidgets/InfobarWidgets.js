@@ -317,7 +317,7 @@ InfobarWidgets.defaultProps = {
 
 const mapStateToProps = (state) => {
     return {
-        integrations: integrationsSelectors.getIntegrations(state),
+        integrations: integrationsSelectors.DEPRECATED_getIntegrations(state),
     }
 }
 

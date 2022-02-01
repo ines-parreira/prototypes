@@ -72,6 +72,7 @@ describe('<SelfServiceStatsPage />', () => {
             phoneNumbers: {},
         } as RootState['entities'],
         integrations: fromJS({}),
+        billing: fromJS({plans: []}),
     } as RootState
 
     beforeEach(() => {

@@ -69,8 +69,6 @@ export type BillingContact = {
     }
 }
 
-export type BillingState = Map<any, any>
-
 export enum SubscriptionPlan {
     BasicMonthlyUSD2 = 'basic-monthly-usd-2',
     BasicAutomationMonthlyUSD2 = 'basic-automation-monthly-usd-2',
@@ -92,4 +90,15 @@ export type Subscription = {
 
 export type PlanWithCurrencySign = Plan & {
     currencySign: '$'
+}
+
+export type BillingImmutableState = Map<any, any>
+
+export type BillingState = {
+    contact?: BillingContact
+    plans: {
+        [plan in SubscriptionPlan]: Plan
+    }
+    futureSubscriptionPlan?: string
+    invoices: Invoice[]
 }

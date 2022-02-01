@@ -69,6 +69,7 @@ describe('<ReturnsPolicyView />', () => {
     const selfServiceConfigurations = createSelfServiceConfigurationFixtures(4)
 
     const defaultState = {
+        billing: fromJS({plans: []}),
         currentAccount: fromJS({
             features: {
                 automation_return_flow: {enabled: true},

@@ -9,7 +9,7 @@ import {IntegrationType} from '../../../../models/integration/constants'
 import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
 import {helpCenterUpdated} from '../../../../state/entities/helpCenters/actions'
 import {fetchIntegrations} from '../../../../state/integrations/actions'
-import {getIntegrations} from '../../../../state/integrations/selectors'
+import {DEPRECATED_getIntegrations} from '../../../../state/integrations/selectors'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import Loader from '../../../common/components/Loader/Loader'
@@ -22,7 +22,7 @@ import {SelfServiceSection} from './SelfServiceSection'
 export const HelpCenterSelfServiceView = (): JSX.Element | null => {
     const helpCenter = useCurrentHelpCenter()
     const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
-    const integrations = useSelector(getIntegrations)
+    const integrations = useSelector(DEPRECATED_getIntegrations)
     const {client} = useHelpCenterApi()
     const dispatch = useAppDispatch()
     const [isLoadingIntegrations, setIsLoadingIntegrations] = useState(true)

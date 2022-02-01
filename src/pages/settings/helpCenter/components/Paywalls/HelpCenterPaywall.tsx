@@ -9,7 +9,10 @@ import helpCenterImagePreview from 'assets/img/paywalls/screens/helpcenter-steve
 
 import UpgradeButton from '../../../../common/components/UpgradeButton'
 import PageHeader from '../../../../common/components/PageHeader'
-import {getCurrentPlan, getPlans} from '../../../../../state/billing/selectors'
+import {
+    DEPRECATED_getCurrentPlan,
+    DEPRECATED_getPlans,
+} from '../../../../../state/billing/selectors'
 import {openChat} from '../../../../../utils'
 import {PlanInterval} from '../../../../../models/billing/types'
 import {
@@ -23,8 +26,8 @@ import HelpCenterChangePlanModal from './HelpCenterChangePlanModal'
 const HelpCenterPaywall = (): JSX.Element => {
     const [isPlanChangeModalOpen, setIsPlanChangeModalOpen] = useState(false)
     const [isLightboxOpen, setIsLightboxOpen] = useState(false)
-    const plans = useSelector(getPlans)
-    const currentPlan = useSelector(getCurrentPlan)
+    const plans = useSelector(DEPRECATED_getPlans)
+    const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
     const planName = currentPlan.get('name') as string
     const currentPlanName = convertLegacyPlanNameToPublicPlanName(planName)
 

@@ -56,7 +56,10 @@ describe('<BillingComparisonPlanCard />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        getCurrentPlanSpy = jest.spyOn(billingSelectors, 'getCurrentPlan')
+        getCurrentPlanSpy = jest.spyOn(
+            billingSelectors,
+            'DEPRECATED_getCurrentPlan'
+        )
         getCurrentPlanSpy.mockImplementation(
             () => fromJS(basicPlan) as Map<any, any>
         )

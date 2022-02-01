@@ -1,3 +1,26 @@
 import {Map} from 'immutable'
 
-export type IntegrationsState = Map<any, any>
+import {
+    Integration,
+    IntegrationAuthentication,
+    IntegrationType,
+} from '../../models/integration/types'
+
+export type IntegrationsImmutableState = Map<any, any>
+
+export type IntegrationsState = {
+    integrations: Integration[]
+    authentication: Partial<{
+        [K in IntegrationType]: IntegrationAuthentication<K>
+    }>
+    state: {
+        loading: {
+            integration?: boolean
+            integrations?: boolean
+            emailDomain?: boolean
+            updateIntegration?: boolean
+            testing?: boolean
+            delete?: boolean
+        }
+    }
+}

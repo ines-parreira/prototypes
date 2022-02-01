@@ -5,7 +5,7 @@ import {fromJS, Map} from 'immutable'
 import classNames from 'classnames'
 
 import {
-    getCurrentPlan,
+    DEPRECATED_getCurrentPlan,
     getEquivalentRegularCurrentPlan,
     getHasAutomationAddOn,
     getPlan,
@@ -50,7 +50,7 @@ export default function BillingComparisonPlanCard({
         defaultIsPlanChangeModalOpen
     )
     const isLegacyPlan = useSelector(hasLegacyPlan)
-    const currentPlan = useSelector(getCurrentPlan)
+    const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
     const regularCurrentPlan = useSelector(getEquivalentRegularCurrentPlan)
     const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
 

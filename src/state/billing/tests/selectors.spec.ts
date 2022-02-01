@@ -2,6 +2,7 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, List, Map, OrderedMap} from 'immutable'
 
 import * as billingFixtures from '../../../fixtures/billing'
+import {Plan} from '../../../models/billing/types'
 import {initialState as initialCurrentAccountState} from '../../currentAccount/reducers'
 import {RootState} from '../../types'
 import * as selectors from '../selectors'
@@ -32,19 +33,25 @@ describe('billing selectors', () => {
         } as RootState
     })
 
-    it('getBillingState', () => {
-        expect(selectors.getBillingState({} as RootState)).toEqualImmutable(
-            fromJS({})
+    it('getBillingState (deprecated)', () => {
+        expect(
+            selectors.DEPRECATED_getBillingState({} as RootState)
+        ).toEqualImmutable(fromJS({}))
+        expect(selectors.DEPRECATED_getBillingState(state)).toEqualImmutable(
+            state.billing
         )
-        expect(selectors.getBillingState(state)).toEqualImmutable(state.billing)
     })
 
-    it('plans', () => {
-        expect(selectors.getPlans({} as RootState)).toEqualImmutable(
+    it('getBillingState', () => {
+        expect(selectors.getBillingState(state)).toEqual(state.billing.toJS())
+    })
+
+    it('getPlans (deprecated)', () => {
+        expect(selectors.DEPRECATED_getPlans({} as RootState)).toEqualImmutable(
             OrderedMap()
         )
 
-        const plans = selectors.getPlans(state)
+        const plans = selectors.DEPRECATED_getPlans(state)
 
         expect((state.billing.get('plans') as List<any>).size).toBe(plans.size)
 
@@ -53,6 +60,56 @@ describe('billing selectors', () => {
             expect(planJS).toHaveProperty('amount')
             expect(planJS).toHaveProperty('currencySign')
         })
+    })
+
+    it('getPlans', () => {
+        const plans = selectors.getPlans(state)
+
+        expect((state.billing.get('plans') as List<any>).size).toBe(
+            plans.length
+        )
+
+        plans.forEach((plan: Plan) => {
+            expect(plan).toHaveProperty('amount')
+            expect(plan).toHaveProperty('currencySign')
+        })
+    })
+
+    it('getCurrentPlan (deprecated)', () => {
+        const statePlan = {
+            id: 'plan-123',
+        }
+        state = {
+            currentAccount: fromJS({
+                current_subscription: {plan: 'plan-123'},
+            }),
+            billing: fromJS({
+                plans: {
+                    'plan-123': statePlan,
+                },
+            }),
+        } as RootState
+        expect(selectors.DEPRECATED_getCurrentPlan(state).get('id')).toBe(
+            statePlan.id
+        )
+    })
+
+    it('getCurrentPlan', () => {
+        const statePlan = {
+            id: 'plan-123',
+        }
+        state = {
+            currentAccount: fromJS({
+                current_subscription: {plan: 'plan-123'},
+            }),
+            billing: fromJS({
+                plans: {
+                    'plan-123': statePlan,
+                },
+            }),
+        } as RootState
+        const plan = selectors.getCurrentPlan(state)
+        expect(plan?.id).toBe(statePlan.id)
     })
 
     it('getPlan', () => {
@@ -106,9 +163,11 @@ describe('billing selectors', () => {
     })
 
     it('isAllowedToCreateIntegration', () => {
-        expect(selectors.isAllowedToCreateIntegration({} as RootState)).toBe(
-            false
-        )
+        expect(
+            selectors.isAllowedToCreateIntegration({
+                billing: fromJS({plans: []}),
+            } as RootState)
+        ).toBe(false)
         expect(
             selectors.isAllowedToCreateIntegration({
                 ...state,
@@ -130,7 +189,11 @@ describe('billing selectors', () => {
     })
 
     it('planIntegrations', () => {
-        expect(selectors.planIntegrations({} as RootState)).toBe(0)
+        expect(
+            selectors.planIntegrations({
+                billing: fromJS({plans: []}),
+            } as RootState)
+        ).toBe(0)
         expect(selectors.planIntegrations(state)).toBe(15)
     })
 
@@ -175,7 +238,7 @@ describe('billing selectors', () => {
 
     describe('currentPlanId()', () => {
         it('should return undefined when no current subscription', () => {
-            state = {} as RootState
+            state = {billing: fromJS({plans: []})} as RootState
             expect(selectors.currentPlanId(state)).toEqual(undefined)
         })
 

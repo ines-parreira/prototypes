@@ -7,7 +7,7 @@ import ArrowForward from 'assets/img/icons/arrow-forward.svg'
 
 import {
     getAddOnAutomationAmountCurrentPlan,
-    getCurrentPlan,
+    DEPRECATED_getCurrentPlan,
     getEquivalentRegularCurrentPlan,
     getHasAutomationAddOn,
 } from '../../../../state/billing/selectors'
@@ -46,7 +46,7 @@ export const ChangePlanModal = ({
     onConfirm,
     renderComparedPlan,
 }: Props) => {
-    const currentPlan = useSelector(getCurrentPlan)
+    const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
     const regularCurrentPlan = useSelector(getEquivalentRegularCurrentPlan)
     const plan = regularCurrentPlan || currentPlan
     const hasAutomationAddOn = useSelector(getHasAutomationAddOn)

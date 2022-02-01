@@ -25,7 +25,7 @@ import {
 import {
     getAddOnAutomationAmountCurrentPlan,
     getContact,
-    getCurrentPlan as currentPlanSelector,
+    DEPRECATED_getCurrentPlan as currentPlanSelector,
     getEquivalentRegularCurrentPlan,
     getHasAutomationAddOn,
     hasLegacyPlan as hasLegacyPlanSelector,

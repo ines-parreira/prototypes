@@ -17,6 +17,7 @@ import {ConnectToShopSection} from '../ConnectToShopSection'
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const defaultState: Partial<RootState> = {
+    billing: fromJS({plans: []}),
     entities: {
         helpCenters: {
             '1': getHelpCentersResponseFixture.data[0],

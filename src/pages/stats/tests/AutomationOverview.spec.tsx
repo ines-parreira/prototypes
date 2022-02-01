@@ -50,6 +50,7 @@ describe('AutomationOverview', () => {
         entities: {
             selfServiceConfigurations: {},
         },
+        billing: fromJS({plans: []}),
     } as RootState
 
     beforeEach(() => {

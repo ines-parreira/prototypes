@@ -7,7 +7,7 @@ import {useAsyncFn} from 'react-use'
 import classnames from 'classnames'
 
 import PageHeader from '../../../../../common/components/PageHeader'
-import {getIntegrations} from '../../../../../../state/integrations/selectors'
+import {DEPRECATED_getIntegrations} from '../../../../../../state/integrations/selectors'
 import {IntegrationType} from '../../../../../../models/integration/types'
 import {fetchSelfServiceConfiguration} from '../../../../../../models/selfServiceConfiguration/resources'
 import ToggleButton from '../../../../../common/components/ToggleButton'
@@ -65,7 +65,7 @@ export function GorgiasChatIntegrationSelfServiceComponent({
         [integration]
     )
 
-    const integrations = useSelector(getIntegrations)
+    const integrations = useSelector(DEPRECATED_getIntegrations)
 
     const shopifyIntegration: Map<any, any> | undefined = integrations.find(
         (shopifyIntegration: Map<any, any>) => {

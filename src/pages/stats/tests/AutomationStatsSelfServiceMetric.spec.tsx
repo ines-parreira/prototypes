@@ -43,6 +43,7 @@ describe('<AutomationStatsSelfServiceMetric />', () => {
     const beforeAddonLaunch = '2021-01-01T00:00:00Z'
 
     const defaultState = {
+        billing: fromJS({plans: []}),
         currentAccount: fromJS({created_datetime: afterAddonLaunch}),
         entities: {
             macros: {},

@@ -11,7 +11,7 @@ import {
     isShopifyIntegration,
 } from '../../../../../../models/integration/types'
 
-import {getIntegrations} from '../../../../../../state/integrations/selectors'
+import {DEPRECATED_getIntegrations} from '../../../../../../state/integrations/selectors'
 
 import css from './Preview.less'
 
@@ -20,7 +20,7 @@ interface PreviewProps {
 }
 
 const Preview = ({reasonOptions}: PreviewProps) => {
-    const immutableIntegrations = useSelector(getIntegrations)
+    const immutableIntegrations = useSelector(DEPRECATED_getIntegrations)
     const {
         params: {shopName},
     } = useRouteMatch<{

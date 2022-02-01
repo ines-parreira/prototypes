@@ -16,7 +16,7 @@ import 'assets/css/typography.less'
 
 import ToggleButton from '../../../pages/common/components/ToggleButton'
 import shortcutManager from '../../../services/shortcutManager/index'
-import {getCurrentPlan} from '../../../state/billing/selectors'
+import {DEPRECATED_getCurrentPlan} from '../../../state/billing/selectors'
 import {isTrialing} from '../../../state/currentAccount/selectors'
 import {submitSetting} from '../../../state/currentUser/actions'
 import {
@@ -476,7 +476,7 @@ const connector = connect(
     (state: RootState) => ({
         currentUser: getCurrentUser(state),
         currentUserPreferences: getPreferences(state),
-        currentPlan: getCurrentPlan(state),
+        currentPlan: DEPRECATED_getCurrentPlan(state),
         available: isAvailable(state),
         isOpenedPanel: isOpenedPanel('navbar')(state),
         isTrialing: isTrialing(state),

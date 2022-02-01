@@ -4,13 +4,13 @@ import {connect, ConnectedProps} from 'react-redux'
 import {RootState} from '../../../state/types'
 import {fetchIntegrations} from '../../../state/integrations/actions'
 import {
-    getBillingState,
+    DEPRECATED_getBillingState,
     planIntegrations,
-    getCurrentPlan,
+    DEPRECATED_getCurrentPlan,
 } from '../../../state/billing/selectors'
 import {
     getActiveIntegrations,
-    getIntegrations,
+    DEPRECATED_getIntegrations,
     getIntegrationsConfig,
 } from '../../../state/integrations/selectors'
 
@@ -27,7 +27,7 @@ export const IntegrationListContainer = ({
 }: ConnectedProps<typeof connector>) => {
     useEffect(() => {
         void fetchIntegrations()
-    }, [])
+    }, [fetchIntegrations])
 
     return (
         <IntegrationList
@@ -45,10 +45,10 @@ const connector = connect(
     (state: RootState) => ({
         activeIntegrations: getActiveIntegrations(state).size,
         allowedIntegrations: planIntegrations(state),
-        currentPlan: getCurrentPlan(state),
-        integrations: getIntegrations(state),
+        currentPlan: DEPRECATED_getCurrentPlan(state),
+        integrations: DEPRECATED_getIntegrations(state),
         integrationsConfig: getIntegrationsConfig(state),
-        plans: getBillingState(state).get('plans'),
+        plans: DEPRECATED_getBillingState(state).get('plans'),
     }),
     {fetchIntegrations}
 )

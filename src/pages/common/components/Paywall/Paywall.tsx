@@ -10,9 +10,9 @@ import {AccountFeature} from '../../../../state/currentAccount/types'
 import {RootState} from '../../../../state/types'
 import {
     hasLegacyPlan,
-    getCurrentPlan,
+    DEPRECATED_getCurrentPlan,
 } from '../../../../state/billing/selectors'
-import {BillingState} from '../../../../state/billing/types'
+import {BillingImmutableState} from '../../../../state/billing/types'
 import {Plan} from '../../../../models/billing/types'
 import {toJS} from '../../../../utils'
 import {getCheapestPlanNameForFeature} from '../../../../utils/paywalls'
@@ -28,11 +28,11 @@ type Props = {
 
 const Paywall = ({feature, paywallConfigs = defaultPaywallConfigs}: Props) => {
     const [isLightboxOpen, setIsLightboxOpen] = useState(false)
-    const billingState = useSelector<RootState, BillingState>(
+    const billingState = useSelector<RootState, BillingImmutableState>(
         (state) => state.billing
     )
     const isLegacyPlan = useSelector(hasLegacyPlan)
-    const currentPlan = useSelector(getCurrentPlan)
+    const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
     const plans: Record<string, Plan> | undefined = toJS(
         billingState.get('plans')
     )

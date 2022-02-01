@@ -25,7 +25,7 @@ import {
 import {AccountFeature, CurrentAccountState} from 'state/currentAccount/types'
 import {RootState} from 'state/types'
 import {SegmentEvent} from 'store/middlewares/segmentTracker'
-import {getCurrentPlan} from 'state/billing/selectors'
+import {DEPRECATED_getCurrentPlan} from 'state/billing/selectors'
 import {getStatsFiltersJS} from 'state/stats/selectors'
 import {IntegrationsStatsFilterValue, StatsFilterType} from 'state/stats/types'
 import {mergeStatsFilters} from 'state/stats/actions'
@@ -70,7 +70,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
     const account = useSelector<RootState, CurrentAccountState>(
         getCurrentAccountState
     )
-    const currentPlan = useSelector(getCurrentPlan)
+    const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
     const statsFilters = useSelector(getStatsFiltersJS)
 
     const pageStatsFilters = useMemo(() => {

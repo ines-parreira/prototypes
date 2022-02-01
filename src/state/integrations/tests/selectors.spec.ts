@@ -14,7 +14,9 @@ import {
     getEmailIntegrations,
     getFacebookRedirectUri,
     getForwardingEmailAddress,
+    DEPRECATED_getIntegrations,
     getIntegrations,
+    DEPRECATED_getIntegrationsState,
     getIntegrationsState,
     getMagento2IntegrationByStoreUrl,
     getOnboardingIntegrations,
@@ -44,22 +46,36 @@ const state = {
 } as RootState
 
 describe('integrations selectors', () => {
+    it('should get deprecated integrations state', () => {
+        const integrationsState = DEPRECATED_getIntegrationsState(state)
+        expect(integrationsState).toEqual(state.integrations)
+    })
+
     it('should get integrations state', () => {
-        const integrations = getIntegrationsState(state)
-        expect(integrations.equals(state.integrations)).toEqual(true)
+        const integrationsState = getIntegrationsState(state)
+        expect(integrationsState).toEqual(state.integrations.toJS())
+    })
+
+    it('should get deprecated integrations', () => {
+        const integrations = DEPRECATED_getIntegrations(state)
+        const expected =
+            DEPRECATED_getIntegrationsState(state).get('integrations')
+
+        expect(integrations).toEqual(expected)
     })
 
     it('should get integrations', () => {
         const integrations = getIntegrations(state)
-        const expected = getIntegrationsState(state).get('integrations')
+        const expected = getIntegrationsState(state).integrations
 
-        expect(integrations.equals(expected)).toEqual(true)
+        expect(integrations).toEqual(expected)
     })
 
     describe('getMessagingIntegrations()', () => {
         it('should get messaging integrations', () => {
             const messagingIntegrations = getMessagingIntegrations(state).toJS()
-            const allIntegrations: Integration[] = getIntegrations(state).toJS()
+            const allIntegrations: Integration[] =
+                DEPRECATED_getIntegrations(state).toJS()
             const expected = allIntegrations.filter(
                 (integration: Integration) =>
                     [
@@ -84,7 +100,8 @@ describe('integrations selectors', () => {
         it('should get email integrations', () => {
             const emailIntegrations: EmailIntegration[] =
                 getEmailIntegrations(state).toJS()
-            const allIntegrations: Integration[] = getIntegrations(state).toJS()
+            const allIntegrations: Integration[] =
+                DEPRECATED_getIntegrations(state).toJS()
             const expected = allIntegrations.filter(
                 (integration: Integration) =>
                     [IntegrationType.Email, IntegrationType.Gmail].includes(
@@ -100,7 +117,8 @@ describe('integrations selectors', () => {
         it('should get phone integrations', () => {
             const phoneIntegrations: PhoneIntegration[] =
                 getPhoneIntegrations(state).toJS()
-            const allIntegrations: Integration[] = getIntegrations(state).toJS()
+            const allIntegrations: Integration[] =
+                DEPRECATED_getIntegrations(state).toJS()
             const expected: PhoneIntegration[] =
                 allIntegrations.filter(isPhoneIntegration)
 

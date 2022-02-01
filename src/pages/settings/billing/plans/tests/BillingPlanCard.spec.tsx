@@ -24,6 +24,7 @@ jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
 
 describe('<BillingPlanCard />', () => {
     const defaultState: Partial<RootState> = {
+        billing: fromJS({plans: []}),
         currentAccount: fromJS(account),
     }
 

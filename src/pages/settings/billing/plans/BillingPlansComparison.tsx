@@ -6,12 +6,12 @@ import {Button, ButtonGroup, CardDeck, Container} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 
 import {
-    getCurrentPlan,
+    DEPRECATED_getCurrentPlan,
     getEquivalentRegularCurrentPlan,
     getHasAutomationAddOn,
     hasLegacyPlan,
     makeIsAllowedToChangePlan,
-    getPlans,
+    DEPRECATED_getPlans,
 } from '../../../../state/billing/selectors'
 import {PlanInterval} from '../../../../models/billing/types'
 import {getEquivalentAutomationPlanId} from '../../../../models/billing/utils'
@@ -43,9 +43,9 @@ export default function BillingPlansComparison({
     onSubscriptionChanged,
 }: Props) {
     const dispatch = useAppDispatch()
-    const plans = useSelector(getPlans)
+    const plans = useSelector(DEPRECATED_getPlans)
     const accountHasLegacyPlan = useSelector(hasLegacyPlan)
-    const currentPlan = useSelector(getCurrentPlan)
+    const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
     const regularCurrentPlan = useSelector(getEquivalentRegularCurrentPlan)
     const displayedCurrentPlan = regularCurrentPlan || currentPlan
 

@@ -8,7 +8,7 @@ import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {getEquivalentRegularPlanId} from '../../../../models/billing/utils'
 import {setFutureSubscriptionPlan} from '../../../../state/billing/actions'
 import {
-    getCurrentPlan,
+    DEPRECATED_getCurrentPlan,
     getEquivalentAutomationCurrentPlan,
     getHasAutomationAddOn,
 } from '../../../../state/billing/selectors'
@@ -65,7 +65,7 @@ const AutomationSubscriptionModal = ({
     onClose,
 }: Props) => {
     const dispatch = useAppDispatch()
-    const currentPlan = useSelector(getCurrentPlan)
+    const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
     const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
     const automationPlan = useSelector(getEquivalentAutomationCurrentPlan)
     const isSelfServeLegacy = useSelector(hasAutomationLegacyFeatures)

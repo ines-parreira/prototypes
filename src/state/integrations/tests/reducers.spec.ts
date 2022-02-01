@@ -1,7 +1,10 @@
 import {fromJS, Map, Seq} from 'immutable'
 
 import {integrationsState} from '../../../fixtures/integrations'
-import {getIntegrationsState, getEmailIntegrations} from '../selectors'
+import {
+    DEPRECATED_getIntegrationsState,
+    getEmailIntegrations,
+} from '../selectors'
 import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
 import {RootState} from '../../types'
@@ -18,7 +21,7 @@ describe('integrations reducers', () => {
             id: getEmailIntegrations(state).getIn([0, 'id']),
         }
         const newState = reducer(state.integrations, action)
-        const expected = getIntegrationsState(state)
+        const expected = DEPRECATED_getIntegrationsState(state)
             .update('integrations', (integrations) =>
                 (
                     (integrations as Map<any, any>)
@@ -37,7 +40,7 @@ describe('integrations reducers', () => {
         const newState = reducer(state.integrations, {
             type: types.DELETE_INTEGRATION_ERROR,
         })
-        const expected = getIntegrationsState(state).setIn(
+        const expected = DEPRECATED_getIntegrationsState(state).setIn(
             ['state', 'loading', 'delete'],
             false
         )
@@ -47,13 +50,13 @@ describe('integrations reducers', () => {
     it('should set integration.meta.verified to true on EMAIL_INTEGRATION_VERIFIED', () => {
         const newState = reducer(state.integrations, {
             type: types.EMAIL_INTEGRATION_VERIFIED,
-            integrationId: getIntegrationsState(state).getIn([
+            integrationId: DEPRECATED_getIntegrationsState(state).getIn([
                 'integrations',
                 0,
                 'id',
             ]),
         })
-        const expected = getIntegrationsState(state)
+        const expected = DEPRECATED_getIntegrationsState(state)
             .setIn(['integration', 'meta', 'verified'], true)
             .setIn(['integrations', 0, 'meta', 'verified'], true)
         expect(newState).toEqual(expected)
@@ -83,7 +86,7 @@ describe('integrations reducers', () => {
                         integrationType,
                     })
                 ).toEqual(
-                    getIntegrationsState(state).setIn(
+                    DEPRECATED_getIntegrationsState(state).setIn(
                         ['extra', integrationType, 'onboardingIntegrations'],
                         fromJS(onboardingIntegrations)
                     )
@@ -118,7 +121,7 @@ describe('integrations reducers', () => {
                         integrationType,
                     })
                 ).toEqual(
-                    getIntegrationsState({
+                    DEPRECATED_getIntegrationsState({
                         integrations: integrationsState,
                     } as RootState).setIn(
                         ['extra', integrationType, 'onboardingIntegrations'],
@@ -154,7 +157,7 @@ describe('integrations reducers', () => {
                         integrationType,
                     })
                 ).toEqual(
-                    getIntegrationsState({
+                    DEPRECATED_getIntegrationsState({
                         integrations: integrationsState,
                     } as RootState).setIn(
                         ['extra', integrationType, 'onboardingIntegrations'],
@@ -193,7 +196,7 @@ describe('integrations reducers', () => {
                             integrationType,
                         })
                     ).toEqual(
-                        getIntegrationsState({
+                        DEPRECATED_getIntegrationsState({
                             integrations: integrationsState,
                         } as RootState).setIn(
                             [

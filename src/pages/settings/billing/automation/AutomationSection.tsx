@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom'
 import {useSelector} from 'react-redux'
 
 import {
-    getCurrentPlan,
+    DEPRECATED_getCurrentPlan,
     getAddOnAutomationAmountCurrentPlan,
     getHasAutomationAddOn,
 } from '../../../../state/billing/selectors'
@@ -21,7 +21,7 @@ import AutomationSubscriptionModal from './AutomationSubscriptionModal'
 import css from './AutomationSection.less'
 
 const AutomationSection = () => {
-    const currentPlan = useSelector(getCurrentPlan)
+    const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
     const addOnAmount = useSelector(getAddOnAutomationAmountCurrentPlan)
 
     const [isAutomationModalOpened, setIsAutomationModalOpened] =

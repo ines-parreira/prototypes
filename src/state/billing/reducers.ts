@@ -3,14 +3,14 @@ import {Map, fromJS, List} from 'immutable'
 import {GorgiasAction} from '../types'
 
 import * as constants from './constants'
-import {BillingState} from './types'
+import {BillingImmutableState} from './types'
 
-export const initialState: BillingState = fromJS({})
+export const initialState: BillingImmutableState = fromJS({})
 
 export default function reducer(
-    state: BillingState = initialState,
+    state: BillingImmutableState = initialState,
     action: GorgiasAction
-): BillingState {
+): BillingImmutableState {
     switch (action.type) {
         case constants.SET_FUTURE_SUBSCRIPTION_PLAN:
             return state.set('futureSubscriptionPlan', action.planId)

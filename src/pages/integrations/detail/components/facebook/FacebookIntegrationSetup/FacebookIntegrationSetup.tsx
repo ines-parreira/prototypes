@@ -37,7 +37,7 @@ import {
     hasFacebookRole,
     InstagramDMSettingStatus,
 } from '../utils'
-import {getCurrentPlan} from '../../../../../../state/billing/selectors'
+import {DEPRECATED_getCurrentPlan} from '../../../../../../state/billing/selectors'
 import {AccountFeature} from '../../../../../../state/currentAccount/types'
 import {IntegrationType} from '../../../../../../models/integration/types'
 import {RootState} from '../../../../../../state/types'
@@ -859,7 +859,7 @@ const connector = connect(
         ),
         pagination: getOnboardingMeta(IntegrationType.Facebook)(state),
         currentAccount: state.currentAccount,
-        currentPlan: getCurrentPlan(state),
+        currentPlan: DEPRECATED_getCurrentPlan(state),
     }),
     {
         activateOnboardingIntegrations,

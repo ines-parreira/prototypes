@@ -635,7 +635,7 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
 const connector = connect(
     (state: RootState) => ({
         currentAccount: state.currentAccount,
-        currentPlan: billingSelectors.getCurrentPlan(state),
+        currentPlan: billingSelectors.DEPRECATED_getCurrentPlan(state),
     }),
     {
         updateOrCreateIntegration,
