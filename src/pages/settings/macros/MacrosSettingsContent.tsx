@@ -125,6 +125,7 @@ export function MacrosSettingsContentContainer({
                     settingsCss.pageContainer,
                     settingsCss.pb0
                 )}
+                data-candu-id="setting-macros-description"
             >
                 <div className={css.description}>
                     <div className={css.descriptionText}>

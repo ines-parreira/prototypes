@@ -251,7 +251,12 @@ export const InfobarCustomerInfoContainer = ({
     }
 
     return (
-        <div className={classnames(css.widgetsList, 'd-flex flex-column')}>
+        <div
+            className={classnames(css.widgetsList, 'd-flex flex-column')}
+            data-candu-id={`infobar-widgets-list-${
+                isEditing ? 'edition' : 'view'
+            }`}
+        >
             <div className={css.customerInfo}>
                 <div className={css.customerProfile}>
                     <Avatar

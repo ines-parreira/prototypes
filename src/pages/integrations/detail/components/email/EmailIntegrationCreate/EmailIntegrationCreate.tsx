@@ -47,7 +47,10 @@ export class EmailIntegrationCreate extends Component<Props> {
                 <Container fluid className={settingsCss.pageContainer}>
                     <p>Choose the type of email account you want to add.</p>
 
-                    <div className={css.form}>
+                    <div
+                        className={css.form}
+                        data-candu-id="email-integration-create-form"
+                    >
                         <Button
                             tag="a"
                             href={gmailRedirectUri}

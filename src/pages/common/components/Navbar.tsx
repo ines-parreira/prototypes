@@ -218,7 +218,10 @@ export class Navbar extends React.Component<Props, State> {
                     [css['hidden-panel']]: !this.props.isOpenedPanel,
                 })}
             >
-                <UncontrolledDropdown className={css['nav-dropdown']}>
+                <UncontrolledDropdown
+                    className={css['nav-dropdown']}
+                    data-candu-id="navbar-dropdown"
+                >
                     <DropdownToggle
                         color="transparent"
                         className={css['dropdown-toggle']}

@@ -141,6 +141,7 @@ class IntegrationList extends React.Component<Props> {
                 <Container
                     fluid
                     className={classnames(css.pageContainer, css.pb0)}
+                    data-candu-id="integration-container"
                 >
                     <div className="mb-3">{longTypeDescription}</div>
                     {alert}

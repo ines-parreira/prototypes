@@ -43,6 +43,7 @@ exports[`<EmailIntegrationList/> render() should render the page when there are 
     </div>
     <div
       class="pageContainer pb0 container-fluid"
+      data-candu-id="integration-container"
     >
       <div
         class="mb-3"
@@ -106,6 +107,7 @@ exports[`<EmailIntegrationList/> render() should render the page with a warning 
     </div>
     <div
       class="pageContainer pb0 container-fluid"
+      data-candu-id="integration-container"
     >
       <div
         class="mb-3"
@@ -227,6 +229,7 @@ exports[`<EmailIntegrationList/> render() should render the page with a warning 
     </div>
     <div
       class="pageContainer pb0 container-fluid"
+      data-candu-id="integration-container"
     >
       <div
         class="mb-3"
@@ -348,6 +351,7 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
     </div>
     <div
       class="pageContainer pb0 container-fluid"
+      data-candu-id="integration-container"
     >
       <div
         class="mb-3"
@@ -459,6 +463,7 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
     </div>
     <div
       class="pageContainer pb0 container-fluid"
+      data-candu-id="integration-container"
     >
       <div
         class="mb-3"

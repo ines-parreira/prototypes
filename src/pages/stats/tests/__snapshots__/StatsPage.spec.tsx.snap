@@ -6,6 +6,7 @@ exports[`StatsPage should render the title, children and filters 1`] = `
 >
   <div
     class="header"
+    data-candu-id="stat-header-container"
   >
     <div
       class="page-header pageHeader mb-0"

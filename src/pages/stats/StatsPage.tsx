@@ -19,7 +19,7 @@ export default function StatsPage({
 }: Props) {
     return (
         <div className={classNames('full-width', css.wrapper)}>
-            <div className={css.header}>
+            <div className={css.header} data-candu-id="stat-header-container">
                 <PageHeader
                     title={<StatsPageTitle {...statsPageTitleProps} />}
                     className="mb-0"

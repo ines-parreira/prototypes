@@ -49,6 +49,7 @@ exports[`<TwitterIntegrationList/> render() should render 1`] = `
   </div>
   <div
     class="pageContainer pb0 container-fluid"
+    data-candu-id="integration-container"
   >
     <div
       class="mb-3"
@@ -148,6 +149,7 @@ exports[`<TwitterIntegrationList/> render() should render with a warning message
   </div>
   <div
     class="pageContainer pb0 container-fluid"
+    data-candu-id="integration-container"
   >
     <div
       class="mb-3"
@@ -269,6 +271,7 @@ exports[`<TwitterIntegrationList/> render() should render with an error message 
   </div>
   <div
     class="pageContainer pb0 container-fluid"
+    data-candu-id="integration-container"
   >
     <div
       class="mb-3"
@@ -405,6 +408,7 @@ exports[`<TwitterIntegrationList/> render() should render with empty list 1`] = 
   </div>
   <div
     class="pageContainer pb0 container-fluid"
+    data-candu-id="integration-container"
   >
     <div
       class="mb-3"

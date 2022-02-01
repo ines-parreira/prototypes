@@ -210,7 +210,10 @@ export default class IntegrationList extends React.Component<Props> {
             <div className="full-width">
                 <PageHeader title="Integrations" />
                 <Container fluid className={css.pageContainer}>
-                    <Row className="mb-4">
+                    <Row
+                        className="mb-4"
+                        data-candu-id="integrations-list-description"
+                    >
                         <Col md="10">
                             <p>
                                 Gorgias is most useful when you connect it to

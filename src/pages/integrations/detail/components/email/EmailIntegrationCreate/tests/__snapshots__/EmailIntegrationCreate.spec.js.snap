@@ -49,6 +49,7 @@ exports[`<EmailIntegrationCreate/> render() should render 1`] = `
     </p>
     <div
       class="form"
+      data-candu-id="email-integration-create-form"
     >
       <a
         class="mb-2 connectButton gmailButton btn btn-secondary btn-block"

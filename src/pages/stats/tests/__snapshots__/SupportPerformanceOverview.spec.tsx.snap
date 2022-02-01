@@ -6,6 +6,7 @@ exports[`SupportPerformanceOverview should not render the filters nor the stats 
 >
   <div
     class="header"
+    data-candu-id="stat-header-container"
   >
     <div
       class="page-header pageHeader mb-0"
@@ -59,6 +60,7 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
 >
   <div
     class="header"
+    data-candu-id="stat-header-container"
   >
     <div
       class="page-header pageHeader mb-0"

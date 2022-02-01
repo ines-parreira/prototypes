@@ -255,6 +255,7 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
 exports[`<InfobarCustomerInfo/> should render basic customer info and a "generate widgets" button because customer data are loaded, the user is currently editing widgets, it is not currently dragging anything and widgets are currently empty 1`] = `
 <div
   className="widgetsList d-flex flex-column"
+  data-candu-id="infobar-widgets-list-edition"
 >
   <div
     className="customerInfo"
@@ -334,6 +335,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and a "generat
 exports[`<InfobarCustomerInfo/> should render basic customer info and empty widgets because customer data are loaded, the user is currently editing widgets and it is dragging a widget -- even though widgets are currently empty 1`] = `
 <div
   className="widgetsList d-flex flex-column"
+  data-candu-id="infobar-widgets-list-edition"
 >
   <div
     className="customerInfo"
@@ -439,6 +441,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
 exports[`<InfobarCustomerInfo/> should render basic customer info and the suggestion to add integrations because there is no customer data and there is no data integrations configured for the account 1`] = `
 <div
   className="widgetsList d-flex flex-column"
+  data-candu-id="infobar-widgets-list-view"
 >
   <div
     className="customerInfo"
@@ -492,6 +495,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and the sugges
 exports[`<InfobarCustomerInfo/> should render only basic customer info because customer data are loaded, the user is not editing widgets and current widgets are empty 1`] = `
 <div
   className="widgetsList d-flex flex-column"
+  data-candu-id="infobar-widgets-list-view"
 >
   <div
     className="customerInfo"
@@ -537,6 +541,7 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because c
 exports[`<InfobarCustomerInfo/> should render only basic customer info because there is no customer data and there is some data integrations configured for the account 1`] = `
 <div
   className="widgetsList d-flex flex-column"
+  data-candu-id="infobar-widgets-list-view"
 >
   <div
     className="customerInfo"
@@ -630,6 +635,7 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
 >
   <div
     className="widgetsList d-flex flex-column"
+    data-candu-id="infobar-widgets-list-view"
   >
     <div
       className="customerInfo"
