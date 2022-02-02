@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useAppSelector should accept equality function argument 1`] = `
+Array [
+  Array [
+    Object {
+      "created_datetime": "2021-01-21T13:10:46.435364+00:00",
+      "decoration": null,
+      "deleted_datetime": null,
+      "description": null,
+      "id": 1,
+      "name": "refund",
+      "uri": "/api/tags/1/",
+      "usage": 20,
+    },
+    Object {
+      "created_datetime": "2021-01-21T13:10:46.435364+00:00",
+      "decoration": null,
+      "deleted_datetime": null,
+      "description": null,
+      "id": 1,
+      "name": "refund",
+      "uri": "/api/tags/1/",
+      "usage": 20,
+    },
+  ],
+]
+`;
+
+exports[`useAppSelector should select value from the store 1`] = `
+Object {
+  "created_datetime": "2021-01-21T13:10:46.435364+00:00",
+  "decoration": null,
+  "deleted_datetime": null,
+  "description": null,
+  "id": 1,
+  "name": "refund",
+  "uri": "/api/tags/1/",
+  "usage": 20,
+}
+`;

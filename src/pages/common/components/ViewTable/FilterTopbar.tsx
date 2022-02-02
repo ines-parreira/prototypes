@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react'
 import {List, Map} from 'immutable'
-import {useSelector} from 'react-redux'
 import classnames from 'classnames'
 import {
     Card,
@@ -17,18 +16,19 @@ import {
 } from 'reactstrap'
 import {useAsyncFn, usePrevious, useUnmount, useUpdateEffect} from 'react-use'
 
+import useAppSelector from 'hooks/useAppSelector'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {getConfigByName} from '../../../../config/views'
-import {SYSTEM_VIEW_CATEGORY} from '../../../../constants/view'
-import useAppDispatch from '../../../../hooks/useAppDispatch'
-import {View, ViewVisibility} from '../../../../models/view/types'
-import {getCurrentUser} from '../../../../state/currentUser/selectors'
+import {getConfigByName} from 'config/views'
+import {SYSTEM_VIEW_CATEGORY} from 'constants/view'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {View, ViewVisibility} from 'models/view/types'
+import {getCurrentUser} from 'state/currentUser/selectors'
 import {
     viewCreated,
     viewDeleted,
     viewUpdated,
-} from '../../../../state/entities/views/actions'
+} from 'state/entities/views/actions'
 import {
     addFieldFilter,
     createJob,
@@ -36,28 +36,27 @@ import {
     fetchViewItems,
     resetView,
     submitView as submitViewAction,
-} from '../../../../state/views/actions'
+} from 'state/views/actions'
 import {
     areFiltersValid as getAreFiltersValid,
     getActiveView,
     getPristineActiveView,
     isDirty as getIsViewDirty,
-} from '../../../../state/views/selectors'
-import {getSchemas} from '../../../../state/schemas/selectors'
-import {GorgiasAction} from '../../../../state/types'
-import {getTickets} from '../../../../state/tickets/selectors'
-import {activeViewIdSet} from '../../../../state/ui/views/actions'
+} from 'state/views/selectors'
+import {getSchemas} from 'state/schemas/selectors'
+import {GorgiasAction} from 'state/types'
+import {getTickets} from 'state/tickets/selectors'
+import {activeViewIdSet} from 'state/ui/views/actions'
 import {
     SUBMIT_NEW_VIEW_ERROR,
     SUBMIT_UPDATE_VIEW_ERROR,
-} from '../../../../state/views/constants'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../store/middlewares/segmentTracker'
-import {fieldPath, getDefaultOperator, slugify} from '../../../../utils'
-import {reportError} from '../../../../utils/errors'
-import history from '../../../history'
+} from 'state/views/constants'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {fieldPath, getDefaultOperator, slugify} from 'utils'
+import {reportError} from 'utils/errors'
+import {JobType} from 'models/job/types'
+import history from 'pages/history'
+
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from '../../utils/withCancellableRequest'
@@ -65,7 +64,6 @@ import ViewSharingButton from '../ViewSharing/ViewSharingButton'
 import Button, {ButtonIntent} from '../button/Button'
 import DropdownButton from '../button/DropdownButton'
 
-import {JobType} from '../../../../models/job/types'
 import Filters from './Filters/ViewFilters'
 import css from './FilterTopbar.less'
 
@@ -93,15 +91,15 @@ export const FilterTopbar = ({
     const [isDropdownOpen, toggleDropdownOpen] = useState<boolean>(false)
     const timeoutChangeFeedbackRef = useRef<Maybe<number>>(null)
 
-    const activeView = useSelector(getActiveView)
+    const activeView = useAppSelector(getActiveView)
     const previousActiveView = usePrevious(activeView)
-    const areFiltersValid = useSelector(getAreFiltersValid)
+    const areFiltersValid = useAppSelector(getAreFiltersValid)
     const config = getConfigByName(type)
-    const currentUser = useSelector(getCurrentUser)
-    const isViewDirty = useSelector(getIsViewDirty)
-    const pristineActiveView = useSelector(getPristineActiveView)
-    const schemas = useSelector(getSchemas)
-    const tickets = useSelector(getTickets)
+    const currentUser = useAppSelector(getCurrentUser)
+    const isViewDirty = useAppSelector(getIsViewDirty)
+    const pristineActiveView = useAppSelector(getPristineActiveView)
+    const schemas = useAppSelector(getSchemas)
+    const tickets = useAppSelector(getTickets)
 
     useEffect(
         () => () => {
