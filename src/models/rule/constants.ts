@@ -205,6 +205,11 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             value: 'ticket.snooze_datetime',
         },
         {
+            label: 'Reopened date',
+            text: 'ticket reopened date',
+            value: 'ticket.opened_datetime',
+        },
+        {
             label: 'Spam',
             text: 'ticket spam',
             value: 'ticket.spam',
