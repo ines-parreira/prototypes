@@ -1,33 +1,27 @@
 @import '~css/new/colorTokens';
 
 :local {
-    .dropdown {
-        width: 230px;
-        padding: 0;
-    }
-
     .content {
         max-height: 60vh;
         overflow-y: auto;
     }
 
-    .item {
-        cursor: pointer;
-        padding: 2px 16px;
-
-        &:first-child {
-            padding-top: 6px;
-        }
-
-        &:last-of-type {
-            padding-bottom: 6px;
-        }
+    .dropdown {
+        width: 230px;
+        padding: 0;
     }
 
-    .checkbox {
-        cursor: pointer;
-        margin-top: -1px !important;
-        align-self: center;
+    .dropdownDivider {
+        margin: 0;
+    }
+
+    .dropdownItemInput {
+        padding: 8px 8px 4px;
+    }
+
+    .header {
+        color: @classic-neutral-grey-5;
+        font-weight: 500;
     }
 
     .icon {
@@ -35,9 +29,21 @@
         align-self: center;
     }
 
-    .header {
-        color: @classic-neutral-grey-5;
-        font-weight: 500;
+    .labelItem {
+        cursor: pointer;
+        padding: 8px 8px 8px 16px;
+
+        &:hover {
+            background-color: @classic-neutral-grey-2;
+        }
+    }
+
+    .wrapperItem {
+        &:last-of-type {
+            .labelItem {
+                padding-bottom: 14px;
+            }
+        }
     }
 
     .items {
@@ -49,15 +55,7 @@
         }
     }
 
-    .dropdownItemInput {
-        padding: 8px 8px 4px;
-    }
-
-    .dropdownDivider {
-        margin: 0;
-    }
-
     .quickSelectionOption {
-        padding: 8px 16px 16px;
+        padding: 8px 16px 12px;
     }
 }

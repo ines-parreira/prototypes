@@ -2,6 +2,8 @@ import React from 'react'
 import classnames from 'classnames'
 import {DropdownItem} from 'reactstrap'
 
+import CheckBox from 'pages/common/forms/CheckBox'
+
 import css from './QuickSelectionOption.less'
 
 type Props = {
@@ -16,20 +18,22 @@ const QuickSelectionOption = ({
     onClick,
     selectedItemsCount,
     totalItemsCount,
-}: Props) => {
-    return (
-        <DropdownItem
-            type="button"
-            onClick={onClick}
-            className={classnames(css.component, className)}
+}: Props) => (
+    <DropdownItem toggle={false} className={css.component}>
+        <CheckBox
+            className={css.checkbox}
+            labelClassName={className}
+            isChecked={!!selectedItemsCount}
+            onChange={onClick}
+            isIndeterminate={
+                !!selectedItemsCount && selectedItemsCount < totalItemsCount
+            }
         >
-            <span>
-                {selectedItemsCount === 0
-                    ? 'Select displayed'
-                    : selectedItemsCount === 1
-                    ? 'Deselect'
-                    : 'Deselect all'}
-            </span>
+            {selectedItemsCount === 0
+                ? 'Select displayed'
+                : selectedItemsCount === 1
+                ? 'Deselect'
+                : 'Deselect all'}
             <div
                 className={classnames(css.badge, {
                     [css['badge--unselect']]: selectedItemsCount > 0,
@@ -37,8 +41,8 @@ const QuickSelectionOption = ({
             >
                 {selectedItemsCount || totalItemsCount}
             </div>
-        </DropdownItem>
-    )
-}
+        </CheckBox>
+    </DropdownItem>
+)
 
 export default QuickSelectionOption

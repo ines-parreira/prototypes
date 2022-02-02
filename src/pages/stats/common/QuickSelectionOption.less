@@ -1,25 +1,29 @@
 @import '~css/new/colorTokens';
+@import '~css/typography';
 
 :local .component {
     align-items: center;
     display: flex;
     line-height: 20px;
     justify-content: space-between;
+    padding: 0;
 
     .badge {
-        background-color: @classic-neutral-grey-3;
+        .caption-allcaps();
+        background-color: @classic-neutral-grey-4;
         border: none;
         border-radius: 15px;
-        color: @classic-neutral-grey-5;
-        font-size: 12px;
-        font-weight: 600;
-        line-height: 16px;
-        margin-left: 0.5rem;
-        padding: 2px 8px;
+        color: @classic-neutral-grey-0;
+        margin-left: auto;
+        padding: 2px 9px;
     }
 
     .badge--unselect {
         background-color: @classic-main-primary;
         color: @classic-neutral-grey-1;
+    }
+
+    .checkbox {
+        width: 100%;
     }
 }

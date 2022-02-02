@@ -32,18 +32,33 @@ exports[`SelectFilter should render the component with items having icons 1`] = 
       />
     </h6>
     <button
-      class="component quickSelectionOption dropdown-item"
+      class="component dropdown-item"
       role="menuitem"
       tabindex="0"
-      type="button"
     >
-      <span>
-        Select displayed
-      </span>
       <div
-        class="badge"
+        class="checkbox"
       >
-        3
+        <label
+          class="label quickSelectionOption"
+          for="checkbox-6"
+        >
+          <input
+            class="input"
+            id="checkbox-6"
+            name="checkbox-6"
+            type="checkbox"
+          />
+          Select displayed
+          <div
+            class="badge"
+          >
+            3
+          </div>
+        </label>
+        <div
+          class="caption"
+        />
       </div>
     </button>
     <div
@@ -53,54 +68,78 @@ exports[`SelectFilter should render the component with items having icons 1`] = 
     <div
       class="content"
     >
-      <label
-        class="item dropdown-item form-check-label"
-        role="menuitem"
-        tabindex="0"
+      <div
+        class="wrapperItem"
       >
-        <input
-          class="mr-2 checkbox"
-          type="checkbox"
-        />
-        <i
-          class="icon material-icons icon"
+        <label
+          class="label labelItem"
+          for="checkbox-7"
         >
-          api
-        </i>
-         Api
-      </label>
-      <label
-        class="item dropdown-item form-check-label"
-        role="menuitem"
-        tabindex="0"
+          <input
+            class="input"
+            id="checkbox-7"
+            name="checkbox-7"
+            type="checkbox"
+          />
+          <i
+            class="icon material-icons icon"
+          >
+            api
+          </i>
+           Api
+        </label>
+        <div
+          class="caption"
+        />
+      </div>
+      <div
+        class="wrapperItem"
       >
-        <input
-          class="mr-2 checkbox"
-          type="checkbox"
-        />
-        <i
-          class="icon material-icons icon"
+        <label
+          class="label labelItem"
+          for="checkbox-8"
         >
-          chat
-        </i>
-         Chat
-      </label>
-      <label
-        class="item dropdown-item form-check-label"
-        role="menuitem"
-        tabindex="0"
+          <input
+            class="input"
+            id="checkbox-8"
+            name="checkbox-8"
+            type="checkbox"
+          />
+          <i
+            class="icon material-icons icon"
+          >
+            chat
+          </i>
+           Chat
+        </label>
+        <div
+          class="caption"
+        />
+      </div>
+      <div
+        class="wrapperItem"
       >
-        <input
-          class="mr-2 checkbox"
-          type="checkbox"
-        />
-        <i
-          class="icon material-icons icon"
+        <label
+          class="label labelItem"
+          for="checkbox-9"
         >
-          email
-        </i>
-         Email
-      </label>
+          <input
+            class="input"
+            id="checkbox-9"
+            name="checkbox-9"
+            type="checkbox"
+          />
+          <i
+            class="icon material-icons icon"
+          >
+            email
+          </i>
+           Email
+        </label>
+        <div
+          class="caption"
+        />
+      </div>
     </div>
   </div>
 </div>
@@ -138,18 +177,33 @@ exports[`SelectFilter should render the component with selectable items 1`] = `
       />
     </h6>
     <button
-      class="component quickSelectionOption dropdown-item"
+      class="component dropdown-item"
       role="menuitem"
       tabindex="0"
-      type="button"
     >
-      <span>
-        Select displayed
-      </span>
       <div
-        class="badge"
+        class="checkbox"
       >
-        3
+        <label
+          class="label quickSelectionOption"
+          for="checkbox-2"
+        >
+          <input
+            class="input"
+            id="checkbox-2"
+            name="checkbox-2"
+            type="checkbox"
+          />
+          Select displayed
+          <div
+            class="badge"
+          >
+            3
+          </div>
+        </label>
+        <div
+          class="caption"
+        />
       </div>
     </button>
     <div
@@ -159,39 +213,63 @@ exports[`SelectFilter should render the component with selectable items 1`] = `
     <div
       class="content"
     >
-      <label
-        class="item dropdown-item form-check-label"
-        role="menuitem"
-        tabindex="0"
+      <div
+        class="wrapperItem"
       >
-        <input
-          class="mr-2 checkbox"
-          type="checkbox"
+        <label
+          class="label labelItem"
+          for="checkbox-3"
+        >
+          <input
+            class="input"
+            id="checkbox-3"
+            name="checkbox-3"
+            type="checkbox"
+          />
+           Api
+        </label>
+        <div
+          class="caption"
         />
-         Api
-      </label>
-      <label
-        class="item dropdown-item form-check-label"
-        role="menuitem"
-        tabindex="0"
+      </div>
+      <div
+        class="wrapperItem"
       >
-        <input
-          class="mr-2 checkbox"
-          type="checkbox"
+        <label
+          class="label labelItem"
+          for="checkbox-4"
+        >
+          <input
+            class="input"
+            id="checkbox-4"
+            name="checkbox-4"
+            type="checkbox"
+          />
+           Chat
+        </label>
+        <div
+          class="caption"
         />
-         Chat
-      </label>
-      <label
-        class="item dropdown-item form-check-label"
-        role="menuitem"
-        tabindex="0"
+      </div>
+      <div
+        class="wrapperItem"
       >
-        <input
-          class="mr-2 checkbox"
-          type="checkbox"
+        <label
+          class="label labelItem"
+          for="checkbox-5"
+        >
+          <input
+            class="input"
+            id="checkbox-5"
+            name="checkbox-5"
+            type="checkbox"
+          />
+           Email
+        </label>
+        <div
+          class="caption"
         />
-         Email
-      </label>
+      </div>
     </div>
   </div>
 </div>
@@ -229,18 +307,34 @@ exports[`SelectFilter should render the component with selected items 1`] = `
       />
     </h6>
     <button
-      class="component quickSelectionOption dropdown-item"
+      class="component dropdown-item"
       role="menuitem"
       tabindex="0"
-      type="button"
     >
-      <span>
-        Deselect all
-      </span>
       <div
-        class="badge badge--unselect"
+        class="checkbox"
       >
-        2
+        <label
+          class="label quickSelectionOption"
+          for="checkbox-10"
+        >
+          <input
+            checked=""
+            class="input"
+            id="checkbox-10"
+            name="checkbox-10"
+            type="checkbox"
+          />
+          Deselect all
+          <div
+            class="badge badge--unselect"
+          >
+            2
+          </div>
+        </label>
+        <div
+          class="caption"
+        />
       </div>
     </button>
     <div
@@ -250,41 +344,65 @@ exports[`SelectFilter should render the component with selected items 1`] = `
     <div
       class="content"
     >
-      <label
-        class="item dropdown-item form-check-label"
-        role="menuitem"
-        tabindex="0"
+      <div
+        class="wrapperItem"
       >
-        <input
-          checked=""
-          class="mr-2 checkbox"
-          type="checkbox"
+        <label
+          class="label labelItem"
+          for="checkbox-11"
+        >
+          <input
+            checked=""
+            class="input"
+            id="checkbox-11"
+            name="checkbox-11"
+            type="checkbox"
+          />
+           Api
+        </label>
+        <div
+          class="caption"
         />
-         Api
-      </label>
-      <label
-        class="item dropdown-item form-check-label"
-        role="menuitem"
-        tabindex="0"
+      </div>
+      <div
+        class="wrapperItem"
       >
-        <input
-          checked=""
-          class="mr-2 checkbox"
-          type="checkbox"
+        <label
+          class="label labelItem"
+          for="checkbox-12"
+        >
+          <input
+            checked=""
+            class="input"
+            id="checkbox-12"
+            name="checkbox-12"
+            type="checkbox"
+          />
+           Chat
+        </label>
+        <div
+          class="caption"
         />
-         Chat
-      </label>
-      <label
-        class="item dropdown-item form-check-label"
-        role="menuitem"
-        tabindex="0"
+      </div>
+      <div
+        class="wrapperItem"
       >
-        <input
-          class="mr-2 checkbox"
-          type="checkbox"
+        <label
+          class="label labelItem"
+          for="checkbox-13"
+        >
+          <input
+            class="input"
+            id="checkbox-13"
+            name="checkbox-13"
+            type="checkbox"
+          />
+           Email
+        </label>
+        <div
+          class="caption"
         />
-         Email
-      </label>
+      </div>
     </div>
   </div>
 </div>
@@ -322,18 +440,33 @@ exports[`SelectFilter should render the component without any item 1`] = `
       />
     </h6>
     <button
-      class="component quickSelectionOption dropdown-item"
+      class="component dropdown-item"
       role="menuitem"
       tabindex="0"
-      type="button"
     >
-      <span>
-        Select displayed
-      </span>
       <div
-        class="badge"
+        class="checkbox"
       >
-        0
+        <label
+          class="label quickSelectionOption"
+          for="checkbox-1"
+        >
+          <input
+            class="input"
+            id="checkbox-1"
+            name="checkbox-1"
+            type="checkbox"
+          />
+          Select displayed
+          <div
+            class="badge"
+          >
+            0
+          </div>
+        </label>
+        <div
+          class="caption"
+        />
       </div>
     </button>
     <div
@@ -379,18 +512,33 @@ exports[`SelectFilter with groups should render the component with groups 1`] = 
       />
     </h6>
     <button
-      class="component quickSelectionOption dropdown-item"
+      class="component dropdown-item"
       role="menuitem"
       tabindex="0"
-      type="button"
     >
-      <span>
-        Select displayed
-      </span>
       <div
-        class="badge"
+        class="checkbox"
       >
-        3
+        <label
+          class="label quickSelectionOption"
+          for="checkbox-25"
+        >
+          <input
+            class="input"
+            id="checkbox-25"
+            name="checkbox-25"
+            type="checkbox"
+          />
+          Select displayed
+          <div
+            class="badge"
+          >
+            3
+          </div>
+        </label>
+        <div
+          class="caption"
+        />
       </div>
     </button>
     <div
@@ -400,72 +548,120 @@ exports[`SelectFilter with groups should render the component with groups 1`] = 
     <div
       class="content"
     >
-      <label
-        class="item dropdown-item form-check-label"
-        role="menuitem"
-        tabindex="0"
+      <div
+        class="wrapperItem"
       >
-        <input
-          class="mr-2 checkbox"
-          type="checkbox"
+        <label
+          class="label labelItem"
+          for="checkbox-26"
+        >
+          <input
+            class="input"
+            id="checkbox-26"
+            name="checkbox-26"
+            type="checkbox"
+          />
+           Api
+        </label>
+        <div
+          class="caption"
         />
-         Api
-      </label>
-      <label
-        class="item dropdown-item form-check-label"
-        role="menuitem"
-        tabindex="0"
+      </div>
+      <div
+        class="wrapperItem"
       >
-        <input
-          class="mr-2 checkbox"
-          type="checkbox"
+        <label
+          class="label labelItem"
+          for="checkbox-27"
+        >
+          <input
+            class="input"
+            id="checkbox-27"
+            name="checkbox-27"
+            type="checkbox"
+          />
+           Chat
+        </label>
+        <div
+          class="caption"
         />
-         Chat
-      </label>
-      <label
-        class="item dropdown-item form-check-label"
-        role="menuitem"
-        tabindex="0"
+      </div>
+      <div
+        class="wrapperItem"
       >
-        <input
-          class="mr-2 checkbox"
-          type="checkbox"
+        <label
+          class="label labelItem"
+          for="checkbox-28"
+        >
+          <input
+            class="input"
+            id="checkbox-28"
+            name="checkbox-28"
+            type="checkbox"
+          />
+           Email
+        </label>
+        <div
+          class="caption"
         />
-         Email
-      </label>
-      <label
-        class="item dropdown-item form-check-label"
-        role="menuitem"
-        tabindex="0"
+      </div>
+      <div
+        class="wrapperItem"
       >
-        <input
-          class="mr-2 checkbox"
-          type="checkbox"
+        <label
+          class="label labelItem"
+          for="checkbox-29"
+        >
+          <input
+            class="input"
+            id="checkbox-29"
+            name="checkbox-29"
+            type="checkbox"
+          />
+          Group 1
+        </label>
+        <div
+          class="caption"
         />
-         Group 1
-      </label>
-      <label
-        class="item dropdown-item form-check-label"
-        role="menuitem"
-        tabindex="0"
+      </div>
+      <div
+        class="wrapperItem"
       >
-        <input
-          class="mr-2 checkbox"
-          type="checkbox"
+        <label
+          class="label labelItem"
+          for="checkbox-30"
+        >
+          <input
+            class="input"
+            id="checkbox-30"
+            name="checkbox-30"
+            type="checkbox"
+          />
+          Group 2
+        </label>
+        <div
+          class="caption"
         />
-         Group 2
-      </label>
-      <label
-        class="item dropdown-item form-check-label"
-        role="menuitem"
-        tabindex="0"
+      </div>
+      <div
+        class="wrapperItem"
       >
-        <input
-          class="mr-2 checkbox"
-          type="checkbox"
+        <label
+          class="label labelItem"
+          for="checkbox-31"
+        >
+          <input
+            class="input"
+            id="checkbox-31"
+            name="checkbox-31"
+            type="checkbox"
+          />
+          Group 3
+        </label>
+        <div
+          class="caption"
         />
-         Group 3
-      </label>
+      </div>
     </div>
   </div>
 </div>

@@ -126,18 +126,34 @@ exports[`AutomationIntents should render the filters and stats when stats filter
                 />
               </h6>
               <button
-                class="component quickSelectionOption dropdown-item"
+                class="component dropdown-item"
                 role="menuitem"
                 tabindex="0"
-                type="button"
               >
-                <span>
-                  Deselect
-                </span>
                 <div
-                  class="badge badge--unselect"
+                  class="checkbox"
                 >
-                  1
+                  <label
+                    class="label quickSelectionOption"
+                    for="checkbox-1"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      id="checkbox-1"
+                      name="checkbox-1"
+                      type="checkbox"
+                    />
+                    Deselect
+                    <div
+                      class="badge badge--unselect"
+                    >
+                      1
+                    </div>
+                  </label>
+                  <div
+                    class="caption"
+                  />
                 </div>
               </button>
               <div
@@ -147,117 +163,197 @@ exports[`AutomationIntents should render the filters and stats when stats filter
               <div
                 class="content"
               >
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-2"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-2"
+                      name="checkbox-2"
+                      type="checkbox"
+                    />
+                     Api
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Api
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    checked=""
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-3"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      id="checkbox-3"
+                      name="checkbox-3"
+                      type="checkbox"
+                    />
+                     Chat
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Chat
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-4"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-4"
+                      name="checkbox-4"
+                      type="checkbox"
+                    />
+                     Email
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Email
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-5"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-5"
+                      name="checkbox-5"
+                      type="checkbox"
+                    />
+                     Facebook
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Facebook
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-6"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-6"
+                      name="checkbox-6"
+                      type="checkbox"
+                    />
+                     Facebook mention
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Facebook mention
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-7"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-7"
+                      name="checkbox-7"
+                      type="checkbox"
+                    />
+                     Facebook messenger
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Facebook messenger
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-8"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-8"
+                      name="checkbox-8"
+                      type="checkbox"
+                    />
+                     Instagram ad comment
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Instagram ad comment
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-9"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-9"
+                      name="checkbox-9"
+                      type="checkbox"
+                    />
+                     Instagram comment
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Instagram comment
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-10"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-10"
+                      name="checkbox-10"
+                      type="checkbox"
+                    />
+                     Phone
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Phone
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-11"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-11"
+                      name="checkbox-11"
+                      type="checkbox"
+                    />
+                     Sms
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Sms
-                </label>
+                </div>
               </div>
             </div>
           </div>

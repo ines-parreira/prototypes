@@ -5,15 +5,31 @@ exports[`QuickSelectionOption should display label to deselect all content 1`] =
   class="component dropdown-item"
   role="menuitem"
   tabindex="0"
-  type="button"
 >
-  <span>
-    Deselect all
-  </span>
   <div
-    class="badge badge--unselect"
+    class="checkbox"
   >
-    10
+    <label
+      class="label"
+      for="checkbox-3"
+    >
+      <input
+        checked=""
+        class="input"
+        id="checkbox-3"
+        name="checkbox-3"
+        type="checkbox"
+      />
+      Deselect all
+      <div
+        class="badge badge--unselect"
+      >
+        10
+      </div>
+    </label>
+    <div
+      class="caption"
+    />
   </div>
 </button>
 `;
@@ -23,15 +39,31 @@ exports[`QuickSelectionOption should display label to deselect one item 1`] = `
   class="component dropdown-item"
   role="menuitem"
   tabindex="0"
-  type="button"
 >
-  <span>
-    Deselect
-  </span>
   <div
-    class="badge badge--unselect"
+    class="checkbox"
   >
-    1
+    <label
+      class="label"
+      for="checkbox-2"
+    >
+      <input
+        checked=""
+        class="input"
+        id="checkbox-2"
+        name="checkbox-2"
+        type="checkbox"
+      />
+      Deselect
+      <div
+        class="badge badge--unselect"
+      >
+        1
+      </div>
+    </label>
+    <div
+      class="caption"
+    />
   </div>
 </button>
 `;
@@ -41,15 +73,30 @@ exports[`QuickSelectionOption should display label to select content 1`] = `
   class="component dropdown-item"
   role="menuitem"
   tabindex="0"
-  type="button"
 >
-  <span>
-    Select displayed
-  </span>
   <div
-    class="badge"
+    class="checkbox"
   >
-    10
+    <label
+      class="label"
+      for="checkbox-1"
+    >
+      <input
+        class="input"
+        id="checkbox-1"
+        name="checkbox-1"
+        type="checkbox"
+      />
+      Select displayed
+      <div
+        class="badge"
+      >
+        10
+      </div>
+    </label>
+    <div
+      class="caption"
+    />
   </div>
 </button>
 `;

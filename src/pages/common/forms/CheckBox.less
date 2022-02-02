@@ -23,6 +23,7 @@
         display: grid;
         place-content: center;
         cursor: pointer;
+        flex-shrink: 0;
 
         &::before {
             content: '';
@@ -62,6 +63,11 @@
             background-color: @classic-neutral-grey-2;
             border-color: @classic-neutral-grey-3;
             cursor: not-allowed;
+        }
+
+        &[readonly]:checked,
+        &[readonly]:indeterminate {
+            background: @classic-main-primary !important; // due to bootstrap rule put to input[readyonly] elements
         }
     }
 

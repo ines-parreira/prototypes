@@ -266,18 +266,34 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                 />
               </h6>
               <button
-                class="component quickSelectionOption dropdown-item"
+                class="component dropdown-item"
                 role="menuitem"
                 tabindex="0"
-                type="button"
               >
-                <span>
-                  Deselect
-                </span>
                 <div
-                  class="badge badge--unselect"
+                  class="checkbox"
                 >
-                  1
+                  <label
+                    class="label quickSelectionOption"
+                    for="checkbox-2"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      id="checkbox-2"
+                      name="checkbox-2"
+                      type="checkbox"
+                    />
+                    Deselect
+                    <div
+                      class="badge badge--unselect"
+                    >
+                      1
+                    </div>
+                  </label>
+                  <div
+                    class="caption"
+                  />
                 </div>
               </button>
               <div

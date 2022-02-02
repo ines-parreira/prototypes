@@ -43,14 +43,16 @@ export default function AgentsStatsFilter({value}: Props) {
             <DropdownItem header className={css.dropdownHeader}>
                 Teams
             </DropdownItem>
-            {teams.map((team) => (
-                <SelectFilter.Group
-                    key={`team-${team.id}`}
-                    items={team.members}
-                    label={team.label}
-                    value={team.id}
-                />
-            ))}
+            <div>
+                {teams.map((team) => (
+                    <SelectFilter.Group
+                        key={`team-${team.id}`}
+                        items={team.members}
+                        label={team.label}
+                        value={team.id}
+                    />
+                ))}
+            </div>
             <DropdownItem divider className={css.dropdownDivider} />
             <DropdownItem header className={css.dropdownHeader}>
                 Users

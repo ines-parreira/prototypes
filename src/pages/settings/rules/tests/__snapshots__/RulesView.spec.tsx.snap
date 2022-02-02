@@ -47,18 +47,33 @@ exports[`<RulesView/> should render the rule library view 1`] = `
               />
             </h6>
             <button
-              class="component quickSelectionOption dropdown-item"
+              class="component dropdown-item"
               role="menuitem"
               tabindex="0"
-              type="button"
             >
-              <span>
-                Select displayed
-              </span>
               <div
-                class="badge"
+                class="checkbox"
               >
-                2
+                <label
+                  class="label quickSelectionOption"
+                  for="checkbox-1"
+                >
+                  <input
+                    class="input"
+                    id="checkbox-1"
+                    name="checkbox-1"
+                    type="checkbox"
+                  />
+                  Select displayed
+                  <div
+                    class="badge"
+                  >
+                    2
+                  </div>
+                </label>
+                <div
+                  class="caption"
+                />
               </div>
             </button>
             <div
@@ -68,28 +83,44 @@ exports[`<RulesView/> should render the rule library view 1`] = `
             <div
               class="content"
             >
-              <label
-                class="item dropdown-item form-check-label"
-                role="menuitem"
-                tabindex="0"
+              <div
+                class="wrapperItem"
               >
-                <input
-                  class="mr-2 checkbox"
-                  type="checkbox"
+                <label
+                  class="label labelItem"
+                  for="checkbox-2"
+                >
+                  <input
+                    class="input"
+                    id="checkbox-2"
+                    name="checkbox-2"
+                    type="checkbox"
+                  />
+                   Auto Close
+                </label>
+                <div
+                  class="caption"
                 />
-                 Auto Close
-              </label>
-              <label
-                class="item dropdown-item form-check-label"
-                role="menuitem"
-                tabindex="0"
+              </div>
+              <div
+                class="wrapperItem"
               >
-                <input
-                  class="mr-2 checkbox"
-                  type="checkbox"
+                <label
+                  class="label labelItem"
+                  for="checkbox-3"
+                >
+                  <input
+                    class="input"
+                    id="checkbox-3"
+                    name="checkbox-3"
+                    type="checkbox"
+                  />
+                   Auto Tag
+                </label>
+                <div
+                  class="caption"
                 />
-                 Auto Tag
-              </label>
+              </div>
             </div>
           </div>
         </div>

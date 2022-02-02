@@ -54,7 +54,7 @@ describe('IntegrationsStatsFilter', () => {
                 type: integrationType,
             } as Integration
 
-            const {getAllByRole} = render(
+            const {getByText} = render(
                 <Provider store={mockStore(defaultState)}>
                     <IntegrationsStatsFilter
                         value={[]}
@@ -63,10 +63,9 @@ describe('IntegrationsStatsFilter', () => {
                 </Provider>
             )
 
-            const item = getAllByRole('menuitem', {
-                hidden: true,
-            })[1]
-            expect(item).toMatchSnapshot()
+            expect(
+                getByText(`${integrationType} integration`)
+            ).toMatchSnapshot()
         }
     )
 

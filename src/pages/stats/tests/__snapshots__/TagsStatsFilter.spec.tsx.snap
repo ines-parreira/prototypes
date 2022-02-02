@@ -46,18 +46,34 @@ exports[`TagsStatsFilter should render the selected tags 1`] = `
       />
     </h6>
     <button
-      class="component quickSelectionOption dropdown-item"
+      class="component dropdown-item"
       role="menuitem"
       tabindex="0"
-      type="button"
     >
-      <span>
-        Deselect all
-      </span>
       <div
-        class="badge badge--unselect"
+        class="checkbox"
       >
-        2
+        <label
+          class="label quickSelectionOption"
+          for="checkbox-1"
+        >
+          <input
+            checked=""
+            class="input"
+            id="checkbox-1"
+            name="checkbox-1"
+            type="checkbox"
+          />
+          Deselect all
+          <div
+            class="badge badge--unselect"
+          >
+            2
+          </div>
+        </label>
+        <div
+          class="caption"
+        />
       </div>
     </button>
     <div
@@ -70,52 +86,84 @@ exports[`TagsStatsFilter should render the selected tags 1`] = `
       <div
         data-testid="infinite-container"
       >
-        <label
-          class="item dropdown-item form-check-label"
-          role="menuitem"
-          tabindex="0"
+        <div
+          class="wrapperItem"
         >
-          <input
-            checked=""
-            class="mr-2 checkbox"
-            type="checkbox"
+          <label
+            class="label labelItem"
+            for="checkbox-2"
+          >
+            <input
+              checked=""
+              class="input"
+              id="checkbox-2"
+              name="checkbox-2"
+              type="checkbox"
+            />
+             billing
+          </label>
+          <div
+            class="caption"
           />
-           billing
-        </label>
-        <label
-          class="item dropdown-item form-check-label"
-          role="menuitem"
-          tabindex="0"
+        </div>
+        <div
+          class="wrapperItem"
         >
-          <input
-            class="mr-2 checkbox"
-            type="checkbox"
+          <label
+            class="label labelItem"
+            for="checkbox-3"
+          >
+            <input
+              class="input"
+              id="checkbox-3"
+              name="checkbox-3"
+              type="checkbox"
+            />
+             refund
+          </label>
+          <div
+            class="caption"
           />
-           refund
-        </label>
-        <label
-          class="item dropdown-item form-check-label"
-          role="menuitem"
-          tabindex="0"
+        </div>
+        <div
+          class="wrapperItem"
         >
-          <input
-            checked=""
-            class="mr-2 checkbox"
-            type="checkbox"
+          <label
+            class="label labelItem"
+            for="checkbox-4"
+          >
+            <input
+              checked=""
+              class="input"
+              id="checkbox-4"
+              name="checkbox-4"
+              type="checkbox"
+            />
+             refund accepted
+          </label>
+          <div
+            class="caption"
           />
-           refund accepted
-        </label>
-        <label
-          class="item dropdown-item form-check-label"
-          role="menuitem"
-          tabindex="0"
+        </div>
+        <div
+          class="wrapperItem"
         >
-          <input
-            class="mr-2 checkbox"
-            type="checkbox"
+          <label
+            class="label labelItem"
+            for="checkbox-5"
+          >
+            <input
+              class="input"
+              id="checkbox-5"
+              name="checkbox-5"
+              type="checkbox"
+            />
+             rejected
+          </label>
+          <div
+            class="caption"
           />
-           rejected
-        </label>
+        </div>
       </div>
     </div>
   </div>

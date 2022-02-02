@@ -45,18 +45,34 @@ exports[`AgentsStatsFilter should render agents stats filter 1`] = `
       />
     </h6>
     <button
-      class="component quickSelectionOption dropdown-item"
+      class="component dropdown-item"
       role="menuitem"
       tabindex="0"
-      type="button"
     >
-      <span>
-        Deselect all
-      </span>
       <div
-        class="badge badge--unselect"
+        class="checkbox"
       >
-        2
+        <label
+          class="label quickSelectionOption"
+          for="checkbox-1"
+        >
+          <input
+            checked=""
+            class="input"
+            id="checkbox-1"
+            name="checkbox-1"
+            type="checkbox"
+          />
+          Deselect all
+          <div
+            class="badge badge--unselect"
+          >
+            2
+          </div>
+        </label>
+        <div
+          class="caption"
+        />
       </div>
     </button>
     <div
@@ -72,39 +88,65 @@ exports[`AgentsStatsFilter should render agents stats filter 1`] = `
       >
         Teams
       </h6>
-      <label
-        class="item dropdown-item form-check-label"
-        role="menuitem"
-        tabindex="0"
-      >
-        <input
-          class="mr-2 checkbox"
-          type="checkbox"
-        />
-         Foo
-      </label>
-      <label
-        class="item dropdown-item form-check-label"
-        role="menuitem"
-        tabindex="0"
-      >
-        <input
-          class="mr-2 checkbox"
-          type="checkbox"
-        />
-         Phone team - +1 205-396-3441
-      </label>
-      <label
-        class="item dropdown-item form-check-label"
-        role="menuitem"
-        tabindex="0"
-      >
-        <input
-          class="mr-2 checkbox"
-          type="checkbox"
-        />
-         Test
-      </label>
+      <div>
+        <div
+          class="wrapperItem"
+        >
+          <label
+            class="label labelItem"
+            for="checkbox-2"
+          >
+            <input
+              class="input"
+              id="checkbox-2"
+              name="checkbox-2"
+              type="checkbox"
+            />
+            Foo
+          </label>
+          <div
+            class="caption"
+          />
+        </div>
+        <div
+          class="wrapperItem"
+        >
+          <label
+            class="label labelItem"
+            for="checkbox-3"
+          >
+            <input
+              class="input"
+              id="checkbox-3"
+              name="checkbox-3"
+              type="checkbox"
+            />
+            Phone team - +1 205-396-3441
+          </label>
+          <div
+            class="caption"
+          />
+        </div>
+        <div
+          class="wrapperItem"
+        >
+          <label
+            class="label labelItem"
+            for="checkbox-4"
+          >
+            <input
+              class="input"
+              id="checkbox-4"
+              name="checkbox-4"
+              type="checkbox"
+            />
+            Test
+          </label>
+          <div
+            class="caption"
+          />
+        </div>
+      </div>
       <div
         class="dropdownDivider dropdown-divider"
         tabindex="-1"
@@ -115,29 +157,45 @@ exports[`AgentsStatsFilter should render agents stats filter 1`] = `
       >
         Users
       </h6>
-      <label
-        class="item dropdown-item form-check-label"
-        role="menuitem"
-        tabindex="0"
+      <div
+        class="wrapperItem"
       >
-        <input
-          checked=""
-          class="mr-2 checkbox"
-          type="checkbox"
+        <label
+          class="label labelItem"
+          for="checkbox-5"
+        >
+          <input
+            checked=""
+            class="input"
+            id="checkbox-5"
+            name="checkbox-5"
+            type="checkbox"
+          />
+           Acme Support
+        </label>
+        <div
+          class="caption"
         />
-         Acme Support
-      </label>
-      <label
-        class="item dropdown-item form-check-label"
-        role="menuitem"
-        tabindex="0"
+      </div>
+      <div
+        class="wrapperItem"
       >
-        <input
-          class="mr-2 checkbox"
-          type="checkbox"
+        <label
+          class="label labelItem"
+          for="checkbox-6"
+        >
+          <input
+            class="input"
+            id="checkbox-6"
+            name="checkbox-6"
+            type="checkbox"
+          />
+           Bob Smith
+        </label>
+        <div
+          class="caption"
         />
-         Bob Smith
-      </label>
+      </div>
     </div>
   </div>
 </div>

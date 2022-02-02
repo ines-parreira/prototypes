@@ -17,6 +17,7 @@ type Props = {
     isChecked?: boolean
     isDisabled?: boolean
     isIndeterminate?: boolean
+    labelClassName?: string
     name?: string
     onChange?: (nextValue: boolean) => void
 } & Omit<
@@ -31,6 +32,7 @@ const CheckBox = ({
     isChecked = false,
     isDisabled = false,
     isIndeterminate = false,
+    labelClassName,
     name,
     onChange,
     ...props
@@ -47,10 +49,14 @@ const CheckBox = ({
     return (
         <div className={className}>
             <label
-                className={classnames(css.label, {
-                    [css.isDisabled]: isDisabled,
-                    [css.hasCaption]: !!caption,
-                })}
+                className={classnames(
+                    css.label,
+                    {
+                        [css.isDisabled]: isDisabled,
+                        [css.hasCaption]: !!caption,
+                    },
+                    labelClassName
+                )}
                 htmlFor={id}
             >
                 <input

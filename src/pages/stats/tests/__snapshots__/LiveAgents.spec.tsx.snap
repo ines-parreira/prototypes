@@ -137,18 +137,34 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                 />
               </h6>
               <button
-                class="component quickSelectionOption dropdown-item"
+                class="component dropdown-item"
                 role="menuitem"
                 tabindex="0"
-                type="button"
               >
-                <span>
-                  Deselect
-                </span>
                 <div
-                  class="badge badge--unselect"
+                  class="checkbox"
                 >
-                  1
+                  <label
+                    class="label quickSelectionOption"
+                    for="checkbox-1"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      id="checkbox-1"
+                      name="checkbox-1"
+                      type="checkbox"
+                    />
+                    Deselect
+                    <div
+                      class="badge badge--unselect"
+                    >
+                      1
+                    </div>
+                  </label>
+                  <div
+                    class="caption"
+                  />
                 </div>
               </button>
               <div
@@ -158,194 +174,330 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
               <div
                 class="content"
               >
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-2"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-2"
+                      name="checkbox-2"
+                      type="checkbox"
+                    />
+                     Aircall
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Aircall
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-3"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-3"
+                      name="checkbox-3"
+                      type="checkbox"
+                    />
+                     Api
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Api
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    checked=""
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-4"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      id="checkbox-4"
+                      name="checkbox-4"
+                      type="checkbox"
+                    />
+                     Chat
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Chat
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-5"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-5"
+                      name="checkbox-5"
+                      type="checkbox"
+                    />
+                     Email
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Email
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-6"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-6"
+                      name="checkbox-6"
+                      type="checkbox"
+                    />
+                     Facebook
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Facebook
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-7"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-7"
+                      name="checkbox-7"
+                      type="checkbox"
+                    />
+                     Facebook mention
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Facebook mention
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-8"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-8"
+                      name="checkbox-8"
+                      type="checkbox"
+                    />
+                     Facebook messenger
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Facebook messenger
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-9"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-9"
+                      name="checkbox-9"
+                      type="checkbox"
+                    />
+                     Facebook recommendations
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Facebook recommendations
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-10"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-10"
+                      name="checkbox-10"
+                      type="checkbox"
+                    />
+                     Instagram ad comment
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Instagram ad comment
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-11"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-11"
+                      name="checkbox-11"
+                      type="checkbox"
+                    />
+                     Instagram comment
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Instagram comment
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-12"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-12"
+                      name="checkbox-12"
+                      type="checkbox"
+                    />
+                     Instagram mention
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Instagram mention
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-13"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-13"
+                      name="checkbox-13"
+                      type="checkbox"
+                    />
+                     Instagram direct message
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Instagram direct message
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-14"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-14"
+                      name="checkbox-14"
+                      type="checkbox"
+                    />
+                     Phone
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Phone
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-15"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-15"
+                      name="checkbox-15"
+                      type="checkbox"
+                    />
+                     Sms
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Sms
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-16"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-16"
+                      name="checkbox-16"
+                      type="checkbox"
+                    />
+                     Twitter
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Twitter
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-17"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-17"
+                      name="checkbox-17"
+                      type="checkbox"
+                    />
+                     Twitter direct message
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Twitter direct message
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-18"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-18"
+                      name="checkbox-18"
+                      type="checkbox"
+                    />
+                     Yotpo review
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Yotpo review
-                </label>
+                </div>
               </div>
             </div>
           </div>
@@ -380,18 +532,34 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                 />
               </h6>
               <button
-                class="component quickSelectionOption dropdown-item"
+                class="component dropdown-item"
                 role="menuitem"
                 tabindex="0"
-                type="button"
               >
-                <span>
-                  Deselect
-                </span>
                 <div
-                  class="badge badge--unselect"
+                  class="checkbox"
                 >
-                  1
+                  <label
+                    class="label quickSelectionOption"
+                    for="checkbox-19"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      id="checkbox-19"
+                      name="checkbox-19"
+                      type="checkbox"
+                    />
+                    Deselect
+                    <div
+                      class="badge badge--unselect"
+                    >
+                      1
+                    </div>
+                  </label>
+                  <div
+                    class="caption"
+                  />
                 </div>
               </button>
               <div
@@ -407,39 +575,65 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                 >
                   Teams
                 </h6>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
-                >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
-                  />
-                   Foo
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
-                >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
-                  />
-                   Phone team - +1 205-396-3441
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
-                >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
-                  />
-                   Test
-                </label>
+                <div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label labelItem"
+                      for="checkbox-20"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-20"
+                        name="checkbox-20"
+                        type="checkbox"
+                      />
+                      Foo
+                    </label>
+                    <div
+                      class="caption"
+                    />
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label labelItem"
+                      for="checkbox-21"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-21"
+                        name="checkbox-21"
+                        type="checkbox"
+                      />
+                      Phone team - +1 205-396-3441
+                    </label>
+                    <div
+                      class="caption"
+                    />
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label labelItem"
+                      for="checkbox-22"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-22"
+                        name="checkbox-22"
+                        type="checkbox"
+                      />
+                      Test
+                    </label>
+                    <div
+                      class="caption"
+                    />
+                  </div>
+                </div>
                 <div
                   class="dropdownDivider dropdown-divider"
                   tabindex="-1"
@@ -450,29 +644,45 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                 >
                   Users
                 </h6>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    checked=""
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-23"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      id="checkbox-23"
+                      name="checkbox-23"
+                      type="checkbox"
+                    />
+                     Acme Support
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Acme Support
-                </label>
-                <label
-                  class="item dropdown-item form-check-label"
-                  role="menuitem"
-                  tabindex="0"
+                </div>
+                <div
+                  class="wrapperItem"
                 >
-                  <input
-                    class="mr-2 checkbox"
-                    type="checkbox"
+                  <label
+                    class="label labelItem"
+                    for="checkbox-24"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-24"
+                      name="checkbox-24"
+                      type="checkbox"
+                    />
+                     Bob Smith
+                  </label>
+                  <div
+                    class="caption"
                   />
-                   Bob Smith
-                </label>
+                </div>
               </div>
             </div>
           </div>

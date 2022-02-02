@@ -21,9 +21,10 @@ import {
     DropdownItem,
     DropdownMenu,
     DropdownToggle,
-    Label,
     UncontrolledDropdown,
 } from 'reactstrap'
+
+import CheckBox from 'pages/common/forms/CheckBox'
 
 import QuickSelectionOption from './QuickSelectionOption'
 import css from './SelectFilter.less'
@@ -70,18 +71,12 @@ const Item = ({label, value, icon}: ItemProps) => {
     }
 
     return (
-        <DropdownItem
-            key={value}
-            tag={(props) => <Label {...props} check />}
-            toggle={false}
-            className={css.item}
+        <CheckBox
+            className={css.wrapperItem}
+            labelClassName={css.labelItem}
+            isChecked={isChecked(value)}
+            onChange={() => handleChange(value)}
         >
-            <input
-                checked={isChecked(value)}
-                className={classnames('mr-2', css.checkbox)}
-                onChange={() => handleChange(value)}
-                type="checkbox"
-            />
             {icon ? (
                 typeof icon === 'string' ? (
                     <i className={classnames('icon material-icons', css.icon)}>
@@ -92,7 +87,7 @@ const Item = ({label, value, icon}: ItemProps) => {
                 )
             ) : null}
             {` ${label}`}
-        </DropdownItem>
+        </CheckBox>
     )
 }
 
@@ -131,34 +126,22 @@ const Group = ({items, label, value}: GroupProps) => {
         SelectFilterGroupContext
     )
 
-    const handleIndeterminate = (el: HTMLInputElement) => {
-        if (!el) {
-            return
-        }
-        el.indeterminate =
-            getCheckedStatus({items, value}) === CheckedStatus.Partial
-    }
-
     if (!isDisplayed(label, items)) {
         return null
     }
 
     return (
-        <DropdownItem
-            key={value}
-            tag={(props) => <Label {...props} check />}
-            toggle={false}
-            className={css.item}
+        <CheckBox
+            className={css.wrapperItem}
+            labelClassName={css.labelItem}
+            isChecked={isChecked(value)}
+            onChange={() => handleChange(value, items)}
+            isIndeterminate={
+                getCheckedStatus({items, value}) === CheckedStatus.Partial
+            }
         >
-            <input
-                checked={isChecked(value)}
-                className={classnames('mr-2', css.checkbox)}
-                onChange={() => handleChange(value, items)}
-                ref={handleIndeterminate}
-                type="checkbox"
-            />
-            {` ${label}`}
-        </DropdownItem>
+            {label}
+        </CheckBox>
     )
 }
 
