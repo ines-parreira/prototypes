@@ -13,20 +13,20 @@ import {
 } from 'reactstrap'
 import classnames from 'classnames'
 
-import BooleanField from 'pages/common/forms/BooleanField'
-import PageHeader from '../../../../../common/components/PageHeader'
-import ListField from '../../../../../common/forms/ListField'
-import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import {
     QUICK_REPLIES_DEFAULTS,
     QUICK_REPLIES_MAX_ITEM_LENGTH,
     QUICK_REPLIES_MAX_ITEMS,
-} from '../../../../../../config/integrations/smooch_inside'
+} from 'config/integrations/smooch_inside'
+import PageHeader from 'pages/common/components/PageHeader'
+import CheckBox from 'pages/common/forms/CheckBox'
+import ListField from 'pages/common/forms/ListField'
+import css from 'pages/settings/settings.less'
+import {updateOrCreateIntegration} from 'state/integrations/actions'
 
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
 import ChatIntegrationPreview from '../ChatIntegrationPreview/ChatIntegrationPreview'
 import QuickRepliesPreview from '../ChatIntegrationPreview/QuickReplies'
-import css from '../../../../../settings/settings.less'
 
 type Props = {
     integration: Map<any, any>
@@ -155,21 +155,19 @@ export class ChatIntegrationQuickRepliesComponent extends Component<
                                         on.
                                     </p>
 
-                                    <div className="mb-3">
-                                        <BooleanField
-                                            name="quickRepliesEnabled"
-                                            type="checkbox"
-                                            label="Enable quick replies"
-                                            value={quickRepliesEnabled}
-                                            onChange={(
-                                                quickRepliesEnabled: boolean
-                                            ) =>
-                                                this.setState({
-                                                    quickRepliesEnabled,
-                                                })
-                                            }
-                                        />
-                                    </div>
+                                    <CheckBox
+                                        name="quickRepliesEnabled"
+                                        isChecked={quickRepliesEnabled}
+                                        onChange={(
+                                            quickRepliesEnabled: boolean
+                                        ) =>
+                                            this.setState({
+                                                quickRepliesEnabled,
+                                            })
+                                        }
+                                    >
+                                        Enable quick replies
+                                    </CheckBox>
                                 </div>
 
                                 <ListField

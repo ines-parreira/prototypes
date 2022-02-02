@@ -2666,6 +2666,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
           tag="div"
         >
           <CheckBox
+            className="mb-2"
             name="show_macros"
             onChange={[Function]}
           >

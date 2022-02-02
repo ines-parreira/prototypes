@@ -1,33 +1,44 @@
+@import './new/typographyTokens';
+
+.body-medium {
+    font-size: @body-medium-font-size;
+    font-weight: @body-medium-font-weight;
+    letter-spacing: @body-medium-letter-spacing;
+    line-height: @body-medium-line-height;
+}
+
 .body-regular {
-    font-size: 14px;
-    font-weight: 400;
-    letter-spacing: -0.1px;
-    line-height: 20px;
+    font-size: @body-regular-font-size;
+    font-weight: @body-regular-font-weight;
+    letter-spacing: @body-regular-letter-spacing;
+    line-height: @body-regular-line-height;
 }
 
 .body-semibold {
-    .body-regular();
-    font-weight: 600;
+    font-size: @body-semibold-font-size;
+    font-weight: @body-semibold-font-weight;
+    letter-spacing: @body-semibold-letter-spacing;
+    line-height: @body-semibold-line-height;
 }
 
 .caption-allcaps {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.6px;
-    line-height: 14px;
-    text-transform: uppercase;
+    font-size: @caption-all-caps-font-size;
+    font-weight: @caption-all-caps-font-weight;
+    letter-spacing: @caption-all-caps-letter-spacing;
+    line-height: @caption-all-caps-line-height;
+    text-transform: @caption-all-caps-text-transform;
 }
 
 .caption-regular {
-    font-size: 12px;
-    font-weight: 400;
-    letter-spacing: 0px;
-    line-height: 16px;
+    font-size: @caption-regular-font-size;
+    font-weight: @caption-regular-font-weight;
+    letter-spacing: @caption-regular-letter-spacing;
+    line-height: @caption-regular-line-height;
 }
 
 .heading-subsection-semibold {
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 0px;
-    line-height: 24px;
+    font-size: @heading-sub-section-semibold-font-size;
+    font-weight: @heading-sub-section-semibold-font-weight;
+    letter-spacing: @heading-sub-section-semibold-letter-spacing;
+    line-height: @heading-sub-section-semibold-line-height;
 }

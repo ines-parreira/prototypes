@@ -16,40 +16,32 @@ import {
     FormGroup,
 } from 'reactstrap'
 
+import {
+    GMAIL_IMPORTED_EMAILS_FOR_YEARS,
+    OUTLOOK_IMPORTED_EMAILS_FOR_YEARS,
+} from 'config'
+import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from 'constants/integration'
+import {IntegrationType} from 'models/integration/types'
+import Alert from 'pages/common/components/Alert/Alert'
+import DEPRECATED_ConfirmButton from 'pages/common/components/DEPRECATED_ConfirmButton'
+import Loader from 'pages/common/components/Loader/Loader'
+import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from 'pages/common/forms/InputField'
-import BooleanField from 'pages/common/forms/BooleanField'
-import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from '../../../../../../constants/integration'
-
-import {
-    getForwardingEmailAddress,
-    getRedirectUri,
-} from '../../../../../../state/integrations/selectors'
-import {
-    isGorgiasSupportAddress,
-    displayRestrictedSymbols,
-} from '../../../../../../utils'
-import {convertToHTML} from '../../../../../../utils/editor'
-import Loader from '../../../../../common/components/Loader/Loader'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../store/middlewares/segmentTracker'
+import RichFieldWithVariables from 'pages/common/forms/RichFieldWithVariables'
+import css from 'pages/settings/settings.less'
 import {
     deleteIntegration,
     importEmails,
     updateOrCreateIntegration,
-} from '../../../../../../state/integrations/actions'
+} from 'state/integrations/actions'
 import {
-    GMAIL_IMPORTED_EMAILS_FOR_YEARS,
-    OUTLOOK_IMPORTED_EMAILS_FOR_YEARS,
-} from '../../../../../../config'
-import DEPRECATED_ConfirmButton from '../../../../../common/components/DEPRECATED_ConfirmButton'
-import Alert from '../../../../../common/components/Alert/Alert'
-
-import RichFieldWithVariables from '../../../../../common/forms/RichFieldWithVariables'
-import {RootState} from '../../../../../../state/types'
-import {IntegrationType} from '../../../../../../models/integration/types'
-import css from '../../../../../settings/settings.less'
+    getForwardingEmailAddress,
+    getRedirectUri,
+} from 'state/integrations/selectors'
+import {RootState} from 'state/types'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {isGorgiasSupportAddress, displayRestrictedSymbols} from 'utils'
+import {convertToHTML} from 'utils/editor'
 
 type Props = {
     integration: Map<any, any>
@@ -482,20 +474,18 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                     />
                     {isGmail && (
                         <FormGroup>
-                            <BooleanField
+                            <CheckBox
                                 name="use_gmail_categories"
-                                type="checkbox"
-                                label={
-                                    'Tag Gorgias tickets with Gmail categories (Social, Promotions, Updates, ' +
-                                    'Forums)'
-                                }
-                                value={use_gmail_categories}
+                                isChecked={use_gmail_categories}
                                 onChange={(value: boolean) =>
                                     this.setState({
                                         use_gmail_categories: value,
                                     })
                                 }
-                            />
+                            >
+                                Tag Gorgias tickets with Gmail categories
+                                (Social, Promotions, Updates, Forums)
+                            </CheckBox>
                         </FormGroup>
                     )}
                     <FormGroup>
@@ -523,18 +513,18 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                     </FormGroup>
                     {isGmail && (
                         <FormGroup>
-                            <BooleanField
+                            <CheckBox
                                 name="enable_gmail_sending"
-                                type="checkbox"
-                                label="Enable sending emails with Gmail"
-                                help={enableGmailSendingHelp}
-                                value={enable_gmail_sending}
+                                caption={enableGmailSendingHelp}
+                                isChecked={enable_gmail_sending}
                                 onChange={(value: boolean) =>
                                     this.setState({
                                         enable_gmail_sending: value,
                                     })
                                 }
-                            />
+                            >
+                                Enable sending emails with Gmail
+                            </CheckBox>
                         </FormGroup>
                     )}
                     <div>

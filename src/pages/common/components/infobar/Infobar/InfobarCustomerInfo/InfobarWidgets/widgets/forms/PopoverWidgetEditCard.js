@@ -3,11 +3,9 @@ import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
 import {Form, FormGroup, Button} from 'reactstrap'
 
-import {isSimpleTemplateWidget} from '../../../../../utils.tsx'
-
-import BooleanField from '../../../../../../../forms/BooleanField'
-import InputField from '../../../../../../../forms/InputField'
-
+import {isSimpleTemplateWidget} from 'pages/common/components/infobar/utils.tsx'
+import CheckBox from 'pages/common/forms/CheckBox.tsx'
+import InputField from 'pages/common/forms/InputField'
 class PopoverWidgetEditCard extends React.Component {
     state = {
         title: '',
@@ -115,15 +113,15 @@ class PopoverWidgetEditCard extends React.Component {
                 )}
                 {!editionHiddenFields.includes('displayCard') && (
                     <FormGroup>
-                        <BooleanField
-                            type="checkbox"
+                        <CheckBox
                             name="card.meta.displayCard"
-                            label="Display card"
-                            value={this.state.displayCard}
+                            isChecked={this.state.displayCard}
                             onChange={(displayCard) =>
                                 this.setState({displayCard})
                             }
-                        />
+                        >
+                            Display card
+                        </CheckBox>
                     </FormGroup>
                 )}
                 {isParentList && [

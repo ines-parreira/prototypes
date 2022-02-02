@@ -1,18 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<CheckBox /> should render a disabled CheckBox 1`] = `
-<div
-  class="wrapper"
->
+<div>
   <label
-    class="label disabled"
-    for="radio-field-2"
+    class="label isDisabled"
+    for="checkbox-2"
   >
     <input
       class="input"
       disabled=""
-      id="radio-field-2"
-      name="radio-field-2"
+      id="checkbox-2"
+      name="checkbox-2"
       type="checkbox"
     />
     Shopify
@@ -24,17 +22,15 @@ exports[`<CheckBox /> should render a disabled CheckBox 1`] = `
 `;
 
 exports[`<CheckBox /> should render an enabled CheckBox 1`] = `
-<div
-  class="wrapper"
->
+<div>
   <label
     class="label"
-    for="radio-field-1"
+    for="checkbox-1"
   >
     <input
       class="input"
-      id="radio-field-1"
-      name="radio-field-1"
+      id="checkbox-1"
+      name="checkbox-1"
       type="checkbox"
     />
     Shopify
@@ -46,17 +42,15 @@ exports[`<CheckBox /> should render an enabled CheckBox 1`] = `
 `;
 
 exports[`<CheckBox /> should render caption under the checkbox 1`] = `
-<div
-  class="wrapper"
->
+<div>
   <label
-    class="label"
-    for="radio-field-3"
+    class="label hasCaption"
+    for="checkbox-3"
   >
     <input
       class="input"
-      id="radio-field-3"
-      name="radio-field-3"
+      id="checkbox-3"
+      name="checkbox-3"
       type="checkbox"
     />
     Shopify

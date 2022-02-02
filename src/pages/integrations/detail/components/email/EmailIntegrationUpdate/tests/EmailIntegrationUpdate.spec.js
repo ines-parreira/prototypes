@@ -6,12 +6,13 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
 import {EmailIntegrationUpdateContainer} from '../EmailIntegrationUpdate.tsx'
+
 import {
     GMAIL_INTEGRATION_TYPE,
     OUTLOOK_INTEGRATION_TYPE,
     EMAIL_INTEGRATION_TYPE,
-} from '../../../../../../../constants/integration.ts'
-import {isBoolean} from '../../../../../../common/components/infobar/utils.tsx'
+} from 'constants/integration.ts'
+import {isBoolean} from 'pages/common/components/infobar/utils.tsx'
 
 const INTEGRATION_NAME = 'My Integration'
 const commonProps = {
@@ -36,12 +37,12 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             finalValue: INTEGRATION_NAME,
         },
         {
-            selector: '#id-use_gmail_categories',
+            selector: '#use_gmail_categories',
             newValue: true,
             finalValue: false,
         },
         {
-            selector: '#id-enable_gmail_sending',
+            selector: '#enable_gmail_sending',
             newValue: false,
             finalValue: true,
         },

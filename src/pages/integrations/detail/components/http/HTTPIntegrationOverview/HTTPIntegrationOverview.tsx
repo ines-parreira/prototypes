@@ -6,37 +6,31 @@ import _isEmpty from 'lodash/isEmpty'
 import {Button, Container, Form, FormGroup, FormText, Label} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {ButtonIntent} from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-
-import BooleanField from 'pages/common/forms/BooleanField'
 import {
     TICKET_CREATED,
     TICKET_MESSAGE_CREATED,
     TICKET_UPDATED,
-} from '../../../../../../constants/event'
-import {
-    toJS,
-    validateWebhookURL,
-    validateWebhookURLToPattern,
-} from '../../../../../../utils'
+} from 'constants/event'
+import {ContentType, HttpMethod} from 'models/api/types'
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import Loader from 'pages/common/components/Loader/Loader'
+import CheckBox from 'pages/common/forms/CheckBox'
+import InputField from 'pages/common/forms/InputField'
+import css from 'pages/settings/settings.less'
 import {
     activateIntegration,
     deactivateIntegration,
     deleteIntegration,
     updateOrCreateIntegration,
-} from '../../../../../../state/integrations/actions'
+} from 'state/integrations/actions'
+import {toJS, validateWebhookURL, validateWebhookURLToPattern} from 'utils'
 
-import Loader from '../../../../../common/components/Loader/Loader'
 import ObjectListField, {Field} from '../ObjectListField'
-import InputField from '../../../../../common/forms/InputField'
-import {ContentType, HttpMethod} from '../../../../../../models/api/types'
-import css from '../../../../../settings/settings.less'
-
 import {DEFAULT_FORM} from './constants.js'
-import JSONBody from './JSONBody'
 import {validateHeaderName} from './httpHeaderValidation.js'
+import JSONBody from './JSONBody'
 
 export type HTTPForm =
     | string
@@ -360,33 +354,36 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                                     any of the events below happens.
                                 </FormText>
                             </p>
-                            <BooleanField
+                            <CheckBox
+                                className="mb-2"
                                 name="http.triggers.ticket-created"
-                                type="checkbox"
-                                label="Ticket created"
-                                value={ticketCreated}
+                                isChecked={ticketCreated}
                                 onChange={(value: boolean) =>
                                     this.setState({ticketCreated: value})
                                 }
-                            />
-                            <BooleanField
+                            >
+                                Ticket created
+                            </CheckBox>
+                            <CheckBox
+                                className="mb-2"
                                 name="http.triggers.ticket-updated"
-                                type="checkbox"
-                                label="Ticket updated"
-                                value={ticketUpdated}
+                                isChecked={ticketUpdated}
                                 onChange={(value: boolean) =>
                                     this.setState({ticketUpdated: value})
                                 }
-                            />
-                            <BooleanField
+                            >
+                                Ticket updated
+                            </CheckBox>
+                            <CheckBox
+                                className="mb-2"
                                 name="http.triggers.ticket-message-created"
-                                type="checkbox"
-                                label="Ticket message created"
-                                value={ticketMessageCreated}
+                                isChecked={ticketMessageCreated}
                                 onChange={(value: boolean) =>
                                     this.setState({ticketMessageCreated: value})
                                 }
-                            />
+                            >
+                                Ticket message created
+                            </CheckBox>
                         </FormGroup>
                         <InputField
                             type="url"

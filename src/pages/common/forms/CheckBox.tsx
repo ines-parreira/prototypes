@@ -11,14 +11,14 @@ import _uniqueId from 'lodash/uniqueId'
 import css from './CheckBox.less'
 
 type Props = {
-    caption?: string
-    children: ReactNode
+    caption?: ReactNode
+    children?: ReactNode
     className?: string
-    isChecked: boolean
+    isChecked?: boolean
     isDisabled?: boolean
     isIndeterminate?: boolean
     name?: string
-    onChange: (nextValue: boolean) => void
+    onChange?: (nextValue: boolean) => void
 } & Omit<
     InputHTMLAttributes<HTMLInputElement>,
     'checked' | 'disabled' | 'indeterminate' | 'name' | 'type' | 'onChange'
@@ -28,7 +28,7 @@ const CheckBox = ({
     caption,
     children,
     className,
-    isChecked,
+    isChecked = false,
     isDisabled = false,
     isIndeterminate = false,
     name,
@@ -36,7 +36,7 @@ const CheckBox = ({
     ...props
 }: Props) => {
     const checkboxRef = useRef<HTMLInputElement>(null)
-    const id = useMemo(() => name || _uniqueId('radio-field-'), [name])
+    const id = useMemo(() => name || _uniqueId('checkbox-'), [name])
 
     useEffect(() => {
         if (checkboxRef.current) {
@@ -45,15 +45,12 @@ const CheckBox = ({
     }, [isIndeterminate])
 
     return (
-        <div className={css.wrapper}>
+        <div className={className}>
             <label
-                className={classnames(
-                    css.label,
-                    {
-                        [css.disabled]: isDisabled,
-                    },
-                    className
-                )}
+                className={classnames(css.label, {
+                    [css.isDisabled]: isDisabled,
+                    [css.hasCaption]: !!caption,
+                })}
                 htmlFor={id}
             >
                 <input
@@ -63,7 +60,7 @@ const CheckBox = ({
                     className={css.input}
                     checked={isChecked}
                     disabled={isDisabled}
-                    onChange={() => onChange(!isChecked)}
+                    onChange={() => onChange?.(!isChecked)}
                     ref={checkboxRef}
                     {...props}
                 />

@@ -61,6 +61,7 @@ export default function PhoneAddressInformation({
                 <Col className="pr-0">
                     <Label check className={css.boxLabel}>
                         <Input
+                            className={css.input}
                             type="radio"
                             onChange={() =>
                                 handleChange('type', AddressType.Company)
@@ -74,6 +75,7 @@ export default function PhoneAddressInformation({
                 <Col>
                     <Label check className={css.boxLabel}>
                         <Input
+                            className={css.input}
                             type="radio"
                             onChange={() =>
                                 handleChange('type', AddressType.Personal)

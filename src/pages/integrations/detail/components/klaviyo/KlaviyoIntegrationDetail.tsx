@@ -15,25 +15,25 @@ import {Link} from 'react-router-dom'
 import classNames from 'classnames'
 import type {Map} from 'immutable'
 
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {ButtonIntent} from 'pages/common/components/button/Button'
-import BooleanField from 'pages/common/forms/BooleanField'
-import InputField from 'pages/common/forms/InputField'
-import PageHeader from '../../../../common/components/PageHeader'
-import Alert from '../../../../common/components/Alert/Alert'
-
-import {KLAVIYO_INTEGRATION_TYPE} from '../../../../../constants/integration'
 import {
     KLAVIYO_INITIAL_SYNC_SYNCED,
     KLAVIYO_INITIAL_SYNC_SYNCING,
-} from '../../../../../config/integrations/klaviyo'
+} from 'config/integrations/klaviyo'
+import {KLAVIYO_INTEGRATION_TYPE} from 'constants/integration'
+import Alert from 'pages/common/components/Alert/Alert'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import PageHeader from 'pages/common/components/PageHeader'
+import CheckBox from 'pages/common/forms/CheckBox'
+import InputField from 'pages/common/forms/InputField'
+import css from 'pages/settings/settings.less'
 import {
     deleteIntegration,
     klaviyoSyncHistoricalEvent,
     updateOrCreateIntegration,
-} from '../../../../../state/integrations/actions'
-import css from '../../../../settings/settings.less'
+} from 'state/integrations/actions'
+
 interface IActions {
     updateOrCreateIntegration: typeof updateOrCreateIntegration
     deleteIntegration: typeof deleteIntegration
@@ -370,67 +370,70 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                                                 synced to Klaviyo every hour.
                                             </FormText>
                                         </p>
-                                        <BooleanField
+                                        <CheckBox
+                                            className="mb-2"
                                             name="klaviyo.event.ticket-created"
-                                            type="checkbox"
-                                            label="Ticket created"
-                                            value={ticketCreated}
+                                            isChecked={ticketCreated}
                                             onChange={(value: boolean) =>
                                                 this.setState({
                                                     ticketCreated: value,
                                                 })
                                             }
-                                        />
-                                        <BooleanField
+                                        >
+                                            Ticket created
+                                        </CheckBox>
+                                        <CheckBox
+                                            className="mb-2"
                                             name="klaviyo.event.ticket-closed"
-                                            type="checkbox"
-                                            label="Ticket closed"
-                                            value={ticketClosed}
+                                            isChecked={ticketClosed}
                                             onChange={(value: boolean) =>
                                                 this.setState({
                                                     ticketClosed: value,
                                                 })
                                             }
-                                        />
-                                        <BooleanField
+                                        >
+                                            Ticket closed
+                                        </CheckBox>
+                                        <CheckBox
+                                            className="mb-2"
                                             name="klaviyo.event.csat-sent"
-                                            type="checkbox"
-                                            label="Satisfaction survey sent"
-                                            value={csatSent}
+                                            isChecked={csatSent}
                                             onChange={(value: boolean) =>
                                                 this.setState({
                                                     csatSent: value,
                                                 })
                                             }
-                                        />
-                                        <BooleanField
+                                        >
+                                            Satisfaction survey sent
+                                        </CheckBox>
+                                        <CheckBox
+                                            className="mb-2"
                                             name="klaviyo.event.csat-responded"
-                                            type="checkbox"
-                                            label="Satisfaction survey responded"
-                                            value={csatResponded}
+                                            isChecked={csatResponded}
                                             onChange={(value: boolean) =>
                                                 this.setState({
                                                     csatResponded: value,
                                                 })
                                             }
-                                        />
-                                        <br />
+                                        >
+                                            Satisfaction survey responded
+                                        </CheckBox>
                                     </FormGroup>
                                     <FormGroup>
                                         <Label className="control-label">
                                             Customer sync
                                         </Label>
-                                        <BooleanField
+                                        <CheckBox
                                             name="klaviyo.customer.enable-sync"
-                                            type="checkbox"
-                                            label="Enable Gorgias customer sync"
-                                            value={enableCustomerSync}
+                                            isChecked={enableCustomerSync}
                                             onChange={(value: boolean) =>
                                                 this.setState({
                                                     enableCustomerSync: value,
                                                 })
                                             }
-                                        />
+                                        >
+                                            Enable Gorgias customer sync
+                                        </CheckBox>
                                     </FormGroup>
                                     {isUpdate && (
                                         <FormGroup>

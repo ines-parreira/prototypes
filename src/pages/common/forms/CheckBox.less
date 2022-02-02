@@ -69,19 +69,18 @@
         .body-semibold();
         display: flex;
         align-items: center;
-        margin-bottom: 4px;
-        max-width: fit-content;
+        margin-bottom: 0;
         user-select: none;
         cursor: pointer;
         transition: color 0.2s linear;
 
-        &.disabled {
+        &.isDisabled {
             cursor: not-allowed;
             color: @classic-neutral-grey-4;
         }
-    }
 
-    .wrapper {
-        margin-bottom: 8px;
+        &.hasCaption {
+            margin-bottom: 4px;
+        }
     }
 }

@@ -372,6 +372,7 @@ export default class YourProfileView extends Component<Props, State> {
                                 )}
                             >
                                 <CheckBox
+                                    className="mb-2"
                                     name="show_macros"
                                     isChecked={
                                         this.state.preferences.get(

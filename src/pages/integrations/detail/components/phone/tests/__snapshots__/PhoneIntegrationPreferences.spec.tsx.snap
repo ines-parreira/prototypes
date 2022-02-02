@@ -162,52 +162,47 @@ exports[`<PhoneIntegrationPreferences/> render() should render 1`] = `
               Inbound calls
             </label>
             <div
-              class="form-check"
-              color=""
+              class="mb-2"
             >
               <label
-                class="control-label form-check-label"
-                for="id-input-1"
+                class="label"
+                for="checkbox-1"
               >
                 <input
                   checked=""
-                  class="form-check-input form-check-input"
-                  id="id-input-1"
+                  class="input"
+                  id="checkbox-1"
+                  name="checkbox-1"
                   type="checkbox"
                 />
-                <span
-                  style="vertical-align: middle;"
-                >
-                  Start recording automatically
-                </span>
+                Start recording automatically
               </label>
+              <div
+                class="caption"
+              />
             </div>
             <div
-              class="form-check"
-              color=""
+              class="mb-2"
             >
               <label
-                class="control-label form-check-label"
-                for="id-input-2"
+                class="label hasCaption"
+                for="checkbox-2"
               >
                 <input
                   checked=""
-                  class="form-check-input form-check-input"
-                  id="id-input-2"
+                  class="input"
+                  id="checkbox-2"
+                  name="checkbox-2"
                   type="checkbox"
                 />
-                <span
-                  style="vertical-align: middle;"
-                >
-                  Send calls to voicemail outside business hours
-                </span>
+                Send calls to voicemail outside business hours
               </label>
+              <div
+                class="caption"
+              >
+                If a customer calls outside of business hours, they will be immediately forwarded to voicemail.
+              </div>
             </div>
-            <small
-              class="pl-4 form-text text-muted"
-            >
-              If a customer calls outside of business hours, they will be immediately forwarded to voicemail.
-            </small>
           </div>
           <div
             class="form-group"
@@ -217,26 +212,23 @@ exports[`<PhoneIntegrationPreferences/> render() should render 1`] = `
             >
               Outbound calls
             </label>
-            <div
-              class="form-check"
-              color=""
-            >
+            <div>
               <label
-                class="control-label form-check-label"
-                for="id-input-3"
+                class="label"
+                for="checkbox-3"
               >
                 <input
                   checked=""
-                  class="form-check-input form-check-input"
-                  id="id-input-3"
+                  class="input"
+                  id="checkbox-3"
+                  name="checkbox-3"
                   type="checkbox"
                 />
-                <span
-                  style="vertical-align: middle;"
-                >
-                  Start recording automatically
-                </span>
+                Start recording automatically
               </label>
+              <div
+                class="caption"
+              />
             </div>
           </div>
           <div
@@ -435,31 +427,27 @@ exports[`<PhoneIntegrationPreferences/> render() should render with IVR integrat
               Inbound calls
             </label>
             <div
-              class="form-check"
-              color=""
+              class="mb-2"
             >
               <label
-                class="control-label form-check-label"
-                for="id-input-4"
+                class="label hasCaption"
+                for="checkbox-4"
               >
                 <input
                   checked=""
-                  class="form-check-input form-check-input"
-                  id="id-input-4"
+                  class="input"
+                  id="checkbox-4"
+                  name="checkbox-4"
                   type="checkbox"
                 />
-                <span
-                  style="vertical-align: middle;"
-                >
-                  Send calls to voicemail outside business hours
-                </span>
+                Send calls to voicemail outside business hours
               </label>
+              <div
+                class="caption"
+              >
+                If a customer calls outside of business hours, they will be immediately forwarded to voicemail.
+              </div>
             </div>
-            <small
-              class="pl-4 form-text text-muted"
-            >
-              If a customer calls outside of business hours, they will be immediately forwarded to voicemail.
-            </small>
           </div>
           <div
             class="mt-5"

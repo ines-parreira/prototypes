@@ -1222,7 +1222,7 @@ exports[`<PhoneIntegrationCreate/> render() should render address validation for
                 >
                   <input
                     checked=""
-                    class="form-check-input"
+                    class="input form-check-input"
                     type="radio"
                   />
                   <strong
@@ -1239,7 +1239,7 @@ exports[`<PhoneIntegrationCreate/> render() should render address validation for
                   class="boxLabel form-check-label"
                 >
                   <input
-                    class="form-check-input"
+                    class="input form-check-input"
                     type="radio"
                   />
                   <strong

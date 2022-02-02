@@ -67,27 +67,30 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
             This HTTP integration will be executed when any of the events below happens.
           </FormText>
         </p>
-        <BooleanField
-          label="Ticket created"
+        <CheckBox
+          className="mb-2"
+          isChecked={true}
           name="http.triggers.ticket-created"
           onChange={[Function]}
-          type="checkbox"
-          value={true}
-        />
-        <BooleanField
-          label="Ticket updated"
+        >
+          Ticket created
+        </CheckBox>
+        <CheckBox
+          className="mb-2"
+          isChecked={false}
           name="http.triggers.ticket-updated"
           onChange={[Function]}
-          type="checkbox"
-          value={false}
-        />
-        <BooleanField
-          label="Ticket message created"
+        >
+          Ticket updated
+        </CheckBox>
+        <CheckBox
+          className="mb-2"
+          isChecked={false}
           name="http.triggers.ticket-message-created"
           onChange={[Function]}
-          type="checkbox"
-          value={false}
-        />
+        >
+          Ticket message created
+        </CheckBox>
       </FormGroup>
       <InputField
         error="Only https protocol is allowed"
@@ -326,27 +329,30 @@ exports[`HTTPIntegrationOverview should display data with url-encoded format 1`]
             This HTTP integration will be executed when any of the events below happens.
           </FormText>
         </p>
-        <BooleanField
-          label="Ticket created"
+        <CheckBox
+          className="mb-2"
+          isChecked={true}
           name="http.triggers.ticket-created"
           onChange={[Function]}
-          type="checkbox"
-          value={true}
-        />
-        <BooleanField
-          label="Ticket updated"
+        >
+          Ticket created
+        </CheckBox>
+        <CheckBox
+          className="mb-2"
+          isChecked={false}
           name="http.triggers.ticket-updated"
           onChange={[Function]}
-          type="checkbox"
-          value={false}
-        />
-        <BooleanField
-          label="Ticket message created"
+        >
+          Ticket updated
+        </CheckBox>
+        <CheckBox
+          className="mb-2"
+          isChecked={false}
           name="http.triggers.ticket-message-created"
           onChange={[Function]}
-          type="checkbox"
-          value={false}
-        />
+        >
+          Ticket message created
+        </CheckBox>
       </FormGroup>
       <InputField
         error="Only https protocol is allowed"
@@ -595,27 +601,30 @@ exports[`HTTPIntegrationOverview should display default values because there is 
             This HTTP integration will be executed when any of the events below happens.
           </FormText>
         </p>
-        <BooleanField
-          label="Ticket created"
+        <CheckBox
+          className="mb-2"
+          isChecked={true}
           name="http.triggers.ticket-created"
           onChange={[Function]}
-          type="checkbox"
-          value={true}
-        />
-        <BooleanField
-          label="Ticket updated"
+        >
+          Ticket created
+        </CheckBox>
+        <CheckBox
+          className="mb-2"
+          isChecked={true}
           name="http.triggers.ticket-updated"
           onChange={[Function]}
-          type="checkbox"
-          value={true}
-        />
-        <BooleanField
-          label="Ticket message created"
+        >
+          Ticket updated
+        </CheckBox>
+        <CheckBox
+          className="mb-2"
+          isChecked={true}
           name="http.triggers.ticket-message-created"
           onChange={[Function]}
-          type="checkbox"
-          value={true}
-        />
+        >
+          Ticket message created
+        </CheckBox>
       </FormGroup>
       <InputField
         error={null}

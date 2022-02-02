@@ -10,7 +10,6 @@ import {
     Container,
     Form,
     FormGroup,
-    FormText,
     Input,
     InputGroup,
     InputGroupAddon,
@@ -19,18 +18,18 @@ import {
 } from 'reactstrap'
 import classnames from 'classnames'
 
-import BooleanField from 'pages/common/forms/BooleanField'
-import {PhoneFunction} from '../../../../../business/twilio'
-import PageHeader from '../../../../common/components/PageHeader'
-import {IntegrationType} from '../../../../../models/integration/types'
-import EmojiTextInput from '../../../../common/forms/EmojiTextInput/EmojiTextInput'
-import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'
-import Alert, {AlertType} from '../../../../common/components/Alert/Alert'
+import {PhoneFunction} from 'business/twilio'
+import {IntegrationType} from 'models/integration/types'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import DEPRECATED_ConfirmButton from 'pages/common/components/DEPRECATED_ConfirmButton'
+import PageHeader from 'pages/common/components/PageHeader'
+import CheckBox from 'pages/common/forms/CheckBox'
+import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
+import css from 'pages/settings/settings.less'
 import {
     deleteIntegration,
     updateOrCreateIntegration,
-} from '../../../../../state/integrations/actions'
-import css from '../../../../settings/settings.less'
+} from 'state/integrations/actions'
 
 import PhoneIntegrationNavigation from './PhoneIntegrationNavigation'
 
@@ -287,36 +286,37 @@ export default function PhoneIntegrationPreferences({
                                     Inbound calls
                                 </Label>
                                 {!isIvr && (
-                                    <BooleanField
-                                        type="checkbox"
-                                        label="Start recording automatically"
-                                        value={recordInboundCalls}
+                                    <CheckBox
+                                        className="mb-2"
+                                        isChecked={recordInboundCalls}
                                         onChange={setRecordInboundCalls}
-                                    />
+                                    >
+                                        Start recording automatically
+                                    </CheckBox>
                                 )}
-                                <BooleanField
-                                    type="checkbox"
-                                    label="Send calls to voicemail outside business hours"
-                                    value={voicemailOutsideBusinessHours}
+                                <CheckBox
+                                    className="mb-2"
+                                    isChecked={voicemailOutsideBusinessHours}
                                     onChange={setVoicemailOutsideBusinessHours}
-                                />
-                                <FormText color="muted" className="pl-4">
-                                    If a customer calls outside of business
+                                    caption="If a customer calls outside of business
                                     hours, they will be immediately forwarded to
-                                    voicemail.
-                                </FormText>
+                                    voicemail."
+                                >
+                                    Send calls to voicemail outside business
+                                    hours
+                                </CheckBox>
                             </FormGroup>
                             {!isIvr && (
                                 <FormGroup>
                                     <Label className="control-label">
                                         Outbound calls
                                     </Label>
-                                    <BooleanField
-                                        type="checkbox"
-                                        label="Start recording automatically"
-                                        value={recordOutboundCalls}
+                                    <CheckBox
+                                        isChecked={recordOutboundCalls}
                                         onChange={setRecordOutboundCalls}
-                                    />
+                                    >
+                                        Start recording automatically
+                                    </CheckBox>
                                 </FormGroup>
                             )}
                             <div className="mt-5">

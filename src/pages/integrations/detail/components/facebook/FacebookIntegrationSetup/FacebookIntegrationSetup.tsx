@@ -15,18 +15,27 @@ import {
 
 import pageIconDefault from 'assets/img/integrations/facebook-page.png'
 import warningIcon from 'assets/img/icons/warning2.svg'
-
-import BooleanField from 'pages/common/forms/BooleanField'
-import history from '../../../../../history'
-import Loader from '../../../../../common/components/Loader/Loader'
-import ToggleButton from '../../../../../common/components/ToggleButton'
-import PageHeader from '../../../../../common/components/PageHeader'
-import Pagination from '../../../../../common/components/Pagination'
-import Alert, {AlertType} from '../../../../../common/components/Alert/Alert'
+import {IntegrationType} from 'models/integration/types'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Loader from 'pages/common/components/Loader/Loader'
+import PageHeader from 'pages/common/components/PageHeader'
+import Pagination from 'pages/common/components/Pagination'
+import ToggleButton from 'pages/common/components/ToggleButton'
+import CheckBox from 'pages/common/forms/CheckBox'
+import history from 'pages/history'
+import settingsCss from 'pages/settings/settings.less'
+import {DEPRECATED_getCurrentPlan} from 'state/billing/selectors'
+import {AccountFeature} from 'state/currentAccount/types'
+import {
+    activateOnboardingIntegrations,
+    fetchFacebookOnboardingIntegrations,
+    fetchIntegrations,
+} from 'state/integrations/actions'
 import {
     getOnboardingMeta,
     getOnboardingIntegrations,
-} from '../../../../../../state/integrations/selectors'
+} from 'state/integrations/selectors'
+import {RootState} from 'state/types'
 
 import {
     canEnableMetaSetting,
@@ -37,17 +46,6 @@ import {
     hasFacebookRole,
     InstagramDMSettingStatus,
 } from '../utils'
-import {DEPRECATED_getCurrentPlan} from '../../../../../../state/billing/selectors'
-import {AccountFeature} from '../../../../../../state/currentAccount/types'
-import {IntegrationType} from '../../../../../../models/integration/types'
-import {RootState} from '../../../../../../state/types'
-import {
-    activateOnboardingIntegrations,
-    fetchFacebookOnboardingIntegrations,
-    fetchIntegrations,
-} from '../../../../../../state/integrations/actions'
-import settingsCss from '../../../../../settings/settings.less'
-
 import css from './FacebookIntegrationSetup.less'
 
 type Props = {
@@ -518,11 +516,10 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
 
                                             <div className="d-md-flex">
                                                 <FormGroup className="mr-5">
-                                                    <BooleanField
+                                                    <CheckBox
+                                                        className="mb-2"
                                                         name={`${id}.messenger_enabled`}
-                                                        type="checkbox"
-                                                        label="Enable Messenger"
-                                                        value={this._getSettingValue(
+                                                        isChecked={this._getSettingValue(
                                                             id,
                                                             'messenger_enabled'
                                                         )}
@@ -535,15 +532,16 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                                                 value
                                                             )
                                                         }
-                                                        disabled={
+                                                        isDisabled={
                                                             !canEnableMessenger
                                                         }
-                                                    />
-                                                    <BooleanField
+                                                    >
+                                                        Enable Messenger
+                                                    </CheckBox>
+                                                    <CheckBox
+                                                        className="mb-2"
                                                         name={`${id}.posts_enabled`}
-                                                        type="checkbox"
-                                                        label="Enable Facebook posts, comments and ads comments"
-                                                        value={this._getSettingValue(
+                                                        isChecked={this._getSettingValue(
                                                             id,
                                                             'posts_enabled'
                                                         )}
@@ -556,15 +554,18 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                                                 value
                                                             )
                                                         }
-                                                        disabled={
+                                                        isDisabled={
                                                             !canEnablePosts
                                                         }
-                                                    />
-                                                    <BooleanField
+                                                    >
+                                                        Enable Facebook posts,
+                                                        comments and ads
+                                                        comments
+                                                    </CheckBox>
+                                                    <CheckBox
+                                                        className="mb-2"
                                                         name={`${id}.recommendations_enabled`}
-                                                        type="checkbox"
-                                                        label="Enable Facebook recommendations"
-                                                        value={this._getSettingValue(
+                                                        isChecked={this._getSettingValue(
                                                             id,
                                                             'recommendations_enabled'
                                                         )}
@@ -577,15 +578,17 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                                                 value
                                                             )
                                                         }
-                                                        disabled={
+                                                        isDisabled={
                                                             !canEnableRecommendations
                                                         }
-                                                    />
-                                                    <BooleanField
+                                                    >
+                                                        Enable Facebook
+                                                        recommendations
+                                                    </CheckBox>
+                                                    <CheckBox
+                                                        className="mb-2"
                                                         name={`${id}.mentions_enabled`}
-                                                        type="checkbox"
-                                                        label="Enable Facebook mentions"
-                                                        value={this._getSettingValue(
+                                                        isChecked={this._getSettingValue(
                                                             id,
                                                             'mentions_enabled'
                                                         )}
@@ -598,15 +601,16 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                                                 value
                                                             )
                                                         }
-                                                        disabled={
+                                                        isDisabled={
                                                             !canEnableMentions
                                                         }
-                                                    />
-                                                    <BooleanField
+                                                    >
+                                                        Enable Facebook mentions
+                                                    </CheckBox>
+                                                    <CheckBox
+                                                        className="mb-2"
                                                         name={`${id}.instagram_comments_enabled`}
-                                                        type="checkbox"
-                                                        label="Enable Instagram comments"
-                                                        value={this._getSettingValue(
+                                                        isChecked={this._getSettingValue(
                                                             id,
                                                             'instagram_comments_enabled'
                                                         )}
@@ -619,16 +623,18 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                                                 value
                                                             )
                                                         }
-                                                        disabled={
+                                                        isDisabled={
                                                             !canEnableInstagramComments ||
                                                             instagramIsDisabled
                                                         }
-                                                    />
-                                                    <BooleanField
+                                                    >
+                                                        Enable Instagram
+                                                        comments
+                                                    </CheckBox>
+                                                    <CheckBox
+                                                        className="mb-2"
                                                         name={`${id}.instagram_mentions_enabled`}
-                                                        type="checkbox"
-                                                        label="Enable Instagram mentions"
-                                                        value={this._getSettingValue(
+                                                        isChecked={this._getSettingValue(
                                                             id,
                                                             'instagram_mentions_enabled'
                                                         )}
@@ -641,60 +647,22 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                                                 value
                                                             )
                                                         }
-                                                        disabled={
+                                                        isDisabled={
                                                             !canEnableInstagramMentions ||
                                                             instagramIsDisabled
                                                         }
-                                                    />
+                                                    >
+                                                        Enable Instagram
+                                                        mentions
+                                                    </CheckBox>
                                                     <table>
                                                         <tbody>
                                                             <tr>
                                                                 <td className="pl-0">
-                                                                    <BooleanField
+                                                                    <CheckBox
+                                                                        className="mb-2"
                                                                         name={`${id}.instagram_direct_message_enabled`}
-                                                                        type="checkbox"
-                                                                        label={
-                                                                            <div
-                                                                                id={`instagram_direct_message-${id}`}
-                                                                                style={
-                                                                                    shouldDisplayDisabledWithTooltip
-                                                                                        ? {
-                                                                                              cursor: 'pointer',
-                                                                                          }
-                                                                                        : undefined
-                                                                                }
-                                                                            >
-                                                                                <span
-                                                                                    style={
-                                                                                        shouldDisplayDisabledWithTooltip
-                                                                                            ? {
-                                                                                                  borderBottom:
-                                                                                                      '1px dashed #D2D7DE',
-                                                                                              }
-                                                                                            : undefined
-                                                                                    }
-                                                                                >
-                                                                                    Enable
-                                                                                    Instagram
-                                                                                    direct
-                                                                                    messages
-                                                                                </span>
-                                                                                {!!shouldDisplayDisabledWithTooltip && (
-                                                                                    <img
-                                                                                        src={
-                                                                                            warningIcon
-                                                                                        }
-                                                                                        className="ml-3"
-                                                                                        style={{
-                                                                                            verticalAlign:
-                                                                                                'text-bottom',
-                                                                                        }}
-                                                                                        alt="icon"
-                                                                                    />
-                                                                                )}
-                                                                            </div>
-                                                                        }
-                                                                        value={this._getSettingValue(
+                                                                        isChecked={this._getSettingValue(
                                                                             id,
                                                                             'instagram_direct_message_enabled'
                                                                         )}
@@ -707,12 +675,52 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                                                                 value
                                                                             )
                                                                         }
-                                                                        disabled={
+                                                                        isDisabled={
                                                                             !canEnableInstagramDirectMessage ||
                                                                             instagramIsDisabled ||
                                                                             !isAllowedToInstagramDM
                                                                         }
-                                                                    />
+                                                                    >
+                                                                        <div
+                                                                            id={`instagram_direct_message-${id}`}
+                                                                            style={
+                                                                                shouldDisplayDisabledWithTooltip
+                                                                                    ? {
+                                                                                          cursor: 'pointer',
+                                                                                      }
+                                                                                    : undefined
+                                                                            }
+                                                                        >
+                                                                            <span
+                                                                                style={
+                                                                                    shouldDisplayDisabledWithTooltip
+                                                                                        ? {
+                                                                                              borderBottom:
+                                                                                                  '1px dashed #D2D7DE',
+                                                                                          }
+                                                                                        : undefined
+                                                                                }
+                                                                            >
+                                                                                Enable
+                                                                                Instagram
+                                                                                direct
+                                                                                messages
+                                                                            </span>
+                                                                            {!!shouldDisplayDisabledWithTooltip && (
+                                                                                <img
+                                                                                    src={
+                                                                                        warningIcon
+                                                                                    }
+                                                                                    className="ml-3"
+                                                                                    style={{
+                                                                                        verticalAlign:
+                                                                                            'text-bottom',
+                                                                                    }}
+                                                                                    alt="icon"
+                                                                                />
+                                                                            )}
+                                                                        </div>
+                                                                    </CheckBox>
                                                                 </td>
                                                                 <td className="pl-0">
                                                                     {!instagramIsDisabled &&
@@ -721,11 +729,10 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                                             </tr>
                                                         </tbody>
                                                     </table>
-                                                    <BooleanField
+                                                    <CheckBox
+                                                        className="mb-2"
                                                         name={`${id}.instagram_ads_enabled`}
-                                                        type="checkbox"
-                                                        label="Enable Instagram ads"
-                                                        value={this._getSettingValue(
+                                                        isChecked={this._getSettingValue(
                                                             id,
                                                             'instagram_ads_enabled'
                                                         )}
@@ -738,11 +745,13 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                                                 value
                                                             )
                                                         }
-                                                        disabled={
+                                                        isDisabled={
                                                             !canEnableInstagramAds ||
                                                             instagramIsDisabled
                                                         }
-                                                    />
+                                                    >
+                                                        Enable Instagram ads
+                                                    </CheckBox>
                                                 </FormGroup>
                                             </div>
 
@@ -752,11 +761,10 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                                 </p>
                                                 <div className="d-md-flex">
                                                     <FormGroup className="mr-5">
-                                                        <BooleanField
+                                                        <CheckBox
+                                                            className="mb-2"
                                                             name={`${id}.import_history_enabled`}
-                                                            type="checkbox"
-                                                            label="Import 30 days of history (posts and comments) as closed tickets"
-                                                            value={this._getSettingValue(
+                                                            isChecked={this._getSettingValue(
                                                                 id,
                                                                 'import_history_enabled'
                                                             )}
@@ -769,10 +777,15 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                                                     value
                                                                 )
                                                             }
-                                                            disabled={
+                                                            isDisabled={
                                                                 !canEnablePosts
                                                             }
-                                                        />
+                                                        >
+                                                            Import 30 days of
+                                                            history (posts and
+                                                            comments) as closed
+                                                            tickets
+                                                        </CheckBox>
                                                     </FormGroup>
                                                 </div>
                                             </div>

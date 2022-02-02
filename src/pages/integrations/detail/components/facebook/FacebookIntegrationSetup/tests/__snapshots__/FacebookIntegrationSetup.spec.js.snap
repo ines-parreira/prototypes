@@ -292,76 +292,81 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                   className="mr-5"
                   tag="div"
                 >
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Messenger"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.messenger_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook posts, comments and ads comments"
+                  >
+                    Enable Messenger
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.posts_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook recommendations"
+                  >
+                    Enable Facebook posts, comments and ads comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.recommendations_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook mentions"
+                  >
+                    Enable Facebook recommendations
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Instagram comments"
+                  >
+                    Enable Facebook mentions
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.instagram_comments_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Instagram mentions"
+                  >
+                    Enable Instagram comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.instagram_mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
+                  >
+                    Enable Instagram mentions
+                  </CheckBox>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <BooleanField
-                            disabled={false}
-                            label={
-                              <div
-                                id="instagram_direct_message-1"
-                              >
-                                <span>
-                                  Enable Instagram direct messages
-                                </span>
-                              </div>
-                            }
+                          <CheckBox
+                            className="mb-2"
+                            isChecked={false}
+                            isDisabled={false}
                             name="1.instagram_direct_message_enabled"
                             onChange={[Function]}
-                            type="checkbox"
-                            value={false}
-                          />
+                          >
+                            <div
+                              id="instagram_direct_message-1"
+                            >
+                              <span>
+                                Enable Instagram direct messages
+                              </span>
+                            </div>
+                          </CheckBox>
                         </td>
                         <td
                           className="pl-0"
@@ -369,14 +374,15 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                       </tr>
                     </tbody>
                   </table>
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Instagram ads"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.instagram_ads_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
+                  >
+                    Enable Instagram ads
+                  </CheckBox>
                 </FormGroup>
               </div>
               <div>
@@ -392,14 +398,15 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     className="mr-5"
                     tag="div"
                   >
-                    <BooleanField
-                      disabled={false}
-                      label="Import 30 days of history (posts and comments) as closed tickets"
+                    <CheckBox
+                      className="mb-2"
+                      isChecked={false}
+                      isDisabled={false}
                       name="1.import_history_enabled"
                       onChange={[Function]}
-                      type="checkbox"
-                      value={false}
-                    />
+                    >
+                      Import 30 days of history (posts and comments) as closed tickets
+                    </CheckBox>
                   </FormGroup>
                 </div>
               </div>
@@ -553,76 +560,81 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                   className="mr-5"
                   tag="div"
                 >
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Messenger"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.messenger_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook posts, comments and ads comments"
+                  >
+                    Enable Messenger
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.posts_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook recommendations"
+                  >
+                    Enable Facebook posts, comments and ads comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.recommendations_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook mentions"
+                  >
+                    Enable Facebook recommendations
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Instagram comments"
+                  >
+                    Enable Facebook mentions
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.instagram_comments_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Instagram mentions"
+                  >
+                    Enable Instagram comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.instagram_mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
+                  >
+                    Enable Instagram mentions
+                  </CheckBox>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <BooleanField
-                            disabled={true}
-                            label={
-                              <div
-                                id="instagram_direct_message-1"
-                              >
-                                <span>
-                                  Enable Instagram direct messages
-                                </span>
-                              </div>
-                            }
+                          <CheckBox
+                            className="mb-2"
+                            isChecked={false}
+                            isDisabled={true}
                             name="1.instagram_direct_message_enabled"
                             onChange={[Function]}
-                            type="checkbox"
-                            value={false}
-                          />
+                          >
+                            <div
+                              id="instagram_direct_message-1"
+                            >
+                              <span>
+                                Enable Instagram direct messages
+                              </span>
+                            </div>
+                          </CheckBox>
                         </td>
                         <td
                           className="pl-0"
@@ -646,14 +658,15 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                       </tr>
                     </tbody>
                   </table>
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Instagram ads"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.instagram_ads_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
+                  >
+                    Enable Instagram ads
+                  </CheckBox>
                 </FormGroup>
               </div>
               <div>
@@ -669,14 +682,15 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     className="mr-5"
                     tag="div"
                   >
-                    <BooleanField
-                      disabled={false}
-                      label="Import 30 days of history (posts and comments) as closed tickets"
+                    <CheckBox
+                      className="mb-2"
+                      isChecked={false}
+                      isDisabled={false}
                       name="1.import_history_enabled"
                       onChange={[Function]}
-                      type="checkbox"
-                      value={false}
-                    />
+                    >
+                      Import 30 days of history (posts and comments) as closed tickets
+                    </CheckBox>
                   </FormGroup>
                 </div>
               </div>
@@ -830,97 +844,102 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                   className="mr-5"
                   tag="div"
                 >
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Messenger"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.messenger_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook posts, comments and ads comments"
+                  >
+                    Enable Messenger
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.posts_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook recommendations"
+                  >
+                    Enable Facebook posts, comments and ads comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.recommendations_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook mentions"
+                  >
+                    Enable Facebook recommendations
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Instagram comments"
+                  >
+                    Enable Facebook mentions
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.instagram_comments_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Instagram mentions"
+                  >
+                    Enable Instagram comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.instagram_mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
+                  >
+                    Enable Instagram mentions
+                  </CheckBox>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <BooleanField
-                            disabled={true}
-                            label={
-                              <div
-                                id="instagram_direct_message-1"
+                          <CheckBox
+                            className="mb-2"
+                            isChecked={false}
+                            isDisabled={true}
+                            name="1.instagram_direct_message_enabled"
+                            onChange={[Function]}
+                          >
+                            <div
+                              id="instagram_direct_message-1"
+                              style={
+                                Object {
+                                  "cursor": "pointer",
+                                }
+                              }
+                            >
+                              <span
                                 style={
                                   Object {
-                                    "cursor": "pointer",
+                                    "borderBottom": "1px dashed #D2D7DE",
                                   }
                                 }
                               >
-                                <span
-                                  style={
-                                    Object {
-                                      "borderBottom": "1px dashed #D2D7DE",
-                                    }
+                                Enable Instagram direct messages
+                              </span>
+                              <img
+                                alt="icon"
+                                className="ml-3"
+                                src="test-file-stub"
+                                style={
+                                  Object {
+                                    "verticalAlign": "text-bottom",
                                   }
-                                >
-                                  Enable Instagram direct messages
-                                </span>
-                                <img
-                                  alt="icon"
-                                  className="ml-3"
-                                  src="test-file-stub"
-                                  style={
-                                    Object {
-                                      "verticalAlign": "text-bottom",
-                                    }
-                                  }
-                                />
-                              </div>
-                            }
-                            name="1.instagram_direct_message_enabled"
-                            onChange={[Function]}
-                            type="checkbox"
-                            value={false}
-                          />
+                                }
+                              />
+                            </div>
+                          </CheckBox>
                         </td>
                         <td
                           className="pl-0"
@@ -962,14 +981,15 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                       </tr>
                     </tbody>
                   </table>
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Instagram ads"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.instagram_ads_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
+                  >
+                    Enable Instagram ads
+                  </CheckBox>
                 </FormGroup>
               </div>
               <div>
@@ -985,14 +1005,15 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     className="mr-5"
                     tag="div"
                   >
-                    <BooleanField
-                      disabled={false}
-                      label="Import 30 days of history (posts and comments) as closed tickets"
+                    <CheckBox
+                      className="mb-2"
+                      isChecked={false}
+                      isDisabled={false}
                       name="1.import_history_enabled"
                       onChange={[Function]}
-                      type="checkbox"
-                      value={false}
-                    />
+                    >
+                      Import 30 days of history (posts and comments) as closed tickets
+                    </CheckBox>
                   </FormGroup>
                 </div>
               </div>
@@ -1146,76 +1167,81 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                   className="mr-5"
                   tag="div"
                 >
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Messenger"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.messenger_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook posts, comments and ads comments"
+                  >
+                    Enable Messenger
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.posts_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook recommendations"
+                  >
+                    Enable Facebook posts, comments and ads comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.recommendations_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook mentions"
+                  >
+                    Enable Facebook recommendations
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Instagram comments"
+                  >
+                    Enable Facebook mentions
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.instagram_comments_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Instagram mentions"
+                  >
+                    Enable Instagram comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.instagram_mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
+                  >
+                    Enable Instagram mentions
+                  </CheckBox>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <BooleanField
-                            disabled={true}
-                            label={
-                              <div
-                                id="instagram_direct_message-1"
-                              >
-                                <span>
-                                  Enable Instagram direct messages
-                                </span>
-                              </div>
-                            }
+                          <CheckBox
+                            className="mb-2"
+                            isChecked={false}
+                            isDisabled={true}
                             name="1.instagram_direct_message_enabled"
                             onChange={[Function]}
-                            type="checkbox"
-                            value={false}
-                          />
+                          >
+                            <div
+                              id="instagram_direct_message-1"
+                            >
+                              <span>
+                                Enable Instagram direct messages
+                              </span>
+                            </div>
+                          </CheckBox>
                         </td>
                         <td
                           className="pl-0"
@@ -1239,14 +1265,15 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                       </tr>
                     </tbody>
                   </table>
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Instagram ads"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.instagram_ads_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
+                  >
+                    Enable Instagram ads
+                  </CheckBox>
                 </FormGroup>
               </div>
               <div>
@@ -1262,14 +1289,15 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     className="mr-5"
                     tag="div"
                   >
-                    <BooleanField
-                      disabled={false}
-                      label="Import 30 days of history (posts and comments) as closed tickets"
+                    <CheckBox
+                      className="mb-2"
+                      isChecked={false}
+                      isDisabled={false}
                       name="1.import_history_enabled"
                       onChange={[Function]}
-                      type="checkbox"
-                      value={false}
-                    />
+                    >
+                      Import 30 days of history (posts and comments) as closed tickets
+                    </CheckBox>
                   </FormGroup>
                 </div>
               </div>
@@ -1581,76 +1609,81 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
                   className="mr-5"
                   tag="div"
                 >
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Messenger"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={false}
                     name="1.messenger_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook posts, comments and ads comments"
+                  >
+                    Enable Messenger
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={false}
                     name="1.posts_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook recommendations"
+                  >
+                    Enable Facebook posts, comments and ads comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.recommendations_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook mentions"
+                  >
+                    Enable Facebook recommendations
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram comments"
+                  >
+                    Enable Facebook mentions
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.instagram_comments_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram mentions"
+                  >
+                    Enable Instagram comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.instagram_mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
+                  >
+                    Enable Instagram mentions
+                  </CheckBox>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <BooleanField
-                            disabled={true}
-                            label={
-                              <div
-                                id="instagram_direct_message-1"
-                              >
-                                <span>
-                                  Enable Instagram direct messages
-                                </span>
-                              </div>
-                            }
+                          <CheckBox
+                            className="mb-2"
+                            isChecked={false}
+                            isDisabled={true}
                             name="1.instagram_direct_message_enabled"
                             onChange={[Function]}
-                            type="checkbox"
-                            value={false}
-                          />
+                          >
+                            <div
+                              id="instagram_direct_message-1"
+                            >
+                              <span>
+                                Enable Instagram direct messages
+                              </span>
+                            </div>
+                          </CheckBox>
                         </td>
                         <td
                           className="pl-0"
@@ -1658,14 +1691,15 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
                       </tr>
                     </tbody>
                   </table>
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram ads"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.instagram_ads_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
+                  >
+                    Enable Instagram ads
+                  </CheckBox>
                 </FormGroup>
               </div>
               <div>
@@ -1681,14 +1715,15 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
                     className="mr-5"
                     tag="div"
                   >
-                    <BooleanField
-                      disabled={false}
-                      label="Import 30 days of history (posts and comments) as closed tickets"
+                    <CheckBox
+                      className="mb-2"
+                      isChecked={false}
+                      isDisabled={false}
                       name="1.import_history_enabled"
                       onChange={[Function]}
-                      type="checkbox"
-                      value={false}
-                    />
+                    >
+                      Import 30 days of history (posts and comments) as closed tickets
+                    </CheckBox>
                   </FormGroup>
                 </div>
               </div>
@@ -1842,97 +1877,102 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                   className="mr-5"
                   tag="div"
                 >
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Messenger"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={false}
                     name="1.messenger_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook posts, comments and ads comments"
+                  >
+                    Enable Messenger
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={false}
                     name="1.posts_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook recommendations"
+                  >
+                    Enable Facebook posts, comments and ads comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.recommendations_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook mentions"
+                  >
+                    Enable Facebook recommendations
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Instagram comments"
+                  >
+                    Enable Facebook mentions
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={false}
                     name="1.instagram_comments_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Instagram mentions"
+                  >
+                    Enable Instagram comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={false}
                     name="1.instagram_mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
+                  >
+                    Enable Instagram mentions
+                  </CheckBox>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <BooleanField
-                            disabled={true}
-                            label={
-                              <div
-                                id="instagram_direct_message-1"
+                          <CheckBox
+                            className="mb-2"
+                            isChecked={false}
+                            isDisabled={true}
+                            name="1.instagram_direct_message_enabled"
+                            onChange={[Function]}
+                          >
+                            <div
+                              id="instagram_direct_message-1"
+                              style={
+                                Object {
+                                  "cursor": "pointer",
+                                }
+                              }
+                            >
+                              <span
                                 style={
                                   Object {
-                                    "cursor": "pointer",
+                                    "borderBottom": "1px dashed #D2D7DE",
                                   }
                                 }
                               >
-                                <span
-                                  style={
-                                    Object {
-                                      "borderBottom": "1px dashed #D2D7DE",
-                                    }
+                                Enable Instagram direct messages
+                              </span>
+                              <img
+                                alt="icon"
+                                className="ml-3"
+                                src="test-file-stub"
+                                style={
+                                  Object {
+                                    "verticalAlign": "text-bottom",
                                   }
-                                >
-                                  Enable Instagram direct messages
-                                </span>
-                                <img
-                                  alt="icon"
-                                  className="ml-3"
-                                  src="test-file-stub"
-                                  style={
-                                    Object {
-                                      "verticalAlign": "text-bottom",
-                                    }
-                                  }
-                                />
-                              </div>
-                            }
-                            name="1.instagram_direct_message_enabled"
-                            onChange={[Function]}
-                            type="checkbox"
-                            value={false}
-                          />
+                                }
+                              />
+                            </div>
+                          </CheckBox>
                         </td>
                         <td
                           className="pl-0"
@@ -1947,14 +1987,15 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                       </tr>
                     </tbody>
                   </table>
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Instagram ads"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.instagram_ads_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
+                  >
+                    Enable Instagram ads
+                  </CheckBox>
                 </FormGroup>
               </div>
               <div>
@@ -1970,14 +2011,15 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                     className="mr-5"
                     tag="div"
                   >
-                    <BooleanField
-                      disabled={false}
-                      label="Import 30 days of history (posts and comments) as closed tickets"
+                    <CheckBox
+                      className="mb-2"
+                      isChecked={false}
+                      isDisabled={false}
                       name="1.import_history_enabled"
                       onChange={[Function]}
-                      type="checkbox"
-                      value={false}
-                    />
+                    >
+                      Import 30 days of history (posts and comments) as closed tickets
+                    </CheckBox>
                   </FormGroup>
                 </div>
               </div>
@@ -2591,97 +2633,102 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   className="mr-5"
                   tag="div"
                 >
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Messenger"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={false}
                     name="1.messenger_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Facebook posts, comments and ads comments"
+                  >
+                    Enable Messenger
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.posts_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Facebook recommendations"
+                  >
+                    Enable Facebook posts, comments and ads comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.recommendations_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Facebook mentions"
+                  >
+                    Enable Facebook recommendations
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram comments"
+                  >
+                    Enable Facebook mentions
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.instagram_comments_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram mentions"
+                  >
+                    Enable Instagram comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.instagram_mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
+                  >
+                    Enable Instagram mentions
+                  </CheckBox>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <BooleanField
-                            disabled={true}
-                            label={
-                              <div
-                                id="instagram_direct_message-1"
+                          <CheckBox
+                            className="mb-2"
+                            isChecked={false}
+                            isDisabled={true}
+                            name="1.instagram_direct_message_enabled"
+                            onChange={[Function]}
+                          >
+                            <div
+                              id="instagram_direct_message-1"
+                              style={
+                                Object {
+                                  "cursor": "pointer",
+                                }
+                              }
+                            >
+                              <span
                                 style={
                                   Object {
-                                    "cursor": "pointer",
+                                    "borderBottom": "1px dashed #D2D7DE",
                                   }
                                 }
                               >
-                                <span
-                                  style={
-                                    Object {
-                                      "borderBottom": "1px dashed #D2D7DE",
-                                    }
+                                Enable Instagram direct messages
+                              </span>
+                              <img
+                                alt="icon"
+                                className="ml-3"
+                                src="test-file-stub"
+                                style={
+                                  Object {
+                                    "verticalAlign": "text-bottom",
                                   }
-                                >
-                                  Enable Instagram direct messages
-                                </span>
-                                <img
-                                  alt="icon"
-                                  className="ml-3"
-                                  src="test-file-stub"
-                                  style={
-                                    Object {
-                                      "verticalAlign": "text-bottom",
-                                    }
-                                  }
-                                />
-                              </div>
-                            }
-                            name="1.instagram_direct_message_enabled"
-                            onChange={[Function]}
-                            type="checkbox"
-                            value={false}
-                          />
+                                }
+                              />
+                            </div>
+                          </CheckBox>
                         </td>
                         <td
                           className="pl-0"
@@ -2696,14 +2743,15 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       </tr>
                     </tbody>
                   </table>
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram ads"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.instagram_ads_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
+                  >
+                    Enable Instagram ads
+                  </CheckBox>
                 </FormGroup>
               </div>
               <div>
@@ -2719,14 +2767,15 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     className="mr-5"
                     tag="div"
                   >
-                    <BooleanField
-                      disabled={true}
-                      label="Import 30 days of history (posts and comments) as closed tickets"
+                    <CheckBox
+                      className="mb-2"
+                      isChecked={false}
+                      isDisabled={true}
                       name="1.import_history_enabled"
                       onChange={[Function]}
-                      type="checkbox"
-                      value={false}
-                    />
+                    >
+                      Import 30 days of history (posts and comments) as closed tickets
+                    </CheckBox>
                   </FormGroup>
                 </div>
               </div>
@@ -3038,97 +3087,102 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   className="mr-5"
                   tag="div"
                 >
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Messenger"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.messenger_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook posts, comments and ads comments"
+                  >
+                    Enable Messenger
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={false}
                     name="1.posts_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook recommendations"
+                  >
+                    Enable Facebook posts, comments and ads comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.recommendations_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook mentions"
+                  >
+                    Enable Facebook recommendations
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram comments"
+                  >
+                    Enable Facebook mentions
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.instagram_comments_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram mentions"
+                  >
+                    Enable Instagram comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.instagram_mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
+                  >
+                    Enable Instagram mentions
+                  </CheckBox>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <BooleanField
-                            disabled={true}
-                            label={
-                              <div
-                                id="instagram_direct_message-1"
+                          <CheckBox
+                            className="mb-2"
+                            isChecked={false}
+                            isDisabled={true}
+                            name="1.instagram_direct_message_enabled"
+                            onChange={[Function]}
+                          >
+                            <div
+                              id="instagram_direct_message-1"
+                              style={
+                                Object {
+                                  "cursor": "pointer",
+                                }
+                              }
+                            >
+                              <span
                                 style={
                                   Object {
-                                    "cursor": "pointer",
+                                    "borderBottom": "1px dashed #D2D7DE",
                                   }
                                 }
                               >
-                                <span
-                                  style={
-                                    Object {
-                                      "borderBottom": "1px dashed #D2D7DE",
-                                    }
+                                Enable Instagram direct messages
+                              </span>
+                              <img
+                                alt="icon"
+                                className="ml-3"
+                                src="test-file-stub"
+                                style={
+                                  Object {
+                                    "verticalAlign": "text-bottom",
                                   }
-                                >
-                                  Enable Instagram direct messages
-                                </span>
-                                <img
-                                  alt="icon"
-                                  className="ml-3"
-                                  src="test-file-stub"
-                                  style={
-                                    Object {
-                                      "verticalAlign": "text-bottom",
-                                    }
-                                  }
-                                />
-                              </div>
-                            }
-                            name="1.instagram_direct_message_enabled"
-                            onChange={[Function]}
-                            type="checkbox"
-                            value={false}
-                          />
+                                }
+                              />
+                            </div>
+                          </CheckBox>
                         </td>
                         <td
                           className="pl-0"
@@ -3143,14 +3197,15 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       </tr>
                     </tbody>
                   </table>
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram ads"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.instagram_ads_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
+                  >
+                    Enable Instagram ads
+                  </CheckBox>
                 </FormGroup>
               </div>
               <div>
@@ -3166,14 +3221,15 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     className="mr-5"
                     tag="div"
                   >
-                    <BooleanField
-                      disabled={false}
-                      label="Import 30 days of history (posts and comments) as closed tickets"
+                    <CheckBox
+                      className="mb-2"
+                      isChecked={false}
+                      isDisabled={false}
                       name="1.import_history_enabled"
                       onChange={[Function]}
-                      type="checkbox"
-                      value={false}
-                    />
+                    >
+                      Import 30 days of history (posts and comments) as closed tickets
+                    </CheckBox>
                   </FormGroup>
                 </div>
               </div>
@@ -3341,97 +3397,102 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   className="mr-5"
                   tag="div"
                 >
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Messenger"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.messenger_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Facebook posts, comments and ads comments"
+                  >
+                    Enable Messenger
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.posts_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook recommendations"
+                  >
+                    Enable Facebook posts, comments and ads comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.recommendations_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook mentions"
+                  >
+                    Enable Facebook recommendations
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram comments"
+                  >
+                    Enable Facebook mentions
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.instagram_comments_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram mentions"
+                  >
+                    Enable Instagram comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.instagram_mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
+                  >
+                    Enable Instagram mentions
+                  </CheckBox>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <BooleanField
-                            disabled={true}
-                            label={
-                              <div
-                                id="instagram_direct_message-1"
+                          <CheckBox
+                            className="mb-2"
+                            isChecked={false}
+                            isDisabled={true}
+                            name="1.instagram_direct_message_enabled"
+                            onChange={[Function]}
+                          >
+                            <div
+                              id="instagram_direct_message-1"
+                              style={
+                                Object {
+                                  "cursor": "pointer",
+                                }
+                              }
+                            >
+                              <span
                                 style={
                                   Object {
-                                    "cursor": "pointer",
+                                    "borderBottom": "1px dashed #D2D7DE",
                                   }
                                 }
                               >
-                                <span
-                                  style={
-                                    Object {
-                                      "borderBottom": "1px dashed #D2D7DE",
-                                    }
+                                Enable Instagram direct messages
+                              </span>
+                              <img
+                                alt="icon"
+                                className="ml-3"
+                                src="test-file-stub"
+                                style={
+                                  Object {
+                                    "verticalAlign": "text-bottom",
                                   }
-                                >
-                                  Enable Instagram direct messages
-                                </span>
-                                <img
-                                  alt="icon"
-                                  className="ml-3"
-                                  src="test-file-stub"
-                                  style={
-                                    Object {
-                                      "verticalAlign": "text-bottom",
-                                    }
-                                  }
-                                />
-                              </div>
-                            }
-                            name="1.instagram_direct_message_enabled"
-                            onChange={[Function]}
-                            type="checkbox"
-                            value={false}
-                          />
+                                }
+                              />
+                            </div>
+                          </CheckBox>
                         </td>
                         <td
                           className="pl-0"
@@ -3446,14 +3507,15 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       </tr>
                     </tbody>
                   </table>
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram ads"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.instagram_ads_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
+                  >
+                    Enable Instagram ads
+                  </CheckBox>
                 </FormGroup>
               </div>
               <div>
@@ -3469,14 +3531,15 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     className="mr-5"
                     tag="div"
                   >
-                    <BooleanField
-                      disabled={true}
-                      label="Import 30 days of history (posts and comments) as closed tickets"
+                    <CheckBox
+                      className="mb-2"
+                      isChecked={false}
+                      isDisabled={true}
                       name="1.import_history_enabled"
                       onChange={[Function]}
-                      type="checkbox"
-                      value={false}
-                    />
+                    >
+                      Import 30 days of history (posts and comments) as closed tickets
+                    </CheckBox>
                   </FormGroup>
                 </div>
               </div>
@@ -3644,97 +3707,102 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   className="mr-5"
                   tag="div"
                 >
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Messenger"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.messenger_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Facebook posts, comments and ads comments"
+                  >
+                    Enable Messenger
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.posts_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook recommendations"
+                  >
+                    Enable Facebook posts, comments and ads comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.recommendations_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook mentions"
+                  >
+                    Enable Facebook recommendations
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram comments"
+                  >
+                    Enable Facebook mentions
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.instagram_comments_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram mentions"
+                  >
+                    Enable Instagram comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.instagram_mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
+                  >
+                    Enable Instagram mentions
+                  </CheckBox>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <BooleanField
-                            disabled={true}
-                            label={
-                              <div
-                                id="instagram_direct_message-1"
+                          <CheckBox
+                            className="mb-2"
+                            isChecked={false}
+                            isDisabled={true}
+                            name="1.instagram_direct_message_enabled"
+                            onChange={[Function]}
+                          >
+                            <div
+                              id="instagram_direct_message-1"
+                              style={
+                                Object {
+                                  "cursor": "pointer",
+                                }
+                              }
+                            >
+                              <span
                                 style={
                                   Object {
-                                    "cursor": "pointer",
+                                    "borderBottom": "1px dashed #D2D7DE",
                                   }
                                 }
                               >
-                                <span
-                                  style={
-                                    Object {
-                                      "borderBottom": "1px dashed #D2D7DE",
-                                    }
+                                Enable Instagram direct messages
+                              </span>
+                              <img
+                                alt="icon"
+                                className="ml-3"
+                                src="test-file-stub"
+                                style={
+                                  Object {
+                                    "verticalAlign": "text-bottom",
                                   }
-                                >
-                                  Enable Instagram direct messages
-                                </span>
-                                <img
-                                  alt="icon"
-                                  className="ml-3"
-                                  src="test-file-stub"
-                                  style={
-                                    Object {
-                                      "verticalAlign": "text-bottom",
-                                    }
-                                  }
-                                />
-                              </div>
-                            }
-                            name="1.instagram_direct_message_enabled"
-                            onChange={[Function]}
-                            type="checkbox"
-                            value={false}
-                          />
+                                }
+                              />
+                            </div>
+                          </CheckBox>
                         </td>
                         <td
                           className="pl-0"
@@ -3749,14 +3817,15 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       </tr>
                     </tbody>
                   </table>
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram ads"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.instagram_ads_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
+                  >
+                    Enable Instagram ads
+                  </CheckBox>
                 </FormGroup>
               </div>
               <div>
@@ -3772,14 +3841,15 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     className="mr-5"
                     tag="div"
                   >
-                    <BooleanField
-                      disabled={true}
-                      label="Import 30 days of history (posts and comments) as closed tickets"
+                    <CheckBox
+                      className="mb-2"
+                      isChecked={false}
+                      isDisabled={true}
                       name="1.import_history_enabled"
                       onChange={[Function]}
-                      type="checkbox"
-                      value={false}
-                    />
+                    >
+                      Import 30 days of history (posts and comments) as closed tickets
+                    </CheckBox>
                   </FormGroup>
                 </div>
               </div>
@@ -4091,97 +4161,102 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   className="mr-5"
                   tag="div"
                 >
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Messenger"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.messenger_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Facebook posts, comments and ads comments"
+                  >
+                    Enable Messenger
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.posts_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Facebook recommendations"
+                  >
+                    Enable Facebook posts, comments and ads comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.recommendations_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Facebook mentions"
+                  >
+                    Enable Facebook recommendations
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Instagram comments"
+                  >
+                    Enable Facebook mentions
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={false}
                     name="1.instagram_comments_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Instagram mentions"
+                  >
+                    Enable Instagram comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={false}
                     name="1.instagram_mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
+                  >
+                    Enable Instagram mentions
+                  </CheckBox>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <BooleanField
-                            disabled={true}
-                            label={
-                              <div
-                                id="instagram_direct_message-1"
+                          <CheckBox
+                            className="mb-2"
+                            isChecked={false}
+                            isDisabled={true}
+                            name="1.instagram_direct_message_enabled"
+                            onChange={[Function]}
+                          >
+                            <div
+                              id="instagram_direct_message-1"
+                              style={
+                                Object {
+                                  "cursor": "pointer",
+                                }
+                              }
+                            >
+                              <span
                                 style={
                                   Object {
-                                    "cursor": "pointer",
+                                    "borderBottom": "1px dashed #D2D7DE",
                                   }
                                 }
                               >
-                                <span
-                                  style={
-                                    Object {
-                                      "borderBottom": "1px dashed #D2D7DE",
-                                    }
+                                Enable Instagram direct messages
+                              </span>
+                              <img
+                                alt="icon"
+                                className="ml-3"
+                                src="test-file-stub"
+                                style={
+                                  Object {
+                                    "verticalAlign": "text-bottom",
                                   }
-                                >
-                                  Enable Instagram direct messages
-                                </span>
-                                <img
-                                  alt="icon"
-                                  className="ml-3"
-                                  src="test-file-stub"
-                                  style={
-                                    Object {
-                                      "verticalAlign": "text-bottom",
-                                    }
-                                  }
-                                />
-                              </div>
-                            }
-                            name="1.instagram_direct_message_enabled"
-                            onChange={[Function]}
-                            type="checkbox"
-                            value={false}
-                          />
+                                }
+                              />
+                            </div>
+                          </CheckBox>
                         </td>
                         <td
                           className="pl-0"
@@ -4196,14 +4271,15 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       </tr>
                     </tbody>
                   </table>
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram ads"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.instagram_ads_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
+                  >
+                    Enable Instagram ads
+                  </CheckBox>
                 </FormGroup>
               </div>
               <div>
@@ -4219,14 +4295,15 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     className="mr-5"
                     tag="div"
                   >
-                    <BooleanField
-                      disabled={true}
-                      label="Import 30 days of history (posts and comments) as closed tickets"
+                    <CheckBox
+                      className="mb-2"
+                      isChecked={false}
+                      isDisabled={true}
                       name="1.import_history_enabled"
                       onChange={[Function]}
-                      type="checkbox"
-                      value={false}
-                    />
+                    >
+                      Import 30 days of history (posts and comments) as closed tickets
+                    </CheckBox>
                   </FormGroup>
                 </div>
               </div>
@@ -4538,97 +4615,102 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   className="mr-5"
                   tag="div"
                 >
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Messenger"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.messenger_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Facebook posts, comments and ads comments"
+                  >
+                    Enable Messenger
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.posts_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Facebook recommendations"
+                  >
+                    Enable Facebook posts, comments and ads comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.recommendations_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Facebook mentions"
+                  >
+                    Enable Facebook recommendations
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Instagram comments"
+                  >
+                    Enable Facebook mentions
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={false}
                     name="1.instagram_comments_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Instagram mentions"
+                  >
+                    Enable Instagram comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={false}
                     name="1.instagram_mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
+                  >
+                    Enable Instagram mentions
+                  </CheckBox>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <BooleanField
-                            disabled={true}
-                            label={
-                              <div
-                                id="instagram_direct_message-1"
+                          <CheckBox
+                            className="mb-2"
+                            isChecked={false}
+                            isDisabled={true}
+                            name="1.instagram_direct_message_enabled"
+                            onChange={[Function]}
+                          >
+                            <div
+                              id="instagram_direct_message-1"
+                              style={
+                                Object {
+                                  "cursor": "pointer",
+                                }
+                              }
+                            >
+                              <span
                                 style={
                                   Object {
-                                    "cursor": "pointer",
+                                    "borderBottom": "1px dashed #D2D7DE",
                                   }
                                 }
                               >
-                                <span
-                                  style={
-                                    Object {
-                                      "borderBottom": "1px dashed #D2D7DE",
-                                    }
+                                Enable Instagram direct messages
+                              </span>
+                              <img
+                                alt="icon"
+                                className="ml-3"
+                                src="test-file-stub"
+                                style={
+                                  Object {
+                                    "verticalAlign": "text-bottom",
                                   }
-                                >
-                                  Enable Instagram direct messages
-                                </span>
-                                <img
-                                  alt="icon"
-                                  className="ml-3"
-                                  src="test-file-stub"
-                                  style={
-                                    Object {
-                                      "verticalAlign": "text-bottom",
-                                    }
-                                  }
-                                />
-                              </div>
-                            }
-                            name="1.instagram_direct_message_enabled"
-                            onChange={[Function]}
-                            type="checkbox"
-                            value={false}
-                          />
+                                }
+                              />
+                            </div>
+                          </CheckBox>
                         </td>
                         <td
                           className="pl-0"
@@ -4643,14 +4725,15 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       </tr>
                     </tbody>
                   </table>
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram ads"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.instagram_ads_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
+                  >
+                    Enable Instagram ads
+                  </CheckBox>
                 </FormGroup>
               </div>
               <div>
@@ -4666,14 +4749,15 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     className="mr-5"
                     tag="div"
                   >
-                    <BooleanField
-                      disabled={true}
-                      label="Import 30 days of history (posts and comments) as closed tickets"
+                    <CheckBox
+                      className="mb-2"
+                      isChecked={false}
+                      isDisabled={true}
                       name="1.import_history_enabled"
                       onChange={[Function]}
-                      type="checkbox"
-                      value={false}
-                    />
+                    >
+                      Import 30 days of history (posts and comments) as closed tickets
+                    </CheckBox>
                   </FormGroup>
                 </div>
               </div>
@@ -4985,97 +5069,102 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   className="mr-5"
                   tag="div"
                 >
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Messenger"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.messenger_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Facebook posts, comments and ads comments"
+                  >
+                    Enable Messenger
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.posts_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Facebook recommendations"
+                  >
+                    Enable Facebook posts, comments and ads comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.recommendations_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Facebook mentions"
+                  >
+                    Enable Facebook recommendations
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Instagram comments"
+                  >
+                    Enable Facebook mentions
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={false}
                     name="1.instagram_comments_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Instagram mentions"
+                  >
+                    Enable Instagram comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={false}
                     name="1.instagram_mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
+                  >
+                    Enable Instagram mentions
+                  </CheckBox>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <BooleanField
-                            disabled={true}
-                            label={
-                              <div
-                                id="instagram_direct_message-1"
+                          <CheckBox
+                            className="mb-2"
+                            isChecked={false}
+                            isDisabled={true}
+                            name="1.instagram_direct_message_enabled"
+                            onChange={[Function]}
+                          >
+                            <div
+                              id="instagram_direct_message-1"
+                              style={
+                                Object {
+                                  "cursor": "pointer",
+                                }
+                              }
+                            >
+                              <span
                                 style={
                                   Object {
-                                    "cursor": "pointer",
+                                    "borderBottom": "1px dashed #D2D7DE",
                                   }
                                 }
                               >
-                                <span
-                                  style={
-                                    Object {
-                                      "borderBottom": "1px dashed #D2D7DE",
-                                    }
+                                Enable Instagram direct messages
+                              </span>
+                              <img
+                                alt="icon"
+                                className="ml-3"
+                                src="test-file-stub"
+                                style={
+                                  Object {
+                                    "verticalAlign": "text-bottom",
                                   }
-                                >
-                                  Enable Instagram direct messages
-                                </span>
-                                <img
-                                  alt="icon"
-                                  className="ml-3"
-                                  src="test-file-stub"
-                                  style={
-                                    Object {
-                                      "verticalAlign": "text-bottom",
-                                    }
-                                  }
-                                />
-                              </div>
-                            }
-                            name="1.instagram_direct_message_enabled"
-                            onChange={[Function]}
-                            type="checkbox"
-                            value={false}
-                          />
+                                }
+                              />
+                            </div>
+                          </CheckBox>
                         </td>
                         <td
                           className="pl-0"
@@ -5090,14 +5179,15 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       </tr>
                     </tbody>
                   </table>
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Instagram ads"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.instagram_ads_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
+                  >
+                    Enable Instagram ads
+                  </CheckBox>
                 </FormGroup>
               </div>
               <div>
@@ -5113,14 +5203,15 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     className="mr-5"
                     tag="div"
                   >
-                    <BooleanField
-                      disabled={true}
-                      label="Import 30 days of history (posts and comments) as closed tickets"
+                    <CheckBox
+                      className="mb-2"
+                      isChecked={false}
+                      isDisabled={true}
                       name="1.import_history_enabled"
                       onChange={[Function]}
-                      type="checkbox"
-                      value={false}
-                    />
+                    >
+                      Import 30 days of history (posts and comments) as closed tickets
+                    </CheckBox>
                   </FormGroup>
                 </div>
               </div>
@@ -5432,76 +5523,81 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   className="mr-5"
                   tag="div"
                 >
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Messenger"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.messenger_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Facebook posts, comments and ads comments"
+                  >
+                    Enable Messenger
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.posts_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Facebook recommendations"
+                  >
+                    Enable Facebook posts, comments and ads comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.recommendations_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Facebook mentions"
+                  >
+                    Enable Facebook recommendations
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram comments"
+                  >
+                    Enable Facebook mentions
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.instagram_comments_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram mentions"
+                  >
+                    Enable Instagram comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.instagram_mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
+                  >
+                    Enable Instagram mentions
+                  </CheckBox>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <BooleanField
-                            disabled={false}
-                            label={
-                              <div
-                                id="instagram_direct_message-1"
-                              >
-                                <span>
-                                  Enable Instagram direct messages
-                                </span>
-                              </div>
-                            }
+                          <CheckBox
+                            className="mb-2"
+                            isChecked={false}
+                            isDisabled={false}
                             name="1.instagram_direct_message_enabled"
                             onChange={[Function]}
-                            type="checkbox"
-                            value={false}
-                          />
+                          >
+                            <div
+                              id="instagram_direct_message-1"
+                            >
+                              <span>
+                                Enable Instagram direct messages
+                              </span>
+                            </div>
+                          </CheckBox>
                         </td>
                         <td
                           className="pl-0"
@@ -5509,14 +5605,15 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       </tr>
                     </tbody>
                   </table>
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram ads"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.instagram_ads_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
+                  >
+                    Enable Instagram ads
+                  </CheckBox>
                 </FormGroup>
               </div>
               <div>
@@ -5532,14 +5629,15 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     className="mr-5"
                     tag="div"
                   >
-                    <BooleanField
-                      disabled={true}
-                      label="Import 30 days of history (posts and comments) as closed tickets"
+                    <CheckBox
+                      className="mb-2"
+                      isChecked={false}
+                      isDisabled={true}
                       name="1.import_history_enabled"
                       onChange={[Function]}
-                      type="checkbox"
-                      value={false}
-                    />
+                    >
+                      Import 30 days of history (posts and comments) as closed tickets
+                    </CheckBox>
                   </FormGroup>
                 </div>
               </div>
@@ -5851,97 +5949,102 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   className="mr-5"
                   tag="div"
                 >
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Messenger"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.messenger_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Facebook posts, comments and ads comments"
+                  >
+                    Enable Messenger
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.posts_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={false}
-                    label="Enable Facebook recommendations"
+                  >
+                    Enable Facebook posts, comments and ads comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={false}
                     name="1.recommendations_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Facebook mentions"
+                  >
+                    Enable Facebook recommendations
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram comments"
+                  >
+                    Enable Facebook mentions
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.instagram_comments_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram mentions"
+                  >
+                    Enable Instagram comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.instagram_mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
+                  >
+                    Enable Instagram mentions
+                  </CheckBox>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <BooleanField
-                            disabled={true}
-                            label={
-                              <div
-                                id="instagram_direct_message-1"
+                          <CheckBox
+                            className="mb-2"
+                            isChecked={false}
+                            isDisabled={true}
+                            name="1.instagram_direct_message_enabled"
+                            onChange={[Function]}
+                          >
+                            <div
+                              id="instagram_direct_message-1"
+                              style={
+                                Object {
+                                  "cursor": "pointer",
+                                }
+                              }
+                            >
+                              <span
                                 style={
                                   Object {
-                                    "cursor": "pointer",
+                                    "borderBottom": "1px dashed #D2D7DE",
                                   }
                                 }
                               >
-                                <span
-                                  style={
-                                    Object {
-                                      "borderBottom": "1px dashed #D2D7DE",
-                                    }
+                                Enable Instagram direct messages
+                              </span>
+                              <img
+                                alt="icon"
+                                className="ml-3"
+                                src="test-file-stub"
+                                style={
+                                  Object {
+                                    "verticalAlign": "text-bottom",
                                   }
-                                >
-                                  Enable Instagram direct messages
-                                </span>
-                                <img
-                                  alt="icon"
-                                  className="ml-3"
-                                  src="test-file-stub"
-                                  style={
-                                    Object {
-                                      "verticalAlign": "text-bottom",
-                                    }
-                                  }
-                                />
-                              </div>
-                            }
-                            name="1.instagram_direct_message_enabled"
-                            onChange={[Function]}
-                            type="checkbox"
-                            value={false}
-                          />
+                                }
+                              />
+                            </div>
+                          </CheckBox>
                         </td>
                         <td
                           className="pl-0"
@@ -5956,14 +6059,15 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       </tr>
                     </tbody>
                   </table>
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram ads"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.instagram_ads_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
+                  >
+                    Enable Instagram ads
+                  </CheckBox>
                 </FormGroup>
               </div>
               <div>
@@ -5979,14 +6083,15 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     className="mr-5"
                     tag="div"
                   >
-                    <BooleanField
-                      disabled={true}
-                      label="Import 30 days of history (posts and comments) as closed tickets"
+                    <CheckBox
+                      className="mb-2"
+                      isChecked={false}
+                      isDisabled={true}
                       name="1.import_history_enabled"
                       onChange={[Function]}
-                      type="checkbox"
-                      value={false}
-                    />
+                    >
+                      Import 30 days of history (posts and comments) as closed tickets
+                    </CheckBox>
                   </FormGroup>
                 </div>
               </div>
@@ -6442,76 +6547,81 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   className="mr-5"
                   tag="div"
                 >
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Messenger"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.messenger_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Facebook posts, comments and ads comments"
+                  >
+                    Enable Messenger
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.posts_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Facebook recommendations"
+                  >
+                    Enable Facebook posts, comments and ads comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.recommendations_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Facebook mentions"
+                  >
+                    Enable Facebook recommendations
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram comments"
+                  >
+                    Enable Facebook mentions
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.instagram_comments_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram mentions"
+                  >
+                    Enable Instagram comments
+                  </CheckBox>
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={true}
+                    isDisabled={true}
                     name="1.instagram_mentions_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={true}
-                  />
+                  >
+                    Enable Instagram mentions
+                  </CheckBox>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <BooleanField
-                            disabled={false}
-                            label={
-                              <div
-                                id="instagram_direct_message-1"
-                              >
-                                <span>
-                                  Enable Instagram direct messages
-                                </span>
-                              </div>
-                            }
+                          <CheckBox
+                            className="mb-2"
+                            isChecked={false}
+                            isDisabled={false}
                             name="1.instagram_direct_message_enabled"
                             onChange={[Function]}
-                            type="checkbox"
-                            value={false}
-                          />
+                          >
+                            <div
+                              id="instagram_direct_message-1"
+                            >
+                              <span>
+                                Enable Instagram direct messages
+                              </span>
+                            </div>
+                          </CheckBox>
                         </td>
                         <td
                           className="pl-0"
@@ -6519,14 +6629,15 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       </tr>
                     </tbody>
                   </table>
-                  <BooleanField
-                    disabled={true}
-                    label="Enable Instagram ads"
+                  <CheckBox
+                    className="mb-2"
+                    isChecked={false}
+                    isDisabled={true}
                     name="1.instagram_ads_enabled"
                     onChange={[Function]}
-                    type="checkbox"
-                    value={false}
-                  />
+                  >
+                    Enable Instagram ads
+                  </CheckBox>
                 </FormGroup>
               </div>
               <div>
@@ -6542,14 +6653,15 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     className="mr-5"
                     tag="div"
                   >
-                    <BooleanField
-                      disabled={true}
-                      label="Import 30 days of history (posts and comments) as closed tickets"
+                    <CheckBox
+                      className="mb-2"
+                      isChecked={false}
+                      isDisabled={true}
                       name="1.import_history_enabled"
                       onChange={[Function]}
-                      type="checkbox"
-                      value={false}
-                    />
+                    >
+                      Import 30 days of history (posts and comments) as closed tickets
+                    </CheckBox>
                   </FormGroup>
                 </div>
               </div>

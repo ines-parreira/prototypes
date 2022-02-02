@@ -18,6 +18,17 @@ const storyConfig: Meta = {
                 disable: true,
             },
         },
+        caption: {
+            options: ['simple text', 'node'],
+            mapping: {
+                ['simple text']: 'This toggle is a checkbox in disguise',
+                node: (
+                    <>
+                        <i className="material-icons">local_shipping</i> tutu
+                    </>
+                ),
+            },
+        },
     },
 }
 

@@ -20,7 +20,7 @@ exports[`<PhoneAddressInformation /> should allow to use company information for
       >
         <input
           checked=""
-          class="form-check-input"
+          class="input form-check-input"
           type="radio"
         />
         <strong
@@ -37,7 +37,7 @@ exports[`<PhoneAddressInformation /> should allow to use company information for
         class="boxLabel form-check-label"
       >
         <input
-          class="form-check-input"
+          class="input form-check-input"
           type="radio"
         />
         <strong
@@ -252,7 +252,7 @@ exports[`<PhoneAddressInformation /> should allow to use personal information fo
         class="boxLabel form-check-label"
       >
         <input
-          class="form-check-input"
+          class="input form-check-input"
           type="radio"
         />
         <strong
@@ -270,7 +270,7 @@ exports[`<PhoneAddressInformation /> should allow to use personal information fo
       >
         <input
           checked=""
-          class="form-check-input"
+          class="input form-check-input"
           type="radio"
         />
         <strong
@@ -485,7 +485,7 @@ exports[`<PhoneAddressInformation /> should display the country name in a disabl
         class="boxLabel form-check-label"
       >
         <input
-          class="form-check-input"
+          class="input form-check-input"
           type="radio"
         />
         <strong
@@ -502,7 +502,7 @@ exports[`<PhoneAddressInformation /> should display the country name in a disabl
         class="boxLabel form-check-label"
       >
         <input
-          class="form-check-input"
+          class="input form-check-input"
           type="radio"
         />
         <strong
@@ -717,7 +717,7 @@ exports[`<PhoneAddressInformation /> should render 1`] = `
         class="boxLabel form-check-label"
       >
         <input
-          class="form-check-input"
+          class="input form-check-input"
           type="radio"
         />
         <strong
@@ -734,7 +734,7 @@ exports[`<PhoneAddressInformation /> should render 1`] = `
         class="boxLabel form-check-label"
       >
         <input
-          class="form-check-input"
+          class="input form-check-input"
           type="radio"
         />
         <strong
