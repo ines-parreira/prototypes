@@ -59,6 +59,7 @@ export const CurrentHelpCenter: React.FC = () => {
                     })
 
                     dispatch(helpCentersFetched([data]))
+                    dispatch(changeHelpCenterId(data.id))
                 } catch (err) {
                     const errorMessage =
                         axios.isAxiosError(err) && err.response?.status === 400

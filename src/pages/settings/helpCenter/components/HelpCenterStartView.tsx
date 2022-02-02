@@ -60,6 +60,10 @@ export const HelpCenterStartView: React.FC = () => {
     }, [client])
 
     useEffect(() => {
+        dispatch(changeHelpCenterId(null))
+    }, [dispatch])
+
+    useEffect(() => {
         if (!loading) {
             void getHelpCentersList()
         }
