@@ -1,23 +1,22 @@
 import classNames from 'classnames'
 import React, {ReactChild, MouseEvent} from 'react'
 
-import RadioButton from '../RadioButton'
+import RadioButton, {RadioButtonProps} from '../RadioButton'
 
 import css from './PreviewRadioButton.less'
 
-type Props = {
+type Props = RadioButtonProps & {
     className?: string
     id?: string
     isSelected?: boolean
     preview?: ReactChild
-    value?: string
-    label: string
     onClick: (ev: MouseEvent<HTMLDivElement>) => void
 }
 
 export const PreviewRadioButton = ({
     className,
     id,
+    isDisabled,
     isSelected = false,
     label,
     preview,
@@ -29,13 +28,19 @@ export const PreviewRadioButton = ({
             css.wrapper,
             {
                 [css.selected]: isSelected,
+                [css.disabled]: isDisabled,
             },
             className
         )}
         id={id}
-        onClick={onClick}
+        onClick={(e) => !isDisabled && onClick(e)}
     >
         {preview && <div className={css.preview}>{preview}</div>}
-        <RadioButton value={value} label={label} isSelected={isSelected} />
+        <RadioButton
+            value={value}
+            label={label}
+            isSelected={isSelected}
+            isDisabled={isDisabled}
+        />
     </div>
 )

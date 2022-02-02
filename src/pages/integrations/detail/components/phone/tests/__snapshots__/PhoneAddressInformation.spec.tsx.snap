@@ -15,37 +15,41 @@ exports[`<PhoneAddressInformation /> should allow to use company information for
     <div
       class="pr-0 col"
     >
-      <label
-        class="boxLabel form-check-label"
+      <div
+        class="wrapper selected"
       >
-        <input
-          checked=""
-          class="input form-check-input"
-          type="radio"
-        />
-        <strong
-          class="ml-1"
-        >
-          Business information
-        </strong>
-      </label>
+        <div>
+          <label
+            class="label"
+          >
+            <input
+              checked=""
+              class="input"
+              type="radio"
+            />
+            Business information
+          </label>
+        </div>
+      </div>
     </div>
     <div
       class="col"
     >
-      <label
-        class="boxLabel form-check-label"
+      <div
+        class="wrapper"
       >
-        <input
-          class="input form-check-input"
-          type="radio"
-        />
-        <strong
-          class="ml-1"
-        >
-          Personal information
-        </strong>
-      </label>
+        <div>
+          <label
+            class="label"
+          >
+            <input
+              class="input"
+              type="radio"
+            />
+            Personal information
+          </label>
+        </div>
+      </div>
     </div>
   </div>
   <div
@@ -248,37 +252,41 @@ exports[`<PhoneAddressInformation /> should allow to use personal information fo
     <div
       class="pr-0 col"
     >
-      <label
-        class="boxLabel form-check-label"
+      <div
+        class="wrapper"
       >
-        <input
-          class="input form-check-input"
-          type="radio"
-        />
-        <strong
-          class="ml-1"
-        >
-          Business information
-        </strong>
-      </label>
+        <div>
+          <label
+            class="label"
+          >
+            <input
+              class="input"
+              type="radio"
+            />
+            Business information
+          </label>
+        </div>
+      </div>
     </div>
     <div
       class="col"
     >
-      <label
-        class="boxLabel form-check-label"
+      <div
+        class="wrapper selected"
       >
-        <input
-          checked=""
-          class="input form-check-input"
-          type="radio"
-        />
-        <strong
-          class="ml-1"
-        >
-          Personal information
-        </strong>
-      </label>
+        <div>
+          <label
+            class="label"
+          >
+            <input
+              checked=""
+              class="input"
+              type="radio"
+            />
+            Personal information
+          </label>
+        </div>
+      </div>
     </div>
   </div>
   <div
@@ -481,36 +489,40 @@ exports[`<PhoneAddressInformation /> should display the country name in a disabl
     <div
       class="pr-0 col"
     >
-      <label
-        class="boxLabel form-check-label"
+      <div
+        class="wrapper"
       >
-        <input
-          class="input form-check-input"
-          type="radio"
-        />
-        <strong
-          class="ml-1"
-        >
-          Business information
-        </strong>
-      </label>
+        <div>
+          <label
+            class="label"
+          >
+            <input
+              class="input"
+              type="radio"
+            />
+            Business information
+          </label>
+        </div>
+      </div>
     </div>
     <div
       class="col"
     >
-      <label
-        class="boxLabel form-check-label"
+      <div
+        class="wrapper"
       >
-        <input
-          class="input form-check-input"
-          type="radio"
-        />
-        <strong
-          class="ml-1"
-        >
-          Personal information
-        </strong>
-      </label>
+        <div>
+          <label
+            class="label"
+          >
+            <input
+              class="input"
+              type="radio"
+            />
+            Personal information
+          </label>
+        </div>
+      </div>
     </div>
   </div>
   <div
@@ -713,36 +725,40 @@ exports[`<PhoneAddressInformation /> should render 1`] = `
     <div
       class="pr-0 col"
     >
-      <label
-        class="boxLabel form-check-label"
+      <div
+        class="wrapper"
       >
-        <input
-          class="input form-check-input"
-          type="radio"
-        />
-        <strong
-          class="ml-1"
-        >
-          Business information
-        </strong>
-      </label>
+        <div>
+          <label
+            class="label"
+          >
+            <input
+              class="input"
+              type="radio"
+            />
+            Business information
+          </label>
+        </div>
+      </div>
     </div>
     <div
       class="col"
     >
-      <label
-        class="boxLabel form-check-label"
+      <div
+        class="wrapper"
       >
-        <input
-          class="input form-check-input"
-          type="radio"
-        />
-        <strong
-          class="ml-1"
-        >
-          Personal information
-        </strong>
-      </label>
+        <div>
+          <label
+            class="label"
+          >
+            <input
+              class="input"
+              type="radio"
+            />
+            Personal information
+          </label>
+        </div>
+      </div>
     </div>
   </div>
   <div

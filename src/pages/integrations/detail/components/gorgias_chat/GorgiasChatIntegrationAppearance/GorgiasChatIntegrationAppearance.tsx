@@ -456,22 +456,20 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             <GorgiasChatIntegrationPreviewContainer preview={chatPreview}>
                 <Form onSubmit={handleSubmit}>
                     {!isUpdate ? (
-                        <>
-                            <div className={css.selectStoreTypeContainer}>
-                                <Label className={css.bold}>
-                                    Where will you use this chat?
-                                    <span className={css.redStar}>*</span>
-                                </Label>
-                                <div className={css.radioButtonGroup}>
-                                    {storeTypeRadioButtons.map((props) => (
-                                        <StoreRadioButton
-                                            {...props}
-                                            key={props.label}
-                                        />
-                                    ))}
-                                </div>
+                        <div className={css.selectStoreTypeContainer}>
+                            <Label className={css.bold}>
+                                Where will you use this chat?
+                                <span className={css.redStar}>*</span>
+                            </Label>
+                            <div className={css.radioButtonGroup}>
+                                {storeTypeRadioButtons.map((props) => (
+                                    <StoreRadioButton
+                                        {...props}
+                                        key={props.label}
+                                    />
+                                ))}
                             </div>
-                        </>
+                        </div>
                     ) : null}
 
                     <div className={css.form}>

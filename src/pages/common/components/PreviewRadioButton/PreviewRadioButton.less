@@ -12,13 +12,22 @@
         transition: border-color 0.2s linear;
 
         &:focus,
-        &:hover:not(.selected) {
+        &:hover:not(.selected):not(.disabled) {
             box-shadow: inset 0px 0px 0px 1px @classic-neutral-grey-3;
         }
 
-        &.selected {
+        &.selected:not(.disabled) {
             border-color: @classic-main-primary;
             box-shadow: inset 0px 0px 0px 1px @classic-main-primary;
+        }
+
+        &.disabled {
+            cursor: not-allowed;
+        }
+
+        &.disabled.selected {
+            border-color: @classic-neutral-grey-3;
+            box-shadow: inset 0px 0px 0px 1px @classic-neutral-grey-3;
         }
 
         &:focus {

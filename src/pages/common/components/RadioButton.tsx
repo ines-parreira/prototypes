@@ -5,7 +5,7 @@ import {RadioFieldOption} from '../forms/RadioFieldSet'
 
 import css from './RadioButton.less'
 
-type Props = RadioFieldOption & {
+export type RadioButtonProps = RadioFieldOption & {
     className?: string
     isSelected?: boolean
     isDisabled?: boolean
@@ -24,7 +24,7 @@ const RadioButton = ({
     value,
     onChange,
     ...props
-}: Props) => (
+}: RadioButtonProps) => (
     <div className={className}>
         <label
             htmlFor={value}

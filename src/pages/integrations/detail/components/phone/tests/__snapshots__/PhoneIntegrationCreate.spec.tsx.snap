@@ -1217,37 +1217,41 @@ exports[`<PhoneIntegrationCreate/> render() should render address validation for
               <div
                 class="pr-0 col"
               >
-                <label
-                  class="boxLabel form-check-label"
+                <div
+                  class="wrapper selected"
                 >
-                  <input
-                    checked=""
-                    class="input form-check-input"
-                    type="radio"
-                  />
-                  <strong
-                    class="ml-1"
-                  >
-                    Business information
-                  </strong>
-                </label>
+                  <div>
+                    <label
+                      class="label"
+                    >
+                      <input
+                        checked=""
+                        class="input"
+                        type="radio"
+                      />
+                      Business information
+                    </label>
+                  </div>
+                </div>
               </div>
               <div
                 class="col"
               >
-                <label
-                  class="boxLabel form-check-label"
+                <div
+                  class="wrapper"
                 >
-                  <input
-                    class="input form-check-input"
-                    type="radio"
-                  />
-                  <strong
-                    class="ml-1"
-                  >
-                    Personal information
-                  </strong>
-                </label>
+                  <div>
+                    <label
+                      class="label"
+                    >
+                      <input
+                        class="input"
+                        type="radio"
+                      />
+                      Personal information
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
             <div

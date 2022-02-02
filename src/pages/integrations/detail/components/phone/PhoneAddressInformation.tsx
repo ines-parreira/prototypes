@@ -1,18 +1,14 @@
 import React, {useCallback, useState, useEffect} from 'react'
-import {Col, Row, Input, Label} from 'reactstrap'
+import {Col, Row} from 'reactstrap'
 import {isEmpty} from 'lodash'
 
+import {PhoneCountry} from 'business/twilio'
+import {AddressType, AddressInformation} from 'models/integration/types'
+import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import InputField from 'pages/common/forms/InputField'
-import {
-    AddressType,
-    AddressInformation,
-} from '../../../../../models/integration/types'
-import {PhoneCountry} from '../../../../../business/twilio'
-
-import {SelectableOption} from '../../../../common/forms/SelectField/types'
 
 import rawCountries from './options/countries.json'
-
 import css from './PhoneAddressInformation.less'
 
 const countries: SelectableOption[] = rawCountries
@@ -59,32 +55,24 @@ export default function PhoneAddressInformation({
             <h4 className="mb-3">Address verification</h4>
             <Row className="mb-3">
                 <Col className="pr-0">
-                    <Label check className={css.boxLabel}>
-                        <Input
-                            className={css.input}
-                            type="radio"
-                            onChange={() =>
-                                handleChange('type', AddressType.Company)
-                            }
-                            checked={value.type === AddressType.Company}
-                            disabled={isDisabled}
-                        />
-                        <strong className="ml-1">Business information</strong>
-                    </Label>
+                    <PreviewRadioButton
+                        isSelected={value.type === AddressType.Company}
+                        isDisabled={isDisabled}
+                        label="Business information"
+                        onClick={() =>
+                            handleChange('type', AddressType.Company)
+                        }
+                    />
                 </Col>
                 <Col>
-                    <Label check className={css.boxLabel}>
-                        <Input
-                            className={css.input}
-                            type="radio"
-                            onChange={() =>
-                                handleChange('type', AddressType.Personal)
-                            }
-                            checked={value.type === AddressType.Personal}
-                            disabled={isDisabled}
-                        />
-                        <strong className="ml-1">Personal information</strong>
-                    </Label>
+                    <PreviewRadioButton
+                        isSelected={value.type === AddressType.Personal}
+                        isDisabled={isDisabled}
+                        label="Personal information"
+                        onClick={() =>
+                            handleChange('type', AddressType.Personal)
+                        }
+                    />
                 </Col>
             </Row>
             <InputField
