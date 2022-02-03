@@ -52,16 +52,18 @@ import BillingPlanCard from '../plans/BillingPlanCard'
 import {RootState} from '../../../../state/types'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {BillingContact, CreditCard} from '../../../../state/billing/types'
-import RecurringPrices from '../plans/RecurringPrices'
 import BillingAddressInputs from '../common/BillingAddressInputs'
 import {UPDATE_BILLING_CONTACT_ERROR} from '../../../../state/billing/constants'
 import settingsCss from '../../settings.less'
 
+import AutomationAmount from '../plans/AutomationAmount'
+import TotalAmount from '../plans/TotalAmount'
 import {
     creditCardCVCNormalizer,
     creditCardExpDateNormalizer,
     creditCardNormalizer,
 } from './utils.js'
+
 import css from './CreditCard.less'
 
 type Props = {
@@ -546,13 +548,22 @@ export class CreditCardContainer extends Component<Props, State> {
                                     )}
                                     footer={
                                         hasAutomationAddOn && (
-                                            <RecurringPrices
-                                                addOnAmount={
-                                                    automationAddOnAmount
-                                                }
-                                                plan={regularCurrentPlan.toJS()}
-                                                editable={false}
-                                            />
+                                            <>
+                                                <AutomationAmount
+                                                    addOnAmount={
+                                                        automationAddOnAmount
+                                                    }
+                                                    plan={regularCurrentPlan.toJS()}
+                                                    editable={false}
+                                                />
+                                                <TotalAmount
+                                                    addOnAmount={
+                                                        automationAddOnAmount
+                                                    }
+                                                    plan={regularCurrentPlan.toJS()}
+                                                    isEditable={false}
+                                                />
+                                            </>
                                         )
                                     }
                                 />

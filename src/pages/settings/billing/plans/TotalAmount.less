@@ -1,0 +1,30 @@
+@import '~css/new/colors';
+
+:local {
+    .amountContainer {
+        margin-left: 8px;
+        text-align: right;
+
+        .amount {
+            color: @classic-neutral-grey-5;
+            font-size: 14px;
+
+            b {
+                color: @classic-neutral-grey-6;
+            }
+        }
+    }
+
+    .row {
+        align-items: center;
+        display: flex;
+        font-weight: 600;
+        height: 52px;
+        padding: 16px;
+        justify-content: space-between;
+
+        &:not(:first-child) {
+            border-top: 1px solid @classic-neutral-grey-3;
+        }
+    }
+}

@@ -47,6 +47,13 @@ describe('<PlanCard />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
+    it('should render the subheader', () => {
+        const {container} = render(
+            <PlanCard {...minProps} subHeader={<span>Foo subheader</span>} />
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
     it('should render the footer', () => {
         const {container} = render(
             <PlanCard {...minProps} footer={<div>Foo footer</div>} />

@@ -1,29 +1,26 @@
 import React, {ComponentProps} from 'react'
-import {render, fireEvent} from '@testing-library/react'
+import {render} from '@testing-library/react'
 
 import {PlanInterval} from '../../../../../models/billing/types'
-import RecurringPrices from '../RecurringPrices'
+import TotalAmount from '../TotalAmount'
 
-jest.mock('lodash/uniqueId', () => () => '876')
-
-describe('<RecurringPrices />', () => {
-    const minProps: ComponentProps<typeof RecurringPrices> = {
+describe('<TotalAmount />', () => {
+    const minProps: ComponentProps<typeof TotalAmount> = {
         addOnAmount: 'Amount',
         plan: {
             id: 'planId',
         },
         isAutomationChecked: false,
-        onAutomationChange: jest.fn(),
     }
 
     it('should render a string as amount', () => {
-        const {container} = render(<RecurringPrices {...minProps} />)
+        const {container} = render(<TotalAmount {...minProps} />)
         expect(container).toMatchSnapshot()
     })
 
     it('should render formatted numbers as amount', () => {
         const {container} = render(
-            <RecurringPrices
+            <TotalAmount
                 {...minProps}
                 addOnAmount={45612}
                 plan={{
@@ -37,19 +34,9 @@ describe('<RecurringPrices />', () => {
         expect(container).toMatchSnapshot()
     })
 
-    it('should trigger callback for updating input value', () => {
-        const {getByLabelText} = render(
-            <RecurringPrices {...minProps} addOnAmount={45612} />
-        )
-
-        fireEvent.click(getByLabelText(/Automation/))
-
-        expect(minProps.onAutomationChange).toHaveBeenCalled()
-    })
-
     it('should render not editable variant', () => {
         const {container} = render(
-            <RecurringPrices
+            <TotalAmount
                 {...minProps}
                 addOnAmount={2000}
                 plan={{
@@ -58,7 +45,7 @@ describe('<RecurringPrices />', () => {
                     amount: 40000,
                     currency: 'usd',
                 }}
-                editable={false}
+                isEditable={false}
             />
         )
         expect(container).toMatchSnapshot()

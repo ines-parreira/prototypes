@@ -17,7 +17,9 @@ import SynchronizedScrollTopContainer from '../../../common/components/Synchroni
 import BillingPlanCard from './BillingPlanCard'
 import CurrentPlanBadge from './CurrentPlanBadge'
 import PlanCard, {PlanCardTheme} from './PlanCard'
-import RecurringPrices from './RecurringPrices'
+import TotalAmount from './TotalAmount'
+import AutomationAmount from './AutomationAmount'
+
 import css from './ChangePlanModal.less'
 
 type Props = {
@@ -92,13 +94,26 @@ export const ChangePlanModal = ({
                                     }
                                     className={css.plan}
                                     footer={
-                                        <RecurringPrices
-                                            addOnAmount={addOnAmountCurrentPlan}
-                                            plan={plan.toJS()}
-                                            isAutomationChecked={
-                                                hasAutomationAddOn
-                                            }
-                                        />
+                                        <>
+                                            <AutomationAmount
+                                                addOnAmount={
+                                                    addOnAmountCurrentPlan
+                                                }
+                                                plan={plan.toJS()}
+                                                isAutomationChecked={
+                                                    hasAutomationAddOn
+                                                }
+                                            />
+                                            <TotalAmount
+                                                addOnAmount={
+                                                    addOnAmountCurrentPlan
+                                                }
+                                                plan={plan.toJS()}
+                                                isAutomationChecked={
+                                                    hasAutomationAddOn
+                                                }
+                                            />
+                                        </>
                                     }
                                 />
                                 <img src={ArrowForward} alt="arrow-icon" />

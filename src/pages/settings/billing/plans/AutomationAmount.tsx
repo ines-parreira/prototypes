@@ -7,7 +7,7 @@ import {Plan} from '../../../../models/billing/types'
 import Tooltip from '../../../common/components/Tooltip'
 import SubscriptionAmount from '../../common/SubscriptionAmount'
 
-import css from './RecurringPrices.less'
+import css from './AutomationAmount.less'
 
 type Props = {
     addOnAmount?: number | string
@@ -15,25 +15,23 @@ type Props = {
     onAutomationChange?: () => void
     plan: Partial<Pick<Plan, 'amount' | 'currency' | 'id' | 'interval'>>
     editable?: boolean
+    isIntervalAbbreviated?: boolean
 }
 
-const RecurringPrices = ({
+const AutomationAmount = ({
     addOnAmount,
     isAutomationChecked,
     onAutomationChange,
     plan,
     editable = true,
+    isIntervalAbbreviated = false,
 }: Props) => {
     const id = useMemo(() => _uniqueId(plan.id), [])
 
     return (
         <>
             {editable ? (
-                <Label
-                    htmlFor={id}
-                    check
-                    className={classnames(css.row, css.automationRow)}
-                >
+                <Label htmlFor={id} check className={css.automationRow}>
                     {typeof addOnAmount === 'number' && (
                         <Input
                             className={classnames(
@@ -63,12 +61,21 @@ const RecurringPrices = ({
                         plan.interval ? (
                             <SubscriptionAmount
                                 amount={addOnAmount}
+                                discountedAmount={addOnAmount * 2}
                                 className={classnames(css.amount, {
                                     [css.amountDisabled]: !isAutomationChecked,
                                 })}
                                 currency={plan.currency}
                                 interval={plan.interval}
                                 renderAmount={(amount) => <b>{amount}</b>}
+                                tooltipContent={
+                                    <span>
+                                        Act now and get early access savings on
+                                        the automation add-on{' '}
+                                        <i>(limited time offer)</i>
+                                    </span>
+                                }
+                                isIntervalAbbreviated={isIntervalAbbreviated}
                             />
                         ) : (
                             <i>{addOnAmount}</i>
@@ -80,18 +87,18 @@ const RecurringPrices = ({
                         innerClassName={css.tooltip}
                         fade={false}
                     >
-                        Leverage the power of self-service to answer customers
-                        quickly, 24/7:
-                        <br />
-                        - Track, Return & Cancel order flows
-                        <br />
-                        - Customized report issue workflows
-                        <br />- Self-service integrated in chat and help center
-                        <br />- Self-service statistics
+                        Leverage self-service to provide instant answers in
+                        Gorgias Chat and Help Center, 24/7:
+                        <ul>
+                            <li>Automated track flow</li>
+                            <li>Return & cancel flows</li>
+                            <li>Customized report issue workflows</li>
+                            <li>Self-service statistics</li>
+                        </ul>
                     </Tooltip>
                 </Label>
             ) : (
-                <div className={classnames(css.row, css.automationRow)}>
+                <div className={css.automationRow}>
                     <div className={classnames('align-middle', css.addOnName)}>
                         Automation
                     </div>
@@ -101,10 +108,19 @@ const RecurringPrices = ({
                         plan.interval ? (
                             <SubscriptionAmount
                                 amount={addOnAmount}
+                                discountedAmount={addOnAmount * 2}
                                 className={classnames(css.amount)}
                                 currency={plan.currency}
                                 interval={plan.interval}
                                 renderAmount={(amount) => <b>{amount}</b>}
+                                tooltipContent={
+                                    <span>
+                                        Act now and get early access savings on
+                                        the automation add-on{' '}
+                                        <i>(limited time offer)</i>
+                                    </span>
+                                }
+                                isIntervalAbbreviated={isIntervalAbbreviated}
                             />
                         ) : (
                             <i>{addOnAmount}</i>
@@ -112,42 +128,8 @@ const RecurringPrices = ({
                     </div>
                 </div>
             )}
-
-            <div className={css.row}>
-                {typeof addOnAmount === 'number' &&
-                plan.amount &&
-                plan.currency &&
-                plan.interval ? (
-                    <>
-                        <div>Total</div>
-                        <div className={css.amountContainer}>
-                            <SubscriptionAmount
-                                amount={
-                                    (isAutomationChecked || !editable
-                                        ? addOnAmount
-                                        : 0) + plan.amount
-                                }
-                                className={css.amount}
-                                currency={plan.currency}
-                                interval={plan.interval}
-                                renderAmount={(amount) => <b>{amount}</b>}
-                            />
-                        </div>
-                    </>
-                ) : (
-                    <div
-                        className={classnames(
-                            'mx-auto',
-                            'font-weight-normal',
-                            'font-italic'
-                        )}
-                    >
-                        {addOnAmount}
-                    </div>
-                )}
-            </div>
         </>
     )
 }
 
-export default RecurringPrices
+export default AutomationAmount

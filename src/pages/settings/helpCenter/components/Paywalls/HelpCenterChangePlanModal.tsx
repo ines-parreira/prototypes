@@ -6,7 +6,6 @@ import {Map} from 'immutable'
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
 import BillingPlanCard from '../../../billing/plans/BillingPlanCard'
 import ChangePlanModal from '../../../billing/plans/ChangePlanModal'
-import RecurringPrices from '../../../billing/plans/RecurringPrices'
 import {
     PlanWithCurrencySign,
     SubscriptionPlan,
@@ -20,6 +19,8 @@ import {
     isAllowedToChangePlan,
 } from '../../../../../state/billing/selectors'
 
+import TotalAmount from '../../../billing/plans/TotalAmount'
+import AutomationAmount from '../../../billing/plans/AutomationAmount'
 import OpenChatButton from './components/OpenChatButton'
 
 type Props = {
@@ -94,16 +95,23 @@ const HelpCenterChangePlanModal = ({
                     className={className}
                     renderBody={renderBody}
                     footer={
-                        <RecurringPrices
-                            addOnAmount={addOnAmount}
-                            plan={suitablePlanWithoutAutomationAddOn}
-                            isAutomationChecked={isModalAutomationChecked}
-                            onAutomationChange={() =>
-                                setModalIsAutomationChecked(
-                                    !isModalAutomationChecked
-                                )
-                            }
-                        />
+                        <>
+                            <AutomationAmount
+                                addOnAmount={addOnAmount}
+                                plan={suitablePlanWithoutAutomationAddOn}
+                                isAutomationChecked={isModalAutomationChecked}
+                                onAutomationChange={() =>
+                                    setModalIsAutomationChecked(
+                                        !isModalAutomationChecked
+                                    )
+                                }
+                            />
+                            <TotalAmount
+                                addOnAmount={addOnAmount}
+                                plan={suitablePlanWithoutAutomationAddOn}
+                                isAutomationChecked={isModalAutomationChecked}
+                            />
+                        </>
                     }
                 />
             )}

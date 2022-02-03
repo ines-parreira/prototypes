@@ -24,6 +24,7 @@ type Props = {
     features: PlanCardFeature[]
     price?: ReactNode
     headerBadge?: ReactNode
+    subHeader?: ReactNode
     footer?: ReactNode
     className?: string
     renderBody?: (featureList: ReactNode) => ReactNode
@@ -35,6 +36,7 @@ export default function PlanCard({
     headerBadge,
     features,
     price,
+    subHeader,
     footer,
     className,
     renderBody = (featureList) => featureList,
@@ -67,6 +69,7 @@ export default function PlanCard({
                     {price && <span className={css.headerPrice}>{price}</span>}
                 </div>
             </CardHeader>
+            {subHeader && <div>{subHeader}</div>}
             <CardBody className={css.cardBody}>
                 {renderBody(
                     <ul className={css.featureList}>

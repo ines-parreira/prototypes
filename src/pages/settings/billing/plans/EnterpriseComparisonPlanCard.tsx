@@ -8,10 +8,11 @@ import {openChat} from '../../../../utils'
 
 import PlanCard, {PlanCardTheme} from './PlanCard'
 import ChangePlanModal from './ChangePlanModal'
+import TotalAmount from './TotalAmount'
+import AutomationAmount from './AutomationAmount'
 import {getEnterprisePlanCardFeatures} from './billingPlanFeatures'
 
 import css from './BillingComparisonPlanCard.less'
-import RecurringPrices from './RecurringPrices'
 
 type Props = {
     isUpdating: boolean
@@ -44,9 +45,15 @@ export default function EnterpriseComparisonPlanCard({
             theme={PlanCardTheme.Gold}
             features={getEnterprisePlanCardFeatures()}
             price="Custom price"
+            subHeader={
+                <AutomationAmount
+                    addOnAmount="Custom price"
+                    plan={{id: 'enterprise'}}
+                />
+            }
             footer={
                 <>
-                    <RecurringPrices
+                    <TotalAmount
                         addOnAmount="Custom price"
                         plan={{id: 'enterprise'}}
                     />
@@ -102,10 +109,16 @@ export default function EnterpriseComparisonPlanCard({
                                 features={getEnterprisePlanCardFeatures()}
                                 renderBody={renderBody}
                                 footer={
-                                    <RecurringPrices
-                                        addOnAmount="Custom price"
-                                        plan={{id: 'enterprise'}}
-                                    />
+                                    <>
+                                        <AutomationAmount
+                                            addOnAmount="Custom price"
+                                            plan={{id: 'enterprise'}}
+                                        />
+                                        <TotalAmount
+                                            addOnAmount="Custom price"
+                                            plan={{id: 'enterprise'}}
+                                        />
+                                    </>
                                 }
                             />
                         )}

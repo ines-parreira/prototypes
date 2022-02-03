@@ -110,14 +110,25 @@ exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
                     </a>
                   </div>
                   <div
-                    class="amount amount"
+                    class="amountWrapper amount"
                   >
-                    <b>
-                      $20
-                    </b>
-                     
-                    / 
-                    month
+                    <span
+                      class="amount"
+                      id="subscription-amount-tooltip-target-1"
+                    >
+                      <span
+                        class="discountedAmount"
+                      >
+                        $40
+                      </span>
+                      <wbr />
+                      <b>
+                        $20
+                      </b>
+                       
+                      / 
+                      month
+                    </span>
                   </div>
                 </div>
                 <div

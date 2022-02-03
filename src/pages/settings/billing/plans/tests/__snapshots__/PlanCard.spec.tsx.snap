@@ -521,3 +521,61 @@ exports[`<PlanCard /> should render the price 1`] = `
   </div>
 </div>
 `;
+
+exports[`<PlanCard /> should render the subheader 1`] = `
+<div
+  class="plan greyTheme customClassName card"
+>
+  <div
+    class="planHeader card-header"
+  >
+    <div
+      class="headerText"
+    >
+      <div
+        class="planName"
+        title="Foo"
+      >
+        Foo
+      </div>
+    </div>
+  </div>
+  <div>
+    <span>
+      Foo subheader
+    </span>
+  </div>
+  <div
+    class="cardBody card-body"
+  >
+    <ul
+      class="featureList"
+    >
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          Foo icon
+        </span>
+        <span>
+          Foo feature
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          Bar icon
+        </span>
+        <span>
+          Bar feature
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>
+`;

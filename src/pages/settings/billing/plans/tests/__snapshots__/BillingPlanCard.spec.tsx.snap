@@ -20,12 +20,14 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced plan 1`] =
         class="headerPrice"
       >
         <div
-          class="amount"
+          class="amountWrapper"
         >
-          $70,000
-           
-          / 
-          month
+          <span>
+            $70,000
+             
+            / 
+            month
+          </span>
         </div>
       </span>
     </div>
@@ -284,12 +286,14 @@ exports[`<BillingPlanCard /> should render plan card for the Basic plan 1`] = `
         class="headerPrice"
       >
         <div
-          class="amount"
+          class="amountWrapper"
         >
-          $6,000
-           
-          / 
-          month
+          <span>
+            $6,000
+             
+            / 
+            month
+          </span>
         </div>
       </span>
     </div>
@@ -547,12 +551,14 @@ exports[`<BillingPlanCard /> should render plan card for the Custom plan 1`] = `
         class="headerPrice"
       >
         <div
-          class="amount"
+          class="amountWrapper"
         >
-          $54,000
-           
-          / 
-          month
+          <span>
+            $54,000
+             
+            / 
+            month
+          </span>
         </div>
       </span>
     </div>
@@ -811,12 +817,14 @@ exports[`<BillingPlanCard /> should render plan card for the Enterprise plan 1`]
         class="headerPrice"
       >
         <div
-          class="amount"
+          class="amountWrapper"
         >
-          $70,000
-           
-          / 
-          month
+          <span>
+            $70,000
+             
+            / 
+            month
+          </span>
         </div>
       </span>
     </div>
@@ -1065,12 +1073,14 @@ exports[`<BillingPlanCard /> should render plan card for the Legacy plan 1`] = `
         class="headerPrice"
       >
         <div
-          class="amount"
+          class="amountWrapper"
         >
-          $3,000
-           
-          / 
-          month
+          <span>
+            $3,000
+             
+            / 
+            month
+          </span>
         </div>
       </span>
     </div>
@@ -1318,12 +1328,14 @@ exports[`<BillingPlanCard /> should render plan card for the Pro plan 1`] = `
         class="headerPrice"
       >
         <div
-          class="amount"
+          class="amountWrapper"
         >
-          $30,000
-           
-          / 
-          month
+          <span>
+            $30,000
+             
+            / 
+            month
+          </span>
         </div>
       </span>
     </div>
@@ -1602,12 +1614,14 @@ exports[`<BillingPlanCard /> should render the legacy badge for legacy plan when
         class="headerPrice"
       >
         <div
-          class="amount"
+          class="amountWrapper"
         >
-          $3,000
-           
-          / 
-          month
+          <span>
+            $3,000
+             
+            / 
+            month
+          </span>
         </div>
       </span>
     </div>

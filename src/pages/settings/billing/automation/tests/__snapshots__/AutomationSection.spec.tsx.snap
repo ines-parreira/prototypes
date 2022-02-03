@@ -9,14 +9,25 @@ exports[`<AutomationSection /> should render 1`] = `
   >
     Automation
     <div
-      class="amount automation-amount"
+      class="amountWrapper automation-amount"
     >
-      <b>
-        $20
-      </b>
-       
-      / 
-      month
+      <span
+        class="amount"
+        id="subscription-amount-tooltip-target-1"
+      >
+        <span
+          class="discountedAmount"
+        >
+          $40
+        </span>
+        <wbr />
+        <b>
+          $20
+        </b>
+         
+        / 
+        month
+      </span>
     </div>
   </div>
   <div
@@ -167,14 +178,25 @@ exports[`<AutomationSection /> should render for customers already with legacy a
   >
     Automation
     <div
-      class="amount automation-amount"
+      class="amountWrapper automation-amount"
     >
-      <b>
-        $20
-      </b>
-       
-      / 
-      month
+      <span
+        class="amount"
+        id="subscription-amount-tooltip-target-2"
+      >
+        <span
+          class="discountedAmount"
+        >
+          $40
+        </span>
+        <wbr />
+        <b>
+          $20
+        </b>
+         
+        / 
+        month
+      </span>
     </div>
   </div>
   <div
@@ -238,14 +260,25 @@ exports[`<AutomationSection /> should render for trialing customers 1`] = `
   >
     Automation
     <div
-      class="amount automation-amount"
+      class="amountWrapper automation-amount"
     >
-      <b>
-        $20
-      </b>
-       
-      / 
-      month
+      <span
+        class="amount"
+        id="subscription-amount-tooltip-target-3"
+      >
+        <span
+          class="discountedAmount"
+        >
+          $40
+        </span>
+        <wbr />
+        <b>
+          $20
+        </b>
+         
+        / 
+        month
+      </span>
     </div>
   </div>
   <div

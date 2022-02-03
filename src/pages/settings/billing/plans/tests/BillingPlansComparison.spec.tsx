@@ -162,11 +162,11 @@ describe('<BillingPlansComparison />', () => {
                 )
                 expect(queryAllByText(/month/)).toHaveLength(
                     interval === PlanInterval.Month
-                        ? monthlyPlans.length * 3
+                        ? monthlyPlans.length * 2
                         : 0
                 )
                 expect(queryAllByText(/year/)).toHaveLength(
-                    interval === PlanInterval.Year ? yearlyPlans.length * 3 : 0
+                    interval === PlanInterval.Year ? yearlyPlans.length * 2 : 0
                 )
             })
 
@@ -197,10 +197,10 @@ describe('<BillingPlansComparison />', () => {
                 expect(queryAllByText(/month/)).toHaveLength(
                     interval === PlanInterval.Month
                         ? 0
-                        : monthlyPlans.length * 3
+                        : monthlyPlans.length * 2
                 )
                 expect(queryAllByText(/year/)).toHaveLength(
-                    interval === PlanInterval.Year ? 0 : yearlyPlans.length * 3
+                    interval === PlanInterval.Year ? 0 : yearlyPlans.length * 2
                 )
             })
         }

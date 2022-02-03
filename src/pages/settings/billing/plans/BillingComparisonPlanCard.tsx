@@ -18,7 +18,8 @@ import BillingPlanCard from './BillingPlanCard'
 import ChangePlanModal from './ChangePlanModal'
 import CurrentPlanBadge from './CurrentPlanBadge'
 import {PlanCardTheme} from './PlanCard'
-import RecurringPrices from './RecurringPrices'
+import AutomationAmount from './AutomationAmount'
+import TotalAmount from './TotalAmount'
 
 import css from './BillingComparisonPlanCard.less'
 
@@ -178,13 +179,21 @@ export default function BillingComparisonPlanCard({
             headerBadge={
                 isCurrentPlan && <CurrentPlanBadge planName={plan.name} />
             }
+            subHeader={
+                <AutomationAmount
+                    addOnAmount={addOnAmount}
+                    plan={plan}
+                    isAutomationChecked={isAutomationChecked}
+                    onAutomationChange={onAutomationChange}
+                    isIntervalAbbreviated
+                />
+            }
             footer={
                 <>
-                    <RecurringPrices
+                    <TotalAmount
                         addOnAmount={addOnAmount}
                         plan={plan}
                         isAutomationChecked={isAutomationChecked}
-                        onAutomationChange={onAutomationChange}
                     />
                     <Button
                         aria-label={switchPlanButtonText}
@@ -227,19 +236,28 @@ export default function BillingComparisonPlanCard({
                                 className={className}
                                 renderBody={renderBody}
                                 footer={
-                                    <RecurringPrices
-                                        addOnAmount={addOnAmount}
-                                        plan={plan}
-                                        isAutomationChecked={
-                                            isModalAutomationChecked
-                                        }
-                                        {...(!isSwitchingToAutomation && {
-                                            onAutomationChange: () =>
-                                                setModalIsAutomationChecked(
-                                                    !isModalAutomationChecked
-                                                ),
-                                        })}
-                                    />
+                                    <>
+                                        <AutomationAmount
+                                            addOnAmount={addOnAmount}
+                                            plan={plan}
+                                            isAutomationChecked={
+                                                isModalAutomationChecked
+                                            }
+                                            {...(!isSwitchingToAutomation && {
+                                                onAutomationChange: () =>
+                                                    setModalIsAutomationChecked(
+                                                        !isModalAutomationChecked
+                                                    ),
+                                            })}
+                                        />
+                                        <TotalAmount
+                                            addOnAmount={addOnAmount}
+                                            plan={plan}
+                                            isAutomationChecked={
+                                                isModalAutomationChecked
+                                            }
+                                        />
+                                    </>
                                 }
                             />
                         )}

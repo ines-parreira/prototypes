@@ -22,14 +22,20 @@ exports[`<AutomationSubscriptionDescription /> should render for customers alrea
       immediately.
     </div>
     <div
-      class="amount amount"
+      class="amountWrapper amount"
     >
-      <b>
-        $0
-      </b>
-       
-      / 
-      month
+      <span
+        class="amount"
+        id="subscription-amount-tooltip-target-2"
+      >
+        0
+        <b>
+          $0
+        </b>
+         
+        / 
+        month
+      </span>
     </div>
   </div>
 </div>
@@ -56,14 +62,25 @@ exports[`<AutomationSubscriptionDescription /> should render for customers alrea
       </a>
     </div>
     <div
-      class="amount amount"
+      class="amountWrapper amount"
     >
-      <b>
-        $20
-      </b>
-       
-      / 
-      month
+      <span
+        class="amount"
+        id="subscription-amount-tooltip-target-3"
+      >
+        <span
+          class="discountedAmount"
+        >
+          $40
+        </span>
+        <wbr />
+        <b>
+          $20
+        </b>
+         
+        / 
+        month
+      </span>
     </div>
   </div>
   <div
@@ -165,14 +182,25 @@ exports[`<AutomationSubscriptionDescription /> should render for customers witho
       </a>
     </div>
     <div
-      class="amount amount"
+      class="amountWrapper amount"
     >
-      <b>
-        $20
-      </b>
-       
-      / 
-      month
+      <span
+        class="amount"
+        id="subscription-amount-tooltip-target-1"
+      >
+        <span
+          class="discountedAmount"
+        >
+          $40
+        </span>
+        <wbr />
+        <b>
+          $20
+        </b>
+         
+        / 
+        month
+      </span>
     </div>
   </div>
   <div

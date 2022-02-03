@@ -20,15 +20,63 @@ exports[`<BillingComparisonPlanCard /> should not render plan as current plan 1`
         class="headerPrice"
       >
         <div
-          class="amount"
+          class="amountWrapper"
         >
-          $60
-           
-          / 
-          month
+          <span>
+            $60
+             
+            / 
+            month
+          </span>
         </div>
       </span>
     </div>
+  </div>
+  <div>
+    <label
+      class="automationRow form-check-label"
+      for="basic-monthly-usd-242"
+    >
+      <input
+        class="form-check-input checkbox form-check-input"
+        id="basic-monthly-usd-242"
+        type="checkbox"
+      />
+      <div
+        class="align-middle addOnName checkboxLabel"
+      >
+        <span
+          id="automation-text-basic-monthly-usd-242"
+        >
+          Automation
+        </span>
+      </div>
+      <div
+        class="amountContainer"
+      >
+        <div
+          class="amountWrapper amount amountDisabled"
+        >
+          <span
+            class="amount"
+            id="subscription-amount-tooltip-target-42"
+          >
+            <span
+              class="discountedAmount"
+            >
+              $40
+            </span>
+            <wbr />
+            <b>
+              $20
+            </b>
+             
+            / 
+            mo
+          </span>
+        </div>
+      </div>
+    </label>
   </div>
   <div
     class="cardBody card-body"
@@ -256,39 +304,6 @@ exports[`<BillingComparisonPlanCard /> should not render plan as current plan 1`
   <div
     class="cardFooter card-footer"
   >
-    <label
-      class="row automationRow form-check-label"
-      for="basic-monthly-usd-242"
-    >
-      <input
-        class="form-check-input checkbox form-check-input"
-        id="basic-monthly-usd-242"
-        type="checkbox"
-      />
-      <div
-        class="align-middle addOnName checkboxLabel"
-      >
-        <span
-          id="automation-text-basic-monthly-usd-242"
-        >
-          Automation
-        </span>
-      </div>
-      <div
-        class="amountContainer"
-      >
-        <div
-          class="amount amount amountDisabled"
-        >
-          <b>
-            $20
-          </b>
-           
-          / 
-          month
-        </div>
-      </div>
-    </label>
     <div
       class="row"
     >
@@ -299,14 +314,16 @@ exports[`<BillingComparisonPlanCard /> should not render plan as current plan 1`
         class="amountContainer"
       >
         <div
-          class="amount amount"
+          class="amountWrapper amount"
         >
-          <b>
-            $60
-          </b>
-           
-          / 
-          month
+          <span>
+            <b>
+              $60
+            </b>
+             
+            / 
+            month
+          </span>
         </div>
       </div>
     </div>
@@ -348,15 +365,63 @@ exports[`<BillingComparisonPlanCard /> should render current legacy plan 1`] = `
         class="headerPrice"
       >
         <div
-          class="amount"
+          class="amountWrapper"
         >
-          $3,000
-           
-          / 
-          month
+          <span>
+            $3,000
+             
+            / 
+            month
+          </span>
         </div>
       </span>
     </div>
+  </div>
+  <div>
+    <label
+      class="automationRow form-check-label"
+      for="standard-usd-142"
+    >
+      <input
+        class="form-check-input checkbox form-check-input"
+        id="standard-usd-142"
+        type="checkbox"
+      />
+      <div
+        class="align-middle addOnName checkboxLabel"
+      >
+        <span
+          id="automation-text-standard-usd-142"
+        >
+          Automation
+        </span>
+      </div>
+      <div
+        class="amountContainer"
+      >
+        <div
+          class="amountWrapper amount amountDisabled"
+        >
+          <span
+            class="amount"
+            id="subscription-amount-tooltip-target-42"
+          >
+            <span
+              class="discountedAmount"
+            >
+              $5,928
+            </span>
+            <wbr />
+            <b>
+              $2,964
+            </b>
+             
+            / 
+            mo
+          </span>
+        </div>
+      </div>
+    </label>
   </div>
   <div
     class="cardBody card-body"
@@ -574,39 +639,6 @@ exports[`<BillingComparisonPlanCard /> should render current legacy plan 1`] = `
   <div
     class="cardFooter card-footer"
   >
-    <label
-      class="row automationRow form-check-label"
-      for="standard-usd-142"
-    >
-      <input
-        class="form-check-input checkbox form-check-input"
-        id="standard-usd-142"
-        type="checkbox"
-      />
-      <div
-        class="align-middle addOnName checkboxLabel"
-      >
-        <span
-          id="automation-text-standard-usd-142"
-        >
-          Automation
-        </span>
-      </div>
-      <div
-        class="amountContainer"
-      >
-        <div
-          class="amount amount amountDisabled"
-        >
-          <b>
-            $2,964
-          </b>
-           
-          / 
-          month
-        </div>
-      </div>
-    </label>
     <div
       class="row"
     >
@@ -617,14 +649,16 @@ exports[`<BillingComparisonPlanCard /> should render current legacy plan 1`] = `
         class="amountContainer"
       >
         <div
-          class="amount amount"
+          class="amountWrapper amount"
         >
-          <b>
-            $3,000
-          </b>
-           
-          / 
-          month
+          <span>
+            <b>
+              $3,000
+            </b>
+             
+            / 
+            month
+          </span>
         </div>
       </div>
     </div>
@@ -667,15 +701,63 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
         class="headerPrice"
       >
         <div
-          class="amount"
+          class="amountWrapper"
         >
-          $60
-           
-          / 
-          month
+          <span>
+            $60
+             
+            / 
+            month
+          </span>
         </div>
       </span>
     </div>
+  </div>
+  <div>
+    <label
+      class="automationRow form-check-label"
+      for="basic-monthly-usd-242"
+    >
+      <input
+        class="form-check-input checkbox form-check-input"
+        id="basic-monthly-usd-242"
+        type="checkbox"
+      />
+      <div
+        class="align-middle addOnName checkboxLabel"
+      >
+        <span
+          id="automation-text-basic-monthly-usd-242"
+        >
+          Automation
+        </span>
+      </div>
+      <div
+        class="amountContainer"
+      >
+        <div
+          class="amountWrapper amount amountDisabled"
+        >
+          <span
+            class="amount"
+            id="subscription-amount-tooltip-target-42"
+          >
+            <span
+              class="discountedAmount"
+            >
+              $40
+            </span>
+            <wbr />
+            <b>
+              $20
+            </b>
+             
+            / 
+            mo
+          </span>
+        </div>
+      </div>
+    </label>
   </div>
   <div
     class="cardBody card-body"
@@ -903,39 +985,6 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
   <div
     class="cardFooter card-footer"
   >
-    <label
-      class="row automationRow form-check-label"
-      for="basic-monthly-usd-242"
-    >
-      <input
-        class="form-check-input checkbox form-check-input"
-        id="basic-monthly-usd-242"
-        type="checkbox"
-      />
-      <div
-        class="align-middle addOnName checkboxLabel"
-      >
-        <span
-          id="automation-text-basic-monthly-usd-242"
-        >
-          Automation
-        </span>
-      </div>
-      <div
-        class="amountContainer"
-      >
-        <div
-          class="amount amount amountDisabled"
-        >
-          <b>
-            $20
-          </b>
-           
-          / 
-          month
-        </div>
-      </div>
-    </label>
     <div
       class="row"
     >
@@ -946,14 +995,16 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
         class="amountContainer"
       >
         <div
-          class="amount amount"
+          class="amountWrapper amount"
         >
-          <b>
-            $60
-          </b>
-           
-          / 
-          month
+          <span>
+            <b>
+              $60
+            </b>
+             
+            / 
+            month
+          </span>
         </div>
       </div>
     </div>
@@ -996,15 +1047,40 @@ exports[`<BillingComparisonPlanCard /> should render custom plan 1`] = `
         class="headerPrice"
       >
         <div
-          class="amount"
+          class="amountWrapper"
         >
-          $540
-           
-          / 
-          month
+          <span>
+            $540
+             
+            / 
+            month
+          </span>
         </div>
       </span>
     </div>
+  </div>
+  <div>
+    <label
+      class="automationRow form-check-label"
+      for="custom-monthly-usd-242"
+    >
+      <div
+        class="align-middle addOnName checkboxLabel"
+      >
+        <span
+          id="automation-text-custom-monthly-usd-242"
+        >
+          Automation
+        </span>
+      </div>
+      <div
+        class="amountContainer"
+      >
+        <i>
+          ?
+        </i>
+      </div>
+    </label>
   </div>
   <div
     class="cardBody card-body"
@@ -1233,27 +1309,6 @@ exports[`<BillingComparisonPlanCard /> should render custom plan 1`] = `
   <div
     class="cardFooter card-footer"
   >
-    <label
-      class="row automationRow form-check-label"
-      for="custom-monthly-usd-242"
-    >
-      <div
-        class="align-middle addOnName checkboxLabel"
-      >
-        <span
-          id="automation-text-custom-monthly-usd-242"
-        >
-          Automation
-        </span>
-      </div>
-      <div
-        class="amountContainer"
-      >
-        <i>
-          ?
-        </i>
-      </div>
-    </label>
     <div
       class="row"
     >
@@ -1302,15 +1357,40 @@ exports[`<BillingComparisonPlanCard /> should render customLegacyPlan plan 1`] =
         class="headerPrice"
       >
         <div
-          class="amount"
+          class="amountWrapper"
         >
-          $540
-           
-          / 
-          month
+          <span>
+            $540
+             
+            / 
+            month
+          </span>
         </div>
       </span>
     </div>
+  </div>
+  <div>
+    <label
+      class="automationRow form-check-label"
+      for="custom-monthly-usd-242"
+    >
+      <div
+        class="align-middle addOnName checkboxLabel"
+      >
+        <span
+          id="automation-text-custom-monthly-usd-242"
+        >
+          Automation
+        </span>
+      </div>
+      <div
+        class="amountContainer"
+      >
+        <i>
+          ?
+        </i>
+      </div>
+    </label>
   </div>
   <div
     class="cardBody card-body"
@@ -1532,27 +1612,6 @@ exports[`<BillingComparisonPlanCard /> should render customLegacyPlan plan 1`] =
   <div
     class="cardFooter card-footer"
   >
-    <label
-      class="row automationRow form-check-label"
-      for="custom-monthly-usd-242"
-    >
-      <div
-        class="align-middle addOnName checkboxLabel"
-      >
-        <span
-          id="automation-text-custom-monthly-usd-242"
-        >
-          Automation
-        </span>
-      </div>
-      <div
-        class="amountContainer"
-      >
-        <i>
-          ?
-        </i>
-      </div>
-    </label>
     <div
       class="row"
     >
@@ -1594,15 +1653,63 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
         class="headerPrice"
       >
         <div
-          class="amount"
+          class="amountWrapper"
         >
-          $60
-           
-          / 
-          month
+          <span>
+            $60
+             
+            / 
+            month
+          </span>
         </div>
       </span>
     </div>
+  </div>
+  <div>
+    <label
+      class="automationRow form-check-label"
+      for="basic-monthly-usd-242"
+    >
+      <input
+        class="form-check-input checkbox form-check-input"
+        id="basic-monthly-usd-242"
+        type="checkbox"
+      />
+      <div
+        class="align-middle addOnName checkboxLabel"
+      >
+        <span
+          id="automation-text-basic-monthly-usd-242"
+        >
+          Automation
+        </span>
+      </div>
+      <div
+        class="amountContainer"
+      >
+        <div
+          class="amountWrapper amount amountDisabled"
+        >
+          <span
+            class="amount"
+            id="subscription-amount-tooltip-target-42"
+          >
+            <span
+              class="discountedAmount"
+            >
+              $40
+            </span>
+            <wbr />
+            <b>
+              $20
+            </b>
+             
+            / 
+            mo
+          </span>
+        </div>
+      </div>
+    </label>
   </div>
   <div
     class="cardBody card-body"
@@ -1830,39 +1937,6 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
   <div
     class="cardFooter card-footer"
   >
-    <label
-      class="row automationRow form-check-label"
-      for="basic-monthly-usd-242"
-    >
-      <input
-        class="form-check-input checkbox form-check-input"
-        id="basic-monthly-usd-242"
-        type="checkbox"
-      />
-      <div
-        class="align-middle addOnName checkboxLabel"
-      >
-        <span
-          id="automation-text-basic-monthly-usd-242"
-        >
-          Automation
-        </span>
-      </div>
-      <div
-        class="amountContainer"
-      >
-        <div
-          class="amount amount amountDisabled"
-        >
-          <b>
-            $20
-          </b>
-           
-          / 
-          month
-        </div>
-      </div>
-    </label>
     <div
       class="row"
     >
@@ -1873,14 +1947,16 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
         class="amountContainer"
       >
         <div
-          class="amount amount"
+          class="amountWrapper amount"
         >
-          <b>
-            $60
-          </b>
-           
-          / 
-          month
+          <span>
+            <b>
+              $60
+            </b>
+             
+            / 
+            month
+          </span>
         </div>
       </div>
     </div>

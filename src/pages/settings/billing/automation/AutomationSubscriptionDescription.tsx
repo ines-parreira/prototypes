@@ -67,8 +67,15 @@ const AutomationSubscriptionDescription = () => {
                         currency={currentPlan.get('currency')}
                         interval={currentPlan.get('interval')}
                         amount={addOnAmount}
+                        discountedAmount={addOnAmount * 2}
                         renderAmount={(amount) => <b>{amount}</b>}
                         className={css.amount}
+                        tooltipContent={
+                            <span>
+                                Act now and get early access savings on the
+                                automation add-on <i>(limited time offer)</i>
+                            </span>
+                        }
                     />
                 )}
             </div>

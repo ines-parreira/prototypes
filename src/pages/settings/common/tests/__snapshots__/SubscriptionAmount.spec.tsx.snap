@@ -1,22 +1,110 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<SubscriptionAmount /> should abbreviate known intervals when isIntervalAbbreviated prop is passed 1`] = `
+<div
+  class="amountWrapper"
+>
+  <span>
+    €1,000
+     
+    / 
+    mo
+  </span>
+</div>
+`;
+
+exports[`<SubscriptionAmount /> should abbreviate known intervals when isIntervalAbbreviated prop is passed 2`] = `
+<div
+  class="amountWrapper"
+>
+  <span>
+    €1,000
+     
+    / 
+    yr
+  </span>
+</div>
+`;
+
 exports[`<SubscriptionAmount /> should format amount 1`] = `
 <div
-  class="amount"
+  class="amountWrapper"
 >
-  €1,000
-   
-  / 
-  week
+  <span>
+    €1,000
+     
+    / 
+    week
+  </span>
+</div>
+`;
+
+exports[`<SubscriptionAmount /> should format discount amount 1`] = `
+<div
+  class="amountWrapper"
+>
+  <span>
+    <span
+      class="discountedAmount"
+    >
+      €2,000
+    </span>
+    <wbr />
+     
+    / 
+    week
+  </span>
+</div>
+`;
+
+exports[`<SubscriptionAmount /> should not abbreviate unknown intervals when isIntervalAbbreviated prop is passed 1`] = `
+<div
+  class="amountWrapper"
+>
+  <span>
+    €1,000
+     
+    / 
+    week
+  </span>
 </div>
 `;
 
 exports[`<SubscriptionAmount /> should render 1`] = `
 <div
-  class="amount"
+  class="amountWrapper"
 >
-   
-  / 
-  week
+  <span>
+     
+    / 
+    week
+  </span>
+</div>
+`;
+
+exports[`<SubscriptionAmount /> should render tooltip content 1`] = `
+<div>
+  <div>
+    Tooltip content
+  </div>
+</div>
+`;
+
+exports[`<SubscriptionAmount /> should render with discounted amount 1`] = `
+<div
+  class="amountWrapper"
+>
+  <span>
+    <span
+      class="discountedAmount"
+    >
+      €2,000
+    </span>
+    <wbr />
+    €1,000
+     
+    / 
+    week
+  </span>
 </div>
 `;

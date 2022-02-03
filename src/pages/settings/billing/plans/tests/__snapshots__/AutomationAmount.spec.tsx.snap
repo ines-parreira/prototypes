@@ -1,0 +1,164 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AutomationAmount /> should render a string as amount 1`] = `
+<div>
+  <label
+    class="automationRow form-check-label"
+    for="planId1"
+  >
+    <div
+      class="align-middle addOnName checkboxLabel"
+    >
+      <span
+        id="automation-text-planId1"
+      >
+        Automation
+      </span>
+    </div>
+    <div
+      class="amountContainer"
+    >
+      <i>
+        Amount
+      </i>
+    </div>
+  </label>
+</div>
+`;
+
+exports[`<AutomationAmount /> should render formatted numbers as amount 1`] = `
+<div>
+  <label
+    class="automationRow form-check-label"
+    for="planId2"
+  >
+    <input
+      class="form-check-input checkbox form-check-input"
+      id="planId2"
+      type="checkbox"
+    />
+    <div
+      class="align-middle addOnName checkboxLabel"
+    >
+      <span
+        id="automation-text-planId2"
+      >
+        Automation
+      </span>
+    </div>
+    <div
+      class="amountContainer"
+    >
+      <div
+        class="amountWrapper amount amountDisabled"
+      >
+        <span
+          class="amount"
+          id="subscription-amount-tooltip-target-3"
+        >
+          <span
+            class="discountedAmount"
+          >
+            $91,224
+          </span>
+          <wbr />
+          <b>
+            $45,612
+          </b>
+           
+          / 
+          month
+        </span>
+      </div>
+    </div>
+  </label>
+</div>
+`;
+
+exports[`<AutomationAmount /> should render not editable variant 1`] = `
+<div>
+  <div
+    class="automationRow"
+  >
+    <div
+      class="align-middle addOnName"
+    >
+      Automation
+    </div>
+    <div
+      class="amountContainer"
+    >
+      <div
+        class="amountWrapper amount"
+      >
+        <span
+          class="amount"
+          id="subscription-amount-tooltip-target-8"
+        >
+          <span
+            class="discountedAmount"
+          >
+            $4,000
+          </span>
+          <wbr />
+          <b>
+            $2,000
+          </b>
+           
+          / 
+          month
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AutomationAmount /> should render with abbreviated plan interval 1`] = `
+<div>
+  <label
+    class="automationRow form-check-label"
+    for="planId4"
+  >
+    <input
+      class="form-check-input checkbox form-check-input"
+      id="planId4"
+      type="checkbox"
+    />
+    <div
+      class="align-middle addOnName checkboxLabel"
+    >
+      <span
+        id="automation-text-planId4"
+      >
+        Automation
+      </span>
+    </div>
+    <div
+      class="amountContainer"
+    >
+      <div
+        class="amountWrapper amount amountDisabled"
+      >
+        <span
+          class="amount"
+          id="subscription-amount-tooltip-target-5"
+        >
+          <span
+            class="discountedAmount"
+          >
+            $91,224
+          </span>
+          <wbr />
+          <b>
+            $45,612
+          </b>
+           
+          / 
+          mo
+        </span>
+      </div>
+    </div>
+  </label>
+</div>
+`;

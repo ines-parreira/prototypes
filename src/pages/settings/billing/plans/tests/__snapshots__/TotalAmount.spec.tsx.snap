@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TotalAmount /> should render a string as amount 1`] = `
+<div>
+  <div
+    class="row"
+  >
+    <div
+      class="mx-auto font-weight-normal font-italic"
+    >
+      Amount
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<TotalAmount /> should render formatted numbers as amount 1`] = `
+<div>
+  <div
+    class="row"
+  >
+    <div>
+      Total
+    </div>
+    <div
+      class="amountContainer"
+    >
+      <div
+        class="amountWrapper amount"
+      >
+        <span>
+          <b>
+            $40,000
+          </b>
+           
+          / 
+          month
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<TotalAmount /> should render not editable variant 1`] = `
+<div>
+  <div
+    class="row"
+  >
+    <div>
+      Total
+    </div>
+    <div
+      class="amountContainer"
+    >
+      <div
+        class="amountWrapper amount"
+      >
+        <span>
+          <b>
+            $42,000
+          </b>
+           
+          / 
+          month
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -3,6 +3,7 @@
 :local {
     .amountContainer {
         margin-left: 8px;
+        text-align: right;
 
         .amount {
             color: @classic-neutral-grey-5;
@@ -23,10 +24,19 @@
     }
 
     .automationRow {
+        align-items: center;
+        display: flex;
+        height: 52px;
+        padding: 16px;
+        justify-content: space-between;
         background-color: @classic-neutral-grey-1;
         color: @classic-neutral-grey-5;
         font-weight: 400;
-        justify-content: space-between;
+
+        &:only-child {
+            border-top: 1px solid @classic-neutral-grey-3;
+            border-bottom: 1px solid @classic-neutral-grey-3;
+        }
     }
 
     .checkbox {
@@ -82,23 +92,12 @@
         }
     }
 
-    .row {
-        align-items: center;
-        display: flex;
-        font-weight: 600;
-        height: 52px;
-        padding: 16px;
-        justify-content: space-between;
-
-        &:not(:first-child) {
-            border-top: 1px solid @classic-neutral-grey-3;
-        }
-    }
-
     .tooltip {
         text-align: left;
-        background: @modern-neutral-neutral-6;
-        box-shadow: 0 2px 3px fade(black, 20%);
-        border-radius: 4px;
+
+        ul {
+            margin-bottom: 0;
+            padding-left: 22px;
+        }
     }
 }
