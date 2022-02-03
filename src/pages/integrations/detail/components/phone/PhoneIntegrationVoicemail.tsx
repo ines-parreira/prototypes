@@ -3,16 +3,16 @@ import {fromJS} from 'immutable'
 import {Button, Col, Container, Form, Row} from 'reactstrap'
 import classnames from 'classnames'
 
-import BooleanField from 'pages/common/forms/BooleanField'
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
-import PageHeader from '../../../../common/components/PageHeader'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
 import {
     PhoneIntegration,
     PhoneIntegrationVoicemailSettings,
     isPhoneIntegration,
-} from '../../../../../models/integration/types'
-import {DEFAULT_VOICE_MESSAGE} from '../../../../../models/integration/constants'
-import settingsCss from '../../../../settings/settings.less'
+} from 'models/integration/types'
+import PageHeader from 'pages/common/components/PageHeader'
+import CheckBox from 'pages/common/forms/CheckBox'
+import settingsCss from 'pages/settings/settings.less'
 
 import {updatePhoneVoicemailConfiguration} from './actions'
 import PhoneIntegrationBreadcrumbs from './PhoneIntegrationBreadcrumbs'
@@ -93,17 +93,19 @@ export function PhoneIntegrationVoicemail({
                             </div>
 
                             <h5>Caller Options</h5>
-                            <BooleanField
-                                type="checkbox"
-                                value={payload?.allow_to_leave_voicemail}
+                            <CheckBox
+                                isChecked={
+                                    payload?.allow_to_leave_voicemail ?? false
+                                }
                                 onChange={(value: boolean) =>
                                     setPayload((payload) => ({
                                         ...(payload ?? DEFAULT_VOICE_MESSAGE),
                                         allow_to_leave_voicemail: value,
                                     }))
                                 }
-                                label="Allow caller to leave voicemail"
-                            />
+                            >
+                                Allow caller to leave voicemail
+                            </CheckBox>
 
                             <Button
                                 type="submit"

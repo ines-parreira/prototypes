@@ -101,67 +101,64 @@ exports[`<TwitterIntegrationDetail/> render() should render 1`] = `
               class="form-group"
             >
               <div
-                class="form-check"
-                color=""
+                class="mb-2"
               >
                 <label
-                  class="control-label form-check-label"
-                  for="id-tweets_replies_enabled"
+                  class="label"
+                  for="tweets_replies_enabled"
                 >
                   <input
                     checked=""
-                    class="form-check-input form-check-input"
-                    id="id-tweets_replies_enabled"
+                    class="input"
+                    id="tweets_replies_enabled"
+                    name="tweets_replies_enabled"
                     type="checkbox"
                   />
-                  <span
-                    style="vertical-align: middle;"
-                  >
-                    Enable replies to Tweets
-                  </span>
+                  Enable replies to Tweets
                 </label>
+                <div
+                  class="caption"
+                />
               </div>
               <div
-                class="form-check"
-                color=""
+                class="mb-2"
               >
                 <label
-                  class="control-label form-check-label"
-                  for="id-mentions_enabled"
+                  class="label"
+                  for="mentions_enabled"
                 >
                   <input
                     checked=""
-                    class="form-check-input form-check-input"
-                    id="id-mentions_enabled"
+                    class="input"
+                    id="mentions_enabled"
+                    name="mentions_enabled"
                     type="checkbox"
                   />
-                  <span
-                    style="vertical-align: middle;"
-                  >
-                    Enable Twitter mentions
-                  </span>
+                  Enable Twitter mentions
                 </label>
+                <div
+                  class="caption"
+                />
               </div>
               <div
-                class="form-check"
-                color=""
+                class="mb-2"
               >
                 <label
-                  class="control-label form-check-label"
-                  for="id-direct_messages_enabled"
+                  class="label"
+                  for="direct_messages_enabled"
                 >
                   <input
                     checked=""
-                    class="form-check-input form-check-input"
-                    id="id-direct_messages_enabled"
+                    class="input"
+                    id="direct_messages_enabled"
+                    name="direct_messages_enabled"
                     type="checkbox"
                   />
-                  <span
-                    style="vertical-align: middle;"
-                  >
-                    Enable Twitter direct messages
-                  </span>
+                  Enable Twitter direct messages
                 </label>
+                <div
+                  class="caption"
+                />
               </div>
             </div>
             <div>

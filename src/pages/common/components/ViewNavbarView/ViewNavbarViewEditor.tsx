@@ -7,16 +7,12 @@ import _pick from 'lodash/pick'
 import _merge from 'lodash/merge'
 import _isUndefined from 'lodash/isUndefined'
 
-import BooleanField from 'pages/common/forms/BooleanField'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../store/middlewares/segmentTracker'
-import {submitSetting} from '../../../../state/currentUser/actions'
+import ReactSortable from 'pages/common/components/dragging/ReactSortable'
+import CheckBox from 'pages/common/forms/CheckBox'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {submitSetting} from 'state/currentUser/actions'
 
-import ReactSortable from './../../../common/components/dragging/ReactSortable'
 import {sortViews} from './utils'
-
 import css from './ViewNavbarViewEditor.less'
 
 type OwnProps = {
@@ -178,10 +174,11 @@ class ViewNavbarViewEditor extends Component<Props, State> {
                         [css.draggable]: !view.get('hide'),
                     })}
                 >
-                    <BooleanField
-                        label={view.get('name')}
+                    <CheckBox
                         name={`hide.${viewId as number}`}
-                        value={!this.state.hide[(viewId as number).toString()]}
+                        isChecked={
+                            !this.state.hide[(viewId as number).toString()]
+                        }
                         onChange={(value: boolean) =>
                             this._updateField({
                                 hide: {
@@ -189,8 +186,9 @@ class ViewNavbarViewEditor extends Component<Props, State> {
                                 },
                             })
                         }
-                        inline
-                    />
+                    >
+                        {view.get('name')}
+                    </CheckBox>
                 </div>
             )
         })

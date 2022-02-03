@@ -5,19 +5,19 @@ import {connect, ConnectedProps} from 'react-redux'
 import {Map} from 'immutable'
 import {EditorState} from 'draft-js'
 
-import BooleanField from 'pages/common/forms/BooleanField'
-import {convertToHTML, getPlainText} from '../../../utils/editor'
-import RichFieldWithVariables from '../../common/forms/RichFieldWithVariables'
-import SelectField from '../../common/forms/SelectField/SelectField'
-import PageHeader from '../../common/components/PageHeader'
-import {getSurveysSettings} from '../../../state/currentAccount/selectors'
-import {submitSetting} from '../../../state/currentAccount/actions'
-import {DELAY_SURVEY_FOR} from '../../../config'
-import {RootState} from '../../../state/types'
+import {DELAY_SURVEY_FOR} from 'config'
+import PageHeader from 'pages/common/components/PageHeader'
+import CheckBox from 'pages/common/forms/CheckBox'
+import RichFieldWithVariables from 'pages/common/forms/RichFieldWithVariables'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {submitSetting} from 'state/currentAccount/actions'
+import {getSurveysSettings} from 'state/currentAccount/selectors'
 import {
     AccountSettingSatisfactionSurvey,
     AccountSettingType,
-} from '../../../state/currentAccount/types'
+} from 'state/currentAccount/types'
+import {RootState} from 'state/types'
+import {convertToHTML, getPlainText} from 'utils/editor'
 import css from '../settings.less'
 
 type Props = ConnectedProps<typeof connector>
@@ -124,11 +124,9 @@ class SatisfactionSurveyView extends Component<Props, State> {
                                     >
                                         Send survey email for following channels
                                     </Label>
-                                    <BooleanField
+                                    <CheckBox
                                         name="send_survey_on_email"
-                                        type="checkbox"
-                                        label="Email"
-                                        value={this.state.settings.get(
+                                        isChecked={this.state.settings.get(
                                             'send_survey_for_email'
                                         )}
                                         onChange={(value: boolean) =>
@@ -141,12 +139,12 @@ class SatisfactionSurveyView extends Component<Props, State> {
                                             })
                                         }
                                         className={css.mb8}
-                                    />
-                                    <BooleanField
+                                    >
+                                        Email
+                                    </CheckBox>
+                                    <CheckBox
                                         name="send_survey_on_chat"
-                                        type="checkbox"
-                                        label="Chat"
-                                        value={this.state.settings.get(
+                                        isChecked={this.state.settings.get(
                                             'send_survey_for_chat'
                                         )}
                                         onChange={(value: boolean) =>
@@ -158,7 +156,9 @@ class SatisfactionSurveyView extends Component<Props, State> {
                                                     ),
                                             })
                                         }
-                                    />
+                                    >
+                                        Chat
+                                    </CheckBox>
                                 </FormGroup>
                                 <FormGroup
                                     className={classnames(

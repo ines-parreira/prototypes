@@ -491,131 +491,59 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                             Send survey email for following channels
                           </label>
                         </Label>
-                        <BooleanField
+                        <CheckBox
                           className="mb8"
-                          label="Email"
                           name="send_survey_on_email"
                           onChange={[Function]}
-                          type="checkbox"
                         >
-                          <FormGroup
-                            check={true}
+                          <div
                             className="mb8"
-                            color=""
-                            tag="div"
                           >
-                            <div
-                              className="mb8 form-check"
-                              color=""
+                            <label
+                              className="label"
+                              htmlFor="send_survey_on_email"
                             >
-                              <Label
-                                check={true}
-                                className="control-label"
-                                htmlFor="id-send_survey_on_email"
-                                tag="label"
-                                widths={
-                                  Array [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
-                              >
-                                <label
-                                  className="control-label form-check-label"
-                                  htmlFor="id-send_survey_on_email"
-                                >
-                                  <Input
-                                    className="form-check-input"
-                                    id="id-send_survey_on_email"
-                                    onChange={[Function]}
-                                    type="checkbox"
-                                  >
-                                    <input
-                                      className="form-check-input form-check-input"
-                                      id="id-send_survey_on_email"
-                                      onChange={[Function]}
-                                      type="checkbox"
-                                    />
-                                  </Input>
-                                  <span
-                                    style={
-                                      Object {
-                                        "verticalAlign": "middle",
-                                      }
-                                    }
-                                  >
-                                    Email
-                                  </span>
-                                </label>
-                              </Label>
-                            </div>
-                          </FormGroup>
-                        </BooleanField>
-                        <BooleanField
-                          label="Chat"
+                              <input
+                                checked={false}
+                                className="input"
+                                disabled={false}
+                                id="send_survey_on_email"
+                                name="send_survey_on_email"
+                                onChange={[Function]}
+                                type="checkbox"
+                              />
+                              Email
+                            </label>
+                            <div
+                              className="caption"
+                            />
+                          </div>
+                        </CheckBox>
+                        <CheckBox
                           name="send_survey_on_chat"
                           onChange={[Function]}
-                          type="checkbox"
                         >
-                          <FormGroup
-                            check={true}
-                            className=""
-                            color=""
-                            tag="div"
-                          >
-                            <div
-                              className="form-check"
-                              color=""
+                          <div>
+                            <label
+                              className="label"
+                              htmlFor="send_survey_on_chat"
                             >
-                              <Label
-                                check={true}
-                                className="control-label"
-                                htmlFor="id-send_survey_on_chat"
-                                tag="label"
-                                widths={
-                                  Array [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
-                              >
-                                <label
-                                  className="control-label form-check-label"
-                                  htmlFor="id-send_survey_on_chat"
-                                >
-                                  <Input
-                                    className="form-check-input"
-                                    id="id-send_survey_on_chat"
-                                    onChange={[Function]}
-                                    type="checkbox"
-                                  >
-                                    <input
-                                      className="form-check-input form-check-input"
-                                      id="id-send_survey_on_chat"
-                                      onChange={[Function]}
-                                      type="checkbox"
-                                    />
-                                  </Input>
-                                  <span
-                                    style={
-                                      Object {
-                                        "verticalAlign": "middle",
-                                      }
-                                    }
-                                  >
-                                    Chat
-                                  </span>
-                                </label>
-                              </Label>
-                            </div>
-                          </FormGroup>
-                        </BooleanField>
+                              <input
+                                checked={false}
+                                className="input"
+                                disabled={false}
+                                id="send_survey_on_chat"
+                                name="send_survey_on_chat"
+                                onChange={[Function]}
+                                type="checkbox"
+                              />
+                              Chat
+                            </label>
+                            <div
+                              className="caption"
+                            />
+                          </div>
+                        </CheckBox>
                       </div>
                     </FormGroup>
                     <FormGroup

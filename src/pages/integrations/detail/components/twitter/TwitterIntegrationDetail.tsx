@@ -13,15 +13,15 @@ import {
     Row,
 } from 'reactstrap'
 
-import BooleanField from 'pages/common/forms/BooleanField'
+import {IntegrationType} from 'models/integration/types'
+import DEPRECATED_ConfirmButton from 'pages/common/components/DEPRECATED_ConfirmButton'
+import PageHeader from 'pages/common/components/PageHeader'
+import CheckBox from 'pages/common/forms/CheckBox'
+import css from 'pages/settings/settings.less'
 import {
     deleteIntegration,
     updateOrCreateIntegration,
-} from '../../../../../state/integrations/actions'
-import PageHeader from '../../../../common/components/PageHeader'
-import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'
-import {IntegrationType} from '../../../../../models/integration/types'
-import css from '../../../../settings/settings.less'
+} from 'state/integrations/actions'
 
 type Props = {
     integration: Map<string, any>
@@ -194,27 +194,30 @@ export default function TwitterIntegrationDetail({
                         <Row>
                             <Col md="12">
                                 <FormGroup>
-                                    <BooleanField
+                                    <CheckBox
+                                        className="mb-2"
                                         name="tweets_replies_enabled"
-                                        type="checkbox"
-                                        label="Enable replies to Tweets"
-                                        value={tweetsRepliesEnabled}
+                                        isChecked={tweetsRepliesEnabled}
                                         onChange={setTweetsRepliesEnabled}
-                                    />
-                                    <BooleanField
+                                    >
+                                        Enable replies to Tweets
+                                    </CheckBox>
+                                    <CheckBox
+                                        className="mb-2"
                                         name="mentions_enabled"
-                                        type="checkbox"
-                                        label="Enable Twitter mentions"
-                                        value={mentionsEnabled}
+                                        isChecked={mentionsEnabled}
                                         onChange={setMentionsEnabled}
-                                    />
-                                    <BooleanField
+                                    >
+                                        Enable Twitter mentions
+                                    </CheckBox>
+                                    <CheckBox
+                                        className="mb-2"
                                         name="direct_messages_enabled"
-                                        type="checkbox"
-                                        label="Enable Twitter direct messages"
-                                        value={directMessagesEnabled}
+                                        isChecked={directMessagesEnabled}
                                         onChange={setDirectMessagesEnabled}
-                                    />
+                                    >
+                                        Enable Twitter direct messages
+                                    </CheckBox>
                                 </FormGroup>
                                 <div>
                                     <Button

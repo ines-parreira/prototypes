@@ -21,7 +21,7 @@ const storyConfig: Meta = {
         caption: {
             options: ['simple text', 'node'],
             mapping: {
-                ['simple text']: 'This toggle is a checkbox in disguise',
+                ['simple text']: 'More information on this checkbox',
                 node: (
                     <>
                         <i className="material-icons">local_shipping</i> tutu

@@ -10,12 +10,12 @@ exports[`<AutoPopulateInput /> render() should render checked 1`] = `
     type="text"
     value="I am a title"
   />
-  <BooleanField
-    label="Use the same as Title"
+  <CheckBox
+    isChecked={true}
     onChange={[Function]}
-    type="checkbox"
-    value={true}
-  />
+  >
+    Use the same as Title
+  </CheckBox>
 </div>
 `;
 
@@ -29,11 +29,11 @@ exports[`<AutoPopulateInput /> render() should render unchecked 1`] = `
     type="text"
     value="Custom title"
   />
-  <BooleanField
-    label="Use the same as Title"
+  <CheckBox
+    isChecked={false}
     onChange={[Function]}
-    type="checkbox"
-    value={false}
-  />
+  >
+    Use the same as Title
+  </CheckBox>
 </div>
 `;

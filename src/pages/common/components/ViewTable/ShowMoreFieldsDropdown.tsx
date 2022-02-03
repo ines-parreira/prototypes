@@ -9,16 +9,12 @@ import {
 } from 'reactstrap'
 import {Map, List} from 'immutable'
 
-import BooleanField from 'pages/common/forms/BooleanField'
+import CheckBox from 'pages/common/forms/CheckBox'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {setFieldVisibility} from 'state/views/actions'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {GorgiasThunkDispatch} from 'types/redux-thunk'
-import {setFieldVisibility} from '../../../../state/views/actions'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../store/middlewares/segmentTracker'
-import {notify} from '../../../../state/notifications/actions'
-
-import {NotificationStatus} from '../../../../state/notifications/types'
 
 type OwnProps = {
     config: Map<any, any>
@@ -82,12 +78,13 @@ class ShowMoreFieldsDropdown extends React.Component<Props> {
                                 toggle={false}
                                 disabled={isMandatory}
                             >
-                                <BooleanField
-                                    value={isChecked}
+                                <CheckBox
+                                    isChecked={isChecked}
                                     onChange={setFieldVisibility}
-                                    label={field.get('title')}
-                                    disabled={isMandatory}
-                                />
+                                    isDisabled={isMandatory}
+                                >
+                                    {field.get('title')}
+                                </CheckBox>
                             </DropdownItem>
                         )
                     })}

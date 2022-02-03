@@ -114,18 +114,18 @@ exports[`<YotpoIntegrationDetailComponent/> render() should not render anything 
           onChange={[Function]}
           type="text"
         />
-        <BooleanField
-          help={
+        <CheckBox
+          caption={
             <div>
               By Enabling Yotpo tickets, you will allow Yotpo reviews to create tickets on Gorgias. If you are using emails to integrate Yotpo reviews you should disable the emails to avoid Yotpo reviews ticket being duplicated.
             </div>
           }
-          label="Enable Yotpo tickets"
+          isChecked={true}
           name="enable_yotpo_tickets"
           onChange={[Function]}
-          type="checkbox"
-          value={true}
-        />
+        >
+          Enable Yotpo ticket
+        </CheckBox>
         <br />
         <div>
           <Button
@@ -249,18 +249,18 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render a small parag
           onChange={[Function]}
           type="text"
         />
-        <BooleanField
-          help={
+        <CheckBox
+          caption={
             <div>
               By Enabling Yotpo tickets, you will allow Yotpo reviews to create tickets on Gorgias. If you are using emails to integrate Yotpo reviews you should disable the emails to avoid Yotpo reviews ticket being duplicated.
             </div>
           }
-          label="Enable Yotpo tickets"
+          isChecked={true}
           name="enable_yotpo_tickets"
           onChange={[Function]}
-          type="checkbox"
-          value={true}
-        />
+        >
+          Enable Yotpo ticket
+        </CheckBox>
         <br />
         <div>
           <Button
@@ -376,18 +376,18 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render an alert beca
           onChange={[Function]}
           type="text"
         />
-        <BooleanField
-          help={
+        <CheckBox
+          caption={
             <div>
               By Enabling Yotpo tickets, you will allow Yotpo reviews to create tickets on Gorgias. If you are using emails to integrate Yotpo reviews you should disable the emails to avoid Yotpo reviews ticket being duplicated.
             </div>
           }
-          label="Enable Yotpo tickets"
+          isChecked={true}
           name="enable_yotpo_tickets"
           onChange={[Function]}
-          type="checkbox"
-          value={true}
-        />
+        >
+          Enable Yotpo ticket
+        </CheckBox>
         <br />
         <div>
           <Button
@@ -503,18 +503,18 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render buttons loadi
           onChange={[Function]}
           type="text"
         />
-        <BooleanField
-          help={
+        <CheckBox
+          caption={
             <div>
               By Enabling Yotpo tickets, you will allow Yotpo reviews to create tickets on Gorgias. If you are using emails to integrate Yotpo reviews you should disable the emails to avoid Yotpo reviews ticket being duplicated.
             </div>
           }
-          label="Enable Yotpo tickets"
+          isChecked={true}
           name="enable_yotpo_tickets"
           onChange={[Function]}
-          type="checkbox"
-          value={true}
-        />
+        >
+          Enable Yotpo ticket
+        </CheckBox>
         <br />
         <div>
           <Button
@@ -630,18 +630,18 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render not render de
           onChange={[Function]}
           type="text"
         />
-        <BooleanField
-          help={
+        <CheckBox
+          caption={
             <div>
               By Enabling Yotpo tickets, you will allow Yotpo reviews to create tickets on Gorgias. If you are using emails to integrate Yotpo reviews you should disable the emails to avoid Yotpo reviews ticket being duplicated.
             </div>
           }
-          label="Enable Yotpo tickets"
+          isChecked={true}
           name="enable_yotpo_tickets"
           onChange={[Function]}
-          type="checkbox"
-          value={true}
-        />
+        >
+          Enable Yotpo ticket
+        </CheckBox>
         <br />
         <div>
           <Button

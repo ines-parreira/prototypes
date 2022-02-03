@@ -5,17 +5,17 @@ import {connect, ConnectedProps} from 'react-redux'
 import {Button, Col, Container, Form, FormGroup, Label, Row} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
 
-import BooleanField from 'pages/common/forms/BooleanField'
-import {TicketChannel} from '../../../business/types/ticket'
-import UserActivityManager from '../../../services/userActivityManager'
-import {fetchChats} from '../../../state/chats/actions'
-import {submitSetting} from '../../../state/currentAccount/actions'
-import {getTicketAssignmentSettings} from '../../../state/currentAccount/selectors'
-import PageHeader from '../../common/components/PageHeader'
-import MultiSelectOptionsField from '../../common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import {Option} from '../../common/forms/MultiSelectOptionsField/types'
-import {AccountSettingType} from '../../../state/currentAccount/types'
-import {RootState} from '../../../state/types'
+import {TicketChannel} from 'business/types/ticket'
+import PageHeader from 'pages/common/components/PageHeader'
+import CheckBox from 'pages/common/forms/CheckBox'
+import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
+import UserActivityManager from 'services/userActivityManager'
+import {fetchChats} from 'state/chats/actions'
+import {submitSetting} from 'state/currentAccount/actions'
+import {getTicketAssignmentSettings} from 'state/currentAccount/selectors'
+import {AccountSettingType} from 'state/currentAccount/types'
+import {RootState} from 'state/types'
 import css from '../settings.less'
 
 type Props = ConnectedProps<typeof connector>
@@ -144,35 +144,39 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                     <Label className="control-label">
                                         Auto-assign tickets
                                     </Label>
-                                    <BooleanField
+                                    <CheckBox
                                         name="auto_assign_to_teams"
-                                        type="checkbox"
-                                        label="Auto-assign tickets that are assigned to a team, to an available agent of
-                                            this team, as soon as an agent of the team is available"
-                                        value={autoAssignToTeams}
+                                        isChecked={autoAssignToTeams}
                                         onChange={(value: boolean) =>
                                             this.setState({
                                                 autoAssignToTeams: value,
                                             })
                                         }
-                                    />
+                                    >
+                                        Auto-assign tickets that are assigned to
+                                        a team, to an available agent of this
+                                        team, as soon as an agent of the team is
+                                        available
+                                    </CheckBox>
                                 </FormGroup>
                                 <FormGroup className={css.inputField}>
                                     <Label className="control-label">
                                         Un-assign on reply
                                     </Label>
-                                    <BooleanField
+                                    <CheckBox
                                         name="unassign_on_reply"
-                                        type="checkbox"
-                                        label="When there is a new reply in a ticket of the following channels, if the
-                                            user assigned to it is not available, un-assign the ticket"
-                                        value={unassignOnReply}
+                                        isChecked={unassignOnReply}
                                         onChange={(value: boolean) =>
                                             this.setState({
                                                 unassignOnReply: value,
                                             })
                                         }
-                                    />
+                                    >
+                                        When there is a new reply in a ticket of
+                                        the following channels, if the user
+                                        assigned to it is not available,
+                                        un-assign the ticket
+                                    </CheckBox>
                                 </FormGroup>
                                 <div className="text-faded">
                                     Users are considered as not available when

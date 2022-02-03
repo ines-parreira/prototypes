@@ -12,21 +12,21 @@ import {
 import {parse} from 'query-string'
 import {fromJS, Map} from 'immutable'
 
-import BooleanField from 'pages/common/forms/BooleanField'
-import InputField from 'pages/common/forms/InputField'
+import {PENDING_AUTHENTICATION_STATUS} from 'constants/integration'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration'
-import Loader from '../../../../common/components/Loader/Loader'
-import PageHeader from '../../../../common/components/PageHeader'
+import Loader from 'pages/common/components/Loader/Loader'
+import PageHeader from 'pages/common/components/PageHeader'
+import CheckBox from 'pages/common/forms/CheckBox'
+import InputField from 'pages/common/forms/InputField'
 import {
     deleteIntegration,
     fetchIntegration,
     triggerCreateSuccess,
     updateOrCreateIntegration,
-} from '../../../../../state/integrations/actions'
-import css from '../../../../settings/settings.less'
+} from 'state/integrations/actions'
+import css from 'pages/settings/settings.less'
 
 interface IActions {
     deleteIntegration: typeof deleteIntegration
@@ -164,18 +164,18 @@ export class YotpoIntegrationDetailComponent extends React.Component<Props> {
                                     this.setState({integrationName: value})
                                 }
                             />
-                            <BooleanField
+                            <CheckBox
                                 name="enable_yotpo_tickets"
-                                type="checkbox"
-                                label="Enable Yotpo tickets"
-                                help={enableYotpoTicketsHelp}
-                                value={enable_yotpo_tickets}
+                                caption={enableYotpoTicketsHelp}
+                                isChecked={enable_yotpo_tickets}
                                 onChange={(value: boolean) =>
                                     this.setState({
                                         enable_yotpo_tickets: value,
                                     })
                                 }
-                            />
+                            >
+                                Enable Yotpo ticket
+                            </CheckBox>
                             <br />
                             <div>
                                 <Button

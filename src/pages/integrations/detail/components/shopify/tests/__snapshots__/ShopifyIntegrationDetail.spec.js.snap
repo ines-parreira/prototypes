@@ -116,14 +116,13 @@ exports[`ShopifyIntegrationDetail should render the page for a deactivated integ
             >
               Synchronization settings
             </Label>
-            <BooleanField
-              help=""
-              label="Synchronize customer notes"
+            <CheckBox
+              isChecked={true}
               name="sync_customer_notes"
               onChange={[Function]}
-              type="checkbox"
-              value={true}
-            />
+            >
+              Synchronize customer notes
+            </CheckBox>
           </div>
           <div
             className="text-faded mb-4"
@@ -418,14 +417,13 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
             >
               Synchronization settings
             </Label>
-            <BooleanField
-              help=""
-              label="Synchronize customer notes"
+            <CheckBox
+              isChecked={true}
               name="sync_customer_notes"
               onChange={[Function]}
-              type="checkbox"
-              value={true}
-            />
+            >
+              Synchronize customer notes
+            </CheckBox>
           </div>
           <div
             className="text-faded mb-4"
@@ -613,14 +611,13 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
             >
               Synchronization settings
             </Label>
-            <BooleanField
-              help=""
-              label="Synchronize customer notes"
+            <CheckBox
+              isChecked={true}
               name="sync_customer_notes"
               onChange={[Function]}
-              type="checkbox"
-              value={true}
-            />
+            >
+              Synchronize customer notes
+            </CheckBox>
           </div>
           <div
             className="text-faded mb-4"
@@ -796,14 +793,13 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
             >
               Synchronization settings
             </Label>
-            <BooleanField
-              help=""
-              label="Synchronize customer notes"
+            <CheckBox
+              isChecked={true}
               name="sync_customer_notes"
               onChange={[Function]}
-              type="checkbox"
-              value={true}
-            />
+            >
+              Synchronize customer notes
+            </CheckBox>
           </div>
           <div
             className="text-faded mb-4"
@@ -979,14 +975,13 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
             >
               Synchronization settings
             </Label>
-            <BooleanField
-              help=""
-              label="Synchronize customer notes"
+            <CheckBox
+              isChecked={true}
               name="sync_customer_notes"
               onChange={[Function]}
-              type="checkbox"
-              value={true}
-            />
+            >
+              Synchronize customer notes
+            </CheckBox>
           </div>
           <div
             className="text-faded mb-4"
@@ -1281,14 +1276,13 @@ exports[`ShopifyIntegrationDetail should render the page to update an existing i
             >
               Synchronization settings
             </Label>
-            <BooleanField
-              help=""
-              label="Synchronize customer notes"
+            <CheckBox
+              isChecked={true}
               name="sync_customer_notes"
               onChange={[Function]}
-              type="checkbox"
-              value={true}
-            />
+            >
+              Synchronize customer notes
+            </CheckBox>
           </div>
           <div
             className="text-faded mb-4"

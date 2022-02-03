@@ -1,6 +1,6 @@
 import React, {ComponentProps, useEffect, useState} from 'react'
 
-import BooleanField from '../BooleanField'
+import CheckBox from '../CheckBox'
 import InputField, {InputFieldProps} from '../InputField'
 
 import css from './AutoPopulateInput.less'
@@ -46,11 +46,9 @@ const AutoPopulateInput = ({
                 onChange={onChange}
                 disabled={isChecked}
             />
-            <BooleanField
-                label={populateLabel}
-                value={isChecked}
-                onChange={handleCheckboxTick}
-            />
+            <CheckBox isChecked={isChecked} onChange={handleCheckboxTick}>
+                {populateLabel}
+            </CheckBox>
         </div>
     )
 }

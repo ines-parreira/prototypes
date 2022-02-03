@@ -147,26 +147,23 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
           SEO Title tag is how your article is going to be displayed in search engines.
         </small>
       </div>
-      <div
-        class="form-check"
-        color=""
-      >
+      <div>
         <label
-          class="control-label form-check-label"
-          for="id-input-1"
+          class="label"
+          for="checkbox-1"
         >
           <input
             checked=""
-            class="form-check-input form-check-input"
-            id="id-input-1"
+            class="input"
+            id="checkbox-1"
+            name="checkbox-1"
             type="checkbox"
           />
-          <span
-            style="vertical-align: middle;"
-          >
-            Use the same as Title
-          </span>
+          Use the same as Title
         </label>
+        <div
+          class="caption"
+        />
       </div>
     </div>
     <div
@@ -201,26 +198,23 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
           Article description is displayed in search engines to help people find it.
         </small>
       </div>
-      <div
-        class="form-check"
-        color=""
-      >
+      <div>
         <label
-          class="control-label form-check-label"
-          for="id-input-2"
+          class="label"
+          for="checkbox-2"
         >
           <input
             checked=""
-            class="form-check-input form-check-input"
-            id="id-input-2"
+            class="input"
+            id="checkbox-2"
+            name="checkbox-2"
             type="checkbox"
           />
-          <span
-            style="vertical-align: middle;"
-          >
-            Use the same as Excerpt
-          </span>
+          Use the same as Excerpt
         </label>
+        <div
+          class="caption"
+        />
       </div>
     </div>
     <div

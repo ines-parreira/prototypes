@@ -16,29 +16,28 @@ import {
 } from 'reactstrap'
 import {parse} from 'query-string'
 
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import {PENDING_AUTHENTICATION_STATUS} from 'constants/integration'
+import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import BooleanField from 'pages/common/forms/BooleanField'
-import InputField from '../../../../common/forms/InputField'
-import Loader from '../../../../common/components/Loader/Loader'
-import PageHeader from '../../../../common/components/PageHeader'
-import LinkAlert from '../../../../common/components/Alert/LinkAlert'
-
-import * as utils from '../../../../../utils'
-import {NotificationStatus} from '../../../../../state/notifications/types'
-import {notify} from '../../../../../state/notifications/actions'
-import {makeGetShopifyIntegrationByShopName} from '../../../../../state/integrations/selectors'
-import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration'
-import history from '../../../../history'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import Loader from 'pages/common/components/Loader/Loader'
+import PageHeader from 'pages/common/components/PageHeader'
+import CheckBox from 'pages/common/forms/CheckBox'
+import InputField from 'pages/common/forms/InputField'
+import history from 'pages/history'
+import css from 'pages/settings/settings.less'
 import {
     deleteIntegration,
     fetchIntegration,
     triggerCreateSuccess,
     updateOrCreateIntegration,
-} from '../../../../../state/integrations/actions'
-import {RootState} from '../../../../../state/types'
-import css from '../../../../settings/settings.less'
+} from 'state/integrations/actions'
+import {makeGetShopifyIntegrationByShopName} from 'state/integrations/selectors'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {RootState} from 'state/types'
+import * as utils from 'utils'
 
 type Props = {
     integration: Map<any, any>
@@ -319,19 +318,17 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                         <Label className="control-label">
                                             Synchronization settings
                                         </Label>
-                                        <BooleanField
+                                        <CheckBox
                                             name="sync_customer_notes"
-                                            type="checkbox"
-                                            value={syncCustomerNotes}
-                                            //$TsFixMe remove once BooleanField is migrated
+                                            isChecked={syncCustomerNotes}
                                             onChange={(value: boolean) =>
                                                 this.setState({
                                                     syncCustomerNotes: value,
                                                 })
                                             }
-                                            label="Synchronize customer notes"
-                                            help=""
-                                        />
+                                        >
+                                            Synchronize customer notes
+                                        </CheckBox>
                                     </div>,
                                     <div key="help" className="text-faded mb-4">
                                         If this option is enabled, updating a
