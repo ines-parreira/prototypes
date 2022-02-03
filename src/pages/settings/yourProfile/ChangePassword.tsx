@@ -2,13 +2,12 @@ import React, {useMemo, useEffect, useState} from 'react'
 import {useAsyncFn} from 'react-use'
 import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
-import {Form, Button, Container} from 'reactstrap'
+import {Form, Button} from 'reactstrap'
 import {AxiosError} from 'axios'
 
 import InputField from 'pages/common/forms/InputField'
 
 import {changePassword} from '../../../state/currentUser/actions'
-import PageHeader from '../../common/components/PageHeader'
 import {RootState} from '../../../state/types'
 import css from '../settings.less'
 
@@ -72,89 +71,93 @@ export const ChangePasswordContainer = ({
     }, [newPassword, confirmNewPassword])
 
     return (
-        <div className="full-width">
-            <PageHeader title="Change password" />
-            <Container fluid className={css.pageContainer}>
-                <div className={css.contentWrapper}>
-                    <div
-                        className={classnames(css['heading-regular'], css.mb32)}
-                    >
-                        Enter your current password to confirm your identity,
-                        then the new password you would like to set instead.
-                    </div>
+        <>
+            <div
+                className={classnames(
+                    css['heading-subsection-semibold'],
+                    css.mb16
+                )}
+            >
+                Update password
+            </div>
+            <div className={classnames(css['heading-regular'], css.mb16)}>
+                Enter your current password to confirm your identity, then the
+                new password you would like to set instead.
+            </div>
 
-                    <Form
-                        onSubmit={(event) => {
-                            event.preventDefault()
-                            void handleSubmit()
-                        }}
-                    >
-                        <InputField
-                            type="password"
-                            name="old_password"
-                            label="Current password"
-                            placeholder="Current password"
-                            required
-                            value={oldPassword}
-                            onChange={(value) => {
-                                const updatedErrors = {
-                                    ...errors,
-                                }
-                                delete updatedErrors['old_password']
-                                setDirty(true)
-                                setErrors(updatedErrors)
-                                setOldPassword(value)
-                            }}
-                            error={errors.old_password}
-                            className={css.inputField}
-                        />
-                        <InputField
-                            type="password"
-                            name="new_password"
-                            label="New password"
-                            placeholder="New password"
-                            pattern={USER_PASSWORD_VALIDATION_PATTERN}
-                            title={`Password must be between ${USER_PASSWORD_MIN_LENGTH} and ${USER_PASSWORD_MAX_LENGTH} characters long and contain at least 1 lower case letter, 1 upper case letter and 1 digit.`}
-                            required
-                            value={newPassword}
-                            onChange={(value) => {
-                                setDirty(true)
-                                setNewPassword(value)
-                            }}
-                            error={errors.new_password}
-                            className={css.inputField}
-                        />
-                        <InputField
-                            type="password"
-                            name="confirm_new_password"
-                            label="Confirm new password"
-                            placeholder="Confirm new password"
-                            pattern={USER_PASSWORD_VALIDATION_PATTERN}
-                            title={`Password must be between ${USER_PASSWORD_MIN_LENGTH} and ${USER_PASSWORD_MAX_LENGTH} characters long and contain at least 1 lower case letter, 1 upper case letter and 1 digit.`}
-                            required
-                            value={confirmNewPassword}
-                            onChange={(value) => {
-                                setDirty(true)
-                                setConfirmNewPassword(value)
-                            }}
-                            error={errors.confirm_new_password}
-                            className={classnames(css.inputField, css.mb40)}
-                        />
+            <Form
+                onSubmit={(event) => {
+                    event.preventDefault()
+                    void handleSubmit()
+                }}
+            >
+                <InputField
+                    type="password"
+                    name="old_password"
+                    label="Current password"
+                    placeholder="Current password"
+                    required
+                    value={oldPassword}
+                    onChange={(value) => {
+                        const updatedErrors = {
+                            ...errors,
+                        }
+                        delete updatedErrors['old_password']
+                        setDirty(true)
+                        setErrors(updatedErrors)
+                        setOldPassword(value)
+                    }}
+                    error={errors.old_password}
+                    className={css.inputField}
+                />
+                <InputField
+                    type="password"
+                    name="new_password"
+                    label="New password"
+                    placeholder="New password"
+                    pattern={USER_PASSWORD_VALIDATION_PATTERN}
+                    title={`Password must be between ${USER_PASSWORD_MIN_LENGTH} and ${USER_PASSWORD_MAX_LENGTH} characters long and contain at least 1 lower case letter, 1 upper case letter and 1 digit.`}
+                    required
+                    value={newPassword}
+                    onChange={(value) => {
+                        setDirty(true)
+                        setNewPassword(value)
+                    }}
+                    error={errors.new_password}
+                    className={css.inputField}
+                />
+                <InputField
+                    type="password"
+                    name="confirm_new_password"
+                    label="Confirm new password"
+                    placeholder="Confirm new password"
+                    pattern={USER_PASSWORD_VALIDATION_PATTERN}
+                    title={`Password must be between ${USER_PASSWORD_MIN_LENGTH} and ${USER_PASSWORD_MAX_LENGTH} characters long and contain at least 1 lower case letter, 1 upper case letter and 1 digit.`}
+                    required
+                    value={confirmNewPassword}
+                    onChange={(value) => {
+                        setDirty(true)
+                        setConfirmNewPassword(value)
+                    }}
+                    error={errors.confirm_new_password}
+                    className={css.inputField}
+                />
 
-                        <Button
-                            type="submit"
-                            color="success"
-                            className={classnames({
-                                'btn-loading': isLoading,
-                            })}
-                            disabled={isLoading || invalid || !dirty}
-                        >
-                            Update Password
-                        </Button>
-                    </Form>
-                </div>
-            </Container>
-        </div>
+                <Button
+                    type="submit"
+                    color="primary"
+                    className={classnames(
+                        {
+                            'btn-loading': isLoading,
+                        },
+                        css.mb32
+                    )}
+                    disabled={isLoading || invalid || !dirty}
+                >
+                    Update Password
+                </Button>
+            </Form>
+        </>
     )
 }
 

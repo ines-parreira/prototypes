@@ -10,6 +10,7 @@ import {hasRole} from 'utils'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 import {UserRole} from 'config/types/user'
 import {PHONE_NUMBER_MANAGEMENT_PREVIEW_ACCOUNTS} from 'models/phoneNumber/constants'
+import {checkAccessTo2FA} from '../../yourProfile/twoFactorAuthentication/utils'
 
 type Props = {
     currentUser: Map<any, any>
@@ -43,6 +44,16 @@ export default class SettingsNavbar extends Component<Props> {
             location: {pathname},
         } = this.props
 
+        const hasPassword = currentUser.get('has_password')
+        const hasAccessTo2FA = checkAccessTo2FA(currentAccount.get('domain'))
+
+        let passwordAnd2FaText = 'Change password'
+        if (hasPassword && hasAccessTo2FA) {
+            passwordAnd2FaText = 'Password & 2FA'
+        } else if (hasAccessTo2FA) {
+            passwordAnd2FaText = '2FA'
+        }
+
         const categories: Category[] = [
             {
                 name: 'You',
@@ -53,9 +64,9 @@ export default class SettingsNavbar extends Component<Props> {
                         text: 'Your profile',
                     },
                     {
-                        to: 'change-password',
-                        text: 'Change password',
-                        isHidden: !currentUser.get('has_password'),
+                        to: 'password-2fa',
+                        text: passwordAnd2FaText,
+                        isHidden: !hasPassword && !hasAccessTo2FA,
                     },
                     {
                         requiredRole: ADMIN_ROLE,

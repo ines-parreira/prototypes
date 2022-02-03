@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ModalContinueButton /> render() should render the appropriate Continue button based on current step 1`] = `
+<button
+  class="btn btn-primary"
+  type="button"
+>
+  Continue
+</button>
+`;
+
+exports[`<ModalContinueButton /> render() should render the appropriate Continue button based on current step 2`] = `
+<button
+  class="btn btn-primary"
+  type="button"
+>
+  Continue
+</button>
+`;
+
+exports[`<ModalContinueButton /> render() should render the appropriate Continue button based on current step 3`] = `
+<button
+  class="full-width btn btn-primary"
+  type="button"
+>
+  Continue
+</button>
+`;
+
+exports[`<ModalContinueButton /> render() should render the appropriate Continue button based on current step 4`] = `null`;

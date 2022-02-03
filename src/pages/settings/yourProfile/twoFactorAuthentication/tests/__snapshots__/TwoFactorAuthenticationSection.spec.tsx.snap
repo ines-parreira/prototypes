@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TwoFactorAuthenticationSection /> render() should open the Two-Factor Authentication Modal 1`] = `
+<body
+  class="modal-open"
+>
+  <div>
+    <div
+      class="heading-subsection-semibold mb16"
+    >
+      Two-Factor Authentication
+      <span
+        class="badge badge-pill badge-danger ml-3 align-middle"
+      >
+        DISABLED
+      </span>
+    </div>
+    <div
+      class="heading-regular mb16"
+    >
+      For an added layer of security, your admin requires you to use two-factor authentication (2FA) when you sign in to Gorgias.
+      <a
+        href=""
+      >
+        Learn more
+      </a>
+    </div>
+    <button
+      class="btn btn-primary"
+      type="button"
+    >
+      Enable Two-Factor Authentication
+    </button>
+  </div>
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog"
+          role="document"
+          style="max-width: 400px;"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Setup 2FA
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="modal-body modal-body"
+            >
+              QR Code step
+            </div>
+            <div
+              class="modal-footer modal-footer"
+            >
+              <button
+                class="btn btn-secondary"
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                class="btn btn-primary"
+                type="button"
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop show"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<TwoFactorAuthenticationSection /> render() should render the Two-Factor Authentication Section 1`] = `
+<body>
+  <div>
+    <div
+      class="heading-subsection-semibold mb16"
+    >
+      Two-Factor Authentication
+      <span
+        class="badge badge-pill badge-danger ml-3 align-middle"
+      >
+        DISABLED
+      </span>
+    </div>
+    <div
+      class="heading-regular mb16"
+    >
+      For an added layer of security, your admin requires you to use two-factor authentication (2FA) when you sign in to Gorgias.
+      <a
+        href=""
+      >
+        Learn more
+      </a>
+    </div>
+    <button
+      class="btn btn-primary"
+      type="button"
+    >
+      Enable Two-Factor Authentication
+    </button>
+  </div>
+</body>
+`;

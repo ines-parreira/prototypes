@@ -37,7 +37,7 @@ import CustomerSourceContainer from './customers/detail/CustomerSourceContainer'
 import CustomerInfobarContainer from './customers/detail/CustomerInfobarContainer'
 
 import YourProfileContainer from './settings/yourProfile/YourProfileContainer.js'
-import ChangePassword from './settings/yourProfile/ChangePassword'
+import PasswordAnd2FA from './settings/yourProfile/PasswordAnd2FA'
 import APIView from './settings/api/APIView'
 
 import SettingsNavbarContainer from './settings/common/SettingsNavbarContainer'
@@ -549,10 +549,10 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 })}
             />
             <Route
-                path={`${path}/change-password`}
+                path={`${path}/password-2fa`}
                 exact
                 render={appRender({
-                    content: ChangePassword,
+                    content: PasswordAnd2FA,
                     navbar: SettingsNavbarContainer,
                 })}
             />
