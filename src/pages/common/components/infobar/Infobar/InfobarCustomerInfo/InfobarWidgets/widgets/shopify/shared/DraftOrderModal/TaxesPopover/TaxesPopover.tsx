@@ -3,25 +3,14 @@ import React, {
     ComponentProps,
     ReactNode,
     KeyboardEvent,
-    ChangeEvent,
     FormEvent,
 } from 'react'
 import classnames from 'classnames'
-import {
-    Button,
-    Form,
-    FormGroup,
-    Input,
-    Label,
-    Popover,
-    PopoverBody,
-} from 'reactstrap'
+import {Button, Form, Popover, PopoverBody} from 'reactstrap'
 
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import {focusElement} from '../../../../../../../../../../../../utils/html'
+import CheckBox from 'pages/common/forms/CheckBox'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {focusElement} from 'utils/html'
 import {ShopifyActionType} from '../../../types'
 
 import css from './TaxesPopover.less'
@@ -96,9 +85,8 @@ export default class TaxesPopover extends Component<Props, State> {
         this._inputElement = inputRef
     }
 
-    _onChargeTaxesChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const taxExempt = !event.target.checked
-        this.setState({taxExempt})
+    _onChargeTaxesChange = (newValue: boolean) => {
+        this.setState({taxExempt: !newValue})
     }
 
     _onSubmit = (event: FormEvent) => {
@@ -154,24 +142,20 @@ export default class TaxesPopover extends Component<Props, State> {
                     trigger="legacy"
                 >
                     <Form onKeyDown={this._onKeyDown} onSubmit={this._onSubmit}>
-                        <PopoverBody className="pt-3">
+                        <PopoverBody className="py-3">
                             <p className={css.legend}>
                                 Taxes are automatically calculated.
                             </p>
-                            <FormGroup check className="mt-1 mb-3">
-                                <Label check>
-                                    <Input
-                                        type="checkbox"
-                                        checked={!taxExempt}
-                                        tabIndex={0}
-                                        innerRef={this._saveInputRef}
-                                        onChange={this._onChargeTaxesChange}
-                                    />
-                                    <span className="ml-1">Charge taxes</span>
-                                </Label>
-                            </FormGroup>
+                            <CheckBox
+                                isChecked={!taxExempt}
+                                tabIndex={0}
+                                ref={this._saveInputRef}
+                                onChange={this._onChargeTaxesChange}
+                            >
+                                Charge taxes
+                            </CheckBox>
                         </PopoverBody>
-                        <hr className="mb-0" />
+                        <hr className="my-0" />
                         <PopoverBody className="d-flex">
                             <Button
                                 type="button"

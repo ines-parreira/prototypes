@@ -1,7 +1,10 @@
 import React, {
+    forwardRef,
     InputHTMLAttributes,
     ReactNode,
+    Ref,
     useEffect,
+    useImperativeHandle,
     useMemo,
     useRef,
 } from 'react'
@@ -25,24 +28,29 @@ type Props = {
     'checked' | 'disabled' | 'indeterminate' | 'name' | 'type' | 'onChange'
 >
 
-const CheckBox = ({
-    caption,
-    children,
-    className,
-    isChecked = false,
-    isDisabled = false,
-    isIndeterminate = false,
-    labelClassName,
-    name,
-    onChange,
-    ...props
-}: Props) => {
-    const checkboxRef = useRef<HTMLInputElement>(null)
+function CheckBox(
+    {
+        caption,
+        children,
+        className,
+        isChecked = false,
+        isDisabled = false,
+        isIndeterminate = false,
+        labelClassName,
+        name,
+        onChange,
+        ...props
+    }: Props,
+    ref: Ref<HTMLInputElement> | null | undefined
+) {
+    const inputRef = useRef<HTMLInputElement>(null)
+    useImperativeHandle(ref, () => inputRef.current!, [inputRef])
+
     const id = useMemo(() => name || _uniqueId('checkbox-'), [name])
 
     useEffect(() => {
-        if (checkboxRef.current) {
-            checkboxRef.current.indeterminate = isIndeterminate
+        if (inputRef.current) {
+            inputRef.current.indeterminate = isIndeterminate
         }
     }, [isIndeterminate])
 
@@ -67,7 +75,7 @@ const CheckBox = ({
                     checked={isChecked}
                     disabled={isDisabled}
                     onChange={() => onChange?.(!isChecked)}
-                    ref={checkboxRef}
+                    ref={inputRef}
                     {...props}
                 />
                 {children}
@@ -77,4 +85,4 @@ const CheckBox = ({
     )
 }
 
-export default CheckBox
+export default forwardRef(CheckBox)

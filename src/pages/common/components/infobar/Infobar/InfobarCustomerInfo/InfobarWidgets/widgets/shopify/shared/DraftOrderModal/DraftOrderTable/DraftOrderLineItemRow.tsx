@@ -1,5 +1,5 @@
 import React, {ChangeEvent, memo, useCallback, useState} from 'react'
-import {Input, Label, FormGroup} from 'reactstrap'
+import {Input} from 'reactstrap'
 import {Map, List} from 'immutable'
 import {getSizedImageUrl} from '@shopify/theme-images'
 import classnames from 'classnames'
@@ -12,16 +12,14 @@ import IconButton from 'pages/common/components/button/IconButton'
 import {
     getDraftOrderLineItemDiscountedPrice,
     getDraftOrderLineItemTotal,
-} from '../../../../../../../../../../../../business/shopify/lineItem'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
-import {ProductStockQuantity} from '../../StockQuantity'
-import DiscountPopover from '../DiscountPopover/DiscountPopover'
+} from 'business/shopify/lineItem'
+import {formatPrice} from 'business/shopify/number'
+import CheckBox from 'pages/common/forms/CheckBox'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import MoneyAmount from '../../../../MoneyAmount'
 import {ShopifyActionType} from '../../../types'
+import {ProductStockQuantity} from '../../StockQuantity'
+import DiscountPopover from '../DiscountPopover/DiscountPopover'
 
 import css from './DraftOrderLineItemRow.less'
 
@@ -101,12 +99,13 @@ function DraftOrderLineItemRow({
     )
 
     const handleRestockItemsChange = useCallback(
-        (event: ChangeEvent<HTMLInputElement>) => {
-            setRestock(event.target.checked)
-            debouncedRestock(event.target.checked, lineItem, index, onChange)
+        (newValue: boolean) => {
+            setRestock(newValue)
+            debouncedRestock(newValue, lineItem, index, onChange)
         },
         [index, lineItem, onChange]
     )
+
     const handleQuantityChange = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
             const min =
@@ -373,25 +372,16 @@ function DraftOrderLineItemRow({
                 )}
 
                 {shouldRestock && !lineItem.get('newly_added') && (
-                    <FormGroup check>
-                        <Label check>
-                            <Input
-                                type="checkbox"
-                                className={classnames(
-                                    css.delete,
-                                    css.focusable
-                                )}
-                                checked={restock}
-                                onChange={handleRestockItemsChange}
-                            />
-                            <span className="ml-1">
-                                Restock{' '}
-                                {lineItem.get('initial_quantity') -
-                                    lineItem.get('quantity')}{' '}
-                                item(s)
-                            </span>
-                        </Label>
-                    </FormGroup>
+                    <CheckBox
+                        className={classnames(css.delete, css.focusable)}
+                        isChecked={restock}
+                        onChange={handleRestockItemsChange}
+                    >
+                        Restock{' '}
+                        {lineItem.get('initial_quantity') -
+                            lineItem.get('quantity')}{' '}
+                        item(s)
+                    </CheckBox>
                 )}
             </td>
         )

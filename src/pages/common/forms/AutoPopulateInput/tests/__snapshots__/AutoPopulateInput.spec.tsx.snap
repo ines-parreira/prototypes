@@ -10,12 +10,12 @@ exports[`<AutoPopulateInput /> render() should render checked 1`] = `
     type="text"
     value="I am a title"
   />
-  <CheckBox
+  <ForwardRef(CheckBox)
     isChecked={true}
     onChange={[Function]}
   >
     Use the same as Title
-  </CheckBox>
+  </ForwardRef(CheckBox)>
 </div>
 `;
 
@@ -29,11 +29,11 @@ exports[`<AutoPopulateInput /> render() should render unchecked 1`] = `
     type="text"
     value="Custom title"
   />
-  <CheckBox
+  <ForwardRef(CheckBox)
     isChecked={false}
     onChange={[Function]}
   >
     Use the same as Title
-  </CheckBox>
+  </ForwardRef(CheckBox)>
 </div>
 `;

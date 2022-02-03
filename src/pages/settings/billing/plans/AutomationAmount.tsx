@@ -1,13 +1,19 @@
 import React, {useMemo} from 'react'
-import {Input, Label} from 'reactstrap'
 import classnames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
 
-import {Plan} from '../../../../models/billing/types'
-import Tooltip from '../../../common/components/Tooltip'
+import {Plan} from 'models/billing/types'
+import Tooltip from 'pages/common/components/Tooltip'
+import CheckBox from 'pages/common/forms/CheckBox'
 import SubscriptionAmount from '../../common/SubscriptionAmount'
 
 import css from './AutomationAmount.less'
+
+const AutomationLabel = ({id}: {id: string}) => (
+    <div className={classnames('align-middle', css.checkboxLabel)}>
+        <span id={`automation-text-${id}`}>Automation</span>
+    </div>
+)
 
 type Props = {
     addOnAmount?: number | string
@@ -31,30 +37,21 @@ const AutomationAmount = ({
     return (
         <>
             {editable ? (
-                <Label htmlFor={id} check className={css.automationRow}>
-                    {typeof addOnAmount === 'number' && (
-                        <Input
-                            className={classnames(
-                                'form-check-input',
-                                css.checkbox
-                            )}
-                            type="checkbox"
-                            id={id}
-                            checked={isAutomationChecked}
+                <div className={css.automationRow}>
+                    {typeof addOnAmount === 'number' ? (
+                        <CheckBox
+                            className={css.checkbox}
+                            name={id}
+                            isChecked={isAutomationChecked}
                             {...(!!onAutomationChange
                                 ? {onChange: onAutomationChange}
                                 : {readOnly: true})}
-                        />
+                        >
+                            <AutomationLabel id={id} />
+                        </CheckBox>
+                    ) : (
+                        <AutomationLabel id={id} />
                     )}
-                    <div
-                        className={classnames(
-                            'align-middle',
-                            css.addOnName,
-                            css.checkboxLabel
-                        )}
-                    >
-                        <span id={`automation-text-${id}`}>Automation</span>
-                    </div>
                     <div className={css.amountContainer}>
                         {typeof addOnAmount === 'number' &&
                         plan.currency &&
@@ -96,10 +93,15 @@ const AutomationAmount = ({
                             <li>Self-service statistics</li>
                         </ul>
                     </Tooltip>
-                </Label>
+                </div>
             ) : (
                 <div className={css.automationRow}>
-                    <div className={classnames('align-middle', css.addOnName)}>
+                    <div
+                        className={classnames(
+                            'align-middle',
+                            css.checkboxLabel
+                        )}
+                    >
                         Automation
                     </div>
                     <div className={css.amountContainer}>

@@ -1,17 +1,9 @@
 import React, {ReactNode, useState} from 'react'
 import _noop from 'lodash/noop'
-import {
-    Button,
-    FormGroup,
-    Input,
-    Label,
-    Modal,
-    ModalBody,
-    ModalFooter,
-    ModalHeader,
-} from 'reactstrap'
+import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 
 import {RuleRecipe} from 'models/ruleRecipe/types'
+import CheckBox from 'pages/common/forms/CheckBox'
 
 import RuleEditor from '../../components/RuleEditor'
 import {RuleItemActions} from '../../types'
@@ -77,22 +69,15 @@ export const RuleRecipeModal = ({
                     />
                 </div>
                 {!!views_per_section && (
-                    <FormGroup check className="mb-1 mt-3">
-                        <Label check>
-                            <Input
-                                type="checkbox"
-                                checked={shouldCreateviews}
-                                onChange={(e) =>
-                                    setShouldCreateViews(e.target.checked)
-                                }
-                            />
-                            <span className="ml-1">
-                                <strong>
-                                    Create the views related to this rule.
-                                </strong>
-                            </span>
-                        </Label>
-                    </FormGroup>
+                    <CheckBox
+                        className="mb-1 mt-3"
+                        isChecked={shouldCreateviews}
+                        onChange={(newValue: boolean) =>
+                            setShouldCreateViews(newValue)
+                        }
+                    >
+                        Create the views related to this rule.
+                    </CheckBox>
                 )}
             </ModalBody>
             <ModalFooter className={css.modalFooter}>

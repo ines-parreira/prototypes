@@ -2,12 +2,11 @@
 
 exports[`<AutomationAmount /> should render a string as amount 1`] = `
 <div>
-  <label
-    class="automationRow form-check-label"
-    for="planId1"
+  <div
+    class="automationRow"
   >
     <div
-      class="align-middle addOnName checkboxLabel"
+      class="align-middle checkboxLabel"
     >
       <span
         id="automation-text-planId1"
@@ -22,29 +21,41 @@ exports[`<AutomationAmount /> should render a string as amount 1`] = `
         Amount
       </i>
     </div>
-  </label>
+  </div>
 </div>
 `;
 
 exports[`<AutomationAmount /> should render formatted numbers as amount 1`] = `
 <div>
-  <label
-    class="automationRow form-check-label"
-    for="planId2"
+  <div
+    class="automationRow"
   >
-    <input
-      class="form-check-input checkbox form-check-input"
-      id="planId2"
-      type="checkbox"
-    />
     <div
-      class="align-middle addOnName checkboxLabel"
+      class="checkbox"
     >
-      <span
-        id="automation-text-planId2"
+      <label
+        class="label"
+        for="planId2"
       >
-        Automation
-      </span>
+        <input
+          class="input"
+          id="planId2"
+          name="planId2"
+          type="checkbox"
+        />
+        <div
+          class="align-middle checkboxLabel"
+        >
+          <span
+            id="automation-text-planId2"
+          >
+            Automation
+          </span>
+        </div>
+      </label>
+      <div
+        class="caption"
+      />
     </div>
     <div
       class="amountContainer"
@@ -71,7 +82,7 @@ exports[`<AutomationAmount /> should render formatted numbers as amount 1`] = `
         </span>
       </div>
     </div>
-  </label>
+  </div>
 </div>
 `;
 
@@ -81,7 +92,7 @@ exports[`<AutomationAmount /> should render not editable variant 1`] = `
     class="automationRow"
   >
     <div
-      class="align-middle addOnName"
+      class="align-middle checkboxLabel"
     >
       Automation
     </div>
@@ -116,23 +127,35 @@ exports[`<AutomationAmount /> should render not editable variant 1`] = `
 
 exports[`<AutomationAmount /> should render with abbreviated plan interval 1`] = `
 <div>
-  <label
-    class="automationRow form-check-label"
-    for="planId4"
+  <div
+    class="automationRow"
   >
-    <input
-      class="form-check-input checkbox form-check-input"
-      id="planId4"
-      type="checkbox"
-    />
     <div
-      class="align-middle addOnName checkboxLabel"
+      class="checkbox"
     >
-      <span
-        id="automation-text-planId4"
+      <label
+        class="label"
+        for="planId4"
       >
-        Automation
-      </span>
+        <input
+          class="input"
+          id="planId4"
+          name="planId4"
+          type="checkbox"
+        />
+        <div
+          class="align-middle checkboxLabel"
+        >
+          <span
+            id="automation-text-planId4"
+          >
+            Automation
+          </span>
+        </div>
+      </label>
+      <div
+        class="caption"
+      />
     </div>
     <div
       class="amountContainer"
@@ -159,6 +182,6 @@ exports[`<AutomationAmount /> should render with abbreviated plan interval 1`] =
         </span>
       </div>
     </div>
-  </label>
+  </div>
 </div>
 `;

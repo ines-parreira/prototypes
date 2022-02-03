@@ -153,13 +153,13 @@ exports[`<TicketAssignment/> render() should render selected channels 1`] = `
             >
               Auto-assign tickets
             </Label>
-            <CheckBox
+            <ForwardRef(CheckBox)
               isChecked={true}
               name="auto_assign_to_teams"
               onChange={[Function]}
             >
               Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available
-            </CheckBox>
+            </ForwardRef(CheckBox)>
           </FormGroup>
           <FormGroup
             className="inputField"
@@ -180,13 +180,13 @@ exports[`<TicketAssignment/> render() should render selected channels 1`] = `
             >
               Un-assign on reply
             </Label>
-            <CheckBox
+            <ForwardRef(CheckBox)
               isChecked={true}
               name="unassign_on_reply"
               onChange={[Function]}
             >
               When there is a new reply in a ticket of the following channels, if the user assigned to it is not available, un-assign the ticket
-            </CheckBox>
+            </ForwardRef(CheckBox)>
           </FormGroup>
           <div
             className="text-faded"
@@ -399,13 +399,13 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox c
             >
               Auto-assign tickets
             </Label>
-            <CheckBox
+            <ForwardRef(CheckBox)
               isChecked={true}
               name="auto_assign_to_teams"
               onChange={[Function]}
             >
               Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available
-            </CheckBox>
+            </ForwardRef(CheckBox)>
           </FormGroup>
           <FormGroup
             className="inputField"
@@ -426,13 +426,13 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox c
             >
               Un-assign on reply
             </Label>
-            <CheckBox
+            <ForwardRef(CheckBox)
               isChecked={true}
               name="unassign_on_reply"
               onChange={[Function]}
             >
               When there is a new reply in a ticket of the following channels, if the user assigned to it is not available, un-assign the ticket
-            </CheckBox>
+            </ForwardRef(CheckBox)>
           </FormGroup>
           <div
             className="text-faded"
@@ -645,13 +645,13 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox u
             >
               Auto-assign tickets
             </Label>
-            <CheckBox
+            <ForwardRef(CheckBox)
               isChecked={false}
               name="auto_assign_to_teams"
               onChange={[Function]}
             >
               Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available
-            </CheckBox>
+            </ForwardRef(CheckBox)>
           </FormGroup>
           <FormGroup
             className="inputField"
@@ -672,13 +672,13 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox u
             >
               Un-assign on reply
             </Label>
-            <CheckBox
+            <ForwardRef(CheckBox)
               isChecked={true}
               name="unassign_on_reply"
               onChange={[Function]}
             >
               When there is a new reply in a ticket of the following channels, if the user assigned to it is not available, un-assign the ticket
-            </CheckBox>
+            </ForwardRef(CheckBox)>
           </FormGroup>
           <div
             className="text-faded"
@@ -891,13 +891,13 @@ exports[`<TicketAssignment/> render() should render the "Save changes" button lo
             >
               Auto-assign tickets
             </Label>
-            <CheckBox
+            <ForwardRef(CheckBox)
               isChecked={true}
               name="auto_assign_to_teams"
               onChange={[Function]}
             >
               Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available
-            </CheckBox>
+            </ForwardRef(CheckBox)>
           </FormGroup>
           <FormGroup
             className="inputField"
@@ -918,13 +918,13 @@ exports[`<TicketAssignment/> render() should render the "Save changes" button lo
             >
               Un-assign on reply
             </Label>
-            <CheckBox
+            <ForwardRef(CheckBox)
               isChecked={false}
               name="unassign_on_reply"
               onChange={[Function]}
             >
               When there is a new reply in a ticket of the following channels, if the user assigned to it is not available, un-assign the ticket
-            </CheckBox>
+            </ForwardRef(CheckBox)>
           </FormGroup>
           <div
             className="text-faded"
@@ -1137,13 +1137,13 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
             >
               Auto-assign tickets
             </Label>
-            <CheckBox
+            <ForwardRef(CheckBox)
               isChecked={true}
               name="auto_assign_to_teams"
               onChange={[Function]}
             >
               Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available
-            </CheckBox>
+            </ForwardRef(CheckBox)>
           </FormGroup>
           <FormGroup
             className="inputField"
@@ -1164,13 +1164,13 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
             >
               Un-assign on reply
             </Label>
-            <CheckBox
+            <ForwardRef(CheckBox)
               isChecked={true}
               name="unassign_on_reply"
               onChange={[Function]}
             >
               When there is a new reply in a ticket of the following channels, if the user assigned to it is not available, un-assign the ticket
-            </CheckBox>
+            </ForwardRef(CheckBox)>
           </FormGroup>
           <div
             className="text-faded"
@@ -1383,13 +1383,13 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
             >
               Auto-assign tickets
             </Label>
-            <CheckBox
+            <ForwardRef(CheckBox)
               isChecked={false}
               name="auto_assign_to_teams"
               onChange={[Function]}
             >
               Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available
-            </CheckBox>
+            </ForwardRef(CheckBox)>
           </FormGroup>
           <FormGroup
             className="inputField"
@@ -1410,13 +1410,13 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
             >
               Un-assign on reply
             </Label>
-            <CheckBox
+            <ForwardRef(CheckBox)
               isChecked={true}
               name="unassign_on_reply"
               onChange={[Function]}
             >
               When there is a new reply in a ticket of the following channels, if the user assigned to it is not available, un-assign the ticket
-            </CheckBox>
+            </ForwardRef(CheckBox)>
           </FormGroup>
           <div
             className="text-faded"
@@ -1629,13 +1629,13 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
             >
               Auto-assign tickets
             </Label>
-            <CheckBox
+            <ForwardRef(CheckBox)
               isChecked={true}
               name="auto_assign_to_teams"
               onChange={[Function]}
             >
               Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available
-            </CheckBox>
+            </ForwardRef(CheckBox)>
           </FormGroup>
           <FormGroup
             className="inputField"
@@ -1656,13 +1656,13 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
             >
               Un-assign on reply
             </Label>
-            <CheckBox
+            <ForwardRef(CheckBox)
               isChecked={false}
               name="unassign_on_reply"
               onChange={[Function]}
             >
               When there is a new reply in a ticket of the following channels, if the user assigned to it is not available, un-assign the ticket
-            </CheckBox>
+            </ForwardRef(CheckBox)>
           </FormGroup>
           <div
             className="text-faded"

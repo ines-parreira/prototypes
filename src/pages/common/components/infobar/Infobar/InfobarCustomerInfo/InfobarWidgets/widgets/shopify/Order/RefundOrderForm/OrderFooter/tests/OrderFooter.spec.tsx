@@ -1,11 +1,12 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {fireEvent, render} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import {fromJS, Map} from 'immutable'
 
 import {
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../../../../../../../../../fixtures/shopify'
+} from 'fixtures/shopify'
 import {ShopifyActionType} from '../../../../types'
 import OrderFooter from '../OrderFooter'
 
@@ -30,7 +31,7 @@ describe('<OrderFooter/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const component = shallow(
+            const {container} = render(
                 <OrderFooter
                     editable
                     hasShippingLine
@@ -48,11 +49,11 @@ describe('<OrderFooter/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render for refund order action', () => {
-            const component = shallow(
+            const {container} = render(
                 <OrderFooter
                     editable
                     hasShippingLine
@@ -70,7 +71,7 @@ describe('<OrderFooter/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 
@@ -81,7 +82,7 @@ describe('<OrderFooter/>', () => {
                 any
             >
 
-            const component = shallow(
+            const {getByLabelText} = render(
                 <OrderFooter
                     editable
                     hasShippingLine
@@ -99,7 +100,9 @@ describe('<OrderFooter/>', () => {
                 />
             )
 
-            component.find({id: 'amount'}).simulate('change', '0.20')
+            fireEvent.change(getByLabelText(/Refund with: Manual/i), {
+                target: {value: '0.20'},
+            })
 
             expect(setPayload).toHaveBeenCalledWith(
                 payload.setIn(['transactions', 0, 'amount'], '0.20')
@@ -112,7 +115,7 @@ describe('<OrderFooter/>', () => {
                 any
             >
 
-            const component = shallow(
+            const {getByLabelText} = render(
                 <OrderFooter
                     editable
                     hasShippingLine
@@ -130,8 +133,9 @@ describe('<OrderFooter/>', () => {
                 />
             )
 
-            component.find({id: 'amount'}).simulate('change', '99.99')
-
+            fireEvent.change(getByLabelText(/Refund with: Manual/i), {
+                target: {value: '99.99'},
+            })
             expect(setPayload).toHaveBeenCalledWith(
                 payload.setIn(['transactions', 0, 'amount'], 1.2)
             )
@@ -145,7 +149,7 @@ describe('<OrderFooter/>', () => {
                 any
             >
 
-            const component = shallow(
+            const {getByLabelText} = render(
                 <OrderFooter
                     editable
                     hasShippingLine
@@ -164,11 +168,15 @@ describe('<OrderFooter/>', () => {
             )
 
             // Use custom amount to display discrepancy field
-            component.find({id: 'amount'}).simulate('change', '0.20')
-
-            component
-                .find({id: 'discrepancy-reason'})
-                .simulate('change', {target: {value: 'damage'}})
+            fireEvent.change(getByLabelText(/Refund with: Manual/i), {
+                target: {value: '0.20'},
+            })
+            fireEvent.change(
+                getByLabelText(/Reason for custom refund amount/i),
+                {
+                    target: {value: 'damage'},
+                }
+            )
 
             expect(setPayload).toHaveBeenCalledWith(
                 payload.set('discrepancy_reason', 'damage')
@@ -183,7 +191,7 @@ describe('<OrderFooter/>', () => {
                 any
             >
 
-            const component = shallow(
+            const {getByText} = render(
                 <OrderFooter
                     editable
                     hasShippingLine
@@ -201,10 +209,7 @@ describe('<OrderFooter/>', () => {
                 />
             )
 
-            component
-                .find({type: 'checkbox'})
-                .at(0)
-                .simulate('change', {target: {checked: false}})
+            userEvent.click(getByText(/Restock items/i))
 
             expect(setPayload).toHaveBeenCalledWith(
                 payload.set('restock', false)
@@ -216,7 +221,7 @@ describe('<OrderFooter/>', () => {
         it('should call onNotifyChange() with checkbox event', () => {
             const payload = fromJS(shopifyRefundOrderPayloadFixture())
 
-            const component = shallow(
+            const {getByText} = render(
                 <OrderFooter
                     editable
                     hasShippingLine
@@ -234,11 +239,9 @@ describe('<OrderFooter/>', () => {
                 />
             )
 
-            const event = {target: {checked: false}}
+            userEvent.click(getByText(/Send notification to customer/i))
 
-            component.find({type: 'checkbox'}).at(1).simulate('change', event)
-
-            expect(onNotifyChange).toHaveBeenCalledWith(event)
+            expect(onNotifyChange).toHaveBeenCalledWith(false)
         })
     })
 })

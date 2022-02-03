@@ -2,250 +2,203 @@
 
 exports[`<OrderTotals/> render() should render as loading 1`] = `
 <dl
-  className="row text-right mb-0"
+  class="row text-right mb-0"
 >
   <dt
-    className="col-7 mb-2 grey"
+    class="col-7 mb-2 grey"
   >
     Subtotal
   </dt>
   <dd
-    className="col-5 mb-2 text-muted"
+    class="col-5 mb-2 text-muted"
   >
-    <MoneyAmount
-      amount="1.00"
-      currencyCode="USD"
-      negative={false}
-      renderIfZero={true}
-    />
+    <span>
+      $1.00
+    </span>
   </dd>
   <dt
-    className="col-7 mb-2 grey"
+    class="col-7 mb-2 grey"
   >
     Discounts
   </dt>
   <dd
-    className="col-5 mb-2 text-muted"
+    class="col-5 mb-2 text-muted"
   >
-    <MoneyAmount
-      amount="0.00"
-      currencyCode="USD"
-      negative={true}
-      renderIfZero={false}
-    />
+    —
   </dd>
   <dt
-    className="col-7 mb-2 grey"
+    class="col-7 mb-2 grey"
   >
     Tax
   </dt>
   <dd
-    className="col-5 mb-2 text-muted"
+    class="col-5 mb-2 text-muted"
   >
-    <MoneyAmount
-      amount="0.20"
-      currencyCode="USD"
-      negative={false}
-      renderIfZero={false}
-    />
+    <span>
+      $0.20
+    </span>
   </dd>
   <dt
-    className="col-7 mb-2 grey"
+    class="col-7 mb-2 grey"
   >
     Total available to refund
   </dt>
   <dd
-    className="col-5 mb-2"
+    class="col-5 mb-2"
   >
-    <MoneyAmount
-      amount="1.20"
-      currencyCode="USD"
-      negative={false}
-      renderIfZero={true}
-    />
+    <span>
+      $1.20
+    </span>
   </dd>
 </dl>
 `;
 
 exports[`<OrderTotals/> render() should render as not loading 1`] = `
 <dl
-  className="row text-right mb-0"
+  class="row text-right mb-0"
 >
   <dt
-    className="col-7 mb-2 grey"
+    class="col-7 mb-2 grey"
   >
     Subtotal
   </dt>
   <dd
-    className="col-5 mb-2"
+    class="col-5 mb-2"
   >
-    <MoneyAmount
-      amount="1.00"
-      currencyCode="USD"
-      negative={false}
-      renderIfZero={true}
-    />
+    <span>
+      $1.00
+    </span>
   </dd>
   <dt
-    className="col-7 mb-2 grey"
+    class="col-7 mb-2 grey"
   >
     Discounts
   </dt>
   <dd
-    className="col-5 mb-2"
+    class="col-5 mb-2"
   >
-    <MoneyAmount
-      amount="0.00"
-      currencyCode="USD"
-      negative={true}
-      renderIfZero={false}
-    />
+    —
   </dd>
   <dt
-    className="col-7 mb-2 grey"
+    class="col-7 mb-2 grey"
   >
     Tax
   </dt>
   <dd
-    className="col-5 mb-2"
+    class="col-5 mb-2"
   >
-    <MoneyAmount
-      amount="0.20"
-      currencyCode="USD"
-      negative={false}
-      renderIfZero={false}
-    />
+    <span>
+      $0.20
+    </span>
   </dd>
   <dt
-    className="col-7 mb-2 grey"
+    class="col-7 mb-2 grey"
   >
     Total available to refund
   </dt>
   <dd
-    className="col-5 mb-2"
+    class="col-5 mb-2"
   >
-    <MoneyAmount
-      amount="1.20"
-      currencyCode="USD"
-      negative={false}
-      renderIfZero={true}
-    />
+    <span>
+      $1.20
+    </span>
   </dd>
 </dl>
 `;
 
 exports[`<OrderTotals/> render() should render with shipping line 1`] = `
 <dl
-  className="row text-right mb-0"
+  class="row text-right mb-0"
 >
   <dt
-    className="col-7 mb-2 grey"
+    class="col-7 mb-2 grey"
   >
     Subtotal
   </dt>
   <dd
-    className="col-5 mb-2"
+    class="col-5 mb-2"
   >
-    <MoneyAmount
-      amount="1.00"
-      currencyCode="USD"
-      negative={false}
-      renderIfZero={true}
-    />
+    <span>
+      $1.00
+    </span>
   </dd>
   <dt
-    className="col-7 grey mt-2"
+    class="col-7 grey mt-2"
   >
-    <Label
-      className="d-inline"
+    <label
+      class="d-inline"
       for="shipping"
-      tag="label"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       Shipping
        
       <span>
         (
-        <MoneyAmount
-          amount="9.99"
-          currencyCode="USD"
-          negative={false}
-          renderIfZero={true}
-        />
+        <span>
+          $9.99
+        </span>
          
         remaining)
       </span>
-    </Label>
+    </label>
   </dt>
   <dd
-    className="col-5 mb-2"
+    class="col-5 mb-2"
   >
-    <AmountInput
-      className="text-right"
-      currencyCode="USD"
-      disabled={false}
-      id="shipping"
-      max={9.99}
-      min={0}
-      onChange={[Function]}
-      required={true}
-      saveInputRef={[Function]}
-      symbol={null}
-      value="9.99"
-    />
+    <div
+      class="container text-right"
+    >
+      <span
+        class="leftLabel"
+        style="width: 2rem;"
+      >
+        $
+      </span>
+      <input
+        class="input form-control"
+        id="shipping"
+        max="9.99"
+        min="0"
+        required=""
+        step="0.01"
+        style="padding-left: 2rem;"
+        type="number"
+        value="9.99"
+      />
+    </div>
   </dd>
   <dt
-    className="col-7 mb-2 grey"
+    class="col-7 mb-2 grey"
   >
     Discounts
   </dt>
   <dd
-    className="col-5 mb-2"
+    class="col-5 mb-2"
   >
-    <MoneyAmount
-      amount="0.00"
-      currencyCode="USD"
-      negative={true}
-      renderIfZero={false}
-    />
+    —
   </dd>
   <dt
-    className="col-7 mb-2 grey"
+    class="col-7 mb-2 grey"
   >
     Tax
   </dt>
   <dd
-    className="col-5 mb-2"
+    class="col-5 mb-2"
   >
-    <MoneyAmount
-      amount="0.20"
-      currencyCode="USD"
-      negative={false}
-      renderIfZero={false}
-    />
+    <span>
+      $0.20
+    </span>
   </dd>
   <dt
-    className="col-7 mb-2 grey"
+    class="col-7 mb-2 grey"
   >
     Total available to refund
   </dt>
   <dd
-    className="col-5 mb-2"
+    class="col-5 mb-2"
   >
-    <MoneyAmount
-      amount="1.20"
-      currencyCode="USD"
-      negative={false}
-      renderIfZero={true}
-    />
+    <span>
+      $1.20
+    </span>
   </dd>
 </dl>
 `;

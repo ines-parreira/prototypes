@@ -1,143 +1,68 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<OrderFooter/> render() should render 1`] = `
-<Container
-  className="container"
-  fluid={true}
-  tag="div"
+<div
+  class="container container-fluid"
 >
-  <Row
-    tag="div"
-    widths={
-      Array [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
+  <div
+    class="row"
   >
-    <Col
-      tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
-      xl={
-        Object {
-          "order": 1,
-          "size": 7,
-        }
-      }
-      xs={
-        Object {
-          "order": 2,
-          "size": 12,
-        }
-      }
+    <div
+      class="col-12 order-2 col-xl-7 order-xl-1"
     >
-      <Row
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <div
+        class="row"
       >
-        <Col
-          lg={6}
-          tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-          xs={12}
+        <div
+          class="col-12 col-lg-6"
         >
-          <FormGroup
-            tag="div"
+          <div
+            class="form-group"
           >
-            <Label
+            <label
+              class=""
               for="amount"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
             >
               Refund with: Manual
-            </Label>
-            <AmountInput
-              className="amountInput"
-              currencyCode="USD"
-              disabled={false}
-              id="amount"
-              max={1.2}
-              min={0}
-              onChange={[Function]}
-              required={true}
-              saveInputRef={[Function]}
-              symbol={null}
-              value="1.00"
-            />
-          </FormGroup>
-        </Col>
-        <Col
-          lg={6}
-          tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-          xs={12}
+            </label>
+            <div
+              class="container amountInput"
+            >
+              <span
+                class="leftLabel"
+                style="width: 2rem;"
+              >
+                $
+              </span>
+              <input
+                class="input form-control"
+                id="amount"
+                max="1.2"
+                min="0"
+                required=""
+                step="0.01"
+                style="padding-left: 2rem;"
+                type="number"
+                value="1.00"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-12 col-lg-6"
         >
-          <FormGroup
-            tag="div"
+          <div
+            class="form-group"
           >
-            <Label
+            <label
+              class=""
               for="reason"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
             >
               Reason for canceling this order
-            </Label>
-            <Input
+            </label>
+            <select
+              class="form-control"
               id="reason"
-              onChange={[MockFunction]}
-              type="select"
-              value="customer"
             >
               <option
                 value="customer"
@@ -164,59 +89,28 @@ exports[`<OrderFooter/> render() should render 1`] = `
               >
                 Other
               </option>
-            </Input>
-          </FormGroup>
-        </Col>
-      </Row>
-      <Row
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+            </select>
+          </div>
+        </div>
+      </div>
+      <div
+        class="row"
       >
-        <Col
-          tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-          xs={12}
+        <div
+          class="col-12"
         >
-          <FormGroup
-            tag="div"
+          <div
+            class="form-group"
           >
-            <Label
+            <label
+              class=""
               for="discrepancy-reason"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
             >
               Reason for custom refund amount
-            </Label>
-            <Input
-              className="discrepancyReasonInput"
+            </label>
+            <select
+              class="discrepancyReasonInput form-control"
               id="discrepancy-reason"
-              onChange={[Function]}
-              type="select"
-              value="other"
             >
               <option
                 value="restock"
@@ -238,378 +132,252 @@ exports[`<OrderFooter/> render() should render 1`] = `
               >
                 Other
               </option>
-            </Input>
-            <FormText
-              color="muted"
-              tag="small"
+            </select>
+            <small
+              class="form-text text-muted"
             >
               The amount being refunded is different from the value of items being returned.
-            </FormText>
-          </FormGroup>
-          <FormGroup
-            check={true}
-            className="mb-3"
-            tag="div"
+            </small>
+          </div>
+          <div
+            class="mb-3"
           >
-            <Label
-              check={true}
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
+            <label
+              class="label hasCaption"
+              for="checkbox-1"
             >
-              <Input
-                checked={true}
-                disabled={false}
-                onChange={[Function]}
+              <input
+                checked=""
+                class="input"
+                id="checkbox-1"
+                name="checkbox-1"
                 type="checkbox"
               />
-              <span
-                className="ml-1"
-              >
-                Restock items
-              </span>
-            </Label>
-            <FormText
-              color="muted"
-              tag="small"
+              Restock items
+            </label>
+            <div
+              class="caption"
             >
               The claimed quantity for products in this order will be restocked back to your store.
-            </FormText>
-          </FormGroup>
-          <FormGroup
-            check={true}
-            className="mb-3"
-            tag="div"
+            </div>
+          </div>
+          <div
+            class="mb-3"
           >
-            <Label
-              check={true}
+            <label
+              class="label"
               for="notify-customer"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
             >
-              <Input
-                checked={true}
+              <input
+                checked=""
+                class="input"
                 id="notify-customer"
-                onChange={[MockFunction]}
+                name="notify-customer"
                 type="checkbox"
               />
-              <span
-                className="ml-1"
-              >
-                Send notification to customer
-              </span>
-            </Label>
-          </FormGroup>
-        </Col>
-      </Row>
-    </Col>
-    <Col
-      className="mb-sm-4"
-      tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
-      xl={
-        Object {
-          "order": 2,
-          "size": 5,
-        }
-      }
-      xs={
-        Object {
-          "order": 1,
-          "size": 12,
-        }
-      }
+              Send notification to customer
+            </label>
+            <div
+              class="caption"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="mb-sm-4 col-12 order-1 col-xl-5 order-xl-2"
     >
-      <OrderTotals
-        currencyCode="USD"
-        editable={true}
-        hasShippingLine={true}
-        loading={false}
-        onPayloadChange={[MockFunction]}
-        payload={
-          Immutable.Map {
-            "currency": "USD",
-            "restock": true,
-            "notify": true,
-            "refund_line_items": Immutable.List [
-              Immutable.Map {
-                "line_item_id": 4193100136471,
-                "restock_type": "cancel",
-                "fulfillment_status": null,
-                "quantity": 1,
-              },
-            ],
-            "shipping": Immutable.Map {
-              "amount": "0.00",
-            },
-            "transactions": Immutable.List [
-              Immutable.Map {
-                "amount": "1.00",
-              },
-            ],
-          }
-        }
-        refund={
-          Immutable.Map {
-            "shipping": Immutable.Map {
-              "amount": "0.00",
-              "tax": "0.00",
-              "maximum_refundable": "2.00",
-            },
-            "refund_line_items": Immutable.List [
-              Immutable.Map {
-                "subtotal": "1.00",
-                "location_id": 123,
-                "price": "1.00",
-                "discounted_price": "1.00",
-                "quantity": 1,
-                "discounted_total_price": "1.00",
-                "total_tax": "0.20",
-                "total_cart_discount_amount": "0.00",
-                "restock_type": "no_restock",
-                "line_item_id": 4193100136471,
-              },
-            ],
-            "transactions": Immutable.List [
-              Immutable.Map {
-                "order_id": 1894175539223,
-                "kind": "suggested_refund",
-                "gateway": "manual",
-                "parent_id": 2521452118039,
-                "amount": "1.20",
-                "currency": "USD",
-                "maximum_refundable": "1.20",
-              },
-            ],
-            "currency": "USD",
-          }
-        }
-      />
-    </Col>
-  </Row>
-</Container>
+      <dl
+        class="row text-right mb-0"
+      >
+        <dt
+          class="col-7 mb-2 grey"
+        >
+          Subtotal
+        </dt>
+        <dd
+          class="col-5 mb-2"
+        >
+          <span>
+            $1.00
+          </span>
+        </dd>
+        <dt
+          class="col-7 grey mt-2"
+        >
+          <label
+            class="d-inline"
+            for="shipping"
+          >
+            Shipping
+             
+            <span>
+              (
+              <span>
+                $2.00
+              </span>
+               
+              remaining)
+            </span>
+          </label>
+        </dt>
+        <dd
+          class="col-5 mb-2"
+        >
+          <div
+            class="container text-right"
+          >
+            <span
+              class="leftLabel"
+              style="width: 2rem;"
+            >
+              $
+            </span>
+            <input
+              class="input form-control"
+              id="shipping"
+              max="2"
+              min="0"
+              required=""
+              step="0.01"
+              style="padding-left: 2rem;"
+              type="number"
+              value="0.00"
+            />
+          </div>
+        </dd>
+        <dt
+          class="col-7 mb-2 grey"
+        >
+          Discounts
+        </dt>
+        <dd
+          class="col-5 mb-2"
+        >
+          —
+        </dd>
+        <dt
+          class="col-7 mb-2 grey"
+        >
+          Tax
+        </dt>
+        <dd
+          class="col-5 mb-2"
+        >
+          <span>
+            $0.20
+          </span>
+        </dd>
+        <dt
+          class="col-7 mb-2 grey"
+        >
+          Total available to refund
+        </dt>
+        <dd
+          class="col-5 mb-2"
+        >
+          <span>
+            $1.20
+          </span>
+        </dd>
+      </dl>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<OrderFooter/> render() should render for refund order action 1`] = `
-<Container
-  className="container"
-  fluid={true}
-  tag="div"
+<div
+  class="container container-fluid"
 >
-  <Row
-    tag="div"
-    widths={
-      Array [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
+  <div
+    class="row"
   >
-    <Col
-      tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
-      xl={
-        Object {
-          "order": 1,
-          "size": 7,
-        }
-      }
-      xs={
-        Object {
-          "order": 2,
-          "size": 12,
-        }
-      }
+    <div
+      class="col-12 order-2 col-xl-7 order-xl-1"
     >
-      <Row
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <div
+        class="row"
       >
-        <Col
-          lg={6}
-          tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-          xs={12}
+        <div
+          class="col-12 col-lg-6"
         >
-          <FormGroup
-            tag="div"
+          <div
+            class="form-group"
           >
-            <Label
+            <label
+              class=""
               for="amount"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
             >
               Refund with: Manual
-            </Label>
-            <AmountInput
-              className="amountInput"
-              currencyCode="USD"
-              disabled={false}
-              id="amount"
-              max={1.2}
-              min={0}
-              onChange={[Function]}
-              required={true}
-              saveInputRef={[Function]}
-              symbol={null}
-              value="1.00"
-            />
-          </FormGroup>
-        </Col>
-        <Col
-          lg={6}
-          tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-          xs={12}
+            </label>
+            <div
+              class="container amountInput"
+            >
+              <span
+                class="leftLabel"
+                style="width: 2rem;"
+              >
+                $
+              </span>
+              <input
+                class="input form-control"
+                id="amount"
+                max="1.2"
+                min="0"
+                required=""
+                step="0.01"
+                style="padding-left: 2rem;"
+                type="number"
+                value="1.00"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-12 col-lg-6"
         >
-          <FormGroup
-            tag="div"
+          <div
+            class="form-group"
           >
-            <Label
+            <label
+              class=""
               for="reason"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
             >
               Reason for refund
-            </Label>
-            <Input
+            </label>
+            <input
+              class="form-control"
               id="reason"
-              onChange={[MockFunction]}
               type="text"
               value=""
             />
-            <FormText
-              color="muted"
-              tag="small"
+            <small
+              class="form-text text-muted"
             >
               Only you and other staff can see this reason.
-            </FormText>
-          </FormGroup>
-        </Col>
-      </Row>
-      <Row
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+            </small>
+          </div>
+        </div>
+      </div>
+      <div
+        class="row"
       >
-        <Col
-          tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-          xs={12}
+        <div
+          class="col-12"
         >
-          <FormGroup
-            tag="div"
+          <div
+            class="form-group"
           >
-            <Label
+            <label
+              class=""
               for="discrepancy-reason"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
             >
               Reason for custom refund amount
-            </Label>
-            <Input
-              className="discrepancyReasonInput"
+            </label>
+            <select
+              class="discrepancyReasonInput form-control"
               id="discrepancy-reason"
-              onChange={[Function]}
-              type="select"
-              value="other"
             >
               <option
                 value="restock"
@@ -631,177 +399,156 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
               >
                 Other
               </option>
-            </Input>
-            <FormText
-              color="muted"
-              tag="small"
+            </select>
+            <small
+              class="form-text text-muted"
             >
               The amount being refunded is different from the value of items being returned.
-            </FormText>
-          </FormGroup>
-          <FormGroup
-            check={true}
-            className="mb-3"
-            tag="div"
+            </small>
+          </div>
+          <div
+            class="mb-3"
           >
-            <Label
-              check={true}
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
+            <label
+              class="label hasCaption"
+              for="checkbox-2"
             >
-              <Input
-                checked={true}
-                disabled={false}
-                onChange={[Function]}
+              <input
+                checked=""
+                class="input"
+                id="checkbox-2"
+                name="checkbox-2"
                 type="checkbox"
               />
-              <span
-                className="ml-1"
-              >
-                Restock items
-              </span>
-            </Label>
-            <FormText
-              color="muted"
-              tag="small"
+              Restock items
+            </label>
+            <div
+              class="caption"
             >
               The claimed quantity for products in this order will be restocked back to your store.
-            </FormText>
-          </FormGroup>
-          <FormGroup
-            check={true}
-            className="mb-3"
-            tag="div"
+            </div>
+          </div>
+          <div
+            class="mb-3"
           >
-            <Label
-              check={true}
+            <label
+              class="label"
               for="notify-customer"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
             >
-              <Input
-                checked={true}
+              <input
+                checked=""
+                class="input"
                 id="notify-customer"
-                onChange={[MockFunction]}
+                name="notify-customer"
                 type="checkbox"
               />
-              <span
-                className="ml-1"
-              >
-                Send notification to customer
-              </span>
-            </Label>
-          </FormGroup>
-        </Col>
-      </Row>
-    </Col>
-    <Col
-      className="mb-sm-4"
-      tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
-      xl={
-        Object {
-          "order": 2,
-          "size": 5,
-        }
-      }
-      xs={
-        Object {
-          "order": 1,
-          "size": 12,
-        }
-      }
+              Send notification to customer
+            </label>
+            <div
+              class="caption"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="mb-sm-4 col-12 order-1 col-xl-5 order-xl-2"
     >
-      <OrderTotals
-        currencyCode="USD"
-        editable={true}
-        hasShippingLine={true}
-        loading={false}
-        onPayloadChange={[MockFunction]}
-        payload={
-          Immutable.Map {
-            "currency": "USD",
-            "restock": true,
-            "notify": true,
-            "refund_line_items": Immutable.List [
-              Immutable.Map {
-                "line_item_id": 4193100136471,
-                "restock_type": "cancel",
-                "fulfillment_status": null,
-                "quantity": 1,
-              },
-            ],
-            "shipping": Immutable.Map {
-              "amount": "0.00",
-            },
-            "transactions": Immutable.List [
-              Immutable.Map {
-                "amount": "1.00",
-              },
-            ],
-          }
-        }
-        refund={
-          Immutable.Map {
-            "shipping": Immutable.Map {
-              "amount": "0.00",
-              "tax": "0.00",
-              "maximum_refundable": "2.00",
-            },
-            "refund_line_items": Immutable.List [
-              Immutable.Map {
-                "subtotal": "1.00",
-                "location_id": 123,
-                "price": "1.00",
-                "discounted_price": "1.00",
-                "quantity": 1,
-                "discounted_total_price": "1.00",
-                "total_tax": "0.20",
-                "total_cart_discount_amount": "0.00",
-                "restock_type": "no_restock",
-                "line_item_id": 4193100136471,
-              },
-            ],
-            "transactions": Immutable.List [
-              Immutable.Map {
-                "order_id": 1894175539223,
-                "kind": "suggested_refund",
-                "gateway": "manual",
-                "parent_id": 2521452118039,
-                "amount": "1.20",
-                "currency": "USD",
-                "maximum_refundable": "1.20",
-              },
-            ],
-            "currency": "USD",
-          }
-        }
-      />
-    </Col>
-  </Row>
-</Container>
+      <dl
+        class="row text-right mb-0"
+      >
+        <dt
+          class="col-7 mb-2 grey"
+        >
+          Subtotal
+        </dt>
+        <dd
+          class="col-5 mb-2"
+        >
+          <span>
+            $1.00
+          </span>
+        </dd>
+        <dt
+          class="col-7 grey mt-2"
+        >
+          <label
+            class="d-inline"
+            for="shipping"
+          >
+            Shipping
+             
+            <span>
+              (
+              <span>
+                $2.00
+              </span>
+               
+              remaining)
+            </span>
+          </label>
+        </dt>
+        <dd
+          class="col-5 mb-2"
+        >
+          <div
+            class="container text-right"
+          >
+            <span
+              class="leftLabel"
+              style="width: 2rem;"
+            >
+              $
+            </span>
+            <input
+              class="input form-control"
+              id="shipping"
+              max="2"
+              min="0"
+              required=""
+              step="0.01"
+              style="padding-left: 2rem;"
+              type="number"
+              value="0.00"
+            />
+          </div>
+        </dd>
+        <dt
+          class="col-7 mb-2 grey"
+        >
+          Discounts
+        </dt>
+        <dd
+          class="col-5 mb-2"
+        >
+          —
+        </dd>
+        <dt
+          class="col-7 mb-2 grey"
+        >
+          Tax
+        </dt>
+        <dd
+          class="col-5 mb-2"
+        >
+          <span>
+            $0.20
+          </span>
+        </dd>
+        <dt
+          class="col-7 mb-2 grey"
+        >
+          Total available to refund
+        </dt>
+        <dd
+          class="col-5 mb-2"
+        >
+          <span>
+            $1.20
+          </span>
+        </dd>
+      </dl>
+    </div>
+  </div>
+</div>
 `;

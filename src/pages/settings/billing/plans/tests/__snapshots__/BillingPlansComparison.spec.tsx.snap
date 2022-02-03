@@ -69,24 +69,36 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
         </div>
       </div>
       <div>
-        <label
-          class="automationRow form-check-label"
-          for="basic-monthly42"
+        <div
+          class="automationRow"
         >
-          <input
-            checked=""
-            class="form-check-input checkbox form-check-input"
-            id="basic-monthly42"
-            type="checkbox"
-          />
           <div
-            class="align-middle addOnName checkboxLabel"
+            class="checkbox"
           >
-            <span
-              id="automation-text-basic-monthly42"
+            <label
+              class="label"
+              for="basic-monthly42"
             >
-              Automation
-            </span>
+              <input
+                checked=""
+                class="input"
+                id="basic-monthly42"
+                name="basic-monthly42"
+                type="checkbox"
+              />
+              <div
+                class="align-middle checkboxLabel"
+              >
+                <span
+                  id="automation-text-basic-monthly42"
+                >
+                  Automation
+                </span>
+              </div>
+            </label>
+            <div
+              class="caption"
+            />
           </div>
           <div
             class="amountContainer"
@@ -113,7 +125,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
               </span>
             </div>
           </div>
-        </label>
+        </div>
       </div>
       <div
         class="cardBody card-body"
@@ -415,24 +427,36 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
         </div>
       </div>
       <div>
-        <label
-          class="automationRow form-check-label"
-          for="pro-monthly42"
+        <div
+          class="automationRow"
         >
-          <input
-            checked=""
-            class="form-check-input checkbox form-check-input"
-            id="pro-monthly42"
-            type="checkbox"
-          />
           <div
-            class="align-middle addOnName checkboxLabel"
+            class="checkbox"
           >
-            <span
-              id="automation-text-pro-monthly42"
+            <label
+              class="label"
+              for="pro-monthly42"
             >
-              Automation
-            </span>
+              <input
+                checked=""
+                class="input"
+                id="pro-monthly42"
+                name="pro-monthly42"
+                type="checkbox"
+              />
+              <div
+                class="align-middle checkboxLabel"
+              >
+                <span
+                  id="automation-text-pro-monthly42"
+                >
+                  Automation
+                </span>
+              </div>
+            </label>
+            <div
+              class="caption"
+            />
           </div>
           <div
             class="amountContainer"
@@ -459,7 +483,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
               </span>
             </div>
           </div>
-        </label>
+        </div>
       </div>
       <div
         class="cardBody card-body"
@@ -761,24 +785,36 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
         </div>
       </div>
       <div>
-        <label
-          class="automationRow form-check-label"
-          for="advanced-monthly42"
+        <div
+          class="automationRow"
         >
-          <input
-            checked=""
-            class="form-check-input checkbox form-check-input"
-            id="advanced-monthly42"
-            type="checkbox"
-          />
           <div
-            class="align-middle addOnName checkboxLabel"
+            class="checkbox"
           >
-            <span
-              id="automation-text-advanced-monthly42"
+            <label
+              class="label"
+              for="advanced-monthly42"
             >
-              Automation
-            </span>
+              <input
+                checked=""
+                class="input"
+                id="advanced-monthly42"
+                name="advanced-monthly42"
+                type="checkbox"
+              />
+              <div
+                class="align-middle checkboxLabel"
+              >
+                <span
+                  id="automation-text-advanced-monthly42"
+                >
+                  Automation
+                </span>
+              </div>
+            </label>
+            <div
+              class="caption"
+            />
           </div>
           <div
             class="amountContainer"
@@ -805,7 +841,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
               </span>
             </div>
           </div>
-        </label>
+        </div>
       </div>
       <div
         class="cardBody card-body"
@@ -1098,12 +1134,11 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
         </div>
       </div>
       <div>
-        <label
-          class="automationRow form-check-label"
-          for="enterprise42"
+        <div
+          class="automationRow"
         >
           <div
-            class="align-middle addOnName checkboxLabel"
+            class="align-middle checkboxLabel"
           >
             <span
               id="automation-text-enterprise42"
@@ -1118,7 +1153,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
               Custom price
             </i>
           </div>
-        </label>
+        </div>
       </div>
       <div
         class="cardBody card-body"
@@ -1472,12 +1507,11 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
         </div>
       </div>
       <div>
-        <label
-          class="automationRow form-check-label"
-          for="standard-usd-142"
+        <div
+          class="automationRow"
         >
           <div
-            class="align-middle addOnName checkboxLabel"
+            class="align-middle checkboxLabel"
           >
             <span
               id="automation-text-standard-usd-142"
@@ -1492,7 +1526,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
               ?
             </i>
           </div>
-        </label>
+        </div>
       </div>
       <div
         class="cardBody card-body"
@@ -1770,23 +1804,35 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
         </div>
       </div>
       <div>
-        <label
-          class="automationRow form-check-label"
-          for="basic-monthly42"
+        <div
+          class="automationRow"
         >
-          <input
-            class="form-check-input checkbox form-check-input"
-            id="basic-monthly42"
-            type="checkbox"
-          />
           <div
-            class="align-middle addOnName checkboxLabel"
+            class="checkbox"
           >
-            <span
-              id="automation-text-basic-monthly42"
+            <label
+              class="label"
+              for="basic-monthly42"
             >
-              Automation
-            </span>
+              <input
+                class="input"
+                id="basic-monthly42"
+                name="basic-monthly42"
+                type="checkbox"
+              />
+              <div
+                class="align-middle checkboxLabel"
+              >
+                <span
+                  id="automation-text-basic-monthly42"
+                >
+                  Automation
+                </span>
+              </div>
+            </label>
+            <div
+              class="caption"
+            />
           </div>
           <div
             class="amountContainer"
@@ -1813,7 +1859,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
               </span>
             </div>
           </div>
-        </label>
+        </div>
       </div>
       <div
         class="cardBody card-body"
@@ -2114,23 +2160,35 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
         </div>
       </div>
       <div>
-        <label
-          class="automationRow form-check-label"
-          for="pro-monthly42"
+        <div
+          class="automationRow"
         >
-          <input
-            class="form-check-input checkbox form-check-input"
-            id="pro-monthly42"
-            type="checkbox"
-          />
           <div
-            class="align-middle addOnName checkboxLabel"
+            class="checkbox"
           >
-            <span
-              id="automation-text-pro-monthly42"
+            <label
+              class="label"
+              for="pro-monthly42"
             >
-              Automation
-            </span>
+              <input
+                class="input"
+                id="pro-monthly42"
+                name="pro-monthly42"
+                type="checkbox"
+              />
+              <div
+                class="align-middle checkboxLabel"
+              >
+                <span
+                  id="automation-text-pro-monthly42"
+                >
+                  Automation
+                </span>
+              </div>
+            </label>
+            <div
+              class="caption"
+            />
           </div>
           <div
             class="amountContainer"
@@ -2157,7 +2215,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
               </span>
             </div>
           </div>
-        </label>
+        </div>
       </div>
       <div
         class="cardBody card-body"
@@ -2459,23 +2517,35 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
         </div>
       </div>
       <div>
-        <label
-          class="automationRow form-check-label"
-          for="advanced-monthly42"
+        <div
+          class="automationRow"
         >
-          <input
-            class="form-check-input checkbox form-check-input"
-            id="advanced-monthly42"
-            type="checkbox"
-          />
           <div
-            class="align-middle addOnName checkboxLabel"
+            class="checkbox"
           >
-            <span
-              id="automation-text-advanced-monthly42"
+            <label
+              class="label"
+              for="advanced-monthly42"
             >
-              Automation
-            </span>
+              <input
+                class="input"
+                id="advanced-monthly42"
+                name="advanced-monthly42"
+                type="checkbox"
+              />
+              <div
+                class="align-middle checkboxLabel"
+              >
+                <span
+                  id="automation-text-advanced-monthly42"
+                >
+                  Automation
+                </span>
+              </div>
+            </label>
+            <div
+              class="caption"
+            />
           </div>
           <div
             class="amountContainer"
@@ -2502,7 +2572,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
               </span>
             </div>
           </div>
-        </label>
+        </div>
       </div>
       <div
         class="cardBody card-body"
@@ -2795,12 +2865,11 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
         </div>
       </div>
       <div>
-        <label
-          class="automationRow form-check-label"
-          for="enterprise42"
+        <div
+          class="automationRow"
         >
           <div
-            class="align-middle addOnName checkboxLabel"
+            class="align-middle checkboxLabel"
           >
             <span
               id="automation-text-enterprise42"
@@ -2815,7 +2884,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
               Custom price
             </i>
           </div>
-        </label>
+        </div>
       </div>
       <div
         class="cardBody card-body"
@@ -3127,23 +3196,35 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
         </div>
       </div>
       <div>
-        <label
-          class="automationRow form-check-label"
-          for="basic-monthly42"
+        <div
+          class="automationRow"
         >
-          <input
-            class="form-check-input checkbox form-check-input"
-            id="basic-monthly42"
-            type="checkbox"
-          />
           <div
-            class="align-middle addOnName checkboxLabel"
+            class="checkbox"
           >
-            <span
-              id="automation-text-basic-monthly42"
+            <label
+              class="label"
+              for="basic-monthly42"
             >
-              Automation
-            </span>
+              <input
+                class="input"
+                id="basic-monthly42"
+                name="basic-monthly42"
+                type="checkbox"
+              />
+              <div
+                class="align-middle checkboxLabel"
+              >
+                <span
+                  id="automation-text-basic-monthly42"
+                >
+                  Automation
+                </span>
+              </div>
+            </label>
+            <div
+              class="caption"
+            />
           </div>
           <div
             class="amountContainer"
@@ -3170,7 +3251,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
               </span>
             </div>
           </div>
-        </label>
+        </div>
       </div>
       <div
         class="cardBody card-body"
@@ -3471,23 +3552,35 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
         </div>
       </div>
       <div>
-        <label
-          class="automationRow form-check-label"
-          for="pro-monthly42"
+        <div
+          class="automationRow"
         >
-          <input
-            class="form-check-input checkbox form-check-input"
-            id="pro-monthly42"
-            type="checkbox"
-          />
           <div
-            class="align-middle addOnName checkboxLabel"
+            class="checkbox"
           >
-            <span
-              id="automation-text-pro-monthly42"
+            <label
+              class="label"
+              for="pro-monthly42"
             >
-              Automation
-            </span>
+              <input
+                class="input"
+                id="pro-monthly42"
+                name="pro-monthly42"
+                type="checkbox"
+              />
+              <div
+                class="align-middle checkboxLabel"
+              >
+                <span
+                  id="automation-text-pro-monthly42"
+                >
+                  Automation
+                </span>
+              </div>
+            </label>
+            <div
+              class="caption"
+            />
           </div>
           <div
             class="amountContainer"
@@ -3514,7 +3607,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
               </span>
             </div>
           </div>
-        </label>
+        </div>
       </div>
       <div
         class="cardBody card-body"
@@ -3816,23 +3909,35 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
         </div>
       </div>
       <div>
-        <label
-          class="automationRow form-check-label"
-          for="advanced-monthly42"
+        <div
+          class="automationRow"
         >
-          <input
-            class="form-check-input checkbox form-check-input"
-            id="advanced-monthly42"
-            type="checkbox"
-          />
           <div
-            class="align-middle addOnName checkboxLabel"
+            class="checkbox"
           >
-            <span
-              id="automation-text-advanced-monthly42"
+            <label
+              class="label"
+              for="advanced-monthly42"
             >
-              Automation
-            </span>
+              <input
+                class="input"
+                id="advanced-monthly42"
+                name="advanced-monthly42"
+                type="checkbox"
+              />
+              <div
+                class="align-middle checkboxLabel"
+              >
+                <span
+                  id="automation-text-advanced-monthly42"
+                >
+                  Automation
+                </span>
+              </div>
+            </label>
+            <div
+              class="caption"
+            />
           </div>
           <div
             class="amountContainer"
@@ -3859,7 +3964,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
               </span>
             </div>
           </div>
-        </label>
+        </div>
       </div>
       <div
         class="cardBody card-body"
@@ -4152,12 +4257,11 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
         </div>
       </div>
       <div>
-        <label
-          class="automationRow form-check-label"
-          for="enterprise42"
+        <div
+          class="automationRow"
         >
           <div
-            class="align-middle addOnName checkboxLabel"
+            class="align-middle checkboxLabel"
           >
             <span
               id="automation-text-enterprise42"
@@ -4172,7 +4276,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
               Custom price
             </i>
           </div>
-        </label>
+        </div>
       </div>
       <div
         class="cardBody card-body"
@@ -4491,23 +4595,35 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
         </div>
       </div>
       <div>
-        <label
-          class="automationRow form-check-label"
-          for="basic-monthly42"
+        <div
+          class="automationRow"
         >
-          <input
-            class="form-check-input checkbox form-check-input"
-            id="basic-monthly42"
-            type="checkbox"
-          />
           <div
-            class="align-middle addOnName checkboxLabel"
+            class="checkbox"
           >
-            <span
-              id="automation-text-basic-monthly42"
+            <label
+              class="label"
+              for="basic-monthly42"
             >
-              Automation
-            </span>
+              <input
+                class="input"
+                id="basic-monthly42"
+                name="basic-monthly42"
+                type="checkbox"
+              />
+              <div
+                class="align-middle checkboxLabel"
+              >
+                <span
+                  id="automation-text-basic-monthly42"
+                >
+                  Automation
+                </span>
+              </div>
+            </label>
+            <div
+              class="caption"
+            />
           </div>
           <div
             class="amountContainer"
@@ -4534,7 +4650,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
               </span>
             </div>
           </div>
-        </label>
+        </div>
       </div>
       <div
         class="cardBody card-body"
@@ -4836,23 +4952,35 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
         </div>
       </div>
       <div>
-        <label
-          class="automationRow form-check-label"
-          for="pro-monthly42"
+        <div
+          class="automationRow"
         >
-          <input
-            class="form-check-input checkbox form-check-input"
-            id="pro-monthly42"
-            type="checkbox"
-          />
           <div
-            class="align-middle addOnName checkboxLabel"
+            class="checkbox"
           >
-            <span
-              id="automation-text-pro-monthly42"
+            <label
+              class="label"
+              for="pro-monthly42"
             >
-              Automation
-            </span>
+              <input
+                class="input"
+                id="pro-monthly42"
+                name="pro-monthly42"
+                type="checkbox"
+              />
+              <div
+                class="align-middle checkboxLabel"
+              >
+                <span
+                  id="automation-text-pro-monthly42"
+                >
+                  Automation
+                </span>
+              </div>
+            </label>
+            <div
+              class="caption"
+            />
           </div>
           <div
             class="amountContainer"
@@ -4879,7 +5007,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
               </span>
             </div>
           </div>
-        </label>
+        </div>
       </div>
       <div
         class="cardBody card-body"
@@ -5182,23 +5310,35 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
         </div>
       </div>
       <div>
-        <label
-          class="automationRow form-check-label"
-          for="advanced-monthly42"
+        <div
+          class="automationRow"
         >
-          <input
-            class="form-check-input checkbox form-check-input"
-            id="advanced-monthly42"
-            type="checkbox"
-          />
           <div
-            class="align-middle addOnName checkboxLabel"
+            class="checkbox"
           >
-            <span
-              id="automation-text-advanced-monthly42"
+            <label
+              class="label"
+              for="advanced-monthly42"
             >
-              Automation
-            </span>
+              <input
+                class="input"
+                id="advanced-monthly42"
+                name="advanced-monthly42"
+                type="checkbox"
+              />
+              <div
+                class="align-middle checkboxLabel"
+              >
+                <span
+                  id="automation-text-advanced-monthly42"
+                >
+                  Automation
+                </span>
+              </div>
+            </label>
+            <div
+              class="caption"
+            />
           </div>
           <div
             class="amountContainer"
@@ -5225,7 +5365,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
               </span>
             </div>
           </div>
-        </label>
+        </div>
       </div>
       <div
         class="cardBody card-body"
@@ -5519,12 +5659,11 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
         </div>
       </div>
       <div>
-        <label
-          class="automationRow form-check-label"
-          for="enterprise42"
+        <div
+          class="automationRow"
         >
           <div
-            class="align-middle addOnName checkboxLabel"
+            class="align-middle checkboxLabel"
           >
             <span
               id="automation-text-enterprise42"
@@ -5539,7 +5678,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
               Custom price
             </i>
           </div>
-        </label>
+        </div>
       </div>
       <div
         class="cardBody card-body"

@@ -18,7 +18,7 @@ type Props = {
     onPayloadChange: (payload: Map<any, any>) => void
     onLineItemChange: (lineItem: Map<string, any>, index: number) => void
     onReasonChange: (event: ChangeEvent<HTMLInputElement>) => void
-    onNotifyChange: (event: ChangeEvent<HTMLInputElement>) => void
+    onNotifyChange: (newValue: boolean) => void
 }
 
 export default function RefundOrderForm({

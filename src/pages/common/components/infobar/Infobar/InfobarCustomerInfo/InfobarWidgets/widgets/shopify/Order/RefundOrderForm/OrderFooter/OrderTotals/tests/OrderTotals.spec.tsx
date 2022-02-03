@@ -1,11 +1,11 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {fireEvent, render} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 
 import {
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../../../../../../../../../../fixtures/shopify'
+} from 'fixtures/shopify'
 import OrderTotals from '../OrderTotals'
 
 jest.mock('lodash/debounce', () => {
@@ -28,7 +28,7 @@ describe('<OrderTotals/>', () => {
 
     describe('render()', () => {
         it('should render as loading', () => {
-            const component = shallow(
+            const {container} = render(
                 <OrderTotals
                     editable
                     hasShippingLine={false}
@@ -40,11 +40,11 @@ describe('<OrderTotals/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render as not loading', () => {
-            const component = shallow(
+            const {container} = render(
                 <OrderTotals
                     editable
                     hasShippingLine={false}
@@ -56,7 +56,7 @@ describe('<OrderTotals/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with shipping line', () => {
@@ -65,7 +65,7 @@ describe('<OrderTotals/>', () => {
                 .setIn(['shipping', 'amount'], '9.99')
                 .setIn(['shipping', 'maximum_refundable'], '9.99')
 
-            const component = shallow(
+            const {container} = render(
                 <OrderTotals
                     editable
                     hasShippingLine
@@ -77,7 +77,7 @@ describe('<OrderTotals/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 
@@ -88,7 +88,7 @@ describe('<OrderTotals/>', () => {
                 .setIn(['shipping', 'amount'], '9.99')
                 .setIn(['shipping', 'maximum_refundable'], '9.99')
 
-            const component = shallow(
+            const {getByLabelText} = render(
                 <OrderTotals
                     editable
                     hasShippingLine
@@ -100,9 +100,9 @@ describe('<OrderTotals/>', () => {
                 />
             )
 
-            ;(
-                component.instance() as InstanceType<typeof OrderTotals>
-            )._onShippingChange('9.00')
+            fireEvent.change(getByLabelText(/Shipping/i), {
+                target: {value: '9.00'},
+            })
 
             const newPayload = payload.setIn(['shipping', 'amount'], '9.00')
             expect(onPayloadChange).toHaveBeenCalledWith(newPayload)
@@ -114,7 +114,7 @@ describe('<OrderTotals/>', () => {
                 .setIn(['shipping', 'amount'], '9.00')
                 .setIn(['shipping', 'maximum_refundable'], '9.00')
 
-            const component = shallow(
+            const {getByLabelText} = render(
                 <OrderTotals
                     editable
                     hasShippingLine
@@ -126,9 +126,9 @@ describe('<OrderTotals/>', () => {
                 />
             )
 
-            ;(
-                component.instance() as InstanceType<typeof OrderTotals>
-            )._onShippingChange('9')
+            fireEvent.change(getByLabelText(/Shipping/i), {
+                target: {value: '9'},
+            })
 
             expect(onPayloadChange).not.toHaveBeenCalled()
         })

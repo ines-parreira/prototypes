@@ -2665,20 +2665,20 @@ exports[`YourProfileView render should render current user profile form 1`] = `
           className="inputField mb32 body-regular"
           tag="div"
         >
-          <CheckBox
+          <ForwardRef(CheckBox)
             className="mb-2"
             name="show_macros"
             onChange={[Function]}
           >
             Display macros by default on emails
-          </CheckBox>
-          <CheckBox
+          </ForwardRef(CheckBox)>
+          <ForwardRef(CheckBox)
             isChecked={true}
             name="show_macros_suggestions"
             onChange={[Function]}
           >
             Display macros suggestions in message editor
-          </CheckBox>
+          </ForwardRef(CheckBox)>
         </FormGroup>
         <FormGroup
           className="inputField mb40"

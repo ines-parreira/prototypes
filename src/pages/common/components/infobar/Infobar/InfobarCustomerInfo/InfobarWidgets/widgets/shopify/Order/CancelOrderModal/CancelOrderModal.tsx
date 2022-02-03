@@ -113,9 +113,8 @@ export const CancelOrderModalContainer = ({
         newPayload && setPayload(newPayload)
     }
 
-    const handleNotifyChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const {checked} = event.target
-        const newPayload = payload?.set('email', checked)
+    const handleNotifyChange = (newValue: boolean) => {
+        const newPayload = payload?.set('email', newValue)
 
         newPayload && setPayload(newPayload)
     }

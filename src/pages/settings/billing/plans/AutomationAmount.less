@@ -40,49 +40,12 @@
     }
 
     .checkbox {
-        visibility: hidden;
-
-        ~ .checkboxLabel {
-            padding-left: 24px;
-
-            p {
-                margin-top: 0;
-            }
-        }
-
-        ~ .checkboxLabel::after {
-            background-color: @classic-neutral-grey-0;
-            background-position: center top 2px, 0 0;
-            background-repeat: no-repeat;
-            border: 1px solid @classic-neutral-grey-3;
-            border-radius: 2px;
-            box-sizing: border-box;
-            content: '';
-            height: 16px;
-            left: 0;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 16px;
-            will-change: background-color;
-            z-index: 2;
-        }
-
-        &:checked ~ .checkboxLabel::after {
-            background-color: @classic-main-primary;
-            background-image: url('data:image/svg+xml;utf8,<svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.00009 6.77988L1.68676 4.46655C1.42676 4.20655 1.00676 4.20655 0.746758 4.46655C0.486758 4.72655 0.486758 5.14655 0.746758 5.40655L3.53342 8.19322C3.79342 8.45322 4.21342 8.45322 4.47342 8.19322L11.5268 1.13988C11.7868 0.879883 11.7868 0.459883 11.5268 0.199883C11.2668 -0.0601172 10.8468 -0.0601172 10.5868 0.199883L4.00009 6.77988Z" fill="white"/></svg>');
-            border: 2px solid @classic-main-primary;
-        }
-    }
-
-    .addOnName {
-        color: @classic-neutral-grey-6;
-        font-weight: 600;
-        position: relative;
+        margin-bottom: 0;
     }
 
     .checkboxLabel {
-        cursor: pointer;
+        color: @classic-neutral-grey-6;
+        font-weight: 600;
 
         span {
             border-bottom: 2px dotted @classic-neutral-grey-3;

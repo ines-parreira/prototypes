@@ -14,7 +14,8 @@ import {
     getRefundAmount,
     getTotalAvailableToRefund,
     getTotalQuantities,
-} from '../../../../../../../../../../../../business/shopify/refund'
+} from 'business/shopify/refund'
+import CheckBox from 'pages/common/forms/CheckBox'
 import {ShopifyActionType} from '../../../types'
 import AmountInput from '../../../shared/AmountInput/AmountInput'
 
@@ -34,7 +35,7 @@ type Props = {
     setPayload: (payload: Map<any, any>) => void
     onPayloadChange: (payload: Map<any, any>) => void
     onReasonChange: (event: ChangeEvent<HTMLInputElement>) => void
-    onNotifyChange: (event: ChangeEvent<HTMLInputElement>) => void
+    onNotifyChange: (newValue: boolean) => void
 }
 
 export default class OrderFooter extends React.PureComponent<Props> {
@@ -58,10 +59,9 @@ export default class OrderFooter extends React.PureComponent<Props> {
         setPayload(newPayload)
     }
 
-    _onRestockItemsChange = (event: ChangeEvent<HTMLInputElement>) => {
+    _onRestockItemsChange = (newValue: boolean) => {
         const {payload, setPayload} = this.props
-        const restock = event.target.checked
-        const newPayload = payload.set('restock', restock)
+        const newPayload = payload.set('restock', newValue)
 
         setPayload(newPayload)
     }
@@ -192,42 +192,25 @@ export default class OrderFooter extends React.PureComponent<Props> {
                                         </FormText>
                                     </FormGroup>
                                 )}
-                                <FormGroup check className="mb-3">
-                                    <Label check>
-                                        <Input
-                                            type="checkbox"
-                                            checked={payload.get(
-                                                'restock',
-                                                false
-                                            )}
-                                            disabled={totalQuantities === 0}
-                                            onChange={
-                                                this._onRestockItemsChange
-                                            }
-                                        />
-                                        <span className="ml-1">
-                                            Restock items
-                                        </span>
-                                    </Label>
-                                    <FormText color="muted">
-                                        The claimed quantity for products in
+                                <CheckBox
+                                    className="mb-3"
+                                    isChecked={payload.get('restock', false)}
+                                    isDisabled={totalQuantities === 0}
+                                    onChange={this._onRestockItemsChange}
+                                    caption="The claimed quantity for products in
                                         this order will be restocked back to
-                                        your store.
-                                    </FormText>
-                                </FormGroup>
-                                <FormGroup check className="mb-3">
-                                    <Label for="notify-customer" check>
-                                        <Input
-                                            id="notify-customer"
-                                            type="checkbox"
-                                            checked={notify}
-                                            onChange={onNotifyChange}
-                                        />
-                                        <span className="ml-1">
-                                            Send notification to customer
-                                        </span>
-                                    </Label>
-                                </FormGroup>
+                                        your store."
+                                >
+                                    Restock items
+                                </CheckBox>
+                                <CheckBox
+                                    className="mb-3"
+                                    name="notify-customer"
+                                    isChecked={notify}
+                                    onChange={onNotifyChange}
+                                >
+                                    Send notification to customer
+                                </CheckBox>
                             </Col>
                         </Row>
                     </Col>

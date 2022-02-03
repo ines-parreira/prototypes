@@ -90,9 +90,8 @@ export const RefundOrderModalContainer = ({
         newPayload && setPayload(newPayload)
     }
 
-    const handleNotifyChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const {checked} = event.target
-        const newPayload = payload?.set('notify', checked)
+    const handleNotifyChange = (newValue: boolean) => {
+        const newPayload = payload?.set('notify', newValue)
 
         newPayload && setPayload(newPayload)
     }

@@ -328,7 +328,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                         <p>
                           When a customer opens the chat, select the quick replies the customer can click on.
                         </p>
-                        <CheckBox
+                        <ForwardRef(CheckBox)
                           isChecked={false}
                           name="quickRepliesEnabled"
                           onChange={[Function]}
@@ -353,7 +353,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                               className="caption"
                             />
                           </div>
-                        </CheckBox>
+                        </ForwardRef(CheckBox)>
                       </div>
                       <ListField
                         className="mb-5"
@@ -1204,7 +1204,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                         <p>
                           When a customer opens the chat, select the quick replies the customer can click on.
                         </p>
-                        <CheckBox
+                        <ForwardRef(CheckBox)
                           isChecked={true}
                           name="quickRepliesEnabled"
                           onChange={[Function]}
@@ -1229,7 +1229,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                               className="caption"
                             />
                           </div>
-                        </CheckBox>
+                        </ForwardRef(CheckBox)>
                       </div>
                       <ListField
                         className="mb-5"

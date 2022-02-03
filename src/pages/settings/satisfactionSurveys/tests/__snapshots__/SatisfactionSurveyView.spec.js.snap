@@ -491,7 +491,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                             Send survey email for following channels
                           </label>
                         </Label>
-                        <CheckBox
+                        <ForwardRef(CheckBox)
                           className="mb8"
                           name="send_survey_on_email"
                           onChange={[Function]}
@@ -518,8 +518,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                               className="caption"
                             />
                           </div>
-                        </CheckBox>
-                        <CheckBox
+                        </ForwardRef(CheckBox)>
+                        <ForwardRef(CheckBox)
                           name="send_survey_on_chat"
                           onChange={[Function]}
                         >
@@ -543,7 +543,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                               className="caption"
                             />
                           </div>
-                        </CheckBox>
+                        </ForwardRef(CheckBox)>
                       </div>
                     </FormGroup>
                     <FormGroup

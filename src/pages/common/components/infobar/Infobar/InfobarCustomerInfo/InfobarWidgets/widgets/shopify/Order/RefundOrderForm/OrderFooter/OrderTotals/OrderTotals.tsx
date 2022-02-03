@@ -4,13 +4,13 @@ import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 import {Map} from 'immutable'
 
-import {formatPrice} from '../../../../../../../../../../../../../business/shopify/number'
+import {formatPrice} from 'business/shopify/number'
 import {
     getSubtotal,
     getTotalAvailableToRefund,
     getTotalCartDiscountAmount,
     getTotalTax,
-} from '../../../../../../../../../../../../../business/shopify/refund'
+} from 'business/shopify/refund'
 import MoneyAmount from '../../../../../MoneyAmount'
 import AmountInput from '../../../../shared/AmountInput/AmountInput'
 
@@ -35,18 +35,21 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
         shipping: this.props.payload.getIn(['shipping', 'amount']),
     }
 
+    componentDidUpdate(prevProps: Props, prevState: State) {
+        if (
+            parseFloat(prevState.shipping) !== parseFloat(this.state.shipping)
+        ) {
+            this._updatePayload()
+        }
+    }
+
     _onShippingChange = (value: string) => {
         const {refund, currencyCode} = this.props
-        const {shipping} = this.state
         const max = parseFloat(refund.getIn(['shipping', 'maximum_refundable']))
         const newValue = parseFloat(value) > max ? max : value
         const newShipping = newValue.toString() || formatPrice(0, currencyCode)
 
         this.setState({shipping: newShipping})
-
-        if (parseFloat(shipping) !== parseFloat(newShipping)) {
-            this._updatePayload()
-        }
     }
 
     _updatePayload = _debounce(() => {

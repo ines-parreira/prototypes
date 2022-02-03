@@ -436,46 +436,45 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                 </small>
               </div>
               <div
-                class="mb-3 form-check"
+                class="mb-3"
               >
                 <label
-                  class="form-check-label"
+                  class="label hasCaption"
+                  for="checkbox-2"
                 >
                   <input
-                    class="form-check-input"
+                    class="input"
+                    id="checkbox-2"
+                    name="checkbox-2"
                     type="checkbox"
                   />
-                  <span
-                    class="ml-1"
-                  >
-                    Restock items
-                  </span>
+                  Restock items
                 </label>
-                <small
-                  class="form-text text-muted"
+                <div
+                  class="caption"
                 >
                   The claimed quantity for products in this order will be restocked back to your store.
-                </small>
+                </div>
               </div>
               <div
-                class="mb-3 form-check"
+                class="mb-3"
               >
                 <label
-                  class="form-check-label"
+                  class="label"
                   for="notify-customer"
                 >
                   <input
                     checked=""
-                    class="form-check-input"
+                    class="input"
                     id="notify-customer"
+                    name="notify-customer"
                     type="checkbox"
                   />
-                  <span
-                    class="ml-1"
-                  >
-                    Send notification to customer
-                  </span>
+                  Send notification to customer
                 </label>
+                <div
+                  class="caption"
+                />
               </div>
             </div>
           </div>
@@ -719,46 +718,45 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
                 </small>
               </div>
               <div
-                class="mb-3 form-check"
+                class="mb-3"
               >
                 <label
-                  class="form-check-label"
+                  class="label hasCaption"
+                  for="checkbox-1"
                 >
                   <input
-                    class="form-check-input"
+                    class="input"
+                    id="checkbox-1"
+                    name="checkbox-1"
                     type="checkbox"
                   />
-                  <span
-                    class="ml-1"
-                  >
-                    Restock items
-                  </span>
+                  Restock items
                 </label>
-                <small
-                  class="form-text text-muted"
+                <div
+                  class="caption"
                 >
                   The claimed quantity for products in this order will be restocked back to your store.
-                </small>
+                </div>
               </div>
               <div
-                class="mb-3 form-check"
+                class="mb-3"
               >
                 <label
-                  class="form-check-label"
+                  class="label"
                   for="notify-customer"
                 >
                   <input
                     checked=""
-                    class="form-check-input"
+                    class="input"
                     id="notify-customer"
+                    name="notify-customer"
                     type="checkbox"
                   />
-                  <span
-                    class="ml-1"
-                  >
-                    Send notification to customer
-                  </span>
+                  Send notification to customer
                 </label>
+                <div
+                  class="caption"
+                />
               </div>
             </div>
           </div>

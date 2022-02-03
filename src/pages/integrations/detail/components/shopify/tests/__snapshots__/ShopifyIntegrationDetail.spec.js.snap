@@ -116,13 +116,13 @@ exports[`ShopifyIntegrationDetail should render the page for a deactivated integ
             >
               Synchronization settings
             </Label>
-            <CheckBox
+            <ForwardRef(CheckBox)
               isChecked={true}
               name="sync_customer_notes"
               onChange={[Function]}
             >
               Synchronize customer notes
-            </CheckBox>
+            </ForwardRef(CheckBox)>
           </div>
           <div
             className="text-faded mb-4"
@@ -417,13 +417,13 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
             >
               Synchronization settings
             </Label>
-            <CheckBox
+            <ForwardRef(CheckBox)
               isChecked={true}
               name="sync_customer_notes"
               onChange={[Function]}
             >
               Synchronize customer notes
-            </CheckBox>
+            </ForwardRef(CheckBox)>
           </div>
           <div
             className="text-faded mb-4"
@@ -611,13 +611,13 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
             >
               Synchronization settings
             </Label>
-            <CheckBox
+            <ForwardRef(CheckBox)
               isChecked={true}
               name="sync_customer_notes"
               onChange={[Function]}
             >
               Synchronize customer notes
-            </CheckBox>
+            </ForwardRef(CheckBox)>
           </div>
           <div
             className="text-faded mb-4"
@@ -793,13 +793,13 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
             >
               Synchronization settings
             </Label>
-            <CheckBox
+            <ForwardRef(CheckBox)
               isChecked={true}
               name="sync_customer_notes"
               onChange={[Function]}
             >
               Synchronize customer notes
-            </CheckBox>
+            </ForwardRef(CheckBox)>
           </div>
           <div
             className="text-faded mb-4"
@@ -975,13 +975,13 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
             >
               Synchronization settings
             </Label>
-            <CheckBox
+            <ForwardRef(CheckBox)
               isChecked={true}
               name="sync_customer_notes"
               onChange={[Function]}
             >
               Synchronize customer notes
-            </CheckBox>
+            </ForwardRef(CheckBox)>
           </div>
           <div
             className="text-faded mb-4"
@@ -1276,13 +1276,13 @@ exports[`ShopifyIntegrationDetail should render the page to update an existing i
             >
               Synchronization settings
             </Label>
-            <CheckBox
+            <ForwardRef(CheckBox)
               isChecked={true}
               name="sync_customer_notes"
               onChange={[Function]}
             >
               Synchronize customer notes
-            </CheckBox>
+            </ForwardRef(CheckBox)>
           </div>
           <div
             className="text-faded mb-4"

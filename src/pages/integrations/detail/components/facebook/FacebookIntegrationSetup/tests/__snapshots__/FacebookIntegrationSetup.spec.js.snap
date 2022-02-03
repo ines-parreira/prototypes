@@ -292,7 +292,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                   className="mr-5"
                   tag="div"
                 >
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -300,8 +300,8 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     onChange={[Function]}
                   >
                     Enable Messenger
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -309,8 +309,8 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     onChange={[Function]}
                   >
                     Enable Facebook posts, comments and ads comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -318,8 +318,8 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     onChange={[Function]}
                   >
                     Enable Facebook recommendations
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -327,8 +327,8 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     onChange={[Function]}
                   >
                     Enable Facebook mentions
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -336,8 +336,8 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     onChange={[Function]}
                   >
                     Enable Instagram comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -345,14 +345,14 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     onChange={[Function]}
                   >
                     Enable Instagram mentions
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <CheckBox
+                          <ForwardRef(CheckBox)
                             className="mb-2"
                             isChecked={false}
                             isDisabled={false}
@@ -366,7 +366,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                                 Enable Instagram direct messages
                               </span>
                             </div>
-                          </CheckBox>
+                          </ForwardRef(CheckBox)>
                         </td>
                         <td
                           className="pl-0"
@@ -374,7 +374,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                       </tr>
                     </tbody>
                   </table>
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -382,7 +382,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     onChange={[Function]}
                   >
                     Enable Instagram ads
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                 </FormGroup>
               </div>
               <div>
@@ -398,7 +398,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     className="mr-5"
                     tag="div"
                   >
-                    <CheckBox
+                    <ForwardRef(CheckBox)
                       className="mb-2"
                       isChecked={false}
                       isDisabled={false}
@@ -406,7 +406,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                       onChange={[Function]}
                     >
                       Import 30 days of history (posts and comments) as closed tickets
-                    </CheckBox>
+                    </ForwardRef(CheckBox)>
                   </FormGroup>
                 </div>
               </div>
@@ -560,7 +560,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                   className="mr-5"
                   tag="div"
                 >
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -568,8 +568,8 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     onChange={[Function]}
                   >
                     Enable Messenger
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -577,8 +577,8 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     onChange={[Function]}
                   >
                     Enable Facebook posts, comments and ads comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -586,8 +586,8 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     onChange={[Function]}
                   >
                     Enable Facebook recommendations
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -595,8 +595,8 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     onChange={[Function]}
                   >
                     Enable Facebook mentions
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -604,8 +604,8 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     onChange={[Function]}
                   >
                     Enable Instagram comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -613,14 +613,14 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     onChange={[Function]}
                   >
                     Enable Instagram mentions
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <CheckBox
+                          <ForwardRef(CheckBox)
                             className="mb-2"
                             isChecked={false}
                             isDisabled={true}
@@ -634,7 +634,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                                 Enable Instagram direct messages
                               </span>
                             </div>
-                          </CheckBox>
+                          </ForwardRef(CheckBox)>
                         </td>
                         <td
                           className="pl-0"
@@ -658,7 +658,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                       </tr>
                     </tbody>
                   </table>
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -666,7 +666,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     onChange={[Function]}
                   >
                     Enable Instagram ads
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                 </FormGroup>
               </div>
               <div>
@@ -682,7 +682,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                     className="mr-5"
                     tag="div"
                   >
-                    <CheckBox
+                    <ForwardRef(CheckBox)
                       className="mb-2"
                       isChecked={false}
                       isDisabled={false}
@@ -690,7 +690,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                       onChange={[Function]}
                     >
                       Import 30 days of history (posts and comments) as closed tickets
-                    </CheckBox>
+                    </ForwardRef(CheckBox)>
                   </FormGroup>
                 </div>
               </div>
@@ -844,7 +844,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                   className="mr-5"
                   tag="div"
                 >
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -852,8 +852,8 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     onChange={[Function]}
                   >
                     Enable Messenger
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -861,8 +861,8 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     onChange={[Function]}
                   >
                     Enable Facebook posts, comments and ads comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -870,8 +870,8 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     onChange={[Function]}
                   >
                     Enable Facebook recommendations
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -879,8 +879,8 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     onChange={[Function]}
                   >
                     Enable Facebook mentions
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -888,8 +888,8 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     onChange={[Function]}
                   >
                     Enable Instagram comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -897,14 +897,14 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     onChange={[Function]}
                   >
                     Enable Instagram mentions
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <CheckBox
+                          <ForwardRef(CheckBox)
                             className="mb-2"
                             isChecked={false}
                             isDisabled={true}
@@ -939,7 +939,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                                 }
                               />
                             </div>
-                          </CheckBox>
+                          </ForwardRef(CheckBox)>
                         </td>
                         <td
                           className="pl-0"
@@ -981,7 +981,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                       </tr>
                     </tbody>
                   </table>
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -989,7 +989,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     onChange={[Function]}
                   >
                     Enable Instagram ads
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                 </FormGroup>
               </div>
               <div>
@@ -1005,7 +1005,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     className="mr-5"
                     tag="div"
                   >
-                    <CheckBox
+                    <ForwardRef(CheckBox)
                       className="mb-2"
                       isChecked={false}
                       isDisabled={false}
@@ -1013,7 +1013,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                       onChange={[Function]}
                     >
                       Import 30 days of history (posts and comments) as closed tickets
-                    </CheckBox>
+                    </ForwardRef(CheckBox)>
                   </FormGroup>
                 </div>
               </div>
@@ -1167,7 +1167,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                   className="mr-5"
                   tag="div"
                 >
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -1175,8 +1175,8 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     onChange={[Function]}
                   >
                     Enable Messenger
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -1184,8 +1184,8 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     onChange={[Function]}
                   >
                     Enable Facebook posts, comments and ads comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -1193,8 +1193,8 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     onChange={[Function]}
                   >
                     Enable Facebook recommendations
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -1202,8 +1202,8 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     onChange={[Function]}
                   >
                     Enable Facebook mentions
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -1211,8 +1211,8 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     onChange={[Function]}
                   >
                     Enable Instagram comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -1220,14 +1220,14 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     onChange={[Function]}
                   >
                     Enable Instagram mentions
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <CheckBox
+                          <ForwardRef(CheckBox)
                             className="mb-2"
                             isChecked={false}
                             isDisabled={true}
@@ -1241,7 +1241,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                                 Enable Instagram direct messages
                               </span>
                             </div>
-                          </CheckBox>
+                          </ForwardRef(CheckBox)>
                         </td>
                         <td
                           className="pl-0"
@@ -1265,7 +1265,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                       </tr>
                     </tbody>
                   </table>
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -1273,7 +1273,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     onChange={[Function]}
                   >
                     Enable Instagram ads
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                 </FormGroup>
               </div>
               <div>
@@ -1289,7 +1289,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                     className="mr-5"
                     tag="div"
                   >
-                    <CheckBox
+                    <ForwardRef(CheckBox)
                       className="mb-2"
                       isChecked={false}
                       isDisabled={false}
@@ -1297,7 +1297,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                       onChange={[Function]}
                     >
                       Import 30 days of history (posts and comments) as closed tickets
-                    </CheckBox>
+                    </ForwardRef(CheckBox)>
                   </FormGroup>
                 </div>
               </div>
@@ -1609,7 +1609,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
                   className="mr-5"
                   tag="div"
                 >
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={false}
@@ -1617,8 +1617,8 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
                     onChange={[Function]}
                   >
                     Enable Messenger
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={false}
@@ -1626,8 +1626,8 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
                     onChange={[Function]}
                   >
                     Enable Facebook posts, comments and ads comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -1635,8 +1635,8 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
                     onChange={[Function]}
                   >
                     Enable Facebook recommendations
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -1644,8 +1644,8 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
                     onChange={[Function]}
                   >
                     Enable Facebook mentions
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -1653,8 +1653,8 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
                     onChange={[Function]}
                   >
                     Enable Instagram comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -1662,14 +1662,14 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
                     onChange={[Function]}
                   >
                     Enable Instagram mentions
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <CheckBox
+                          <ForwardRef(CheckBox)
                             className="mb-2"
                             isChecked={false}
                             isDisabled={true}
@@ -1683,7 +1683,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
                                 Enable Instagram direct messages
                               </span>
                             </div>
-                          </CheckBox>
+                          </ForwardRef(CheckBox)>
                         </td>
                         <td
                           className="pl-0"
@@ -1691,7 +1691,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
                       </tr>
                     </tbody>
                   </table>
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -1699,7 +1699,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
                     onChange={[Function]}
                   >
                     Enable Instagram ads
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                 </FormGroup>
               </div>
               <div>
@@ -1715,7 +1715,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
                     className="mr-5"
                     tag="div"
                   >
-                    <CheckBox
+                    <ForwardRef(CheckBox)
                       className="mb-2"
                       isChecked={false}
                       isDisabled={false}
@@ -1723,7 +1723,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
                       onChange={[Function]}
                     >
                       Import 30 days of history (posts and comments) as closed tickets
-                    </CheckBox>
+                    </ForwardRef(CheckBox)>
                   </FormGroup>
                 </div>
               </div>
@@ -1877,7 +1877,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                   className="mr-5"
                   tag="div"
                 >
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={false}
@@ -1885,8 +1885,8 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                     onChange={[Function]}
                   >
                     Enable Messenger
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={false}
@@ -1894,8 +1894,8 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                     onChange={[Function]}
                   >
                     Enable Facebook posts, comments and ads comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -1903,8 +1903,8 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                     onChange={[Function]}
                   >
                     Enable Facebook recommendations
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -1912,8 +1912,8 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                     onChange={[Function]}
                   >
                     Enable Facebook mentions
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={false}
@@ -1921,8 +1921,8 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                     onChange={[Function]}
                   >
                     Enable Instagram comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={false}
@@ -1930,14 +1930,14 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                     onChange={[Function]}
                   >
                     Enable Instagram mentions
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <CheckBox
+                          <ForwardRef(CheckBox)
                             className="mb-2"
                             isChecked={false}
                             isDisabled={true}
@@ -1972,7 +1972,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                                 }
                               />
                             </div>
-                          </CheckBox>
+                          </ForwardRef(CheckBox)>
                         </td>
                         <td
                           className="pl-0"
@@ -1987,7 +1987,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                       </tr>
                     </tbody>
                   </table>
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -1995,7 +1995,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                     onChange={[Function]}
                   >
                     Enable Instagram ads
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                 </FormGroup>
               </div>
               <div>
@@ -2011,7 +2011,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                     className="mr-5"
                     tag="div"
                   >
-                    <CheckBox
+                    <ForwardRef(CheckBox)
                       className="mb-2"
                       isChecked={false}
                       isDisabled={false}
@@ -2019,7 +2019,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                       onChange={[Function]}
                     >
                       Import 30 days of history (posts and comments) as closed tickets
-                    </CheckBox>
+                    </ForwardRef(CheckBox)>
                   </FormGroup>
                 </div>
               </div>
@@ -2633,7 +2633,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   className="mr-5"
                   tag="div"
                 >
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={false}
@@ -2641,8 +2641,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Messenger
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -2650,8 +2650,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook posts, comments and ads comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -2659,8 +2659,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook recommendations
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -2668,8 +2668,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook mentions
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -2677,8 +2677,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -2686,14 +2686,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram mentions
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <CheckBox
+                          <ForwardRef(CheckBox)
                             className="mb-2"
                             isChecked={false}
                             isDisabled={true}
@@ -2728,7 +2728,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                                 }
                               />
                             </div>
-                          </CheckBox>
+                          </ForwardRef(CheckBox)>
                         </td>
                         <td
                           className="pl-0"
@@ -2743,7 +2743,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       </tr>
                     </tbody>
                   </table>
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -2751,7 +2751,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram ads
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                 </FormGroup>
               </div>
               <div>
@@ -2767,7 +2767,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     className="mr-5"
                     tag="div"
                   >
-                    <CheckBox
+                    <ForwardRef(CheckBox)
                       className="mb-2"
                       isChecked={false}
                       isDisabled={true}
@@ -2775,7 +2775,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       onChange={[Function]}
                     >
                       Import 30 days of history (posts and comments) as closed tickets
-                    </CheckBox>
+                    </ForwardRef(CheckBox)>
                   </FormGroup>
                 </div>
               </div>
@@ -3087,7 +3087,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   className="mr-5"
                   tag="div"
                 >
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -3095,8 +3095,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Messenger
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={false}
@@ -3104,8 +3104,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook posts, comments and ads comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -3113,8 +3113,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook recommendations
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -3122,8 +3122,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook mentions
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -3131,8 +3131,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -3140,14 +3140,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram mentions
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <CheckBox
+                          <ForwardRef(CheckBox)
                             className="mb-2"
                             isChecked={false}
                             isDisabled={true}
@@ -3182,7 +3182,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                                 }
                               />
                             </div>
-                          </CheckBox>
+                          </ForwardRef(CheckBox)>
                         </td>
                         <td
                           className="pl-0"
@@ -3197,7 +3197,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       </tr>
                     </tbody>
                   </table>
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -3205,7 +3205,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram ads
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                 </FormGroup>
               </div>
               <div>
@@ -3221,7 +3221,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     className="mr-5"
                     tag="div"
                   >
-                    <CheckBox
+                    <ForwardRef(CheckBox)
                       className="mb-2"
                       isChecked={false}
                       isDisabled={false}
@@ -3229,7 +3229,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       onChange={[Function]}
                     >
                       Import 30 days of history (posts and comments) as closed tickets
-                    </CheckBox>
+                    </ForwardRef(CheckBox)>
                   </FormGroup>
                 </div>
               </div>
@@ -3397,7 +3397,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   className="mr-5"
                   tag="div"
                 >
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -3405,8 +3405,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Messenger
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -3414,8 +3414,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook posts, comments and ads comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -3423,8 +3423,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook recommendations
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -3432,8 +3432,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook mentions
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -3441,8 +3441,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -3450,14 +3450,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram mentions
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <CheckBox
+                          <ForwardRef(CheckBox)
                             className="mb-2"
                             isChecked={false}
                             isDisabled={true}
@@ -3492,7 +3492,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                                 }
                               />
                             </div>
-                          </CheckBox>
+                          </ForwardRef(CheckBox)>
                         </td>
                         <td
                           className="pl-0"
@@ -3507,7 +3507,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       </tr>
                     </tbody>
                   </table>
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -3515,7 +3515,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram ads
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                 </FormGroup>
               </div>
               <div>
@@ -3531,7 +3531,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     className="mr-5"
                     tag="div"
                   >
-                    <CheckBox
+                    <ForwardRef(CheckBox)
                       className="mb-2"
                       isChecked={false}
                       isDisabled={true}
@@ -3539,7 +3539,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       onChange={[Function]}
                     >
                       Import 30 days of history (posts and comments) as closed tickets
-                    </CheckBox>
+                    </ForwardRef(CheckBox)>
                   </FormGroup>
                 </div>
               </div>
@@ -3707,7 +3707,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   className="mr-5"
                   tag="div"
                 >
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -3715,8 +3715,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Messenger
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -3724,8 +3724,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook posts, comments and ads comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -3733,8 +3733,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook recommendations
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -3742,8 +3742,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook mentions
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -3751,8 +3751,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -3760,14 +3760,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram mentions
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <CheckBox
+                          <ForwardRef(CheckBox)
                             className="mb-2"
                             isChecked={false}
                             isDisabled={true}
@@ -3802,7 +3802,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                                 }
                               />
                             </div>
-                          </CheckBox>
+                          </ForwardRef(CheckBox)>
                         </td>
                         <td
                           className="pl-0"
@@ -3817,7 +3817,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       </tr>
                     </tbody>
                   </table>
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -3825,7 +3825,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram ads
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                 </FormGroup>
               </div>
               <div>
@@ -3841,7 +3841,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     className="mr-5"
                     tag="div"
                   >
-                    <CheckBox
+                    <ForwardRef(CheckBox)
                       className="mb-2"
                       isChecked={false}
                       isDisabled={true}
@@ -3849,7 +3849,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       onChange={[Function]}
                     >
                       Import 30 days of history (posts and comments) as closed tickets
-                    </CheckBox>
+                    </ForwardRef(CheckBox)>
                   </FormGroup>
                 </div>
               </div>
@@ -4161,7 +4161,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   className="mr-5"
                   tag="div"
                 >
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -4169,8 +4169,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Messenger
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -4178,8 +4178,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook posts, comments and ads comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -4187,8 +4187,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook recommendations
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -4196,8 +4196,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook mentions
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={false}
@@ -4205,8 +4205,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={false}
@@ -4214,14 +4214,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram mentions
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <CheckBox
+                          <ForwardRef(CheckBox)
                             className="mb-2"
                             isChecked={false}
                             isDisabled={true}
@@ -4256,7 +4256,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                                 }
                               />
                             </div>
-                          </CheckBox>
+                          </ForwardRef(CheckBox)>
                         </td>
                         <td
                           className="pl-0"
@@ -4271,7 +4271,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       </tr>
                     </tbody>
                   </table>
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -4279,7 +4279,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram ads
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                 </FormGroup>
               </div>
               <div>
@@ -4295,7 +4295,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     className="mr-5"
                     tag="div"
                   >
-                    <CheckBox
+                    <ForwardRef(CheckBox)
                       className="mb-2"
                       isChecked={false}
                       isDisabled={true}
@@ -4303,7 +4303,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       onChange={[Function]}
                     >
                       Import 30 days of history (posts and comments) as closed tickets
-                    </CheckBox>
+                    </ForwardRef(CheckBox)>
                   </FormGroup>
                 </div>
               </div>
@@ -4615,7 +4615,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   className="mr-5"
                   tag="div"
                 >
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -4623,8 +4623,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Messenger
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -4632,8 +4632,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook posts, comments and ads comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -4641,8 +4641,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook recommendations
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -4650,8 +4650,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook mentions
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={false}
@@ -4659,8 +4659,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={false}
@@ -4668,14 +4668,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram mentions
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <CheckBox
+                          <ForwardRef(CheckBox)
                             className="mb-2"
                             isChecked={false}
                             isDisabled={true}
@@ -4710,7 +4710,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                                 }
                               />
                             </div>
-                          </CheckBox>
+                          </ForwardRef(CheckBox)>
                         </td>
                         <td
                           className="pl-0"
@@ -4725,7 +4725,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       </tr>
                     </tbody>
                   </table>
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -4733,7 +4733,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram ads
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                 </FormGroup>
               </div>
               <div>
@@ -4749,7 +4749,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     className="mr-5"
                     tag="div"
                   >
-                    <CheckBox
+                    <ForwardRef(CheckBox)
                       className="mb-2"
                       isChecked={false}
                       isDisabled={true}
@@ -4757,7 +4757,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       onChange={[Function]}
                     >
                       Import 30 days of history (posts and comments) as closed tickets
-                    </CheckBox>
+                    </ForwardRef(CheckBox)>
                   </FormGroup>
                 </div>
               </div>
@@ -5069,7 +5069,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   className="mr-5"
                   tag="div"
                 >
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -5077,8 +5077,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Messenger
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -5086,8 +5086,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook posts, comments and ads comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -5095,8 +5095,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook recommendations
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -5104,8 +5104,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook mentions
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={false}
@@ -5113,8 +5113,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={false}
@@ -5122,14 +5122,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram mentions
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <CheckBox
+                          <ForwardRef(CheckBox)
                             className="mb-2"
                             isChecked={false}
                             isDisabled={true}
@@ -5164,7 +5164,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                                 }
                               />
                             </div>
-                          </CheckBox>
+                          </ForwardRef(CheckBox)>
                         </td>
                         <td
                           className="pl-0"
@@ -5179,7 +5179,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       </tr>
                     </tbody>
                   </table>
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -5187,7 +5187,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram ads
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                 </FormGroup>
               </div>
               <div>
@@ -5203,7 +5203,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     className="mr-5"
                     tag="div"
                   >
-                    <CheckBox
+                    <ForwardRef(CheckBox)
                       className="mb-2"
                       isChecked={false}
                       isDisabled={true}
@@ -5211,7 +5211,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       onChange={[Function]}
                     >
                       Import 30 days of history (posts and comments) as closed tickets
-                    </CheckBox>
+                    </ForwardRef(CheckBox)>
                   </FormGroup>
                 </div>
               </div>
@@ -5523,7 +5523,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   className="mr-5"
                   tag="div"
                 >
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -5531,8 +5531,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Messenger
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -5540,8 +5540,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook posts, comments and ads comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -5549,8 +5549,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook recommendations
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -5558,8 +5558,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook mentions
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -5567,8 +5567,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -5576,14 +5576,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram mentions
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <CheckBox
+                          <ForwardRef(CheckBox)
                             className="mb-2"
                             isChecked={false}
                             isDisabled={false}
@@ -5597,7 +5597,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                                 Enable Instagram direct messages
                               </span>
                             </div>
-                          </CheckBox>
+                          </ForwardRef(CheckBox)>
                         </td>
                         <td
                           className="pl-0"
@@ -5605,7 +5605,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       </tr>
                     </tbody>
                   </table>
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -5613,7 +5613,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram ads
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                 </FormGroup>
               </div>
               <div>
@@ -5629,7 +5629,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     className="mr-5"
                     tag="div"
                   >
-                    <CheckBox
+                    <ForwardRef(CheckBox)
                       className="mb-2"
                       isChecked={false}
                       isDisabled={true}
@@ -5637,7 +5637,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       onChange={[Function]}
                     >
                       Import 30 days of history (posts and comments) as closed tickets
-                    </CheckBox>
+                    </ForwardRef(CheckBox)>
                   </FormGroup>
                 </div>
               </div>
@@ -5949,7 +5949,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   className="mr-5"
                   tag="div"
                 >
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -5957,8 +5957,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Messenger
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -5966,8 +5966,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook posts, comments and ads comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={false}
@@ -5975,8 +5975,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook recommendations
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -5984,8 +5984,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook mentions
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -5993,8 +5993,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -6002,14 +6002,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram mentions
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <CheckBox
+                          <ForwardRef(CheckBox)
                             className="mb-2"
                             isChecked={false}
                             isDisabled={true}
@@ -6044,7 +6044,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                                 }
                               />
                             </div>
-                          </CheckBox>
+                          </ForwardRef(CheckBox)>
                         </td>
                         <td
                           className="pl-0"
@@ -6059,7 +6059,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       </tr>
                     </tbody>
                   </table>
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -6067,7 +6067,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram ads
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                 </FormGroup>
               </div>
               <div>
@@ -6083,7 +6083,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     className="mr-5"
                     tag="div"
                   >
-                    <CheckBox
+                    <ForwardRef(CheckBox)
                       className="mb-2"
                       isChecked={false}
                       isDisabled={true}
@@ -6091,7 +6091,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       onChange={[Function]}
                     >
                       Import 30 days of history (posts and comments) as closed tickets
-                    </CheckBox>
+                    </ForwardRef(CheckBox)>
                   </FormGroup>
                 </div>
               </div>
@@ -6547,7 +6547,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   className="mr-5"
                   tag="div"
                 >
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -6555,8 +6555,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Messenger
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -6564,8 +6564,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook posts, comments and ads comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -6573,8 +6573,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook recommendations
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -6582,8 +6582,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Facebook mentions
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -6591,8 +6591,8 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram comments
-                  </CheckBox>
-                  <CheckBox
+                  </ForwardRef(CheckBox)>
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={true}
                     isDisabled={true}
@@ -6600,14 +6600,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram mentions
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                   <table>
                     <tbody>
                       <tr>
                         <td
                           className="pl-0"
                         >
-                          <CheckBox
+                          <ForwardRef(CheckBox)
                             className="mb-2"
                             isChecked={false}
                             isDisabled={false}
@@ -6621,7 +6621,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                                 Enable Instagram direct messages
                               </span>
                             </div>
-                          </CheckBox>
+                          </ForwardRef(CheckBox)>
                         </td>
                         <td
                           className="pl-0"
@@ -6629,7 +6629,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       </tr>
                     </tbody>
                   </table>
-                  <CheckBox
+                  <ForwardRef(CheckBox)
                     className="mb-2"
                     isChecked={false}
                     isDisabled={true}
@@ -6637,7 +6637,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     onChange={[Function]}
                   >
                     Enable Instagram ads
-                  </CheckBox>
+                  </ForwardRef(CheckBox)>
                 </FormGroup>
               </div>
               <div>
@@ -6653,7 +6653,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                     className="mr-5"
                     tag="div"
                   >
-                    <CheckBox
+                    <ForwardRef(CheckBox)
                       className="mb-2"
                       isChecked={false}
                       isDisabled={true}
@@ -6661,7 +6661,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       onChange={[Function]}
                     >
                       Import 30 days of history (posts and comments) as closed tickets
-                    </CheckBox>
+                    </ForwardRef(CheckBox)>
                   </FormGroup>
                 </div>
               </div>

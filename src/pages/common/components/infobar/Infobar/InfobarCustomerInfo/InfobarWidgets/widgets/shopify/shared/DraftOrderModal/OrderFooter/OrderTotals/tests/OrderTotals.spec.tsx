@@ -208,7 +208,7 @@ describe('<OrderTotalsComponent/>', () => {
             fireEvent.click(screen.getByText('Charge taxes'))
             fireEvent.click(screen.getByText('Apply'))
 
-            const newPayload = payload.set('tax_exempt', false)
+            const newPayload = payload.set('tax_exempt', true)
             expect(onPayloadChange).toHaveBeenCalledWith(
                 integrationContextData.integrationId,
                 newPayload

@@ -17,14 +17,12 @@ import {
 import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
 
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
-import {focusElement} from '../../../../../../../../../../../../utils/html'
-import AmountInput from '../../AmountInput/AmountInput'
+import CheckBox from 'pages/common/forms/CheckBox'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {formatPrice} from 'business/shopify/number'
+import {focusElement} from 'utils/html'
 import {ShopifyActionType} from '../../../types'
+import AmountInput from '../../AmountInput/AmountInput'
 
 import css from './AddCustomItemPopover.less'
 
@@ -120,14 +118,12 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
         this.setState({quantity})
     }
 
-    _onTaxableChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const taxable = event.target.checked
-        this.setState({taxable})
+    _onTaxableChange = (newValue: boolean) => {
+        this.setState({taxable: newValue})
     }
 
-    _onShippingChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const requiresShipping = event.target.checked
-        this.setState({requiresShipping})
+    _onShippingChange = (newValue: boolean) => {
+        this.setState({requiresShipping: newValue})
     }
 
     _onSubmit = (event: FormEvent) => {
@@ -242,30 +238,20 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
                                     />
                                 </FormGroup>
                             </div>
-                            <FormGroup check className="mt-1 mb-3">
-                                <Label check>
-                                    <Input
-                                        type="checkbox"
-                                        checked={taxable}
-                                        onChange={this._onTaxableChange}
-                                    />
-                                    <span className="ml-1">
-                                        Item is taxable
-                                    </span>
-                                </Label>
-                            </FormGroup>
-                            <FormGroup check className="mb-3">
-                                <Label check>
-                                    <Input
-                                        type="checkbox"
-                                        checked={requiresShipping}
-                                        onChange={this._onShippingChange}
-                                    />
-                                    <span className="ml-1">
-                                        Item requires shipping
-                                    </span>
-                                </Label>
-                            </FormGroup>
+                            <CheckBox
+                                className="mt-1 mb-3"
+                                isChecked={taxable}
+                                onChange={this._onTaxableChange}
+                            >
+                                Item is taxable
+                            </CheckBox>
+                            <CheckBox
+                                className="mb-3"
+                                isChecked={requiresShipping}
+                                onChange={this._onShippingChange}
+                            >
+                                Item requires shipping
+                            </CheckBox>
                         </PopoverBody>
                         <hr className="m-0" />
                         <PopoverBody className="d-flex">

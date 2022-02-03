@@ -1,29 +1,22 @@
 import React from 'react'
-import {shallow} from 'enzyme'
-import {Button, Form, Popover} from 'reactstrap'
+import {fireEvent, render} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
-import _noop from 'lodash/noop'
 
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import AddCustomItemPopover from '../AddCustomItemPopover'
 import {ShopifyActionType} from '../../../../types'
 
-jest.mock(
-    '../../../../../../../../../../../../../store/middlewares/segmentTracker',
-    () => {
-        const segmentTracker: Record<string, unknown> = jest.requireActual(
-            '../../../../../../../../../../../../../store/middlewares/segmentTracker'
-        )
+jest.mock('store/middlewares/segmentTracker', () => {
+    const segmentTracker: Record<string, unknown> = jest.requireActual(
+        'store/middlewares/segmentTracker'
+    )
 
-        return {
-            ...segmentTracker,
-            logEvent: jest.fn(),
-        }
+    return {
+        ...segmentTracker,
+        logEvent: jest.fn(),
     }
-)
+})
 
 describe('<AddCustomItemPopover/>', () => {
     let onSubmit: jest.MockedFunction<any>
@@ -34,7 +27,7 @@ describe('<AddCustomItemPopover/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const component = shallow(
+            const {container} = render(
                 <AddCustomItemPopover
                     currencyCode="USD"
                     actionName={ShopifyActionType.DuplicateOrder}
@@ -43,7 +36,7 @@ describe('<AddCustomItemPopover/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 
@@ -62,7 +55,7 @@ describe('<AddCustomItemPopover/>', () => {
         ])(
             'should call prop `onSubmit` with form values',
             (actionName, openEvent, submitEvent) => {
-                const component = shallow<AddCustomItemPopover>(
+                const {getByLabelText, getByText} = render(
                     <AddCustomItemPopover
                         currencyCode="USD"
                         actionName={actionName}
@@ -71,30 +64,21 @@ describe('<AddCustomItemPopover/>', () => {
                     />
                 )
 
-                // Open popover
-                component.find(Button).at(0).simulate('click')
-                expect(component.find(Popover).props().isOpen).toBe(true)
+                userEvent.click(getByText(/Add custom item/i))
+                expect(getByLabelText(/Line item name/i)).toBeTruthy()
                 expect(logEvent).toHaveBeenCalledWith(openEvent)
 
-                // Change form values
-                component
-                    .find({id: 'title'})
-                    .simulate('change', {target: {value: 'foo'}})
-                component.instance()._onPriceChange('5.99')
-                component
-                    .find({id: 'quantity'})
-                    .simulate('change', {target: {value: '2'}})
-                component
-                    .find({type: 'checkbox'})
-                    .at(0)
-                    .simulate('change', {target: {checked: true}})
-
-                // Submit
-                component
-                    .find(Form)
-                    .dive()
-                    .find('form')
-                    .simulate('submit', {preventDefault: _noop})
+                fireEvent.change(getByLabelText(/Line item name/i), {
+                    target: {value: 'foo'},
+                })
+                fireEvent.change(getByLabelText(/Price per item/i), {
+                    target: {value: '5.99'},
+                })
+                fireEvent.change(getByLabelText(/Quantity/i), {
+                    target: {value: '2'},
+                })
+                userEvent.click(getByLabelText(/Item is taxable/i))
+                userEvent.click(getByText(/Save item/i))
 
                 expect(onSubmit).toHaveBeenCalledWith(
                     fromJS({
@@ -124,7 +108,7 @@ describe('<AddCustomItemPopover/>', () => {
                 SegmentEvent.ShopifyDuplicateOrderCustomItemPopoverCancel,
             ],
         ])('should track', (actionName, event) => {
-            const component = shallow<AddCustomItemPopover>(
+            const {getByText} = render(
                 <AddCustomItemPopover
                     currencyCode="USD"
                     actionName={actionName}
@@ -133,7 +117,8 @@ describe('<AddCustomItemPopover/>', () => {
                 />
             )
 
-            component.instance()._onCancel()
+            userEvent.click(getByText(/Add custom item/i))
+            userEvent.click(getByText(/Cancel/i))
 
             expect(logEvent).toHaveBeenCalledWith(event)
         })
