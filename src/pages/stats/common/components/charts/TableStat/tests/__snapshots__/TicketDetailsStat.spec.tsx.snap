@@ -1,5 +1,136 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`TicketDetailsStat should handle an unknown channel and report error 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="openTickets"
+  >
+    <a
+      data-testid="view-link"
+    >
+      <span
+        aria-label="view name"
+      >
+        Open tickets assigned to: John Doe
+      </span>
+      <span
+        aria-label="filters"
+      >
+        [
+  {
+    "left": "ticket.assignee_user.id",
+    "operator": "eq",
+    "right": 1
+  },
+  {
+    "left": "ticket.status",
+    "operator": "eq",
+    "right": "\\"open\\""
+  },
+  {
+    "left": "ticket.channel",
+    "operator": "eq",
+    "right": "\\"email\\""
+  }
+]
+      </span>
+      <span
+        aria-label="children"
+      >
+        21
+      </span>
+    </a>
+  </div>
+  <div
+    class="separator"
+  />
+  <div
+    class="channelsBreakdown"
+  >
+    <div
+      class="channel"
+      title="Chat"
+    >
+      <i
+        class="icon d-inline-block material-icons channelIcon"
+      >
+        forum
+      </i>
+      <a
+        data-testid="view-link"
+      >
+        <span
+          aria-label="view name"
+        >
+          Open tickets assigned to: John Doe, channel: Chat
+        </span>
+        <span
+          aria-label="filters"
+        >
+          [
+  {
+    "left": "ticket.assignee_user.id",
+    "operator": "eq",
+    "right": 1
+  },
+  {
+    "left": "ticket.status",
+    "operator": "eq",
+    "right": "\\"open\\""
+  },
+  {
+    "left": "ticket.channel",
+    "operator": "eq",
+    "right": "\\"chat\\""
+  }
+]
+        </span>
+        <span
+          aria-label="children"
+        >
+          2
+        </span>
+      </a>
+    </div>
+    <div
+      class="channel"
+      title="foo"
+    >
+      <i
+        class="material-icons channelIcon"
+      >
+        live_help
+      </i>
+      1
+    </div>
+    <div
+      class="channel"
+      title="bar"
+    >
+      <i
+        class="material-icons channelIcon"
+      >
+        live_help
+      </i>
+      2
+    </div>
+  </div>
+</div>
+`;
+
+exports[`TicketDetailsStat should handle an unknown channel and report error 2`] = `
+Array [
+  Array [
+    [Error: Channel not found for the name: foo],
+  ],
+  Array [
+    [Error: Channel not found for the name: bar],
+  ],
+]
+`;
+
 exports[`TicketDetailsStat should log event on view link click 1`] = `
 Array [
   Array [
@@ -82,6 +213,7 @@ exports[`TicketDetailsStat should render open tickets and channels breakdown 1`]
   >
     <div
       class="channel"
+      title="Chat"
     >
       <i
         class="icon d-inline-block material-icons channelIcon"
@@ -126,6 +258,7 @@ exports[`TicketDetailsStat should render open tickets and channels breakdown 1`]
     </div>
     <div
       class="channel"
+      title="Email"
     >
       <i
         class="icon d-inline-block material-icons channelIcon"

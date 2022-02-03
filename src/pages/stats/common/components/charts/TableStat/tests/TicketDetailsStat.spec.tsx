@@ -11,13 +11,16 @@ import {integrationsState} from 'fixtures/integrations'
 import {logEvent} from 'store/middlewares/segmentTracker'
 import {StatsFilters} from 'state/stats/types'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
+import {reportError} from 'utils/errors'
 
 import ViewLink from '../../../../ViewLink'
 import TicketDetailsStat from '../TicketDetailsStat'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const logEventMock = logEvent as jest.Mock
+const reportErrorMock = reportError as jest.Mock
 
+jest.mock('utils/errors')
 jest.mock('store/middlewares/segmentTracker')
 jest.mock(
     '../../../../ViewLink',
@@ -63,7 +66,7 @@ describe('TicketDetailsStat', () => {
                 acc[channel] = 0
                 return acc
             },
-            {} as Record<TicketChannel, number>
+            {} as Record<string, number>
         ),
     }
 
@@ -123,5 +126,26 @@ describe('TicketDetailsStat', () => {
         }
 
         expect(logEventMock.mock.calls).toMatchSnapshot()
+    })
+
+    it('should handle an unknown channel and report error', () => {
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <StatsFiltersContext.Provider value={defaultStatsFilters}>
+                    <TicketDetailsStat
+                        {...minProps}
+                        openTickets={21}
+                        channelsBreakdown={{
+                            [TicketChannel.Chat]: 2,
+                            foo: 1,
+                            bar: 2,
+                        }}
+                    />
+                </StatsFiltersContext.Provider>
+            </Provider>
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+        expect(reportErrorMock.mock.calls).toMatchSnapshot()
     })
 })

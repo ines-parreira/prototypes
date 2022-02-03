@@ -30,7 +30,6 @@ import {
 import DistributionVariantStat from '../DistributionVariantStat'
 import StatPercentageDiff from '../../StatPercentageDiff'
 import StatsHelpIcon from '../../StatsHelpIcon'
-import {TicketChannel} from '../../../../../../business/types/ticket'
 
 import ProductCell from './cells/ProductCell'
 import css from './TableStat.less'
@@ -91,7 +90,7 @@ export class TableStat extends Component<
             case StatValueType.TicketDetails: {
                 const details = (
                     metric.get('details') as Map<any, any>
-                )?.toJS() as Record<TicketChannel, number>
+                )?.toJS() as Partial<Record<string, number>>
                 return (
                     <TicketDetailsStat
                         agentId={line.getIn(['0', 'value', 'id'])}

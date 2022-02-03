@@ -340,7 +340,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                       name="checkbox-10"
                       type="checkbox"
                     />
-                     Instagram ad comment
+                     Help center
                   </label>
                   <div
                     class="caption"
@@ -359,7 +359,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                       name="checkbox-11"
                       type="checkbox"
                     />
-                     Instagram comment
+                     Instagram ad comment
                   </label>
                   <div
                     class="caption"
@@ -378,7 +378,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                       name="checkbox-12"
                       type="checkbox"
                     />
-                     Instagram mention
+                     Instagram comment
                   </label>
                   <div
                     class="caption"
@@ -397,7 +397,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                       name="checkbox-13"
                       type="checkbox"
                     />
-                     Instagram direct message
+                     Instagram mention
                   </label>
                   <div
                     class="caption"
@@ -416,7 +416,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                       name="checkbox-14"
                       type="checkbox"
                     />
-                     Phone
+                     Instagram direct message
                   </label>
                   <div
                     class="caption"
@@ -435,7 +435,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                       name="checkbox-15"
                       type="checkbox"
                     />
-                     Sms
+                     Phone
                   </label>
                   <div
                     class="caption"
@@ -454,7 +454,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                       name="checkbox-16"
                       type="checkbox"
                     />
-                     Twitter
+                     Sms
                   </label>
                   <div
                     class="caption"
@@ -473,7 +473,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                       name="checkbox-17"
                       type="checkbox"
                     />
-                     Twitter direct message
+                     Twitter
                   </label>
                   <div
                     class="caption"
@@ -490,6 +490,25 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                       class="input"
                       id="checkbox-18"
                       name="checkbox-18"
+                      type="checkbox"
+                    />
+                     Twitter direct message
+                  </label>
+                  <div
+                    class="caption"
+                  />
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label labelItem"
+                    for="checkbox-19"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-19"
+                      name="checkbox-19"
                       type="checkbox"
                     />
                      Yotpo review
@@ -541,13 +560,13 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                 >
                   <label
                     class="label quickSelectionOption"
-                    for="checkbox-19"
+                    for="checkbox-20"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-19"
-                      name="checkbox-19"
+                      id="checkbox-20"
+                      name="checkbox-20"
                       type="checkbox"
                     />
                     Deselect
@@ -581,25 +600,6 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                   >
                     <label
                       class="label labelItem"
-                      for="checkbox-20"
-                    >
-                      <input
-                        class="input"
-                        id="checkbox-20"
-                        name="checkbox-20"
-                        type="checkbox"
-                      />
-                      Foo
-                    </label>
-                    <div
-                      class="caption"
-                    />
-                  </div>
-                  <div
-                    class="wrapperItem"
-                  >
-                    <label
-                      class="label labelItem"
                       for="checkbox-21"
                     >
                       <input
@@ -608,7 +608,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                         name="checkbox-21"
                         type="checkbox"
                       />
-                      Phone team - +1 205-396-3441
+                      Foo
                     </label>
                     <div
                       class="caption"
@@ -625,6 +625,25 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                         class="input"
                         id="checkbox-22"
                         name="checkbox-22"
+                        type="checkbox"
+                      />
+                      Phone team - +1 205-396-3441
+                    </label>
+                    <div
+                      class="caption"
+                    />
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label labelItem"
+                      for="checkbox-23"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-23"
+                        name="checkbox-23"
                         type="checkbox"
                       />
                       Test
@@ -649,13 +668,13 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                 >
                   <label
                     class="label labelItem"
-                    for="checkbox-23"
+                    for="checkbox-24"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-23"
-                      name="checkbox-23"
+                      id="checkbox-24"
+                      name="checkbox-24"
                       type="checkbox"
                     />
                      Acme Support
@@ -669,12 +688,12 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                 >
                   <label
                     class="label labelItem"
-                    for="checkbox-24"
+                    for="checkbox-25"
                   >
                     <input
                       class="input"
-                      id="checkbox-24"
-                      name="checkbox-24"
+                      id="checkbox-25"
+                      name="checkbox-25"
                       type="checkbox"
                     />
                      Bob Smith
@@ -881,6 +900,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                     >
                       <div
                         class="channel"
+                        title="Facebook"
                       >
                         <i
                           class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
@@ -894,6 +914,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                       </div>
                       <div
                         class="channel"
+                        title="Facebook Messenger"
                       >
                         <i
                           class="icon d-inline-block icon-custom icon-facebook-messenger channelIcon"
@@ -907,6 +928,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                       </div>
                       <div
                         class="channel"
+                        title="Phone"
                       >
                         <i
                           class="icon d-inline-block material-icons channelIcon"
@@ -922,6 +944,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                       </div>
                       <div
                         class="channel"
+                        title="Chat"
                       >
                         <i
                           class="icon d-inline-block material-icons channelIcon"
@@ -937,6 +960,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                       </div>
                       <div
                         class="channel"
+                        title="Email"
                       >
                         <i
                           class="icon d-inline-block material-icons channelIcon"
@@ -952,6 +976,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                       </div>
                       <div
                         class="channel"
+                        title="Instagram Direct Message"
                       >
                         <i
                           class="icon d-inline-block icon-custom icon-instagram-dm channelIcon"

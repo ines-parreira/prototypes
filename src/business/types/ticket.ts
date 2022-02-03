@@ -50,6 +50,7 @@ export enum TicketChannel {
     FacebookMention = 'facebook-mention',
     FacebookMessenger = 'facebook-messenger',
     FacebookRecommendations = 'facebook-recommendations',
+    HelpCenter = 'help-center',
     InstagramAdComment = 'instagram-ad-comment',
     InstagramComment = 'instagram-comment',
     InstagramMention = 'instagram-mention',
@@ -69,4 +70,5 @@ export enum TicketVia {
     Twilio = 'twilio',
     Yotpo = 'yotpo',
     Twitter = 'twitter',
+    SelfService = 'self_service',
 }

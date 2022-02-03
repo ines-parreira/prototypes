@@ -110,6 +110,8 @@ const sourceTypeToIcon = (
             icon.custom = true
             icon.name = 'yotpo-review-private-comment'
             break
+        case TicketChannel.HelpCenter:
+            icon.name = 'help'
     }
 
     return icon
