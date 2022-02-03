@@ -41,7 +41,7 @@ import {eventTypes as getEventTypes} from '../../../../state/rules/helpers'
 import {getEmptyRule} from '../../../../state/rules/utils'
 import history from '../../../history'
 
-import ToggleButton from '../../../common/components/ToggleButton'
+import ToggleInput from '../../../common/forms/ToggleInput'
 import PageHeader from '../../../common/components/PageHeader'
 import {RootState} from '../../../../state/types'
 import {updateCodeAst} from '../../../common/components/ast/utils.js'
@@ -394,9 +394,9 @@ export function RuleDetailForm({
                         />
                         <div className={css.toggleButtonContainer}>
                             <span>
-                                <ToggleButton
-                                    value={!ruleDraft.deactivated_datetime}
-                                    onChange={toggleActivation}
+                                <ToggleInput
+                                    isToggled={!ruleDraft.deactivated_datetime}
+                                    onClick={toggleActivation}
                                 />
                             </span>
                             <span>

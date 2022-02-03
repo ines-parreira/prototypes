@@ -542,10 +542,14 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               class="container"
             >
               <label
-                class="switch toggle-switch"
+                class="container"
+                for="toggle-button-3"
               >
                 <input
-                  readonly=""
+                  class="input"
+                  disabled=""
+                  id="toggle-button-3"
+                  name="toggle-button-3"
                   type="checkbox"
                 />
                 <div
@@ -569,11 +573,15 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               class="container"
             >
               <label
-                class="switch toggle-switch"
+                class="container"
+                for="toggle-button-4"
               >
                 <input
                   checked=""
-                  readonly=""
+                  class="input"
+                  disabled=""
+                  id="toggle-button-4"
+                  name="toggle-button-4"
                   type="checkbox"
                 />
                 <div

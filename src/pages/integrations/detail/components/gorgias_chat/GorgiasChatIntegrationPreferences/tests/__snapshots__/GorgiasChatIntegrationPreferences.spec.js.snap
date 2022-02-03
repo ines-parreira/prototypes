@@ -269,9 +269,9 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
           <div
             className="formGroup d-flex"
           >
-            <ToggleButton
-              onChange={[Function]}
-              value={false}
+            <ToggleInput
+              isToggled={false}
+              onClick={[Function]}
             />
             <div
               className="ml-2"
@@ -304,9 +304,9 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
           <div
             className="formGroup d-flex"
           >
-            <ToggleButton
-              onChange={[Function]}
-              value={false}
+            <ToggleInput
+              isToggled={false}
+              onClick={[Function]}
             />
             <div
               className="ml-2"
@@ -333,9 +333,9 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
           <div
             className="mb-3 d-flex align-items-center"
           >
-            <ToggleButton
-              onChange={[Function]}
-              value={false}
+            <ToggleInput
+              isToggled={false}
+              onClick={[Function]}
             />
             <div
               className="ml-2"
@@ -620,9 +620,9 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
           <div
             className="formGroup d-flex"
           >
-            <ToggleButton
-              onChange={[Function]}
-              value={false}
+            <ToggleInput
+              isToggled={false}
+              onClick={[Function]}
             />
             <div
               className="ml-2"
@@ -655,9 +655,9 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
           <div
             className="formGroup d-flex"
           >
-            <ToggleButton
-              onChange={[Function]}
-              value={false}
+            <ToggleInput
+              isToggled={false}
+              onClick={[Function]}
             />
             <div
               className="ml-2"
@@ -684,9 +684,9 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
           <div
             className="mb-3 d-flex align-items-center"
           >
-            <ToggleButton
-              onChange={[Function]}
-              value={false}
+            <ToggleInput
+              isToggled={false}
+              onClick={[Function]}
             />
             <div
               className="ml-2"

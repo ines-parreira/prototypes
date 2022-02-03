@@ -346,24 +346,28 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                           <div
                             className="d-flex align-items-center mb16"
                           >
-                            <ToggleButton
-                              onChange={[Function]}
-                              value={false}
+                            <ToggleInput
+                              isToggled={false}
+                              onClick={[Function]}
                             >
                               <label
-                                className="switch toggle-switch"
+                                className="container"
+                                htmlFor="toggle-button-1"
                                 onClick={[Function]}
                               >
                                 <input
                                   checked={false}
-                                  readOnly={true}
+                                  className="input"
+                                  disabled={true}
+                                  id="toggle-button-1"
+                                  name="toggle-button-1"
                                   type="checkbox"
                                 />
                                 <div
                                   className="slider"
                                 />
                               </label>
-                            </ToggleButton>
+                            </ToggleInput>
                             <div
                               className="ml-2"
                             >
@@ -1315,24 +1319,28 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                           <div
                             className="d-flex align-items-center mb16"
                           >
-                            <ToggleButton
-                              onChange={[Function]}
-                              value={true}
+                            <ToggleInput
+                              isToggled={true}
+                              onClick={[Function]}
                             >
                               <label
-                                className="switch toggle-switch"
+                                className="container"
+                                htmlFor="toggle-button-2"
                                 onClick={[Function]}
                               >
                                 <input
                                   checked={true}
-                                  readOnly={true}
+                                  className="input"
+                                  disabled={true}
+                                  id="toggle-button-2"
+                                  name="toggle-button-2"
                                   type="checkbox"
                                 />
                                 <div
                                   className="slider"
                                 />
                               </label>
-                            </ToggleButton>
+                            </ToggleInput>
                             <div
                               className="ml-2"
                             >

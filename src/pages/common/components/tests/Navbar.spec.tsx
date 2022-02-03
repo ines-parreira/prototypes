@@ -1,12 +1,14 @@
 import React from 'react'
 import {render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import userEvent, {TargetElement} from '@testing-library/user-event'
 import {fromJS, Map} from 'immutable'
 
 import {DEFAULT_PREFERENCES} from '../../../../config'
 import {proPlan, advancedPlan} from '../../../../fixtures/subscriptionPlan'
 import {user} from '../../../../fixtures/users'
 import {Navbar} from '../Navbar'
+
+jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
 
 describe('<Navbar />', () => {
     const minProps = {
@@ -23,6 +25,7 @@ describe('<Navbar />', () => {
         isOpenedPanel: false,
         isTrialing: false,
         submitSetting: jest.fn(),
+        isPreferencesLoading: false,
     }
 
     afterEach(() => {
@@ -52,11 +55,16 @@ describe('<Navbar />', () => {
     })
 
     it('should toggle the user availability when clicking the availability toggle', () => {
-        render(<Navbar {...minProps} />)
+        const {container} = render(<Navbar {...minProps} isOpenedPanel />)
 
-        userEvent.click(document.getElementsByClassName('switch')[0])
+        userEvent.click(
+            container.getElementsByClassName('slider')[0] as TargetElement
+        )
         expect(minProps.submitSetting).toHaveBeenCalledWith(
-            {data: {available: false, show_macros: false}, type: 'preferences'},
+            {
+                data: {available: false, show_macros: false},
+                type: 'preferences',
+            },
             false
         )
     })

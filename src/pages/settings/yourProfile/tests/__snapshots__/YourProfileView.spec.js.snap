@@ -2695,10 +2695,10 @@ exports[`YourProfileView render should render current user profile form 1`] = `
             When you are routed a call in Gorgias, forward the call to a mobile device or landline.
           </p>
           <ToggleField
+            isToggled={false}
             label="Enable call forwarding"
             name="forward_calls"
-            onChange={[Function]}
-            value={false}
+            onClick={[Function]}
           />
         </FormGroup>
       </div>

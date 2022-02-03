@@ -63,10 +63,10 @@ export const UpdateToggle = ({
         <>
             <ToggleField
                 label={label}
-                value={activated}
-                onChange={toggle}
-                loading={loading}
-                disabled={loading}
+                isToggled={activated}
+                onClick={toggle}
+                isLoading={loading}
+                isDisabled={loading}
                 className={css.toggle}
             />
             <p>{description}</p>

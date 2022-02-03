@@ -206,11 +206,15 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
             class="smallest align-middle"
           >
             <label
-              class="switch toggle-switch"
+              class="container"
+              for="toggle-button-1"
             >
               <input
                 checked=""
-                readonly=""
+                class="input"
+                disabled=""
+                id="toggle-button-1"
+                name="toggle-button-1"
                 type="checkbox"
               />
               <div
@@ -250,10 +254,14 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
             class="smallest align-middle"
           >
             <label
-              class="switch toggle-switch"
+              class="container"
+              for="toggle-button-2"
             >
               <input
-                readonly=""
+                class="input"
+                disabled=""
+                id="toggle-button-2"
+                name="toggle-button-2"
                 type="checkbox"
               />
               <div

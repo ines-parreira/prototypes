@@ -6,7 +6,7 @@ import {fromJS, List, Map} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Button, Container, Form} from 'reactstrap'
 
 import Loader from '../../../../../../common/components/Loader/Loader'
-import ToggleButton from '../../../../../../common/components/ToggleButton'
+import ToggleInput from '../../../../../../common/forms/ToggleInput'
 import PageHeader from '../../../../../../common/components/PageHeader'
 import Pagination from '../../../../../../common/components/Pagination'
 import Search from '../../../../../../common/components/Search'
@@ -228,11 +228,11 @@ export class OutlookIntegrationSetupContainer extends Component<Props, State> {
                                                                     {address}
                                                                 </span>
                                                             </div>
-                                                            <ToggleButton
-                                                                value={
+                                                            <ToggleInput
+                                                                isToggled={
                                                                     integrationEnabled
                                                                 }
-                                                                onChange={(
+                                                                onClick={(
                                                                     value: boolean
                                                                 ) => {
                                                                     this._toggleIntegration(

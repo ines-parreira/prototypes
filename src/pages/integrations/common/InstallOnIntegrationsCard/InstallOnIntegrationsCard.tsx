@@ -6,7 +6,7 @@ import _capitalize from 'lodash/capitalize'
 import {connect, ConnectedProps} from 'react-redux'
 
 import {getIconFromType} from '../../../../state/integrations/helpers'
-import ToggleButton from '../../../common/components/ToggleButton'
+import ToggleInput from '../../../common/forms/ToggleInput'
 import history from '../../../history'
 import {notify} from '../../../../state/notifications/actions'
 import {IntegrationType} from '../../../../models/integration/types'
@@ -188,9 +188,9 @@ export class InstallOnIntegrationsCardContainer extends React.Component<
                                                     )}
                                                 </b>
                                             </div>
-                                            <ToggleButton
-                                                value={chatIsInstalled}
-                                                onChange={
+                                            <ToggleInput
+                                                isToggled={chatIsInstalled}
+                                                onClick={
                                                     chatIsInstalled
                                                         ? () =>
                                                               this._removeFromStore(
@@ -201,11 +201,13 @@ export class InstallOnIntegrationsCardContainer extends React.Component<
                                                                   targetIntegration!
                                                               )
                                                 }
-                                                loading={
+                                                isLoading={
                                                     integrationLoading ===
                                                     targetIntegrationId
                                                 }
-                                                disabled={!!integrationLoading}
+                                                isDisabled={
+                                                    !!integrationLoading
+                                                }
                                             />
                                         </div>
                                     )

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfServiceConfigurations action and the ssp for the store with id 1 will get deactivated 1`] = `
+exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServiceConfigurations action and the ssp for the store with id 1 when it gets deactivated 1`] = `
 <div>
   <div
     class="full-width"
@@ -55,11 +55,22 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
+                    <label
+                      class="container"
+                      for="toggle-button-42"
                     >
-                      ToggleButtonMock value=true
-                    </div>
+                      <input
+                        checked=""
+                        class="input"
+                        disabled=""
+                        id="toggle-button-42"
+                        name="toggle-button-42"
+                        type="checkbox"
+                      />
+                      <div
+                        class="slider"
+                      />
+                    </label>
                   </td>
                   <td
                     class="link-full-td"
@@ -100,11 +111,21 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
+                    <label
+                      class="container"
+                      for="toggle-button-42"
                     >
-                      ToggleButtonMock value=false
-                    </div>
+                      <input
+                        class="input"
+                        disabled=""
+                        id="toggle-button-42"
+                        name="toggle-button-42"
+                        type="checkbox"
+                      />
+                      <div
+                        class="slider"
+                      />
+                    </label>
                   </td>
                   <td
                     class="link-full-td"
@@ -145,11 +166,22 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
+                    <label
+                      class="container"
+                      for="toggle-button-42"
                     >
-                      ToggleButtonMock value=true
-                    </div>
+                      <input
+                        checked=""
+                        class="input"
+                        disabled=""
+                        id="toggle-button-42"
+                        name="toggle-button-42"
+                        type="checkbox"
+                      />
+                      <div
+                        class="slider"
+                      />
+                    </label>
                   </td>
                   <td
                     class="link-full-td"
@@ -190,11 +222,21 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
+                    <label
+                      class="container"
+                      for="toggle-button-42"
                     >
-                      ToggleButtonMock value=false
-                    </div>
+                      <input
+                        class="input"
+                        disabled=""
+                        id="toggle-button-42"
+                        name="toggle-button-42"
+                        type="checkbox"
+                      />
+                      <div
+                        class="slider"
+                      />
+                    </label>
                   </td>
                   <td
                     class="link-full-td"
@@ -251,7 +293,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
 </div>
 `;
 
-exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfServiceConfigurations action and the ssp for the store with id 2 will get activated 1`] = `
+exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServiceConfigurations action and the ssp for the store with id 2 when it gets activated 1`] = `
 <div>
   <div
     class="full-width"
@@ -306,11 +348,22 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
+                    <label
+                      class="container"
+                      for="toggle-button-42"
                     >
-                      ToggleButtonMock value=true
-                    </div>
+                      <input
+                        checked=""
+                        class="input"
+                        disabled=""
+                        id="toggle-button-42"
+                        name="toggle-button-42"
+                        type="checkbox"
+                      />
+                      <div
+                        class="slider"
+                      />
+                    </label>
                   </td>
                   <td
                     class="link-full-td"
@@ -351,11 +404,21 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
+                    <label
+                      class="container"
+                      for="toggle-button-42"
                     >
-                      ToggleButtonMock value=false
-                    </div>
+                      <input
+                        class="input"
+                        disabled=""
+                        id="toggle-button-42"
+                        name="toggle-button-42"
+                        type="checkbox"
+                      />
+                      <div
+                        class="slider"
+                      />
+                    </label>
                   </td>
                   <td
                     class="link-full-td"
@@ -396,11 +459,22 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
+                    <label
+                      class="container"
+                      for="toggle-button-42"
                     >
-                      ToggleButtonMock value=true
-                    </div>
+                      <input
+                        checked=""
+                        class="input"
+                        disabled=""
+                        id="toggle-button-42"
+                        name="toggle-button-42"
+                        type="checkbox"
+                      />
+                      <div
+                        class="slider"
+                      />
+                    </label>
                   </td>
                   <td
                     class="link-full-td"
@@ -441,11 +515,21 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
+                    <label
+                      class="container"
+                      for="toggle-button-42"
                     >
-                      ToggleButtonMock value=false
-                    </div>
+                      <input
+                        class="input"
+                        disabled=""
+                        id="toggle-button-42"
+                        name="toggle-button-42"
+                        type="checkbox"
+                      />
+                      <div
+                        class="slider"
+                      />
+                    </label>
                   </td>
                   <td
                     class="link-full-td"
@@ -557,11 +641,22 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
+                    <label
+                      class="container"
+                      for="toggle-button-42"
                     >
-                      ToggleButtonMock value=true
-                    </div>
+                      <input
+                        checked=""
+                        class="input"
+                        disabled=""
+                        id="toggle-button-42"
+                        name="toggle-button-42"
+                        type="checkbox"
+                      />
+                      <div
+                        class="slider"
+                      />
+                    </label>
                   </td>
                   <td
                     class="link-full-td"
@@ -602,11 +697,21 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
+                    <label
+                      class="container"
+                      for="toggle-button-42"
                     >
-                      ToggleButtonMock value=false
-                    </div>
+                      <input
+                        class="input"
+                        disabled=""
+                        id="toggle-button-42"
+                        name="toggle-button-42"
+                        type="checkbox"
+                      />
+                      <div
+                        class="slider"
+                      />
+                    </label>
                   </td>
                   <td
                     class="link-full-td"
@@ -647,11 +752,22 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
+                    <label
+                      class="container"
+                      for="toggle-button-42"
                     >
-                      ToggleButtonMock value=true
-                    </div>
+                      <input
+                        checked=""
+                        class="input"
+                        disabled=""
+                        id="toggle-button-42"
+                        name="toggle-button-42"
+                        type="checkbox"
+                      />
+                      <div
+                        class="slider"
+                      />
+                    </label>
                   </td>
                   <td
                     class="link-full-td"

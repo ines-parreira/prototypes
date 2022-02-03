@@ -9,11 +9,15 @@ exports[`<UpdateToggle /> should display the update toggle 1`] = `
       class="container"
     >
       <label
-        class="switch toggle-switch"
+        class="container"
+        for="toggle-button-1"
       >
         <input
           checked=""
-          readonly=""
+          class="input"
+          disabled=""
+          id="toggle-button-1"
+          name="toggle-button-1"
           type="checkbox"
         />
         <div

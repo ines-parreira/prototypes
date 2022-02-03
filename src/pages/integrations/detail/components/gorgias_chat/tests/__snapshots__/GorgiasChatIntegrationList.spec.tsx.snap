@@ -87,11 +87,11 @@ exports[`<GorgiasChatIntegrationList/> should display correcty the list of chat 
         <ForwardRef
           className="smallest"
         >
-          <ToggleButton
-            disabled={false}
-            loading={false}
-            onChange={[Function]}
-            value={true}
+          <ToggleInput
+            isDisabled={false}
+            isLoading={false}
+            isToggled={true}
+            onClick={[Function]}
           />
         </ForwardRef>
         <ForwardRef

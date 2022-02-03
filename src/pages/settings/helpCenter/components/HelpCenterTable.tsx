@@ -3,17 +3,17 @@ import classnames from 'classnames'
 import moment from 'moment'
 import {Container} from 'reactstrap'
 
-import {HelpCenter, Locale} from '../../../../models/helpCenter/types'
-import {LanguageList} from '../../../common/components/LanguageBulletList'
-import Loader from '../../../common/components/Loader/Loader'
-import BodyCell from '../../../common/components/table/cells/BodyCell'
-import HeaderCell from '../../../common/components/table/cells/HeaderCell'
-import HeaderCellProperty from '../../../common/components/table/cells/HeaderCellProperty'
-import TableBody from '../../../common/components/table/TableBody'
-import TableBodyRow from '../../../common/components/table/TableBodyRow'
-import TableHead from '../../../common/components/table/TableHead'
-import TableWrapper from '../../../common/components/table/TableWrapper'
-import ToggleButton from '../../../common/components/ToggleButton'
+import {HelpCenter, Locale} from 'models/helpCenter/types'
+import {LanguageList} from 'pages/common/components/LanguageBulletList'
+import Loader from 'pages/common/components/Loader/Loader'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
+import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import TableBody from 'pages/common/components/table/TableBody'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import TableHead from 'pages/common/components/table/TableHead'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
+import ToggleInput from 'pages/common/forms/ToggleInput'
 import settingsCss from '../../settings.less'
 
 import css from './HelpCenterTable.less'
@@ -37,7 +37,7 @@ export const HelpCenterTable: React.FC<Props> = ({
 }) => {
     const handleToggle =
         (helpCenterId: number) =>
-        (isToggled: boolean, event?: MouseEvent): void => {
+        (isToggled: boolean, event?: MouseEvent<HTMLLabelElement>): void => {
             event?.stopPropagation()
             onToggle(helpCenterId, isToggled)
         }
@@ -86,9 +86,9 @@ export const HelpCenterTable: React.FC<Props> = ({
                                         css.actions
                                     )}
                                 >
-                                    <ToggleButton
-                                        value={activated}
-                                        onChange={handleToggle(id)}
+                                    <ToggleInput
+                                        isToggled={activated}
+                                        onClick={handleToggle(id)}
                                     />
                                 </BodyCell>
                                 <BodyCell className={css.helpCenterName}>

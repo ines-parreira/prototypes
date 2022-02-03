@@ -22,7 +22,7 @@ import {
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import {getIntegrationsByTypes} from '../../../../../../state/integrations/selectors'
 import PageHeader from '../../../../../common/components/PageHeader'
-import ToggleButton from '../../../../../common/components/ToggleButton'
+import ToggleInput from '../../../../../common/forms/ToggleInput'
 import Tooltip from '../../../../../common/components/Tooltip'
 import RadioField from '../../../../../common/forms/RadioField'
 import SelectField from '../../../../../common/forms/SelectField/SelectField'
@@ -397,11 +397,11 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         'd-flex'
                                     )}
                                 >
-                                    <ToggleButton
-                                        onChange={
+                                    <ToggleInput
+                                        onClick={
                                             this._setHideOutsideBusinessHours
                                         }
-                                        value={hideOutsideBusinessHours}
+                                        isToggled={hideOutsideBusinessHours}
                                     />
 
                                     <div className="ml-2">
@@ -450,9 +450,9 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         'd-flex'
                                     )}
                                 >
-                                    <ToggleButton
-                                        onChange={this._setHideOnMobile}
-                                        value={hideOnMobile}
+                                    <ToggleInput
+                                        onClick={this._setHideOnMobile}
+                                        isToggled={hideOnMobile}
                                     />
 
                                     <div className="ml-2">
@@ -469,9 +469,9 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                 <h4 className={css.title}>Auto-responder</h4>
 
                                 <div className="mb-3 d-flex align-items-center">
-                                    <ToggleButton
-                                        onChange={this._setAutoResponderEnabled}
-                                        value={autoResponderEnabled}
+                                    <ToggleInput
+                                        onClick={this._setAutoResponderEnabled}
+                                        isToggled={autoResponderEnabled}
                                     />
                                     <div className="ml-2">
                                         <b>Enable auto-responder</b>

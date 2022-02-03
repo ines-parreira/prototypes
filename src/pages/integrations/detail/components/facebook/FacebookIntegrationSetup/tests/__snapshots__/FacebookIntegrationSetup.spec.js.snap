@@ -272,9 +272,9 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                   </div>
                 </div>
               </div>
-              <ToggleButton
-                onChange={[Function]}
-                value={false}
+              <ToggleInput
+                isToggled={false}
+                onClick={[Function]}
               />
             </div>
             <div
@@ -540,9 +540,9 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                   </div>
                 </div>
               </div>
-              <ToggleButton
-                onChange={[Function]}
-                value={false}
+              <ToggleInput
+                isToggled={false}
+                onClick={[Function]}
               />
             </div>
             <div
@@ -824,9 +824,9 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                   </div>
                 </div>
               </div>
-              <ToggleButton
-                onChange={[Function]}
-                value={false}
+              <ToggleInput
+                isToggled={false}
+                onClick={[Function]}
               />
             </div>
             <div
@@ -1147,9 +1147,9 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                   </div>
                 </div>
               </div>
-              <ToggleButton
-                onChange={[Function]}
-                value={false}
+              <ToggleInput
+                isToggled={false}
+                onClick={[Function]}
               />
             </div>
             <div
@@ -1582,9 +1582,9 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
                   </div>
                 </div>
               </div>
-              <ToggleButton
-                onChange={[Function]}
-                value={true}
+              <ToggleInput
+                isToggled={true}
+                onClick={[Function]}
               />
             </div>
             <Alert
@@ -1857,9 +1857,9 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                   </div>
                 </div>
               </div>
-              <ToggleButton
-                onChange={[Function]}
-                value={true}
+              <ToggleInput
+                isToggled={true}
+                onClick={[Function]}
               />
             </div>
             <div
@@ -2599,9 +2599,9 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   </div>
                 </div>
               </div>
-              <ToggleButton
-                onChange={[Function]}
-                value={true}
+              <ToggleInput
+                isToggled={true}
+                onClick={[Function]}
               />
             </div>
             <Alert
@@ -3053,9 +3053,9 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   </div>
                 </div>
               </div>
-              <ToggleButton
-                onChange={[Function]}
-                value={true}
+              <ToggleInput
+                isToggled={true}
+                onClick={[Function]}
               />
             </div>
             <Alert
@@ -3363,9 +3363,9 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   </div>
                 </div>
               </div>
-              <ToggleButton
-                onChange={[Function]}
-                value={true}
+              <ToggleInput
+                isToggled={true}
+                onClick={[Function]}
               />
             </div>
             <Alert
@@ -3673,9 +3673,9 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   </div>
                 </div>
               </div>
-              <ToggleButton
-                onChange={[Function]}
-                value={true}
+              <ToggleInput
+                isToggled={true}
+                onClick={[Function]}
               />
             </div>
             <Alert
@@ -4127,9 +4127,9 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   </div>
                 </div>
               </div>
-              <ToggleButton
-                onChange={[Function]}
-                value={true}
+              <ToggleInput
+                isToggled={true}
+                onClick={[Function]}
               />
             </div>
             <Alert
@@ -4581,9 +4581,9 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   </div>
                 </div>
               </div>
-              <ToggleButton
-                onChange={[Function]}
-                value={true}
+              <ToggleInput
+                isToggled={true}
+                onClick={[Function]}
               />
             </div>
             <Alert
@@ -5035,9 +5035,9 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   </div>
                 </div>
               </div>
-              <ToggleButton
-                onChange={[Function]}
-                value={true}
+              <ToggleInput
+                isToggled={true}
+                onClick={[Function]}
               />
             </div>
             <Alert
@@ -5489,9 +5489,9 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   </div>
                 </div>
               </div>
-              <ToggleButton
-                onChange={[Function]}
-                value={true}
+              <ToggleInput
+                isToggled={true}
+                onClick={[Function]}
               />
             </div>
             <Alert
@@ -5915,9 +5915,9 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   </div>
                 </div>
               </div>
-              <ToggleButton
-                onChange={[Function]}
-                value={true}
+              <ToggleInput
+                isToggled={true}
+                onClick={[Function]}
               />
             </div>
             <Alert
@@ -6513,9 +6513,9 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                   </div>
                 </div>
               </div>
-              <ToggleButton
-                onChange={[Function]}
-                value={true}
+              <ToggleInput
+                isToggled={true}
+                onClick={[Function]}
               />
             </div>
             <Alert

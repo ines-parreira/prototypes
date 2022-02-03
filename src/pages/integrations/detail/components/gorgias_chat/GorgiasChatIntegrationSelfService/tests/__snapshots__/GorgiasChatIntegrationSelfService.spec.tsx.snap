@@ -110,12 +110,15 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the self se
         id="toggle-button"
       >
         <label
-          class="switch toggle-switch disabled"
+          class="container disabled"
+          for="toggle-button-1"
         >
           <input
             checked=""
+            class="input"
             disabled=""
-            readonly=""
+            id="toggle-button-1"
+            name="toggle-button-1"
             type="checkbox"
           />
           <div

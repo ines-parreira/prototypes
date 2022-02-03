@@ -1,0 +1,125 @@
+@import '~css/new/colors';
+@import '~css/typography';
+
+:local {
+    .caption {
+        color: @classic-neutral-grey-4;
+        position: relative;
+        left: 50px;
+        margin-top: 4px;
+        .caption-regular();
+    }
+
+    .container {
+        position: relative;
+        display: flex;
+        margin: 0;
+        max-width: fit-content;
+        transition: color 0.2s linear;
+    }
+
+    .disabled {
+        color: @classic-neutral-grey-4;
+
+        .label {
+            cursor: not-allowed;
+        }
+
+        .slider {
+            background-color: @classic-neutral-grey-3;
+            cursor: not-allowed;
+        }
+
+        .input:checked + .slider {
+            background-color: @classic-neutral-grey-3;
+        }
+    }
+
+    .loading {
+        :global {
+            @keyframes blink {
+                0% {
+                    opacity: 0.6;
+                }
+
+                100% {
+                    opacity: 1;
+                }
+            }
+        }
+
+        .slider {
+            :global {
+                animation: blink 0.5s infinite alternate;
+            }
+        }
+
+        .input:not(:checked) + .slider::after,
+        .input:checked + .slider::after {
+            content: '';
+        }
+    }
+
+    .input {
+        -webkit-appearance: none;
+        appearance: none;
+        position: absolute;
+        margin: 0;
+        opacity: 0;
+        width: 0;
+        height: 0;
+
+        &:checked + .slider {
+            background-color: @classic-feedback-success;
+
+            &::before {
+                transform: translateX(26px);
+            }
+
+            &::after {
+                content: 'on';
+                transform: translateX(-11px);
+            }
+        }
+    }
+
+    .label {
+        .body-semibold();
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .slider {
+        cursor: pointer;
+        border-radius: 3px;
+        background-color: @classic-neutral-grey-4;
+        transition: 0.4s;
+        width: 42px;
+        height: 20px;
+        margin-right: 8px;
+        position: relative;
+        .caption-allcaps();
+
+        &::before {
+            position: absolute;
+            content: '';
+            height: 16px;
+            width: 12px;
+            left: 2px;
+            bottom: 2px;
+            border-radius: 2px;
+            background-color: @classic-neutral-grey-0;
+            transition: 0.4s;
+        }
+
+        &::after {
+            position: absolute;
+            content: 'off';
+            font-size: 11px;
+            left: 16px;
+            bottom: 3px;
+            color: @classic-neutral-grey-0;
+            transition: 0.4s;
+        }
+    }
+}

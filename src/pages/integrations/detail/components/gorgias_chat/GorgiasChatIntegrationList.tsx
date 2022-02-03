@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react'
+import React, {MouseEvent, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import {List, Map} from 'immutable'
 import classnames from 'classnames'
@@ -9,9 +9,9 @@ import warningIcon from 'assets/img/icons/warning.svg'
 
 import {getIntegrationConfig} from 'state/integrations/helpers'
 
-import ToggleButton from '../../../../common/components/ToggleButton'
-import ForwardIcon from '../ForwardIcon'
+import ToggleInput from '../../../../common/forms/ToggleInput'
 import Tooltip from '../../../../common/components/Tooltip'
+import history from '../../../../history'
 import {IntegrationType} from '../../../../../models/integration/types'
 
 import BodyCell from '../../../../common/components/table/cells/BodyCell'
@@ -23,8 +23,8 @@ import TableHead from '../../../../common/components/table/TableHead'
 import TableWrapper from '../../../../common/components/table/TableWrapper'
 import {LanguageBullet} from '../../../../common/components/LanguageBulletList'
 import PageHeader from '../../../../common/components/PageHeader'
-import history from '../../../../history'
 import settingsCss from '../../../../settings/settings.less'
+import ForwardIcon from '../ForwardIcon'
 
 import NoIntegration from '../NoIntegration.js'
 
@@ -65,7 +65,7 @@ function GorgiasChatIntegrationList({
         const integrationId: number = chat.get('id')
         const toggleIntegration = (
             isToggled: boolean,
-            event?: React.MouseEvent<Element, MouseEvent>
+            event?: MouseEvent<HTMLLabelElement>
         ) => {
             event?.stopPropagation()
             isToggled
@@ -95,11 +95,11 @@ function GorgiasChatIntegrationList({
         return (
             <TableBodyRow className={css.tableBodyRow} onClick={goToChat}>
                 <BodyCell className="smallest">
-                    <ToggleButton
-                        value={isEnabled}
-                        onChange={toggleIntegration}
-                        loading={isLoading}
-                        disabled={!!loading.get('updateIntegration')}
+                    <ToggleInput
+                        isToggled={isEnabled}
+                        onClick={toggleIntegration}
+                        isLoading={isLoading}
+                        isDisabled={!!loading.get('updateIntegration')}
                     />
                 </BodyCell>
                 <BodyCell innerClassName={css.chatName}>

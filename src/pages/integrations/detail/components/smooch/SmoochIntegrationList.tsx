@@ -10,7 +10,7 @@ import {NotificationStatus} from '../../../../../state/notifications/types'
 import {IntegrationType} from '../../../../../models/integration/types'
 
 import history from '../../../../history'
-import ToggleButton from '../../../../common/components/ToggleButton'
+import ToggleInput from '../../../../common/forms/ToggleInput'
 
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
@@ -85,9 +85,9 @@ export class SmoochIntegrationList extends Component<Props> {
             return (
                 <tr key={int.get('id')}>
                     <td className="smallest align-middle">
-                        <ToggleButton
-                            value={!isDisabled}
-                            onChange={toggleIntegration}
+                        <ToggleInput
+                            isToggled={!isDisabled}
+                            onClick={toggleIntegration}
                         />
                     </td>
                     <td className="link-full-td">

@@ -255,9 +255,9 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
             <div
               className="mb-3 d-flex align-items-center"
             >
-              <ToggleButton
-                onChange={[Function]}
-                value={false}
+              <ToggleInput
+                isToggled={false}
+                onClick={[Function]}
               />
               <div
                 className="ml-2"
@@ -565,9 +565,9 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
             <div
               className="mb-3 d-flex align-items-center"
             >
-              <ToggleButton
-                onChange={[Function]}
-                value={false}
+              <ToggleInput
+                isToggled={false}
+                onClick={[Function]}
               />
               <div
                 className="ml-2"

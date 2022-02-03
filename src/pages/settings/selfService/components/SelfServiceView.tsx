@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {useSelector} from 'react-redux'
 import {Col, Container, Row, Table} from 'reactstrap'
 import {List, Map} from 'immutable'
+import classnames from 'classnames'
 
 import PageHeader from '../../../common/components/PageHeader'
 import Tooltip from '../../../common/components/Tooltip'
@@ -140,7 +141,10 @@ export const SelfServiceView = () => {
                                             integration.
                                         </p>
                                         <Table
-                                            className={`table-hover table-integrations ${css.selfServiceIntegrationsTable}`}
+                                            className={classnames(
+                                                'table-hover table-integrations',
+                                                css.selfServiceIntegrationsTable
+                                            )}
                                         >
                                             <tbody>
                                                 {shopifyIntegrations

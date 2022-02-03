@@ -27,24 +27,7 @@ const updateSelfServiceConfigurationMock =
         typeof updateSelfServiceConfiguration
     >
 
-jest.mock('../../../../common/components/ToggleButton', () => {
-    return ({
-        value,
-        onChange,
-    }: {
-        value: string
-        onChange: (param: boolean) => null
-    }) => {
-        return (
-            <div
-                data-testid="toggle-button"
-                onClick={() => {
-                    onChange(!Boolean(value))
-                }}
-            >{`ToggleButtonMock value=${value}`}</div>
-        )
-    }
-})
+jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
 jest.mock('../../../../../models/selfServiceConfiguration/resources')
 
 const createShopifyIntegrationFixtures = (length: number) => {
@@ -182,13 +165,13 @@ describe('<SelfServiceView/>', () => {
         })
     })
 
-    describe('ToggleButton.onChange()', () => {
-        it('should send an updateSelfServiceConfigurations action and the ssp for the store with id 1 will get deactivated', async () => {
+    describe('ToggleInput.onChange()', () => {
+        it('should send an updateSelfServiceConfigurations action and the ssp for the store with id 1 when it gets deactivated', async () => {
             const shopifyIntegrations = createShopifyIntegrationFixtures(4)
             const selfServiceConfigurations =
                 createSelfServiceConfigurationFixtures(4)
 
-            const {container, getAllByTestId, findByText} = render(
+            const {container, findByText} = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -219,42 +202,42 @@ describe('<SelfServiceView/>', () => {
             expect(container).toMatchSnapshot()
 
             act(() => {
-                fireEvent.click(getAllByTestId('toggle-button')[0]) // selecting the 1st store (id = 1)
+                fireEvent.click(document.getElementsByClassName('input')[0]) // selecting the 1st store (id = 1)
             })
             expect(updateSelfServiceConfigurationMock.mock.calls[0])
                 .toMatchInlineSnapshot(`
-                    Array [
-                      Object {
-                        "cancel_order_policy": Object {
-                          "enabled": false,
-                        },
-                        "created_datetime": "2021-01-26T00:29:00Z",
-                        "deactivated_datetime": "2021-01-26T00:30:00Z",
-                        "id": 1,
-                        "report_issue_policy": Object {
-                          "cases": Array [],
-                          "enabled": false,
-                        },
-                        "return_order_policy": Object {
-                          "enabled": false,
-                        },
-                        "shop_name": "mystore1",
-                        "track_order_policy": Object {
-                          "enabled": false,
-                        },
-                        "type": "shopify",
-                        "updated_datetime": "2021-01-26T00:29:30Z",
-                      },
-                    ]
-                `)
+                Array [
+                  Object {
+                    "cancel_order_policy": Object {
+                      "enabled": false,
+                    },
+                    "created_datetime": "2021-01-26T00:29:00Z",
+                    "deactivated_datetime": "2021-01-26T00:30:00Z",
+                    "id": 1,
+                    "report_issue_policy": Object {
+                      "cases": Array [],
+                      "enabled": false,
+                    },
+                    "return_order_policy": Object {
+                      "enabled": false,
+                    },
+                    "shop_name": "mystore1",
+                    "track_order_policy": Object {
+                      "enabled": false,
+                    },
+                    "type": "shopify",
+                    "updated_datetime": "2021-01-26T00:29:30Z",
+                  },
+                ]
+            `)
         })
 
-        it('should send an updateSelfServiceConfigurations action and the ssp for the store with id 2 will get activated', async () => {
+        it('should send an updateSelfServiceConfigurations action and the ssp for the store with id 2 when it gets activated', async () => {
             const shopifyIntegrations = createShopifyIntegrationFixtures(4)
             const selfServiceConfigurations =
                 createSelfServiceConfigurationFixtures(4)
 
-            const {container, getAllByTestId, findByText} = render(
+            const {container, findByText} = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -285,7 +268,7 @@ describe('<SelfServiceView/>', () => {
             expect(container).toMatchSnapshot()
 
             act(() => {
-                fireEvent.click(getAllByTestId('toggle-button')[1]) // selecting the 2nd store (id = 2)
+                fireEvent.click(document.getElementsByClassName('input')[1]) // selecting the 2nd store (id = 2)
             })
             expect(updateSelfServiceConfigurationMock.mock.calls[0])
                 .toMatchInlineSnapshot(`

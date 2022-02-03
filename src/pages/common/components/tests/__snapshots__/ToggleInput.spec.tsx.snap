@@ -1,0 +1,143 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ToggleInput should render caption 1`] = `
+<label
+  class="container"
+  for="toggle-button-7"
+>
+  <input
+    checked=""
+    class="input"
+    disabled=""
+    id="toggle-button-7"
+    name="toggle-button-7"
+    type="checkbox"
+  />
+  <div
+    class="slider"
+  />
+  <div
+    class="label"
+  >
+    Label
+  </div>
+</label>
+`;
+
+exports[`ToggleInput should render label 1`] = `
+<label
+  class="container"
+  for="toggle-button-6"
+>
+  <input
+    checked=""
+    class="input"
+    disabled=""
+    id="toggle-button-6"
+    name="toggle-button-6"
+    type="checkbox"
+  />
+  <div
+    class="slider"
+  />
+  <div
+    class="label"
+  >
+    Label
+  </div>
+</label>
+`;
+
+exports[`ToggleInput should render the button disabled 1`] = `
+<label
+  class="container disabled"
+  for="toggle-button-4"
+>
+  <input
+    checked=""
+    class="input"
+    disabled=""
+    id="toggle-button-4"
+    name="toggle-button-4"
+    type="checkbox"
+  />
+  <div
+    class="slider"
+  />
+</label>
+`;
+
+exports[`ToggleInput should render the button loading 1`] = `
+<label
+  class="container loading"
+  for="toggle-button-3"
+>
+  <input
+    checked=""
+    class="input"
+    disabled=""
+    id="toggle-button-3"
+    name="toggle-button-3"
+    type="checkbox"
+  />
+  <div
+    class="slider"
+  />
+</label>
+`;
+
+exports[`ToggleInput should render the button loading and disabled 1`] = `
+<label
+  class="container loading disabled"
+  for="toggle-button-5"
+>
+  <input
+    checked=""
+    class="input"
+    disabled=""
+    id="toggle-button-5"
+    name="toggle-button-5"
+    type="checkbox"
+  />
+  <div
+    class="slider"
+  />
+</label>
+`;
+
+exports[`ToggleInput should render the checkbox checked 1`] = `
+<label
+  class="container"
+  for="toggle-button-1"
+>
+  <input
+    checked=""
+    class="input"
+    disabled=""
+    id="toggle-button-1"
+    name="toggle-button-1"
+    type="checkbox"
+  />
+  <div
+    class="slider"
+  />
+</label>
+`;
+
+exports[`ToggleInput should render the checkbox unchecked 1`] = `
+<label
+  class="container"
+  for="toggle-button-2"
+>
+  <input
+    class="input"
+    disabled=""
+    id="toggle-button-2"
+    name="toggle-button-2"
+    type="checkbox"
+  />
+  <div
+    class="slider"
+  />
+</label>
+`;

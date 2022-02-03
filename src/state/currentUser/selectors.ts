@@ -141,3 +141,23 @@ const createUserSettingSelector = (type: UserSettingType) =>
 export const getViewsOrderingUserSetting = createUserSettingSelector(
     UserSettingType.ViewsOrdering
 )
+
+export const getLoadingState = createSelector<
+    RootState,
+    Map<any, any>,
+    CurrentUserState
+>(
+    getCurrentUserState,
+    (state: CurrentUserState) =>
+        (state.getIn(['_internal', 'loading']) as Map<any, any>) || fromJS({})
+)
+
+export const isLoading = (name: string | string[]) =>
+    createSelector<RootState, boolean, Map<any, any>>(
+        getLoadingState,
+        (loadingState: Map<any, any>) =>
+            loadingState.getIn(
+                typeof name === 'string' ? [name] : name,
+                false
+            ) as boolean
+    )

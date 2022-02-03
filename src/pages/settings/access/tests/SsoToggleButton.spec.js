@@ -39,7 +39,7 @@ describe('<SsoToggleButton/>', () => {
             />
         )
 
-        userEvent.click(container.getElementsByClassName('toggle-switch')[0])
+        userEvent.click(container.getElementsByClassName('slider')[0])
         expect(setValue).toHaveBeenCalledWith(true)
     })
 
@@ -51,7 +51,7 @@ describe('<SsoToggleButton/>', () => {
             <SsoToggleButton {...basicProps} value={true} setValue={setValue} />
         )
 
-        userEvent.click(container.getElementsByClassName('toggle-switch')[0])
+        userEvent.click(container.getElementsByClassName('slider')[0])
         await waitFor(() => expect(setValue).toHaveBeenCalledWith(false))
     })
 
@@ -63,7 +63,7 @@ describe('<SsoToggleButton/>', () => {
             <SsoToggleButton {...basicProps} value={true} setValue={setValue} />
         )
 
-        userEvent.click(container.getElementsByClassName('toggle-switch')[0])
+        userEvent.click(container.getElementsByClassName('slider')[0])
         expect(
             await findByText('Deactivate Google Single Sign-On?')
         ).not.toBeNull()

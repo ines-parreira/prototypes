@@ -3,7 +3,7 @@ import {Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import {useSelector} from 'react-redux'
 
-import ToggleButton from '../../../common/components/ToggleButton'
+import ToggleInput from '../../../common/forms/ToggleInput'
 import {generateConfiguration} from '../utils/generateConfiguration'
 import ForwardIcon from '../../../integrations/detail/components/ForwardIcon'
 import {
@@ -102,10 +102,10 @@ export const PolicyRow = ({
     return (
         <tr>
             <td className="smallest align-middle">
-                <ToggleButton
-                    value={enabled}
-                    onChange={onChange}
-                    loading={loading}
+                <ToggleInput
+                    isToggled={enabled}
+                    onClick={onChange}
+                    isLoading={loading}
                 />
             </td>
             <td className={css.policyTd}>

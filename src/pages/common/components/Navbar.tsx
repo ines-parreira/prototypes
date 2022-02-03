@@ -14,7 +14,6 @@ import {
 
 import 'assets/css/typography.less'
 
-import ToggleButton from '../../../pages/common/components/ToggleButton'
 import shortcutManager from '../../../services/shortcutManager/index'
 import {DEPRECATED_getCurrentPlan} from '../../../state/billing/selectors'
 import {isTrialing} from '../../../state/currentAccount/selectors'
@@ -23,6 +22,7 @@ import {
     getCurrentUser,
     getPreferences,
     isAvailable,
+    isLoading,
 } from '../../../state/currentUser/selectors'
 import {closePanels} from '../../../state/layout/actions'
 import {isOpenedPanel} from '../../../state/layout/selectors'
@@ -30,6 +30,7 @@ import {RootState} from '../../../state/types'
 import {logEvent, SegmentEvent} from '../../../store/middlewares/segmentTracker'
 import {reportError} from '../../../utils/errors'
 
+import ToggleInput from '../forms/ToggleInput'
 import Avatar from './Avatar/Avatar'
 
 import css from './Navbar.less'
@@ -206,7 +207,13 @@ export class Navbar extends React.Component<Props, State> {
     }
 
     render() {
-        const {available, currentPlan, currentUser, isTrialing} = this.props
+        const {
+            available,
+            currentPlan,
+            currentUser,
+            isTrialing,
+            isPreferencesLoading,
+        } = this.props
         const currentPlanName = (currentPlan.get('name') as string) || ''
         const isBasicOrPro = ['pro', 'basic'].some((planType) =>
             currentPlanName.toLowerCase().includes(planType)
@@ -313,9 +320,10 @@ export class Navbar extends React.Component<Props, State> {
                             <div className="d-flex justify-content-between align-items-center">
                                 <div>Available</div>
                                 <div>
-                                    <ToggleButton
-                                        value={available}
-                                        onChange={
+                                    <ToggleInput
+                                        isToggled={available}
+                                        isLoading={isPreferencesLoading}
+                                        onClick={
                                             this
                                                 ._updateAvailableForChatPreference
                                         }
@@ -473,14 +481,19 @@ export class Navbar extends React.Component<Props, State> {
 }
 
 const connector = connect(
-    (state: RootState) => ({
-        currentUser: getCurrentUser(state),
-        currentUserPreferences: getPreferences(state),
-        currentPlan: DEPRECATED_getCurrentPlan(state),
-        available: isAvailable(state),
-        isOpenedPanel: isOpenedPanel('navbar')(state),
-        isTrialing: isTrialing(state),
-    }),
+    (state: RootState) => {
+        const getIsPreferencesLoading = isLoading(['settings', 'preferences'])
+
+        return {
+            currentUser: getCurrentUser(state),
+            currentUserPreferences: getPreferences(state),
+            currentPlan: DEPRECATED_getCurrentPlan(state),
+            available: isAvailable(state),
+            isOpenedPanel: isOpenedPanel('navbar')(state),
+            isTrialing: isTrialing(state),
+            isPreferencesLoading: getIsPreferencesLoading(state),
+        }
+    },
     {
         submitSetting,
         closePanels,

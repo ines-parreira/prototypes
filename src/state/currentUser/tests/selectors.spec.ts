@@ -4,7 +4,7 @@ import {fromJS, List} from 'immutable'
 import {UserSettingType} from '../../../config/types/user'
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
-import * as usersFixtures from '../../../fixtures/users'
+import {user} from '../../../fixtures/users'
 import {DEFAULT_PREFERENCES} from '../../../config'
 import {RootState} from '../../types'
 
@@ -15,7 +15,19 @@ describe('current user selectors', () => {
 
     beforeEach(() => {
         state = {
-            currentUser: initialState.mergeDeep(fromJS(usersFixtures.user)),
+            currentUser: initialState.mergeDeep(
+                fromJS({
+                    ...user,
+                    _internal: {
+                        loading: {
+                            settings: {
+                                preferences: true,
+                            },
+                            currentUser: true,
+                        },
+                    },
+                })
+            ),
         } as RootState
     })
 
@@ -123,5 +135,22 @@ describe('current user selectors', () => {
             })
             expect(res).toMatchSnapshot()
         })
+    })
+
+    it('getLoading', () => {
+        expect(selectors.getLoadingState(state)).toEqualImmutable(
+            state.currentUser.getIn(['_internal', 'loading'])
+        )
+        expect(selectors.getLoadingState({} as RootState)).toEqualImmutable(
+            fromJS({})
+        )
+    })
+
+    it('isLoading', () => {
+        expect(
+            selectors.isLoading(['settings', 'preferences'])(state)
+        ).toEqualImmutable(true)
+        expect(selectors.isLoading('currentUser')(state)).toBe(true)
+        expect(selectors.isLoading('unknown')(state)).toBe(false)
     })
 })

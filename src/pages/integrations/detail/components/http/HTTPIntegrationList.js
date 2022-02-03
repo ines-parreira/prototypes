@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import _truncate from 'lodash/truncate'
 
-import ToggleButton from '../../../../common/components/ToggleButton.tsx'
+import ToggleInput from '../../../../common/forms/ToggleInput.tsx'
 import IntegrationList from '../IntegrationList.tsx'
 import ForwardIcon from '../ForwardIcon.tsx'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
@@ -61,9 +61,9 @@ export default class HTTPIntegrationList extends React.Component {
             return (
                 <tr key={int.get('id')}>
                     <td className="smallest align-middle">
-                        <ToggleButton
-                            value={!isDisabled}
-                            onChange={toggleIntegration}
+                        <ToggleInput
+                            isToggled={!isDisabled}
+                            onClick={toggleIntegration}
                         />
                     </td>
                     <td className="link-full-td">

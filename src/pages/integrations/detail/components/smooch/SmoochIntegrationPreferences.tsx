@@ -14,7 +14,7 @@ import {
 } from '../../../../../config/integrations/index'
 import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
 import PageHeader from '../../../../common/components/PageHeader'
-import ToggleButton from '../../../../common/components/ToggleButton'
+import ToggleInput from '../../../../common/forms/ToggleInput'
 import RadioField from '../../../../common/forms/RadioField'
 import css from '../../../../settings/settings.less'
 
@@ -146,9 +146,9 @@ export class SmoochIntegrationPreferences extends React.Component<
                             <h4>Auto-responder</h4>
 
                             <div className="mb-3 d-flex align-items-center">
-                                <ToggleButton
-                                    onChange={this._setAutoResponderEnabled}
-                                    value={autoResponderEnabled}
+                                <ToggleInput
+                                    onClick={this._setAutoResponderEnabled}
+                                    isToggled={autoResponderEnabled}
                                 />
                                 <div className="ml-2">
                                     <b>Enable auto-responder</b>

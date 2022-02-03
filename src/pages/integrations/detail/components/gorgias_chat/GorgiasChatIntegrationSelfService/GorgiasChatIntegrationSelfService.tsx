@@ -10,7 +10,7 @@ import PageHeader from '../../../../../common/components/PageHeader'
 import {DEPRECATED_getIntegrations} from '../../../../../../state/integrations/selectors'
 import {IntegrationType} from '../../../../../../models/integration/types'
 import {fetchSelfServiceConfiguration} from '../../../../../../models/selfServiceConfiguration/resources'
-import ToggleButton from '../../../../../common/components/ToggleButton'
+import ToggleInput from '../../../../../common/forms/ToggleInput'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import useAppDispatch from '../../../../../../hooks/useAppDispatch'
 import Tooltip from '../../../../../common/components/Tooltip'
@@ -148,10 +148,10 @@ export function GorgiasChatIntegrationSelfServiceComponent({
                 </p>
                 <div className="d-flex my-4">
                     <span id="toggle-button">
-                        <ToggleButton
-                            value={originalSSPEnabled}
-                            disabled={isSwitchDisabled}
-                            onChange={handleOnChangeSwitch}
+                        <ToggleInput
+                            isToggled={originalSSPEnabled}
+                            isDisabled={isSwitchDisabled}
+                            onClick={handleOnChangeSwitch}
                         />
                     </span>
                     {sspForceDisabled ? (

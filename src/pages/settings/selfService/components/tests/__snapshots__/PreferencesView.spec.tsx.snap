@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<SelfServicePreferencesView/> ToggleButton.onChange() should deactivate the report issue policy on the mystore3 store 1`] = `
+exports[`<SelfServicePreferencesView/> ToggleInput.onChange() should deactivate the report issue policy on the mystore3 store 1`] = `
 <div>
   <div
     class="full-width"
@@ -115,11 +115,22 @@ exports[`<SelfServicePreferencesView/> ToggleButton.onChange() should deactivate
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
+                    <label
+                      class="container"
+                      for="toggle-button-42"
                     >
-                      ToggleButtonMock value=true
-                    </div>
+                      <input
+                        checked=""
+                        class="input"
+                        disabled=""
+                        id="toggle-button-42"
+                        name="toggle-button-42"
+                        type="checkbox"
+                      />
+                      <div
+                        class="slider"
+                      />
+                    </label>
                   </td>
                   <td
                     class="policyTd"
@@ -151,11 +162,21 @@ exports[`<SelfServicePreferencesView/> ToggleButton.onChange() should deactivate
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
+                    <label
+                      class="container"
+                      for="toggle-button-42"
                     >
-                      ToggleButtonMock value=false
-                    </div>
+                      <input
+                        class="input"
+                        disabled=""
+                        id="toggle-button-42"
+                        name="toggle-button-42"
+                        type="checkbox"
+                      />
+                      <div
+                        class="slider"
+                      />
+                    </label>
                   </td>
                   <td
                     class="policyTd"
@@ -210,11 +231,22 @@ exports[`<SelfServicePreferencesView/> ToggleButton.onChange() should deactivate
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
+                    <label
+                      class="container"
+                      for="toggle-button-42"
                     >
-                      ToggleButtonMock value=true
-                    </div>
+                      <input
+                        checked=""
+                        class="input"
+                        disabled=""
+                        id="toggle-button-42"
+                        name="toggle-button-42"
+                        type="checkbox"
+                      />
+                      <div
+                        class="slider"
+                      />
+                    </label>
                   </td>
                   <td
                     class="policyTd"
@@ -260,11 +292,21 @@ exports[`<SelfServicePreferencesView/> ToggleButton.onChange() should deactivate
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
+                    <label
+                      class="container"
+                      for="toggle-button-42"
                     >
-                      ToggleButtonMock value=false
-                    </div>
+                      <input
+                        class="input"
+                        disabled=""
+                        id="toggle-button-42"
+                        name="toggle-button-42"
+                        type="checkbox"
+                      />
+                      <div
+                        class="slider"
+                      />
+                    </label>
                   </td>
                   <td
                     class="policyTd"
@@ -431,11 +473,22 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
+                    <label
+                      class="container"
+                      for="toggle-button-42"
                     >
-                      ToggleButtonMock value=true
-                    </div>
+                      <input
+                        checked=""
+                        class="input"
+                        disabled=""
+                        id="toggle-button-42"
+                        name="toggle-button-42"
+                        type="checkbox"
+                      />
+                      <div
+                        class="slider"
+                      />
+                    </label>
                   </td>
                   <td
                     class="policyTd"
@@ -467,11 +520,21 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
+                    <label
+                      class="container"
+                      for="toggle-button-42"
                     >
-                      ToggleButtonMock value=false
-                    </div>
+                      <input
+                        class="input"
+                        disabled=""
+                        id="toggle-button-42"
+                        name="toggle-button-42"
+                        type="checkbox"
+                      />
+                      <div
+                        class="slider"
+                      />
+                    </label>
                   </td>
                   <td
                     class="policyTd"
@@ -526,11 +589,22 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
+                    <label
+                      class="container"
+                      for="toggle-button-42"
                     >
-                      ToggleButtonMock value=true
-                    </div>
+                      <input
+                        checked=""
+                        class="input"
+                        disabled=""
+                        id="toggle-button-42"
+                        name="toggle-button-42"
+                        type="checkbox"
+                      />
+                      <div
+                        class="slider"
+                      />
+                    </label>
                   </td>
                   <td
                     class="policyTd"
@@ -576,11 +650,21 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
+                    <label
+                      class="container"
+                      for="toggle-button-42"
                     >
-                      ToggleButtonMock value=false
-                    </div>
+                      <input
+                        class="input"
+                        disabled=""
+                        id="toggle-button-42"
+                        name="toggle-button-42"
+                        type="checkbox"
+                      />
+                      <div
+                        class="slider"
+                      />
+                    </label>
                   </td>
                   <td
                     class="policyTd"

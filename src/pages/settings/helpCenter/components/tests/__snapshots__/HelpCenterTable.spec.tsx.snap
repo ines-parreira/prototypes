@@ -122,11 +122,15 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
             class="cellContent"
           >
             <label
-              class="switch toggle-switch"
+              class="container"
+              for="toggle-button-1"
             >
               <input
                 checked=""
-                readonly=""
+                class="input"
+                disabled=""
+                id="toggle-button-1"
+                name="toggle-button-1"
                 type="checkbox"
               />
               <div
@@ -196,11 +200,15 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
             class="cellContent"
           >
             <label
-              class="switch toggle-switch"
+              class="container"
+              for="toggle-button-2"
             >
               <input
                 checked=""
-                readonly=""
+                class="input"
+                disabled=""
+                id="toggle-button-2"
+                name="toggle-button-2"
                 type="checkbox"
               />
               <div
@@ -281,11 +289,15 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
             class="cellContent"
           >
             <label
-              class="switch toggle-switch"
+              class="container"
+              for="toggle-button-3"
             >
               <input
                 checked=""
-                readonly=""
+                class="input"
+                disabled=""
+                id="toggle-button-3"
+                name="toggle-button-3"
                 type="checkbox"
               />
               <div

@@ -2,7 +2,7 @@ import {Link} from 'react-router-dom'
 import React, {useCallback, useEffect, useState} from 'react'
 import {fromJS, Map} from 'immutable'
 
-import ToggleButton from '../../../common/components/ToggleButton'
+import ToggleInput from '../../../common/forms/ToggleInput'
 import {getIconFromType} from '../../../../state/integrations/helpers'
 import {generateConfiguration} from '../utils/generateConfiguration'
 import ForwardIcon from '../../../integrations/detail/components/ForwardIcon'
@@ -115,10 +115,10 @@ export const IntegrationRow = ({
     return (
         <tr key={shopifyIntegration.get('id')}>
             <td className="smallest align-middle">
-                <ToggleButton
-                    value={enabled}
-                    onChange={_onChange}
-                    loading={loading}
+                <ToggleInput
+                    isToggled={enabled}
+                    onClick={_onChange}
+                    isLoading={loading}
                 />
             </td>
             <td className="link-full-td">

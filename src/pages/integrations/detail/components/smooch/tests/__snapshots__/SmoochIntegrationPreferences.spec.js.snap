@@ -82,9 +82,9 @@ exports[`<SmoochIntegrationPreferences/> render() should render loading buttons 
         <div
           className="mb-3 d-flex align-items-center"
         >
-          <ToggleButton
-            onChange={[Function]}
-            value={false}
+          <ToggleInput
+            isToggled={false}
+            onClick={[Function]}
           />
           <div
             className="ml-2"
@@ -237,9 +237,9 @@ exports[`<SmoochIntegrationPreferences/> render() should render the Smooch prefe
         <div
           className="mb-3 d-flex align-items-center"
         >
-          <ToggleButton
-            onChange={[Function]}
-            value={false}
+          <ToggleInput
+            isToggled={false}
+            onClick={[Function]}
           />
           <div
             className="ml-2"

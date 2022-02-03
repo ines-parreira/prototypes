@@ -178,9 +178,9 @@ exports[`<OutlookIntegrationSetup/> render() should render the list of integrati
                   email1@foo.com
                 </span>
               </div>
-              <ToggleButton
-                onChange={[Function]}
-                value={false}
+              <ToggleInput
+                isToggled={false}
+                onClick={[Function]}
               />
             </div>
           </div>
@@ -301,9 +301,9 @@ exports[`<OutlookIntegrationSetup/> render() should render the list of integrati
                   email1@foo.com
                 </span>
               </div>
-              <ToggleButton
-                onChange={[Function]}
-                value={false}
+              <ToggleInput
+                isToggled={false}
+                onClick={[Function]}
               />
             </div>
           </div>
@@ -327,9 +327,9 @@ exports[`<OutlookIntegrationSetup/> render() should render the list of integrati
                   email2@foo.com
                 </span>
               </div>
-              <ToggleButton
-                onChange={[Function]}
-                value={false}
+              <ToggleInput
+                isToggled={false}
+                onClick={[Function]}
               />
             </div>
           </div>

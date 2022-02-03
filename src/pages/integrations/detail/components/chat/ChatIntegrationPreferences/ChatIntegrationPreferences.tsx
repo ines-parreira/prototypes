@@ -31,7 +31,7 @@ import {
 
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import PageHeader from '../../../../../common/components/PageHeader'
-import ToggleButton from '../../../../../common/components/ToggleButton'
+import ToggleInput from '../../../../../common/forms/ToggleInput'
 import Tooltip from '../../../../../common/components/Tooltip'
 import RadioField from '../../../../../common/forms/RadioField'
 import SelectField from '../../../../../common/forms/SelectField/SelectField'
@@ -330,11 +330,11 @@ export class ChatIntegrationPreferences extends Component<Props, State> {
                                     <h4>Auto-responder</h4>
 
                                     <div className="mb-3 d-flex align-items-center">
-                                        <ToggleButton
-                                            onChange={
+                                        <ToggleInput
+                                            onClick={
                                                 this._setAutoResponderEnabled
                                             }
-                                            value={autoResponderEnabled}
+                                            isToggled={autoResponderEnabled}
                                         />
                                         <div className="ml-2">
                                             <b>Enable auto-responder</b>

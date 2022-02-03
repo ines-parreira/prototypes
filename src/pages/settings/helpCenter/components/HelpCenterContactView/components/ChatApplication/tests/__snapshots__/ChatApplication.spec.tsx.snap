@@ -9,10 +9,14 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
       class="container"
     >
       <label
-        class="switch toggle-switch"
+        class="container"
+        for="toggle-button-1"
       >
         <input
-          readonly=""
+          class="input"
+          disabled=""
+          id="toggle-button-1"
+          name="toggle-button-1"
           type="checkbox"
         />
         <div
@@ -41,11 +45,14 @@ exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] =
       class="container"
     >
       <label
-        class="switch toggle-switch disabled"
+        class="container disabled"
+        for="toggle-button-2"
       >
         <input
+          class="input"
           disabled=""
-          readonly=""
+          id="toggle-button-2"
+          name="toggle-button-2"
           type="checkbox"
         />
         <div

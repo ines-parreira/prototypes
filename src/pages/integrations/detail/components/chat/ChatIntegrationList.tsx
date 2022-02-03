@@ -7,7 +7,7 @@ import {
     activateIntegration,
     deactivateIntegration,
 } from '../../../../../state/integrations/actions'
-import ToggleButton from '../../../../common/components/ToggleButton'
+import ToggleInput from '../../../../common/forms/ToggleInput'
 import Alert, {AlertType} from '../../../../common/components/Alert/Alert'
 import history from '../../../../history'
 import IntegrationList from '../IntegrationList'
@@ -83,11 +83,11 @@ export class ChatIntegrationListContainer extends Component<Props> {
             return (
                 <tr key={integration.get('id')}>
                     <td className="smallest align-middle">
-                        <ToggleButton
-                            value={!isDisabled}
-                            onChange={toggleIntegration}
-                            loading={isLoading}
-                            disabled={!!loading.get('updateIntegration')}
+                        <ToggleInput
+                            isToggled={!isDisabled}
+                            onClick={toggleIntegration}
+                            isLoading={isLoading}
+                            isDisabled={!!loading.get('updateIntegration')}
                         />
                     </td>
                     <td className="link-full-td">

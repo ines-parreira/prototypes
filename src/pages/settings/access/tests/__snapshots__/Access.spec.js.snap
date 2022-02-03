@@ -40,10 +40,14 @@ exports[`<Access/> should render properly 1`] = `
             class="mb-2 d-flex align-items-center"
           >
             <label
-              class="switch toggle-switch"
+              class="container"
+              for="toggle-button-1"
             >
               <input
-                readonly=""
+                class="input"
+                disabled=""
+                id="toggle-button-1"
+                name="toggle-button-1"
                 type="checkbox"
               />
               <div
@@ -165,10 +169,14 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
             class="mb-2 d-flex align-items-center"
           >
             <label
-              class="switch toggle-switch"
+              class="container"
+              for="toggle-button-2"
             >
               <input
-                readonly=""
+                class="input"
+                disabled=""
+                id="toggle-button-2"
+                name="toggle-button-2"
                 type="checkbox"
               />
               <div
@@ -246,7 +254,7 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
             >
               <textarea
                 class="form-control"
-                id="id-input-1"
+                id="id-input-3"
               >
                 gorgias.com
 gorgias.io
@@ -312,10 +320,14 @@ exports[`<Access/> should show an error and block submit when using a generic do
             class="mb-2 d-flex align-items-center"
           >
             <label
-              class="switch toggle-switch"
+              class="container"
+              for="toggle-button-4"
             >
               <input
-                readonly=""
+                class="input"
+                disabled=""
+                id="toggle-button-4"
+                name="toggle-button-4"
                 type="checkbox"
               />
               <div
@@ -393,7 +405,7 @@ exports[`<Access/> should show an error and block submit when using a generic do
             >
               <textarea
                 class="form-control-danger is-invalid form-control"
-                id="id-input-2"
+                id="id-input-5"
               >
                 gmail.com
               </textarea>

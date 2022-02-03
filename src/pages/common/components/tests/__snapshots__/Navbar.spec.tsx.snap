@@ -141,11 +141,15 @@ exports[`<Navbar /> should render the navbar 1`] = `
           </div>
           <div>
             <label
-              class="switch toggle-switch"
+              class="container"
+              for="toggle-button-42"
             >
               <input
                 checked=""
-                readonly=""
+                class="input"
+                disabled=""
+                id="toggle-button-42"
+                name="toggle-button-42"
                 type="checkbox"
               />
               <div
@@ -404,11 +408,15 @@ exports[`<Navbar /> should render the opened panel 1`] = `
           </div>
           <div>
             <label
-              class="switch toggle-switch"
+              class="container"
+              for="toggle-button-42"
             >
               <input
                 checked=""
-                readonly=""
+                class="input"
+                disabled=""
+                id="toggle-button-42"
+                name="toggle-button-42"
                 type="checkbox"
               />
               <div
@@ -667,10 +675,14 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
           </div>
           <div>
             <label
-              class="switch toggle-switch"
+              class="container"
+              for="toggle-button-42"
             >
               <input
-                readonly=""
+                class="input"
+                disabled=""
+                id="toggle-button-42"
+                name="toggle-button-42"
                 type="checkbox"
               />
               <div

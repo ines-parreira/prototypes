@@ -1,20 +1,20 @@
 import React, {ComponentProps} from 'react'
 import {FormGroup, Label, FormText} from 'reactstrap'
 
-import ToggleButton from '../../common/components/ToggleButton'
+import ToggleInput from './ToggleInput'
 
 import css from './ToggleField.less'
 
-type Props = Omit<ComponentProps<typeof ToggleButton>, 'onChange'> & {
-    onChange: (value: boolean) => void
+type Props = Omit<ComponentProps<typeof ToggleInput>, 'onClick'> & {
+    onClick: (value: boolean) => void
     label?: string
     helpText?: string
     className?: string
 }
 
 const ToggleField = ({
-    value,
-    onChange,
+    isToggled,
+    onClick,
     label,
     helpText,
     className,
@@ -22,10 +22,10 @@ const ToggleField = ({
 }: Props): JSX.Element => (
     <FormGroup className={className}>
         <div className={css.container}>
-            <ToggleButton {...rest} value={value} onChange={onChange} />
+            <ToggleInput {...rest} isToggled={isToggled} onClick={onClick} />
             <Label
                 className="control-label mb-0 ml-2 clickable"
-                onClick={() => onChange(!value)}
+                onClick={() => onClick(!isToggled)}
             >
                 {label}
             </Label>

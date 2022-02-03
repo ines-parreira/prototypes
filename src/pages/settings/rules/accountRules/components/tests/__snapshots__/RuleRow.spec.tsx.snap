@@ -19,11 +19,15 @@ exports[`<RuleRow /> should render a row with a rule 1`] = `
     class="smallest align-middle position-relative"
   >
     <label
-      class="switch toggle-switch"
+      class="container"
+      for="toggle-button-1"
     >
       <input
         checked=""
-        readonly=""
+        class="input"
+        disabled=""
+        id="toggle-button-1"
+        name="toggle-button-1"
         type="checkbox"
       />
       <div

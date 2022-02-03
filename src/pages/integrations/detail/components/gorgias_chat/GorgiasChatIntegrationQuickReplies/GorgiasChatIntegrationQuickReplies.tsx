@@ -7,7 +7,7 @@ import classnames from 'classnames'
 
 import PageHeader from '../../../../../common/components/PageHeader'
 import ListField from '../../../../../common/forms/ListField'
-import ToggleButton from '../../../../../common/components/ToggleButton'
+import ToggleInput from '../../../../../common/forms/ToggleInput'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import {
     QUICK_REPLIES_DEFAULTS,
@@ -208,12 +208,11 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                                     css.mb16
                                 )}
                             >
-                                <ToggleButton
-                                    value={quickRepliesEnabled}
-                                    onChange={() =>
+                                <ToggleInput
+                                    isToggled={quickRepliesEnabled}
+                                    onClick={(newValue) =>
                                         this.setState({
-                                            quickRepliesEnabled:
-                                                !quickRepliesEnabled,
+                                            quickRepliesEnabled: newValue,
                                         })
                                     }
                                 />

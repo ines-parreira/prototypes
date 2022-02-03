@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react'
+import React, {MouseEvent, useMemo, useState} from 'react'
 import {useAsyncFn} from 'react-use'
 import moment from 'moment'
 import classnames from 'classnames'
@@ -6,9 +6,9 @@ import {Badge, Button, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 
-import ToggleButton from 'pages/common/components/ToggleButton'
 import {ButtonIntent} from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
+import ToggleInput from 'pages/common/forms/ToggleInput'
 import {Rule} from 'state/rules/types'
 import {
     activateRule,
@@ -149,7 +149,11 @@ export function RuleRow({
         toggleShowToggleConfirmation()
     }
 
-    const toggleActivation = async () => {
+    const toggleActivation = async (
+        value: boolean,
+        event: MouseEvent<HTMLLabelElement>
+    ) => {
+        event.stopPropagation()
         const checked = !!rule.deactivated_datetime
         if (checked) {
             await handleActivate()
@@ -191,10 +195,9 @@ export function RuleRow({
                 </td>
 
                 <td className="smallest align-middle position-relative">
-                    <ToggleButton
-                        value={!rule.deactivated_datetime}
-                        onChange={toggleActivation}
-                        stopPropagation
+                    <ToggleInput
+                        isToggled={!rule.deactivated_datetime}
+                        onClick={toggleActivation}
                     />
                     <div className={css.toggleActivation} id={toggleId} />
                 </td>

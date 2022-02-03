@@ -7,7 +7,7 @@ import {Breadcrumb, BreadcrumbItem, Button, Container, Table} from 'reactstrap'
 import classnames from 'classnames'
 
 import {updateCampaign} from '../../../../../../state/campaigns/actions'
-import ToggleButton from '../../../../../common/components/ToggleButton'
+import ToggleInput from '../../../../../common/forms/ToggleInput'
 import PageHeader from '../../../../../common/components/PageHeader'
 import ForwardIcon from '../../ForwardIcon'
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
@@ -113,13 +113,13 @@ export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
                                 return (
                                     <tr key={campaign.get('id') as number}>
                                         <td className="smallest align-middle">
-                                            <ToggleButton
-                                                value={
+                                            <ToggleInput
+                                                isToggled={
                                                     !campaign.get(
                                                         'deactivated_datetime'
                                                     )
                                                 }
-                                                onChange={() =>
+                                                onClick={() =>
                                                     this.toggleCampaign(
                                                         campaign
                                                     )

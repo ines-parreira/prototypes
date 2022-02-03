@@ -20,8 +20,8 @@ import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import Pagination from 'pages/common/components/Pagination'
-import ToggleButton from 'pages/common/components/ToggleButton'
 import CheckBox from 'pages/common/forms/CheckBox'
+import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
 import {DEPRECATED_getCurrentPlan} from 'state/billing/selectors'
@@ -449,9 +449,9 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                             </div>
                                         </div>
                                         {!nothingToEnable && canModerate && (
-                                            <ToggleButton
-                                                value={pageEnabled}
-                                                onChange={(value) =>
+                                            <ToggleInput
+                                                isToggled={pageEnabled}
+                                                onClick={(value) =>
                                                     this._toggleIntegration(
                                                         integration,
                                                         value

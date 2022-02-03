@@ -26,26 +26,9 @@ const updateSelfServiceConfigurationMock =
     >
 const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
 
-jest.mock('../../../../common/components/ToggleButton', () => {
-    return ({
-        value,
-        onChange,
-    }: {
-        value: string
-        onChange: (param: boolean) => null
-    }) => {
-        return (
-            <div
-                data-testid="toggle-button"
-                onClick={() => {
-                    onChange(!Boolean(value))
-                }}
-            >{`ToggleButtonMock value=${value}`}</div>
-        )
-    }
-})
-jest.mock('../../../../../models/selfServiceConfiguration/resources')
 jest.mock('react-router')
+jest.mock('../../../../../models/selfServiceConfiguration/resources')
+jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
 
 const createShopifyIntegrationFixtures = (length: number) => {
     return Array.from({length}, (_, i) => ({
@@ -168,7 +151,7 @@ describe('<SelfServicePreferencesView/>', () => {
         })
     })
 
-    describe('ToggleButton.onChange()', () => {
+    describe('ToggleInput.onChange()', () => {
         it('should deactivate the report issue policy on the mystore3 store', () => {
             // make sure return order policy is enabled before toggling
             expect(
@@ -180,7 +163,7 @@ describe('<SelfServicePreferencesView/>', () => {
                 integrationType: 'shopify',
             })
 
-            const {container, getAllByTestId} = render(
+            const {container} = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -209,7 +192,7 @@ describe('<SelfServicePreferencesView/>', () => {
 
             expect(container).toMatchSnapshot()
 
-            fireEvent.click(getAllByTestId('toggle-button')[2]) // selecting the return order policy toggle button
+            fireEvent.click(document.getElementsByClassName('input')[2])
             expect(updateSelfServiceConfigurationMock.mock.calls[0])
                 .toMatchInlineSnapshot(`
                 Array [

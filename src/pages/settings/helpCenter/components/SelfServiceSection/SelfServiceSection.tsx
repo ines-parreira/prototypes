@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import {Map} from 'immutable'
 import {useAsyncFn} from 'react-use'
 
-import ToggleButton from '../../../../common/components/ToggleButton'
+import ToggleInput from '../../../../common/forms/ToggleInput'
 
 import {
     HelpCenter,
@@ -87,10 +87,10 @@ export const SelfServiceSection = ({
             </div>
 
             <div className="d-flex mt-4">
-                <ToggleButton
-                    value={!selfServiceDeactivated}
-                    disabled={isSwitchDisabled}
-                    onChange={handleOnChangeSwitch}
+                <ToggleInput
+                    isToggled={!selfServiceDeactivated}
+                    isDisabled={isSwitchDisabled}
+                    onClick={handleOnChangeSwitch}
                 />
                 <Label
                     className="control-label ml-2 clickable"

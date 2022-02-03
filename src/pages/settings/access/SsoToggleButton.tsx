@@ -1,8 +1,8 @@
 import React, {useCallback, useState} from 'react'
 
-import ToggleButton from '../../common/components/ToggleButton'
+import client from 'models/api/resources'
+import ToggleInput from 'pages/common/forms/ToggleInput'
 import {ConfirmationModal} from '../helpCenter/components/ConfirmationModal'
-import client from '../../../models/api/resources'
 
 type Props = {
     id: string
@@ -50,11 +50,11 @@ export const SsoToggleButton = (props: Props) => {
     return (
         <>
             <div className="mb-2 d-flex align-items-center">
-                <ToggleButton
-                    value={value}
-                    loading={loading || isLoadingUsers || ssoModalVisible}
-                    disabled={disabled}
-                    onChange={handleToggle}
+                <ToggleInput
+                    isToggled={value}
+                    isLoading={loading || isLoadingUsers || ssoModalVisible}
+                    isDisabled={disabled}
+                    onClick={handleToggle}
                 />
                 <img
                     alt={name + ' logo'}

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import ToggleButton from '../../../../common/components/ToggleButton.tsx'
+import ToggleInput from '../../../../common/forms/ToggleInput.tsx'
 
 export default class AircallIntegrationListItem extends React.Component {
     static propTypes = {
@@ -28,7 +28,10 @@ export default class AircallIntegrationListItem extends React.Component {
         return (
             <tr>
                 <td className="smallest align-middle">
-                    <ToggleButton value={!isDisabled} onChange={this._toggle} />
+                    <ToggleInput
+                        isToggled={!isDisabled}
+                        onClick={this._toggle}
+                    />
                 </td>
                 <td className="align-middle">
                     <div>

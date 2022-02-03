@@ -32,8 +32,8 @@ const EmailContactInfoSection: React.FC = () => {
         <section className={css.container}>
             <ToggleField
                 label="Email card"
-                value={enabled}
-                onChange={handleChange('enabled')}
+                isToggled={enabled}
+                onClick={handleChange('enabled')}
             />
             <InputField
                 type="textarea"

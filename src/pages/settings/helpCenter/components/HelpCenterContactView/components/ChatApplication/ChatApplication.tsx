@@ -78,9 +78,9 @@ const ChatApplication: React.FC = () => {
         <>
             <ToggleField
                 label="Enable chat widget"
-                value={!!chatApplicationId}
-                onChange={toggleChatEnabled}
-                disabled={chatOptions.length === 0}
+                isToggled={!!chatApplicationId}
+                onClick={toggleChatEnabled}
+                isDisabled={chatOptions.length === 0}
                 className={css.toggle}
             />
             <p>This makes a chat widget visible for all help center pages.</p>

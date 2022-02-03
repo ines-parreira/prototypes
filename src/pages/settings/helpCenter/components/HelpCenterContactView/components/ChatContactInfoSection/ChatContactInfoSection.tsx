@@ -76,8 +76,8 @@ const ChatContactInfoSection: React.FC = () => {
         <section className={css.container}>
             <ToggleField
                 label="Chat card"
-                value={enabled}
-                onChange={handleChange('enabled')}
+                isToggled={enabled}
+                onClick={handleChange('enabled')}
             />
             <p>
                 This card will be shown in the helpcenter home page and display

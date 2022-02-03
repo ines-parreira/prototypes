@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {Map} from 'immutable'
 
-import ToggleButton from '../../../common/components/ToggleButton'
+import ToggleInput from '../../../common/forms/ToggleInput'
 
 import {generateConfiguration} from '../utils/generateConfiguration'
 import {SelfServiceConfiguration} from '../../../../models/selfServiceConfiguration/types'
@@ -85,10 +85,10 @@ export const MigratedIntegrationRow = ({
                 </div>
             </td>
             <td className="smallest align-middle">
-                <ToggleButton
-                    value={enabled}
-                    loading={loading}
-                    onChange={_onChange}
+                <ToggleInput
+                    isToggled={enabled}
+                    isLoading={loading}
+                    onClick={_onChange}
                 />
             </td>
         </tr>

@@ -432,12 +432,12 @@ export default class YourProfileView extends Component<Props, State> {
                                 <ToggleField
                                     name="forward_calls"
                                     label="Enable call forwarding"
-                                    value={
+                                    isToggled={
                                         (this.state.preferences.get(
                                             'forward_calls'
                                         ) as boolean) ?? false
                                     }
-                                    onChange={(value: boolean) => {
+                                    onClick={(value: boolean) => {
                                         this.setState({
                                             preferences:
                                                 this.state.preferences.set(
