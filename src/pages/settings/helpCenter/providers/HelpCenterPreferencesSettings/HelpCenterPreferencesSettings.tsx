@@ -267,7 +267,7 @@ export const HelpCenterPreferencesSettings = ({
 
     useEffect(() => {
         updatePreferencesFromData()
-    }, [helpCenter])
+    }, [helpCenter, viewLanguage])
 
     useEffect(() => {
         if (!helpCenter.translations) {
