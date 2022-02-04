@@ -251,7 +251,7 @@ export class RichFieldEditor extends InputField<Props, State> {
         const {editorState} = this.props
         const newState = RichUtils.handleKeyCommand(editorState, command)
         if (newState) {
-            this._onChange(newState)
+            this.handleChildChange(newState)
             return 'handled'
         }
 
