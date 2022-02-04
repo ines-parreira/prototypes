@@ -70,7 +70,7 @@ import css from './FilterTopbar.less'
 type Props = {
     isSearch: boolean
     isUpdate: boolean
-    type: string
+    type: 'ticket' | 'customer'
 } & CancellableRequestInjectedProps<
     'fetchViewItemsCancellable',
     'cancelFetchViewItemsCancellable',
@@ -275,7 +275,7 @@ export const FilterTopbar = ({
             <CardBody className="filter-topbar-content">
                 {isUpdate && !isSearch && (
                     <div className={css.cardActions}>
-                        {!tickets.isEmpty() && (
+                        {!tickets.isEmpty() && type === 'ticket' && (
                             <Button
                                 intent={ButtonIntent.Secondary}
                                 onClick={createExportTicketJob}

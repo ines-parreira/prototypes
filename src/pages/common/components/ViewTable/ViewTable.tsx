@@ -30,7 +30,7 @@ import MissingBillingInformationRow from './Table/MissingBillingInformationRow'
 
 type OwnProps = {
     className?: string
-    type: string
+    type: 'ticket' | 'customer'
     items: List<any>
     isUpdate: boolean
     isSearch: boolean

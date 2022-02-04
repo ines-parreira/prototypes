@@ -191,6 +191,15 @@ describe('<FilterTopbar />', () => {
             expect(queryByText('Export all view tickets')).toBeNull()
             expect(queryByText('View Sharing Button')).toBeNull()
         })
+
+        it('should not render export tickets button on a customer view', () => {
+            const {queryByTitle} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <FilterTopbar {...minProps} type="customer" />
+                </Provider>
+            )
+            expect(queryByTitle('Export all view tickets')).toBeNull()
+        })
     })
 
     describe('updating filters', () => {
