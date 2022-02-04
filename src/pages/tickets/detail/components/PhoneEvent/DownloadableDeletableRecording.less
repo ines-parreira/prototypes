@@ -1,12 +1,13 @@
 :local .recording-wrapper {
     display: flex;
     align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 5px;
 }
 
-:local .recording-download {
-    margin-left: 5px;
-}
-
-:local .recording-delete {
-    margin-left: 5px;
+:local .recording-controls {
+    flex-grow: 1;
+    flex-basis: calc(100%-90px); // Leave 90px for two buttons and their gaps.
+    min-width: 48px; // Minimum amount to see the 'play' button.
 }

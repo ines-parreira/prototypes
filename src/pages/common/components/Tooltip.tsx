@@ -6,6 +6,8 @@ import {isTouchDevice} from '../utils/mobile'
 
 import css from './Tooltip.less'
 
+type Trigger = 'click' | 'hover' | 'legacy' | 'manual' | 'focus'
+
 type Props = {
     children: ReactNode
     delay?: number | {show: number; hide: number}
@@ -13,6 +15,7 @@ type Props = {
     offset?: string | number
     boundariesElement?: string | Element
     arrowClassName?: string
+    trigger?: Trigger[]
 } & Pick<UncontrolledTooltipProps, KnownKeys<UncontrolledTooltipProps>>
 
 export default function Tooltip({
@@ -21,6 +24,7 @@ export default function Tooltip({
     delay,
     autohide,
     disabled = false,
+    trigger,
     ...rest
 }: Props) {
     const tooltipDelay = useMemo(() => {
@@ -45,6 +49,7 @@ export default function Tooltip({
             {...rest}
             autohide={autohide}
             delay={tooltipDelay}
+            trigger={trigger ? trigger.join(' ') : trigger}
         >
             {children}
         </UncontrolledTooltip>

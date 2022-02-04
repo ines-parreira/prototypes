@@ -35,55 +35,32 @@ exports[`<PhoneEventDetails/> render() should render call recording event 1`] = 
         class="recording-wrapper"
       >
         <audio
+          class="recording-controls"
           controls=""
           src="https://uploads.gorgi.us/development/some-file.mp3"
         />
-        <div
-          class="recording-download"
+        <button
+          class="wrapper secondary medium"
+          id="download-button-3-tooltip-target"
+          type="button"
         >
-          <span
-            class=""
+          <i
+            class="material-icons"
           >
-            <button
-              class="btn btn-default"
-              data-testid="record-call-button"
-              id="download-button-3-tooltip-target"
-              type="button"
-            >
-              <i
-                class="material-icons"
-              >
-                download
-              </i>
-            </button>
-            <span />
-          </span>
-        </div>
-        <div
-          class="recording-delete"
+            download
+          </i>
+        </button>
+        <button
+          class="wrapper float-right destructive medium"
+          id="delete-button-4-tooltip-target"
+          type="button"
         >
-          <span
-            class=""
+          <i
+            class="material-icons"
           >
-            <div
-              class="component d-inline-block float-right"
-              id="delete-button-4-tooltip-target"
-            >
-              <button
-                class="btn btn-default"
-                id="confirm-button-delete-button-4-tooltip-target"
-                type="button"
-              >
-                <i
-                  class="material-icons"
-                >
-                  delete
-                </i>
-              </button>
-            </div>
-            <span />
-          </span>
-        </div>
+            delete
+          </i>
+        </button>
       </div>
     </div>
   </div>
@@ -233,55 +210,32 @@ exports[`<PhoneEventDetails/> render() should render voicemail event details 1`]
         class="recording-wrapper"
       >
         <audio
+          class="recording-controls"
           controls=""
           src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/RE6fac6a901e0b886cec366ceb6365a8cd-a358dc82-a84b-4975-baef-7852d7c9c180.mp3"
         />
-        <div
-          class="recording-download"
+        <button
+          class="wrapper secondary medium"
+          id="download-button-1-tooltip-target"
+          type="button"
         >
-          <span
-            class=""
+          <i
+            class="material-icons"
           >
-            <button
-              class="btn btn-default"
-              data-testid="record-call-button"
-              id="download-button-1-tooltip-target"
-              type="button"
-            >
-              <i
-                class="material-icons"
-              >
-                download
-              </i>
-            </button>
-            <span />
-          </span>
-        </div>
-        <div
-          class="recording-delete"
+            download
+          </i>
+        </button>
+        <button
+          class="wrapper float-right destructive medium"
+          id="delete-button-2-tooltip-target"
+          type="button"
         >
-          <span
-            class=""
+          <i
+            class="material-icons"
           >
-            <div
-              class="component d-inline-block float-right"
-              id="delete-button-2-tooltip-target"
-            >
-              <button
-                class="btn btn-default"
-                id="confirm-button-delete-button-2-tooltip-target"
-                type="button"
-              >
-                <i
-                  class="material-icons"
-                >
-                  delete
-                </i>
-              </button>
-            </div>
-            <span />
-          </span>
-        </div>
+            delete
+          </i>
+        </button>
       </div>
     </div>
   </div>

@@ -21,11 +21,13 @@ import classnames from 'classnames'
 import {PhoneFunction} from 'business/twilio'
 import {IntegrationType} from 'models/integration/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import DEPRECATED_ConfirmButton from 'pages/common/components/DEPRECATED_ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import css from 'pages/settings/settings.less'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
     deleteIntegration,
     updateOrCreateIntegration,
@@ -330,18 +332,19 @@ export default function PhoneIntegrationPreferences({
                                 >
                                     Save changes
                                 </Button>
-                                <DEPRECATED_ConfirmButton
+                                <ConfirmButton
+                                    type="button"
                                     className="float-right"
-                                    color="secondary"
-                                    disabled={!isInitialized || isLoading}
-                                    confirm={onDelete}
-                                    content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                    intent={ButtonIntent.Destructive}
+                                    isDisabled={!isInitialized}
+                                    isLoading={isLoading}
+                                    onConfirm={onDelete}
+                                    confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                                 >
-                                    <i className="material-icons mr-1 text-danger">
-                                        delete
-                                    </i>
-                                    Delete phone number
-                                </DEPRECATED_ConfirmButton>
+                                    <ButtonIconLabel icon="delete">
+                                        Delete phone number
+                                    </ButtonIconLabel>
+                                </ConfirmButton>
                             </div>
                         </Form>
                     </Col>

@@ -1,28 +1,22 @@
 import React, {useCallback, useMemo, useState} from 'react'
 
-import classNames from 'classnames'
-import {Button} from 'reactstrap'
 import {AxiosError} from 'axios'
 import {connect} from 'react-redux'
 import {uniqueId} from 'lodash'
 import {Map} from 'immutable'
 
-import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'
-import Hoverable from '../../../../common/components/Hoverable'
-import {
-    Notification,
-    NotificationStatus,
-} from '../../../../../state/notifications/types'
-import client from '../../../../../models/api/resources'
-import {notify as notifyAction} from '../../../../../state/notifications/actions'
-import {saveFileAsDownloaded} from '../../../../../utils/file'
-import * as currentUserSelectors from '../../../../../state/currentUser/selectors'
-import {RootState} from '../../../../../state/types'
-import {hasRole} from '../../../../../utils'
-import {UserRole} from '../../../../../config/types/user'
-import Tooltip from '../../../../common/components/Tooltip'
-
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import {Notification, NotificationStatus} from 'state/notifications/types'
+import client from 'models/api/resources'
+import {notify as notifyAction} from 'state/notifications/actions'
+import {saveFileAsDownloaded} from 'utils/file'
+import * as currentUserSelectors from 'state/currentUser/selectors'
+import {RootState} from 'state/types'
+import {hasRole} from 'utils'
+import {UserRole} from 'config/types/user'
+import useAppDispatch from 'hooks/useAppDispatch'
+import Tooltip from 'pages/common/components/Tooltip'
 
 import css from './DownloadableDeletableRecording.less'
 
@@ -33,7 +27,6 @@ type OwnProps = {
 }
 
 type ButtonProps = {
-    hovered: boolean
     url: string
 }
 
@@ -123,7 +116,7 @@ function useDownloadRecording(url: string) {
     }
 }
 
-const DeleteButton = ({hovered, url}: ButtonProps) => {
+const DeleteButton = ({url}: ButtonProps) => {
     const {deleteRecording, isRequestPending} = useDeleteRecording(url)
     const tooltipTargetID = useMemo(
         () => uniqueId('delete-button-') + '-tooltip-target',
@@ -131,32 +124,24 @@ const DeleteButton = ({hovered, url}: ButtonProps) => {
     )
 
     return (
-        <>
-            <DEPRECATED_ConfirmButton
-                id={tooltipTargetID}
-                className="float-right"
-                color={hovered ? 'secondary' : 'default'}
-                disabled={isRequestPending}
-                confirm={deleteRecording}
-                confirmColor="danger"
-                content="You are about to delete this call recording. You cannot recover a deleted recording."
-            >
-                <i
-                    className={classNames('material-icons', {
-                        'text-danger': hovered,
-                    })}
-                >
-                    delete
-                </i>
-            </DEPRECATED_ConfirmButton>
-            <span>
-                <Tooltip target={tooltipTargetID}>Delete recording</Tooltip>
-            </span>
-        </>
+        <ConfirmButton
+            id={tooltipTargetID}
+            className="float-right"
+            type="button"
+            intent={ButtonIntent.Destructive}
+            isDisabled={isRequestPending}
+            onConfirm={deleteRecording}
+            confirmationContent="You are about to delete this call recording. You cannot recover a deleted recording."
+        >
+            <i className="material-icons">delete</i>
+            <Tooltip target={tooltipTargetID} trigger={['hover']}>
+                Delete recording
+            </Tooltip>
+        </ConfirmButton>
     )
 }
 
-const DownloadButton = ({hovered, url}: ButtonProps) => {
+const DownloadButton = ({url}: ButtonProps) => {
     const {downloadRecording, isRequestPending} = useDownloadRecording(url)
 
     const tooltipTargetID = useMemo(
@@ -165,31 +150,20 @@ const DownloadButton = ({hovered, url}: ButtonProps) => {
     )
 
     return (
-        <>
-            <Button
-                id={tooltipTargetID}
-                data-testid="record-call-button"
-                color={hovered ? 'secondary' : 'default'}
-                disabled={isRequestPending}
-                onClick={downloadRecording}
-            >
-                <i
-                    className={classNames('material-icons', {
-                        'text-danger': hovered,
-                    })}
-                >
-                    download
-                </i>
-            </Button>
-            <span>
-                <Tooltip target={tooltipTargetID}>Download recording</Tooltip>
-            </span>
-        </>
+        <Button
+            id={tooltipTargetID}
+            type="button"
+            intent={ButtonIntent.Secondary}
+            isDisabled={isRequestPending}
+            onClick={downloadRecording}
+        >
+            <i className="material-icons">download</i>
+            <Tooltip target={tooltipTargetID} trigger={['hover']}>
+                Download recording
+            </Tooltip>
+        </Button>
     )
 }
-
-const HoverableDeleteButton = Hoverable(DeleteButton)
-const HoverableDownloadButton = Hoverable(DownloadButton)
 
 const DownloadableDeletableRecording = ({
     downloadRecordingURL,
@@ -198,17 +172,17 @@ const DownloadableDeletableRecording = ({
 }: OwnProps): JSX.Element => (
     <div className={css['recording-wrapper']}>
         {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-        <audio controls src={downloadRecordingURL} />
+        <audio
+            controls
+            src={downloadRecordingURL}
+            className={css['recording-controls']}
+        />
         {hasRole(currentUser, UserRole.BasicAgent) && (
-            <div className={css['recording-download']}>
-                <HoverableDownloadButton url={downloadRecordingURL} />
-            </div>
+            <DownloadButton url={downloadRecordingURL} />
         )}
 
         {hasRole(currentUser, UserRole.Admin) && (
-            <div className={css['recording-delete']}>
-                <HoverableDeleteButton url={deleteRecordingURL} />
-            </div>
+            <DeleteButton url={deleteRecordingURL} />
         )}
     </div>
 )
