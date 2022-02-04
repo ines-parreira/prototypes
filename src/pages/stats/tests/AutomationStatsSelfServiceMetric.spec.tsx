@@ -57,6 +57,7 @@ describe('<AutomationStatsSelfServiceMetric />', () => {
             helpCenters: {},
             selfServiceConfigurations: {},
             phoneNumbers: {},
+            auditLogEvents: {},
         },
     }
 

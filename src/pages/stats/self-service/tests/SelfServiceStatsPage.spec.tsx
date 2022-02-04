@@ -70,6 +70,7 @@ describe('<SelfServiceStatsPage />', () => {
             helpCenterArticles: {},
             selfServiceConfigurations: {},
             phoneNumbers: {},
+            auditLogEvents: {},
         } as RootState['entities'],
         integrations: fromJS({}),
         billing: fromJS({plans: []}),

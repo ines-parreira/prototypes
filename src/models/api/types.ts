@@ -30,6 +30,13 @@ export type PaginationMeta = {
     next_page?: string
 }
 
+export type ApiListResponseCursorPagination<T> = ApiListResponse<T, CursorMeta>
+
+export type CursorMeta = {
+    next_cursor: string | null
+    prev_cursor: string | null
+}
+
 export enum OrderDirection {
     Asc = 'asc',
     Desc = 'desc',

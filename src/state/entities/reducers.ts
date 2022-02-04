@@ -22,6 +22,8 @@ import phoneNumbers from './phoneNumbers/reducer'
 import {PhoneNumbersState} from './phoneNumbers/types'
 import ruleRecipes from './ruleRecipes/reducer'
 import {RuleRecipesState} from './ruleRecipes/types'
+import auditLogEvents from './auditLogEvents/reducer'
+import {AuditLogEventsState} from './auditLogEvents/types'
 
 const entitiesReducers = combineReducers<{
     macros: MacrosState
@@ -35,6 +37,7 @@ const entitiesReducers = combineReducers<{
     rules: RulesState
     phoneNumbers: PhoneNumbersState
     ruleRecipes: RuleRecipesState
+    auditLogEvents: AuditLogEventsState
 }>({
     macros,
     rules,
@@ -47,6 +50,7 @@ const entitiesReducers = combineReducers<{
     helpCenters,
     selfServiceConfigurations,
     phoneNumbers,
+    auditLogEvents,
 })
 
 export default entitiesReducers

@@ -97,6 +97,7 @@ describe('<CancellationsPolicyView/>', () => {
             helpCenterArticles: {},
             selfServiceConfigurations: {},
             phoneNumbers: {},
+            auditLogEvents: {},
         },
         integrations: fromJS({}),
     }

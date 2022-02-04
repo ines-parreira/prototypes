@@ -11,28 +11,11 @@ exports[`UserAuditList component mounts correctly 1`] = `
       className="d-flex flex-wrap float-right"
     >
       <SelectFilter
+        isMultiple={false}
         onChange={[Function]}
-        plural="team members"
         singular="team member"
         value={Array []}
       />
-      <SelectFilter
-        onChange={[Function]}
-        plural="objects"
-        singular="object"
-        value={Array []}
-      >
-        <SelectFilter.Item
-          key="Ticket"
-          label="Ticket"
-          value="Ticket"
-        />
-        <SelectFilter.Item
-          key="Macro"
-          label="Macro"
-          value="Macro"
-        />
-      </SelectFilter>
       <SelectFilter
         onChange={[Function]}
         plural="events"
@@ -40,9 +23,224 @@ exports[`UserAuditList component mounts correctly 1`] = `
         value={Array []}
       >
         <SelectFilter.Item
+          key="account-created"
+          label="Account created"
+          value="account-created"
+        />
+        <SelectFilter.Item
+          key="account-deactivated"
+          label="Account deactivated"
+          value="account-deactivated"
+        />
+        <SelectFilter.Item
+          key="account-updated"
+          label="Account updated"
+          value="account-updated"
+        />
+        <SelectFilter.Item
+          key="customer-created"
+          label="Customer created"
+          value="customer-created"
+        />
+        <SelectFilter.Item
+          key="customer-deleted"
+          label="Customer deleted"
+          value="customer-deleted"
+        />
+        <SelectFilter.Item
+          key="customer-merged"
+          label="Customer merged"
+          value="customer-merged"
+        />
+        <SelectFilter.Item
+          key="customer-updated"
+          label="Customer updated"
+          value="customer-updated"
+        />
+        <SelectFilter.Item
+          key="integration-created"
+          label="Integration created"
+          value="integration-created"
+        />
+        <SelectFilter.Item
+          key="integration-deleted"
+          label="Integration deleted"
+          value="integration-deleted"
+        />
+        <SelectFilter.Item
+          key="integration-updated"
+          label="Integration updated"
+          value="integration-updated"
+        />
+        <SelectFilter.Item
+          key="macro-created"
+          label="Macro created"
+          value="macro-created"
+        />
+        <SelectFilter.Item
+          key="macro-deleted"
+          label="Macro deleted"
+          value="macro-deleted"
+        />
+        <SelectFilter.Item
+          key="macro-updated"
+          label="Macro updated"
+          value="macro-updated"
+        />
+        <SelectFilter.Item
+          key="rule-created"
+          label="Rule created"
+          value="rule-created"
+        />
+        <SelectFilter.Item
+          key="rule-deleted"
+          label="Rule deleted"
+          value="rule-deleted"
+        />
+        <SelectFilter.Item
+          key="rule-updated"
+          label="Rule updated"
+          value="rule-updated"
+        />
+        <SelectFilter.Item
+          key="tag-created"
+          label="Tag created"
+          value="tag-created"
+        />
+        <SelectFilter.Item
+          key="tag-deleted"
+          label="Tag deleted"
+          value="tag-deleted"
+        />
+        <SelectFilter.Item
+          key="tag-merged"
+          label="Tag merged"
+          value="tag-merged"
+        />
+        <SelectFilter.Item
+          key="team-created"
+          label="Team created"
+          value="team-created"
+        />
+        <SelectFilter.Item
+          key="team-deleted"
+          label="Team deleted"
+          value="team-deleted"
+        />
+        <SelectFilter.Item
+          key="team-updated"
+          label="Team updated"
+          value="team-updated"
+        />
+        <SelectFilter.Item
+          key="ticket-assigned"
+          label="Ticket assigned"
+          value="ticket-assigned"
+        />
+        <SelectFilter.Item
+          key="ticket-closed"
+          label="Ticket closed"
+          value="ticket-closed"
+        />
+        <SelectFilter.Item
           key="ticket-created"
           label="Ticket created"
           value="ticket-created"
+        />
+        <SelectFilter.Item
+          key="ticket-customer-updated"
+          label="Ticket customer updated"
+          value="ticket-customer-updated"
+        />
+        <SelectFilter.Item
+          key="ticket-marked-spam"
+          label="Ticket marked spam"
+          value="ticket-marked-spam"
+        />
+        <SelectFilter.Item
+          key="ticket-merged"
+          label="Ticket merged"
+          value="ticket-merged"
+        />
+        <SelectFilter.Item
+          key="ticket-message-created"
+          label="Ticket message created"
+          value="ticket-message-created"
+        />
+        <SelectFilter.Item
+          key="ticket-message-deleted"
+          label="Ticket message deleted"
+          value="ticket-message-deleted"
+        />
+        <SelectFilter.Item
+          key="ticket-message-summary-created"
+          label="Ticket message summary created"
+          value="ticket-message-summary-created"
+        />
+        <SelectFilter.Item
+          key="ticket-message-updated"
+          label="Ticket message updated"
+          value="ticket-message-updated"
+        />
+        <SelectFilter.Item
+          key="ticket-reopened"
+          label="Ticket reopened"
+          value="ticket-reopened"
+        />
+        <SelectFilter.Item
+          key="ticket-self-unsnoozed"
+          label="Ticket self unsnoozed"
+          value="ticket-self-unsnoozed"
+        />
+        <SelectFilter.Item
+          key="ticket-snoozed"
+          label="Ticket snoozed"
+          value="ticket-snoozed"
+        />
+        <SelectFilter.Item
+          key="ticket-subject-updated"
+          label="Ticket subject updated"
+          value="ticket-subject-updated"
+        />
+        <SelectFilter.Item
+          key="ticket-tags-added"
+          label="Ticket tags added"
+          value="ticket-tags-added"
+        />
+        <SelectFilter.Item
+          key="ticket-tags-removed"
+          label="Ticket tags removed"
+          value="ticket-tags-removed"
+        />
+        <SelectFilter.Item
+          key="ticket-team-assigned"
+          label="Ticket team assigned"
+          value="ticket-team-assigned"
+        />
+        <SelectFilter.Item
+          key="ticket-team-unassigned"
+          label="Ticket team unassigned"
+          value="ticket-team-unassigned"
+        />
+        <SelectFilter.Item
+          key="ticket-trashed"
+          label="Ticket trashed"
+          value="ticket-trashed"
+        />
+        <SelectFilter.Item
+          key="ticket-unassigned"
+          label="Ticket unassigned"
+          value="ticket-unassigned"
+        />
+        <SelectFilter.Item
+          key="ticket-unmarked-spam"
+          label="Ticket unmarked spam"
+          value="ticket-unmarked-spam"
+        />
+        <SelectFilter.Item
+          key="ticket-untrashed"
+          label="Ticket untrashed"
+          value="ticket-untrashed"
         />
         <SelectFilter.Item
           key="ticket-updated"
@@ -50,14 +248,74 @@ exports[`UserAuditList component mounts correctly 1`] = `
           value="ticket-updated"
         />
         <SelectFilter.Item
-          key="ticket-deleted"
-          label="Ticket deleted"
-          value="ticket-deleted"
+          key="user-created"
+          label="User created"
+          value="user-created"
         />
         <SelectFilter.Item
-          key="macro-created"
-          label="Macro created"
-          value="macro-created"
+          key="user-deleted"
+          label="User deleted"
+          value="user-deleted"
+        />
+        <SelectFilter.Item
+          key="user-invited"
+          label="User invited"
+          value="user-invited"
+        />
+        <SelectFilter.Item
+          key="user-logged-in"
+          label="User logged in"
+          value="user-logged-in"
+        />
+        <SelectFilter.Item
+          key="user-logged-out"
+          label="User logged out"
+          value="user-logged-out"
+        />
+        <SelectFilter.Item
+          key="user-password-changed"
+          label="User password changed"
+          value="user-password-changed"
+        />
+        <SelectFilter.Item
+          key="user-password-reset"
+          label="User password reset"
+          value="user-password-reset"
+        />
+        <SelectFilter.Item
+          key="user-updated"
+          label="User updated"
+          value="user-updated"
+        />
+        <SelectFilter.Item
+          key="view-created"
+          label="View created"
+          value="view-created"
+        />
+        <SelectFilter.Item
+          key="view-deleted"
+          label="View deleted"
+          value="view-deleted"
+        />
+        <SelectFilter.Item
+          key="view-updated"
+          label="View updated"
+          value="view-updated"
+        />
+        <SelectFilter.Item
+          key="widget-created"
+          label="Widget created"
+          value="widget-created"
+        />
+        <SelectFilter.Item
+          key="widget-deleted"
+          label="Widget deleted"
+          value="widget-deleted"
+        />
+        <SelectFilter.Item
+          key="widget-updated"
+          label="Widget updated"
+          value="widget-updated"
         />
       </SelectFilter>
       <Connect(PeriodPickerContainer)
@@ -102,11 +360,6 @@ exports[`UserAuditList component mounts correctly 1`] = `
       <p>
         User audit logs display recent actions performed by users in Gorgias.
       </p>
-      <Alert
-        className="mb16"
-      >
-        This section is still under development, more details will be added to the list in the future. We'd love to hear your feedback!
-      </Alert>
     </div>
     <div>
       <Table
@@ -132,50 +385,59 @@ exports[`UserAuditList component mounts correctly 1`] = `
         <tbody>
           <Connect(UserAuditRowContainer)
             eventItem={
-              Immutable.Map {
+              Object {
+                "context": "f8cb5ba6-a235-4353-8900-24a3354beee9",
+                "created_datetime": "2022-01-25T10:39:21.892050+00:00",
+                "data": null,
                 "id": 1,
-                "type": "ticket-created",
+                "object_id": 10,
                 "object_type": "Ticket",
-                "object_id": 111,
+                "type": "ticket-customer-updated",
+                "uri": "/api/events/1/",
                 "user_id": 1,
-                "created_datetime": "2018-01-01T00:00:00.000Z",
               }
             }
             key="1"
           />
           <Connect(UserAuditRowContainer)
             eventItem={
-              Immutable.Map {
+              Object {
+                "context": "3c3fd1c2-ef5c-4c2e-b56b-3471a04fb21c",
+                "created_datetime": "2022-01-25T10:39:21.892050+00:00",
+                "data": null,
                 "id": 2,
-                "type": "macro-created",
+                "object_id": 20,
                 "object_type": "Macro",
-                "object_id": 11,
+                "type": "macro-created",
+                "uri": "/api/events/2/",
                 "user_id": 1,
-                "created_datetime": "2018-01-02T00:00:00.000Z",
               }
             }
             key="2"
           />
           <Connect(UserAuditRowContainer)
             eventItem={
-              Immutable.Map {
+              Object {
+                "context": "4fe8a0b3-7185-40f9-9442-07c291d669c0",
+                "created_datetime": "2022-01-25T10:39:21.892050+00:00",
+                "data": null,
                 "id": 3,
-                "type": "ticket-updated",
-                "object_type": "Ticket",
-                "object_id": 1,
-                "user_id": 2,
-                "created_datetime": "2018-01-03T00:00:00.000Z",
+                "object_id": 30,
+                "object_type": "View",
+                "type": "view-deleted",
+                "uri": "/api/events/3/",
+                "user_id": 1,
               }
             }
             key="3"
           />
         </tbody>
       </Table>
-      <Pagination
-        className="pagination-transparent"
-        currentPage={1}
-        onChange={[Function]}
-        pageCount={1}
+      <Navigation
+        fetchNextItems={[Function]}
+        fetchPrevItems={[Function]}
+        hasNextItems={false}
+        hasPrevItems={false}
       />
     </div>
   </Container>

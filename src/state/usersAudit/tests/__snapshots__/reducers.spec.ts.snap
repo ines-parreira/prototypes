@@ -1,8 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`users audit reducers fetch user audit 1`] = `
-Object {
-  "events": undefined,
-  "meta": undefined,
-}
-`;

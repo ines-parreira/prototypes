@@ -40,6 +40,21 @@ describe('SelectFilter', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
+    it('should not render the component with quick selection option if multiple selection is disabled', () => {
+        const {container} = render(
+            <SelectFilter {...commonProps} isMultiple={false}>
+                {items.map((item) => (
+                    <SelectFilter.Item
+                        key={item.value}
+                        label={item.label}
+                        value={item.value}
+                    />
+                ))}
+            </SelectFilter>
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
     it('should render the component with items having icons', () => {
         const {container} = render(
             <SelectFilter {...commonProps}>

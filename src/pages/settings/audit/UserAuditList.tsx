@@ -1,30 +1,36 @@
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Container, Table} from 'reactstrap'
-import _pick from 'lodash/pick'
+import _isEmpty from 'lodash/isEmpty'
 import moment from 'moment-timezone'
-import {Map} from 'immutable'
+import {AxiosError} from 'axios'
+import {List, Map} from 'immutable'
+
+import {fetchEvents} from '../../../models/event/resources'
+import {getMoment} from '../../../utils/date'
+import {RootState} from '../../../state/types'
+import {NotificationStatus} from '../../../state/notifications/types'
+import {notify} from '../../../state/notifications/actions'
+import {getAgents} from '../../../state/agents/selectors'
+import {auditLogEventsFetched} from '../../../state/entities/auditLogEvents/actions'
+import {
+    EventType,
+    EventsDatetimeOperator,
+    FetchEventsOptions,
+} from '../../../models/event/types'
 
 import Loader from '../../common/components/Loader/Loader'
 import PageHeader from '../../common/components/PageHeader'
 import PeriodPicker from '../../stats/common/PeriodPicker'
 import SelectFilter from '../../stats/common/SelectFilter'
-import Pagination from '../../common/components/Pagination'
-import Alert from '../../common/components/Alert/Alert'
-import {fetchUsersAudit} from '../../../state/usersAudit/actions'
-import {
-    getUserAuditEvents,
-    getUserAuditEventTypeOptions,
-    getUserAuditObjectTypeOptions,
-    getUserAuditPagination,
-    getUserAuditUserIdOptions,
-} from '../../../state/usersAudit/selectors'
-import {getMoment} from '../../../utils/date'
-import {RootState} from '../../../state/types'
+import Navigation from '../../common/components/Navigation/Navigation'
+import {humanizeString} from '../../../utils'
+
 import css from '../settings.less'
 
+import {CursorMeta} from '../../../models/api/types'
+import {DATETIME_LABEL_FORMAT, EventNavDirection} from './constants'
 import UserAuditRow from './UserAuditRow'
-import {DATETIME_LABEL_FORMAT} from './constants.js'
 
 type Props = ConnectedProps<typeof connector>
 
@@ -32,56 +38,86 @@ type State = {
     isFetching: boolean
     end_datetime: string
     start_datetime: string
-    event_types: Array<string>
-    object_types: Array<string>
+    types: Array<EventType>
     user_ids: Array<number>
+    meta: CursorMeta | null
 }
-
-// filters we'll use to fetch from the API
-const filterStateProps = [
-    'end_datetime',
-    'start_datetime',
-    'user_ids',
-    'event_types',
-    'object_types',
-]
 
 const _startOfToday = () => getMoment().startOf('day')
 const _endOfToday = () => getMoment().endOf('day')
 const _someDaysAgoStartOfDay = (days: number) =>
     _startOfToday().subtract(days - 1, 'days')
 
+const eventTypeOptions = Object.values(EventType).map((auditEvent) => ({
+    label: humanizeString(auditEvent),
+    value: auditEvent,
+}))
+
 export class UserAuditListContainer extends Component<Props, State> {
-    state = {
+    state: State = {
         isFetching: false,
         start_datetime: _startOfToday().format(),
         end_datetime: _endOfToday().format(),
         user_ids: [],
-        object_types: [],
-        event_types: [],
+        types: [],
+        meta: null,
     }
 
     componentDidMount() {
-        this._fetchUsersAudit()
+        void this.fetchUsersAudit()
     }
 
     componentDidUpdate(prevProps: Props, prevState: State) {
         if (
-            prevState.object_types !== this.state.object_types ||
-            prevState.event_types !== this.state.event_types ||
+            prevState.types !== this.state.types ||
             prevState.user_ids !== this.state.user_ids
         ) {
-            this._fetchUsersAudit()
+            void this.fetchUsersAudit()
         }
     }
 
-    _fetchUsersAudit = (page = 1) => {
+    getFetchOptions = (): FetchEventsOptions => {
+        const {start_datetime, end_datetime, user_ids, types} = this.state
+        return {
+            createdDatetime: {
+                [EventsDatetimeOperator.GTE]: start_datetime,
+                [EventsDatetimeOperator.LTE]: end_datetime,
+            },
+            userIds: user_ids,
+            types,
+        }
+    }
+
+    fetchUsersAudit = async (direction?: EventNavDirection) => {
+        const {auditLogEventsFetched, notify} = this.props
+        const {meta} = this.state
         this.setState({isFetching: true})
-        void this.props
-            .fetchUsersAudit({page, ..._pick(this.state, filterStateProps)})
-            .then(() => {
-                this.setState({isFetching: false})
+
+        const params = this.getFetchOptions()
+
+        if (direction === EventNavDirection.PrevCursor && meta?.prev_cursor) {
+            params.cursor = meta.prev_cursor
+        } else if (
+            direction === EventNavDirection.NextCursor &&
+            meta?.next_cursor
+        ) {
+            params.cursor = meta.next_cursor
+        }
+        try {
+            const res = await fetchEvents(params)
+            this.setState({isFetching: false, meta: res.data.meta})
+            auditLogEventsFetched(res.data.data)
+        } catch (error) {
+            const responseError = error as AxiosError<{error?: {msg: string}}>
+            void notify({
+                message:
+                    responseError.response?.data.error?.msg ||
+                    'Failed to fetch events.',
+                status: NotificationStatus.Error,
             })
+        } finally {
+            this.setState({isFetching: false})
+        }
     }
 
     _onApplyDatePicker = ({
@@ -96,7 +132,7 @@ export class UserAuditListContainer extends Component<Props, State> {
                 start_datetime: startDatetime,
                 end_datetime: endDatetime,
             },
-            this._fetchUsersAudit
+            () => void this.fetchUsersAudit()
         )
     }
 
@@ -107,20 +143,14 @@ export class UserAuditListContainer extends Component<Props, State> {
     }
 
     render() {
-        const {
-            events,
-            eventsListMeta,
-            userIdOptions,
-            eventTypeOptions,
-            objectTypeOptions,
-        } = this.props
+        const {userIdOptions, auditLogEvents} = this.props
         const {
             isFetching,
             start_datetime,
             end_datetime,
             user_ids,
-            object_types,
-            event_types,
+            types,
+            meta,
         } = this.state
 
         if (isFetching) {
@@ -132,44 +162,31 @@ export class UserAuditListContainer extends Component<Props, State> {
                 <PageHeader title="Audit logs">
                     <div className="d-flex flex-wrap float-right">
                         <SelectFilter
-                            plural="team members"
                             singular="team member"
                             onChange={this.handleChange('user_ids') as any}
+                            isMultiple={false}
                             value={user_ids}
                         >
                             {userIdOptions.map((option) => (
                                 <SelectFilter.Item
-                                    key={option!.value}
-                                    label={option!.label}
-                                    value={option!.value}
+                                    key={option!.get('id')}
+                                    label={option!.get('name')}
+                                    value={option!.get('id')}
                                 />
                             ))}
                         </SelectFilter>
-                        <SelectFilter
-                            plural="objects"
-                            singular="object"
-                            onChange={this.handleChange('object_types') as any}
-                            value={object_types}
-                        >
-                            {objectTypeOptions.map((option) => (
-                                <SelectFilter.Item
-                                    key={option!.value}
-                                    label={option!.label}
-                                    value={option!.value}
-                                />
-                            ))}
-                        </SelectFilter>
+
                         <SelectFilter
                             plural="events"
                             singular="event"
-                            onChange={this.handleChange('event_types') as any}
-                            value={event_types}
+                            onChange={this.handleChange('types') as any}
+                            value={types}
                         >
                             {eventTypeOptions.map((option) => (
                                 <SelectFilter.Item
-                                    key={option!.value}
-                                    label={option!.label}
-                                    value={option!.value}
+                                    key={option.value}
+                                    label={option.label}
+                                    value={option.value}
                                 />
                             ))}
                         </SelectFilter>
@@ -211,13 +228,8 @@ export class UserAuditListContainer extends Component<Props, State> {
                             User audit logs display recent actions performed by
                             users in Gorgias.
                         </p>
-                        <Alert className={css.mb16}>
-                            This section is still under development, more
-                            details will be added to the list in the future.
-                            We'd love to hear your feedback!
-                        </Alert>
                     </div>
-                    {events.isEmpty() ? (
+                    {_isEmpty(auditLogEvents) ? (
                         <div>
                             There is no event recorded matching these filters.
                         </div>
@@ -233,21 +245,29 @@ export class UserAuditListContainer extends Component<Props, State> {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {events
-                                        .map((eventItem: Map<any, any>) => (
+                                    {auditLogEvents.map((auditLogEvent) => {
+                                        return (
                                             <UserAuditRow
-                                                key={eventItem.get('id')}
-                                                eventItem={eventItem}
+                                                key={auditLogEvent.id}
+                                                eventItem={auditLogEvent}
                                             />
-                                        ))
-                                        .toList()}
+                                        )
+                                    })}
                                 </tbody>
                             </Table>
-                            <Pagination
-                                className="pagination-transparent"
-                                pageCount={eventsListMeta.get('nb_pages') || 1}
-                                currentPage={eventsListMeta.get('page') || 1}
-                                onChange={this._fetchUsersAudit}
+                            <Navigation
+                                hasNextItems={!!meta?.next_cursor}
+                                hasPrevItems={!!meta?.prev_cursor}
+                                fetchNextItems={() =>
+                                    this.fetchUsersAudit(
+                                        EventNavDirection.NextCursor
+                                    )
+                                }
+                                fetchPrevItems={() =>
+                                    this.fetchUsersAudit(
+                                        EventNavDirection.PrevCursor
+                                    )
+                                }
                             />
                         </div>
                     )}
@@ -259,14 +279,12 @@ export class UserAuditListContainer extends Component<Props, State> {
 
 const connector = connect(
     (state: RootState) => ({
-        events: getUserAuditEvents(state),
-        eventsListMeta: getUserAuditPagination(state),
-        userIdOptions: getUserAuditUserIdOptions(state),
-        objectTypeOptions: getUserAuditObjectTypeOptions(state),
-        eventTypeOptions: getUserAuditEventTypeOptions(state),
+        userIdOptions: getAgents(state) as List<Map<any, any>>,
+        auditLogEvents: Object.values(state.entities.auditLogEvents),
     }),
     {
-        fetchUsersAudit,
+        auditLogEventsFetched,
+        notify,
     }
 )
 

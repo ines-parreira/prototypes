@@ -1,1 +1,0 @@
-export const DATETIME_LABEL_FORMAT = 'LLL'

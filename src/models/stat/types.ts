@@ -1,4 +1,5 @@
 import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
+import {CursorMeta} from '../api/types'
 
 export enum StatType {
     User = 'user',
@@ -27,13 +28,11 @@ export type Stat<T = StatData> = {
     meta: StatMeta
 }
 
-export type StatMeta = {
+export type StatMeta = Partial<CursorMeta> & {
     end_datetime?: string
     previous_end_datetime?: string
     previous_start_datetime?: string
     start_datetime?: string
-    next_cursor?: string | null
-    prev_cursor?: string | null
 }
 
 export type StatData =

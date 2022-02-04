@@ -13,6 +13,7 @@ import {PaginationMeta, OrderDirection} from '../models/api/types'
 import {BillingContact, Subscription} from './billing/types'
 import {AccountSetting} from './currentAccount/types'
 import {MacrosAction} from './entities/macros/types'
+import {AuditLogEventsAction} from './entities/auditLogEvents/types'
 import {EntitiesState} from './entities/reducers'
 import {InfobarActionsState} from './infobarActions/types'
 import {Message} from './newMessage/types'
@@ -58,7 +59,7 @@ export type StoreState = {
     views: Map<any, any>
     widgets: Map<any, any>
 }
-export type StoreAction = MacrosAction | GorgiasAction
+export type StoreAction = MacrosAction | AuditLogEventsAction | GorgiasAction
 
 export type GorgiasAction = {
     type: string

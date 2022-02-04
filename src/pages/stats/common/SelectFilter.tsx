@@ -381,7 +381,7 @@ const SelectFilter = ({
                                 value={search}
                             />
                         </DropdownItem>
-                        {!isRequired && (
+                        {!isRequired && isMultiple && (
                             <QuickSelectionOption
                                 className={css.quickSelectionOption}
                                 totalItemsCount={items.length}

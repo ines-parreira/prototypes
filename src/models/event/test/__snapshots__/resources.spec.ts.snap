@@ -1,0 +1,116 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`event resources fetchEvents should format option value to snake_case 1`] = `
+Object {
+  "delete": Array [],
+  "get": Array [
+    Object {
+      "data": undefined,
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "params": Object {
+        "order_by": "createdDatetime",
+      },
+      "paramsSerializer": [Function],
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/events/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [],
+  "put": Array [],
+}
+`;
+
+exports[`event resources fetchEvents should resolve with an Event list on success 1`] = `
+Object {
+  "config": Object {
+    "data": undefined,
+    "headers": Object {
+      "Accept": "application/json, text/plain, */*",
+      "X-CSRF-Token": "abcd",
+      "X-Gorgias-User-Client": "web",
+    },
+    "maxBodyLength": -1,
+    "maxContentLength": -1,
+    "method": "get",
+    "params": Object {},
+    "paramsSerializer": [Function],
+    "timeout": 0,
+    "transformRequest": Array [
+      [Function],
+    ],
+    "transformResponse": Array [
+      [Function],
+    ],
+    "url": "/api/events/",
+    "validateStatus": [Function],
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+  },
+  "data": Object {
+    "data": Array [
+      Object {
+        "context": "f8cb5ba6-a235-4353-8900-24a3354beee9",
+        "created_datetime": "2022-01-25T10:39:21.892050+00:00",
+        "data": null,
+        "id": 1,
+        "object_id": 10,
+        "object_type": "Ticket",
+        "type": "ticket-customer-updated",
+        "uri": "/api/events/1/",
+        "user_id": 1,
+      },
+      Object {
+        "context": "3c3fd1c2-ef5c-4c2e-b56b-3471a04fb21c",
+        "created_datetime": "2022-01-25T10:39:21.892050+00:00",
+        "data": null,
+        "id": 2,
+        "object_id": 20,
+        "object_type": "Macro",
+        "type": "macro-created",
+        "uri": "/api/events/2/",
+        "user_id": 1,
+      },
+      Object {
+        "context": "4fe8a0b3-7185-40f9-9442-07c291d669c0",
+        "created_datetime": "2022-01-25T10:39:21.892050+00:00",
+        "data": null,
+        "id": 3,
+        "object_id": 30,
+        "object_type": "View",
+        "type": "view-deleted",
+        "uri": "/api/events/3/",
+        "user_id": 1,
+      },
+    ],
+    "meta": Object {
+      "next_cursor": "WyJuZXh0IiwgIjIwMjItMDEtMjRUMTM6MTE6NDQuODEyNzE3IiwgMTEwMF0=",
+      "prev_cursor": null,
+    },
+  },
+  "headers": undefined,
+  "request": Object {
+    "responseUrl": "/api/events/",
+  },
+  "status": 200,
+}
+`;

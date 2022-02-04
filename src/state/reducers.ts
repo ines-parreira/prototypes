@@ -26,7 +26,6 @@ import ticketReducer from './ticket/reducers'
 import ticketsReducer from './tickets/reducers'
 import twilioReducer from './twilio/reducers'
 import ui from './ui/reducers'
-import usersAuditReducer from './usersAudit/reducers'
 import viewsReducer from './views/reducers'
 import widgetsReducer from './widgets/reducers'
 import {StoreState} from './types'
@@ -59,7 +58,6 @@ const rootReducer = combineReducers<StoreState>({
     tickets: ticketsReducer,
     twilio: twilioReducer,
     ui,
-    usersAudit: usersAuditReducer,
     views: viewsReducer,
     widgets: widgetsReducer,
 })

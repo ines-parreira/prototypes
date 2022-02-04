@@ -106,6 +106,7 @@ describe('<SelfServicePreferencesView/>', () => {
             helpCenterArticles: {},
             selfServiceConfigurations: {},
             phoneNumbers: {},
+            auditLogEvents: {},
         },
         integrations: fromJS({}),
     }

@@ -1,4 +1,5 @@
 import {RuleEvent} from '../../state/rules/types'
+import {OrderDirection} from '../api/types'
 
 export type TicketTagsAddedEventData = {
     tags_added: number[]
@@ -116,4 +117,100 @@ export type AuditLogEvent = {
     context: string
     type: AuditLogEventType
     created_datetime: string
+}
+
+export enum EventType {
+    AccountCreated = 'account-created',
+    AccountDeactivated = 'account-deactivated',
+    AccountUpdated = 'account-updated',
+    CustomerCreated = 'customer-created',
+    CustomerDeleted = 'customer-deleted',
+    CustomerMerged = 'customer-merged',
+    CustomerUpdated = 'customer-updated',
+    IntegrationCreated = 'integration-created',
+    IntegrationDeleted = 'integration-deleted',
+    IntegrationUpdated = 'integration-updated',
+    MacroCreated = 'macro-created',
+    MacroDeleted = 'macro-deleted',
+    MacroUpdated = 'macro-updated',
+    RuleCreated = 'rule-created',
+    RuleDeleted = 'rule-deleted',
+    RuleUpdated = 'rule-updated',
+    TagCreated = 'tag-created',
+    TagDeleted = 'tag-deleted',
+    TagMerged = 'tag-merged',
+    TeamCreated = 'team-created',
+    TeamDeleted = 'team-deleted',
+    TeamUpdated = 'team-updated',
+    TicketAssigned = 'ticket-assigned',
+    TicketClosed = 'ticket-closed',
+    TicketCreated = 'ticket-created',
+    TicketCustomerUpdated = 'ticket-customer-updated',
+    TicketMarkedSpam = 'ticket-marked-spam',
+    TicketMerged = 'ticket-merged',
+    TicketMessageCreated = 'ticket-message-created',
+    TicketMessageDeleted = 'ticket-message-deleted',
+    TicketMessageSummaryCreated = 'ticket-message-summary-created',
+    TicketMessageUpdated = 'ticket-message-updated',
+    TicketReopened = 'ticket-reopened',
+    TicketSelfUnsnoozed = 'ticket-self-unsnoozed',
+    TicketSnoozed = 'ticket-snoozed',
+    TicketSubjectUpdated = 'ticket-subject-updated',
+    TicketTagsAdded = 'ticket-tags-added',
+    TicketTagsRemoved = 'ticket-tags-removed',
+    TicketTeamAssigned = 'ticket-team-assigned',
+    TicketTeamUnassigned = 'ticket-team-unassigned',
+    TicketTrashed = 'ticket-trashed',
+    TicketUnassigned = 'ticket-unassigned',
+    TicketUnmarkedSpam = 'ticket-unmarked-spam',
+    TicketUntrashed = 'ticket-untrashed',
+    TicketUpdated = 'ticket-updated',
+    UserCreated = 'user-created',
+    UserDeleted = 'user-deleted',
+    UserInvited = 'user-invited',
+    UserLoggedIn = 'user-logged-in',
+    UserLoggedOut = 'user-logged-out',
+    UserPasswordChanged = 'user-password-changed',
+    UserPasswordReset = 'user-password-reset',
+    UserUpdated = 'user-updated',
+    ViewCreated = 'view-created',
+    ViewDeleted = 'view-deleted',
+    ViewUpdated = 'view-updated',
+    WidgetCreated = 'widget-created',
+    WidgetDeleted = 'widget-deleted',
+    WidgetUpdated = 'widget-updated',
+}
+
+export type Event = {
+    id: number
+    context: string
+    created_datetime: string
+    data: Record<string, unknown> | null
+    object_id: number
+    object_type: string
+    type: string
+    user_id: number
+    uri: string
+}
+
+export enum EventsDatetimeOperator {
+    LTE = 'lte',
+    GTE = 'gte',
+    GT = 'gt',
+    LT = 'lt',
+}
+
+export type FetchEventsOptions = {
+    objectId?: number
+    createdDatetime?: Partial<Record<EventsDatetimeOperator, string>>
+    orderDir?: OrderDirection
+    orderBy?: EventSortableProperties
+    objectType?: string
+    types?: Array<EventType>
+    userIds?: number[]
+    cursor?: string
+}
+
+export enum EventSortableProperties {
+    CreatedDatetime = 'createdDatetime',
 }

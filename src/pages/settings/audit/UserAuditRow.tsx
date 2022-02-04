@@ -2,30 +2,34 @@ import React, {Component} from 'react'
 import {Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
+import _startCase from 'lodash/startCase'
 
+import {Event} from '../../../models/event/types'
 import Avatar from '../../common/components/Avatar/Avatar'
 import {DatetimeLabel} from '../../common/utils/labels'
 import {getAgents} from '../../../state/agents/selectors'
 import {RootState} from '../../../state/types'
+import {humanizeString} from '../../../utils'
 
-import {DATETIME_LABEL_FORMAT} from './constants.js'
+import {DATETIME_LABEL_FORMAT} from './constants'
+import css from './UserAuditRow.less'
 
 type Props = {
-    eventItem: Map<any, any>
+    eventItem: Event
 } & ConnectedProps<typeof connector>
 
 export class UserAuditRowContainer extends Component<Props> {
-    _renderUser = (item: Map<any, any>) => {
+    _renderUser = (item: Event) => {
         const {agents} = this.props
         if (!agents) {
             return null
         }
 
         const user: Map<any, any> | undefined = agents.find(
-            (u: Map<any, any>) => u.get('id') === item.get('user_id')
+            (u: Map<any, any>) => u.get('id') === item.user_id
         )
         if (!user) {
-            return null
+            return <span className={css.emptyUser}>No user</span>
         }
 
         return (
@@ -43,25 +47,23 @@ export class UserAuditRowContainer extends Component<Props> {
         )
     }
 
-    _renderObject = (item: Map<any, any>) => {
+    _renderObject = (item: Event) => {
         const objectTypeRoutes = {
-            Ticket: `/app/ticket/${item.get('object_id') as number}/`,
-            Customer: `/app/customer/${item.get('object_id') as number}/`,
+            Ticket: `/app/ticket/${item.object_id}/`,
+            Customer: `/app/customer/${item.object_id}/`,
             // TODO(customers-migration): remove this when we updated the object type for customers-related events
-            User: `/app/customer/${item.get('object_id') as number}/`,
+            User: `/app/customer/${item.object_id}/`,
         }
-        const objectType = item.get(
-            'object_type'
-        ) as keyof typeof objectTypeRoutes
-        const text = `${objectType} #${item.get('object_id') as number}`
+        const objectType = item.object_type as keyof typeof objectTypeRoutes
+        const text = `${objectType} #${item.object_id}`
         if (objectTypeRoutes[objectType]) {
             return <Link to={objectTypeRoutes[objectType]}>{text}</Link>
         }
-        return text
+        return `${_startCase(objectType)} #${item.object_id}`
     }
 
-    _renderEventType = (item: Map<any, any>) => {
-        return (item.get('type') as string).split('-').slice(1).join(' ')
+    _renderEventType = (item: Event) => {
+        return humanizeString(item.type)
     }
 
     render() {
@@ -74,7 +76,7 @@ export class UserAuditRowContainer extends Component<Props> {
                 <td>{this._renderObject(eventItem)}</td>
                 <td className="smallest">
                     <DatetimeLabel
-                        dateTime={eventItem.get('created_datetime')}
+                        dateTime={eventItem.created_datetime}
                         labelFormat={DATETIME_LABEL_FORMAT}
                     />
                 </td>
