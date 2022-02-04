@@ -195,7 +195,7 @@ export const ReturnsPolicyView = () => {
                                 {shopName}
                             </Link>
                         </BreadcrumbItem>
-                        <BreadcrumbItem active>Returns</BreadcrumbItem>
+                        <BreadcrumbItem active>Return</BreadcrumbItem>
                     </Breadcrumb>
                 }
             />
@@ -203,7 +203,7 @@ export const ReturnsPolicyView = () => {
                 <Row>
                     <Col>
                         <div className="mb-3">
-                            <h4 className={css.returnsPolicyTitle}>Returns</h4>
+                            <h4 className={css.returnsPolicyTitle}>Return</h4>
                             <p>
                                 Let customers request returns directly from the
                                 chat portal. Returns can only be initiated if

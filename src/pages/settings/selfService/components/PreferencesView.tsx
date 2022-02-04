@@ -157,7 +157,7 @@ export const PreferencesView = () => {
                                                 policyKey={
                                                     PolicyEnum.TRACK_ORDER_POLICY
                                                 }
-                                                policyName="Track order"
+                                                policyName="Track"
                                                 policyDescription="Let customers track
                                                         orders directly from the
                                                         chat portal"
@@ -178,7 +178,7 @@ export const PreferencesView = () => {
                                                     PolicyEnum.RETURN_ORDER_POLICY
                                                 }
                                                 integration={integration}
-                                                policyName="Returns"
+                                                policyName="Return"
                                                 policyDescription="Let customers request returns directly
                                                         from the chat portal"
                                                 configuration={configuration}
@@ -188,7 +188,7 @@ export const PreferencesView = () => {
                                                     PolicyEnum.CANCEL_ORDER_POLICY
                                                 }
                                                 integration={integration}
-                                                policyName="Cancellations"
+                                                policyName="Cancel"
                                                 policyDescription="Let customers request order cancellations
                                                         directly from the chat portal"
                                                 configuration={configuration}

@@ -37,7 +37,7 @@ exports[`<CancellationsPolicyView/> onSubmit() should set the eligibility option
             aria-current="page"
             class="active breadcrumb-item"
           >
-            Cancellations
+            Cancel
           </li>
         </ol>
       </nav>
@@ -57,7 +57,7 @@ exports[`<CancellationsPolicyView/> onSubmit() should set the eligibility option
             <h4
               class="cancellationsPolicyTitle"
             >
-              Cancellations
+              Cancel
             </h4>
             <p
               class="cancellationsPolicyDescription"
@@ -216,7 +216,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
             aria-current="page"
             class="active breadcrumb-item"
           >
-            Cancellations
+            Cancel
           </li>
         </ol>
       </nav>
@@ -236,7 +236,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
             <h4
               class="cancellationsPolicyTitle"
             >
-              Cancellations
+              Cancel
             </h4>
             <p
               class="cancellationsPolicyDescription"

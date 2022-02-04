@@ -37,7 +37,7 @@ exports[`<ReturnsPolicyView /> render() should render the select field 1`] = `
             aria-current="page"
             class="active breadcrumb-item"
           >
-            Returns
+            Return
           </li>
         </ol>
       </nav>
@@ -57,7 +57,7 @@ exports[`<ReturnsPolicyView /> render() should render the select field 1`] = `
             <h4
               class="returnsPolicyTitle"
             >
-              Returns
+              Return
             </h4>
             <p>
               Let customers request returns directly from the chat portal. Returns can only be initiated if the order has been delivered.

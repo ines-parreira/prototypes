@@ -144,7 +144,7 @@ exports[`<SelfServicePreferencesView/> ToggleInput.onChange() should deactivate 
                         <span
                           class="policyName"
                         >
-                          Track order
+                          Track
                         </span>
                         <span
                           class="policyDescription"
@@ -263,7 +263,7 @@ exports[`<SelfServicePreferencesView/> ToggleInput.onChange() should deactivate 
                           <span
                             class="policyName"
                           >
-                            Returns
+                            Return
                           </span>
                           <span
                             class="policyDescription"
@@ -323,7 +323,7 @@ exports[`<SelfServicePreferencesView/> ToggleInput.onChange() should deactivate 
                           <span
                             class="policyName"
                           >
-                            Cancellations
+                            Cancel
                           </span>
                           <span
                             class="policyDescription"
@@ -502,7 +502,7 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                         <span
                           class="policyName"
                         >
-                          Track order
+                          Track
                         </span>
                         <span
                           class="policyDescription"
@@ -621,7 +621,7 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                           <span
                             class="policyName"
                           >
-                            Returns
+                            Return
                           </span>
                           <span
                             class="policyDescription"
@@ -681,7 +681,7 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                           <span
                             class="policyName"
                           >
-                            Cancellations
+                            Cancel
                           </span>
                           <span
                             class="policyDescription"

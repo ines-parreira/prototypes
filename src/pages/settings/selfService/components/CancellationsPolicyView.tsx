@@ -180,7 +180,7 @@ export const CancellationsPolicyView = () => {
                                 {shopName}
                             </Link>
                         </BreadcrumbItem>
-                        <BreadcrumbItem active>Cancellations</BreadcrumbItem>
+                        <BreadcrumbItem active>Cancel</BreadcrumbItem>
                     </Breadcrumb>
                 }
             />
@@ -189,7 +189,7 @@ export const CancellationsPolicyView = () => {
                     <Col>
                         <div className="mb-3">
                             <h4 className={css.cancellationsPolicyTitle}>
-                                Cancellations
+                                Cancel
                             </h4>
                             <p className={css.cancellationsPolicyDescription}>
                                 Let customers request order cancellations
