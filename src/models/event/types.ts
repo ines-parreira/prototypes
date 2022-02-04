@@ -209,6 +209,7 @@ export type FetchEventsOptions = {
     types?: Array<EventType>
     userIds?: number[]
     cursor?: string
+    limit?: number
 }
 
 export enum EventSortableProperties {

@@ -11,9 +11,11 @@ const auditLogEventsReducer = createReducer<AuditLogEventsState>(
     initialState,
     (builder) =>
         builder.addCase(auditLogEventsFetched, (state, {payload}) => {
+            const newState: AuditLogEventsState = {}
             payload.map((event: Event) => {
-                state[event.id.toString()] = event
+                newState[event.id.toString()] = event
             })
+            return newState
         })
 )
 

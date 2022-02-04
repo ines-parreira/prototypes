@@ -15,6 +15,7 @@ type APIFetchEventsOptions = {
     types?: FetchEventsOptions['types']
     user_ids?: FetchEventsOptions['userIds']
     cursor?: FetchEventsOptions['cursor']
+    limit?: number
 }
 
 export const fetchEvents = async (options: FetchEventsOptions = {}) => {

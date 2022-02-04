@@ -85,6 +85,7 @@ export class UserAuditListContainer extends Component<Props, State> {
             },
             userIds: user_ids,
             types,
+            limit: 30,
         }
     }
 
