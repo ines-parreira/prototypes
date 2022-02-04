@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Right /> should default the current datetime when the date value is invalid 1`] = `
+<div>
+  <input
+    class="form-control"
+    placeholder="Choose a date..."
+    type="text"
+    value="09/03/2019 12:00 AM"
+  />
+</div>
+`;

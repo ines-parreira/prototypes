@@ -46,7 +46,7 @@ type State = {
     dropdownOpen: boolean
 }
 
-class Right extends Component<Props, State> {
+export class RightContainer extends Component<Props, State> {
     static defaultProps: Pick<Props, 'empty'> = {
         empty: false,
     }
@@ -209,15 +209,16 @@ class Right extends Component<Props, State> {
                 )
             }
 
-            const datetime = displayedValue
-                ? stringToDatetime(displayedValue as string)
-                : moment()
+            const datetime =
+                (displayedValue &&
+                    stringToDatetime(displayedValue as string)) ||
+                moment()
 
             return (
                 <DatePicker
                     initialSettings={{
-                        endDate: datetime!,
-                        startDate: datetime!,
+                        endDate: datetime,
+                        startDate: datetime,
                     }}
                     onSubmit={(date) => {
                         updateFieldFilter(index, date.toISOString())
@@ -225,7 +226,7 @@ class Right extends Component<Props, State> {
                 >
                     <div>
                         <Input
-                            value={datetime!.format('L LT')}
+                            value={datetime.format('L LT')}
                             placeholder="Choose a date..."
                         />
                     </div>
@@ -326,4 +327,4 @@ const connector = connect((state: RootState) => {
     }
 })
 
-export default connector(Right)
+export default connector(RightContainer)
