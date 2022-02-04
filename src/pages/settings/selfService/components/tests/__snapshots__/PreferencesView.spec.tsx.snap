@@ -54,7 +54,7 @@ exports[`<SelfServicePreferencesView/> ToggleInput.onChange() should deactivate 
               class="preferencesDescription"
               id="email-capture-help"
             >
-              Choose preferences of the actions your customers will be able to take with the Self-service portal. Note that actions available for each
+              Choose preferences of the actions your customers will be able to take to manage their orders. Note that actions available for each
               <span
                 id="orders-shipments"
               >
@@ -149,7 +149,7 @@ exports[`<SelfServicePreferencesView/> ToggleInput.onChange() should deactivate 
                         <span
                           class="policyDescription"
                         >
-                          Let customers track orders directly from the chat portal
+                          Let customers track  orders directly from the  Self-service Portal in chat  and help center
                         </span>
                       </div>
                     </div>
@@ -268,7 +268,7 @@ exports[`<SelfServicePreferencesView/> ToggleInput.onChange() should deactivate 
                           <span
                             class="policyDescription"
                           >
-                            Let customers request returns directly from the chat portal
+                            Let customers track orders directly  from the Self-service Portal in chat  and help center
                           </span>
                         </div>
                       </div>
@@ -328,7 +328,7 @@ exports[`<SelfServicePreferencesView/> ToggleInput.onChange() should deactivate 
                           <span
                             class="policyDescription"
                           >
-                            Let customers request order cancellations directly from the chat portal
+                            Let customers request order cancellations  directly from the Self-service Portal in chat  and help center
                           </span>
                         </div>
                       </div>
@@ -412,7 +412,7 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
               class="preferencesDescription"
               id="email-capture-help"
             >
-              Choose preferences of the actions your customers will be able to take with the Self-service portal. Note that actions available for each
+              Choose preferences of the actions your customers will be able to take to manage their orders. Note that actions available for each
               <span
                 id="orders-shipments"
               >
@@ -507,7 +507,7 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                         <span
                           class="policyDescription"
                         >
-                          Let customers track orders directly from the chat portal
+                          Let customers track  orders directly from the  Self-service Portal in chat  and help center
                         </span>
                       </div>
                     </div>
@@ -626,7 +626,7 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                           <span
                             class="policyDescription"
                           >
-                            Let customers request returns directly from the chat portal
+                            Let customers track orders directly  from the Self-service Portal in chat  and help center
                           </span>
                         </div>
                       </div>
@@ -686,7 +686,7 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                           <span
                             class="policyDescription"
                           >
-                            Let customers request order cancellations directly from the chat portal
+                            Let customers request order cancellations  directly from the Self-service Portal in chat  and help center
                           </span>
                         </div>
                       </div>

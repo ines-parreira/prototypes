@@ -104,7 +104,8 @@ export const SelfServiceView = () => {
                                     Self-service enables your customers to
                                     browse their orders and select the type of
                                     issue they are having. It will then create a
-                                    chat ticket for your team to handle.
+                                    chat or help center ticket for your team to
+                                    handle.
                                 </p>
                                 <h5 className={css.enableSelfServiceTitle}>
                                     Enable Self-service{' '}
@@ -121,8 +122,8 @@ export const SelfServiceView = () => {
                                             css.enableSelfServiceTooltip
                                         }
                                     >
-                                        Self-Service is currently only available
-                                        for chat.
+                                        Self-service is only available to stores
+                                        that have a Shopify store integration.
                                     </Tooltip>
                                 </h5>
                                 {shopifyIntegrations.size === 0 ? (
@@ -134,49 +135,43 @@ export const SelfServiceView = () => {
                                 ) : loading ? (
                                     <Loader />
                                 ) : (
-                                    <>
-                                        <p>
-                                            Self-service is only available to
-                                            stores that have a Shopify store
-                                            integration.
-                                        </p>
-                                        <Table
-                                            className={classnames(
-                                                'table-hover table-integrations',
-                                                css.selfServiceIntegrationsTable
-                                            )}
-                                        >
-                                            <tbody>
-                                                {shopifyIntegrations
-                                                    .valueSeq()
-                                                    .map(
-                                                        (
-                                                            shopifyIntegration: Map<
-                                                                any,
-                                                                any
-                                                            >
-                                                        ) => (
-                                                            <IntegrationRow
-                                                                key={shopifyIntegration.get(
-                                                                    'id'
-                                                                )}
-                                                                shopifyIntegration={
-                                                                    shopifyIntegration
-                                                                }
-                                                                selfServiceIntegration={_findSelfServiceIntegration(
-                                                                    selfServiceIntegrations,
-                                                                    shopifyIntegration
-                                                                )}
-                                                                configuration={_findConfiguration(
-                                                                    selfServiceConfigurations,
-                                                                    shopifyIntegration
-                                                                )}
-                                                            />
-                                                        )
-                                                    )}
-                                            </tbody>
-                                        </Table>
-                                    </>
+                                    <Table
+                                        className={classnames(
+                                            'table-hover table-integrations',
+                                            css.selfServiceIntegrationsTable
+                                        )}
+                                        data-testid="table-integrations"
+                                    >
+                                        <tbody>
+                                            {shopifyIntegrations
+                                                .valueSeq()
+                                                .map(
+                                                    (
+                                                        shopifyIntegration: Map<
+                                                            any,
+                                                            any
+                                                        >
+                                                    ) => (
+                                                        <IntegrationRow
+                                                            key={shopifyIntegration.get(
+                                                                'id'
+                                                            )}
+                                                            shopifyIntegration={
+                                                                shopifyIntegration
+                                                            }
+                                                            selfServiceIntegration={_findSelfServiceIntegration(
+                                                                selfServiceIntegrations,
+                                                                shopifyIntegration
+                                                            )}
+                                                            configuration={_findConfiguration(
+                                                                selfServiceConfigurations,
+                                                                shopifyIntegration
+                                                            )}
+                                                        />
+                                                    )
+                                                )}
+                                        </tbody>
+                                    </Table>
                                 )}
                             </div>
                         </Col>

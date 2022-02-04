@@ -30,7 +30,7 @@ exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServ
               Most ecommerce support requests are about the same 20 types of issues.
             </p>
             <p>
-              Self-service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat ticket for your team to handle.
+              Self-service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat or help center ticket for your team to handle.
             </p>
             <h5
               class="enableSelfServiceTitle"
@@ -44,11 +44,9 @@ exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServ
                 info
               </i>
             </h5>
-            <p>
-              Self-service is only available to stores that have a Shopify store integration.
-            </p>
             <table
               class="table-hover table-integrations selfServiceIntegrationsTable table"
+              data-testid="table-integrations"
             >
               <tbody>
                 <tr>
@@ -323,7 +321,7 @@ exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServ
               Most ecommerce support requests are about the same 20 types of issues.
             </p>
             <p>
-              Self-service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat ticket for your team to handle.
+              Self-service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat or help center ticket for your team to handle.
             </p>
             <h5
               class="enableSelfServiceTitle"
@@ -337,11 +335,9 @@ exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServ
                 info
               </i>
             </h5>
-            <p>
-              Self-service is only available to stores that have a Shopify store integration.
-            </p>
             <table
               class="table-hover table-integrations selfServiceIntegrationsTable table"
+              data-testid="table-integrations"
             >
               <tbody>
                 <tr>
@@ -616,7 +612,7 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
               Most ecommerce support requests are about the same 20 types of issues.
             </p>
             <p>
-              Self-service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat ticket for your team to handle.
+              Self-service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat or help center ticket for your team to handle.
             </p>
             <h5
               class="enableSelfServiceTitle"
@@ -630,11 +626,9 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                 info
               </i>
             </h5>
-            <p>
-              Self-service is only available to stores that have a Shopify store integration.
-            </p>
             <table
               class="table-hover table-integrations selfServiceIntegrationsTable table"
+              data-testid="table-integrations"
             >
               <tbody>
                 <tr>
@@ -854,7 +848,7 @@ exports[`<SelfServiceView/> render() should render the default message when ther
               Most ecommerce support requests are about the same 20 types of issues.
             </p>
             <p>
-              Self-service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat ticket for your team to handle.
+              Self-service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat or help center ticket for your team to handle.
             </p>
             <h5
               class="enableSelfServiceTitle"

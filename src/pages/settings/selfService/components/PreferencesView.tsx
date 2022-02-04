@@ -73,8 +73,8 @@ export const PreferencesView = () => {
                                 className={css.preferencesDescription}
                             >
                                 Choose preferences of the actions your customers
-                                will be able to take with the Self-service
-                                portal. Note that actions available for each
+                                will be able to take to manage their orders.
+                                Note that actions available for each
                                 <span id="orders-shipments">
                                     <b> order’s shipments</b>
                                 </span>{' '}
@@ -158,9 +158,10 @@ export const PreferencesView = () => {
                                                     PolicyEnum.TRACK_ORDER_POLICY
                                                 }
                                                 policyName="Track"
-                                                policyDescription="Let customers track
-                                                        orders directly from the
-                                                        chat portal"
+                                                policyDescription="Let customers track 
+                                                        orders directly from the 
+                                                        Self-service Portal in chat 
+                                                        and help center"
                                                 configuration={configuration}
                                             />
                                             <PolicyRow
@@ -179,8 +180,9 @@ export const PreferencesView = () => {
                                                 }
                                                 integration={integration}
                                                 policyName="Return"
-                                                policyDescription="Let customers request returns directly
-                                                        from the chat portal"
+                                                policyDescription="Let customers track orders directly 
+                                                        from the Self-service Portal in chat 
+                                                        and help center"
                                                 configuration={configuration}
                                             />
                                             <PolicyRow
@@ -189,8 +191,9 @@ export const PreferencesView = () => {
                                                 }
                                                 integration={integration}
                                                 policyName="Cancel"
-                                                policyDescription="Let customers request order cancellations
-                                                        directly from the chat portal"
+                                                policyDescription="Let customers request order cancellations 
+                                                        directly from the Self-service Portal in chat 
+                                                        and help center"
                                                 configuration={configuration}
                                             />
                                         </tbody>

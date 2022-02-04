@@ -133,7 +133,7 @@ describe('<SelfServiceView/>', () => {
                 })
             })
 
-            const {container, findByText} = render(
+            const {container, findByTestId} = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -160,7 +160,7 @@ describe('<SelfServiceView/>', () => {
                 </Provider>
             )
 
-            await findByText(/Self-service is only available/i)
+            await findByTestId('table-integrations')
             expect(container).toMatchSnapshot()
         })
     })
@@ -171,7 +171,7 @@ describe('<SelfServiceView/>', () => {
             const selfServiceConfigurations =
                 createSelfServiceConfigurationFixtures(4)
 
-            const {container, findByText} = render(
+            const {container, findByTestId} = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -198,7 +198,7 @@ describe('<SelfServiceView/>', () => {
                 </Provider>
             )
 
-            await findByText(/Self-service is only available/i)
+            await findByTestId('table-integrations')
             expect(container).toMatchSnapshot()
 
             act(() => {
@@ -237,7 +237,7 @@ describe('<SelfServiceView/>', () => {
             const selfServiceConfigurations =
                 createSelfServiceConfigurationFixtures(4)
 
-            const {container, findByText} = render(
+            const {container, findByTestId} = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -264,7 +264,7 @@ describe('<SelfServiceView/>', () => {
                 </Provider>
             )
 
-            await findByText(/Self-service is only available/i)
+            await findByTestId('table-integrations')
             expect(container).toMatchSnapshot()
 
             act(() => {
