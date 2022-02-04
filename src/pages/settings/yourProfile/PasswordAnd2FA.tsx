@@ -9,7 +9,10 @@ import {getCurrentAccountState} from '../../../state/currentAccount/selectors'
 import {getCurrentUserState} from '../../../state/currentUser/selectors'
 import ChangePassword from './ChangePassword'
 import TwoFactorAuthenticationSection from './twoFactorAuthentication/TwoFactorAuthenticationSection'
-import {checkAccessTo2FA} from './twoFactorAuthentication/utils'
+import {
+    buildPasswordAnd2FaText,
+    checkAccessTo2FA,
+} from './twoFactorAuthentication/utils'
 
 export default function PasswordAnd2FA() {
     const currentAccount = useSelector(getCurrentAccountState)
@@ -23,13 +26,13 @@ export default function PasswordAnd2FA() {
         return checkAccessTo2FA(currentAccount.get('domain'))
     }, [currentAccount])
 
-    const pageHeader = useMemo(() => {
-        return hasPassword ? 'Password & 2FA' : '2FA'
-    }, [hasPassword])
+    const pageHeaderTitle = useMemo(() => {
+        return buildPasswordAnd2FaText(hasPassword, hasAccessTo2FA)
+    }, [hasPassword, hasAccessTo2FA])
 
     return (
         <div className="full-width">
-            <PageHeader title={pageHeader} />
+            <PageHeader title={pageHeaderTitle} />
             <Container fluid className={css.pageContainer}>
                 <div className={css.contentWrapper}>
                     {hasPassword && <ChangePassword />}
