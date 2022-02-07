@@ -2,10 +2,10 @@ import classnames from 'classnames'
 import moment from 'moment'
 import React, {useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Button, Popover, PopoverHeader, PopoverBody} from 'reactstrap'
+import {Popover, PopoverHeader, PopoverBody} from 'reactstrap'
 
 import IconButton from 'pages/common/components/button/IconButton'
-import {ButtonIntent} from 'pages/common/components/button/Button'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import {
     OrderDirection,
     MetaSortOptions,
@@ -249,11 +249,11 @@ export function MacrosSettingsTableContainer({
                                             <b>{name || 'this'}</b> macro.
                                         </p>
                                         <Button
-                                            color="danger"
+                                            intent={ButtonIntent.Destructive}
                                             onClick={() =>
                                                 handleMacroDelete(macroId)
                                             }
-                                            type="submit"
+                                            type="button"
                                         >
                                             Confirm
                                         </Button>

@@ -92,14 +92,13 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
           </b>
            macro.
         </p>
-        <Button
-          color="danger"
+        <ForwardRef
+          intent="destructive"
           onClick={[Function]}
-          tag="button"
-          type="submit"
+          type="button"
         >
           Confirm
-        </Button>
+        </ForwardRef>
       </PopoverBody>
     </Popover>
     <ForwardRef(TableBodyRow)
@@ -168,14 +167,13 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
           </b>
            macro.
         </p>
-        <Button
-          color="danger"
+        <ForwardRef
+          intent="destructive"
           onClick={[Function]}
-          tag="button"
-          type="submit"
+          type="button"
         >
           Confirm
-        </Button>
+        </ForwardRef>
       </PopoverBody>
     </Popover>
   </ForwardRef(TableBody)>

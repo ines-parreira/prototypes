@@ -2,16 +2,10 @@ import React, {Component, ComponentProps, FormEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
-import {
-    Button,
-    Container,
-    Form,
-    Popover,
-    PopoverBody,
-    PopoverHeader,
-} from 'reactstrap'
+import {Container, Form, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import {Map} from 'immutable'
 
+import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import InputField from 'pages/common/forms/InputField'
 import Pagination from '../../common/components/Pagination'
@@ -221,7 +215,6 @@ export class ManageTagsContainer extends Component<Props, State> {
                             />
                             <Button
                                 id="create-tag-button"
-                                color="success"
                                 type="button"
                                 onClick={this._toggleCreationPopup}
                             >

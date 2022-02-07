@@ -1,11 +1,12 @@
 import React, {Component, FormEvent} from 'react'
 import classnames from 'classnames'
-import {Form, FormGroup, Button, Container, Label} from 'reactstrap'
+import {Form, FormGroup, Container, Label} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 import {Map} from 'immutable'
 import {EditorState} from 'draft-js'
 
 import {DELAY_SURVEY_FOR} from 'config'
+import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import RichFieldWithVariables from 'pages/common/forms/RichFieldWithVariables'
@@ -186,14 +187,7 @@ class SatisfactionSurveyView extends Component<Props, State> {
                                         onChange={this._updateSurveyEmail}
                                     />
                                 </FormGroup>
-                                <Button
-                                    type="submit"
-                                    color="success"
-                                    className={classnames({
-                                        'btn-loading': this.state.isLoading,
-                                    })}
-                                    disabled={this.state.isLoading}
-                                >
+                                <Button isLoading={this.state.isLoading}>
                                     Save
                                 </Button>
                             </Form>

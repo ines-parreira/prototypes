@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import {useDebounce, useAsyncFn} from 'react-use'
 import classnames from 'classnames'
-import {Button, Container} from 'reactstrap'
+import {Container} from 'reactstrap'
 import {useSelector} from 'react-redux'
 import {Link, withRouter, RouteComponentProps} from 'react-router-dom'
 import history from 'pages/history'
 
+import Button from 'pages/common/components/button/Button'
 import PageHeader from '../../common/components/PageHeader'
 import Video from '../../common/components/Video/Video'
 import Loader from '../../common/components/Loader/Loader'
@@ -160,9 +161,9 @@ export function RulesViewContainer({
                     )}
                     <Link to="/app/settings/rules/new">
                         <Button
-                            color="success"
                             className="float-right"
-                            disabled={limitStatus === RuleLimitStatus.Reached}
+                            isDisabled={limitStatus === RuleLimitStatus.Reached}
+                            type="button"
                         >
                             Create new rule
                         </Button>

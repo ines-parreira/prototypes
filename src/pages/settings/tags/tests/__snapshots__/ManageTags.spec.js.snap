@@ -23,15 +23,13 @@ exports[`ManageTags component mounts correctly 1`] = `
           searchDebounceTime={300}
           style={Object {}}
         />
-        <Button
-          color="success"
+        <ForwardRef
           id="create-tag-button"
           onClick={[Function]}
-          tag="button"
           type="button"
         >
           Create tag
-        </Button>
+        </ForwardRef>
         <Popover
           fade={false}
           isOpen={false}

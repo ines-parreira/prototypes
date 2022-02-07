@@ -1,6 +1,9 @@
 import React, {useCallback, useState} from 'react'
-import {Button, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
+import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import {List, Map} from 'immutable'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 export type Props = {
     selectedNum: number
@@ -43,15 +46,13 @@ const MergeButton = ({selectedNum, tags, meta, onMerge, disabled}: Props) => {
         <>
             <Button
                 id="bulk-merge-button"
-                disabled={disabled}
-                size="sm"
-                color="secondary"
+                isDisabled={disabled}
+                intent={ButtonIntent.Secondary}
                 type="button"
-                className="mr-2"
+                className="mr-2 skip-default"
                 onClick={toggleMergeConfirmation}
             >
-                <i className="material-icons mr-2">call_merge</i>
-                Merge
+                <ButtonIconLabel icon="call_merge">Merge</ButtonIconLabel>
             </Button>
             <Popover
                 placement="bottom"
@@ -67,11 +68,7 @@ const MergeButton = ({selectedNum, tags, meta, onMerge, disabled}: Props) => {
                         <b>{mergeTagDestination}</b>.<br />
                         <b>This action cannot be undone</b>.
                     </p>
-                    <Button
-                        type="submit"
-                        color="success"
-                        onClick={handleMergeClick}
-                    >
+                    <Button type="button" onClick={handleMergeClick}>
                         Confirm
                     </Button>
                 </PopoverBody>

@@ -1,7 +1,6 @@
 import React from 'react'
-import {Button} from 'reactstrap'
 
-import {ButtonIntent} from 'pages/common/components/button/Button'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
@@ -31,20 +30,20 @@ export const RuleItemButtons = ({
             <div>
                 <Button
                     id={`rule-item-save`}
-                    color="success"
                     onClick={onSubmit}
-                    disabled={!canSubmit}
+                    isDisabled={!canSubmit}
                     form={`rule-form`}
+                    type="button"
                 >
                     {ruleId ? 'Update rule' : 'Create rule'}
                 </Button>
                 {ruleId && (
                     <Button
                         id={`rule-item-duplicate`}
-                        color="secondary"
+                        intent={ButtonIntent.Secondary}
                         type="submit"
                         className="ml-3"
-                        disabled={!canDuplicate}
+                        isDisabled={!canDuplicate}
                         onClick={onDuplicate}
                     >
                         Duplicate rule

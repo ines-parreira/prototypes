@@ -2,11 +2,11 @@ import React, {MouseEvent, useMemo, useState} from 'react'
 import {useAsyncFn} from 'react-use'
 import moment from 'moment'
 import classnames from 'classnames'
-import {Badge, Button, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
+import {Badge, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 
-import {ButtonIntent} from 'pages/common/components/button/Button'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {Rule} from 'state/rules/types'
@@ -313,7 +313,10 @@ export function RuleRow({
                         You are about to delete <b>{rule.name || 'this'}</b>{' '}
                         rule.
                     </p>
-                    <Button color="danger" onClick={handleDelete} type="submit">
+                    <Button
+                        intent={ButtonIntent.Destructive}
+                        onClick={handleDelete}
+                    >
                         Confirm
                     </Button>
                 </PopoverBody>
@@ -330,8 +333,7 @@ export function RuleRow({
                     <p>You are about to deactivate {rule.name} rule.</p>
 
                     <Button
-                        type="submit"
-                        color="danger"
+                        intent={ButtonIntent.Destructive}
                         onClick={handleDeactivate}
                     >
                         Confirm

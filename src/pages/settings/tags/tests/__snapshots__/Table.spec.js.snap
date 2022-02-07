@@ -22,28 +22,36 @@ exports[`ManageTags Table component should display the same number of rows as th
             class="actions"
           >
             <button
-              class="mr-2 btn btn-secondary btn-sm"
+              class="wrapper mr-2 skip-default secondary medium"
               id="bulk-merge-button"
               type="button"
             >
-              <i
-                class="material-icons mr-2"
+              <span
+                class="wrapper"
               >
-                call_merge
-              </i>
-              Merge
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  call_merge
+                </i>
+                Merge
+              </span>
             </button>
             <button
-              class="mr-2 btn btn-secondary btn-sm"
+              class="wrapper mr-2 skip-default secondary medium"
               id="bulk-remove-button"
               type="button"
             >
-              <i
-                class="material-icons mr-2"
+              <span
+                class="wrapper"
               >
-                delete
-              </i>
-              Delete
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete
+              </span>
             </button>
           </div>
           <div>

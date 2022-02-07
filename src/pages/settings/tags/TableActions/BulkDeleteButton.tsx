@@ -1,5 +1,8 @@
 import React, {useCallback, useState} from 'react'
-import {Button, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
+import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 export type Props = {
     disabled: boolean
@@ -21,16 +24,14 @@ const BulkDeleteButton = ({onBulkDelete, disabled}: Props) => {
     return (
         <>
             <Button
-                disabled={disabled}
+                isDisabled={disabled}
                 id="bulk-remove-button"
-                size="sm"
-                color="secondary"
+                intent={ButtonIntent.Secondary}
                 type="button"
-                className="mr-2"
+                className="mr-2 skip-default"
                 onClick={toggleRemoveConfirmation}
             >
-                <i className="material-icons mr-2">delete</i>
-                Delete
+                <ButtonIconLabel icon="delete">Delete</ButtonIconLabel>
             </Button>
             <Popover
                 placement="bottom"
@@ -45,11 +46,7 @@ const BulkDeleteButton = ({onBulkDelete, disabled}: Props) => {
                         Are you sure you want to delete these tags?{' '}
                         <b>They will be removed from all tickets</b>.
                     </p>
-                    <Button
-                        type="submit"
-                        color="success"
-                        onClick={handleDeleteClick}
-                    >
+                    <Button type="button" onClick={handleDeleteClick}>
                         Confirm
                     </Button>
                 </PopoverBody>

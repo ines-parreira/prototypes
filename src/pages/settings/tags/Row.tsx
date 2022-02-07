@@ -1,11 +1,11 @@
 import React, {Component, FormEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map} from 'immutable'
-import {Button, Form, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
+import {Form, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import classNames from 'classnames'
 
 import InputField from 'pages/common/forms/InputField'
-import {ButtonIntent} from 'pages/common/components/button/Button'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import ColorPicker from '../../common/components/ColorPicker'
 import {TagLabel} from '../../common/utils/labels'
@@ -172,15 +172,13 @@ export class Row extends Component<Props, State> {
                             <div className="d-flex">
                                 <Button
                                     type="button"
-                                    color="secondary"
+                                    intent={ButtonIntent.Secondary}
                                     onClick={this._onCancel}
                                     className="mr-2"
                                 >
                                     Cancel
                                 </Button>
-                                <Button type="submit" color="primary">
-                                    Save
-                                </Button>
+                                <Button>Save</Button>
                             </div>
                         </Form>
                     </td>
@@ -255,11 +253,7 @@ export class Row extends Component<Props, State> {
                                     Are you sure you want to delete this tag?{' '}
                                     <b>It will be removed from all tickets</b>.
                                 </p>
-                                <Button
-                                    type="submit"
-                                    color="success"
-                                    onClick={this._onRemove}
-                                >
+                                <Button type="button" onClick={this._onRemove}>
                                     Confirm
                                 </Button>
                             </PopoverBody>

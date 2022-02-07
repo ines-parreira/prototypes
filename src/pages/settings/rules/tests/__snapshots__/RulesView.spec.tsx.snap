@@ -144,7 +144,8 @@ exports[`<RulesView/> should render the rule library view 1`] = `
           to="/app/settings/rules/new"
         >
           <button
-            class="float-right btn btn-success"
+            class="wrapper float-right primary medium"
+            type="button"
           >
             Create new rule
           </button>
@@ -228,7 +229,8 @@ exports[`<RulesView/> should render the rule views 1`] = `
           to="/app/settings/rules/new"
         >
           <button
-            class="float-right btn btn-success"
+            class="wrapper float-right primary medium"
+            type="button"
           >
             Create new rule
           </button>

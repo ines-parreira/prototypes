@@ -1,7 +1,7 @@
 import {shallow} from 'enzyme'
 import React, {ComponentProps} from 'react'
-import {Button} from 'reactstrap'
 
+import Button from 'pages/common/components/button/Button'
 import IconButton from '../../../common/components/button/IconButton'
 import {createMacro, deleteMacro} from '../../../../models/macro/resources'
 import {Macro} from '../../../../models/macro/types'
@@ -156,7 +156,7 @@ describe('<MacrosSettingsTable/>', () => {
         )
 
         component.find(IconButton).at(1).simulate('click', mockClickEvent)
-        component.find({type: 'submit'}).at(0).simulate('click')
+        component.find(Button).at(0).simulate('click')
         setImmediate(() => {
             expect(mockMacroDeleted).toHaveBeenNthCalledWith(1, 1)
             expect(mockNotify).toHaveBeenNthCalledWith(1, {
@@ -188,8 +188,8 @@ describe('<MacrosSettingsTable/>', () => {
             />
         )
 
-        component.find(Button).at(1).simulate('click', mockClickEvent)
-        component.find({type: 'submit'}).at(0).simulate('click')
+        component.find(IconButton).at(1).simulate('click', mockClickEvent)
+        component.find(Button).at(0).simulate('click')
         setImmediate(() => {
             expect(mockNotify.mock.calls[0]).toMatchSnapshot()
             done()

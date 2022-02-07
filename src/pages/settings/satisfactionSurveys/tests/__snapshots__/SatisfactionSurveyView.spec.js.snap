@@ -3717,23 +3717,16 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                         </RichFieldWithVariables>
                       </div>
                     </FormGroup>
-                    <Button
-                      className=""
-                      color="success"
-                      disabled={false}
-                      tag="button"
-                      type="submit"
+                    <ForwardRef
+                      isLoading={false}
                     >
                       <button
-                        aria-label={null}
-                        className="btn btn-success"
+                        className="wrapper primary medium"
                         disabled={false}
-                        onClick={[Function]}
-                        type="submit"
                       >
                         Save
                       </button>
-                    </Button>
+                    </ForwardRef>
                   </form>
                 </Form>
               </div>
