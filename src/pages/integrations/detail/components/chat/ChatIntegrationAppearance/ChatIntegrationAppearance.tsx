@@ -1,5 +1,5 @@
 import {AxiosError} from 'axios'
-import React, {Fragment, Component} from 'react'
+import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
@@ -18,8 +18,7 @@ import {
     Row,
 } from 'reactstrap'
 
-import InputField from 'pages/common/forms/InputField'
-import ColorField from 'pages/common/forms/ColorField'
+import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from 'config/integrations/index'
 import {
     SMOOCH_INSIDE_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
     SMOOCH_INSIDE_AUTO_RESPONDER_ENABLED_DEFAULT,
@@ -32,28 +31,25 @@ import {
     SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS,
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_DEFAULT,
-} from '../../../../../../config/integrations/smooch_inside'
-
-import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integrations/index'
-import {getIntegrationsByTypes} from '../../../../../../state/integrations/selectors'
-import DEPRECATED_ConfirmButton from '../../../../../common/components/DEPRECATED_ConfirmButton'
-import FileField from '../../../../../common/forms/FileField'
-import Loader from '../../../../../common/components/Loader/Loader'
-import PageHeader from '../../../../../common/components/PageHeader'
-import RadioField from '../../../../../common/forms/RadioField'
-import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
-import ChatIntegrationPreview from '../ChatIntegrationPreview/ChatIntegrationPreview'
-import MessageContentPreview from '../ChatIntegrationPreview/MessageContent'
-import {
-    IntegrationType,
-    IntegrationDecoration,
-} from '../../../../../../models/integration/types'
-import {RootState} from '../../../../../../state/types'
+} from 'config/integrations/smooch_inside'
+import {IntegrationType, IntegrationDecoration} from 'models/integration/types'
+import DEPRECATED_ConfirmButton from 'pages/common/components/DEPRECATED_ConfirmButton'
+import Loader from 'pages/common/components/Loader/Loader'
+import PageHeader from 'pages/common/components/PageHeader'
+import ColorField from 'pages/common/forms/ColorField'
+import FileField from 'pages/common/forms/FileField'
+import InputField from 'pages/common/forms/InputField'
+import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import settingsCss from 'pages/settings/settings.less'
 import {
     deleteIntegration,
     updateOrCreateIntegration,
-} from '../../../../../../state/integrations/actions'
-import settingsCss from '../../../../../settings/settings.less'
+} from 'state/integrations/actions'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {RootState} from 'state/types'
+import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
+import ChatIntegrationPreview from '../ChatIntegrationPreview/ChatIntegrationPreview'
+import MessageContentPreview from '../ChatIntegrationPreview/MessageContent'
 
 import css from './ChatIntegrationAppearance.less'
 
@@ -79,7 +75,7 @@ const avatarTypeOptions = [
     {
         value: SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
         label: 'Use a single image for the whole team',
-        description:
+        caption:
             "For example, use your company's logo. The image " +
             'needs to be a square of 500kb maximum.',
     },
@@ -351,11 +347,11 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                                         />
 
                                         {isUpdate && (
-                                            <Fragment>
-                                                <RadioField
-                                                    key="type-field"
+                                            <>
+                                                <RadioFieldSet
+                                                    className="mb-3"
                                                     options={avatarTypeOptions}
-                                                    value={avatarType}
+                                                    selectedValue={avatarType}
                                                     onChange={(value) =>
                                                         this.setState({
                                                             avatarType: value,
@@ -364,10 +360,7 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                                                     label="Avatar"
                                                 />
                                                 {isTeamPictureAvatarSelected && (
-                                                    <div
-                                                        key="file-field"
-                                                        className="d-flex flex-direction-row mb-2"
-                                                    >
+                                                    <div className="d-flex flex-direction-row mb-2">
                                                         {!!avatarTeamPictureUrl && (
                                                             <img
                                                                 className="mr-3"
@@ -406,7 +399,7 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                                                         />
                                                     </div>
                                                 )}
-                                            </Fragment>
+                                            </>
                                         )}
 
                                         <ColorField

@@ -12,47 +12,43 @@ exports[`<Body/> should render with a json textarea 1`] = `
   <div
     class="mb-3"
   >
-    <div
-      class="form-check"
-      color=""
+    <fieldset
+      name="radio-field-1"
     >
-      <label
-        class="control-label form-check-label"
-        for="id-input-1"
+      <div
+        class="option"
       >
-        <input
-          checked=""
-          class="form-check-input form-check-input"
-          id="id-input-1"
-          type="radio"
-        />
-        <span
-          style="vertical-align: middle;"
+        <label
+          class="label"
+          for="application/json"
         >
+          <input
+            checked=""
+            class="input"
+            id="application/json"
+            name="radio-field-1"
+            type="radio"
+          />
           application/json
-        </span>
-      </label>
-    </div>
-    <div
-      class="form-check"
-      color=""
-    >
-      <label
-        class="control-label form-check-label"
-        for="id-input-2"
+        </label>
+      </div>
+      <div
+        class="option"
       >
-        <input
-          class="form-check-input form-check-input"
-          id="id-input-2"
-          type="radio"
-        />
-        <span
-          style="vertical-align: middle;"
+        <label
+          class="label"
+          for="application/x-www-form-urlencoded"
         >
+          <input
+            class="input"
+            id="application/x-www-form-urlencoded"
+            name="radio-field-1"
+            type="radio"
+          />
           application/x-www-form-urlencoded
-        </span>
-      </label>
-    </div>
+        </label>
+      </div>
+    </fieldset>
   </div>
   <div
     class="InputField form-group"
@@ -93,47 +89,43 @@ exports[`<Body/> should render with parameter fields 1`] = `
   <div
     class="mb-3"
   >
-    <div
-      class="form-check"
-      color=""
+    <fieldset
+      name="radio-field-2"
     >
-      <label
-        class="control-label form-check-label"
-        for="id-input-3"
+      <div
+        class="option"
       >
-        <input
-          class="form-check-input form-check-input"
-          id="id-input-3"
-          type="radio"
-        />
-        <span
-          style="vertical-align: middle;"
+        <label
+          class="label"
+          for="application/json"
         >
+          <input
+            class="input"
+            id="application/json"
+            name="radio-field-2"
+            type="radio"
+          />
           application/json
-        </span>
-      </label>
-    </div>
-    <div
-      class="form-check"
-      color=""
-    >
-      <label
-        class="control-label form-check-label"
-        for="id-input-4"
+        </label>
+      </div>
+      <div
+        class="option"
       >
-        <input
-          checked=""
-          class="form-check-input form-check-input"
-          id="id-input-4"
-          type="radio"
-        />
-        <span
-          style="vertical-align: middle;"
+        <label
+          class="label"
+          for="application/x-www-form-urlencoded"
         >
+          <input
+            checked=""
+            class="input"
+            id="application/x-www-form-urlencoded"
+            name="radio-field-2"
+            type="radio"
+          />
           application/x-www-form-urlencoded
-        </span>
-      </label>
-    </div>
+        </label>
+      </div>
+    </fieldset>
   </div>
   <div>
     <button

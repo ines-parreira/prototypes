@@ -34,7 +34,7 @@ exports[`<ThemeSwitch> matches snapshot 1`] = `
             checked=""
             class="input"
             id="light"
-            name="light"
+            name="theme"
             type="radio"
           />
           Light Theme
@@ -60,7 +60,7 @@ exports[`<ThemeSwitch> matches snapshot 1`] = `
           <input
             class="input"
             id="dark"
-            name="dark"
+            name="theme"
             type="radio"
           />
           Dark Theme

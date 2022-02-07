@@ -9,6 +9,7 @@ jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
 
 const baseProps = {
     label: 'Shopify Store',
+    value: 'shopify',
     tooltipText:
         "By connecting your live chat to an online store, you can leverage all the store's information for automation such as self-service flows and help articles.",
     isSelected: false,

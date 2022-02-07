@@ -8,7 +8,7 @@ import configureMockStore from 'redux-mock-store'
 import {
     shopifyCalculatedDraftOrderFixture,
     shopifyDraftOrderPayloadFixture,
-} from '../../../../../../../../../../../../../../fixtures/shopify'
+} from 'fixtures/shopify'
 import {ShopifyActionType} from '../../../../../types'
 import {IntegrationContext} from '../../../../../../IntegrationContext'
 import {OrderTotalsComponent} from '../OrderTotals'
@@ -170,19 +170,10 @@ describe('<OrderTotalsComponent/>', () => {
             fireEvent.click(screen.getByText('Free shipping'))
             fireEvent.click(screen.getByText('Apply'))
 
-            const newPayload = payload.set(
-                'shipping_line',
-                fromJS({
-                    custom: false,
-                    handle: null,
-                    price: null,
-                    title: null,
-                })
-            )
-            expect(onPayloadChange).toHaveBeenCalledWith(
-                integrationContextData.integrationId,
-                newPayload
-            )
+            expect(onPayloadChange.mock.calls[0][0]).toMatchSnapshot()
+            expect(
+                onPayloadChange.mock.calls[0][1].get('shipping_line')
+            ).toMatchSnapshot()
         })
     })
 

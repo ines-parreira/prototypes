@@ -18,13 +18,11 @@ const storyConfig: Meta = {
 const Template: Story<ComponentProps<typeof RadioFieldSet>> = (props) => {
     const [selectedValue, setSelectedValue] = useState<string | null>(null)
 
-    const update = (value?: string) => setSelectedValue(value!)
-
     return (
         <RadioFieldSet
             {...props}
             selectedValue={selectedValue}
-            onChange={update}
+            onChange={setSelectedValue}
         />
     )
 }
@@ -69,7 +67,7 @@ WithCaptions.args = {
     ...defaultProps,
     options: defaultProps.options!.map((option) => ({
         ...option,
-        caption: `${option.value!} food`,
+        caption: `${option.value} food`,
     })),
 }
 WithCaptions.parameters = templateParameters

@@ -60,7 +60,6 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
             ['shipping', 'amount'],
             formatPrice(shipping, currencyCode)
         )
-
         onPayloadChange(newPayload)
     }, 250)
 

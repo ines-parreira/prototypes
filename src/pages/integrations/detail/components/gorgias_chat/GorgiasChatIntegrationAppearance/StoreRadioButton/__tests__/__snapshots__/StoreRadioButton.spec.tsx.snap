@@ -9,9 +9,11 @@ exports[`<StoreRadioButton /> should match snapshot 1`] = `
     <div>
       <label
         class="label"
+        for="shopify"
       >
         <input
           class="input"
+          id="shopify"
           type="radio"
         />
         Shopify Store

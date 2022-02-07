@@ -233,8 +233,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
           >
             Ask your customers to leave their email before starting a chat
           </p>
-          <RadioField
-            disabled={false}
+          <RadioFieldSet
             onChange={[Function]}
             options={
               Array [
@@ -255,7 +254,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
                 },
               ]
             }
-            value="optional"
+            selectedValue="optional"
           />
         </div>
         <div
@@ -362,8 +361,9 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
               </b>
               , tell customers how fast they can expect a response with an auto-responder:
             </p>
-            <RadioField
-              disabled={true}
+            <RadioFieldSet
+              className="mb-2"
+              isDisabled={true}
               onChange={[Function]}
               options={
                 Array [
@@ -385,7 +385,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
                   },
                 ]
               }
-              value="reply-shortly"
+              selectedValue="reply-shortly"
             />
             <p
               className="text-faded tinyText"
@@ -584,8 +584,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
           >
             Ask your customers to leave their email before starting a chat
           </p>
-          <RadioField
-            disabled={false}
+          <RadioFieldSet
             onChange={[Function]}
             options={
               Array [
@@ -606,7 +605,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                 },
               ]
             }
-            value="optional"
+            selectedValue="optional"
           />
         </div>
         <div
@@ -713,8 +712,9 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
               </b>
               , tell customers how fast they can expect a response with an auto-responder:
             </p>
-            <RadioField
-              disabled={true}
+            <RadioFieldSet
+              className="mb-2"
+              isDisabled={true}
               onChange={[Function]}
               options={
                 Array [
@@ -736,7 +736,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                   },
                 ]
               }
-              value="reply-shortly"
+              selectedValue="reply-shortly"
             />
             <p
               className="text-faded tinyText"

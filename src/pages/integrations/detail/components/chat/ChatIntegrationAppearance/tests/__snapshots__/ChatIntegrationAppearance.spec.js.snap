@@ -414,9 +414,8 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
                 type="text"
                 value="We'll be back tomorrow"
               />
-              <RadioField
-                disabled={false}
-                key="type-field"
+              <RadioFieldSet
+                className="mb-3"
                 label="Avatar"
                 onChange={[Function]}
                 options={
@@ -426,13 +425,13 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
                       "value": "team-members",
                     },
                     Object {
-                      "description": "For example, use your company's logo. The image needs to be a square of 500kb maximum.",
+                      "caption": "For example, use your company's logo. The image needs to be a square of 500kb maximum.",
                       "label": "Use a single image for the whole team",
                       "value": "team-picture",
                     },
                   ]
                 }
-                value="team-members"
+                selectedValue="team-members"
               />
               <ColorField
                 label="Main color"
@@ -761,9 +760,8 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
                 type="text"
                 value="We'll be back tomorrow"
               />
-              <RadioField
-                disabled={false}
-                key="type-field"
+              <RadioFieldSet
+                className="mb-3"
                 label="Avatar"
                 onChange={[Function]}
                 options={
@@ -773,13 +771,13 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
                       "value": "team-members",
                     },
                     Object {
-                      "description": "For example, use your company's logo. The image needs to be a square of 500kb maximum.",
+                      "caption": "For example, use your company's logo. The image needs to be a square of 500kb maximum.",
                       "label": "Use a single image for the whole team",
                       "value": "team-picture",
                     },
                   ]
                 }
-                value="team-members"
+                selectedValue="team-members"
               />
               <ColorField
                 label="Main color"
@@ -1112,9 +1110,8 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
                 type="text"
                 value="We'll be back tomorrow"
               />
-              <RadioField
-                disabled={false}
-                key="type-field"
+              <RadioFieldSet
+                className="mb-3"
                 label="Avatar"
                 onChange={[Function]}
                 options={
@@ -1124,17 +1121,16 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
                       "value": "team-members",
                     },
                     Object {
-                      "description": "For example, use your company's logo. The image needs to be a square of 500kb maximum.",
+                      "caption": "For example, use your company's logo. The image needs to be a square of 500kb maximum.",
                       "label": "Use a single image for the whole team",
                       "value": "team-picture",
                     },
                   ]
                 }
-                value="team-picture"
+                selectedValue="team-picture"
               />
               <div
                 className="d-flex flex-direction-row mb-2"
-                key="file-field"
               >
                 <Connect(FileFieldContainer)
                   maxSize={500000}
@@ -1481,9 +1477,8 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
                 type="text"
                 value="We'll be back tomorrow"
               />
-              <RadioField
-                disabled={false}
-                key="type-field"
+              <RadioFieldSet
+                className="mb-3"
                 label="Avatar"
                 onChange={[Function]}
                 options={
@@ -1493,13 +1488,13 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
                       "value": "team-members",
                     },
                     Object {
-                      "description": "For example, use your company's logo. The image needs to be a square of 500kb maximum.",
+                      "caption": "For example, use your company's logo. The image needs to be a square of 500kb maximum.",
                       "label": "Use a single image for the whole team",
                       "value": "team-picture",
                     },
                   ]
                 }
-                value="team-members"
+                selectedValue="team-members"
               />
               <ColorField
                 label="Main color"
@@ -1832,9 +1827,8 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
                 type="text"
                 value="We'll be back tomorrow"
               />
-              <RadioField
-                disabled={false}
-                key="type-field"
+              <RadioFieldSet
+                className="mb-3"
                 label="Avatar"
                 onChange={[Function]}
                 options={
@@ -1844,17 +1838,16 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
                       "value": "team-members",
                     },
                     Object {
-                      "description": "For example, use your company's logo. The image needs to be a square of 500kb maximum.",
+                      "caption": "For example, use your company's logo. The image needs to be a square of 500kb maximum.",
                       "label": "Use a single image for the whole team",
                       "value": "team-picture",
                     },
                   ]
                 }
-                value="team-picture"
+                selectedValue="team-picture"
               />
               <div
                 className="d-flex flex-direction-row mb-2"
-                key="file-field"
               >
                 <img
                   alt="Team avatar"

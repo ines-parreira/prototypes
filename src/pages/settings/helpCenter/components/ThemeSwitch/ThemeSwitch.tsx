@@ -37,6 +37,7 @@ export const ThemeSwitch: FunctionComponent<ThemeSwitchProps> = ({
                     preview={<img src={previewLight} alt="preview-light" />}
                     label="Light Theme"
                     onClick={() => onThemeChange(HelpCenterTheme.LIGHT)}
+                    name="theme"
                 />
                 <PreviewRadioButton
                     isSelected={selectedTheme === HelpCenterTheme.DARK}
@@ -44,6 +45,7 @@ export const ThemeSwitch: FunctionComponent<ThemeSwitchProps> = ({
                     label="Dark Theme"
                     value={HelpCenterTheme.DARK}
                     onClick={() => onThemeChange(HelpCenterTheme.DARK)}
+                    name="theme"
                 />
             </div>
 

@@ -3,12 +3,14 @@ import React from 'react'
 import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import {AccessContainer} from '../Access.tsx'
+
 import {
     AccountSettingAccessSignupMode,
     AccountSettingType,
-} from '../../../../state/currentAccount/types.ts'
+} from 'state/currentAccount/types.ts'
 
-import {AccessContainer} from '../Access.tsx'
+jest.mock('lodash/uniqueId', () => (id) => `${id}42`)
 
 const accessSettings = fromJS({
     id: 1,

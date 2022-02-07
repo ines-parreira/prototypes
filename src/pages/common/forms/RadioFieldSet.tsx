@@ -6,8 +6,8 @@ import RadioButton from '../components/RadioButton'
 import css from './RadioFieldSet.less'
 
 export type RadioFieldOption = {
-    value?: string
-    label: string
+    value: string
+    label: ReactNode
     caption?: string
 }
 
@@ -16,7 +16,7 @@ type Props = {
     isDisabled?: boolean
     label?: ReactNode
     name?: string
-    onChange: (value?: string) => void
+    onChange: (value: string) => void
     options: Array<RadioFieldOption>
     selectedValue: string | null
 }
@@ -41,10 +41,11 @@ const RadioFieldSet = ({
             name={fieldsetName}
             className={className}
         >
-            {!!label && <div className={css.label}>{label}</div>}
+            {!!label && <legend className={css.legend}>{label}</legend>}
             {options.map(({value, label, caption}) => (
                 <RadioButton
                     key={value}
+                    name={fieldsetName}
                     className={css.option}
                     value={value}
                     label={label}

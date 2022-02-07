@@ -56,6 +56,7 @@ export default function PhoneAddressInformation({
             <Row className="mb-3">
                 <Col className="pr-0">
                     <PreviewRadioButton
+                        value={AddressType.Company}
                         isSelected={value.type === AddressType.Company}
                         isDisabled={isDisabled}
                         label="Business information"
@@ -66,6 +67,7 @@ export default function PhoneAddressInformation({
                 </Col>
                 <Col>
                     <PreviewRadioButton
+                        value={AddressType.Personal}
                         isSelected={value.type === AddressType.Personal}
                         isDisabled={isDisabled}
                         label="Personal information"

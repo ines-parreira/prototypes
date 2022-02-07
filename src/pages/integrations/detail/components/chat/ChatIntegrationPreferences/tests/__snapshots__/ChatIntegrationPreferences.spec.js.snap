@@ -221,8 +221,7 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
             <p>
               Ask your customers to leave their email before starting a chat
             </p>
-            <RadioField
-              disabled={false}
+            <RadioFieldSet
               onChange={[Function]}
               options={
                 Array [
@@ -243,7 +242,7 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
                   },
                 ]
               }
-              value="optional"
+              selectedValue="optional"
             />
           </div>
           <div
@@ -284,8 +283,9 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
                 </b>
                 , tell customers how fast they can expect a response with an auto-responder:
               </p>
-              <RadioField
-                disabled={true}
+              <RadioFieldSet
+                className="mb-2"
+                isDisabled={true}
                 onChange={[Function]}
                 options={
                   Array [
@@ -307,7 +307,7 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
                     },
                   ]
                 }
-                value="reply-shortly"
+                selectedValue="reply-shortly"
               />
               <p
                 className="text-faded"
@@ -531,8 +531,7 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
             <p>
               Ask your customers to leave their email before starting a chat
             </p>
-            <RadioField
-              disabled={false}
+            <RadioFieldSet
               onChange={[Function]}
               options={
                 Array [
@@ -553,7 +552,7 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
                   },
                 ]
               }
-              value="optional"
+              selectedValue="optional"
             />
           </div>
           <div
@@ -594,8 +593,9 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
                 </b>
                 , tell customers how fast they can expect a response with an auto-responder:
               </p>
-              <RadioField
-                disabled={true}
+              <RadioFieldSet
+                className="mb-2"
+                isDisabled={true}
                 onChange={[Function]}
                 options={
                   Array [
@@ -617,7 +617,7 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
                     },
                   ]
                 }
-                value="reply-shortly"
+                selectedValue="reply-shortly"
               />
               <p
                 className="text-faded"

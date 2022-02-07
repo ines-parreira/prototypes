@@ -21,7 +21,6 @@ exports[`<PreviewRadioButton /> should match snapshot 1`] = `
         <input
           class="input"
           id="light"
-          name="light"
           type="radio"
         />
         Light Theme

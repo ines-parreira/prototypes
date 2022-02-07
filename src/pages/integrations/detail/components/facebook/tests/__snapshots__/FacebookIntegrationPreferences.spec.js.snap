@@ -111,8 +111,9 @@ exports[`<FacebookIntegrationPreferences/> render() should render loading button
             </b>
             , tell customers how fast they can expect a response with an auto-responder:
           </p>
-          <RadioField
-            disabled={true}
+          <RadioFieldSet
+            className="mb-3"
+            isDisabled={true}
             onChange={[Function]}
             options={
               Array [
@@ -134,7 +135,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render loading button
                 },
               ]
             }
-            value="reply-shortly"
+            selectedValue="reply-shortly"
           />
           <p
             className="text-faded"
@@ -266,8 +267,9 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
             </b>
             , tell customers how fast they can expect a response with an auto-responder:
           </p>
-          <RadioField
-            disabled={true}
+          <RadioFieldSet
+            className="mb-3"
+            isDisabled={true}
             onChange={[Function]}
             options={
               Array [
@@ -289,7 +291,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
                 },
               ]
             }
-            value="reply-shortly"
+            selectedValue="reply-shortly"
           />
           <p
             className="text-faded"

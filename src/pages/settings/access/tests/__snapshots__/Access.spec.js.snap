@@ -41,13 +41,13 @@ exports[`<Access/> should render properly 1`] = `
           >
             <label
               class="container"
-              for="toggle-button-1"
+              for="toggle-button-42"
             >
               <input
                 class="input"
                 disabled=""
-                id="toggle-button-1"
-                name="toggle-button-1"
+                id="toggle-button-42"
+                name="toggle-button-42"
                 type="checkbox"
               />
               <div
@@ -86,32 +86,39 @@ exports[`<Access/> should render properly 1`] = `
             </a>
           </p>
           <fieldset
-            class="form-group"
+            class="mb-3"
+            name="radio-field-42"
           >
             <div
-              class="formGroup form-check"
+              class="option"
             >
-              <input
-                checked=""
-                class="form-check-input"
-                type="radio"
-              />
               <label
-                class="control-label ml-2 form-check-label"
+                class="label"
+                for="invite"
               >
+                <input
+                  checked=""
+                  class="input"
+                  id="invite"
+                  name="radio-field-42"
+                  type="radio"
+                />
                 Invite people manually
               </label>
             </div>
             <div
-              class="formGroup form-check"
+              class="option"
             >
-              <input
-                class="form-check-input"
-                type="radio"
-              />
               <label
-                class="control-label ml-2 form-check-label"
+                class="label"
+                for="allowed-domains"
               >
+                <input
+                  class="input"
+                  id="allowed-domains"
+                  name="radio-field-42"
+                  type="radio"
+                />
                 Let people sign up automatically, and only accept email addresses from specific domains
               </label>
             </div>
@@ -170,13 +177,13 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
           >
             <label
               class="container"
-              for="toggle-button-2"
+              for="toggle-button-42"
             >
               <input
                 class="input"
                 disabled=""
-                id="toggle-button-2"
-                name="toggle-button-2"
+                id="toggle-button-42"
+                name="toggle-button-42"
                 type="checkbox"
               />
               <div
@@ -215,32 +222,39 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
             </a>
           </p>
           <fieldset
-            class="form-group"
+            class="mb-3"
+            name="radio-field-42"
           >
             <div
-              class="formGroup form-check"
+              class="option"
             >
-              <input
-                class="form-check-input"
-                type="radio"
-              />
               <label
-                class="control-label ml-2 form-check-label"
+                class="label"
+                for="invite"
               >
+                <input
+                  class="input"
+                  id="invite"
+                  name="radio-field-42"
+                  type="radio"
+                />
                 Invite people manually
               </label>
             </div>
             <div
-              class="formGroup form-check"
+              class="option"
             >
-              <input
-                checked=""
-                class="form-check-input"
-                type="radio"
-              />
               <label
-                class="control-label ml-2 form-check-label"
+                class="label"
+                for="allowed-domains"
               >
+                <input
+                  checked=""
+                  class="input"
+                  id="allowed-domains"
+                  name="radio-field-42"
+                  type="radio"
+                />
                 Let people sign up automatically, and only accept email addresses from specific domains
               </label>
             </div>
@@ -254,7 +268,7 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
             >
               <textarea
                 class="form-control"
-                id="id-input-3"
+                id="id-input-42"
               >
                 gorgias.com
 gorgias.io
@@ -321,13 +335,13 @@ exports[`<Access/> should show an error and block submit when using a generic do
           >
             <label
               class="container"
-              for="toggle-button-4"
+              for="toggle-button-42"
             >
               <input
                 class="input"
                 disabled=""
-                id="toggle-button-4"
-                name="toggle-button-4"
+                id="toggle-button-42"
+                name="toggle-button-42"
                 type="checkbox"
               />
               <div
@@ -366,32 +380,39 @@ exports[`<Access/> should show an error and block submit when using a generic do
             </a>
           </p>
           <fieldset
-            class="form-group"
+            class="mb-3"
+            name="radio-field-42"
           >
             <div
-              class="formGroup form-check"
+              class="option"
             >
-              <input
-                class="form-check-input"
-                type="radio"
-              />
               <label
-                class="control-label ml-2 form-check-label"
+                class="label"
+                for="invite"
               >
+                <input
+                  class="input"
+                  id="invite"
+                  name="radio-field-42"
+                  type="radio"
+                />
                 Invite people manually
               </label>
             </div>
             <div
-              class="formGroup form-check"
+              class="option"
             >
-              <input
-                checked=""
-                class="form-check-input"
-                type="radio"
-              />
               <label
-                class="control-label ml-2 form-check-label"
+                class="label"
+                for="allowed-domains"
               >
+                <input
+                  checked=""
+                  class="input"
+                  id="allowed-domains"
+                  name="radio-field-42"
+                  type="radio"
+                />
                 Let people sign up automatically, and only accept email addresses from specific domains
               </label>
             </div>
@@ -405,7 +426,7 @@ exports[`<Access/> should show an error and block submit when using a generic do
             >
               <textarea
                 class="form-control-danger is-invalid form-control"
-                id="id-input-5"
+                id="id-input-42"
               >
                 gmail.com
               </textarea>

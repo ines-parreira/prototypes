@@ -1,18 +1,17 @@
 import React, {useState, useEffect, useCallback} from 'react'
-
-import {Button, FormGroup, Input, Label} from 'reactstrap'
+import {Button, Input} from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
 import {
-    VoiceMessageType,
     VoiceMessage,
     VoiceMessageRecording,
+    VoiceMessageType,
 } from 'models/integration/types'
-
-import {countLines} from 'utils/string'
+import RadioButton from 'pages/common/components/RadioButton'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {getBase64} from 'utils/file'
+import {countLines} from 'utils/string'
 
 import css from './VoiceMessageField.less'
 
@@ -129,23 +128,15 @@ const VoiceMessageField = ({
 
     return (
         <>
-            <FormGroup check className="mb-3">
-                <Label check>
-                    <Input
-                        type="radio"
-                        checked={
-                            value.voice_message_type ===
-                            VoiceMessageType.VoiceRecording
-                        }
-                        onChange={() => {
-                            handleVoiceMessageTypeChange(
-                                VoiceMessageType.VoiceRecording
-                            )
-                        }}
-                    />
-                    <strong className="ml-1">Insert Voice Recording</strong>
-                </Label>
-            </FormGroup>
+            <RadioButton
+                className="mb-3"
+                label="Insert Voice Recording"
+                value={VoiceMessageType.VoiceRecording}
+                isSelected={
+                    value.voice_message_type === VoiceMessageType.VoiceRecording
+                }
+                onChange={handleVoiceMessageTypeChange}
+            />
             {value.voice_message_type === VoiceMessageType.VoiceRecording && (
                 <div className={css.optionContent}>
                     <div>
@@ -169,23 +160,15 @@ const VoiceMessageField = ({
                     </div>
                 </div>
             )}
-            <FormGroup check className="mb-3">
-                <Label check>
-                    <Input
-                        type="radio"
-                        onChange={() => {
-                            handleVoiceMessageTypeChange(
-                                VoiceMessageType.TextToSpeech
-                            )
-                        }}
-                        checked={
-                            value.voice_message_type ===
-                            VoiceMessageType.TextToSpeech
-                        }
-                    />
-                    <strong className="ml-1">Text To Speech</strong>
-                </Label>
-            </FormGroup>
+            <RadioButton
+                className="mb-3"
+                label="Text To Speech"
+                value={VoiceMessageType.TextToSpeech}
+                isSelected={
+                    value.voice_message_type === VoiceMessageType.TextToSpeech
+                }
+                onChange={handleVoiceMessageTypeChange}
+            />
             {value.voice_message_type === VoiceMessageType.TextToSpeech && (
                 <div className={css.optionContent}>
                     <Input
@@ -203,23 +186,15 @@ const VoiceMessageField = ({
                 </div>
             )}
             {allowNone && (
-                <FormGroup check className="mb-3">
-                    <Label check>
-                        <Input
-                            type="radio"
-                            onChange={() => {
-                                handleVoiceMessageTypeChange(
-                                    VoiceMessageType.None
-                                )
-                            }}
-                            checked={
-                                value.voice_message_type ===
-                                VoiceMessageType.None
-                            }
-                        />
-                        <strong className="ml-1">None</strong>
-                    </Label>
-                </FormGroup>
+                <RadioButton
+                    className="mb-3"
+                    label="None"
+                    value={VoiceMessageType.None}
+                    isSelected={
+                        value.voice_message_type === VoiceMessageType.None
+                    }
+                    onChange={handleVoiceMessageTypeChange}
+                />
             )}
         </>
     )

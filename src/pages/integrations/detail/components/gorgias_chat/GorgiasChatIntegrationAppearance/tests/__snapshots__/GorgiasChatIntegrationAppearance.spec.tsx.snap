@@ -76,10 +76,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   <div>
                     <label
                       class="label"
+                      for="shopify"
                     >
                       <input
                         checked=""
                         class="input"
+                        id="shopify"
                         type="radio"
                       />
                       Shopify store
@@ -93,9 +95,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   <div>
                     <label
                       class="label"
+                      for="website"
                     >
                       <input
                         class="input"
+                        id="website"
                         type="radio"
                       />
                       Any other website
@@ -918,44 +922,51 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
                 <fieldset
-                  class="form-group"
+                  class="mb-3"
+                  name="type-field"
                 >
-                  <label
-                    class="control-label"
+                  <legend
+                    class="legend"
                   >
                     Avatar
-                  </label>
+                  </legend>
                   <div
-                    class="formGroup form-check"
+                    class="option"
                   >
-                    <input
-                      checked=""
-                      class="form-check-input"
-                      type="radio"
-                    />
                     <label
-                      class="control-label ml-2 form-check-label"
+                      class="label"
+                      for="team-members"
                     >
+                      <input
+                        checked=""
+                        class="input"
+                        id="team-members"
+                        name="type-field"
+                        type="radio"
+                      />
                       Use team members' avatars
                     </label>
                   </div>
                   <div
-                    class="formGroup form-check"
+                    class="option"
                   >
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                    />
                     <label
-                      class="control-label ml-2 form-check-label"
+                      class="label labelWithCaption"
+                      for="team-picture"
                     >
+                      <input
+                        class="input"
+                        id="team-picture"
+                        name="type-field"
+                        type="radio"
+                      />
                       Use a single image for the whole team
                     </label>
-                    <small
-                      class="description form-text text-muted"
+                    <div
+                      class="caption"
                     >
                       For example, use your company's logo. The image needs to be a square of 500kb maximum.
-                    </small>
+                    </div>
                   </div>
                 </fieldset>
                 <div
@@ -1642,44 +1653,51 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
                 <fieldset
-                  class="form-group"
+                  class="mb-3"
+                  name="type-field"
                 >
-                  <label
-                    class="control-label"
+                  <legend
+                    class="legend"
                   >
                     Avatar
-                  </label>
+                  </legend>
                   <div
-                    class="formGroup form-check"
+                    class="option"
                   >
-                    <input
-                      checked=""
-                      class="form-check-input"
-                      type="radio"
-                    />
                     <label
-                      class="control-label ml-2 form-check-label"
+                      class="label"
+                      for="team-members"
                     >
+                      <input
+                        checked=""
+                        class="input"
+                        id="team-members"
+                        name="type-field"
+                        type="radio"
+                      />
                       Use team members' avatars
                     </label>
                   </div>
                   <div
-                    class="formGroup form-check"
+                    class="option"
                   >
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                    />
                     <label
-                      class="control-label ml-2 form-check-label"
+                      class="label labelWithCaption"
+                      for="team-picture"
                     >
+                      <input
+                        class="input"
+                        id="team-picture"
+                        name="type-field"
+                        type="radio"
+                      />
                       Use a single image for the whole team
                     </label>
-                    <small
-                      class="description form-text text-muted"
+                    <div
+                      class="caption"
                     >
                       For example, use your company's logo. The image needs to be a square of 500kb maximum.
-                    </small>
+                    </div>
                   </div>
                 </fieldset>
                 <div
@@ -2365,44 +2383,51 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   </div>
                 </div>
                 <fieldset
-                  class="form-group"
+                  class="mb-3"
+                  name="type-field"
                 >
-                  <label
-                    class="control-label"
+                  <legend
+                    class="legend"
                   >
                     Avatar
-                  </label>
+                  </legend>
                   <div
-                    class="formGroup form-check"
+                    class="option"
                   >
-                    <input
-                      checked=""
-                      class="form-check-input"
-                      type="radio"
-                    />
                     <label
-                      class="control-label ml-2 form-check-label"
+                      class="label"
+                      for="team-members"
                     >
+                      <input
+                        checked=""
+                        class="input"
+                        id="team-members"
+                        name="type-field"
+                        type="radio"
+                      />
                       Use team members' avatars
                     </label>
                   </div>
                   <div
-                    class="formGroup form-check"
+                    class="option"
                   >
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                    />
                     <label
-                      class="control-label ml-2 form-check-label"
+                      class="label labelWithCaption"
+                      for="team-picture"
                     >
+                      <input
+                        class="input"
+                        id="team-picture"
+                        name="type-field"
+                        type="radio"
+                      />
                       Use a single image for the whole team
                     </label>
-                    <small
-                      class="description form-text text-muted"
+                    <div
+                      class="caption"
                     >
                       For example, use your company's logo. The image needs to be a square of 500kb maximum.
-                    </small>
+                    </div>
                   </div>
                 </fieldset>
                 <div
@@ -3096,44 +3121,51 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   </div>
                 </div>
                 <fieldset
-                  class="form-group"
+                  class="mb-3"
+                  name="type-field"
                 >
-                  <label
-                    class="control-label"
+                  <legend
+                    class="legend"
                   >
                     Avatar
-                  </label>
+                  </legend>
                   <div
-                    class="formGroup form-check"
+                    class="option"
                   >
-                    <input
-                      checked=""
-                      class="form-check-input"
-                      type="radio"
-                    />
                     <label
-                      class="control-label ml-2 form-check-label"
+                      class="label"
+                      for="team-members"
                     >
+                      <input
+                        checked=""
+                        class="input"
+                        id="team-members"
+                        name="type-field"
+                        type="radio"
+                      />
                       Use team members' avatars
                     </label>
                   </div>
                   <div
-                    class="formGroup form-check"
+                    class="option"
                   >
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                    />
                     <label
-                      class="control-label ml-2 form-check-label"
+                      class="label labelWithCaption"
+                      for="team-picture"
                     >
+                      <input
+                        class="input"
+                        id="team-picture"
+                        name="type-field"
+                        type="radio"
+                      />
                       Use a single image for the whole team
                     </label>
-                    <small
-                      class="description form-text text-muted"
+                    <div
+                      class="caption"
                     >
                       For example, use your company's logo. The image needs to be a square of 500kb maximum.
-                    </small>
+                    </div>
                   </div>
                 </fieldset>
                 <div
@@ -3819,44 +3851,51 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   </div>
                 </div>
                 <fieldset
-                  class="form-group"
+                  class="mb-3"
+                  name="type-field"
                 >
-                  <label
-                    class="control-label"
+                  <legend
+                    class="legend"
                   >
                     Avatar
-                  </label>
+                  </legend>
                   <div
-                    class="formGroup form-check"
+                    class="option"
                   >
-                    <input
-                      checked=""
-                      class="form-check-input"
-                      type="radio"
-                    />
                     <label
-                      class="control-label ml-2 form-check-label"
+                      class="label"
+                      for="team-members"
                     >
+                      <input
+                        checked=""
+                        class="input"
+                        id="team-members"
+                        name="type-field"
+                        type="radio"
+                      />
                       Use team members' avatars
                     </label>
                   </div>
                   <div
-                    class="formGroup form-check"
+                    class="option"
                   >
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                    />
                     <label
-                      class="control-label ml-2 form-check-label"
+                      class="label labelWithCaption"
+                      for="team-picture"
                     >
+                      <input
+                        class="input"
+                        id="team-picture"
+                        name="type-field"
+                        type="radio"
+                      />
                       Use a single image for the whole team
                     </label>
-                    <small
-                      class="description form-text text-muted"
+                    <div
+                      class="caption"
                     >
                       For example, use your company's logo. The image needs to be a square of 500kb maximum.
-                    </small>
+                    </div>
                   </div>
                 </fieldset>
                 <div
@@ -4445,10 +4484,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   <div>
                     <label
                       class="label"
+                      for="shopify"
                     >
                       <input
                         checked=""
                         class="input"
+                        id="shopify"
                         type="radio"
                       />
                       Shopify store
@@ -4462,9 +4503,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   <div>
                     <label
                       class="label"
+                      for="website"
                     >
                       <input
                         class="input"
+                        id="website"
                         type="radio"
                       />
                       Any other website

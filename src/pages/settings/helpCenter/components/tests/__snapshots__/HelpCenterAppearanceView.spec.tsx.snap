@@ -371,7 +371,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                     checked=""
                     class="input"
                     id="light"
-                    name="light"
+                    name="theme"
                     type="radio"
                   />
                   Light Theme
@@ -397,7 +397,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                   <input
                     class="input"
                     id="dark"
-                    name="dark"
+                    name="theme"
                     type="radio"
                   />
                   Dark Theme

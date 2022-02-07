@@ -3,23 +3,19 @@ import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
 import {Row, Col, FormGroup, Label} from 'reactstrap'
 
+import ParametersEditor from '../ParametersEditor.tsx'
+
 import {
     AVAILABLE_HTTP_METHODS,
     JSON_CONTENT_TYPE,
     FORM_CONTENT_TYPE,
     HTTP_METHOD_GET,
-} from '../../../../../../config.ts'
+} from 'config.ts'
+import {validateWebhookURL, validateWebhookURLToPattern} from 'utils.ts'
 
-import ParametersEditor from '../ParametersEditor.tsx'
-
-import InputField from '../../../../../common/forms/InputField'
-import BooleanField from '../../../../../common/forms/BooleanField'
-import JsonField from '../../../../../common/forms/JsonField.tsx'
-
-import {
-    validateWebhookURL,
-    validateWebhookURLToPattern,
-} from '../../../../../../utils.ts'
+import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import InputField from 'pages/common/forms/InputField'
+import JsonField from 'pages/common/forms/JsonField.tsx'
 
 export default class HttpAction extends React.Component {
     _setTitle = (title) => {
@@ -38,51 +34,47 @@ export default class HttpAction extends React.Component {
             return null
         }
 
-        let field = (
-            <JsonField
-                name="json"
-                value={action.getIn(['arguments', 'json'])}
-                onChange={(value) => this._setArgument('json', value)}
-            />
-        )
-
-        const isFormData =
-            action.getIn(['arguments', 'content_type']) === FORM_CONTENT_TYPE
-
-        if (isFormData) {
-            field = (
-                <ParametersEditor
-                    name="body"
-                    list={action.getIn(['arguments', 'form'], fromJS([]))}
-                    updateDict={(d) => this._setArgument('form', d)}
-                />
-            )
-        }
-
         return (
             <FormGroup>
                 <Label>Body</Label>
 
                 <div className="d-inline fields">
-                    <BooleanField
-                        type="radio"
-                        value={isFormData}
-                        onChange={() =>
-                            this._setArgument('content_type', FORM_CONTENT_TYPE)
+                    <RadioFieldSet
+                        className="mb-2"
+                        options={[
+                            {
+                                value: FORM_CONTENT_TYPE,
+                                label: FORM_CONTENT_TYPE,
+                            },
+                            {
+                                value: JSON_CONTENT_TYPE,
+                                label: JSON_CONTENT_TYPE,
+                            },
+                        ]}
+                        selectedValue={action.getIn([
+                            'arguments',
+                            'content_type',
+                        ])}
+                        onChange={(value) =>
+                            this._setArgument('content_type', value)
                         }
-                        label={FORM_CONTENT_TYPE}
-                    />
-                    <BooleanField
-                        type="radio"
-                        value={!isFormData}
-                        onChange={() =>
-                            this._setArgument('content_type', JSON_CONTENT_TYPE)
-                        }
-                        label={JSON_CONTENT_TYPE}
                     />
                 </div>
 
-                {field}
+                {action.getIn(['arguments', 'content_type']) ===
+                FORM_CONTENT_TYPE ? (
+                    <ParametersEditor
+                        name="body"
+                        list={action.getIn(['arguments', 'form'], fromJS([]))}
+                        updateDict={(d) => this._setArgument('form', d)}
+                    />
+                ) : (
+                    <JsonField
+                        name="json"
+                        value={action.getIn(['arguments', 'json'])}
+                        onChange={(value) => this._setArgument('json', value)}
+                    />
+                )}
             </FormGroup>
         )
     }

@@ -1,4 +1,4 @@
-import React, {Fragment, SyntheticEvent, useEffect, useState} from 'react'
+import React, {SyntheticEvent, useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map} from 'immutable'
@@ -17,9 +17,7 @@ import classNames from 'classnames'
 import wrench from 'assets/img/icons/wrench.svg'
 import storefront from 'assets/img/icons/storefront.svg'
 
-import ColorField from 'pages/common/forms/ColorField'
-import InputField from 'pages/common/forms/InputField'
-import * as IntegrationsActions from '../../../../../../state/integrations/actions'
+import * as IntegrationsActions from 'state/integrations/actions'
 import {
     GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
     GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
@@ -34,26 +32,28 @@ import {
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,
     GORGIAS_CHAT_WIDGET_POSITION_OPTIONS,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
-} from '../../../../../../config/integrations/gorgias_chat'
-import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integrations'
-import {Language} from '../../../../../../constants/languages'
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../constants/integration'
-import * as integrationSelectors from '../../../../../../state/integrations/selectors'
+} from 'config/integrations/gorgias_chat'
+import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from 'config/integrations'
+import {Language} from 'constants/languages'
+import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
+import * as integrationSelectors from 'state/integrations/selectors'
 import {
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
     IntegrationType,
-} from '../../../../../../models/integration/types'
-import {RootState} from '../../../../../../state/types'
-import DEPRECATED_ConfirmButton from '../../../../../common/components/DEPRECATED_ConfirmButton'
-import FileField from '../../../../../common/forms/FileField'
-import Loader from '../../../../../common/components/Loader/Loader'
-import PageHeader from '../../../../../common/components/PageHeader'
-import RadioField from '../../../../../common/forms/RadioField'
+} from 'models/integration/types'
+import {RootState} from 'state/types'
+import DEPRECATED_ConfirmButton from 'pages/common/components/DEPRECATED_ConfirmButton'
+import Loader from 'pages/common/components/Loader/Loader'
+import PageHeader from 'pages/common/components/PageHeader'
+import Tooltip from 'pages/common/components/Tooltip'
+import ColorField from 'pages/common/forms/ColorField'
+import FileField from 'pages/common/forms/FileField'
+import InputField from 'pages/common/forms/InputField'
+import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
 import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import MessageContentPreview from '../GorgiasChatIntegrationPreview/MessageContent'
-import Tooltip from '../../../../../common/components/Tooltip'
 
 import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 import css from './GorgiasChatIntegrationAppearance.less'
@@ -88,7 +88,7 @@ const avatarTypeOptions = [
     {
         value: GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
         label: 'Use a single image for the whole team',
-        description:
+        caption:
             "For example, use your company's logo. The image " +
             'needs to be a square of 500kb maximum.',
     },
@@ -331,6 +331,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
     const storeTypeRadioButtons = [
         {
             label: 'Shopify store',
+            value: 'shopify',
             icon: <img src={storefront} alt="storefront" />,
             onClick: () =>
                 setState((prevState) => ({
@@ -343,6 +344,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         },
         {
             label: 'Any other website',
+            value: 'website',
             icon: <img src={wrench} alt="wrench" />,
             onClick: () =>
                 setState((prevState) => ({
@@ -593,12 +595,13 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                 }
                             />
                             {isUpdate && (
-                                <Fragment>
-                                    <RadioField
-                                        key="type-field"
+                                <>
+                                    <RadioFieldSet
+                                        name="type-field"
+                                        className="mb-3"
                                         options={avatarTypeOptions}
-                                        value={avatarType}
-                                        onChange={(value: string) =>
+                                        selectedValue={avatarType}
+                                        onChange={(value) =>
                                             setState((prevState) => ({
                                                 ...prevState,
                                                 avatarType: value,
@@ -645,7 +648,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                             />
                                         </div>
                                     )}
-                                </Fragment>
+                                </>
                             )}
                             <div
                                 className={classNames(

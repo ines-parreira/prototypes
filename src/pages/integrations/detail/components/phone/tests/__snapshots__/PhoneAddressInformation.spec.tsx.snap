@@ -21,10 +21,12 @@ exports[`<PhoneAddressInformation /> should allow to use company information for
         <div>
           <label
             class="label"
+            for="company"
           >
             <input
               checked=""
               class="input"
+              id="company"
               type="radio"
             />
             Business information
@@ -41,9 +43,11 @@ exports[`<PhoneAddressInformation /> should allow to use company information for
         <div>
           <label
             class="label"
+            for="personal"
           >
             <input
               class="input"
+              id="personal"
               type="radio"
             />
             Personal information
@@ -258,9 +262,11 @@ exports[`<PhoneAddressInformation /> should allow to use personal information fo
         <div>
           <label
             class="label"
+            for="company"
           >
             <input
               class="input"
+              id="company"
               type="radio"
             />
             Business information
@@ -277,10 +283,12 @@ exports[`<PhoneAddressInformation /> should allow to use personal information fo
         <div>
           <label
             class="label"
+            for="personal"
           >
             <input
               checked=""
               class="input"
+              id="personal"
               type="radio"
             />
             Personal information
@@ -495,9 +503,11 @@ exports[`<PhoneAddressInformation /> should display the country name in a disabl
         <div>
           <label
             class="label"
+            for="company"
           >
             <input
               class="input"
+              id="company"
               type="radio"
             />
             Business information
@@ -514,9 +524,11 @@ exports[`<PhoneAddressInformation /> should display the country name in a disabl
         <div>
           <label
             class="label"
+            for="personal"
           >
             <input
               class="input"
+              id="personal"
               type="radio"
             />
             Personal information
@@ -731,9 +743,11 @@ exports[`<PhoneAddressInformation /> should render 1`] = `
         <div>
           <label
             class="label"
+            for="company"
           >
             <input
               class="input"
+              id="company"
               type="radio"
             />
             Business information
@@ -750,9 +764,11 @@ exports[`<PhoneAddressInformation /> should render 1`] = `
         <div>
           <label
             class="label"
+            for="personal"
           >
             <input
               class="input"
+              id="personal"
               type="radio"
             />
             Personal information

@@ -1,14 +1,14 @@
 import React, {MouseEvent, CSSProperties, useMemo} from 'react'
 import _uniqueId from 'lodash/uniqueId'
 
-import {PreviewRadioButton} from '../../../../../../common/components/PreviewRadioButton'
-import Tooltip from '../../../../../../common/components/Tooltip'
+import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import {RadioFieldOption} from 'pages/common/forms/RadioFieldSet'
+import Tooltip from 'pages/common/components/Tooltip'
 
 import css from './StoreRadioButton.less'
 
-type Props = {
+type Props = RadioFieldOption & {
     isSelected?: boolean
-    label: string
     tooltipText: string
     style?: CSSProperties
     onClick: (ev: MouseEvent<HTMLDivElement>) => void
@@ -18,6 +18,7 @@ export const StoreRadioButton = ({
     isSelected = false,
     label,
     tooltipText,
+    value,
     onClick,
 }: Props) => {
     const tooltipTargetId = useMemo(() => _uniqueId('store-radio-button-'), [])
@@ -29,6 +30,7 @@ export const StoreRadioButton = ({
                 id={tooltipTargetId}
                 isSelected={isSelected}
                 label={label}
+                value={value}
                 onClick={onClick}
             />
             <Tooltip

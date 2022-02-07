@@ -1,5 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<OrderTotalsComponent/> _onShippingLineChange() should call onPayloadChange() with updated payload 1`] = `1`;
+
+exports[`<OrderTotalsComponent/> _onShippingLineChange() should call onPayloadChange() with updated payload 2`] = `
+Immutable.Map {
+  "custom": true,
+  "handle": null,
+  "price": "0.00",
+  "title": "Free shipping",
+}
+`;
+
 exports[`<OrderTotalsComponent/> render() should render 1`] = `
 <div>
   <dl

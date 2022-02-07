@@ -24,7 +24,7 @@ import {getIntegrationsByTypes} from '../../../../../../state/integrations/selec
 import PageHeader from '../../../../../common/components/PageHeader'
 import ToggleInput from '../../../../../common/forms/ToggleInput'
 import Tooltip from '../../../../../common/components/Tooltip'
-import RadioField from '../../../../../common/forms/RadioField'
+import RadioFieldSet from '../../../../../common/forms/RadioFieldSet'
 import SelectField from '../../../../../common/forms/SelectField/SelectField'
 import {EMAIL_INTEGRATION_TYPES} from '../../../../../../constants/integration'
 import {RootState} from '../../../../../../state/types'
@@ -382,9 +382,9 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                     Ask your customers to leave their email
                                     before starting a chat
                                 </p>
-                                <RadioField
+                                <RadioFieldSet
                                     options={emailCaptureOptions}
-                                    value={emailCaptureEnforcement}
+                                    selectedValue={emailCaptureEnforcement}
                                     onChange={this._setEmailCaptureEnforcement}
                                 />
                             </div>
@@ -494,13 +494,14 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         expect a response with an
                                         auto-responder:
                                     </p>
-                                    <RadioField
+                                    <RadioFieldSet
+                                        className="mb-2"
                                         options={getAutoResponderReplyOptions(
                                             language
                                         )}
-                                        value={autoResponderReply}
+                                        selectedValue={autoResponderReply}
                                         onChange={this._setAutoResponderReply}
-                                        disabled={!autoResponderEnabled}
+                                        isDisabled={!autoResponderEnabled}
                                     />
                                     <p
                                         className={classnames(

@@ -10,7 +10,6 @@ exports[`<RadioButton /> should render a disabled RadioField 1`] = `
       class="input"
       disabled=""
       id="japanese"
-      name="japanese"
       type="radio"
     />
     sushis and sashimis
@@ -27,7 +26,6 @@ exports[`<RadioButton /> should render an enabled Radio field 1`] = `
     <input
       class="input"
       id="japanese"
-      name="japanese"
       type="radio"
     />
     sushis and sashimis
@@ -44,7 +42,6 @@ exports[`<RadioButton /> should render captions under radio button 1`] = `
     <input
       class="input"
       id="japanese"
-      name="japanese"
       type="radio"
     />
     sushis and sashimis

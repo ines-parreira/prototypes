@@ -1,33 +1,25 @@
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
-import {fromJS} from 'immutable'
-import _noop from 'lodash/noop'
-import {Button, Form, Popover} from 'reactstrap'
+import {fireEvent, render} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import {fromJS, Map} from 'immutable'
 
-import {
-    SegmentEvent,
-    logEvent,
-} from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
+import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import {
     shopifyAvailableShippingRate,
     shopifyShippingLineFixture,
-} from '../../../../../../../../../../../../../fixtures/shopify'
-import AmountInput from '../../../AmountInput/AmountInput'
-import ShippingPopover from '../ShippingPopover'
+} from 'fixtures/shopify'
 import {ShopifyActionType} from '../../../../types'
+import ShippingPopover from '../ShippingPopover'
 
-jest.mock(
-    '../../../../../../../../../../../../../store/middlewares/segmentTracker',
-    () => {
-        const segmentTracker: Record<string, unknown> = jest.requireActual(
-            '../../../../../../../../../../../../../store/middlewares/segmentTracker'
-        )
-        return {
-            ...segmentTracker,
-            logEvent: jest.fn(),
-        }
+jest.mock('store/middlewares/segmentTracker', () => {
+    const segmentTracker: Record<string, unknown> = jest.requireActual(
+        'store/middlewares/segmentTracker'
+    )
+    return {
+        ...segmentTracker,
+        logEvent: jest.fn(),
     }
-)
+})
 
 describe('<ShippingPopover/>', () => {
     let onChange: jest.MockedFunction<
@@ -40,7 +32,7 @@ describe('<ShippingPopover/>', () => {
 
     describe('render()', () => {
         it('should render without value', () => {
-            const component = shallow(
+            const {baseElement} = render(
                 <ShippingPopover
                     id="shipping-lines"
                     actionName={ShopifyActionType.DuplicateOrder}
@@ -54,13 +46,13 @@ describe('<ShippingPopover/>', () => {
                 </ShippingPopover>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(baseElement).toMatchSnapshot()
         })
 
         it('should render with value', () => {
             const shippingLine = fromJS(shopifyShippingLineFixture())
 
-            const component = shallow(
+            const {baseElement} = render(
                 <ShippingPopover
                     id="shipping-lines"
                     actionName={ShopifyActionType.DuplicateOrder}
@@ -74,7 +66,7 @@ describe('<ShippingPopover/>', () => {
                 </ShippingPopover>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(baseElement).toMatchSnapshot()
         })
     })
 
@@ -91,11 +83,11 @@ describe('<ShippingPopover/>', () => {
                 SegmentEvent.ShopifyDuplicateOrderShippingPopoverApply,
             ],
         ])(
-            'should call onChange() with custom shipping line',
+            'should call onChange() with custom shipping line for %s action',
             (actionName, openEvent, submitEvent) => {
                 const shippingLine = fromJS(shopifyShippingLineFixture())
-
-                const component = shallow(
+                const label = 'Add shipping'
+                const {getByPlaceholderText, getByText} = render(
                     <ShippingPopover
                         id="shipping-lines"
                         actionName={actionName}
@@ -105,35 +97,24 @@ describe('<ShippingPopover/>', () => {
                         availableShippingRates={fromJS([])}
                         onChange={onChange}
                     >
-                        Add shipping
+                        {label}
                     </ShippingPopover>
                 )
 
                 // Open popover
-                component.find(Button).at(0).simulate('click')
-                expect(component.find(Popover).props().isOpen).toBe(true)
+                userEvent.click(getByText(label))
+                const customInput = getByPlaceholderText('Custom rate name')
                 expect(logEvent).toHaveBeenCalledWith(openEvent)
-
                 // Change form values
-                const handle = 'custom'
-                component
-                    .find({value: handle})
-                    .simulate('change', {target: {value: handle}})
-                component
-                    .find({type: 'text'})
-                    .simulate('change', {target: {value: 'Test'}})
-                component
-                    .find(AmountInput)
-                    .dive()
-                    .find({type: 'number'})
-                    .simulate('change', {target: {value: '12'}})
-
+                userEvent.click(getByText(/custom/i))
+                fireEvent.change(customInput, {
+                    target: {value: 'Test'},
+                })
+                fireEvent.change(document.getElementsByTagName('input')[1], {
+                    target: {value: '12'},
+                })
                 // Submit
-                component
-                    .find(Form)
-                    .dive()
-                    .find('form')
-                    .simulate('submit', {preventDefault: _noop})
+                userEvent.click(getByText('Apply'))
 
                 expect(onChange).toHaveBeenCalledWith(
                     fromJS({
@@ -145,15 +126,15 @@ describe('<ShippingPopover/>', () => {
                 )
 
                 expect(logEvent).toHaveBeenCalledWith(submitEvent, {
-                    handle,
+                    handle: 'custom',
                 })
             }
         )
 
         it('should call onChange() with free shipping line', () => {
             const shippingLine = fromJS(shopifyShippingLineFixture())
-
-            const component = shallow(
+            const label = 'Add shipping'
+            const {getByLabelText, getByText} = render(
                 <ShippingPopover
                     id="shipping-lines"
                     actionName={ShopifyActionType.DuplicateOrder}
@@ -163,25 +144,13 @@ describe('<ShippingPopover/>', () => {
                     availableShippingRates={fromJS([])}
                     onChange={onChange}
                 >
-                    Add shipping
+                    {label}
                 </ShippingPopover>
             )
 
-            // Open popover
-            component.find(Button).at(0).simulate('click')
-            expect(component.find(Popover).props().isOpen).toBe(true)
-
-            // Change form values
-            component
-                .find({value: 'free'})
-                .simulate('change', {target: {value: 'free'}})
-
-            // Submit
-            component
-                .find(Form)
-                .dive()
-                .find('form')
-                .simulate('submit', {preventDefault: _noop})
+            userEvent.click(getByText(label))
+            userEvent.click(getByLabelText(/free/i))
+            userEvent.click(getByText('Apply'))
 
             expect(onChange).toHaveBeenCalledWith(
                 fromJS({
@@ -197,8 +166,8 @@ describe('<ShippingPopover/>', () => {
             const availableShippingRate = fromJS(
                 shopifyAvailableShippingRate()
             ) as Map<any, any>
-
-            const component = shallow(
+            const label = 'Add shipping'
+            const {getByLabelText, getByText} = render(
                 <ShippingPopover
                     id="shipping-lines"
                     actionName={ShopifyActionType.DuplicateOrder}
@@ -208,27 +177,20 @@ describe('<ShippingPopover/>', () => {
                     availableShippingRates={fromJS([availableShippingRate])}
                     onChange={onChange}
                 >
-                    Add shipping
+                    {label}
                 </ShippingPopover>
             )
 
             // Open popover
-            component.find(Button).at(0).simulate('click')
-            expect(component.find(Popover).props().isOpen).toBe(true)
-
+            userEvent.click(getByText(label))
             // Change form values
-            component
-                .find({value: availableShippingRate.get('handle')})
-                .simulate('change', {
-                    target: {value: availableShippingRate.get('handle')},
-                })
-
+            userEvent.click(
+                getByLabelText(
+                    new RegExp(availableShippingRate.get('title'), 'i')
+                )
+            )
             // Submit
-            component
-                .find(Form)
-                .dive()
-                .find('form')
-                .simulate('submit', {preventDefault: _noop})
+            userEvent.click(getByText('Apply'))
 
             expect(onChange).toHaveBeenCalledWith(
                 fromJS({
@@ -251,10 +213,13 @@ describe('<ShippingPopover/>', () => {
                 ShopifyActionType.DuplicateOrder,
                 SegmentEvent.ShopifyDuplicateOrderShippingPopoverRemove,
             ],
-        ])('should call onChange() with no shipping line', () => {
-            const shippingLine = fromJS(shopifyShippingLineFixture())
-
-            const component = shallow(
+        ])('should call onChange() with no shipping line for %s action', () => {
+            const shippingLine = fromJS(shopifyShippingLineFixture()) as Map<
+                any,
+                any
+            >
+            const label = 'Add shipping'
+            const {getByText} = render(
                 <ShippingPopover
                     id="shipping-lines"
                     actionName={ShopifyActionType.DuplicateOrder}
@@ -264,18 +229,13 @@ describe('<ShippingPopover/>', () => {
                     availableShippingRates={fromJS([])}
                     onChange={onChange}
                 >
-                    Add shipping
+                    {label}
                 </ShippingPopover>
             )
 
-            // Open popover
-            component.find(Button).at(0).simulate('click')
-            expect(component.find(Popover).props().isOpen).toBe(true)
+            userEvent.click(getByText(label))
+            userEvent.click(getByText('Remove'))
 
-            // Click on "Remove"
-            component.find(Button).at(1).simulate('click')
-
-            expect(component.find(Popover).props().isOpen).toBe(false)
             expect(onChange).toHaveBeenCalledWith(null)
         })
     })
@@ -290,8 +250,9 @@ describe('<ShippingPopover/>', () => {
                 ShopifyActionType.DuplicateOrder,
                 SegmentEvent.ShopifyDuplicateOrderShippingPopoverClose,
             ],
-        ])('should track', (actionName, event) => {
-            const component = shallow<ShippingPopover>(
+        ])('should track %s', (actionName, event) => {
+            const label = 'Add shipping'
+            const {getByText} = render(
                 <ShippingPopover
                     id="shipping-lines"
                     actionName={actionName}
@@ -301,11 +262,11 @@ describe('<ShippingPopover/>', () => {
                     availableShippingRates={fromJS([])}
                     onChange={onChange}
                 >
-                    Add shipping
+                    {label}
                 </ShippingPopover>
             )
-
-            component.instance()._onClose()
+            userEvent.click(getByText(label))
+            userEvent.click(getByText('Close'))
 
             expect(logEvent).toHaveBeenCalledWith(event)
         })

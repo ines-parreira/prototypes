@@ -11,12 +11,12 @@ import {
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     getAutoResponderReplyOptions,
-} from '../../../../../config/integrations/index'
-import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
-import PageHeader from '../../../../common/components/PageHeader'
-import ToggleInput from '../../../../common/forms/ToggleInput'
-import RadioField from '../../../../common/forms/RadioField'
-import css from '../../../../settings/settings.less'
+} from 'config/integrations/index'
+import PageHeader from 'pages/common/components/PageHeader'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import css from 'pages/settings/settings.less'
+import {updateOrCreateIntegration} from 'state/integrations/actions'
 
 import SmoochIntegrationNavigation from './SmoochIntegrationNavigation'
 
@@ -145,7 +145,7 @@ export class SmoochIntegrationPreferences extends React.Component<
                         <div className="mb-4">
                             <h4>Auto-responder</h4>
 
-                            <div className="mb-3 d-flex align-items-center">
+                            <div className="my-3 d-flex align-items-center">
                                 <ToggleInput
                                     onClick={this._setAutoResponderEnabled}
                                     isToggled={autoResponderEnabled}
@@ -170,13 +170,14 @@ export class SmoochIntegrationPreferences extends React.Component<
                                     , tell customers how fast they can expect a
                                     response with an auto-responder:
                                 </p>
-                                <RadioField
+                                <RadioFieldSet
+                                    className="mb-3"
                                     options={getAutoResponderReplyOptions(
                                         integration.getIn(['meta', 'language'])
                                     )}
-                                    value={autoResponderReply}
+                                    selectedValue={autoResponderReply}
                                     onChange={this._setAutoResponderReply}
-                                    disabled={!autoResponderEnabled}
+                                    isDisabled={!autoResponderEnabled}
                                 />
                                 <p
                                     className={classnames({

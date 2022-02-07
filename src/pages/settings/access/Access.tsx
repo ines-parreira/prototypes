@@ -3,19 +3,18 @@ import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {Button, Container, Form} from 'reactstrap'
 
-import {RootState} from '../../../state/types'
-import {submitSetting} from '../../../state/currentAccount/actions'
-import {getAccessSettings} from '../../../state/currentAccount/selectors'
+import googleLogo from 'assets/img/integrations/google.svg'
+import InputField from 'pages/common/forms/InputField'
+import PageHeader from 'pages/common/components/PageHeader'
+import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import {submitSetting} from 'state/currentAccount/actions'
+import {getAccessSettings} from 'state/currentAccount/selectors'
+import {RootState} from 'state/types'
 import {
     AccountSettingAccess,
     AccountSettingAccessSignupMode as SignupMode,
     AccountSettingType,
-} from '../../../state/currentAccount/types'
-
-import PageHeader from '../../common/components/PageHeader'
-import RadioField from '../../common/forms/RadioField'
-import InputField from '../../common/forms/InputField'
-import googleLogo from '../../../assets/img/integrations/google.svg'
+} from 'state/currentAccount/types'
 import css from '../settings.less'
 import SsoToggleButton from './SsoToggleButton'
 
@@ -165,9 +164,12 @@ export const AccessContainer = (props: Props) => {
                             confirm their email and sign up:{' '}
                             <a href={signupLink}>{signupLink}</a>
                         </p>
-                        <RadioField
-                            onChange={setSignupMode}
-                            value={signupMode}
+                        <RadioFieldSet
+                            className="mb-3"
+                            onChange={(value) =>
+                                setSignupMode(value as SignupMode)
+                            }
+                            selectedValue={signupMode}
                             options={[
                                 {
                                     value: SignupMode.Invite,

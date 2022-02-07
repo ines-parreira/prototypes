@@ -6,27 +6,18 @@ import React, {
     FormEvent,
     KeyboardEvent,
 } from 'react'
-import {
-    Button,
-    Form,
-    FormGroup,
-    Input,
-    Label,
-    Popover,
-    PopoverBody,
-} from 'reactstrap'
+import {Button, Form, Input, Popover, PopoverBody} from 'reactstrap'
 import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
 
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
-import {focusElement} from '../../../../../../../../../../../../utils/html'
+import {formatPrice} from 'business/shopify/number'
+import RadioButton from 'pages/common/components/RadioButton'
+import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {focusElement} from 'utils/html'
 import MoneyAmount from '../../../../MoneyAmount'
-import AmountInput from '../../AmountInput/AmountInput'
 import {ShopifyActionType} from '../../../types'
+import AmountInput from '../../AmountInput/AmountInput'
 
 import css from './ShippingPopover.less'
 
@@ -159,9 +150,8 @@ export default class ShippingPopover extends Component<Props, State> {
         this._firstInputElement = inputRef
     }
 
-    _onHandleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const handle = event.target.value
-        this.setState({handle})
+    _onHandleChange = (newHandle: string) => {
+        this.setState({handle: newHandle})
     }
 
     _onTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -291,42 +281,18 @@ export default class ShippingPopover extends Component<Props, State> {
                     trigger="legacy"
                 >
                     <Form onKeyDown={this._onKeyDown} onSubmit={this._onSubmit}>
-                        <PopoverBody className="pt-3">
+                        <PopoverBody className="py-3">
                             {availableShippingRates.map(
                                 (
                                     availableShippingRate: Map<any, any>,
                                     index
                                 ) => (
-                                    <FormGroup
-                                        check
-                                        className="mb-3"
+                                    <RadioButton
                                         key={availableShippingRate.get(
                                             'handle'
                                         )}
-                                    >
-                                        <Label check>
-                                            <Input
-                                                type="radio"
-                                                name="handle"
-                                                value={availableShippingRate.get(
-                                                    'handle'
-                                                )}
-                                                required
-                                                checked={
-                                                    handle ===
-                                                    availableShippingRate.get(
-                                                        'handle'
-                                                    )
-                                                }
-                                                tabIndex={0}
-                                                innerRef={
-                                                    index === 0
-                                                        ? this
-                                                              ._saveFirstInputRef
-                                                        : null
-                                                }
-                                                onChange={this._onHandleChange}
-                                            />
+                                        className={css.radioButton}
+                                        label={
                                             <span className="d-inline-block ml-1">
                                                 <span className="d-block">
                                                     {availableShippingRate.get(
@@ -343,38 +309,34 @@ export default class ShippingPopover extends Component<Props, State> {
                                                     />
                                                 </span>
                                             </span>
-                                        </Label>
-                                    </FormGroup>
+                                        }
+                                        name="handle"
+                                        value={availableShippingRate.get(
+                                            'handle'
+                                        )}
+                                        isSelected={
+                                            handle ===
+                                            availableShippingRate.get('handle')
+                                        }
+                                        ref={
+                                            index === 0
+                                                ? this._saveFirstInputRef
+                                                : null
+                                        }
+                                        onChange={this._onHandleChange}
+                                    />
                                 )
                             )}
-                            <FormGroup check className="mb-3">
-                                <Label check>
-                                    <Input
-                                        type="radio"
-                                        name="handle"
-                                        value="free"
-                                        required
-                                        checked={handle === 'free'}
-                                        tabIndex={0}
-                                        onChange={this._onHandleChange}
-                                    />
-                                    <span className="ml-1">Free shipping</span>
-                                </Label>
-                            </FormGroup>
-                            <FormGroup check>
-                                <Label check>
-                                    <Input
-                                        type="radio"
-                                        name="handle"
-                                        value="custom"
-                                        required
-                                        checked={handle === 'custom'}
-                                        tabIndex={0}
-                                        onChange={this._onHandleChange}
-                                    />
-                                    <span className="ml-1">Custom</span>
-                                </Label>
-                            </FormGroup>
+                            <RadioFieldSet
+                                className="mb-3"
+                                name="handle"
+                                options={[
+                                    {value: 'free', label: 'Free shipping'},
+                                    {value: 'custom', label: 'Custom'},
+                                ]}
+                                selectedValue={handle}
+                                onChange={this._onHandleChange}
+                            />
                             <div className="d-flex mt-1">
                                 <Input
                                     type="text"
@@ -395,7 +357,7 @@ export default class ShippingPopover extends Component<Props, State> {
                                 />
                             </div>
                         </PopoverBody>
-                        <hr className="mb-0" />
+                        <hr className="my-0" />
                         <PopoverBody className="d-flex">
                             {!!value ? (
                                 <Button

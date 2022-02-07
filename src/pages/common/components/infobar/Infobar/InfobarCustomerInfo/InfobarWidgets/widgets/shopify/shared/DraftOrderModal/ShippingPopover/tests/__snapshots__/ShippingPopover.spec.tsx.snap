@@ -1,326 +1,44 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ShippingPopover/> render() should render with value 1`] = `
-<div>
-  <Button
-    className="p-0 focusable"
-    color="link"
-    disabled={false}
-    id="shipping-lines"
-    innerRef={[Function]}
-    onClick={[Function]}
-    tabIndex={0}
-    tag="button"
-    type="button"
-  >
-    <strong>
-      Add shipping
-    </strong>
-  </Button>
-  <span
-    className="title"
-  >
-    Standard Shipping
-  </span>
-  <Popover
-    isOpen={false}
-    placement="bottom"
-    placementPrefix="bs-popover"
-    target="shipping-lines"
-    toggle={[Function]}
-    trigger="legacy"
-  >
-    <Form
-      onKeyDown={[Function]}
-      onSubmit={[Function]}
-      tag="form"
-    >
-      <PopoverBody
-        className="pt-3"
-        tag="div"
+<body>
+  <div>
+    <div>
+      <button
+        class="p-0 focusable btn btn-link"
+        id="shipping-lines"
+        tabindex="0"
+        type="button"
       >
-        <FormGroup
-          check={true}
-          className="mb-3"
-          tag="div"
-        >
-          <Label
-            check={true}
-            tag="label"
-            widths={
-              Array [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <Input
-              checked={false}
-              name="handle"
-              onChange={[Function]}
-              required={true}
-              tabIndex={0}
-              type="radio"
-              value="free"
-            />
-            <span
-              className="ml-1"
-            >
-              Free shipping
-            </span>
-          </Label>
-        </FormGroup>
-        <FormGroup
-          check={true}
-          tag="div"
-        >
-          <Label
-            check={true}
-            tag="label"
-            widths={
-              Array [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <Input
-              checked={true}
-              name="handle"
-              onChange={[Function]}
-              required={true}
-              tabIndex={0}
-              type="radio"
-              value="custom"
-            />
-            <span
-              className="ml-1"
-            >
-              Custom
-            </span>
-          </Label>
-        </FormGroup>
-        <div
-          className="d-flex mt-1"
-        >
-          <Input
-            autoComplete="off"
-            className="titleInput"
-            disabled={false}
-            onChange={[Function]}
-            placeholder="Custom rate name"
-            required={true}
-            type="text"
-            value="Standard Shipping"
-          />
-          <AmountInput
-            className={null}
-            currencyCode="USD"
-            disabled={false}
-            id="amount"
-            min={0}
-            onChange={[Function]}
-            required={true}
-            saveInputRef={[Function]}
-            symbol={null}
-            value="12.00"
-          />
-        </div>
-      </PopoverBody>
-      <hr
-        className="mb-0"
-      />
-      <PopoverBody
-        className="d-flex"
-        tag="div"
+        <strong>
+          Add shipping
+        </strong>
+      </button>
+      <span
+        class="title"
       >
-        <Button
-          className="focusable"
-          color="danger"
-          onClick={[Function]}
-          tabIndex={0}
-          tag="button"
-          type="button"
-        >
-          Remove
-        </Button>
-        <Button
-          className="ml-auto focusable"
-          color="primary"
-          tabIndex={0}
-          tag="button"
-          type="submit"
-        >
-          Apply
-        </Button>
-      </PopoverBody>
-    </Form>
-  </Popover>
-</div>
+        Standard Shipping
+      </span>
+    </div>
+  </div>
+</body>
 `;
 
 exports[`<ShippingPopover/> render() should render without value 1`] = `
-<div>
-  <Button
-    className="p-0 focusable"
-    color="link"
-    disabled={false}
-    id="shipping-lines"
-    innerRef={[Function]}
-    onClick={[Function]}
-    tabIndex={0}
-    tag="button"
-    type="button"
-  >
-    <strong>
-      Add shipping
-    </strong>
-  </Button>
-  <Popover
-    isOpen={false}
-    placement="bottom"
-    placementPrefix="bs-popover"
-    target="shipping-lines"
-    toggle={[Function]}
-    trigger="legacy"
-  >
-    <Form
-      onKeyDown={[Function]}
-      onSubmit={[Function]}
-      tag="form"
-    >
-      <PopoverBody
-        className="pt-3"
-        tag="div"
+<body>
+  <div>
+    <div>
+      <button
+        class="p-0 focusable btn btn-link"
+        id="shipping-lines"
+        tabindex="0"
+        type="button"
       >
-        <FormGroup
-          check={true}
-          className="mb-3"
-          tag="div"
-        >
-          <Label
-            check={true}
-            tag="label"
-            widths={
-              Array [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <Input
-              checked={false}
-              name="handle"
-              onChange={[Function]}
-              required={true}
-              tabIndex={0}
-              type="radio"
-              value="free"
-            />
-            <span
-              className="ml-1"
-            >
-              Free shipping
-            </span>
-          </Label>
-        </FormGroup>
-        <FormGroup
-          check={true}
-          tag="div"
-        >
-          <Label
-            check={true}
-            tag="label"
-            widths={
-              Array [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <Input
-              checked={false}
-              name="handle"
-              onChange={[Function]}
-              required={true}
-              tabIndex={0}
-              type="radio"
-              value="custom"
-            />
-            <span
-              className="ml-1"
-            >
-              Custom
-            </span>
-          </Label>
-        </FormGroup>
-        <div
-          className="d-flex mt-1"
-        >
-          <Input
-            autoComplete="off"
-            className="titleInput"
-            disabled={true}
-            onChange={[Function]}
-            placeholder="Custom rate name"
-            required={false}
-            type="text"
-            value=""
-          />
-          <AmountInput
-            className={null}
-            currencyCode="USD"
-            disabled={true}
-            id="amount"
-            min={0}
-            onChange={[Function]}
-            required={false}
-            saveInputRef={[Function]}
-            symbol={null}
-            value=""
-          />
-        </div>
-      </PopoverBody>
-      <hr
-        className="mb-0"
-      />
-      <PopoverBody
-        className="d-flex"
-        tag="div"
-      >
-        <Button
-          className="focusable"
-          color="secondary"
-          onClick={[Function]}
-          tabIndex={0}
-          tag="button"
-          type="button"
-        >
-          Close
-        </Button>
-        <Button
-          className="ml-auto focusable"
-          color="primary"
-          tabIndex={0}
-          tag="button"
-          type="submit"
-        >
-          Apply
-        </Button>
-      </PopoverBody>
-    </Form>
-  </Popover>
-</div>
+        <strong>
+          Add shipping
+        </strong>
+      </button>
+    </div>
+  </div>
+</body>
 `;

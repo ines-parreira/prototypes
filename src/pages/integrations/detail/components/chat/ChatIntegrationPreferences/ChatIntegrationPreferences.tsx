@@ -20,31 +20,28 @@ import {
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     getAutoResponderReplyOptions,
-} from '../../../../../../config/integrations/index'
-
+} from 'config/integrations/index'
 import {
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_OPTIONAL,
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS,
-} from '../../../../../../config/integrations/smooch_inside'
-
-import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
-import PageHeader from '../../../../../common/components/PageHeader'
-import ToggleInput from '../../../../../common/forms/ToggleInput'
-import Tooltip from '../../../../../common/components/Tooltip'
-import RadioField from '../../../../../common/forms/RadioField'
-import SelectField from '../../../../../common/forms/SelectField/SelectField'
-
+} from 'config/integrations/smooch_inside'
+import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
+import PageHeader from 'pages/common/components/PageHeader'
+import Tooltip from 'pages/common/components/Tooltip'
+import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import css from 'pages/settings/settings.less'
+import {updateOrCreateIntegration} from 'state/integrations/actions'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {RootState} from 'state/types'
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
 import ChatIntegrationPreview from '../ChatIntegrationPreview/ChatIntegrationPreview'
+import AutoResponderPreview from '../ChatIntegrationPreview/AutoResponder'
 import OptionalEmailCapturePreview from '../ChatIntegrationPreview/OptionalEmailCapture'
 import RequiredEmailCapturePreview from '../ChatIntegrationPreview/RequiredEmailCapture'
-import AutoResponderPreview from '../ChatIntegrationPreview/AutoResponder'
-import {EMAIL_INTEGRATION_TYPES} from '../../../../../../constants/integration'
-import {getIntegrationsByTypes} from '../../../../../../state/integrations/selectors'
-import {RootState} from '../../../../../../state/types'
-import css from '../../../../../settings/settings.less'
 
 const emailCaptureOptions = [
     {
@@ -317,9 +314,9 @@ export class ChatIntegrationPreferences extends Component<Props, State> {
                                         Ask your customers to leave their email
                                         before starting a chat
                                     </p>
-                                    <RadioField
+                                    <RadioFieldSet
                                         options={emailCaptureOptions}
-                                        value={emailCaptureEnforcement}
+                                        selectedValue={emailCaptureEnforcement}
                                         onChange={
                                             this._setEmailCaptureEnforcement
                                         }
@@ -358,15 +355,16 @@ export class ChatIntegrationPreferences extends Component<Props, State> {
                                             expect a response with an
                                             auto-responder:
                                         </p>
-                                        <RadioField
+                                        <RadioFieldSet
+                                            className="mb-2"
                                             options={getAutoResponderReplyOptions(
                                                 language
                                             )}
-                                            value={autoResponderReply}
+                                            selectedValue={autoResponderReply}
                                             onChange={
                                                 this._setAutoResponderReply
                                             }
-                                            disabled={!autoResponderEnabled}
+                                            isDisabled={!autoResponderEnabled}
                                         />
                                         <p
                                             className={classnames({

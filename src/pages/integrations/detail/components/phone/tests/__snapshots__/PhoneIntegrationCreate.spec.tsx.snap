@@ -1223,10 +1223,12 @@ exports[`<PhoneIntegrationCreate/> render() should render address validation for
                   <div>
                     <label
                       class="label"
+                      for="company"
                     >
                       <input
                         checked=""
                         class="input"
+                        id="company"
                         type="radio"
                       />
                       Business information
@@ -1243,9 +1245,11 @@ exports[`<PhoneIntegrationCreate/> render() should render address validation for
                   <div>
                     <label
                       class="label"
+                      for="personal"
                     >
                       <input
                         class="input"
+                        id="personal"
                         type="radio"
                       />
                       Personal information

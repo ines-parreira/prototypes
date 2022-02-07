@@ -80,7 +80,7 @@ exports[`<SmoochIntegrationPreferences/> render() should render loading buttons 
           Auto-responder
         </h4>
         <div
-          className="mb-3 d-flex align-items-center"
+          className="my-3 d-flex align-items-center"
         >
           <ToggleInput
             isToggled={false}
@@ -111,8 +111,9 @@ exports[`<SmoochIntegrationPreferences/> render() should render loading buttons 
             </b>
             , tell customers how fast they can expect a response with an auto-responder:
           </p>
-          <RadioField
-            disabled={true}
+          <RadioFieldSet
+            className="mb-3"
+            isDisabled={true}
             onChange={[Function]}
             options={
               Array [
@@ -134,7 +135,7 @@ exports[`<SmoochIntegrationPreferences/> render() should render loading buttons 
                 },
               ]
             }
-            value="reply-shortly"
+            selectedValue="reply-shortly"
           />
           <p
             className="text-faded"
@@ -235,7 +236,7 @@ exports[`<SmoochIntegrationPreferences/> render() should render the Smooch prefe
           Auto-responder
         </h4>
         <div
-          className="mb-3 d-flex align-items-center"
+          className="my-3 d-flex align-items-center"
         >
           <ToggleInput
             isToggled={false}
@@ -266,8 +267,9 @@ exports[`<SmoochIntegrationPreferences/> render() should render the Smooch prefe
             </b>
             , tell customers how fast they can expect a response with an auto-responder:
           </p>
-          <RadioField
-            disabled={true}
+          <RadioFieldSet
+            className="mb-3"
+            isDisabled={true}
             onChange={[Function]}
             options={
               Array [
@@ -289,7 +291,7 @@ exports[`<SmoochIntegrationPreferences/> render() should render the Smooch prefe
                 },
               ]
             }
-            value="reply-shortly"
+            selectedValue="reply-shortly"
           />
           <p
             className="text-faded"
