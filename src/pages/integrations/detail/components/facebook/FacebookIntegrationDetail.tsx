@@ -19,7 +19,6 @@ import {
     FACEBOOK_LANGUAGE_DEFAULT,
 } from 'config/integrations/facebook'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import DEPRECATED_ConfirmButton from 'pages/common/components/DEPRECATED_ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
@@ -33,6 +32,9 @@ import {
 } from 'state/integrations/actions'
 import {RootState} from 'state/types'
 
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import FacebookIntegrationNavigation from './FacebookIntegrationNavigation'
 import FacebookLoginButton from './FacebookLoginButton/FacebookLoginButton'
 import {
@@ -620,18 +622,18 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
                             Save changes
                         </Button>
                         <FacebookLoginButton reconnect />
-                        <DEPRECATED_ConfirmButton
-                            color="secondary"
+                        <ConfirmButton
+                            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                            onConfirm={() => deleteIntegration(integration)}
+                            type="button"
+                            isLoading={isSubmitting}
+                            intent={ButtonIntent.Destructive}
                             className="float-right"
-                            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-                            confirm={() => deleteIntegration(integration)}
-                            disabled={isSubmitting}
                         >
-                            <i className="material-icons mr-1 text-danger">
-                                delete
-                            </i>
-                            Delete this page
-                        </DEPRECATED_ConfirmButton>
+                            <ButtonIconLabel icon="delete">
+                                Delete this page
+                            </ButtonIconLabel>
+                        </ConfirmButton>
                     </div>
                 </Container>
             </div>
