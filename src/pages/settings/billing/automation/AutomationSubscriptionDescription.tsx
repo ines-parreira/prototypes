@@ -37,7 +37,7 @@ const AutomationSubscriptionDescription = () => {
                         .
                         <br />
                         <br />
-                        If you cancel now, you will loose access to self-service{' '}
+                        If you cancel now, you will lose access to self-service{' '}
                         {isSelfServeLegacy && 'custom report issue flow '}
                         immediately.
                     </div>
