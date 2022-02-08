@@ -181,20 +181,20 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
         </i>
          Re-send verification email
       </Button>
-      <DEPRECATED_ConfirmButton
+      <ConfirmButton
         className="float-right"
-        color="secondary"
-        confirm={[Function]}
-        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-        disabled={false}
+        confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+        intent="destructive"
+        isDisabled={false}
+        onConfirm={[Function]}
+        type="button"
       >
-        <i
-          className="material-icons mr-1 text-danger"
+        <ButtonIconLabel
+          icon="delete"
         >
-          delete
-        </i>
-        Delete email address
-      </DEPRECATED_ConfirmButton>
+          Delete email address
+        </ButtonIconLabel>
+      </ConfirmButton>
     </div>
   </Container>
 </div>

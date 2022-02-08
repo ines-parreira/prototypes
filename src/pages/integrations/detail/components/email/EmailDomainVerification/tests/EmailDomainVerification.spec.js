@@ -3,9 +3,10 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {render, waitFor} from '@testing-library/react'
 
-import {IntegrationType} from '../../../../../../../models/integration/constants.ts'
-import {EmailDomainVerificationContainer} from '../EmailDomainVerification.tsx'
-import {UserRole} from '../../../../../../../config/types/user.ts'
+import {EmailDomainVerificationContainer} from '../EmailDomainVerification'
+
+import {IntegrationType} from 'models/integration/constants'
+import {UserRole} from 'config/types/user'
 
 describe('<EmailDomainVerificationContainer/>', () => {
     const commonProps = {
@@ -97,6 +98,11 @@ describe('<EmailDomainVerificationContainer/>', () => {
         })
 
         it('should render a delete button to account admins', () => {
+            // Patch Date.now to always get the same time-based IDs.
+            let frozenTime = 42
+            const now = Date.now
+            Date.now = () => frozenTime++
+
             const {container} = render(
                 <EmailDomainVerificationContainer
                     emailDomain={fromJS({
@@ -111,6 +117,9 @@ describe('<EmailDomainVerificationContainer/>', () => {
             )
 
             expect(container).toMatchSnapshot()
+
+            // Unpatch Date.now
+            Date.now = now
         })
 
         it('clicking the delete button should trigger deletion', () => {

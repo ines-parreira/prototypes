@@ -48,23 +48,22 @@ exports[`<EmailDomainVerificationContainer/> render() should render a delete but
         class="tableBody"
       />
     </table>
-    <div
-      class="component d-inline-block"
-      id="delete-email-domain"
+    <button
+      class="wrapper destructive medium"
+      id="confirm-42"
+      type="button"
     >
-      <button
-        class="btn btn-secondary"
-        id="confirm-button-delete-email-domain"
-        type="button"
+      <span
+        class="wrapper"
       >
         <i
-          class="material-icons mr-1 text-danger"
+          class="material-icons icon isLeft medium"
         >
           delete
         </i>
         Delete
-      </button>
-    </div>
+      </span>
+    </button>
   </div>
 </div>
 `;

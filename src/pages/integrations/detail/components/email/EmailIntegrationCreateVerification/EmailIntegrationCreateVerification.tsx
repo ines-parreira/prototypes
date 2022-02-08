@@ -6,25 +6,27 @@ import classNames from 'classnames'
 import {Map} from 'immutable'
 
 import InputField from 'pages/common/forms/InputField'
-import DEPRECATED_ConfirmButton from '../../../../../common/components/DEPRECATED_ConfirmButton'
-import PageHeader from '../../../../../common/components/PageHeader'
-import Alert, {AlertType} from '../../../../../common/components/Alert/Alert'
-import socketManager from '../../../../../../services/socketManager/socketManager'
-import {resendVerificationEmail} from '../../../../../../state/currentAccount/actions'
+import socketManager from 'services/socketManager/socketManager'
+import {resendVerificationEmail} from 'state/currentAccount/actions'
 import {
     sendVerificationEmail,
     verifyEmailIntegrationManually,
     deleteIntegration,
-} from '../../../../../../state/integrations/actions'
-import {notify} from '../../../../../../state/notifications/actions'
+} from 'state/integrations/actions'
+import {notify} from 'state/notifications/actions'
 import {
     getForwardingEmailAddress,
     getEmailForwardingActivated,
-} from '../../../../../../state/integrations/selectors'
-import history from '../../../../../history'
-import {RootState} from '../../../../../../state/types'
-import {JoinEventType} from '../../../../../../services/socketManager/types'
-import css from '../../../../../settings/settings.less'
+} from 'state/integrations/selectors'
+import {RootState} from 'state/types'
+import {JoinEventType} from 'services/socketManager/types'
+import history from 'pages/history'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import PageHeader from 'pages/common/components/PageHeader'
+import css from 'pages/settings/settings.less'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 type OwnProps = {
     integration: Map<any, any>
@@ -189,16 +191,18 @@ export class EmailIntegrationCreateVerification extends Component<
                     <i className="material-icons">mail</i> Re-send verification
                     email
                 </Button>
-                <DEPRECATED_ConfirmButton
+                <ConfirmButton
+                    onConfirm={() => deleteIntegration(integration)}
+                    confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                    type="button"
+                    isDisabled={this.state.isDisabled}
+                    intent={ButtonIntent.Destructive}
                     className="float-right"
-                    color="secondary"
-                    disabled={this.state.isDisabled}
-                    confirm={() => deleteIntegration(integration)}
-                    content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                 >
-                    <i className="material-icons mr-1 text-danger">delete</i>
-                    Delete email address
-                </DEPRECATED_ConfirmButton>
+                    <ButtonIconLabel icon="delete">
+                        Delete email address
+                    </ButtonIconLabel>
+                </ConfirmButton>
             </div>
         )
     }

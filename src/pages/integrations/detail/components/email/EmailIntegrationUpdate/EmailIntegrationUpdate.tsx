@@ -23,7 +23,6 @@ import {
 import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from 'constants/integration'
 import {IntegrationType} from 'models/integration/types'
 import Alert from 'pages/common/components/Alert/Alert'
-import DEPRECATED_ConfirmButton from 'pages/common/components/DEPRECATED_ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from 'pages/common/forms/InputField'
@@ -42,6 +41,9 @@ import {RootState} from 'state/types'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {isGorgiasSupportAddress, displayRestrictedSymbols} from 'utils'
 import {convertToHTML} from 'utils/editor'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 type Props = {
     integration: Map<any, any>
@@ -241,14 +243,15 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                     )}
                 </p>
                 {!importActivated && (
-                    <DEPRECATED_ConfirmButton
-                        color="primary"
-                        loading={isLoading}
-                        confirm={importMethod}
-                        content="Are you sure you want to import emails?"
+                    <ConfirmButton
+                        isLoading={isLoading}
+                        onConfirm={importMethod}
+                        confirmationContent="Are you sure you want to import emails?"
+                        type="button"
+                        intent={ButtonIntent.Primary}
                     >
                         Import emails
-                    </DEPRECATED_ConfirmButton>
+                    </ConfirmButton>
                 )}
             </div>
         )
@@ -556,17 +559,16 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                             </Button>
                         )}
 
-                        <DEPRECATED_ConfirmButton
+                        <ConfirmButton
                             className="float-right"
-                            color="secondary"
-                            confirm={() => deleteIntegration(integration)}
-                            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                            onConfirm={() => deleteIntegration(integration)}
+                            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                            intent={ButtonIntent.Destructive}
                         >
-                            <i className="material-icons mr-1 text-danger">
-                                delete
-                            </i>
-                            Delete email address
-                        </DEPRECATED_ConfirmButton>
+                            <ButtonIconLabel icon="delete">
+                                Delete email address
+                            </ButtonIconLabel>
+                        </ConfirmButton>
                     </div>
                 </Form>
             </div>

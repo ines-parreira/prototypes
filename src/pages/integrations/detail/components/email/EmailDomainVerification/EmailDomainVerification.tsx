@@ -4,21 +4,23 @@ import {connect} from 'react-redux'
 import {Map} from 'immutable'
 import {Button, Container, FormGroup, Label} from 'reactstrap'
 
-import DEPRECATED_ConfirmButton from '../../../../../common/components/DEPRECATED_ConfirmButton'
-import Loader from '../../../../../common/components/Loader/Loader'
-import SelectField from '../../../../../common/forms/SelectField/SelectField'
-import Alert, {AlertType} from '../../../../../common/components/Alert/Alert'
+import Loader from 'pages/common/components/Loader/Loader'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
-import {RootState} from '../../../../../../state/types'
-import * as currentUserSelectors from '../../../../../../state/currentUser/selectors'
+import {RootState} from 'state/types'
+import * as currentUserSelectors from 'state/currentUser/selectors'
 import {
     IntegrationType,
     DEFAULT_EMAIL_DKIM_KEY_SIZE,
-} from '../../../../../../models/integration/constants'
-import {hasRole} from '../../../../../../utils'
-import {UserRole} from '../../../../../../config/types/user'
-import settingsCss from '../../../../../settings/settings.less'
+} from 'models/integration/constants'
+import {hasRole} from 'utils'
+import {UserRole} from 'config/types/user'
+import settingsCss from 'pages/settings/settings.less'
 
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import css from './EmailDomainVerification.less'
 import RecordsTable from './components/RecordsTable'
 
@@ -96,17 +98,16 @@ export const EmailDomainVerificationContainer = (props: Props) => {
                     />
 
                     {hasRole(currentUser, UserRole.Admin) && (
-                        <DEPRECATED_ConfirmButton
-                            id="delete-email-domain"
-                            color="secondary"
-                            confirm={() => actions.deleteEmailDomain(domain)}
-                            content="Are you sure you want to delete this domain? Domain verification can take up to 72 hours. Non-verified domains may lead to increased deliverability issues."
+                        <ConfirmButton
+                            onConfirm={() => actions.deleteEmailDomain(domain)}
+                            confirmationContent="Are you sure you want to delete this domain? Domain verification can take up to 72 hours. Non-verified domains may lead to increased deliverability issues."
+                            type="button"
+                            intent={ButtonIntent.Destructive}
                         >
-                            <i className="material-icons mr-1 text-danger">
-                                delete
-                            </i>
-                            Delete
-                        </DEPRECATED_ConfirmButton>
+                            <ButtonIconLabel icon="delete">
+                                Delete
+                            </ButtonIconLabel>
+                        </ConfirmButton>
                     )}
                 </>
             )}
