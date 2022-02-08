@@ -5,6 +5,7 @@ import {PhoneNumber} from 'models/phoneNumber/types'
 import {PhoneNumbersState} from './types'
 import {
     phoneNumberCreated,
+    phoneNumberDeleted,
     phoneNumberFetched,
     phoneNumbersFetched,
 } from './actions'
@@ -16,14 +17,17 @@ const phoneNumbersReducer = createReducer<PhoneNumbersState>(
     (builder) =>
         builder
             .addCase(phoneNumberCreated, (state, {payload}) => {
-                state[payload.id.toString()] = payload
+                state[payload.id] = payload
+            })
+            .addCase(phoneNumberDeleted, (state, {payload}) => {
+                delete state[payload]
             })
             .addCase(phoneNumberFetched, (state, {payload}) => {
-                state[payload.id.toString()] = payload
+                state[payload.id] = payload
             })
             .addCase(phoneNumbersFetched, (state, {payload}) => {
                 payload.map((phoneNumber: PhoneNumber) => {
-                    state[phoneNumber.id.toString()] = phoneNumber
+                    state[phoneNumber.id] = phoneNumber
                 })
             })
 )

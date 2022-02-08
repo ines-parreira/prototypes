@@ -31,3 +31,7 @@ export const createPhoneNumber = async (
     )
     return res.data
 }
+
+export const deletePhoneNumber = async (id: number): Promise<void> => {
+    await client.delete(`/api/integrations/phone/phone-numbers/${id}/`)
+}

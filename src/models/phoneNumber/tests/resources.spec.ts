@@ -4,7 +4,11 @@ import _pick from 'lodash/pick'
 
 import {phoneNumbers as phoneNumbersFixtures} from 'fixtures/phoneNumber'
 import client from 'models/api/resources'
-import {fetchPhoneNumbers, createPhoneNumber} from '../resources'
+import {
+    fetchPhoneNumbers,
+    createPhoneNumber,
+    deletePhoneNumber,
+} from '../resources'
 
 const mockedServer = new MockAdapter(client)
 
@@ -74,6 +78,25 @@ describe('phone numbers resources', () => {
             return expect(
                 createPhoneNumber(phoneNumberDraftMock)
             ).rejects.toEqual(new Error('Request failed with status code 503'))
+        })
+    })
+
+    describe('deletePhoneNumber', () => {
+        it('should resolve on success', async () => {
+            mockedServer
+                .onDelete(/\/api\/integrations\/phone\/phone-numbers\/\d+\//)
+                .reply(200)
+            const res = await deletePhoneNumber(1)
+            expect(res).toMatchSnapshot()
+        })
+
+        it('should reject an error on fail', () => {
+            mockedServer
+                .onDelete(/\/api\/integrations\/phone\/phone-numbers\/\d+\//)
+                .reply(503, {message: 'error'})
+            return expect(deletePhoneNumber(1)).rejects.toEqual(
+                new Error('Request failed with status code 503')
+            )
         })
     })
 })

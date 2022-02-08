@@ -2,6 +2,7 @@ import {phoneNumbers as phoneNumbersFixtures} from 'fixtures/phoneNumber'
 
 import {
     phoneNumberCreated,
+    phoneNumberDeleted,
     phoneNumberFetched,
     phoneNumbersFetched,
 } from '../actions'
@@ -13,6 +14,16 @@ describe('phoneNumbers reducer', () => {
             const newState = reducer(
                 {},
                 phoneNumberCreated(phoneNumbersFixtures[0])
+            )
+            expect(newState).toMatchSnapshot()
+        })
+    })
+
+    describe('deletePhoneNumner action', () => {
+        it('should delete a phone numner from the state', () => {
+            const newState = reducer(
+                {'1': phoneNumbersFixtures[0]},
+                phoneNumberDeleted(1)
             )
             expect(newState).toMatchSnapshot()
         })

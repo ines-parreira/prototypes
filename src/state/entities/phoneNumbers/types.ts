@@ -9,7 +9,7 @@ import {
 } from './constants'
 
 export type PhoneNumbersState = {
-    [key: string]: PhoneNumber
+    [key: number]: PhoneNumber
 }
 
 export type PhoneNumbersAction =
