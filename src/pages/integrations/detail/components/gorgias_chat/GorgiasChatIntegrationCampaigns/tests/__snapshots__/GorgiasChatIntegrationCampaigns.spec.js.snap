@@ -206,10 +206,14 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
             class="smallest align-middle"
           >
             <label
+              aria-checked="true"
+              aria-label="Enable campaign Super campaign"
               class="container"
               for="toggle-button-1"
+              role="switch"
             >
               <input
+                aria-label="Enable campaign Super campaign"
                 checked=""
                 class="input"
                 disabled=""
@@ -254,10 +258,14 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
             class="smallest align-middle"
           >
             <label
+              aria-checked="false"
+              aria-label="Enable campaign Not so good campaign"
               class="container"
               for="toggle-button-2"
+              role="switch"
             >
               <input
+                aria-label="Enable campaign Not so good campaign"
                 class="input"
                 disabled=""
                 id="toggle-button-2"

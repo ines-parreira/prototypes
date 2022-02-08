@@ -116,8 +116,10 @@ exports[`<SelfServicePreferencesView/> ToggleInput.onChange() should deactivate 
                     class="smallest align-middle"
                   >
                     <label
+                      aria-checked="true"
                       class="container"
                       for="toggle-button-42"
+                      role="switch"
                     >
                       <input
                         checked=""
@@ -163,8 +165,10 @@ exports[`<SelfServicePreferencesView/> ToggleInput.onChange() should deactivate 
                     class="smallest align-middle"
                   >
                     <label
+                      aria-checked="false"
                       class="container"
                       for="toggle-button-42"
+                      role="switch"
                     >
                       <input
                         class="input"
@@ -229,8 +233,10 @@ exports[`<SelfServicePreferencesView/> ToggleInput.onChange() should deactivate 
                     class="smallest align-middle"
                   >
                     <label
+                      aria-checked="true"
                       class="container"
                       for="toggle-button-42"
+                      role="switch"
                     >
                       <input
                         checked=""
@@ -290,8 +296,10 @@ exports[`<SelfServicePreferencesView/> ToggleInput.onChange() should deactivate 
                     class="smallest align-middle"
                   >
                     <label
+                      aria-checked="false"
                       class="container"
                       for="toggle-button-42"
+                      role="switch"
                     >
                       <input
                         class="input"
@@ -471,8 +479,10 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                     class="smallest align-middle"
                   >
                     <label
+                      aria-checked="true"
                       class="container"
                       for="toggle-button-42"
+                      role="switch"
                     >
                       <input
                         checked=""
@@ -518,8 +528,10 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                     class="smallest align-middle"
                   >
                     <label
+                      aria-checked="false"
                       class="container"
                       for="toggle-button-42"
+                      role="switch"
                     >
                       <input
                         class="input"
@@ -584,8 +596,10 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                     class="smallest align-middle"
                   >
                     <label
+                      aria-checked="true"
                       class="container"
                       for="toggle-button-42"
+                      role="switch"
                     >
                       <input
                         checked=""
@@ -645,8 +659,10 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                     class="smallest align-middle"
                   >
                     <label
+                      aria-checked="false"
                       class="container"
                       for="toggle-button-42"
+                      role="switch"
                     >
                       <input
                         class="input"

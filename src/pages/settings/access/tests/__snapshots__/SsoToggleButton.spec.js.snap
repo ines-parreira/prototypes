@@ -6,8 +6,10 @@ exports[`<SsoToggleButton/> should render properly 1`] = `
     class="mb-2 d-flex align-items-center"
   >
     <label
+      aria-checked="false"
       class="container"
       for="toggle-button-1"
+      role="switch"
     >
       <input
         class="input"

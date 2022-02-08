@@ -54,8 +54,10 @@ exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServ
                     class="smallest align-middle"
                   >
                     <label
+                      aria-checked="true"
                       class="container"
                       for="toggle-button-42"
+                      role="switch"
                     >
                       <input
                         checked=""
@@ -110,8 +112,10 @@ exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServ
                     class="smallest align-middle"
                   >
                     <label
+                      aria-checked="false"
                       class="container"
                       for="toggle-button-42"
+                      role="switch"
                     >
                       <input
                         class="input"
@@ -165,8 +169,10 @@ exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServ
                     class="smallest align-middle"
                   >
                     <label
+                      aria-checked="true"
                       class="container"
                       for="toggle-button-42"
+                      role="switch"
                     >
                       <input
                         checked=""
@@ -221,8 +227,10 @@ exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServ
                     class="smallest align-middle"
                   >
                     <label
+                      aria-checked="false"
                       class="container"
                       for="toggle-button-42"
+                      role="switch"
                     >
                       <input
                         class="input"
@@ -345,8 +353,10 @@ exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServ
                     class="smallest align-middle"
                   >
                     <label
+                      aria-checked="true"
                       class="container"
                       for="toggle-button-42"
+                      role="switch"
                     >
                       <input
                         checked=""
@@ -401,8 +411,10 @@ exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServ
                     class="smallest align-middle"
                   >
                     <label
+                      aria-checked="false"
                       class="container"
                       for="toggle-button-42"
+                      role="switch"
                     >
                       <input
                         class="input"
@@ -456,8 +468,10 @@ exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServ
                     class="smallest align-middle"
                   >
                     <label
+                      aria-checked="true"
                       class="container"
                       for="toggle-button-42"
+                      role="switch"
                     >
                       <input
                         checked=""
@@ -512,8 +526,10 @@ exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServ
                     class="smallest align-middle"
                   >
                     <label
+                      aria-checked="false"
                       class="container"
                       for="toggle-button-42"
+                      role="switch"
                     >
                       <input
                         class="input"
@@ -636,8 +652,10 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                     class="smallest align-middle"
                   >
                     <label
+                      aria-checked="true"
                       class="container"
                       for="toggle-button-42"
+                      role="switch"
                     >
                       <input
                         checked=""
@@ -692,8 +710,10 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                     class="smallest align-middle"
                   >
                     <label
+                      aria-checked="false"
                       class="container"
                       for="toggle-button-42"
+                      role="switch"
                     >
                       <input
                         class="input"
@@ -747,8 +767,10 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                     class="smallest align-middle"
                   >
                     <label
+                      aria-checked="true"
                       class="container"
                       for="toggle-button-42"
+                      role="switch"
                     >
                       <input
                         checked=""

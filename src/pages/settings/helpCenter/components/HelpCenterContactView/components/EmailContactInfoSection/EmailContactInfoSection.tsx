@@ -34,6 +34,7 @@ const EmailContactInfoSection: React.FC = () => {
                 label="Email card"
                 isToggled={enabled}
                 onClick={handleChange('enabled')}
+                aria-label="Enable email contact card"
             />
             <InputField
                 type="textarea"

@@ -40,8 +40,10 @@ exports[`<Access/> should render properly 1`] = `
             class="mb-2 d-flex align-items-center"
           >
             <label
+              aria-checked="false"
               class="container"
               for="toggle-button-42"
+              role="switch"
             >
               <input
                 class="input"
@@ -176,8 +178,10 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
             class="mb-2 d-flex align-items-center"
           >
             <label
+              aria-checked="false"
               class="container"
               for="toggle-button-42"
+              role="switch"
             >
               <input
                 class="input"
@@ -334,8 +338,10 @@ exports[`<Access/> should show an error and block submit when using a generic do
             class="mb-2 d-flex align-items-center"
           >
             <label
+              aria-checked="false"
               class="container"
               for="toggle-button-42"
+              role="switch"
             >
               <input
                 class="input"

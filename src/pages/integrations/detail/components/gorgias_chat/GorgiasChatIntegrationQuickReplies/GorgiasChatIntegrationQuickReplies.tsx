@@ -215,6 +215,7 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                                             quickRepliesEnabled: newValue,
                                         })
                                     }
+                                    aria-label="Enable quick replies"
                                 />
 
                                 <div className="ml-2">

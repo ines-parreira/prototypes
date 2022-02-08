@@ -124,6 +124,11 @@ export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
                                                         campaign
                                                     )
                                                 }
+                                                aria-label={`Enable campaign ${
+                                                    campaign.get(
+                                                        'name'
+                                                    ) as string
+                                                }`}
                                             />
                                         </td>
                                         <td className="link-full-td">

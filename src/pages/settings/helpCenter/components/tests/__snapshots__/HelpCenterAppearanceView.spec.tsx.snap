@@ -542,8 +542,10 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               class="container"
             >
               <label
+                aria-checked="false"
                 class="container"
                 for="toggle-button-3"
+                role="switch"
               >
                 <input
                   class="input"
@@ -573,8 +575,10 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               class="container"
             >
               <label
+                aria-checked="true"
                 class="container"
                 for="toggle-button-4"
+                role="switch"
               >
                 <input
                   checked=""

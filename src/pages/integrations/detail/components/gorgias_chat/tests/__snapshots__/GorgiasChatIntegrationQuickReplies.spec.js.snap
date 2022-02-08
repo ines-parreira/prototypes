@@ -347,15 +347,20 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                             className="d-flex align-items-center mb16"
                           >
                             <ToggleInput
+                              aria-label="Enable quick replies"
                               isToggled={false}
                               onClick={[Function]}
                             >
                               <label
+                                aria-checked={false}
+                                aria-label="Enable quick replies"
                                 className="container"
                                 htmlFor="toggle-button-1"
                                 onClick={[Function]}
+                                role="switch"
                               >
                                 <input
+                                  aria-label="Enable quick replies"
                                   checked={false}
                                   className="input"
                                   disabled={true}
@@ -1320,15 +1325,20 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                             className="d-flex align-items-center mb16"
                           >
                             <ToggleInput
+                              aria-label="Enable quick replies"
                               isToggled={true}
                               onClick={[Function]}
                             >
                               <label
+                                aria-checked={true}
+                                aria-label="Enable quick replies"
                                 className="container"
                                 htmlFor="toggle-button-2"
                                 onClick={[Function]}
+                                role="switch"
                               >
                                 <input
+                                  aria-label="Enable quick replies"
                                   checked={true}
                                   className="input"
                                   disabled={true}

@@ -1,4 +1,5 @@
 import React, {
+    AriaAttributes,
     InputHTMLAttributes,
     MouseEvent,
     ReactNode,
@@ -22,7 +23,8 @@ type Props = {
 } & Omit<
     InputHTMLAttributes<HTMLInputElement>,
     'checked' | 'disabled' | 'name' | 'type' | 'onClick'
->
+> &
+    Pick<AriaAttributes, 'aria-label'>
 
 const ToggleInput = ({
     caption,
@@ -57,6 +59,10 @@ const ToggleInput = ({
                 )}
                 htmlFor={id}
                 onClick={handleClick}
+                // eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role
+                role="switch"
+                aria-label={props['aria-label']}
+                aria-checked={isToggled}
             >
                 <input
                     type="checkbox"

@@ -866,9 +866,11 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                       onClick={[Function]}
                     >
                       <label
+                        aria-checked={true}
                         className="container"
                         htmlFor="toggle-button-4"
                         onClick={[Function]}
+                        role="switch"
                       >
                         <input
                           checked={true}
@@ -989,9 +991,11 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                       onClick={[Function]}
                     >
                       <label
+                        aria-checked={true}
                         className="container"
                         htmlFor="toggle-button-5"
                         onClick={[Function]}
+                        role="switch"
                       >
                         <input
                           checked={true}
@@ -1112,9 +1116,11 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                       onClick={[Function]}
                     >
                       <label
+                        aria-checked={false}
                         className="container disabled"
                         htmlFor="toggle-button-6"
                         onClick={[Function]}
+                        role="switch"
                       >
                         <input
                           checked={false}
@@ -1559,9 +1565,11 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                       onClick={[Function]}
                     >
                       <label
+                        aria-checked={true}
                         className="container"
                         htmlFor="toggle-button-1"
                         onClick={[Function]}
+                        role="switch"
                       >
                         <input
                           checked={true}
@@ -2023,9 +2031,11 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                       onClick={[Function]}
                     >
                       <label
+                        aria-checked={true}
                         className="container"
                         htmlFor="toggle-button-2"
                         onClick={[Function]}
+                        role="switch"
                       >
                         <input
                           checked={true}
@@ -2146,9 +2156,11 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                       onClick={[Function]}
                     >
                       <label
+                        aria-checked={false}
                         className="container"
                         htmlFor="toggle-button-3"
                         onClick={[Function]}
+                        role="switch"
                       >
                         <input
                           checked={false}

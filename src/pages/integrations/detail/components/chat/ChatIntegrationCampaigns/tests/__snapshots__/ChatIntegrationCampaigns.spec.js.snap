@@ -220,8 +220,10 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
             class="smallest align-middle"
           >
             <label
+              aria-checked="true"
               class="container"
               for="toggle-button-1"
+              role="switch"
             >
               <input
                 checked=""
@@ -268,8 +270,10 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
             class="smallest align-middle"
           >
             <label
+              aria-checked="false"
               class="container"
               for="toggle-button-2"
+              role="switch"
             >
               <input
                 class="input"

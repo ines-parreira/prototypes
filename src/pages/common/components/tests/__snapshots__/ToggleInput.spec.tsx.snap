@@ -2,8 +2,10 @@
 
 exports[`ToggleInput should render caption 1`] = `
 <label
+  aria-checked="true"
   class="container"
   for="toggle-button-7"
+  role="switch"
 >
   <input
     checked=""
@@ -26,8 +28,10 @@ exports[`ToggleInput should render caption 1`] = `
 
 exports[`ToggleInput should render label 1`] = `
 <label
+  aria-checked="true"
   class="container"
   for="toggle-button-6"
+  role="switch"
 >
   <input
     checked=""
@@ -50,8 +54,10 @@ exports[`ToggleInput should render label 1`] = `
 
 exports[`ToggleInput should render the button disabled 1`] = `
 <label
+  aria-checked="true"
   class="container disabled"
   for="toggle-button-4"
+  role="switch"
 >
   <input
     checked=""
@@ -69,8 +75,10 @@ exports[`ToggleInput should render the button disabled 1`] = `
 
 exports[`ToggleInput should render the button loading 1`] = `
 <label
+  aria-checked="true"
   class="container loading"
   for="toggle-button-3"
+  role="switch"
 >
   <input
     checked=""
@@ -88,8 +96,10 @@ exports[`ToggleInput should render the button loading 1`] = `
 
 exports[`ToggleInput should render the button loading and disabled 1`] = `
 <label
+  aria-checked="true"
   class="container loading disabled"
   for="toggle-button-5"
+  role="switch"
 >
   <input
     checked=""
@@ -107,8 +117,10 @@ exports[`ToggleInput should render the button loading and disabled 1`] = `
 
 exports[`ToggleInput should render the checkbox checked 1`] = `
 <label
+  aria-checked="true"
   class="container"
   for="toggle-button-1"
+  role="switch"
 >
   <input
     checked=""
@@ -126,8 +138,10 @@ exports[`ToggleInput should render the checkbox checked 1`] = `
 
 exports[`ToggleInput should render the checkbox unchecked 1`] = `
 <label
+  aria-checked="false"
   class="container"
   for="toggle-button-2"
+  role="switch"
 >
   <input
     class="input"

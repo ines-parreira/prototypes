@@ -19,8 +19,10 @@ exports[`<RuleRow /> should render a row with a rule 1`] = `
     class="smallest align-middle position-relative"
   >
     <label
+      aria-checked="true"
       class="container"
       for="toggle-button-1"
+      role="switch"
     >
       <input
         checked=""

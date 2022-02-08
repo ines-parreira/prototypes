@@ -110,8 +110,10 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the self se
         id="toggle-button"
       >
         <label
+          aria-checked="true"
           class="container disabled"
           for="toggle-button-1"
+          role="switch"
         >
           <input
             checked=""

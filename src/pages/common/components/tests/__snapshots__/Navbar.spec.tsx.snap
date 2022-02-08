@@ -141,8 +141,10 @@ exports[`<Navbar /> should render the navbar 1`] = `
           </div>
           <div>
             <label
+              aria-checked="true"
               class="container"
               for="toggle-button-42"
+              role="switch"
             >
               <input
                 checked=""
@@ -408,8 +410,10 @@ exports[`<Navbar /> should render the opened panel 1`] = `
           </div>
           <div>
             <label
+              aria-checked="true"
               class="container"
               for="toggle-button-42"
+              role="switch"
             >
               <input
                 checked=""
@@ -675,8 +679,10 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
           </div>
           <div>
             <label
+              aria-checked="false"
               class="container"
               for="toggle-button-42"
+              role="switch"
             >
               <input
                 class="input"

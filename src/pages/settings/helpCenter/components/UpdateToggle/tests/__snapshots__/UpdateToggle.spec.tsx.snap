@@ -9,8 +9,10 @@ exports[`<UpdateToggle /> should display the update toggle 1`] = `
       class="container"
     >
       <label
+        aria-checked="true"
         class="container"
         for="toggle-button-1"
+        role="switch"
       >
         <input
           checked=""
