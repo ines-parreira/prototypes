@@ -1,8 +1,10 @@
 import React, {useRef, useState, RefObject} from 'react'
-import {Button, Popover} from 'reactstrap'
+import {Popover} from 'reactstrap'
 import {EmojiData, BaseEmoji} from 'emoji-mart'
 import classNames from 'classnames'
 
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import EmojiPicker from '../../EmojiPicker/EmojiPicker'
 
 import css from './EmojiSelect.less'
@@ -55,17 +57,16 @@ const EmojiSelect = (props: Props) => {
                         />
                         {emoji && (
                             <Button
-                                color="link"
+                                intent={ButtonIntent.Text}
                                 className={css.clearButton}
                                 onClick={() => {
                                     onEmojiClear()
                                     setIsOpen(false)
                                 }}
                             >
-                                <span className={css.clearInner}>
-                                    <i className="icon material-icons">clear</i>{' '}
+                                <ButtonIconLabel icon="clear">
                                     Clear icon
-                                </span>
+                                </ButtonIconLabel>
                             </Button>
                         )}
                     </div>

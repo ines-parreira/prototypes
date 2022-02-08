@@ -110,19 +110,18 @@ exports[`<Paywall /> should ask to upgrade custom plan when missing feature 1`] 
                   to="[object Object]"
                 >
                   <button
-                    class="upgradeButton btn btn-outline-warning"
-                    type="button"
+                    class="wrapper primary medium"
                   >
                     <span
-                      class="mr-2 upgradeLabel"
+                      class="wrapper"
                     >
                       Upgrade to New Enterprise
+                      <i
+                        class="material-icons icon isRight medium"
+                      >
+                        auto_awesome
+                      </i>
                     </span>
-                    <img
-                      alt="upgrade-icon"
-                      class="upgradeIcon"
-                      src="test-file-stub"
-                    />
                   </button>
                 </a>
               </div>
@@ -245,19 +244,18 @@ exports[`<Paywall /> should ask to upgrade legacy plan into new plan 1`] = `
                   to="[object Object]"
                 >
                   <button
-                    class="upgradeButton btn btn-outline-warning"
-                    type="button"
+                    class="wrapper primary medium"
                   >
                     <span
-                      class="mr-2 upgradeLabel"
+                      class="wrapper"
                     >
                       Upgrade to New Advanced
+                      <i
+                        class="material-icons icon isRight medium"
+                      >
+                        auto_awesome
+                      </i>
                     </span>
-                    <img
-                      alt="upgrade-icon"
-                      class="upgradeIcon"
-                      src="test-file-stub"
-                    />
                   </button>
                 </a>
               </div>
@@ -374,19 +372,18 @@ exports[`<Paywall /> should render a page header for the feature with a page hea
                   to="[object Object]"
                 >
                   <button
-                    class="upgradeButton btn btn-outline-warning"
-                    type="button"
+                    class="wrapper primary medium"
                   >
                     <span
-                      class="mr-2 upgradeLabel"
+                      class="wrapper"
                     >
                       Upgrade to Advanced
+                      <i
+                        class="material-icons icon isRight medium"
+                      >
+                        auto_awesome
+                      </i>
                     </span>
-                    <img
-                      alt="upgrade-icon"
-                      class="upgradeIcon"
-                      src="test-file-stub"
-                    />
                   </button>
                 </a>
               </div>
@@ -502,19 +499,18 @@ exports[`<Paywall /> should render lightbox for the feature with a preview 1`] =
                   to="[object Object]"
                 >
                   <button
-                    class="upgradeButton btn btn-outline-warning"
-                    type="button"
+                    class="wrapper primary medium"
                   >
                     <span
-                      class="mr-2 upgradeLabel"
+                      class="wrapper"
                     >
                       Upgrade to Advanced
+                      <i
+                        class="material-icons icon isRight medium"
+                      >
+                        auto_awesome
+                      </i>
                     </span>
-                    <img
-                      alt="upgrade-icon"
-                      class="upgradeIcon"
-                      src="test-file-stub"
-                    />
                   </button>
                 </a>
               </div>
@@ -638,19 +634,18 @@ exports[`<Paywall /> should render paywall screen for the feature 1`] = `
                   to="[object Object]"
                 >
                   <button
-                    class="upgradeButton btn btn-outline-warning"
-                    type="button"
+                    class="wrapper primary medium"
                   >
                     <span
-                      class="mr-2 upgradeLabel"
+                      class="wrapper"
                     >
                       Upgrade to Advanced
+                      <i
+                        class="material-icons icon isRight medium"
+                      >
+                        auto_awesome
+                      </i>
                     </span>
-                    <img
-                      alt="upgrade-icon"
-                      class="upgradeIcon"
-                      src="test-file-stub"
-                    />
                   </button>
                 </a>
               </div>

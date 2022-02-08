@@ -62,24 +62,22 @@ exports[`<ViewSharingModal/> render() should render as private 1`] = `
   <ModalFooter
     tag="div"
   >
-    <Button
+    <ForwardRef
       className="submit"
-      color="success"
-      disabled={true}
-      href="#"
       id="view-sharing-submit"
+      isDisabled={true}
       onClick={[Function]}
-      tag="button"
+      type="button"
     >
       Update view sharing
-    </Button>
-    <Button
-      color="secondary"
+    </ForwardRef>
+    <ForwardRef
+      intent="secondary"
       onClick={[MockFunction]}
-      tag="button"
+      type="button"
     >
       Cancel
-    </Button>
+    </ForwardRef>
   </ModalFooter>
 </Modal>
 `;
@@ -146,24 +144,22 @@ exports[`<ViewSharingModal/> render() should render as public 1`] = `
   <ModalFooter
     tag="div"
   >
-    <Button
+    <ForwardRef
       className="submit"
-      color="success"
-      disabled={true}
-      href="#"
       id="view-sharing-submit"
+      isDisabled={true}
       onClick={[Function]}
-      tag="button"
+      type="button"
     >
       Update view sharing
-    </Button>
-    <Button
-      color="secondary"
+    </ForwardRef>
+    <ForwardRef
+      intent="secondary"
       onClick={[MockFunction]}
-      tag="button"
+      type="button"
     >
       Cancel
-    </Button>
+    </ForwardRef>
   </ModalFooter>
 </Modal>
 `;
@@ -230,24 +226,22 @@ exports[`<ViewSharingModal/> render() should render as shared 1`] = `
   <ModalFooter
     tag="div"
   >
-    <Button
+    <ForwardRef
       className="submit"
-      color="success"
-      disabled={true}
-      href="#"
       id="view-sharing-submit"
+      isDisabled={true}
       onClick={[Function]}
-      tag="button"
+      type="button"
     >
       Update view sharing
-    </Button>
-    <Button
-      color="secondary"
+    </ForwardRef>
+    <ForwardRef
+      intent="secondary"
       onClick={[MockFunction]}
-      tag="button"
+      type="button"
     >
       Cancel
-    </Button>
+    </ForwardRef>
   </ModalFooter>
   <UncontrolledTooltip
     placement="top"

@@ -62,19 +62,18 @@ exports[`<AutomationSection /> should render 1`] = `
         class="d-flex align-items-center upgradeLink"
       >
         <button
-          class="upgradeButton btn btn-outline-warning"
-          type="button"
+          class="wrapper primary medium"
         >
           <span
-            class="mr-2 upgradeLabel"
+            class="wrapper"
           >
             Subscribe
+            <i
+              class="material-icons icon isRight medium"
+            >
+              auto_awesome
+            </i>
           </span>
-          <img
-            alt="upgrade-icon"
-            class="upgradeIcon"
-            src="test-file-stub"
-          />
         </button>
       </div>
     </div>
@@ -231,19 +230,18 @@ exports[`<AutomationSection /> should render for customers already with legacy a
         class="d-flex align-items-center upgradeLink"
       >
         <button
-          class="upgradeButton btn btn-outline-warning"
-          type="button"
+          class="wrapper primary medium"
         >
           <span
-            class="mr-2 upgradeLabel"
+            class="wrapper"
           >
             Subscribe
+            <i
+              class="material-icons icon isRight medium"
+            >
+              auto_awesome
+            </i>
           </span>
-          <img
-            alt="upgrade-icon"
-            class="upgradeIcon"
-            src="test-file-stub"
-          />
         </button>
       </div>
     </div>
@@ -316,19 +314,18 @@ exports[`<AutomationSection /> should render for trialing customers 1`] = `
           to="[object Object]"
         >
           <button
-            class="upgradeButton btn btn-outline-warning"
-            type="button"
+            class="wrapper primary medium"
           >
             <span
-              class="mr-2 upgradeLabel"
+              class="wrapper"
             >
               Subscribe
+              <i
+                class="material-icons icon isRight medium"
+              >
+                auto_awesome
+              </i>
             </span>
-            <img
-              alt="upgrade-icon"
-              class="upgradeIcon"
-              src="test-file-stub"
-            />
           </button>
         </a>
       </div>

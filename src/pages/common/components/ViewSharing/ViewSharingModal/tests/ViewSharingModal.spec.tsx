@@ -1,8 +1,8 @@
 import React from 'react'
-import {Button} from 'reactstrap'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
+import Button from 'pages/common/components/button/Button'
 import {
     advancedPlan,
     basicPlan,

@@ -3,6 +3,7 @@ import {shallow} from 'enzyme'
 import {EditorState} from 'draft-js'
 import _noop from 'lodash/noop'
 
+import Button from 'pages/common/components/button/Button'
 import {AddLinkContainer} from '../AddLink'
 
 describe('<AddLink />', () => {
@@ -28,16 +29,16 @@ describe('<AddLink />', () => {
                 url="http://gorgias.io"
             />
         )
-        const button = component.find('Button')
-        expect(button.props().disabled).toBe(false)
+        const button = component.find(Button)
+        expect(button.props().isDisabled).toBe(false)
     })
 
     it('should allow to submit a url without the protocol', () => {
         const component = shallow(
             <AddLinkContainer {...defaultProps} text="foo" url="gorgias.io" />
         )
-        const button = component.find('Button')
-        expect(button.props().disabled).toBe(false)
+        const button = component.find(Button)
+        expect(button.props().isDisabled).toBe(false)
     })
 
     it('should NOT allow to submit an invalid url', () => {
@@ -48,8 +49,8 @@ describe('<AddLink />', () => {
                 url="{{ticket.url_something}}"
             />
         )
-        const button = component.find('Button')
-        expect(button.props().disabled).toBe(true)
+        const button = component.find(Button)
+        expect(button.props().isDisabled).toBe(true)
     })
 
     it('should allow to submit an url with a variable', () => {
@@ -60,7 +61,7 @@ describe('<AddLink />', () => {
                 url="http://google.com/?email={{message.customer.email}}"
             />
         )
-        const button = component.find('Button')
-        expect(button.props().disabled).toBe(false)
+        const button = component.find(Button)
+        expect(button.props().isDisabled).toBe(false)
     })
 })

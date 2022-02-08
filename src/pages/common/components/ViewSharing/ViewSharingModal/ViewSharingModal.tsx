@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {
-    Button,
     Modal,
     ModalBody,
     ModalFooter,
@@ -11,6 +10,7 @@ import {fromJS, Map, List} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 import {AxiosError} from 'axios'
 
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import GorgiasApi from '../../../../../services/gorgiasApi'
 import {notify} from '../../../../../state/notifications/actions'
 import {RootState} from '../../../../../state/types'
@@ -93,16 +93,19 @@ export function ViewSharingModalContainer({
             </ModalBody>
             <ModalFooter>
                 <Button
-                    color="success"
                     id="view-sharing-submit"
                     className={css.submit}
-                    disabled={disabled}
-                    href="#"
+                    isDisabled={disabled}
+                    type="button"
                     onClick={() => save(onSaveSuccess)}
                 >
                     Update view sharing
                 </Button>
-                <Button color="secondary" onClick={toggle}>
+                <Button
+                    intent={ButtonIntent.Secondary}
+                    onClick={toggle}
+                    type="button"
+                >
                     Cancel
                 </Button>
             </ModalFooter>

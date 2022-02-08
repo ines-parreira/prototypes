@@ -1,8 +1,8 @@
 import {EditorState, Modifier} from 'draft-js'
 import React, {Component, KeyboardEvent} from 'react'
-import {Button} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 
+import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/InputField'
 import {removeLink} from '../../utils'
 import {
@@ -212,9 +212,9 @@ export class AddLinkContainer extends Component<Props> {
                         autoFocus={!!this.props.text}
                     />
                     <Button
-                        color="primary"
-                        disabled={!this._isValid()}
+                        isDisabled={!this._isValid()}
                         onClick={this._submit}
+                        type="button"
                     >
                         {this.props.entityKey ? 'Update Link' : 'Insert Link'}
                     </Button>

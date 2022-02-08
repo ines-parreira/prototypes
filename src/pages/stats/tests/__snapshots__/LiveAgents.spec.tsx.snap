@@ -29,23 +29,19 @@ exports[`LiveAgents should not render the filters nor the stats when stats filte
           Live agents
         </span>
         <button
-          class="wrapper ml-3 btn btn-secondary"
+          class="wrapper wrapper ml-3 secondary medium"
           type="button"
         >
-          <div
-            class="content"
+          <span
+            class="wrapper"
           >
             <i
-              class="icon material-icons"
+              class="material-icons icon isLeft medium"
             >
               info_outline
             </i>
-            <span
-              class="label ml-1"
-            >
-              Learn
-            </span>
-          </div>
+            Learn
+          </span>
         </button>
       </h1>
       <div>
@@ -83,23 +79,19 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
           Live agents
         </span>
         <button
-          class="wrapper ml-3 btn btn-secondary"
+          class="wrapper wrapper ml-3 secondary medium"
           type="button"
         >
-          <div
-            class="content"
+          <span
+            class="wrapper"
           >
             <i
-              class="icon material-icons"
+              class="material-icons icon isLeft medium"
             >
               info_outline
             </i>
-            <span
-              class="label ml-1"
-            >
-              Learn
-            </span>
-          </div>
+            Learn
+          </span>
         </button>
       </h1>
       <div>

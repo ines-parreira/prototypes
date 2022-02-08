@@ -113,19 +113,18 @@ exports[`withFeaturePaywall should not render the passed component when the feat
                     to="[object Object]"
                   >
                     <button
-                      class="upgradeButton btn btn-outline-warning"
-                      type="button"
+                      class="wrapper primary medium"
                     >
                       <span
-                        class="mr-2 upgradeLabel"
+                        class="wrapper"
                       >
                         Upgrade to Advanced
+                        <i
+                          class="material-icons icon isRight medium"
+                        >
+                          auto_awesome
+                        </i>
                       </span>
-                      <img
-                        alt="upgrade-icon"
-                        class="upgradeIcon"
-                        src="test-file-stub"
-                      />
                     </button>
                   </a>
                 </div>
@@ -262,19 +261,18 @@ exports[`withFeaturePaywall should pass custom paywall configuration props 1`] =
                     to="[object Object]"
                   >
                     <button
-                      class="upgradeButton btn btn-outline-warning"
-                      type="button"
+                      class="wrapper primary medium"
                     >
                       <span
-                        class="mr-2 upgradeLabel"
+                        class="wrapper"
                       >
                         Upgrade to Advanced
+                        <i
+                          class="material-icons icon isRight medium"
+                        >
+                          auto_awesome
+                        </i>
                       </span>
-                      <img
-                        alt="upgrade-icon"
-                        class="upgradeIcon"
-                        src="test-file-stub"
-                      />
                     </button>
                   </a>
                 </div>

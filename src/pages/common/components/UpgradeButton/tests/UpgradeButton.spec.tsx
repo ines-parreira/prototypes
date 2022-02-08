@@ -11,12 +11,7 @@ describe('UpgradeButton', () => {
 
     it('should display with custom props', () => {
         const {container} = render(
-            <UpgradeButton
-                label="a label"
-                size="sm"
-                hasInvertedColors
-                className="button-class"
-            />
+            <UpgradeButton label="a label" className="button-class" />
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -25,8 +20,6 @@ describe('UpgradeButton', () => {
         const {container} = render(
             <UpgradeButton
                 label="a label"
-                size="sm"
-                hasInvertedColors
                 className="button-class"
                 onClick={jest.fn()}
             />

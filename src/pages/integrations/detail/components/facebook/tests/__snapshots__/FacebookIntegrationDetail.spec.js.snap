@@ -525,7 +525,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
               >
                 <UpgradeButton
                   className="ml-1 py-0 px-1"
-                  hasInvertedColors={true}
                   segmentEventToSend={
                     Object {
                       "name": "paywall-upgrade-button-selected",
@@ -536,7 +535,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
                       },
                     }
                   }
-                  size="sm"
+                  size="small"
                 />
               </td>
             </tr>
@@ -1260,7 +1259,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
               >
                 <UpgradeButton
                   className="ml-1 py-0 px-1"
-                  hasInvertedColors={true}
                   segmentEventToSend={
                     Object {
                       "name": "paywall-upgrade-button-selected",
@@ -1271,7 +1269,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
                       },
                     }
                   }
-                  size="sm"
+                  size="small"
                 />
               </td>
             </tr>

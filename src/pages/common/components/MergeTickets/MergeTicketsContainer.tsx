@@ -4,6 +4,7 @@ import {fromJS, Map, List} from 'immutable'
 import {Form} from 'reactstrap'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Modal from '../Modal'
 import {mergeTickets} from '../../../../state/mergeTickets/actions'
@@ -154,10 +155,9 @@ class MergeTicketsContainer extends React.Component<Props, State> {
                                     }
                                     isDisabled={isLoading}
                                 >
-                                    <i className="material-icons mr-2">
-                                        arrow_back
-                                    </i>
-                                    Back
+                                    <ButtonIconLabel icon="arrow_back">
+                                        Back
+                                    </ButtonIconLabel>
                                 </Button>
                             </div>
                             <div

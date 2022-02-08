@@ -55,12 +55,11 @@ exports[`MergeTicketsContainer component should render the build component if th
           onClick={[Function]}
           type="button"
         >
-          <i
-            className="material-icons mr-2"
+          <ButtonIconLabel
+            icon="arrow_back"
           >
-            arrow_back
-          </i>
-          Back
+            Back
+          </ButtonIconLabel>
         </ForwardRef>
       </div>
       <div

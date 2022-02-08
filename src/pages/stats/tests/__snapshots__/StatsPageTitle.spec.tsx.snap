@@ -9,23 +9,19 @@ exports[`StatsPageTitle should render the title 1`] = `
       Foo
     </span>
     <button
-      class="wrapper ml-3 btn btn-secondary"
+      class="wrapper wrapper ml-3 secondary medium"
       type="button"
     >
-      <div
-        class="content"
+      <span
+        class="wrapper"
       >
         <i
-          class="icon material-icons"
+          class="material-icons icon isLeft medium"
         >
           info_outline
         </i>
-        <span
-          class="label ml-1"
-        >
-          Learn
-        </span>
-      </div>
+        Learn
+      </span>
     </button>
   </h1>
 </div>

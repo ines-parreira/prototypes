@@ -1,7 +1,7 @@
 import React, {KeyboardEvent, Component} from 'react'
 import classnames from 'classnames'
-import {Button} from 'reactstrap'
 
+import Button from 'pages/common/components/button/Button'
 import FileField from '../../../../forms/FileField'
 import {ActionInjectedProps} from '../types'
 import {getMaxAttachmentSize} from '../../../../../../utils/file'
@@ -146,9 +146,8 @@ export default class AddImage extends Component<Props, State> {
                         />
                         <Button
                             type="button"
-                            color="primary"
                             className="ml-2"
-                            disabled={!this.state.url}
+                            isDisabled={!this.state.url}
                             onClick={this._submit}
                         >
                             Insert

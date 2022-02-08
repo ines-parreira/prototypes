@@ -208,19 +208,18 @@ exports[`<BillingUsage/> should display price 1`] = `
             class="d-flex align-items-center upgradeLink"
           >
             <button
-              class="upgradeButton btn btn-outline-warning"
-              type="button"
+              class="wrapper primary medium"
             >
               <span
-                class="mr-2 upgradeLabel"
+                class="wrapper"
               >
                 Subscribe
+                <i
+                  class="material-icons icon isRight medium"
+                >
+                  auto_awesome
+                </i>
               </span>
-              <img
-                alt="upgrade-icon"
-                class="upgradeIcon"
-                src="test-file-stub"
-              />
             </button>
           </div>
         </div>
@@ -447,19 +446,18 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
             class="d-flex align-items-center upgradeLink"
           >
             <button
-              class="upgradeButton btn btn-outline-warning"
-              type="button"
+              class="wrapper primary medium"
             >
               <span
-                class="mr-2 upgradeLabel"
+                class="wrapper"
               >
                 Subscribe
+                <i
+                  class="material-icons icon isRight medium"
+                >
+                  auto_awesome
+                </i>
               </span>
-              <img
-                alt="upgrade-icon"
-                class="upgradeIcon"
-                src="test-file-stub"
-              />
             </button>
           </div>
         </div>

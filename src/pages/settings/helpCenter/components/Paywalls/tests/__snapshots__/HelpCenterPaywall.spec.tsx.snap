@@ -75,19 +75,18 @@ exports[`HelpCenterPaywall should render the component correctly "for" Pro legac
                   class="d-flex align-items-center upgradeLink"
                 >
                   <button
-                    class="upgradeButton btn btn-outline-warning"
-                    type="button"
+                    class="wrapper primary medium"
                   >
                     <span
-                      class="mr-2 upgradeLabel"
+                      class="wrapper"
                     >
                       Upgrade Your Plan
+                      <i
+                        class="material-icons icon isRight medium"
+                      >
+                        auto_awesome
+                      </i>
                     </span>
-                    <img
-                      alt="upgrade-icon"
-                      class="upgradeIcon"
-                      src="test-file-stub"
-                    />
                   </button>
                 </div>
               </div>
@@ -176,19 +175,18 @@ exports[`HelpCenterPaywall should render the component correctly for "Advanced" 
                   class="d-flex align-items-center upgradeLink"
                 >
                   <button
-                    class="upgradeButton btn btn-outline-warning"
-                    type="button"
+                    class="wrapper primary medium"
                   >
                     <span
-                      class="mr-2 upgradeLabel"
+                      class="wrapper"
                     >
                       Upgrade Your Plan
+                      <i
+                        class="material-icons icon isRight medium"
+                      >
+                        auto_awesome
+                      </i>
                     </span>
-                    <img
-                      alt="upgrade-icon"
-                      class="upgradeIcon"
-                      src="test-file-stub"
-                    />
                   </button>
                 </div>
               </div>
@@ -276,19 +274,18 @@ exports[`HelpCenterPaywall should render the component correctly for "Basic" leg
                   class="d-flex align-items-center upgradeLink"
                 >
                   <button
-                    class="upgradeButton btn btn-outline-warning"
-                    type="button"
+                    class="wrapper primary medium"
                   >
                     <span
-                      class="mr-2 upgradeLabel"
+                      class="wrapper"
                     >
                       Upgrade Your Plan
+                      <i
+                        class="material-icons icon isRight medium"
+                      >
+                        auto_awesome
+                      </i>
                     </span>
-                    <img
-                      alt="upgrade-icon"
-                      class="upgradeIcon"
-                      src="test-file-stub"
-                    />
                   </button>
                 </div>
               </div>
@@ -377,19 +374,18 @@ exports[`HelpCenterPaywall should render the component correctly for "Enterprise
                   class="d-flex align-items-center upgradeLink"
                 >
                   <button
-                    class="upgradeButton btn btn-outline-warning"
-                    type="button"
+                    class="wrapper primary medium"
                   >
                     <span
-                      class="mr-2 upgradeLabel"
+                      class="wrapper"
                     >
                       Contact Us
+                      <i
+                        class="material-icons icon isRight medium"
+                      >
+                        auto_awesome
+                      </i>
                     </span>
-                    <img
-                      alt="upgrade-icon"
-                      class="upgradeIcon"
-                      src="test-file-stub"
-                    />
                   </button>
                 </div>
               </div>

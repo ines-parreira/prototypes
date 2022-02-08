@@ -13,26 +13,23 @@ exports[`<AutomationStatsSelfServiceMetric /> should render paywall 1`] = `
     <div
       class="mt-3 button"
     >
-      <div
-        class=""
-      >
+      <div>
         <div
           class="d-flex align-items-center upgradeLink"
         >
           <button
-            class="upgradeButton btn btn-outline-warning"
-            type="button"
+            class="wrapper primary medium"
           >
             <span
-              class="mr-2 upgradeLabel"
+              class="wrapper"
             >
               Get Automation Features
+              <i
+                class="material-icons icon isRight medium"
+              >
+                auto_awesome
+              </i>
             </span>
-            <img
-              alt="upgrade-icon"
-              class="upgradeIcon"
-              src="test-file-stub"
-            />
           </button>
         </div>
       </div>
@@ -95,26 +92,23 @@ exports[`<AutomationStatsSelfServiceMetric /> should render setup and paywall 1`
     <div
       class="mt-3 button"
     >
-      <div
-        class=""
-      >
+      <div>
         <div
           class="d-flex align-items-center upgradeLink"
         >
           <button
-            class="upgradeButton btn btn-outline-warning"
-            type="button"
+            class="wrapper primary medium"
           >
             <span
-              class="mr-2 upgradeLabel"
+              class="wrapper"
             >
               Get Automation Features
+              <i
+                class="material-icons icon isRight medium"
+              >
+                auto_awesome
+              </i>
             </span>
-            <img
-              alt="upgrade-icon"
-              class="upgradeIcon"
-              src="test-file-stub"
-            />
           </button>
         </div>
       </div>
@@ -225,26 +219,23 @@ exports[`<AutomationStatsSelfServiceMetric /> should render stats and paywall 1`
     <div
       class="mt-3 button"
     >
-      <div
-        class=""
-      >
+      <div>
         <div
           class="d-flex align-items-center upgradeLink"
         >
           <button
-            class="upgradeButton btn btn-outline-warning"
-            type="button"
+            class="wrapper primary medium"
           >
             <span
-              class="mr-2 upgradeLabel"
+              class="wrapper"
             >
               Get Automation Features
+              <i
+                class="material-icons icon isRight medium"
+              >
+                auto_awesome
+              </i>
             </span>
-            <img
-              alt="upgrade-icon"
-              class="upgradeIcon"
-              src="test-file-stub"
-            />
           </button>
         </div>
       </div>

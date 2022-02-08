@@ -8,19 +8,18 @@ exports[`UpgradeButton should display with custom callback 1`] = `
     class="d-flex align-items-center upgradeLink"
   >
     <button
-      class="upgradeButton sm invertedColors btn btn-outline-warning"
-      type="button"
+      class="wrapper primary medium"
     >
       <span
-        class="mr-2 upgradeLabel sm"
+        class="wrapper"
       >
         a label
+        <i
+          class="material-icons icon isRight medium"
+        >
+          auto_awesome
+        </i>
       </span>
-      <img
-        alt="upgrade-icon"
-        class="upgradeIcon sm"
-        src="test-file-stub"
-      />
     </button>
   </div>
 </div>
@@ -37,19 +36,18 @@ exports[`UpgradeButton should display with custom props 1`] = `
       to="[object Object]"
     >
       <button
-        class="upgradeButton sm invertedColors btn btn-outline-warning"
-        type="button"
+        class="wrapper primary medium"
       >
         <span
-          class="mr-2 upgradeLabel sm"
+          class="wrapper"
         >
           a label
+          <i
+            class="material-icons icon isRight medium"
+          >
+            auto_awesome
+          </i>
         </span>
-        <img
-          alt="upgrade-icon"
-          class="upgradeIcon sm"
-          src="test-file-stub"
-        />
       </button>
     </a>
   </div>
@@ -57,9 +55,7 @@ exports[`UpgradeButton should display with custom props 1`] = `
 `;
 
 exports[`UpgradeButton should display with default props 1`] = `
-<div
-  class=""
->
+<div>
   <div
     class="d-flex align-items-center upgradeLink"
   >
@@ -67,19 +63,18 @@ exports[`UpgradeButton should display with default props 1`] = `
       to="[object Object]"
     >
       <button
-        class="upgradeButton btn btn-outline-warning"
-        type="button"
+        class="wrapper primary medium"
       >
         <span
-          class="mr-2 upgradeLabel"
+          class="wrapper"
         >
           Upgrade
+          <i
+            class="material-icons icon isRight medium"
+          >
+            auto_awesome
+          </i>
         </span>
-        <img
-          alt="upgrade-icon"
-          class="upgradeIcon"
-          src="test-file-stub"
-        />
       </button>
     </a>
   </div>

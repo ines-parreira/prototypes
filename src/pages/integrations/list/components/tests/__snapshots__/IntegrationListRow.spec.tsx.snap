@@ -171,19 +171,18 @@ exports[`IntegrationListRow should display an integration with upgrade requireme
             to="[object Object]"
           >
             <button
-              class="upgradeButton sm invertedColors btn btn-outline-warning"
-              type="button"
+              class="wrapper primary small"
             >
               <span
-                class="mr-2 upgradeLabel sm"
+                class="wrapper"
               >
                 Upgrade
+                <i
+                  class="material-icons icon isRight small"
+                >
+                  auto_awesome
+                </i>
               </span>
-              <img
-                alt="upgrade-icon"
-                class="upgradeIcon sm"
-                src="test-file-stub"
-              />
             </button>
           </a>
         </div>

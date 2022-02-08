@@ -198,26 +198,23 @@ exports[`<SelfServicePreferencesView/> ToggleInput.onChange() should deactivate 
                           Let customers report an issue with an order
                         </span>
                       </div>
-                      <div
-                        class=""
-                      >
+                      <div>
                         <div
                           class="d-flex align-items-center upgradeLink"
                         >
                           <button
-                            class="upgradeButton btn btn-outline-warning"
-                            type="button"
+                            class="wrapper primary medium"
                           >
                             <span
-                              class="mr-2 upgradeLabel"
+                              class="wrapper"
                             >
                               Get Automation Features
+                              <i
+                                class="material-icons icon isRight medium"
+                              >
+                                auto_awesome
+                              </i>
                             </span>
-                            <img
-                              alt="upgrade-icon"
-                              class="upgradeIcon"
-                              src="test-file-stub"
-                            />
                           </button>
                         </div>
                       </div>
@@ -556,26 +553,23 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                           Let customers report an issue with an order
                         </span>
                       </div>
-                      <div
-                        class=""
-                      >
+                      <div>
                         <div
                           class="d-flex align-items-center upgradeLink"
                         >
                           <button
-                            class="upgradeButton btn btn-outline-warning"
-                            type="button"
+                            class="wrapper primary medium"
                           >
                             <span
-                              class="mr-2 upgradeLabel"
+                              class="wrapper"
                             >
                               Get Automation Features
+                              <i
+                                class="material-icons icon isRight medium"
+                              >
+                                auto_awesome
+                              </i>
                             </span>
-                            <img
-                              alt="upgrade-icon"
-                              class="upgradeIcon"
-                              src="test-file-stub"
-                            />
                           </button>
                         </div>
                       </div>
