@@ -51,6 +51,9 @@ const sourceTypeToIcon = (
         case TicketMessageSourceType.Twilio:
             icon.name = 'phone'
             break
+        case TicketMessageSourceType.Sms:
+            icon.name = 'sms'
+            break
         case TicketChannel.FacebookMention:
         case TicketMessageSourceType.FacebookComment:
         case TicketMessageSourceType.FacebookReviewComment:

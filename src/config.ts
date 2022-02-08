@@ -164,6 +164,12 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         requiredFeature: AccountFeature.PhoneIntegration,
     },
     {
+        type: IntegrationType.Sms,
+        title: 'SMS',
+        description: 'Chat with your customers via SMS from Gorgias.',
+        requiredFeature: AccountFeature.PhoneIntegration,
+    },
+    {
         type: IntegrationType.GorgiasChat,
         title: 'Chat',
         description: 'Add a chat on your website.',

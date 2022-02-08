@@ -16,6 +16,7 @@ export enum IntegrationType {
     Yotpo = 'yotpo',
     Klaviyo = 'klaviyo',
     Phone = 'phone',
+    Sms = 'sms',
     Twitter = 'twitter',
     SelfService = 'self_service',
 }

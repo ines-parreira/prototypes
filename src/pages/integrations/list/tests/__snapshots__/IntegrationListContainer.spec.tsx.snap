@@ -1,5 +1,159 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<IntegrationListContainer /> SMS integrations feature flag should include SMS tile SMS preview accounts 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <h1
+      class="d-flex align-items-center"
+    >
+      Integrations
+    </h1>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="mb-4 row"
+      data-candu-id="integrations-list-description"
+    >
+      <div
+        class="col-md-10"
+      >
+        <p>
+          Gorgias is most useful when you connect it to other applications. Integrations let you communicate with customers through multiple channels, pull more information about them and perform actions in outside tools directly from Gorgias.
+        </p>
+      </div>
+    </div>
+    <div
+      class="row"
+    >
+      <div
+        class="col"
+      >
+        <a
+          class="component link card d-flex flex-row align-items-center"
+          to="/app/settings/integrations/sms"
+        >
+          <div
+            class="icon d-flex align-items-center justify-content-center"
+          >
+            <i
+              class="icon d-inline-block material-icons"
+            >
+              sms
+            </i>
+          </div>
+          <div
+            class="flex-grow mr-1"
+          >
+            <div
+              class="d-flex align-items-start"
+            >
+              <h5
+                class="title"
+              >
+                SMS
+              </h5>
+            </div>
+          </div>
+          <div>
+            <div
+              class="action"
+            >
+              <i
+                class="material-icons md-1"
+              >
+                navigate_next
+              </i>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<IntegrationListContainer /> SMS integrations feature flag should not include SMS tile for all other accounts 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <h1
+      class="d-flex align-items-center"
+    >
+      Integrations
+    </h1>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="mb-4 row"
+      data-candu-id="integrations-list-description"
+    >
+      <div
+        class="col-md-10"
+      >
+        <p>
+          Gorgias is most useful when you connect it to other applications. Integrations let you communicate with customers through multiple channels, pull more information about them and perform actions in outside tools directly from Gorgias.
+        </p>
+      </div>
+    </div>
+    <div
+      class="row"
+    >
+      <div
+        class="col"
+      >
+        <a
+          class="component link card d-flex flex-row align-items-center"
+          to="/app/settings/integrations/email"
+        >
+          <div
+            class="icon d-flex align-items-center justify-content-center"
+          >
+            <i
+              class="icon d-inline-block material-icons"
+            >
+              email
+            </i>
+          </div>
+          <div
+            class="flex-grow mr-1"
+          >
+            <div
+              class="d-flex align-items-start"
+            >
+              <h5
+                class="title"
+              />
+            </div>
+          </div>
+          <div>
+            <div
+              class="action"
+            >
+              <i
+                class="material-icons md-1"
+              >
+                navigate_next
+              </i>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<IntegrationListContainer /> should display content 1`] = `
 <div
   class="full-width"

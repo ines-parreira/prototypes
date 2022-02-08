@@ -15,6 +15,7 @@ import type {ZendeskIntegration} from './zendesk'
 import type {YotpoIntegration} from './yotpo'
 import type {KlaviyoIntegration} from './klaviyo'
 import type {PhoneIntegration} from './phone'
+import type {SmsIntegration} from './sms'
 import type {TwitterIntegration} from './twitter'
 import {SelfServiceIntegration} from './selfService'
 
@@ -45,6 +46,7 @@ export * from './zendesk'
 export * from './yotpo'
 export * from './klaviyo'
 export * from './phone'
+export * from './sms'
 export * from './twitter'
 export * from './selfService'
 
@@ -66,5 +68,6 @@ export type Integration =
     | YotpoIntegration
     | KlaviyoIntegration
     | PhoneIntegration
+    | SmsIntegration
     | TwitterIntegration
     | SelfServiceIntegration

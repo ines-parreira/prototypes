@@ -10,6 +10,7 @@ describe('<IntegrationListContainer />', () => {
         activeIntegrations: 0,
         allowedIntegrations: 100,
         currentPlan: fromJS({}),
+        currentAccount: fromJS({}),
         integrations: fromJS([]),
         integrationsConfig: fromJS([{type: 'email'}]),
         plans: fromJS({}),
@@ -25,5 +26,36 @@ describe('<IntegrationListContainer />', () => {
         render(<IntegrationListContainer {...minProps} />)
 
         expect(minProps.fetchIntegrations).toHaveBeenCalled()
+    })
+
+    describe('SMS integrations feature flag', () => {
+        const smsMinProps = {
+            ...minProps,
+            integrationsConfig: fromJS([{type: 'sms', title: 'SMS'}]),
+        }
+
+        it('should include SMS tile SMS preview accounts', () => {
+            const props = {
+                ...smsMinProps,
+                currentAccount: fromJS({
+                    domain: 'acme',
+                }),
+            }
+            const {container, queryByText} = render(
+                <IntegrationListContainer {...props} />
+            )
+
+            expect(queryByText('SMS')).not.toBeFalsy()
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should not include SMS tile for all other accounts', () => {
+            const {container, queryByText} = render(
+                <IntegrationListContainer {...minProps} />
+            )
+
+            expect(queryByText('SMS')).toBeFalsy()
+            expect(container.firstChild).toMatchSnapshot()
+        })
     })
 })

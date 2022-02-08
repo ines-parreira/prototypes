@@ -2,15 +2,16 @@ import React from 'react'
 import {Col, Container, Row} from 'reactstrap'
 import {List, Map} from 'immutable'
 
-import {IntegrationType} from '../../../../models/integration/types'
-import {getCheapestPlanNameForFeature} from '../../../../utils/paywalls'
-import {toJS} from '../../../../utils'
-import PageHeader from '../../../common/components/PageHeader'
-import {AlertType} from '../../../common/components/Alert/Alert'
-import LinkAlert from '../../../common/components/Alert/LinkAlert'
+import {IntegrationType} from 'models/integration/types'
+import {getCheapestPlanNameForFeature} from 'utils/paywalls'
+import {toJS} from 'utils'
+import PageHeader from 'pages/common/components/PageHeader'
+import {AlertType} from 'pages/common/components/Alert/Alert'
+import LinkAlert from 'pages/common/components/Alert/LinkAlert'
+import {SMS_INTEGRATION_PREVIEW_ACCOUNTS} from 'models/phoneNumber/constants'
 
-import {isFeatureEnabled} from '../../../../utils/account'
-import css from '../../../settings/settings.less'
+import {isFeatureEnabled} from 'utils/account'
+import css from 'pages/settings/settings.less'
 
 import IntegrationListRow from './IntegrationListRow'
 
@@ -18,6 +19,7 @@ type Props = {
     integrations: List<Map<string, any>>
     integrationsConfig: List<Map<string, any>>
     currentPlan: Map<any, any>
+    currentAccount: Map<any, any>
     allowedIntegrations: number
     activeIntegrations: number
     plans: Map<any, any>
@@ -139,7 +141,8 @@ export default class IntegrationList extends React.Component<Props> {
     }
 
     render() {
-        const {currentPlan, integrationsConfig, plans} = this.props
+        const {currentPlan, currentAccount, integrationsConfig, plans} =
+            this.props
         const hasActiveSmoochInsideIntegrations =
             this._hasActiveSmoochInsideIntegrations()
         const hasTwitterIntegrations = this._hasTwitterIntegrations()
@@ -161,6 +164,15 @@ export default class IntegrationList extends React.Component<Props> {
                 if (
                     integration!.get('type') === IntegrationType.Klaviyo &&
                     !hasKlaviyoIntegrations
+                ) {
+                    return false
+                }
+
+                if (
+                    integration!.get('type') === IntegrationType.Sms &&
+                    !SMS_INTEGRATION_PREVIEW_ACCOUNTS.includes(
+                        currentAccount.get('domain')
+                    )
                 ) {
                     return false
                 }

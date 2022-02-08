@@ -25,6 +25,7 @@ export enum TicketMessageSourceType {
     InternalNote = 'internal-note',
     OttspottCall = 'ottspott-call',
     Phone = 'phone',
+    Sms = 'sms',
     SystemMessage = 'system-message',
     Twilio = 'twilio',
     YotpoReview = 'yotpo-review',
