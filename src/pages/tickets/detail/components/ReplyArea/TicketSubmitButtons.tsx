@@ -183,11 +183,13 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                 </div>
                 {!isHidingTips && (
                     <small className="text-faded d-none d-md-inline-block">
-                        <i className="material-icons md-1 mr-1">info</i>
+                        <i className="material-icons md-1 mr-1 align-text-bottom">
+                            info
+                        </i>
                         {this.tip}
                         <i
                             id="hide-helpers-button"
-                            className="material-icons md-1 cursor-pointer ml-1 mr-1"
+                            className="material-icons md-1 cursor-pointer ml-1 mr-1 align-text-bottom"
                             onClick={this.hideTips}
                         >
                             close
