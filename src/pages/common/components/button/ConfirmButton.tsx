@@ -62,6 +62,7 @@ export default function ConfirmButton({
             }
         }
         e.preventDefault()
+        e.stopPropagation()
         setIsOpened(true)
     }, [])
 
@@ -93,6 +94,9 @@ export default function ConfirmButton({
                     isOpen={isOpened}
                     placement={placement}
                     target={uid}
+                    onClick={(e) => {
+                        e.stopPropagation()
+                    }}
                     toggle={() => setIsOpened(false)}
                     trigger="legacy"
                 >

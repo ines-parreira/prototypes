@@ -11,7 +11,7 @@ jest.mock('reactstrap', () => {
     return {
         ...reactstrap,
         Popover: (props: Record<string, any>) => {
-            return props.isOpen ? <div>{props.children}</div> : null
+            return props.isOpen ? <div {...props}>{props.children}</div> : null
         },
     }
 })
@@ -90,5 +90,19 @@ describe('<ConfirmButton />', () => {
         fireEvent.click(getByText(/Confirm/i))
         unmount()
         expect(window.clearTimeout).toHaveBeenCalled()
+    })
+
+    it('should prevent the event bubbling from the confirmation popover', () => {
+        const mockHandleClick = jest.fn()
+
+        const {getByText} = render(
+            <div onClick={mockHandleClick}>
+                <ConfirmButton {...defaultProps}>Click me!</ConfirmButton>
+            </div>
+        )
+
+        fireEvent.click(getByText(/Click me!/i))
+        fireEvent.click(getByText(/Confirm/i))
+        expect(mockHandleClick).not.toHaveBeenCalled()
     })
 })
