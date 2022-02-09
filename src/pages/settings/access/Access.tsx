@@ -4,6 +4,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {Button, Container, Form} from 'reactstrap'
 
 import googleLogo from 'assets/img/integrations/google.svg'
+import microsoftLogo from 'assets/img/integrations/microsoft.svg'
 import InputField from 'pages/common/forms/InputField'
 import PageHeader from 'pages/common/components/PageHeader'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
@@ -22,7 +23,8 @@ type Props = ConnectedProps<typeof connector>
 
 enum LoadingKey {
     Settings = 'settings',
-    SSO = 'sso',
+    GoogleSSO = 'sso_google',
+    Office365SSO = 'sso_office_365',
 }
 
 const FORBIDDEN_DOMAINS = ['gmail.com', 'outlook.com']
@@ -57,6 +59,10 @@ export const AccessContainer = (props: Props) => {
         ['data', 'google_sso_enabled'],
         false
     )
+    const office365SsoEnabled: boolean = accessSettings.getIn(
+        ['data', 'office365_sso_enabled'],
+        false
+    )
 
     const [isLoading, setIsLoading] = useState<LoadingKey>()
     const [signupMode, setSignupMode] = useState(signupModeSetting)
@@ -82,6 +88,7 @@ export const AccessContainer = (props: Props) => {
                 signup_mode: signupMode,
                 allowed_domains: splitDomains(allowedDomains),
                 google_sso_enabled: googleSsoEnabled,
+                office365_sso_enabled: office365SsoEnabled,
             }
 
             setIsLoading(loadingKey)
@@ -101,15 +108,29 @@ export const AccessContainer = (props: Props) => {
             submitSetting,
             accessSettings,
             googleSsoEnabled,
+            office365SsoEnabled,
         ]
     )
 
-    const toggleSso = useCallback(
+    const toggleGoogleSso = useCallback(
         (val: boolean) => {
             return saveSettings(
-                LoadingKey.SSO,
+                LoadingKey.GoogleSSO,
                 {google_sso_enabled: val},
                 `Google Single Sign-On successfully ${
+                    val ? 'activated' : 'deactivated'
+                }`
+            )
+        },
+        [saveSettings]
+    )
+
+    const toggleOffice365Sso = useCallback(
+        (val: boolean) => {
+            return saveSettings(
+                LoadingKey.Office365SSO,
+                {office365_sso_enabled: val},
+                `Microsoft 365 Single Sign-On successfully ${
                     val ? 'activated' : 'deactivated'
                 }`
             )
@@ -138,20 +159,33 @@ export const AccessContainer = (props: Props) => {
                         </h4>
                         <p>
                             Social and business single sign-on allows agents to
-                            access Gorgias using their Google accounts. When you
-                            enable the SSO methods, a sign-in button is added to
-                            the log-in page.
+                            access Gorgias using their Google or Microsoft
+                            accounts. When you enable the SSO methods, a sign-in
+                            button is added to the log-in page.
                         </p>
                         <SsoToggleButton
                             id="google"
                             name="Google"
                             logo={googleLogo}
                             value={googleSsoEnabled}
-                            loading={isLoading === LoadingKey.SSO}
+                            loading={isLoading === LoadingKey.GoogleSSO}
                             disabled={
-                                !!isLoading && isLoading !== LoadingKey.SSO
+                                !!isLoading &&
+                                isLoading !== LoadingKey.GoogleSSO
                             }
-                            setValue={toggleSso}
+                            setValue={toggleGoogleSso}
+                        />
+                        <SsoToggleButton
+                            id="office365"
+                            name="Microsoft 365"
+                            logo={microsoftLogo}
+                            value={office365SsoEnabled}
+                            loading={isLoading === LoadingKey.Office365SSO}
+                            disabled={
+                                !!isLoading &&
+                                isLoading !== LoadingKey.Office365SSO
+                            }
+                            setValue={toggleOffice365Sso}
                         />
 
                         <h4 className="mt-5 mb-2">
