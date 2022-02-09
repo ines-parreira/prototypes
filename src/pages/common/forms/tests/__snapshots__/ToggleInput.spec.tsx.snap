@@ -91,6 +91,27 @@ exports[`ToggleInput should render the button loading 1`] = `
   <div
     class="slider"
   />
+  <svg
+    class="spinner left"
+    viewBox="0 0 20 20"
+  >
+    <circle
+      class="dot"
+      cx="10"
+      cy="10"
+      fill="none"
+      r="6"
+      stroke-width="2"
+    />
+    <circle
+      class="circle"
+      cx="10"
+      cy="10"
+      fill="none"
+      r="6"
+      stroke-width="2"
+    />
+  </svg>
 </label>
 `;
 
@@ -112,6 +133,27 @@ exports[`ToggleInput should render the button loading and disabled 1`] = `
   <div
     class="slider"
   />
+  <svg
+    class="spinner left"
+    viewBox="0 0 20 20"
+  >
+    <circle
+      class="dot"
+      cx="10"
+      cy="10"
+      fill="none"
+      r="6"
+      stroke-width="2"
+    />
+    <circle
+      class="circle"
+      cx="10"
+      cy="10"
+      fill="none"
+      r="6"
+      stroke-width="2"
+    />
+  </svg>
 </label>
 `;
 

@@ -41,9 +41,9 @@ const ToggleInput = ({
 
     const handleClick = useCallback(
         (event: MouseEvent<HTMLLabelElement>) => {
-            onClick(!isToggled, event)
+            !isLoading && onClick(!isToggled, event)
         },
-        [isToggled, onClick]
+        [isLoading, isToggled, onClick]
     )
 
     return (
@@ -74,6 +74,31 @@ const ToggleInput = ({
                     {...props}
                 />
                 <div className={css.slider} />
+                {isLoading && (
+                    <svg
+                        className={classnames(css.spinner, {
+                            [css.left]: isToggled,
+                        })}
+                        viewBox="0 0 20 20"
+                    >
+                        <circle
+                            className={css.dot}
+                            cx="10"
+                            cy="10"
+                            r="6"
+                            fill="none"
+                            strokeWidth="2"
+                        />
+                        <circle
+                            className={css.circle}
+                            cx="10"
+                            cy="10"
+                            r="6"
+                            fill="none"
+                            strokeWidth="2"
+                        />
+                    </svg>
+                )}
                 {!!children && <div className={css.label}>{children}</div>}
             </label>
             {!!caption && <div className={css.caption}>{caption}</div>}

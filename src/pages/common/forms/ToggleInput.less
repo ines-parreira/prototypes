@@ -36,21 +36,18 @@
     }
 
     .loading {
-        :global {
-            @keyframes blink {
-                0% {
-                    opacity: 0.6;
-                }
+        cursor: not-allowed;
 
-                100% {
-                    opacity: 1;
-                }
-            }
+        .label {
+            cursor: not-allowed;
         }
 
         .slider {
-            :global {
-                animation: blink 0.5s infinite alternate;
+            cursor: not-allowed;
+
+            &::after {
+                position: absolute;
+                content: '';
             }
         }
 
@@ -70,7 +67,7 @@
         height: 0;
 
         &:checked + .slider {
-            background-color: @classic-feedback-success;
+            background-color: @classic-main-primary;
 
             &::before {
                 transform: translateX(26px);
@@ -120,6 +117,57 @@
             bottom: 3px;
             color: @classic-neutral-grey-0;
             transition: 0.4s;
+        }
+    }
+
+    .spinner {
+        :global {
+            @keyframes rotate {
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+
+            @keyframes dash {
+                0% {
+                    stroke-dasharray: 0, 60;
+                    stroke-dashoffset: 0;
+                }
+                50% {
+                    stroke-dasharray: 33, 60;
+                    stroke-dashoffset: -13;
+                }
+                100% {
+                    stroke-dasharray: 50, 60;
+                    stroke-dashoffset: -37;
+                }
+            }
+        }
+
+        :global {
+            animation: rotate 2.2s linear infinite;
+        }
+        z-index: 2;
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        left: 17px;
+
+        &.left {
+            left: 4px;
+        }
+
+        .dot {
+            stroke: @classic-neutral-grey-0;
+            stroke-linecap: round;
+
+            :global {
+                animation: dash 1.5s ease-in-out infinite;
+            }
+        }
+
+        .circle {
+            stroke: fadeout(@classic-neutral-grey-0, 68%);
         }
     }
 }
