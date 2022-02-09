@@ -15,6 +15,7 @@ import ReactCountryFlag from 'react-country-flag'
 import {fetchPhoneNumber} from 'models/phoneNumber/resources'
 import {RootState} from 'state/types'
 import {phoneNumberFetched} from 'state/entities/phoneNumbers/actions'
+import {getPhoneNumber} from 'state/entities/phoneNumbers/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -28,6 +29,7 @@ export function PhoneNumberDetailContainer({
 }: ConnectedProps<typeof connector>) {
     const dispatch = useAppDispatch()
     const {phoneNumberId} = useParams<{phoneNumberId?: string}>()
+
     const [, handleFetchPhoneNumber] = useAsyncFn(async (id) => {
         try {
             const phoneNumber = await fetchPhoneNumber(id)
@@ -35,7 +37,7 @@ export function PhoneNumberDetailContainer({
         } catch (error) {
             void dispatch(
                 notify({
-                    message: 'Failed to fetch phone numbers',
+                    message: 'Failed to fetch phone number',
                     status: NotificationStatus.Error,
                 })
             )
@@ -83,10 +85,9 @@ export function PhoneNumberDetailContainer({
 
 const connector = connect((state: RootState, ownProps: RouteComponentProps) => {
     return {
-        phoneNumber: get(
-            state.entities.phoneNumbers,
+        phoneNumber: getPhoneNumber(
             get(ownProps.match.params, 'phoneNumberId')
-        ),
+        )(state),
     }
 })
 

@@ -25,6 +25,7 @@ export type PhoneIntegrationMeta = {
     type: string
     state?: string
     area_code: string
+    twilio_phone_number_id: number
     twilio?: Maybe<{
         incoming_phone_number: {
             sid: string
@@ -33,14 +34,16 @@ export type PhoneIntegrationMeta = {
             deleted_datetime: Maybe<string>
         }
     }>
-    preferences: {
-        record_inbound_calls: boolean
-        record_outbound_calls: boolean
-        voicemail_outside_business_hours: boolean
-    }
+    preferences: PhoneIntegrationPreferences
     greeting_message: VoiceMessage
     voicemail: PhoneIntegrationVoicemailSettings
     ivr?: PhoneIntegrationIvrSettings
+}
+
+export type PhoneIntegrationPreferences = {
+    record_inbound_calls: boolean
+    record_outbound_calls: boolean
+    voicemail_outside_business_hours: boolean
 }
 
 export type PhoneIntegrationVoicemailSettings = VoiceMessage & {

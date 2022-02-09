@@ -1,28 +1,30 @@
 import React, {useEffect} from 'react'
-
-import {Container} from 'reactstrap'
+import {Link} from 'react-router-dom'
+import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 import {isEmpty} from 'lodash'
 
 import {fetchPhoneNumbers} from 'models/phoneNumber/resources'
 import {phoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
-import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {IntegrationType} from 'models/integration/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import PageHeader from 'pages/common/components/PageHeader'
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import history from 'pages/history'
+import PhoneIntegrationsList from 'pages/integrations/detail/components/phone/PhoneIntegrationsList'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 
 import css from 'pages/settings/settings.less'
 
-import PhoneNumbersList from './PhoneNumbersList'
-
-export function PhoneNumbersListContainer() {
+export function PhoneIntegrationsListContainer(): JSX.Element {
     const dispatch = useAppDispatch()
-    const phoneNumbers = useAppSelector(getPhoneNumbers)
+    const integrations = useAppSelector(
+        getIntegrationsByTypes([IntegrationType.Phone])
+    )?.toJS()
     const [{loading: isLoading}, handleFetchPhoneNumbers] = useAsyncFn(
         async () => {
             try {
@@ -48,30 +50,44 @@ export function PhoneNumbersListContainer() {
 
     return (
         <div className="full-width">
-            <PageHeader title="Phone Numbers">
-                <Button
-                    intent={ButtonIntent.Creation}
-                    onClick={() =>
-                        history.push('/app/settings/phone-numbers/new')
-                    }
-                >
-                    Add Phone Number
-                </Button>
-            </PageHeader>
+            <PageHeader
+                title={
+                    <>
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations">
+                                    Integrations
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem active>Phone</BreadcrumbItem>
+                        </Breadcrumb>
+                        <Button
+                            intent={ButtonIntent.Creation}
+                            onClick={() =>
+                                history.push(
+                                    '/app/settings/integrations/phone/new'
+                                )
+                            }
+                        >
+                            Add Phone Integration
+                        </Button>
+                    </>
+                }
+            />
             <Container fluid className={css.pageContainer}>
                 Chat with your customers over the phone from Gorgias.
-                {isEmpty(phoneNumbers) &&
+                {isEmpty(integrations) &&
                     (isLoading ? (
                         <Loader />
                     ) : (
                         <div className="mt-3">
-                            You don't have any phone numbers at the moment.
+                            You don't have any phone integrations at the moment.
                         </div>
                     ))}
             </Container>
-            <PhoneNumbersList />
+            <PhoneIntegrationsList />
         </div>
     )
 }
 
-export default PhoneNumbersListContainer
+export default PhoneIntegrationsListContainer

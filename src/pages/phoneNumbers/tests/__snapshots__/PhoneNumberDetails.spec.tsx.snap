@@ -30,7 +30,7 @@ exports[`<PhoneNumberDetails/> render() should render with a local US number 1`]
           class="input-group-append"
         >
           <button
-            class="wrapper copy-phone-number-button secondary medium"
+            class="copy-phone-number-button btn btn-secondary"
             data-clipboard-target="#phone-number"
             type="button"
           >
@@ -78,7 +78,7 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
           class="input-group-append"
         >
           <button
-            class="wrapper copy-phone-number-button secondary medium"
+            class="copy-phone-number-button btn btn-secondary"
             data-clipboard-target="#phone-number"
             type="button"
           >
@@ -126,7 +126,7 @@ exports[`<PhoneNumberDetails/> render() should render with a toll-free CA number
           class="input-group-append"
         >
           <button
-            class="wrapper copy-phone-number-button secondary medium"
+            class="copy-phone-number-button btn btn-secondary"
             data-clipboard-target="#phone-number"
             type="button"
           >

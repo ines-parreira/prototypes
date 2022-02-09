@@ -20,6 +20,7 @@ export const phoneNumbers: PhoneNumber[] = [
             country: PhoneCountry.US,
             area_code: 415,
         },
+        integrations: [],
     },
     {
         id: 2,
@@ -35,6 +36,7 @@ export const phoneNumbers: PhoneNumber[] = [
             country: PhoneCountry.CA,
             area_code: 813,
         },
+        integrations: [],
     },
     {
         id: 3,
@@ -59,5 +61,6 @@ export const phoneNumbers: PhoneNumber[] = [
             country: PhoneCountry.GB,
             area_code: 7,
         },
+        integrations: [],
     },
 ]

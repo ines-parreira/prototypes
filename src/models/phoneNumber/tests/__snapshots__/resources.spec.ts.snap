@@ -5,6 +5,7 @@ Object {
   "created_datetime": "2021-12-01T18:00:00.000000+00:00",
   "deleted_datetime": null,
   "id": 1,
+  "integrations": Array [],
   "meta": Object {
     "area_code": 415,
     "country": "US",
@@ -65,6 +66,7 @@ Object {
       "created_datetime": "2021-12-01T18:00:00.000000+00:00",
       "deleted_datetime": null,
       "id": 1,
+      "integrations": Array [],
       "meta": Object {
         "area_code": 415,
         "country": "US",
@@ -81,6 +83,7 @@ Object {
       "created_datetime": "2021-12-01T18:00:00.000000+00:00",
       "deleted_datetime": null,
       "id": 2,
+      "integrations": Array [],
       "meta": Object {
         "area_code": 813,
         "country": "CA",
@@ -105,6 +108,7 @@ Object {
       "created_datetime": "2021-12-01T18:00:00.000000+00:00",
       "deleted_datetime": null,
       "id": 3,
+      "integrations": Array [],
       "meta": Object {
         "area_code": 7,
         "country": "GB",

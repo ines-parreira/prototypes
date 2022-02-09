@@ -283,7 +283,7 @@ exports[`<IntegrationDetailContainer /> should render the list of integrations f
 
 exports[`<IntegrationDetailContainer /> should render the list of integrations for phone 1`] = `
 <div>
-  PhoneIntegrationList
+  DEPRECATED_PhoneIntegrationList
 </div>
 `;
 

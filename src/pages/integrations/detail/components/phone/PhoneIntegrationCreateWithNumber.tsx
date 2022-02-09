@@ -25,6 +25,7 @@ import {
 import {RootState} from 'state/types'
 import {notify} from 'state/notifications/actions'
 import {phoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
+import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import {NotificationStatus} from 'state/notifications/types'
 import {IntegrationType, VoiceMessageType} from 'models/integration/types'
 import {PhoneFunction} from 'business/twilio'
@@ -248,7 +249,7 @@ function PhoneIntegrationCreateWithNumber({
 }
 
 const connector = connect((state: RootState) => ({
-    phoneNumbers: state.entities.phoneNumbers,
+    phoneNumbers: getPhoneNumbers(state),
 }))
 
 export default connector(PhoneIntegrationCreateWithNumber)

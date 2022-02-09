@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import {
     Col,
     Row,
@@ -7,20 +7,23 @@ import {
     Input,
     Label,
     FormGroup,
+    Button as ReactstrapButton,
 } from 'reactstrap'
 import {Link} from 'react-router-dom'
 import {useAsyncFn} from 'react-use'
 
+import Clipboard from 'clipboard'
 import {PhoneNumber, PhoneCountry} from 'models/phoneNumber/types'
 import {deletePhoneNumber} from 'models/phoneNumber/resources'
 import {GorgiasApiError} from 'models/api/types'
 import {phoneNumberDeleted} from 'state/entities/phoneNumbers/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+import {IntegrationType} from 'models/integration/types'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import {ButtonIntent} from 'pages/common/components/button/Button'
 import history from 'pages/history'
 import {errorToChildren} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -49,7 +52,7 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                   (c) => c.value === phoneNumber.meta.state
               )?.label || ''
             : ''
-
+    const [isPhoneNumberCopied, setIsPhoneNumberCopied] = useState(false)
     const countryName = phoneNumber.meta.country
         ? countries.find((c) => c.value === phoneNumber.meta.country)?.label ??
           phoneNumber.meta.country
@@ -78,6 +81,26 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
         }
     }, [phoneNumber])
 
+    const voiceApp = phoneNumber.integrations.find(
+        (integration) => integration.type === IntegrationType.Phone
+    )
+
+    useEffect(() => {
+        const clipboard = new Clipboard('.copy-phone-number-button')
+
+        clipboard.on('success', () => {
+            setIsPhoneNumberCopied(true)
+
+            setTimeout(() => {
+                setIsPhoneNumberCopied(false)
+            }, 1500)
+        })
+
+        return () => {
+            clipboard.destroy()
+        }
+    }, [])
+
     return (
         <>
             <Row>
@@ -94,8 +117,7 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                                 readOnly
                             />
                             <InputGroupAddon addonType="append">
-                                <Button
-                                    intent={ButtonIntent.Secondary}
+                                <ReactstrapButton
                                     className="copy-phone-number-button"
                                     data-clipboard-target="#phone-number"
                                     type="button"
@@ -103,8 +125,8 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                                     <i className="material-icons mr-2">
                                         file_copy
                                     </i>
-                                    Copy
-                                </Button>
+                                    {isPhoneNumberCopied ? 'Copied!' : 'Copy'}
+                                </ReactstrapButton>
                             </InputGroupAddon>
                         </InputGroup>
                     </FormGroup>
@@ -151,14 +173,22 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                             <strong>Voice</strong>
                         </Col>
                         <Col lg={4} className={css.appLink}>
-                            <Link
-                                to={`/app/settings/integrations/phone/new?phoneNumberId=${phoneNumber.id}`}
-                            >
-                                <i className="material-icons md-2 align-middle mr-2">
-                                    add
-                                </i>
-                                Add Integration
-                            </Link>
+                            {voiceApp ? (
+                                <Link
+                                    to={`/app/settings/integrations/phone/${voiceApp.id}/preferences`}
+                                >
+                                    Manage Integration
+                                </Link>
+                            ) : (
+                                <Link
+                                    to={`/app/settings/integrations/phone/new?phoneNumberId=${phoneNumber.id}`}
+                                >
+                                    <i className="material-icons md-2 align-middle mr-2">
+                                        add
+                                    </i>
+                                    Add Integration
+                                </Link>
+                            )}
                         </Col>
                     </Row>
                 </Col>

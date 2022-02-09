@@ -1,0 +1,48 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .header {
+        td:first-child {
+            padding-left: 25px;
+        }
+    }
+
+    .table {
+        tr {
+            td {
+                width: auto;
+                padding-left: 25px;
+
+                > div {
+                    padding-top: 0;
+                    padding-bottom: 0;
+
+                    &:first-child {
+                        padding-left: 0;
+                    }
+                }
+
+                &:last-child {
+                    width: 70px !important;
+                    max-width: 70px !important;
+
+                    a {
+                        color: @classic-neutral-grey-4;
+                    }
+                }
+            }
+
+            &:hover {
+                a {
+                    color: @classic-main-primary !important;
+                }
+            }
+        }
+    }
+
+    .phoneCell {
+        strong {
+            font-weight: normal;
+        }
+    }
+}

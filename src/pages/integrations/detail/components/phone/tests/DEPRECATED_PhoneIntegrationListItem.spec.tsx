@@ -2,10 +2,10 @@ import React from 'react'
 import {render} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 
-import PhoneIntegrationListItem from '../PhoneIntegrationListItem'
+import DEPRECATED_PhoneIntegrationListItem from '../DEPRECATED_PhoneIntegrationListItem'
 import {PhoneFunction} from '../../../../../../business/twilio'
 
-describe('<PhoneIntegrationListItem/>', () => {
+describe('<DEPRECATED_PhoneIntegrationListItem/>', () => {
     let integration: Map<string, any>
 
     beforeEach(() => {
@@ -26,7 +26,9 @@ describe('<PhoneIntegrationListItem/>', () => {
     describe('render()', () => {
         it('should render', () => {
             const {container} = render(
-                <PhoneIntegrationListItem integration={integration} />
+                <DEPRECATED_PhoneIntegrationListItem
+                    integration={integration}
+                />
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -39,7 +41,9 @@ describe('<PhoneIntegrationListItem/>', () => {
             )
 
             const {container} = render(
-                <PhoneIntegrationListItem integration={integration} />
+                <DEPRECATED_PhoneIntegrationListItem
+                    integration={integration}
+                />
             )
 
             expect(container.firstChild).toMatchSnapshot()

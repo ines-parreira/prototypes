@@ -9,9 +9,9 @@ import configureMockStore from 'redux-mock-store'
 import {IntegrationType} from '../../../../../../models/integration/types'
 import {AccountFeature} from '../../../../../../state/currentAccount/types'
 
-import PhoneIntegrationList from '../PhoneIntegrationList'
+import DEPRECATED_PhoneIntegrationList from '../DEPRECATED_PhoneIntegrationList'
 
-describe('<PhoneIntegrationList/>', () => {
+describe('<DEPRECATED_PhoneIntegrationList/>', () => {
     const middlewares = [thunk]
     const mockStore = configureMockStore(middlewares)
 
@@ -51,7 +51,7 @@ describe('<PhoneIntegrationList/>', () => {
             const store = mockStore(getState(3))
 
             const {container} = render(
-                <PhoneIntegrationList
+                <DEPRECATED_PhoneIntegrationList
                     integrations={integrations}
                     loading={fromJS({})}
                 />,
@@ -71,7 +71,7 @@ describe('<PhoneIntegrationList/>', () => {
             const store = mockStore(getState(2))
 
             const {container} = render(
-                <PhoneIntegrationList
+                <DEPRECATED_PhoneIntegrationList
                     integrations={integrations}
                     loading={fromJS({})}
                 />,
@@ -91,7 +91,7 @@ describe('<PhoneIntegrationList/>', () => {
             const store = mockStore(getState(1))
 
             const {container} = render(
-                <PhoneIntegrationList
+                <DEPRECATED_PhoneIntegrationList
                     integrations={integrations}
                     loading={fromJS({})}
                 />,
@@ -112,7 +112,7 @@ describe('<PhoneIntegrationList/>', () => {
             const store = mockStore(getState(99))
 
             const {container} = render(
-                <PhoneIntegrationList
+                <DEPRECATED_PhoneIntegrationList
                     integrations={integrations}
                     loading={fromJS({})}
                 />,

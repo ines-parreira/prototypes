@@ -33,6 +33,7 @@ describe('<PhoneIntegrationBreadcrumbs/>', () => {
             area_code: '880',
             function: PhoneFunction.Standard,
             country: PhoneCountry.US,
+            twilio_phone_number_id: 123,
             twilio: {
                 incoming_phone_number: {
                     sid: '123',

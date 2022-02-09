@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<PhoneNumbersTable/> render() should allow sorting by column header 1`] = `
+exports[`<PhoneNumbersList/> render() should allow sorting by column header 1`] = `
 <table
-  class="table"
+  class="table table"
 >
   <thead
     class="header"
@@ -53,16 +53,13 @@ exports[`<PhoneNumbersTable/> render() should allow sorting by column header 1`]
       <td
         class="wrapper"
       />
-      <td
-        class="wrapper"
-      />
     </tr>
   </thead>
   <tbody
     class="tableBody"
   >
     <tr
-      class="row row isClickable"
+      class="row isClickable"
     >
       <td>
         <div
@@ -71,23 +68,25 @@ exports[`<PhoneNumbersTable/> render() should allow sorting by column header 1`]
           <div
             class="wrapper"
           >
-            <span
-              role="img"
-              style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
+            <div
+              class="wrapper round"
             >
-              🇺🇸
+              <span
+                role="img"
+                style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
+              >
+                🇺🇸
+              </span>
+            </div>
+             
+            <strong>
+              A Phone Number
+            </strong>
+             
+            <span>
+              +1 415 111 2222
             </span>
           </div>
-           
-          <strong
-            class="mr-3"
-          >
-            A Phone Number
-          </strong>
-           
-          <span>
-            +1 415 111 2222
-          </span>
         </div>
       </td>
       <td>
@@ -106,17 +105,6 @@ exports[`<PhoneNumbersTable/> render() should allow sorting by column header 1`]
         <div
           class="cellContent"
         >
-          <div
-            style="width: 400px;"
-          />
-        </div>
-      </td>
-      <td
-        class="smallest"
-      >
-        <div
-          class="cellContent"
-        >
           <a
             to="/app/settings/phone-numbers/1"
           >
@@ -130,7 +118,7 @@ exports[`<PhoneNumbersTable/> render() should allow sorting by column header 1`]
       </td>
     </tr>
     <tr
-      class="row row isClickable"
+      class="row isClickable"
     >
       <td>
         <div
@@ -139,23 +127,25 @@ exports[`<PhoneNumbersTable/> render() should allow sorting by column header 1`]
           <div
             class="wrapper"
           >
-            <span
-              role="img"
-              style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
+            <div
+              class="wrapper round"
             >
-              🇨🇦
+              <span
+                role="img"
+                style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
+              >
+                🇨🇦
+              </span>
+            </div>
+             
+            <strong>
+              Another Phone Number
+            </strong>
+             
+            <span>
+              +1 813 111 2223
             </span>
           </div>
-           
-          <strong
-            class="mr-3"
-          >
-            Another Phone Number
-          </strong>
-           
-          <span>
-            +1 813 111 2223
-          </span>
         </div>
       </td>
       <td>
@@ -174,17 +164,6 @@ exports[`<PhoneNumbersTable/> render() should allow sorting by column header 1`]
         <div
           class="cellContent"
         >
-          <div
-            style="width: 400px;"
-          />
-        </div>
-      </td>
-      <td
-        class="smallest"
-      >
-        <div
-          class="cellContent"
-        >
           <a
             to="/app/settings/phone-numbers/2"
           >
@@ -198,7 +177,7 @@ exports[`<PhoneNumbersTable/> render() should allow sorting by column header 1`]
       </td>
     </tr>
     <tr
-      class="row row isClickable"
+      class="row isClickable"
     >
       <td>
         <div
@@ -207,23 +186,25 @@ exports[`<PhoneNumbersTable/> render() should allow sorting by column header 1`]
           <div
             class="wrapper"
           >
-            <span
-              role="img"
-              style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
+            <div
+              class="wrapper round"
             >
-              🇬🇧
+              <span
+                role="img"
+                style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
+              >
+                🇬🇧
+              </span>
+            </div>
+             
+            <strong>
+              Intl. Phone Number
+            </strong>
+             
+            <span>
+              +44 7123 456789
             </span>
           </div>
-           
-          <strong
-            class="mr-3"
-          >
-            Intl. Phone Number
-          </strong>
-           
-          <span>
-            +44 7123 456789
-          </span>
         </div>
       </td>
       <td>
@@ -239,17 +220,6 @@ exports[`<PhoneNumbersTable/> render() should allow sorting by column header 1`]
         </div>
       </td>
       <td>
-        <div
-          class="cellContent"
-        >
-          <div
-            style="width: 400px;"
-          />
-        </div>
-      </td>
-      <td
-        class="smallest"
-      >
         <div
           class="cellContent"
         >
@@ -269,9 +239,9 @@ exports[`<PhoneNumbersTable/> render() should allow sorting by column header 1`]
 </table>
 `;
 
-exports[`<PhoneNumbersTable/> render() should render 1`] = `
+exports[`<PhoneNumbersList/> render() should render 1`] = `
 <table
-  class="table"
+  class="table table"
 >
   <thead
     class="header"
@@ -322,16 +292,13 @@ exports[`<PhoneNumbersTable/> render() should render 1`] = `
       <td
         class="wrapper"
       />
-      <td
-        class="wrapper"
-      />
     </tr>
   </thead>
   <tbody
     class="tableBody"
   >
     <tr
-      class="row row isClickable"
+      class="row isClickable"
     >
       <td>
         <div
@@ -340,23 +307,25 @@ exports[`<PhoneNumbersTable/> render() should render 1`] = `
           <div
             class="wrapper"
           >
-            <span
-              role="img"
-              style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
+            <div
+              class="wrapper round"
             >
-              🇬🇧
+              <span
+                role="img"
+                style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
+              >
+                🇬🇧
+              </span>
+            </div>
+             
+            <strong>
+              Intl. Phone Number
+            </strong>
+             
+            <span>
+              +44 7123 456789
             </span>
           </div>
-           
-          <strong
-            class="mr-3"
-          >
-            Intl. Phone Number
-          </strong>
-           
-          <span>
-            +44 7123 456789
-          </span>
         </div>
       </td>
       <td>
@@ -375,17 +344,6 @@ exports[`<PhoneNumbersTable/> render() should render 1`] = `
         <div
           class="cellContent"
         >
-          <div
-            style="width: 400px;"
-          />
-        </div>
-      </td>
-      <td
-        class="smallest"
-      >
-        <div
-          class="cellContent"
-        >
           <a
             to="/app/settings/phone-numbers/3"
           >
@@ -399,7 +357,7 @@ exports[`<PhoneNumbersTable/> render() should render 1`] = `
       </td>
     </tr>
     <tr
-      class="row row isClickable"
+      class="row isClickable"
     >
       <td>
         <div
@@ -408,23 +366,25 @@ exports[`<PhoneNumbersTable/> render() should render 1`] = `
           <div
             class="wrapper"
           >
-            <span
-              role="img"
-              style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
+            <div
+              class="wrapper round"
             >
-              🇨🇦
+              <span
+                role="img"
+                style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
+              >
+                🇨🇦
+              </span>
+            </div>
+             
+            <strong>
+              Another Phone Number
+            </strong>
+             
+            <span>
+              +1 813 111 2223
             </span>
           </div>
-           
-          <strong
-            class="mr-3"
-          >
-            Another Phone Number
-          </strong>
-           
-          <span>
-            +1 813 111 2223
-          </span>
         </div>
       </td>
       <td>
@@ -443,17 +403,6 @@ exports[`<PhoneNumbersTable/> render() should render 1`] = `
         <div
           class="cellContent"
         >
-          <div
-            style="width: 400px;"
-          />
-        </div>
-      </td>
-      <td
-        class="smallest"
-      >
-        <div
-          class="cellContent"
-        >
           <a
             to="/app/settings/phone-numbers/2"
           >
@@ -467,7 +416,7 @@ exports[`<PhoneNumbersTable/> render() should render 1`] = `
       </td>
     </tr>
     <tr
-      class="row row isClickable"
+      class="row isClickable"
     >
       <td>
         <div
@@ -476,23 +425,25 @@ exports[`<PhoneNumbersTable/> render() should render 1`] = `
           <div
             class="wrapper"
           >
-            <span
-              role="img"
-              style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
+            <div
+              class="wrapper round"
             >
-              🇺🇸
+              <span
+                role="img"
+                style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
+              >
+                🇺🇸
+              </span>
+            </div>
+             
+            <strong>
+              A Phone Number
+            </strong>
+             
+            <span>
+              +1 415 111 2222
             </span>
           </div>
-           
-          <strong
-            class="mr-3"
-          >
-            A Phone Number
-          </strong>
-           
-          <span>
-            +1 415 111 2222
-          </span>
         </div>
       </td>
       <td>
@@ -508,17 +459,6 @@ exports[`<PhoneNumbersTable/> render() should render 1`] = `
         </div>
       </td>
       <td>
-        <div
-          class="cellContent"
-        >
-          <div
-            style="width: 400px;"
-          />
-        </div>
-      </td>
-      <td
-        class="smallest"
-      >
         <div
           class="cellContent"
         >

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<PhoneIntegrationListItem/> render() should render 1`] = `
+exports[`<DEPRECATED_PhoneIntegrationListItem/> render() should render 1`] = `
 <tr>
   <td
     class="link-full-td"
@@ -41,7 +41,7 @@ exports[`<PhoneIntegrationListItem/> render() should render 1`] = `
 </tr>
 `;
 
-exports[`<PhoneIntegrationListItem/> render() should render with IVR badge 1`] = `
+exports[`<DEPRECATED_PhoneIntegrationListItem/> render() should render with IVR badge 1`] = `
 <tr>
   <td
     class="link-full-td"

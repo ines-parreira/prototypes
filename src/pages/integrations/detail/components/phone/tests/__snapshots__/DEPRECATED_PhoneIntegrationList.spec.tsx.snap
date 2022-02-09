@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<PhoneIntegrationList/> render() should render 1`] = `
+exports[`<DEPRECATED_PhoneIntegrationList/> render() should render 1`] = `
 <div
   class="w-100"
 >
@@ -97,7 +97,7 @@ exports[`<PhoneIntegrationList/> render() should render 1`] = `
 </div>
 `;
 
-exports[`<PhoneIntegrationList/> render() should render with a warning message 1`] = `
+exports[`<DEPRECATED_PhoneIntegrationList/> render() should render with a warning message 1`] = `
 <div
   class="w-100"
 >
@@ -231,7 +231,7 @@ exports[`<PhoneIntegrationList/> render() should render with a warning message 1
 </div>
 `;
 
-exports[`<PhoneIntegrationList/> render() should render with an error message and without creation button 1`] = `
+exports[`<DEPRECATED_PhoneIntegrationList/> render() should render with an error message and without creation button 1`] = `
 <div
   class="w-100"
 >
@@ -357,7 +357,7 @@ exports[`<PhoneIntegrationList/> render() should render with an error message an
 </div>
 `;
 
-exports[`<PhoneIntegrationList/> render() should render with empty list 1`] = `
+exports[`<DEPRECATED_PhoneIntegrationList/> render() should render with empty list 1`] = `
 <div
   class="w-100"
 >

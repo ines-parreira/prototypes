@@ -2,10 +2,7 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import {
-    PhoneIntegration,
-    IntegrationType,
-} from '../../../../../models/integration/types'
+import {PhoneIntegration, IntegrationType} from 'models/integration/types'
 
 type Props = {
     integration: PhoneIntegration

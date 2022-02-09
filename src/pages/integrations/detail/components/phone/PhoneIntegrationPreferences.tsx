@@ -339,7 +339,7 @@ export default function PhoneIntegrationPreferences({
                                     isDisabled={!isInitialized}
                                     isLoading={isLoading}
                                     onConfirm={onDelete}
-                                    confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                    confirmationContent="Are you sure you want to delete this integration? All associated views will be disabled."
                                 >
                                     <ButtonIconLabel icon="delete">
                                         Delete phone number

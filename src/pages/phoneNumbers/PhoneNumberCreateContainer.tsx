@@ -17,9 +17,7 @@ export function PhoneNumberCreateContainer() {
                                 Phone Numbers
                             </Link>
                         </BreadcrumbItem>
-                        <BreadcrumbItem active>
-                            Create Phone Number
-                        </BreadcrumbItem>
+                        <BreadcrumbItem active>Add Phone Number</BreadcrumbItem>
                     </Breadcrumb>
                 }
             />

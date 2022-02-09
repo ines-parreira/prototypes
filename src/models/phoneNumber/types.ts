@@ -1,3 +1,4 @@
+import {Integration} from 'models/integration/types'
 import {PhoneType, PhoneCountry, PhoneFunction} from 'business/twilio'
 
 export type PhoneNumber = {
@@ -8,6 +9,7 @@ export type PhoneNumber = {
     created_datetime: string
     updated_datetime: string
     deleted_datetime: Maybe<string>
+    integrations: IntegrationPreview[]
     meta: PhoneNumberMeta
 }
 
@@ -34,5 +36,7 @@ export enum AddressType {
     Company = 'company',
     Personal = 'personal',
 }
+
+export type IntegrationPreview = Pick<Integration, 'id' | 'type' | 'name'>
 
 export {PhoneType, PhoneCountry, PhoneFunction}

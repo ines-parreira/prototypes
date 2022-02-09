@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import {phoneNumbers} from 'fixtures/phoneNumber'
 import {RootState, StoreDispatch} from 'state/types'
 
-import PhoneNumbersTable from '../PhoneNumbersTable'
+import PhoneNumbersList from '../PhoneNumbersList'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
@@ -19,12 +19,12 @@ const store = mockStore({
     },
 } as RootState)
 
-describe('<PhoneNumbersTable/>', () => {
+describe('<PhoneNumbersList/>', () => {
     describe('render()', () => {
         it('should render', () => {
             const {container} = render(
                 <Provider store={store}>
-                    <PhoneNumbersTable />
+                    <PhoneNumbersList />
                 </Provider>
             )
 
@@ -34,7 +34,7 @@ describe('<PhoneNumbersTable/>', () => {
         it('should allow sorting by column header', () => {
             const {container, getByText, getAllByRole} = render(
                 <Provider store={store}>
-                    <PhoneNumbersTable />
+                    <PhoneNumbersList />
                 </Provider>
             )
 

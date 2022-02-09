@@ -6,15 +6,16 @@ import {fromJS, List, Map} from 'immutable'
 import {useUpdateEffect} from 'react-use'
 
 import useSearch from 'hooks/useSearch'
-
-import * as IntegrationsActions from '../../../state/integrations/actions'
-import {IntegrationType} from '../../../models/integration/types'
-import {RootState} from '../../../state/types'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import * as IntegrationsActions from 'state/integrations/actions'
+import {IntegrationType} from 'models/integration/types'
+import {RootState} from 'state/types'
 import {
     getEligibleShopifyIntegrationsFor,
     makeGetRedirectUri,
-} from '../../../state/integrations/selectors'
-import {compare} from '../../../utils'
+} from 'state/integrations/selectors'
+import {compare} from 'utils'
+import {PHONE_NUMBER_MANAGEMENT_PREVIEW_ACCOUNTS} from 'models/phoneNumber/constants'
 
 import AircallIntegrationList from './components/aircall/AircallIntegrationList.js'
 import AircallIntegrationCreate from './components/aircall/AircallIntegrationCreate.js'
@@ -84,10 +85,12 @@ import HTTPIntegrationEvents from './components/http/HTTPIntegrationEvents/HTTPI
 import HTTPIntegrationEvent from './components/http/HTTPIntegrationEvent/HTTPIntegrationEvent'
 import HTTPIntegrationLayout from './components/http/HTTPIntegrationLayout/HTTPIntegrationLayout'
 
-import PhoneIntegrationList from './components/phone/PhoneIntegrationList'
+import DEPRECATED_PhoneIntegrationList from './components/phone/DEPRECATED_PhoneIntegrationList'
+import PhoneIntegrationsListContainer from './components/phone/PhoneIntegrationsListContainer'
 import PhoneIntegrationCreate from './components/phone/PhoneIntegrationCreate'
 import PhoneIntegrationCreateWithNumber from './components/phone/PhoneIntegrationCreateWithNumber'
 import PhoneIntegrationPreferences from './components/phone/PhoneIntegrationPreferences'
+import VoiceAppPreferences from './components/phone/VoiceAppPreferences'
 import PhoneIntegrationVoicemail from './components/phone/PhoneIntegrationVoicemail'
 import PhoneIntegrationGreetingMessage from './components/phone/PhoneIntegrationGreetingMessage'
 import PhoneIntegrationIvr from './components/phone/PhoneIntegrationIvr'
@@ -117,6 +120,7 @@ export enum Tab {
 export const IntegrationDetailContainer = ({
     actions,
     currentUser,
+    currentAccount,
     getEligibleShopifyIntegrationsFor,
     getRedirectUri,
     integrations,
@@ -450,7 +454,11 @@ export const IntegrationDetailContainer = ({
                 }
 
                 if (extra === Tab.Preferences) {
-                    return (
+                    return PHONE_NUMBER_MANAGEMENT_PREVIEW_ACCOUNTS.includes(
+                        currentAccount.get('domain')
+                    ) ? (
+                        <VoiceAppPreferences integration={integration.toJS()} />
+                    ) : (
                         <PhoneIntegrationPreferences
                             actions={actions}
                             integration={integration}
@@ -481,8 +489,12 @@ export const IntegrationDetailContainer = ({
                 }
             }
 
-            return (
-                <PhoneIntegrationList
+            return PHONE_NUMBER_MANAGEMENT_PREVIEW_ACCOUNTS.includes(
+                currentAccount.get('domain')
+            ) ? (
+                <PhoneIntegrationsListContainer />
+            ) : (
+                <DEPRECATED_PhoneIntegrationList
                     integrations={integrationsProp}
                     loading={loading}
                 />
@@ -724,6 +736,7 @@ const connector = connect(
             getEligibleShopifyIntegrationsFor(state),
         getRedirectUri: makeGetRedirectUri(state),
         currentUser: state.currentUser,
+        currentAccount: getCurrentAccountState(state),
     }),
     (dispatch) => ({
         actions: bindActionCreators(IntegrationsActions, dispatch),

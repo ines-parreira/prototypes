@@ -11,7 +11,7 @@ import {AccountFeature} from '../../../../../state/currentAccount/types'
 
 import IntegrationListLimitAlert from '../IntegrationListLimitAlert'
 
-import PhoneIntegrationListItem from './PhoneIntegrationListItem'
+import DEPRECATED_PhoneIntegrationListItem from './DEPRECATED_PhoneIntegrationListItem'
 
 type OwnProps = {
     integrations: List<Map<string, any>>
@@ -20,7 +20,7 @@ type OwnProps = {
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
-export function PhoneIntegrationList({
+export function DEPRECATED_PhoneIntegrationList({
     integrations,
     loading,
     maxIntegrations,
@@ -33,7 +33,7 @@ export function PhoneIntegrationList({
         'Chat with your customers over the phone from Gorgias.'
 
     const integrationToItemDisplay = (integration: Map<string, any>) => (
-        <PhoneIntegrationListItem
+        <DEPRECATED_PhoneIntegrationListItem
             key={integration.get('id')}
             integration={integration}
         />
@@ -74,4 +74,4 @@ const mapStateToProps = (state: RootState) => ({
 
 const connector = connect(mapStateToProps)
 
-export default connector(PhoneIntegrationList)
+export default connector(DEPRECATED_PhoneIntegrationList)
