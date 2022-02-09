@@ -174,23 +174,22 @@ exports[`<TwitterIntegrationDetail/> render() should render 1`] = `
               >
                 Reconnect
               </button>
-              <div
-                class="component d-inline-block float-right"
-                id=""
+              <button
+                class="wrapper float-right destructive medium"
+                id="confirm-1615240000000"
+                type="button"
               >
-                <button
-                  class="btn btn-secondary"
-                  id="confirm-button-1615240000000"
-                  type="button"
+                <span
+                  class="wrapper"
                 >
                   <i
-                    class="material-icons mr-1 text-danger"
+                    class="material-icons icon isLeft medium"
                   >
                     delete
                   </i>
                   Remove Twitter Account
-                </button>
-              </div>
+                </span>
+              </button>
             </div>
           </div>
         </div>

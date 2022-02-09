@@ -17,20 +17,22 @@ import {connect, ConnectedProps} from 'react-redux'
 import {
     SMOOCH_LANGUAGE_DEFAULT,
     SMOOCH_LANGUAGE_OPTIONS,
-} from '../../../../../config/integrations/smooch'
+} from 'config/integrations/smooch'
 import {
     activateIntegration,
     deactivateIntegration,
     deleteIntegration,
     triggerCreateSuccess,
     updateOrCreateIntegration,
-} from '../../../../../state/integrations/actions'
-import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'
-import InputField from '../../../../common/forms/InputField'
-import Loader from '../../../../common/components/Loader/Loader'
-import PageHeader from '../../../../common/components/PageHeader'
-import css from '../../../../settings/settings.less'
+} from 'state/integrations/actions'
+import InputField from 'pages/common/forms/InputField'
+import Loader from 'pages/common/components/Loader/Loader'
+import PageHeader from 'pages/common/components/PageHeader'
+import css from 'pages/settings/settings.less'
 
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {ButtonIntent} from 'pages/common/components/button/Button'
 import SmoochIntegrationNavigation from './SmoochIntegrationNavigation'
 
 type Props = {
@@ -235,19 +237,20 @@ export class SmoochIntegrationDetail extends Component<Props, State> {
                                         </Button>
                                     )}
 
-                                    <DEPRECATED_ConfirmButton
+                                    <ConfirmButton
                                         className="float-right"
-                                        color="secondary"
-                                        confirm={() =>
+                                        onConfirm={() =>
                                             deleteIntegration(integration)
                                         }
-                                        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                        confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                        type="button"
+                                        intent={ButtonIntent.Destructive}
+                                        isDisabled={isSubmitting}
                                     >
-                                        <i className="material-icons mr-1 text-danger">
-                                            delete
-                                        </i>
-                                        Delete integration
-                                    </DEPRECATED_ConfirmButton>
+                                        <ButtonIconLabel icon="delete">
+                                            Delete integration
+                                        </ButtonIconLabel>
+                                    </ConfirmButton>
                                 </div>
                             </Form>
                         </Col>

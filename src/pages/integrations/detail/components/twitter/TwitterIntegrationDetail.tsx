@@ -14,7 +14,6 @@ import {
 } from 'reactstrap'
 
 import {IntegrationType} from 'models/integration/types'
-import DEPRECATED_ConfirmButton from 'pages/common/components/DEPRECATED_ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import css from 'pages/settings/settings.less'
@@ -22,6 +21,9 @@ import {
     deleteIntegration,
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 type Props = {
     integration: Map<string, any>
@@ -39,6 +41,7 @@ export default function TwitterIntegrationDetail({
 }: Props): JSX.Element {
     const [isInitialized, setIsInitialized] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [isDeleting, setIsDeleting] = useState(false)
     const [integrationName, setIntegrationName] = useState('')
     const [integrationDescription, setIntegrationDescription] = useState('')
     const [integrationPicture, setIntegrationPicture] = useState('')
@@ -83,14 +86,14 @@ export default function TwitterIntegrationDetail({
 
     const onDelete = useCallback(async () => {
         try {
-            setIsSubmitting(true)
+            setIsDeleting(true)
             await (actions.deleteIntegration(
                 integration
             ) as unknown as Promise<any>)
         } catch (error) {
             console.error(error)
         } finally {
-            setIsSubmitting(false)
+            setIsDeleting(false)
         }
     }, [integration, actions])
 
@@ -224,9 +227,10 @@ export default function TwitterIntegrationDetail({
                                         type="submit"
                                         color="success"
                                         className={classNames('mr-2', {
-                                            'btn-loading': isSubmitting,
+                                            'btn-loading':
+                                                isSubmitting || isDeleting,
                                         })}
-                                        disabled={isSubmitting}
+                                        disabled={isSubmitting || isDeleting}
                                         onClick={onSubmit}
                                     >
                                         Save Changes
@@ -236,28 +240,30 @@ export default function TwitterIntegrationDetail({
                                         type="button"
                                         color="secondary"
                                         className={classNames({
-                                            'btn-loading': isSubmitting,
+                                            'btn-loading':
+                                                isSubmitting || isDeleting,
                                         })}
                                         onClick={() =>
                                             (window.location.href = redirectUri)
                                         }
-                                        disabled={isSubmitting}
+                                        disabled={isSubmitting || isDeleting}
                                     >
                                         Reconnect
                                     </Button>
 
-                                    <DEPRECATED_ConfirmButton
+                                    <ConfirmButton
                                         className="float-right"
-                                        color="secondary"
-                                        confirm={onDelete}
-                                        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-                                        disabled={isSubmitting}
+                                        onConfirm={onDelete}
+                                        confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                        isDisabled={isSubmitting}
+                                        isLoading={isDeleting}
+                                        type="button"
+                                        intent={ButtonIntent.Destructive}
                                     >
-                                        <i className="material-icons mr-1 text-danger">
-                                            delete
-                                        </i>
-                                        Remove Twitter Account
-                                    </DEPRECATED_ConfirmButton>
+                                        <ButtonIconLabel icon="delete">
+                                            Remove Twitter Account
+                                        </ButtonIconLabel>
+                                    </ConfirmButton>
                                 </div>
                             </Col>
                         </Row>
