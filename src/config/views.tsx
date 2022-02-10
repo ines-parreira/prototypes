@@ -277,12 +277,7 @@ export const views = fromJS([
                     const body = stripHTML(item.get('excerpt'))
 
                     return (
-                        <div
-                            style={{
-                                marginTop: '-5px',
-                                marginBottom: '-5px',
-                            }}
-                        >
+                        <div>
                             <div className="subject">{subject}</div>
                             {!!body && (
                                 <div className="description">{body}</div>

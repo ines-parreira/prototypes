@@ -16,14 +16,7 @@ exports[`ViewTable::Table::Cell default cell with a click handler passed 1`] = `
         }
       }
       value={
-        <div
-          style={
-            Object {
-              "marginBottom": "-5px",
-              "marginTop": "-5px",
-            }
-          }
-        >
+        <div>
           <div
             className="subject"
           >
@@ -59,14 +52,7 @@ exports[`ViewTable::Table::Cell default cell with a url passed 1`] = `
           }
         }
         value={
-          <div
-            style={
-              Object {
-                "marginBottom": "-5px",
-                "marginTop": "-5px",
-              }
-            }
-          >
+          <div>
             <div
               className="subject"
             >
@@ -100,14 +86,7 @@ exports[`ViewTable::Table::Cell default cell with no click handler passed (cant 
         }
       }
       value={
-        <div
-          style={
-            Object {
-              "marginBottom": "-5px",
-              "marginTop": "-5px",
-            }
-          }
-        >
+        <div>
           <div
             className="subject"
           >
@@ -138,14 +117,7 @@ Object {
         }
       }
       value={
-        <div
-          style={
-            Object {
-              "marginBottom": "-5px",
-              "marginTop": "-5px",
-            }
-          }
-        >
+        <div>
           <div
             className="subject"
           >

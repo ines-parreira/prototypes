@@ -1,4 +1,6 @@
 @import '~css/new/colorTokens';
+@import '~css/typography';
+@import '~css/new/typographyTokens';
 
 .view-table {
     margin-bottom: 20px;
@@ -16,26 +18,24 @@
         tr {
             border-bottom: 1px solid @classic-neutral-grey-3;
             &.highlighted {
-                font-weight: 600 !important;
-
                 .subject {
-                    font-weight: 600 !important;
+                    .heading-subsection-semibold();
                 }
 
-                .description {
-                    font-weight: initial !important;
+                :not(.description) {
+                    font-weight: @body-semibold-font-weight;
                 }
             }
         }
 
         .subject {
-            font-size: 15px;
-            font-weight: normal;
+            .heading-subsection-regular();
+            margin-bottom: 4px;
         }
 
         .description {
             color: @classic-neutral-grey-4;
-            font-size: 13px;
+            .body-regular();
         }
     }
 
