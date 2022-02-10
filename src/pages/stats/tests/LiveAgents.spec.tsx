@@ -15,7 +15,7 @@ import {agents} from 'fixtures/agents'
 import {teams} from 'fixtures/teams'
 import {account} from 'fixtures/account'
 import {AccountFeature} from 'state/currentAccount/types'
-import Paywall from 'pages/common/components/Paywall/Paywall'
+import FeaturePaywall from '../../common/components/FeaturePaywall/FeaturePaywall'
 
 import useStatResource from '../useStatResource'
 import TagsStatsFilter from '../TagsStatsFilter'
@@ -30,9 +30,9 @@ jest.mock(
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
 )
 jest.mock(
-    'pages/common/components/Paywall/Paywall',
+    'pages/common/components/FeaturePaywall/FeaturePaywall',
     () =>
-        ({feature}: ComponentProps<typeof Paywall>) => {
+        ({feature}: ComponentProps<typeof FeaturePaywall>) => {
             return <div>Paywall for {feature}</div>
         }
 )

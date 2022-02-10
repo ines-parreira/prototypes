@@ -1,43 +1,47 @@
 @import '~css/new/colorTokens';
 @import '~css/new/mixins';
 
-@medium-and-large-screens: ~'only screen and (min-width: 992px) and (max-width: 1500px)';
-
 :local {
     .pageWrapper {
-        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: auto;
 
         :global(.page-header) {
-            position: fixed;
             width: 100%;
             background: @classic-neutral-grey-0;
             z-index: 1;
+            flex-shrink: 0;
         }
 
         [class*='col-xl'] {
             &:nth-of-type(2) {
                 @media (min-width: 1500px) {
-                    flex: 0 0 530px;
                     max-width: 530px;
                 }
             }
         }
 
         .page {
+            overflow: auto;
+            height: 100%;
+
             @media @medium-and-large-screens {
                 padding-right: 0;
             }
+
             @media @desktops and (max-height: 1000px) {
-                height: ~'calc(100% - 60px)';
-                margin-top: 60px;
                 display: flex;
                 align-items: center;
             }
 
             .paywallContainer {
+                width: 100%;
+
                 :global(.row) {
                     @media @desktops and (min-height: 1000px) {
-                        margin-top: 234px;
+                        margin-top: 174px;
                     }
                 }
 
@@ -57,77 +61,32 @@
                             height: 37px;
                             width: 60%;
                             z-index: -1;
-                            box-shadow: 0px 16px 64px
-                                fade(@classic-main-primary-3, 16%);
                         }
 
                         img {
                             cursor: pointer;
                             border-radius: 8px;
-                            box-shadow: 0px 4px 24px
-                                fade(@classic-main-primary, 8%);
                         }
                     }
-
-                    &.advanced {
-                        div {
-                            &::after {
-                                box-shadow: 0px 16px 64px
-                                    rgba(32, 192, 140, 0.16);
-                            }
-
-                            img {
-                                box-shadow: 0px 4px 24px
-                                    rgba(36, 214, 157, 0.08);
-                            }
-                        }
-                    }
-
-                    &.enterprise {
-                        div {
-                            &::after {
-                                box-shadow: 0px 16px 64px
-                                    rgba(253, 155, 90, 0.16);
-                            }
-
-                            img {
-                                box-shadow: 0px 4px 24px
-                                    rgba(253, 155, 90, 0.08);
-                            }
-                        }
-                    }
+                    .shadow-variant();
 
                     @media @desktops {
                         max-width: 572px;
                         box-sizing: content-box;
-
                         &::before {
-                            content: url('data:image/svg+xml;utf8,<svg width="824" height="900" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h374c248.528 0 450 201.472 450 450S622.528 900 374 900H0V0Z" fill="rgb(246, 249, 255)"/></svg>');
                             position: absolute;
                             top: -250px;
                             z-index: -1;
                         }
 
-                        &.advanced {
-                            &::before {
-                                content: url('data:image/svg+xml;utf8,<svg width="824" height="900" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h374c248.528 0 450 201.472 450 450S622.528 900 374 900H0V0Z" fill="rgb(244, 253, 250)"/></svg>');
-                            }
-                        }
-
-                        &.enterprise {
-                            &::before {
-                                content: url('data:image/svg+xml;utf8,<svg width="824" height="900" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h374c248.528 0 450 201.472 450 450S622.528 900 374 900H0V0Z" fill="rgb(255, 251, 247)"/></svg>');
-                            }
-                        }
+                        .circle-variant();
                     }
                 }
-
                 .content {
                     .contentTitle {
                         margin: 20px 0 8px;
                         font-weight: 600;
                         color: @classic-neutral-grey-6;
-
                         @media @mobiles {
                             font-size: 20px;
                         }
@@ -136,7 +95,6 @@
                     .description {
                         color: @classic-neutral-grey-5;
                         font-size: 16px;
-
                         @media @mobiles {
                             font-size: 14px;
                         }
@@ -150,9 +108,14 @@
                         text-transform: uppercase;
                         border-radius: 100px;
                         transition: none;
-
+                        &.default {
+                            background-color: @classic-neutral-grey-5;
+                        }
+                        &.basic {
+                            background-color: @classic-main-primary;
+                        }
                         &.pro {
-                            background-color: #0024a1;
+                            background-color: @modern-main-primary-4;
                         }
                         &.advanced {
                             background-color: @classic-feedback-success;
@@ -222,4 +185,75 @@
             }
         }
     }
+}
+
+@medium-and-large-screens: ~'only screen and (min-width: 992px) and (max-width: 1500px)';
+@paywall-type: 'default', 'basic', 'pro', 'advanced', 'enterprise';
+
+@defaultContainerShadow: 0px 16px 64px fade(@classic-neutral-grey-5, 20%);
+@defaultImageShadow: 0px 16px 64px fade(@classic-neutral-grey-5, 20%);
+
+@basicContainerShadow: 0px 16px 64px fade(@classic-main-primary-3, 16%);
+@basicImageShadow: 0px 4px 24px fade(@classic-main-primary, 8%);
+
+@proContainerShadow: 0px 16px 64px fade(@classic-main-primary-3, 16%);
+@proImageShadow: 0px 4px 24px fade(@classic-main-primary, 8%);
+
+@advancedContainerShadow: 0px 16px 64px rgba(32, 192, 140, 0.16);
+@advancedImageShadow: 0px 4px 24px rgba(36, 214, 157, 0.08);
+
+@enterpriseContainerShadow: 0px 16px 64px fade(@classic-feedback-warning, 16%);
+@enterpriseImageShadow: 0px 4px 24px fade(@classic-feedback-warning, 8%);
+
+.shadow-variant(@i:1) when (@i <= length(@paywall-type)) {
+    @variantValue: extract(@paywall-type, @i);
+    @containerShadow: '@{variantValue}ContainerShadow';
+    @imageShadow: '@{variantValue}ImageShadow';
+    @class: ~'@{variantValue}';
+
+    &.@{class} {
+        div {
+            &:not(&.filterShadow) {
+                &::after {
+                    box-shadow: @@containerShadow;
+                }
+
+                img {
+                    box-shadow: @@imageShadow;
+                }
+            }
+            &.filterShadow {
+                img {
+                    filter: drop-shadow(@@imageShadow);
+                }
+            }
+        }
+    }
+
+    .shadow-variant(@i + 1);
+}
+
+@defaultPaywallCircleColor: @classic-neutral-grey-1;
+@basicPaywallCircleColor: @classic-main-primary-0;
+@proPaywallCircleColor: @classic-main-primary-0;
+@advancedPaywallCircleColor: @classic-feedback-success-0;
+@enterprisePaywallCircleColor: @classic-feedback-warning-0;
+
+.circle-variant(@i:1) when (@i <= length(@paywall-type)) {
+    @variantValue: extract(@paywall-type, @i);
+    @circleColor: '@{variantValue}PaywallCircleColor';
+    @class: ~'@{variantValue}';
+    @circle: replace(
+        'data:image/svg+xml;utf8,<svg width="824" height="900" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h374c248.528 0 450 201.472 450 450S622.528 900 374 900H0V0Z" fill="@{@{circleColor}}"/></svg>',
+        '#',
+        '%23'
+    );
+
+    &.@{class} {
+        &::before {
+            content: url(@circle);
+        }
+    }
+
+    .circle-variant(@i + 1);
 }

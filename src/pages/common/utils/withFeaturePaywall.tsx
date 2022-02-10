@@ -4,8 +4,8 @@ import {useSelector} from 'react-redux'
 import {AccountFeature} from '../../../state/currentAccount/types'
 import {RootState} from '../../../state/types'
 import {currentAccountHasFeature} from '../../../state/currentAccount/selectors'
-import Paywall from '../components/Paywall/Paywall'
 import {paywallConfigs as defaultPaywallConfigs} from '../../../config/paywalls'
+import FeaturePaywall from '../components/FeaturePaywall/FeaturePaywall'
 
 export const withFeaturePaywall = (
     feature: AccountFeature,
@@ -22,7 +22,10 @@ export const withFeaturePaywall = (
             ) : CustomPaywall ? (
                 <CustomPaywall />
             ) : (
-                <Paywall feature={feature} paywallConfigs={paywallConfigs} />
+                <FeaturePaywall
+                    feature={feature}
+                    paywallConfigs={paywallConfigs}
+                />
             )
         }
     }

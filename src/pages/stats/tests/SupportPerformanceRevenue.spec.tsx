@@ -26,7 +26,7 @@ import {StatsFilterType} from '../../../state/stats/types'
 import {agents} from '../../../fixtures/agents'
 import {teams} from '../../../fixtures/teams'
 import SupportPerformanceRevenue from '../SupportPerformanceRevenue'
-import Paywall from '../../common/components/Paywall/Paywall'
+import FeaturePaywall from '../../common/components/FeaturePaywall/FeaturePaywall'
 import {account} from '../../../fixtures/account'
 import TagsStatsFilter from '../TagsStatsFilter'
 import {AccountFeature} from '../../../state/currentAccount/types'
@@ -34,9 +34,9 @@ import {AccountFeature} from '../../../state/currentAccount/types'
 jest.mock('../useStatResource')
 jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
 jest.mock(
-    '../../common/components/Paywall/Paywall',
+    '../../common/components/FeaturePaywall/FeaturePaywall',
     () =>
-        ({feature}: ComponentProps<typeof Paywall>) => {
+        ({feature}: ComponentProps<typeof FeaturePaywall>) => {
             return <div>Paywall for {feature}</div>
         }
 )

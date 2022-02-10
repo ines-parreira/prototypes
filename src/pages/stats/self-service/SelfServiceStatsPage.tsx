@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {useSelector} from 'react-redux'
-import {Badge} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 import {fromJS, Map} from 'immutable'
 
@@ -31,7 +30,6 @@ import {IntegrationsStatsFilterValue, StatsFilterType} from 'state/stats/types'
 import {mergeStatsFilters} from 'state/stats/actions'
 import Loader from 'pages/common/components/Loader/Loader'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
-import CirclePaywall from 'pages/common/components/CirclePaywall/CirclePaywall'
 import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
 import PageHeader from 'pages/common/components/PageHeader'
 
@@ -45,6 +43,8 @@ import StatWrapper from '../StatWrapper'
 import NormalizedBarStat from '../common/components/charts/NormalizedBarStat'
 import TableStat from '../common/components/charts/TableStat/TableStat'
 
+import Paywall, {UpgradeType} from '../../common/components/Paywall/Paywall'
+import {paywallConfigs} from '../../../config/paywalls'
 import SelfServiceIntegrationsFilter from './SelfServiceIntegrationsFilter'
 import css from './SelfServiceStatsPage.less'
 
@@ -163,12 +163,14 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         [dispatch]
     )
 
+    const paywallConfig =
+        paywallConfigs[AccountFeature.AutomationSelfServiceStatistics]!
+
     if (loading) {
         return <Loader />
     } else if (!hasSelfServiceStatisticsFeature) {
         return (
-            <CirclePaywall
-                feature={AccountFeature.AutomationSelfServiceStatistics}
+            <Paywall
                 pageHeader={
                     <PageHeader
                         title={
@@ -180,8 +182,12 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                         }
                     />
                 }
-                badge={<Badge className={css.badge}>AUTOMATION ADD-ON</Badge>}
-                ctaButton={
+                requiredUpgrade="Automation"
+                upgradeType={UpgradeType.AddOn}
+                header={paywallConfig.header}
+                description={paywallConfig.description}
+                previewImage={paywallConfig.preview}
+                customCta={
                     <UpgradeButton
                         onClick={() => {
                             setIsAutomationModalOpened(true)
@@ -190,7 +196,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                         segmentEventToSend={segmentEventToSend}
                     />
                 }
-                modale={
+                modal={
                     <AutomationSubscriptionModal
                         confirmLabel="Confirm"
                         isOpen={isAutomationModalOpened}

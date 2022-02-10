@@ -3,7 +3,7 @@
 exports[`HelpCenterPaywall should render the component correctly "for" Pro legacy plan 1`] = `
 <div>
   <div
-    class="full-width"
+    class="full-width pageWrapper"
   >
     <div
       class="page-header pageHeader"
@@ -15,79 +15,93 @@ exports[`HelpCenterPaywall should render the component correctly "for" Pro legac
       </h1>
     </div>
     <div
-      class="paywallWrapper"
+      class="page container-fluid"
     >
       <div
-        class="coloredCircle pro"
-      />
-      <div
-        class="page-container container-fluid"
+        class="paywallContainer"
       >
         <div
-          class="row"
+          class="align-items-center mx-0 row"
         >
           <div
-            class="preview col-12 col-xl-6"
-          >
-            <img
-              alt="Feature preview"
-              class="img-fluid previewImage"
-              src="test-file-stub"
-            />
-          </div>
-          <div
-            class="info col-12 col-xl-6"
+            class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview pro col-12 col-lg-6 col-xl-6"
           >
             <div
-              class="badgeContainer"
+              class=""
             >
-              <span
-                class="badge legacy badge badge-secondary"
-              >
-                Legacy Plan
-              </span>
-              <i
-                class="material-icons chevron"
-              >
-                chevron_right
-              </i>
-              <span
-                class="badge pro badge badge-secondary"
-              >
-                Pro Plan
-              </span>
+              <img
+                alt="Feature preview"
+                class="img-fluid"
+                src="test-file-stub"
+              />
             </div>
-            <h1
-              class="header"
+          </div>
+          <div
+            class="pl-lg-5 col-12 col-lg-5 col-xl-5"
+          >
+            <div
+              class="content"
             >
-              Change plans to activate your Help Center
-            </h1>
-            <p
-              class="infoText"
-            >
-              Create your own help center in order to help users better understand your product and answer frequently asked questions.
-            </p>
-            <div>
               <div
-                class="mt-3 mb-5 d-inline-block"
+                class="flex align-items-center"
+              >
+                <span
+                  class="badge badge badge-danger"
+                >
+                  <i
+                    class="material-icons mr-1"
+                  >
+                    warning
+                  </i>
+                  Legacy plan
+                </span>
+                <i
+                  class="material-icons upgradeChevron"
+                >
+                  chevron_right
+                </i>
+                <span
+                  class="badge pro badge badge-primary"
+                >
+                  Pro Plan
+                </span>
+              </div>
+              <h1
+                class="contentTitle"
+              >
+                Change plans to activate your Help Center
+              </h1>
+              <div
+                class="description"
+              >
+                <p>
+                  Create your own help center in order to help users better understand your product and answer frequently asked questions.
+                </p>
+              </div>
+              <div
+                class="upgradeButton"
               >
                 <div
-                  class="d-flex align-items-center upgradeLink"
+                  class="mb-5 d-inline-block"
                 >
-                  <button
-                    class="wrapper primary medium"
+                  <div
+                    class="d-flex align-items-center upgradeLink"
                   >
-                    <span
-                      class="wrapper"
+                    <button
+                      class="wrapper primary medium"
                     >
-                      Upgrade Your Plan
-                      <i
-                        class="material-icons icon isRight medium"
+                      <span
+                        class="wrapper"
                       >
-                        auto_awesome
-                      </i>
-                    </span>
-                  </button>
+                        Upgrade Your Plan
+                        <i
+                          class="material-icons icon isRight medium"
+                        >
+                          auto_awesome
+                        </i>
+                      </span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -102,7 +116,7 @@ exports[`HelpCenterPaywall should render the component correctly "for" Pro legac
 exports[`HelpCenterPaywall should render the component correctly for "Advanced" legacy plan 1`] = `
 <div>
   <div
-    class="full-width"
+    class="full-width pageWrapper"
   >
     <div
       class="page-header pageHeader"
@@ -114,80 +128,94 @@ exports[`HelpCenterPaywall should render the component correctly for "Advanced" 
       </h1>
     </div>
     <div
-      class="paywallWrapper"
+      class="page container-fluid"
     >
       <div
-        class="coloredCircle advanced"
-      />
-      <div
-        class="page-container container-fluid"
+        class="paywallContainer"
       >
         <div
-          class="row"
+          class="align-items-center mx-0 row"
         >
           <div
-            class="preview col-12 col-xl-6"
-          >
-            <img
-              alt="Feature preview"
-              class="img-fluid previewImage"
-              src="test-file-stub"
-            />
-          </div>
-          <div
-            class="info col-12 col-xl-6"
+            class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview advanced col-12 col-lg-6 col-xl-6"
           >
             <div
-              class="badgeContainer"
+              class=""
             >
-              <span
-                class="badge legacy badge badge-secondary"
-              >
-                Legacy Plan
-              </span>
-              <i
-                class="material-icons chevron"
-              >
-                chevron_right
-              </i>
-              <span
-                class="badge advanced badge badge-secondary"
-              >
-                Advanced Plan
-              </span>
+              <img
+                alt="Feature preview"
+                class="img-fluid"
+                src="test-file-stub"
+              />
             </div>
-            <h1
-              class="header"
+          </div>
+          <div
+            class="pl-lg-5 col-12 col-lg-5 col-xl-5"
+          >
+            <div
+              class="content"
             >
-              Change plans to activate your Help Center
-            </h1>
-            <p
-              class="infoText"
-            >
-              Create your own help center in order to help users better understand your product and answer frequently asked questions.
-              You can contact your customer success manager or do it from here to upgrade today!
-            </p>
-            <div>
               <div
-                class="mt-3 mb-5 d-inline-block"
+                class="flex align-items-center"
+              >
+                <span
+                  class="badge badge badge-danger"
+                >
+                  <i
+                    class="material-icons mr-1"
+                  >
+                    warning
+                  </i>
+                  Legacy plan
+                </span>
+                <i
+                  class="material-icons upgradeChevron"
+                >
+                  chevron_right
+                </i>
+                <span
+                  class="badge advanced badge badge-primary"
+                >
+                  Advanced Plan
+                </span>
+              </div>
+              <h1
+                class="contentTitle"
+              >
+                Change plans to activate your Help Center
+              </h1>
+              <div
+                class="description"
+              >
+                <p>
+                  Create your own help center in order to help users better understand your product and answer frequently asked questions.
+                  You can contact your customer success manager or do it from here to upgrade today!
+                </p>
+              </div>
+              <div
+                class="upgradeButton"
               >
                 <div
-                  class="d-flex align-items-center upgradeLink"
+                  class="mb-5 d-inline-block"
                 >
-                  <button
-                    class="wrapper primary medium"
+                  <div
+                    class="d-flex align-items-center upgradeLink"
                   >
-                    <span
-                      class="wrapper"
+                    <button
+                      class="wrapper primary medium"
                     >
-                      Upgrade Your Plan
-                      <i
-                        class="material-icons icon isRight medium"
+                      <span
+                        class="wrapper"
                       >
-                        auto_awesome
-                      </i>
-                    </span>
-                  </button>
+                        Upgrade Your Plan
+                        <i
+                          class="material-icons icon isRight medium"
+                        >
+                          auto_awesome
+                        </i>
+                      </span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -202,7 +230,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Advanced" 
 exports[`HelpCenterPaywall should render the component correctly for "Basic" legacy plan 1`] = `
 <div>
   <div
-    class="full-width"
+    class="full-width pageWrapper"
   >
     <div
       class="page-header pageHeader"
@@ -214,79 +242,93 @@ exports[`HelpCenterPaywall should render the component correctly for "Basic" leg
       </h1>
     </div>
     <div
-      class="paywallWrapper"
+      class="page container-fluid"
     >
       <div
-        class="coloredCircle basic"
-      />
-      <div
-        class="page-container container-fluid"
+        class="paywallContainer"
       >
         <div
-          class="row"
+          class="align-items-center mx-0 row"
         >
           <div
-            class="preview col-12 col-xl-6"
-          >
-            <img
-              alt="Feature preview"
-              class="img-fluid previewImage"
-              src="test-file-stub"
-            />
-          </div>
-          <div
-            class="info col-12 col-xl-6"
+            class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview basic col-12 col-lg-6 col-xl-6"
           >
             <div
-              class="badgeContainer"
+              class=""
             >
-              <span
-                class="badge legacy badge badge-secondary"
-              >
-                Legacy Plan
-              </span>
-              <i
-                class="material-icons chevron"
-              >
-                chevron_right
-              </i>
-              <span
-                class="badge basic badge badge-secondary"
-              >
-                Basic Plan
-              </span>
+              <img
+                alt="Feature preview"
+                class="img-fluid"
+                src="test-file-stub"
+              />
             </div>
-            <h1
-              class="header"
+          </div>
+          <div
+            class="pl-lg-5 col-12 col-lg-5 col-xl-5"
+          >
+            <div
+              class="content"
             >
-              Change plans to activate your Help Center
-            </h1>
-            <p
-              class="infoText"
-            >
-              Create your own help center in order to help users better understand your product and answer frequently asked questions.
-            </p>
-            <div>
               <div
-                class="mt-3 mb-5 d-inline-block"
+                class="flex align-items-center"
+              >
+                <span
+                  class="badge badge badge-danger"
+                >
+                  <i
+                    class="material-icons mr-1"
+                  >
+                    warning
+                  </i>
+                  Legacy plan
+                </span>
+                <i
+                  class="material-icons upgradeChevron"
+                >
+                  chevron_right
+                </i>
+                <span
+                  class="badge basic badge badge-primary"
+                >
+                  Basic Plan
+                </span>
+              </div>
+              <h1
+                class="contentTitle"
+              >
+                Change plans to activate your Help Center
+              </h1>
+              <div
+                class="description"
+              >
+                <p>
+                  Create your own help center in order to help users better understand your product and answer frequently asked questions.
+                </p>
+              </div>
+              <div
+                class="upgradeButton"
               >
                 <div
-                  class="d-flex align-items-center upgradeLink"
+                  class="mb-5 d-inline-block"
                 >
-                  <button
-                    class="wrapper primary medium"
+                  <div
+                    class="d-flex align-items-center upgradeLink"
                   >
-                    <span
-                      class="wrapper"
+                    <button
+                      class="wrapper primary medium"
                     >
-                      Upgrade Your Plan
-                      <i
-                        class="material-icons icon isRight medium"
+                      <span
+                        class="wrapper"
                       >
-                        auto_awesome
-                      </i>
-                    </span>
-                  </button>
+                        Upgrade Your Plan
+                        <i
+                          class="material-icons icon isRight medium"
+                        >
+                          auto_awesome
+                        </i>
+                      </span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -301,7 +343,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Basic" leg
 exports[`HelpCenterPaywall should render the component correctly for "Enterprise" legacy plan 1`] = `
 <div>
   <div
-    class="full-width"
+    class="full-width pageWrapper"
   >
     <div
       class="page-header pageHeader"
@@ -313,80 +355,94 @@ exports[`HelpCenterPaywall should render the component correctly for "Enterprise
       </h1>
     </div>
     <div
-      class="paywallWrapper"
+      class="page container-fluid"
     >
       <div
-        class="coloredCircle enterprise"
-      />
-      <div
-        class="page-container container-fluid"
+        class="paywallContainer"
       >
         <div
-          class="row"
+          class="align-items-center mx-0 row"
         >
           <div
-            class="preview col-12 col-xl-6"
-          >
-            <img
-              alt="Feature preview"
-              class="img-fluid previewImage"
-              src="test-file-stub"
-            />
-          </div>
-          <div
-            class="info col-12 col-xl-6"
+            class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview enterprise col-12 col-lg-6 col-xl-6"
           >
             <div
-              class="badgeContainer"
+              class=""
             >
-              <span
-                class="badge legacy badge badge-secondary"
-              >
-                Legacy Plan
-              </span>
-              <i
-                class="material-icons chevron"
-              >
-                chevron_right
-              </i>
-              <span
-                class="badge enterprise badge badge-secondary"
-              >
-                Enterprise Plan
-              </span>
+              <img
+                alt="Feature preview"
+                class="img-fluid"
+                src="test-file-stub"
+              />
             </div>
-            <h1
-              class="header"
+          </div>
+          <div
+            class="pl-lg-5 col-12 col-lg-5 col-xl-5"
+          >
+            <div
+              class="content"
             >
-              Change plans to activate your Help Center
-            </h1>
-            <p
-              class="infoText"
-            >
-              Create your own help center in order to help users better understand your product and answer frequently asked questions.
-              Contact your customer success manager to upgrade today!
-            </p>
-            <div>
               <div
-                class="mt-3 mb-5 d-inline-block"
+                class="flex align-items-center"
+              >
+                <span
+                  class="badge badge badge-danger"
+                >
+                  <i
+                    class="material-icons mr-1"
+                  >
+                    warning
+                  </i>
+                  Legacy plan
+                </span>
+                <i
+                  class="material-icons upgradeChevron"
+                >
+                  chevron_right
+                </i>
+                <span
+                  class="badge enterprise badge badge-primary"
+                >
+                  Enterprise Plan
+                </span>
+              </div>
+              <h1
+                class="contentTitle"
+              >
+                Change plans to activate your Help Center
+              </h1>
+              <div
+                class="description"
+              >
+                <p>
+                  Create your own help center in order to help users better understand your product and answer frequently asked questions.
+                  Contact your customer success manager to upgrade today!
+                </p>
+              </div>
+              <div
+                class="upgradeButton"
               >
                 <div
-                  class="d-flex align-items-center upgradeLink"
+                  class="mb-5 d-inline-block"
                 >
-                  <button
-                    class="wrapper primary medium"
+                  <div
+                    class="d-flex align-items-center upgradeLink"
                   >
-                    <span
-                      class="wrapper"
+                    <button
+                      class="wrapper primary medium"
                     >
-                      Contact Us
-                      <i
-                        class="material-icons icon isRight medium"
+                      <span
+                        class="wrapper"
                       >
-                        auto_awesome
-                      </i>
-                    </span>
-                  </button>
+                        Contact Us
+                        <i
+                          class="material-icons icon isRight medium"
+                        >
+                          auto_awesome
+                        </i>
+                      </span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

@@ -23,7 +23,7 @@ import SupportPerformanceSatisfaction from '../SupportPerformanceSatisfaction'
 import TagsStatsFilter from '../TagsStatsFilter'
 import {account} from '../../../fixtures/account'
 import {AccountFeature} from '../../../state/currentAccount/types'
-import Paywall from '../../common/components/Paywall/Paywall'
+import FeaturePaywall from '../../common/components/FeaturePaywall/FeaturePaywall'
 
 jest.mock('../useStatResource')
 jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
@@ -34,9 +34,9 @@ jest.mock(
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
 )
 jest.mock(
-    '../../common/components/Paywall/Paywall',
+    '../../common/components/FeaturePaywall/FeaturePaywall',
     () =>
-        ({feature}: ComponentProps<typeof Paywall>) => {
+        ({feature}: ComponentProps<typeof FeaturePaywall>) => {
             return <div>Paywall for {feature}</div>
         }
 )

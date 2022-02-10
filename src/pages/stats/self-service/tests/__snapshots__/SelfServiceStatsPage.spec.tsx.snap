@@ -71,10 +71,10 @@ exports[`<SelfServiceStatsPage /> should not render the filters nor the stats wh
 exports[`<SelfServiceStatsPage /> should render the automation add-on upgrade paywall if the current account doesnt have the feature 1`] = `
 <div>
   <div
-    class="full-width"
+    class="full-width pageWrapper"
   >
     <div
-      class="page-header pageHeader pageHeader"
+      class="page-header pageHeader"
     >
       <h1
         class="align-items-center"
@@ -100,78 +100,85 @@ exports[`<SelfServiceStatsPage /> should render the automation add-on upgrade pa
       </h1>
     </div>
     <div
-      class="paywallWrapper"
+      class="page container-fluid"
     >
       <div
-        class="coloredCircle"
-      />
-      <div
-        class="page-container container-fluid"
+        class="paywallContainer"
       >
         <div
-          class="row"
+          class="align-items-center mx-0 row"
         >
           <div
-            class="preview col-12 col-xl-6"
+            class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview default col-12 col-lg-6 col-xl-6"
           >
-            <img
-              alt="Feature preview"
-              class="img-fluid previewImage"
-              src="/static/private/js/assets/img/paywalls/screens/self-service-statistics.png"
-            />
+            <div
+              class=""
+            >
+              <img
+                alt="Feature preview"
+                class="img-fluid"
+                src="/static/private/js/assets/img/paywalls/screens/self-service-statistics.png"
+              />
+            </div>
           </div>
           <div
-            class="info col-12 col-xl-6"
+            class="pl-lg-5 col-12 col-lg-5 col-xl-5"
           >
             <div
-              class="badgeWrapper"
+              class="content"
             >
-              <span
-                class="badge badge badge-secondary"
+              <div
+                class="flex align-items-center"
               >
-                AUTOMATION ADD-ON
-              </span>
-            </div>
-            <h1
-              class="header"
-            >
-              Track self-service’s interactions
-            </h1>
-            <p
-              class="infoText"
-            >
-              <div>
-                Activate 
-                <b>
-                  self-service
-                </b>
-                 and see the number of your customers’ requests passing through it and how many of these interactions you are 
-                <b>
-                  automating!
-                </b>
-              </div>
-            </p>
-            <div
-              class="ctaButtonWrapper"
-            >
-              <div>
-                <div
-                  class="d-flex align-items-center upgradeLink"
+                <span
+                  class="badge default badge badge-primary"
                 >
-                  <button
-                    class="wrapper primary medium"
+                  Automation Add-on
+                </span>
+              </div>
+              <h1
+                class="contentTitle"
+              >
+                Track self-service’s interactions
+              </h1>
+              <div
+                class="description"
+              >
+                <p>
+                  <div>
+                    Activate 
+                    <b>
+                      self-service
+                    </b>
+                     and see the number of your customers’ requests passing through it and how many of these interactions you are 
+                    <b>
+                      automating!
+                    </b>
+                  </div>
+                </p>
+              </div>
+              <div
+                class="upgradeButton"
+              >
+                <div>
+                  <div
+                    class="d-flex align-items-center upgradeLink"
                   >
-                    <span
-                      class="wrapper"
+                    <button
+                      class="wrapper primary medium"
                     >
-                      Get Automation Features
-                      <i
-                        class="material-icons icon isRight medium"
+                      <span
+                        class="wrapper"
                       >
-                        auto_awesome
-                      </i>
-                    </span>
-                  </button>
+                        Get Automation Features
+                        <i
+                          class="material-icons icon isRight medium"
+                        >
+                          auto_awesome
+                        </i>
+                      </span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

@@ -15,18 +15,20 @@ exports[`withFeaturePaywall should not render the passed component when the feat
       </h1>
     </div>
     <div
-      class="page-container page container-fluid"
+      class="page container-fluid"
     >
       <div
         class="paywallContainer"
       >
         <div
-          class="align-items-center row"
+          class="align-items-center mx-0 row"
         >
           <div
             class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview advanced col-12 col-lg-6 col-xl-6"
           >
-            <div>
+            <div
+              class=""
+            >
               <img
                 alt="Feature preview"
                 class="img-fluid"
@@ -163,18 +165,20 @@ exports[`withFeaturePaywall should pass custom paywall configuration props 1`] =
       </h1>
     </div>
     <div
-      class="page-container page container-fluid"
+      class="page container-fluid"
     >
       <div
         class="paywallContainer"
       >
         <div
-          class="align-items-center row"
+          class="align-items-center mx-0 row"
         >
           <div
             class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview advanced col-12 col-lg-6 col-xl-6"
           >
-            <div>
+            <div
+              class=""
+            >
               <img
                 alt="Feature preview"
                 class="img-fluid"

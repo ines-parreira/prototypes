@@ -88,8 +88,8 @@ export const SelfServiceView = () => {
     }, [])
 
     return (
-        <div className="full-width">
-            <PageHeader title="Self-service" />
+        <div className="full-width d-flex flex-column">
+            <PageHeader title="Self-service" className={css.pageHeader} />
 
             {hasSelfServiceV1Features || hasAutomationAddOn ? (
                 <Container fluid className={settingsCss.pageContainer}>

@@ -20,7 +20,7 @@ export type PaywallConfig = {
         }
         text: string
     }
-    preview?: string
+    preview: string
 }
 
 export const paywallConfigs: Partial<Record<AccountFeature, PaywallConfig>> = {

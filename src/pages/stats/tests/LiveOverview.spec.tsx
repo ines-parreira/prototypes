@@ -20,7 +20,7 @@ import {agents} from 'fixtures/agents'
 import {teams} from 'fixtures/teams'
 import {account} from 'fixtures/account'
 import {AccountFeature} from 'state/currentAccount/types'
-import Paywall from 'pages/common/components/Paywall/Paywall'
+import FeaturePaywall from '../../common/components/FeaturePaywall/FeaturePaywall'
 
 import LiveOverview from '../LiveOverview'
 import useStatResource from '../useStatResource'
@@ -28,9 +28,9 @@ import useStatResource from '../useStatResource'
 jest.mock('../useStatResource')
 jest.mock('react-chartjs-2', () => ({Line: () => <canvas />}))
 jest.mock(
-    '../../common/components/Paywall/Paywall',
+    '../../common/components/FeaturePaywall/FeaturePaywall',
     () =>
-        ({feature}: ComponentProps<typeof Paywall>) => {
+        ({feature}: ComponentProps<typeof FeaturePaywall>) => {
             return <div>Paywall for {feature}</div>
         }
 )

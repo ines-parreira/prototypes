@@ -3,10 +3,10 @@
 exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServiceConfigurations action and the ssp for the store with id 1 when it gets deactivated 1`] = `
 <div>
   <div
-    class="full-width"
+    class="full-width d-flex flex-column"
   >
     <div
-      class="page-header pageHeader"
+      class="page-header pageHeader pageHeader"
     >
       <h1
         class="d-flex align-items-center"
@@ -302,10 +302,10 @@ exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServ
 exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServiceConfigurations action and the ssp for the store with id 2 when it gets activated 1`] = `
 <div>
   <div
-    class="full-width"
+    class="full-width d-flex flex-column"
   >
     <div
-      class="page-header pageHeader"
+      class="page-header pageHeader pageHeader"
     >
       <h1
         class="d-flex align-items-center"
@@ -601,10 +601,10 @@ exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServ
 exports[`<SelfServiceView/> render() should render a row for each shopify integration, 2 active and 1 inactive ssp services 1`] = `
 <div>
   <div
-    class="full-width"
+    class="full-width d-flex flex-column"
   >
     <div
-      class="page-header pageHeader"
+      class="page-header pageHeader pageHeader"
     >
       <h1
         class="d-flex align-items-center"
@@ -843,10 +843,10 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
 exports[`<SelfServiceView/> render() should render the default message when there is no active shopify integration 1`] = `
 <div>
   <div
-    class="full-width"
+    class="full-width d-flex flex-column"
   >
     <div
-      class="page-header pageHeader"
+      class="page-header pageHeader pageHeader"
     >
       <h1
         class="d-flex align-items-center"

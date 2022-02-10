@@ -1,14 +1,10 @@
-import {Col, Container, Row, Badge} from 'reactstrap'
-import classnames from 'classnames'
-import Lightbox from 'react-images'
 import React, {useState} from 'react'
 import {useSelector} from 'react-redux'
 import {Map} from 'immutable'
 
-import helpCenterImagePreview from 'assets/img/paywalls/screens/helpcenter-steve-madden.png'
+import helpCenterImagePreview from 'assets/img/paywalls/screens/helpcenter.png'
 
 import UpgradeButton from '../../../../common/components/UpgradeButton'
-import PageHeader from '../../../../common/components/PageHeader'
 import {
     DEPRECATED_getCurrentPlan,
     DEPRECATED_getPlans,
@@ -19,13 +15,14 @@ import {
     convertLegacyPlanNameToPublicPlanName,
     PlanName,
 } from '../../../../../utils/paywalls'
+import Paywall, {
+    PaywallTheme,
+} from '../../../../common/components/Paywall/Paywall'
 
-import css from './HelpCenterPaywall.less'
 import HelpCenterChangePlanModal from './HelpCenterChangePlanModal'
 
 const HelpCenterPaywall = (): JSX.Element => {
     const [isPlanChangeModalOpen, setIsPlanChangeModalOpen] = useState(false)
-    const [isLightboxOpen, setIsLightboxOpen] = useState(false)
     const plans = useSelector(DEPRECATED_getPlans)
     const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
     const planName = currentPlan.get('name') as string
@@ -49,105 +46,51 @@ const HelpCenterPaywall = (): JSX.Element => {
         )
 
     return (
-        <div className="full-width">
-            <PageHeader title="Help Center" />
-            <div className={css.paywallWrapper}>
-                <div
-                    className={classnames(
-                        css.coloredCircle,
-                        css[currentPlanName.toLowerCase()]
-                    )}
-                />
-                <Container fluid className="page-container">
-                    <Row>
-                        <Col xs={12} xl={6} className={css.preview}>
-                            <img
-                                src={helpCenterImagePreview}
-                                alt="Feature preview"
-                                className={classnames(
-                                    'img-fluid',
-                                    css.previewImage
-                                )}
-                                onClick={() => setIsLightboxOpen(true)}
-                            />
-                        </Col>
-                        <Col className={css.info} xs={12} xl={6}>
-                            <div className={css.badgeContainer}>
-                                <Badge
-                                    className={classnames(
-                                        css.badge,
-                                        css.legacy
-                                    )}
-                                >
-                                    Legacy Plan
-                                </Badge>
-                                <i
-                                    className={classnames(
-                                        'material-icons',
-                                        css.chevron
-                                    )}
-                                >
-                                    chevron_right
-                                </i>
-                                <Badge
-                                    className={classnames(
-                                        css.badge,
-                                        css[currentPlanName.toLowerCase()]
-                                    )}
-                                >
-                                    {`${currentPlanName} Plan`}
-                                </Badge>
-                            </div>
-                            <h1 className={css.header}>
-                                Change plans to activate your Help Center
-                            </h1>
-                            <p className={css.infoText}>
-                                Create your own help center in order to help
-                                users better understand your product and answer
-                                frequently asked questions.
-                                {currentPlanName === PlanName.Enterprise
-                                    ? 'Contact your customer success manager to upgrade today!'
-                                    : currentPlanName === PlanName.Advanced
-                                    ? 'You can contact your customer success manager or do it from here to upgrade today!'
-                                    : null}
-                            </p>
-                            <div>
-                                {displayContactUsButton ? (
-                                    <UpgradeButton
-                                        className="mt-3 mb-5 d-inline-block"
-                                        onClick={(e) => e && openChat(e)}
-                                        label="Contact Us"
-                                    />
-                                ) : (
-                                    <UpgradeButton
-                                        className="mt-3 mb-5 d-inline-block"
-                                        onClick={() =>
-                                            setIsPlanChangeModalOpen(true)
-                                        }
-                                        label="Upgrade Your Plan"
-                                    />
-                                )}
-                            </div>
-                        </Col>
-                    </Row>
-                    <Lightbox
-                        images={[{src: helpCenterImagePreview}]}
-                        isOpen={isLightboxOpen}
-                        onClose={() => setIsLightboxOpen(false)}
-                        onClickImage={() => setIsLightboxOpen(false)}
-                        backdropClosesModal
+        <Paywall
+            pageHeader="Help Center"
+            requiredUpgrade={currentPlanName}
+            header="Change plans to activate your Help Center"
+            description={
+                <>
+                    Create your own help center in order to help users better
+                    understand your product and answer frequently asked
+                    questions.
+                    {currentPlanName === PlanName.Enterprise
+                        ? 'Contact your customer success manager to upgrade today!'
+                        : currentPlanName === PlanName.Advanced
+                        ? 'You can contact your customer success manager or do it from here to upgrade today!'
+                        : null}
+                </>
+            }
+            paywallTheme={currentPlanName as string as PaywallTheme}
+            previewImage={helpCenterImagePreview}
+            customCta={
+                displayContactUsButton ? (
+                    <UpgradeButton
+                        className="mb-5 d-inline-block"
+                        onClick={(e) => e && openChat(e)}
+                        label="Contact Us"
                     />
-                </Container>
-            </div>
-            {suitablePlanWithoutAutomationAddOn && (
-                <HelpCenterChangePlanModal
-                    currentPlan={currentPlan}
-                    suitablePlanWithoutAutomationAddOn={suitablePlanWithoutAutomationAddOn.toJS()}
-                    isOpen={isPlanChangeModalOpen}
-                    onClose={() => setIsPlanChangeModalOpen(false)}
-                />
-            )}
-        </div>
+                ) : (
+                    <UpgradeButton
+                        className="mb-5 d-inline-block"
+                        onClick={() => setIsPlanChangeModalOpen(true)}
+                        label="Upgrade Your Plan"
+                    />
+                )
+            }
+            shouldKeepPlan
+            modal={
+                suitablePlanWithoutAutomationAddOn && (
+                    <HelpCenterChangePlanModal
+                        currentPlan={currentPlan}
+                        suitablePlanWithoutAutomationAddOn={suitablePlanWithoutAutomationAddOn.toJS()}
+                        isOpen={isPlanChangeModalOpen}
+                        onClose={() => setIsPlanChangeModalOpen(false)}
+                    />
+                )
+            }
+        />
     )
 }
 
