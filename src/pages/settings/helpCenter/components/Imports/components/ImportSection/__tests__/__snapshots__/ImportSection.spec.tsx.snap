@@ -14,7 +14,7 @@ exports[`<ImportSection /> renders import modal 1`] = `
      or by uploading a CSV.
   </p>
   <button
-    class="btn btn-secondary"
+    class="wrapper secondary medium"
     type="button"
   >
     <i

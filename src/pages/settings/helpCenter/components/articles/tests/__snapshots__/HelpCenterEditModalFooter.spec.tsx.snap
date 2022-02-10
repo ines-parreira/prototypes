@@ -12,15 +12,14 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
         id="article-save-button-wrapper"
       >
         <button
-          class="submitButton btn btn-primary"
+          class="wrapper submitButton primary medium"
           type="button"
         >
           Save Article
         </button>
       </div>
       <button
-        class="btn btn-secondary"
-        name="discard"
+        class="wrapper secondary medium"
         type="button"
       >
         Discard changes
@@ -36,7 +35,7 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
         1752
       </div>
       <button
-        class="deleteButton btn btn-secondary"
+        class="wrapper deleteButton secondary medium"
         type="button"
       >
         <i

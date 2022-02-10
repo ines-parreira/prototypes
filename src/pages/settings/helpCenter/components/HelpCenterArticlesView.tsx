@@ -3,7 +3,8 @@ import axios from 'axios'
 import copy from 'copy-to-clipboard'
 import _isEqual from 'lodash/isEqual'
 import {useSelector} from 'react-redux'
-import {Button} from 'reactstrap'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import {useLimitations} from '../../../../hooks/helpCenter/useLimitations'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
@@ -648,11 +649,18 @@ export const HelpCenterArticlesView: React.FC = () => {
             helpCenter={helpCenter}
             actions={
                 <>
-                    <Button onClick={onCategoryCreate}>Create Category</Button>
                     <Button
-                        color="success"
+                        intent={ButtonIntent.Secondary}
+                        type="button"
+                        onClick={onCategoryCreate}
+                    >
+                        Create Category
+                    </Button>
+                    <Button
+                        isDisabled={limitations.createArticle.disabled}
+                        intent={ButtonIntent.Primary}
+                        type="button"
                         onClick={onArticleCreate}
-                        disabled={limitations.createArticle.disabled}
                     >
                         Create Article
                     </Button>

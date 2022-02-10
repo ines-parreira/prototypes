@@ -3,7 +3,8 @@
 exports[`<ActionButton /> matches default snapshot 1`] = `
 <div>
   <button
-    class="base btn btn-link"
+    class="wrapper base text medium"
+    type="button"
   >
     Action
   </button>

@@ -1,10 +1,12 @@
 import React, {useMemo, useRef, useState} from 'react'
-import {Button, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
+import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import {useSelector} from 'react-redux'
 import {Map} from 'immutable'
 import classNames from 'classnames'
 
 import shopify from 'assets/img/integrations/shopify.png'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import {getHasAutomationAddOn} from '../../../../../state/billing/selectors'
 
@@ -177,8 +179,8 @@ export const ConnectToShopSection = ({
                             </p>
 
                             <Button
+                                intent={ButtonIntent.Destructive}
                                 type="button"
-                                color="danger"
                                 onClick={() => {
                                     setDisconnectModalOpen(false)
                                     setSelectedShop(NO_SELECTED_SHOP)
@@ -192,7 +194,8 @@ export const ConnectToShopSection = ({
                 </div>
             ) : (
                 <Button
-                    color="primary"
+                    intent={ButtonIntent.Primary}
+                    type="button"
                     onClick={() => setConnectModalOpen(true)}
                 >
                     Connect
@@ -206,12 +209,19 @@ export const ConnectToShopSection = ({
                 onClose={() => setConnectModalOpen(false)}
                 footer={
                     <div>
-                        <Button onClick={() => setConnectModalOpen(false)}>
+                        <Button
+                            intent={ButtonIntent.Secondary}
+                            type="button"
+                            onClick={() => setConnectModalOpen(false)}
+                        >
                             Cancel
                         </Button>
 
                         <Button
                             className="ml-3"
+                            isDisabled={selectedShop === NO_SELECTED_SHOP}
+                            intent={ButtonIntent.Primary}
+                            type="button"
                             onClick={() => {
                                 onUpdate({
                                     shop_name: selectedShop,
@@ -221,8 +231,6 @@ export const ConnectToShopSection = ({
 
                                 setConnectModalOpen(false)
                             }}
-                            color="primary"
-                            disabled={selectedShop === NO_SELECTED_SHOP}
                         >
                             Connect
                         </Button>

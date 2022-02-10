@@ -1,6 +1,8 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {useSelector} from 'react-redux'
-import {Button, FormGroup} from 'reactstrap'
+import {FormGroup} from 'reactstrap'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {
@@ -511,18 +513,25 @@ export const HelpCenterCustomizationView = () => {
             </section>
             <FormGroup>
                 <Button
-                    disabled={
+                    className="mr-2"
+                    isDisabled={
                         !headerNavigation.isListValid() ||
                         !footerNavigation.isListValid() ||
                         !socialNavigation.isListValid()
                     }
-                    className="mr-2"
-                    color="success"
+                    intent={ButtonIntent.Primary}
+                    type="button"
                     onClick={handleOnSave}
                 >
                     Save Changes
                 </Button>
-                <Button onClick={handleOnReset}>Cancel</Button>
+                <Button
+                    intent={ButtonIntent.Secondary}
+                    type="button"
+                    onClick={handleOnReset}
+                >
+                    Cancel
+                </Button>
             </FormGroup>
         </HelpCenterPageWrapper>
     )

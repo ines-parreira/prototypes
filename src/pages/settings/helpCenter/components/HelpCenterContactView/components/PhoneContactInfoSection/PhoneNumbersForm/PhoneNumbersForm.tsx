@@ -1,7 +1,9 @@
 import React from 'react'
 import classNames from 'classnames'
-import {Button, FormGroup, Label} from 'reactstrap'
+import {FormGroup, Label} from 'reactstrap'
 import {produce} from 'immer'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import {ContactPhoneNumber} from '../../../../../../../../models/helpCenter/types'
 import InputField from '../../../../../../../common/forms/InputField'
@@ -94,7 +96,12 @@ const PhoneNumbersForm: React.FC<Props> = ({
                     </FormGroup>
                 </div>
             )}
-            <Button onClick={addPhoneNumber} disabled={disabled}>
+            <Button
+                isDisabled={disabled}
+                intent={ButtonIntent.Secondary}
+                type="button"
+                onClick={addPhoneNumber}
+            >
                 <i className="material-icons">add</i>&nbsp;Add Number
             </Button>
         </>

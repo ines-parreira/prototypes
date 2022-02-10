@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button} from 'reactstrap'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import {useHelpCenterTranslation} from '../../../../providers/HelpCenterTranslation'
 
@@ -8,10 +8,19 @@ const FooterActions: React.FC = () => {
 
     return (
         <footer>
-            <Button color="success" onClick={saveTranslation}>
+            <Button
+                intent={ButtonIntent.Primary}
+                type="button"
+                onClick={saveTranslation}
+            >
                 Save Changes
             </Button>
-            <Button className="ml-2" onClick={resetTranslation}>
+            <Button
+                className="ml-2"
+                intent={ButtonIntent.Secondary}
+                type="button"
+                onClick={resetTranslation}
+            >
                 Cancel
             </Button>
         </footer>

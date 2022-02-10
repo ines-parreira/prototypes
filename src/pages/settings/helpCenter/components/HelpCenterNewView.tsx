@@ -5,7 +5,9 @@ import produce from 'immer'
 import _debounce from 'lodash/debounce'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory, useLocation} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Button, Container} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import InputField from 'pages/common/forms/InputField'
 import {CreateHelpCenterDto} from '../../../../models/helpCenter/types'
@@ -286,14 +288,17 @@ export const HelpCenterNewView = ({
 
                     <div className="d-flex">
                         <Button
-                            color="success"
-                            disabled={!canSubmit}
+                            isDisabled={!canSubmit}
+                            intent={ButtonIntent.Primary}
+                            type="button"
                             onClick={handleSubmit}
                         >
                             Add new Help Center
                         </Button>
                         <Button
                             className={css.cancelButton}
+                            intent={ButtonIntent.Secondary}
+                            type="button"
                             onClick={navigateToStartView}
                         >
                             Cancel

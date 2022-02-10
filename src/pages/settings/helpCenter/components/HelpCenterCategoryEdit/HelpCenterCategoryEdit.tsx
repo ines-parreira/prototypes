@@ -3,7 +3,6 @@ import classNames from 'classnames'
 import copy from 'copy-to-clipboard'
 import {useSelector} from 'react-redux'
 import {
-    Button,
     FormGroup,
     FormText,
     Input,
@@ -11,6 +10,8 @@ import {
     InputGroupAddon,
     Label,
 } from 'reactstrap'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
 import {SCREEN_SIZE, useScreenSize} from '../../../../../hooks/useScreenSize'
@@ -300,14 +301,15 @@ export const HelpCenterCategoryEdit = ({
                 </FormGroup>
                 <FormGroup className={classNames(css.textfield, css.required)}>
                     <Label for="slug">Slug</Label>
-                    <button
+                    <Button
+                        intent={ButtonIntent.Text}
                         type="button"
                         onClick={copyURL}
                         className={css.copyButton}
                     >
                         Copy URL
                         <i className="material-icons">content_copy</i>
-                    </button>
+                    </Button>
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
                             <span
@@ -392,8 +394,8 @@ export const HelpCenterCategoryEdit = ({
             <Drawer.Footer>
                 <Button
                     data-testid="button-save"
-                    color="primary"
-                    disabled={!canSaveCategory}
+                    intent={ButtonIntent.Primary}
+                    isDisabled={!canSaveCategory}
                     onClick={handleOnSave}
                 >
                     Save
@@ -401,6 +403,7 @@ export const HelpCenterCategoryEdit = ({
                 {category?.id && onDelete && (
                     <Button
                         className={css['delete-btn']}
+                        intent={ButtonIntent.Secondary}
                         onClick={() => setPendingDeleteCategory(true)}
                     >
                         <i className="material-icons mr-2">delete</i>

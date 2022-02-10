@@ -1,7 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 
-import Button from 'reactstrap/lib/Button'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import Modal from '../../../../../common/components/Modal'
 
@@ -35,18 +35,26 @@ export const CloseArticleModal = ({
             footerClassName={css.actions}
             footer={
                 <div className={css.footerWrapper}>
-                    <Button name="discard" color="danger" onClick={onDiscard}>
+                    <Button
+                        intent={ButtonIntent.Destructive}
+                        type="button"
+                        onClick={onDiscard}
+                    >
                         Discard changes
                     </Button>
                     <div>
-                        <Button name="edit" onClick={onContinueEditing}>
+                        <Button
+                            intent={ButtonIntent.Secondary}
+                            type="button"
+                            onClick={onContinueEditing}
+                        >
                             Edit article
                         </Button>
                         {onSave && (
                             <Button
-                                color="primary"
-                                name="save"
                                 className={classNames('ml-3', css.confirmBtn)}
+                                intent={ButtonIntent.Primary}
+                                type="button"
                                 onClick={onSave}
                             >
                                 Save article

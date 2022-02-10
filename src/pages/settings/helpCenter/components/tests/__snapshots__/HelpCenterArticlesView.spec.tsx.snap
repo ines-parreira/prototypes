@@ -43,7 +43,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
         >
           <button
             aria-label="help center preview"
-            class="btn btn-secondary"
+            class="wrapper secondary medium"
             type="button"
           >
             <i
@@ -56,13 +56,13 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
             </span>
           </button>
           <button
-            class="btn btn-secondary"
+            class="wrapper secondary medium"
             type="button"
           >
             Create Category
           </button>
           <button
-            class="btn btn-success"
+            class="wrapper primary medium"
             type="button"
           >
             Create Article
@@ -139,7 +139,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
         Write your first article or create your first category to be displayed in your very own Help Center.
       </p>
       <button
-        class="mr-2 btn btn-success"
+        class="wrapper mr-2 primary medium"
         type="button"
       >
         <i
@@ -150,7 +150,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
         Create Article
       </button>
       <button
-        class="btn btn-secondary"
+        class="wrapper secondary medium"
         type="button"
       >
         <i
@@ -175,7 +175,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
            or by uploading a CSV.
         </p>
         <button
-          class="btn btn-secondary"
+          class="wrapper secondary medium"
           type="button"
         >
           <i
@@ -331,7 +331,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
               Slug
             </label>
             <button
-              class="copyButton"
+              class="wrapper copyButton text medium"
               type="button"
             >
               Copy URL
@@ -539,10 +539,9 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
           class="footer"
         >
           <button
-            class="btn btn-primary disabled"
+            class="wrapper primary medium isDisabled"
             data-testid="button-save"
             disabled=""
-            type="button"
           >
             Save
           </button>

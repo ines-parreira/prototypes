@@ -1,5 +1,6 @@
 import React from 'react'
-import {Button} from 'reactstrap'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import Tooltip from '../../../../common/components/Tooltip'
 
@@ -53,8 +54,10 @@ export const LinkList = ({
             <span id={`help-${name}`}>
                 <Button
                     className={css['add-link']}
-                    disabled={isLimitExceeded}
+                    isDisabled={isLimitExceeded}
+                    intent={ButtonIntent.Secondary}
                     style={isLimitExceeded ? {pointerEvents: 'none'} : {}}
+                    type="button"
                     onClick={onAddNew}
                 >
                     <i className="material-icons">add</i>

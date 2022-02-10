@@ -1,8 +1,10 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import axios from 'axios'
 import {useAsyncFn} from 'react-use'
-import {Button, FormGroup} from 'reactstrap'
+import {FormGroup} from 'reactstrap'
 import isHexColor from 'validator/lib/isHexColor'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {HelpCenter} from '../../../../models/helpCenter/types'
@@ -296,13 +298,20 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 <FormGroup>
                     <Button
                         className="mr-2"
-                        color="success"
-                        disabled={!canSaveCurrentAppearance}
+                        intent={ButtonIntent.Primary}
+                        isDisabled={!canSaveCurrentAppearance}
+                        type="button"
                         onClick={saveCurrentAppearance}
                     >
                         {updateResponse.loading ? 'Saving...' : 'Save Changes'}
                     </Button>
-                    <Button onClick={resetCurrentAppearance}>Cancel</Button>
+                    <Button
+                        intent={ButtonIntent.Secondary}
+                        type="button"
+                        onClick={resetCurrentAppearance}
+                    >
+                        Cancel
+                    </Button>
                 </FormGroup>
             </footer>
         </HelpCenterPageWrapper>

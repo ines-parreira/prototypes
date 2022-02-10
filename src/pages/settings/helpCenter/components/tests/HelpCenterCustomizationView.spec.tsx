@@ -40,6 +40,9 @@ jest.mock('../../hooks/useHelpCenterApi', () => {
                 listNavigationLinks: jest.fn().mockResolvedValue({
                     data: {data: [], meta: {item_count: 0}},
                 }),
+                getExtraHTML: jest.fn().mockResolvedValue({
+                    data: {},
+                }),
             },
         }),
     }

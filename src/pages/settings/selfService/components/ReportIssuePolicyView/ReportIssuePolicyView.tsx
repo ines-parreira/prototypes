@@ -1,14 +1,9 @@
 import React, {ComponentType} from 'react'
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Col,
-    Container,
-    Row,
-    Button,
-} from 'reactstrap'
-import {Link, useRouteMatch} from 'react-router-dom'
+import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
+import {Link, useHistory, useRouteMatch} from 'react-router-dom'
 import {useSelector} from 'react-redux'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import PageHeader from '../../../../common/components/PageHeader'
 import {GorgiasChatIntegrationSelfServicePaywall} from '../../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
@@ -24,9 +19,16 @@ const ReportIssuePolicyView: ComponentType = () => {
     const {
         params: {shopName, integrationType},
     } = useRouteMatch<{shopName: string; integrationType: string}>()
+    const history = useHistory()
 
     const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
     const isLoading = useSelector(getLoading)
+
+    const handleClickNewCase = () => {
+        history.push(
+            `/app/settings/self-service/${integrationType}/${shopName}/preferences/report-issue/new`
+        )
+    }
 
     if (!hasAutomationAddOn) {
         return <GorgiasChatIntegrationSelfServicePaywall />
@@ -58,9 +60,9 @@ const ReportIssuePolicyView: ComponentType = () => {
                 }
             >
                 <Button
-                    tag={Link}
-                    color="success"
-                    to={`/app/settings/self-service/${integrationType}/${shopName}/preferences/report-issue/new`}
+                    intent={ButtonIntent.Creation}
+                    type="button"
+                    onClick={handleClickNewCase}
                 >
                     <span className="icon material-icons">add</span> New Case
                 </Button>

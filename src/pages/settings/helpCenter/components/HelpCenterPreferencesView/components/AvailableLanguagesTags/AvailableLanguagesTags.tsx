@@ -1,7 +1,8 @@
 import React, {useMemo, useState} from 'react'
 import produce from 'immer'
 import _keyBy from 'lodash/keyBy'
-import {Button} from 'reactstrap'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import {Locale} from 'models/helpCenter/types'
 import {FlagLanguageItem} from '../../../../../../common/components/LanguageBulletList'
@@ -120,11 +121,17 @@ export const AvailableLanguagesTags: React.FC<Props> = ({
                 className={css['modal-centered']}
                 footer={
                     <div className={css['footer-actions']}>
-                        <Button onClick={handleOnCancelDeleteLocale}>
+                        <Button
+                            intent={ButtonIntent.Secondary}
+                            type="button"
+                            onClick={handleOnCancelDeleteLocale}
+                        >
                             Cancel
                         </Button>
                         <Button
                             className={css['delete-btn']}
+                            intent={ButtonIntent.Secondary}
+                            type="button"
                             onClick={handleOnClickDeleteLocale}
                         >
                             <i className="material-icons">delete</i>

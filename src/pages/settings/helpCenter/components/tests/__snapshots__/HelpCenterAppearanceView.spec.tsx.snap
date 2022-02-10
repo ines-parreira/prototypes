@@ -43,7 +43,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
         >
           <button
             aria-label="help center preview"
-            class="btn btn-secondary"
+            class="wrapper secondary medium"
             type="button"
           >
             <i
@@ -608,14 +608,14 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             class="form-group"
           >
             <button
-              class="mr-2 btn btn-success disabled"
+              class="wrapper mr-2 primary medium isDisabled"
               disabled=""
               type="button"
             >
               Save Changes
             </button>
             <button
-              class="btn btn-secondary"
+              class="wrapper secondary medium"
               type="button"
             >
               Cancel

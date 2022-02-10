@@ -1,6 +1,7 @@
 import React, {ReactNode, useState} from 'react'
-import {Button, Container, FormGroup, UncontrolledTooltip} from 'reactstrap'
+import {Container, FormGroup, UncontrolledTooltip} from 'reactstrap'
 import classNames from 'classnames'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import HeaderCellProperty from '../../../../../../common/components/table/cells/HeaderCellProperty'
 import TableBody from '../../../../../../common/components/table/TableBody'
@@ -312,9 +313,10 @@ export const CsvColumnMatching = ({
 
             <FormGroup className="mt-5">
                 <Button
-                    color="primary"
                     className="mr-2"
-                    disabled={!mappingsComplete(fieldsMappings)}
+                    isDisabled={!mappingsComplete(fieldsMappings)}
+                    intent={ButtonIntent.Primary}
+                    type="button"
                     onClick={() => onImport(fieldsMappings)}
                 >
                     Confirm Import
@@ -322,10 +324,19 @@ export const CsvColumnMatching = ({
                 <ConfirmModalAction
                     actions={(onClose) => (
                         <div className={css['modal-actions']}>
-                            <Button className="mr-2" onClick={() => onClose()}>
+                            <Button
+                                className="mr-2"
+                                intent={ButtonIntent.Secondary}
+                                type="button"
+                                onClick={() => onClose()}
+                            >
                                 Cancel
                             </Button>
-                            <Button color="danger" onClick={onCancel}>
+                            <Button
+                                intent={ButtonIntent.Destructive}
+                                type="button"
+                                onClick={onCancel}
+                            >
                                 Stop Import
                             </Button>
                         </div>
@@ -338,7 +349,15 @@ export const CsvColumnMatching = ({
                     }
                     title="Are you sure you want to stop importing?"
                 >
-                    {(onClick) => <Button onClick={onClick}>Cancel</Button>}
+                    {(onClick) => (
+                        <Button
+                            intent={ButtonIntent.Secondary}
+                            type="button"
+                            onClick={onClick}
+                        >
+                            Cancel
+                        </Button>
+                    )}
                 </ConfirmModalAction>
             </FormGroup>
         </Container>

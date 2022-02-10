@@ -485,14 +485,14 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
           class="d-flex"
         >
           <button
-            class="btn btn-success disabled"
+            class="wrapper primary medium isDisabled"
             disabled=""
             type="button"
           >
             Add new Help Center
           </button>
           <button
-            class="cancelButton btn btn-secondary"
+            class="wrapper cancelButton secondary medium"
             type="button"
           >
             Cancel

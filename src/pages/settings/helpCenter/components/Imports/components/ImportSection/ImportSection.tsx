@@ -1,14 +1,7 @@
 import classNames from 'classnames'
 import React, {ChangeEvent, useRef, useState, useEffect} from 'react'
 import {Link, useHistory} from 'react-router-dom'
-import {
-    Button,
-    Modal,
-    ModalBody,
-    ModalFooter,
-    ModalHeader,
-    Spinner,
-} from 'reactstrap'
+import {Modal, ModalBody, ModalFooter, ModalHeader, Spinner} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 import {fromJS, Map} from 'immutable'
 import {AxiosError} from 'axios'
@@ -17,6 +10,11 @@ import zendeskLogo from 'assets/img/integrations/zendesk.png'
 import helpdocsLogo from 'assets/img/integrations/helpdocs.png'
 import reamazeLogo from 'assets/img/integrations/reamaze.png'
 import intercomLogo from 'assets/img/integrations/intercom.png'
+
+import Button, {
+    ButtonIntent,
+    ButtonSize,
+} from 'pages/common/components/button/Button'
 
 import {notify} from '../../../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../../../state/notifications/types'
@@ -263,7 +261,9 @@ export const ImportSection: React.FC<Props> = ({className}: Props) => {
 
             {!isHotswapImportInProgress && (
                 <Button
-                    disabled={isHotswapImportProgressRequestLoading}
+                    isDisabled={isHotswapImportProgressRequestLoading}
+                    intent={ButtonIntent.Secondary}
+                    type="button"
                     onClick={() => setModalState({state: 'NO_FILE_SELECTED'})}
                 >
                     <i className="material-icons mr-2">cloud_upload</i>Import
@@ -311,8 +311,9 @@ export const ImportSection: React.FC<Props> = ({className}: Props) => {
 
                                         <div>
                                             <Button
-                                                color="secondary"
-                                                size="sm"
+                                                intent={ButtonIntent.Secondary}
+                                                size={ButtonSize.Small}
+                                                type="button"
                                                 onClick={openFileDialog}
                                             >
                                                 Change File
@@ -430,10 +431,18 @@ export const ImportSection: React.FC<Props> = ({className}: Props) => {
                 </ModalBody>
                 {shouldShowModalFooter && (
                     <ModalFooter className={css.modalFooter}>
-                        <Button color="secondary" onClick={closeModal}>
+                        <Button
+                            intent={ButtonIntent.Secondary}
+                            type="button"
+                            onClick={closeModal}
+                        >
                             Cancel
                         </Button>
-                        <Button color="primary" onClick={handleImport}>
+                        <Button
+                            intent={ButtonIntent.Primary}
+                            type="button"
+                            onClick={handleImport}
+                        >
                             Import File
                         </Button>
                     </ModalFooter>

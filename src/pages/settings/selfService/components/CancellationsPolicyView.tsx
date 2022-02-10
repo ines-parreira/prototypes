@@ -1,16 +1,10 @@
 import React, {FormEvent, useEffect, useState} from 'react'
 import {Link, useParams} from 'react-router-dom'
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Button,
-    Col,
-    Container,
-    Form,
-    Row,
-} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Col, Container, Form, Row} from 'reactstrap'
 import classNames from 'classnames'
 import {useSelector} from 'react-redux'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import PageHeader from '../../../common/components/PageHeader'
 import SelectField from '../../../common/forms/SelectField/SelectField'
@@ -269,29 +263,30 @@ export const CancellationsPolicyView = () => {
                                             ) : null}
                                         </div>
                                         <Button
-                                            type="submit"
-                                            color="primary"
                                             className={classNames('mr-2', {
                                                 'btn-loading': loading,
                                             })}
-                                            disabled={
+                                            isDisabled={
                                                 loading ||
                                                 eligibilityWindowOptionValue ===
                                                     configCancelOrderStatusEligibility
                                             }
+                                            intent={ButtonIntent.Primary}
+                                            type="submit"
                                         >
                                             Save changes
                                         </Button>
                                         <Button
-                                            type="button"
                                             className={classNames({
                                                 'btn-loading': loading,
                                             })}
-                                            disabled={
+                                            isDisabled={
                                                 loading ||
                                                 eligibilityWindowOptionValue ===
                                                     configCancelOrderStatusEligibility
                                             }
+                                            intent={ButtonIntent.Secondary}
+                                            type="button"
                                             onClick={onCancel}
                                         >
                                             Cancel

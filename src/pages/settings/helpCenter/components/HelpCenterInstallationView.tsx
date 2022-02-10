@@ -2,7 +2,8 @@ import React, {useCallback, useEffect, useState} from 'react'
 import axios from 'axios'
 import _debounce from 'lodash/debounce'
 import {useHistory, useLocation} from 'react-router-dom'
-import {Button} from 'reactstrap'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import {Paths} from 'rest_api/help_center_api/client.generated'
 
@@ -165,8 +166,9 @@ export const HelpCenterInstallationView: React.FC = () => {
                 error={subdomainError}
             >
                 <Button
-                    color="primary"
-                    disabled={!isNewSubdomainValid}
+                    intent={ButtonIntent.Primary}
+                    isDisabled={!isNewSubdomainValid}
+                    type="button"
                     onClick={() =>
                         handleOnUpdateHelpCenter({
                             subdomain: subdomainValue,
@@ -187,6 +189,8 @@ export const HelpCenterInstallationView: React.FC = () => {
                     actions={(onClose) => (
                         <div className={css['modal-actions']}>
                             <Button
+                                intent={ButtonIntent.Secondary}
+                                type="button"
                                 onClick={() => {
                                     setDeleteModalConfirmation('')
                                     onClose()
@@ -196,8 +200,10 @@ export const HelpCenterInstallationView: React.FC = () => {
                             </Button>
                             <Button
                                 className={css['delete-btn']}
+                                isDisabled={deleteBtnDisabled}
+                                intent={ButtonIntent.Secondary}
+                                type="button"
                                 onClick={handleOnDeleteHelpCenter}
-                                disabled={deleteBtnDisabled}
                             >
                                 <i className="material-icons">delete</i>
                                 Delete Forever
@@ -240,7 +246,12 @@ export const HelpCenterInstallationView: React.FC = () => {
                     title="Delete confirmation"
                 >
                     {(onClick) => (
-                        <Button className={css['delete-btn']} onClick={onClick}>
+                        <Button
+                            className={css['delete-btn']}
+                            intent={ButtonIntent.Secondary}
+                            type="button"
+                            onClick={onClick}
+                        >
                             <i className="material-icons">delete</i>
                             Delete Help Center
                         </Button>

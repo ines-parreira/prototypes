@@ -1,6 +1,8 @@
 import React from 'react'
 
-import {Button, Col, Row} from 'reactstrap'
+import {Col, Row} from 'reactstrap'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import Loader from '../../../../../../common/components/Loader/Loader'
 
@@ -23,8 +25,9 @@ export const StatusCheck = ({
         <div data-testid="domain-status-check">
             <Button
                 className="mr-4"
-                color="primary"
-                disabled={isLoading}
+                isDisabled={isLoading}
+                intent={ButtonIntent.Primary}
+                type="button"
                 onClick={onCheckStatus}
             >
                 {isLoading ? (

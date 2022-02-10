@@ -1,11 +1,14 @@
 import React, {ReactNode, useMemo} from 'react'
 import classNames from 'classnames'
 import {useSelector} from 'react-redux'
-import {Button, Container} from 'reactstrap'
+import {Container} from 'reactstrap'
 
 import {HelpCenter} from 'models/helpCenter/types'
 import PageHeader from 'pages/common/components/PageHeader'
 import {getViewLanguage, changeViewLanguage} from 'state/helpCenter/ui'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
 import {validLocaleCode} from '../../../../../models/helpCenter/utils'
 import SelectField from '../../../../common/forms/SelectField/SelectField'
@@ -78,10 +81,12 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                         />
                     )}
                     <Button
+                        aria-label="help center preview"
+                        intent={ButtonIntent.Secondary}
+                        type="button"
                         onClick={() =>
                             window.open(helpCenterUrl, '_blank')!.focus()
                         }
-                        aria-label="help center preview"
                     >
                         <i className="material-icons">open_in_new</i>
                         <span>Preview</span>

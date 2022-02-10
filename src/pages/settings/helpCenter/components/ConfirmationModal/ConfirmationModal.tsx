@@ -1,19 +1,17 @@
 import React from 'react'
 import classNames from 'classnames'
 
-import Button from 'reactstrap/lib/Button'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import Modal from '../../../../common/components/Modal'
 
 import css from './ConfirmationModal.less'
 
-type ButtonColor = 'danger' | 'success'
-
 export type ConfirmationModalProps = {
     children: React.ReactNode
     className?: string
     cancelText?: React.ReactNode
-    confirmColor?: ButtonColor
+    confirmIntent?: ButtonIntent
     confirmText: React.ReactNode
     isOpen: boolean
     style?: React.CSSProperties
@@ -26,7 +24,7 @@ export const ConfirmationModal = ({
     children,
     className,
     cancelText = 'Cancel',
-    confirmColor = 'danger',
+    confirmIntent = ButtonIntent.Destructive,
     confirmText,
     isOpen,
     style,
@@ -43,10 +41,17 @@ export const ConfirmationModal = ({
             footerClassName={css.actions}
             footer={
                 <>
-                    <Button onClick={onClose}>{cancelText}</Button>
                     <Button
-                        color={confirmColor}
+                        intent={ButtonIntent.Secondary}
+                        type="button"
+                        onClick={onClose}
+                    >
+                        {cancelText}
+                    </Button>
+                    <Button
                         className={classNames('ml-3', css.confirmBtn)}
+                        intent={confirmIntent}
+                        type="button"
                         onClick={onConfirm}
                     >
                         {confirmText}

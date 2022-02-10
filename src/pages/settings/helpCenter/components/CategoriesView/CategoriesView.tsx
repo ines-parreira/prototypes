@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {useSelector} from 'react-redux'
-import {Button, Container} from 'reactstrap'
+import {Container} from 'reactstrap'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import {Category, HelpCenter} from '../../../../../models/helpCenter/types'
 import {getUncategorizedArticles} from '../../../../../state/helpCenter/articles'
@@ -86,15 +87,20 @@ export const CategoriesViews = ({
                         to be displayed in your very own Help Center.
                     </p>
                     <Button
-                        color="success"
-                        onClick={onCreateArticle}
                         className="mr-2"
+                        intent={ButtonIntent.Primary}
+                        type="button"
+                        onClick={onCreateArticle}
                     >
                         <i className="material-icons-outlined mr-1">article</i>
                         Create Article
                     </Button>
 
-                    <Button onClick={onCreateCategory}>
+                    <Button
+                        intent={ButtonIntent.Secondary}
+                        type="button"
+                        onClick={onCreateCategory}
+                    >
                         <i className="material-icons mr-1">list</i>
                         Create Category
                     </Button>

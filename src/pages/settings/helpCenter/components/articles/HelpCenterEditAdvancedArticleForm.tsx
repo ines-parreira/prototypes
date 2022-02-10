@@ -108,9 +108,9 @@ export const HelpCenterEditAdvancedArticleForm = ({
                 />
                 {articleId && (
                     <button
+                        className={css.copyButton}
                         type="button"
                         onClick={copyURL}
-                        className={css.copyButton}
                     >
                         Copy URL
                         <i className="material-icons">content_copy</i>

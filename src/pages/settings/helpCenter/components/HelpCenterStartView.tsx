@@ -2,9 +2,11 @@ import React, {useEffect, useCallback, useMemo} from 'react'
 import {useAsyncFn} from 'react-use'
 import {useSelector} from 'react-redux'
 import {useHistory} from 'react-router-dom'
-import {Container, Button} from 'reactstrap'
+import {Container} from 'reactstrap'
 import produce from 'immer'
 import _keyBy from 'lodash/keyBy'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 
@@ -137,8 +139,9 @@ export const HelpCenterStartView: React.FC = () => {
             <PageHeader title="Help Center">
                 <div id="add-new-help-center-button-wrapper">
                     <Button
-                        disabled={addNewButtonDisabled}
-                        color="success"
+                        isDisabled={addNewButtonDisabled}
+                        intent={ButtonIntent.Primary}
+                        type="button"
                         onClick={() =>
                             history.push(`${HELP_CENTER_BASE_PATH}/new`)
                         }

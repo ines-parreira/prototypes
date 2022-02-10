@@ -13,11 +13,12 @@ import {
     Container,
     Row,
     Form,
-    Button,
     UncontrolledTooltip,
 } from 'reactstrap'
 import {Link, useRouteMatch, useHistory} from 'react-router-dom'
 import produce from 'immer'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import PageHeader from '../../../../common/components/PageHeader'
 import InputField from '../../../../common/forms/InputField'
@@ -362,11 +363,11 @@ const ReportIssueCaseEditor: ComponentType = () => {
                                     id="caseSubmitButtonWrapper"
                                 >
                                     <Button
-                                        color="success"
-                                        type="submit"
-                                        disabled={
+                                        isDisabled={
                                             Object.keys(errors).length > 0
                                         }
+                                        intent={ButtonIntent.Primary}
+                                        type="submit"
                                     >
                                         {caseIndex === 'new'
                                             ? 'Add new case'
@@ -384,6 +385,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
                                 )}
 
                                 <Button
+                                    intent={ButtonIntent.Secondary}
                                     type="button"
                                     onClick={handleCancelClick}
                                 >

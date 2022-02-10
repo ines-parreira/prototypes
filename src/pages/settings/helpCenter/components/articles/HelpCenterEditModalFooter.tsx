@@ -1,5 +1,6 @@
 import React, {FormEvent, useState} from 'react'
-import {Button} from 'reactstrap'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import {Rating} from 'models/helpCenter/types'
 import Tooltip from '../../../../common/components/Tooltip'
@@ -52,10 +53,11 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
             <div className={css.buttonsWrapper}>
                 <div id="article-save-button-wrapper">
                     <Button
-                        disabled={!canSave}
-                        color="primary"
-                        onClick={handleOnSave}
                         className={css.submitButton}
+                        isDisabled={!canSave}
+                        intent={ButtonIntent.Primary}
+                        type="button"
+                        onClick={handleOnSave}
                     >
                         Save Article
                     </Button>
@@ -69,7 +71,11 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                         You need to add a {requiredFields[0]}
                     </Tooltip>
                 )}
-                <Button name="discard" onClick={onDiscard}>
+                <Button
+                    intent={ButtonIntent.Secondary}
+                    type="button"
+                    onClick={onDiscard}
+                >
                     Discard changes
                 </Button>
 
@@ -113,6 +119,8 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                 {canDelete && (
                     <Button
                         className={css.deleteButton}
+                        intent={ButtonIntent.Secondary}
+                        type="button"
                         onClick={() => setPendingDeleteArticle(true)}
                     >
                         <i className="material-icons">delete</i>
