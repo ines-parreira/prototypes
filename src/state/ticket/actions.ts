@@ -8,46 +8,47 @@ import {dismissNotification} from 'reapop'
 import {Moment} from 'moment'
 import {compressToEncodedURIComponent} from 'lz-string'
 
-import {TicketMessageSourceType} from '../../business/types/ticket'
-import {DEFAULT_ACTIONS} from '../../config'
-import browserNotification from '../../services/browserNotification'
-import GorgiasApi from '../../services/gorgiasApi'
-import socketManager from '../../services/socketManager/socketManager'
-import {isCurrentlyOnTicket, isTabActive} from '../../utils'
-import {markChatAsRead} from '../chats/actions'
-import * as newMessageActions from '../newMessage/actions'
-import * as newMessageTypes from '../newMessage/constants'
-import {getSourceTypeCache} from '../newMessage/responseUtils'
-import {notify} from '../notifications/actions'
-import * as ticketsSelectors from '../tickets/selectors'
-import * as viewsSelectors from '../views/selectors'
-import {logEvent, SegmentEvent} from '../../store/middlewares/segmentTracker'
+import {TicketMessageSourceType} from 'business/types/ticket'
+import {DEFAULT_ACTIONS} from 'config'
+import {ViewType} from 'models/view/constants'
+import browserNotification from 'services/browserNotification'
+import GorgiasApi from 'services/gorgiasApi'
+import socketManager from 'services/socketManager/socketManager'
+import {markChatAsRead} from 'state/chats/actions'
+import * as newMessageActions from 'state/newMessage/actions'
+import * as newMessageTypes from 'state/newMessage/constants'
+import {getSourceTypeCache} from 'state/newMessage/responseUtils'
+import {notify} from 'state/notifications/actions'
+import * as ticketsSelectors from 'state/tickets/selectors'
+import * as viewsSelectors from 'state/views/selectors'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {isCurrentlyOnTicket, isTabActive} from 'utils'
 
-import {ApiListResponsePagination} from '../../models/api/types'
+import {ApiListResponsePagination} from 'models/api/types'
 import {
     Action,
     Ticket,
     TicketMessage,
     TicketMessageIntent,
-} from '../../models/ticket/types'
-import {View} from '../../models/view/types'
-import {Macro} from '../macro/types'
-import {StoreDispatch, RootState} from '../types'
+} from 'models/ticket/types'
+import {View} from 'models/view/types'
 
 import {
     TicketMessageFailedEvent,
     JoinEventType,
     SocketEventType,
-} from '../../services/socketManager/types'
-import {Customer} from '../customers/types'
-import {SearchCustomerType, UserSearchResult} from '../newMessage/types'
+} from 'services/socketManager/types'
+import {Customer} from 'state/customers/types'
+import {SearchCustomerType, UserSearchResult} from 'state/newMessage/types'
 import {
     NotificationStatus,
     Notification,
     NotificationButton,
-} from '../notifications/types'
-import history from '../../pages/history'
-import client from '../../models/api/resources'
+} from 'state/notifications/types'
+import history from 'pages/history'
+import client from 'models/api/resources'
+import {StoreDispatch, RootState} from 'state/types'
+import {Macro} from 'state/macro/types'
 
 import {
     buildPartialUpdateFromAction,
@@ -743,8 +744,9 @@ export const _goToNextOrPrevTicket = (
         const viewSearch = view.get('search') as string
         const viewFilters = view.get('filters') as string
         const viewCursor = ticketsSelectors.getCursor(getState())
+        const isCustomerView = view.get('type') === ViewType.CustomerList
 
-        if (!viewId && !viewSearch && !viewFilters) {
+        if ((!viewId && !viewSearch && !viewFilters) || isCustomerView) {
             return returnedPromise.then(() => {
                 // there is no active view so we go to the first view
                 history.push('/app')

@@ -9,24 +9,25 @@ import {fromJS, Map} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {dismissNotification} from 'reapop'
 
-import * as actions from '../actions'
-import {initialState} from '../reducers'
-import {notify} from '../../notifications/actions'
-import {initialState as newMessageState} from '../../newMessage/reducers'
+import {notify} from 'state/notifications/actions'
+import {initialState as newMessageState} from 'state/newMessage/reducers'
 import {
     AuditLogEventType,
     AuditLogEvent,
     AuditLogEventObjectType,
-} from '../../../models/event/types'
-import {StoreDispatch} from '../../types'
-import {Ticket, TicketMessage} from '../../../models/ticket/types'
-import socketManager from '../../../services/socketManager/socketManager'
+} from 'models/event/types'
+import {StoreDispatch} from 'state/types'
+import {Ticket, TicketMessage} from 'models/ticket/types'
+import socketManager from 'services/socketManager/socketManager'
 import {
     TicketMessageFailedEvent,
     SocketEventType,
-} from '../../../services/socketManager/types'
-import history from '../../../pages/history'
-import client from '../../../models/api/resources'
+} from 'services/socketManager/types'
+import history from 'pages/history'
+import client from 'models/api/resources'
+import {ViewType} from 'models/view/constants'
+import {initialState} from '../reducers'
+import * as actions from '../actions'
 
 type MockedRootState = {
     ticket: Map<any, any>
@@ -55,8 +56,8 @@ jest.mock('push.js', () => {
     }
 })
 
-jest.mock('../../../utils', () => {
-    const utils = require.requireActual('../../../utils')
+jest.mock('utils', () => {
+    const utils = require.requireActual('utils')
 
     return {
         ...utils,
@@ -70,19 +71,19 @@ jest.mock('../../../utils', () => {
     }
 })
 
-jest.mock('../../../services/socketManager/socketManager', () => {
+jest.mock('services/socketManager/socketManager', () => {
     return {
         join: jest.fn(),
         send: jest.fn(),
     }
 })
 
-jest.mock('../../notifications/actions', () => {
+jest.mock('state/notifications/actions', () => {
     return {
         notify: jest.fn(() => (args: Record<string, unknown>) => args),
     }
 })
-jest.mock('../../../pages/history')
+jest.mock('pages/history')
 
 describe('ticket actions', () => {
     let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
@@ -647,6 +648,18 @@ describe('ticket actions', () => {
         })
 
         it('should go to first view because there is no active view', (done) => {
+            void store.dispatch(actions.goToNextTicket(1)).then(() => {
+                expect(store.getActions()).toMatchSnapshot()
+                expect(history.push).toHaveBeenCalledWith('/app')
+                done()
+            })
+        })
+
+        it('should go to first view because active view is a customer view', (done) => {
+            store = mockStore({
+                ticket: initialState,
+                views: fromJS({active: {id: 1, type: ViewType.CustomerList}}),
+            })
             void store.dispatch(actions.goToNextTicket(1)).then(() => {
                 expect(store.getActions()).toMatchSnapshot()
                 expect(history.push).toHaveBeenCalledWith('/app')

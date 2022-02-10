@@ -947,6 +947,14 @@ Array [
 ]
 `;
 
+exports[`ticket actions goToNextTicket() should go to first view because active view is a customer view 1`] = `
+Array [
+  Object {
+    "type": "FETCH_TICKET_START",
+  },
+]
+`;
+
 exports[`ticket actions goToNextTicket() should go to first view because there is no active view 1`] = `
 Array [
   Object {
