@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TicketReplyActions/> should render the ticket reply macro actions 1`] = `
+exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
 <div>
   <div
     class="actions"
@@ -24,11 +24,11 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions 1`] 
       class="collapseIcon material-icons"
       id="show-actions"
     >
-      keyboard_arrow_up
+      keyboard_arrow_down
     </i>
   </div>
   <div
-    class="collapse show"
+    class="collapse"
     style=""
   >
     <div
@@ -256,7 +256,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
     <span
       class="badge mr-2 badge badge-primary badge-pill"
     >
-      1
+      5
     </span>
     <span
       class="title"
@@ -272,6 +272,445 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
   </div>
   <div
     class="collapse"
+  >
+    <div
+      class="component"
+    >
+      <div
+        class="title"
+      >
+        <img
+          alt="Cancel last order icon"
+          class="actionLogo"
+          role="presentation"
+          src="test-file-stub"
+        />
+        <span>
+          Cancel last order
+        </span>
+      </div>
+      <i
+        class="closeIcon material-icons"
+      >
+        close
+      </i>
+      <div
+        class="argsWrapper"
+      >
+        <div>
+          <div
+            class="argInput"
+          >
+            <div
+              class="d-inline-block form-check"
+              color=""
+            >
+              <label
+                class="control-label form-check-label"
+                for="id-input-2"
+              >
+                <input
+                  checked=""
+                  class="form-check-input form-check-input"
+                  id="id-input-2"
+                  type="checkbox"
+                />
+                <span
+                  style="vertical-align: middle;"
+                >
+                  Restock
+                </span>
+              </label>
+            </div>
+          </div>
+          <div
+            class="argInput"
+          >
+            <div
+              class="d-inline-block form-check"
+              color=""
+            >
+              <label
+                class="control-label form-check-label"
+                for="id-input-3"
+              >
+                <input
+                  checked=""
+                  class="form-check-input form-check-input"
+                  id="id-input-3"
+                  type="checkbox"
+                />
+                <span
+                  style="vertical-align: middle;"
+                >
+                  Refund
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="component"
+    >
+      <div
+        class="title"
+      >
+        <img
+          alt="Duplicate last order icon"
+          class="actionLogo"
+          role="presentation"
+          src="test-file-stub"
+        />
+        <span>
+          Duplicate last order
+        </span>
+      </div>
+      <i
+        class="closeIcon material-icons"
+      >
+        close
+      </i>
+    </div>
+    <div
+      class="component"
+    >
+      <div
+        class="title"
+      >
+        <img
+          alt="Partially refund last order icon"
+          class="actionLogo"
+          role="presentation"
+          src="test-file-stub"
+        />
+        <span>
+          Partially refund last order
+        </span>
+      </div>
+      <i
+        class="closeIcon material-icons"
+      >
+        close
+      </i>
+      <div
+        class="argsWrapper"
+      >
+        <div>
+          <div
+            class="argInput"
+          >
+            <div
+              class="InputField required d-inline-block form-group"
+              color=""
+            >
+              <label
+                class="control-label"
+                for="id-input-4"
+              >
+                Amount
+              </label>
+              <div
+                class=""
+              >
+                <input
+                  class="form-control"
+                  id="id-input-4"
+                  required=""
+                  step="0.01"
+                  type="number"
+                  value="Map { \\"label\\": \\"Amount\\", \\"default\\": \\"\\", \\"editable\\": true, \\"required\\": true, \\"display_order\\": 1, \\"input\\": Map { \\"type\\": \\"number\\", \\"step\\": 0.01 } }"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="note"
+      >
+        <i
+          class="material-icons mr-1"
+        >
+          info
+        </i>
+        This action will fail if the payment hasn't been captured yet.
+      </div>
+    </div>
+    <div
+      class="component"
+    >
+      <div
+        class="title"
+      >
+        <img
+          alt="Refund last order's shipping cost icon"
+          class="actionLogo"
+          role="presentation"
+          src="test-file-stub"
+        />
+        <span>
+          Refund last order's shipping cost
+        </span>
+      </div>
+      <i
+        class="closeIcon material-icons"
+      >
+        close
+      </i>
+      <div
+        class="note"
+      >
+        <i
+          class="material-icons mr-1"
+        >
+          info
+        </i>
+        This action will fail if the payment hasn't been captured yet.
+      </div>
+    </div>
+    <div
+      class="component"
+    >
+      <div
+        class="title"
+      >
+        <img
+          alt="Add internal note icon"
+          class="actionLogo"
+          role="presentation"
+          src="test-file-stub"
+        />
+        <span>
+          Add internal note
+        </span>
+      </div>
+      <i
+        class="closeIcon material-icons"
+      >
+        close
+      </i>
+      <div
+        class="argsWrapper"
+      >
+        <div
+          class="field"
+        >
+          <div
+            class="InputField form-group"
+            color=""
+          >
+            <div
+              class=""
+            >
+              <div
+                class="InputField form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <div
+                    class="rich-textarea-wrapper"
+                  >
+                    <div
+                      class="editor-wrapper"
+                    >
+                      <div
+                        class="withMinHeight"
+                      >
+                        <div
+                          class="DraftEditor-root"
+                        >
+                          <div
+                            class="DraftEditor-editorContainer"
+                          >
+                            <div
+                              aria-autocomplete="list"
+                              aria-describedby="placeholder-888"
+                              aria-expanded="true"
+                              class="notranslate public-DraftEditor-content"
+                              contenteditable="true"
+                              role="combobox"
+                              spellcheck="true"
+                              style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                            >
+                              <div
+                                data-contents="true"
+                              >
+                                <div
+                                  class=""
+                                  data-block="true"
+                                  data-editor="888"
+                                  data-offset-key="888-0-0"
+                                >
+                                  <div
+                                    class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                    data-offset-key="888-0-0"
+                                  >
+                                    <span
+                                      data-offset-key="888-0-0"
+                                    >
+                                      <span
+                                        data-text="true"
+                                      >
+                                        Map { "type": "string", "format": "html", "default": "" }
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="editor-toolbar page"
+                    >
+                      <div
+                        class="actionsWrapper"
+                      >
+                        <div
+                          class="actions"
+                        >
+                          <button
+                            class="wrapper button wrapper small secondary small"
+                            title="Bold"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              format_bold
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small secondary small"
+                            title="Italic"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              format_italic
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small secondary small"
+                            title="Underline"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              format_underline
+                            </i>
+                          </button>
+                          <span
+                            class="popoverWrapper"
+                          >
+                            <button
+                              class="wrapper button wrapper small secondary small"
+                              title="Insert link"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                link
+                              </i>
+                            </button>
+                            <div
+                              class="popover top-left hidden"
+                            />
+                          </span>
+                          <span
+                            class="popoverWrapper"
+                          >
+                            <button
+                              class="wrapper button wrapper small secondary small"
+                              title="Insert image"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                insert_photo
+                              </i>
+                            </button>
+                            <div
+                              class="popover top-left hidden"
+                            />
+                          </span>
+                          <span
+                            class="popoverWrapper"
+                          >
+                            <button
+                              class="wrapper button wrapper small secondary small"
+                              title="Insert emoji"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                insert_emoticon
+                              </i>
+                            </button>
+                            <div
+                              class="p-0 d-flex popover top-left hidden"
+                            />
+                          </span>
+                        </div>
+                        <div
+                          class="hoverOverlay"
+                        >
+                          Add files as attachments
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<TicketReplyActions/> should render the ticket reply macro actions uncollapsed 1`] = `
+<div>
+  <div
+    class="actions"
+  >
+    <i
+      class="actionIcon material-icons mr-2"
+    >
+      bolt
+    </i>
+    <span
+      class="badge mr-2 badge badge-primary badge-pill"
+    >
+      1
+    </span>
+    <span
+      class="title"
+    >
+      Actions performed on send
+    </span>
+    <i
+      class="collapseIcon material-icons"
+      id="show-actions"
+    >
+      keyboard_arrow_up
+    </i>
+  </div>
+  <div
+    class="collapse show"
   >
     <div
       class="component"

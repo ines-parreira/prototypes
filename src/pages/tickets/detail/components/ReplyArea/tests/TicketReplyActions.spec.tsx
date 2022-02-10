@@ -33,7 +33,7 @@ describe('<TicketReplyActions/>', () => {
         onUpdate: jest.fn(),
     }
 
-    it('should render the ticket reply macro actions collapsed', () => {
+    it('should render the ticket reply macro actions uncollapsed', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
                 <TicketReplyActions {...minProps} />
@@ -42,8 +42,51 @@ describe('<TicketReplyActions/>', () => {
 
         expect(container.firstChild).toMatchSnapshot()
     })
+    it('should render the ticket reply macro actions collapsed', () => {
+        const props: ComponentProps<typeof TicketReplyActions> = {
+            ticketId: 1,
+            appliedMacro: fromJS({
+                actions: [
+                    ACTION_TEMPLATES.find(
+                        (action) =>
+                            action.name === MacroActionName.AddInternalNote
+                    ),
+                    ACTION_TEMPLATES.find(
+                        (action) =>
+                            action.name ===
+                            MacroActionName.ShopifyCancelLastOrder
+                    ),
+                    ACTION_TEMPLATES.find(
+                        (action) =>
+                            action.name ===
+                            MacroActionName.ShopifyDuplicateLastOrder
+                    ),
+                    ACTION_TEMPLATES.find(
+                        (action) =>
+                            action.name ===
+                            MacroActionName.ShopifyPartialRefundLastOrder
+                    ),
+                    ACTION_TEMPLATES.find(
+                        (action) =>
+                            action.name ===
+                            MacroActionName.ShopifyRefundShippingCostLastOrder
+                    ),
+                ],
+            }),
+            onDelete: jest.fn(),
+            onUpdate: jest.fn(),
+        }
 
-    it('should render the ticket reply macro actions', async () => {
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketReplyActions {...props} />
+            </Provider>
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should collapse the macro actions', async () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
                 <TicketReplyActions {...minProps} />
@@ -54,7 +97,7 @@ describe('<TicketReplyActions/>', () => {
 
         fireEvent.click(header)
         await waitFor(() => {
-            expect(collapsingElement.className).toBe('collapse show')
+            expect(collapsingElement.className).toBe('collapse')
         })
         expect(container.firstChild).toMatchSnapshot()
     })

@@ -24,8 +24,6 @@ export default function TicketReplyActions({
     onDelete,
     onUpdate,
 }: Props) {
-    const [isOpen, setIsOpen] = useState(false)
-
     const backendActions = appliedMacro
         ? ((appliedMacro.get('actions') as List<any>).filter(
               (action: Map<any, any>) => {
@@ -34,6 +32,8 @@ export default function TicketReplyActions({
               }
           ) as List<any>)
         : (fromJS([]) as List<any>)
+
+    const [isOpen, setIsOpen] = useState(backendActions.size < 5)
 
     if (!appliedMacro || !backendActions || !backendActions.size) {
         return null
