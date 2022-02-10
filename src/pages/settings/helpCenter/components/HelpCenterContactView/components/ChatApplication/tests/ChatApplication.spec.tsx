@@ -126,7 +126,7 @@ describe('<ChatApplication />', () => {
     })
 
     it('allows to enable chat widget and selects the first chat by default', async () => {
-        const {container, getByText} = renderWithRouter(
+        const {container, getByLabelText} = renderWithRouter(
             <Provider store={mockedStore(defaultState)}>
                 <ChatApplication />
             </Provider>,
@@ -136,7 +136,7 @@ describe('<ChatApplication />', () => {
         expect(container).toMatchSnapshot()
 
         await waitFor(() => {
-            fireEvent.click(getByText('Enable chat widget'))
+            fireEvent.click(getByLabelText('Enable chat widget'))
         })
 
         expect(mockedUpdateTranslation).toHaveBeenLastCalledWith({

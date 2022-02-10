@@ -205,26 +205,28 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
           <td
             class="smallest align-middle"
           >
-            <label
-              aria-checked="true"
-              aria-label="Enable campaign Super campaign"
-              class="container"
-              for="toggle-button-1"
-              role="switch"
-            >
-              <input
+            <div>
+              <label
+                aria-checked="true"
                 aria-label="Enable campaign Super campaign"
-                checked=""
-                class="input"
-                disabled=""
-                id="toggle-button-1"
-                name="toggle-button-1"
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-            </label>
+                class="container"
+                for="toggle-button-1"
+                role="switch"
+              >
+                <input
+                  aria-label="Enable campaign Super campaign"
+                  checked=""
+                  class="input"
+                  disabled=""
+                  id="toggle-button-1"
+                  name="toggle-button-1"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+              </label>
+            </div>
           </td>
           <td
             class="link-full-td"
@@ -257,25 +259,27 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
           <td
             class="smallest align-middle"
           >
-            <label
-              aria-checked="false"
-              aria-label="Enable campaign Not so good campaign"
-              class="container"
-              for="toggle-button-2"
-              role="switch"
-            >
-              <input
+            <div>
+              <label
+                aria-checked="false"
                 aria-label="Enable campaign Not so good campaign"
-                class="input"
-                disabled=""
-                id="toggle-button-2"
-                name="toggle-button-2"
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-            </label>
+                class="container"
+                for="toggle-button-2"
+                role="switch"
+              >
+                <input
+                  aria-label="Enable campaign Not so good campaign"
+                  class="input"
+                  disabled=""
+                  id="toggle-button-2"
+                  name="toggle-button-2"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+              </label>
+            </div>
           </td>
           <td
             class="link-full-td"

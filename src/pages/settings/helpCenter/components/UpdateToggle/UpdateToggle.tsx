@@ -1,12 +1,12 @@
 import React from 'react'
 import {useAsyncFn} from 'react-use'
 
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
-import {UpdateHelpCenterDto} from '../../../../../models/helpCenter/types'
-import {helpCenterUpdated} from '../../../../../state/entities/helpCenters/actions'
-import {notify} from '../../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../../state/notifications/types'
-import ToggleField from '../../../../common/forms/ToggleField'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {UpdateHelpCenterDto} from 'models/helpCenter/types'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import {helpCenterUpdated} from 'state/entities/helpCenters/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../../hooks/useHelpCenterIdParam'
 
@@ -60,17 +60,16 @@ export const UpdateToggle = ({
     )
 
     return (
-        <>
-            <ToggleField
-                label={label}
-                isToggled={activated}
-                onClick={toggle}
-                isLoading={loading}
-                isDisabled={loading}
-                className={css.toggle}
-            />
-            <p>{description}</p>
-        </>
+        <ToggleInput
+            isToggled={activated}
+            onClick={toggle}
+            isLoading={loading}
+            isDisabled={loading}
+            className={css.toggle}
+            caption={description}
+        >
+            {label}
+        </ToggleInput>
     )
 }
 

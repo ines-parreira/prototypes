@@ -47,16 +47,12 @@ const ToggleInput = ({
     )
 
     return (
-        <>
+        <div className={className}>
             <label
-                className={classnames(
-                    css.container,
-                    {
-                        [css.loading]: isLoading,
-                        [css.disabled]: isDisabled,
-                    },
-                    className
-                )}
+                className={classnames(css.container, {
+                    [css.loading]: isLoading,
+                    [css.disabled]: isDisabled,
+                })}
                 htmlFor={id}
                 onClick={handleClick}
                 // eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role
@@ -102,7 +98,7 @@ const ToggleInput = ({
                 {!!children && <div className={css.label}>{children}</div>}
             </label>
             {!!caption && <div className={css.caption}>{caption}</div>}
-        </>
+        </div>
     )
 }
 

@@ -40,7 +40,7 @@ describe('YourProfileView', () => {
         })
 
         it('should expand to show the phone number field when enabling call forwarding', async () => {
-            const {findByText, getByText} = render(
+            const {findByText, getByLabelText} = render(
                 <Provider store={mockedStore(defaultState)}>
                     <YourProfileView
                         updateCurrentUser={mockUpdateCurrentUser}
@@ -51,7 +51,7 @@ describe('YourProfileView', () => {
                 </Provider>
             )
 
-            fireEvent.click(getByText(/Enable call forwarding/))
+            fireEvent.click(getByLabelText(/Enable call forwarding/i))
             const countrySelector = await findByText('+1')
             expect(countrySelector).toMatchSnapshot()
         })

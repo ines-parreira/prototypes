@@ -109,24 +109,26 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the self se
       <span
         id="toggle-button"
       >
-        <label
-          aria-checked="true"
-          class="container disabled"
-          for="toggle-button-1"
-          role="switch"
-        >
-          <input
-            checked=""
-            class="input"
-            disabled=""
-            id="toggle-button-1"
-            name="toggle-button-1"
-            type="checkbox"
-          />
-          <div
-            class="slider"
-          />
-        </label>
+        <div>
+          <label
+            aria-checked="true"
+            class="container disabled"
+            for="toggle-button-1"
+            role="switch"
+          >
+            <input
+              checked=""
+              class="input"
+              disabled=""
+              id="toggle-button-1"
+              name="toggle-button-1"
+              type="checkbox"
+            />
+            <div
+              class="slider"
+            />
+          </label>
+        </div>
       </span>
       <label
         class="control-label ml-2"

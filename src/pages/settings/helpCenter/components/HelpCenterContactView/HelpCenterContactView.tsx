@@ -31,8 +31,8 @@ const HelpCenterContactView: React.FC = () => {
                             </p>
                         </div>
                     </div>
-                    <ChatApplication />
                 </section>
+                <ChatApplication />
 
                 <section>
                     <div className={css.heading}>

@@ -24,23 +24,25 @@ exports[`<SelfServiceSection/> should render the component 1`] = `
     <div
       class="d-flex mt-4"
     >
-      <label
-        aria-checked="false"
-        class="container disabled"
-        for="toggle-button-1"
-        role="switch"
-      >
-        <input
-          class="input"
-          disabled=""
-          id="toggle-button-1"
-          name="toggle-button-1"
-          type="checkbox"
-        />
-        <div
-          class="slider"
-        />
-      </label>
+      <div>
+        <label
+          aria-checked="false"
+          class="container disabled"
+          for="toggle-button-1"
+          role="switch"
+        >
+          <input
+            class="input"
+            disabled=""
+            id="toggle-button-1"
+            name="toggle-button-1"
+            type="checkbox"
+          />
+          <div
+            class="slider"
+          />
+        </label>
+      </div>
       <label
         class="control-label ml-2 clickable"
       >

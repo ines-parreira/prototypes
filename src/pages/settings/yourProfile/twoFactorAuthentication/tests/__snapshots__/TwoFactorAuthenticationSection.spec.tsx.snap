@@ -16,7 +16,7 @@ exports[`<TwoFactorAuthenticationSection /> render() should open the Two-Factor 
       </span>
     </div>
     <div
-      class="heading-regular mb16"
+      class="body-regular mb16"
     >
       For an added layer of security, your admin requires you to use two-factor authentication (2FA) when you sign in to Gorgias.
       <a
@@ -119,7 +119,7 @@ exports[`<TwoFactorAuthenticationSection /> render() should render the Two-Facto
       </span>
     </div>
     <div
-      class="heading-regular mb16"
+      class="body-regular mb16"
     >
       For an added layer of security, your admin requires you to use two-factor authentication (2FA) when you sign in to Gorgias.
       <a

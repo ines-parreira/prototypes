@@ -53,24 +53,26 @@ exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServ
                   <td
                     class="smallest align-middle"
                   >
-                    <label
-                      aria-checked="true"
-                      class="container"
-                      for="toggle-button-42"
-                      role="switch"
-                    >
-                      <input
-                        checked=""
-                        class="input"
-                        disabled=""
-                        id="toggle-button-42"
-                        name="toggle-button-42"
-                        type="checkbox"
-                      />
-                      <div
-                        class="slider"
-                      />
-                    </label>
+                    <div>
+                      <label
+                        aria-checked="true"
+                        class="container"
+                        for="toggle-button-42"
+                        role="switch"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          disabled=""
+                          id="toggle-button-42"
+                          name="toggle-button-42"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
                   </td>
                   <td
                     class="link-full-td"
@@ -111,23 +113,25 @@ exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServ
                   <td
                     class="smallest align-middle"
                   >
-                    <label
-                      aria-checked="false"
-                      class="container"
-                      for="toggle-button-42"
-                      role="switch"
-                    >
-                      <input
-                        class="input"
-                        disabled=""
-                        id="toggle-button-42"
-                        name="toggle-button-42"
-                        type="checkbox"
-                      />
-                      <div
-                        class="slider"
-                      />
-                    </label>
+                    <div>
+                      <label
+                        aria-checked="false"
+                        class="container"
+                        for="toggle-button-42"
+                        role="switch"
+                      >
+                        <input
+                          class="input"
+                          disabled=""
+                          id="toggle-button-42"
+                          name="toggle-button-42"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
                   </td>
                   <td
                     class="link-full-td"
@@ -168,24 +172,26 @@ exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServ
                   <td
                     class="smallest align-middle"
                   >
-                    <label
-                      aria-checked="true"
-                      class="container"
-                      for="toggle-button-42"
-                      role="switch"
-                    >
-                      <input
-                        checked=""
-                        class="input"
-                        disabled=""
-                        id="toggle-button-42"
-                        name="toggle-button-42"
-                        type="checkbox"
-                      />
-                      <div
-                        class="slider"
-                      />
-                    </label>
+                    <div>
+                      <label
+                        aria-checked="true"
+                        class="container"
+                        for="toggle-button-42"
+                        role="switch"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          disabled=""
+                          id="toggle-button-42"
+                          name="toggle-button-42"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
                   </td>
                   <td
                     class="link-full-td"
@@ -226,23 +232,25 @@ exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServ
                   <td
                     class="smallest align-middle"
                   >
-                    <label
-                      aria-checked="false"
-                      class="container"
-                      for="toggle-button-42"
-                      role="switch"
-                    >
-                      <input
-                        class="input"
-                        disabled=""
-                        id="toggle-button-42"
-                        name="toggle-button-42"
-                        type="checkbox"
-                      />
-                      <div
-                        class="slider"
-                      />
-                    </label>
+                    <div>
+                      <label
+                        aria-checked="false"
+                        class="container"
+                        for="toggle-button-42"
+                        role="switch"
+                      >
+                        <input
+                          class="input"
+                          disabled=""
+                          id="toggle-button-42"
+                          name="toggle-button-42"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
                   </td>
                   <td
                     class="link-full-td"
@@ -352,24 +360,26 @@ exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServ
                   <td
                     class="smallest align-middle"
                   >
-                    <label
-                      aria-checked="true"
-                      class="container"
-                      for="toggle-button-42"
-                      role="switch"
-                    >
-                      <input
-                        checked=""
-                        class="input"
-                        disabled=""
-                        id="toggle-button-42"
-                        name="toggle-button-42"
-                        type="checkbox"
-                      />
-                      <div
-                        class="slider"
-                      />
-                    </label>
+                    <div>
+                      <label
+                        aria-checked="true"
+                        class="container"
+                        for="toggle-button-42"
+                        role="switch"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          disabled=""
+                          id="toggle-button-42"
+                          name="toggle-button-42"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
                   </td>
                   <td
                     class="link-full-td"
@@ -410,23 +420,25 @@ exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServ
                   <td
                     class="smallest align-middle"
                   >
-                    <label
-                      aria-checked="false"
-                      class="container"
-                      for="toggle-button-42"
-                      role="switch"
-                    >
-                      <input
-                        class="input"
-                        disabled=""
-                        id="toggle-button-42"
-                        name="toggle-button-42"
-                        type="checkbox"
-                      />
-                      <div
-                        class="slider"
-                      />
-                    </label>
+                    <div>
+                      <label
+                        aria-checked="false"
+                        class="container"
+                        for="toggle-button-42"
+                        role="switch"
+                      >
+                        <input
+                          class="input"
+                          disabled=""
+                          id="toggle-button-42"
+                          name="toggle-button-42"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
                   </td>
                   <td
                     class="link-full-td"
@@ -467,24 +479,26 @@ exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServ
                   <td
                     class="smallest align-middle"
                   >
-                    <label
-                      aria-checked="true"
-                      class="container"
-                      for="toggle-button-42"
-                      role="switch"
-                    >
-                      <input
-                        checked=""
-                        class="input"
-                        disabled=""
-                        id="toggle-button-42"
-                        name="toggle-button-42"
-                        type="checkbox"
-                      />
-                      <div
-                        class="slider"
-                      />
-                    </label>
+                    <div>
+                      <label
+                        aria-checked="true"
+                        class="container"
+                        for="toggle-button-42"
+                        role="switch"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          disabled=""
+                          id="toggle-button-42"
+                          name="toggle-button-42"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
                   </td>
                   <td
                     class="link-full-td"
@@ -525,23 +539,25 @@ exports[`<SelfServiceView/> ToggleInput.onChange() should send an updateSelfServ
                   <td
                     class="smallest align-middle"
                   >
-                    <label
-                      aria-checked="false"
-                      class="container"
-                      for="toggle-button-42"
-                      role="switch"
-                    >
-                      <input
-                        class="input"
-                        disabled=""
-                        id="toggle-button-42"
-                        name="toggle-button-42"
-                        type="checkbox"
-                      />
-                      <div
-                        class="slider"
-                      />
-                    </label>
+                    <div>
+                      <label
+                        aria-checked="false"
+                        class="container"
+                        for="toggle-button-42"
+                        role="switch"
+                      >
+                        <input
+                          class="input"
+                          disabled=""
+                          id="toggle-button-42"
+                          name="toggle-button-42"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
                   </td>
                   <td
                     class="link-full-td"
@@ -651,24 +667,26 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                   <td
                     class="smallest align-middle"
                   >
-                    <label
-                      aria-checked="true"
-                      class="container"
-                      for="toggle-button-42"
-                      role="switch"
-                    >
-                      <input
-                        checked=""
-                        class="input"
-                        disabled=""
-                        id="toggle-button-42"
-                        name="toggle-button-42"
-                        type="checkbox"
-                      />
-                      <div
-                        class="slider"
-                      />
-                    </label>
+                    <div>
+                      <label
+                        aria-checked="true"
+                        class="container"
+                        for="toggle-button-42"
+                        role="switch"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          disabled=""
+                          id="toggle-button-42"
+                          name="toggle-button-42"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
                   </td>
                   <td
                     class="link-full-td"
@@ -709,23 +727,25 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                   <td
                     class="smallest align-middle"
                   >
-                    <label
-                      aria-checked="false"
-                      class="container"
-                      for="toggle-button-42"
-                      role="switch"
-                    >
-                      <input
-                        class="input"
-                        disabled=""
-                        id="toggle-button-42"
-                        name="toggle-button-42"
-                        type="checkbox"
-                      />
-                      <div
-                        class="slider"
-                      />
-                    </label>
+                    <div>
+                      <label
+                        aria-checked="false"
+                        class="container"
+                        for="toggle-button-42"
+                        role="switch"
+                      >
+                        <input
+                          class="input"
+                          disabled=""
+                          id="toggle-button-42"
+                          name="toggle-button-42"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
                   </td>
                   <td
                     class="link-full-td"
@@ -766,24 +786,26 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                   <td
                     class="smallest align-middle"
                   >
-                    <label
-                      aria-checked="true"
-                      class="container"
-                      for="toggle-button-42"
-                      role="switch"
-                    >
-                      <input
-                        checked=""
-                        class="input"
-                        disabled=""
-                        id="toggle-button-42"
-                        name="toggle-button-42"
-                        type="checkbox"
-                      />
-                      <div
-                        class="slider"
-                      />
-                    </label>
+                    <div>
+                      <label
+                        aria-checked="true"
+                        class="container"
+                        for="toggle-button-42"
+                        role="switch"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          disabled=""
+                          id="toggle-button-42"
+                          name="toggle-button-42"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
                   </td>
                   <td
                     class="link-full-td"

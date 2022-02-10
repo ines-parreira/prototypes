@@ -11,17 +11,14 @@ export default function TwoFactorAuthenticationSection() {
     return (
         <>
             <div
-                className={classnames(
-                    css['heading-subsection-semibold'],
-                    css.mb16
-                )}
+                className={classnames('heading-subsection-semibold', css.mb16)}
             >
                 Two-Factor Authentication
                 <span className="badge badge-pill badge-danger ml-3 align-middle">
                     DISABLED
                 </span>
             </div>
-            <div className={classnames(css['heading-regular'], css.mb16)}>
+            <div className={classnames('body-regular', css.mb16)}>
                 For an added layer of security, your admin requires you to use
                 two-factor authentication (2FA) when you sign in to Gorgias.
                 <a href={''}>Learn more</a>

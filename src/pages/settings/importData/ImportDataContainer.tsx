@@ -45,12 +45,7 @@ export const ImportDataContainer = (
                 </Button>
             </PageHeader>
             <Container fluid className={css.pageContainer}>
-                <div
-                    className={classnames(
-                        css['body-regular'],
-                        css.contentWrapper
-                    )}
-                >
+                <div className={classnames('body-regular', css.contentWrapper)}>
                     <div className={classnames(css.mb32)}>
                         <p>
                             Import data (one way) from your current helpdesk

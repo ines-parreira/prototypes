@@ -140,24 +140,26 @@ exports[`<Navbar /> should render the navbar 1`] = `
             Available
           </div>
           <div>
-            <label
-              aria-checked="true"
-              class="container"
-              for="toggle-button-42"
-              role="switch"
-            >
-              <input
-                checked=""
-                class="input"
-                disabled=""
-                id="toggle-button-42"
-                name="toggle-button-42"
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-            </label>
+            <div>
+              <label
+                aria-checked="true"
+                class="container"
+                for="toggle-button-42"
+                role="switch"
+              >
+                <input
+                  checked=""
+                  class="input"
+                  disabled=""
+                  id="toggle-button-42"
+                  name="toggle-button-42"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+              </label>
+            </div>
           </div>
         </div>
       </a>
@@ -409,24 +411,26 @@ exports[`<Navbar /> should render the opened panel 1`] = `
             Available
           </div>
           <div>
-            <label
-              aria-checked="true"
-              class="container"
-              for="toggle-button-42"
-              role="switch"
-            >
-              <input
-                checked=""
-                class="input"
-                disabled=""
-                id="toggle-button-42"
-                name="toggle-button-42"
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-            </label>
+            <div>
+              <label
+                aria-checked="true"
+                class="container"
+                for="toggle-button-42"
+                role="switch"
+              >
+                <input
+                  checked=""
+                  class="input"
+                  disabled=""
+                  id="toggle-button-42"
+                  name="toggle-button-42"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+              </label>
+            </div>
           </div>
         </div>
       </a>
@@ -678,23 +682,25 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
             Available
           </div>
           <div>
-            <label
-              aria-checked="false"
-              class="container"
-              for="toggle-button-42"
-              role="switch"
-            >
-              <input
-                class="input"
-                disabled=""
-                id="toggle-button-42"
-                name="toggle-button-42"
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-            </label>
+            <div>
+              <label
+                aria-checked="false"
+                class="container"
+                for="toggle-button-42"
+                role="switch"
+              >
+                <input
+                  class="input"
+                  disabled=""
+                  id="toggle-button-42"
+                  name="toggle-button-42"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+              </label>
+            </div>
           </div>
         </div>
       </a>

@@ -73,14 +73,11 @@ export const ChangePasswordContainer = ({
     return (
         <>
             <div
-                className={classnames(
-                    css['heading-subsection-semibold'],
-                    css.mb16
-                )}
+                className={classnames('heading-subsection-semibold', css.mb16)}
             >
                 Update password
             </div>
-            <div className={classnames(css['heading-regular'], css.mb16)}>
+            <div className={classnames('body-regular', css.mb16)}>
                 Enter your current password to confirm your identity, then the
                 new password you would like to set instead.
             </div>

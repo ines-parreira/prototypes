@@ -8,23 +8,19 @@ import {Button, Container, Form, FormGroup, FormText, Label} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
 
+import {CallForwardingCountries} from 'business/twilio'
+import {AVAILABLE_LANGUAGES} from 'config'
+import Avatar from 'pages/common/components/Avatar/Avatar'
+import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from 'pages/common/forms/InputField'
-import Avatar from '../../../common/components/Avatar/Avatar'
-import FileField from '../../../common/forms/FileField'
-import SelectField from '../../../common/forms/SelectField/SelectField'
-import ToggleField from '../../../common/forms/ToggleField'
-import PhoneNumberInput from '../../../common/forms/PhoneNumberInput/PhoneNumberInput'
-import PageHeader from '../../../common/components/PageHeader'
-import {AVAILABLE_LANGUAGES} from '../../../../config'
-import {CallForwardingCountries} from '../../../../business/twilio'
-import {
-    EditableUserProfile,
-    User,
-    UserSetting,
-} from '../../../../config/types/user'
+import FileField from 'pages/common/forms/FileField'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import {EditableUserProfile, User, UserSetting} from 'config/types/user'
 
-import css from '../../settings.less'
+import settingsCss from '../../settings.less'
 
 const defaultContent: Pick<
     State,
@@ -162,18 +158,18 @@ export default class YourProfileView extends Component<Props, State> {
         return (
             <div className="full-width">
                 <PageHeader title="Your profile" />
-                <Container fluid className={css.pageContainer}>
+                <Container fluid className={settingsCss.pageContainer}>
                     <div
                         className={classnames(
-                            css['heading-subsection-semibold'],
-                            css.mb16
+                            'heading-subsection-semibold',
+                            settingsCss.mb16
                         )}
                     >
                         Personal information
                     </div>
                     <Form onSubmit={this._handleSubmit}>
                         <div className="flex flex-wrap">
-                            <div className={css.leftSideWrapper}>
+                            <div className={settingsCss.leftSideWrapper}>
                                 <InputField
                                     type="text"
                                     name="name"
@@ -182,7 +178,7 @@ export default class YourProfileView extends Component<Props, State> {
                                     required
                                     value={this.state.name}
                                     onChange={(name) => this.setState({name})}
-                                    className={css.inputField}
+                                    className={settingsCss.inputField}
                                 />
                                 <InputField
                                     type="email"
@@ -192,7 +188,7 @@ export default class YourProfileView extends Component<Props, State> {
                                     required
                                     value={this.state.email}
                                     onChange={this._onEmailChange}
-                                    className={css.inputField}
+                                    className={settingsCss.inputField}
                                 />
                                 {hasChangedEmail ? (
                                     <InputField
@@ -207,7 +203,7 @@ export default class YourProfileView extends Component<Props, State> {
                                                 password_confirmation,
                                             })
                                         }
-                                        className={css.inputField}
+                                        className={settingsCss.inputField}
                                     />
                                 ) : null}
                                 <InputField
@@ -226,9 +222,9 @@ export default class YourProfileView extends Component<Props, State> {
                                     }
                                     value={this.state.bio}
                                     onChange={(bio) => this.setState({bio})}
-                                    className={css.inputField}
+                                    className={settingsCss.inputField}
                                 />
-                                <FormGroup className={css.inputField}>
+                                <FormGroup className={settingsCss.inputField}>
                                     <Label className="control-label">
                                         Timezone
                                     </Label>
@@ -266,7 +262,7 @@ export default class YourProfileView extends Component<Props, State> {
                                         fullWidth
                                     />
                                 </FormGroup>
-                                <FormGroup className={css.inputField}>
+                                <FormGroup className={settingsCss.inputField}>
                                     <Label className="control-label">
                                         Language
                                     </Label>
@@ -293,8 +289,8 @@ export default class YourProfileView extends Component<Props, State> {
                             </div>
                             <FormGroup
                                 className={classnames(
-                                    css.profilePicture,
-                                    css.inputField
+                                    settingsCss.profilePicture,
+                                    settingsCss.inputField
                                 )}
                             >
                                 <Label className="control-label">
@@ -305,7 +301,7 @@ export default class YourProfileView extends Component<Props, State> {
                                     name={this.state.name}
                                     size={100}
                                     url={this.state.profilePictureUrl}
-                                    className={css.mb16}
+                                    className={settingsCss.mb16}
                                 />
 
                                 <FileField
@@ -324,7 +320,7 @@ export default class YourProfileView extends Component<Props, State> {
                                     }
                                     uploadType="profile_picture"
                                     maxSize={500 * 1000}
-                                    className={css.mb16}
+                                    className={settingsCss.mb16}
                                 />
 
                                 <FormText color="muted">
@@ -354,11 +350,11 @@ export default class YourProfileView extends Component<Props, State> {
                                 )}
                             </FormGroup>
                         </div>
-                        <div className={css.contentWrapper}>
+                        <div className={settingsCss.contentWrapper}>
                             <div
                                 className={classnames(
-                                    css['heading-subsection-semibold'],
-                                    css.mb16
+                                    'heading-subsection-semibold',
+                                    settingsCss.mb16
                                 )}
                             >
                                 Account Preferences
@@ -366,9 +362,9 @@ export default class YourProfileView extends Component<Props, State> {
 
                             <FormGroup
                                 className={classnames(
-                                    css.inputField,
-                                    css.mb32,
-                                    css['body-regular']
+                                    settingsCss.inputField,
+                                    settingsCss.mb32,
+                                    'body-regular'
                                 )}
                             >
                                 <CheckBox
@@ -413,25 +409,28 @@ export default class YourProfileView extends Component<Props, State> {
                                 </CheckBox>
                             </FormGroup>
                             <FormGroup
-                                className={classnames(css.inputField, css.mb40)}
+                                className={classnames(
+                                    settingsCss.inputField,
+                                    settingsCss.mb40
+                                )}
                             >
                                 <div
                                     className={classnames(
-                                        css['heading-subsection-semibold'],
-                                        css.mb16
+                                        'heading-subsection-semibold',
+                                        settingsCss.mb16
                                     )}
                                 >
                                     Forward calls to an external number
                                 </div>
-                                <p className={css['body-regular']}>
+                                <p className="body-regular">
                                     When you are routed a call in Gorgias,
                                     forward the call to a mobile device or
                                     landline.
                                 </p>
 
-                                <ToggleField
+                                <ToggleInput
+                                    className={settingsCss.inputField}
                                     name="forward_calls"
-                                    label="Enable call forwarding"
                                     isToggled={
                                         (this.state.preferences.get(
                                             'forward_calls'
@@ -446,7 +445,9 @@ export default class YourProfileView extends Component<Props, State> {
                                                 ),
                                         })
                                     }}
-                                />
+                                >
+                                    Enable call forwarding
+                                </ToggleInput>
                                 {this.state.preferences.get(
                                     'forward_calls'
                                 ) && (

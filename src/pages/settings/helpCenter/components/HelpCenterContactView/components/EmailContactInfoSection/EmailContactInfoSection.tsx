@@ -1,9 +1,9 @@
 import React from 'react'
 
-import {EmailContactInfoDto} from '../../../../../../../models/helpCenter/types'
-import InputField from '../../../../../../common/forms/InputField'
-import ToggleField from '../../../../../../common/forms/ToggleField'
-import {useHelpCenterTranslation} from '../../../../providers/HelpCenterTranslation'
+import {EmailContactInfoDto} from 'models/helpCenter/types'
+import InputField from 'pages/common/forms/InputField'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import ContactCard from '../ContactCard'
 
 import css from './EmailContactInfoSection.less'
@@ -30,8 +30,8 @@ const EmailContactInfoSection: React.FC = () => {
 
     return (
         <section className={css.container}>
-            <ToggleField
-                label="Email card"
+            <ToggleInput
+                className={css.toggleInput}
                 isToggled={enabled}
                 onClick={handleChange('enabled')}
                 aria-label="Enable email contact card"

@@ -12,8 +12,6 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import 'assets/css/typography.less'
-
 import shortcutManager from '../../../services/shortcutManager/index'
 import {DEPRECATED_getCurrentPlan} from '../../../state/billing/selectors'
 import {isTrialing} from '../../../state/currentAccount/selectors'

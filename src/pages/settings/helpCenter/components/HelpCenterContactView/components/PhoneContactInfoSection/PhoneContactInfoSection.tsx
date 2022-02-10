@@ -1,10 +1,10 @@
 import React from 'react'
 import parsePhoneNumber from 'libphonenumber-js'
 
-import {PhoneContactInfoDto} from '../../../../../../../models/helpCenter/types'
-import InputField from '../../../../../../common/forms/InputField'
-import ToggleField from '../../../../../../common/forms/ToggleField'
-import {useHelpCenterTranslation} from '../../../../providers/HelpCenterTranslation'
+import {PhoneContactInfoDto} from 'models/helpCenter/types'
+import InputField from 'pages/common/forms/InputField'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import ContactCard from '../ContactCard'
 
 import PhoneNumbersForm from './PhoneNumbersForm'
@@ -32,8 +32,8 @@ const PhoneContactInfoSection: React.FC = () => {
 
     return (
         <section className={css.container}>
-            <ToggleField
-                label="Phone number card"
+            <ToggleInput
+                className={css.toggle}
                 isToggled={enabled}
                 onClick={handleChange('enabled')}
             />

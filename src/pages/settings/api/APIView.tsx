@@ -12,15 +12,15 @@ import {
 } from 'reactstrap'
 import classnames from 'classnames'
 
-import {getCurrentUser} from '../../../state/currentUser/selectors'
-import {getApiKey} from '../../../state/auths/selectors'
-import {getCurrentAccountState} from '../../../state/currentAccount/selectors'
-import {fetchCurrentAuths, resetApiKey} from '../../../state/auths/actions'
-import {notify} from '../../../state/notifications/actions'
-import PageHeader from '../../common/components/PageHeader'
-import {logEvent, SegmentEvent} from '../../../store/middlewares/segmentTracker'
-import {RootState} from '../../../state/types'
-import {NotificationStatus} from '../../../state/notifications/types'
+import PageHeader from 'pages/common/components/PageHeader'
+import {fetchCurrentAuths, resetApiKey} from 'state/auths/actions'
+import {getApiKey} from 'state/auths/selectors'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {RootState} from 'state/types'
 import css from '../settings.less'
 
 type Props = ConnectedProps<typeof connector>
@@ -190,12 +190,7 @@ export class APIViewContainer extends Component<Props, State> {
                 <PageHeader title="REST API" />
                 <Container fluid className={css.pageContainer}>
                     <div className={css.contentWrapper}>
-                        <div
-                            className={classnames(
-                                css['body-regular'],
-                                css.mb32
-                            )}
-                        >
+                        <div className={classnames('body-regular', css.mb32)}>
                             <p>
                                 Gorgias prides itself on being a
                                 developer-friendly helpdesk. We expose a{' '}
@@ -234,7 +229,7 @@ export class APIViewContainer extends Component<Props, State> {
                         </div>
                         <div
                             className={classnames(
-                                css['heading-section-semibold'],
+                                'heading-section-semibold',
                                 css.mb16
                             )}
                         >
@@ -305,18 +300,13 @@ export class APIViewContainer extends Component<Props, State> {
 
                         <div
                             className={classnames(
-                                css['heading-subsection-semibold'],
+                                'heading-subsection-semibold',
                                 css.mb8
                             )}
                         >
                             Postman collection
                         </div>
-                        <div
-                            className={classnames(
-                                css['body-regular'],
-                                css.mb24
-                            )}
-                        >
+                        <div className={classnames('body-regular', css.mb24)}>
                             <p>
                                 You can also import our{' '}
                                 <a
@@ -343,18 +333,13 @@ export class APIViewContainer extends Component<Props, State> {
 
                         <div
                             className={classnames(
-                                css['heading-subsection-semibold'],
+                                'heading-subsection-semibold',
                                 css.mb8
                             )}
                         >
                             Developer newsletter
                         </div>
-                        <div
-                            className={classnames(
-                                css['body-regular'],
-                                css.mb24
-                            )}
-                        >
+                        <div className={classnames('body-regular', css.mb24)}>
                             <p>
                                 If you're using our API, we highly encourage you
                                 to subscribe to our developer newsletter. It

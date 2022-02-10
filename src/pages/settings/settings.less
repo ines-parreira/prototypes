@@ -1,27 +1,8 @@
 @import '~css/new/colorTokens';
 @import '~css/new/mixins';
+@import (reference) '~css/typography';
 
 :local {
-    .body-regular {
-        font-size: 14px;
-        font-weight: 400;
-        letter-spacing: -0.1px;
-        line-height: 20px;
-    }
-
-    .body-semibold {
-        .body-regular();
-        font-weight: 600;
-    }
-
-    .caption-regular {
-        color: @classic-neutral-grey-4;
-        font-size: 12px;
-        font-weight: 400;
-        letter-spacing: 0px;
-        line-height: 16px;
-    }
-
     .contentWrapper {
         color: @classic-neutral-grey-6;
         max-width: 680px;
@@ -31,20 +12,6 @@
             max-width: inherit;
             width: 100%;
         }
-    }
-
-    .heading-section-semibold {
-        font-size: 20px;
-        font-weight: 600;
-        letter-spacing: -0.4px;
-        line-height: 28px;
-    }
-
-    .heading-subsection-semibold {
-        font-size: 16px;
-        font-weight: 600;
-        letter-spacing: 0px;
-        line-height: 24px;
     }
 
     .inputField {
@@ -61,6 +28,7 @@
 
         :global(.form-text) {
             .caption-regular();
+            color: @classic-neutral-grey-4;
             margin-top: 4px;
         }
     }

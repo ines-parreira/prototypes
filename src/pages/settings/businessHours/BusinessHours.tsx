@@ -92,7 +92,7 @@ export class BusinessHoursContainer extends Component<Props, State> {
                 <Container fluid className={settingsCss.pageContainer}>
                     <div
                         className={classnames(
-                            settingsCss['body-regular'],
+                            'body-regular',
                             settingsCss.contentWrapper
                         )}
                     >

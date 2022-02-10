@@ -115,24 +115,26 @@ exports[`<SelfServicePreferencesView/> ToggleInput.onChange() should deactivate 
                   <td
                     class="smallest align-middle"
                   >
-                    <label
-                      aria-checked="true"
-                      class="container"
-                      for="toggle-button-42"
-                      role="switch"
-                    >
-                      <input
-                        checked=""
-                        class="input"
-                        disabled=""
-                        id="toggle-button-42"
-                        name="toggle-button-42"
-                        type="checkbox"
-                      />
-                      <div
-                        class="slider"
-                      />
-                    </label>
+                    <div>
+                      <label
+                        aria-checked="true"
+                        class="container"
+                        for="toggle-button-42"
+                        role="switch"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          disabled=""
+                          id="toggle-button-42"
+                          name="toggle-button-42"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
                   </td>
                   <td
                     class="policyTd"
@@ -164,23 +166,25 @@ exports[`<SelfServicePreferencesView/> ToggleInput.onChange() should deactivate 
                   <td
                     class="smallest align-middle"
                   >
-                    <label
-                      aria-checked="false"
-                      class="container"
-                      for="toggle-button-42"
-                      role="switch"
-                    >
-                      <input
-                        class="input"
-                        disabled=""
-                        id="toggle-button-42"
-                        name="toggle-button-42"
-                        type="checkbox"
-                      />
-                      <div
-                        class="slider"
-                      />
-                    </label>
+                    <div>
+                      <label
+                        aria-checked="false"
+                        class="container"
+                        for="toggle-button-42"
+                        role="switch"
+                      >
+                        <input
+                          class="input"
+                          disabled=""
+                          id="toggle-button-42"
+                          name="toggle-button-42"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
                   </td>
                   <td
                     class="policyTd"
@@ -232,24 +236,26 @@ exports[`<SelfServicePreferencesView/> ToggleInput.onChange() should deactivate 
                   <td
                     class="smallest align-middle"
                   >
-                    <label
-                      aria-checked="true"
-                      class="container"
-                      for="toggle-button-42"
-                      role="switch"
-                    >
-                      <input
-                        checked=""
-                        class="input"
-                        disabled=""
-                        id="toggle-button-42"
-                        name="toggle-button-42"
-                        type="checkbox"
-                      />
-                      <div
-                        class="slider"
-                      />
-                    </label>
+                    <div>
+                      <label
+                        aria-checked="true"
+                        class="container"
+                        for="toggle-button-42"
+                        role="switch"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          disabled=""
+                          id="toggle-button-42"
+                          name="toggle-button-42"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
                   </td>
                   <td
                     class="policyTd"
@@ -295,23 +301,25 @@ exports[`<SelfServicePreferencesView/> ToggleInput.onChange() should deactivate 
                   <td
                     class="smallest align-middle"
                   >
-                    <label
-                      aria-checked="false"
-                      class="container"
-                      for="toggle-button-42"
-                      role="switch"
-                    >
-                      <input
-                        class="input"
-                        disabled=""
-                        id="toggle-button-42"
-                        name="toggle-button-42"
-                        type="checkbox"
-                      />
-                      <div
-                        class="slider"
-                      />
-                    </label>
+                    <div>
+                      <label
+                        aria-checked="false"
+                        class="container"
+                        for="toggle-button-42"
+                        role="switch"
+                      >
+                        <input
+                          class="input"
+                          disabled=""
+                          id="toggle-button-42"
+                          name="toggle-button-42"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
                   </td>
                   <td
                     class="policyTd"
@@ -478,24 +486,26 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                   <td
                     class="smallest align-middle"
                   >
-                    <label
-                      aria-checked="true"
-                      class="container"
-                      for="toggle-button-42"
-                      role="switch"
-                    >
-                      <input
-                        checked=""
-                        class="input"
-                        disabled=""
-                        id="toggle-button-42"
-                        name="toggle-button-42"
-                        type="checkbox"
-                      />
-                      <div
-                        class="slider"
-                      />
-                    </label>
+                    <div>
+                      <label
+                        aria-checked="true"
+                        class="container"
+                        for="toggle-button-42"
+                        role="switch"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          disabled=""
+                          id="toggle-button-42"
+                          name="toggle-button-42"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
                   </td>
                   <td
                     class="policyTd"
@@ -527,23 +537,25 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                   <td
                     class="smallest align-middle"
                   >
-                    <label
-                      aria-checked="false"
-                      class="container"
-                      for="toggle-button-42"
-                      role="switch"
-                    >
-                      <input
-                        class="input"
-                        disabled=""
-                        id="toggle-button-42"
-                        name="toggle-button-42"
-                        type="checkbox"
-                      />
-                      <div
-                        class="slider"
-                      />
-                    </label>
+                    <div>
+                      <label
+                        aria-checked="false"
+                        class="container"
+                        for="toggle-button-42"
+                        role="switch"
+                      >
+                        <input
+                          class="input"
+                          disabled=""
+                          id="toggle-button-42"
+                          name="toggle-button-42"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
                   </td>
                   <td
                     class="policyTd"
@@ -595,24 +607,26 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                   <td
                     class="smallest align-middle"
                   >
-                    <label
-                      aria-checked="true"
-                      class="container"
-                      for="toggle-button-42"
-                      role="switch"
-                    >
-                      <input
-                        checked=""
-                        class="input"
-                        disabled=""
-                        id="toggle-button-42"
-                        name="toggle-button-42"
-                        type="checkbox"
-                      />
-                      <div
-                        class="slider"
-                      />
-                    </label>
+                    <div>
+                      <label
+                        aria-checked="true"
+                        class="container"
+                        for="toggle-button-42"
+                        role="switch"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          disabled=""
+                          id="toggle-button-42"
+                          name="toggle-button-42"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
                   </td>
                   <td
                     class="policyTd"
@@ -658,23 +672,25 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                   <td
                     class="smallest align-middle"
                   >
-                    <label
-                      aria-checked="false"
-                      class="container"
-                      for="toggle-button-42"
-                      role="switch"
-                    >
-                      <input
-                        class="input"
-                        disabled=""
-                        id="toggle-button-42"
-                        name="toggle-button-42"
-                        type="checkbox"
-                      />
-                      <div
-                        class="slider"
-                      />
-                    </label>
+                    <div>
+                      <label
+                        aria-checked="false"
+                        class="container"
+                        for="toggle-button-42"
+                        role="switch"
+                      >
+                        <input
+                          class="input"
+                          disabled=""
+                          id="toggle-button-42"
+                          name="toggle-button-42"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
                   </td>
                   <td
                     class="policyTd"

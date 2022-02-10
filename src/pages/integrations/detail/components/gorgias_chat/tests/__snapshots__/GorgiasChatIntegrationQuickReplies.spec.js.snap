@@ -351,27 +351,29 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                               isToggled={false}
                               onClick={[Function]}
                             >
-                              <label
-                                aria-checked={false}
-                                aria-label="Enable quick replies"
-                                className="container"
-                                htmlFor="toggle-button-1"
-                                onClick={[Function]}
-                                role="switch"
-                              >
-                                <input
+                              <div>
+                                <label
+                                  aria-checked={false}
                                   aria-label="Enable quick replies"
-                                  checked={false}
-                                  className="input"
-                                  disabled={true}
-                                  id="toggle-button-1"
-                                  name="toggle-button-1"
-                                  type="checkbox"
-                                />
-                                <div
-                                  className="slider"
-                                />
-                              </label>
+                                  className="container"
+                                  htmlFor="toggle-button-1"
+                                  onClick={[Function]}
+                                  role="switch"
+                                >
+                                  <input
+                                    aria-label="Enable quick replies"
+                                    checked={false}
+                                    className="input"
+                                    disabled={true}
+                                    id="toggle-button-1"
+                                    name="toggle-button-1"
+                                    type="checkbox"
+                                  />
+                                  <div
+                                    className="slider"
+                                  />
+                                </label>
+                              </div>
                             </ToggleInput>
                             <div
                               className="ml-2"
@@ -1329,27 +1331,29 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                               isToggled={true}
                               onClick={[Function]}
                             >
-                              <label
-                                aria-checked={true}
-                                aria-label="Enable quick replies"
-                                className="container"
-                                htmlFor="toggle-button-2"
-                                onClick={[Function]}
-                                role="switch"
-                              >
-                                <input
+                              <div>
+                                <label
+                                  aria-checked={true}
                                   aria-label="Enable quick replies"
-                                  checked={true}
-                                  className="input"
-                                  disabled={true}
-                                  id="toggle-button-2"
-                                  name="toggle-button-2"
-                                  type="checkbox"
-                                />
-                                <div
-                                  className="slider"
-                                />
-                              </label>
+                                  className="container"
+                                  htmlFor="toggle-button-2"
+                                  onClick={[Function]}
+                                  role="switch"
+                                >
+                                  <input
+                                    aria-label="Enable quick replies"
+                                    checked={true}
+                                    className="input"
+                                    disabled={true}
+                                    id="toggle-button-2"
+                                    name="toggle-button-2"
+                                    type="checkbox"
+                                  />
+                                  <div
+                                    className="slider"
+                                  />
+                                </label>
+                              </div>
                             </ToggleInput>
                             <div
                               className="ml-2"

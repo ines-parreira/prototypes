@@ -8,7 +8,7 @@ import {FormText, Label} from 'reactstrap'
 import {GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS} from 'config/integrations/gorgias_chat'
 import {IntegrationType} from 'models/integration/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import ToggleField from 'pages/common/forms/ToggleField'
+import ToggleInput from 'pages/common/forms/ToggleInput'
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
 
@@ -75,14 +75,15 @@ const ChatApplication: React.FC = () => {
     }
 
     return (
-        <>
-            <ToggleField
-                label="Enable chat widget"
+        <section>
+            <ToggleInput
                 isToggled={!!chatApplicationId}
                 onClick={toggleChatEnabled}
                 isDisabled={chatOptions.length === 0}
                 className={css.toggle}
-            />
+            >
+                Enable chat widget
+            </ToggleInput>
             <p>This makes a chat widget visible for all help center pages.</p>
 
             {chatOptions.length === 0 && (
@@ -116,7 +117,7 @@ const ChatApplication: React.FC = () => {
                     </FormText>
                 </>
             )}
-        </>
+        </section>
     )
 }
 

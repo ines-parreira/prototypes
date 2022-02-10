@@ -536,72 +536,68 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             Other settings
           </h3>
           <div
-            class="toggle form-group"
+            class="toggle"
           >
-            <div
+            <label
+              aria-checked="false"
               class="container"
+              for="toggle-button-3"
+              role="switch"
             >
-              <label
-                aria-checked="false"
-                class="container"
-                for="toggle-button-3"
-                role="switch"
-              >
-                <input
-                  class="input"
-                  disabled=""
-                  id="toggle-button-3"
-                  name="toggle-button-3"
-                  type="checkbox"
-                />
-                <div
-                  class="slider"
-                />
-              </label>
-              <label
-                class="control-label mb-0 ml-2 clickable"
+              <input
+                class="input"
+                disabled=""
+                id="toggle-button-3"
+                name="toggle-button-3"
+                type="checkbox"
+              />
+              <div
+                class="slider"
+              />
+              <div
+                class="label"
               >
                 Enable search bar
-              </label>
+              </div>
+            </label>
+            <div
+              class="caption"
+            >
+              Use this toggle to display or hide the search bar in your Help Center.
             </div>
           </div>
-          <p>
-            Use this toggle to display or hide the search bar in your Help Center.
-          </p>
           <div
-            class="toggle form-group"
+            class="toggle"
           >
-            <div
+            <label
+              aria-checked="true"
               class="container"
+              for="toggle-button-4"
+              role="switch"
             >
-              <label
-                aria-checked="true"
-                class="container"
-                for="toggle-button-4"
-                role="switch"
-              >
-                <input
-                  checked=""
-                  class="input"
-                  disabled=""
-                  id="toggle-button-4"
-                  name="toggle-button-4"
-                  type="checkbox"
-                />
-                <div
-                  class="slider"
-                />
-              </label>
-              <label
-                class="control-label mb-0 ml-2 clickable"
+              <input
+                checked=""
+                class="input"
+                disabled=""
+                id="toggle-button-4"
+                name="toggle-button-4"
+                type="checkbox"
+              />
+              <div
+                class="slider"
+              />
+              <div
+                class="label"
               >
                 Powered by Gorgias
-              </label>
+              </div>
+            </label>
+            <div
+              class="caption"
+            >
+              Use this toggle to display or hide the Gorgias branding on the footer in Help Center.
             </div>
           </div>
-          <p>
-            Use this toggle to display or hide the Gorgias branding on the footer in Help Center.
-          </p>
         </section>
         <footer>
           <div

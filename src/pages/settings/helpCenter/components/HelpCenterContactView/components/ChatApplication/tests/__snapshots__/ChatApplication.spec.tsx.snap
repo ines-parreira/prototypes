@@ -2,11 +2,9 @@
 
 exports[`<ChatApplication /> allows to enable chat widget and selects the first chat by default 1`] = `
 <div>
-  <div
-    class="toggle form-group"
-  >
+  <section>
     <div
-      class="container"
+      class="toggle"
     >
       <label
         aria-checked="false"
@@ -24,27 +22,25 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
         <div
           class="slider"
         />
-      </label>
-      <label
-        class="control-label mb-0 ml-2 clickable"
-      >
-        Enable chat widget
+        <div
+          class="label"
+        >
+          Enable chat widget
+        </div>
       </label>
     </div>
-  </div>
-  <p>
-    This makes a chat widget visible for all help center pages.
-  </p>
+    <p>
+      This makes a chat widget visible for all help center pages.
+    </p>
+  </section>
 </div>
 `;
 
 exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] = `
 <div>
-  <div
-    class="toggle form-group"
-  >
+  <section>
     <div
-      class="container"
+      class="toggle"
     >
       <label
         aria-checked="false"
@@ -62,39 +58,39 @@ exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] =
         <div
           class="slider"
         />
-      </label>
-      <label
-        class="control-label mb-0 ml-2 clickable"
-      >
-        Enable chat widget
+        <div
+          class="label"
+        >
+          Enable chat widget
+        </div>
       </label>
     </div>
-  </div>
-  <p>
-    This makes a chat widget visible for all help center pages.
-  </p>
-  <div
-    class="warning-no-chat"
-  >
-    <span
-      class="float-right"
+    <p>
+      This makes a chat widget visible for all help center pages.
+    </p>
+    <div
+      class="warning-no-chat"
     >
-      <a
-        to="/app/settings/integrations/gorgias_chat"
+      <span
+        class="float-right"
       >
-        Create Chat
-      </a>
-    </span>
-    <span
-      class="warning-icon mr-2"
-    >
-      <i
-        class="material-icons"
+        <a
+          to="/app/settings/integrations/gorgias_chat"
+        >
+          Create Chat
+        </a>
+      </span>
+      <span
+        class="warning-icon mr-2"
       >
-        report_problem
-      </i>
-    </span>
-    You don't have any existing chat integration. Please create one to enable.
-  </div>
+        <i
+          class="material-icons"
+        >
+          report_problem
+        </i>
+      </span>
+      You don't have any existing chat integration. Please create one to enable.
+    </div>
+  </section>
 </div>
 `;

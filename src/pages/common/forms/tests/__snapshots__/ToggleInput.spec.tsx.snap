@@ -1,199 +1,218 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ToggleInput should render caption 1`] = `
-<label
-  aria-checked="true"
-  class="container"
-  for="toggle-button-7"
-  role="switch"
->
-  <input
-    checked=""
-    class="input"
-    disabled=""
-    id="toggle-button-7"
-    name="toggle-button-7"
-    type="checkbox"
-  />
-  <div
-    class="slider"
-  />
-  <div
-    class="label"
+<div>
+  <label
+    aria-checked="true"
+    class="container"
+    for="toggle-button-7"
+    role="switch"
   >
-    Label
+    <input
+      checked=""
+      class="input"
+      disabled=""
+      id="toggle-button-7"
+      name="toggle-button-7"
+      type="checkbox"
+    />
+    <div
+      class="slider"
+    />
+    <div
+      class="label"
+    >
+      Label
+    </div>
+  </label>
+  <div
+    class="caption"
+  >
+    caption
   </div>
-</label>
+</div>
 `;
 
 exports[`ToggleInput should render label 1`] = `
-<label
-  aria-checked="true"
-  class="container"
-  for="toggle-button-6"
-  role="switch"
->
-  <input
-    checked=""
-    class="input"
-    disabled=""
-    id="toggle-button-6"
-    name="toggle-button-6"
-    type="checkbox"
-  />
-  <div
-    class="slider"
-  />
-  <div
-    class="label"
+<div>
+  <label
+    aria-checked="true"
+    class="container"
+    for="toggle-button-6"
+    role="switch"
   >
-    Label
-  </div>
-</label>
+    <input
+      checked=""
+      class="input"
+      disabled=""
+      id="toggle-button-6"
+      name="toggle-button-6"
+      type="checkbox"
+    />
+    <div
+      class="slider"
+    />
+    <div
+      class="label"
+    >
+      Label
+    </div>
+  </label>
+</div>
 `;
 
 exports[`ToggleInput should render the button disabled 1`] = `
-<label
-  aria-checked="true"
-  class="container disabled"
-  for="toggle-button-4"
-  role="switch"
->
-  <input
-    checked=""
-    class="input"
-    disabled=""
-    id="toggle-button-4"
-    name="toggle-button-4"
-    type="checkbox"
-  />
-  <div
-    class="slider"
-  />
-</label>
+<div>
+  <label
+    aria-checked="true"
+    class="container disabled"
+    for="toggle-button-4"
+    role="switch"
+  >
+    <input
+      checked=""
+      class="input"
+      disabled=""
+      id="toggle-button-4"
+      name="toggle-button-4"
+      type="checkbox"
+    />
+    <div
+      class="slider"
+    />
+  </label>
+</div>
 `;
 
 exports[`ToggleInput should render the button loading 1`] = `
-<label
-  aria-checked="true"
-  class="container loading"
-  for="toggle-button-3"
-  role="switch"
->
-  <input
-    checked=""
-    class="input"
-    disabled=""
-    id="toggle-button-3"
-    name="toggle-button-3"
-    type="checkbox"
-  />
-  <div
-    class="slider"
-  />
-  <svg
-    class="spinner left"
-    viewBox="0 0 20 20"
+<div>
+  <label
+    aria-checked="true"
+    class="container loading"
+    for="toggle-button-3"
+    role="switch"
   >
-    <circle
-      class="dot"
-      cx="10"
-      cy="10"
-      fill="none"
-      r="6"
-      stroke-width="2"
+    <input
+      checked=""
+      class="input"
+      disabled=""
+      id="toggle-button-3"
+      name="toggle-button-3"
+      type="checkbox"
     />
-    <circle
-      class="circle"
-      cx="10"
-      cy="10"
-      fill="none"
-      r="6"
-      stroke-width="2"
+    <div
+      class="slider"
     />
-  </svg>
-</label>
+    <svg
+      class="spinner left"
+      viewBox="0 0 20 20"
+    >
+      <circle
+        class="dot"
+        cx="10"
+        cy="10"
+        fill="none"
+        r="6"
+        stroke-width="2"
+      />
+      <circle
+        class="circle"
+        cx="10"
+        cy="10"
+        fill="none"
+        r="6"
+        stroke-width="2"
+      />
+    </svg>
+  </label>
+</div>
 `;
 
 exports[`ToggleInput should render the button loading and disabled 1`] = `
-<label
-  aria-checked="true"
-  class="container loading disabled"
-  for="toggle-button-5"
-  role="switch"
->
-  <input
-    checked=""
-    class="input"
-    disabled=""
-    id="toggle-button-5"
-    name="toggle-button-5"
-    type="checkbox"
-  />
-  <div
-    class="slider"
-  />
-  <svg
-    class="spinner left"
-    viewBox="0 0 20 20"
+<div>
+  <label
+    aria-checked="true"
+    class="container loading disabled"
+    for="toggle-button-5"
+    role="switch"
   >
-    <circle
-      class="dot"
-      cx="10"
-      cy="10"
-      fill="none"
-      r="6"
-      stroke-width="2"
+    <input
+      checked=""
+      class="input"
+      disabled=""
+      id="toggle-button-5"
+      name="toggle-button-5"
+      type="checkbox"
     />
-    <circle
-      class="circle"
-      cx="10"
-      cy="10"
-      fill="none"
-      r="6"
-      stroke-width="2"
+    <div
+      class="slider"
     />
-  </svg>
-</label>
+    <svg
+      class="spinner left"
+      viewBox="0 0 20 20"
+    >
+      <circle
+        class="dot"
+        cx="10"
+        cy="10"
+        fill="none"
+        r="6"
+        stroke-width="2"
+      />
+      <circle
+        class="circle"
+        cx="10"
+        cy="10"
+        fill="none"
+        r="6"
+        stroke-width="2"
+      />
+    </svg>
+  </label>
+</div>
 `;
 
 exports[`ToggleInput should render the checkbox checked 1`] = `
-<label
-  aria-checked="true"
-  class="container"
-  for="toggle-button-1"
-  role="switch"
->
-  <input
-    checked=""
-    class="input"
-    disabled=""
-    id="toggle-button-1"
-    name="toggle-button-1"
-    type="checkbox"
-  />
-  <div
-    class="slider"
-  />
-</label>
+<div>
+  <label
+    aria-checked="true"
+    class="container"
+    for="toggle-button-1"
+    role="switch"
+  >
+    <input
+      checked=""
+      class="input"
+      disabled=""
+      id="toggle-button-1"
+      name="toggle-button-1"
+      type="checkbox"
+    />
+    <div
+      class="slider"
+    />
+  </label>
+</div>
 `;
 
 exports[`ToggleInput should render the checkbox unchecked 1`] = `
-<label
-  aria-checked="false"
-  class="container"
-  for="toggle-button-2"
-  role="switch"
->
-  <input
-    class="input"
-    disabled=""
-    id="toggle-button-2"
-    name="toggle-button-2"
-    type="checkbox"
-  />
-  <div
-    class="slider"
-  />
-</label>
+<div>
+  <label
+    aria-checked="false"
+    class="container"
+    for="toggle-button-2"
+    role="switch"
+  >
+    <input
+      class="input"
+      disabled=""
+      id="toggle-button-2"
+      name="toggle-button-2"
+      type="checkbox"
+    />
+    <div
+      class="slider"
+    />
+  </label>
+</div>
 `;

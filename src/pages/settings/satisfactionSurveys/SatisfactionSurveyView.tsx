@@ -73,7 +73,7 @@ class SatisfactionSurveyView extends Component<Props, State> {
                     <div
                         className={classnames(
                             css.contentWrapper,
-                            css['body-regular']
+                            'body-regular'
                         )}
                     >
                         <div className={css.mb24}>
@@ -109,7 +109,7 @@ class SatisfactionSurveyView extends Component<Props, State> {
                                     <div
                                         className={classnames(
                                             css.mt4,
-                                            css['caption-regular']
+                                            'caption-regular'
                                         )}
                                     >
                                         No survey will be sent after the ticket

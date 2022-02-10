@@ -5,23 +5,25 @@ exports[`<SsoToggleButton/> should render properly 1`] = `
   <div
     class="mb-2 d-flex align-items-center"
   >
-    <label
-      aria-checked="false"
-      class="container"
-      for="toggle-button-1"
-      role="switch"
-    >
-      <input
-        class="input"
-        disabled=""
-        id="toggle-button-1"
-        name="toggle-button-1"
-        type="checkbox"
-      />
-      <div
-        class="slider"
-      />
-    </label>
+    <div>
+      <label
+        aria-checked="false"
+        class="container"
+        for="toggle-button-1"
+        role="switch"
+      >
+        <input
+          class="input"
+          disabled=""
+          id="toggle-button-1"
+          name="toggle-button-1"
+          type="checkbox"
+        />
+        <div
+          class="slider"
+        />
+      </label>
+    </div>
     <img
       alt="Google logo"
       class="ml-3 mr-2"

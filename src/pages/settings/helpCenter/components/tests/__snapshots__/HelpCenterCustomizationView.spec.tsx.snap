@@ -210,42 +210,46 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             </p>
           </div>
           <div>
-            <label
-              aria-checked="false"
-              class="container toggle"
-              for="toggle-button-1"
-              role="switch"
+            <div
+              class="toggle"
             >
-              <input
-                class="input"
-                disabled=""
-                id="toggle-button-1"
-                name="toggle-button-1"
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-              <div
-                class="label"
+              <label
+                aria-checked="false"
+                class="container"
+                for="toggle-button-1"
+                role="switch"
               >
-                <span>
-                  Use custom header
-                </span>
-                <span>
-                  <span
-                    class="toggleTooltip"
-                    id="custom-header-toggle-info"
-                  >
-                    <i
-                      class="material-icons"
-                    >
-                      info_outline
-                    </i>
+                <input
+                  class="input"
+                  disabled=""
+                  id="toggle-button-1"
+                  name="toggle-button-1"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+                <div
+                  class="label"
+                >
+                  <span>
+                    Use custom header
                   </span>
-                </span>
-              </div>
-            </label>
+                  <span>
+                    <span
+                      class="toggleTooltip"
+                      id="custom-header-toggle-info"
+                    >
+                      <i
+                        class="material-icons"
+                      >
+                        info_outline
+                      </i>
+                    </span>
+                  </span>
+                </div>
+              </label>
+            </div>
           </div>
           <h5>
             Navigation Links
@@ -282,42 +286,46 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             </div>
           </div>
           <div>
-            <label
-              aria-checked="false"
-              class="container toggle"
-              for="toggle-button-2"
-              role="switch"
+            <div
+              class="toggle"
             >
-              <input
-                class="input"
-                disabled=""
-                id="toggle-button-2"
-                name="toggle-button-2"
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-              <div
-                class="label"
+              <label
+                aria-checked="false"
+                class="container"
+                for="toggle-button-2"
+                role="switch"
               >
-                <span>
-                  Use custom footer
-                </span>
-                <span>
-                  <span
-                    class="toggleTooltip"
-                    id="custom-footer-toggle-info"
-                  >
-                    <i
-                      class="material-icons"
-                    >
-                      info_outline
-                    </i>
+                <input
+                  class="input"
+                  disabled=""
+                  id="toggle-button-2"
+                  name="toggle-button-2"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+                <div
+                  class="label"
+                >
+                  <span>
+                    Use custom footer
                   </span>
-                </span>
-              </div>
-            </label>
+                  <span>
+                    <span
+                      class="toggleTooltip"
+                      id="custom-footer-toggle-info"
+                    >
+                      <i
+                        class="material-icons"
+                      >
+                        info_outline
+                      </i>
+                    </span>
+                  </span>
+                </div>
+              </label>
+            </div>
           </div>
           <h5>
             Navigation Links
@@ -464,28 +472,32 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             </p>
           </div>
           <div>
-            <label
-              aria-checked="false"
-              class="container toggle"
-              for="toggle-button-3"
-              role="switch"
+            <div
+              class="toggle"
             >
-              <input
-                class="input"
-                disabled=""
-                id="toggle-button-3"
-                name="toggle-button-3"
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-              <div
-                class="label"
+              <label
+                aria-checked="false"
+                class="container"
+                for="toggle-button-3"
+                role="switch"
               >
-                Add extra HTML
-              </div>
-            </label>
+                <input
+                  class="input"
+                  disabled=""
+                  id="toggle-button-3"
+                  name="toggle-button-3"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+                <div
+                  class="label"
+                >
+                  Add extra HTML
+                </div>
+              </label>
+            </div>
           </div>
           <div
             class="wrapper"

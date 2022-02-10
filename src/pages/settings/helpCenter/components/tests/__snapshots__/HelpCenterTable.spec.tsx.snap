@@ -121,24 +121,26 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
           <div
             class="cellContent"
           >
-            <label
-              aria-checked="true"
-              class="container"
-              for="toggle-button-1"
-              role="switch"
-            >
-              <input
-                checked=""
-                class="input"
-                disabled=""
-                id="toggle-button-1"
-                name="toggle-button-1"
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-            </label>
+            <div>
+              <label
+                aria-checked="true"
+                class="container"
+                for="toggle-button-1"
+                role="switch"
+              >
+                <input
+                  checked=""
+                  class="input"
+                  disabled=""
+                  id="toggle-button-1"
+                  name="toggle-button-1"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+              </label>
+            </div>
           </div>
         </td>
         <td
@@ -201,24 +203,26 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
           <div
             class="cellContent"
           >
-            <label
-              aria-checked="true"
-              class="container"
-              for="toggle-button-2"
-              role="switch"
-            >
-              <input
-                checked=""
-                class="input"
-                disabled=""
-                id="toggle-button-2"
-                name="toggle-button-2"
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-            </label>
+            <div>
+              <label
+                aria-checked="true"
+                class="container"
+                for="toggle-button-2"
+                role="switch"
+              >
+                <input
+                  checked=""
+                  class="input"
+                  disabled=""
+                  id="toggle-button-2"
+                  name="toggle-button-2"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+              </label>
+            </div>
           </div>
         </td>
         <td
@@ -292,24 +296,26 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
           <div
             class="cellContent"
           >
-            <label
-              aria-checked="true"
-              class="container"
-              for="toggle-button-3"
-              role="switch"
-            >
-              <input
-                checked=""
-                class="input"
-                disabled=""
-                id="toggle-button-3"
-                name="toggle-button-3"
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-            </label>
+            <div>
+              <label
+                aria-checked="true"
+                class="container"
+                for="toggle-button-3"
+                role="switch"
+              >
+                <input
+                  checked=""
+                  class="input"
+                  disabled=""
+                  id="toggle-button-3"
+                  name="toggle-button-3"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+              </label>
+            </div>
           </div>
         </td>
         <td

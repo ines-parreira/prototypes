@@ -3,11 +3,11 @@ import moment from 'moment'
 import {useSelector} from 'react-redux'
 import {Link} from 'react-router-dom'
 
-import {ChatContactInfoDto} from '../../../../../../../models/helpCenter/types'
-import {getBusinessHoursSettings} from '../../../../../../../state/currentAccount/selectors'
-import InputField from '../../../../../../common/forms/InputField'
-import ToggleField from '../../../../../../common/forms/ToggleField'
-import {useHelpCenterTranslation} from '../../../../providers/HelpCenterTranslation'
+import {ChatContactInfoDto} from 'models/helpCenter/types'
+import InputField from 'pages/common/forms/InputField'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
+import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 import ContactCard from '../ContactCard'
 
 import ChatCardAvatars from './ChatCardAvatars'
@@ -74,8 +74,8 @@ const ChatContactInfoSection: React.FC = () => {
 
     return (
         <section className={css.container}>
-            <ToggleField
-                label="Chat card"
+            <ToggleInput
+                className={css.toggleInput}
                 isToggled={enabled}
                 onClick={handleChange('enabled')}
                 aria-label="Enable chat contact card"
