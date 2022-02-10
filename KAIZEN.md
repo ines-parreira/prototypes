@@ -21,6 +21,7 @@ PR).
 -   [Separate UI and Entity reducers](#separate-ui-and-entity-reducers)
 -   [Don't write actions with Axios calls](#dont-write-actions-with-axios-calls)
 -   [Migration to Functional Components](#migration-to-functional-components)
+-   [Don't use relative parent imports](#dont-use-relative-parent-imports)
 
 ## Migration from Js to Ts
 
@@ -32,14 +33,17 @@ We are aiming to migrate them to TypeScript as it is a better tool.
 The general approach to migrating a file is:
 
 1. If the file can benefit from some exported types, write the declarations in a `types.ts` file.
+
     - A new type should be named as `type Foo`.
 
 2. Change the file extension from `.js` to either `.ts` or `.tsx` if the file contains JSX.
 
 3. Make adjustments:
+
 -   Add missing parameters in function definitions such as `(Type) => void` becoming `(foo: Type) => void`.
 -   Avoid `Maybe<T>` types as they are a remnant of the Flow to TypeScript migration, and whenever you have the occasion, try redefining `Maybe<T>` types.
 -   Type imports should be performed as:
+
 ```
 import Foo, {FooType} from 'foo'
 // or
@@ -149,3 +153,39 @@ If you need to reuse a component logic, prioritize Hooks over HOC.
 Always create a Hook first, then you can also write a thin HOC wrapper for the Hook as the situation demands.
 The same procedure applies when migrating the existing HOC: convert it to a Hook and write a HOC wrapper for it
 (only if it's required).
+
+## Don't use relative parent imports
+
+Always use _absolute_ imports instead of _relative parent imports_. For example, the following imports:
+
+```ts
+import {RootState} from '../../../../state/types'
+import {account} from '../../../../fixtures/account'
+import Tooltip from '../../../../pages/common/components/Tooltip'
+
+import Foo from './Foo'
+```
+
+Need to be replaced with:
+
+```ts
+import {RootState} from 'state/types'
+import {account} from 'fixtures/account'
+import Tooltip from 'pages/common/components/Tooltip'
+
+import Foo from './Foo'
+```
+
+The only allowed relative parent import is the import of the Component Under Test from `tests/` directory. Example:
+
+```ts
+// tests/Foo.spec.tsx
+
+import Foo from '../Foo'
+
+describe('Foo', () => {
+  // ...
+})
+```
+
+When modifying the existing code, please consider migrating the _relative parent imports_ to the _absolute imports_.
