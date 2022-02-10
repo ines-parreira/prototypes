@@ -1,0 +1,32 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .wrapper {
+        margin-top: 24px;
+        .titleWrapper {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            .title {
+                margin: 0 10px 0 0;
+            }
+        }
+        .codeWrapper {
+            border-radius: 4px;
+            padding: 8px;
+            background-color: @classic-neutral-grey-2;
+            :global .ace_gutter {
+                background-color: @classic-neutral-grey-2;
+            }
+            :global .ace_content {
+                background-color: @classic-neutral-grey-2;
+            }
+        }
+        .codeDisabled {
+            pointer-events: none;
+            /* for "disabled" effect */
+            opacity: 0.5;
+            background: #ccc;
+        }
+    }
+}

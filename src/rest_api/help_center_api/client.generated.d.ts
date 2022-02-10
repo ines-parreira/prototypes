@@ -688,6 +688,58 @@ declare namespace Components {
       enabled: boolean;
       description: string;
     }
+    export interface ExtraHTML {
+      extra_head: string;
+      extra_head_deactivated_datetime: string | null; // date-time
+      custom_header: string;
+      custom_header_deactivated_datetime: string | null; // date-time
+      custom_footer: string;
+      custom_footer_deactivated_datetime: string | null; // date-time
+    }
+    export interface ExtraHTMLDto {
+      /**
+       * The HTML injected in the head
+       * 
+       * It should be in help center's supported locales.
+       * example:
+       * <div>....</div>
+       */
+      extra_head: string;
+      /**
+       * Boolean indicating if the extra head should be injected.
+       * example:
+       * false
+       */
+      extra_head_deactivated: boolean;
+      /**
+       * The HTML of the custom header
+       * 
+       * It should be in help center's supported locales.
+       * example:
+       * <div>....</div>
+       */
+      custom_header: string;
+      /**
+       * Boolean indicating if the custom header should be injected.
+       * example:
+       * false
+       */
+      custom_header_deactivated: boolean;
+      /**
+       * The HTML of the custom footer
+       * 
+       * It should be in help center's supported locales.
+       * example:
+       * <div>....</div>
+       */
+      custom_footer: string;
+      /**
+       * Boolean indicating if the custom footer should be injected.
+       * example:
+       * false
+       */
+      custom_footer_deactivated: boolean;
+    }
     export interface HelpCenterEntity {
       created_datetime: string; // date-time
       updated_datetime: string; // date-time
@@ -738,6 +790,14 @@ declare namespace Components {
         };
       };
       chat_application_id: number | null;
+      extra_html: {
+        extra_head: string;
+        extra_head_deactivated_datetime: string | null; // date-time
+        custom_header: string;
+        custom_header_deactivated_datetime: string | null; // date-time
+        custom_footer: string;
+        custom_footer_deactivated_datetime: string | null; // date-time
+      };
     }
     export interface HelpCenterTranslationSeoMeta {
       title: string | null;
@@ -1073,6 +1133,50 @@ declare namespace Components {
         description: string | null;
       };
     }
+    export interface UpdateExtraHTMLDto {
+      /**
+       * The HTML injected in the head
+       * 
+       * It should be in help center's supported locales.
+       * example:
+       * <div>....</div>
+       */
+      extra_head: string;
+      /**
+       * Boolean indicating if the extra head should be injected.
+       * example:
+       * false
+       */
+      extra_head_deactivated: boolean;
+      /**
+       * The HTML of the custom header
+       * 
+       * It should be in help center's supported locales.
+       * example:
+       * <div>....</div>
+       */
+      custom_header: string;
+      /**
+       * Boolean indicating if the custom header should be injected.
+       * example:
+       * false
+       */
+      custom_header_deactivated: boolean;
+      /**
+       * The HTML of the custom footer
+       * 
+       * It should be in help center's supported locales.
+       * example:
+       * <div>....</div>
+       */
+      custom_footer: string;
+      /**
+       * Boolean indicating if the custom footer should be injected.
+       * example:
+       * false
+       */
+      custom_footer_deactivated: boolean;
+    }
     export interface UpdateHelpCenterDto {
       /**
        * example:
@@ -1158,6 +1262,50 @@ declare namespace Components {
         email: EmailContactInfoDto;
         phone: PhoneContactInfoDto;
         chat: ChatContactInfoDto;
+      };
+      extra_html?: {
+        /**
+         * The HTML injected in the head
+         * 
+         * It should be in help center's supported locales.
+         * example:
+         * <div>....</div>
+         */
+        extra_head: string;
+        /**
+         * Boolean indicating if the extra head should be injected.
+         * example:
+         * false
+         */
+        extra_head_deactivated: boolean;
+        /**
+         * The HTML of the custom header
+         * 
+         * It should be in help center's supported locales.
+         * example:
+         * <div>....</div>
+         */
+        custom_header: string;
+        /**
+         * Boolean indicating if the custom header should be injected.
+         * example:
+         * false
+         */
+        custom_header_deactivated: boolean;
+        /**
+         * The HTML of the custom footer
+         * 
+         * It should be in help center's supported locales.
+         * example:
+         * <div>....</div>
+         */
+        custom_footer: string;
+        /**
+         * Boolean indicating if the custom footer should be injected.
+         * example:
+         * false
+         */
+        custom_footer_deactivated: boolean;
       };
     }
     export interface UpdateNavigationLinkDto {
@@ -1578,6 +1726,21 @@ declare namespace Paths {
       export type $200 = Components.Schemas.CustomDomain;
     }
   }
+  namespace GetExtraHTML {
+    namespace Parameters {
+      export type HelpCenterId = number;
+      export type Locale = string;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+    }
+    export interface QueryParameters {
+      locale: Parameters.Locale;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ExtraHTML;
+    }
+  }
   namespace GetHelpCenter {
     namespace Parameters {
       export type HelpCenterId = number;
@@ -1984,6 +2147,20 @@ declare namespace Paths {
       export type $200 = Components.Schemas.CategoryTranslationEntity;
     }
   }
+  namespace UpdateExtraHTML {
+    namespace Parameters {
+      export type HelpCenterId = number;
+      export type Locale = string;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+      locale: Parameters.Locale;
+    }
+    export type RequestBody = Components.Schemas.UpdateExtraHTMLDto;
+    namespace Responses {
+      export type $200 = Components.Schemas.ExtraHTML;
+    }
+  }
   namespace UpdateHelpCenter {
     namespace Parameters {
       export type HelpCenterId = number;
@@ -2226,6 +2403,22 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CheckCustomDomainStatus.Responses.$200>
+  /**
+   * getExtraHTML - Get a help center's extra HTML
+   */
+  'getExtraHTML'(
+    parameters?: Parameters<Paths.GetExtraHTML.PathParameters & Paths.GetExtraHTML.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetExtraHTML.Responses.$200>
+  /**
+   * updateExtraHTML - Update a help center's extra HTML
+   */
+  'updateExtraHTML'(
+    parameters?: Parameters<Paths.UpdateExtraHTML.PathParameters> | null,
+    data?: Paths.UpdateExtraHTML.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.UpdateExtraHTML.Responses.$200>
   /**
    * listLocales - List supported locales
    */
@@ -2806,6 +2999,26 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CheckCustomDomainStatus.Responses.$200>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/extra-html']: {
+    /**
+     * getExtraHTML - Get a help center's extra HTML
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetExtraHTML.PathParameters & Paths.GetExtraHTML.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetExtraHTML.Responses.$200>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/extra-html/{locale}']: {
+    /**
+     * updateExtraHTML - Update a help center's extra HTML
+     */
+    'put'(
+      parameters?: Parameters<Paths.UpdateExtraHTML.PathParameters> | null,
+      data?: Paths.UpdateExtraHTML.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.UpdateExtraHTML.Responses.$200>
   }
   ['/api/help-center/locales']: {
     /**

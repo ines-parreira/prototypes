@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CodeEditor /> should render the component 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="titleWrapper"
+  >
+    <h4
+      class="title"
+    >
+      Custom Code
+    </h4>
+    <div>
+      <span
+        id="code-editor-tooltip-2"
+      >
+        <i
+          class="material-icons"
+        >
+          info_outline
+        </i>
+      </span>
+    </div>
+  </div>
+  <div
+    id="code-editor-wrapper-tooltip-3"
+  >
+    <div
+      class="codeWrapper"
+    >
+      <div
+        class="container"
+      >
+        <div
+          class="inner"
+          style="min-height: 200px;"
+        >
+          <i
+            class="icon-custom icon-circle-o-notch md-spin"
+            style="font-size: 40px;"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

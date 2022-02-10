@@ -724,6 +724,83 @@
                 "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
             }
         },
+        "/api/help-center/help-centers/{help_center_id}/extra-html": {
+            "get": {
+                "operationId": "getExtraHTML",
+                "summary": "Get a help center's extra HTML",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "locale",
+                        "required": true,
+                        "in": "query",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExtraHTML"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["extra-html"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/extra-html/{locale}": {
+            "put": {
+                "operationId": "updateExtraHTML",
+                "summary": "Update a help center's extra HTML",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "locale",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateExtraHTMLDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExtraHTML"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["extra-html"]
+            }
+        },
         "/api/help-center/locales": {
             "get": {
                 "operationId": "listLocales",
@@ -3164,6 +3241,40 @@
                 },
                 "required": ["email", "phone", "chat"]
             },
+            "ExtraHTML": {
+                "type": "object",
+                "properties": {
+                    "extra_head": {"type": "string", "default": ""},
+                    "extra_head_deactivated_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "default": "2022-01-26T14:30:37.346Z"
+                    },
+                    "custom_header": {"type": "string", "default": ""},
+                    "custom_header_deactivated_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "default": "2022-01-26T14:30:37.346Z"
+                    },
+                    "custom_footer": {"type": "string", "default": ""},
+                    "custom_footer_deactivated_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "default": "2022-01-26T14:30:37.346Z"
+                    }
+                },
+                "required": [
+                    "extra_head",
+                    "extra_head_deactivated_datetime",
+                    "custom_header",
+                    "custom_header_deactivated_datetime",
+                    "custom_footer",
+                    "custom_footer_deactivated_datetime"
+                ]
+            },
             "HelpCenterTranslationEntity": {
                 "type": "object",
                 "properties": {
@@ -3207,7 +3318,10 @@
                     "contact_info": {
                         "allOf": [{"$ref": "#/components/schemas/ContactInfo"}]
                     },
-                    "chat_application_id": {"type": "number", "nullable": true}
+                    "chat_application_id": {"type": "number", "nullable": true},
+                    "extra_html": {
+                        "allOf": [{"$ref": "#/components/schemas/ExtraHTML"}]
+                    }
                 },
                 "required": [
                     "created_datetime",
@@ -3216,7 +3330,8 @@
                     "locale",
                     "seo_meta",
                     "contact_info",
-                    "chat_application_id"
+                    "chat_application_id",
+                    "extra_html"
                 ]
             },
             "HelpCenterTranslationsListPageDto": {
@@ -3339,6 +3454,49 @@
                 },
                 "required": ["email", "phone", "chat"]
             },
+            "ExtraHTMLDto": {
+                "type": "object",
+                "properties": {
+                    "extra_head": {
+                        "type": "string",
+                        "description": "The HTML injected in the head\n\nIt should be in help center's supported locales.",
+                        "example": "<div>....</div>"
+                    },
+                    "extra_head_deactivated": {
+                        "type": "boolean",
+                        "description": "Boolean indicating if the extra head should be injected.",
+                        "example": false
+                    },
+                    "custom_header": {
+                        "type": "string",
+                        "description": "The HTML of the custom header\n\nIt should be in help center's supported locales.",
+                        "example": "<div>....</div>"
+                    },
+                    "custom_header_deactivated": {
+                        "type": "boolean",
+                        "description": "Boolean indicating if the custom header should be injected.",
+                        "example": false
+                    },
+                    "custom_footer": {
+                        "type": "string",
+                        "description": "The HTML of the custom footer\n\nIt should be in help center's supported locales.",
+                        "example": "<div>....</div>"
+                    },
+                    "custom_footer_deactivated": {
+                        "type": "boolean",
+                        "description": "Boolean indicating if the custom footer should be injected.",
+                        "example": false
+                    }
+                },
+                "required": [
+                    "extra_head",
+                    "extra_head_deactivated",
+                    "custom_header",
+                    "custom_header_deactivated",
+                    "custom_footer",
+                    "custom_footer_deactivated"
+                ]
+            },
             "UpdateHelpCenterTranslationDto": {
                 "type": "object",
                 "properties": {
@@ -3356,6 +3514,9 @@
                         "allOf": [
                             {"$ref": "#/components/schemas/ContactInfoDto"}
                         ]
+                    },
+                    "extra_html": {
+                        "allOf": [{"$ref": "#/components/schemas/ExtraHTMLDto"}]
                     }
                 }
             },
@@ -3417,6 +3578,49 @@
                 "type": "object",
                 "properties": {"hostname": {"type": "string"}},
                 "required": ["hostname"]
+            },
+            "UpdateExtraHTMLDto": {
+                "type": "object",
+                "properties": {
+                    "extra_head": {
+                        "type": "string",
+                        "description": "The HTML injected in the head\n\nIt should be in help center's supported locales.",
+                        "example": "<div>....</div>"
+                    },
+                    "extra_head_deactivated": {
+                        "type": "boolean",
+                        "description": "Boolean indicating if the extra head should be injected.",
+                        "example": false
+                    },
+                    "custom_header": {
+                        "type": "string",
+                        "description": "The HTML of the custom header\n\nIt should be in help center's supported locales.",
+                        "example": "<div>....</div>"
+                    },
+                    "custom_header_deactivated": {
+                        "type": "boolean",
+                        "description": "Boolean indicating if the custom header should be injected.",
+                        "example": false
+                    },
+                    "custom_footer": {
+                        "type": "string",
+                        "description": "The HTML of the custom footer\n\nIt should be in help center's supported locales.",
+                        "example": "<div>....</div>"
+                    },
+                    "custom_footer_deactivated": {
+                        "type": "boolean",
+                        "description": "Boolean indicating if the custom footer should be injected.",
+                        "example": false
+                    }
+                },
+                "required": [
+                    "extra_head",
+                    "extra_head_deactivated",
+                    "custom_header",
+                    "custom_header_deactivated",
+                    "custom_footer",
+                    "custom_footer_deactivated"
+                ]
             },
             "LocaleEntity": {
                 "type": "object",

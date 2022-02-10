@@ -1,0 +1,35 @@
+:local {
+    .wrapper {
+        section:first-child {
+            margin-bottom: 24px;
+        }
+        section {
+            margin-bottom: 64px;
+            .toggle {
+                margin-bottom: 24px;
+                .toggleTooltip {
+                    margin-left: 5px;
+                }
+            }
+            .heading {
+                margin-bottom: 24px;
+
+                .headingInner {
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+                h3 {
+                    margin-bottom: 4px;
+                }
+
+                p {
+                    margin-bottom: 0;
+                }
+            }
+            :global .form-group + p {
+                margin-bottom: 24px;
+            }
+        }
+    }
+}

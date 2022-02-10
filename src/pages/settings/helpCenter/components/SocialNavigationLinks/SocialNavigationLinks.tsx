@@ -34,7 +34,7 @@ export const SocialNavigationLinks = ({
     onBlurLink,
 }: Props): JSX.Element => {
     return (
-        <section className={css['social-list']}>
+        <div className={css['social-list']}>
             <h4>Social network links</h4>
             {links.map((link) => {
                 if (LOGO_MAP[link.label.toLowerCase()]) {
@@ -51,6 +51,6 @@ export const SocialNavigationLinks = ({
                 }
                 return null
             })}
-        </section>
+        </div>
     )
 }

@@ -1,0 +1,543 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/help-center"
+            >
+              Help Center
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            ACME Help Center
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            Customization
+          </li>
+        </ol>
+      </nav>
+      <div>
+        <div
+          class="header"
+        >
+          <button
+            aria-label="help center preview"
+            class="btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons"
+            >
+              open_in_new
+            </i>
+            <span>
+              Preview
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/articles"
+      >
+        Articles
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/contact"
+      >
+        Contact
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/appearance"
+      >
+        Appearance
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/customization"
+      >
+        Customization
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/self-service"
+      >
+        Self-service
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/installation"
+      >
+        Installation
+      </a>
+    </nav>
+    <div
+      class="pageContainer wrapper container-fluid"
+    >
+      <div
+        class="contentWrapper"
+      >
+        <section>
+          <div
+            class="heading"
+          >
+            <div>
+              <div
+                class="headingInner"
+              >
+                <h3>
+                  Customization
+                </h3>
+                <div>
+                  <div
+                    class="dropdown"
+                  >
+                    <div
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class=""
+                      data-toggle="dropdown"
+                    >
+                      <div
+                        class="select dropdown-toggle"
+                      >
+                        <span
+                          class="label"
+                          style="min-width: 10px; opacity: 1;"
+                        >
+                          <span>
+                            <img
+                              alt="en-US"
+                              class="flag-emoji"
+                              src="test-file-stub"
+                            />
+                            <span>
+                              English - USA
+                            </span>
+                          </span>
+                        </span>
+                        <input
+                          autocomplete="chrome-off"
+                          class="input"
+                          style="min-width: 10px;"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      aria-hidden="true"
+                      class="options dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      
+                      <button
+                        class="option option--focused dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                      >
+                        <span>
+                          <span>
+                            <img
+                              alt="fr-FR"
+                              class="flag-emoji"
+                              src="test-file-stub"
+                            />
+                            <span>
+                              French - France
+                            </span>
+                          </span>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div
+            class="heading"
+          >
+            <h4>
+              Header settings
+            </h4>
+            <p>
+              Change navigation elements at the top of the help center.
+            </p>
+          </div>
+          <div>
+            <label
+              aria-checked="false"
+              class="container toggle"
+              for="toggle-button-1"
+              role="switch"
+            >
+              <input
+                class="input"
+                disabled=""
+                id="toggle-button-1"
+                name="toggle-button-1"
+                type="checkbox"
+              />
+              <div
+                class="slider"
+              />
+              <div
+                class="label"
+              >
+                <span>
+                  Use custom header
+                </span>
+                <span>
+                  <span
+                    class="toggleTooltip"
+                    id="custom-header-toggle-info"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      info_outline
+                    </i>
+                  </span>
+                </span>
+              </div>
+            </label>
+          </div>
+          <h5>
+            Navigation Links
+          </h5>
+          <div>
+            <span
+              id="help-header"
+            >
+              <button
+                class="add-link btn btn-secondary"
+                type="button"
+              >
+                <i
+                  class="material-icons"
+                >
+                  add
+                </i>
+                Add Nav Item
+              </button>
+            </span>
+          </div>
+        </section>
+        <section>
+          <div
+            class="heading"
+          >
+            <div>
+              <h4>
+                Footer settings
+              </h4>
+              <p>
+                Change navigation elements at the bottom of the help center.
+              </p>
+            </div>
+          </div>
+          <div>
+            <label
+              aria-checked="false"
+              class="container toggle"
+              for="toggle-button-2"
+              role="switch"
+            >
+              <input
+                class="input"
+                disabled=""
+                id="toggle-button-2"
+                name="toggle-button-2"
+                type="checkbox"
+              />
+              <div
+                class="slider"
+              />
+              <div
+                class="label"
+              >
+                <span>
+                  Use custom footer
+                </span>
+                <span>
+                  <span
+                    class="toggleTooltip"
+                    id="custom-footer-toggle-info"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      info_outline
+                    </i>
+                  </span>
+                </span>
+              </div>
+            </label>
+          </div>
+          <h5>
+            Navigation Links
+          </h5>
+          <div>
+            <span
+              id="help-footer"
+            >
+              <button
+                class="add-link btn btn-secondary"
+                type="button"
+              >
+                <i
+                  class="material-icons"
+                >
+                  add
+                </i>
+                Add Nav Item
+              </button>
+            </span>
+          </div>
+          <div
+            class="social-list"
+          >
+            <h4>
+              Social network links
+            </h4>
+            <div
+              class="social-item"
+              data-testid="Facebook-nav"
+            >
+              <div
+                class="label"
+              >
+                <img
+                  alt="Facebook"
+                  class="logo"
+                  src="test-file-stub"
+                />
+                <span
+                  data-testid="Facebook-label"
+                >
+                  Facebook
+                </span>
+              </div>
+              <div>
+                <div
+                  class="formGroup form-group"
+                >
+                  <input
+                    aria-invalid="false"
+                    class="social-input form-control"
+                    placeholder="Facebook page link"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="social-item"
+              data-testid="Twitter-nav"
+            >
+              <div
+                class="label"
+              >
+                <img
+                  alt="Twitter"
+                  class="logo"
+                  src="test-file-stub"
+                />
+                <span
+                  data-testid="Twitter-label"
+                >
+                  Twitter
+                </span>
+              </div>
+              <div>
+                <div
+                  class="formGroup form-group"
+                >
+                  <input
+                    aria-invalid="false"
+                    class="social-input form-control"
+                    placeholder="Twitter page link"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="social-item"
+              data-testid="Instagram-nav"
+            >
+              <div
+                class="label"
+              >
+                <img
+                  alt="Instagram"
+                  class="logo"
+                  src="test-file-stub"
+                />
+                <span
+                  data-testid="Instagram-label"
+                >
+                  Instagram
+                </span>
+              </div>
+              <div>
+                <div
+                  class="formGroup form-group"
+                >
+                  <input
+                    aria-invalid="false"
+                    class="social-input form-control"
+                    placeholder="Instagram page link"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div
+            class="heading"
+          >
+            <h4>
+              Extra HTML
+            </h4>
+            <p>
+              Add extra HTML in the
+               
+              <a
+                href="https://www.w3schools.com/html/html_head.asp"
+                rel="noreferrer"
+                target="_blank"
+              >
+                head section
+              </a>
+              .
+            </p>
+          </div>
+          <div>
+            <label
+              aria-checked="false"
+              class="container toggle"
+              for="toggle-button-3"
+              role="switch"
+            >
+              <input
+                class="input"
+                disabled=""
+                id="toggle-button-3"
+                name="toggle-button-3"
+                type="checkbox"
+              />
+              <div
+                class="slider"
+              />
+              <div
+                class="label"
+              >
+                Add extra HTML
+              </div>
+            </label>
+          </div>
+          <div
+            class="wrapper"
+          >
+            <div
+              class="titleWrapper"
+            >
+              <h4
+                class="title"
+              />
+            </div>
+            <div
+              id="code-editor-wrapper-tooltip-6"
+            >
+              <div
+                class="codeWrapper codeDisabled"
+              >
+                <div
+                  class="container"
+                >
+                  <div
+                    class="inner"
+                    style="min-height: 200px;"
+                  >
+                    <i
+                      class="icon-custom icon-circle-o-notch md-spin"
+                      style="font-size: 40px;"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div
+          class="form-group"
+        >
+          <button
+            class="mr-2 btn btn-success"
+            type="button"
+          >
+            Save Changes
+          </button>
+          <button
+            class="btn btn-secondary"
+            type="button"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
