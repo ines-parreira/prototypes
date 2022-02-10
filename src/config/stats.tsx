@@ -1260,6 +1260,7 @@ export const stats = toImmutable<
             automated: '#4a8df9',
             not_automated: '#ded7de',
             self_service: '#8088D6',
+            fallback: '#8fce6e',
         },
         priority: {
             total: 1,

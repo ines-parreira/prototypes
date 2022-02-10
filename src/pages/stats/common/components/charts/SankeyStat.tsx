@@ -26,8 +26,12 @@ export function SankeyStat({data, config, legend}: Props) {
         )
     }, [data])
 
+    const getColor = (key: string) => {
+        const colorMap = config.get('colorMap') as Map<any, string>
+        return colorMap.get(key, colorMap.get('fallback'))
+    }
+
     const sankeyData = useMemo(() => {
-        const colorMap = config.get('colorMap') as Map<any, any>
         return {
             datasets: [
                 {
@@ -35,15 +39,10 @@ export function SankeyStat({data, config, legend}: Props) {
                     labels: legend
                         ? (legend.get('labels') as Map<any, any>).toJS()
                         : {},
-                    colorFrom: (ctx: ScriptableContext<'sankey'>) => {
-                        return colorMap.get(
-                            ctx.dataset.data[ctx.dataIndex].from
-                        ) as string
-                    },
+                    colorFrom: (ctx: ScriptableContext<'sankey'>) =>
+                        getColor(ctx.dataset.data[ctx.dataIndex].from),
                     colorTo: (ctx: ScriptableContext<'sankey'>) =>
-                        (colorMap.get(
-                            ctx.dataset.data[ctx.dataIndex].to
-                        ) as string) || '#00ff00',
+                        getColor(ctx.dataset.data[ctx.dataIndex].to),
                     colorMode: 'gradient',
                     borderWidth: 0,
                     color: '#1D365C',
