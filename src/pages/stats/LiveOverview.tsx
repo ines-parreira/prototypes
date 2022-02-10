@@ -4,8 +4,7 @@ import {useSelector} from 'react-redux'
 
 import {TicketChannel} from 'business/types/ticket'
 import {getTimezone} from 'state/currentUser/selectors'
-import {getStatsFiltersJS} from 'state/stats/selectors'
-import {PeriodStatsFilterValue, StatsFilterType} from 'state/stats/types'
+import {getStatsFilters} from 'state/stats/selectors'
 import {
     stats as statsConfig,
     USERS_STATUSES,
@@ -13,7 +12,11 @@ import {
     LIVE_OVERVIEW_METRICS,
     SUPPORT_VOLUME_PER_HOUR,
 } from 'config/stats'
-import {OneDimensionalChart, TwoDimensionalChart} from 'models/stat/types'
+import {
+    OneDimensionalChart,
+    StatsFilters,
+    TwoDimensionalChart,
+} from 'models/stat/types'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import {AccountFeature} from 'state/currentAccount/types'
 
@@ -32,22 +35,19 @@ const LIVE_OVERVIEW_STAT_NAME = 'live-overview'
 
 function LiveOverview() {
     const userTimezone = useSelector(getTimezone)
-    const statsFilters = useSelector(getStatsFiltersJS)
+    const statsFilters = useSelector(getStatsFilters)
 
-    const pageStatsFilters = useMemo(() => {
+    const pageStatsFilters = useMemo<StatsFilters>(() => {
         const currentDay = userTimezone ? moment().tz(userTimezone) : moment()
-        return (
-            statsFilters && {
-                [StatsFilterType.Channels]:
-                    statsFilters[StatsFilterType.Channels] || [],
-                [StatsFilterType.Agents]:
-                    statsFilters[StatsFilterType.Agents] || [],
-                [StatsFilterType.Period]: {
-                    start_datetime: currentDay.clone().startOf('day').format(),
-                    end_datetime: currentDay.clone().endOf('day').format(),
-                } as PeriodStatsFilterValue,
-            }
-        )
+        const {channels, agents} = statsFilters
+        return {
+            channels,
+            agents,
+            period: {
+                start_datetime: currentDay.clone().startOf('day').format(),
+                end_datetime: currentDay.clone().endOf('day').format(),
+            },
+        }
     }, [statsFilters, userTimezone])
 
     const [usersStatuses, isFetchingUsersStatuses] =
@@ -112,12 +112,10 @@ function LiveOverview() {
                 pageStatsFilters && (
                     <>
                         <ChannelsStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Channels]}
+                            value={pageStatsFilters.channels}
                             channels={Object.values(TicketChannel)}
                         />
-                        <AgentsStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Agents]}
-                        />
+                        <AgentsStatsFilter value={pageStatsFilters.agents} />
                     </>
                 )
             }

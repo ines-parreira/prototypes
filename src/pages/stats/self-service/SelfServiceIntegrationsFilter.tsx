@@ -7,7 +7,7 @@ import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
 import {Value} from 'pages/common/forms/SelectField/types'
-import {IntegrationsStatsFilterValue} from 'state/stats/types'
+import {StatsFilters} from 'models/stat/types'
 
 import SelectFilter from '../common/SelectFilter'
 
@@ -15,11 +15,11 @@ import css from './SelfServiceIntegrationsFilter.less'
 import {hasShopifyIntegrationSSPEnabled} from './self-service-stats.utils'
 
 type Props = {
-    value: IntegrationsStatsFilterValue
-    onChange: (value: IntegrationsStatsFilterValue) => void
+    value: StatsFilters['integrations']
+    onChange: (value: StatsFilters['integrations']) => void
 }
 
-const SelfServiceIntegrationsFilter = ({value, onChange}: Props) => {
+const SelfServiceIntegrationsFilter = ({value = [], onChange}: Props) => {
     const shopifyIntegrations = useSelector(
         getIntegrationsByTypes(IntegrationType.Shopify)
     )

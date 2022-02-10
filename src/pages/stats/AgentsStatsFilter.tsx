@@ -1,22 +1,21 @@
 import React, {ComponentProps, useCallback} from 'react'
-import {fromJS} from 'immutable'
 import {DropdownItem} from 'reactstrap'
 import {useSelector} from 'react-redux'
 
-import useAppDispatch from '../../hooks/useAppDispatch'
-import {mergeStatsFilters} from '../../state/stats/actions'
-import {AgentsStatsFilterValue, StatsFilterType} from '../../state/stats/types'
-import {getLabelledTeamsJS} from '../../state/teams/selectors'
-import {getLabelledAgentsJS} from '../../state/agents/selectors'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {mergeStatsFilters} from 'state/stats/actions'
+import {getLabelledTeamsJS} from 'state/teams/selectors'
+import {getLabelledAgentsJS} from 'state/agents/selectors'
+import {StatsFilters} from 'models/stat/types'
 
 import SelectFilter from './common/SelectFilter'
 import css from './AgentsStatsFilter.less'
 
 type Props = {
-    value: AgentsStatsFilterValue
+    value: StatsFilters['agents']
 }
 
-export default function AgentsStatsFilter({value}: Props) {
+export default function AgentsStatsFilter({value = []}: Props) {
     const dispatch = useAppDispatch()
     const agents = useSelector(getLabelledAgentsJS)
     const teams = useSelector(getLabelledTeamsJS)
@@ -24,11 +23,7 @@ export default function AgentsStatsFilter({value}: Props) {
     const handleFilterChange: ComponentProps<typeof SelectFilter>['onChange'] =
         useCallback(
             (values) => {
-                dispatch(
-                    mergeStatsFilters(
-                        fromJS({[StatsFilterType.Agents]: values})
-                    )
-                )
+                dispatch(mergeStatsFilters({agents: values as number[]}))
             },
             [dispatch]
         )

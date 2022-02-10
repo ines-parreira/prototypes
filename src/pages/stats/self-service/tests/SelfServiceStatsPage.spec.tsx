@@ -10,7 +10,6 @@ import {RootState, StoreDispatch} from 'state/types'
 import {proPlan} from 'fixtures/subscriptionPlan'
 import {flushPromises, renderWithRouter} from 'utils/testing'
 import {AccountFeature} from 'state/currentAccount/types'
-import {StatsFilterType} from 'state/stats/types'
 import {integrationsState} from 'fixtures/integrations'
 import {
     SELF_SERVICE_FLOWS_DISTRIBUTION,
@@ -25,6 +24,7 @@ import {
     selfServiceProductsWithMostIssues,
     selfServiceTopReportedIssues,
 } from 'fixtures/stats'
+import {StatsFilters} from 'models/stat/types'
 
 import useStatResource from '../../useStatResource'
 import SelfServiceStatsPage from '../SelfServiceStatsPage'
@@ -43,7 +43,13 @@ const useStatResourceMock = useStatResource as jest.MockedFunction<
 describe('<SelfServiceStatsPage />', () => {
     const defaultState = {
         stats: fromJS({
-            filters: null,
+            filters: {
+                period: {
+                    start_datetime: '2021-02-03T00:00:00.000Z',
+                    end_datetime: '2021-02-03T23:59:59.999Z',
+                },
+                integrations: [integrationsState.integrations[0].id],
+            } as StatsFilters,
         }),
         currentAccount: fromJS({
             features: {
@@ -128,33 +134,7 @@ describe('<SelfServiceStatsPage />', () => {
         })
     })
 
-    it('should not render the filters nor the stats when stats filters are not defined', async () => {
-        const {container} = render(
-            <Provider store={mockStore(defaultState)}>
-                <SelfServiceStatsPage />
-            </Provider>
-        )
-
-        await flushPromises()
-
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
     it('should render the filters and stats when stats filters are defined', async () => {
-        const store = mockStore({
-            ...defaultState,
-            stats: fromJS({
-                filters: {
-                    [StatsFilterType.Period]: {
-                        start_time: '2021-02-03T00:00:00.000Z',
-                        end_time: '2021-02-03T23:59:59.999Z',
-                    },
-                    [StatsFilterType.Integrations]: [
-                        integrationsState.integrations[0].id,
-                    ],
-                },
-            }),
-        })
         useStatResourceMock.mockImplementation(({resourceName}) => {
             if (resourceName === SELF_SERVICE_OVERVIEW) {
                 return [selfServiceOverview, false, _noop]
@@ -171,7 +151,7 @@ describe('<SelfServiceStatsPage />', () => {
         })
 
         const {container} = renderWithRouter(
-            <Provider store={store}>
+            <Provider store={mockStore(defaultState)}>
                 <SelfServiceStatsPage />
             </Provider>
         )

@@ -4,14 +4,13 @@ import {fromJS, Map} from 'immutable'
 
 import {
     getMessagingIntegrationsStatsFilter,
-    getStatsFiltersJS,
+    getStatsFilters,
     getStatsMessagingIntegrations,
-} from '../../state/stats/selectors'
-import {StatsFilterType} from '../../state/stats/types'
-import {stats as statsConfig, TICKETS_PER_TAG} from '../../config/stats'
-import {getTags} from '../../state/tags/selectors'
-import {TwoDimensionalChart} from '../../models/stat/types'
-import {TicketChannel} from '../../business/types/ticket'
+} from 'state/stats/selectors'
+import {stats as statsConfig, TICKETS_PER_TAG} from 'config/stats'
+import {getTags} from 'state/tags/selectors'
+import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
+import {TicketChannel} from 'business/types/ticket'
 
 import IntegrationsStatsFilter from './IntegrationsStatsFilter'
 import StatsPage from './StatsPage'
@@ -31,20 +30,16 @@ export default function SupportPerformanceTags() {
     const integrationsStatsFilter = useSelector(
         getMessagingIntegrationsStatsFilter
     )
-    const statsFilters = useSelector(getStatsFiltersJS)
+    const statsFilters = useSelector(getStatsFilters)
 
-    const pageStatsFilters = useMemo(() => {
-        return (
-            statsFilters && {
-                [StatsFilterType.Integrations]: integrationsStatsFilter,
-                [StatsFilterType.Channels]:
-                    statsFilters[StatsFilterType.Channels] || [],
-                [StatsFilterType.Tags]:
-                    statsFilters[StatsFilterType.Tags] || [],
-                [StatsFilterType.Period]:
-                    statsFilters[StatsFilterType.Period] || [],
-            }
-        )
+    const pageStatsFilters = useMemo<StatsFilters>(() => {
+        const {channels, tags, period} = statsFilters
+        return {
+            channels,
+            tags,
+            period,
+            integrations: integrationsStatsFilter,
+        }
     }, [integrationsStatsFilter, statsFilters])
 
     const [ticketsPerTag, isFetchingTicketsPerTag] =
@@ -68,48 +63,38 @@ export default function SupportPerformanceTags() {
 tag attached to them."
                 helpUrl="https://docs.gorgias.com/statistics/statistics#tags"
                 filters={
-                    pageStatsFilters && (
-                        <>
-                            <IntegrationsStatsFilter
-                                value={integrationsStatsFilter}
-                                integrations={messagingIntegrations}
-                                isMultiple
-                            />
-                            <ChannelsStatsFilter
-                                value={
-                                    pageStatsFilters[StatsFilterType.Channels]
-                                }
-                                channels={Object.values(TicketChannel)}
-                            />
-                            <TagsStatsFilter
-                                value={pageStatsFilters[StatsFilterType.Tags]}
-                            />
-                            <PeriodStatsFilter
-                                value={pageStatsFilters[StatsFilterType.Period]}
-                            />
-                        </>
-                    )
+                    <>
+                        <IntegrationsStatsFilter
+                            value={integrationsStatsFilter}
+                            integrations={messagingIntegrations}
+                            isMultiple
+                        />
+                        <ChannelsStatsFilter
+                            value={pageStatsFilters.channels}
+                            channels={Object.values(TicketChannel)}
+                        />
+                        <TagsStatsFilter value={pageStatsFilters.tags} />
+                        <PeriodStatsFilter value={pageStatsFilters.period} />
+                    </>
                 }
             >
-                {pageStatsFilters && (
-                    <StatWrapper
-                        stat={ticketsPerTag}
-                        isFetchingStat={isFetchingTicketsPerTag}
-                        resourceName={TICKETS_PER_TAG}
-                        statsFilters={pageStatsFilters}
-                        helpText="Number of tickets created per channel"
-                        isDownloadable
-                    >
-                        {(stat) => (
-                            <TableStat
-                                context={{tagColors}}
-                                data={stat.getIn(['data', 'data'])}
-                                config={statsConfig.get(TICKETS_PER_TAG)}
-                                meta={stat.get('meta')}
-                            />
-                        )}
-                    </StatWrapper>
-                )}
+                <StatWrapper
+                    stat={ticketsPerTag}
+                    isFetchingStat={isFetchingTicketsPerTag}
+                    resourceName={TICKETS_PER_TAG}
+                    statsFilters={pageStatsFilters}
+                    helpText="Number of tickets created per channel"
+                    isDownloadable
+                >
+                    {(stat) => (
+                        <TableStat
+                            context={{tagColors}}
+                            data={stat.getIn(['data', 'data'])}
+                            config={statsConfig.get(TICKETS_PER_TAG)}
+                            meta={stat.get('meta')}
+                        />
+                    )}
+                </StatWrapper>
             </StatsPage>
         </StatsFiltersContext.Provider>
     )

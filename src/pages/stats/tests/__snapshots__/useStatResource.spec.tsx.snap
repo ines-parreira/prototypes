@@ -40,46 +40,6 @@ Object {
 }
 `;
 
-exports[`useStatResource debouncing fetch requests should not debounce the request when statsFilters were initially set 1`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [
-    Object {
-      "cancelToken": CancelToken {
-        "promise": Promise {},
-      },
-      "data": "{\\"filters\\":{\\"period\\":{\\"start_datetime\\":\\"2021-04-02T00:00:00.000Z\\",\\"end_datetime\\":\\"2021-04-02T23:59:59.999Z\\"},\\"channels\\":[\\"email\\"]}}",
-      "headers": Object {
-        "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
-      },
-      "maxBodyLength": -1,
-      "maxContentLength": -1,
-      "method": "post",
-      "timeout": 180000,
-      "transformRequest": Array [
-        [Function],
-      ],
-      "transformResponse": Array [
-        [Function],
-      ],
-      "url": "/api/stats/first-response-time/",
-      "validateStatus": [Function],
-      "xsrfCookieName": "XSRF-TOKEN",
-      "xsrfHeaderName": "X-XSRF-TOKEN",
-    },
-  ],
-  "put": Array [],
-}
-`;
-
 exports[`useStatResource should display error message on server response error 1`] = `
 Array [
   Object {

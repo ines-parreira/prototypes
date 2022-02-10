@@ -1,20 +1,18 @@
 import React, {useMemo} from 'react'
-
 import {useSelector} from 'react-redux'
 
 import {
     getMessagingIntegrationsStatsFilter,
-    getStatsFiltersJS,
+    getStatsFilters,
     getStatsMessagingIntegrations,
-} from '../../state/stats/selectors'
-import {StatsFilterType} from '../../state/stats/types'
+} from 'state/stats/selectors'
 import {
     stats as statsConfig,
     TICKETS_CREATED_PER_CHANNEL,
     TICKETS_CREATED_PER_CHANNEL_PER_DAY,
-} from '../../config/stats'
-import {TwoDimensionalChart} from '../../models/stat/types'
-import {TicketChannel} from '../../business/types/ticket'
+} from 'config/stats'
+import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
+import {TicketChannel} from 'business/types/ticket'
 
 import IntegrationsStatsFilter from './IntegrationsStatsFilter'
 import ChannelsStatsFilter from './ChannelsStatsFilter'
@@ -33,18 +31,15 @@ export default function SupportPerformanceChannels() {
     const integrationsStatsFilter = useSelector(
         getMessagingIntegrationsStatsFilter
     )
-    const statsFilters = useSelector(getStatsFiltersJS)
+    const statsFilters = useSelector(getStatsFilters)
 
-    const pageStatsFilters = useMemo(() => {
-        return (
-            statsFilters && {
-                [StatsFilterType.Integrations]: integrationsStatsFilter,
-                [StatsFilterType.Channels]:
-                    statsFilters[StatsFilterType.Channels] || [],
-                [StatsFilterType.Period]:
-                    statsFilters[StatsFilterType.Period] || [],
-            }
-        )
+    const pageStatsFilters = useMemo<StatsFilters>(() => {
+        const {channels, period} = statsFilters
+        return {
+            channels,
+            period,
+            integrations: integrationsStatsFilter,
+        }
     }, [integrationsStatsFilter, statsFilters])
 
     const [
@@ -71,72 +66,57 @@ export default function SupportPerformanceChannels() {
 channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc..."
                 helpUrl="https://docs.gorgias.com/statistics/statistics#channels"
                 filters={
-                    pageStatsFilters && (
-                        <>
-                            <IntegrationsStatsFilter
-                                value={integrationsStatsFilter}
-                                integrations={messagingIntegrations}
-                                isMultiple
-                            />
-                            <ChannelsStatsFilter
-                                value={
-                                    pageStatsFilters[StatsFilterType.Channels]
-                                }
-                                channels={Object.values(TicketChannel)}
-                            />
-                            <PeriodStatsFilter
-                                value={pageStatsFilters[StatsFilterType.Period]}
-                            />
-                        </>
-                    )
+                    <>
+                        <IntegrationsStatsFilter
+                            value={integrationsStatsFilter}
+                            integrations={messagingIntegrations}
+                            isMultiple
+                        />
+                        <ChannelsStatsFilter
+                            value={pageStatsFilters.channels}
+                            channels={Object.values(TicketChannel)}
+                        />
+                        <PeriodStatsFilter value={pageStatsFilters.period} />
+                    </>
                 }
             >
-                {pageStatsFilters && (
-                    <>
-                        <StatWrapper
-                            stat={ticketsCreatedPerChannelPerDay}
-                            isFetchingStat={
-                                isFetchingTicketsCreatedPerChannelPerDay
-                            }
-                            resourceName={TICKETS_CREATED_PER_CHANNEL_PER_DAY}
-                            statsFilters={pageStatsFilters}
-                            helpText="Number of tickets created per channel per day"
-                            isDownloadable
-                        >
-                            {(stat) => (
-                                <BarStat
-                                    data={stat.getIn(['data', 'data'])}
-                                    legend={stat.getIn(
-                                        ['data', 'legend'],
-                                        null
-                                    )}
-                                    config={statsConfig.get(
-                                        TICKETS_CREATED_PER_CHANNEL_PER_DAY
-                                    )}
-                                />
+                <StatWrapper
+                    stat={ticketsCreatedPerChannelPerDay}
+                    isFetchingStat={isFetchingTicketsCreatedPerChannelPerDay}
+                    resourceName={TICKETS_CREATED_PER_CHANNEL_PER_DAY}
+                    statsFilters={pageStatsFilters}
+                    helpText="Number of tickets created per channel per day"
+                    isDownloadable
+                >
+                    {(stat) => (
+                        <BarStat
+                            data={stat.getIn(['data', 'data'])}
+                            legend={stat.getIn(['data', 'legend'], null)}
+                            config={statsConfig.get(
+                                TICKETS_CREATED_PER_CHANNEL_PER_DAY
                             )}
-                        </StatWrapper>
-                        <StatWrapper
-                            stat={ticketsCreatedPerChannel}
-                            isFetchingStat={isFetchingTicketsCreatedPerChannel}
-                            resourceName={TICKETS_CREATED_PER_CHANNEL}
-                            statsFilters={pageStatsFilters}
-                            helpText="Number of tickets created per channel"
-                            isDownloadable
-                        >
-                            {(stat) => (
-                                <TableStat
-                                    context={{tagColors: null}}
-                                    data={stat.getIn(['data', 'data'])}
-                                    config={statsConfig.get(
-                                        TICKETS_CREATED_PER_CHANNEL
-                                    )}
-                                    meta={stat.get('meta')}
-                                />
+                        />
+                    )}
+                </StatWrapper>
+                <StatWrapper
+                    stat={ticketsCreatedPerChannel}
+                    isFetchingStat={isFetchingTicketsCreatedPerChannel}
+                    resourceName={TICKETS_CREATED_PER_CHANNEL}
+                    statsFilters={pageStatsFilters}
+                    helpText="Number of tickets created per channel"
+                    isDownloadable
+                >
+                    {(stat) => (
+                        <TableStat
+                            context={{tagColors: null}}
+                            data={stat.getIn(['data', 'data'])}
+                            config={statsConfig.get(
+                                TICKETS_CREATED_PER_CHANNEL
                             )}
-                        </StatWrapper>
-                    </>
-                )}
+                            meta={stat.get('meta')}
+                        />
+                    )}
+                </StatWrapper>
             </StatsPage>
         </StatsFiltersContext.Provider>
     )

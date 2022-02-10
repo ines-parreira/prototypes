@@ -1,55 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SupportPerformanceChannels should not render the filters nor the stats when stats filters are not defined 1`] = `
-<div
-  class="full-width wrapper"
->
-  <div
-    class="header"
-    data-candu-id="stat-header-container"
-  >
-    <div
-      class="page-header pageHeader mb-0"
-    >
-      <h1
-        class="align-items-center"
-      >
-        <span>
-          Channels
-        </span>
-        <button
-          class="wrapper wrapper ml-3 secondary medium"
-          type="button"
-        >
-          <span
-            class="wrapper"
-          >
-            <i
-              class="material-icons icon isLeft medium"
-            >
-              info_outline
-            </i>
-            Learn
-          </span>
-        </button>
-      </h1>
-      <div>
-        <div
-          class="d-flex flex-wrap float-right"
-        />
-      </div>
-    </div>
-  </div>
-  <div
-    class="statsWrapper"
-  >
-    <div
-      class="statsContainer container-fluid"
-    />
-  </div>
-</div>
-`;
-
 exports[`SupportPerformanceChannels should render the filters and stats when stats filters are defined 1`] = `
 <div
   class="full-width wrapper"
@@ -581,7 +531,7 @@ exports[`SupportPerformanceChannels should render the filters and stats when sta
                 calendar_today
               </i>
               <span>
-                Feb 14, 2017
+                Feb 02, 2021 - Feb 03, 2021
               </span>
               <i
                 class="material-icons md-2 strong ml-1"

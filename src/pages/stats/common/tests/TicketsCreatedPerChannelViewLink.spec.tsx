@@ -11,8 +11,8 @@ import {integrationsState} from 'fixtures/integrations'
 import {logEvent} from 'store/middlewares/segmentTracker'
 import {TicketChannel} from 'business/types/ticket'
 import {reportError} from 'utils/errors'
-import {StatsFilters} from 'state/stats/types'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
+import {StatsFilters} from 'models/stat/types'
 
 import TicketsCreatedPerChannelViewLink from '../TicketsCreatedPerChannelViewLink'
 

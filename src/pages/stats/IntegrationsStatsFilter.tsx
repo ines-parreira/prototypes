@@ -1,19 +1,16 @@
 import React, {ComponentProps, useCallback, useMemo} from 'react'
-import {fromJS} from 'immutable'
+
 import aircallIcon from 'assets/img/integrations/aircall.png'
 import gmailIcon from 'assets/img/integrations/gmail.png'
 import outlookIcon from 'assets/img/integrations/outlook.svg'
 import shopifyIcon from 'assets/img/integrations/shopify.png'
 import smoochIcon from 'assets/img/integrations/smooch.png'
 import zendeskIcon from 'assets/img/integrations/zendesk.png'
-import {
-    IntegrationsStatsFilterValue,
-    StatsFilterType,
-} from '../../state/stats/types'
-import {IntegrationType} from '../../models/integration/constants'
-import {mergeStatsFilters} from '../../state/stats/actions'
-import useAppDispatch from '../../hooks/useAppDispatch'
-import {Integration} from '../../models/integration/types'
+import {IntegrationType} from 'models/integration/constants'
+import {mergeStatsFilters} from 'state/stats/actions'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {Integration} from 'models/integration/types'
+import {StatsFilters} from 'models/stat/types'
 
 import SelectFilter from './common/SelectFilter'
 import css from './IntegrationsStatsFilter.less'
@@ -37,14 +34,14 @@ export const FONT_ICONS = {
 }
 
 type Props = {
-    value: IntegrationsStatsFilterValue
+    value: StatsFilters['integrations']
     integrations: Integration[]
     isMultiple?: boolean
     isRequired?: boolean
 }
 
 export default function IntegrationsStatsFilter({
-    value,
+    value = [],
     integrations,
     isMultiple = false,
     isRequired = false,
@@ -63,11 +60,7 @@ export default function IntegrationsStatsFilter({
     const handleFilterChange: ComponentProps<typeof SelectFilter>['onChange'] =
         useCallback(
             (values) => {
-                dispatch(
-                    mergeStatsFilters(
-                        fromJS({[StatsFilterType.Integrations]: values})
-                    )
-                )
+                dispatch(mergeStatsFilters({integrations: values as number[]}))
             },
             [dispatch]
         )

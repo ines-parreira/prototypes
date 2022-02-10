@@ -110,10 +110,6 @@ export const useStatsViewFilters = (periodFilterLeft: string): ViewFilter[] => {
     const statsFilters = useContext(StatsFiltersContext)
     const tagsState = useSelector((state: RootState) => state.entities.tags)
     return useMemo(() => {
-        if (!statsFilters) {
-            return []
-        }
-
         const filters: ViewFilter[] = []
         const {period, channels, integrations, agents, tags} = statsFilters
 

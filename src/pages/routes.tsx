@@ -1,4 +1,4 @@
-import React, {ComponentType} from 'react'
+import React, {ComponentType, ReactNode} from 'react'
 import {
     Route,
     Switch,
@@ -103,12 +103,13 @@ const assetsURL = window.GORGIAS_ASSETS_URL || ''
 const appRender =
     (props: {
         navbar: ComponentType<any>
-        content: ComponentType<any>
+        content?: ComponentType<any>
         infobar?: ComponentType<any>
         containerPadding?: boolean
         infobarOnMobile?: boolean
         noContainerWidthLimit?: boolean
         isEditingWidgets?: boolean
+        children?: ReactNode
     }) =>
     (routeProps: RouteComponentProps) => {
         return <App {...routeProps} {...props} />
@@ -385,7 +386,16 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
     )
 
     return (
-        <DefaultStatsFilters>
+        <DefaultStatsFilters
+            notReadyFallback={
+                <Route
+                    render={appRender({
+                        navbar: StatsNavbarContainer,
+                        children: null,
+                    })}
+                />
+            }
+        >
             <Switch>
                 <Route
                     exact

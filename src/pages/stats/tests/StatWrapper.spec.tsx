@@ -8,7 +8,6 @@ import {fromJS} from 'immutable'
 
 import {firstResponseTime} from 'fixtures/stats'
 import {FIRST_RESPONSE_TIME} from 'config/stats'
-import {StatsFilterType} from 'state/stats/types'
 import {saveFileAsDownloaded} from 'utils/file'
 import {notify} from 'state/notifications/actions'
 import {downloadStat} from 'models/stat/resources'
@@ -55,7 +54,7 @@ describe('StatWrapper', () => {
         isFetchingStat: false,
         resourceName: FIRST_RESPONSE_TIME,
         statsFilters: {
-            [StatsFilterType.Period]: {
+            period: {
                 start_datetime: '2021-04-02T00:00:00.000Z',
                 end_datetime: '2021-04-02T23:59:59.999Z',
             },

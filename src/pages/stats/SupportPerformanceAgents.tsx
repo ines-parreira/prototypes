@@ -1,20 +1,18 @@
 import React, {useMemo} from 'react'
-
 import {useSelector} from 'react-redux'
 
 import {
     getMessagingIntegrationsStatsFilter,
-    getStatsFiltersJS,
+    getStatsFilters,
     getStatsMessagingIntegrations,
-} from '../../state/stats/selectors'
-import {StatsFilterType} from '../../state/stats/types'
+} from 'state/stats/selectors'
 import {
     stats as statsConfig,
     TICKETS_CLOSED_PER_AGENT,
     TICKETS_CLOSED_PER_AGENT_PER_DAY,
-} from '../../config/stats'
-import {TwoDimensionalChart} from '../../models/stat/types'
-import {TicketChannel} from '../../business/types/ticket'
+} from 'config/stats'
+import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
+import {TicketChannel} from 'business/types/ticket'
 
 import IntegrationsStatsFilter from './IntegrationsStatsFilter'
 import ChannelsStatsFilter from './ChannelsStatsFilter'
@@ -34,20 +32,16 @@ export default function SupportPerformanceAgents() {
     const integrationsStatsFilter = useSelector(
         getMessagingIntegrationsStatsFilter
     )
-    const statsFilters = useSelector(getStatsFiltersJS)
+    const statsFilters = useSelector(getStatsFilters)
 
-    const pageStatsFilters = useMemo(() => {
-        return (
-            statsFilters && {
-                [StatsFilterType.Integrations]: integrationsStatsFilter,
-                [StatsFilterType.Channels]:
-                    statsFilters[StatsFilterType.Channels] || [],
-                [StatsFilterType.Agents]:
-                    statsFilters[StatsFilterType.Agents] || [],
-                [StatsFilterType.Period]:
-                    statsFilters[StatsFilterType.Period] || [],
-            }
-        )
+    const pageStatsFilters = useMemo<StatsFilters>(() => {
+        const {channels, agents, period} = statsFilters
+        return {
+            channels,
+            agents,
+            period,
+            integrations: integrationsStatsFilter,
+        }
     }, [integrationsStatsFilter, statsFilters])
 
     const [ticketsClosedPerAgentPerDay, isFetchingTicketsClosedPerAgentPerDay] =
@@ -71,75 +65,56 @@ export default function SupportPerformanceAgents() {
                 description="Agents statistics will show you how many tickets were closed by each agent during this period."
                 helpUrl="https://docs.gorgias.com/statistics/statistics#agents"
                 filters={
-                    pageStatsFilters && (
-                        <>
-                            <IntegrationsStatsFilter
-                                value={integrationsStatsFilter}
-                                integrations={messagingIntegrations}
-                                isMultiple
-                            />
-                            <ChannelsStatsFilter
-                                value={
-                                    pageStatsFilters[StatsFilterType.Channels]
-                                }
-                                channels={Object.values(TicketChannel)}
-                            />
-                            <AgentsStatsFilter
-                                value={pageStatsFilters[StatsFilterType.Agents]}
-                            />
-                            <PeriodStatsFilter
-                                value={pageStatsFilters[StatsFilterType.Period]}
-                            />
-                        </>
-                    )
+                    <>
+                        <IntegrationsStatsFilter
+                            value={integrationsStatsFilter}
+                            integrations={messagingIntegrations}
+                            isMultiple
+                        />
+                        <ChannelsStatsFilter
+                            value={pageStatsFilters.channels}
+                            channels={Object.values(TicketChannel)}
+                        />
+                        <AgentsStatsFilter value={pageStatsFilters.agents} />
+                        <PeriodStatsFilter value={pageStatsFilters.period} />
+                    </>
                 }
             >
-                {pageStatsFilters && (
-                    <>
-                        <StatWrapper
-                            stat={ticketsClosedPerAgentPerDay}
-                            isFetchingStat={
-                                isFetchingTicketsClosedPerAgentPerDay
-                            }
-                            resourceName={TICKETS_CLOSED_PER_AGENT_PER_DAY}
-                            statsFilters={pageStatsFilters}
-                            helpText="Number of tickets closed per assigned agent, per day"
-                            isDownloadable
-                        >
-                            {(stat) => (
-                                <BarStat
-                                    data={stat.getIn(['data', 'data'])}
-                                    legend={stat.getIn(
-                                        ['data', 'legend'],
-                                        null
-                                    )}
-                                    config={statsConfig.get(
-                                        TICKETS_CLOSED_PER_AGENT_PER_DAY
-                                    )}
-                                />
+                <StatWrapper
+                    stat={ticketsClosedPerAgentPerDay}
+                    isFetchingStat={isFetchingTicketsClosedPerAgentPerDay}
+                    resourceName={TICKETS_CLOSED_PER_AGENT_PER_DAY}
+                    statsFilters={pageStatsFilters}
+                    helpText="Number of tickets closed per assigned agent, per day"
+                    isDownloadable
+                >
+                    {(stat) => (
+                        <BarStat
+                            data={stat.getIn(['data', 'data'])}
+                            legend={stat.getIn(['data', 'legend'], null)}
+                            config={statsConfig.get(
+                                TICKETS_CLOSED_PER_AGENT_PER_DAY
                             )}
-                        </StatWrapper>
-                        <StatWrapper
-                            stat={ticketsClosedPerAgent}
-                            isFetchingStat={isFetchingTicketsClosedPerAgent}
-                            resourceName={TICKETS_CLOSED_PER_AGENT}
-                            statsFilters={pageStatsFilters}
-                            helpText="Number of tickets closed per assigned agent"
-                            isDownloadable
-                        >
-                            {(stat) => (
-                                <TableStat
-                                    context={{tagColors: null}}
-                                    data={stat.getIn(['data', 'data'])}
-                                    meta={stat.get('meta')}
-                                    config={statsConfig.get(
-                                        TICKETS_CLOSED_PER_AGENT
-                                    )}
-                                />
-                            )}
-                        </StatWrapper>
-                    </>
-                )}
+                        />
+                    )}
+                </StatWrapper>
+                <StatWrapper
+                    stat={ticketsClosedPerAgent}
+                    isFetchingStat={isFetchingTicketsClosedPerAgent}
+                    resourceName={TICKETS_CLOSED_PER_AGENT}
+                    statsFilters={pageStatsFilters}
+                    helpText="Number of tickets closed per assigned agent"
+                    isDownloadable
+                >
+                    {(stat) => (
+                        <TableStat
+                            context={{tagColors: null}}
+                            data={stat.getIn(['data', 'data'])}
+                            meta={stat.get('meta')}
+                            config={statsConfig.get(TICKETS_CLOSED_PER_AGENT)}
+                        />
+                    )}
+                </StatWrapper>
             </StatsPage>
         </StatsFiltersContext.Provider>
     )

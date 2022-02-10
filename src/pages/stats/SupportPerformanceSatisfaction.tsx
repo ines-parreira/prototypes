@@ -4,24 +4,24 @@ import {useSelector} from 'react-redux'
 
 import {
     getMessagingIntegrationsStatsFilter,
-    getStatsFiltersJS,
+    getStatsFilters,
     getStatsMessagingIntegrations,
-} from '../../state/stats/selectors'
-import {StatsFilterType} from '../../state/stats/types'
+} from 'state/stats/selectors'
 import {
     LATEST_SATISFACTION_SURVEYS,
     SATISFACTION_SURVEY_MAX_SCORE,
     SATISFACTION_SURVEY_MIN_SCORE,
     SATISFACTION_SURVEYS,
     stats as statsConfig,
-} from '../../config/stats'
+} from 'config/stats'
 import {
     OneDimensionalUnionChart,
+    StatsFilters,
     TwoDimensionalChart,
-} from '../../models/stat/types'
-import {TicketChannel} from '../../business/types/ticket'
-import withFeaturePaywall from '../common/utils/withFeaturePaywall'
-import {AccountFeature} from '../../state/currentAccount/types'
+} from 'models/stat/types'
+import {TicketChannel} from 'business/types/ticket'
+import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
+import {AccountFeature} from 'state/currentAccount/types'
 
 import IntegrationsStatsFilter from './IntegrationsStatsFilter'
 import ChannelsStatsFilter from './ChannelsStatsFilter'
@@ -44,24 +44,18 @@ function SupportPerformanceSatisfaction() {
     const integrationsStatsFilter = useSelector(
         getMessagingIntegrationsStatsFilter
     )
-    const statsFilters = useSelector(getStatsFiltersJS)
+    const statsFilters = useSelector(getStatsFilters)
 
-    const pageStatsFilters = useMemo(() => {
-        return (
-            statsFilters && {
-                [StatsFilterType.Integrations]: integrationsStatsFilter,
-                [StatsFilterType.Channels]:
-                    statsFilters[StatsFilterType.Channels] || [],
-                [StatsFilterType.Score]:
-                    statsFilters[StatsFilterType.Score] || [],
-                [StatsFilterType.Agents]:
-                    statsFilters[StatsFilterType.Agents] || [],
-                [StatsFilterType.Tags]:
-                    statsFilters[StatsFilterType.Tags] || [],
-                [StatsFilterType.Period]:
-                    statsFilters[StatsFilterType.Period] || [],
-            }
-        )
+    const pageStatsFilters = useMemo<StatsFilters>(() => {
+        const {channels, score, agents, tags, period} = statsFilters
+        return {
+            channels,
+            score,
+            agents,
+            tags,
+            period,
+            integrations: integrationsStatsFilter,
+        }
     }, [integrationsStatsFilter, statsFilters])
 
     const [satisfactionSurveys, isFetchingSatisfactionSurveys] =
@@ -90,70 +84,56 @@ function SupportPerformanceSatisfaction() {
 How many surveys have been sent, response rate, average scores and more."
             helpUrl="https://docs.gorgias.com/statistics/statistics#satisfaction"
             filters={
-                pageStatsFilters && (
-                    <>
-                        <IntegrationsStatsFilter
-                            value={integrationsStatsFilter}
-                            integrations={messagingIntegrations}
-                            isMultiple
-                        />
-                        <ChannelsStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Channels]}
-                            channels={[TicketChannel.Chat, TicketChannel.Email]}
-                        />
-                        <ScoreStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Score]}
-                            minValue={SATISFACTION_SURVEY_MIN_SCORE}
-                            maxValue={SATISFACTION_SURVEY_MAX_SCORE}
-                            isDescending
-                        />
-                        <AgentsStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Agents]}
-                        />
-                        <TagsStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Tags]}
-                        />
-                        <PeriodStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Period]}
-                        />
-                    </>
-                )
+                <>
+                    <IntegrationsStatsFilter
+                        value={integrationsStatsFilter}
+                        integrations={messagingIntegrations}
+                        isMultiple
+                    />
+                    <ChannelsStatsFilter
+                        value={pageStatsFilters.channels}
+                        channels={[TicketChannel.Chat, TicketChannel.Email]}
+                    />
+                    <ScoreStatsFilter
+                        value={pageStatsFilters.score}
+                        minValue={SATISFACTION_SURVEY_MIN_SCORE}
+                        maxValue={SATISFACTION_SURVEY_MAX_SCORE}
+                        isDescending
+                    />
+                    <AgentsStatsFilter value={pageStatsFilters.agents} />
+                    <TagsStatsFilter value={pageStatsFilters.tags} />
+                    <PeriodStatsFilter value={pageStatsFilters.period} />
+                </>
             }
         >
-            {pageStatsFilters && (
-                <>
-                    <KeyMetricStatWrapper>
-                        <KeyMetricStat
-                            data={immutableStatsSatisfactionSurveys.getIn([
-                                'data',
-                                'data',
-                            ])}
-                            meta={immutableStatsSatisfactionSurveys.get('meta')}
-                            loading={isFetchingSatisfactionSurveys}
-                            config={statsConfig.get(SATISFACTION_SURVEYS)}
-                        />
-                    </KeyMetricStatWrapper>
-                    <StatWrapper
-                        stat={latestSatisfactionSurveys}
-                        isFetchingStat={isFetchingLatestSatisfactionSurveys}
-                        resourceName={LATEST_SATISFACTION_SURVEYS}
-                        statsFilters={pageStatsFilters}
-                        helpText="Latest surveys for selected period"
-                        isDownloadable
-                    >
-                        {(stat) => (
-                            <TableStat
-                                context={{tagColors: null}}
-                                data={stat.getIn(['data', 'data'])}
-                                meta={stat.get('meta')}
-                                config={statsConfig.get(
-                                    LATEST_SATISFACTION_SURVEYS
-                                )}
-                            />
-                        )}
-                    </StatWrapper>
-                </>
-            )}
+            <KeyMetricStatWrapper>
+                <KeyMetricStat
+                    data={immutableStatsSatisfactionSurveys.getIn([
+                        'data',
+                        'data',
+                    ])}
+                    meta={immutableStatsSatisfactionSurveys.get('meta')}
+                    loading={isFetchingSatisfactionSurveys}
+                    config={statsConfig.get(SATISFACTION_SURVEYS)}
+                />
+            </KeyMetricStatWrapper>
+            <StatWrapper
+                stat={latestSatisfactionSurveys}
+                isFetchingStat={isFetchingLatestSatisfactionSurveys}
+                resourceName={LATEST_SATISFACTION_SURVEYS}
+                statsFilters={pageStatsFilters}
+                helpText="Latest surveys for selected period"
+                isDownloadable
+            >
+                {(stat) => (
+                    <TableStat
+                        context={{tagColors: null}}
+                        data={stat.getIn(['data', 'data'])}
+                        meta={stat.get('meta')}
+                        config={statsConfig.get(LATEST_SATISFACTION_SURVEYS)}
+                    />
+                )}
+            </StatWrapper>
         </StatsPage>
     )
 }

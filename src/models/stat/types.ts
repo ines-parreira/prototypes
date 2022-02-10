@@ -1,5 +1,18 @@
+import {TicketChannel} from 'business/types/ticket'
 import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
 import {CursorMeta} from '../api/types'
+
+export type StatsFilters = {
+    period: {
+        end_datetime: string
+        start_datetime: string
+    }
+    integrations?: number[]
+    tags?: number[]
+    agents?: number[]
+    channels?: TicketChannel[]
+    score?: string[]
+}
 
 export enum StatType {
     User = 'user',

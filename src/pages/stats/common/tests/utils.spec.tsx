@@ -7,9 +7,9 @@ import {renderHook} from 'react-hooks-testing-library'
 
 import {tags} from 'fixtures/tag'
 import {RootState} from 'state/types'
-import {StatsFilters} from 'state/stats/types'
 import {TicketChannel} from 'business/types/ticket'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
+import {StatsFilters} from 'models/stat/types'
 
 import {formatDuration, useStatsViewFilters} from '../utils'
 

@@ -1,15 +1,14 @@
 import moment from 'moment-timezone'
 import React, {ComponentProps, useCallback} from 'react'
-import {fromJS} from 'immutable'
 
-import {PeriodStatsFilterValue, StatsFilterType} from '../../state/stats/types'
-import {mergeStatsFilters} from '../../state/stats/actions'
-import useAppDispatch from '../../hooks/useAppDispatch'
+import {mergeStatsFilters} from 'state/stats/actions'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {StatsFilters} from 'models/stat/types'
 
 import PeriodPicker from './common/PeriodPicker'
 
 type Props = {
-    value: PeriodStatsFilterValue
+    value: StatsFilters['period']
 }
 
 export default function PeriodStatsFilter({value}: Props) {
@@ -25,14 +24,12 @@ export default function PeriodStatsFilter({value}: Props) {
                     .endOf('day')
                     .format()
                 dispatch(
-                    mergeStatsFilters(
-                        fromJS({
-                            [StatsFilterType.Period]: {
-                                start_datetime: startDatetime,
-                                end_datetime: endDatetime,
-                            },
-                        })
-                    )
+                    mergeStatsFilters({
+                        period: {
+                            start_datetime: startDatetime,
+                            end_datetime: endDatetime,
+                        },
+                    })
                 )
             },
             [dispatch]

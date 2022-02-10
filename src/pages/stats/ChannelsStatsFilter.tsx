@@ -1,32 +1,26 @@
 import React, {ComponentProps, useCallback} from 'react'
-import {fromJS} from 'immutable'
 import _upperFirst from 'lodash/upperFirst'
 
-import {
-    ChannelsStatsFilterValue,
-    StatsFilterType,
-} from '../../state/stats/types'
-import {TicketChannel} from '../../business/types/ticket'
-import {mergeStatsFilters} from '../../state/stats/actions'
-import useAppDispatch from '../../hooks/useAppDispatch'
+import {TicketChannel} from 'business/types/ticket'
+import {mergeStatsFilters} from 'state/stats/actions'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {StatsFilters} from 'models/stat/types'
 
 import SelectFilter from './common/SelectFilter'
 
 type Props = {
-    value: ChannelsStatsFilterValue
+    value: StatsFilters['channels']
     channels: TicketChannel[]
 }
 
-export default function ChannelsStatsFilter({value, channels}: Props) {
+export default function ChannelsStatsFilter({value = [], channels}: Props) {
     const dispatch = useAppDispatch()
 
     const handleFilterChange: ComponentProps<typeof SelectFilter>['onChange'] =
         useCallback(
             (values) => {
                 dispatch(
-                    mergeStatsFilters(
-                        fromJS({[StatsFilterType.Channels]: values})
-                    )
+                    mergeStatsFilters({channels: values as TicketChannel[]})
                 )
             },
             [dispatch]

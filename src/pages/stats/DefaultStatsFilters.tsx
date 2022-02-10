@@ -1,23 +1,36 @@
-import React, {ReactNode, useEffect} from 'react'
+import React, {ReactNode, useEffect, useMemo} from 'react'
 import {useSelector} from 'react-redux'
 import moment from 'moment-timezone'
-import {fromJS} from 'immutable'
+import _isEqual from 'lodash/isEqual'
 
-import useAppDispatch from '../../hooks/useAppDispatch'
-import {getTimezone} from '../../state/currentUser/selectors'
-import {resetStatsFilters, setStatsFilters} from '../../state/stats/actions'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {getTimezone} from 'state/currentUser/selectors'
+import {resetStatsFilters, setStatsFilters} from 'state/stats/actions'
+import {getStatsFilters} from 'state/stats/selectors'
+import {defaultStatsFilters} from 'state/stats/reducers'
+import {StatsFilters} from 'models/stat/types'
 
 type Props = {
     children?: ReactNode
+    notReadyFallback?: ReactNode
 }
 
-export default function DefaultStatsFilters({children}: Props) {
+export default function DefaultStatsFilters({
+    children,
+    notReadyFallback,
+}: Props) {
     const dispatch = useAppDispatch()
     const userTimezone = useSelector(getTimezone)
+    const statsFilters = useSelector(getStatsFilters)
+
+    const isReady = useMemo(
+        () => !_isEqual(statsFilters, defaultStatsFilters),
+        [statsFilters]
+    )
 
     useEffect(() => {
         const currentDay = userTimezone ? moment().tz(userTimezone) : moment()
-        const defaultFilters = {
+        const defaultFilters: StatsFilters = {
             period: {
                 // default period: last 7 days
                 start_datetime: currentDay
@@ -28,11 +41,11 @@ export default function DefaultStatsFilters({children}: Props) {
                 end_datetime: currentDay.clone().endOf('day').format(),
             },
         }
-        dispatch(setStatsFilters(fromJS(defaultFilters)))
+        dispatch(setStatsFilters(defaultFilters))
         return () => {
             dispatch(resetStatsFilters())
         }
     }, [])
 
-    return <>{children}</>
+    return <>{isReady ? children : notReadyFallback}</>
 }

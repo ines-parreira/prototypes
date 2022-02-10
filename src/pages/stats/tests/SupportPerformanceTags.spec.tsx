@@ -2,19 +2,19 @@ import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
 
-import {RootState, StoreDispatch} from '../../../state/types'
+import {RootState, StoreDispatch} from 'state/types'
+import {TicketChannel} from 'business/types/ticket'
+import {ticketsPerTagStat} from 'fixtures/stats'
+import {renderWithRouter} from 'utils/testing'
+import {integrationsState} from 'fixtures/integrations'
+import {StatsFilters} from 'models/stat/types'
+
+import useStatResource from '../useStatResource'
 import SupportPerformanceTags from '../SupportPerformanceTags'
 import TagsStatsFilter from '../TagsStatsFilter'
-import {TicketChannel} from '../../../business/types/ticket'
-import {ticketsPerTagStat} from '../../../fixtures/stats'
-import useStatResource from '../useStatResource'
-import {renderWithRouter} from '../../../utils/testing'
-import {integrationsState} from '../../../fixtures/integrations'
-import {StatsFilterType} from '../../../state/stats/types'
 
 jest.mock(
     '../TagsStatsFilter',
@@ -33,7 +33,15 @@ let dateNowSpy: jest.SpiedFunction<typeof Date.now>
 describe('SupportPerformanceTags', () => {
     const defaultState = {
         stats: fromJS({
-            filters: null,
+            filters: {
+                period: {
+                    start_datetime: '2021-02-03T00:00:00.000Z',
+                    end_datetime: '2021-02-03T23:59:59.999Z',
+                },
+                channels: [TicketChannel.Chat],
+                tags: [1],
+                integrations: [integrationsState.integrations[0].id],
+            } as StatsFilters,
         }),
         integrations: fromJS(integrationsState),
         entities: {
@@ -53,37 +61,11 @@ describe('SupportPerformanceTags', () => {
         dateNowSpy.mockRestore()
     })
 
-    it('should not render the filters nor the stats when stats filters are not defined', () => {
-        const store = mockStore(defaultState)
-        const {container} = render(
-            <Provider store={store}>
-                <SupportPerformanceTags />
-            </Provider>
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
     it('should render the filters and stats when stats filters are defined', () => {
-        const store = mockStore({
-            ...defaultState,
-            stats: fromJS({
-                filters: {
-                    [StatsFilterType.Period]: {
-                        start_time: '2021-02-03T00:00:00.000Z',
-                        end_time: '2021-02-03T23:59:59.999Z',
-                    },
-                    [StatsFilterType.Channels]: [TicketChannel.Chat],
-                    [StatsFilterType.Tags]: [1],
-                    [StatsFilterType.Integrations]: [
-                        integrationsState.integrations[0].id,
-                    ],
-                },
-            }),
-        })
         useStatResourceMock.mockReturnValue([ticketsPerTagStat, false, _noop])
 
         const {container} = renderWithRouter(
-            <Provider store={store}>
+            <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceTags />
             </Provider>
         )

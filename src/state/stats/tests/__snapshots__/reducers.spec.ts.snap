@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`reducers stat MERGE_STATS_FILTERS should merge stats filters 1`] = `
+exports[`stats reducer MERGE_STATS_FILTERS should merge stats filters 1`] = `
 Immutable.Map {
   "filters": Immutable.Map {
     "score": 4,
@@ -16,13 +16,18 @@ Immutable.Map {
 }
 `;
 
-exports[`reducers stat RESET_STATS_FILTERS shoud reset stats filters  1`] = `
+exports[`stats reducer RESET_STATS_FILTERS should reset stats filters  1`] = `
 Immutable.Map {
-  "filters": null,
+  "filters": Immutable.Map {
+    "period": Immutable.Map {
+      "start_datetime": "1970-01-01T00:00:00+00:00",
+      "end_datetime": "1970-01-01T00:00:00+00:00",
+    },
+  },
 }
 `;
 
-exports[`reducers stat SET_STATS_FILTERS should set stats filters 1`] = `
+exports[`stats reducer SET_STATS_FILTERS should set stats filters 1`] = `
 Immutable.Map {
   "filters": Immutable.Map {
     "tags": Immutable.List [
@@ -37,8 +42,13 @@ Immutable.Map {
 }
 `;
 
-exports[`reducers stat should return initial state 1`] = `
+exports[`stats reducer should return initial state 1`] = `
 Immutable.Map {
-  "filters": null,
+  "filters": Immutable.Map {
+    "period": Immutable.Map {
+      "start_datetime": "1970-01-01T00:00:00+00:00",
+      "end_datetime": "1970-01-01T00:00:00+00:00",
+    },
+  },
 }
 `;

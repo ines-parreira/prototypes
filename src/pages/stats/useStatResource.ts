@@ -4,7 +4,7 @@ import axios, {AxiosError, CancelToken} from 'axios'
 import {useSelector} from 'react-redux'
 import _isEqual from 'lodash/isEqual'
 
-import {Stat} from '../../models/stat/types'
+import {Stat, StatsFilters} from '../../models/stat/types'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import {fetchStat} from '../../models/stat/resources'
 import {notify} from '../../state/notifications/actions'
@@ -15,13 +15,12 @@ import {errorToChildren} from '../../utils'
 import {RootState} from '../../state/types'
 import {StatsState} from '../../state/entities/stats/types'
 import {StatsState as StatsUIState} from '../../state/ui/stats/types'
-import {StatsFilters} from '../../state/stats/types'
 import useCancellableRequest from '../../hooks/useCancellableRequest'
 
 type Params = {
     statName: string
     resourceName: string
-    statsFilters: StatsFilters | null
+    statsFilters: StatsFilters
     fetchDebounceDelay?: number
 }
 
@@ -43,15 +42,11 @@ export default function useStatResource<T>({
     const [fetchParams, setFetchParams] = useState<{
         filters: StatsFilters
         cursor?: string
-    } | null>(statsFilters ? {filters: statsFilters} : null)
+    }>({filters: statsFilters})
 
     const createFetchStat = useCallback(
         (cancelToken: CancelToken) => {
             return async () => {
-                if (!fetchParams) {
-                    return
-                }
-
                 dispatch(fetchStatStarted({statName, resourceName}))
                 try {
                     const stat = await fetchStat(resourceName, fetchParams, {
@@ -101,19 +96,13 @@ export default function useStatResource<T>({
 
     useDebounce(
         () => {
-            if (statsFilters && !_isEqual(statsFilters, fetchParams?.filters)) {
+            if (statsFilters && !_isEqual(statsFilters, fetchParams.filters)) {
                 setFetchParams({filters: statsFilters})
             }
         },
         fetchDebounceDelay,
         [statsFilters, fetchParams]
     )
-
-    useEffect(() => {
-        if (statsFilters && !fetchParams) {
-            setFetchParams({filters: statsFilters})
-        }
-    }, [statsFilters, fetchParams])
 
     const fetchPage = useCallback((cursor: string) => {
         setFetchParams((params) => params && {...params, cursor})

@@ -12,19 +12,23 @@ import {useAsyncFn} from 'react-use'
 import {fromJS, Map} from 'immutable'
 import {useSelector} from 'react-redux'
 
-import Loader from '../common/components/Loader/Loader'
-import {SankeyDiagram, Stat, TwoDimensionalChart} from '../../models/stat/types'
-import useAppDispatch from '../../hooks/useAppDispatch'
-import {downloadStat} from '../../models/stat/resources'
-import {saveFileAsDownloaded} from '../../utils/file'
-import {notify} from '../../state/notifications/actions'
-import {NotificationStatus} from '../../state/notifications/types'
-import Tooltip from '../common/components/Tooltip'
-import {StatsFilters} from '../../state/stats/types'
-import useCancellableRequest from '../../hooks/useCancellableRequest'
-import {logEvent, SegmentEvent} from '../../store/middlewares/segmentTracker'
-import {getCurrentUser} from '../../state/currentUser/selectors'
-import {getCurrentAccountState} from '../../state/currentAccount/selectors'
+import Loader from 'pages/common/components/Loader/Loader'
+import {
+    SankeyDiagram,
+    Stat,
+    StatsFilters,
+    TwoDimensionalChart,
+} from 'models/stat/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {downloadStat} from 'models/stat/resources'
+import {saveFileAsDownloaded} from 'utils/file'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import Tooltip from 'pages/common/components/Tooltip'
+import useCancellableRequest from 'hooks/useCancellableRequest'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
 import StatsHelpIcon from './common/components/StatsHelpIcon'
 import css from './StatWrapper.less'

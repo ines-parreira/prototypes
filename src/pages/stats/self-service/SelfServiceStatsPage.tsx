@@ -12,7 +12,11 @@ import {
     SELF_SERVICE_MOST_RETURNED_PRODUCTS,
 } from 'config/stats'
 import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
-import {OneDimensionalUnionChart, TwoDimensionalChart} from 'models/stat/types'
+import {
+    OneDimensionalUnionChart,
+    StatsFilters,
+    TwoDimensionalChart,
+} from 'models/stat/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {selfServiceConfigurationsFetched} from 'state/entities/selfServiceConfigurations/actions'
 import {notify} from 'state/notifications/actions'
@@ -25,8 +29,7 @@ import {AccountFeature, CurrentAccountState} from 'state/currentAccount/types'
 import {RootState} from 'state/types'
 import {SegmentEvent} from 'store/middlewares/segmentTracker'
 import {DEPRECATED_getCurrentPlan} from 'state/billing/selectors'
-import {getStatsFiltersJS} from 'state/stats/selectors'
-import {IntegrationsStatsFilterValue, StatsFilterType} from 'state/stats/types'
+import {getStatsFilters} from 'state/stats/selectors'
 import {mergeStatsFilters} from 'state/stats/actions'
 import Loader from 'pages/common/components/Loader/Loader'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
@@ -71,16 +74,14 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         getCurrentAccountState
     )
     const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
-    const statsFilters = useSelector(getStatsFiltersJS)
+    const statsFilters = useSelector(getStatsFilters)
 
-    const pageStatsFilters = useMemo(() => {
-        return (
-            statsFilters && {
-                [StatsFilterType.Integrations]: statsFilters.integrations || [],
-                [StatsFilterType.Period]:
-                    statsFilters[StatsFilterType.Period] || [],
-            }
-        )
+    const pageStatsFilters = useMemo<StatsFilters>(() => {
+        const {period, integrations} = statsFilters
+        return {
+            period,
+            integrations,
+        }
     }, [statsFilters])
 
     const segmentEventToSend = {
@@ -153,12 +154,8 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         })
 
     const handleIntegrationsFilterChange = useCallback(
-        (values: IntegrationsStatsFilterValue) => {
-            dispatch(
-                mergeStatsFilters(
-                    fromJS({[StatsFilterType.Integrations]: values})
-                )
-            )
+        (values) => {
+            dispatch(mergeStatsFilters({integrations: values as number[]}))
         },
         [dispatch]
     )
@@ -217,13 +214,9 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                     <>
                         <SelfServiceIntegrationsFilter
                             onChange={handleIntegrationsFilterChange}
-                            value={
-                                pageStatsFilters[StatsFilterType.Integrations]
-                            }
+                            value={pageStatsFilters.integrations}
                         />
-                        <PeriodStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Period]}
-                        />
+                        <PeriodStatsFilter value={pageStatsFilters.period} />
                     </>
                 )
             }

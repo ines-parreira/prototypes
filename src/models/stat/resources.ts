@@ -1,9 +1,8 @@
 import {AxiosRequestConfig} from 'axios'
 
-import {StatsFilters} from '../../state/stats/types'
 import client from '../api/resources'
 
-import {Stat} from './types'
+import {StatsFilters, Stat} from './types'
 
 export async function fetchStat(
     name: string,

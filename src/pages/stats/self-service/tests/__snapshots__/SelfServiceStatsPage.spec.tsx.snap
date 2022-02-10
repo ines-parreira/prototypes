@@ -18,56 +18,6 @@ exports[`<SelfServiceStatsPage /> should display the loader on loading 1`] = `
 </div>
 `;
 
-exports[`<SelfServiceStatsPage /> should not render the filters nor the stats when stats filters are not defined 1`] = `
-<div
-  class="full-width wrapper"
->
-  <div
-    class="header"
-    data-candu-id="stat-header-container"
-  >
-    <div
-      class="page-header pageHeader mb-0"
-    >
-      <h1
-        class="align-items-center"
-      >
-        <span>
-          Self-service
-        </span>
-        <button
-          class="wrapper wrapper ml-3 secondary medium"
-          type="button"
-        >
-          <span
-            class="wrapper"
-          >
-            <i
-              class="material-icons icon isLeft medium"
-            >
-              info_outline
-            </i>
-            Learn
-          </span>
-        </button>
-      </h1>
-      <div>
-        <div
-          class="d-flex flex-wrap float-right"
-        />
-      </div>
-    </div>
-  </div>
-  <div
-    class="statsWrapper"
-  >
-    <div
-      class="statsContainer container-fluid"
-    />
-  </div>
-</div>
-`;
-
 exports[`<SelfServiceStatsPage /> should render the automation add-on upgrade paywall if the current account doesnt have the feature 1`] = `
 <div>
   <div
@@ -308,7 +258,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                 calendar_today
               </i>
               <span>
-                Feb 14, 2017
+                Feb 02, 2021 - Feb 03, 2021
               </span>
               <i
                 class="material-icons md-2 strong ml-1"

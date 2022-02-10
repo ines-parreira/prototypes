@@ -7,17 +7,17 @@ import MockAdapter from 'axios-mock-adapter'
 import {act, render} from '@testing-library/react'
 import {produce} from 'immer'
 
-import useStatResource from '../useStatResource'
-import {Stat, TwoDimensionalChart} from '../../../models/stat/types'
-import {StatsFilters, StatsFilterType} from '../../../state/stats/types'
-import {TicketChannel} from '../../../business/types/ticket'
-import client from '../../../models/api/resources'
-import {RootState} from '../../../state/types'
-import {firstResponseTime} from '../../../fixtures/stats'
-import {FIRST_RESPONSE_TIME} from '../../../config/stats'
-import {flushPromises} from '../../../utils/testing'
+import {Stat, StatsFilters, TwoDimensionalChart} from 'models/stat/types'
+import {TicketChannel} from 'business/types/ticket'
+import client from 'models/api/resources'
+import {RootState} from 'state/types'
+import {firstResponseTime} from 'fixtures/stats'
+import {FIRST_RESPONSE_TIME} from 'config/stats'
+import {flushPromises} from 'utils/testing'
 
-jest.mock('../../../state/notifications/actions', () => ({
+import useStatResource from '../useStatResource'
+
+jest.mock('state/notifications/actions', () => ({
     notify: (message: string) => ({
         type: 'notify mock',
         message,
@@ -40,11 +40,11 @@ describe('useStatResource', () => {
     } as RootState
 
     const defaultStatsFilters: StatsFilters = {
-        [StatsFilterType.Period]: {
+        period: {
             start_datetime: '2021-04-02T00:00:00.000Z',
             end_datetime: '2021-04-02T23:59:59.999Z',
         },
-        [StatsFilterType.Channels]: [TicketChannel.Email],
+        channels: [TicketChannel.Email],
     }
 
     const createStoreWrapper = (store: ReturnType<typeof mockStore>) => {
@@ -59,26 +59,6 @@ describe('useStatResource', () => {
         serverMock
             .onAny(`/api/stats/${FIRST_RESPONSE_TIME}/`)
             .reply(200, firstResponseTime)
-    })
-
-    it('should not fetch the stat when statFilters are null', async () => {
-        const store = mockStore(defaultState)
-
-        renderHook(
-            () => {
-                return useStatResource<TwoDimensionalChart>({
-                    statName: 'stat',
-                    resourceName: FIRST_RESPONSE_TIME,
-                    statsFilters: null,
-                })
-            },
-            {
-                wrapper: createStoreWrapper(store),
-            }
-        )
-        await flushPromises()
-
-        expect(serverMock.history.post).toHaveLength(0)
     })
 
     it('should fetch and save the stat', async () => {
@@ -238,7 +218,7 @@ describe('useStatResource', () => {
         const TestComponent = ({
             statsFilters,
         }: {
-            statsFilters: StatsFilters | null
+            statsFilters: StatsFilters
         }) => {
             useStatResource({
                 statName: 'stat',
@@ -273,7 +253,7 @@ describe('useStatResource', () => {
                     <TestComponent
                         statsFilters={{
                             ...defaultStatsFilters,
-                            [StatsFilterType.Tags]: [1],
+                            tags: [1],
                         }}
                     />
                 </Provider>
@@ -286,7 +266,7 @@ describe('useStatResource', () => {
                     <TestComponent
                         statsFilters={{
                             ...defaultStatsFilters,
-                            [StatsFilterType.Tags]: [2],
+                            tags: [2],
                         }}
                     />
                 </Provider>
@@ -322,24 +302,6 @@ describe('useStatResource', () => {
             await flushPromises()
 
             expect(serverMock.history.post).toHaveLength(0)
-        })
-
-        it('should not debounce the request when statsFilters were initially set', async () => {
-            const store = mockStore(defaultState)
-
-            const {rerender} = render(
-                <Provider store={store}>
-                    <TestComponent statsFilters={null} />
-                </Provider>
-            )
-            rerender(
-                <Provider store={store}>
-                    <TestComponent statsFilters={defaultStatsFilters} />
-                </Provider>
-            )
-            await flushPromises()
-
-            expect(serverMock.history).toMatchSnapshot()
         })
     })
 })

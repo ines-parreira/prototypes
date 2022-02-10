@@ -1,5 +1,6 @@
 import {createContext} from 'react'
 
-import {StatsFilters} from 'state/stats/types'
+import {StatsFilters} from 'models/stat/types'
+import {defaultStatsFilters} from 'state/stats/reducers'
 
-export default createContext<StatsFilters | null>(null)
+export default createContext<StatsFilters>(defaultStatsFilters)

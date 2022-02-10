@@ -10,12 +10,12 @@ import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
 import {userPerformanceOverview} from 'fixtures/stats'
 import {renderWithRouter} from 'utils/testing'
-import {StatsFilterType} from 'state/stats/types'
 import {agents} from 'fixtures/agents'
 import {teams} from 'fixtures/teams'
 import {account} from 'fixtures/account'
 import {AccountFeature} from 'state/currentAccount/types'
-import FeaturePaywall from '../../common/components/FeaturePaywall/FeaturePaywall'
+import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
+import {StatsFilters} from 'models/stat/types'
 
 import useStatResource from '../useStatResource'
 import TagsStatsFilter from '../TagsStatsFilter'
@@ -47,7 +47,14 @@ describe('LiveAgents', () => {
     const defaultState = {
         currentAccount: fromJS(account),
         stats: fromJS({
-            filters: null,
+            filters: {
+                period: {
+                    start_datetime: '2021-02-03T00:00:00.000Z',
+                    end_datetime: '2021-02-03T23:59:59.999Z',
+                },
+                channels: [TicketChannel.Chat],
+                agents: [agents[0].id],
+            } as StatsFilters,
         }),
         agents: fromJS({
             all: agents,
@@ -65,36 +72,13 @@ describe('LiveAgents', () => {
         useStatResourceMock.mockReturnValue([null, true, _noop])
     })
 
-    it('should not render the filters nor the stats when stats filters are not defined', () => {
-        const store = mockStore(defaultState)
-        const {container} = render(
-            <Provider store={store}>
-                <LiveAgents />
-            </Provider>
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
     it('should render the filters and stats when stats filters are defined', () => {
-        const store = mockStore({
-            ...defaultState,
-            stats: fromJS({
-                filters: {
-                    [StatsFilterType.Period]: {
-                        start_time: '2021-02-03T00:00:00.000Z',
-                        end_time: '2021-02-03T23:59:59.999Z',
-                    },
-                    [StatsFilterType.Channels]: [TicketChannel.Chat],
-                    [StatsFilterType.Agents]: [agents[0].id],
-                },
-            }),
-        })
         useStatResourceMock.mockImplementation(() => {
             return [userPerformanceOverview, false, _noop]
         })
 
         const {container} = renderWithRouter(
-            <Provider store={store}>
+            <Provider store={mockStore(defaultState)}>
                 <LiveAgents />
             </Provider>
         )
@@ -123,11 +107,11 @@ describe('LiveAgents', () => {
             ...defaultState,
             stats: fromJS({
                 filters: {
-                    [StatsFilterType.Period]: {
-                        start_time: '2021-02-03T00:00:00.000Z',
-                        end_time: '2021-02-03T23:59:59.999Z',
+                    period: {
+                        start_datetime: '2021-02-03T00:00:00.000Z',
+                        end_datetime: '2021-02-03T23:59:59.999Z',
                     },
-                },
+                } as StatsFilters,
             }),
         })
         const fetchPage = jest.fn()

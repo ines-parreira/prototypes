@@ -2,21 +2,21 @@ import React from 'react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
-import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
 
-import {RootState, StoreDispatch} from '../../../state/types'
-import useStatResource from '../useStatResource'
-import SupportPerformanceChannels from '../SupportPerformanceChannels'
-import {TicketChannel} from '../../../business/types/ticket'
+import {RootState, StoreDispatch} from 'state/types'
+import {TicketChannel} from 'business/types/ticket'
 import {
     ticketsCreatedPerChannel,
     ticketsCreatedPerChannelPerDay,
-} from '../../../fixtures/stats'
-import {renderWithRouter} from '../../../utils/testing'
-import {TICKETS_CREATED_PER_CHANNEL_PER_DAY} from '../../../config/stats'
-import {StatsFilterType} from '../../../state/stats/types'
+} from 'fixtures/stats'
+import {renderWithRouter} from 'utils/testing'
+import {TICKETS_CREATED_PER_CHANNEL_PER_DAY} from 'config/stats'
+import {StatsFilters} from 'models/stat/types'
+
+import useStatResource from '../useStatResource'
+import SupportPerformanceChannels from '../SupportPerformanceChannels'
 
 jest.mock('../useStatResource')
 jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
@@ -30,7 +30,13 @@ let dateNowSpy: jest.SpiedFunction<typeof Date.now>
 describe('SupportPerformanceChannels', () => {
     const defaultState = {
         stats: fromJS({
-            filters: null,
+            filters: {
+                period: {
+                    start_datetime: '2021-02-03T00:00:00.000Z',
+                    end_datetime: '2021-02-03T23:59:59.999Z',
+                },
+                channels: [TicketChannel.Chat],
+            } as StatsFilters,
         }),
         entities: {
             tags: {},
@@ -49,29 +55,7 @@ describe('SupportPerformanceChannels', () => {
         dateNowSpy.mockRestore()
     })
 
-    it('should not render the filters nor the stats when stats filters are not defined', () => {
-        const store = mockStore(defaultState)
-        const {container} = render(
-            <Provider store={store}>
-                <SupportPerformanceChannels />
-            </Provider>
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
     it('should render the filters and stats when stats filters are defined', () => {
-        const store = mockStore({
-            ...defaultState,
-            stats: fromJS({
-                filters: {
-                    [StatsFilterType.Period]: {
-                        start_time: '2021-02-03T00:00:00.000Z',
-                        end_time: '2021-02-03T23:59:59.999Z',
-                    },
-                    [StatsFilterType.Channels]: [TicketChannel.Chat],
-                },
-            }),
-        })
         useStatResourceMock.mockImplementation(({resourceName}) => {
             if (resourceName === TICKETS_CREATED_PER_CHANNEL_PER_DAY) {
                 return [ticketsCreatedPerChannelPerDay, false, _noop]
@@ -80,7 +64,7 @@ describe('SupportPerformanceChannels', () => {
         })
 
         const {container} = renderWithRouter(
-            <Provider store={store}>
+            <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceChannels />
             </Provider>
         )

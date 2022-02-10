@@ -2,15 +2,18 @@ import React, {useMemo} from 'react'
 import {useSelector} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 
-import {getStatsFiltersJS} from 'state/stats/selectors'
+import {getStatsFilters} from 'state/stats/selectors'
 import {
     INTENTS_BREAKDOWN_PER_DAY,
     INTENTS_OCCURRENCE,
     INTENTS_OVERVIEW,
     stats as statsConfig,
 } from 'config/stats'
-import {OneDimensionalChart, TwoDimensionalChart} from 'models/stat/types'
-import {StatsFilterType} from 'state/stats/types'
+import {
+    OneDimensionalChart,
+    StatsFilters,
+    TwoDimensionalChart,
+} from 'models/stat/types'
 import {TicketChannel} from 'business/types/ticket'
 
 import ChannelsStatsFilter from './ChannelsStatsFilter'
@@ -38,17 +41,11 @@ const AUTOMATION_INTENTS_CHANNELS = [
 ]
 
 export default function AutomationIntents() {
-    const statsFilters = useSelector(getStatsFiltersJS)
+    const statsFilters = useSelector(getStatsFilters)
 
-    const pageStatsFilters = useMemo(() => {
-        return (
-            statsFilters && {
-                [StatsFilterType.Channels]:
-                    statsFilters[StatsFilterType.Channels] || [],
-                [StatsFilterType.Period]:
-                    statsFilters[StatsFilterType.Period] || [],
-            }
-        )
+    const pageStatsFilters = useMemo<StatsFilters>(() => {
+        const {channels, period} = statsFilters
+        return {channels, period}
     }, [statsFilters])
 
     const [intentsOverview, isFetchingIntentsOverview] =
@@ -86,12 +83,10 @@ export default function AutomationIntents() {
                 pageStatsFilters && (
                     <>
                         <ChannelsStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Channels]}
+                            value={pageStatsFilters.channels}
                             channels={AUTOMATION_INTENTS_CHANNELS}
                         />
-                        <PeriodStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Period]}
-                        />
+                        <PeriodStatsFilter value={pageStatsFilters.period} />
                     </>
                 )
             }

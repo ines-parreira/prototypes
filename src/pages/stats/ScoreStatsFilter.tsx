@@ -1,21 +1,20 @@
 import React, {ComponentProps, useCallback, useMemo} from 'react'
-import {fromJS} from 'immutable'
 
-import {mergeStatsFilters} from '../../state/stats/actions'
-import {ScoreStatsFilterValue, StatsFilterType} from '../../state/stats/types'
-import useAppDispatch from '../../hooks/useAppDispatch'
+import {mergeStatsFilters} from 'state/stats/actions'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {StatsFilters} from 'models/stat/types'
 
 import SelectFilter from './common/SelectFilter'
 
 type Props = {
-    value: ScoreStatsFilterValue
+    value: StatsFilters['score']
     minValue: number
     maxValue: number
     isDescending?: boolean
 }
 
 export function ScoreStatsFilter({
-    value,
+    value = [],
     minValue,
     maxValue,
     isDescending,
@@ -43,9 +42,7 @@ export function ScoreStatsFilter({
     const handleFilterChange: ComponentProps<typeof SelectFilter>['onChange'] =
         useCallback(
             (values) => {
-                dispatch(
-                    mergeStatsFilters(fromJS({[StatsFilterType.Score]: values}))
-                )
+                dispatch(mergeStatsFilters({score: values as string[]}))
             },
             [dispatch]
         )

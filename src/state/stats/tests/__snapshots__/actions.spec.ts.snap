@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`actions stats mergeStatsFilters() should return an action to merge stats filters 1`] = `
+exports[`stats actions mergeStatsFilters() should return an action to merge stats filters 1`] = `
 Object {
   "filters": Immutable.Map {
     "tags": Immutable.List [
@@ -13,15 +13,19 @@ Object {
 }
 `;
 
-exports[`actions stats resetStatsFilters() should return an action to reset stats filters 1`] = `
+exports[`stats actions resetStatsFilters() should return an action to reset stats filters 1`] = `
 Object {
   "type": "RESET_STATS_FILTERS",
 }
 `;
 
-exports[`actions stats setStatsFilters() should return an action to set stats filters 1`] = `
+exports[`stats actions setStatsFilters() should return an action to set stats filters 1`] = `
 Object {
   "filters": Immutable.Map {
+    "period": Immutable.Map {
+      "start_datetime": "2021-02-03T00:00:00Z",
+      "end_datetime": "2021-02-03T23:59:59Z",
+    },
     "tags": Immutable.List [
       1,
       2,

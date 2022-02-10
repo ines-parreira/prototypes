@@ -3,13 +3,12 @@ import {useSelector} from 'react-redux'
 
 import {TicketChannel} from 'business/types/ticket'
 import {MESSAGES_SENT_PER_MACRO, stats as statsConfig} from 'config/stats'
-import {TwoDimensionalChart} from 'models/stat/types'
+import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import {
     getMessagingIntegrationsStatsFilter,
-    getStatsFiltersJS,
+    getStatsFilters,
     getStatsMessagingIntegrations,
 } from 'state/stats/selectors'
-import {StatsFilterType} from 'state/stats/types'
 
 import ChannelsStatsFilter from './ChannelsStatsFilter'
 import TableStat from './common/components/charts/TableStat/TableStat'
@@ -26,18 +25,15 @@ export default function AutomationMacros() {
     const integrationsStatsFilter = useSelector(
         getMessagingIntegrationsStatsFilter
     )
-    const statsFilters = useSelector(getStatsFiltersJS)
+    const statsFilters = useSelector(getStatsFilters)
 
-    const pageStatsFilters = useMemo(() => {
-        return (
-            statsFilters && {
-                [StatsFilterType.Integrations]: integrationsStatsFilter,
-                [StatsFilterType.Channels]:
-                    statsFilters[StatsFilterType.Channels] || [],
-                [StatsFilterType.Period]:
-                    statsFilters[StatsFilterType.Period] || [],
-            }
-        )
+    const pageStatsFilters = useMemo<StatsFilters>(() => {
+        const {channels, period} = statsFilters
+        return {
+            channels,
+            period,
+            integrations: integrationsStatsFilter,
+        }
     }, [integrationsStatsFilter, statsFilters])
 
     const [messagesSentPerMacro, isFetchingMessagesSentPerMacro] =
@@ -63,12 +59,10 @@ export default function AutomationMacros() {
                             isMultiple
                         />
                         <ChannelsStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Channels]}
+                            value={pageStatsFilters.channels}
                             channels={Object.values(TicketChannel)}
                         />
-                        <PeriodStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Period]}
-                        />
+                        <PeriodStatsFilter value={pageStatsFilters.period} />
                     </>
                 )
             }

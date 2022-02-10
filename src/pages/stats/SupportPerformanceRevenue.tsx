@@ -3,25 +3,25 @@ import {useSelector} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 
 import {
-    getStatsFiltersJS,
+    getStatsFilters,
     getStatsStoreIntegrations,
     getStoreIntegrationsStatsFilter,
-} from '../../state/stats/selectors'
-import {StatsFilterType} from '../../state/stats/types'
-import {TicketChannel} from '../../business/types/ticket'
+} from 'state/stats/selectors'
+import {TicketChannel} from 'business/types/ticket'
 import {
     OneDimensionalUnionChart,
+    StatsFilters,
     TwoDimensionalChart,
-} from '../../models/stat/types'
+} from 'models/stat/types'
 import {
     REVENUE_OVERVIEW,
     REVENUE_PER_AGENT,
     REVENUE_PER_DAY,
     REVENUE_PER_TICKET,
     stats as statsConfig,
-} from '../../config/stats'
-import withFeaturePaywall from '../common/utils/withFeaturePaywall'
-import {AccountFeature} from '../../state/currentAccount/types'
+} from 'config/stats'
+import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
+import {AccountFeature} from 'state/currentAccount/types'
 
 import IntegrationsStatsFilter from './IntegrationsStatsFilter'
 import ChannelsStatsFilter from './ChannelsStatsFilter'
@@ -41,23 +41,19 @@ const SUPPORT_PERFORMANCE_REVENUE_STAT_NAME = 'support-performance-revenue'
 function SupportPerformanceRevenue() {
     const storeIntegrations = useSelector(getStatsStoreIntegrations)
     const storeStatsFilter = useSelector(getStoreIntegrationsStatsFilter)
-    const statsFilters = useSelector(getStatsFiltersJS)
+    const statsFilters = useSelector(getStatsFilters)
 
-    const pageStatsFilters = useMemo(() => {
-        return (
-            statsFilters && {
-                [StatsFilterType.Integrations]: storeStatsFilter.length
-                    ? storeStatsFilter
-                    : [storeIntegrations[0]!.id],
-                [StatsFilterType.Channels]:
-                    statsFilters[StatsFilterType.Channels] || [],
-                [StatsFilterType.Tags]:
-                    statsFilters[StatsFilterType.Tags] || [],
-                [StatsFilterType.Period]:
-                    statsFilters[StatsFilterType.Period] || [],
-            }
-        )
-    }, [storeStatsFilter, statsFilters])
+    const pageStatsFilters = useMemo<StatsFilters>(() => {
+        const {channels, tags, period} = statsFilters
+        return {
+            channels,
+            tags,
+            period,
+            integrations: storeStatsFilter.length
+                ? storeStatsFilter
+                : [storeIntegrations[0]!.id],
+        }
+    }, [storeStatsFilter, statsFilters, storeIntegrations])
 
     const [revenueOverview, isFetchingRevenueOverview] =
         useStatResource<OneDimensionalUnionChart>({
@@ -102,22 +98,16 @@ helping customers through the purchasing journey."
                 pageStatsFilters && (
                     <>
                         <IntegrationsStatsFilter
-                            value={
-                                pageStatsFilters[StatsFilterType.Integrations]
-                            }
+                            value={pageStatsFilters.integrations}
                             integrations={storeIntegrations}
                             isRequired
                         />
                         <ChannelsStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Channels]}
+                            value={pageStatsFilters.channels}
                             channels={Object.values(TicketChannel)}
                         />
-                        <TagsStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Tags]}
-                        />
-                        <PeriodStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Period]}
-                        />
+                        <TagsStatsFilter value={pageStatsFilters.tags} />
+                        <PeriodStatsFilter value={pageStatsFilters.period} />
                     </>
                 )
             }

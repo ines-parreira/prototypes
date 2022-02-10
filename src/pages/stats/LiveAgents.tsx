@@ -4,8 +4,7 @@ import moment from 'moment-timezone'
 import produce from 'immer'
 
 import {stats as statsConfig, USERS_PERFORMANCE_OVERVIEW} from 'config/stats'
-import {getStatsFiltersJS} from 'state/stats/selectors'
-import {PeriodStatsFilterValue, StatsFilterType} from 'state/stats/types'
+import {getStatsFilters} from 'state/stats/selectors'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import {AccountFeature} from 'state/currentAccount/types'
 import {getTimezone} from 'state/currentUser/selectors'
@@ -18,6 +17,7 @@ import {
     NumericStatCell,
     OnlineTimeDetailStatCell,
     TicketDetailStatCell,
+    StatsFilters,
 } from 'models/stat/types'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 
@@ -35,22 +35,19 @@ const LIVE_AGENTS_STAT_NAME = 'live-agents-stat'
 
 function LiveAgents() {
     const userTimezone = useSelector(getTimezone)
-    const statsFilters = useSelector(getStatsFiltersJS)
+    const statsFilters = useSelector(getStatsFilters)
 
-    const pageStatsFilters = useMemo(() => {
+    const pageStatsFilters = useMemo<StatsFilters>(() => {
         const currentDay = userTimezone ? moment().tz(userTimezone) : moment()
-        return (
-            statsFilters && {
-                [StatsFilterType.Channels]:
-                    statsFilters[StatsFilterType.Channels] || [],
-                [StatsFilterType.Agents]:
-                    statsFilters[StatsFilterType.Agents] || [],
-                [StatsFilterType.Period]: {
-                    start_datetime: currentDay.clone().startOf('day').format(),
-                    end_datetime: currentDay.clone().endOf('day').format(),
-                } as PeriodStatsFilterValue,
-            }
-        )
+        const {channels, agents} = statsFilters
+        return {
+            channels,
+            agents,
+            period: {
+                start_datetime: currentDay.clone().startOf('day').format(),
+                end_datetime: currentDay.clone().endOf('day').format(),
+            },
+        }
     }, [statsFilters, userTimezone])
 
     const [
@@ -89,13 +86,11 @@ function LiveAgents() {
                     pageStatsFilters && (
                         <>
                             <ChannelsStatsFilter
-                                value={
-                                    pageStatsFilters[StatsFilterType.Channels]
-                                }
+                                value={pageStatsFilters.channels}
                                 channels={Object.values(TicketChannel)}
                             />
                             <AgentsStatsFilter
-                                value={pageStatsFilters[StatsFilterType.Agents]}
+                                value={pageStatsFilters.agents}
                             />
                         </>
                     )

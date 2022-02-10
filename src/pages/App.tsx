@@ -45,7 +45,7 @@ type Props = {
     // Navbar and Infobar containers can be changed depending on the route. See `routes.js`
     navbar: ComponentType<any>
     infobar?: ComponentType<any>
-    content: ComponentType<any>
+    content?: ComponentType<any>
 } & ConnectedProps<typeof connector> &
     RouteComponentProps
 

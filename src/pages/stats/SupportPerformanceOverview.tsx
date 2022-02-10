@@ -3,12 +3,15 @@ import {useSelector} from 'react-redux'
 
 import {
     getMessagingIntegrationsStatsFilter,
-    getStatsFiltersJS,
+    getStatsFilters,
     getStatsMessagingIntegrations,
-} from '../../state/stats/selectors'
-import {StatsFilterType} from '../../state/stats/types'
-import {TicketChannel} from '../../business/types/ticket'
-import {OneDimensionalChart, TwoDimensionalChart} from '../../models/stat/types'
+} from 'state/stats/selectors'
+import {TicketChannel} from 'business/types/ticket'
+import {
+    OneDimensionalChart,
+    StatsFilters,
+    TwoDimensionalChart,
+} from 'models/stat/types'
 import {
     FIRST_RESPONSE_TIME,
     MEDIAN_FIRST_RESPONSE_TIME,
@@ -24,7 +27,7 @@ import {
     TOTAL_TICKETS_CLOSED,
     TOTAL_TICKETS_CREATED,
     TOTAL_TICKETS_REPLIED,
-} from '../../config/stats'
+} from 'config/stats'
 
 import IntegrationsStatsFilter from './IntegrationsStatsFilter'
 import ChannelsStatsFilter from './ChannelsStatsFilter'
@@ -47,22 +50,17 @@ export default function SupportPerformanceOverview() {
     const integrationsStatsFilter = useSelector(
         getMessagingIntegrationsStatsFilter
     )
-    const statsFilters = useSelector(getStatsFiltersJS)
+    const statsFilters = useSelector(getStatsFilters)
 
-    const pageStatsFilters = useMemo(() => {
-        return (
-            statsFilters && {
-                [StatsFilterType.Integrations]: integrationsStatsFilter,
-                [StatsFilterType.Channels]:
-                    statsFilters[StatsFilterType.Channels] || [],
-                [StatsFilterType.Agents]:
-                    statsFilters[StatsFilterType.Agents] || [],
-                [StatsFilterType.Tags]:
-                    statsFilters[StatsFilterType.Tags] || [],
-                [StatsFilterType.Period]:
-                    statsFilters[StatsFilterType.Period] || [],
-            }
-        )
+    const pageStatsFilters = useMemo<StatsFilters>(() => {
+        const {channels, agents, tags, period} = statsFilters
+        return {
+            channels,
+            agents,
+            tags,
+            period,
+            integrations: integrationsStatsFilter,
+        }
     }, [integrationsStatsFilter, statsFilters])
 
     const [totalTicketsCreated, isFetchingTotalTicketsCreated] =
@@ -224,25 +222,17 @@ providing excellent customer support."
                 pageStatsFilters && (
                     <>
                         <IntegrationsStatsFilter
-                            value={
-                                pageStatsFilters[StatsFilterType.Integrations]
-                            }
+                            value={pageStatsFilters.integrations}
                             integrations={messagingIntegrations}
                             isMultiple
                         />
                         <ChannelsStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Channels]}
+                            value={pageStatsFilters.channels}
                             channels={Object.values(TicketChannel)}
                         />
-                        <AgentsStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Agents]}
-                        />
-                        <TagsStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Tags]}
-                        />
-                        <PeriodStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Period]}
-                        />
+                        <AgentsStatsFilter value={pageStatsFilters.agents} />
+                        <TagsStatsFilter value={pageStatsFilters.tags} />
+                        <PeriodStatsFilter value={pageStatsFilters.period} />
                     </>
                 )
             }

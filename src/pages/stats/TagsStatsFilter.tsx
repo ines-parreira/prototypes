@@ -1,26 +1,21 @@
 import React, {ComponentProps, useCallback, useState} from 'react'
-import {fromJS} from 'immutable'
 import {useSelector} from 'react-redux'
 import {useDebounce} from 'react-use'
 import {CancelToken} from 'axios'
 
-import InfiniteScroll from '../common/components/InfiniteScroll/InfiniteScroll'
-import {mergeStatsFilters} from '../../state/stats/actions'
-import {StatsFilterType, TagsStatsFilterValue} from '../../state/stats/types'
-import useAppDispatch from '../../hooks/useAppDispatch'
-import useCancellableRequest from '../../hooks/useCancellableRequest'
-import {
-    FetchTagsOptions,
-    Tag,
-    TagSortableProperties,
-} from '../../models/tag/types'
-import {fetchTags} from '../../models/tag/resources'
-import {NotificationStatus} from '../../state/notifications/types'
-import {OrderDirection} from '../../models/api/types'
-import {tagsFetched} from '../../state/entities/tags/actions'
-import {notify} from '../../state/notifications/actions'
-import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMenu'
-import {RootState} from '../../state/types'
+import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import {mergeStatsFilters} from 'state/stats/actions'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useCancellableRequest from 'hooks/useCancellableRequest'
+import {FetchTagsOptions, Tag, TagSortableProperties} from 'models/tag/types'
+import {fetchTags} from 'models/tag/resources'
+import {NotificationStatus} from 'state/notifications/types'
+import {OrderDirection} from 'models/api/types'
+import {tagsFetched} from 'state/entities/tags/actions'
+import {notify} from 'state/notifications/actions'
+import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
+import {RootState} from 'state/types'
+import {StatsFilters} from 'models/stat/types'
 
 import css from './TagsStatsFilter.less'
 import SelectFilter from './common/SelectFilter'
@@ -35,10 +30,10 @@ const TagDropdownMenuWrapper = (
 ) => <TagDropdownMenu {...props} />
 
 type Props = {
-    value: TagsStatsFilterValue
+    value: StatsFilters['tags']
 }
 
-export default function TagsStatsFilter({value}: Props) {
+export default function TagsStatsFilter({value = []}: Props) {
     const dispatch = useAppDispatch()
     const tags = useSelector((state: RootState) => state.entities.tags)
     const [tagIds, setTagIds] = useState<string[]>([])
@@ -52,9 +47,7 @@ export default function TagsStatsFilter({value}: Props) {
     const handleFilterChange: ComponentProps<typeof SelectFilter>['onChange'] =
         useCallback(
             (values) => {
-                dispatch(
-                    mergeStatsFilters(fromJS({[StatsFilterType.Tags]: values}))
-                )
+                dispatch(mergeStatsFilters({tags: values as number[]}))
             },
             [dispatch]
         )

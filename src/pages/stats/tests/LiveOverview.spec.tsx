@@ -15,12 +15,12 @@ import {
     usersStatuses,
 } from 'fixtures/stats'
 import {renderWithRouter} from 'utils/testing'
-import {StatsFilterType} from 'state/stats/types'
 import {agents} from 'fixtures/agents'
 import {teams} from 'fixtures/teams'
 import {account} from 'fixtures/account'
 import {AccountFeature} from 'state/currentAccount/types'
-import FeaturePaywall from '../../common/components/FeaturePaywall/FeaturePaywall'
+import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
+import {StatsFilters} from 'models/stat/types'
 
 import LiveOverview from '../LiveOverview'
 import useStatResource from '../useStatResource'
@@ -45,7 +45,14 @@ describe('LiveOverview', () => {
     const defaultState = {
         currentAccount: fromJS(account),
         stats: fromJS({
-            filters: null,
+            filters: {
+                period: {
+                    start_datetime: '2021-02-03T00:00:00.000Z',
+                    end_datetime: '2021-02-03T23:59:59.999Z',
+                },
+                channels: [TicketChannel.Chat],
+                agents: [agents[0].id],
+            } as StatsFilters,
         }),
         agents: fromJS({
             all: agents,
@@ -60,30 +67,7 @@ describe('LiveOverview', () => {
         useStatResourceMock.mockReturnValue([null, true, _noop])
     })
 
-    it('should not render the filters nor the stats when stats filters are not defined', () => {
-        const store = mockStore(defaultState)
-        const {container} = render(
-            <Provider store={store}>
-                <LiveOverview />
-            </Provider>
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
     it('should render the filters and stats when stats filters are defined', () => {
-        const store = mockStore({
-            ...defaultState,
-            stats: fromJS({
-                filters: {
-                    [StatsFilterType.Period]: {
-                        start_time: '2021-02-03T00:00:00.000Z',
-                        end_time: '2021-02-03T23:59:59.999Z',
-                    },
-                    [StatsFilterType.Channels]: [TicketChannel.Chat],
-                    [StatsFilterType.Agents]: [agents[0].id],
-                },
-            }),
-        })
         useStatResourceMock.mockImplementation(({resourceName}) => {
             if (resourceName === USERS_STATUSES) {
                 return [usersStatuses, false, _noop]
@@ -94,7 +78,7 @@ describe('LiveOverview', () => {
         })
 
         const {container} = renderWithRouter(
-            <Provider store={store}>
+            <Provider store={mockStore(defaultState)}>
                 <LiveOverview />
             </Provider>
         )

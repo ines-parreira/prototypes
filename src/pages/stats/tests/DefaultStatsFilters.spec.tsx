@@ -5,9 +5,12 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 
+import {defaultStatsFilters} from 'state/stats/reducers'
+import {StatsFilters} from 'models/stat/types'
+import {RootState, StoreDispatch} from 'state/types'
+import {user} from 'fixtures/users'
+
 import DefaultStatsFilters from '../DefaultStatsFilters'
-import {RootState, StoreDispatch} from '../../../state/types'
-import {user} from '../../../fixtures/users'
 
 jest.mock('moment-timezone', () => () => {
     const moment: (date: string) => Record<string, unknown> =
@@ -24,14 +27,39 @@ describe('DefaultStatsFilters', () => {
             ...user,
             timezone: 'America/Los_Angeles',
         }),
+        stats: fromJS({
+            filters: {
+                period: {
+                    start_datetime: '2021-02-03T00:00:00.000Z',
+                    end_datetime: '2021-02-03T23:59:59.999Z',
+                },
+            } as StatsFilters,
+        }),
     } as RootState
 
-    it('should render children', () => {
-        const store = mockStore(defaultState)
-
+    it('should render children when stats filters are not the default stats filters', () => {
         const {container} = render(
-            <Provider store={store}>
+            <Provider store={mockStore(defaultState)}>
                 <DefaultStatsFilters>
+                    <div>Foo bar</div>
+                </DefaultStatsFilters>
+            </Provider>
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render the fallback when stats filters are the default stats filters', () => {
+        const {container} = render(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    stats: fromJS({
+                        filters: defaultStatsFilters,
+                    }),
+                })}
+            >
+                <DefaultStatsFilters notReadyFallback={<div>fallback</div>}>
                     <div>Foo bar</div>
                 </DefaultStatsFilters>
             </Provider>

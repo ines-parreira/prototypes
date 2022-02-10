@@ -1,34 +1,23 @@
-import {Map} from 'immutable'
+import {fromJS} from 'immutable'
 
-import {StoreDispatch} from '../types'
+import {StatsFilters} from 'models/stat/types'
 
 import * as constants from './constants'
 
-export const setStatsFilters = (filters: Map<any, any>) => {
+export const setStatsFilters = (filters: StatsFilters) => {
     return {
         type: constants.SET_STATS_FILTERS,
-        filters,
+        filters: fromJS(filters),
     }
 }
 
-export const mergeStatsFilters = (filters: Map<any, any>) => {
+export const mergeStatsFilters = (filters: Partial<StatsFilters>) => {
     return {
         type: constants.MERGE_STATS_FILTERS,
-        filters,
+        filters: fromJS(filters),
     }
 }
 
 export const resetStatsFilters = () => {
     return {type: constants.RESET_STATS_FILTERS}
-}
-
-export const setStat = (
-    name: string,
-    stat: Map<any, any>
-): ReturnType<StoreDispatch> => {
-    return {
-        type: constants.SET_STAT,
-        name,
-        stat,
-    }
 }

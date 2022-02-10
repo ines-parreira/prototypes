@@ -11,9 +11,9 @@ import {RootState, StoreDispatch} from 'state/types'
 import {integrationsState} from 'fixtures/integrations'
 import {logEvent} from 'store/middlewares/segmentTracker'
 import {tags} from 'fixtures/tag'
-import {StatsFilters} from 'state/stats/types'
 import {TicketChannel} from 'business/types/ticket'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
+import {StatsFilters} from 'models/stat/types'
 
 import TicketsCreatedPerTagViewLink from '../TicketsCreatedPerTagViewLink'
 

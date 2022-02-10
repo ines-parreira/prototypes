@@ -6,24 +6,22 @@ import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
 
-import {RootState, StoreDispatch} from '../../../state/types'
-import useStatResource from '../useStatResource'
-import {TicketChannel} from '../../../business/types/ticket'
-import {
-    latestSatisfactionSurveys,
-    satisfactionSurveys,
-} from '../../../fixtures/stats'
-import {renderWithRouter} from '../../../utils/testing'
-import {SATISFACTION_SURVEYS} from '../../../config/stats'
-import {integrationsState} from '../../../fixtures/integrations'
-import {StatsFilterType} from '../../../state/stats/types'
-import {agents} from '../../../fixtures/agents'
-import {teams} from '../../../fixtures/teams'
+import {RootState, StoreDispatch} from 'state/types'
+import {TicketChannel} from 'business/types/ticket'
+import {latestSatisfactionSurveys, satisfactionSurveys} from 'fixtures/stats'
+import {renderWithRouter} from 'utils/testing'
+import {SATISFACTION_SURVEYS} from 'config/stats'
+import {integrationsState} from 'fixtures/integrations'
+import {agents} from 'fixtures/agents'
+import {teams} from 'fixtures/teams'
+import {account} from 'fixtures/account'
+import {AccountFeature} from 'state/currentAccount/types'
+import {StatsFilters} from 'models/stat/types'
+import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
+
 import SupportPerformanceSatisfaction from '../SupportPerformanceSatisfaction'
 import TagsStatsFilter from '../TagsStatsFilter'
-import {account} from '../../../fixtures/account'
-import {AccountFeature} from '../../../state/currentAccount/types'
-import FeaturePaywall from '../../common/components/FeaturePaywall/FeaturePaywall'
+import useStatResource from '../useStatResource'
 
 jest.mock('../useStatResource')
 jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
@@ -34,7 +32,7 @@ jest.mock(
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
 )
 jest.mock(
-    '../../common/components/FeaturePaywall/FeaturePaywall',
+    'pages/common/components/FeaturePaywall/FeaturePaywall',
     () =>
         ({feature}: ComponentProps<typeof FeaturePaywall>) => {
             return <div>Paywall for {feature}</div>
@@ -52,7 +50,17 @@ describe('SupportPerformanceSatisfaction', () => {
     const defaultState = {
         currentAccount: fromJS(account),
         stats: fromJS({
-            filters: null,
+            filters: {
+                period: {
+                    start_datetime: '2021-02-03T00:00:00.000Z',
+                    end_datetime: '2021-02-03T23:59:59.999Z',
+                },
+                channels: [TicketChannel.Chat],
+                integrations: [integrationsState.integrations[0].id],
+                tags: [1],
+                agents: [agents[0].id],
+                score: ['2'],
+            } as StatsFilters,
         }),
         agents: fromJS({
             all: agents,
@@ -76,35 +84,7 @@ describe('SupportPerformanceSatisfaction', () => {
         mathRandomSpy.mockRestore()
     })
 
-    it('should not render the filters nor the stats when stats filters are not defined', () => {
-        const store = mockStore(defaultState)
-        const {container} = render(
-            <Provider store={store}>
-                <SupportPerformanceSatisfaction />
-            </Provider>
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
     it('should render the filters and stats when stats filters are defined', () => {
-        const store = mockStore({
-            ...defaultState,
-            stats: fromJS({
-                filters: {
-                    [StatsFilterType.Period]: {
-                        start_time: '2021-02-03T00:00:00.000Z',
-                        end_time: '2021-02-03T23:59:59.999Z',
-                    },
-                    [StatsFilterType.Channels]: [TicketChannel.Chat],
-                    [StatsFilterType.Integrations]: [
-                        integrationsState.integrations[0].id,
-                    ],
-                    [StatsFilterType.Tags]: [1],
-                    [StatsFilterType.Agents]: [agents[0].id],
-                    [StatsFilterType.Score]: ['2'],
-                },
-            }),
-        })
         useStatResourceMock.mockImplementation(({resourceName}) => {
             if (resourceName === SATISFACTION_SURVEYS) {
                 return [satisfactionSurveys, false, _noop]
@@ -113,7 +93,7 @@ describe('SupportPerformanceSatisfaction', () => {
         })
 
         const {container} = renderWithRouter(
-            <Provider store={store}>
+            <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceSatisfaction />
             </Provider>
         )

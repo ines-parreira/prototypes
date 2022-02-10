@@ -4,7 +4,7 @@ import {fromJS, Map} from 'immutable'
 
 import {
     getMessagingIntegrationsStatsFilter,
-    getStatsFiltersJS,
+    getStatsFilters,
     getStatsMessagingIntegrations,
 } from 'state/stats/selectors'
 import {
@@ -17,8 +17,8 @@ import {
     SankeyDiagram,
     OneDimensionalChart,
     TwoDimensionalChart,
+    StatsFilters,
 } from 'models/stat/types'
-import {StatsFilterType} from 'state/stats/types'
 import {TicketChannel} from 'business/types/ticket'
 
 import ChannelsStatsFilter from './ChannelsStatsFilter'
@@ -39,18 +39,15 @@ export default function AutomationOverview() {
     const integrationsStatsFilter = useSelector(
         getMessagingIntegrationsStatsFilter
     )
-    const statsFilters = useSelector(getStatsFiltersJS)
+    const statsFilters = useSelector(getStatsFilters)
 
-    const pageStatsFilters = useMemo(() => {
-        return (
-            statsFilters && {
-                [StatsFilterType.Integrations]: integrationsStatsFilter,
-                [StatsFilterType.Channels]:
-                    statsFilters[StatsFilterType.Channels] || [],
-                [StatsFilterType.Period]:
-                    statsFilters[StatsFilterType.Period] || [],
-            }
-        )
+    const pageStatsFilters = useMemo<StatsFilters>(() => {
+        const {channels, period} = statsFilters
+        return {
+            channels,
+            period,
+            integrations: integrationsStatsFilter,
+        }
     }, [integrationsStatsFilter, statsFilters])
 
     const [automationOverview, isFetchingAutomationOverview] =
@@ -90,19 +87,15 @@ export default function AutomationOverview() {
                 pageStatsFilters && (
                     <>
                         <IntegrationsStatsFilter
-                            value={
-                                pageStatsFilters[StatsFilterType.Integrations]
-                            }
+                            value={pageStatsFilters.integrations}
                             integrations={messagingIntegrations}
                             isMultiple
                         />
                         <ChannelsStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Channels]}
+                            value={pageStatsFilters.channels}
                             channels={Object.values(TicketChannel)}
                         />
-                        <PeriodStatsFilter
-                            value={pageStatsFilters[StatsFilterType.Period]}
-                        />
+                        <PeriodStatsFilter value={pageStatsFilters.period} />
                     </>
                 )
             }

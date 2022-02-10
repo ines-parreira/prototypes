@@ -6,35 +6,36 @@ import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
 
-import {RootState, StoreDispatch} from '../../../state/types'
-import useStatResource from '../useStatResource'
-import {TicketChannel} from '../../../business/types/ticket'
+import {RootState, StoreDispatch} from 'state/types'
+import {TicketChannel} from 'business/types/ticket'
 import {
     revenueOverview,
     revenuePerAgent,
     revenuePerDay,
     revenuePerTicket,
-} from '../../../fixtures/stats'
-import {renderWithRouter} from '../../../utils/testing'
+} from 'fixtures/stats'
+import {renderWithRouter} from 'utils/testing'
 import {
     REVENUE_OVERVIEW,
     REVENUE_PER_AGENT,
     REVENUE_PER_DAY,
-} from '../../../config/stats'
-import {integrationsStateWithShopify} from '../../../fixtures/integrations'
-import {StatsFilterType} from '../../../state/stats/types'
-import {agents} from '../../../fixtures/agents'
-import {teams} from '../../../fixtures/teams'
-import SupportPerformanceRevenue from '../SupportPerformanceRevenue'
-import FeaturePaywall from '../../common/components/FeaturePaywall/FeaturePaywall'
-import {account} from '../../../fixtures/account'
+} from 'config/stats'
+import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
+import {integrationsStateWithShopify} from 'fixtures/integrations'
+import {agents} from 'fixtures/agents'
+import {teams} from 'fixtures/teams'
+import {account} from 'fixtures/account'
+import {AccountFeature} from 'state/currentAccount/types'
+import {StatsFilters} from 'models/stat/types'
+
 import TagsStatsFilter from '../TagsStatsFilter'
-import {AccountFeature} from '../../../state/currentAccount/types'
+import useStatResource from '../useStatResource'
+import SupportPerformanceRevenue from '../SupportPerformanceRevenue'
 
 jest.mock('../useStatResource')
 jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
 jest.mock(
-    '../../common/components/FeaturePaywall/FeaturePaywall',
+    'pages/common/components/FeaturePaywall/FeaturePaywall',
     () =>
         ({feature}: ComponentProps<typeof FeaturePaywall>) => {
             return <div>Paywall for {feature}</div>
@@ -59,7 +60,23 @@ describe('SupportPerformanceRevenue', () => {
         currentAccount: fromJS(account),
         integrations: integrationsStateWithShopify,
         stats: fromJS({
-            filters: null,
+            filters: {
+                period: {
+                    start_datetime: '2021-02-03T00:00:00.000Z',
+                    end_datetime: '2021-02-03T23:59:59.999Z',
+                },
+                channels: [TicketChannel.Chat],
+                integrations: [
+                    (
+                        integrationsStateWithShopify.getIn([
+                            'integrations',
+                            '0',
+                        ]) as Map<any, any>
+                    ).get('id'),
+                ],
+                agents: [agents[0].id],
+                tags: [1],
+            } as StatsFilters,
         }),
         agents: fromJS({
             all: agents,
@@ -83,39 +100,7 @@ describe('SupportPerformanceRevenue', () => {
         mathRandomSpy.mockRestore()
     })
 
-    it('should not render the filters nor the stats when stats filters are not defined', () => {
-        const store = mockStore(defaultState)
-        const {container} = render(
-            <Provider store={store}>
-                <SupportPerformanceRevenue />
-            </Provider>
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
     it('should render the filters and stats when stats filters are defined', () => {
-        const store = mockStore({
-            ...defaultState,
-            stats: fromJS({
-                filters: {
-                    [StatsFilterType.Period]: {
-                        start_time: '2021-02-03T00:00:00.000Z',
-                        end_time: '2021-02-03T23:59:59.999Z',
-                    },
-                    [StatsFilterType.Channels]: [TicketChannel.Chat],
-                    [StatsFilterType.Integrations]: [
-                        (
-                            integrationsStateWithShopify.getIn([
-                                'integrations',
-                                '0',
-                            ]) as Map<any, any>
-                        ).get('id'),
-                    ],
-                    [StatsFilterType.Agents]: [agents[0].id],
-                    [StatsFilterType.Tags]: [1],
-                },
-            }),
-        })
         useStatResourceMock.mockImplementation(({resourceName}) => {
             switch (resourceName) {
                 case REVENUE_OVERVIEW:
@@ -130,7 +115,7 @@ describe('SupportPerformanceRevenue', () => {
         })
 
         const {container} = renderWithRouter(
-            <Provider store={store}>
+            <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceRevenue />
             </Provider>
         )
