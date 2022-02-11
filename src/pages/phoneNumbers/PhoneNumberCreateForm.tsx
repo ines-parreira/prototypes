@@ -2,6 +2,7 @@ import React, {useCallback, useState, useMemo} from 'react'
 import classnames from 'classnames'
 import {Button, Col, Form, FormGroup, Label, Row} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
+import {AxiosError} from 'axios'
 
 import {
     PhoneNumber,
@@ -187,9 +188,15 @@ export default function PhoneIntegrationCreate(): JSX.Element {
                 )
                 history.push(`/app/settings/phone-numbers/${phoneNumber.id}`)
             } catch (error) {
+                const {response} = error as AxiosError<{error: {msg: string}}>
+                const errorMsg =
+                    response && response.data.error
+                        ? response.data.error.msg
+                        : 'Failed to create phone number'
+
                 void dispatch(
                     notify({
-                        message: 'Failed to create phone number',
+                        message: errorMsg,
                         status: NotificationStatus.Error,
                     })
                 )
