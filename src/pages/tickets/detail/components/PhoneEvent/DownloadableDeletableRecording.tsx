@@ -1,8 +1,7 @@
-import React, {useCallback, useMemo, useState} from 'react'
+import React, {useCallback, useState} from 'react'
 
 import {AxiosError} from 'axios'
 import {connect} from 'react-redux'
-import {uniqueId} from 'lodash'
 import {Map} from 'immutable'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
@@ -16,7 +15,6 @@ import {RootState} from 'state/types'
 import {hasRole} from 'utils'
 import {UserRole} from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
-import Tooltip from 'pages/common/components/Tooltip'
 
 import css from './DownloadableDeletableRecording.less'
 
@@ -118,14 +116,9 @@ function useDownloadRecording(url: string) {
 
 const DeleteButton = ({url}: ButtonProps) => {
     const {deleteRecording, isRequestPending} = useDeleteRecording(url)
-    const tooltipTargetID = useMemo(
-        () => uniqueId('delete-button-') + '-tooltip-target',
-        []
-    )
 
     return (
         <ConfirmButton
-            id={tooltipTargetID}
             className="float-right"
             type="button"
             intent={ButtonIntent.Destructive}
@@ -134,9 +127,6 @@ const DeleteButton = ({url}: ButtonProps) => {
             confirmationContent="You are about to delete this call recording. You cannot recover a deleted recording."
         >
             <i className="material-icons">delete</i>
-            <Tooltip target={tooltipTargetID} trigger={['hover']}>
-                Delete recording
-            </Tooltip>
         </ConfirmButton>
     )
 }
@@ -144,23 +134,14 @@ const DeleteButton = ({url}: ButtonProps) => {
 const DownloadButton = ({url}: ButtonProps) => {
     const {downloadRecording, isRequestPending} = useDownloadRecording(url)
 
-    const tooltipTargetID = useMemo(
-        () => uniqueId('download-button-') + '-tooltip-target',
-        []
-    )
-
     return (
         <Button
-            id={tooltipTargetID}
             type="button"
             intent={ButtonIntent.Secondary}
             isDisabled={isRequestPending}
             onClick={downloadRecording}
         >
             <i className="material-icons">download</i>
-            <Tooltip target={tooltipTargetID} trigger={['hover']}>
-                Download recording
-            </Tooltip>
         </Button>
     )
 }

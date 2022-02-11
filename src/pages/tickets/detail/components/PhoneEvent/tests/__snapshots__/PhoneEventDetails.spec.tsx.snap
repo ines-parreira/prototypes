@@ -41,7 +41,6 @@ exports[`<PhoneEventDetails/> render() should render call recording event 1`] = 
         />
         <button
           class="wrapper secondary medium"
-          id="download-button-3-tooltip-target"
           type="button"
         >
           <i
@@ -52,7 +51,7 @@ exports[`<PhoneEventDetails/> render() should render call recording event 1`] = 
         </button>
         <button
           class="wrapper float-right destructive medium"
-          id="delete-button-4-tooltip-target"
+          id="confirm-42"
           type="button"
         >
           <i
@@ -216,7 +215,6 @@ exports[`<PhoneEventDetails/> render() should render voicemail event details 1`]
         />
         <button
           class="wrapper secondary medium"
-          id="download-button-1-tooltip-target"
           type="button"
         >
           <i
@@ -227,7 +225,7 @@ exports[`<PhoneEventDetails/> render() should render voicemail event details 1`]
         </button>
         <button
           class="wrapper float-right destructive medium"
-          id="delete-button-2-tooltip-target"
+          id="confirm-42"
           type="button"
         >
           <i

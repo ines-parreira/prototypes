@@ -5,10 +5,11 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 
-import {PhoneIntegrationEvent} from '../../../../../../constants/integrations/types/event'
-import {RootState, StoreDispatch} from '../../../../../../state/types'
+import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
+import {RootState, StoreDispatch} from 'state/types'
+import {user} from 'fixtures/users'
+
 import PhoneEventDetails from '../PhoneEventDetails'
-import {user} from '../../../../../../fixtures/users'
 
 describe('<PhoneEventDetails/>', () => {
     let store: MockStoreEnhanced
@@ -16,8 +17,13 @@ describe('<PhoneEventDetails/>', () => {
         thunk,
     ])
 
+    const realDateNow = Date.now
     beforeEach(() => {
         store = mockStore({currentUser: fromJS(user)})
+        Date.now = jest.fn(() => 42)
+    })
+    afterAll(() => {
+        Date.now = realDateNow
     })
 
     describe('render()', () => {
