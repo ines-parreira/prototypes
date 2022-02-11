@@ -2970,6 +2970,7 @@
                     },
                     "algolia_api_key": {"type": "string", "nullable": true},
                     "primary_color": {"type": "string"},
+                    "primary_font_family": {"type": "string"},
                     "theme": {"type": "string"},
                     "shop_name": {"type": "string", "nullable": true},
                     "self_service_deactivated_datetime": {
@@ -2995,6 +2996,7 @@
                     "powered_by_deactivated_datetime",
                     "algolia_api_key",
                     "primary_color",
+                    "primary_font_family",
                     "theme",
                     "shop_name",
                     "self_service_deactivated_datetime",
@@ -3146,7 +3148,8 @@
                         "type": "boolean",
                         "description": "Boolean indicating if the help center is deactivated.",
                         "example": false
-                    }
+                    },
+                    "primary_font_family": {"type": "string", "nullable": true}
                 }
             },
             "DeleteAccountDto": {

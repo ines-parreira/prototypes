@@ -120,6 +120,16 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
         <div
           class="heading"
         >
+          <h3>
+            Appearance
+          </h3>
+          <p>
+            Set up your help center's logo, color and theme.
+          </p>
+        </div>
+        <div
+          class="heading"
+        >
           <h4>
             Logo & Favicon
           </h4>
@@ -439,6 +449,174 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               This will be used as your primary color in hyperlinks, pagination and icons.
             </small>
           </div>
+        </section>
+        <section
+          style="margin-top: -20px;"
+        >
+          <label
+            class="control-label"
+          >
+            Primary font
+          </label>
+          <div>
+            <div
+              class="dropdown"
+            >
+              <div
+                aria-expanded="false"
+                aria-haspopup="true"
+                class=""
+                data-toggle="dropdown"
+              >
+                <div
+                  class="select dropdown-toggle selectFullWidth"
+                >
+                  <span
+                    class="label"
+                    style="min-width: 10px; opacity: 1;"
+                  >
+                    <span
+                      style="font-family: Inter;"
+                    >
+                      Inter
+                    </span>
+                  </span>
+                  <input
+                    autocomplete="chrome-off"
+                    class="input"
+                    style="min-width: 10px;"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                aria-hidden="true"
+                class="options optionsFullWidth dropdown-menu"
+                role="menu"
+                tabindex="-1"
+              >
+                
+                <button
+                  class="option option--focused dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    <span
+                      style="font-family: Arial;"
+                    >
+                      Arial
+                    </span>
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    <span
+                      style="font-family: Georgia;"
+                    >
+                      Georgia
+                    </span>
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    <span
+                      style="font-family: Impact;"
+                    >
+                      Impact
+                    </span>
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    <span
+                      style="font-family: Merriweather;"
+                    >
+                      Merriweather
+                    </span>
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    <span
+                      style="font-family: Source Code Pro;"
+                    >
+                      Source Code Pro
+                    </span>
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    <span
+                      style="font-family: Tahoma;"
+                    >
+                      Tahoma
+                    </span>
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    <span
+                      style="font-family: Times New Roman;"
+                    >
+                      Times New Roman
+                    </span>
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    <span
+                      style="font-family: Verdana;"
+                    >
+                      Verdana
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <small
+            class="form-text text-muted"
+          >
+            This font will be applied to the website. It will also be applied to articles unless another font is enforced on the article editor side.
+          </small>
         </section>
         <section>
           <div

@@ -756,6 +756,7 @@ declare namespace Components {
       powered_by_deactivated_datetime: string | null; // date-time
       algolia_api_key: string | null;
       primary_color: string;
+      primary_font_family: string;
       theme: string;
       shop_name: string | null;
       self_service_deactivated_datetime: string | null; // date-time
@@ -1242,6 +1243,7 @@ declare namespace Components {
        * false
        */
       deactivated?: boolean;
+      primary_font_family?: string | null;
     }
     export interface UpdateHelpCenterTranslationDto {
       /**

@@ -10,6 +10,20 @@ export const HELP_CENTER_BASE_PATH = '/app/settings/help-center'
 
 export const HELP_CENTER_DEFAULT_COLOR = '#4A8DF9'
 
+export const HELP_CENTER_DEFAULT_FONT = 'Inter'
+
+export const HELP_CENTER_AVAILABLE_FONTS = [
+    'Arial',
+    'Georgia',
+    'Impact',
+    'Inter',
+    'Merriweather',
+    'Source Code Pro',
+    'Tahoma',
+    'Times New Roman',
+    'Verdana',
+]
+
 export const HELP_CENTER_DEFAULT_THEME = HelpCenterTheme.LIGHT
 
 export const HELP_CENTER_DEFAULT_LOCALE: LocaleCode = 'en-US'

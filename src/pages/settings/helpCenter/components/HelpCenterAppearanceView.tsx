@@ -12,19 +12,23 @@ import {helpCenterUpdated} from '../../../../state/entities/helpCenters/actions'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {
+    HELP_CENTER_AVAILABLE_FONTS,
     HELP_CENTER_DEFAULT_COLOR,
+    HELP_CENTER_DEFAULT_FONT,
     HELP_CENTER_DEFAULT_THEME,
 } from '../constants'
 import {FileUpload, useFileUpload} from '../hooks/useFileUpload'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
 import {HelpCenterTheme, isHelpCenterTheme} from '../types'
+
 import HelpCenterPageWrapper from './HelpCenterPageWrapper'
 import {ImageUpload} from './ImageUpload'
 import {ThemeSwitch} from './ThemeSwitch'
 import {UpdateToggle} from './UpdateToggle'
 
 import css from './HelpCenterAppearanceView.less'
+import {FontSelectField} from './FontSelectField/FontSelectField'
 
 export const HelpCenterAppearanceView: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -36,9 +40,12 @@ export const HelpCenterAppearanceView: React.FC = () => {
             : HELP_CENTER_DEFAULT_THEME
     const helpCenterColor =
         helpCenter.primary_color || HELP_CENTER_DEFAULT_COLOR
+    const helpCenterFont =
+        helpCenter.primary_font_family || HELP_CENTER_DEFAULT_FONT
     const [selectedTheme, setSelectedTheme] =
         useState<HelpCenterTheme>(helpCenterTheme)
     const [currentColor, setCurrentColor] = useState(helpCenterColor)
+    const [currentFont, setCurrentFont] = useState(helpCenterFont)
     const primaryLogo = useFileUpload()
     const lightLogo = useFileUpload()
     const favicon = useFileUpload()
@@ -72,6 +79,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 const payload: Partial<HelpCenter> = {
                     theme: selectedTheme,
                     primary_color: currentColor,
+                    primary_font_family: currentFont,
                 }
 
                 payload.brand_logo_url = await getFileUploadURL(primaryLogo)
@@ -119,6 +127,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
         helpCenter,
         selectedTheme,
         currentColor,
+        currentFont,
         primaryLogo,
         favicon,
         bannerImage,
@@ -138,6 +147,10 @@ export const HelpCenterAppearanceView: React.FC = () => {
             return isHexColor(currentColor)
         }
 
+        if (currentFont !== helpCenter.primary_font_family) {
+            return Boolean(currentFont)
+        }
+
         if (
             primaryLogo.isTouched ||
             lightLogo.isTouched ||
@@ -152,6 +165,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
         helpCenter,
         selectedTheme,
         currentColor,
+        currentFont,
         primaryLogo,
         lightLogo,
         favicon,
@@ -184,6 +198,10 @@ export const HelpCenterAppearanceView: React.FC = () => {
 
     return (
         <HelpCenterPageWrapper activeLabel="Appearance" helpCenter={helpCenter}>
+            <div className={css.heading}>
+                <h3>Appearance</h3>
+                <p>Set up your help center's logo, color and theme.</p>
+            </div>
             <div className={css.heading}>
                 <h4>Logo &amp; Favicon</h4>
                 <p>
@@ -249,6 +267,17 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     currentColor={currentColor}
                     onThemeChange={setSelectedTheme}
                     onColorChange={setCurrentColor}
+                />
+            </section>
+            <section style={{marginTop: -20}}>
+                <FontSelectField
+                    title="Primary font"
+                    help="This font will be applied to the website. It will also be applied to articles unless another font is enforced on the article editor side."
+                    value={currentFont}
+                    fontOptions={HELP_CENTER_AVAILABLE_FONTS}
+                    onChange={(value) => {
+                        setCurrentFont(value)
+                    }}
                 />
             </section>
             <section>
