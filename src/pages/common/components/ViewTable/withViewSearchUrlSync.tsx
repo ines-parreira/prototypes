@@ -7,7 +7,7 @@ import {
     compressToEncodedURIComponent,
     decompressFromEncodedURIComponent,
 } from 'lz-string'
-import {stringify} from 'qs'
+import {stringify} from 'query-string'
 
 import useSearch from '../../../../hooks/useSearch'
 import * as viewsSelectors from '../../../../state/views/selectors'

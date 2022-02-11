@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
-import {parse as parseQueryString} from 'qs'
+import {parse as parseQueryString} from 'query-string'
 import {AxiosError} from 'axios'
 
 import {Components} from 'rest_api/help_center_api/client.generated'
@@ -75,9 +75,7 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
     const [importInProgress, setImportInProgress] = useState(false)
 
     useEffect(() => {
-        const queryString = parseQueryString(location.search, {
-            ignoreQueryPrefix: true,
-        })
+        const queryString = parseQueryString(location.search)
         const rawFileUrl = queryString.file_url
 
         if (typeof rawFileUrl === 'string' && rawFileUrl.length > 0) {

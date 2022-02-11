@@ -10,7 +10,7 @@ import {
     Container,
     Row,
 } from 'reactstrap'
-import {parse} from 'qs'
+import {parse} from 'query-string'
 import {connect, ConnectedProps} from 'react-redux'
 
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -63,8 +63,7 @@ export class SmileIntegrationDetailComponent extends Component<Props, State> {
                 nextProps.integration.getIn(['meta', 'oauth', 'status']) ===
                 PENDING_AUTHENTICATION_STATUS
             const isAuthenticating =
-                parse(nextProps.location.search, {ignoreQueryPrefix: true})
-                    .action === 'authentication'
+                parse(nextProps.location.search).action === 'authentication'
 
             if (isAuthenticating) {
                 if (authenticationRequired) {

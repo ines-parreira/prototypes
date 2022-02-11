@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
-import {parse} from 'qs'
+import {parse} from 'query-string'
 import {List, Map} from 'immutable'
 
 import * as integrationsActions from '../../../../../state/integrations/actions'
@@ -30,8 +30,7 @@ export class SmoochIntegrationList extends Component<Props> {
     componentDidMount() {
         // display message from url
         const {message, message_type: status = NotificationStatus.Info} = parse(
-            this.props.location.search,
-            {ignoreQueryPrefix: true}
+            this.props.location.search
         ) as {message: string; message_type: NotificationStatus}
 
         if (message) {

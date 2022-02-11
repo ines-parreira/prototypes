@@ -4,7 +4,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {Map} from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
 import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
-import {parse} from 'qs'
+import {parse} from 'query-string'
 import classNames from 'classnames'
 
 import {NotificationStatus} from '../../../../../state/notifications/types'
@@ -43,8 +43,7 @@ export class Magento2IntegrationDetail extends React.Component<Props, State> {
     componentDidMount() {
         // display message from url
         const {location, isUpdate} = this.props
-        const message = parse(location.search, {ignoreQueryPrefix: true})
-            .message as string
+        const message = parse(location.search).message as string
         const status =
             (parse(location.search).message_type as NotificationStatus) ||
             NotificationStatus.Info
@@ -66,8 +65,7 @@ export class Magento2IntegrationDetail extends React.Component<Props, State> {
             !_isEmpty(nextProps.integration.toJS())
         ) {
             const isAuthenticating =
-                parse(nextProps.location.search, {ignoreQueryPrefix: true})
-                    .action === 'authentication'
+                parse(nextProps.location.search).action === 'authentication'
 
             if (isAuthenticating) {
                 this.props.triggerCreateSuccess(nextProps.integration.toJS())
