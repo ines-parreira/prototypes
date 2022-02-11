@@ -170,7 +170,7 @@ export const HelpCenterStartView: React.FC = () => {
                     client’s questions in an organic way. Set up a dedicated
                     site to sideload your support flow.{' '}
                     <a
-                        href="https://docs.gorgias.com/other-integrations/gorgias-help-center"
+                        href="https://docs.gorgias.com/help-center/gorgias-help-center"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
