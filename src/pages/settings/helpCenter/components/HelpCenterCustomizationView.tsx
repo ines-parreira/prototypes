@@ -4,15 +4,15 @@ import {FormGroup} from 'reactstrap'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
-import useAppDispatch from '../../../../hooks/useAppDispatch'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     ExtraHTMLDto,
     LocalSocialNavigationLink,
     NavigationLink,
-} from '../../../../models/helpCenter/types'
-import {getViewLanguage} from '../../../../state/helpCenter/ui'
-import {notify} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
+} from 'models/helpCenter/types'
+import {getViewLanguage} from 'state/ui/helpCenter'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {SocialNavigationLinks} from '../components/SocialNavigationLinks'
 import {HELP_CENTER_DEFAULT_LOCALE, SOCIAL_NAVIGATION_LINKS} from '../constants'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'

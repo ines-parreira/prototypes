@@ -6,18 +6,18 @@ import {DndProvider} from 'react-dnd'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useSupportedLocales} from '../../../../../providers/SupportedLocales'
-import {getLocalesResponseFixture} from '../../../../../fixtures/getLocalesResponse.fixtures'
-import {RootState, StoreDispatch} from '../../../../../../../../state/types'
-import {getSingleHelpCenterResponseFixture} from '../../../../../fixtures/getHelpCentersResponse.fixture'
-import {getSingleArticleEnglish} from '../../../../../fixtures/getArticlesResponse.fixture'
-import {getSingleCategoryEnglish} from '../../../../../fixtures/getCategoriesResponse.fixtures'
+import {RootState, StoreDispatch} from 'state/types'
+import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {getSingleArticleEnglish} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
+import {getSingleCategoryEnglish} from 'pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
 
 import {CategoriesTableRow} from '../CategoriesTableRow'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('../../../../../hooks/useHelpCenterIdParam', () => {
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam', () => {
     return {
         useHelpCenterIdParam: jest.fn().mockReturnValue(1),
     }
@@ -36,7 +36,7 @@ const mockGetUncategorizedArticlesPositions = jest.fn().mockResolvedValue({
     data: [],
 })
 
-jest.mock('../../../../../hooks/useHelpCenterApi', () => {
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     return {
         useHelpCenterApi: () => ({
             isReady: true,
@@ -51,29 +51,33 @@ jest.mock('../../../../../hooks/useHelpCenterApi', () => {
     }
 })
 
-jest.mock('../../../../../providers/SupportedLocales')
+jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
 describe('<CategoriesTableRow />', () => {
     it('should render null if shouldRenderRowWithoutArticles is false and there are no articles', () => {
         const initialState: Partial<RootState> = {
             entities: {
-                helpCenters: {
-                    '1': getSingleHelpCenterResponseFixture,
+                helpCenter: {
+                    helpCenters: {
+                        helpCentersById: {
+                            '1': getSingleHelpCenterResponseFixture,
+                        },
+                    },
+                    articles: {
+                        articlesById: {},
+                    },
+                    categories: {
+                        categoriesById: {},
+                    },
                 },
             } as any,
-            helpCenter: {
-                articles: {
-                    articlesById: {},
-                },
-                categories: {
-                    categoriesById: {},
-                },
-                ui: {
+            ui: {
+                helpCenter: {
                     currentId: 1,
                     currentLanguage: 'en-US',
                 },
-            },
+            } as any,
         }
 
         const {container} = render(
@@ -93,22 +97,26 @@ describe('<CategoriesTableRow />', () => {
     it('should render "Uncategorized articles" row when shouldRenderRowWithoutArticles is false but there are some uncategorized articles', async () => {
         const initialState: Partial<RootState> = {
             entities: {
-                helpCenters: {
-                    '1': getSingleHelpCenterResponseFixture,
+                helpCenter: {
+                    helpCenters: {
+                        helpCentersById: {
+                            '1': getSingleHelpCenterResponseFixture,
+                        },
+                    },
+                    articles: {
+                        articlesById: {},
+                    },
+                    categories: {
+                        categoriesById: {},
+                    },
                 },
             } as any,
-            helpCenter: {
-                articles: {
-                    articlesById: {},
-                },
-                categories: {
-                    categoriesById: {},
-                },
-                ui: {
+            ui: {
+                helpCenter: {
                     currentId: 1,
                     currentLanguage: 'en-US',
                 },
-            },
+            } as any,
         }
 
         mockedListArticles.mockResolvedValue({
@@ -145,24 +153,28 @@ describe('<CategoriesTableRow />', () => {
     it('should render category row loading then idle', async () => {
         const initialState: Partial<RootState> = {
             entities: {
-                helpCenters: {
-                    '1': getSingleHelpCenterResponseFixture,
-                },
-            } as any,
-            helpCenter: {
-                articles: {
-                    articlesById: {},
-                },
-                categories: {
-                    categoriesById: {
-                        '1': getSingleCategoryEnglish,
+                helpCenter: {
+                    helpCenters: {
+                        helpCentersById: {
+                            '1': getSingleHelpCenterResponseFixture,
+                        },
+                    },
+                    articles: {
+                        articlesById: {},
+                    },
+                    categories: {
+                        categoriesById: {
+                            '1': getSingleCategoryEnglish,
+                        },
                     },
                 },
-                ui: {
+            } as any,
+            ui: {
+                helpCenter: {
                     currentId: 1,
                     currentLanguage: 'en-US',
                 },
-            },
+            } as any,
         }
 
         const {container, findByText} = render(

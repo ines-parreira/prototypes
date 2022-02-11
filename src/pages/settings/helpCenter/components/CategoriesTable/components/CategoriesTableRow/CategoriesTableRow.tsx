@@ -12,29 +12,29 @@ import {useSelector} from 'react-redux'
 import {usePrevious} from 'react-use'
 import {Badge, Spinner} from 'reactstrap'
 
-import {useModalManager} from '../../../../../../../hooks/useModalManager'
-import {Article, Category} from '../../../../../../../models/helpCenter/types'
+import {useModalManager} from 'hooks/useModalManager'
+import {Article, Category} from 'models/helpCenter/types'
 import {
     getArticlesInCategory,
     getUncategorizedArticles,
-} from '../../../../../../../state/helpCenter/articles'
-import {LanguageList} from '../../../../../../common/components/LanguageBulletList'
-import BodyCell from '../../../../../../common/components/table/cells/BodyCell'
-import TableBodyRow from '../../../../../../common/components/table/TableBodyRow'
-import Tooltip from '../../../../../../common/components/Tooltip'
+} from 'state/entities/helpCenter/articles'
+import {LanguageList} from 'pages/common/components/LanguageBulletList'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import Tooltip from 'pages/common/components/Tooltip'
 import {
     ARTICLES_PER_PAGE,
     CATEGORY_ROW_ACTIONS,
     MODALS,
-} from '../../../../constants'
-import {useArticlesActions} from '../../../../hooks/useArticlesActions'
-import {useSupportedLocales} from '../../../../providers/SupportedLocales'
+} from 'pages/settings/helpCenter/constants'
+import {useArticlesActions} from 'pages/settings/helpCenter/hooks/useArticlesActions'
+import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {
     DroppableTableBodyRow,
     RowEventListeners,
-} from '../../../DroppableTableBodyRow'
-import {TableActions} from '../../../TableActions'
-import {DND_ENTITIES} from '../../constants'
+} from 'pages/settings/helpCenter/components/DroppableTableBodyRow'
+import {TableActions} from 'pages/settings/helpCenter/components/TableActions'
+import {DND_ENTITIES} from 'pages/settings/helpCenter/components/CategoriesTable/constants'
 
 import css from './CategoriesTableRow.less'
 

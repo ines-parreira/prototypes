@@ -7,11 +7,11 @@ import {act, fireEvent, render, waitFor} from '@testing-library/react'
 
 import {fromJS} from 'immutable'
 
-import {initialState as articlesState} from '../../../../../../state/helpCenter/articles/reducer'
-import {initialState as categoriesState} from '../../../../../../state/helpCenter/categories/reducer'
-import {initialState as uiState} from '../../../../../../state/helpCenter/ui/reducer'
-import {RootState, StoreDispatch} from '../../../../../../state/types'
-import {getHelpCentersResponseFixture} from '../../../fixtures/getHelpCentersResponse.fixture'
+import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
+import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
+import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import {RootState, StoreDispatch} from 'state/types'
+import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {ConnectToShopSection} from '../ConnectToShopSection'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -19,15 +19,17 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const defaultState: Partial<RootState> = {
     billing: fromJS({plans: []}),
     entities: {
-        helpCenters: {
-            '1': getHelpCentersResponseFixture.data[0],
+        helpCenter: {
+            helpCenters: {
+                helpCentersById: {
+                    '1': getHelpCentersResponseFixture.data[0],
+                },
+            },
+            articles: articlesState,
+            categories: categoriesState,
         },
     } as any,
-    helpCenter: {
-        ui: {...uiState, currentId: 1},
-        articles: articlesState,
-        categories: categoriesState,
-    },
+    ui: {helpCenter: {...uiState, currentId: 1}} as any,
     integrations: fromJS({
         integrations: [
             {

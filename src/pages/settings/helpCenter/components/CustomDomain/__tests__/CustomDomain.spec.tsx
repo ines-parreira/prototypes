@@ -10,21 +10,21 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {initialState as articlesState} from '../../../../../../state/helpCenter/articles/reducer'
-import {initialState as categoriesState} from '../../../../../../state/helpCenter/categories/reducer'
-import {initialState as uiState} from '../../../../../../state/helpCenter/ui/reducer'
-import {RootState, StoreDispatch} from '../../../../../../state/types'
-import {getSingleHelpCenterResponseFixture} from '../../../fixtures/getHelpCentersResponse.fixture'
-import {useCurrentHelpCenter} from '../../../providers/CurrentHelpCenter'
+import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
+import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
+import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import {RootState, StoreDispatch} from 'state/types'
+import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
 import {CustomDomain} from '../CustomDomain'
 
-jest.mock('../../../hooks/useHelpCenterIdParam', () => {
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam', () => {
     return {
         useHelpCenterIdParam: jest.fn().mockReturnValue(1),
     }
 })
 
-jest.mock('../../../hooks/useHelpCenterApi', () => {
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     return {
         useHelpCenterApi: jest.fn().mockReturnValue({
             isReady: true,
@@ -103,7 +103,7 @@ jest.mock('../../../hooks/useHelpCenterApi', () => {
     }
 })
 
-jest.mock('../../../providers/CurrentHelpCenter')
+jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
     getSingleHelpCenterResponseFixture
 )
@@ -112,15 +112,17 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const defaultState: Partial<RootState> = {
     entities: {
-        helpCenters: {
-            '1': getSingleHelpCenterResponseFixture,
+        helpCenter: {
+            helpCenters: {
+                helpCentersById: {
+                    '1': getSingleHelpCenterResponseFixture,
+                },
+            },
+            articles: articlesState,
+            categories: categoriesState,
         },
     } as any,
-    helpCenter: {
-        ui: {...uiState, currentId: 1},
-        articles: articlesState,
-        categories: categoriesState,
-    },
+    ui: {helpCenter: {...uiState, currentId: 1}} as any,
 }
 
 const store = mockStore(defaultState)

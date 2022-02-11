@@ -6,12 +6,12 @@ import {useParams} from 'react-router-dom'
 import {renderHook} from 'react-hooks-testing-library'
 import configureMockStore from 'redux-mock-store'
 
-import {createCategoryFromDto} from '../../../../../models/helpCenter/utils'
+import {createCategoryFromDto} from 'models/helpCenter/utils'
 
-import {RootState, StoreDispatch} from '../../../../../state/types'
-import {initialState as articlesState} from '../../../../../state/helpCenter/articles/reducer'
-import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
-import {initialState as categoriesState} from '../../../../../state/helpCenter/categories/reducer'
+import {RootState, StoreDispatch} from 'state/types'
+import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
+import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {
     deleteCategory,
     pushCategorySupportedLocales,
@@ -19,9 +19,9 @@ import {
     saveCategories,
     updateCategoriesOrder,
     updateCategoryTranslation,
-} from '../../../../../state/helpCenter/categories'
+} from 'state/entities/helpCenter/categories'
 
-import {getSingleCategoryEnglish} from '../../fixtures/getCategoriesResponse.fixtures'
+import {getSingleCategoryEnglish} from 'pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
 
 import {useCategoriesActions} from '../useCategoriesActions'
 import {useHelpCenterApi} from '../useHelpCenterApi'
@@ -83,7 +83,7 @@ jest.mock('../useHelpCenterApi', () => {
     }
 })
 
-jest.mock('../../../../../state/helpCenter/categories', () => ({
+jest.mock('state/entities/helpCenter/categories', () => ({
     saveCategories: jest.fn().mockReturnValue({
         type: 'HELPCENTER/CATEGORIES/SAVE_CATEGORIES',
         payload: {},
@@ -110,17 +110,19 @@ jest.mock('../../../../../state/helpCenter/categories', () => ({
     }),
 }))
 
-jest.mock('../../../../../state/helpCenter/ui/selectors', () => ({
+jest.mock('state/ui/helpCenter/selectors', () => ({
     getViewLanguage: () => 'en-US',
 }))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const defaultState: Partial<RootState> = {
-    helpCenter: {
-        ui: uiState,
-        articles: articlesState,
-        categories: categoriesState,
-    },
+    entities: {
+        helpCenter: {
+            articles: articlesState,
+            categories: categoriesState,
+        },
+    } as any,
+    ui: {helpCenter: uiState} as any,
 }
 
 // TODO: This should be extracted in a tests utils folder

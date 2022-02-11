@@ -10,24 +10,24 @@ import axios from 'axios'
 import produce, {Draft} from 'immer'
 import {useSelector} from 'react-redux'
 
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     HelpCenter,
     HelpCenterTranslationSeoMeta,
     LocaleCode,
-} from '../../../../../models/helpCenter/types'
-import {helpCenterUpdated} from '../../../../../state/entities/helpCenters/actions'
-import {getViewLanguage} from '../../../../../state/helpCenter/ui'
-import {changeViewLanguage} from '../../../../../state/helpCenter/ui/actions'
-import {notify} from '../../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../../state/notifications/types'
-import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
-import {useHelpCenterActions} from '../../hooks/useHelpCenterActions'
-import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
+} from 'models/helpCenter/types'
+import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
+import {getViewLanguage} from 'state/ui/helpCenter'
+import {changeViewLanguage} from 'state/ui/helpCenter/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {HELP_CENTER_DEFAULT_LOCALE} from 'pages/settings/helpCenter/constants'
+import {useHelpCenterActions} from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
+import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {
     getNewHelpCenterTranslation,
     helpCenterSeoMetaFields,
-} from '../../utils/helpCenter.utils'
+} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 
 export type HelpCenterPreferencesState = {
     name: string

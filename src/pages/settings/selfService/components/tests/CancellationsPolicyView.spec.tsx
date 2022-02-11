@@ -6,14 +6,15 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {useParams} from 'react-router-dom'
 
-import {CancellationsPolicyView} from '../CancellationsPolicyView'
 import {
     SelfServiceConfiguration,
     ShopType,
-} from '../../../../../models/selfServiceConfiguration/types'
-import {SelfServiceConfigurationsState} from '../../../../../state/entities/selfServiceConfigurations/types'
-import {RootState, StoreDispatch} from '../../../../../state/types'
-import {updateSelfServiceConfiguration} from '../../../../../models/selfServiceConfiguration/resources'
+} from 'models/selfServiceConfiguration/types'
+import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
+import {SelfServiceConfigurationsState} from 'state/entities/selfServiceConfigurations/types'
+import {RootState, StoreDispatch} from 'state/types'
+import {updateSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
+import {CancellationsPolicyView} from '../CancellationsPolicyView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const updateSelfServiceConfigurationMock =
@@ -22,7 +23,7 @@ const updateSelfServiceConfigurationMock =
     >
 const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
 
-jest.mock('../../../../../models/selfServiceConfiguration/resources')
+jest.mock('models/selfServiceConfiguration/resources')
 jest.mock('react-router')
 
 const createShopifyIntegrationFixtures = (length: number) => {
@@ -93,7 +94,7 @@ describe('<CancellationsPolicyView/>', () => {
             tags: {},
             views: {},
             viewsCount: {},
-            helpCenters: {},
+            helpCenter: helpCenterInitialState,
             helpCenterArticles: {},
             selfServiceConfigurations: {},
             phoneNumbers: {},

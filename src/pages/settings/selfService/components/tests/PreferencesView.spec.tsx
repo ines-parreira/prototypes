@@ -6,18 +6,19 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {useParams} from 'react-router-dom'
 
-import {PreferencesView} from '../PreferencesView'
 import {
     SelfServiceConfiguration,
     ShopType,
-} from '../../../../../models/selfServiceConfiguration/types'
-import {RootState, StoreDispatch} from '../../../../../state/types'
-import {updateSelfServiceConfiguration} from '../../../../../models/selfServiceConfiguration/resources'
-import {SelfServiceConfigurationsState} from '../../../../../state/entities/selfServiceConfigurations/types'
-import {billingState} from '../../../../../fixtures/billing'
-import {account} from '../../../../../fixtures/account'
-import {basicPlan} from '../../../../../fixtures/subscriptionPlan'
-import {getEquivalentAutomationPlanId} from '../../../../../models/billing/utils'
+} from 'models/selfServiceConfiguration/types'
+import {RootState, StoreDispatch} from 'state/types'
+import {updateSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
+import {SelfServiceConfigurationsState} from 'state/entities/selfServiceConfigurations/types'
+import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
+import {billingState} from 'fixtures/billing'
+import {account} from 'fixtures/account'
+import {basicPlan} from 'fixtures/subscriptionPlan'
+import {getEquivalentAutomationPlanId} from 'models/billing/utils'
+import {PreferencesView} from '../PreferencesView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const updateSelfServiceConfigurationMock =
@@ -27,7 +28,7 @@ const updateSelfServiceConfigurationMock =
 const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
 
 jest.mock('react-router')
-jest.mock('../../../../../models/selfServiceConfiguration/resources')
+jest.mock('models/selfServiceConfiguration/resources')
 jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
 
 const createShopifyIntegrationFixtures = (length: number) => {
@@ -102,7 +103,7 @@ describe('<SelfServicePreferencesView/>', () => {
             tags: {},
             views: {},
             viewsCount: {},
-            helpCenters: {},
+            helpCenter: helpCenterInitialState,
             helpCenterArticles: {},
             selfServiceConfigurations: {},
             phoneNumbers: {},

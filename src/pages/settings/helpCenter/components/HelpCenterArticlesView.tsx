@@ -6,21 +6,21 @@ import {useSelector} from 'react-redux'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
-import {useLimitations} from '../../../../hooks/helpCenter/useLimitations'
-import useAppDispatch from '../../../../hooks/useAppDispatch'
-import {Event, useModalManager} from '../../../../hooks/useModalManager'
+import {useLimitations} from 'hooks/helpCenter/useLimitations'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {Event, useModalManager} from 'hooks/useModalManager'
 import {
     Article,
     ArticleTranslation,
     CreateArticleDto,
     LocaleCode,
-} from '../../../../models/helpCenter/types'
-import {resetArticles} from '../../../../state/helpCenter/articles'
-import {resetCategories} from '../../../../state/helpCenter/categories'
-import {getViewLanguage} from '../../../../state/helpCenter/ui'
-import {notify} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
-import {reportError} from '../../../../utils/errors'
+} from 'models/helpCenter/types'
+import {resetArticles} from 'state/entities/helpCenter/articles'
+import {resetCategories} from 'state/entities/helpCenter/categories'
+import {getViewLanguage} from 'state/ui/helpCenter'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {reportError} from 'utils/errors'
 import {
     DRAWER_TRANSITION_DURATION_MS,
     HELP_CENTER_DEFAULT_LOCALE,

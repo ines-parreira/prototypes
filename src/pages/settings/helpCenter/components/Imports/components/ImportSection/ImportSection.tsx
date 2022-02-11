@@ -16,16 +16,16 @@ import Button, {
     ButtonSize,
 } from 'pages/common/components/button/Button'
 
-import {notify} from '../../../../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../../../../state/notifications/types'
-import Loader from '../../../../../../common/components/Loader/Loader'
-import useAppDispatch from '../../../../../../../hooks/useAppDispatch'
-import {helpCenterUpdated} from '../../../../../../../state/entities/helpCenters/actions'
-import {uploadFiles} from '../../../../../../../utils'
-import {useHelpCenterApi} from '../../../../hooks/useHelpCenterApi'
-import {useCurrentHelpCenter} from '../../../../providers/CurrentHelpCenter'
-import {saveFileAsDownloaded} from '../../../../../../../utils/file'
-import {HOTSWAP_SDK_URL} from '../../../../../../../config'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import Loader from 'pages/common/components/Loader/Loader'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
+import {uploadFiles} from 'utils'
+import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
+import {saveFileAsDownloaded} from 'utils/file'
+import {HOTSWAP_SDK_URL} from 'config'
 
 import css from './ImportSection.less'
 import {

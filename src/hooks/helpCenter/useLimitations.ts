@@ -1,10 +1,10 @@
 import {useSelector} from 'react-redux'
 
-import {getArticles} from '../../state/helpCenter/articles'
+import {getArticles} from 'state/entities/helpCenter/articles'
 import {
     HELP_CENTER_MAX_ARTICLES,
     HELP_CENTER_MAX_ARTICLES_WARNING_THRESHOLD,
-} from '../../pages/settings/helpCenter/constants'
+} from 'pages/settings/helpCenter/constants'
 
 type Limitation = {
     disabled: boolean

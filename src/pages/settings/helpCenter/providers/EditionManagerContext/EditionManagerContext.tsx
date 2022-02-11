@@ -8,14 +8,10 @@ import React, {
 } from 'react'
 import {useSelector} from 'react-redux'
 
-import {
-    Article,
-    CreateArticleDto,
-    LocaleCode,
-} from '../../../../../models/helpCenter/types'
-import {getViewLanguage} from '../../../../../state/helpCenter/ui/selectors'
-import {HelpCenterArticleModalState} from '../../components/articles/HelpCenterEditArticleModalContent/types'
-import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
+import {Article, CreateArticleDto, LocaleCode} from 'models/helpCenter/types'
+import {getViewLanguage} from 'state/ui/helpCenter/selectors'
+import {HelpCenterArticleModalState} from 'pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/types'
+import {HELP_CENTER_DEFAULT_LOCALE} from 'pages/settings/helpCenter/constants'
 
 // TODO: move to redux (as UI states?)
 type EditionManagerContextValues = {

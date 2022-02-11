@@ -5,15 +5,15 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {fromJS, Map} from 'immutable'
 
-import {IntegrationType} from '../../../../../../models/integration/constants'
-import {RootState, StoreDispatch} from '../../../../../../state/types'
-import {initialState as articlesState} from '../../../../../../state/helpCenter/articles/reducer'
-import {initialState as uiState} from '../../../../../../state/helpCenter/ui/reducer'
-import {initialState as categoriesState} from '../../../../../../state/helpCenter/categories/reducer'
-import {renderWithRouter} from '../../../../../../utils/testing'
-import {HelpCenter} from '../../../../../../models/helpCenter/types'
-import {getHelpCentersResponseFixture} from '../../../fixtures/getHelpCentersResponse.fixture'
-import {SelfServiceConfiguration} from '../../../../../../models/selfServiceConfiguration/types'
+import {IntegrationType} from 'models/integration/constants'
+import {RootState, StoreDispatch} from 'state/types'
+import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
+import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
+import {renderWithRouter} from 'utils/testing'
+import {HelpCenter} from 'models/helpCenter/types'
+import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import SelfServiceSection from '../SelfServiceSection'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
@@ -28,47 +28,46 @@ const helpCenter: HelpCenter = {
 
 const defaultState: Partial<RootState> = {
     entities: {
-        helpCenters: {
-            '1': helpCenter,
+        helpCenter: {
+            helpCenters: {
+                helpCentersById: {
+                    '1': helpCenter,
+                },
+            },
+            articles: articlesState,
+            categories: categoriesState,
         },
     } as any,
-    helpCenter: {
-        ui: {...uiState, currentId: 1},
-        articles: articlesState,
-        categories: categoriesState,
-    },
+    ui: {helpCenter: {...uiState, currentId: 1}} as any,
 }
 
 const mockedUpdateHelpCenter = jest.fn().mockResolvedValue({
     data: helpCenter,
 })
 
-jest.mock(
-    '../../../../../../models/selfServiceConfiguration/resources',
-    () => ({
-        fetchSelfServiceConfiguration: (id: any): SelfServiceConfiguration => ({
-            id,
-            type: 'shopify',
-            shop_name: 'my-shop',
-            created_datetime: '2019-11-15 19:00:00.000000',
-            updated_datetime: '2019-11-15 19:00:00.000000',
-            deactivated_datetime: null,
-            report_issue_policy: {
-                enabled: true,
-                cases: [],
-            },
-            track_order_policy: {
-                enabled: true,
-            },
-            cancel_order_policy: {
-                enabled: true,
-            },
-            return_order_policy: {
-                enabled: true,
-            },
-        }),
-    })
-)
+jest.mock('models/selfServiceConfiguration/resources', () => ({
+    fetchSelfServiceConfiguration: (id: any): SelfServiceConfiguration => ({
+        id,
+        type: 'shopify',
+        shop_name: 'my-shop',
+        created_datetime: '2019-11-15 19:00:00.000000',
+        updated_datetime: '2019-11-15 19:00:00.000000',
+        deactivated_datetime: null,
+        report_issue_policy: {
+            enabled: true,
+            cases: [],
+        },
+        track_order_policy: {
+            enabled: true,
+        },
+        cancel_order_policy: {
+            enabled: true,
+        },
+        return_order_policy: {
+            enabled: true,
+        },
+    }),
+}))
 
 const route = {
     path: '/app/settings/help-center/:helpcenterId/appearance',

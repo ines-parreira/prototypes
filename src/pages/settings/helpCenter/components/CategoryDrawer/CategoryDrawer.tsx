@@ -3,18 +3,18 @@ import axios from 'axios'
 import {useSelector} from 'react-redux'
 import {useAsyncFn} from 'react-use'
 
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
-import {useModalManager} from '../../../../../hooks/useModalManager'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {useModalManager} from 'hooks/useModalManager'
 import {
     Category,
     CreateCategoryTranslationDto,
     HelpCenter,
     LocaleCode,
     UpdateCategoryTranslationDto,
-} from '../../../../../models/helpCenter/types'
-import {getCategoryById} from '../../../../../state/helpCenter/categories'
-import {notify} from '../../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../../state/notifications/types'
+} from 'models/helpCenter/types'
+import {getCategoryById} from 'state/entities/helpCenter/categories'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {MODALS} from '../../constants'
 import {useCategoriesActions} from '../../hooks/useCategoriesActions'
 import {HelpCenterCategoryEdit} from '../HelpCenterCategoryEdit'

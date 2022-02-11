@@ -5,13 +5,13 @@ import {useSelector} from 'react-redux'
 
 import {HelpCenterClient} from 'rest_api/help_center_api/index'
 
-import useAppDispatch from '../../../../hooks/useAppDispatch'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     Article,
     CreateArticleTranslationDto,
     LocaleCode,
-} from '../../../../models/helpCenter/types'
-import {createArticleFromDto} from '../../../../models/helpCenter/utils'
+} from 'models/helpCenter/types'
+import {createArticleFromDto} from 'models/helpCenter/utils'
 import {
     deleteArticle,
     pushArticleSupportedLocales,
@@ -19,11 +19,11 @@ import {
     saveArticles,
     updateArticle,
     updateArticlesOrder,
-} from '../../../../state/helpCenter/articles'
-import {getViewLanguage} from '../../../../state/helpCenter/ui'
+} from 'state/entities/helpCenter/articles'
+import {getViewLanguage} from 'state/ui/helpCenter'
 
-import {notify} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
 import {useHelpCenterApi} from './useHelpCenterApi'
 import {useHelpCenterIdParam} from './useHelpCenterIdParam'

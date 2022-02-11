@@ -7,15 +7,15 @@ import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import {Paths} from 'rest_api/help_center_api/client.generated'
 
-import useAppDispatch from '../../../../hooks/useAppDispatch'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     helpCenterDeleted,
     helpCenterUpdated,
-} from '../../../../state/entities/helpCenters/actions'
-import {notify} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
-import {ConfirmModalAction} from '../../../common/components/ConfirmModalAction'
-import InputField from '../../../common/forms/InputField'
+} from 'state/entities/helpCenter/helpCenters/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
+import InputField from 'pages/common/forms/InputField'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'

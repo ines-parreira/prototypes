@@ -3,20 +3,20 @@ import {useSelector} from 'react-redux'
 import {Container} from 'reactstrap'
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
-import {Category, HelpCenter} from '../../../../../models/helpCenter/types'
-import {getUncategorizedArticles} from '../../../../../state/helpCenter/articles'
-import InfiniteScroll from '../../../../common/components/InfiniteScroll/InfiniteScroll'
-import Loader from '../../../../common/components/Loader/Loader'
+import {Category, HelpCenter} from 'models/helpCenter/types'
+import {getUncategorizedArticles} from 'state/entities/helpCenter/articles'
+import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import Loader from 'pages/common/components/Loader/Loader'
 import {
     CategoriesTable,
     CategoriesTableProps,
-} from '../../components/CategoriesTable'
-import {ImportSection} from '../../components/Imports/components/ImportSection'
-import {CATEGORIES_PER_PAGE} from '../../constants'
-import {useArticlesActions} from '../../hooks/useArticlesActions'
-import {useCategoriesActions} from '../../hooks/useCategoriesActions'
-import {useHelpCenterCategories} from '../../hooks/useHelpCenterCategories'
-import settingsCss from '../../../settings.less'
+} from 'pages/settings/helpCenter/components/CategoriesTable'
+import {ImportSection} from 'pages/settings/helpCenter/components/Imports/components/ImportSection'
+import {CATEGORIES_PER_PAGE} from 'pages/settings/helpCenter/constants'
+import {useArticlesActions} from 'pages/settings/helpCenter/hooks/useArticlesActions'
+import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategoriesActions'
+import {useHelpCenterCategories} from 'pages/settings/helpCenter/hooks/useHelpCenterCategories'
+import settingsCss from 'pages/settings/settings.less'
 
 import css from './CategoriesView.less'
 

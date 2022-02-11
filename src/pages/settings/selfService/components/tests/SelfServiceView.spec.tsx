@@ -5,17 +5,18 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import {SelfServiceView} from '../SelfServiceView'
 import {
     SelfServiceConfiguration,
     ShopType,
-} from '../../../../../models/selfServiceConfiguration/types'
-import {RootState, StoreDispatch} from '../../../../../state/types'
+} from 'models/selfServiceConfiguration/types'
+import {RootState, StoreDispatch} from 'state/types'
 import {
     fetchSelfServiceConfigurations,
     updateSelfServiceConfiguration,
-} from '../../../../../models/selfServiceConfiguration/resources'
-import {SelfServiceConfigurationsState} from '../../../../../state/entities/selfServiceConfigurations/types'
+} from 'models/selfServiceConfiguration/resources'
+import {SelfServiceConfigurationsState} from 'state/entities/selfServiceConfigurations/types'
+import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
+import {SelfServiceView} from '../SelfServiceView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const fetchSelfServiceConfigurationsMock =
@@ -28,7 +29,7 @@ const updateSelfServiceConfigurationMock =
     >
 
 jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
-jest.mock('../../../../../models/selfServiceConfiguration/resources')
+jest.mock('models/selfServiceConfiguration/resources')
 
 const createShopifyIntegrationFixtures = (length: number) => {
     return Array.from({length}, (_, i) => ({
@@ -86,7 +87,7 @@ describe('<SelfServiceView/>', () => {
             tags: {},
             views: {},
             viewsCount: {},
-            helpCenters: {},
+            helpCenter: helpCenterInitialState,
             helpCenterArticles: {},
             selfServiceConfigurations: {},
             phoneNumbers: {},

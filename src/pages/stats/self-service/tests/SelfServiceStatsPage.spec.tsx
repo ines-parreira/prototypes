@@ -25,6 +25,7 @@ import {
     selfServiceTopReportedIssues,
 } from 'fixtures/stats'
 import {StatsFilters} from 'models/stat/types'
+import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
 
 import useStatResource from '../../useStatResource'
 import SelfServiceStatsPage from '../SelfServiceStatsPage'
@@ -72,7 +73,7 @@ describe('<SelfServiceStatsPage />', () => {
             tags: {},
             views: {},
             viewsCount: {},
-            helpCenters: {},
+            helpCenter: helpCenterInitialState,
             helpCenterArticles: {},
             selfServiceConfigurations: {},
             phoneNumbers: {},

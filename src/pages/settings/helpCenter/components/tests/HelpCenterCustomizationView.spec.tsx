@@ -2,11 +2,11 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {RootState, StoreDispatch} from '../../../../../state/types'
-import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
-import {initialState as articlesState} from '../../../../../state/helpCenter/articles/reducer'
-import {initialState as categoriesState} from '../../../../../state/helpCenter/categories/reducer'
-import {renderWithRouter} from '../../../../../utils/testing'
+import {RootState, StoreDispatch} from 'state/types'
+import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
+import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
+import {renderWithRouter} from 'utils/testing'
 import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
 import HelpCenterCustomizationView from '../HelpCenterCustomizationView'
 import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
@@ -17,15 +17,15 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
 const defaultState: Partial<RootState> = {
     entities: {
-        helpCenters: {
-            '1': getSingleHelpCenterResponseFixture,
+        helpCenter: {
+            articles: articlesState,
+            categories: categoriesState,
+            helpCenters: {
+                '1': getSingleHelpCenterResponseFixture,
+            },
         },
     } as any,
-    helpCenter: {
-        ui: {...uiState, currentId: 1},
-        articles: articlesState,
-        categories: categoriesState,
-    },
+    ui: {helpCenter: {...uiState, currentId: 1}} as any,
 }
 const store = mockStore(defaultState)
 

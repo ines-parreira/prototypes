@@ -5,7 +5,7 @@ import {useParams} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {CreateArticleTranslationDto} from '../../../../../models/helpCenter/types'
+import {CreateArticleTranslationDto} from 'models/helpCenter/types'
 import {
     deleteArticle,
     pushArticleSupportedLocales,
@@ -13,15 +13,15 @@ import {
     saveArticles,
     updateArticle,
     updateArticlesOrder,
-} from '../../../../../state/helpCenter/articles'
-import {initialState as articlesState} from '../../../../../state/helpCenter/articles/reducer'
-import {initialState as categoriesState} from '../../../../../state/helpCenter/categories/reducer'
-import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
-import {RootState, StoreDispatch} from '../../../../../state/types'
+} from 'state/entities/helpCenter/articles'
+import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
+import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
+import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import {RootState, StoreDispatch} from 'state/types'
 import {
     getArticlesResponseFixture,
     getSingleArticleEnglish,
-} from '../../fixtures/getArticlesResponse.fixture'
+} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 import {useArticlesActions} from '../useArticlesActions'
 
 jest.mock('react-router')
@@ -182,7 +182,7 @@ jest.mock('../useHelpCenterApi', () => {
     }
 })
 
-jest.mock('../../../../../state/helpCenter/articles', () => ({
+jest.mock('state/entities/helpCenter/articles', () => ({
     deleteArticle: jest.fn().mockReturnValue({
         type: 'HELPCENTER/ARTICLES/DELETE_ARTICLE',
         payload: {},
@@ -209,17 +209,19 @@ jest.mock('../../../../../state/helpCenter/articles', () => ({
     }),
 }))
 
-jest.mock('../../../../../state/helpCenter/ui/selectors', () => ({
+jest.mock('state/ui/helpCenter/selectors', () => ({
     getViewLanguage: () => 'en-US',
 }))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const defaultState: Partial<RootState> = {
-    helpCenter: {
-        ui: uiState,
-        articles: articlesState,
-        categories: categoriesState,
-    },
+    entities: {
+        helpCenter: {
+            articles: articlesState,
+            categories: categoriesState,
+        },
+    } as any,
+    ui: {helpCenter: uiState} as any,
 }
 
 // TODO: This should be extracted in a tests utils folder

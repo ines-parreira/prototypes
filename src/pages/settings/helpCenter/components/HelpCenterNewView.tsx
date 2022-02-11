@@ -9,15 +9,15 @@ import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
+import {CreateHelpCenterDto} from 'models/helpCenter/types'
+import {validLocaleCode} from 'models/helpCenter/utils'
+import {helpCenterCreated} from 'state/entities/helpCenter/helpCenters/actions'
+import {notify as notifyAction} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import Loader from 'pages/common/components/Loader/Loader'
+import PageHeader from 'pages/common/components/PageHeader'
 import InputField from 'pages/common/forms/InputField'
-import {CreateHelpCenterDto} from '../../../../models/helpCenter/types'
-import {validLocaleCode} from '../../../../models/helpCenter/utils'
-import {helpCenterCreated} from '../../../../state/entities/helpCenters/actions'
-import {notify as notifyAction} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
-import Loader from '../../../common/components/Loader/Loader'
-import PageHeader from '../../../common/components/PageHeader'
-import SelectField from '../../../common/forms/SelectField/SelectField'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {SubdomainInput} from '../components/SubdomainSection'
 import {
     HELP_CENTER_BASE_PATH,

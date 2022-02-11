@@ -2,17 +2,17 @@ import {chain as _chain} from 'lodash'
 import {useState} from 'react'
 import {useSelector} from 'react-redux'
 
-import {notify} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {
     Category,
     CreateCategoryDto,
     CreateCategoryTranslationDto,
     LocaleCode,
     UpdateCategoryTranslationDto,
-} from '../../../../models/helpCenter/types'
-import {createCategoryFromDto} from '../../../../models/helpCenter/utils'
-import useAppDispatch from '../../../../hooks/useAppDispatch'
+} from 'models/helpCenter/types'
+import {createCategoryFromDto} from 'models/helpCenter/utils'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     deleteCategory,
     pushCategorySupportedLocales,
@@ -20,8 +20,8 @@ import {
     saveCategories,
     updateCategoriesOrder,
     updateCategoryTranslation,
-} from '../../../../state/helpCenter/categories'
-import {getViewLanguage} from '../../../../state/helpCenter/ui'
+} from 'state/entities/helpCenter/categories'
+import {getViewLanguage} from 'state/ui/helpCenter'
 
 import {useHelpCenterApi} from './useHelpCenterApi'
 import {useHelpCenterIdParam} from './useHelpCenterIdParam'

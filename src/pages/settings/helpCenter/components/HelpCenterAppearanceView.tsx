@@ -6,11 +6,11 @@ import isHexColor from 'validator/lib/isHexColor'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
-import useAppDispatch from '../../../../hooks/useAppDispatch'
-import {HelpCenter} from '../../../../models/helpCenter/types'
-import {helpCenterUpdated} from '../../../../state/entities/helpCenters/actions'
-import {notify} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {HelpCenter} from 'models/helpCenter/types'
+import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {
     HELP_CENTER_AVAILABLE_FONTS,
     HELP_CENTER_DEFAULT_COLOR,

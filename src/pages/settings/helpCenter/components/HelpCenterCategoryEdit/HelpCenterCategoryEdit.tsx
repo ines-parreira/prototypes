@@ -13,8 +13,8 @@ import {
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
-import {SCREEN_SIZE, useScreenSize} from '../../../../../hooks/useScreenSize'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
 import {
     Category,
     CreateCategoryTranslationDto,
@@ -22,25 +22,25 @@ import {
     LocalCategoryTranslation,
     LocaleCode,
     UpdateCategoryTranslationDto,
-} from '../../../../../models/helpCenter/types'
-import {getViewLanguage} from '../../../../../state/helpCenter/ui'
-import {notify} from '../../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../../state/notifications/types'
-import {Drawer} from '../../../../common/components/Drawer'
-import AutoPopulateInput from '../../../../common/forms/AutoPopulateInput/AutoPopulateInput'
+} from 'models/helpCenter/types'
+import {getViewLanguage} from 'state/ui/helpCenter'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {Drawer} from 'pages/common/components/Drawer'
+import AutoPopulateInput from 'pages/common/forms/AutoPopulateInput/AutoPopulateInput'
 import {
     DRAWER_TRANSITION_DURATION_MS,
     HELP_CENTER_DEFAULT_LOCALE,
     HELP_CENTER_TITLE_MAX_LENGTH,
-} from '../../constants'
-import {useSupportedLocales} from '../../providers/SupportedLocales'
+} from 'pages/settings/helpCenter/constants'
+import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {
     getAbsoluteUrl,
     getCategoryUrl,
     getHelpCenterDomain,
     slugify,
-} from '../../utils/helpCenter.utils'
-import {getLocaleSelectOptions} from '../../utils/localeSelectOptions'
+} from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import {getLocaleSelectOptions} from 'pages/settings/helpCenter/utils/localeSelectOptions'
 import {ConfirmationModal} from '../ConfirmationModal'
 import {SearchEnginePreview} from '../SearchEnginePreview'
 import {

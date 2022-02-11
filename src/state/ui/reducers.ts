@@ -10,6 +10,8 @@ import views from './views/reducer'
 import {ViewsState} from './views/types'
 import {SelfServiceConfigurationsState} from './selfServiceConfigurations/types'
 import selfServiceConfigurations from './selfServiceConfigurations/reducer'
+import {HelpCenterState} from './helpCenter/types'
+import helpCenter from './helpCenter/reducer'
 
 const uiReducers = combineReducers<{
     editor: EditorState
@@ -17,12 +19,14 @@ const uiReducers = combineReducers<{
     ticketNavbar: TicketNavbarState
     views: ViewsState
     selfServiceConfigurations: SelfServiceConfigurationsState
+    helpCenter: HelpCenterState
 }>({
     editor,
     stats,
     ticketNavbar,
     views,
     selfServiceConfigurations,
+    helpCenter,
 })
 
 export default uiReducers

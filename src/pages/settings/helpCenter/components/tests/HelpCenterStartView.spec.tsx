@@ -4,28 +4,32 @@ import {createBrowserHistory} from 'history'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {RootState, StoreDispatch} from '../../../../../state/types'
-import {renderWithRouter} from '../../../../../utils/testing'
-import {HELP_CENTER_BASE_PATH} from '../../constants'
-import {getHelpCentersResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
-import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
-import {useSupportedLocales} from '../../providers/SupportedLocales'
+import {RootState, StoreDispatch} from 'state/types'
+import {renderWithRouter} from 'utils/testing'
+import {HELP_CENTER_BASE_PATH} from 'pages/settings/helpCenter/constants'
+import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import HelpCenterStartView from '../HelpCenterStartView'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
 const mockedHistory = {...createBrowserHistory(), push: jest.fn()}
 
-jest.mock('../../providers/SupportedLocales')
+jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
 describe('<HelpCenterStartView />', () => {
     const defaultState: Partial<RootState> = {
         entities: {
-            helpCenters: {
-                '1': getHelpCentersResponseFixture.data[0],
-                '2': getHelpCentersResponseFixture.data[1],
-                '3': getHelpCentersResponseFixture.data[2],
+            helpCenter: {
+                helpCenters: {
+                    helpCentersById: {
+                        '1': getHelpCentersResponseFixture.data[0],
+                        '2': getHelpCentersResponseFixture.data[1],
+                        '3': getHelpCentersResponseFixture.data[2],
+                    },
+                },
             },
         } as any,
     }

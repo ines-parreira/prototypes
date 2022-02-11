@@ -5,14 +5,15 @@ import {Container} from 'reactstrap'
 
 import {HelpCenter} from 'models/helpCenter/types'
 import PageHeader from 'pages/common/components/PageHeader'
-import {getViewLanguage, changeViewLanguage} from 'state/helpCenter/ui'
+
+import {getViewLanguage, changeViewLanguage} from 'state/ui/helpCenter'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
-import {validLocaleCode} from '../../../../../models/helpCenter/utils'
-import SelectField from '../../../../common/forms/SelectField/SelectField'
-import settingsCss from '../../../settings.less'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {validLocaleCode} from 'models/helpCenter/utils'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import settingsCss from 'pages/settings/settings.less'
 import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
 import {useSupportedLocales} from '../../providers/SupportedLocales'
 import {getAbsoluteUrl, getHelpCenterDomain} from '../../utils/helpCenter.utils'

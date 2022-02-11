@@ -6,15 +6,15 @@ import {DndProvider} from 'react-dnd'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {renderWithRouter} from '../../../../../../utils/testing'
-import {RootState, StoreDispatch} from '../../../../../../state/types'
-import {getSingleHelpCenterResponseFixture} from '../../../fixtures/getHelpCentersResponse.fixture'
-import {getSingleArticleEnglish} from '../../../fixtures/getArticlesResponse.fixture'
-import {getSingleCategoryEnglish} from '../../../fixtures/getCategoriesResponse.fixtures'
-import {getLocalesResponseFixture} from '../../../fixtures/getLocalesResponse.fixtures'
-import {useHelpCenterApi} from '../../../hooks/useHelpCenterApi'
-import {useCurrentHelpCenter} from '../../../providers/CurrentHelpCenter'
-import {useSupportedLocales} from '../../../providers/SupportedLocales'
+import {renderWithRouter} from 'utils/testing'
+import {RootState, StoreDispatch} from 'state/types'
+import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {getSingleArticleEnglish} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
+import {getSingleCategoryEnglish} from 'pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
+import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
+import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 
 import {CategoriesViews} from '../CategoriesView'
 
@@ -22,13 +22,13 @@ const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
 ])
 
-jest.mock('../../../hooks/useHelpCenterIdParam', () => {
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam', () => {
     return {
         useHelpCenterIdParam: jest.fn().mockReturnValue(1),
     }
 })
 
-jest.mock('../../../hooks/useHelpCenterApi')
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
 const useHelpCenterApiMock = useHelpCenterApi as jest.Mock
 
 const mockedListArticles = jest.fn().mockResolvedValue({
@@ -58,34 +58,38 @@ useHelpCenterApiMock.mockImplementation(() => ({
     },
 }))
 
-jest.mock('../../../providers/CurrentHelpCenter')
+jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
     getSingleHelpCenterResponseFixture
 )
 
-jest.mock('../../../providers/SupportedLocales')
+jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
 describe('<CategoriesViews />', () => {
     it('should show starter screen', async () => {
         const initialState: Partial<RootState> = {
             entities: {
-                helpCenters: {
-                    '1': getSingleHelpCenterResponseFixture,
+                helpCenter: {
+                    helpCenters: {
+                        helpCentersById: {
+                            '1': getSingleHelpCenterResponseFixture,
+                        },
+                    },
+                    articles: {
+                        articlesById: {},
+                    },
+                    categories: {
+                        categoriesById: {},
+                    },
                 },
             } as any,
-            helpCenter: {
-                articles: {
-                    articlesById: {},
-                },
-                categories: {
-                    categoriesById: {},
-                },
-                ui: {
+            ui: {
+                helpCenter: {
                     currentId: 1,
                     currentLanguage: 'en-US',
                 },
-            },
+            } as any,
         }
 
         renderWithRouter(
@@ -107,24 +111,28 @@ describe('<CategoriesViews />', () => {
     it('should show uncategorized row', async () => {
         const initialState: Partial<RootState> = {
             entities: {
-                helpCenters: {
-                    '1': getSingleHelpCenterResponseFixture,
-                },
-            } as any,
-            helpCenter: {
-                articles: {
-                    articlesById: {},
-                },
-                categories: {
-                    categoriesById: {
-                        1: getSingleCategoryEnglish,
+                helpCenter: {
+                    helpCenters: {
+                        helpCentersById: {
+                            '1': getSingleHelpCenterResponseFixture,
+                        },
+                    },
+                    articles: {
+                        articlesById: {},
+                    },
+                    categories: {
+                        categoriesById: {
+                            1: getSingleCategoryEnglish,
+                        },
                     },
                 },
-                ui: {
+            } as any,
+            ui: {
+                helpCenter: {
                     currentId: 1,
                     currentLanguage: 'en-US',
                 },
-            },
+            } as any,
         }
 
         mockedListArticles.mockResolvedValue({
@@ -161,24 +169,28 @@ describe('<CategoriesViews />', () => {
     it('should show uncategorized row and category row', async () => {
         const initialState: Partial<RootState> = {
             entities: {
-                helpCenters: {
-                    '1': getSingleHelpCenterResponseFixture,
-                },
-            } as any,
-            helpCenter: {
-                articles: {
-                    articlesById: {},
-                },
-                categories: {
-                    categoriesById: {
-                        1: getSingleCategoryEnglish,
+                helpCenter: {
+                    helpCenters: {
+                        helpCentersById: {
+                            '1': getSingleHelpCenterResponseFixture,
+                        },
+                    },
+                    articles: {
+                        articlesById: {},
+                    },
+                    categories: {
+                        categoriesById: {
+                            1: getSingleCategoryEnglish,
+                        },
                     },
                 },
-                ui: {
+            } as any,
+            ui: {
+                helpCenter: {
                     currentId: 1,
                     currentLanguage: 'en-US',
                 },
-            },
+            } as any,
         }
 
         renderWithRouter(

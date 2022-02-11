@@ -4,14 +4,14 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {RootState, StoreDispatch} from '../../../../../../state/types'
-import {getSingleHelpCenterResponseFixture} from '../../../fixtures/getHelpCentersResponse.fixture'
-import {getLocalesResponseFixture} from '../../../fixtures/getLocalesResponse.fixtures'
-import {useSupportedLocales} from '../../../providers/SupportedLocales'
+import {RootState, StoreDispatch} from 'state/types'
+import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {
     getAbsoluteUrl,
     getHelpCenterDomain,
-} from '../../../utils/helpCenter.utils'
+} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
 
 const windowOpenMock = jest.fn().mockReturnValue({
@@ -25,20 +25,22 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const viewLanguage = 'en-US'
 const defaultState: Partial<RootState> = {
     entities: {
-        helpCenters: {
-            '1': getSingleHelpCenterResponseFixture,
+        helpCenter: {
+            helpCenters: {
+                helpCentersById: {
+                    '1': getSingleHelpCenterResponseFixture,
+                },
+            },
+            articles: {articlesById: {}},
+            categories: {categoriesById: {}},
         },
     } as any,
-    helpCenter: {
-        ui: {currentId: 1, currentLanguage: viewLanguage},
-        articles: {articlesById: {}},
-        categories: {categoriesById: {}},
-    },
+    ui: {helpCenter: {currentId: 1, currentLanguage: viewLanguage}} as any,
 }
 
 const store = mockStore(defaultState)
 
-jest.mock('../../../providers/SupportedLocales')
+jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
 describe('<HelpCenterPageWrapper />', () => {

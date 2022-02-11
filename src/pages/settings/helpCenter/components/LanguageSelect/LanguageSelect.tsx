@@ -1,15 +1,15 @@
 import React, {useMemo} from 'react'
 import {useSelector} from 'react-redux'
 
-import {getViewLanguage, changeViewLanguage} from 'state/helpCenter/ui'
+import {getViewLanguage, changeViewLanguage} from 'state/ui/helpCenter'
 
-import SelectField from '../../../../common/forms/SelectField/SelectField'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {validLocaleCode} from 'models/helpCenter/utils'
 import {getLocaleSelectOptions} from '../../utils/localeSelectOptions'
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
 import {useSupportedLocales} from '../../providers/SupportedLocales'
 import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
 import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
-import {validLocaleCode} from '../../../../../models/helpCenter/utils'
 
 export const LanguageSelect: React.FC = () => {
     const dispatch = useAppDispatch()

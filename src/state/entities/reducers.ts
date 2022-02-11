@@ -12,8 +12,8 @@ import stats from './stats/reducer'
 import {StatsState} from './stats/types'
 import tags from './tags/reducer'
 import {TagsState} from './tags/types'
-import helpCenters from './helpCenters/reducer'
-import {HelpCentersState} from './helpCenters/types'
+import helpCenter from './helpCenter/reducer'
+import {HelpCenterState} from './helpCenter/types'
 import selfServiceConfigurations from './selfServiceConfigurations/reducer'
 import {SelfServiceConfigurationsState} from './selfServiceConfigurations/types'
 import rules from './rules/reducer'
@@ -32,7 +32,7 @@ const entitiesReducers = combineReducers<{
     tags: TagsState
     views: ViewsState
     viewsCount: ViewsCountState
-    helpCenters: HelpCentersState
+    helpCenter: HelpCenterState
     selfServiceConfigurations: SelfServiceConfigurationsState
     rules: RulesState
     phoneNumbers: PhoneNumbersState
@@ -47,7 +47,7 @@ const entitiesReducers = combineReducers<{
     tags,
     views,
     viewsCount,
-    helpCenters,
+    helpCenter,
     selfServiceConfigurations,
     phoneNumbers,
     auditLogEvents,

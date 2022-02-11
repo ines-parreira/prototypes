@@ -8,22 +8,19 @@ import _keyBy from 'lodash/keyBy'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
-import useAppDispatch from '../../../../hooks/useAppDispatch'
+import useAppDispatch from 'hooks/useAppDispatch'
 
-import {Locale} from '../../../../models/helpCenter/types'
-import {notify} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
-import {helpCentersFetched} from '../../../../state/entities/helpCenters/actions'
-import {getHelpCenterSortedList} from '../../../..//state/entities/helpCenters/selectors'
-import {
-    changeHelpCenterId,
-    changeViewLanguage,
-} from '../../../../state/helpCenter/ui'
-import PageHeader from '../../../common/components/PageHeader'
+import {Locale} from 'models/helpCenter/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {helpCentersFetched} from 'state/entities/helpCenter/helpCenters/actions'
+import {getHelpCenterSortedList} from 'state/entities/helpCenter/helpCenters/selectors'
+import {changeHelpCenterId, changeViewLanguage} from 'state/ui/helpCenter'
+import PageHeader from 'pages/common/components/PageHeader'
+import Tooltip from 'pages/common/components/Tooltip'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useSupportedLocales} from '../providers/SupportedLocales'
 import {HELP_CENTER_MAX_CREATION, HELP_CENTER_BASE_PATH} from '../constants'
-import Tooltip from '../../../common/components/Tooltip'
 import settingsCss from '../../settings.less'
 
 import HelpCenterTable from './HelpCenterTable'

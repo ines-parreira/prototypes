@@ -5,19 +5,19 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {initialState as articlesState} from '../../../../../state/helpCenter/articles/reducer'
-import {initialState as categoriesState} from '../../../../../state/helpCenter/categories/reducer'
-import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
-import {RootState, StoreDispatch} from '../../../../../state/types'
-import {renderWithRouter} from '../../../../../utils/testing'
-import {EditionManagerContextProvider} from '../../providers/EditionManagerContext'
-import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
-import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
-import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
-import {useSupportedLocales} from '../../providers/SupportedLocales'
+import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
+import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
+import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import {RootState, StoreDispatch} from 'state/types'
+import {renderWithRouter} from 'utils/testing'
+import {EditionManagerContextProvider} from 'pages/settings/helpCenter/providers/EditionManagerContext'
+import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
+import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import HelpCenterArticlesView from '../HelpCenterArticlesView'
 
-jest.mock('../../hooks/useHelpCenterApi', () => {
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     return {
         useHelpCenterApi: () => ({
             isReady: true,
@@ -33,15 +33,15 @@ jest.mock('../../hooks/useHelpCenterApi', () => {
     }
 })
 
-jest.mock('../../providers/CurrentHelpCenter')
+jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
     getSingleHelpCenterResponseFixture
 )
 
-jest.mock('../../providers/SupportedLocales')
+jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
-jest.mock('../../hooks/useHelpCenterIdParam', () => {
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam', () => {
     return {
         useHelpCenterIdParam: jest.fn().mockReturnValue(1),
     }
@@ -53,15 +53,17 @@ const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
 
 const defaultState: Partial<RootState> = {
     entities: {
-        helpCenters: {
-            '1': getSingleHelpCenterResponseFixture,
+        helpCenter: {
+            helpCenters: {
+                helpCentersById: {
+                    '1': getSingleHelpCenterResponseFixture,
+                },
+            },
+            articles: articlesState,
+            categories: categoriesState,
         },
     } as any,
-    helpCenter: {
-        ui: {...uiState, currentId: 1},
-        articles: articlesState,
-        categories: categoriesState,
-    },
+    ui: {helpCenter: {...uiState, currentId: 1}} as any,
 }
 
 const route = {

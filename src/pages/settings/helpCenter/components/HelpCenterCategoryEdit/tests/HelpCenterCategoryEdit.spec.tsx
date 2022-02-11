@@ -4,31 +4,35 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {HelpCenter} from '../../../../../../models/helpCenter/types'
-import {initialState as articlesState} from '../../../../../../state/helpCenter/articles/reducer'
-import {initialState as categoriesState} from '../../../../../../state/helpCenter/categories/reducer'
-import {initialState as uiState} from '../../../../../../state/helpCenter/ui/reducer'
-import {RootState, StoreDispatch} from '../../../../../../state/types'
-import {HELP_CENTER_DOMAIN} from '../../../constants'
-import {getSingleCustomDomainResponseFixture as customDomain} from '../../../fixtures/getCustomDomainsResponse.fixture'
-import {getSingleHelpCenterResponseFixture} from '../../../fixtures/getHelpCentersResponse.fixture'
-import {getLocalesResponseFixture} from '../../../fixtures/getLocalesResponse.fixtures'
-import {useSupportedLocales} from '../../../providers/SupportedLocales'
+import {HelpCenter} from 'models/helpCenter/types'
+import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
+import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
+import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import {RootState, StoreDispatch} from 'state/types'
+import {HELP_CENTER_DOMAIN} from 'pages/settings/helpCenter/constants'
+import {getSingleCustomDomainResponseFixture as customDomain} from 'pages/settings/helpCenter/fixtures/getCustomDomainsResponse.fixture'
+import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {HelpCenterCategoryEdit} from '../HelpCenterCategoryEdit'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const defaultState: Partial<RootState> = {
-    helpCenter: {
-        ui: uiState,
-        articles: articlesState,
-        categories: categoriesState,
-    },
+    entities: {
+        helpCenter: {
+            articles: articlesState,
+            categories: categoriesState,
+        },
+    } as any,
+    ui: {
+        helpCenter: uiState,
+    } as any,
 }
 
 const store = mockStore(defaultState)
 
-jest.mock('../../../providers/SupportedLocales')
+jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
 const wrapper = ({children}: {children?: React.ReactNode}) => (

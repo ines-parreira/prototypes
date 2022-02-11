@@ -8,43 +8,41 @@ import thunk from 'redux-thunk'
 
 import {Provider} from 'react-redux'
 
-import {RootState, StoreDispatch} from '../../../../../../../state/types'
-import {IntegrationType} from '../../../../../../../models/integration/types'
-import {SelfServiceConfiguration} from '../../../../../../../models/selfServiceConfiguration/types'
-import {updateOrCreateIntegration} from '../../../../../../../state/integrations/actions'
+import {RootState, StoreDispatch} from 'state/types'
+import {IntegrationType} from 'models/integration/types'
+import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import {updateOrCreateIntegration} from 'state/integrations/actions'
+import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
 
 import GorgiasChatIntegrationSelfService from '..'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock(
-    '../../../../../../../models/selfServiceConfiguration/resources',
-    () => ({
-        fetchSelfServiceConfiguration: (id: any): SelfServiceConfiguration => ({
-            id,
-            type: 'shopify',
-            shop_name: 'my-shop',
-            created_datetime: '2019-11-15 19:00:00.000000',
-            updated_datetime: '2019-11-15 19:00:00.000000',
-            deactivated_datetime: null,
-            report_issue_policy: {
-                enabled: true,
-                cases: [],
-            },
-            track_order_policy: {
-                enabled: true,
-            },
-            cancel_order_policy: {
-                enabled: true,
-            },
-            return_order_policy: {
-                enabled: true,
-            },
-        }),
-    })
-)
+jest.mock('models/selfServiceConfiguration/resources', () => ({
+    fetchSelfServiceConfiguration: (id: any): SelfServiceConfiguration => ({
+        id,
+        type: 'shopify',
+        shop_name: 'my-shop',
+        created_datetime: '2019-11-15 19:00:00.000000',
+        updated_datetime: '2019-11-15 19:00:00.000000',
+        deactivated_datetime: null,
+        report_issue_policy: {
+            enabled: true,
+            cases: [],
+        },
+        track_order_policy: {
+            enabled: true,
+        },
+        cancel_order_policy: {
+            enabled: true,
+        },
+        return_order_policy: {
+            enabled: true,
+        },
+    }),
+}))
 
-jest.mock('../../../../../../../state/integrations/actions', () => ({
+jest.mock('state/integrations/actions', () => ({
     updateOrCreateIntegration: jest.fn().mockResolvedValue({}),
 }))
 
@@ -80,7 +78,7 @@ describe('<GorgiasChatIntegrationSelfService/>', () => {
             tags: {},
             views: {},
             viewsCount: {},
-            helpCenters: {},
+            helpCenter: helpCenterInitialState,
             helpCenterArticles: {},
             selfServiceConfigurations: {},
             phoneNumbers: {},

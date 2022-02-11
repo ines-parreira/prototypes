@@ -9,17 +9,14 @@ import React, {
 } from 'react'
 import {useSelector} from 'react-redux'
 
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
-import {
-    ContactInfoDto,
-    HelpCenter,
-} from '../../../../../models/helpCenter/types'
-import {getViewLanguage} from '../../../../../state/helpCenter/ui'
-import {notify} from '../../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../../state/notifications/types'
-import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
-import {useHelpCenterActions} from '../../hooks/useHelpCenterActions'
-import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {ContactInfoDto, HelpCenter} from 'models/helpCenter/types'
+import {getViewLanguage} from 'state/ui/helpCenter'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {HELP_CENTER_DEFAULT_LOCALE} from 'pages/settings/helpCenter/constants'
+import {useHelpCenterActions} from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
+import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
 export type HelpCenterTranslationState = {
     chatApplicationId: number | null

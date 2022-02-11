@@ -1,5 +1,5 @@
 import useAppDispatch from 'hooks/useAppDispatch'
-import {helpCenterUpdated} from 'state/entities/helpCenters/actions'
+import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'

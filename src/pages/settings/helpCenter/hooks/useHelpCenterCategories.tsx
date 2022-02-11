@@ -3,13 +3,13 @@ import {useSelector} from 'react-redux'
 
 import {Paths} from 'rest_api/help_center_api/client.generated'
 
-import useAppDispatch from '../../../../hooks/useAppDispatch'
-import {Category} from '../../../../models/helpCenter/types'
-import {createCategoryFromDto} from '../../../../models/helpCenter/utils'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {Category} from 'models/helpCenter/types'
+import {createCategoryFromDto} from 'models/helpCenter/utils'
 import {
     getCategories,
     saveCategories,
-} from '../../../../state/helpCenter/categories'
+} from 'state/entities/helpCenter/categories'
 
 import {useHelpCenterApi} from './useHelpCenterApi'
 
