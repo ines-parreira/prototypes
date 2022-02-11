@@ -14,7 +14,7 @@ import {
     Label,
     Row,
 } from 'reactstrap'
-import {parse} from 'query-string'
+import {parse} from 'qs'
 
 import {PENDING_AUTHENTICATION_STATUS} from 'constants/integration'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
@@ -63,11 +63,12 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
     componentDidMount() {
         // display message from url
         const {location, isUpdate} = this.props
-        const message = parse(location.search).message as string
+        const message = parse(location.search, {ignoreQueryPrefix: true})
+            .message as string
         const status =
             (parse(location.search).message_type as NotificationStatus) ||
             NotificationStatus.Info
-        const error = parse(location.search).error
+        const error = parse(location.search, {ignoreQueryPrefix: true}).error
         this.setState({isInitialized: !isUpdate})
 
         if (error === 'need_scope_update') {
@@ -97,7 +98,8 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
                 nextProps.integration.getIn(['meta', 'oauth', 'status']) ===
                 PENDING_AUTHENTICATION_STATUS
             const isAuthenticating =
-                parse(nextProps.location.search).action === 'authentication'
+                parse(nextProps.location.search, {ignoreQueryPrefix: true})
+                    .action === 'authentication'
 
             if (isAuthenticating) {
                 if (authenticationRequired) {

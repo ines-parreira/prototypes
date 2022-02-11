@@ -2,7 +2,7 @@ import React, {ReactNode} from 'react'
 import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import {Breadcrumb, BreadcrumbItem, Button, Container, Table} from 'reactstrap'
-import {parse} from 'query-string'
+import {parse} from 'qs'
 import moment from 'moment'
 import {List, Map} from 'immutable'
 import classnames from 'classnames'
@@ -87,7 +87,10 @@ class IntegrationList extends React.Component<Props> {
     }
 
     componentWillMount() {
-        if (parse(this.props.location.search).status === 'create-error') {
+        if (
+            parse(this.props.location.search, {ignoreQueryPrefix: true})
+                .status === 'create-error'
+        ) {
             void this.props.notify({
                 status: NotificationStatus.Error,
                 message: `Something went wrong while creating your integration. Please wait a few minutes and ' +

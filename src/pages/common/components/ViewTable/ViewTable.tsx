@@ -3,7 +3,7 @@ import {fromJS, List, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 import {withRouter, RouteComponentProps} from 'react-router-dom'
 import classnames from 'classnames'
-import {parse, stringify} from 'query-string'
+import {parse, stringify} from 'qs'
 
 import Loader from '../Loader/Loader'
 import withCancellableRequest, {
@@ -113,7 +113,10 @@ export class ViewTableContainer extends Component<Props> {
             activeViewIdSet(suggestedViewId)
         }
 
-        void fetchViewItems(null, parse(location.search).cursor as string)
+        void fetchViewItems(
+            null,
+            parse(location.search, {ignoreQueryPrefix: true}).cursor as string
+        )
     }
 
     componentDidUpdate(prevProps: Props) {
@@ -193,7 +196,7 @@ export class ViewTableContainer extends Component<Props> {
         if (urlCursor !== storedCursor) {
             if (prevProps.isLoading('fetchList') && !isLoading('fetchList')) {
                 // if the stored cursor has changed after a fetch, update the cursor in the URL
-                const query = parse(location.search)
+                const query = parse(location.search, {ignoreQueryPrefix: true})
                 const cursorToSet = !isOnFirstPage ? storedCursor : null
                 if (cursorToSet) {
                     query.cursor = cursorToSet

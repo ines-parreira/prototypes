@@ -4,7 +4,7 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, Map} from 'immutable'
 import {Location} from 'history'
 import _identity from 'lodash/identity'
-import {stringify} from 'query-string'
+import {stringify} from 'qs'
 
 import * as ticketFixtures from '../../../../../fixtures/ticket'
 import {ViewVisibility} from '../../../../../models/view/types'

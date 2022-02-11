@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
 import {Container} from 'reactstrap'
-import {parse} from 'query-string'
+import {parse} from 'qs'
 
 import {notify} from '../../../state/notifications/actions.ts'
 import PageHeader from '../../common/components/PageHeader.tsx'
@@ -32,7 +32,9 @@ export class BillingContainer extends Component {
 
     componentDidMount() {
         // display message from url
-        const {notif_msg, notif_type} = parse(this.props.location.search)
+        const {notif_msg, notif_type} = parse(this.props.location.search, {
+            ignoreQueryPrefix: true,
+        })
 
         if (notif_msg) {
             this.props.notify({

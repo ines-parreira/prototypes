@@ -11,7 +11,7 @@ import {
     Row,
     Col,
 } from 'reactstrap'
-import {parse} from 'query-string'
+import {parse} from 'qs'
 import {connect, ConnectedProps} from 'react-redux'
 
 import {
@@ -82,7 +82,8 @@ export class SmoochIntegrationDetail extends Component<Props, State> {
 
     componentWillReceiveProps(nextProps: Props) {
         const isAuthenticating =
-            parse(nextProps.location.search).action === 'authentication'
+            parse(nextProps.location.search, {ignoreQueryPrefix: true})
+                .action === 'authentication'
 
         if (
             this.props.integration.isEmpty() &&
