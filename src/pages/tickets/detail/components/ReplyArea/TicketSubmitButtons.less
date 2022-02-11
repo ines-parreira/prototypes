@@ -1,9 +1,16 @@
 @import '~css/new/colorTokens';
 
-:local .component {
-    padding: 0.8rem 0.5rem;
-    background: @classic-neutral-grey-2;
-    border-top: 1px solid @classic-neutral-grey-3;
+:local {
+    .component {
+        padding-bottom: 0.4rem;
+        background: @classic-neutral-grey-2;
+        border-top: 1px solid @classic-neutral-grey-3;
+        flex-wrap: wrap;
+        text-align: right;
+    }
 
-    text-align: right;
+    .buttons,
+    .tip {
+        margin: 0.8rem 0.5rem 0.4rem 0.5rem;
+    }
 }

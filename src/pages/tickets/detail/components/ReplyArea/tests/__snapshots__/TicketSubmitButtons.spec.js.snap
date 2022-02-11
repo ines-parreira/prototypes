@@ -4,7 +4,9 @@ exports[`TicketSubmitButtons component empty ticket 1`] = `
 <div
   className="component d-flex align-items-center justify-content-between"
 >
-  <div>
+  <div
+    className="buttons"
+  >
     <ConfirmButton
       className="mr-2"
       confirmationContent="Are you sure you want to create a ticket with no subject?"
@@ -28,7 +30,7 @@ exports[`TicketSubmitButtons component empty ticket 1`] = `
     </ConfirmButton>
   </div>
   <small
-    className="text-faded d-none d-md-inline-block"
+    className="tip text-faded d-none d-md-inline-block"
   >
     <i
       className="material-icons md-1 mr-1 align-text-bottom"

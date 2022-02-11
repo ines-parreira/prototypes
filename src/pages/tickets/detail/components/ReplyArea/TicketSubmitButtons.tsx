@@ -109,7 +109,7 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                     'd-flex align-items-center justify-content-between'
                 )}
             >
-                <div>
+                <div className={classnames(css.buttons)}>
                     {hasTitle || isUpdating ? (
                         <Button
                             id="submit-button"
@@ -182,7 +182,12 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                     )}
                 </div>
                 {!isHidingTips && (
-                    <small className="text-faded d-none d-md-inline-block">
+                    <small
+                        className={classnames(
+                            css.tip,
+                            'text-faded d-none d-md-inline-block'
+                        )}
+                    >
                         <i className="material-icons md-1 mr-1 align-text-bottom">
                             info
                         </i>
