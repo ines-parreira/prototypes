@@ -1,8 +1,12 @@
 import React from 'react'
 import {fromJS} from 'immutable'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
-import {renderWithRouter} from '../../../../utils/testing'
-import {IntegrationType} from '../../../../models/integration/types'
+import {RootState, StoreDispatch} from 'state/types'
+import {renderWithRouter} from 'utils/testing'
+import {IntegrationType} from 'models/integration/types'
+
 import {IntegrationDetailContainer, Tab} from '../IntegrationDetailContainer'
 
 jest.mock('../components/aircall/AircallIntegrationList.js', () => () => (
@@ -225,6 +229,9 @@ beforeEach(() => {
     jest.clearAllMocks()
 })
 
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+const store = mockStore({} as RootState)
+
 describe('<IntegrationDetailContainer />', () => {
     const minProps = {
         actions: {
@@ -278,7 +285,9 @@ describe('<IntegrationDetailContainer />', () => {
         [IntegrationType.Yotpo],
     ])('should render the list of integrations for %s', (integrationType) => {
         const {container} = renderWithRouter(
-            <IntegrationDetailContainer {...minProps} />,
+            <Provider store={store}>
+                <IntegrationDetailContainer {...minProps} />
+            </Provider>,
             {
                 path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                 route: `/integrations/${integrationType}`,
@@ -294,7 +303,9 @@ describe('<IntegrationDetailContainer />', () => {
         [IntegrationType.Phone],
     ])('should render the creation page for %s', (integrationType) => {
         const {container} = renderWithRouter(
-            <IntegrationDetailContainer {...minProps} />,
+            <Provider store={store}>
+                <IntegrationDetailContainer {...minProps} />
+            </Provider>,
             {
                 path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                 route: `/integrations/${integrationType}/new`,
@@ -307,7 +318,9 @@ describe('<IntegrationDetailContainer />', () => {
         'should render the setup page for %s',
         (integrationType) => {
             const {container} = renderWithRouter(
-                <IntegrationDetailContainer {...minProps} />,
+                <Provider store={store}>
+                    <IntegrationDetailContainer {...minProps} />
+                </Provider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${integrationType}/setup`,
@@ -334,10 +347,12 @@ describe('<IntegrationDetailContainer />', () => {
         'should render the page of a specific integration for %s',
         (integrationType) => {
             const {container} = renderWithRouter(
-                <IntegrationDetailContainer
-                    {...minProps}
-                    integrations={fromJS({integration: {id: 1}})}
-                />,
+                <Provider store={store}>
+                    <IntegrationDetailContainer
+                        {...minProps}
+                        integrations={fromJS({integration: {id: 1}})}
+                    />
+                </Provider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${integrationType}/1`,
@@ -351,7 +366,9 @@ describe('<IntegrationDetailContainer />', () => {
         'should render the installation tab of a specific integration for %s',
         (integrationType) => {
             const {container} = renderWithRouter(
-                <IntegrationDetailContainer {...minProps} />,
+                <Provider store={store}>
+                    <IntegrationDetailContainer {...minProps} />
+                </Provider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${integrationType}/1/${Tab.Installation}`,
@@ -370,7 +387,9 @@ describe('<IntegrationDetailContainer />', () => {
         'should render the preferences tab of a specific integrations for %s',
         (integrationType) => {
             const {container} = renderWithRouter(
-                <IntegrationDetailContainer {...minProps} />,
+                <Provider store={store}>
+                    <IntegrationDetailContainer {...minProps} />
+                </Provider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${integrationType}/1/${Tab.Preferences}`,
@@ -384,7 +403,9 @@ describe('<IntegrationDetailContainer />', () => {
         'should render the list of campaigns of a specific integration for %s',
         (integrationType) => {
             const {container} = renderWithRouter(
-                <IntegrationDetailContainer {...minProps} />,
+                <Provider store={store}>
+                    <IntegrationDetailContainer {...minProps} />
+                </Provider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${integrationType}/1/${Tab.Campaigns}`,
@@ -398,7 +419,9 @@ describe('<IntegrationDetailContainer />', () => {
         'should render the campaign tab of a specific integration for %s',
         (integrationType) => {
             const {container} = renderWithRouter(
-                <IntegrationDetailContainer {...minProps} />,
+                <Provider store={store}>
+                    <IntegrationDetailContainer {...minProps} />
+                </Provider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${integrationType}/1/${Tab.Campaigns}/1`,
@@ -412,7 +435,9 @@ describe('<IntegrationDetailContainer />', () => {
         'should render the quick replies tab of a specific integration for %s',
         (integrationType) => {
             const {container} = renderWithRouter(
-                <IntegrationDetailContainer {...minProps} />,
+                <Provider store={store}>
+                    <IntegrationDetailContainer {...minProps} />
+                </Provider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${integrationType}/1/${Tab.QuickReplies}`,
@@ -425,7 +450,9 @@ describe('<IntegrationDetailContainer />', () => {
     describe(`${IntegrationType.Email}`, () => {
         it('should render the custom creation page', () => {
             const {container} = renderWithRouter(
-                <IntegrationDetailContainer {...minProps} />,
+                <Provider store={store}>
+                    <IntegrationDetailContainer {...minProps} />
+                </Provider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.Email}/new/${Tab.EmailCustom}`,
@@ -436,7 +463,9 @@ describe('<IntegrationDetailContainer />', () => {
 
         it('should render the forwarding page for a specific integration', () => {
             const {container} = renderWithRouter(
-                <IntegrationDetailContainer {...minProps} />,
+                <Provider store={store}>
+                    <IntegrationDetailContainer {...minProps} />
+                </Provider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.Email}/1/${Tab.EmailForwarding}`,
@@ -447,7 +476,9 @@ describe('<IntegrationDetailContainer />', () => {
 
         it('should render the verification page for a specific integration', () => {
             const {container} = renderWithRouter(
-                <IntegrationDetailContainer {...minProps} />,
+                <Provider store={store}>
+                    <IntegrationDetailContainer {...minProps} />
+                </Provider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.Email}/1/${Tab.EmailVerification}`,
@@ -460,7 +491,9 @@ describe('<IntegrationDetailContainer />', () => {
     describe(`${IntegrationType.Facebook}`, () => {
         it('should render the customer chat tab for a specific integration', () => {
             const {container} = renderWithRouter(
-                <IntegrationDetailContainer {...minProps} />,
+                <Provider store={store}>
+                    <IntegrationDetailContainer {...minProps} />
+                </Provider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.Facebook}/1/${Tab.FacebookCustomerChat}`,
@@ -471,7 +504,9 @@ describe('<IntegrationDetailContainer />', () => {
 
         it('should render the ads tab for a specific integration', () => {
             const {container} = renderWithRouter(
-                <IntegrationDetailContainer {...minProps} />,
+                <Provider store={store}>
+                    <IntegrationDetailContainer {...minProps} />
+                </Provider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.Facebook}/1/${Tab.FacebookAds}`,
@@ -484,10 +519,12 @@ describe('<IntegrationDetailContainer />', () => {
     describe(`${IntegrationType.Http}`, () => {
         it('should render the list of events page for a specific integration', () => {
             const {container} = renderWithRouter(
-                <IntegrationDetailContainer
-                    {...minProps}
-                    integrations={fromJS({integration: {id: 1}})}
-                />,
+                <Provider store={store}>
+                    <IntegrationDetailContainer
+                        {...minProps}
+                        integrations={fromJS({integration: {id: 1}})}
+                    />
+                </Provider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.Http}/1/${Tab.HttpEvents}`,
@@ -498,10 +535,12 @@ describe('<IntegrationDetailContainer />', () => {
 
         it('should render the page of an event for a specific integration', () => {
             const {container} = renderWithRouter(
-                <IntegrationDetailContainer
-                    {...minProps}
-                    integrations={fromJS({integration: {id: 1}})}
-                />,
+                <Provider store={store}>
+                    <IntegrationDetailContainer
+                        {...minProps}
+                        integrations={fromJS({integration: {id: 1}})}
+                    />
+                </Provider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.Http}/1/${Tab.HttpEvents}/1`,
@@ -514,7 +553,9 @@ describe('<IntegrationDetailContainer />', () => {
     describe(`${IntegrationType.GorgiasChat}`, () => {
         it('should render the self service tab of a specific integration', () => {
             const {container} = renderWithRouter(
-                <IntegrationDetailContainer {...minProps} />,
+                <Provider store={store}>
+                    <IntegrationDetailContainer {...minProps} />
+                </Provider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.GorgiasChat}/1/${Tab.ChatSelfService}`,
@@ -527,7 +568,9 @@ describe('<IntegrationDetailContainer />', () => {
     describe(`${IntegrationType.Phone}`, () => {
         it('should render the voicemail tab of a specific integration', () => {
             const {container} = renderWithRouter(
-                <IntegrationDetailContainer {...minProps} />,
+                <Provider store={store}>
+                    <IntegrationDetailContainer {...minProps} />
+                </Provider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.Phone}/1/${Tab.PhoneVoicemail}`,
@@ -540,7 +583,9 @@ describe('<IntegrationDetailContainer />', () => {
     describe(`${IntegrationType.SmoochInside}`, () => {
         it('should render the migration tab of a specific integrations', () => {
             const {container} = renderWithRouter(
-                <IntegrationDetailContainer {...minProps} />,
+                <Provider store={store}>
+                    <IntegrationDetailContainer {...minProps} />
+                </Provider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.SmoochInside}/1/${Tab.SmoochInsideMigration}`,

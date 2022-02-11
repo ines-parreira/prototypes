@@ -1,13 +1,14 @@
 // g/integrations/phone/schemas.py
 
-import {createTypeGuard} from '../../../utils'
+import {createTypeGuard} from 'utils'
+import {PhoneFunction} from 'business/twilio'
+
 import {
     IntegrationType,
     IvrMenuActionType,
     VoiceMessageType,
     AddressType,
 } from '../constants'
-import {PhoneFunction} from '../../../business/twilio'
 
 import {IntegrationBase} from './base'
 
@@ -26,14 +27,6 @@ export type PhoneIntegrationMeta = {
     state?: string
     area_code: string
     twilio_phone_number_id: number
-    twilio?: Maybe<{
-        incoming_phone_number: {
-            sid: string
-            friendly_name: string
-            phone_number: string
-            deleted_datetime: Maybe<string>
-        }
-    }>
     preferences: PhoneIntegrationPreferences
     greeting_message: VoiceMessage
     voicemail: PhoneIntegrationVoicemailSettings

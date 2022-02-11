@@ -3,12 +3,17 @@ import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
 import {PhoneIntegration, IntegrationType} from 'models/integration/types'
+import {getPhoneNumber} from 'state/entities/phoneNumbers/selectors'
+import useAppSelector from 'hooks/useAppSelector'
 
 type Props = {
     integration: PhoneIntegration
 }
 
 const PhoneIntegrationBreadcrumbs = ({integration}: Props): JSX.Element => {
+    const phoneNumber = useAppSelector(
+        getPhoneNumber(integration.meta.twilio_phone_number_id)
+    )
     return (
         <Breadcrumb>
             <BreadcrumbItem>
@@ -24,10 +29,7 @@ const PhoneIntegrationBreadcrumbs = ({integration}: Props): JSX.Element => {
             <BreadcrumbItem>
                 {integration.meta.emoji} {integration.name}
                 <small className="text-muted ml-2">
-                    {
-                        integration.meta.twilio?.incoming_phone_number
-                            .friendly_name
-                    }
+                    {phoneNumber?.meta.friendly_name}
                 </small>
             </BreadcrumbItem>
         </Breadcrumb>

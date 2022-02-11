@@ -35,7 +35,7 @@ exports[`<PhoneIntegrationBreadcrumbs/> render() should render 1`] = `
       <small
         class="text-muted ml-2"
       >
-        +123123123
+        +1 415 111 2222
       </small>
     </li>
   </ol>

@@ -3,19 +3,24 @@ import {useParams} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {fromJS, List, Map} from 'immutable'
-import {useUpdateEffect} from 'react-use'
+import {useUpdateEffect, useAsyncFn} from 'react-use'
 
 import useSearch from 'hooks/useSearch'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import * as IntegrationsActions from 'state/integrations/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {IntegrationType} from 'models/integration/types'
 import {RootState} from 'state/types'
 import {
     getEligibleShopifyIntegrationsFor,
     makeGetRedirectUri,
 } from 'state/integrations/selectors'
+import {fetchPhoneNumbers} from 'models/phoneNumber/resources'
+import {phoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
 import {compare} from 'utils'
 import {PHONE_NUMBER_MANAGEMENT_PREVIEW_ACCOUNTS} from 'models/phoneNumber/constants'
+import useAppDispatch from 'hooks/useAppDispatch'
 
 import AircallIntegrationList from './components/aircall/AircallIntegrationList.js'
 import AircallIntegrationCreate from './components/aircall/AircallIntegrationCreate.js'
@@ -184,13 +189,31 @@ export const IntegrationDetailContainer = ({
 
     useEffect(() => {
         actions.fetchIntegrations()
-
+        void handleFetchPhoneNumbers()
         // We need this to allow the user to refresh the settings page.
         // If we don't fetch it, the state is empty on refresh.
         if (integrationId && !['new', 'setup'].includes(integrationId)) {
             actions.fetchIntegration(integrationId, integrationType)
         }
     }, [])
+
+    const dispatch = useAppDispatch()
+    const [, handleFetchPhoneNumbers] = useAsyncFn(async () => {
+        try {
+            const res = await fetchPhoneNumbers()
+            if (!res) {
+                return
+            }
+            dispatch(phoneNumbersFetched(res.data))
+        } catch (error) {
+            void dispatch(
+                notify({
+                    message: 'Failed to fetch phone numbers',
+                    status: NotificationStatus.Error,
+                })
+            )
+        }
+    })
 
     useUpdateEffect(() => {
         if (integrationId && !['new', 'setup'].includes(integrationId)) {

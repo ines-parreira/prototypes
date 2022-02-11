@@ -1,13 +1,28 @@
 import React from 'react'
 import {render} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
-import {PhoneFunction, PhoneCountry} from '../../../../../../business/twilio'
+import {RootState, StoreDispatch} from 'state/types'
+import {PhoneFunction, PhoneCountry} from 'business/twilio'
 import {
     PhoneIntegration,
     IntegrationType,
     VoiceMessageType,
-} from '../../../../../../models/integration/types'
+} from 'models/integration/types'
+import {phoneNumbers} from 'fixtures/phoneNumber'
+
 import PhoneIntegrationBreadcrumbs from '../PhoneIntegrationBreadcrumbs'
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+const store = mockStore({
+    entities: {
+        phoneNumbers: phoneNumbers.reduce(
+            (acc, number) => ({...acc, [number.id]: number}),
+            {}
+        ),
+    },
+} as RootState)
 
 describe('<PhoneIntegrationBreadcrumbs/>', () => {
     const integration: PhoneIntegration = {
@@ -33,15 +48,7 @@ describe('<PhoneIntegrationBreadcrumbs/>', () => {
             area_code: '880',
             function: PhoneFunction.Standard,
             country: PhoneCountry.US,
-            twilio_phone_number_id: 123,
-            twilio: {
-                incoming_phone_number: {
-                    sid: '123',
-                    friendly_name: '+123123123',
-                    phone_number: '+123123123',
-                    deleted_datetime: null,
-                },
-            },
+            twilio_phone_number_id: 1,
             preferences: {
                 record_inbound_calls: false,
                 record_outbound_calls: false,
@@ -60,7 +67,9 @@ describe('<PhoneIntegrationBreadcrumbs/>', () => {
     describe('render()', () => {
         it('should render', () => {
             const {container} = render(
-                <PhoneIntegrationBreadcrumbs integration={integration} />
+                <Provider store={store}>
+                    <PhoneIntegrationBreadcrumbs integration={integration} />
+                </Provider>
             )
 
             expect(container.firstChild).toMatchSnapshot()

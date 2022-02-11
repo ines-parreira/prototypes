@@ -10,6 +10,7 @@ import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+
 import PageHeader from 'pages/common/components/PageHeader'
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
