@@ -102,6 +102,17 @@ exports[`components utils: labels <AgentLabel/> render() should render the avata
 </div>
 `;
 
+exports[`components utils: labels <DatetimeLabel/> render() should render a modified date because integrationType is Recharge 1`] = `
+<span>
+  <span
+    id="datetime-tooltip-"
+  >
+    01-01-2022 00:11
+  </span>
+  TooltipMock
+</span>
+`;
+
 exports[`components utils: labels <DatetimeLabel/> render() should render with zero width space 1`] = `
 <span>
   <span

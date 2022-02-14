@@ -23,6 +23,7 @@ import ActionButtonsGroup from '../ActionButtonsGroup'
 import {CardHeaderDetails} from '../CardHeaderDetails'
 import {CardHeaderValue} from '../CardHeaderValue'
 import {IntegrationContext} from '../IntegrationContext'
+import {RECHARGE_INTEGRATION_TYPE} from '../../../../../../../../../constants/integration'
 
 const OrderContext = createContext<{
     order: Map<string, unknown> | null
@@ -192,6 +193,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                         <DatetimeLabel
                             key="created-at"
                             dateTime={source.get('created_at')}
+                            integrationType={RECHARGE_INTEGRATION_TYPE}
                         />
                     </CardHeaderValue>
                     <CardHeaderValue>

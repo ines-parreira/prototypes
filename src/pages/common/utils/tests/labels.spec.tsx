@@ -11,6 +11,7 @@ import {
     TicketStatus,
 } from '../../../../business/types/ticket'
 import * as labels from '../labels'
+import {RECHARGE_INTEGRATION_TYPE} from '../../../../constants/integration'
 
 /* DatetimeLabel uses Math.random.
  * Mock it to always return the same data.
@@ -357,6 +358,24 @@ describe('components utils: labels', () => {
                         })}
                     >
                         <labels.DatetimeLabel dateTime="2016-01-15" breakDate />
+                    </Provider>
+                )
+
+                expect(container.firstChild).toMatchSnapshot()
+            })
+
+            it('should render a modified date because integrationType is Recharge', () => {
+                const {container} = render(
+                    <Provider
+                        store={mockStore({
+                            currentUser: fromJS({timezone: 'US/Pacific'}),
+                        })}
+                    >
+                        <labels.DatetimeLabel
+                            dateTime="2022-01-01T03:11:07"
+                            integrationType={RECHARGE_INTEGRATION_TYPE}
+                            labelFormat="MM-DD-YYYY HH:mm"
+                        />
                     </Provider>
                 )
 

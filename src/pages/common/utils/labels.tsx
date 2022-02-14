@@ -6,8 +6,12 @@ import _capitalize from 'lodash/capitalize'
 import _omit from 'lodash/omit'
 import {Badge, UncontrolledTooltipProps} from 'reactstrap'
 import {Emoji} from 'emoji-mart'
+import moment from 'moment-timezone'
 
-import {EMAIL_INTEGRATION_TYPES} from '../../../constants/integration'
+import {
+    EMAIL_INTEGRATION_TYPES,
+    RECHARGE_INTEGRATION_TYPE,
+} from '../../../constants/integration'
 import {UserRole} from '../../../config/types/user'
 import * as currentUserSelectors from '../../../state/currentUser/selectors'
 import {RootState} from '../../../state/types'
@@ -371,6 +375,7 @@ type DatetimeLabelOwnProps = {
     labelFormat?: string
     hasTooltip?: boolean
     placement?: UncontrolledTooltipProps['placement']
+    integrationType?: string
 }
 
 type DatetimeLabelProps = DatetimeLabelOwnProps &
@@ -392,15 +397,20 @@ class DatetimeLabelContainer extends React.PureComponent<DatetimeLabelProps> {
         const {
             breakDate,
             className,
-            dateTime,
             hasTooltip,
             labelFormat,
             placement = 'top',
             timezone,
+            integrationType,
         } = _omit(this.props, 'dispatch')
+        let {dateTime} = this.props
 
         if (!dateTime) {
             return null
+        }
+
+        if (integrationType === RECHARGE_INTEGRATION_TYPE) {
+            dateTime = moment(dateTime).tz('US/Eastern', true).toISOString(true)
         }
 
         const labelDatetime = formatDatetime(dateTime, timezone, labelFormat)

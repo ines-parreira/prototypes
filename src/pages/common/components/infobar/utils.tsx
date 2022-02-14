@@ -581,7 +581,11 @@ export const StarRatingColors = Object.freeze({
 /**
  * Return a field value based on raw incoming data and a field type
  */
-export function guessFieldValueFromRawData(data: any, type: string) {
+export function guessFieldValueFromRawData(
+    data: any,
+    type: string,
+    integrationType?: string
+) {
     let fieldValue: unknown = ''
 
     if (_isUndefined(data) || _isNull(data)) {
@@ -598,7 +602,12 @@ export function guessFieldValueFromRawData(data: any, type: string) {
             break
         }
         case 'date': {
-            fieldValue = <DatetimeLabel dateTime={data} />
+            fieldValue = (
+                <DatetimeLabel
+                    dateTime={data}
+                    integrationType={integrationType}
+                />
+            )
             break
         }
         case 'age': {

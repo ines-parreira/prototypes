@@ -181,7 +181,11 @@ export default class InfobarWidget extends React.Component {
                     <FieldInfobarWidget
                         isEditing={isEditing}
                         isParentList={isParentList}
-                        value={guessFieldValueFromRawData(data, type)}
+                        value={guessFieldValueFromRawData(
+                            data,
+                            type,
+                            widget.get('type')
+                        )}
                         widget={widget}
                         template={updatedTemplate}
                         editing={editing}
