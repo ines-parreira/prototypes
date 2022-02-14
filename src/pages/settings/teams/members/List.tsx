@@ -5,6 +5,7 @@ import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom'
 import {fromJS, List, Map, Set} from 'immutable'
 import classnames from 'classnames'
 
+import CheckBox from 'pages/common/forms/CheckBox'
 import PageHeader from '../../../common/components/PageHeader'
 import SecondaryNavbar from '../../../common/components/SecondaryNavbar/SecondaryNavbar'
 import {
@@ -214,8 +215,7 @@ export class MembersListContainer extends Component<Props, State> {
                         <div className={css.listHeader}>
                             <Col sm={4} className={settingsCss.py24}>
                                 <div className="d-flex align-items-center mb-2 mt-3">
-                                    <input
-                                        type="checkbox"
+                                    <CheckBox
                                         className="mr-4"
                                         onChange={() => {
                                             this.setState({
@@ -224,7 +224,7 @@ export class MembersListContainer extends Component<Props, State> {
                                                     : allMemberIds,
                                             })
                                         }}
-                                        checked={isAllSelected}
+                                        isChecked={isAllSelected}
                                     />
                                     <Button
                                         color="secondary"

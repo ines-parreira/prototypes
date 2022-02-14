@@ -28,23 +28,23 @@ exports[`<EditOrderForm/> should render 1`] = `
         </small>
       </div>
       <div
-        class="mb-3 form-check"
+        class="mb-3"
       >
         <label
-          class="form-check-label"
-          for="notify-customer"
+          class="label"
+          for="checkbox-1"
         >
           <input
-            class="form-check-input"
-            id="notify-customer"
+            class="input"
+            id="checkbox-1"
+            name="checkbox-1"
             type="checkbox"
           />
-          <span
-            class="ml-1"
-          >
-            Send invoice to customer
-          </span>
+          Send invoice to customer
         </label>
+        <div
+          class="caption"
+        />
       </div>
     </div>
     <div

@@ -1,18 +1,9 @@
 import React, {ChangeEvent} from 'react'
-import {
-    Col,
-    Container,
-    FormGroup,
-    FormText,
-    Input,
-    Label,
-    Row,
-} from 'reactstrap'
-
+import {Col, Container, FormText, Row} from 'reactstrap'
 import {Map} from 'immutable'
-
 import _debounce from 'lodash/debounce'
 
+import CheckBox from 'pages/common/forms/CheckBox'
 import {
     logEvent,
     SegmentEvent,
@@ -45,10 +36,6 @@ export function EditOrderForm({
         element.style.height = `${element.scrollHeight + padding}px`
     }
 
-    const _onCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-        _updateNotif(event.target.checked)
-    }
-
     const _updateNotif = _debounce((notif: boolean) => {
         notifyCustomer(notif)
     }, 800)
@@ -78,18 +65,9 @@ export function EditOrderForm({
                             Only you and other staff can see this reason
                         </FormText>
                     </div>
-                    <FormGroup check className="mb-3">
-                        <Label for="notify-customer" check>
-                            <Input
-                                id="notify-customer"
-                                type="checkbox"
-                                onChange={_onCheckboxChange}
-                            />
-                            <span className="ml-1">
-                                Send invoice to customer
-                            </span>
-                        </Label>
-                    </FormGroup>
+                    <CheckBox className="mb-3" onChange={_updateNotif}>
+                        Send invoice to customer
+                    </CheckBox>
                 </Col>
                 <Col
                     xs={{size: 12, order: 1}}

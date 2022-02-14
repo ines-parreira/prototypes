@@ -364,23 +364,23 @@ exports[`<EditOrderModal/> should render with a default currency if missing from
               </small>
             </div>
             <div
-              class="mb-3 form-check"
+              class="mb-3"
             >
               <label
-                class="form-check-label"
-                for="notify-customer"
+                class="label"
+                for="checkbox-3"
               >
                 <input
-                  class="form-check-input"
-                  id="notify-customer"
+                  class="input"
+                  id="checkbox-3"
+                  name="checkbox-3"
                   type="checkbox"
                 />
-                <span
-                  class="ml-1"
-                >
-                  Send invoice to customer
-                </span>
+                Send invoice to customer
               </label>
+              <div
+                class="caption"
+              />
             </div>
           </div>
           <div
@@ -787,23 +787,23 @@ exports[`<EditOrderModal/> should render with a populated order table when data 
               </small>
             </div>
             <div
-              class="mb-3 form-check"
+              class="mb-3"
             >
               <label
-                class="form-check-label"
-                for="notify-customer"
+                class="label"
+                for="checkbox-1"
               >
                 <input
-                  class="form-check-input"
-                  id="notify-customer"
+                  class="input"
+                  id="checkbox-1"
+                  name="checkbox-1"
                   type="checkbox"
                 />
-                <span
-                  class="ml-1"
-                >
-                  Send invoice to customer
-                </span>
+                Send invoice to customer
               </label>
+              <div
+                class="caption"
+              />
             </div>
           </div>
           <div
@@ -1004,23 +1004,23 @@ exports[`<EditOrderModal/> should render with an empty order table when data is 
               </small>
             </div>
             <div
-              class="mb-3 form-check"
+              class="mb-3"
             >
               <label
-                class="form-check-label"
-                for="notify-customer"
+                class="label"
+                for="checkbox-2"
               >
                 <input
-                  class="form-check-input"
-                  id="notify-customer"
+                  class="input"
+                  id="checkbox-2"
+                  name="checkbox-2"
                   type="checkbox"
                 />
-                <span
-                  class="ml-1"
-                >
-                  Send invoice to customer
-                </span>
+                Send invoice to customer
               </label>
+              <div
+                class="caption"
+              />
             </div>
           </div>
           <div

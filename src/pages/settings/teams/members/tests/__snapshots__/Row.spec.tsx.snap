@@ -8,10 +8,24 @@ exports[`<Row /> should render 1`] = `
   <span
     class="d-flex align-items-center"
   >
-    <input
+    <div
       class="mr-4"
-      type="checkbox"
-    />
+    >
+      <label
+        class="label"
+        for="checkbox-1"
+      >
+        <input
+          class="input"
+          id="checkbox-1"
+          name="checkbox-1"
+          type="checkbox"
+        />
+      </label>
+      <div
+        class="caption"
+      />
+    </div>
     <div
       class="component avatar d-none d-md-block"
       style="width: 36px; height: 36px;"

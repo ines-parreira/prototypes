@@ -8,10 +8,9 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
     className="cell-wrapper cell-short clickable d-none d-md-table-cell"
     onClick={[Function]}
   >
-    <input
-      checked={false}
+    <ForwardRef(CheckBox)
+      isChecked={false}
       readOnly={true}
-      type="checkbox"
     />
   </td>
   <Connect(CellContainer)
@@ -1668,10 +1667,9 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
         remove_red_eye
       </i>
     </div>
-    <input
-      checked={false}
+    <ForwardRef(CheckBox)
+      isChecked={false}
       readOnly={true}
-      type="checkbox"
     />
   </td>
   <Connect(CellContainer)

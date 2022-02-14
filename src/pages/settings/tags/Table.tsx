@@ -3,6 +3,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {Map} from 'immutable'
 import classnames from 'classnames'
 
+import CheckBox from 'pages/common/forms/CheckBox'
 import {
     getMeta,
     makeGetSelectedTagMeta,
@@ -112,11 +113,7 @@ export class TableContainer extends Component<Props> {
                             className="cell-wrapper cell-short clickable"
                             onClick={onSelectAll}
                         >
-                            <input
-                                type="checkbox"
-                                checked={selectAll}
-                                readOnly={true}
-                            />
+                            <CheckBox isChecked={selectAll} readOnly />
                         </td>
                         {columns.map((column, i) => (
                             <td key={i}>

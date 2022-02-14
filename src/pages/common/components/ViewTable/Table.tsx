@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {usePrevious} from 'react-use'
 
+import CheckBox from 'pages/common/forms/CheckBox'
 import Loader from '../Loader/Loader'
 import BlankState from '../BlankState/index.js'
 import Navigation from '../Navigation/index.js'
@@ -250,14 +251,9 @@ const TableContainer = ({
                                 className="cell-wrapper cell-short clickable d-none d-md-table-cell"
                                 onClick={toggleSelectAllPageItems}
                             >
-                                <input
-                                    type="checkbox"
-                                    checked={areAllSelected}
-                                    ref={(el) =>
-                                        el &&
-                                        (el.indeterminate =
-                                            indeterminateCheckbox)
-                                    }
+                                <CheckBox
+                                    isChecked={areAllSelected}
+                                    isIndeterminate={indeterminateCheckbox}
                                     readOnly
                                 />
                             </td>

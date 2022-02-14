@@ -4,6 +4,7 @@ import {fromJS, Map} from 'immutable'
 import {Form, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import classNames from 'classnames'
 
+import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from 'pages/common/forms/InputField'
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -133,10 +134,9 @@ export class Row extends Component<Props, State> {
                         className="cell-wrapper cell-short clickable"
                         onClick={this._onSelect}
                     >
-                        <input
-                            type="checkbox"
-                            checked={meta.get('selected', false)}
-                            readOnly={true}
+                        <CheckBox
+                            isChecked={meta.get('selected', false)}
+                            readOnly
                         />
                     </td>
 
@@ -192,10 +192,9 @@ export class Row extends Component<Props, State> {
                     className="cell-wrapper cell-short clickable"
                     onClick={this._onSelect}
                 >
-                    <input
-                        type="checkbox"
-                        checked={meta.get('selected', false)}
-                        readOnly={true}
+                    <CheckBox
+                        isChecked={meta.get('selected', false)}
+                        readOnly
                     />
                 </td>
 

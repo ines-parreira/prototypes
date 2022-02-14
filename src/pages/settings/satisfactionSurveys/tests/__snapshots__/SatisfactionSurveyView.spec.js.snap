@@ -504,7 +504,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                               htmlFor="send_survey_on_email"
                             >
                               <input
-                                checked={false}
                                 className="input"
                                 disabled={false}
                                 id="send_survey_on_email"
@@ -529,7 +528,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                               htmlFor="send_survey_on_chat"
                             >
                               <input
-                                checked={false}
                                 className="input"
                                 disabled={false}
                                 id="send_survey_on_chat"

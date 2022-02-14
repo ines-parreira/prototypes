@@ -10,10 +10,23 @@ exports[`<Table /> should display a default view 1`] = `
         <td
           class="cell-wrapper cell-short clickable d-none d-md-table-cell"
         >
-          <input
-            readonly=""
-            type="checkbox"
-          />
+          <div>
+            <label
+              class="label"
+              for="checkbox-2"
+            >
+              <input
+                class="input"
+                id="checkbox-2"
+                name="checkbox-2"
+                readonly=""
+                type="checkbox"
+              />
+            </label>
+            <div
+              class="caption"
+            />
+          </div>
         </td>
         <div>
           HeaderCell
@@ -109,10 +122,23 @@ exports[`<Table /> should display a view with no fields 1`] = `
         <td
           class="cell-wrapper cell-short clickable d-none d-md-table-cell"
         >
-          <input
-            readonly=""
-            type="checkbox"
-          />
+          <div>
+            <label
+              class="label"
+              for="checkbox-1"
+            >
+              <input
+                class="input"
+                id="checkbox-1"
+                name="checkbox-1"
+                readonly=""
+                type="checkbox"
+              />
+            </label>
+            <div
+              class="caption"
+            />
+          </div>
         </td>
       </tr>
     </thead>

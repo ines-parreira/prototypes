@@ -33,7 +33,7 @@ function CheckBox(
         caption,
         children,
         className,
-        isChecked = false,
+        isChecked,
         isDisabled = false,
         isIndeterminate = false,
         labelClassName,

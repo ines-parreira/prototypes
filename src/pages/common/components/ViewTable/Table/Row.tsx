@@ -3,6 +3,7 @@ import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
 
+import CheckBox from 'pages/common/forms/CheckBox'
 import {scrollToReactNode} from '../../../utils/keyboard'
 
 import css from '../Table.less'
@@ -89,7 +90,7 @@ export class RowContainer extends Component<Props> {
                                 </div>
                             )
                         }
-                        <input type="checkbox" checked={isSelected} readOnly />
+                        <CheckBox isChecked={isSelected} readOnly />
                     </td>
                 ) : null}
                 {fields.map((field: Map<any, any>) => (

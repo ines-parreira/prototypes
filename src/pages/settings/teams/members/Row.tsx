@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
 
+import CheckBox from 'pages/common/forms/CheckBox'
 import {ButtonIntent} from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import {RoleLabel} from '../../../common/utils/labels'
@@ -43,10 +44,9 @@ export default class Row extends Component<Props, State> {
         return (
             <Link to={editLink} className={css.component}>
                 <span className="d-flex align-items-center">
-                    <input
-                        type="checkbox"
+                    <CheckBox
                         className="mr-4"
-                        checked={isSelected}
+                        isChecked={isSelected}
                         onClick={(event) => event.stopPropagation()}
                         onChange={() => select(member.get('id'))}
                     />
