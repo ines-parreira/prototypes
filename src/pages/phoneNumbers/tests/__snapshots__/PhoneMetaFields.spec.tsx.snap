@@ -1,0 +1,1114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PhoneMetaFields /> should render 1`] = `
+<div
+  class="row"
+>
+  <div
+    class="col"
+  >
+    <div
+      class="form-group"
+    >
+      <label
+        class="control-label"
+        for="country"
+      >
+        Country
+      </label>
+      <div>
+        <div
+          class="dropdown"
+        >
+          <div
+            aria-expanded="false"
+            aria-haspopup="true"
+            class=""
+            data-toggle="dropdown"
+          >
+            <div
+              class="select dropdown-toggle selectFullWidth"
+            >
+              <span
+                class="label placeholder"
+                style="min-width: 10px; opacity: 1;"
+              >
+                Select an option
+              </span>
+              <input
+                autocomplete="chrome-off"
+                class="input"
+                id="country"
+                required=""
+                style="min-width: 10px;"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            aria-hidden="true"
+            class="options optionsFullWidth dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            
+            <button
+              class="option option--focused dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Canada
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                United States
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Australia
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                United Kingdom
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                France
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneMetaFields /> should render when a country and a state are selected 1`] = `
+<div
+  class="row"
+>
+  <div
+    class="col"
+  >
+    <div
+      class="form-group"
+    >
+      <label
+        class="control-label"
+        for="country"
+      >
+        Country
+      </label>
+      <div>
+        <div
+          class="dropdown"
+        >
+          <div
+            aria-expanded="false"
+            aria-haspopup="true"
+            class=""
+            data-toggle="dropdown"
+          >
+            <div
+              class="select dropdown-toggle selectFullWidth"
+            >
+              <span
+                class="label"
+                style="min-width: 10px; opacity: 1;"
+              >
+                United States
+              </span>
+              <input
+                autocomplete="chrome-off"
+                class="input"
+                id="country"
+                style="min-width: 10px;"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            aria-hidden="true"
+            class="options optionsFullWidth dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            
+            <button
+              class="option option--focused dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Canada
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Australia
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                United Kingdom
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                France
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="form-group"
+    >
+      <label
+        class="control-label"
+        for="type"
+      >
+        Type
+      </label>
+      <div>
+        <div
+          class="dropdown"
+        >
+          <div
+            aria-expanded="false"
+            aria-haspopup="true"
+            class=""
+            data-toggle="dropdown"
+          >
+            <div
+              class="select dropdown-toggle selectFullWidth"
+            >
+              <span
+                class="label"
+                style="min-width: 10px; opacity: 1;"
+              >
+                Local
+              </span>
+              <input
+                autocomplete="chrome-off"
+                class="input"
+                id="type"
+                style="min-width: 10px;"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            aria-hidden="true"
+            class="options optionsFullWidth dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            
+            <button
+              class="option option--focused dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Toll-free
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="form-group"
+    >
+      <label
+        class="control-label"
+        for="state"
+      >
+        State
+      </label>
+      <div>
+        <div
+          class="dropdown"
+        >
+          <div
+            aria-expanded="false"
+            aria-haspopup="true"
+            class=""
+            data-toggle="dropdown"
+          >
+            <div
+              class="select dropdown-toggle selectFullWidth"
+            >
+              <span
+                class="label placeholder"
+                style="min-width: 10px; opacity: 1;"
+              >
+                Select an option
+              </span>
+              <input
+                autocomplete="chrome-off"
+                class="input"
+                id="state"
+                style="min-width: 10px;"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            aria-hidden="true"
+            class="options optionsFullWidth dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            
+            <button
+              class="option option--focused dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Alabama
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Arizona
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Arkansas
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                California
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Colorado
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Connecticut
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Delaware
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                District Of Columbia
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Florida
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Georgia
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Idaho
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Illinois
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Indiana
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Iowa
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Kansas
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Kentucky
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Louisiana
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Maine
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Maryland
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Massachusetts
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Michigan
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Minnesota
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Mississippi
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Missouri
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Montana
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Nebraska
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Nevada
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                New Jersey
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                New Mexico
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                New York
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                North Carolina
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                North Dakota
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Ohio
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Oklahoma
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Oregon
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Pennsylvania
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Rhode Island
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                South Carolina
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                South Dakota
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Tennessee
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Texas
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Utah
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Vermont
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Virginia
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Washington
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                West Virginia
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Wisconsin
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="form-group"
+    >
+      <label
+        class="control-label"
+        for="area-code"
+      >
+        Area code
+      </label>
+      <div>
+        <div
+          class="dropdown"
+        >
+          <div
+            aria-expanded="false"
+            aria-haspopup="true"
+            class=""
+            data-toggle="dropdown"
+          >
+            <div
+              class="select dropdown-toggle selectFullWidth"
+            >
+              <span
+                class="label placeholder"
+                style="min-width: 10px; opacity: 1;"
+              >
+                Select an option
+              </span>
+              <input
+                autocomplete="chrome-off"
+                class="input"
+                id="area-code"
+                required=""
+                style="min-width: 10px;"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            aria-hidden="true"
+            class="options optionsFullWidth dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            <h6
+              class="dropdown-header"
+              tabindex="-1"
+            >
+              No result
+            </h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneMetaFields /> should render when a country and a state are selected 2`] = `
+<div
+  class="row"
+>
+  <div
+    class="col"
+  >
+    <div
+      class="form-group"
+    >
+      <label
+        class="control-label"
+        for="country"
+      >
+        Country
+      </label>
+      <div>
+        <div
+          class="dropdown"
+        >
+          <div
+            aria-expanded="false"
+            aria-haspopup="true"
+            class=""
+            data-toggle="dropdown"
+          >
+            <div
+              class="select dropdown-toggle selectFullWidth"
+            >
+              <span
+                class="label"
+                style="min-width: 10px; opacity: 1;"
+              >
+                Canada
+              </span>
+              <input
+                autocomplete="chrome-off"
+                class="input"
+                id="country"
+                style="min-width: 10px;"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            aria-hidden="true"
+            class="options optionsFullWidth dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            
+            <button
+              class="option option--focused dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                United States
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Australia
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                United Kingdom
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                France
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="form-group"
+    >
+      <label
+        class="control-label"
+        for="type"
+      >
+        Type
+      </label>
+      <div>
+        <div
+          class="dropdown"
+        >
+          <div
+            aria-expanded="false"
+            aria-haspopup="true"
+            class=""
+            data-toggle="dropdown"
+          >
+            <div
+              class="select dropdown-toggle selectFullWidth"
+            >
+              <span
+                class="label"
+                style="min-width: 10px; opacity: 1;"
+              >
+                Toll-free
+              </span>
+              <input
+                autocomplete="chrome-off"
+                class="input"
+                id="type"
+                style="min-width: 10px;"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            aria-hidden="true"
+            class="options optionsFullWidth dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            
+            <button
+              class="option option--focused dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                Local
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="form-group"
+    >
+      <label
+        class="control-label"
+        for="area-code"
+      >
+        Area code
+      </label>
+      <div>
+        <div
+          class="dropdown"
+        >
+          <div
+            aria-expanded="false"
+            aria-haspopup="true"
+            class=""
+            data-toggle="dropdown"
+          >
+            <div
+              class="select dropdown-toggle selectFullWidth"
+            >
+              <span
+                class="label placeholder"
+                style="min-width: 10px; opacity: 1;"
+              >
+                Select an option
+              </span>
+              <input
+                autocomplete="chrome-off"
+                class="input"
+                id="area-code"
+                required=""
+                style="min-width: 10px;"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            aria-hidden="true"
+            class="options optionsFullWidth dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            
+            <button
+              class="option option--focused dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                833
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                844
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                855
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                866
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                877
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                888
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

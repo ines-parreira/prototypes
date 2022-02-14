@@ -15,6 +15,8 @@ import {
 } from 'reactstrap'
 
 import InputField from 'pages/common/forms/InputField'
+import PhoneAddressFields from 'pages/phoneNumbers/PhoneAddressFields'
+
 import {
     DEFAULT_IVR_SETTINGS,
     DEFAULT_VOICE_MESSAGE,
@@ -36,7 +38,8 @@ import {
     PhoneFunction,
     PhoneType,
 } from '../../../../../business/twilio'
-import css from '../../../../settings/settings.less'
+import settingsCss from '../../../../settings/settings.less'
+import css from './PhoneIntegrationCreate.less'
 
 import rawPhoneFunctionOptions from './options/functions.json'
 import rawCountryOptions from './options/countries.json'
@@ -46,8 +49,6 @@ import rawUsAreaCodeOptions from './options/area-codes/us.json'
 import rawGbAreaCodeOptions from './options/area-codes/gb.json'
 import rawAuAreaCodeOptions from './options/area-codes/au.json'
 import rawTollFreeAreaCodeOptions from './options/area-codes/toll-free.json'
-
-import PhoneAddressInformation from './PhoneAddressInformation'
 
 type StateOptions = {
     [key: string]: SelectableOption[]
@@ -304,7 +305,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                 }
             />
 
-            <Container fluid className={css.pageContainer}>
+            <Container fluid className={settingsCss.pageContainer}>
                 <Row>
                     <Col lg={6}>
                         <p>
@@ -350,7 +351,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                             {!!error && (
                                 <Alert
                                     type={AlertType.Error}
-                                    className={css.mb16}
+                                    className={settingsCss.mb16}
                                 >
                                     {error.toString()}
                                 </Alert>
@@ -490,10 +491,15 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                             )}
                             {addressInformation &&
                                 shouldValidateAddress(country) && (
-                                    <PhoneAddressInformation
-                                        value={addressInformation}
-                                        onChange={setAddressInformation}
-                                    />
+                                    <div className={css.addressWrapper}>
+                                        <h4 className="mb-3">
+                                            Address verification
+                                        </h4>
+                                        <PhoneAddressFields
+                                            value={addressInformation}
+                                            onChange={setAddressInformation}
+                                        />
+                                    </div>
                                 )}
                             <Button
                                 type="submit"

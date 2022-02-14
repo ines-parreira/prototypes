@@ -1204,238 +1204,240 @@ exports[`<PhoneIntegrationCreate/> render() should render address validation for
           </div>
           
           <div
-            class="container"
+            class="addressWrapper"
           >
             <h4
               class="mb-3"
             >
               Address verification
             </h4>
-            <div
-              class="mb-3 row"
-            >
+            <div>
               <div
-                class="pr-0 col"
+                class="mb-3 row"
               >
                 <div
-                  class="wrapper selected"
+                  class="pr-0 col"
                 >
-                  <div>
+                  <div
+                    class="wrapper selected"
+                  >
+                    <div>
+                      <label
+                        class="label"
+                        for="company"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="company"
+                          type="radio"
+                        />
+                        Business information
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="col"
+                >
+                  <div
+                    class="wrapper"
+                  >
+                    <div>
+                      <label
+                        class="label"
+                        for="personal"
+                      >
+                        <input
+                          class="input"
+                          id="personal"
+                          type="radio"
+                        />
+                        Personal information
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="InputField required form-group"
+                color=""
+              >
+                <label
+                  class="control-label"
+                  for="id-input-1"
+                >
+                  Business name
+                </label>
+                <div
+                  class=""
+                >
+                  <input
+                    class="form-control"
+                    id="id-input-1"
+                    required=""
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                class="InputField required form-group"
+                color=""
+              >
+                <label
+                  class="control-label"
+                  for="id-input-2"
+                >
+                  Address 1
+                </label>
+                <div
+                  class=""
+                >
+                  <input
+                    class="form-control"
+                    id="id-input-2"
+                    required=""
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="pr-0 col"
+                >
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
                     <label
-                      class="label"
-                      for="company"
+                      class="control-label"
+                      for="id-input-3"
+                    >
+                      Address 2
+                    </label>
+                    <div
+                      class=""
                     >
                       <input
-                        checked=""
-                        class="input"
-                        id="company"
-                        type="radio"
+                        class="form-control"
+                        id="id-input-3"
+                        type="text"
+                        value=""
                       />
-                      Business information
-                    </label>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="col"
-              >
                 <div
-                  class="wrapper"
+                  class="col"
                 >
-                  <div>
+                  <div
+                    class="InputField required form-group"
+                    color=""
+                  >
                     <label
-                      class="label"
-                      for="personal"
+                      class="control-label"
+                      for="id-input-4"
+                    >
+                      City
+                    </label>
+                    <div
+                      class=""
                     >
                       <input
-                        class="input"
-                        id="personal"
-                        type="radio"
+                        class="form-control"
+                        id="id-input-4"
+                        required=""
+                        type="text"
+                        value=""
                       />
-                      Personal information
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="pr-0 col"
+                >
+                  <div
+                    class="InputField required form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-5"
+                    >
+                      State/Province/Region
                     </label>
+                    <div
+                      class=""
+                    >
+                      <input
+                        class="form-control"
+                        id="id-input-5"
+                        required=""
+                        type="text"
+                        value=""
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div
-              class="InputField required form-group"
-              color=""
-            >
-              <label
-                class="control-label"
-                for="id-input-1"
-              >
-                Business name
-              </label>
-              <div
-                class=""
-              >
-                <input
-                  class="form-control"
-                  id="id-input-1"
-                  required=""
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-            <div
-              class="InputField required form-group"
-              color=""
-            >
-              <label
-                class="control-label"
-                for="id-input-2"
-              >
-                Address 1
-              </label>
-              <div
-                class=""
-              >
-                <input
-                  class="form-control"
-                  id="id-input-2"
-                  required=""
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-            <div
-              class="row"
-            >
-              <div
-                class="pr-0 col"
-              >
                 <div
-                  class="InputField form-group"
-                  color=""
+                  class="pr-0 col"
                 >
-                  <label
-                    class="control-label"
-                    for="id-input-3"
-                  >
-                    Address 2
-                  </label>
                   <div
-                    class=""
+                    class="InputField required form-group"
+                    color=""
                   >
-                    <input
-                      class="form-control"
-                      id="id-input-3"
-                      type="text"
-                      value=""
-                    />
+                    <label
+                      class="control-label"
+                      for="id-input-6"
+                    >
+                      Postal Code
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <input
+                        class="form-control"
+                        id="id-input-6"
+                        required=""
+                        type="text"
+                        value=""
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="col"
-              >
                 <div
-                  class="InputField required form-group"
-                  color=""
+                  class="col"
                 >
-                  <label
-                    class="control-label"
-                    for="id-input-4"
-                  >
-                    City
-                  </label>
                   <div
-                    class=""
+                    class="InputField required form-group"
+                    color=""
                   >
-                    <input
-                      class="form-control"
-                      id="id-input-4"
-                      required=""
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              class="row"
-            >
-              <div
-                class="pr-0 col"
-              >
-                <div
-                  class="InputField required form-group"
-                  color=""
-                >
-                  <label
-                    class="control-label"
-                    for="id-input-5"
-                  >
-                    State/Province/Region
-                  </label>
-                  <div
-                    class=""
-                  >
-                    <input
-                      class="form-control"
-                      id="id-input-5"
-                      required=""
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
-              </div>
-              <div
-                class="pr-0 col"
-              >
-                <div
-                  class="InputField required form-group"
-                  color=""
-                >
-                  <label
-                    class="control-label"
-                    for="id-input-6"
-                  >
-                    Postal Code
-                  </label>
-                  <div
-                    class=""
-                  >
-                    <input
-                      class="form-control"
-                      id="id-input-6"
-                      required=""
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
-              </div>
-              <div
-                class="col"
-              >
-                <div
-                  class="InputField required form-group"
-                  color=""
-                >
-                  <label
-                    class="control-label"
-                    for="id-input-7"
-                  >
-                    Country
-                  </label>
-                  <div
-                    class=""
-                  >
-                    <input
-                      class="form-control"
-                      disabled=""
-                      id="id-input-7"
-                      required=""
-                      type="text"
-                      value="Australia"
-                    />
+                    <label
+                      class="control-label"
+                      for="id-input-7"
+                    >
+                      Country
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <input
+                        class="form-control"
+                        disabled=""
+                        id="id-input-7"
+                        required=""
+                        type="text"
+                        value="Australia"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

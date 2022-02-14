@@ -1,8 +1,6 @@
 import React, {useEffect, useCallback, useState} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
-import {isString} from 'lodash'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -12,17 +10,14 @@ import {
     FormGroup,
     Label,
     Row,
-    Button,
 } from 'reactstrap'
 import {Link} from 'react-router-dom'
 import {useAsyncFn} from 'react-use'
-import CountryFlag from 'react-country-flag'
 
 import {
     DEFAULT_IVR_SETTINGS,
     DEFAULT_VOICE_MESSAGE,
 } from 'models/integration/constants'
-import {RootState} from 'state/types'
 import {notify} from 'state/notifications/actions'
 import {phoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
 import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
@@ -30,12 +25,16 @@ import {NotificationStatus} from 'state/notifications/types'
 import {IntegrationType, VoiceMessageType} from 'models/integration/types'
 import {PhoneFunction} from 'business/twilio'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
+import {PhoneNumber} from 'models/phoneNumber/types'
 import {fetchPhoneNumbers} from 'models/phoneNumber/resources'
 import useAppDispatch from 'hooks/useAppDispatch'
 import PageHeader from 'pages/common/components/PageHeader'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import PhoneNumberSelectField from 'pages/phoneNumbers/PhoneNumberSelectField'
+import useAppSelector from 'hooks/useAppSelector'
 
 import css from 'pages/settings/settings.less'
 
@@ -43,13 +42,11 @@ import rawPhoneFunctionOptions from './options/functions.json'
 
 const phoneFunctionOptions: SelectableOption[] = rawPhoneFunctionOptions
 
-type OwnProps = {
-    selectedPhoneNumberId: number
+type Props = {
+    selectedPhoneNumberId?: number
 }
-type Props = ConnectedProps<typeof connector> & OwnProps
 
 function PhoneIntegrationCreateWithNumber({
-    phoneNumbers,
     selectedPhoneNumberId,
 }: Props): JSX.Element {
     const [, handleFetchPhoneNumbers] = useAsyncFn(async () => {
@@ -73,14 +70,22 @@ function PhoneIntegrationCreateWithNumber({
         void handleFetchPhoneNumbers()
     }, [handleFetchPhoneNumbers])
 
+    const phoneNumbers = useAppSelector(getPhoneNumbers)
     const [title, setTitle] = useState('')
-    const [phoneNumberId, setPhoneNumberId] = useState<number>(
-        selectedPhoneNumberId
-    )
+    const [phoneNumber, setPhoneNumber] = useState<Maybe<PhoneNumber>>(null)
     const [emoji, setEmoji] = useState<string | null>(null)
     const [phoneFunction, setPhoneFunction] = useState(PhoneFunction.Standard)
     const [isLoading, setIsLoading] = useState(false)
     const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        if (!selectedPhoneNumberId) {
+            return
+        }
+
+        const selectedNumber = phoneNumbers[selectedPhoneNumberId]
+        setPhoneNumber(selectedNumber)
+    }, [phoneNumbers, selectedPhoneNumberId])
 
     const onSubmit = useCallback(
         async (event: React.FormEvent) => {
@@ -93,7 +98,7 @@ function PhoneIntegrationCreateWithNumber({
                 meta: {
                     emoji,
                     function: phoneFunction,
-                    twilio_phone_number_id: phoneNumberId,
+                    twilio_phone_number_id: phoneNumber?.id,
                     preferences: {
                         record_inbound_calls: false,
                         voicemail_outside_business_hours: true,
@@ -120,29 +125,7 @@ function PhoneIntegrationCreateWithNumber({
                 setIsLoading(false)
             }
         },
-        [title, emoji, phoneFunction, phoneNumberId, dispatch]
-    )
-
-    const phoneNumberOptions = Object.entries(phoneNumbers).map(
-        ([, phoneNumber]) => {
-            const {name} = phoneNumber
-            const {country, friendly_name} = phoneNumber.meta
-            return {
-                value: phoneNumber.id,
-                label: (
-                    <>
-                        {country && (
-                            <CountryFlag
-                                style={{fontSize: '20px', marginLeft: '5px'}}
-                                countryCode={country}
-                            />
-                        )}{' '}
-                        {name} - {country} ({friendly_name})
-                    </>
-                ),
-                text: `${name} ${country} ${friendly_name}`,
-            }
-        }
+        [title, emoji, phoneFunction, phoneNumber, dispatch]
     )
 
     return (
@@ -197,19 +180,10 @@ function PhoneIntegrationCreateWithNumber({
                                 >
                                     Phone Number
                                 </Label>
-                                <SelectField
-                                    id="phoneNumber"
-                                    placeholder="Select number"
-                                    onChange={(value) =>
-                                        setPhoneNumberId(
-                                            isString(value)
-                                                ? parseInt(value)
-                                                : value
-                                        )
-                                    }
-                                    options={phoneNumberOptions}
-                                    value={phoneNumberId}
-                                    fullWidth
+                                <PhoneNumberSelectField
+                                    value={phoneNumber}
+                                    onChange={setPhoneNumber}
+                                    onCreate={setPhoneNumber}
                                 />
                             </FormGroup>
                             <FormGroup>
@@ -232,11 +206,9 @@ function PhoneIntegrationCreateWithNumber({
                             </FormGroup>
                             <Button
                                 type="submit"
-                                color="success"
-                                className={classnames('mt-5', 'mb-5', {
-                                    'btn-loading': isLoading,
-                                })}
-                                disabled={isLoading}
+                                intent={ButtonIntent.Creation}
+                                isLoading={isLoading}
+                                className={classnames('mt-5', 'mb-5')}
                             >
                                 Add voice integration
                             </Button>
@@ -248,8 +220,4 @@ function PhoneIntegrationCreateWithNumber({
     )
 }
 
-const connector = connect((state: RootState) => ({
-    phoneNumbers: getPhoneNumbers(state),
-}))
-
-export default connector(PhoneIntegrationCreateWithNumber)
+export default PhoneIntegrationCreateWithNumber

@@ -1,14 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<PhoneAddressInformation /> should allow to use company information for validation 1`] = `
-<div
-  class="container"
->
-  <h4
-    class="mb-3"
-  >
-    Address verification
-  </h4>
+exports[`<PhoneAddressFields /> should allow to use company information for validation 1`] = `
+<div>
   <div
     class="mb-3 row"
   >
@@ -241,15 +234,8 @@ exports[`<PhoneAddressInformation /> should allow to use company information for
 </div>
 `;
 
-exports[`<PhoneAddressInformation /> should allow to use personal information for validation 1`] = `
-<div
-  class="container"
->
-  <h4
-    class="mb-3"
-  >
-    Address verification
-  </h4>
+exports[`<PhoneAddressFields /> should allow to use personal information for validation 1`] = `
+<div>
   <div
     class="mb-3 row"
   >
@@ -482,15 +468,8 @@ exports[`<PhoneAddressInformation /> should allow to use personal information fo
 </div>
 `;
 
-exports[`<PhoneAddressInformation /> should display the country name in a disabled field 1`] = `
-<div
-  class="container"
->
-  <h4
-    class="mb-3"
-  >
-    Address verification
-  </h4>
+exports[`<PhoneAddressFields /> should display the country name in a disabled field 1`] = `
+<div>
   <div
     class="mb-3 row"
   >
@@ -722,15 +701,8 @@ exports[`<PhoneAddressInformation /> should display the country name in a disabl
 </div>
 `;
 
-exports[`<PhoneAddressInformation /> should render 1`] = `
-<div
-  class="container"
->
-  <h4
-    class="mb-3"
-  >
-    Address verification
-  </h4>
+exports[`<PhoneAddressFields /> should render 1`] = `
+<div>
   <div
     class="mb-3 row"
   >

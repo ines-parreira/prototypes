@@ -5,11 +5,10 @@ import {isEmpty} from 'lodash'
 import {PhoneCountry} from 'business/twilio'
 import {AddressType, AddressInformation} from 'models/integration/types'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
-import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import InputField from 'pages/common/forms/InputField'
+import {SelectableOption} from 'pages/common/forms/SelectField/types'
 
 import rawCountries from './options/countries.json'
-import css from './PhoneAddressInformation.less'
 
 const countries: SelectableOption[] = rawCountries
 
@@ -18,7 +17,7 @@ type Props = {
     onChange: (value: Partial<AddressInformation>) => void
 }
 
-export default function PhoneAddressInformation({
+export default function PhoneAddressFields({
     value,
     onChange,
 }: Props): JSX.Element {
@@ -51,8 +50,7 @@ export default function PhoneAddressInformation({
     }, [value.address, address1, address2, handleChange])
 
     return (
-        <div className={css.container}>
-            <h4 className="mb-3">Address verification</h4>
+        <div>
             <Row className="mb-3">
                 <Col className="pr-0">
                     <PreviewRadioButton
@@ -145,7 +143,7 @@ export default function PhoneAddressInformation({
                     <InputField
                         label="Country"
                         required
-                        value={countryName as string}
+                        value={countryName}
                         disabled
                     />
                 </Col>

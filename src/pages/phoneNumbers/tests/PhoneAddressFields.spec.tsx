@@ -1,21 +1,19 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 
-import PhoneAddressInformation from '../PhoneAddressInformation'
-import {
-    AddressInformation,
-    AddressType,
-} from '../../../../../../models/integration/types'
-import {PhoneCountry} from '../../../../../../business/twilio'
+import {AddressInformation, AddressType} from 'models/integration/types'
+import {PhoneCountry} from 'business/twilio'
 
-describe('<PhoneAddressInformation />', () => {
+import PhoneAddressFields from '../PhoneAddressFields'
+
+describe('<PhoneAddressFields />', () => {
     const onChange: jest.MockedFunction<
         (value: Partial<AddressInformation>) => void
     > = jest.fn()
 
     it('should render', () => {
         const {container} = render(
-            <PhoneAddressInformation onChange={onChange} value={{}} />
+            <PhoneAddressFields onChange={onChange} value={{}} />
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -23,7 +21,7 @@ describe('<PhoneAddressInformation />', () => {
 
     it('should allow to use company information for validation', () => {
         const {container, queryByLabelText} = render(
-            <PhoneAddressInformation
+            <PhoneAddressFields
                 onChange={onChange}
                 value={{
                     type: AddressType.Company,
@@ -39,7 +37,7 @@ describe('<PhoneAddressInformation />', () => {
 
     it('should allow to use personal information for validation', () => {
         const {container, queryByLabelText} = render(
-            <PhoneAddressInformation
+            <PhoneAddressFields
                 onChange={onChange}
                 value={{
                     type: AddressType.Personal,
@@ -60,7 +58,7 @@ describe('<PhoneAddressInformation />', () => {
             queryByLabelText,
             queryByDisplayValue,
         } = render(
-            <PhoneAddressInformation
+            <PhoneAddressFields
                 onChange={onChange}
                 value={{
                     country: PhoneCountry.AU,

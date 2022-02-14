@@ -1,0 +1,517 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PhoneNumberSelectField/> render() should open a modal form when selecting the create option 1`] = `
+<body
+  class="modal-open"
+>
+  <div>
+    <div>
+      <div
+        class="dropdown"
+      >
+        <div
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+          data-toggle="dropdown"
+        >
+          <div
+            class="select dropdown-toggle selectFullWidth"
+          >
+            <span
+              class="label placeholder"
+              style="min-width: 10px; opacity: 1;"
+            >
+              Select number
+            </span>
+            <input
+              autocomplete="chrome-off"
+              class="input"
+              id="phoneNumber"
+              style="min-width: 10px;"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <div
+          aria-hidden="true"
+          class="options optionsFullWidth dropdown-menu"
+          role="menu"
+          tabindex="-1"
+        >
+          
+          <button
+            class="option option--focused dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              <div
+                class="createLabel"
+              >
+                <i
+                  class="material-icons"
+                >
+                  add
+                </i>
+                <span>
+                  Create phone number
+                </span>
+              </div>
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              <span
+                role="img"
+                style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
+              >
+                🇺🇸
+              </span>
+               
+              A Phone Number
+               - 
+              US
+               (
+              +1 415 111 2222
+              )
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              <span
+                role="img"
+                style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
+              >
+                🇨🇦
+              </span>
+               
+              Another Phone Number
+               - 
+              CA
+               (
+              +1 813 111 2223
+              )
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              <span
+                role="img"
+                style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
+              >
+                🇬🇧
+              </span>
+               
+              Intl. Phone Number
+               - 
+              GB
+               (
+              +44 7123 456789
+              )
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <form
+      class=""
+    />
+  </div>
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog modal modal-dialog-centered"
+          role="document"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Create Phone Number
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="body modal-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="form-group"
+                  >
+                    <label
+                      class="control-label"
+                      for="type"
+                    >
+                      Title
+                    </label>
+                    <div
+                      class="InputField required form-group"
+                      color=""
+                    >
+                      <div
+                        class=""
+                      >
+                        <input
+                          class="form-control"
+                          id="id-input-1"
+                          placeholder="Ex: Company Support Line"
+                          required=""
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="row"
+                  >
+                    <div
+                      class="col"
+                    >
+                      <div
+                        class="form-group"
+                      >
+                        <label
+                          class="control-label"
+                          for="country"
+                        >
+                          Country
+                        </label>
+                        <div>
+                          <div
+                            class="dropdown"
+                          >
+                            <div
+                              aria-expanded="false"
+                              aria-haspopup="true"
+                              class=""
+                              data-toggle="dropdown"
+                            >
+                              <div
+                                class="select dropdown-toggle selectFullWidth"
+                              >
+                                <span
+                                  class="label placeholder"
+                                  style="min-width: 10px; opacity: 1;"
+                                >
+                                  Select an option
+                                </span>
+                                <input
+                                  autocomplete="chrome-off"
+                                  class="input"
+                                  id="country"
+                                  required=""
+                                  style="min-width: 10px;"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                            <div
+                              aria-hidden="true"
+                              class="options optionsFullWidth dropdown-menu"
+                              role="menu"
+                              tabindex="-1"
+                            >
+                              
+                              <button
+                                class="option option--focused dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Canada
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  United States
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Australia
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  United Kingdom
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  France
+                                </span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="form-group"
+                      >
+                        <label
+                          class="control-label"
+                          for="area-code"
+                        >
+                          Area code
+                        </label>
+                        <div>
+                          <div
+                            class="dropdown"
+                          >
+                            <div
+                              aria-expanded="false"
+                              aria-haspopup="true"
+                              class=""
+                              data-toggle="dropdown"
+                            >
+                              <div
+                                class="select dropdown-toggle selectFullWidth"
+                              >
+                                <span
+                                  class="label placeholder"
+                                  style="min-width: 10px; opacity: 1;"
+                                >
+                                  Select an option
+                                </span>
+                                <input
+                                  autocomplete="chrome-off"
+                                  class="input"
+                                  id="area-code"
+                                  required=""
+                                  style="min-width: 10px;"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                            <div
+                              aria-hidden="true"
+                              class="options optionsFullWidth dropdown-menu"
+                              role="menu"
+                              tabindex="-1"
+                            >
+                              <h6
+                                class="dropdown-header"
+                                tabindex="-1"
+                              >
+                                No result
+                              </h6>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="footer modal-footer"
+            >
+              <button
+                class="wrapper creation medium"
+              >
+                Create phone number
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop show"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<PhoneNumberSelectField/> render() should render 1`] = `
+<div>
+  <div
+    class="dropdown"
+  >
+    <div
+      aria-expanded="false"
+      aria-haspopup="true"
+      class=""
+      data-toggle="dropdown"
+    >
+      <div
+        class="select dropdown-toggle selectFullWidth"
+      >
+        <span
+          class="label"
+          style="min-width: 10px; opacity: 1;"
+        >
+          <span
+            role="img"
+            style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
+          >
+            🇺🇸
+          </span>
+           
+          A Phone Number
+           - 
+          US
+           (
+          +1 415 111 2222
+          )
+        </span>
+        <input
+          autocomplete="chrome-off"
+          class="input"
+          id="phoneNumber"
+          style="min-width: 10px;"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      class="options optionsFullWidth dropdown-menu"
+      role="menu"
+      tabindex="-1"
+    >
+      
+      <button
+        class="option option--focused dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <span>
+          <div
+            class="createLabel"
+          >
+            <i
+              class="material-icons"
+            >
+              add
+            </i>
+            <span>
+              Create phone number
+            </span>
+          </div>
+        </span>
+      </button>
+      <button
+        class="option dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <span>
+          <span
+            role="img"
+            style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
+          >
+            🇨🇦
+          </span>
+           
+          Another Phone Number
+           - 
+          CA
+           (
+          +1 813 111 2223
+          )
+        </span>
+      </button>
+      <button
+        class="option dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <span>
+          <span
+            role="img"
+            style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
+          >
+            🇬🇧
+          </span>
+           
+          Intl. Phone Number
+           - 
+          GB
+           (
+          +44 7123 456789
+          )
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;

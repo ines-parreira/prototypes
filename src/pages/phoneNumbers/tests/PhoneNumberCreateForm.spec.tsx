@@ -3,7 +3,6 @@ import {fireEvent, render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {RootState, StoreDispatch} from 'state/types'
-
 import {phoneNumbers} from 'fixtures/phoneNumber'
 
 import PhoneNumberCreateForm from '../PhoneNumberCreateForm'

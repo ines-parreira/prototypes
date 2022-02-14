@@ -113,7 +113,7 @@ exports[`<PhoneIntegrationCreateWithNumber/> render() should render 1`] = `
                     >
                       <span
                         role="img"
-                        style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-left: 5px;"
+                        style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
                       >
                         🇺🇸
                       </span>
@@ -149,9 +149,30 @@ exports[`<PhoneIntegrationCreateWithNumber/> render() should render 1`] = `
                     type="button"
                   >
                     <span>
+                      <div
+                        class="createLabel"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          add
+                        </i>
+                        <span>
+                          Create phone number
+                        </span>
+                      </div>
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
                       <span
                         role="img"
-                        style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-left: 5px;"
+                        style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
                       >
                         🇨🇦
                       </span>
@@ -173,7 +194,7 @@ exports[`<PhoneIntegrationCreateWithNumber/> render() should render 1`] = `
                     <span>
                       <span
                         role="img"
-                        style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-left: 5px;"
+                        style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
                       >
                         🇬🇧
                       </span>
@@ -189,6 +210,9 @@ exports[`<PhoneIntegrationCreateWithNumber/> render() should render 1`] = `
                 </div>
               </div>
             </div>
+            <form
+              class=""
+            />
           </div>
           <div
             class="form-group"
@@ -250,7 +274,7 @@ exports[`<PhoneIntegrationCreateWithNumber/> render() should render 1`] = `
             </div>
           </div>
           <button
-            class="mt-5 mb-5 btn btn-success"
+            class="wrapper mt-5 mb-5 creation medium"
             type="submit"
           >
             Add voice integration
@@ -375,7 +399,7 @@ exports[`<PhoneIntegrationCreateWithNumber/> render() should submit a valid payl
                     >
                       <span
                         role="img"
-                        style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-left: 5px;"
+                        style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
                       >
                         🇺🇸
                       </span>
@@ -411,9 +435,30 @@ exports[`<PhoneIntegrationCreateWithNumber/> render() should submit a valid payl
                     type="button"
                   >
                     <span>
+                      <div
+                        class="createLabel"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          add
+                        </i>
+                        <span>
+                          Create phone number
+                        </span>
+                      </div>
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
                       <span
                         role="img"
-                        style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-left: 5px;"
+                        style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
                       >
                         🇨🇦
                       </span>
@@ -435,7 +480,7 @@ exports[`<PhoneIntegrationCreateWithNumber/> render() should submit a valid payl
                     <span>
                       <span
                         role="img"
-                        style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-left: 5px;"
+                        style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
                       >
                         🇬🇧
                       </span>
@@ -451,6 +496,9 @@ exports[`<PhoneIntegrationCreateWithNumber/> render() should submit a valid payl
                 </div>
               </div>
             </div>
+            <form
+              class=""
+            />
           </div>
           <div
             class="form-group"
@@ -512,10 +560,20 @@ exports[`<PhoneIntegrationCreateWithNumber/> render() should submit a valid payl
             </div>
           </div>
           <button
-            class="mt-5 mb-5 btn-loading btn btn-success disabled"
+            class="wrapper mt-5 mb-5 creation medium isDisabled"
             disabled=""
             type="submit"
           >
+            <div
+              class="spinner spinner-border"
+              role="status"
+            >
+              <span
+                class="sr-only"
+              >
+                Loading...
+              </span>
+            </div>
             Add voice integration
           </button>
         </form>
