@@ -19,7 +19,7 @@ import {
     getMaxAttachmentSize,
 } from '../../../../utils/file'
 import {DEFAULT_IMAGE_WIDTH} from '../../../../config/editor'
-import {getEntitySelectionState} from '../../../../utils/editor'
+import {getEntitySelectionState, linkify} from '../../../../utils/editor'
 
 import {PluginMethods} from './types'
 
@@ -180,4 +180,16 @@ export const insertInlineImages = (
     setEditorState(newEditorState)
 
     return Promise.all(uploaded)
+}
+
+export const linkifyWithTemplate = (url: string) => {
+    const noTemplateUrl = url.replace(
+        /{{(.*?)}}/g,
+        (m, group: string) => `**${group}**`
+    )
+    const parsedUrl = linkify.match(noTemplateUrl)?.[0]?.url || noTemplateUrl
+    return parsedUrl.replace(
+        /\*\*(.*?)\*\*/g,
+        (m, group: string) => `{{${group}}}`
+    )
 }

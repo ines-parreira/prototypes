@@ -1,6 +1,6 @@
 import {EditorState} from 'draft-js'
 
-import {removeLink} from '../utils'
+import {linkifyWithTemplate, removeLink} from '../utils'
 import {convertFromHTML} from '../../../../../utils/editor'
 
 describe('plugin utils', () => {
@@ -41,6 +41,23 @@ describe('plugin utils', () => {
                     .getFirstBlock()
                     .getEntityAt(0)
             ).not.toBeFalsy()
+        })
+
+        it('should parse the link ending with a template variable', () => {
+            const url = 'https://www.gorgias.com/app/ticket/{{ticket.id}}'
+            const parsedUrl = linkifyWithTemplate(url)
+            expect(parsedUrl).toBe(
+                'https://www.gorgias.com/app/ticket/{{ticket.id}}'
+            )
+        })
+
+        it('should parse the link containing multiple template variables', () => {
+            const url =
+                'https://www.gorgias.com/app/ticket/{{ticket.id}}/messages/{{ticket.message.id}}/detail'
+            const parsedUrl = linkifyWithTemplate(url)
+            expect(parsedUrl).toBe(
+                'https://www.gorgias.com/app/ticket/{{ticket.id}}/messages/{{ticket.message.id}}/detail'
+            )
         })
     })
 })

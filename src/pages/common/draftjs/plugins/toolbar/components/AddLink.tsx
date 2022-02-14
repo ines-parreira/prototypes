@@ -4,7 +4,7 @@ import {connect, ConnectedProps} from 'react-redux'
 
 import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/InputField'
-import {removeLink} from '../../utils'
+import {linkifyWithTemplate, removeLink} from '../../utils'
 import {
     getEntitySelectionState,
     getSelectedEntityKey,
@@ -110,12 +110,13 @@ export class AddLinkContainer extends Component<Props> {
         let editorState = this.props.getEditorState()
         let contentState = editorState.getCurrentContent()
         const {url, text, entityKey} = this.props
-        // Use linkify to add protocol to the url
-        const parsedUrl = linkify.match(url)?.[0]?.url || url
 
         if (!entityKey) {
             return
         }
+
+        // Use linkify to add protocol to the url
+        const parsedUrl = linkifyWithTemplate(url)
 
         // Update url
         contentState = contentState.replaceEntityData(entityKey, {
@@ -154,7 +155,7 @@ export class AddLinkContainer extends Component<Props> {
     _insertLink = () => {
         const {url, text} = this.props
         // Use linkify to add protocol to the url
-        const parsedUrl = linkify.match(url)?.[0]?.url || url
+        const parsedUrl = linkifyWithTemplate(url)
 
         let editorState = this.props.getEditorState()
         const selection = editorState.getSelection()
