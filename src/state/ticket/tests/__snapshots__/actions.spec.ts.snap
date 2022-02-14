@@ -322,10 +322,6 @@ Array [
     "type": "FETCH_TICKET_START",
   },
   Object {
-    "ticketId": 1,
-    "type": "MARK_CHAT_AS_READ",
-  },
-  Object {
     "resp": Object {
       "id": 1,
       "messages": Array [
@@ -452,10 +448,6 @@ exports[`ticket actions fetchTicket() existing ticket 1`] = `
 Array [
   Object {
     "type": "FETCH_TICKET_START",
-  },
-  Object {
-    "ticketId": 1,
-    "type": "MARK_CHAT_AS_READ",
   },
   Object {
     "resp": Object {
@@ -600,6 +592,104 @@ Array [
   },
   Object {
     "type": "FETCH_TICKET_REPLY_MACRO",
+  },
+]
+`;
+
+exports[`ticket actions fetchTicket() should send ticket-viewed event when ticket is unread 1`] = `
+Array [
+  Object {
+    "type": "FETCH_TICKET_START",
+  },
+  Object {
+    "resp": Object {
+      "id": 1,
+      "is_unread": true,
+      "messages": Array [],
+    },
+    "ticketId": 1,
+    "type": "FETCH_TICKET_SUCCESS",
+  },
+  Object {
+    "resp": Object {
+      "id": 1,
+      "is_unread": true,
+      "messages": Array [],
+    },
+    "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
+  },
+  Object {
+    "appliedMacro": null,
+    "args": Immutable.Map {},
+    "currentUser": Immutable.Map {
+      "id": 1,
+    },
+    "forceFocus": false,
+    "forceUpdate": false,
+    "fromMacro": false,
+    "signature": Immutable.Map {},
+    "ticket": Immutable.Map {
+      "trashed_datetime": null,
+      "channel": "email",
+      "is_unread": false,
+      "priority": "normal",
+      "reply_options": Immutable.Map {
+        "email": Immutable.Map {
+          "answerable": true,
+        },
+        "internal-note": Immutable.Map {
+          "answerable": true,
+        },
+      },
+      "spam": false,
+      "subject": "",
+      "messages": Immutable.List [],
+      "assignee_team": null,
+      "via": "helpdesk",
+      "state": Immutable.Map {
+        "dirty": false,
+        "latestEventDatetime": null,
+        "appliedMacro": null,
+      },
+      "status": "open",
+      "tags": Immutable.List [],
+      "events": Immutable.List [],
+      "assignee_user": null,
+      "id": 1,
+      "_internal": Immutable.Map {
+        "displayHistory": false,
+        "shouldDisplayAuditLogEvents": false,
+        "shouldDisplayHistoryOnNextPage": false,
+        "loading": Immutable.Map {
+          "fetchTicket": false,
+          "deleteMessage": false,
+          "setSpam": false,
+          "setTrash": false,
+        },
+        "pendingMessages": Immutable.List [],
+      },
+      "customer": null,
+    },
+    "ticketId": 1,
+    "type": "setResponseText",
+  },
+  Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
+  },
+  Object {
+    "ticketId": 1,
+    "type": "MARK_CHAT_AS_READ",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {},
+    "type": "NEW_MESSAGE_SET_SENDER",
   },
 ]
 `;
@@ -1294,10 +1384,6 @@ Array [
 exports[`ticket actions handleMessageActionError() should fetch the ticket because the user is currently on it 1`] = `
 Array [
   Object {
-    "ticketId": 1,
-    "type": "MARK_CHAT_AS_READ",
-  },
-  Object {
     "resp": Object {
       "id": 1,
       "messages": Array [],
@@ -1385,10 +1471,6 @@ exports[`ticket actions handleMessageActionError() should not fetch the ticket b
 
 exports[`ticket actions handleMessageError() should fetch the ticket because the user is currently on it 1`] = `
 Array [
-  Object {
-    "ticketId": 1,
-    "type": "MARK_CHAT_AS_READ",
-  },
   Object {
     "resp": Object {
       "id": 1,
@@ -1754,10 +1836,6 @@ Array [
     "type": "FETCH_TICKET_START",
   },
   Object {
-    "ticketId": 1,
-    "type": "MARK_CHAT_AS_READ",
-  },
-  Object {
     "error": [Error: Request failed with status code 404],
     "reason": "Failed to fetch ticket 1",
     "type": "FETCH_TICKET_ERROR",
@@ -1895,10 +1973,6 @@ Array [
   },
   Object {
     "type": "FETCH_TICKET_START",
-  },
-  Object {
-    "ticketId": 1,
-    "type": "MARK_CHAT_AS_READ",
   },
   Object {
     "error": [Error: Request failed with status code 404],

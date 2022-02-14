@@ -620,8 +620,6 @@ export const fetchTicket =
             })
         }
 
-        dispatch(markChatAsRead(parsedTicketId))
-
         const url = `/api/tickets/${parsedTicketId}/`
 
         return client
@@ -696,8 +694,9 @@ export const fetchTicket =
                         )
                     }
 
-                    // Notify the server that we viewed this ticket
+                    // Notify the server that we viewed this ticket and mark it as read in the reducer
                     if (resp.is_unread) {
+                        dispatch(markChatAsRead(parsedTicketId))
                         socketManager.send(
                             SocketEventType.TicketViewed,
                             parsedTicketId

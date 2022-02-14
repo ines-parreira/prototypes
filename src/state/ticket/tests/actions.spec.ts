@@ -509,14 +509,13 @@ describe('ticket actions', () => {
                 ticket: initialState.set('id', 1),
                 currentUser: fromJS({id: 1}),
             })
-            return store
-                .dispatch(actions.fetchTicket('1'))
-                .then(() =>
-                    expect(socketManager.send).toHaveBeenCalledWith(
-                        SocketEventType.TicketViewed,
-                        1
-                    )
+            return store.dispatch(actions.fetchTicket('1')).then(() => {
+                expect(socketManager.send).toHaveBeenCalledWith(
+                    SocketEventType.TicketViewed,
+                    1
                 )
+                expect(store.getActions()).toMatchSnapshot()
+            })
         })
 
         it('should not send ticket-viewed event when ticket is read', () => {
