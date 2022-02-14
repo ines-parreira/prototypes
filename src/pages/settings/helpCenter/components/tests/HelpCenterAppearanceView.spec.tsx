@@ -94,11 +94,19 @@ describe('<HelpCenterAppearanceView />', () => {
         expect(saveBtn.disabled).toBeTruthy()
 
         // Change one setting and expect the button to become active
-        fireEvent.click(getByLabelText('Dark Theme'))
+        fireEvent.click(
+            getByLabelText('Dark Theme', {
+                selector: '[role="radio"]',
+            })
+        )
         expect(saveBtn.disabled).toBeFalsy()
 
         // Change back the setting and expect the initial state
-        fireEvent.click(getByLabelText('Light Theme'))
+        fireEvent.click(
+            getByLabelText('Light Theme', {
+                selector: '[role="radio"]',
+            })
+        )
         expect(saveBtn.disabled).toBeTruthy()
     })
 
@@ -117,7 +125,11 @@ describe('<HelpCenterAppearanceView />', () => {
             name: 'Save Changes',
         }) as HTMLButtonElement
 
-        fireEvent.click(getByLabelText('Dark Theme'))
+        fireEvent.click(
+            getByLabelText('Dark Theme', {
+                selector: '[role="radio"]',
+            })
+        )
         expect(saveBtn.disabled).toBeFalsy()
 
         fireEvent.click(cancelBtn)

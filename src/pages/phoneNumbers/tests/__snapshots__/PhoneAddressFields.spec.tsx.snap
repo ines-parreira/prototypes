@@ -9,7 +9,11 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
       class="pr-0 col"
     >
       <div
+        aria-checked="true"
+        aria-label="Business information"
         class="wrapper selected"
+        role="radio"
+        tabindex="0"
       >
         <div>
           <label
@@ -20,6 +24,7 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
               checked=""
               class="input"
               id="company"
+              tabindex="-1"
               type="radio"
             />
             Business information
@@ -31,7 +36,11 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
       class="col"
     >
       <div
+        aria-checked="false"
+        aria-label="Personal information"
         class="wrapper"
+        role="radio"
+        tabindex="0"
       >
         <div>
           <label
@@ -41,6 +50,7 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
             <input
               class="input"
               id="personal"
+              tabindex="-1"
               type="radio"
             />
             Personal information
@@ -243,7 +253,11 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
       class="pr-0 col"
     >
       <div
+        aria-checked="false"
+        aria-label="Business information"
         class="wrapper"
+        role="radio"
+        tabindex="0"
       >
         <div>
           <label
@@ -253,6 +267,7 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
             <input
               class="input"
               id="company"
+              tabindex="-1"
               type="radio"
             />
             Business information
@@ -264,7 +279,11 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
       class="col"
     >
       <div
+        aria-checked="true"
+        aria-label="Personal information"
         class="wrapper selected"
+        role="radio"
+        tabindex="0"
       >
         <div>
           <label
@@ -275,6 +294,7 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
               checked=""
               class="input"
               id="personal"
+              tabindex="-1"
               type="radio"
             />
             Personal information
@@ -477,7 +497,11 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
       class="pr-0 col"
     >
       <div
+        aria-checked="false"
+        aria-label="Business information"
         class="wrapper"
+        role="radio"
+        tabindex="0"
       >
         <div>
           <label
@@ -487,6 +511,7 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
             <input
               class="input"
               id="company"
+              tabindex="-1"
               type="radio"
             />
             Business information
@@ -498,7 +523,11 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
       class="col"
     >
       <div
+        aria-checked="false"
+        aria-label="Personal information"
         class="wrapper"
+        role="radio"
+        tabindex="0"
       >
         <div>
           <label
@@ -508,6 +537,7 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
             <input
               class="input"
               id="personal"
+              tabindex="-1"
               type="radio"
             />
             Personal information
@@ -710,7 +740,11 @@ exports[`<PhoneAddressFields /> should render 1`] = `
       class="pr-0 col"
     >
       <div
+        aria-checked="false"
+        aria-label="Business information"
         class="wrapper"
+        role="radio"
+        tabindex="0"
       >
         <div>
           <label
@@ -720,6 +754,7 @@ exports[`<PhoneAddressFields /> should render 1`] = `
             <input
               class="input"
               id="company"
+              tabindex="-1"
               type="radio"
             />
             Business information
@@ -731,7 +766,11 @@ exports[`<PhoneAddressFields /> should render 1`] = `
       class="col"
     >
       <div
+        aria-checked="false"
+        aria-label="Personal information"
         class="wrapper"
+        role="radio"
+        tabindex="0"
       >
         <div>
           <label
@@ -741,6 +780,7 @@ exports[`<PhoneAddressFields /> should render 1`] = `
             <input
               class="input"
               id="personal"
+              tabindex="-1"
               type="radio"
             />
             Personal information

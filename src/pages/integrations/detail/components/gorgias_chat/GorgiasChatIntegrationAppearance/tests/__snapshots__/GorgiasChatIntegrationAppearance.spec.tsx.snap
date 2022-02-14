@@ -70,8 +70,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 class="radioButtonGroup"
               >
                 <div
+                  aria-checked="true"
+                  aria-label="Shopify store"
                   class="wrapper selected radioButton"
                   id="store-radio-button-42"
+                  role="radio"
+                  tabindex="0"
                 >
                   <div>
                     <label
@@ -82,6 +86,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         checked=""
                         class="input"
                         id="shopify"
+                        tabindex="-1"
                         type="radio"
                       />
                       Shopify store
@@ -89,8 +94,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
                 <div
+                  aria-checked="false"
+                  aria-label="Any other website"
                   class="wrapper radioButton"
                   id="store-radio-button-42"
+                  role="radio"
+                  tabindex="0"
                 >
                   <div>
                     <label
@@ -100,6 +109,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       <input
                         class="input"
                         id="website"
+                        tabindex="-1"
                         type="radio"
                       />
                       Any other website
@@ -4478,8 +4488,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 class="radioButtonGroup"
               >
                 <div
+                  aria-checked="true"
+                  aria-label="Shopify store"
                   class="wrapper selected radioButton"
                   id="store-radio-button-42"
+                  role="radio"
+                  tabindex="0"
                 >
                   <div>
                     <label
@@ -4490,6 +4504,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         checked=""
                         class="input"
                         id="shopify"
+                        tabindex="-1"
                         type="radio"
                       />
                       Shopify store
@@ -4497,8 +4512,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   </div>
                 </div>
                 <div
+                  aria-checked="false"
+                  aria-label="Any other website"
                   class="wrapper radioButton"
                   id="store-radio-button-42"
+                  role="radio"
+                  tabindex="0"
                 >
                   <div>
                     <label
@@ -4508,6 +4527,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       <input
                         class="input"
                         id="website"
+                        tabindex="-1"
                         type="radio"
                       />
                       Any other website

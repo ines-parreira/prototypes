@@ -3,10 +3,15 @@
 exports[`<PreviewRadioButton /> should match snapshot 1`] = `
 <div>
   <div
+    aria-checked="false"
+    aria-label="Light Theme"
     class="wrapper"
+    role="radio"
+    tabindex="0"
   >
     <div
       class="preview"
+      role="img"
     >
       <img
         alt="preview-light"
@@ -21,6 +26,7 @@ exports[`<PreviewRadioButton /> should match snapshot 1`] = `
         <input
           class="input"
           id="light"
+          tabindex="-1"
           type="radio"
         />
         Light Theme

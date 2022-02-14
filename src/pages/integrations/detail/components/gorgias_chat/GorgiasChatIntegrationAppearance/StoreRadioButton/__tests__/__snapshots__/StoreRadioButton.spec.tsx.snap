@@ -3,8 +3,12 @@
 exports[`<StoreRadioButton /> should match snapshot 1`] = `
 <div>
   <div
+    aria-checked="false"
+    aria-label="Shopify Store"
     class="wrapper radioButton"
     id="store-radio-button-42"
+    role="radio"
+    tabindex="0"
   >
     <div>
       <label
@@ -14,6 +18,7 @@ exports[`<StoreRadioButton /> should match snapshot 1`] = `
         <input
           class="input"
           id="shopify"
+          tabindex="-1"
           type="radio"
         />
         Shopify Store

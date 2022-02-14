@@ -362,10 +362,15 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             class="list"
           >
             <div
+              aria-checked="true"
+              aria-label="Light Theme"
               class="wrapper selected"
+              role="radio"
+              tabindex="0"
             >
               <div
                 class="preview"
+                role="img"
               >
                 <img
                   alt="preview-light"
@@ -382,6 +387,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                     class="input"
                     id="light"
                     name="theme"
+                    tabindex="-1"
                     type="radio"
                   />
                   Light Theme
@@ -389,10 +395,15 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               </div>
             </div>
             <div
+              aria-checked="false"
+              aria-label="Dark Theme"
               class="wrapper"
+              role="radio"
+              tabindex="0"
             >
               <div
                 class="preview"
+                role="img"
               >
                 <img
                   alt="preview-dark"
@@ -408,6 +419,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                     class="input"
                     id="dark"
                     name="theme"
+                    tabindex="-1"
                     type="radio"
                   />
                   Dark Theme

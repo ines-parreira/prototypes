@@ -1,5 +1,5 @@
-import classNames from 'classnames'
 import React, {ComponentProps, ReactChild, MouseEvent} from 'react'
+import classNames from 'classnames'
 
 import RadioButton from '../RadioButton'
 
@@ -33,16 +33,25 @@ export const PreviewRadioButton = ({
             },
             className
         )}
+        role="radio"
+        aria-checked={isSelected}
         id={id}
+        tabIndex={0}
+        aria-label={String(label)}
         onClick={(e) => !isDisabled && onClick(e)}
     >
-        {preview && <div className={css.preview}>{preview}</div>}
+        {preview && (
+            <div className={css.preview} role="img">
+                {preview}
+            </div>
+        )}
         <RadioButton
             value={value}
             label={label}
             isSelected={isSelected}
             isDisabled={isDisabled}
             name={name}
+            tabIndex={-1}
         />
     </div>
 )

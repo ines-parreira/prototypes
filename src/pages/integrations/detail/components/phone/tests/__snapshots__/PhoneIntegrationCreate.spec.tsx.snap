@@ -1219,7 +1219,11 @@ exports[`<PhoneIntegrationCreate/> render() should render address validation for
                   class="pr-0 col"
                 >
                   <div
+                    aria-checked="true"
+                    aria-label="Business information"
                     class="wrapper selected"
+                    role="radio"
+                    tabindex="0"
                   >
                     <div>
                       <label
@@ -1230,6 +1234,7 @@ exports[`<PhoneIntegrationCreate/> render() should render address validation for
                           checked=""
                           class="input"
                           id="company"
+                          tabindex="-1"
                           type="radio"
                         />
                         Business information
@@ -1241,7 +1246,11 @@ exports[`<PhoneIntegrationCreate/> render() should render address validation for
                   class="col"
                 >
                   <div
+                    aria-checked="false"
+                    aria-label="Personal information"
                     class="wrapper"
+                    role="radio"
+                    tabindex="0"
                   >
                     <div>
                       <label
@@ -1251,6 +1260,7 @@ exports[`<PhoneIntegrationCreate/> render() should render address validation for
                         <input
                           class="input"
                           id="personal"
+                          tabindex="-1"
                           type="radio"
                         />
                         Personal information
