@@ -11,13 +11,15 @@ import {useUpdateEffect} from 'react-use'
 
 import {ADMIN_ROLE, AGENT_ROLE} from '../config/user'
 import {currentAccountHasFeature} from '../state/currentAccount/selectors'
+import {getHasAutomationAddOn} from '../state/billing/selectors'
 import {AccountFeature} from '../state/currentAccount/types'
 import {logPageChange} from '../store/middlewares/segmentTracker'
+
 import {
     PaywallConfig,
     paywallConfigs as defaultPaywallConfigs,
 } from '../config/paywalls'
-
+import {isDevelopment, isStaging} from '../utils/environment'
 import App from './App'
 import IntegrationDetailContainer from './integrations/detail/IntegrationDetailContainer'
 import IntegrationListContainer from './integrations/list/IntegrationListContainer'
@@ -72,7 +74,8 @@ import TicketAssignment from './settings/ticketAssignment/index.js'
 import withFeaturePaywall from './common/utils/withFeaturePaywall'
 import OnboardingContent from './onboarding/OnboardingContent'
 import ReferralContent from './referral/ReferralContent'
-import SelfServicePreferencesContainer from './settings/selfService/components/PreferencesView'
+import SelfServiceQuickResponseFlowsPreferencesContainer from './settings/selfService/components/QuickResponseFlowsPreferences'
+import SelfServiceOrderManagementFlowsPreferencesContainer from './settings/selfService/components/OrderManagementFlowsPreferences'
 import SelfServiceCancellationsPolicyContainer from './settings/selfService/components/CancellationsPolicyView'
 import SelfServiceReturnsPolicyContainer from './settings/selfService/components/ReturnsPolicyView'
 import SelfServiceReportIssuePolicyContainer from './settings/selfService/components/ReportIssuePolicyView/index'
@@ -548,7 +551,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
             <Route path={`${path}/rules`} render={RulesSettingsRoute} />
             <Route
                 path={`${path}/self-service`}
-                render={SelfServiceSettingsRoutes}
+                render={(props) => <SelfServiceSettingsRoutes {...props} />}
             />
             <Route
                 path={`${path}/profile`}
@@ -771,6 +774,10 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
 export function SelfServiceSettingsRoutes({
     match: {path},
 }: RouteComponentProps) {
+    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
+    const showQuickResponse =
+        hasAutomationAddOn && (isDevelopment() || isStaging())
+
     return (
         <Switch>
             <Route
@@ -784,12 +791,30 @@ export function SelfServiceSettingsRoutes({
                     navbar: SettingsNavbarContainer,
                 })}
             />
+            <Redirect
+                exact
+                from={`${path}/:integrationType/:shopName/preferences`}
+                to={`${path}/:integrationType/:shopName/preferences/${
+                    showQuickResponse ? `quick-response` : `order-management`
+                }`}
+            />
             <Route
-                path={`${path}/:integrationType/:shopName/preferences`}
+                path={`${path}/:integrationType/:shopName/preferences/quick-response`}
                 exact
                 render={appRender({
                     content: withUserRoleRequired(
-                        SelfServicePreferencesContainer,
+                        SelfServiceQuickResponseFlowsPreferencesContainer,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/:integrationType/:shopName/preferences/order-management`}
+                exact
+                render={appRender({
+                    content: withUserRoleRequired(
+                        SelfServiceOrderManagementFlowsPreferencesContainer,
                         ADMIN_ROLE
                     ),
                     navbar: SettingsNavbarContainer,

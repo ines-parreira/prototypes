@@ -101,5 +101,6 @@ export const generateConfiguration = (
         cancel_order_policy: {
             enabled: true,
         },
+        quick_response_policies: [],
     }
 }

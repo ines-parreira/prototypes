@@ -63,6 +63,7 @@ const createSelfServiceConfigurationFixtures = (length: number) => {
         return_order_policy: {
             enabled: false,
         },
+        quick_response_policies: [],
     }))
 }
 
@@ -216,6 +217,7 @@ describe('<SelfServiceView/>', () => {
                     "created_datetime": "2021-01-26T00:29:00Z",
                     "deactivated_datetime": "2021-01-26T00:30:00Z",
                     "id": 1,
+                    "quick_response_policies": Array [],
                     "report_issue_policy": Object {
                       "cases": Array [],
                       "enabled": false,
@@ -282,6 +284,7 @@ describe('<SelfServiceView/>', () => {
                         "created_datetime": "2021-01-26T00:29:00Z",
                         "deactivated_datetime": null,
                         "id": 2,
+                        "quick_response_policies": Array [],
                         "report_issue_policy": Object {
                           "cases": Array [],
                           "enabled": false,

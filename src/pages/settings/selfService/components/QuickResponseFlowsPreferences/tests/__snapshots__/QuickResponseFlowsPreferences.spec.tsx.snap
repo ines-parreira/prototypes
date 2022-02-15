@@ -1,0 +1,290 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<QuickResponseFlowsPreferences /> should add a new flow 1`] = `
+Array [
+  Array [
+    Object {
+      "cancel_order_policy": Object {
+        "enabled": true,
+      },
+      "created_datetime": "2021-01-26T00:29:00Z",
+      "deactivated_datetime": "2021-01-26T00:30:00Z",
+      "id": 1,
+      "quick_response_policies": Array [
+        Object {
+          "deactivated_datetime": null,
+          "title": "First",
+        },
+        Object {
+          "deactivated_datetime": null,
+          "title": "Second edited",
+        },
+        Object {
+          "deactivated_datetime": null,
+          "title": "Third",
+        },
+        Object {
+          "deactivated_datetime": null,
+          "title": "Fourth",
+        },
+        Object {
+          "deactivated_datetime": "2020-01-01T00:00:00Z",
+          "title": "Fifth",
+        },
+      ],
+      "report_issue_policy": Object {
+        "cases": Array [],
+        "enabled": true,
+      },
+      "return_order_policy": Object {
+        "enabled": true,
+      },
+      "shop_name": "mystore1",
+      "track_order_policy": Object {
+        "enabled": true,
+      },
+      "type": "shopify",
+      "updated_datetime": "2021-01-26T00:29:30Z",
+    },
+  ],
+  Array [
+    Object {
+      "cancel_order_policy": Object {
+        "enabled": true,
+      },
+      "created_datetime": "2021-01-26T00:29:00Z",
+      "deactivated_datetime": "2021-01-26T00:30:00Z",
+      "id": 1,
+      "quick_response_policies": Array [
+        Object {
+          "deactivated_datetime": null,
+          "title": "First",
+        },
+        Object {
+          "deactivated_datetime": null,
+          "title": "Second",
+        },
+        Object {
+          "deactivated_datetime": null,
+          "title": "Third",
+        },
+        Object {
+          "deactivated_datetime": null,
+          "title": "Fourth",
+        },
+        Object {
+          "deactivated_datetime": "2020-01-01T00:00:00Z",
+          "title": "Fifth",
+        },
+        Object {
+          "deactivated_datetime": "2021-01-24T17:30:00.000Z",
+          "title": "New flow",
+        },
+      ],
+      "report_issue_policy": Object {
+        "cases": Array [],
+        "enabled": true,
+      },
+      "return_order_policy": Object {
+        "enabled": true,
+      },
+      "shop_name": "mystore1",
+      "track_order_policy": Object {
+        "enabled": true,
+      },
+      "type": "shopify",
+      "updated_datetime": "2021-01-26T00:29:30Z",
+    },
+  ],
+]
+`;
+
+exports[`<QuickResponseFlowsPreferences /> should be able to remove quick response flow 1`] = `
+Array [
+  Array [
+    Object {
+      "cancel_order_policy": Object {
+        "enabled": true,
+      },
+      "created_datetime": "2021-01-26T00:29:00Z",
+      "deactivated_datetime": "2021-01-26T00:30:00Z",
+      "id": 1,
+      "quick_response_policies": Array [
+        Object {
+          "deactivated_datetime": null,
+          "title": "First",
+        },
+        Object {
+          "deactivated_datetime": null,
+          "title": "Second edited",
+        },
+        Object {
+          "deactivated_datetime": null,
+          "title": "Third",
+        },
+        Object {
+          "deactivated_datetime": null,
+          "title": "Fourth",
+        },
+        Object {
+          "deactivated_datetime": "2020-01-01T00:00:00Z",
+          "title": "Fifth",
+        },
+      ],
+      "report_issue_policy": Object {
+        "cases": Array [],
+        "enabled": true,
+      },
+      "return_order_policy": Object {
+        "enabled": true,
+      },
+      "shop_name": "mystore1",
+      "track_order_policy": Object {
+        "enabled": true,
+      },
+      "type": "shopify",
+      "updated_datetime": "2021-01-26T00:29:30Z",
+    },
+  ],
+  Array [
+    Object {
+      "cancel_order_policy": Object {
+        "enabled": true,
+      },
+      "created_datetime": "2021-01-26T00:29:00Z",
+      "deactivated_datetime": "2021-01-26T00:30:00Z",
+      "id": 1,
+      "quick_response_policies": Array [
+        Object {
+          "deactivated_datetime": null,
+          "title": "First",
+        },
+        Object {
+          "deactivated_datetime": null,
+          "title": "Second",
+        },
+        Object {
+          "deactivated_datetime": null,
+          "title": "Third",
+        },
+        Object {
+          "deactivated_datetime": null,
+          "title": "Fourth",
+        },
+        Object {
+          "deactivated_datetime": "2020-01-01T00:00:00Z",
+          "title": "Fifth",
+        },
+        Object {
+          "deactivated_datetime": "2021-01-24T17:30:00.000Z",
+          "title": "New flow",
+        },
+      ],
+      "report_issue_policy": Object {
+        "cases": Array [],
+        "enabled": true,
+      },
+      "return_order_policy": Object {
+        "enabled": true,
+      },
+      "shop_name": "mystore1",
+      "track_order_policy": Object {
+        "enabled": true,
+      },
+      "type": "shopify",
+      "updated_datetime": "2021-01-26T00:29:30Z",
+    },
+  ],
+  Array [
+    Object {
+      "cancel_order_policy": Object {
+        "enabled": true,
+      },
+      "created_datetime": "2021-01-26T00:29:00Z",
+      "deactivated_datetime": "2021-01-26T00:30:00Z",
+      "id": 1,
+      "quick_response_policies": Array [
+        Object {
+          "deactivated_datetime": null,
+          "title": "First",
+        },
+        Object {
+          "deactivated_datetime": null,
+          "title": "Third",
+        },
+        Object {
+          "deactivated_datetime": null,
+          "title": "Fourth",
+        },
+        Object {
+          "deactivated_datetime": "2020-01-01T00:00:00Z",
+          "title": "Fifth",
+        },
+      ],
+      "report_issue_policy": Object {
+        "cases": Array [],
+        "enabled": true,
+      },
+      "return_order_policy": Object {
+        "enabled": true,
+      },
+      "shop_name": "mystore1",
+      "track_order_policy": Object {
+        "enabled": true,
+      },
+      "type": "shopify",
+      "updated_datetime": "2021-01-26T00:29:30Z",
+    },
+  ],
+]
+`;
+
+exports[`<QuickResponseFlowsPreferences /> should update existing flow 1`] = `
+Array [
+  Array [
+    Object {
+      "cancel_order_policy": Object {
+        "enabled": true,
+      },
+      "created_datetime": "2021-01-26T00:29:00Z",
+      "deactivated_datetime": "2021-01-26T00:30:00Z",
+      "id": 1,
+      "quick_response_policies": Array [
+        Object {
+          "deactivated_datetime": null,
+          "title": "First",
+        },
+        Object {
+          "deactivated_datetime": null,
+          "title": "Second edited",
+        },
+        Object {
+          "deactivated_datetime": null,
+          "title": "Third",
+        },
+        Object {
+          "deactivated_datetime": null,
+          "title": "Fourth",
+        },
+        Object {
+          "deactivated_datetime": "2020-01-01T00:00:00Z",
+          "title": "Fifth",
+        },
+      ],
+      "report_issue_policy": Object {
+        "cases": Array [],
+        "enabled": true,
+      },
+      "return_order_policy": Object {
+        "enabled": true,
+      },
+      "shop_name": "mystore1",
+      "track_order_policy": Object {
+        "enabled": true,
+      },
+      "type": "shopify",
+      "updated_datetime": "2021-01-26T00:29:30Z",
+    },
+  ],
+]
+`;

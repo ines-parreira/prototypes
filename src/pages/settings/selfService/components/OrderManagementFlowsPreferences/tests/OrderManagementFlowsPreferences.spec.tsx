@@ -18,7 +18,7 @@ import {billingState} from 'fixtures/billing'
 import {account} from 'fixtures/account'
 import {basicPlan} from 'fixtures/subscriptionPlan'
 import {getEquivalentAutomationPlanId} from 'models/billing/utils'
-import {PreferencesView} from '../PreferencesView'
+import {OrderManagementFlowsPreferences} from '../OrderManagementFlowsPreferences'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const updateSelfServiceConfigurationMock =
@@ -65,10 +65,11 @@ const createSelfServiceConfigurationFixtures = (length: number) => {
         return_order_policy: {
             enabled: i % 2 === 0,
         },
+        quick_response_policies: [],
     }))
 }
 
-describe('<SelfServicePreferencesView/>', () => {
+describe('<OrderManagementFlowsPreferences/>', () => {
     const automationPlanId = getEquivalentAutomationPlanId(basicPlan.id)
     const shopifyIntegrations = createShopifyIntegrationFixtures(4)
     const selfServiceConfigurations = createSelfServiceConfigurationFixtures(4)
@@ -146,7 +147,7 @@ describe('<SelfServicePreferencesView/>', () => {
                         },
                     })}
                 >
-                    <PreferencesView />
+                    <OrderManagementFlowsPreferences />
                 </Provider>
             )
             expect(container).toMatchSnapshot()
@@ -188,7 +189,7 @@ describe('<SelfServicePreferencesView/>', () => {
                         },
                     })}
                 >
-                    <PreferencesView />
+                    <OrderManagementFlowsPreferences />
                 </Provider>
             )
 
@@ -205,6 +206,7 @@ describe('<SelfServicePreferencesView/>', () => {
                     "created_datetime": "2021-01-26T00:29:00Z",
                     "deactivated_datetime": null,
                     "id": 3,
+                    "quick_response_policies": Array [],
                     "report_issue_policy": Object {
                       "cases": Array [],
                       "enabled": false,

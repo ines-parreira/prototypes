@@ -1,0 +1,32 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .dragIcon {
+        cursor: grab;
+        font-size: 20px;
+        color: @classic-neutral-grey-3;
+    }
+
+    .actionButtonsWrapper {
+        display: flex;
+    }
+
+    .actionButton {
+        background: none;
+        border: none;
+        font-size: 18px;
+        display: inline-block;
+
+        :global(.material-icons) {
+            color: @classic-neutral-grey-4;
+        }
+
+        :global(.edit):hover {
+            color: @classic-main-primary;
+        }
+
+        :global(.delete):hover {
+            color: @classic-feedback-error;
+        }
+    }
+}

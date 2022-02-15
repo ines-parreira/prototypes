@@ -66,6 +66,7 @@ jest.mock('models/selfServiceConfiguration/resources', () => ({
         return_order_policy: {
             enabled: true,
         },
+        quick_response_policies: [],
     }),
 }))
 

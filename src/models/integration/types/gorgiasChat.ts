@@ -4,13 +4,16 @@ import {createTypeGuard} from '../../../utils'
 
 import {IntegrationType} from '../constants'
 
-import {IntegrationBase} from './base'
+import {IntegrationBase, IntegrationDecoration} from './base'
 
 import type {Integration} from './'
 
 export type GorgiasChatIntegration = IntegrationBase & {
     type: IntegrationType.GorgiasChat
     meta: GorgiasChatIntegrationMeta
+    decoration: IntegrationDecoration & {
+        position: GorgiasChatPosition
+    }
 }
 
 export type GorgiasChatIntegrationMeta = {

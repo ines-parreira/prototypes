@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<SelfServicePreferencesView/> ToggleInput.onChange() should deactivate the report issue policy on the mystore3 store 1`] = `
+exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deactivate the report issue policy on the mystore3 store 1`] = `
 <div>
   <div
     class="full-width"
@@ -33,6 +33,17 @@ exports[`<SelfServicePreferencesView/> ToggleInput.onChange() should deactivate 
         </ol>
       </nav>
     </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/self-service/shopify/mystore3/preferences/order-management"
+      >
+        Order Management Flows
+      </a>
+    </nav>
     <div
       class="pageContainer container-fluid"
     >
@@ -371,7 +382,7 @@ exports[`<SelfServicePreferencesView/> ToggleInput.onChange() should deactivate 
 </div>
 `;
 
-exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows, 2 active and 2 inactive 1`] = `
+exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy rows, 2 active and 2 inactive 1`] = `
 <div>
   <div
     class="full-width"
@@ -404,6 +415,17 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
         </ol>
       </nav>
     </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/self-service/shopify/mystore1/preferences/order-management"
+      >
+        Order Management Flows
+      </a>
+    </nav>
     <div
       class="pageContainer container-fluid"
     >

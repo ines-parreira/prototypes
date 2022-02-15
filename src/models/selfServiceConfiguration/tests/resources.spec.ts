@@ -42,6 +42,7 @@ describe('selfServiceConfiguration resources', () => {
                   "created_datetime": "2021-02-07T06:07:46.097905+00:00",
                   "deactivated_datetime": null,
                   "id": 1,
+                  "quick_response_policies": Array [],
                   "report_issue_policy": Object {
                     "cases": Array [],
                     "enabled": true,

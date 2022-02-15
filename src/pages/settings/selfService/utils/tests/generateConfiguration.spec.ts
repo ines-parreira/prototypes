@@ -17,6 +17,7 @@ describe('generateConfiguration()', () => {
             updated_datetime: expect.any(String),
             created_datetime: expect.any(String),
             deactivated_datetime: null,
+            quick_response_policies: [],
             report_issue_policy: {
                 enabled: true,
                 cases: [

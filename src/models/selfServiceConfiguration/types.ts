@@ -54,6 +54,11 @@ export type SelfServiceConfigurationReportIssuePolicy = {
     cases: SelfServiceReportIssueCase[]
 }
 
+export type QuickReplyPolicy = {
+    title: string
+    deactivated_datetime: string | null
+}
+
 export type SelfServiceConfiguration = {
     id: number
     type: ShopType
@@ -65,6 +70,7 @@ export type SelfServiceConfiguration = {
     track_order_policy: SelfServiceConfigurationPolicy
     cancel_order_policy: SelfServiceConfigurationFilterPolicy
     return_order_policy: SelfServiceConfigurationFilterPolicy
+    quick_response_policies: QuickReplyPolicy[]
 }
 
 export type PolicyKey =

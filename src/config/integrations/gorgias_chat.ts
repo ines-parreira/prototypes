@@ -1,6 +1,7 @@
 import {fromJS, List} from 'immutable'
 
 import gorgiasChatWidgetTexts from '../../../../../integrations/common/texts/widget_texts.json'
+import gorgiasChatSSPTexts from '../../../../../integrations/gorgias_chat/texts/ssp_texts.json'
 import {
     DANISH_LANGUAGE,
     DUTCH_LANGUAGE,
@@ -42,6 +43,9 @@ export const GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS: List<Map<string, string>> =
 export const GORGIAS_CHAT_WIDGET_TEXTS: {
     [locale: string]: {[key: string]: string}
 } = gorgiasChatWidgetTexts
+export const GORGIAS_CHAT_SSP_TEXTS: {
+    [locale: string]: {[key: string]: string}
+} = gorgiasChatSSPTexts
 export const GORGIAS_CHAT_WIDGET_TEXTS_DEFAULTS =
     GORGIAS_CHAT_WIDGET_TEXTS[GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT]
 export const GORGIAS_CHAT_DEFAULT_COLOR = '#0d87dd'

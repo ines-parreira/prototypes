@@ -32,6 +32,7 @@ describe('selfServiceConfigurations reducer', () => {
                     "created_datetime": "2021-02-07T06:07:46.097905+00:00",
                     "deactivated_datetime": null,
                     "id": 1,
+                    "quick_response_policies": Array [],
                     "report_issue_policy": Object {
                       "cases": Array [],
                       "enabled": true,
@@ -66,6 +67,7 @@ describe('selfServiceConfigurations reducer', () => {
                     "created_datetime": "2021-02-07T06:07:46.097905+00:00",
                     "deactivated_datetime": null,
                     "id": 1,
+                    "quick_response_policies": Array [],
                     "report_issue_policy": Object {
                       "cases": Array [],
                       "enabled": true,
@@ -103,6 +105,7 @@ describe('selfServiceConfigurations reducer', () => {
                     "created_datetime": "2021-02-07T06:07:46.097905+00:00",
                     "deactivated_datetime": null,
                     "id": 1,
+                    "quick_response_policies": Array [],
                     "report_issue_policy": Object {
                       "cases": Array [],
                       "enabled": true,
@@ -124,6 +127,7 @@ describe('selfServiceConfigurations reducer', () => {
                     "created_datetime": "2021-02-20T08:15:46.097905+00:00",
                     "deactivated_datetime": "2021-02-20T08:30:46.097905+00:00",
                     "id": 2,
+                    "quick_response_policies": Array [],
                     "report_issue_policy": Object {
                       "cases": Array [],
                       "enabled": true,

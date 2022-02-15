@@ -38,6 +38,7 @@ type Props = {
     language?: string
     children: ReactNode
     renderFooter?: boolean
+    renderPoweredBy?: boolean
     position: GorgiasChatPosition
     editedPositionAxis?: PositionAxis | null
     autoResponderEnabled?: boolean
@@ -56,6 +57,7 @@ const ChatIntegrationPreview = (props: Props) => {
         language = GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
         children,
         renderFooter = true,
+        renderPoweredBy = true,
         position,
         editedPositionAxis,
         autoResponderReply,
@@ -215,7 +217,9 @@ const ChatIntegrationPreview = (props: Props) => {
 
                 {children}
 
-                <GorgiasChatPoweredBy translatedTexts={translatedTexts} />
+                {renderPoweredBy && (
+                    <GorgiasChatPoweredBy translatedTexts={translatedTexts} />
+                )}
 
                 {renderFooter && (
                     <div className={css.footer}>

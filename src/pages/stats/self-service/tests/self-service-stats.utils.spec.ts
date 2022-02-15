@@ -33,6 +33,7 @@ describe('hasShopifyIntegrationSSPEnabled', () => {
                 return_order_policy: {
                     enabled: true,
                 },
+                quick_response_policies: [],
             },
         ]
         expect(
@@ -73,6 +74,7 @@ describe('hasShopifyIntegrationSSPEnabled', () => {
                 return_order_policy: {
                     enabled: true,
                 },
+                quick_response_policies: [],
             },
         ]
         expect(

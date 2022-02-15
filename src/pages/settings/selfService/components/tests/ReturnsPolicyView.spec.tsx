@@ -62,6 +62,7 @@ const createSelfServiceConfigurationFixtures = (length: number) => {
                 },
             ],
         },
+        quick_response_policies: [],
     }))
 }
 

@@ -82,6 +82,7 @@ describe('<AutomationStatsSelfServiceMetric />', () => {
         return_order_policy: {
             enabled: true,
         },
+        quick_response_policies: [],
     }
 
     type state = Parameters<typeof mockStore>[0]

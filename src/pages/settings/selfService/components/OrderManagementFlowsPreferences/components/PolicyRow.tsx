@@ -3,26 +3,26 @@ import {Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import {useSelector} from 'react-redux'
 
-import ToggleInput from '../../../common/forms/ToggleInput'
-import {generateConfiguration} from '../utils/generateConfiguration'
-import ForwardIcon from '../../../integrations/detail/components/ForwardIcon'
+import ToggleInput from '../../../../../common/forms/ToggleInput'
+import {generateConfiguration} from '../../../utils/generateConfiguration'
+import ForwardIcon from '../../../../../integrations/detail/components/ForwardIcon'
 import {
     PolicyEnum,
     PolicyKey,
     SelfServiceConfiguration,
     ShopType,
-} from '../../../../models/selfServiceConfiguration/types'
-import {updateSelfServiceConfiguration} from '../../../../models/selfServiceConfiguration/resources'
-import useAppDispatch from '../../../../hooks/useAppDispatch'
-import {selfServiceConfigurationUpdated} from '../../../../state/entities/selfServiceConfigurations/actions'
-import {notify} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
-import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
-import AutomationSubscriptionModal from '../../billing/automation/AutomationSubscriptionModal'
-import UpgradeButton from '../../../common/components/UpgradeButton'
-import {getIconFromUrl} from '../../../../utils'
+} from '../../../../../../models/selfServiceConfiguration/types'
+import {updateSelfServiceConfiguration} from '../../../../../../models/selfServiceConfiguration/resources'
+import useAppDispatch from '../../../../../../hooks/useAppDispatch'
+import {selfServiceConfigurationUpdated} from '../../../../../../state/entities/selfServiceConfigurations/actions'
+import {notify} from '../../../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../../../state/notifications/types'
+import {getHasAutomationAddOn} from '../../../../../../state/billing/selectors'
+import AutomationSubscriptionModal from '../../../../billing/automation/AutomationSubscriptionModal'
+import UpgradeButton from '../../../../../common/components/UpgradeButton'
+import {getIconFromUrl} from '../../../../../../utils'
 
-import css from './PreferencesView.less'
+import css from '../OrderManagementFlowsPreferences.less'
 
 // TODO: uncomment this once advanced track order is implemented
 // const automationTrackModal = getIconFromUrl(
@@ -108,6 +108,7 @@ export const PolicyRow = ({
                     isLoading={loading}
                 />
             </td>
+
             <td className={css.policyTd}>
                 <AutomationSubscriptionModal
                     confirmLabel="Confirm"

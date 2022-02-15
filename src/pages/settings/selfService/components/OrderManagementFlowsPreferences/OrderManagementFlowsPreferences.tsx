@@ -13,24 +13,26 @@ import classnames from 'classnames'
 
 import upgradeIcon from 'assets/img/icons/upgrade-icon.svg'
 
-import Tooltip from '../../../common/components/Tooltip'
-import PageHeader from '../../../common/components/PageHeader'
-import Loader from '../../../common/components/Loader/Loader'
-import Alert, {AlertType} from '../../../common/components/Alert/Alert'
-import LinkAlert from '../../../common/components/Alert/LinkAlert'
+import Tooltip from '../../../../common/components/Tooltip'
+import PageHeader from '../../../../common/components/PageHeader'
+import Loader from '../../../../common/components/Loader/Loader'
+import Alert, {AlertType} from '../../../../common/components/Alert/Alert'
+import LinkAlert from '../../../../common/components/Alert/LinkAlert'
 
-import {PolicyEnum} from '../../../../models/selfServiceConfiguration/types'
-import {hasAutomationLegacyFeatures} from '../../../../state/currentAccount/selectors'
-import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
-import {GorgiasChatIntegrationSelfServicePaywall} from '../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
-import {openChat} from '../../../../utils'
-import settingsCss from '../../settings.less'
+import {PolicyEnum} from '../../../../../models/selfServiceConfiguration/types'
+import {hasAutomationLegacyFeatures} from '../../../../../state/currentAccount/selectors'
+import {getHasAutomationAddOn} from '../../../../../state/billing/selectors'
+import {GorgiasChatIntegrationSelfServicePaywall} from '../../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
+import {openChat} from '../../../../../utils'
+import settingsCss from '../../../settings.less'
 
-import {PolicyRow} from './PolicyRow'
-import {useConfigurationData} from './hooks'
-import css from './PreferencesView.less'
+import SelfServicePreferencesNavbar from '../SelfServicePreferencesNavbar'
 
-export const PreferencesView = () => {
+import {useConfigurationData} from '../hooks'
+import {PolicyRow} from './components/PolicyRow'
+import css from './OrderManagementFlowsPreferences.less'
+
+export const OrderManagementFlowsPreferences = () => {
     const {
         isLoadingConfig: loading,
         integration,
@@ -60,6 +62,7 @@ export const PreferencesView = () => {
                     </Breadcrumb>
                 }
             />
+            <SelfServicePreferencesNavbar />
 
             <Container fluid className={settingsCss.pageContainer}>
                 <Row>
@@ -150,6 +153,7 @@ export const PreferencesView = () => {
                                             agents to improve automations?
                                         </LinkAlert>
                                     )}
+
                                     <Table>
                                         <tbody>
                                             <PolicyRow
@@ -208,4 +212,4 @@ export const PreferencesView = () => {
     )
 }
 
-export default PreferencesView
+export default OrderManagementFlowsPreferences

@@ -23,6 +23,7 @@ export const selfServiceConfiguration1: SelfServiceConfiguration = {
     cancel_order_policy: {
         enabled: true,
     },
+    quick_response_policies: [],
 }
 
 export const selfServiceConfiguration2: SelfServiceConfiguration = {
@@ -45,6 +46,7 @@ export const selfServiceConfiguration2: SelfServiceConfiguration = {
     cancel_order_policy: {
         enabled: true,
     },
+    quick_response_policies: [],
 }
 
 export const selfServiceState = {
