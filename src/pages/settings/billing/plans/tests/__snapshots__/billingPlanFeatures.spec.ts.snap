@@ -155,6 +155,10 @@ Array [
               "enabled": true,
               "limit": 10,
             },
+            "phone_number": Object {
+              "enabled": true,
+              "limit": 10,
+            },
             "revenue_statistics": Object {
               "enabled": true,
             },
@@ -226,6 +230,10 @@ Array [
               "enabled": true,
             },
             "phone_integration": Object {
+              "enabled": true,
+              "limit": 10,
+            },
+            "phone_number": Object {
               "enabled": true,
               "limit": 10,
             },
@@ -423,6 +431,10 @@ Array [
               "enabled": true,
               "limit": 1,
             },
+            "phone_number": Object {
+              "enabled": true,
+              "limit": 1,
+            },
             "revenue_statistics": Object {
               "enabled": false,
             },
@@ -494,6 +506,10 @@ Array [
               "enabled": false,
             },
             "phone_integration": Object {
+              "enabled": true,
+              "limit": 1,
+            },
+            "phone_number": Object {
               "enabled": true,
               "limit": 1,
             },
@@ -691,6 +707,10 @@ Array [
               "enabled": true,
               "limit": 50,
             },
+            "phone_number": Object {
+              "enabled": true,
+              "limit": 50,
+            },
             "revenue_statistics": Object {
               "enabled": false,
             },
@@ -762,6 +782,10 @@ Array [
               "enabled": true,
             },
             "phone_integration": Object {
+              "enabled": true,
+              "limit": 50,
+            },
+            "phone_number": Object {
               "enabled": true,
               "limit": 50,
             },
@@ -1055,6 +1079,10 @@ Array [
               "enabled": true,
               "limit": 3,
             },
+            "phone_number": Object {
+              "enabled": true,
+              "limit": 3,
+            },
             "revenue_statistics": Object {
               "enabled": false,
             },
@@ -1126,6 +1154,10 @@ Array [
               "enabled": true,
             },
             "phone_integration": Object {
+              "enabled": true,
+              "limit": 3,
+            },
+            "phone_number": Object {
               "enabled": true,
               "limit": 3,
             },
@@ -1323,6 +1355,10 @@ Array [
               "enabled": true,
               "limit": 1,
             },
+            "phone_number": Object {
+              "enabled": true,
+              "limit": 1,
+            },
             "revenue_statistics": Object {
               "enabled": false,
             },
@@ -1394,6 +1430,10 @@ Array [
               "enabled": false,
             },
             "phone_integration": Object {
+              "enabled": true,
+              "limit": 1,
+            },
+            "phone_number": Object {
               "enabled": true,
               "limit": 1,
             },
@@ -1590,6 +1630,10 @@ Array [
               "enabled": true,
               "limit": 1,
             },
+            "phone_number": Object {
+              "enabled": true,
+              "limit": 1,
+            },
             "revenue_statistics": Object {
               "enabled": false,
             },
@@ -1661,6 +1705,10 @@ Array [
               "enabled": false,
             },
             "phone_integration": Object {
+              "enabled": true,
+              "limit": 1,
+            },
+            "phone_number": Object {
               "enabled": true,
               "limit": 1,
             },

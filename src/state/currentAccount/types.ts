@@ -31,6 +31,7 @@ export enum AccountFeature {
     YotpoIntegration = 'yotpo_integration',
     RevenueStatistics = 'revenue_statistics',
     SatisfactionSurveys = 'satisfaction_surveys',
+    PhoneNumber = 'phone_number',
     Teams = 'teams',
     UserRoles = 'user_roles',
     ViewSharing = 'view_sharing',

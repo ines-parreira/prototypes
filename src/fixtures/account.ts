@@ -51,6 +51,7 @@ export const account: Account = {
         [AccountFeature.InstagramDirectMessage]: {enabled: true},
         [AccountFeature.UsersLiveStatistics]: {enabled: true},
         [AccountFeature.OverviewLiveStatistics]: {enabled: true},
+        [AccountFeature.PhoneNumber]: {enabled: true, limit: 5},
         [AccountFeature.PhoneIntegration]: {enabled: true, limit: 3},
         [AccountFeature.TwitterIntegration]: {enabled: true, limit: 2},
         [AccountFeature.MagentoIntegration]: {enabled: true},

@@ -12,6 +12,7 @@ import {
     PhoneType,
 } from 'models/phoneNumber/types'
 import {createPhoneNumber} from 'models/phoneNumber/resources'
+import {GorgiasApiError} from 'models/api/types'
 import {phoneNumberCreated} from 'state/entities/phoneNumbers/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
@@ -85,9 +86,12 @@ export default function PhoneNumberCreateModalForm({
                 onCreate(phoneNumber)
             } catch (error) {
                 const errors = errorToChildren(error)
+                const title =
+                    (error as GorgiasApiError).response.data.error.msg ??
+                    'Failed to create phone number'
                 void dispatch(
                     notify({
-                        title: 'Failed to create phone number',
+                        title,
                         message: errors ?? '',
                         status: NotificationStatus.Error,
                         allowHTML: true,

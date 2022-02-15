@@ -169,6 +169,10 @@ Object {
           "automation_self_service_statistics": Immutable.Map {
             "enabled": false,
           },
+          "phone_number": Immutable.Map {
+            "enabled": true,
+            "limit": 50,
+          },
           "automation_track_order_flow": Immutable.Map {
             "enabled": false,
           },
@@ -295,6 +299,10 @@ Object {
       },
       "automation_self_service_statistics": Immutable.Map {
         "enabled": true,
+      },
+      "phone_number": Immutable.Map {
+        "enabled": true,
+        "limit": 5,
       },
       "automation_track_order_flow": Immutable.Map {
         "enabled": true,

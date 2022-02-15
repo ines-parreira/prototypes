@@ -34,6 +34,7 @@ const planFixture: Plan = {
         [AccountFeature.InstagramDirectMessage]: {enabled: true},
         [AccountFeature.OverviewLiveStatistics]: {enabled: false},
         [AccountFeature.UsersLiveStatistics]: {enabled: false},
+        [AccountFeature.PhoneNumber]: {enabled: true, limit: 50},
         [AccountFeature.PhoneIntegration]: {enabled: true, limit: 50},
         [AccountFeature.TwitterIntegration]: {enabled: false, limit: 0},
         [AccountFeature.MagentoIntegration]: {enabled: true},
