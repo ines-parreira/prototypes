@@ -7,6 +7,21 @@ const storyConfig: Meta = {
     title: 'Data Entry/CheckBox',
     component: CheckBox,
     argTypes: {
+        caption: {
+            options: ['none', 'simple text', 'node'],
+            mapping: {
+                none: null,
+                ['simple text']: 'More information on this checkbox',
+                node: (
+                    <>
+                        <i className="material-icons">local_shipping</i> tutu
+                    </>
+                ),
+            },
+            control: {
+                type: 'select',
+            },
+        },
         isDisabled: {
             control: {
                 type: 'boolean',
@@ -16,17 +31,6 @@ const storyConfig: Meta = {
             action: 'clicked!',
             table: {
                 disable: true,
-            },
-        },
-        caption: {
-            options: ['simple text', 'node'],
-            mapping: {
-                ['simple text']: 'More information on this checkbox',
-                node: (
-                    <>
-                        <i className="material-icons">local_shipping</i> tutu
-                    </>
-                ),
             },
         },
     },

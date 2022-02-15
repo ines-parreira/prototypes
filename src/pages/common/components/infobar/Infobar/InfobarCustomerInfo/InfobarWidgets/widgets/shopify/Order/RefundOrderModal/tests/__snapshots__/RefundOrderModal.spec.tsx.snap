@@ -439,7 +439,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                 class="mb-3"
               >
                 <label
-                  class="label hasCaption"
+                  class="label"
                   for="checkbox-2"
                 >
                   <input
@@ -721,7 +721,7 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
                 class="mb-3"
               >
                 <label
-                  class="label hasCaption"
+                  class="label"
                   for="checkbox-1"
                 >
                   <input

@@ -458,7 +458,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                 class="mb-3"
               >
                 <label
-                  class="label hasCaption"
+                  class="label"
                   for="checkbox-2"
                 >
                   <input
@@ -759,7 +759,7 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
                 class="mb-3"
               >
                 <label
-                  class="label hasCaption"
+                  class="label"
                   for="checkbox-1"
                 >
                   <input

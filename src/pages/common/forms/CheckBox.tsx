@@ -61,7 +61,6 @@ function CheckBox(
                     css.label,
                     {
                         [css.isDisabled]: isDisabled,
-                        [css.hasCaption]: !!caption,
                     },
                     labelClassName
                 )}

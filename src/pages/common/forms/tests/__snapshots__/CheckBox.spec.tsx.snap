@@ -44,7 +44,7 @@ exports[`<CheckBox /> should render an enabled CheckBox 1`] = `
 exports[`<CheckBox /> should render caption under the checkbox 1`] = `
 <div>
   <label
-    class="label hasCaption"
+    class="label"
     for="checkbox-3"
   >
     <input

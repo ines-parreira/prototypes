@@ -185,7 +185,7 @@ exports[`<PhoneIntegrationPreferences/> render() should render 1`] = `
               class="mb-2"
             >
               <label
-                class="label hasCaption"
+                class="label"
                 for="checkbox-2"
               >
                 <input
@@ -429,7 +429,7 @@ exports[`<PhoneIntegrationPreferences/> render() should render with IVR integrat
               class="mb-2"
             >
               <label
-                class="label hasCaption"
+                class="label"
                 for="checkbox-4"
               >
                 <input
