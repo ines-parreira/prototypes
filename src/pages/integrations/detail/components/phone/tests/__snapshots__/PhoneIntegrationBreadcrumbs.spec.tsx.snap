@@ -23,7 +23,7 @@ exports[`<PhoneIntegrationBreadcrumbs/> render() should render 1`] = `
       <a
         to="/app/settings/integrations/phone"
       >
-        Phone
+        Voice
       </a>
     </li>
     <li

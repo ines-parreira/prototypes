@@ -60,7 +60,7 @@ export function PhoneIntegrationsListContainer(): JSX.Element {
                                     Integrations
                                 </Link>
                             </BreadcrumbItem>
-                            <BreadcrumbItem active>Phone</BreadcrumbItem>
+                            <BreadcrumbItem active>Voice</BreadcrumbItem>
                         </Breadcrumb>
                         <Button
                             intent={ButtonIntent.Creation}
@@ -70,7 +70,7 @@ export function PhoneIntegrationsListContainer(): JSX.Element {
                                 )
                             }
                         >
-                            Add Phone Integration
+                            Add Voice Integration
                         </Button>
                     </>
                 }
@@ -82,7 +82,7 @@ export function PhoneIntegrationsListContainer(): JSX.Element {
                         <Loader />
                     ) : (
                         <div className="mt-3">
-                            You don't have any phone integrations at the moment.
+                            You don't have any voice integrations at the moment.
                         </div>
                     ))}
             </Container>

@@ -29,14 +29,14 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
           <a
             to="/app/settings/integrations/phone"
           >
-            Phone
+            Voice
           </a>
         </li>
         <li
           aria-current="page"
           class="active breadcrumb-item"
         >
-          Add Phone Number
+          Add Voice Integration
         </li>
       </ol>
     </nav>
@@ -50,26 +50,6 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
       <div
         class="col-lg-6"
       >
-        <p>
-          Create a new phone number in Gorgias or forward calls from an existing number to a Gorgias internal number. To learn more about forwarding existing calls, check out
-           
-          <a
-            href="https://docs.gorgias.com/voice-and-phone/gorgias-phone-integration"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            our phone docs
-          </a>
-          .
-        </p>
-      </div>
-    </div>
-    <div
-      class="row"
-    >
-      <div
-        class="col-lg-6 col-xl-7"
-      >
         <form
           class=""
         >
@@ -80,7 +60,7 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
               class="control-label"
               for="title"
             >
-              Phone title
+              Integration title
             </label>
             <div
               class="container"
@@ -110,9 +90,9 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
           >
             <label
               class="control-label"
-              for="phoneFunction"
+              for="phoneNumber"
             >
-              Function
+              Phone Number
             </label>
             <div>
               <div
@@ -131,12 +111,24 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
                       class="label"
                       style="min-width: 10px; opacity: 1;"
                     >
-                      Standard number
+                      <span
+                        role="img"
+                        style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
+                      >
+                        🇺🇸
+                      </span>
+                       
+                      A Phone Number
+                       - 
+                      US
+                       (
+                      +1 415 111 2222
+                      )
                     </span>
                     <input
                       autocomplete="chrome-off"
                       class="input"
-                      id="phoneFunction"
+                      id="phoneNumber"
                       style="min-width: 10px;"
                       type="text"
                       value=""
@@ -157,314 +149,72 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
                     type="button"
                   >
                     <span>
-                      Interactive Voice Response (IVR)
+                      <div
+                        class="createLabel"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          add
+                        </i>
+                        <span>
+                          Create phone number
+                        </span>
+                      </div>
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      <span
+                        role="img"
+                        style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
+                      >
+                        🇨🇦
+                      </span>
+                       
+                      Another Phone Number
+                       - 
+                      CA
+                       (
+                      +1 813 111 2223
+                      )
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      <span
+                        role="img"
+                        style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
+                      >
+                        🇬🇧
+                      </span>
+                       
+                      Intl. Phone Number
+                       - 
+                      GB
+                       (
+                      +44 7123 456789
+                      )
                     </span>
                   </button>
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            class="form-group"
-          >
-            <label
-              class="control-label"
-              for="country"
-            >
-              Country
-            </label>
-            <div>
-              <div
-                class="dropdown"
-              >
-                <div
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                  class=""
-                  data-toggle="dropdown"
-                >
-                  <div
-                    class="select dropdown-toggle selectFullWidth"
-                  >
-                    <span
-                      class="label placeholder"
-                      style="min-width: 10px; opacity: 1;"
-                    >
-                      Select an option
-                    </span>
-                    <input
-                      autocomplete="chrome-off"
-                      class="input"
-                      id="country"
-                      required=""
-                      style="min-width: 10px;"
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
-                <div
-                  aria-hidden="true"
-                  class="options optionsFullWidth dropdown-menu"
-                  role="menu"
-                  tabindex="-1"
-                >
-                  
-                  <button
-                    class="option option--focused dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Canada
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      United States
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Australia
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      United Kingdom
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      France
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="form-group"
-          >
-            <label
-              class="control-label"
-              for="type"
-            >
-              Type
-            </label>
-            <div>
-              <div
-                class="dropdown"
-              >
-                <div
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                  class=""
-                  data-toggle="dropdown"
-                >
-                  <div
-                    class="select dropdown-toggle selectFullWidth"
-                  >
-                    <span
-                      class="label placeholder"
-                      style="min-width: 10px; opacity: 1;"
-                    >
-                      Select an option
-                    </span>
-                    <input
-                      autocomplete="chrome-off"
-                      class="input"
-                      id="type"
-                      required=""
-                      style="min-width: 10px;"
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
-                <div
-                  aria-hidden="true"
-                  class="options optionsFullWidth dropdown-menu"
-                  role="menu"
-                  tabindex="-1"
-                >
-                  <h6
-                    class="dropdown-header"
-                    tabindex="-1"
-                  >
-                    No result
-                  </h6>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <button
-            class="mt-5 mb-5 btn btn-success"
-            type="submit"
-          >
-            Add phone number
-          </button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<PhoneIntegrationCreate/> render() should render address validation form for Australia or United Kingdom 1`] = `
-<div
-  class="full-width"
->
-  <div
-    class="page-header pageHeader"
-  >
-    <nav
-      aria-label="breadcrumb"
-      class=""
-    >
-      <ol
-        class="breadcrumb"
-      >
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations/phone"
-          >
-            Phone
-          </a>
-        </li>
-        <li
-          aria-current="page"
-          class="active breadcrumb-item"
-        >
-          Add Phone Number
-        </li>
-      </ol>
-    </nav>
-  </div>
-  <div
-    class="pageContainer container-fluid"
-  >
-    <div
-      class="row"
-    >
-      <div
-        class="col-lg-6"
-      >
-        <p>
-          Create a new phone number in Gorgias or forward calls from an existing number to a Gorgias internal number. To learn more about forwarding existing calls, check out
-           
-          <a
-            href="https://docs.gorgias.com/voice-and-phone/gorgias-phone-integration"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            our phone docs
-          </a>
-          .
-        </p>
-      </div>
-    </div>
-    <div
-      class="row"
-    >
-      <div
-        class="col-lg-6 col-xl-7"
-      >
-        <div
-          class="alert info mt-3 mb-4"
-        >
-          <div
-            class="iconContainer"
-          >
-            <img
-              alt="icon"
-              src="test-file-stub"
+            <form
+              class=""
             />
           </div>
           <div
-            class="content"
-          >
-            <span
-              class="label"
-            >
-              Creating phone numbers from Australia and UK requires address verification
-            </span>
-          </div>
-        </div>
-        <form
-          class=""
-        >
-          <div
-            class="form-group"
-          >
-            <h4
-              class="mb-3"
-            >
-              Phone number settings
-            </h4>
-            <label
-              class="control-label"
-              for="title"
-            >
-              Phone title
-            </label>
-            <div
-              class="container"
-            >
-              <div
-                class="picker emojiPicker"
-              >
-                <span
-                  class="material-icons empty icon"
-                >
-                  insert_emoticon
-                </span>
-              </div>
-              <input
-                class="input form-control"
-                id="title"
-                placeholder="Ex: Company Support Line"
-                required=""
-                tabindex="0"
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-          <div
             class="form-group"
           >
             <label
@@ -523,14 +273,112 @@ exports[`<PhoneIntegrationCreate/> render() should render address validation for
               </div>
             </div>
           </div>
+          <button
+            class="wrapper mt-5 mb-5 creation medium"
+            type="submit"
+          >
+            Add voice integration
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneIntegrationCreate/> render() should submit a valid payload with the selected phone_number_id 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/phone"
+          >
+            Voice
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Add Voice Integration
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-lg-6"
+      >
+        <form
+          class=""
+        >
           <div
             class="form-group"
           >
             <label
               class="control-label"
-              for="country"
+              for="title"
             >
-              Country
+              Integration title
+            </label>
+            <div
+              class="container"
+            >
+              <div
+                class="picker emojiPicker"
+              >
+                <span
+                  class="material-icons empty icon"
+                >
+                  insert_emoticon
+                </span>
+              </div>
+              <input
+                class="input form-control"
+                id="title"
+                placeholder="Ex: Company Support Line"
+                required=""
+                tabindex="0"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            class="form-group"
+          >
+            <label
+              class="control-label"
+              for="phoneNumber"
+            >
+              Phone Number
             </label>
             <div>
               <div
@@ -549,1142 +397,56 @@ exports[`<PhoneIntegrationCreate/> render() should render address validation for
                       class="label"
                       style="min-width: 10px; opacity: 1;"
                     >
-                      Australia
-                    </span>
-                    <input
-                      autocomplete="chrome-off"
-                      class="input"
-                      id="country"
-                      style="min-width: 10px;"
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
-                <div
-                  aria-hidden="true"
-                  class="options optionsFullWidth dropdown-menu"
-                  role="menu"
-                  tabindex="-1"
-                >
-                  
-                  <button
-                    class="option option--focused dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Canada
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      United States
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      United Kingdom
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      France
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="form-group"
-          >
-            <label
-              class="control-label"
-              for="area-code"
-            >
-              Area code
-            </label>
-            <div>
-              <div
-                class="dropdown"
-              >
-                <div
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                  class=""
-                  data-toggle="dropdown"
-                >
-                  <div
-                    class="select dropdown-toggle selectFullWidth"
-                  >
-                    <span
-                      class="label placeholder"
-                      style="min-width: 10px; opacity: 1;"
-                    >
-                      Select an option
-                    </span>
-                    <input
-                      autocomplete="chrome-off"
-                      class="input"
-                      id="area-code"
-                      required=""
-                      style="min-width: 10px;"
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
-                <div
-                  aria-hidden="true"
-                  class="options optionsFullWidth dropdown-menu"
-                  role="menu"
-                  tabindex="-1"
-                >
-                  
-                  <button
-                    class="option option--focused dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Adelaide (888)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Adelaide (87)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Adelaide (872)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Albany (8)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Albury (260)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Alice Springs (889)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Armadale (861)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Avalon Beach, Dural, Terrey Hills (284)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Ayr (7)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Bairnsdale (3)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Ballarat (343)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Bankstown, Liverpool (281)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Beenleigh (730)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Bendigo (344)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Blacktown, Parramatta (286)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Brisbane (73)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Bunbury (897)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Bundaberg (743)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Carins (742)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Caloundra (Caboolture) (753)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Canberra (251)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Clayton (385)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Craigieburn, Point Cook (383)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Croydon (382)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Dandenong (387)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Darwin (879)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Dubbo (258)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Eltham (384)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Engadine, Sutherland (285)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Geelon (342)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Gosford (243)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Hobart (361)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Kalkallo, Whittlesea (381)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Launceston (363)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Mandurah (Pinjarra) (895)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Melbourne (39)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Mildura (340)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Newcastle (240)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Orange (253)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Perth (862)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Perth (86)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Port Macquarie (Wauchope) (255)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Ringwood (388)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Rockhampton (748)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Sandgate (731)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Sheppaton (358)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Sunbury, Werribee (380)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Sydney (27)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Tamworth (257)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Toowoomba (745)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Townsville (744)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Tweed Heads (Beaudesert) (756)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Wagga Wagga (259)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Wollongong  (242)
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div
-            class="addressWrapper"
-          >
-            <h4
-              class="mb-3"
-            >
-              Address verification
-            </h4>
-            <div>
-              <div
-                class="mb-3 row"
-              >
-                <div
-                  class="pr-0 col"
-                >
-                  <div
-                    aria-checked="true"
-                    aria-label="Business information"
-                    class="wrapper selected"
-                    role="radio"
-                    tabindex="0"
-                  >
-                    <div>
-                      <label
-                        class="label"
-                        for="company"
+                      <span
+                        role="img"
+                        style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
                       >
-                        <input
-                          checked=""
-                          class="input"
-                          id="company"
-                          tabindex="-1"
-                          type="radio"
-                        />
-                        Business information
-                      </label>
-                    </div>
+                        🇺🇸
+                      </span>
+                       
+                      A Phone Number
+                       - 
+                      US
+                       (
+                      +1 415 111 2222
+                      )
+                    </span>
+                    <input
+                      autocomplete="chrome-off"
+                      class="input"
+                      id="phoneNumber"
+                      style="min-width: 10px;"
+                      type="text"
+                      value=""
+                    />
                   </div>
                 </div>
                 <div
-                  class="col"
+                  aria-hidden="true"
+                  class="options optionsFullWidth dropdown-menu"
+                  role="menu"
+                  tabindex="-1"
                 >
-                  <div
-                    aria-checked="false"
-                    aria-label="Personal information"
-                    class="wrapper"
-                    role="radio"
+                  
+                  <button
+                    class="option option--focused dropdown-item"
+                    role="menuitem"
                     tabindex="0"
+                    type="button"
                   >
-                    <div>
-                      <label
-                        class="label"
-                        for="personal"
+                    <span>
+                      <div
+                        class="createLabel"
                       >
-                        <input
-                          class="input"
-                          id="personal"
-                          tabindex="-1"
-                          type="radio"
-                        />
-                        Personal information
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="InputField required form-group"
-                color=""
-              >
-                <label
-                  class="control-label"
-                  for="id-input-1"
-                >
-                  Business name
-                </label>
-                <div
-                  class=""
-                >
-                  <input
-                    class="form-control"
-                    id="id-input-1"
-                    required=""
-                    type="text"
-                    value=""
-                  />
-                </div>
-              </div>
-              <div
-                class="InputField required form-group"
-                color=""
-              >
-                <label
-                  class="control-label"
-                  for="id-input-2"
-                >
-                  Address 1
-                </label>
-                <div
-                  class=""
-                >
-                  <input
-                    class="form-control"
-                    id="id-input-2"
-                    required=""
-                    type="text"
-                    value=""
-                  />
-                </div>
-              </div>
-              <div
-                class="row"
-              >
-                <div
-                  class="pr-0 col"
-                >
-                  <div
-                    class="InputField form-group"
-                    color=""
-                  >
-                    <label
-                      class="control-label"
-                      for="id-input-3"
-                    >
-                      Address 2
-                    </label>
-                    <div
-                      class=""
-                    >
-                      <input
-                        class="form-control"
-                        id="id-input-3"
-                        type="text"
-                        value=""
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="col"
-                >
-                  <div
-                    class="InputField required form-group"
-                    color=""
-                  >
-                    <label
-                      class="control-label"
-                      for="id-input-4"
-                    >
-                      City
-                    </label>
-                    <div
-                      class=""
-                    >
-                      <input
-                        class="form-control"
-                        id="id-input-4"
-                        required=""
-                        type="text"
-                        value=""
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="row"
-              >
-                <div
-                  class="pr-0 col"
-                >
-                  <div
-                    class="InputField required form-group"
-                    color=""
-                  >
-                    <label
-                      class="control-label"
-                      for="id-input-5"
-                    >
-                      State/Province/Region
-                    </label>
-                    <div
-                      class=""
-                    >
-                      <input
-                        class="form-control"
-                        id="id-input-5"
-                        required=""
-                        type="text"
-                        value=""
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="pr-0 col"
-                >
-                  <div
-                    class="InputField required form-group"
-                    color=""
-                  >
-                    <label
-                      class="control-label"
-                      for="id-input-6"
-                    >
-                      Postal Code
-                    </label>
-                    <div
-                      class=""
-                    >
-                      <input
-                        class="form-control"
-                        id="id-input-6"
-                        required=""
-                        type="text"
-                        value=""
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="col"
-                >
-                  <div
-                    class="InputField required form-group"
-                    color=""
-                  >
-                    <label
-                      class="control-label"
-                      for="id-input-7"
-                    >
-                      Country
-                    </label>
-                    <div
-                      class=""
-                    >
-                      <input
-                        class="form-control"
-                        disabled=""
-                        id="id-input-7"
-                        required=""
-                        type="text"
-                        value="Australia"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <button
-            class="mt-5 mb-5 btn btn-success"
-            type="submit"
-          >
-            Add phone number
-          </button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<PhoneIntegrationCreate/> render() should render when IVR function is selected 1`] = `
-<div
-  class="full-width"
->
-  <div
-    class="page-header pageHeader"
-  >
-    <nav
-      aria-label="breadcrumb"
-      class=""
-    >
-      <ol
-        class="breadcrumb"
-      >
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations/phone"
-          >
-            Phone
-          </a>
-        </li>
-        <li
-          aria-current="page"
-          class="active breadcrumb-item"
-        >
-          Add Phone Number
-        </li>
-      </ol>
-    </nav>
-  </div>
-  <div
-    class="pageContainer container-fluid"
-  >
-    <div
-      class="row"
-    >
-      <div
-        class="col-lg-6"
-      >
-        <p>
-          Create a new phone number in Gorgias or forward calls from an existing number to a Gorgias internal number. To learn more about forwarding existing calls, check out
-           
-          <a
-            href="https://docs.gorgias.com/voice-and-phone/gorgias-phone-integration"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            our phone docs
-          </a>
-          .
-        </p>
-      </div>
-    </div>
-    <div
-      class="row"
-    >
-      <div
-        class="col-lg-6 col-xl-7"
-      >
-        <form
-          class=""
-        >
-          <div
-            class="form-group"
-          >
-            <label
-              class="control-label"
-              for="title"
-            >
-              Phone title
-            </label>
-            <div
-              class="container"
-            >
-              <div
-                class="picker emojiPicker"
-              >
-                <span
-                  class="material-icons empty icon"
-                >
-                  insert_emoticon
-                </span>
-              </div>
-              <input
-                class="input form-control"
-                id="title"
-                placeholder="Ex: Company Support Line"
-                required=""
-                tabindex="0"
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-          <div
-            class="form-group"
-          >
-            <label
-              class="control-label"
-              for="phoneFunction"
-            >
-              Function
-            </label>
-            <div>
-              <div
-                class="dropdown show"
-              >
-                <div
-                  aria-expanded="true"
-                  aria-haspopup="true"
-                  class=""
-                  data-toggle="dropdown"
-                >
-                  <div
-                    class="select dropdown-toggle selectFullWidth"
-                  >
-                    <span
-                      class="label"
-                      style="min-width: 10px; opacity: 1;"
-                    >
-                      Interactive Voice Response (IVR)
-                    </span>
-                    <input
-                      autocomplete="chrome-off"
-                      class="input"
-                      id="phoneFunction"
-                      style="min-width: 10px;"
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
-                <div
-                  aria-hidden="false"
-                  class="options optionsFullWidth dropdown-menu show"
-                  role="menu"
-                  style="position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
-                  tabindex="-1"
-                >
-                  
-                  <button
-                    class="option option--focused dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Standard number
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="form-group"
-          >
-            <label
-              class="control-label"
-              for="country"
-            >
-              Country
-            </label>
-            <div>
-              <div
-                class="dropdown"
-              >
-                <div
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                  class=""
-                  data-toggle="dropdown"
-                >
-                  <div
-                    class="select dropdown-toggle selectFullWidth"
-                  >
-                    <span
-                      class="label placeholder"
-                      style="min-width: 10px; opacity: 1;"
-                    >
-                      Select an option
-                    </span>
-                    <input
-                      autocomplete="chrome-off"
-                      class="input"
-                      id="country"
-                      required=""
-                      style="min-width: 10px;"
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
-                <div
-                  aria-hidden="true"
-                  class="options optionsFullWidth dropdown-menu"
-                  role="menu"
-                  tabindex="-1"
-                >
-                  
-                  <button
-                    class="option option--focused dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Canada
+                        <i
+                          class="material-icons"
+                        >
+                          add
+                        </i>
+                        <span>
+                          Create phone number
+                        </span>
+                      </div>
                     </span>
                   </button>
                   <button
@@ -1694,7 +456,19 @@ exports[`<PhoneIntegrationCreate/> render() should render when IVR function is s
                     type="button"
                   >
                     <span>
-                      United States
+                      <span
+                        role="img"
+                        style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
+                      >
+                        🇨🇦
+                      </span>
+                       
+                      Another Phone Number
+                       - 
+                      CA
+                       (
+                      +1 813 111 2223
+                      )
                     </span>
                   </button>
                   <button
@@ -1704,206 +478,27 @@ exports[`<PhoneIntegrationCreate/> render() should render when IVR function is s
                     type="button"
                   >
                     <span>
-                      Australia
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      United Kingdom
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      France
+                      <span
+                        role="img"
+                        style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
+                      >
+                        🇬🇧
+                      </span>
+                       
+                      Intl. Phone Number
+                       - 
+                      GB
+                       (
+                      +44 7123 456789
+                      )
                     </span>
                   </button>
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            class="form-group"
-          >
-            <label
-              class="control-label"
-              for="type"
-            >
-              Type
-            </label>
-            <div>
-              <div
-                class="dropdown"
-              >
-                <div
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                  class=""
-                  data-toggle="dropdown"
-                >
-                  <div
-                    class="select dropdown-toggle selectFullWidth"
-                  >
-                    <span
-                      class="label placeholder"
-                      style="min-width: 10px; opacity: 1;"
-                    >
-                      Select an option
-                    </span>
-                    <input
-                      autocomplete="chrome-off"
-                      class="input"
-                      id="type"
-                      required=""
-                      style="min-width: 10px;"
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
-                <div
-                  aria-hidden="true"
-                  class="options optionsFullWidth dropdown-menu"
-                  role="menu"
-                  tabindex="-1"
-                >
-                  <h6
-                    class="dropdown-header"
-                    tabindex="-1"
-                  >
-                    No result
-                  </h6>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <button
-            class="mt-5 mb-5 btn btn-success"
-            type="submit"
-          >
-            Add phone number
-          </button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<PhoneIntegrationCreate/> render() should render when a country and a state are selected 1`] = `
-<div
-  class="full-width"
->
-  <div
-    class="page-header pageHeader"
-  >
-    <nav
-      aria-label="breadcrumb"
-      class=""
-    >
-      <ol
-        class="breadcrumb"
-      >
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations/phone"
-          >
-            Phone
-          </a>
-        </li>
-        <li
-          aria-current="page"
-          class="active breadcrumb-item"
-        >
-          Add Phone Number
-        </li>
-      </ol>
-    </nav>
-  </div>
-  <div
-    class="pageContainer container-fluid"
-  >
-    <div
-      class="row"
-    >
-      <div
-        class="col-lg-6"
-      >
-        <p>
-          Create a new phone number in Gorgias or forward calls from an existing number to a Gorgias internal number. To learn more about forwarding existing calls, check out
-           
-          <a
-            href="https://docs.gorgias.com/voice-and-phone/gorgias-phone-integration"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            our phone docs
-          </a>
-          .
-        </p>
-      </div>
-    </div>
-    <div
-      class="row"
-    >
-      <div
-        class="col-lg-6 col-xl-7"
-      >
-        <form
-          class=""
-        >
-          <div
-            class="form-group"
-          >
-            <label
-              class="control-label"
-              for="title"
-            >
-              Phone title
-            </label>
-            <div
-              class="container"
-            >
-              <div
-                class="picker emojiPicker"
-              >
-                <span
-                  class="material-icons empty icon"
-                >
-                  insert_emoticon
-                </span>
-              </div>
-              <input
-                class="input form-control"
-                id="title"
-                placeholder="Ex: Company Support Line"
-                required=""
-                tabindex="0"
-                type="text"
-                value=""
-              />
-            </div>
+            <form
+              class=""
+            />
           </div>
           <div
             class="form-group"
@@ -1964,1207 +559,22 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
               </div>
             </div>
           </div>
-          <div
-            class="form-group"
-          >
-            <label
-              class="control-label"
-              for="country"
-            >
-              Country
-            </label>
-            <div>
-              <div
-                class="dropdown"
-              >
-                <div
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                  class=""
-                  data-toggle="dropdown"
-                >
-                  <div
-                    class="select dropdown-toggle selectFullWidth"
-                  >
-                    <span
-                      class="label"
-                      style="min-width: 10px; opacity: 1;"
-                    >
-                      United States
-                    </span>
-                    <input
-                      autocomplete="chrome-off"
-                      class="input"
-                      id="country"
-                      style="min-width: 10px;"
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
-                <div
-                  aria-hidden="true"
-                  class="options optionsFullWidth dropdown-menu"
-                  role="menu"
-                  tabindex="-1"
-                >
-                  
-                  <button
-                    class="option option--focused dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Canada
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Australia
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      United Kingdom
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      France
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="form-group"
-          >
-            <label
-              class="control-label"
-              for="type"
-            >
-              Type
-            </label>
-            <div>
-              <div
-                class="dropdown"
-              >
-                <div
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                  class=""
-                  data-toggle="dropdown"
-                >
-                  <div
-                    class="select dropdown-toggle selectFullWidth"
-                  >
-                    <span
-                      class="label"
-                      style="min-width: 10px; opacity: 1;"
-                    >
-                      Local
-                    </span>
-                    <input
-                      autocomplete="chrome-off"
-                      class="input"
-                      id="type"
-                      style="min-width: 10px;"
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
-                <div
-                  aria-hidden="true"
-                  class="options optionsFullWidth dropdown-menu"
-                  role="menu"
-                  tabindex="-1"
-                >
-                  
-                  <button
-                    class="option option--focused dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Toll-free
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="form-group"
-          >
-            <label
-              class="control-label"
-              for="state"
-            >
-              State
-            </label>
-            <div>
-              <div
-                class="dropdown show"
-              >
-                <div
-                  aria-expanded="true"
-                  aria-haspopup="true"
-                  class=""
-                  data-toggle="dropdown"
-                >
-                  <div
-                    class="select dropdown-toggle selectFullWidth"
-                  >
-                    <span
-                      class="label"
-                      style="min-width: 10px; opacity: 1;"
-                    >
-                      Alabama
-                    </span>
-                    <input
-                      autocomplete="chrome-off"
-                      class="input"
-                      id="state"
-                      style="min-width: 10px;"
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
-                <div
-                  aria-hidden="false"
-                  class="options optionsFullWidth dropdown-menu show"
-                  role="menu"
-                  style="position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
-                  tabindex="-1"
-                >
-                  
-                  <button
-                    class="option option--focused dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Arizona
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Arkansas
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      California
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Colorado
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Connecticut
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Delaware
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      District Of Columbia
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Florida
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Georgia
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Idaho
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Illinois
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Indiana
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Iowa
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Kansas
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Kentucky
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Louisiana
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Maine
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Maryland
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Massachusetts
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Michigan
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Minnesota
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Mississippi
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Missouri
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Montana
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Nebraska
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Nevada
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      New Jersey
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      New Mexico
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      New York
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      North Carolina
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      North Dakota
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Ohio
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Oklahoma
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Oregon
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Pennsylvania
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Rhode Island
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      South Carolina
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      South Dakota
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Tennessee
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Texas
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Utah
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Vermont
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Virginia
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Washington
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      West Virginia
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Wisconsin
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="form-group"
-          >
-            <label
-              class="control-label"
-              for="area-code"
-            >
-              Area code
-            </label>
-            <div>
-              <div
-                class="dropdown"
-              >
-                <div
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                  class=""
-                  data-toggle="dropdown"
-                >
-                  <div
-                    class="select dropdown-toggle selectFullWidth"
-                  >
-                    <span
-                      class="label placeholder"
-                      style="min-width: 10px; opacity: 1;"
-                    >
-                      Select an option
-                    </span>
-                    <input
-                      autocomplete="chrome-off"
-                      class="input"
-                      id="area-code"
-                      required=""
-                      style="min-width: 10px;"
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
-                <div
-                  aria-hidden="true"
-                  class="options optionsFullWidth dropdown-menu"
-                  role="menu"
-                  tabindex="-1"
-                >
-                  
-                  <button
-                    class="option option--focused dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Birmingham (205)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Mobile (251)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Huntsville (256)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Montegomery (334)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Huntsville (938)
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          
           <button
-            class="mt-5 mb-5 btn btn-success"
+            class="wrapper mt-5 mb-5 creation medium isDisabled"
+            disabled=""
             type="submit"
           >
-            Add phone number
-          </button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<PhoneIntegrationCreate/> render() should render when type "Toll-free" is selected 1`] = `
-<div
-  class="full-width"
->
-  <div
-    class="page-header pageHeader"
-  >
-    <nav
-      aria-label="breadcrumb"
-      class=""
-    >
-      <ol
-        class="breadcrumb"
-      >
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations/phone"
-          >
-            Phone
-          </a>
-        </li>
-        <li
-          aria-current="page"
-          class="active breadcrumb-item"
-        >
-          Add Phone Number
-        </li>
-      </ol>
-    </nav>
-  </div>
-  <div
-    class="pageContainer container-fluid"
-  >
-    <div
-      class="row"
-    >
-      <div
-        class="col-lg-6"
-      >
-        <p>
-          Create a new phone number in Gorgias or forward calls from an existing number to a Gorgias internal number. To learn more about forwarding existing calls, check out
-           
-          <a
-            href="https://docs.gorgias.com/voice-and-phone/gorgias-phone-integration"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            our phone docs
-          </a>
-          .
-        </p>
-      </div>
-    </div>
-    <div
-      class="row"
-    >
-      <div
-        class="col-lg-6 col-xl-7"
-      >
-        <form
-          class=""
-        >
-          <div
-            class="form-group"
-          >
-            <label
-              class="control-label"
-              for="title"
-            >
-              Phone title
-            </label>
             <div
-              class="container"
+              class="spinner spinner-border"
+              role="status"
             >
-              <div
-                class="picker emojiPicker"
+              <span
+                class="sr-only"
               >
-                <span
-                  class="material-icons empty icon"
-                >
-                  insert_emoticon
-                </span>
-              </div>
-              <input
-                class="input form-control"
-                id="title"
-                placeholder="Ex: Company Support Line"
-                required=""
-                tabindex="0"
-                type="text"
-                value=""
-              />
+                Loading...
+              </span>
             </div>
-          </div>
-          <div
-            class="form-group"
-          >
-            <label
-              class="control-label"
-              for="phoneFunction"
-            >
-              Function
-            </label>
-            <div>
-              <div
-                class="dropdown"
-              >
-                <div
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                  class=""
-                  data-toggle="dropdown"
-                >
-                  <div
-                    class="select dropdown-toggle selectFullWidth"
-                  >
-                    <span
-                      class="label"
-                      style="min-width: 10px; opacity: 1;"
-                    >
-                      Standard number
-                    </span>
-                    <input
-                      autocomplete="chrome-off"
-                      class="input"
-                      id="phoneFunction"
-                      style="min-width: 10px;"
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
-                <div
-                  aria-hidden="true"
-                  class="options optionsFullWidth dropdown-menu"
-                  role="menu"
-                  tabindex="-1"
-                >
-                  
-                  <button
-                    class="option option--focused dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Interactive Voice Response (IVR)
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="form-group"
-          >
-            <label
-              class="control-label"
-              for="country"
-            >
-              Country
-            </label>
-            <div>
-              <div
-                class="dropdown"
-              >
-                <div
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                  class=""
-                  data-toggle="dropdown"
-                >
-                  <div
-                    class="select dropdown-toggle selectFullWidth"
-                  >
-                    <span
-                      class="label"
-                      style="min-width: 10px; opacity: 1;"
-                    >
-                      Canada
-                    </span>
-                    <input
-                      autocomplete="chrome-off"
-                      class="input"
-                      id="country"
-                      style="min-width: 10px;"
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
-                <div
-                  aria-hidden="true"
-                  class="options optionsFullWidth dropdown-menu"
-                  role="menu"
-                  tabindex="-1"
-                >
-                  
-                  <button
-                    class="option option--focused dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      United States
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Australia
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      United Kingdom
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      France
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="form-group"
-          >
-            <label
-              class="control-label"
-              for="type"
-            >
-              Type
-            </label>
-            <div>
-              <div
-                class="dropdown show"
-              >
-                <div
-                  aria-expanded="true"
-                  aria-haspopup="true"
-                  class=""
-                  data-toggle="dropdown"
-                >
-                  <div
-                    class="select dropdown-toggle selectFullWidth"
-                  >
-                    <span
-                      class="label"
-                      style="min-width: 10px; opacity: 1;"
-                    >
-                      Toll-free
-                    </span>
-                    <input
-                      autocomplete="chrome-off"
-                      class="input"
-                      id="type"
-                      style="min-width: 10px;"
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
-                <div
-                  aria-hidden="false"
-                  class="options optionsFullWidth dropdown-menu show"
-                  role="menu"
-                  style="position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
-                  tabindex="-1"
-                >
-                  
-                  <button
-                    class="option option--focused dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Local
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="form-group"
-          >
-            <label
-              class="control-label"
-              for="area-code"
-            >
-              Area code
-            </label>
-            <div>
-              <div
-                class="dropdown"
-              >
-                <div
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                  class=""
-                  data-toggle="dropdown"
-                >
-                  <div
-                    class="select dropdown-toggle selectFullWidth"
-                  >
-                    <span
-                      class="label placeholder"
-                      style="min-width: 10px; opacity: 1;"
-                    >
-                      Select an option
-                    </span>
-                    <input
-                      autocomplete="chrome-off"
-                      class="input"
-                      id="area-code"
-                      required=""
-                      style="min-width: 10px;"
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
-                <div
-                  aria-hidden="true"
-                  class="options optionsFullWidth dropdown-menu"
-                  role="menu"
-                  tabindex="-1"
-                >
-                  
-                  <button
-                    class="option option--focused dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      833
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      844
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      855
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      866
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      877
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      888
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <button
-            class="mt-5 mb-5 btn btn-success"
-            type="submit"
-          >
-            Add phone number
+            Add voice integration
           </button>
         </form>
       </div>

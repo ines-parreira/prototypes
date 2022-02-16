@@ -27,7 +27,7 @@ exports[`<DEPRECATED_PhoneIntegrationList/> render() should render 1`] = `
           aria-current="page"
           class="active breadcrumb-item"
         >
-          Phone
+          Voice
         </li>
       </ol>
     </nav>
@@ -124,7 +124,7 @@ exports[`<DEPRECATED_PhoneIntegrationList/> render() should render with a warnin
           aria-current="page"
           class="active breadcrumb-item"
         >
-          Phone
+          Voice
         </li>
       </ol>
     </nav>
@@ -258,7 +258,7 @@ exports[`<DEPRECATED_PhoneIntegrationList/> render() should render with an error
           aria-current="page"
           class="active breadcrumb-item"
         >
-          Phone
+          Voice
         </li>
       </ol>
     </nav>
@@ -384,7 +384,7 @@ exports[`<DEPRECATED_PhoneIntegrationList/> render() should render with empty li
           aria-current="page"
           class="active breadcrumb-item"
         >
-          Phone
+          Voice
         </li>
       </ol>
     </nav>

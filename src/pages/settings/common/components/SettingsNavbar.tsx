@@ -9,7 +9,6 @@ import css from 'assets/css/navbar.less'
 import {hasRole} from 'utils'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 import {UserRole} from 'config/types/user'
-import {PHONE_NUMBER_MANAGEMENT_PREVIEW_ACCOUNTS} from 'models/phoneNumber/constants'
 import {
     buildPasswordAnd2FaText,
     checkAccessTo2FA,
@@ -87,9 +86,7 @@ export default class SettingsNavbar extends Component<Props> {
                         text: 'Integrations',
                         className: 'd-none d-md-block',
                     },
-                    PHONE_NUMBER_MANAGEMENT_PREVIEW_ACCOUNTS.includes(
-                        currentAccount.get('domain')
-                    ) && {
+                    {
                         requiredRole: ADMIN_ROLE,
                         to: 'phone-numbers',
                         text: 'Phone numbers',

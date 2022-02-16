@@ -115,27 +115,21 @@ jest.mock(
     () => () => <div>GorgiasChatIntegrationSelfService</div>
 )
 
-jest.mock('../components/phone/DEPRECATED_PhoneIntegrationList', () => () => (
-    <div>DEPRECATED_PhoneIntegrationList</div>
+jest.mock('../components/phone/PhoneIntegrationsList', () => () => (
+    <div>PhoneIntegrationsList</div>
 ))
 jest.mock('../components/phone/PhoneIntegrationCreate', () => () => (
     <div>PhoneIntegrationCreate</div>
 ))
-jest.mock('../components/phone/PhoneIntegrationPreferences', () => () => (
-    <div>PhoneIntegrationPreferences</div>
+jest.mock('../components/phone/VoiceAppPreferences', () => () => (
+    <div>VoiceAppPreferences</div>
 ))
 jest.mock('../components/phone/PhoneIntegrationVoicemail', () => () => (
     <div>PhoneIntegrationVoicemail</div>
 ))
 
-jest.mock('../components/phone/DEPRECATED_PhoneIntegrationList', () => () => (
-    <div>DEPRECATED_PhoneIntegrationList</div>
-))
 jest.mock('../components/phone/PhoneIntegrationCreate', () => () => (
     <div>PhoneIntegrationCreate</div>
-))
-jest.mock('../components/phone/PhoneIntegrationPreferences', () => () => (
-    <div>PhoneIntegrationPreferences</div>
 ))
 jest.mock('../components/phone/PhoneIntegrationVoicemail', () => () => (
     <div>PhoneIntegrationVoicemail</div>

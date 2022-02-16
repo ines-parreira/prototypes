@@ -6,7 +6,6 @@ import {fromJS, List, Map} from 'immutable'
 import {useUpdateEffect, useAsyncFn} from 'react-use'
 
 import useSearch from 'hooks/useSearch'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import * as IntegrationsActions from 'state/integrations/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -19,7 +18,6 @@ import {
 import {fetchPhoneNumbers} from 'models/phoneNumber/resources'
 import {phoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
 import {compare} from 'utils'
-import {PHONE_NUMBER_MANAGEMENT_PREVIEW_ACCOUNTS} from 'models/phoneNumber/constants'
 import useAppDispatch from 'hooks/useAppDispatch'
 
 import AircallIntegrationList from './components/aircall/AircallIntegrationList.js'
@@ -90,11 +88,8 @@ import HTTPIntegrationEvents from './components/http/HTTPIntegrationEvents/HTTPI
 import HTTPIntegrationEvent from './components/http/HTTPIntegrationEvent/HTTPIntegrationEvent'
 import HTTPIntegrationLayout from './components/http/HTTPIntegrationLayout/HTTPIntegrationLayout'
 
-import DEPRECATED_PhoneIntegrationList from './components/phone/DEPRECATED_PhoneIntegrationList'
 import PhoneIntegrationsListContainer from './components/phone/PhoneIntegrationsListContainer'
 import PhoneIntegrationCreate from './components/phone/PhoneIntegrationCreate'
-import PhoneIntegrationCreateWithNumber from './components/phone/PhoneIntegrationCreateWithNumber'
-import PhoneIntegrationPreferences from './components/phone/PhoneIntegrationPreferences'
 import VoiceAppPreferences from './components/phone/VoiceAppPreferences'
 import PhoneIntegrationVoicemail from './components/phone/PhoneIntegrationVoicemail'
 import PhoneIntegrationGreetingMessage from './components/phone/PhoneIntegrationGreetingMessage'
@@ -125,7 +120,6 @@ export enum Tab {
 export const IntegrationDetailContainer = ({
     actions,
     currentUser,
-    currentAccount,
     getEligibleShopifyIntegrationsFor,
     getRedirectUri,
     integrations,
@@ -466,26 +460,16 @@ export const IntegrationDetailContainer = ({
         case IntegrationType.Phone:
             if (!!integrationId) {
                 if (!isUpdate) {
-                    if (phoneNumberId) {
-                        return (
-                            <PhoneIntegrationCreateWithNumber
-                                selectedPhoneNumberId={parseInt(phoneNumberId)}
-                            />
-                        )
-                    }
-                    return <PhoneIntegrationCreate actions={actions} />
+                    return (
+                        <PhoneIntegrationCreate
+                            selectedPhoneNumberId={parseInt(phoneNumberId)}
+                        />
+                    )
                 }
 
                 if (extra === Tab.Preferences) {
-                    return PHONE_NUMBER_MANAGEMENT_PREVIEW_ACCOUNTS.includes(
-                        currentAccount.get('domain')
-                    ) ? (
+                    return (
                         <VoiceAppPreferences integration={integration.toJS()} />
-                    ) : (
-                        <PhoneIntegrationPreferences
-                            actions={actions}
-                            integration={integration}
-                        />
                     )
                 }
 
@@ -512,16 +496,7 @@ export const IntegrationDetailContainer = ({
                 }
             }
 
-            return PHONE_NUMBER_MANAGEMENT_PREVIEW_ACCOUNTS.includes(
-                currentAccount.get('domain')
-            ) ? (
-                <PhoneIntegrationsListContainer />
-            ) : (
-                <DEPRECATED_PhoneIntegrationList
-                    integrations={integrationsProp}
-                    loading={loading}
-                />
-            )
+            return <PhoneIntegrationsListContainer />
 
         case IntegrationType.SmoochInside:
             if (!!integrationId) {
@@ -759,7 +734,6 @@ const connector = connect(
             getEligibleShopifyIntegrationsFor(state),
         getRedirectUri: makeGetRedirectUri(state),
         currentUser: state.currentUser,
-        currentAccount: getCurrentAccountState(state),
     }),
     (dispatch) => ({
         actions: bindActionCreators(IntegrationsActions, dispatch),

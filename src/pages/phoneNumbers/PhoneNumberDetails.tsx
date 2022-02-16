@@ -164,7 +164,7 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
             </Row>
             <Row className="mt-4">
                 <Col lg={6} className="pr-lg-0 pr-md-3">
-                    <h4>Connected apps</h4>
+                    <h4>Connected integrations</h4>
                     <Row className="border-bottom py-3  ml-1 mr-1">
                         <Col lg={8}>
                             <i className="material-icons md-2 align-middle mr-2">

@@ -1,83 +1,79 @@
 import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import {fromJS} from 'immutable'
+import configureMockStore from 'redux-mock-store'
+
+import {RootState, StoreDispatch} from 'state/types'
+import {updateOrCreateIntegration} from 'state/integrations/actions'
+import {phoneNumbers} from 'fixtures/phoneNumber'
 
 import PhoneIntegrationCreate from '../PhoneIntegrationCreate'
 
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+const store = mockStore({
+    entities: {
+        phoneNumbers: phoneNumbers.reduce(
+            (acc, number) => ({...acc, [number.id]: number}),
+            {}
+        ),
+    },
+} as RootState)
+
+store.dispatch = jest.fn()
+jest.mock('state/integrations/actions', () => ({
+    updateOrCreateIntegration: jest.fn(),
+}))
+
 describe('<PhoneIntegrationCreate/>', () => {
-    let updateOrCreateIntegration: jest.MockedFunction<any>
-
-    beforeEach(() => {
-        updateOrCreateIntegration = jest.fn()
-    })
-
     describe('render()', () => {
         it('should render', () => {
             const {container} = render(
-                <PhoneIntegrationCreate actions={{updateOrCreateIntegration}} />
+                <Provider store={store}>
+                    <PhoneIntegrationCreate selectedPhoneNumberId={1} />
+                </Provider>
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
-        it('should render when IVR function is selected', () => {
+        it('should submit a valid payload with the selected phone_number_id', () => {
             const {container, getByText} = render(
-                <PhoneIntegrationCreate actions={{updateOrCreateIntegration}} />
+                <Provider store={store}>
+                    <PhoneIntegrationCreate selectedPhoneNumberId={1} />
+                </Provider>
             )
 
-            // Select function "IVR"
-            fireEvent.click(getByText('Interactive Voice Response (IVR)'))
+            const payload = fromJS({
+                type: 'phone',
+                name: '',
+                meta: {
+                    emoji: null,
+                    function: 'standard',
+                    twilio_phone_number_id: 1,
+                    preferences: {
+                        record_inbound_calls: false,
+                        voicemail_outside_business_hours: true,
+                        record_outbound_calls: false,
+                    },
+                    voicemail: {
+                        voice_message_type: 'text_to_speech',
+                        text_to_speech_content:
+                            "Hello, unfortunately we aren't able to take your call right now. Please call us back later. Thank you!",
+                        allow_to_leave_voicemail: true,
+                    },
+                    greeting_message: {
+                        voice_message_type: 'none',
+                        text_to_speech_content: null,
+                    },
+                    ivr: undefined,
+                },
+            })
 
-            expect(container.firstChild).toMatchSnapshot()
-        })
+            fireEvent.click(getByText('Add voice integration'))
 
-        it('should render when a country and a state are selected', () => {
-            const {container, getByText} = render(
-                <PhoneIntegrationCreate actions={{updateOrCreateIntegration}} />
-            )
-
-            // Select country "United States"
-            fireEvent.click(getByText('United States'))
-
-            // Select type "Local"
-            fireEvent.click(getByText('Local'))
-
-            // Select state "Alabama"
-            fireEvent.click(getByText('Alabama'))
-
-            expect(container.firstChild).toMatchSnapshot()
-        })
-
-        it('should render when type "Toll-free" is selected', () => {
-            const {container, getByText} = render(
-                <PhoneIntegrationCreate actions={{updateOrCreateIntegration}} />
-            )
-
-            // Select country "Canada"
-            fireEvent.click(getByText('Canada'))
-
-            // Select type "Toll-free"
-            fireEvent.click(getByText('Toll-free'))
-
-            expect(container.firstChild).toMatchSnapshot()
-        })
-
-        it('should render address validation form for Australia or United Kingdom', () => {
-            const {container, getByText, queryByText} = render(
-                <PhoneIntegrationCreate actions={{updateOrCreateIntegration}} />
-            )
-
-            fireEvent.click(getByText('United States'))
-            expect(queryByText('Address verification')).toBe(null)
-
-            fireEvent.click(getByText('Canada'))
-            expect(queryByText('Address verification')).toBe(null)
-
-            fireEvent.click(getByText('United Kingdom'))
-            expect(queryByText('Address verification')).not.toBe(null)
-
-            fireEvent.click(getByText('Australia'))
-            expect(queryByText('Address verification')).not.toBe(null)
-
+            expect(updateOrCreateIntegration).toHaveBeenCalledWith(payload)
+            expect(store.dispatch).toHaveBeenCalledTimes(1)
             expect(container.firstChild).toMatchSnapshot()
         })
     })

@@ -23,7 +23,7 @@ const PhoneIntegrationBreadcrumbs = ({integration}: Props): JSX.Element => {
                 <Link
                     to={`/app/settings/integrations/${IntegrationType.Phone}`}
                 >
-                    Phone
+                    Voice
                 </Link>
             </BreadcrumbItem>
             <BreadcrumbItem>

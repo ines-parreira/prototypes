@@ -159,7 +159,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     },
     {
         type: IntegrationType.Phone,
-        title: 'Phone',
+        title: 'Voice',
         description: 'Chat with your customers over the phone from Gorgias.',
         requiredFeature: AccountFeature.PhoneIntegration,
     },
