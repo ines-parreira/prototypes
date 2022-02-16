@@ -43,7 +43,6 @@ import {
     IntegrationType,
 } from 'models/integration/types'
 import {RootState} from 'state/types'
-import DEPRECATED_ConfirmButton from 'pages/common/components/DEPRECATED_ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import Tooltip from 'pages/common/components/Tooltip'
@@ -51,11 +50,14 @@ import ColorField from 'pages/common/forms/ColorField'
 import FileField from 'pages/common/forms/FileField'
 import InputField from 'pages/common/forms/InputField'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
-import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
-import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-import MessageContentPreview from '../GorgiasChatIntegrationPreview/MessageContent'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import GorgiasChatIntegrationNavigation from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationNavigation'
+import ChatIntegrationPreview from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import MessageContentPreview from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
+import GorgiasChatIntegrationPreviewContainer from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 
-import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 import css from './GorgiasChatIntegrationAppearance.less'
 import {StoreNameDropdown} from './StoreNameDropdown'
 import {StoreRadioButton} from './StoreRadioButton'
@@ -836,23 +838,22 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             </Button>
 
                             {isUpdate && (
-                                <DEPRECATED_ConfirmButton
+                                <ConfirmButton
                                     className="float-right"
-                                    color="secondary"
-                                    confirm={() =>
+                                    onConfirm={() =>
                                         actions.deleteIntegration(
                                             integration
                                         ) as unknown as Promise<any>
                                     }
-                                    confirmText="Delete"
-                                    confirmColor="danger"
-                                    content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                    confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                    type="button"
+                                    intent={ButtonIntent.Destructive}
+                                    isDisabled={isSubmitting}
                                 >
-                                    <i className="material-icons mr-1 text-danger">
-                                        delete
-                                    </i>
-                                    Delete chat
-                                </DEPRECATED_ConfirmButton>
+                                    <ButtonIconLabel icon="delete">
+                                        Delete chat
+                                    </ButtonIconLabel>
+                                </ConfirmButton>
                             )}
                         </div>
                     </div>

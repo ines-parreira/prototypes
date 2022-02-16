@@ -2,21 +2,22 @@ import React, {ComponentProps} from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
-import * as IntegrationsActions from '../../../../../../../state/integrations/actions'
+import * as IntegrationsActions from 'state/integrations/actions'
 import {
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-} from '../../../../../../../config/integrations/gorgias_chat'
+} from 'config/integrations/gorgias_chat'
 import {
     SHOPIFY_INTEGRATION_TYPE,
     GORGIAS_CHAT_INTEGRATION_TYPE,
-} from '../../../../../../../constants/integration'
+} from 'constants/integration'
+
 import {GorgiasChatIntegrationAppearanceComponent} from '../GorgiasChatIntegrationAppearance'
 
 jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
 
-jest.mock('../../../../../../common/forms/FileField', () => {
+jest.mock('pages/common/forms/FileField', () => {
     type MockedProps = {
         required: boolean
     }

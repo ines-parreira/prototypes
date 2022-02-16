@@ -1279,23 +1279,23 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   Save changes
                 </button>
-                <div
-                  class="component d-inline-block float-right"
-                  id=""
+                <button
+                  class="wrapper float-right destructive medium isDisabled"
+                  disabled=""
+                  id="confirm-1561334400000"
+                  type="button"
                 >
-                  <button
-                    class="btn btn-secondary"
-                    id="confirm-button-1561334400000"
-                    type="button"
+                  <span
+                    class="wrapper"
                   >
                     <i
-                      class="material-icons mr-1 text-danger"
+                      class="material-icons icon isLeft medium"
                     >
                       delete
                     </i>
                     Delete chat
-                  </button>
-                </div>
+                  </span>
+                </button>
               </div>
             </div>
           </form>
@@ -2009,23 +2009,22 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   Save changes
                 </button>
-                <div
-                  class="component d-inline-block float-right"
-                  id=""
+                <button
+                  class="wrapper float-right destructive medium"
+                  id="confirm-1561334400000"
+                  type="button"
                 >
-                  <button
-                    class="btn btn-secondary"
-                    id="confirm-button-1561334400000"
-                    type="button"
+                  <span
+                    class="wrapper"
                   >
                     <i
-                      class="material-icons mr-1 text-danger"
+                      class="material-icons icon isLeft medium"
                     >
                       delete
                     </i>
                     Delete chat
-                  </button>
-                </div>
+                  </span>
+                </button>
               </div>
             </div>
           </form>
@@ -2747,23 +2746,22 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                 >
                   Save changes
                 </button>
-                <div
-                  class="component d-inline-block float-right"
-                  id=""
+                <button
+                  class="wrapper float-right destructive medium"
+                  id="confirm-1561334400000"
+                  type="button"
                 >
-                  <button
-                    class="btn btn-secondary"
-                    id="confirm-button-1561334400000"
-                    type="button"
+                  <span
+                    class="wrapper"
                   >
                     <i
-                      class="material-icons mr-1 text-danger"
+                      class="material-icons icon isLeft medium"
                     >
                       delete
                     </i>
                     Delete chat
-                  </button>
-                </div>
+                  </span>
+                </button>
               </div>
             </div>
           </form>
@@ -3477,23 +3475,22 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 >
                   Save changes
                 </button>
-                <div
-                  class="component d-inline-block float-right"
-                  id=""
+                <button
+                  class="wrapper float-right destructive medium"
+                  id="confirm-1561334400000"
+                  type="button"
                 >
-                  <button
-                    class="btn btn-secondary"
-                    id="confirm-button-1561334400000"
-                    type="button"
+                  <span
+                    class="wrapper"
                   >
                     <i
-                      class="material-icons mr-1 text-danger"
+                      class="material-icons icon isLeft medium"
                     >
                       delete
                     </i>
                     Delete chat
-                  </button>
-                </div>
+                  </span>
+                </button>
               </div>
             </div>
           </form>
@@ -4221,23 +4218,22 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 >
                   Save changes
                 </button>
-                <div
-                  class="component d-inline-block float-right"
-                  id=""
+                <button
+                  class="wrapper float-right destructive medium"
+                  id="confirm-1561334400000"
+                  type="button"
                 >
-                  <button
-                    class="btn btn-secondary"
-                    id="confirm-button-1561334400000"
-                    type="button"
+                  <span
+                    class="wrapper"
                   >
                     <i
-                      class="material-icons mr-1 text-danger"
+                      class="material-icons icon isLeft medium"
                     >
                       delete
                     </i>
                     Delete chat
-                  </button>
-                </div>
+                  </span>
+                </button>
               </div>
             </div>
           </form>

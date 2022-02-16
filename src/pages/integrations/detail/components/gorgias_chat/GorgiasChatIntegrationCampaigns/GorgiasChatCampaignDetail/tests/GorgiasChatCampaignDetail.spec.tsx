@@ -5,7 +5,8 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import {RootState} from '../../../../../../../../state/types'
+import {RootState} from 'state/types'
+
 import GorgiasChatCampaignDetail from '../GorgiasChatCampaignDetail'
 
 const chatIntegration = {
@@ -41,8 +42,13 @@ jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
 describe('<GorgiasChatCampaignDetail/>', () => {
     const mockStore = configureMockStore([thunk])
 
+    const realDateNow = Date.now
     beforeEach(() => {
         jest.resetAllMocks()
+        Date.now = jest.fn(() => 42)
+    })
+    afterAll(() => {
+        Date.now = realDateNow
     })
 
     describe('render()', () => {

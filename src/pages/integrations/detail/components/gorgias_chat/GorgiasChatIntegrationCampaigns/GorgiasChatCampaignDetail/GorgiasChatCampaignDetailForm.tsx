@@ -12,24 +12,26 @@ import classnames from 'classnames'
 import {EditorState} from 'draft-js'
 import {Link} from 'react-router-dom'
 
-import ConfirmButton from 'pages/common/components/DEPRECATED_ConfirmButton'
 import {
     CAMPAIGNS_TRIGGER_KEYS,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
-} from '../../../../../../../config/integrations/gorgias_chat'
-import RichField from '../../../../../../common/forms/RichField/RichField'
-import InputField from '../../../../../../common/forms/InputField'
-import CampaignPreview from '../CampaignPreview'
-import SelectField from '../../../../../../common/forms/SelectField/SelectField'
-import {Value} from '../../../../../../common/forms/SelectField/types'
-import {AgentLabel} from '../../../../../../common/utils/labels'
-import {sanitizeHtmlDefault} from '../../../../../../../utils/html'
-import {convertToHTML} from '../../../../../../../utils/editor'
-import history from '../../../../../../history'
-import ArrowBackwardIcon from '../../../../../../../assets/img/icons/arrow-backward.svg'
-import GorgiasChatIntegrationPreviewContainer from '../../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
+} from 'config/integrations/gorgias_chat'
+import RichField from 'pages/common/forms/RichField/RichField'
+import InputField from 'pages/common/forms/InputField'
+import CampaignPreview from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationCampaigns/CampaignPreview'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {Value} from 'pages/common/forms/SelectField/types'
+import {AgentLabel} from 'pages/common/utils/labels'
+import {sanitizeHtmlDefault} from 'utils/html'
+import {convertToHTML} from 'utils/editor'
+import history from 'pages/history'
+import ArrowBackwardIcon from 'assets/img/icons/arrow-backward.svg'
+import GorgiasChatIntegrationPreviewContainer from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import css from './GorgiasChatCampaignDetailForm.less'
 import {GorgiasChatCampaignDetailTriggerRow} from './GorgiasChatCampaignDetailTriggerRow'
@@ -451,19 +453,17 @@ export const GorgiasChatCampaignDetailForm = ({
 
                         {isUpdate && (
                             <ConfirmButton
-                                id="delete-campaign-button"
                                 className="float-right"
                                 placement="bottom-end"
-                                color="secondary"
-                                confirm={_deleteCampaign}
-                                confirmColor="danger"
-                                confirmText="Delete"
-                                content="Are you sure you want to delete this campaign?"
+                                onConfirm={_deleteCampaign}
+                                confirmationContent="Are you sure you want to delete this campaign?"
+                                type="button"
+                                intent={ButtonIntent.Destructive}
+                                isDisabled={loading}
                             >
-                                <i className="material-icons mr-1 text-danger">
-                                    delete
-                                </i>
-                                Delete campaign
+                                <ButtonIconLabel icon="delete">
+                                    Delete campaign
+                                </ButtonIconLabel>
                             </ConfirmButton>
                         )}
                     </Form>

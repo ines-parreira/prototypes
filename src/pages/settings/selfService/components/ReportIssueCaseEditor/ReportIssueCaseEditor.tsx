@@ -19,28 +19,27 @@ import {Link, useRouteMatch, useHistory} from 'react-router-dom'
 import produce from 'immer'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
-
-import PageHeader from '../../../../common/components/PageHeader'
-import InputField from '../../../../common/forms/InputField'
-import DEPRECATED_ConfirmButton from '../../../../common/components/DEPRECATED_ConfirmButton'
+import PageHeader from 'pages/common/components/PageHeader'
+import InputField from 'pages/common/forms/InputField'
 import {
     ReportIssueRulesLogic,
     SelfServiceReportIssueCase,
-} from '../../../../../models/selfServiceConfiguration/types'
-import {useConfigurationData} from '../hooks'
-import {SelectableOption} from '../../../../common/forms/SelectField/types'
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
-import {updateSelfServiceConfiguration} from '../../../../../models/selfServiceConfiguration/resources'
-import {selfServiceConfigurationUpdated} from '../../../../../state/entities/selfServiceConfigurations/actions'
-import {notify} from '../../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../../state/notifications/types'
-import settingsCss from '../../../settings.less'
+} from 'models/selfServiceConfiguration/types'
+import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
+import {SelectableOption} from 'pages/common/forms/SelectField/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {updateSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
+import {selfServiceConfigurationUpdated} from 'state/entities/selfServiceConfigurations/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import settingsCss from 'pages/settings/settings.less'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from './constants'
 import Reasons from './components/Reasons'
 import Conditions from './components/Conditions'
 import Preview from './components/Preview'
-
 import css from './ReportIssueCaseEditor.less'
 
 type ErrorFormState = {
@@ -393,28 +392,17 @@ const ReportIssueCaseEditor: ComponentType = () => {
                                 </Button>
 
                                 {!isFallbackCase && caseIndex !== 'new' && (
-                                    <DEPRECATED_ConfirmButton
-                                        content={
-                                            <span>
-                                                You are about to delete this
-                                                case.
-                                            </span>
-                                        }
-                                        confirm={handleDeleteClick}
+                                    <ConfirmButton
                                         className={css.deleteButton}
-                                        confirmColor="danger"
-                                        color="secondary"
+                                        confirmationContent="You are about to delete this case."
+                                        onConfirm={handleDeleteClick}
+                                        type="button"
+                                        intent={ButtonIntent.Destructive}
                                     >
-                                        <i
-                                            className={classNames(
-                                                'material-icons',
-                                                css.deleteButtonIcon
-                                            )}
-                                        >
-                                            delete
-                                        </i>{' '}
-                                        Delete case
-                                    </DEPRECATED_ConfirmButton>
+                                        <ButtonIconLabel icon="delete">
+                                            Delete case
+                                        </ButtonIconLabel>
+                                    </ConfirmButton>
                                 )}
                             </div>
                         </Form>
