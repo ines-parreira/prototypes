@@ -567,19 +567,20 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
           >
             Save changes
           </Button>
-          <DEPRECATED_ConfirmButton
+          <ConfirmButton
             className="float-right"
-            color="secondary"
-            confirm={[Function]}
-            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            intent="destructive"
+            isDisabled={true}
+            onConfirm={[Function]}
+            type="button"
           >
-            <i
-              className="material-icons mr-1 text-danger"
+            <ButtonIconLabel
+              icon="delete"
             >
-              delete
-            </i>
-            Delete chat
-          </DEPRECATED_ConfirmButton>
+              Delete chat
+            </ButtonIconLabel>
+          </ConfirmButton>
         </Form>
       </Col>
       <Col
@@ -913,19 +914,20 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
           >
             Save changes
           </Button>
-          <DEPRECATED_ConfirmButton
+          <ConfirmButton
             className="float-right"
-            color="secondary"
-            confirm={[Function]}
-            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            intent="destructive"
+            isDisabled={false}
+            onConfirm={[Function]}
+            type="button"
           >
-            <i
-              className="material-icons mr-1 text-danger"
+            <ButtonIconLabel
+              icon="delete"
             >
-              delete
-            </i>
-            Delete chat
-          </DEPRECATED_ConfirmButton>
+              Delete chat
+            </ButtonIconLabel>
+          </ConfirmButton>
         </Form>
       </Col>
       <Col
@@ -1280,19 +1282,20 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
           >
             Save changes
           </Button>
-          <DEPRECATED_ConfirmButton
+          <ConfirmButton
             className="float-right"
-            color="secondary"
-            confirm={[Function]}
-            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            intent="destructive"
+            isDisabled={false}
+            onConfirm={[Function]}
+            type="button"
           >
-            <i
-              className="material-icons mr-1 text-danger"
+            <ButtonIconLabel
+              icon="delete"
             >
-              delete
-            </i>
-            Delete chat
-          </DEPRECATED_ConfirmButton>
+              Delete chat
+            </ButtonIconLabel>
+          </ConfirmButton>
         </Form>
       </Col>
       <Col
@@ -1630,19 +1633,20 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
           >
             Save changes
           </Button>
-          <DEPRECATED_ConfirmButton
+          <ConfirmButton
             className="float-right"
-            color="secondary"
-            confirm={[Function]}
-            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            intent="destructive"
+            isDisabled={false}
+            onConfirm={[Function]}
+            type="button"
           >
-            <i
-              className="material-icons mr-1 text-danger"
+            <ButtonIconLabel
+              icon="delete"
             >
-              delete
-            </i>
-            Delete chat
-          </DEPRECATED_ConfirmButton>
+              Delete chat
+            </ButtonIconLabel>
+          </ConfirmButton>
         </Form>
       </Col>
       <Col
@@ -2007,19 +2011,20 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
           >
             Save changes
           </Button>
-          <DEPRECATED_ConfirmButton
+          <ConfirmButton
             className="float-right"
-            color="secondary"
-            confirm={[Function]}
-            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+            intent="destructive"
+            isDisabled={false}
+            onConfirm={[Function]}
+            type="button"
           >
-            <i
-              className="material-icons mr-1 text-danger"
+            <ButtonIconLabel
+              icon="delete"
             >
-              delete
-            </i>
-            Delete chat
-          </DEPRECATED_ConfirmButton>
+              Delete chat
+            </ButtonIconLabel>
+          </ConfirmButton>
         </Form>
       </Col>
       <Col

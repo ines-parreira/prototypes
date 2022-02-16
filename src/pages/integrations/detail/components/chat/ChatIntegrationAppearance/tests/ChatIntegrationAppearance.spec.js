@@ -2,18 +2,18 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import configureStore from '../../../../../../../store/configureStore.ts'
+import {ChatIntegrationAppearance} from '../ChatIntegrationAppearance.tsx'
+
+import configureStore from 'store/configureStore.ts'
 import {
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
-} from '../../../../../../../config/integrations/smooch_inside.ts'
+} from 'config/integrations/smooch_inside.ts'
 import {
     SHOPIFY_INTEGRATION_TYPE,
     SMOOCH_INSIDE_INTEGRATION_TYPE,
-} from '../../../../../../../constants/integration.ts'
-
-import {ChatIntegrationAppearance} from '../ChatIntegrationAppearance.tsx'
+} from 'constants/integration.ts'
 
 describe('<ChatIntegrationAppearance/>', () => {
     const minStore = {

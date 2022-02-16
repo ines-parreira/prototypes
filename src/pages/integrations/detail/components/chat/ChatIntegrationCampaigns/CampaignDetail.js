@@ -18,32 +18,33 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import InputField from '../../../../../common/forms/InputField'
-import SelectField from '../../../../../common/forms/SelectField/SelectField.tsx'
-import RichField from '../../../../../common/forms/RichField'
-import DEPRECATED_ConfirmButton from '../../../../../common/components/DEPRECATED_ConfirmButton.tsx'
-import PageHeader from '../../../../../common/components/PageHeader.tsx'
-import {AgentLabel} from '../../../../../common/utils/labels.tsx'
+import CampaignPreview from './CampaignPreview.tsx'
+import css from './CampaignDetail.less'
 
-import {sanitizeHtmlDefault} from '../../../../../../utils/html.ts'
-import {convertToHTML} from '../../../../../../utils/editor.tsx'
+import ChatIntegrationNavigation from 'pages/integrations/detail/components/chat/ChatIntegrationNavigation.tsx'
+import InputField from 'pages/common/forms/InputField'
+import SelectField from 'pages/common/forms/SelectField/SelectField.tsx'
+import RichField from 'pages/common/forms/RichField'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import PageHeader from 'pages/common/components/PageHeader.tsx'
+import {AgentLabel} from 'pages/common/utils/labels.tsx'
 
-import {notify} from '../../../../../../state/notifications/actions.ts'
-import * as campaignActions from '../../../../../../state/campaigns/actions.ts'
-import * as integrationsSelectors from '../../../../../../state/integrations/selectors.ts'
-import * as agentSelectors from '../../../../../../state/agents/selectors.ts'
+import {sanitizeHtmlDefault} from 'utils/html.ts'
+import {convertToHTML} from 'utils/editor.tsx'
 
-import ChatIntegrationNavigation from '../ChatIntegrationNavigation.tsx'
+import {notify} from 'state/notifications/actions.ts'
+import * as campaignActions from 'state/campaigns/actions.ts'
+import * as integrationsSelectors from 'state/integrations/selectors.ts'
+import * as agentSelectors from 'state/agents/selectors.ts'
 
 import {
     CAMPAIGNS_TRIGGER_KEYS,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_TEXTS,
-} from '../../../../../../config/integrations/smooch_inside.ts'
-import history from '../../../../../history.ts'
-
-import CampaignPreview from './CampaignPreview.tsx'
-import css from './CampaignDetail.less'
+} from 'config/integrations/smooch_inside.ts'
+import history from 'pages/history.ts'
 
 /**
  * Generate and return a default empty trigger associated with a trigger configuration.
@@ -586,19 +587,19 @@ export class CampaignForm extends React.Component {
                             </Button>
 
                             {isUpdate && (
-                                <DEPRECATED_ConfirmButton
-                                    id="delete-campaign-button"
+                                <ConfirmButton
                                     className="float-right"
-                                    placement="bottom right"
-                                    color="secondary"
-                                    confirm={this._deleteCampaign}
-                                    content="Are you sure you want to delete this campaign?"
+                                    placement="bottom-end"
+                                    onConfirm={this._deleteCampaign}
+                                    confirmationContent="Are you sure you want to delete this campaign?"
+                                    type="button"
+                                    intent={ButtonIntent.Destructive}
+                                    isDisabled={this.state.loading}
                                 >
-                                    <i className="material-icons mr-1 text-danger">
-                                        delete
-                                    </i>
-                                    Delete campaign
-                                </DEPRECATED_ConfirmButton>
+                                    <ButtonIconLabel icon="delete">
+                                        Delete campaign
+                                    </ButtonIconLabel>
+                                </ConfirmButton>
                             )}
                         </Form>
                     </Col>

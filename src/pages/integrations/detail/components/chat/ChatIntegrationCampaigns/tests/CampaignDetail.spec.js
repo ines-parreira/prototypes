@@ -42,9 +42,14 @@ jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
 
 describe('CampaignDetail component', () => {
     let store = mockStore({})
+    const realDateNow = Date.now
     beforeEach(() => {
         jest.resetAllMocks()
         store = mockStore({})
+        Date.now = jest.fn(() => 42)
+    })
+    afterAll(() => {
+        Date.now = realDateNow
     })
 
     it("should display default value when it's a new campaign", () => {

@@ -33,7 +33,9 @@ import {
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_DEFAULT,
 } from 'config/integrations/smooch_inside'
 import {IntegrationType, IntegrationDecoration} from 'models/integration/types'
-import DEPRECATED_ConfirmButton from 'pages/common/components/DEPRECATED_ConfirmButton'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {ButtonIntent} from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import ColorField from 'pages/common/forms/ColorField'
@@ -47,9 +49,9 @@ import {
 } from 'state/integrations/actions'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {RootState} from 'state/types'
-import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
-import ChatIntegrationPreview from '../ChatIntegrationPreview/ChatIntegrationPreview'
-import MessageContentPreview from '../ChatIntegrationPreview/MessageContent'
+import ChatIntegrationNavigation from 'pages/integrations/detail/components/chat/ChatIntegrationNavigation'
+import ChatIntegrationPreview from 'pages/integrations/detail/components/chat/ChatIntegrationPreview/ChatIntegrationPreview'
+import MessageContentPreview from 'pages/integrations/detail/components/chat/ChatIntegrationPreview/MessageContent'
 
 import css from './ChatIntegrationAppearance.less'
 
@@ -459,19 +461,20 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                                 </Button>
 
                                 {isUpdate && (
-                                    <DEPRECATED_ConfirmButton
+                                    <ConfirmButton
                                         className="float-right"
-                                        color="secondary"
-                                        confirm={() =>
+                                        onConfirm={() =>
                                             deleteIntegration(integration)
                                         }
-                                        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                        confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                        type="button"
+                                        intent={ButtonIntent.Destructive}
+                                        isDisabled={isSubmitting}
                                     >
-                                        <i className="material-icons mr-1 text-danger">
-                                            delete
-                                        </i>
-                                        Delete chat
-                                    </DEPRECATED_ConfirmButton>
+                                        <ButtonIconLabel icon="delete">
+                                            Delete chat
+                                        </ButtonIconLabel>
+                                    </ConfirmButton>
                                 )}
                             </Form>
                         </Col>

@@ -1342,23 +1342,22 @@ exports[`CampaignDetail component should display the campaign correctly when upd
             >
               Save
             </button>
-            <div
-              class="component d-inline-block float-right"
-              id="delete-campaign-button"
+            <button
+              class="wrapper float-right destructive medium"
+              id="confirm-42"
+              type="button"
             >
-              <button
-                class="btn btn-secondary"
-                id="confirm-button-delete-campaign-button"
-                type="button"
+              <span
+                class="wrapper"
               >
                 <i
-                  class="material-icons mr-1 text-danger"
+                  class="material-icons icon isLeft medium"
                 >
                   delete
                 </i>
                 Delete campaign
-              </button>
-            </div>
+              </span>
+            </button>
           </form>
         </div>
         <div
@@ -2118,23 +2117,22 @@ exports[`CampaignDetail component should display the campaign correctly when upd
             >
               Save
             </button>
-            <div
-              class="component d-inline-block float-right"
-              id="delete-campaign-button"
+            <button
+              class="wrapper float-right destructive medium"
+              id="confirm-42"
+              type="button"
             >
-              <button
-                class="btn btn-secondary"
-                id="confirm-button-delete-campaign-button"
-                type="button"
+              <span
+                class="wrapper"
               >
                 <i
-                  class="material-icons mr-1 text-danger"
+                  class="material-icons icon isLeft medium"
                 >
                   delete
                 </i>
                 Delete campaign
-              </button>
-            </div>
+              </span>
+            </button>
           </form>
         </div>
         <div
