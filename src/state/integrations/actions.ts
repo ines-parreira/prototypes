@@ -7,16 +7,12 @@ import _sortBy from 'lodash/sortBy'
 import client from 'models/api/resources'
 import {ApiListResponsePagination} from 'models/api/types'
 import {Integration, IntegrationType} from 'models/integration/types'
-import {getPhoneNumber} from 'state/entities/phoneNumbers/selectors'
-import {phoneNumberDeleted} from 'state/entities/phoneNumbers/actions'
-
-import {notify} from '../notifications/actions'
-import {NotificationStatus} from '../notifications/types'
-import history from '../../pages/history'
-import type {StoreDispatch, RootState} from '../types'
-
-import * as constants from './constants'
-import * as integrationSelectors from './selectors'
+import type {StoreDispatch, RootState} from 'state/types'
+import * as constants from 'state/integrations/constants'
+import * as integrationSelectors from 'state/integrations/selectors'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import history from 'pages/history'
 
 export function fetchIntegrations() {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
@@ -311,10 +307,7 @@ export function fetchIntegration(
 }
 
 export function deleteIntegration(integration: Map<any, any>) {
-    return (
-        dispatch: StoreDispatch,
-        getState: () => RootState
-    ): Promise<ReturnType<StoreDispatch>> => {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
             type: constants.DELETE_INTEGRATION_START,
             id: integration.get('id'),
@@ -328,18 +321,6 @@ export function deleteIntegration(integration: Map<any, any>) {
                         type: constants.DELETE_INTEGRATION_SUCCESS,
                         id: integration.get('id'),
                     })
-
-                    if (integration.get('type') === IntegrationType.Phone) {
-                        const phoneNumber = getPhoneNumber(
-                            integration.getIn([
-                                'meta',
-                                'twilio_phone_number_id',
-                            ])
-                        )(getState())
-                        if (phoneNumber?.integrations.length === 1) {
-                            dispatch(phoneNumberDeleted(phoneNumber.id))
-                        }
-                    }
 
                     const currentUrl = window.location.pathname
                     const indexOfId = currentUrl.lastIndexOf(
