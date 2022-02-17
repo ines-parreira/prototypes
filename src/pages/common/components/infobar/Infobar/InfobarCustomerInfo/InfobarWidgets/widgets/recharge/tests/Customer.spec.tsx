@@ -2,8 +2,9 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 
-import {IntegrationContext} from '../../IntegrationContext.ts'
-import {TitleWrapper} from '../Customer.tsx'
+import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+
+import {TitleWrapper} from '../Customer'
 
 const integrationContextData = {
     integration: fromJS({meta: {store_name: 'mystore'}}),

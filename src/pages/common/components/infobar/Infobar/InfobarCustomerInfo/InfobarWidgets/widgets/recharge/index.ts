@@ -1,10 +1,18 @@
-import Customer from './Customer.tsx'
-import Charge from './Charge.tsx'
-import Order from './Order.tsx'
-import Subscription from './Subscription.tsx'
+import {List, Map} from 'immutable'
 
-const recharge = (args) => {
-    const path = args.template.get('absolutePath', []).join('.')
+import Customer from './Customer'
+import Charge from './Charge'
+import Order from './Order'
+import Subscription from './Subscription'
+
+const recharge = (args: {
+    template: Map<any, any>
+    source: Map<any, any>
+    parent: Map<any, any>
+}) => {
+    const path = (args.template.get('absolutePath', []) as List<string>).join(
+        '.'
+    )
 
     if (path.match(/integrations\.[0-9]+\.customer$/)) {
         return Customer()

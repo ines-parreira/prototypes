@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {TitleWrapper} from '../Root.tsx'
+import {TitleWrapper} from '../Root'
 
 describe('<TitleWrapper/>', () => {
     describe('render()', () => {

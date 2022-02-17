@@ -24,7 +24,7 @@ exports[`<CardContentYotpoReviewTopics/> render() should render children as a li
     <Badge
       className="topic"
       color="secondary"
-      key="0"
+      key="bread"
       pill={false}
       tag="span"
     >
@@ -33,7 +33,7 @@ exports[`<CardContentYotpoReviewTopics/> render() should render children as a li
     <Badge
       className="topic"
       color="secondary"
-      key="1"
+      key="test"
       pill={false}
       tag="span"
     >

@@ -168,7 +168,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
 }
 
 type TitleWrapperProps = {
-    children: ReactNode
+    children?: ReactNode
     source: Map<any, any>
     template: Map<any, any>
 } & ConnectedProps<typeof connectorTitleWrapper>

@@ -4,7 +4,7 @@ import {Badge} from 'reactstrap'
 import css from './CardContentYotpoReviewTopics.less'
 
 type Props = {
-    children: Record<string, ReactNode>
+    children?: Record<string, ReactNode> | null
 }
 
 export function CardContentYotpoReviewTopics({children}: Props) {

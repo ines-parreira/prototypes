@@ -1,12 +1,13 @@
-import React from 'react'
-import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {fromJS, Map} from 'immutable'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
-import {IntegrationContext} from '../../IntegrationContext.ts'
-import {AfterTitle, TitleWrapperContainer, Wrapper} from '../Subscription.tsx'
+import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+
+import {AfterTitle, TitleWrapperContainer, Wrapper} from '../Subscription'
 
 const mockStore = configureMockStore([thunk])
 const integrationContextData = {integration: fromJS({}), integrationId: 1}
@@ -43,15 +44,15 @@ describe('Subscription', () => {
     })
 
     describe('TitleWrapper', () => {
-        let integrationId = 12
-        let customerId = 456
+        const integrationId = 12
+        const customerId = 456
         const getIntegrationData = () =>
             fromJS({
                 customer: {
                     id: customerId,
                     hash: 'asd1as2d3',
                 },
-            })
+            }) as Map<any, any>
 
         const subscriptionData = fromJS({
             id: 789,
@@ -67,6 +68,15 @@ describe('Subscription', () => {
             }),
         }
 
+        const minProps = {
+            getIntegrationData: () =>
+                fromJS({
+                    customer: {},
+                }) as Map<any, any>,
+            source: subscriptionData,
+            template: fromJS({}),
+        } as unknown as ComponentProps<typeof TitleWrapperContainer>
+
         it('should not render any link because no customer hash is available', () => {
             window.location.pathname = ''
 
@@ -76,15 +86,7 @@ describe('Subscription', () => {
                         value={integrationContextData2}
                     >
                         <Wrapper source={fromJS({})}>
-                            <TitleWrapperContainer
-                                getIntegrationData={() =>
-                                    fromJS({
-                                        customer: {},
-                                    })
-                                }
-                                source={subscriptionData}
-                                template={fromJS({})}
-                            />
+                            <TitleWrapperContainer {...minProps} />
                         </Wrapper>
                     </IntegrationContext.Provider>
                 </Provider>
@@ -101,12 +103,7 @@ describe('Subscription', () => {
                     >
                         <Wrapper source={fromJS({})}>
                             <TitleWrapperContainer
-                                getIntegrationData={() =>
-                                    fromJS({
-                                        customer: {},
-                                    })
-                                }
-                                source={subscriptionData}
+                                {...minProps}
                                 template={fromJS({
                                     meta: {
                                         link: 'https://gorgias.io/{{customerHash}}/',
@@ -134,9 +131,8 @@ describe('Subscription', () => {
                         >
                             <Wrapper source={fromJS({})}>
                                 <TitleWrapperContainer
+                                    {...minProps}
                                     getIntegrationData={getIntegrationData}
-                                    source={subscriptionData}
-                                    template={fromJS({})}
                                 />
                             </Wrapper>
                         </IntegrationContext.Provider>
@@ -154,8 +150,8 @@ describe('Subscription', () => {
                         >
                             <Wrapper source={fromJS({})}>
                                 <TitleWrapperContainer
+                                    {...minProps}
                                     getIntegrationData={getIntegrationData}
-                                    source={subscriptionData}
                                     template={fromJS({
                                         meta: {
                                             link: 'https://gorgias.io/{{customerHash}}/',
@@ -184,9 +180,8 @@ describe('Subscription', () => {
                         >
                             <Wrapper source={fromJS({})}>
                                 <TitleWrapperContainer
+                                    {...minProps}
                                     getIntegrationData={getIntegrationData}
-                                    source={subscriptionData}
-                                    template={fromJS({})}
                                 />
                             </Wrapper>
                         </IntegrationContext.Provider>
@@ -204,8 +199,8 @@ describe('Subscription', () => {
                         >
                             <Wrapper source={fromJS({})}>
                                 <TitleWrapperContainer
+                                    {...minProps}
                                     getIntegrationData={getIntegrationData}
-                                    source={subscriptionData}
                                     template={fromJS({
                                         meta: {
                                             link: 'https://gorgias.io/{{customerHash}}/',

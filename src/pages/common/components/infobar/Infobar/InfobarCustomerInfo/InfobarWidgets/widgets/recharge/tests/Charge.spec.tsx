@@ -1,17 +1,18 @@
-import React from 'react'
-import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {fromJS, Map} from 'immutable'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
-import {IntegrationContext} from '../../IntegrationContext.ts'
+import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+
 import index, {
     SubscriptionAfterTitle,
     AfterContent,
     AfterTitle,
     TitleWrapperContainer,
-} from '../Charge.tsx'
+} from '../Charge'
 
 const BeforeContent = index().BeforeContent
 const Wrapper = index().Wrapper
@@ -190,7 +191,7 @@ describe('Charge', () => {
                     <IntegrationContext.Provider
                         value={{
                             integration: fromJS({}),
-                            integrationId: undefined,
+                            integrationId: null,
                         }}
                     >
                         <AfterTitle
@@ -305,7 +306,7 @@ describe('Charge', () => {
                     id: customerId,
                     hash: 'asd1as2d3',
                 },
-            })
+            }) as Map<any, any>
 
         const chargeData = fromJS({
             id: 789,
@@ -318,6 +319,14 @@ describe('Charge', () => {
                 meta: {store_name: 'mystore'},
             }),
         }
+        const minProps = {
+            getIntegrationData: () =>
+                fromJS({
+                    customer: {},
+                }) as Map<any, any>,
+            source: chargeData,
+            template: fromJS({}),
+        } as unknown as ComponentProps<typeof TitleWrapperContainer>
 
         it('should not render any link because no customer hash is available', () => {
             window.location.pathname = ''
@@ -328,15 +337,7 @@ describe('Charge', () => {
                         value={integrationContextData2}
                     >
                         <Wrapper source={fromJS({})}>
-                            <TitleWrapperContainer
-                                getIntegrationData={() =>
-                                    fromJS({
-                                        customer: {},
-                                    })
-                                }
-                                source={chargeData}
-                                template={fromJS({})}
-                            />
+                            <TitleWrapperContainer {...minProps} />
                         </Wrapper>
                     </IntegrationContext.Provider>
                 </Provider>
@@ -352,12 +353,7 @@ describe('Charge', () => {
                     >
                         <Wrapper source={fromJS({})}>
                             <TitleWrapperContainer
-                                getIntegrationData={() =>
-                                    fromJS({
-                                        customer: {},
-                                    })
-                                }
-                                source={chargeData}
+                                {...minProps}
                                 template={fromJS({
                                     meta: {
                                         link: 'https://gorgias.io/{{customerHash}}/',
@@ -385,9 +381,8 @@ describe('Charge', () => {
                         >
                             <Wrapper source={fromJS({})}>
                                 <TitleWrapperContainer
+                                    {...minProps}
                                     getIntegrationData={getIntegrationData}
-                                    source={chargeData}
-                                    template={fromJS({})}
                                 />
                             </Wrapper>
                         </IntegrationContext.Provider>
@@ -405,8 +400,8 @@ describe('Charge', () => {
                         >
                             <Wrapper source={fromJS({})}>
                                 <TitleWrapperContainer
+                                    {...minProps}
                                     getIntegrationData={getIntegrationData}
-                                    source={chargeData}
                                     template={fromJS({
                                         meta: {
                                             link: 'https://gorgias.io/{{customerHash}}/',
@@ -435,9 +430,8 @@ describe('Charge', () => {
                         >
                             <Wrapper source={fromJS({})}>
                                 <TitleWrapperContainer
+                                    {...minProps}
                                     getIntegrationData={getIntegrationData}
-                                    source={chargeData}
-                                    template={fromJS({})}
                                 />
                             </Wrapper>
                         </IntegrationContext.Provider>
@@ -455,8 +449,8 @@ describe('Charge', () => {
                         >
                             <Wrapper source={fromJS({})}>
                                 <TitleWrapperContainer
+                                    {...minProps}
                                     getIntegrationData={getIntegrationData}
-                                    source={chargeData}
                                     template={fromJS({
                                         meta: {
                                             link: 'https://gorgias.io/{{customerHash}}/',

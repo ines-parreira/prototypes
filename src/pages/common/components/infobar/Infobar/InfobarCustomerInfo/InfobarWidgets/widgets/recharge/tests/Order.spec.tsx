@@ -1,28 +1,31 @@
-import React from 'react'
-import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {fromJS, Map} from 'immutable'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
-import {IntegrationContext} from '../../IntegrationContext.ts'
-import {AfterTitle, BeforeContent, TitleWrapper, Wrapper} from '../Order.tsx'
+import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+
+import {AfterTitle, BeforeContent, TitleWrapper, Wrapper} from '../Order'
 
 const mockStore = configureMockStore([thunk])
 const integrationContextData = {integration: fromJS({}), integrationId: 1}
 
 describe('Order', () => {
     describe('<AfterTitle/>', () => {
+        const minProps = {
+            source: fromJS({}),
+            isEditing: false,
+            getIntegrationData: () => fromJS({}) as Map<any, any>,
+        } as unknown as ComponentProps<typeof AfterTitle>
+
         it('should not render because widgets are being edited', () => {
             const {container} = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <Wrapper source={fromJS({})}>
-                            <AfterTitle
-                                source={fromJS({})}
-                                isEditing={true}
-                                getIntegrationData={() => fromJS({})}
-                            />
+                            <AfterTitle {...minProps} isEditing />
                         </Wrapper>
                     </IntegrationContext.Provider>
                 </Provider>
@@ -32,13 +35,7 @@ describe('Order', () => {
         })
 
         it('should not render because no integration id was provided', () => {
-            const {container} = render(
-                <AfterTitle
-                    source={fromJS({})}
-                    isEditing={false}
-                    getIntegrationData={() => fromJS({})}
-                />
-            )
+            const {container} = render(<AfterTitle {...minProps} />)
 
             expect(container).toMatchSnapshot()
         })
@@ -54,12 +51,11 @@ describe('Order', () => {
                             })}
                         >
                             <AfterTitle
+                                {...minProps}
                                 source={fromJS({
                                     id: 1,
                                     total_price: 10.0,
                                 })}
-                                isEditing={false}
-                                getIntegrationData={() => fromJS({})}
                             />
                         </Wrapper>
                     </IntegrationContext.Provider>
@@ -80,12 +76,11 @@ describe('Order', () => {
                             })}
                         >
                             <AfterTitle
+                                {...minProps}
                                 source={fromJS({
                                     id: 1,
                                     total_price: 10.0,
                                 })}
-                                isEditing={false}
-                                getIntegrationData={() => fromJS({})}
                             />
                         </Wrapper>
                     </IntegrationContext.Provider>
@@ -106,12 +101,11 @@ describe('Order', () => {
                             })}
                         >
                             <AfterTitle
+                                {...minProps}
                                 source={fromJS({
                                     id: 1,
                                     total_price: 10.0,
                                 })}
-                                isEditing={false}
-                                getIntegrationData={() => fromJS({})}
                             />
                         </Wrapper>
                     </IntegrationContext.Provider>
@@ -132,12 +126,11 @@ describe('Order', () => {
                             })}
                         >
                             <AfterTitle
+                                {...minProps}
                                 source={fromJS({
                                     id: 1,
                                     total_price: 10.0,
                                 })}
-                                isEditing={false}
-                                getIntegrationData={() => fromJS({})}
                             />
                         </Wrapper>
                     </IntegrationContext.Provider>
@@ -159,12 +152,12 @@ describe('Order', () => {
                             })}
                         >
                             <AfterTitle
+                                {...minProps}
                                 source={fromJS({
                                     id: 1,
                                     total_price: '10.00',
                                     charge_id: chargeId,
                                 })}
-                                isEditing={false}
                                 getIntegrationData={() =>
                                     fromJS({
                                         charges: [
@@ -173,7 +166,7 @@ describe('Order', () => {
                                                 total_refunds: '4.00',
                                             },
                                         ],
-                                    })
+                                    }) as Map<any, any>
                                 }
                             />
                         </Wrapper>
@@ -186,28 +179,28 @@ describe('Order', () => {
     })
 
     describe('<BeforeContent/>', () => {
+        const minProps = {
+            source: fromJS({
+                charge_status: 'success',
+                charge_id: 1,
+            }),
+            getIntegrationData: () =>
+                fromJS({
+                    charges: [
+                        {
+                            id: 1,
+                            total_refunds: null,
+                        },
+                    ],
+                }) as Map<any, any>,
+        } as unknown as ComponentProps<typeof BeforeContent>
+
         it('should render the total_refunds field to 0.00 because the value on the associated charge is null', () => {
-            const chargeId = 1
             const {container} = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <Wrapper source={fromJS({})}>
-                            <BeforeContent
-                                source={fromJS({
-                                    charge_status: 'success',
-                                    charge_id: chargeId,
-                                })}
-                                getIntegrationData={() =>
-                                    fromJS({
-                                        charges: [
-                                            {
-                                                id: chargeId,
-                                                total_refunds: null,
-                                            },
-                                        ],
-                                    })
-                                }
-                            />
+                            <BeforeContent {...minProps} />
                         </Wrapper>
                     </IntegrationContext.Provider>
                 </Provider>
@@ -217,27 +210,23 @@ describe('Order', () => {
         })
 
         it('should render with the total_refunds field from the associated charge', () => {
-            const chargeId = 1
             const {container} = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <Wrapper source={fromJS({})}>
                             <BeforeContent
-                                source={fromJS({
-                                    charge_status: 'success',
-                                    charge_id: chargeId,
-                                })}
+                                {...minProps}
                                 getIntegrationData={() =>
                                     fromJS({
                                         charges: [
                                             {
-                                                id: chargeId,
+                                                id: 1,
                                                 total_refunds: '5.00',
                                             },
                                         ],
-                                    })
+                                    }) as Map<any, any>
                                 }
-                            />{' '}
+                            />
                         </Wrapper>
                     </IntegrationContext.Provider>
                 </Provider>
@@ -248,6 +237,12 @@ describe('Order', () => {
     })
 
     describe('<TitleWrapper/>', () => {
+        const minProps = {
+            source: fromJS({order_id: 1}),
+            template: fromJS({}),
+            getIntegrationData: () => fromJS({}) as Map<any, any>,
+        } as unknown as ComponentProps<typeof TitleWrapper>
+
         it('should not render any link because no customer hash was passed', () => {
             const {container} = render(
                 <Provider store={mockStore({})}>
@@ -260,11 +255,7 @@ describe('Order', () => {
                         }}
                     >
                         <Wrapper source={fromJS({})}>
-                            <TitleWrapper
-                                source={fromJS({order_id: 1})}
-                                template={fromJS({})}
-                                getIntegrationData={() => fromJS({})}
-                            />
+                            <TitleWrapper {...minProps} />
                         </Wrapper>
                     </IntegrationContext.Provider>
                 </Provider>
@@ -286,14 +277,16 @@ describe('Order', () => {
                     >
                         <Wrapper source={fromJS({})}>
                             <TitleWrapper
+                                {...minProps}
                                 source={fromJS({
                                     order_id: 1,
                                     customer_id: 4564,
                                     id: 2345,
                                 })}
-                                template={fromJS({})}
                                 getIntegrationData={() =>
-                                    fromJS({customer: {hash: 's8d4f6sdf4'}})
+                                    fromJS({
+                                        customer: {hash: 's8d4f6sdf4'},
+                                    }) as Map<any, any>
                                 }
                             />
                         </Wrapper>
@@ -317,14 +310,16 @@ describe('Order', () => {
                     >
                         <Wrapper source={fromJS({})}>
                             <TitleWrapper
-                                source={fromJS({order_id: 1})}
+                                {...minProps}
                                 template={fromJS({
                                     meta: {
                                         link: 'https://google.com/{{customerHash}}',
                                     },
                                 })}
                                 getIntegrationData={() =>
-                                    fromJS({customer: {hash: 's8d4f6sdf4'}})
+                                    fromJS({
+                                        customer: {hash: 's8d4f6sdf4'},
+                                    }) as Map<any, any>
                                 }
                             />
                         </Wrapper>

@@ -5,8 +5,9 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {IntegrationContext} from '../../IntegrationContext.ts'
-import Order, {statusColors} from '../Order.tsx'
+import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+
+import Order, {statusColors} from '../Order'
 
 const mockStore = configureMockStore([thunk])
 
@@ -15,9 +16,13 @@ const BeforeContent = orderWidgets.BeforeContent
 const AfterContent = orderWidgets.AfterContent
 const TitleWrapper = orderWidgets.TitleWrapper
 
-jest.mock('../../../../../../../../utils/labels', () => {
+jest.mock('pages/common/utils/labels', () => {
+    const utilsLabels: Record<string, unknown> = jest.requireActual(
+        'pages/common/utils/labels'
+    )
+
     return {
-        ...jest.requireActual('../../../../../../../../utils/labels'),
+        ...utilsLabels,
         DatetimeLabel: 'time',
     }
 })
@@ -104,6 +109,7 @@ describe('Order', () => {
                                 }}
                             >
                                 <BeforeContent
+                                    currentUserTimezone="US/Pacific"
                                     source={fromJS({
                                         customer_id: customerId,
                                         entity_id: orderId,
@@ -143,6 +149,7 @@ describe('Order', () => {
                             }}
                         >
                             <BeforeContent
+                                currentUserTimezone="US/Pacific"
                                 source={fromJS({
                                     customer_id: customerId,
                                     entity_id: orderId,
@@ -185,6 +192,7 @@ describe('Order', () => {
                             }}
                         >
                             <BeforeContent
+                                currentUserTimezone="US/Pacific"
                                 source={fromJS({
                                     customer_id: customerId,
                                     entity_id: orderId,
@@ -228,6 +236,7 @@ describe('Order', () => {
                             }}
                         >
                             <BeforeContent
+                                currentUserTimezone="US/Pacific"
                                 source={fromJS({
                                     customer_id: customerId,
                                     entity_id: orderId,

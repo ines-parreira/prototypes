@@ -2,8 +2,9 @@ import React from 'react'
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
-import {IntegrationContext} from '../../IntegrationContext.ts'
-import Customer from '../Customer.tsx'
+import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+
+import Customer from '../Customer'
 
 const TitleWrapper = Customer().TitleWrapper
 
@@ -13,6 +14,7 @@ describe('<TitleWrapper/>', () => {
             const {container} = render(
                 <IntegrationContext.Provider
                     value={{
+                        integrationId: null,
                         integration: fromJS({
                             meta: {
                                 store_url: 'magento.gorgi.us',
@@ -34,6 +36,7 @@ describe('<TitleWrapper/>', () => {
             const {container} = render(
                 <IntegrationContext.Provider
                     value={{
+                        integrationId: null,
                         integration: fromJS({
                             meta: {
                                 store_url: 'magento.gorgi.us',

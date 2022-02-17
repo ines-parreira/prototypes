@@ -280,7 +280,7 @@ export class AfterContent extends React.Component<{
 }
 
 type TitleWrapperProps = {
-    children: ReactNode | null
+    children?: ReactNode
     source: Map<any, any>
     template: Map<any, any>
 } & ConnectedProps<typeof connectorTitleWrapper>

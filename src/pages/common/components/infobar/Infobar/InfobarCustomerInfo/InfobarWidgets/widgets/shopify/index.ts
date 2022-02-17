@@ -1,11 +1,19 @@
-import Customer from './Customer.tsx'
-import Item from './Item.tsx'
-import Order from './Order/OrderWidget.tsx'
-import ShippingAddress from './Order/ShippingAddress.tsx'
-import Fulfillment from './Fulfillment.tsx'
+import {List, Map} from 'immutable'
 
-const shopify = (args) => {
-    const path = args.template.get('absolutePath', []).join('.')
+import Customer from './Customer'
+import Item from './Item'
+import Order from './Order/OrderWidget'
+import ShippingAddress from './Order/ShippingAddress'
+import Fulfillment from './Fulfillment'
+
+const shopify = (args: {
+    template: Map<any, any>
+    source: Map<any, any>
+    parent: Map<any, any>
+}) => {
+    const path = (args.template.get('absolutePath', []) as List<string>).join(
+        '.'
+    )
 
     if (path.match(/integrations\.\d+\.customer$/)) {
         return Customer()
