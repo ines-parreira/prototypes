@@ -1,12 +1,12 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {Button} from 'reactstrap'
 import classnames from 'classnames'
 
 import shopifyLogo from 'assets/img/integrations/shopify.png'
 import warningIcon from 'assets/img/icons/warning.svg'
-import ConfirmButton from 'pages/common/components/DEPRECATED_ConfirmButton'
-
-import Tooltip from '../../../../../common/components/Tooltip'
+import Tooltip from 'pages/common/components/Tooltip'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import {ButtonIntent} from 'pages/common/components/button/Button'
 
 import css from './OneClickInstallationCardStoreRow.less'
 
@@ -37,7 +37,6 @@ export const OneClickInstallationCardStoreRow = ({
     onDisconnect,
     loading,
 }: Props) => {
-    const [showTooltip, setShowTooltip] = useState(true)
     const getWarnings = (
         targetIntegrationId: number,
         {
@@ -146,21 +145,16 @@ export const OneClickInstallationCardStoreRow = ({
                 )}
                 <>
                     <ConfirmButton
-                        placement="top"
-                        onToggleConfirmation={(confimationDisplayed) => {
-                            setShowTooltip(!confimationDisplayed)
-                        }}
-                        confirm={() =>
+                        onConfirm={() =>
                             isLegacyInstallation
                                 ? onUninstall(targetIntegrationId)
                                 : onDisconnect(targetIntegrationId)
                         }
-                        confirmText="Disconnect"
-                        confirmColor="danger"
-                        disabled={
-                            isDisconnectionLoading || isInstallationLoading
-                        }
-                        content={
+                        isDisabled={isInstallationLoading}
+                        isLoading={isDisconnectionLoading}
+                        type="button"
+                        intent={ButtonIntent.Destructive}
+                        confirmationContent={
                             hasLegacyInstallations ? (
                                 <>
                                     <p>
@@ -214,7 +208,6 @@ export const OneClickInstallationCardStoreRow = ({
                         }
                         className={classnames({
                             [css['disconnect-button']]: true,
-                            'btn-loading': isDisconnectionLoading,
                         })}
                         id={`disconnect-button-${targetIntegrationId}`}
                     >
@@ -223,7 +216,6 @@ export const OneClickInstallationCardStoreRow = ({
                     <Tooltip
                         target={`disconnect-button-${targetIntegrationId}`}
                         placement="top"
-                        disabled={!showTooltip}
                     >
                         {hasLegacyInstallations
                             ? 'Disconnecting this store from the chat integration will disconnect all other stores'

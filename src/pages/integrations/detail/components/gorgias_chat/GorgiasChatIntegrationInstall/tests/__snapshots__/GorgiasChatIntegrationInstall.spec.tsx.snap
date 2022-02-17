@@ -482,12 +482,9 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                       Install
                                     </button>
                                   </Button>
-                                  <DEPRECATED_ConfirmButton
+                                  <ConfirmButton
                                     className="disconnect-button"
-                                    confirm={[Function]}
-                                    confirmColor="danger"
-                                    confirmText="Disconnect"
-                                    content={
+                                    confirmationContent={
                                       <React.Fragment>
                                         <p>
                                           If this
@@ -502,73 +499,68 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                         </p>
                                       </React.Fragment>
                                     }
-                                    disabled={false}
                                     id="disconnect-button-undefined"
-                                    onToggleConfirmation={[Function]}
-                                    placement="top"
+                                    intent="destructive"
+                                    isDisabled={false}
+                                    isLoading={false}
+                                    onConfirm={[Function]}
+                                    type="button"
                                   >
-                                    <div
-                                      className="component d-inline-block disconnect-button"
+                                    <ForwardRef
+                                      className="disconnect-button"
                                       id="disconnect-button-undefined"
+                                      intent="destructive"
+                                      isDisabled={false}
+                                      isLoading={false}
+                                      onClick={[Function]}
+                                      type="button"
                                     >
-                                      <Button
-                                        className=""
-                                        color="secondary"
+                                      <button
+                                        className="wrapper disconnect-button destructive medium"
                                         disabled={false}
-                                        id="confirm-button-disconnect-button-undefined"
+                                        id="disconnect-button-undefined"
                                         onClick={[Function]}
-                                        tag="button"
                                         type="button"
                                       >
-                                        <button
-                                          aria-label={null}
-                                          className="btn btn-secondary"
-                                          disabled={false}
-                                          id="confirm-button-disconnect-button-undefined"
-                                          onClick={[Function]}
-                                          type="button"
+                                        <i
+                                          className="material-icons"
                                         >
-                                          <i
-                                            className="material-icons"
-                                          >
-                                            delete
-                                          </i>
-                                        </button>
-                                      </Button>
-                                      <Popover
-                                        container="body"
+                                          delete
+                                        </i>
+                                      </button>
+                                    </ForwardRef>
+                                    <Popover
+                                      isOpen={false}
+                                      onClick={[Function]}
+                                      placement="bottom"
+                                      placementPrefix="bs-popover"
+                                      target="disconnect-button-undefined"
+                                      toggle={[Function]}
+                                      trigger="legacy"
+                                    >
+                                      <TooltipPopoverWrapper
+                                        autohide={false}
+                                        delay={
+                                          Object {
+                                            "hide": 50,
+                                            "show": 0,
+                                          }
+                                        }
+                                        fade={true}
+                                        hideArrow={false}
+                                        innerClassName="popover-inner"
                                         isOpen={false}
-                                        placement="top"
+                                        onClick={[Function]}
+                                        placement="bottom"
                                         placementPrefix="bs-popover"
-                                        target="confirm-button-disconnect-button-undefined"
+                                        popperClassName="popover show"
+                                        target="disconnect-button-undefined"
                                         toggle={[Function]}
                                         trigger="legacy"
-                                      >
-                                        <TooltipPopoverWrapper
-                                          autohide={false}
-                                          container="body"
-                                          delay={
-                                            Object {
-                                              "hide": 50,
-                                              "show": 0,
-                                            }
-                                          }
-                                          fade={true}
-                                          hideArrow={false}
-                                          innerClassName="popover-inner"
-                                          isOpen={false}
-                                          placement="top"
-                                          placementPrefix="bs-popover"
-                                          popperClassName="popover show"
-                                          target="confirm-button-disconnect-button-undefined"
-                                          toggle={[Function]}
-                                          trigger="legacy"
-                                        />
-                                      </Popover>
-                                    </div>
-                                  </DEPRECATED_ConfirmButton>
+                                      />
+                                    </Popover>
+                                  </ConfirmButton>
                                   <Tooltip
-                                    disabled={false}
                                     placement="top"
                                     target="disconnect-button-undefined"
                                   >
@@ -703,85 +695,77 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                       Uninstall
                                     </button>
                                   </Button>
-                                  <DEPRECATED_ConfirmButton
+                                  <ConfirmButton
                                     className="disconnect-button"
-                                    confirm={[Function]}
-                                    confirmColor="danger"
-                                    confirmText="Disconnect"
-                                    content={
+                                    confirmationContent={
                                       <React.Fragment>
                                         <p>
                                           Are you sure you want to disconnect this Shopify store for the chat integration?
                                         </p>
                                       </React.Fragment>
                                     }
-                                    disabled={false}
                                     id="disconnect-button-2"
-                                    onToggleConfirmation={[Function]}
-                                    placement="top"
+                                    intent="destructive"
+                                    isDisabled={false}
+                                    isLoading={false}
+                                    onConfirm={[Function]}
+                                    type="button"
                                   >
-                                    <div
-                                      className="component d-inline-block disconnect-button"
+                                    <ForwardRef
+                                      className="disconnect-button"
                                       id="disconnect-button-2"
+                                      intent="destructive"
+                                      isDisabled={false}
+                                      isLoading={false}
+                                      onClick={[Function]}
+                                      type="button"
                                     >
-                                      <Button
-                                        className=""
-                                        color="secondary"
+                                      <button
+                                        className="wrapper disconnect-button destructive medium"
                                         disabled={false}
-                                        id="confirm-button-disconnect-button-2"
+                                        id="disconnect-button-2"
                                         onClick={[Function]}
-                                        tag="button"
                                         type="button"
                                       >
-                                        <button
-                                          aria-label={null}
-                                          className="btn btn-secondary"
-                                          disabled={false}
-                                          id="confirm-button-disconnect-button-2"
-                                          onClick={[Function]}
-                                          type="button"
+                                        <i
+                                          className="material-icons"
                                         >
-                                          <i
-                                            className="material-icons"
-                                          >
-                                            delete
-                                          </i>
-                                        </button>
-                                      </Button>
-                                      <Popover
-                                        container="body"
+                                          delete
+                                        </i>
+                                      </button>
+                                    </ForwardRef>
+                                    <Popover
+                                      isOpen={false}
+                                      onClick={[Function]}
+                                      placement="bottom"
+                                      placementPrefix="bs-popover"
+                                      target="disconnect-button-2"
+                                      toggle={[Function]}
+                                      trigger="legacy"
+                                    >
+                                      <TooltipPopoverWrapper
+                                        autohide={false}
+                                        delay={
+                                          Object {
+                                            "hide": 50,
+                                            "show": 0,
+                                          }
+                                        }
+                                        fade={true}
+                                        hideArrow={false}
+                                        innerClassName="popover-inner"
                                         isOpen={false}
-                                        placement="top"
+                                        onClick={[Function]}
+                                        placement="bottom"
                                         placementPrefix="bs-popover"
-                                        target="confirm-button-disconnect-button-2"
+                                        popperClassName="popover show"
+                                        target="disconnect-button-2"
                                         toggle={[Function]}
                                         trigger="legacy"
-                                      >
-                                        <TooltipPopoverWrapper
-                                          autohide={false}
-                                          container="body"
-                                          delay={
-                                            Object {
-                                              "hide": 50,
-                                              "show": 0,
-                                            }
-                                          }
-                                          fade={true}
-                                          hideArrow={false}
-                                          innerClassName="popover-inner"
-                                          isOpen={false}
-                                          placement="top"
-                                          placementPrefix="bs-popover"
-                                          popperClassName="popover show"
-                                          target="confirm-button-disconnect-button-2"
-                                          toggle={[Function]}
-                                          trigger="legacy"
-                                        />
-                                      </Popover>
-                                    </div>
-                                  </DEPRECATED_ConfirmButton>
+                                      />
+                                    </Popover>
+                                  </ConfirmButton>
                                   <Tooltip
-                                    disabled={false}
                                     placement="top"
                                     target="disconnect-button-2"
                                   >
@@ -916,85 +900,77 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                       Uninstall
                                     </button>
                                   </Button>
-                                  <DEPRECATED_ConfirmButton
+                                  <ConfirmButton
                                     className="disconnect-button"
-                                    confirm={[Function]}
-                                    confirmColor="danger"
-                                    confirmText="Disconnect"
-                                    content={
+                                    confirmationContent={
                                       <React.Fragment>
                                         <p>
                                           Are you sure you want to disconnect this Shopify store for the chat integration?
                                         </p>
                                       </React.Fragment>
                                     }
-                                    disabled={false}
                                     id="disconnect-button-3"
-                                    onToggleConfirmation={[Function]}
-                                    placement="top"
+                                    intent="destructive"
+                                    isDisabled={false}
+                                    isLoading={false}
+                                    onConfirm={[Function]}
+                                    type="button"
                                   >
-                                    <div
-                                      className="component d-inline-block disconnect-button"
+                                    <ForwardRef
+                                      className="disconnect-button"
                                       id="disconnect-button-3"
+                                      intent="destructive"
+                                      isDisabled={false}
+                                      isLoading={false}
+                                      onClick={[Function]}
+                                      type="button"
                                     >
-                                      <Button
-                                        className=""
-                                        color="secondary"
+                                      <button
+                                        className="wrapper disconnect-button destructive medium"
                                         disabled={false}
-                                        id="confirm-button-disconnect-button-3"
+                                        id="disconnect-button-3"
                                         onClick={[Function]}
-                                        tag="button"
                                         type="button"
                                       >
-                                        <button
-                                          aria-label={null}
-                                          className="btn btn-secondary"
-                                          disabled={false}
-                                          id="confirm-button-disconnect-button-3"
-                                          onClick={[Function]}
-                                          type="button"
+                                        <i
+                                          className="material-icons"
                                         >
-                                          <i
-                                            className="material-icons"
-                                          >
-                                            delete
-                                          </i>
-                                        </button>
-                                      </Button>
-                                      <Popover
-                                        container="body"
+                                          delete
+                                        </i>
+                                      </button>
+                                    </ForwardRef>
+                                    <Popover
+                                      isOpen={false}
+                                      onClick={[Function]}
+                                      placement="bottom"
+                                      placementPrefix="bs-popover"
+                                      target="disconnect-button-3"
+                                      toggle={[Function]}
+                                      trigger="legacy"
+                                    >
+                                      <TooltipPopoverWrapper
+                                        autohide={false}
+                                        delay={
+                                          Object {
+                                            "hide": 50,
+                                            "show": 0,
+                                          }
+                                        }
+                                        fade={true}
+                                        hideArrow={false}
+                                        innerClassName="popover-inner"
                                         isOpen={false}
-                                        placement="top"
+                                        onClick={[Function]}
+                                        placement="bottom"
                                         placementPrefix="bs-popover"
-                                        target="confirm-button-disconnect-button-3"
+                                        popperClassName="popover show"
+                                        target="disconnect-button-3"
                                         toggle={[Function]}
                                         trigger="legacy"
-                                      >
-                                        <TooltipPopoverWrapper
-                                          autohide={false}
-                                          container="body"
-                                          delay={
-                                            Object {
-                                              "hide": 50,
-                                              "show": 0,
-                                            }
-                                          }
-                                          fade={true}
-                                          hideArrow={false}
-                                          innerClassName="popover-inner"
-                                          isOpen={false}
-                                          placement="top"
-                                          placementPrefix="bs-popover"
-                                          popperClassName="popover show"
-                                          target="confirm-button-disconnect-button-3"
-                                          toggle={[Function]}
-                                          trigger="legacy"
-                                        />
-                                      </Popover>
-                                    </div>
-                                  </DEPRECATED_ConfirmButton>
+                                      />
+                                    </Popover>
+                                  </ConfirmButton>
                                   <Tooltip
-                                    disabled={false}
                                     placement="top"
                                     target="disconnect-button-3"
                                   >
@@ -1129,85 +1105,77 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                       Uninstall
                                     </button>
                                   </Button>
-                                  <DEPRECATED_ConfirmButton
+                                  <ConfirmButton
                                     className="disconnect-button"
-                                    confirm={[Function]}
-                                    confirmColor="danger"
-                                    confirmText="Disconnect"
-                                    content={
+                                    confirmationContent={
                                       <React.Fragment>
                                         <p>
                                           Are you sure you want to disconnect this Shopify store for the chat integration?
                                         </p>
                                       </React.Fragment>
                                     }
-                                    disabled={false}
                                     id="disconnect-button-1"
-                                    onToggleConfirmation={[Function]}
-                                    placement="top"
+                                    intent="destructive"
+                                    isDisabled={false}
+                                    isLoading={false}
+                                    onConfirm={[Function]}
+                                    type="button"
                                   >
-                                    <div
-                                      className="component d-inline-block disconnect-button"
+                                    <ForwardRef
+                                      className="disconnect-button"
                                       id="disconnect-button-1"
+                                      intent="destructive"
+                                      isDisabled={false}
+                                      isLoading={false}
+                                      onClick={[Function]}
+                                      type="button"
                                     >
-                                      <Button
-                                        className=""
-                                        color="secondary"
+                                      <button
+                                        className="wrapper disconnect-button destructive medium"
                                         disabled={false}
-                                        id="confirm-button-disconnect-button-1"
+                                        id="disconnect-button-1"
                                         onClick={[Function]}
-                                        tag="button"
                                         type="button"
                                       >
-                                        <button
-                                          aria-label={null}
-                                          className="btn btn-secondary"
-                                          disabled={false}
-                                          id="confirm-button-disconnect-button-1"
-                                          onClick={[Function]}
-                                          type="button"
+                                        <i
+                                          className="material-icons"
                                         >
-                                          <i
-                                            className="material-icons"
-                                          >
-                                            delete
-                                          </i>
-                                        </button>
-                                      </Button>
-                                      <Popover
-                                        container="body"
+                                          delete
+                                        </i>
+                                      </button>
+                                    </ForwardRef>
+                                    <Popover
+                                      isOpen={false}
+                                      onClick={[Function]}
+                                      placement="bottom"
+                                      placementPrefix="bs-popover"
+                                      target="disconnect-button-1"
+                                      toggle={[Function]}
+                                      trigger="legacy"
+                                    >
+                                      <TooltipPopoverWrapper
+                                        autohide={false}
+                                        delay={
+                                          Object {
+                                            "hide": 50,
+                                            "show": 0,
+                                          }
+                                        }
+                                        fade={true}
+                                        hideArrow={false}
+                                        innerClassName="popover-inner"
                                         isOpen={false}
-                                        placement="top"
+                                        onClick={[Function]}
+                                        placement="bottom"
                                         placementPrefix="bs-popover"
-                                        target="confirm-button-disconnect-button-1"
+                                        popperClassName="popover show"
+                                        target="disconnect-button-1"
                                         toggle={[Function]}
                                         trigger="legacy"
-                                      >
-                                        <TooltipPopoverWrapper
-                                          autohide={false}
-                                          container="body"
-                                          delay={
-                                            Object {
-                                              "hide": 50,
-                                              "show": 0,
-                                            }
-                                          }
-                                          fade={true}
-                                          hideArrow={false}
-                                          innerClassName="popover-inner"
-                                          isOpen={false}
-                                          placement="top"
-                                          placementPrefix="bs-popover"
-                                          popperClassName="popover show"
-                                          target="confirm-button-disconnect-button-1"
-                                          toggle={[Function]}
-                                          trigger="legacy"
-                                        />
-                                      </Popover>
-                                    </div>
-                                  </DEPRECATED_ConfirmButton>
+                                      />
+                                    </Popover>
+                                  </ConfirmButton>
                                   <Tooltip
-                                    disabled={false}
                                     placement="top"
                                     target="disconnect-button-1"
                                   >
@@ -3350,12 +3318,9 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                       Uninstall
                                     </button>
                                   </Button>
-                                  <DEPRECATED_ConfirmButton
+                                  <ConfirmButton
                                     className="disconnect-button"
-                                    confirm={[Function]}
-                                    confirmColor="danger"
-                                    confirmText="Disconnect"
-                                    content={
+                                    confirmationContent={
                                       <React.Fragment>
                                         <p>
                                           <b>
@@ -3368,73 +3333,68 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                         </p>
                                       </React.Fragment>
                                     }
-                                    disabled={false}
                                     id="disconnect-button-3"
-                                    onToggleConfirmation={[Function]}
-                                    placement="top"
+                                    intent="destructive"
+                                    isDisabled={false}
+                                    isLoading={false}
+                                    onConfirm={[Function]}
+                                    type="button"
                                   >
-                                    <div
-                                      className="component d-inline-block disconnect-button"
+                                    <ForwardRef
+                                      className="disconnect-button"
                                       id="disconnect-button-3"
+                                      intent="destructive"
+                                      isDisabled={false}
+                                      isLoading={false}
+                                      onClick={[Function]}
+                                      type="button"
                                     >
-                                      <Button
-                                        className=""
-                                        color="secondary"
+                                      <button
+                                        className="wrapper disconnect-button destructive medium"
                                         disabled={false}
-                                        id="confirm-button-disconnect-button-3"
+                                        id="disconnect-button-3"
                                         onClick={[Function]}
-                                        tag="button"
                                         type="button"
                                       >
-                                        <button
-                                          aria-label={null}
-                                          className="btn btn-secondary"
-                                          disabled={false}
-                                          id="confirm-button-disconnect-button-3"
-                                          onClick={[Function]}
-                                          type="button"
+                                        <i
+                                          className="material-icons"
                                         >
-                                          <i
-                                            className="material-icons"
-                                          >
-                                            delete
-                                          </i>
-                                        </button>
-                                      </Button>
-                                      <Popover
-                                        container="body"
+                                          delete
+                                        </i>
+                                      </button>
+                                    </ForwardRef>
+                                    <Popover
+                                      isOpen={false}
+                                      onClick={[Function]}
+                                      placement="bottom"
+                                      placementPrefix="bs-popover"
+                                      target="disconnect-button-3"
+                                      toggle={[Function]}
+                                      trigger="legacy"
+                                    >
+                                      <TooltipPopoverWrapper
+                                        autohide={false}
+                                        delay={
+                                          Object {
+                                            "hide": 50,
+                                            "show": 0,
+                                          }
+                                        }
+                                        fade={true}
+                                        hideArrow={false}
+                                        innerClassName="popover-inner"
                                         isOpen={false}
-                                        placement="top"
+                                        onClick={[Function]}
+                                        placement="bottom"
                                         placementPrefix="bs-popover"
-                                        target="confirm-button-disconnect-button-3"
+                                        popperClassName="popover show"
+                                        target="disconnect-button-3"
                                         toggle={[Function]}
                                         trigger="legacy"
-                                      >
-                                        <TooltipPopoverWrapper
-                                          autohide={false}
-                                          container="body"
-                                          delay={
-                                            Object {
-                                              "hide": 50,
-                                              "show": 0,
-                                            }
-                                          }
-                                          fade={true}
-                                          hideArrow={false}
-                                          innerClassName="popover-inner"
-                                          isOpen={false}
-                                          placement="top"
-                                          placementPrefix="bs-popover"
-                                          popperClassName="popover show"
-                                          target="confirm-button-disconnect-button-3"
-                                          toggle={[Function]}
-                                          trigger="legacy"
-                                        />
-                                      </Popover>
-                                    </div>
-                                  </DEPRECATED_ConfirmButton>
+                                      />
+                                    </Popover>
+                                  </ConfirmButton>
                                   <Tooltip
-                                    disabled={false}
                                     placement="top"
                                     target="disconnect-button-3"
                                   >
