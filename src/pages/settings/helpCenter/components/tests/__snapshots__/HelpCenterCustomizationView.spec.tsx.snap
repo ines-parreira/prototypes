@@ -29,12 +29,6 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
           >
             ACME Help Center
           </li>
-          <li
-            aria-current="page"
-            class="active breadcrumb-item"
-          >
-            Customization
-          </li>
         </ol>
       </nav>
       <div>

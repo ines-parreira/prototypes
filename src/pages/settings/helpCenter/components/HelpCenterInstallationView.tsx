@@ -154,7 +154,6 @@ export const HelpCenterInstallationView: React.FC = () => {
 
     return (
         <HelpCenterPageWrapper
-            activeLabel="Installation"
             helpCenter={helpCenter}
             className={css.container}
         >

@@ -46,7 +46,6 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 describe('<HelpCenterPageWrapper />', () => {
     const props: ComponentProps<typeof HelpCenterPageWrapper> = {
         helpCenter: getSingleHelpCenterResponseFixture,
-        activeLabel: 'Articles',
     }
 
     beforeEach(() => {

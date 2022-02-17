@@ -21,11 +21,7 @@ export const HelpCenterPreferencesView: React.FC = () => {
     }, [])
 
     return (
-        <HelpCenterPageWrapper
-            helpCenter={helpCenter}
-            activeLabel="Preferences"
-            showLanguageSelector
-        >
+        <HelpCenterPageWrapper helpCenter={helpCenter} showLanguageSelector>
             <HelpCenterPreferencesSettings helpCenter={helpCenter}>
                 <DisplayName />
                 <section>

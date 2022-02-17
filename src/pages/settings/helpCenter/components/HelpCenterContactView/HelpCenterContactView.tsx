@@ -15,11 +15,7 @@ const HelpCenterContactView: React.FC = () => {
     const helpCenter = useCurrentHelpCenter()
 
     return (
-        <HelpCenterPageWrapper
-            helpCenter={helpCenter}
-            activeLabel="Contact"
-            showLanguageSelector
-        >
+        <HelpCenterPageWrapper helpCenter={helpCenter} showLanguageSelector>
             <HelpCenterTranslation helpCenter={helpCenter}>
                 <section>
                     <div className={css.heading}>

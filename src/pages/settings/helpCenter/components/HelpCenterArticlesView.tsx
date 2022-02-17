@@ -645,7 +645,6 @@ export const HelpCenterArticlesView: React.FC = () => {
 
     return (
         <HelpCenterPageWrapper
-            activeLabel="Articles"
             helpCenter={helpCenter}
             actions={
                 <>

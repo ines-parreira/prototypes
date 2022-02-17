@@ -24,7 +24,6 @@ import {HelpCenterNavigation} from '../HelpCenterNavigation'
 import css from './HelpCenterPageWrapper.less'
 
 type Props = {
-    activeLabel: string
     helpCenter: HelpCenter
     children?: ReactNode
     actions?: ReactNode
@@ -34,7 +33,6 @@ type Props = {
 }
 
 export const HelpCenterPageWrapper: React.FC<Props> = ({
-    activeLabel,
     helpCenter,
     children,
     actions,
@@ -68,7 +66,6 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                 title={
                     <HelpCenterDetailsBreadcrumb
                         helpCenterName={helpCenter.name}
-                        activeLabel={activeLabel}
                     />
                 }
             >

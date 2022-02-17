@@ -249,11 +249,7 @@ export const HelpCenterCustomizationView = () => {
     }, [extraHTML])
 
     return (
-        <HelpCenterPageWrapper
-            helpCenter={helpCenter}
-            activeLabel="Customization"
-            className={css.wrapper}
-        >
+        <HelpCenterPageWrapper helpCenter={helpCenter} className={css.wrapper}>
             <section>
                 <div className={css.heading}>
                     <div>

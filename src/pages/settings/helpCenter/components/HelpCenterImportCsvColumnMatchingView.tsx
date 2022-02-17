@@ -261,7 +261,6 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
                 title={
                     <HelpCenterDetailsBreadcrumb
                         helpCenterName={helpCenter.name}
-                        activeLabel="Import CSV"
                     />
                 }
             />

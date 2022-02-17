@@ -197,7 +197,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
     }
 
     return (
-        <HelpCenterPageWrapper activeLabel="Appearance" helpCenter={helpCenter}>
+        <HelpCenterPageWrapper helpCenter={helpCenter}>
             <div className={css.heading}>
                 <h3>Appearance</h3>
                 <p>Set up your help center's logo, color and theme.</p>

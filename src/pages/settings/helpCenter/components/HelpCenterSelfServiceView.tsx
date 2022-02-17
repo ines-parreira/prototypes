@@ -105,7 +105,6 @@ export const HelpCenterSelfServiceView = (): JSX.Element | null => {
 
     return (
         <HelpCenterPageWrapper
-            activeLabel="Self-service"
             helpCenter={helpCenter}
             fluidContainer={!isLoadingIntegrations && hasAutomationAddOn}
         >
