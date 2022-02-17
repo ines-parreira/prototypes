@@ -5,7 +5,6 @@ import {fromJS, Map} from 'immutable'
 import {
     Breadcrumb,
     BreadcrumbItem,
-    Button,
     ButtonGroup,
     Col,
     Container,
@@ -19,7 +18,7 @@ import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom'
 import classnames from 'classnames'
 
 import InputField from 'pages/common/forms/InputField'
-import {ButtonIntent} from 'pages/common/components/button/Button'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -185,7 +184,13 @@ export class FormContainer extends Component<Props, State> {
                                         <ButtonGroup>
                                             <Button
                                                 type="button"
-                                                color="secondary"
+                                                className={classnames(
+                                                    css.emojiButton,
+                                                    {
+                                                        [css.hasEmoji]: !!emoji,
+                                                    }
+                                                )}
+                                                intent={ButtonIntent.Secondary}
                                                 id="add-emoji"
                                                 onClick={
                                                     this._toggleEmojiPicker
@@ -287,13 +292,8 @@ export class FormContainer extends Component<Props, State> {
                                 />
                                 <FormGroup>
                                     <Button
-                                        type="submit"
-                                        color="success"
-                                        className={classnames('mr-2', {
-                                            'btn-loading':
-                                                this.state.isSubmitting,
-                                        })}
-                                        disabled={this.state.isSubmitting}
+                                        className="mr-2"
+                                        isLoading={this.state.isSubmitting}
                                     >
                                         Save team
                                     </Button>

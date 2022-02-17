@@ -1,11 +1,11 @@
 import React, {Component, SyntheticEvent} from 'react'
 import {List} from 'immutable'
-import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
-import {Button, Col, Container, Form, FormGroup, Label, Row} from 'reactstrap'
+import {Col, Container, Form, FormGroup, Label, Row} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
 
 import {TicketChannel} from 'business/types/ticket'
+import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
@@ -225,16 +225,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                             </Col>
                         </Row>
 
-                        <Button
-                            type="submit"
-                            color="success"
-                            className={classnames({
-                                'btn-loading': isLoading,
-                            })}
-                            disabled={isLoading}
-                        >
-                            Save changes
-                        </Button>
+                        <Button isLoading={isLoading}>Save changes</Button>
                     </Form>
                 </Container>
             </div>

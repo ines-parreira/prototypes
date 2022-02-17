@@ -329,15 +329,11 @@ exports[`<TicketAssignment/> render() should render selected channels 1`] = `
           </FormGroup>
         </Col>
       </Row>
-      <Button
-        className="btn-loading"
-        color="success"
-        disabled={true}
-        tag="button"
-        type="submit"
+      <ForwardRef
+        isLoading={true}
       >
         Save changes
-      </Button>
+      </ForwardRef>
     </Form>
   </Container>
 </div>
@@ -579,15 +575,11 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox c
           </FormGroup>
         </Col>
       </Row>
-      <Button
-        className=""
-        color="success"
-        disabled={false}
-        tag="button"
-        type="submit"
+      <ForwardRef
+        isLoading={false}
       >
         Save changes
-      </Button>
+      </ForwardRef>
     </Form>
   </Container>
 </div>
@@ -829,15 +821,11 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox u
           </FormGroup>
         </Col>
       </Row>
-      <Button
-        className=""
-        color="success"
-        disabled={false}
-        tag="button"
-        type="submit"
+      <ForwardRef
+        isLoading={false}
       >
         Save changes
-      </Button>
+      </ForwardRef>
     </Form>
   </Container>
 </div>
@@ -1079,15 +1067,11 @@ exports[`<TicketAssignment/> render() should render the "Save changes" button lo
           </FormGroup>
         </Col>
       </Row>
-      <Button
-        className="btn-loading"
-        color="success"
-        disabled={true}
-        tag="button"
-        type="submit"
+      <ForwardRef
+        isLoading={true}
       >
         Save changes
-      </Button>
+      </ForwardRef>
     </Form>
   </Container>
 </div>
@@ -1329,15 +1313,11 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
           </FormGroup>
         </Col>
       </Row>
-      <Button
-        className=""
-        color="success"
-        disabled={false}
-        tag="button"
-        type="submit"
+      <ForwardRef
+        isLoading={false}
       >
         Save changes
-      </Button>
+      </ForwardRef>
     </Form>
   </Container>
 </div>
@@ -1579,15 +1559,11 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
           </FormGroup>
         </Col>
       </Row>
-      <Button
-        className=""
-        color="success"
-        disabled={false}
-        tag="button"
-        type="submit"
+      <ForwardRef
+        isLoading={false}
       >
         Save changes
-      </Button>
+      </ForwardRef>
     </Form>
   </Container>
 </div>
@@ -1829,15 +1805,11 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
           </FormGroup>
         </Col>
       </Row>
-      <Button
-        className=""
-        color="success"
-        disabled={false}
-        tag="button"
-        type="submit"
+      <ForwardRef
+        isLoading={false}
       >
         Save changes
-      </Button>
+      </ForwardRef>
     </Form>
   </Container>
 </div>

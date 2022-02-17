@@ -1,11 +1,12 @@
 import React, {Component} from 'react'
 import {Emoji} from 'emoji-mart'
-import {Button, Container} from 'reactstrap'
+import {Container} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
 
+import Button from 'pages/common/components/button/Button'
 import PageHeader from '../../common/components/PageHeader'
 import {fetchTeamsPagination} from '../../../state/teams/actions'
 import Avatar from '../../common/components/Avatar/Avatar'
@@ -56,13 +57,9 @@ export class TeamListContainer extends Component<Props, State> {
         return (
             <div className={classnames(css.component, 'full-width')}>
                 <PageHeader title="Teams">
-                    <Button
-                        tag={Link}
-                        color="success"
-                        to="/app/settings/teams/create/"
-                    >
-                        Create Team
-                    </Button>
+                    <Link to="/app/settings/teams/create/">
+                        <Button type="button">Create Team</Button>
+                    </Link>
                 </PageHeader>
 
                 <Container fluid className={settingsCss.pageContainer}>

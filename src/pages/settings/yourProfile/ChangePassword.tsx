@@ -2,14 +2,17 @@ import React, {useMemo, useEffect, useState} from 'react'
 import {useAsyncFn} from 'react-use'
 import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
-import {Form, Button} from 'reactstrap'
+import {Form} from 'reactstrap'
 import {AxiosError} from 'axios'
 
+import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/InputField'
 
 import {changePassword} from '../../../state/currentUser/actions'
 import {RootState} from '../../../state/types'
-import css from '../settings.less'
+import settingsCss from '../settings.less'
+
+import css from './ChangePassword.less'
 
 type Errors = {
     old_password?: string
@@ -105,7 +108,7 @@ export const ChangePasswordContainer = ({
                         setOldPassword(value)
                     }}
                     error={errors.old_password}
-                    className={css.inputField}
+                    className={settingsCss.inputField}
                 />
                 <InputField
                     type="password"
@@ -121,7 +124,7 @@ export const ChangePasswordContainer = ({
                         setNewPassword(value)
                     }}
                     error={errors.new_password}
-                    className={css.inputField}
+                    className={settingsCss.inputField}
                 />
                 <InputField
                     type="password"
@@ -137,19 +140,13 @@ export const ChangePasswordContainer = ({
                         setConfirmNewPassword(value)
                     }}
                     error={errors.confirm_new_password}
-                    className={css.inputField}
+                    className={settingsCss.inputField}
                 />
 
                 <Button
-                    type="submit"
-                    color="primary"
-                    className={classnames(
-                        {
-                            'btn-loading': isLoading,
-                        },
-                        css.mb32
-                    )}
-                    disabled={isLoading || invalid || !dirty}
+                    className={css.updatePasswordButton}
+                    isDisabled={invalid || !dirty}
+                    isLoading={isLoading}
                 >
                     Update Password
                 </Button>

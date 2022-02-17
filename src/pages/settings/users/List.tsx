@@ -2,9 +2,10 @@ import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
 import {Link} from 'react-router-dom'
-import {Button, Container} from 'reactstrap'
+import {Container} from 'reactstrap'
 import {Map} from 'immutable'
 
+import Button from 'pages/common/components/button/Button'
 import Loader from '../../common/components/Loader/Loader'
 import Pagination from '../../common/components/Pagination'
 import {fetchPagination} from '../../../state/agents/actions'
@@ -53,13 +54,9 @@ export class UserListContainer extends Component<Props, State> {
         return (
             <div className={classnames('full-width', css.component)}>
                 <PageHeader title="Users">
-                    <Button
-                        tag={Link}
-                        color="success"
-                        to="/app/settings/users/add/"
-                    >
-                        Add user
-                    </Button>
+                    <Link to="/app/settings/users/add/">
+                        <Button type="button">Add user</Button>
+                    </Link>
                 </PageHeader>
 
                 <Container fluid className={settingsCss.pageContainer}>

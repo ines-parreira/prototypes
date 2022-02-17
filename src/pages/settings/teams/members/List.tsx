@@ -1,11 +1,13 @@
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Breadcrumb, BreadcrumbItem, Button, Col, Container} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Col, Container} from 'reactstrap'
 import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom'
 import {fromJS, List, Map, Set} from 'immutable'
 import classnames from 'classnames'
 
 import CheckBox from 'pages/common/forms/CheckBox'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import PageHeader from '../../../common/components/PageHeader'
 import SecondaryNavbar from '../../../common/components/SecondaryNavbar/SecondaryNavbar'
 import {
@@ -227,23 +229,17 @@ export class MembersListContainer extends Component<Props, State> {
                                         isChecked={isAllSelected}
                                     />
                                     <Button
-                                        color="secondary"
-                                        size="sm"
+                                        intent={ButtonIntent.Secondary}
+                                        type="button"
                                         onClick={
                                             this._deleteTeamMemberSelection
                                         }
-                                        className={classnames({
-                                            'btn-loading': isDeleting,
-                                        })}
-                                        disabled={
-                                            !this.state.selection.size ||
-                                            isDeleting
-                                        }
+                                        isLoading={isDeleting}
+                                        isDisabled={!this.state.selection.size}
                                     >
-                                        <i className="material-icons mr-2">
-                                            delete
-                                        </i>
-                                        Delete
+                                        <ButtonIconLabel icon="delete">
+                                            Delete
+                                        </ButtonIconLabel>
                                     </Button>
                                 </div>
                             </Col>

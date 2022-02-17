@@ -8,7 +8,6 @@ import {
     Badge,
     Breadcrumb,
     BreadcrumbItem,
-    Button,
     Container,
     Form as BootstrapForm,
     FormGroup,
@@ -16,7 +15,7 @@ import {
 } from 'reactstrap'
 import {AxiosError} from 'axios'
 
-import {ButtonIntent} from 'pages/common/components/button/Button'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import InputField from 'pages/common/forms/InputField'
@@ -254,8 +253,7 @@ export class FormContainer extends Component<Props, State> {
                                         within the dashboard.
                                     </p>
                                     <Button
-                                        className={css.learnMoreButton}
-                                        color="secondary"
+                                        intent={ButtonIntent.Secondary}
                                         type="button"
                                         onClick={() => {
                                             window
@@ -273,12 +271,8 @@ export class FormContainer extends Component<Props, State> {
                         </RichDropdown>
                         <FormGroup>
                             <Button
-                                type="submit"
-                                color="success"
-                                className={classnames('mr-2', {
-                                    'btn-loading': this.state.isSubmitting,
-                                })}
-                                disabled={this.state.isSubmitting}
+                                className="mr-2"
+                                isLoading={this.state.isSubmitting}
                             >
                                 Save user
                             </Button>
@@ -286,16 +280,13 @@ export class FormContainer extends Component<Props, State> {
                                 <>
                                     <Button
                                         type="button"
-                                        color="secondary"
+                                        intent={ButtonIntent.Secondary}
                                         onClick={this._invite}
-                                        className={classnames({
-                                            'btn-loading':
-                                                this.state.isInviting,
-                                        })}
-                                        disabled={this.state.isInviting}
+                                        isLoading={this.state.isInviting}
                                     >
-                                        <i className="material-icons">mail</i>{' '}
-                                        Re-send invitation email
+                                        <ButtonIconLabel icon="mail">
+                                            Re-send invitation email
+                                        </ButtonIconLabel>
                                     </Button>
                                     {isCurrentUserAccountOwner &&
                                         !isAgentAccountOwner && (
