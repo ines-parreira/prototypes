@@ -3,36 +3,47 @@ import axios from 'axios'
 import {useAsyncFn} from 'react-use'
 import {FormGroup} from 'reactstrap'
 import isHexColor from 'validator/lib/isHexColor'
+import {useSelector} from 'react-redux'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import InputField from 'pages/common/forms/InputField'
+import {validLocaleCode} from 'models/helpCenter/utils'
+import {Value} from 'pages/common/forms/SelectField/types'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import {HelpCenter} from 'models/helpCenter/types'
-import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import {getViewLanguage} from 'state/ui/helpCenter'
+import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters'
+
+import useAppDispatch from '../../../../hooks/useAppDispatch'
+import {HelpCenter} from '../../../../models/helpCenter/types'
+import {notify} from '../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../state/notifications/types'
+import {useHelpCenterActions} from '../hooks/useHelpCenterActions'
+import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
+import {FileUpload, useFileUpload} from '../hooks/useFileUpload'
 import {
     HELP_CENTER_AVAILABLE_FONTS,
     HELP_CENTER_DEFAULT_COLOR,
     HELP_CENTER_DEFAULT_FONT,
     HELP_CENTER_DEFAULT_THEME,
+    HELP_CENTER_DEFAULT_LOCALE,
 } from '../constants'
-import {FileUpload, useFileUpload} from '../hooks/useFileUpload'
-import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
 import {HelpCenterTheme, isHelpCenterTheme} from '../types'
+import {getLocaleSelectOptions} from '../utils/localeSelectOptions'
+import {useSupportedLocales} from '../providers/SupportedLocales'
 
-import HelpCenterPageWrapper from './HelpCenterPageWrapper'
 import {ImageUpload} from './ImageUpload'
-import {ThemeSwitch} from './ThemeSwitch'
 import {UpdateToggle} from './UpdateToggle'
-
-import css from './HelpCenterAppearanceView.less'
 import {FontSelectField} from './FontSelectField/FontSelectField'
+import HelpCenterPageWrapper from './HelpCenterPageWrapper'
+import {ThemeSwitch} from './ThemeSwitch'
+import css from './HelpCenterAppearanceView.less'
 
 export const HelpCenterAppearanceView: React.FC = () => {
     const dispatch = useAppDispatch()
     const helpCenter = useCurrentHelpCenter()
+    const {fetchHelpCenterTranslations} = useHelpCenterActions()
     const {client} = useHelpCenterApi()
     const helpCenterTheme: HelpCenterTheme =
         helpCenter.theme && isHelpCenterTheme(helpCenter.theme)
@@ -50,6 +61,21 @@ export const HelpCenterAppearanceView: React.FC = () => {
     const lightLogo = useFileUpload()
     const favicon = useFileUpload()
     const bannerImage = useFileUpload()
+    const viewLanguage =
+        useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
+    const locales = useSupportedLocales()
+    const [selectedLanguage, setSelectedLanguage] = useState(viewLanguage)
+    const [bannerText, setBannerText] = useState<string>('')
+
+    const translation = useMemo(() => {
+        return helpCenter.translations?.find(
+            (t) => t.locale === selectedLanguage
+        )
+    }, [helpCenter.translations, selectedLanguage])
+
+    const isBannerTextUpdated = useMemo(() => {
+        return bannerText !== (translation?.banner_text || '')
+    }, [bannerText, translation])
 
     useEffect(() => {
         if (helpCenter.theme && isHelpCenterTheme(helpCenter.theme)) {
@@ -60,6 +86,23 @@ export const HelpCenterAppearanceView: React.FC = () => {
             setCurrentColor(helpCenter.primary_color)
         }
     }, [helpCenter])
+
+    useEffect(() => {
+        void fetchHelpCenterTranslations()
+    }, [])
+
+    useEffect(() => {
+        setBannerText(translation?.banner_text || '')
+    }, [translation])
+
+    const localeOptions = useMemo(
+        () => getLocaleSelectOptions(locales, helpCenter.supported_locales),
+        [locales, helpCenter.supported_locales]
+    )
+
+    function handleOnChangeLocale(locale: Value) {
+        setSelectedLanguage(validLocaleCode(locale))
+    }
 
     const getFileUploadURL = async (file: FileUpload) => {
         if (file.payload) {
@@ -87,14 +130,35 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 payload.favicon_url = await getFileUploadURL(favicon)
                 payload.banner_image_url = await getFileUploadURL(bannerImage)
 
-                const {data} = await client.updateHelpCenter(
+                const {data: updateHelpCenter} = await client.updateHelpCenter(
                     {
                         help_center_id: helpCenter.id,
                     },
                     payload
                 )
 
-                dispatch(helpCenterUpdated(data))
+                let translations = helpCenter.translations
+
+                if (isBannerTextUpdated) {
+                    const {data: updatedTranslation} =
+                        await client.updateHelpCenterTranslation(
+                            {
+                                help_center_id: helpCenter.id,
+                                locale: selectedLanguage,
+                            },
+                            {
+                                banner_text: bannerText,
+                            }
+                        )
+
+                    translations = helpCenter.translations?.map((translation) =>
+                        translation.locale === updatedTranslation.locale
+                            ? updatedTranslation
+                            : translation
+                    )
+                }
+
+                dispatch(helpCenterUpdated({...updateHelpCenter, translations}))
 
                 discardAllFiles()
 
@@ -155,7 +219,8 @@ export const HelpCenterAppearanceView: React.FC = () => {
             primaryLogo.isTouched ||
             lightLogo.isTouched ||
             favicon.isTouched ||
-            bannerImage.isTouched
+            bannerImage.isTouched ||
+            isBannerTextUpdated
         ) {
             return true
         }
@@ -170,6 +235,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
         lightLogo,
         favicon,
         bannerImage,
+        isBannerTextUpdated,
         updateResponse,
     ])
 
@@ -287,6 +353,28 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         This is displayed on top of your help center’s{' '}
                         <strong>home page</strong>.
                     </p>
+                </div>
+                <div className={css.bannerText}>
+                    <div className={css.bannerTextInput}>
+                        <InputField
+                            type="text"
+                            name="name"
+                            label="Banner title"
+                            help="This title is displayed on your homepage header."
+                            placeholder="Banner title"
+                            value={bannerText}
+                            onChange={setBannerText}
+                        />
+                    </div>
+                    <div className={css.bannerTextLocale}>
+                        <SelectField
+                            fixedWidth={true}
+                            value={selectedLanguage}
+                            options={localeOptions}
+                            onChange={handleOnChangeLocale}
+                            aria-label="language selector"
+                        />
+                    </div>
                 </div>
                 <ImageUpload
                     id="banner_image"

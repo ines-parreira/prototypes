@@ -704,13 +704,13 @@ declare namespace Components {
        * example:
        * <div>....</div>
        */
-      extra_head: string;
+      extra_head?: string;
       /**
        * Boolean indicating if the extra head should be injected.
        * example:
        * false
        */
-      extra_head_deactivated: boolean;
+      extra_head_deactivated?: boolean;
       /**
        * The HTML of the custom header
        * 
@@ -718,13 +718,13 @@ declare namespace Components {
        * example:
        * <div>....</div>
        */
-      custom_header: string;
+      custom_header?: string;
       /**
        * Boolean indicating if the custom header should be injected.
        * example:
        * false
        */
-      custom_header_deactivated: boolean;
+      custom_header_deactivated?: boolean;
       /**
        * The HTML of the custom footer
        * 
@@ -732,13 +732,13 @@ declare namespace Components {
        * example:
        * <div>....</div>
        */
-      custom_footer: string;
+      custom_footer?: string;
       /**
        * Boolean indicating if the custom footer should be injected.
        * example:
        * false
        */
-      custom_footer_deactivated: boolean;
+      custom_footer_deactivated?: boolean;
     }
     export interface HelpCenterEntity {
       created_datetime: string; // date-time
@@ -769,6 +769,7 @@ declare namespace Components {
       updated_datetime: string; // date-time
       deleted_datetime?: string | null; // date-time
       help_center_id: number;
+      banner_text: string | null;
       locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
       seo_meta: {
         title: string | null;
@@ -1142,13 +1143,13 @@ declare namespace Components {
        * example:
        * <div>....</div>
        */
-      extra_head: string;
+      extra_head?: string;
       /**
        * Boolean indicating if the extra head should be injected.
        * example:
        * false
        */
-      extra_head_deactivated: boolean;
+      extra_head_deactivated?: boolean;
       /**
        * The HTML of the custom header
        * 
@@ -1156,13 +1157,13 @@ declare namespace Components {
        * example:
        * <div>....</div>
        */
-      custom_header: string;
+      custom_header?: string;
       /**
        * Boolean indicating if the custom header should be injected.
        * example:
        * false
        */
-      custom_header_deactivated: boolean;
+      custom_header_deactivated?: boolean;
       /**
        * The HTML of the custom footer
        * 
@@ -1170,13 +1171,13 @@ declare namespace Components {
        * example:
        * <div>....</div>
        */
-      custom_footer: string;
+      custom_footer?: string;
       /**
        * Boolean indicating if the custom footer should be injected.
        * example:
        * false
        */
-      custom_footer_deactivated: boolean;
+      custom_footer_deactivated?: boolean;
     }
     export interface UpdateHelpCenterDto {
       /**
@@ -1260,6 +1261,10 @@ declare namespace Components {
         description: string | null;
       };
       chat_application_id?: number | null;
+      /**
+       * The banner text of the help center in the `locale`'s translation.
+       */
+      banner_text?: string | null;
       contact_info?: {
         email: EmailContactInfoDto;
         phone: PhoneContactInfoDto;
@@ -1273,13 +1278,13 @@ declare namespace Components {
          * example:
          * <div>....</div>
          */
-        extra_head: string;
+        extra_head?: string;
         /**
          * Boolean indicating if the extra head should be injected.
          * example:
          * false
          */
-        extra_head_deactivated: boolean;
+        extra_head_deactivated?: boolean;
         /**
          * The HTML of the custom header
          * 
@@ -1287,13 +1292,13 @@ declare namespace Components {
          * example:
          * <div>....</div>
          */
-        custom_header: string;
+        custom_header?: string;
         /**
          * Boolean indicating if the custom header should be injected.
          * example:
          * false
          */
-        custom_header_deactivated: boolean;
+        custom_header_deactivated?: boolean;
         /**
          * The HTML of the custom footer
          * 
@@ -1301,13 +1306,13 @@ declare namespace Components {
          * example:
          * <div>....</div>
          */
-        custom_footer: string;
+        custom_footer?: string;
         /**
          * Boolean indicating if the custom footer should be injected.
          * example:
          * false
          */
-        custom_footer_deactivated: boolean;
+        custom_footer_deactivated?: boolean;
       };
     }
     export interface UpdateNavigationLinkDto {

@@ -34,8 +34,13 @@ const defaultState: Partial<RootState> = {
     ui: {helpCenter: {...uiState, currentId: 1}} as any,
 }
 
-const mockedUpdateHelpCenter = jest.fn().mockResolvedValue({
-    data: getSingleHelpCenterResponseFixture,
+const mockedUpdateHelpCenter = jest
+    .fn()
+    .mockResolvedValue({data: getSingleHelpCenterResponseFixture})
+
+const mockedUpdateHelpCenterTranslation = jest.fn()
+const mockedListHelpCenterTranslations = jest.fn().mockResolvedValue({
+    data: {},
 })
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
@@ -44,6 +49,8 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
             isReady: true,
             client: {
                 updateHelpCenter: mockedUpdateHelpCenter,
+                updateHelpCenterTranslation: mockedUpdateHelpCenterTranslation,
+                listHelpCenterTranslations: mockedListHelpCenterTranslations,
             },
         }),
     }

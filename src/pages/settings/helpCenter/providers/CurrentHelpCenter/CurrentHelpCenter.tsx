@@ -13,8 +13,7 @@ import {Container} from 'reactstrap'
 import Loader from 'pages/common/components/Loader/Loader'
 import {HelpCenter} from 'models/helpCenter/types'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {helpCentersFetched} from 'state/entities/helpCenter/helpCenters/actions'
-import {getCurrentHelpCenter} from 'state/entities/helpCenter/helpCenters/selectors'
+
 import {
     changeHelpCenterId,
     changeViewLanguage,
@@ -34,6 +33,11 @@ import HelpCenterPreferencesView from 'pages/settings/helpCenter/components/Help
 import HelpCenterSelfServiceView from 'pages/settings/helpCenter/components/HelpCenterSelfServiceView'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
+import {
+    getCurrentHelpCenter,
+    helpCentersFetched,
+    helpCenterUpdated,
+} from 'state/entities/helpCenter/helpCenters'
 
 import './CurrentHelpCenter.less'
 import {EditionManagerContextProvider} from '../EditionManagerContext'
@@ -54,12 +58,18 @@ export const CurrentHelpCenter: React.FC = () => {
         async function init() {
             if (client && helpCenterId) {
                 try {
-                    const {data} = await client.getHelpCenter({
+                    const {data: helpCenter} = await client.getHelpCenter({
                         help_center_id: helpCenterId,
                     })
 
-                    dispatch(helpCentersFetched([data]))
-                    dispatch(changeHelpCenterId(data.id))
+                    dispatch(changeHelpCenterId(helpCenter.id))
+                    dispatch(helpCentersFetched([helpCenter]))
+                    const {
+                        data: {data: translations},
+                    } = await client.listHelpCenterTranslations({
+                        help_center_id: helpCenter.id,
+                    })
+                    dispatch(helpCenterUpdated({...helpCenter, translations}))
                 } catch (err) {
                     const errorMessage =
                         axios.isAxiosError(err) && err.response?.status === 400

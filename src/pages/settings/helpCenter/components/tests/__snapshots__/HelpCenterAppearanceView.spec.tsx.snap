@@ -641,6 +641,111 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             </p>
           </div>
           <div
+            class="bannerText"
+          >
+            <div
+              class="bannerTextInput"
+            >
+              <div
+                class="InputField form-group"
+                color=""
+              >
+                <label
+                  class="control-label"
+                  for="id-name"
+                >
+                  Banner title
+                </label>
+                <div
+                  class=""
+                >
+                  <input
+                    class="form-control"
+                    id="id-name"
+                    placeholder="Banner title"
+                    type="text"
+                    value=""
+                  />
+                </div>
+                <small
+                  class="form-text text-muted"
+                >
+                  This title is displayed on your homepage header.
+                </small>
+              </div>
+            </div>
+            <div
+              class="bannerTextLocale"
+            >
+              <div>
+                <div
+                  class="dropdown"
+                >
+                  <div
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class=""
+                    data-toggle="dropdown"
+                  >
+                    <div
+                      class="select dropdown-toggle"
+                    >
+                      <span
+                        class="label"
+                        style="min-width: 130px; opacity: 1;"
+                      >
+                        <span>
+                          <img
+                            alt="en-US"
+                            class="flag-emoji"
+                            src="test-file-stub"
+                          />
+                          <span>
+                            English - USA
+                          </span>
+                        </span>
+                      </span>
+                      <input
+                        autocomplete="chrome-off"
+                        class="input"
+                        style="min-width: 130px;"
+                        type="text"
+                        value=""
+                      />
+                    </div>
+                  </div>
+                  <div
+                    aria-hidden="true"
+                    class="options dropdown-menu"
+                    role="menu"
+                    tabindex="-1"
+                  >
+                    
+                    <button
+                      class="option option--focused dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span>
+                        <span>
+                          <img
+                            alt="fr-FR"
+                            class="flag-emoji"
+                            src="test-file-stub"
+                          />
+                          <span>
+                            French - France
+                          </span>
+                        </span>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
             class="container"
           >
             <div

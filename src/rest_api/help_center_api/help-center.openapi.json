@@ -3247,26 +3247,26 @@
             "ExtraHTML": {
                 "type": "object",
                 "properties": {
-                    "extra_head": {"type": "string", "default": ""},
+                    "extra_head": {"type": "string"},
                     "extra_head_deactivated_datetime": {
                         "format": "date-time",
                         "type": "string",
                         "nullable": true,
-                        "default": "2022-01-26T14:30:37.346Z"
+                        "default": "2022-01-01T00:00:00Z"
                     },
-                    "custom_header": {"type": "string", "default": ""},
+                    "custom_header": {"type": "string"},
                     "custom_header_deactivated_datetime": {
                         "format": "date-time",
                         "type": "string",
                         "nullable": true,
-                        "default": "2022-01-26T14:30:37.346Z"
+                        "default": "2022-01-01T00:00:00Z"
                     },
-                    "custom_footer": {"type": "string", "default": ""},
+                    "custom_footer": {"type": "string"},
                     "custom_footer_deactivated_datetime": {
                         "format": "date-time",
                         "type": "string",
                         "nullable": true,
-                        "default": "2022-01-26T14:30:37.346Z"
+                        "default": "2022-01-01T00:00:00Z"
                     }
                 },
                 "required": [
@@ -3295,6 +3295,7 @@
                         "nullable": true
                     },
                     "help_center_id": {"type": "number"},
+                    "banner_text": {"type": "string", "nullable": true},
                     "locale": {
                         "type": "string",
                         "enum": [
@@ -3330,6 +3331,7 @@
                     "created_datetime",
                     "updated_datetime",
                     "help_center_id",
+                    "banner_text",
                     "locale",
                     "seo_meta",
                     "contact_info",
@@ -3490,15 +3492,7 @@
                         "description": "Boolean indicating if the custom footer should be injected.",
                         "example": false
                     }
-                },
-                "required": [
-                    "extra_head",
-                    "extra_head_deactivated",
-                    "custom_header",
-                    "custom_header_deactivated",
-                    "custom_footer",
-                    "custom_footer_deactivated"
-                ]
+                }
             },
             "UpdateHelpCenterTranslationDto": {
                 "type": "object",
@@ -3513,6 +3507,11 @@
                         ]
                     },
                     "chat_application_id": {"type": "number", "nullable": true},
+                    "banner_text": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "The banner text of the help center in the `locale`'s translation."
+                    },
                     "contact_info": {
                         "allOf": [
                             {"$ref": "#/components/schemas/ContactInfoDto"}
@@ -3615,15 +3614,7 @@
                         "description": "Boolean indicating if the custom footer should be injected.",
                         "example": false
                     }
-                },
-                "required": [
-                    "extra_head",
-                    "extra_head_deactivated",
-                    "custom_header",
-                    "custom_header_deactivated",
-                    "custom_footer",
-                    "custom_footer_deactivated"
-                ]
+                }
             },
             "LocaleEntity": {
                 "type": "object",
