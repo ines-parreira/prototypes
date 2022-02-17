@@ -1,5 +1,6 @@
-import React from 'react'
+import React, {useRef} from 'react'
 import classNames from 'classnames'
+import _uniqueId from 'lodash/uniqueId'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
@@ -20,7 +21,7 @@ export const ActionButton = ({
     children,
     ...rest
 }: ActionButtonProps): JSX.Element => {
-    const $tooltipRef = React.createRef<HTMLButtonElement>()
+    const id = useRef(_uniqueId('action-button-'))
     return (
         <>
             <Button
@@ -31,13 +32,13 @@ export const ActionButton = ({
                     [css.neutral]: variant === 'neutral',
                 })}
                 intent={ButtonIntent.Text}
-                ref={$tooltipRef}
                 type="button"
+                id={id.current}
             >
                 {children}
             </Button>
             {help && (
-                <Tooltip target={$tooltipRef} placement="top-start">
+                <Tooltip target={id.current} placement="top-start">
                     {help}
                 </Tooltip>
             )}
