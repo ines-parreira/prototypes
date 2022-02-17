@@ -17,22 +17,28 @@ Array [
 exports[`PeriodStatsFilter should render period stats filter 1`] = `
 <div>
   <button
-    class="btn btn-secondary"
+    class="wrapper secondary medium"
     type="button"
   >
-    <i
-      class="material-icons mr-2"
+    <span
+      class="wrapper"
     >
-      calendar_today
-    </i>
-    <span>
-      May 02, 2021 - May 03, 2021
+      <i
+        class="material-icons icon isLeft medium"
+      >
+        calendar_today
+      </i>
+      <span
+        class="wrapper"
+      >
+        May 02, 2021 - May 03, 2021
+        <i
+          class="material-icons icon isRight medium"
+        >
+          arrow_drop_down
+        </i>
+      </span>
     </span>
-    <i
-      class="material-icons md-2 strong ml-1"
-    >
-      arrow_drop_down
-    </i>
   </button>
 </div>
 `;

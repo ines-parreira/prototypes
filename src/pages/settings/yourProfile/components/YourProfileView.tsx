@@ -4,7 +4,7 @@ import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
 import _sortBy from 'lodash/sortBy'
 import moment from 'moment-timezone'
-import {Button, Container, Form, FormGroup, FormText, Label} from 'reactstrap'
+import {Container, Form, FormGroup, FormText, Label} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
 
@@ -12,6 +12,7 @@ import {CallForwardingCountries} from 'business/twilio'
 import {AVAILABLE_LANGUAGES} from 'config'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import PageHeader from 'pages/common/components/PageHeader'
+import Button from 'pages/common/components/button/Button'
 import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from 'pages/common/forms/InputField'
 import FileField from 'pages/common/forms/FileField'
@@ -478,16 +479,7 @@ export default class YourProfileView extends Component<Props, State> {
                             </FormGroup>
                         </div>
 
-                        <Button
-                            type="submit"
-                            color="success"
-                            className={classnames({
-                                'btn-loading': isLoading,
-                            })}
-                            disabled={isLoading}
-                        >
-                            Save Changes
-                        </Button>
+                        <Button isLoading={isLoading}>Save Changes</Button>
                     </Form>
                 </Container>
             </div>

@@ -143,15 +143,13 @@ exports[`<TicketHeader /> should change snooze label and display the clear snooz
           </b>
            this ticket.
         </p>
-        <Button
+        <ForwardRef
           autoFocus={true}
-          color="success"
           onClick={[Function]}
-          tag="button"
-          type="submit"
+          type="button"
         >
           Confirm
-        </Button>
+        </ForwardRef>
       </PopoverBody>
     </Popover>
   </DropdownItem>
@@ -200,15 +198,13 @@ exports[`<TicketHeader /> should display the delete action for lead and admin ag
         </b>
          this ticket.
       </p>
-      <Button
+      <ForwardRef
         autoFocus={true}
-        color="success"
         onClick={[Function]}
-        tag="button"
-        type="submit"
+        type="button"
       >
         Confirm
-      </Button>
+      </ForwardRef>
     </PopoverBody>
   </Popover>
 </DropdownItem>
@@ -397,15 +393,13 @@ exports[`<TicketHeader /> should render an unread ticket without the "Mark as un
                 </b>
                  this ticket.
               </p>
-              <Button
+              <ForwardRef
                 autoFocus={true}
-                color="success"
                 onClick={[Function]}
-                tag="button"
-                type="submit"
+                type="button"
               >
                 Confirm
-              </Button>
+              </ForwardRef>
             </PopoverBody>
           </Popover>
         </DropdownItem>
@@ -634,15 +628,13 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
                 </b>
                  this ticket.
               </p>
-              <Button
+              <ForwardRef
                 autoFocus={true}
-                color="success"
                 onClick={[Function]}
-                tag="button"
-                type="submit"
+                type="button"
               >
                 Confirm
-              </Button>
+              </ForwardRef>
             </PopoverBody>
           </Popover>
         </DropdownItem>
@@ -937,15 +929,13 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
                 </b>
                  this ticket.
               </p>
-              <Button
+              <ForwardRef
                 autoFocus={true}
-                color="success"
                 onClick={[Function]}
-                tag="button"
-                type="submit"
+                type="button"
               >
                 Confirm
-              </Button>
+              </ForwardRef>
             </PopoverBody>
           </Popover>
         </DropdownItem>

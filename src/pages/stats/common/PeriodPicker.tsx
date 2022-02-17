@@ -5,8 +5,12 @@ import DateRangePicker, {
     EventHandler,
     Props as DateRangeProps,
 } from 'react-bootstrap-daterangepicker'
-import {Button, Tooltip} from 'reactstrap'
+import {Tooltip} from 'reactstrap'
 
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel, {
+    ButtonIconPosition,
+} from 'pages/common/components/button/ButtonIconLabel'
 import {RootState} from '../../../state/types'
 import {getTimezone} from '../../../state/currentUser/selectors'
 
@@ -237,14 +241,19 @@ export const PeriodPickerContainer = ({
                         }}
                     >
                         <div>
-                            <Button type="button" disabled={isDisabled}>
-                                <i className="material-icons mr-2">
-                                    calendar_today
-                                </i>
-                                <span>{label}</span>
-                                <i className="material-icons md-2 strong ml-1">
-                                    arrow_drop_down
-                                </i>
+                            <Button
+                                type="button"
+                                intent={ButtonIntent.Secondary}
+                                isDisabled={isDisabled}
+                            >
+                                <ButtonIconLabel icon="calendar_today">
+                                    <ButtonIconLabel
+                                        icon="arrow_drop_down"
+                                        position={ButtonIconPosition.Right}
+                                    >
+                                        {label}
+                                    </ButtonIconLabel>
+                                </ButtonIconLabel>
                             </Button>
                         </div>
                     </DateRangePicker>

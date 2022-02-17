@@ -10,15 +10,19 @@ exports[`<MacroNoResults /> should display no macros available without search qu
     </span>
   </p>
   <button
-    class="btn btn-info"
+    class="wrapper primary medium"
     type="button"
   >
-    <i
-      class="material-icons mr-2"
+    <span
+      class="wrapper"
     >
-      add
-    </i>
-    Create a new macro
+      <i
+        class="material-icons icon isLeft medium"
+      >
+        add
+      </i>
+      Create a new macro
+    </span>
   </button>
 </div>
 `;
@@ -33,15 +37,19 @@ exports[`<MacroNoResults /> should display no macros found with search query 1`]
     </span>
   </p>
   <button
-    class="btn btn-info"
+    class="wrapper primary medium"
     type="button"
   >
-    <i
-      class="material-icons mr-2"
+    <span
+      class="wrapper"
     >
-      add
-    </i>
-    Create a new macro
+      <i
+        class="material-icons icon isLeft medium"
+      >
+        add
+      </i>
+      Create a new macro
+    </span>
   </button>
 </div>
 `;

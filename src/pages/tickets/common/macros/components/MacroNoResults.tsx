@@ -1,7 +1,8 @@
 import React from 'react'
 import {useSelector} from 'react-redux'
-import {Button} from 'reactstrap'
 
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {RootState} from '../../../../../state/types'
 import {hasRole} from '../../../../../utils'
 import {UserRole} from '../../../../../config/types/user'
@@ -24,9 +25,10 @@ const MacroNoResults = ({searchQuery, newAction}: Props) => {
                 )}
             </p>
             {hasRole(currentUser, UserRole.Agent) && (
-                <Button type="button" color="info" onClick={newAction}>
-                    <i className="material-icons mr-2">add</i>
-                    Create a new macro
+                <Button type="button" onClick={newAction}>
+                    <ButtonIconLabel icon="add">
+                        Create a new macro
+                    </ButtonIconLabel>
                 </Button>
             )}
         </div>

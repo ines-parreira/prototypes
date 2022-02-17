@@ -7,13 +7,13 @@ import {
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
-    Button,
     Popover,
     PopoverHeader,
     PopoverBody,
 } from 'reactstrap'
 import {Map} from 'immutable'
 
+import Button from 'pages/common/components/button/Button'
 import shortcutManager from '../../../../services/shortcutManager'
 import EditableTitle from '../../../common/components/EditableTitle'
 import MergeTicketsContainer from '../../../common/components/MergeTickets/MergeTicketsContainer'
@@ -424,8 +424,7 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                                                     <b>delete</b> this ticket.
                                                 </p>
                                                 <Button
-                                                    type="submit"
-                                                    color="success"
+                                                    type="button"
                                                     onClick={this._trashTicket}
                                                     autoFocus
                                                 >

@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {
-    Button,
     UncontrolledButtonDropdown,
     DropdownToggle,
     DropdownMenu,
@@ -10,15 +9,13 @@ import {
 } from 'reactstrap'
 
 import {attachEntitiesToVariables} from '../../../../../common/draftjs/plugins/variables/utils'
-
 import * as integrationsSelectors from '../../../../../../state/integrations/selectors.ts'
-
 import RichField from '../../../../../common/forms/RichField'
-
 import {insertText} from '../../../../../../utils.ts'
 import {convertToHTML, getPlainText} from '../../../../../../utils/editor.tsx'
-
 import {getVariables} from '../../../../../../config/ticket.ts'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 @connect((state) => {
     return {
@@ -98,11 +95,12 @@ export default class SetResponseTextAction extends React.Component {
                 </UncontrolledButtonDropdown>
             ) : (
                 <Button
-                    color="link"
+                    intent={ButtonIntent.Text}
                     style={{color: 'inherit'}}
                     onClick={() => {
                         this._insertText(category.value)
                     }}
+                    type="button"
                 >
                     {category.name}
                 </Button>

@@ -14,7 +14,8 @@ exports[`<TicketMacros /> should display macros list, and selected macro 1`] = `
       close
     </i>
     <button
-      class="d-md-none btn btn-secondary btn-sm"
+      class="wrapper d-md-none secondary small"
+      type="button"
     >
       Close
     </button>

@@ -574,22 +574,28 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
           </div>
           <div>
             <button
-              class="btn btn-secondary"
+              class="wrapper secondary medium"
               type="button"
             >
-              <i
-                class="material-icons mr-2"
+              <span
+                class="wrapper"
               >
-                calendar_today
-              </i>
-              <span>
-                Feb 02, 2021 - Feb 03, 2021
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  calendar_today
+                </i>
+                <span
+                  class="wrapper"
+                >
+                  Feb 02, 2021 - Feb 03, 2021
+                  <i
+                    class="material-icons icon isRight medium"
+                  >
+                    arrow_drop_down
+                  </i>
+                </span>
               </span>
-              <i
-                class="material-icons md-2 strong ml-1"
-              >
-                arrow_drop_down
-              </i>
             </button>
           </div>
         </div>

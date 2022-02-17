@@ -2,10 +2,10 @@ import React, {Component, FormEvent} from 'react'
 import {fromJS, Map, List} from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
 import classnames from 'classnames'
-import {Button, Container, Row, Col} from 'reactstrap'
+import {Container, Row, Col} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 
-import {ButtonIntent} from 'pages/common/components/button/Button'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from '../../../../common/components/Loader/Loader'
@@ -310,21 +310,12 @@ export class MacroModalContainer extends Component<Props, State> {
                             >
                                 {!selectionMode && (
                                     <Button
-                                        type="submit"
-                                        color="primary"
+                                        type="button"
                                         onClick={this._addNewMacro}
-                                        block
                                     >
-                                        <div className="d-flex">
-                                            <div>
-                                                <i className="material-icons">
-                                                    add
-                                                </i>
-                                            </div>
-                                            <div className="flex-grow">
-                                                Create macro
-                                            </div>
-                                        </div>
+                                        <ButtonIconLabel icon="add">
+                                            Create macro
+                                        </ButtonIconLabel>
                                     </Button>
                                 )}
                             </Col>
@@ -334,8 +325,7 @@ export class MacroModalContainer extends Component<Props, State> {
                                     (selectionMode ? (
                                         <div className="d-inline-block float-right">
                                             <Button
-                                                type="submit"
-                                                color="primary"
+                                                type="button"
                                                 onClick={
                                                     this._applyMacroAndClose
                                                 }
@@ -345,9 +335,9 @@ export class MacroModalContainer extends Component<Props, State> {
                                             </Button>
                                             <Button
                                                 className="ml-3"
-                                                type="submit"
-                                                color="secondary"
+                                                intent={ButtonIntent.Secondary}
                                                 onClick={this._applyMacro}
+                                                type="button"
                                             >
                                                 Apply macro to {selectedCount}{' '}
                                                 tickets
@@ -386,10 +376,7 @@ export class MacroModalContainer extends Component<Props, State> {
                                                         this._createMacro(e)
                                                     }
                                                 >
-                                                    <Button
-                                                        type="submit"
-                                                        color="success"
-                                                    >
+                                                    <Button>
                                                         Save new macro
                                                     </Button>
                                                 </form>
@@ -402,10 +389,7 @@ export class MacroModalContainer extends Component<Props, State> {
                                                             this._updateMacro(e)
                                                         }
                                                     >
-                                                        <Button
-                                                            type="submit"
-                                                            color="success"
-                                                        >
+                                                        <Button>
                                                             Update macro
                                                         </Button>
                                                     </form>
@@ -419,8 +403,9 @@ export class MacroModalContainer extends Component<Props, State> {
                                                         }
                                                     >
                                                         <Button
-                                                            type="submit"
-                                                            color="secondary"
+                                                            intent={
+                                                                ButtonIntent.Secondary
+                                                            }
                                                         >
                                                             Duplicate macro
                                                         </Button>

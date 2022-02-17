@@ -2704,15 +2704,11 @@ exports[`YourProfileView render should render current user profile form 1`] = `
           </ToggleInput>
         </FormGroup>
       </div>
-      <Button
-        className=""
-        color="success"
-        disabled={false}
-        tag="button"
-        type="submit"
+      <ForwardRef
+        isLoading={false}
       >
         Save Changes
-      </Button>
+      </ForwardRef>
     </Form>
   </Container>
 </div>

@@ -4,7 +4,6 @@ import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {
-    Button,
     Dropdown,
     DropdownItem,
     DropdownMenu,
@@ -13,6 +12,10 @@ import {
     PopoverBody,
 } from 'reactstrap'
 
+import Button, {
+    ButtonIntent,
+    ButtonSize,
+} from 'pages/common/components/button/Button'
 import {RootState} from '../../../../../state/types'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {
@@ -258,7 +261,8 @@ export class TicketMacrosContainer extends Component<Props, State> {
                                         </p>
                                         <Button
                                             onClick={this.deleteMacro}
-                                            color="danger"
+                                            intent={ButtonIntent.Destructive}
+                                            type="button"
                                         >
                                             Delete macro
                                         </Button>
@@ -268,6 +272,8 @@ export class TicketMacrosContainer extends Component<Props, State> {
                                                     .toggleMacroDeleteConfirmOpen
                                             }
                                             className="float-right"
+                                            intent={ButtonIntent.Secondary}
+                                            type="button"
                                         >
                                             Cancel
                                         </Button>
@@ -296,7 +302,12 @@ export class TicketMacrosContainer extends Component<Props, State> {
                     <i className="material-icons d-none d-md-inline-block">
                         close
                     </i>
-                    <Button color="secondary" size="sm" className="d-md-none">
+                    <Button
+                        className="d-md-none"
+                        intent={ButtonIntent.Secondary}
+                        size={ButtonSize.Small}
+                        type="button"
+                    >
                         Close
                     </Button>
                     <Tooltip placement="top" target="clear-macro-button">
