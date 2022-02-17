@@ -103,4 +103,35 @@
     .eventDetailsIcon {
         margin-left: 2px;
     }
+
+    .failedActions {
+        padding: 10px 0 0 0;
+        font-size: 13px;
+
+        .failedAction {
+            padding: 0 0 0 22px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+
+            .failureName {
+                font-weight: bold;
+                margin-right: 3px;
+            }
+
+            .failureReasonWarning {
+                color: @classic-feedback-warning;
+                font-weight: bold;
+                margin-left: 3px;
+                margin-right: 3px;
+            }
+
+            .failureReasonError {
+                color: @classic-feedback-error;
+                font-weight: bold;
+                margin-left: 3px;
+                margin-right: 3px;
+            }
+        }
+    }
 }

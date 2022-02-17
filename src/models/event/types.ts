@@ -1,3 +1,5 @@
+import {List} from 'immutable'
+
 import {RuleEvent} from '../../state/rules/types'
 import {OrderDirection} from '../api/types'
 
@@ -61,6 +63,7 @@ export type RuleExecutedEventData = {
     created_datetime: string
     updated_datetime: string
     deactivated_datetime: Maybe<string>
+    failed_actions: Maybe<List<any>>
 }
 
 export type AuditLogEventData =
@@ -105,6 +108,103 @@ export enum AuditLogEventType {
     TicketUntrashed = 'ticket-untrashed',
     TicketUpdated = 'ticket-updated',
     TicketSubjectUpdated = 'ticket-subject-updated',
+}
+
+export const RuleActionsEventType = [
+    AuditLogEventType.TicketAssigned,
+    AuditLogEventType.TicketClosed,
+    AuditLogEventType.TicketReopened,
+    AuditLogEventType.TicketSnoozed,
+    AuditLogEventType.TicketTagsAdded,
+    AuditLogEventType.TicketTagsRemoved,
+    AuditLogEventType.TicketTeamAssigned,
+    AuditLogEventType.TicketTeamUnassigned,
+    AuditLogEventType.TicketUnassigned,
+    AuditLogEventType.TicketSubjectUpdated,
+]
+
+export enum RuleActionFailureCauses {
+    NoReplyUnanswerableChannel = 'unanswerable-channel',
+    NoReplyToAgent = 'no-autoreply-no-nonagents',
+    NoReplyRecent = 'recent-auto-reply',
+    NoReplyNoReturnPath = 'no-return-path',
+    NoReplyAutoSubmitted = 'auto-submitted',
+    NoReplyNotEmail = 'not-email',
+    NoSnoozeClosedTicket = 'no-snooze-closed-ticket',
+    NoSnoozePastDate = 'snooze-datetime-in-past',
+    NoAssignUserNotFound = 'user-not-found',
+    NoTeamAssignUserNotFound = 'team-not-found',
+    NoEmailNoRecipient = 'no-recipient',
+    NoEmailIntegrationNotFound = 'integration-not-found',
+}
+
+export enum RuleActionFailureSeverity {
+    Warning = 'warning',
+    Error = 'error',
+}
+
+export type RuleActionFailureType = {
+    description: string
+    severity: string
+}
+
+export const rulesActionsFailures: {
+    [key: string]: RuleActionFailureType
+} = {
+    [RuleActionFailureCauses.NoReplyUnanswerableChannel]: {
+        description: 'The channel of the previous message is not eligible.',
+        severity: RuleActionFailureSeverity.Warning,
+    },
+    [RuleActionFailureCauses.NoReplyToAgent]: {
+        description: 'Can only auto-reply to customer messages.',
+        severity: RuleActionFailureSeverity.Warning,
+    },
+    [RuleActionFailureCauses.NoReplyRecent]: {
+        description:
+            'Can only auto-reply to a given customer once every 5 minutes.',
+        severity: RuleActionFailureSeverity.Warning,
+    },
+    [RuleActionFailureCauses.NoReplyNoReturnPath]: {
+        description:
+            'No return-path specified in the header of the previous message.',
+        severity: RuleActionFailureSeverity.Warning,
+    },
+    [RuleActionFailureCauses.NoReplyAutoSubmitted]: {
+        description: 'Cannot auto-reply to an auto-generated message.',
+        severity: RuleActionFailureSeverity.Warning,
+    },
+    [RuleActionFailureCauses.NoReplyNotEmail]: {
+        description: 'Can only auto-reply to email messages.',
+        severity: RuleActionFailureSeverity.Warning,
+    },
+
+    [RuleActionFailureCauses.NoSnoozeClosedTicket]: {
+        description: 'Cannot only snooze an open ticket.',
+        severity: RuleActionFailureSeverity.Warning,
+    },
+    [RuleActionFailureCauses.NoSnoozePastDate]: {
+        description: 'Specified snooze date is in the past.',
+        severity: RuleActionFailureSeverity.Warning,
+    },
+
+    [RuleActionFailureCauses.NoAssignUserNotFound]: {
+        description: 'Could not find the agent to assign this ticket to.',
+        severity: RuleActionFailureSeverity.Error,
+    },
+    [RuleActionFailureCauses.NoAssignUserNotFound]: {
+        description: 'Could not find the team to assign this ticket to.',
+        severity: RuleActionFailureSeverity.Error,
+    },
+
+    [RuleActionFailureCauses.NoEmailNoRecipient]: {
+        description: 'The recipient of the email was not specified.',
+        severity: RuleActionFailureSeverity.Warning,
+    },
+    [RuleActionFailureCauses.NoEmailIntegrationNotFound]: {
+        description:
+            'The integration used to send the email was deactivated or deleted.',
+        severity: RuleActionFailureSeverity.Error,
+    },
 }
 
 export type AuditLogEvent = {

@@ -2,6 +2,7 @@ import React, {Component, ReactNode} from 'react'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, List, Map} from 'immutable'
+import _truncate from 'lodash/truncate'
 
 import {
     AgentLabel,
@@ -13,7 +14,10 @@ import {
     TAGS_ADDED_KEY,
     TAGS_REMOVED_KEY,
 } from '../../../../models/event/constants'
-import {AuditLogEventType} from '../../../../models/event/types'
+import {
+    AuditLogEventType,
+    rulesActionsFailures,
+} from '../../../../models/event/types'
 import {
     isRuleExecutedType,
     isSystemRuleEvent,
@@ -24,6 +28,8 @@ import {getTeams} from '../../../../state/teams/selectors'
 import {getEvents} from '../../../../state/ticket/selectors'
 import {RootState} from '../../../../state/types'
 import {eventNameToLabel} from '../../../../config/rules'
+import Tooltip from '../../../common/components/Tooltip'
+import {actionsConfig} from '../../../common/components/ast/actions/Action'
 
 import css from './Event.less'
 
@@ -148,21 +154,39 @@ export class AuditLogEventContainer extends Component<Props> {
 
         const data = event.get('data') as Map<any, any>
         const triggeringEventType = data.get('triggering_event_type') as string
+        const rule_id = data.get('id') as string
+        const context = event.get('context') as string
 
         return (
             <>
-                <ActionName>
-                    Rule "
-                    <a href={`/app/settings/rules/${data.get('id') as number}`}>
-                        {data.get('name')}
-                    </a>
-                    " executed
-                </ActionName>
-                {triggeringEventType && (
-                    <Filler>
-                        on "{eventNameToLabel[triggeringEventType]}"
-                    </Filler>
-                )}
+                <div id={`rule-code-${rule_id}-${context}`}>
+                    <ActionName>
+                        Rule "
+                        <a
+                            href={`/app/settings/rules/${
+                                data.get('id') as number
+                            }`}
+                        >
+                            {data.get('name')}
+                        </a>
+                        " executed
+                    </ActionName>
+                    {triggeringEventType && (
+                        <Filler>
+                            on "{eventNameToLabel[triggeringEventType]}"
+                        </Filler>
+                    )}
+                </div>
+                <Tooltip
+                    placement="top"
+                    target={`rule-code-${rule_id}-${context}`}
+                >
+                    {_truncate(data.get('code'), {
+                        length: 500,
+                        omission:
+                            '... [see the rest of the rule in the settings]',
+                    })}
+                </Tooltip>
             </>
         )
     }
@@ -348,7 +372,50 @@ export class AuditLogEventContainer extends Component<Props> {
         )
     }
 
+    _renderFailedRuleActions() {
+        const {event} = this.props
+        const failedActions = (
+            (event.getIn(['data', 'failed_actions']) as List<any>) || []
+        ).filter((action: Map<any, any>) => {
+            return action.get('failure_reason') in rulesActionsFailures
+        })
+
+        if (!failedActions || failedActions.size === 0) {
+            return null
+        }
+
+        const failures = failedActions.map(
+            (action: Map<any, any>, index = 0) => {
+                const failure_reason =
+                    rulesActionsFailures[action.get('failure_reason') as string]
+                const action_name =
+                    actionsConfig[action.get('action_name') as string].name
+                return (
+                    <div className={css.failedAction} key={`action-${index}`}>
+                        <span className={css.failureName}>{action_name} </span>
+                        failed:
+                        <span
+                            className={
+                                failure_reason.severity === 'warning'
+                                    ? css.failureReasonWarning
+                                    : css.failureReasonError
+                            }
+                        >
+                            {failure_reason.description}
+                        </span>
+                    </div>
+                )
+            }
+        )
+
+        return <div className={css.failedActions}>{failures}</div>
+    }
+
     render() {
+        const {event, isLast, users, events} = this.props
+        const viaRule = isViaRuleEvent(event, events)
+        const isRuleExecuted = isRuleExecutedType(event)
+
         const icon = this._getIcon()
         const content = this._getContent()
 
@@ -356,14 +423,12 @@ export class AuditLogEventContainer extends Component<Props> {
             return null
         }
 
-        const {event, isLast, users, events} = this.props
-        const viaRule = isViaRuleEvent(event, events)
         const user = users.find(
             (user: Map<any, any>) => user.get('id') === event.get('user_id')
         ) as Map<any, any>
-        const shouldRenderViaRule = viaRule && !isRuleExecutedType(event)
+        const shouldRenderViaRule = viaRule && !isRuleExecuted
         const shouldRenderByUser =
-            !shouldRenderViaRule && user && !isRuleExecutedType(event)
+            !shouldRenderViaRule && user && !isRuleExecuted
 
         return (
             <div
@@ -389,6 +454,7 @@ export class AuditLogEventContainer extends Component<Props> {
                         className={classnames(css.date, 'text-faded')}
                     />
                 </div>
+                {isRuleExecuted && this._renderFailedRuleActions()}
             </div>
         )
     }

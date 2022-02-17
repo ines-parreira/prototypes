@@ -150,6 +150,30 @@ describe('<AuditLogEvent/>', () => {
                 expect(component).toMatchSnapshot()
             })
 
+            it('when the rule has failed actions', () => {
+                const event = getEvent(AuditLogEventType.RuleExecuted, {
+                    id: 1,
+                    name: 'Rule 1',
+                    triggering_event_type: RuleEvent.TicketCreated,
+                    failed_actions: fromJS([
+                        {
+                            action_name: 'applyMacro',
+                            failure_reason: 'recent-auto-reply',
+                        },
+                    ]),
+                })
+
+                const component = shallow(
+                    <AuditLogEventContainer
+                        {...minProps}
+                        event={fromJS(event)}
+                        isLast={false}
+                    />
+                )
+
+                expect(component).toMatchSnapshot()
+            })
+
             it('when the user ID is missing', () => {
                 const event = getEvent(AuditLogEventType.TicketReopened, null, {
                     user_id: null,

@@ -207,25 +207,107 @@ exports[`<AuditLogEvent/> render() should render when the rule has a triggering 
           settings
         </i>
       </div>
-      <ActionName>
-        Rule "
-        <a
-          href="/app/settings/rules/1"
-        >
-          Rule 1
-        </a>
-        " executed
-      </ActionName>
-      <Filler>
-        on "
-        ticket created
-        "
-      </Filler>
+      <div
+        id="rule-code-1-foo"
+      >
+        <ActionName>
+          Rule "
+          <a
+            href="/app/settings/rules/1"
+          >
+            Rule 1
+          </a>
+          " executed
+        </ActionName>
+        <Filler>
+          on "
+          ticket created
+          "
+        </Filler>
+      </div>
+      <Tooltip
+        placement="top"
+        target="rule-code-1-foo"
+      />
     </div>
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
     />
+  </div>
+  <div
+    className="failedActions"
+  />
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render when the rule has failed actions 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          settings
+        </i>
+      </div>
+      <div
+        id="rule-code-1-foo"
+      >
+        <ActionName>
+          Rule "
+          <a
+            href="/app/settings/rules/1"
+          >
+            Rule 1
+          </a>
+          " executed
+        </ActionName>
+        <Filler>
+          on "
+          ticket created
+          "
+        </Filler>
+      </div>
+      <Tooltip
+        placement="top"
+        target="rule-code-1-foo"
+      />
+    </div>
+    <Connect(DatetimeLabelContainer)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+    />
+  </div>
+  <div
+    className="failedActions"
+  >
+    <div
+      className="failedAction"
+      key="action-0"
+    >
+      <span
+        className="failureName"
+      >
+        Apply macro
+         
+      </span>
+      failed:
+      <span
+        className="failureReasonWarning"
+      >
+        Can only auto-reply to a given customer once every 5 minutes.
+      </span>
+    </div>
   </div>
 </div>
 `;
@@ -322,21 +404,32 @@ exports[`<AuditLogEvent/> render() should render with event type rule-executed 1
           settings
         </i>
       </div>
-      <ActionName>
-        Rule "
-        <a
-          href="/app/settings/rules/1"
-        >
-          Rule 1
-        </a>
-        " executed
-      </ActionName>
+      <div
+        id="rule-code-1-foo"
+      >
+        <ActionName>
+          Rule "
+          <a
+            href="/app/settings/rules/1"
+          >
+            Rule 1
+          </a>
+          " executed
+        </ActionName>
+      </div>
+      <Tooltip
+        placement="top"
+        target="rule-code-1-foo"
+      />
     </div>
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
     />
   </div>
+  <div
+    className="failedActions"
+  />
 </div>
 `;
 
