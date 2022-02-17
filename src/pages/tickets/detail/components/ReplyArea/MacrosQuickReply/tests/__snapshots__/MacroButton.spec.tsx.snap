@@ -220,7 +220,7 @@ exports[`<MacroButton /> should render the button 1`] = `
   class="buttonWrapper"
 >
   <button
-    class="button btn btn-secondary btn-sm btn btn-secondary"
+    class="wrapper button secondary small"
     id="macro-quick-reply-1"
     type="button"
   >

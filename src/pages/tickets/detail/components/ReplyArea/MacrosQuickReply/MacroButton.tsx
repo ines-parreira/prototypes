@@ -1,6 +1,9 @@
 import React, {useState} from 'react'
-import {Button} from 'reactstrap'
 
+import Button, {
+    ButtonIntent,
+    ButtonSize,
+} from 'pages/common/components/button/Button'
 import type {Macro} from '../../../../../../models/macro/types'
 
 import {PreviewPopover} from './PreviewPopover'
@@ -24,7 +27,8 @@ export const MacroButton = ({macro, applyMacro, onHover}: Props) => {
                 actions={macro.actions}
             />
             <Button
-                className={css.button + ' btn btn-secondary btn-sm'}
+                className={css.button}
+                intent={ButtonIntent.Secondary}
                 onClick={applyMacro}
                 onMouseEnter={() => {
                     onHover()
@@ -32,6 +36,8 @@ export const MacroButton = ({macro, applyMacro, onHover}: Props) => {
                 }}
                 onMouseLeave={() => setPreviewOpen(false)}
                 id={buttonId}
+                size={ButtonSize.Small}
+                type="button"
             >
                 {macro.name}
             </Button>

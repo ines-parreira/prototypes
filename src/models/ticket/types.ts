@@ -125,6 +125,14 @@ export type Action = {
     type: string
     response?: {
         msg: string
+        status_code: number
+        response: string
+    }
+    arguments?: {
+        headers: Record<string, string>
+        params: Record<string, string>
+        form?: Record<string, string>
+        json?: Record<string, string>
     }
 }
 

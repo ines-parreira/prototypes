@@ -1,7 +1,9 @@
 import React from 'react'
 import {mount} from 'enzyme'
 
-import Actions from '../Actions'
+import Actions from '../Actions.tsx'
+
+import Button from 'pages/common/components/button/Button'
 
 describe('Actions component', () => {
     const args = {
@@ -45,7 +47,7 @@ describe('Actions component', () => {
     let component = mount(<Actions message={message} />)
 
     it('should display only actions with execution in back-end', () => {
-        expect(component.find('Button').length).toBe(4)
+        expect(component.find(Button).length).toBe(4)
     })
 
     it('should display actions titles', () => {

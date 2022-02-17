@@ -1,7 +1,7 @@
-import classnames from 'classnames'
 import React from 'react'
-import {Button} from 'reactstrap'
 
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {Section} from '../../../models/section/types'
 import Modal from '../../common/components/Modal'
 
@@ -46,18 +46,20 @@ export default function DeleteSectionModal({
             </div>
             <div className="float-left mt-3">
                 <Button
-                    className={classnames('mr-2', {
-                        'btn-loading': isSubmitting,
-                    })}
-                    color="danger"
-                    disabled={isSubmitting}
+                    className="mr-2"
+                    intent={ButtonIntent.Destructive}
+                    isLoading={isSubmitting}
                     onClick={onSubmit}
                     type="button"
                 >
-                    <i className="material-icons">delete</i> Delete
+                    <ButtonIconLabel icon="delete">Delete</ButtonIconLabel>
                 </Button>
 
-                <Button color="secondary" type="button" onClick={onClose}>
+                <Button
+                    intent={ButtonIntent.Secondary}
+                    type="button"
+                    onClick={onClose}
+                >
                     Cancel
                 </Button>
             </div>

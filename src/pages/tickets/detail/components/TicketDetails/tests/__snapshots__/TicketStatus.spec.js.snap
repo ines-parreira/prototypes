@@ -4,20 +4,16 @@ exports[`TicketStatus component closed ticket 1`] = `
 <div
   className="d-inline-block mr-2"
 >
-  <Button
-    className="headerButton font-weight-medium closed"
-    color="success"
+  <span
     id="change-status-button"
-    onClick={[Function]}
-    tag="button"
-    type="button"
   >
-    <i
-      className="icon material-icons md-3"
+    <ForwardRef
+      onClick={[Function]}
+      type="button"
     >
       check
-    </i>
-  </Button>
+    </ForwardRef>
+  </span>
   <Tooltip
     placement="bottom"
     target="change-status-button"
@@ -31,23 +27,21 @@ exports[`TicketStatus component open ticket 1`] = `
 <div
   className="d-inline-block mr-2"
 >
-  <Button
-    className="headerButton font-weight-medium"
-    color="secondary"
+  <span
     id="change-status-button"
-    onClick={[Function]}
-    tag="button"
-    type="button"
   >
-    <i
-      className="icon material-icons md-2 mr-1"
+    <ForwardRef
+      intent="secondary"
+      onClick={[Function]}
+      type="button"
     >
-      check
-    </i>
-    <span>
-      Close
-    </span>
-  </Button>
+      <ButtonIconLabel
+        icon="check"
+      >
+        Close
+      </ButtonIconLabel>
+    </ForwardRef>
+  </span>
   <Tooltip
     placement="bottom"
     target="change-status-button"

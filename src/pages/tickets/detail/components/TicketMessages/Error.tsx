@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect, ConnectedProps} from 'react-redux'
-import {Button} from 'reactstrap'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import {Action} from '../../../../../models/ticket/types'
 import Tooltip from '../../../../common/components/Tooltip'
 import Alert, {AlertType} from '../../../../common/components/Alert/Alert'
@@ -147,9 +147,8 @@ class Error extends Component<Props, State> {
                     <Button
                         id={id}
                         type="button"
-                        color="primary"
                         onClick={this.retry}
-                        disabled={!!this.state.loading}
+                        isDisabled={!!this.state.loading}
                     >
                         Retry
                     </Button>
@@ -168,9 +167,8 @@ class Error extends Component<Props, State> {
                     <Button
                         id={id}
                         type="button"
-                        color="primary"
                         onClick={this.force}
-                        disabled={!!this.state.loading}
+                        isDisabled={!!this.state.loading}
                     >
                         Force
                     </Button>
@@ -190,9 +188,9 @@ class Error extends Component<Props, State> {
                     <Button
                         id={id}
                         type="button"
-                        color="secondary"
+                        intent={ButtonIntent.Secondary}
                         onClick={this.cancel}
-                        disabled={!!this.state.loading}
+                        isDisabled={!!this.state.loading}
                     >
                         Cancel
                     </Button>

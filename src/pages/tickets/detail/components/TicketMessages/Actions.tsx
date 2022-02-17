@@ -1,15 +1,16 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {Component} from 'react'
 import {fromJS} from 'immutable'
 import _get from 'lodash/get'
-import {Button} from 'reactstrap'
 import classnames from 'classnames'
 
-import {getActionTemplate} from '../../../../../utils.ts'
-import Modal from '../../../../common/components/Modal.tsx'
-import {JSONTree} from '../../../../common/components/JSONTree.tsx'
-import {JSON_CONTENT_TYPE, FORM_CONTENT_TYPE} from '../../../../../config.ts'
-import {MACRO_ACTION_NAME} from '../../../../../models/macroAction/constants.ts'
+import {getActionTemplate} from 'utils'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Modal from 'pages/common/components/Modal'
+import {JSONTree} from 'pages/common/components/JSONTree'
+import {ContentType} from 'models/api/types'
+import {MACRO_ACTION_NAME} from 'models/macroAction/constants'
+import {TicketMessage, ActionStatus, Action} from 'models/ticket/types'
 
 import css from './Actions.less'
 
@@ -24,41 +25,52 @@ const SHOPIFY_ACTION_NAMES = [
     MACRO_ACTION_NAME.SHOPIFY_REFUND_SHIPPING_COST_LAST_ORDER,
 ]
 
-export default class Actions extends React.Component {
-    constructor(props) {
+type Props = {
+    message: TicketMessage
+}
+
+type State = {
+    isModalOpen: Record<number, boolean>
+}
+
+export default class Actions extends Component<Props, State> {
+    modalState: Record<number, boolean> = {}
+
+    constructor(props: Props) {
         super(props)
 
         this.state = {
             isModalOpen: {},
         }
-
-        this.modalState = {}
     }
 
-    _openModal = (id) => {
+    _openModal = (id: number) => {
         return () => {
             this.modalState[id] = true
             this.setState({isModalOpen: this.modalState})
         }
     }
 
-    _closeModal = (id) => {
+    _closeModal = (id: number) => {
         return () => {
             this.modalState[id] = false
             this.setState({isModalOpen: this.modalState})
         }
     }
 
-    _renderShopifyActionModalContent = (id, action) => {
-        let hiddenOptions = ['tracking_event_name']
+    _renderShopifyActionModalContent = (id: number, action: Action) => {
+        const hiddenOptions = ['tracking_event_name']
         return (
             <div>
-                {Object.keys(action.arguments).map((arg, idx) => {
+                {Object.keys(action.arguments!).map((arg, idx) => {
                     if (!hiddenOptions.includes(arg)) {
-                        let value = action.arguments[arg]
+                        let value: string =
+                            action.arguments![
+                                arg as keyof typeof action.arguments
+                            ]
 
                         if (typeof value === 'boolean') {
-                            value = value.toString()
+                            value = (value as boolean).toString()
                         }
 
                         return (
@@ -72,35 +84,39 @@ export default class Actions extends React.Component {
         )
     }
 
-    _renderModalContent = (id, action, contentType) => {
+    _renderModalContent = (
+        id: number,
+        action: Action,
+        contentType: ContentType
+    ) => {
         return (
             <div>
                 <h3>Headers</h3>
-                {Object.keys(action.arguments.headers).map((arg, idx) => (
+                {Object.keys(action.arguments!.headers).map((arg, idx) => (
                     <p key={idx}>
-                        <b>{arg}:</b> {action.arguments.headers[arg]}
+                        <b>{arg}:</b> {action.arguments!.headers[arg]}
                     </p>
                 ))}
                 <h3>URL Parameters</h3>
-                {Object.keys(action.arguments.params).map((arg, idx) => (
+                {Object.keys(action.arguments!.params).map((arg, idx) => (
                     <p key={idx}>
-                        <b>{arg}:</b> {action.arguments.params[arg]}
+                        <b>{arg}:</b> {action.arguments!.params[arg]}
                     </p>
                 ))}
-                {!!action.arguments.form && contentType === FORM_CONTENT_TYPE && (
+                {!!action.arguments!.form && contentType === ContentType.Form && (
                     <div className="mt-3">
                         <h3>Form Data</h3>
-                        {Object.keys(action.arguments.form).map((arg, idx) => (
+                        {Object.keys(action.arguments!.form).map((arg, idx) => (
                             <p key={idx}>
-                                <b>{arg}:</b> {action.arguments.form[arg]}
+                                <b>{arg}:</b> {action.arguments!.form![arg]}
                             </p>
                         ))}
                     </div>
                 )}
-                {!!action.arguments.json && contentType === JSON_CONTENT_TYPE && (
+                {!!action.arguments!.json && contentType === ContentType.Json && (
                     <div className="mt-3">
                         <h3>JSON Data</h3>
-                        <JSONTree data={fromJS(action.arguments.json)} />
+                        <JSONTree data={fromJS(action.arguments!.json)} />
                     </div>
                 )}
                 {!!action.response && (
@@ -129,7 +145,7 @@ export default class Actions extends React.Component {
         }
 
         const backActions = message.actions.filter(
-            (action) => getActionTemplate(action.name).execution === 'back'
+            (action) => getActionTemplate(action.name)!.execution === 'back'
         )
 
         if (backActions.length === 0) {
@@ -139,17 +155,17 @@ export default class Actions extends React.Component {
         return (
             <div className={classnames(css.component, 'mt-3')}>
                 {backActions.map((action, index) => {
-                    let color = 'success'
+                    let intent = ButtonIntent.Primary
                     let icon = 'check'
 
-                    if (action.status === 'error') {
-                        color = 'danger'
+                    if (action.status === ActionStatus.Error) {
+                        intent = ButtonIntent.Destructive
                         icon = 'close'
-                    } else if (action.status === 'pending') {
-                        color = 'secondary'
+                    } else if (action.status === ActionStatus.Pending) {
+                        intent = ButtonIntent.Secondary
                         icon = 'refresh'
-                    } else if (action.status === 'canceled') {
-                        color = 'danger'
+                    } else if ((action.status as any) === 'canceled') {
+                        intent = ButtonIntent.Destructive
                         icon = 'block'
                     }
 
@@ -165,20 +181,12 @@ export default class Actions extends React.Component {
                         >
                             <Button
                                 type="button"
-                                color={color}
+                                intent={intent}
                                 onClick={this._openModal(index)}
                             >
-                                <i
-                                    className={classnames(
-                                        'material-icons mr-2',
-                                        {
-                                            'md-spin': icon === 'refresh',
-                                        }
-                                    )}
-                                >
-                                    {icon}
-                                </i>
-                                {action.title}
+                                <ButtonIconLabel icon={icon}>
+                                    {action.title}
+                                </ButtonIconLabel>
                             </Button>
                             {isShopifyAction ? (
                                 <Modal
@@ -213,8 +221,4 @@ export default class Actions extends React.Component {
             </div>
         )
     }
-}
-
-Actions.propTypes = {
-    message: PropTypes.object.isRequired,
 }

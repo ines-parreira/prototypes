@@ -2,9 +2,9 @@ import React, {ComponentProps, useEffect, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import DocumentTitle from 'react-document-title'
 import {Link, useLocation, useParams} from 'react-router-dom'
-import {Button} from 'reactstrap'
 import decorateComponentWithProps from 'decorate-component-with-props'
 
+import Button from 'pages/common/components/button/Button'
 import {RootState} from '../../../state/types'
 import {fetchTags} from '../../../state/tags/actions'
 import {getTickets} from '../../../state/tickets/selectors'
@@ -91,13 +91,9 @@ export const TicketListContainer = ({
                     viewButtons={
                         !isEditMode && (
                             <div className="d-inline-flex align-items-center">
-                                <Button
-                                    tag={Link}
-                                    color="success"
-                                    to="/app/ticket/new"
-                                >
-                                    Create ticket
-                                </Button>
+                                <Link to="/app/ticket/new">
+                                    <Button type="button">Create ticket</Button>
+                                </Link>
                             </div>
                         )
                     }

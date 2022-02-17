@@ -1,11 +1,9 @@
 import React from 'react'
-import classnames from 'classnames'
-import {Button} from 'reactstrap'
 
-import Tooltip from '../../../../common/components/Tooltip'
-import headerCss from '../TicketHeader.less'
-
-import css from './TicketStatus.less'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import IconButton from 'pages/common/components/button/IconButton'
+import Tooltip from 'pages/common/components/Tooltip'
 
 type Props = {
     setQuickStatus: (status: string) => void
@@ -17,29 +15,24 @@ const TicketStatus = ({setQuickStatus, currentStatus}: Props) => {
 
     return (
         <div className="d-inline-block mr-2">
-            <Button
-                type="button"
-                id="change-status-button"
-                className={classnames(
-                    headerCss.headerButton,
-                    'font-weight-medium',
-                    {
-                        [css.closed]: !toClose,
-                    }
+            <span id="change-status-button">
+                {toClose ? (
+                    <Button
+                        type="button"
+                        intent={ButtonIntent.Secondary}
+                        onClick={() => setQuickStatus(currentStatus)}
+                    >
+                        <ButtonIconLabel icon="check">Close</ButtonIconLabel>
+                    </Button>
+                ) : (
+                    <IconButton
+                        type="button"
+                        onClick={() => setQuickStatus(currentStatus)}
+                    >
+                        check
+                    </IconButton>
                 )}
-                color={toClose ? 'secondary' : 'success'}
-                onClick={() => setQuickStatus(currentStatus)}
-            >
-                <i
-                    className={classnames(css.icon, 'material-icons', {
-                        ['md-2 mr-1']: toClose,
-                        ['md-3']: !toClose,
-                    })}
-                >
-                    check
-                </i>
-                {toClose && <span>Close</span>}
-            </Button>
+            </span>
             <Tooltip placement="bottom" target="change-status-button">
                 {toClose ? 'Close (press C)' : 'Reopen (press O)'}
             </Tooltip>

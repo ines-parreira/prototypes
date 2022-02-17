@@ -1,7 +1,8 @@
 import classnames from 'classnames'
 import React from 'react'
-import {Form, Button} from 'reactstrap'
+import {Form} from 'reactstrap'
 
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/InputField'
 import {SectionDraft} from '../../../models/section/types'
 import Modal from '../../common/components/Modal'
@@ -108,15 +109,17 @@ export default function SectionFormModal({
                 <div className="float-left mt-3">
                     <Button
                         type="submit"
-                        color="primary"
-                        className={classnames('mr-2', {
-                            'btn-loading': isSubmitting,
-                        })}
-                        disabled={isSubmitting || sectionForm.name.length === 0}
+                        className="mr-2"
+                        isDisabled={sectionForm.name.length === 0}
+                        isLoading={isSubmitting}
                     >
                         {isNewSection ? 'Create' : 'Update'}
                     </Button>
-                    <Button color="secondary" type="button" onClick={onClose}>
+                    <Button
+                        intent={ButtonIntent.Secondary}
+                        type="button"
+                        onClick={onClose}
+                    >
                         Cancel
                     </Button>
                 </div>
